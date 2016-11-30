@@ -54,11 +54,8 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
     @Override
     void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
             PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth) {
-        // Now we need to tint the original background with the tint, using
-        // an InsetDrawable if we have a border width
-        mShapeDrawable = DrawableCompat.wrap(borderWidth > 0
-                ? new InsetDrawable(originalBackground, borderWidth)
-                : originalBackground);
+        // Now we need to tint the original background with the tint
+        mShapeDrawable = DrawableCompat.wrap(originalBackground);
         DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
             DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
@@ -67,7 +64,8 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
         final Drawable rippleContent;
         if (borderWidth > 0) {
             mBorderDrawable = createBorderDrawable(backgroundTint);
-            rippleContent = new LayerDrawable(new Drawable[]{mBorderDrawable, mShapeDrawable});
+            rippleContent = new LayerDrawable(new Drawable[]{
+                    mBorderDrawable, new InsetDrawable(mShapeDrawable, borderWidth)});
         } else {
             mBorderDrawable = null;
             rippleContent = mShapeDrawable;
