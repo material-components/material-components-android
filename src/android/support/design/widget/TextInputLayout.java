@@ -503,19 +503,32 @@ public class TextInputLayout extends LinearLayout {
         }
 
         if (!TextUtils.isEmpty(error)) {
-            ViewCompat.setAlpha(mErrorView, 0f);
-            mErrorView.setText(error);
-            ViewCompat.animate(mErrorView)
-                    .alpha(1f)
-                    .setDuration(ANIMATION_DURATION)
-                    .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
-                    .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                        @Override
-                        public void onAnimationStart(View view) {
-                            view.setVisibility(VISIBLE);
-                        }
-                    })
-                    .start();
+            boolean animate;
+            if (TextUtils.equals(error, mErrorView.getText())) {
+                // We've been given the same error message, so only animate if needed
+                animate = !mErrorView.isShown() || ViewCompat.getAlpha(mErrorView) < 1f;
+            } else {
+                animate = true;
+                mErrorView.setText(error);
+            }
+
+            if (animate) {
+                if (ViewCompat.getAlpha(mErrorView) == 1f) {
+                    // If it's currently 100% show, we'll animate it from 0
+                    ViewCompat.setAlpha(mErrorView, 0f);
+                }
+                ViewCompat.animate(mErrorView)
+                        .alpha(1f)
+                        .setDuration(ANIMATION_DURATION)
+                        .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
+                        .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                            @Override
+                            public void onAnimationStart(View view) {
+                                view.setVisibility(VISIBLE);
+                            }
+                        })
+                        .start();
+            }
 
             // Set the EditText's background tint to the error color
             mErrorShown = true;
