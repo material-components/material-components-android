@@ -95,9 +95,17 @@ public class Snackbar {
     /**
      * @hide
      */
-    @IntDef({LENGTH_SHORT, LENGTH_LONG})
+    @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
     @Retention(RetentionPolicy.SOURCE)
     public @interface Duration {}
+
+    /**
+     * Show the Snackbar indefinitely. This means that the Snackbar will be displayed from the time
+     * that is {@link #show() shown} until either it is dismissed, or another Snackbar is shown.
+     *
+     * @see #setDuration
+     */
+    public static final int LENGTH_INDEFINITE = -2;
 
     /**
      * Show the Snackbar for a short period of time.

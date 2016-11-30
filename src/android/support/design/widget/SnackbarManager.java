@@ -200,6 +200,11 @@ class SnackbarManager {
     }
 
     private void scheduleTimeoutLocked(SnackbarRecord r) {
+        if (r.duration == Snackbar.LENGTH_INDEFINITE) {
+            // If we're set to indefinite, we don't want to set a timeout
+            return;
+        }
+
         int durationMs = LONG_DURATION_MS;
         if (r.duration > 0) {
             durationMs = r.duration;

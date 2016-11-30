@@ -229,6 +229,7 @@ package android.support.design.widget {
     method public android.support.design.widget.Snackbar setText(java.lang.CharSequence);
     method public android.support.design.widget.Snackbar setText(int);
     method public void show();
+    field public static final int LENGTH_INDEFINITE = -2; // 0xfffffffe
     field public static final int LENGTH_LONG = 0; // 0x0
     field public static final int LENGTH_SHORT = -1; // 0xffffffff
   }
