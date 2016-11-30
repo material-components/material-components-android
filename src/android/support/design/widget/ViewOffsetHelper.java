@@ -50,16 +50,14 @@ class ViewOffsetHelper {
         updateOffsets();
     }
 
-    private void updateOffsets()  {
-        if (mOffsetLeft != 0 || mOffsetTop != 0) {
-            ViewCompat.offsetTopAndBottom(mView, mOffsetTop - (mView.getTop() - mLayoutTop));
-            ViewCompat.offsetLeftAndRight(mView, mOffsetLeft - (mView.getLeft() - mLayoutLeft));
+    private void updateOffsets() {
+        ViewCompat.offsetTopAndBottom(mView, mOffsetTop - (mView.getTop() - mLayoutTop));
+        ViewCompat.offsetLeftAndRight(mView, mOffsetLeft - (mView.getLeft() - mLayoutLeft));
 
-            // Manually invalidate the parent to make sure we get drawn
-            ViewParent parent = mView.getParent();
-            if (parent instanceof View) {
-                ((View) parent).invalidate();
-            }
+        // Manually invalidate the parent to make sure we get drawn
+        ViewParent parent = mView.getParent();
+        if (parent instanceof View) {
+            ((View) parent).invalidate();
         }
     }
 
