@@ -16,10 +16,15 @@
 
 package android.support.design.widget;
 
-import org.hamcrest.Matcher;
-import org.junit.Test;
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.CoreMatchers.notNullValue;
+import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.lessThan;
+import static org.junit.Assert.fail;
 
 import android.content.Context;
+import android.content.DialogInterface;
+import android.os.SystemClock;
 import android.support.design.test.R;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
@@ -33,9 +38,12 @@ import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
 import android.widget.FrameLayout;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.hamcrest.MatcherAssert.assertThat;
-import static org.hamcrest.Matchers.lessThan;
+import org.hamcrest.Description;
+import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
+import org.junit.Test;
+
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class BottomSheetDialogTest extends
         BaseInstrumentationTestCase<BottomSheetDialogActivity> {
@@ -110,6 +118,7 @@ public class BottomSheetDialogTest extends
     }
 
     @Test
+    @MediumTest
     public void testNonCancelableDialog() {
         InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override
@@ -133,6 +142,34 @@ public class BottomSheetDialogTest extends
                 assertThat(mDialog.isShowing(), is(false));
             }
         });
+    }
+
+    @Test
+    @MediumTest
+    public void testHideBottomSheet() {
+        final AtomicBoolean canceled = new AtomicBoolean(false);
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                showDialog();
+                mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                    @Override
+                    public void onCancel(DialogInterface dialogInterface) {
+                        canceled.set(true);
+                    }
+                });
+            }
+        });
+        Espresso.onView(ViewMatchers.withId(R.id.design_bottom_sheet))
+                .perform(setState(BottomSheetBehavior.STATE_HIDDEN));
+        // The dialog should be canceled
+        long start = System.currentTimeMillis();
+        while (!canceled.get()) {
+            SystemClock.sleep(31);
+            if (System.currentTimeMillis() - start > 3000) {
+                fail("Timed out while waiting for the dialog to be canceled.");
+            }
+        }
     }
 
     private void showDialog() {
@@ -162,6 +199,39 @@ public class BottomSheetDialogTest extends
             public void perform(UiController uiController, View view) {
                 BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
                 behavior.setPeekHeight(view.getHeight() + 100);
+            }
+        };
+    }
+
+    private static ViewAction setState(@BottomSheetBehavior.State final int state) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isBottomSheet();
+            }
+
+            @Override
+            public String getDescription() {
+                return "set state to " + state;
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                BottomSheetBehavior.from(view).setState(state);
+            }
+        };
+    }
+
+    private static Matcher<View> isBottomSheet() {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            protected boolean matchesSafely(View view) {
+                return BottomSheetBehavior.from(view) != null;
+            }
+
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("is a bottom sheet");
             }
         };
     }

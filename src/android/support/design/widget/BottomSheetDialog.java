@@ -166,7 +166,7 @@ public class BottomSheetDialog extends AppCompatDialog {
         public void onStateChanged(@NonNull View bottomSheet,
                 @BottomSheetBehavior.State int newState) {
             if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-                dismiss();
+                cancel();
             }
         }
 
