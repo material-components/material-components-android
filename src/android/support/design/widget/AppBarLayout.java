@@ -1283,20 +1283,20 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        public Parcelable onSaveInstanceState(CoordinatorLayout parent, AppBarLayout appBarLayout) {
-            final Parcelable superState = super.onSaveInstanceState(parent, appBarLayout);
+        public Parcelable onSaveInstanceState(CoordinatorLayout parent, AppBarLayout abl) {
+            final Parcelable superState = super.onSaveInstanceState(parent, abl);
             final int offset = getTopAndBottomOffset();
 
             // Try and find the first visible child...
-            for (int i = 0, count = appBarLayout.getChildCount(); i < count; i++) {
-                View child = appBarLayout.getChildAt(i);
+            for (int i = 0, count = abl.getChildCount(); i < count; i++) {
+                View child = abl.getChildAt(i);
                 final int visBottom = child.getBottom() + offset;
 
                 if (child.getTop() + offset <= 0 && visBottom >= 0) {
                     final SavedState ss = new SavedState(superState);
                     ss.firstVisibleChildIndex = i;
                     ss.firstVisibleChildAtMinimumHeight =
-                            visBottom == ViewCompat.getMinimumHeight(child);
+                            visBottom == (ViewCompat.getMinimumHeight(child) + abl.getTopInset());
                     ss.firstVisibleChildPercentageShown = visBottom / (float) child.getHeight();
                     return ss;
                 }

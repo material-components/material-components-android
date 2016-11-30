@@ -413,20 +413,19 @@ public class CollapsingToolbarLayout extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        // Update our child view offset helpers
-        for (int i = 0, z = getChildCount(); i < z; i++) {
-            final View child = getChildAt(i);
-
-            if (mLastInsets != null && !ViewCompat.getFitsSystemWindows(child)) {
-                final int insetTop = mLastInsets.getSystemWindowInsetTop();
-                if (child.getTop() < insetTop) {
-                    // If the child isn't set to fit system windows but is drawing within the inset
-                    // offset it down
-                    ViewCompat.offsetTopAndBottom(child, insetTop);
+        if (mLastInsets != null) {
+            // Shift down any views which are not set to fit system windows
+            final int insetTop = mLastInsets.getSystemWindowInsetTop();
+            for (int i = 0, z = getChildCount(); i < z; i++) {
+                final View child = getChildAt(i);
+                if (!ViewCompat.getFitsSystemWindows(child)) {
+                    if (child.getTop() < insetTop) {
+                        // If the child isn't set to fit system windows but is drawing within
+                        // the inset offset it down
+                        ViewCompat.offsetTopAndBottom(child, insetTop);
+                    }
                 }
             }
-
-            getViewOffsetHelper(child).onViewLayout();
         }
 
         // Update the collapsed bounds by getting it's transformed bounds
@@ -463,6 +462,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
                 // Now recalculate using the new bounds
                 mCollapsingTextHelper.recalculate();
             }
+        }
+
+        // Update our child view offset helpers. This needs to be done after the title has been
+        // setup, so that any Toolbars are in their original position
+        for (int i = 0, z = getChildCount(); i < z; i++) {
+            getViewOffsetHelper(getChildAt(i)).onViewLayout();
         }
 
         // Finally, set our minimum height to enable proper AppBarLayout collapsing
