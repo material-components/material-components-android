@@ -17,12 +17,17 @@ package android.support.design.widget;
 
 import android.content.res.Resources;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IdRes;
 import android.support.design.test.R;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,9 +40,11 @@ import static android.support.design.testutils.DrawerLayoutActions.openDrawer;
 import static android.support.design.testutils.NavigationViewActions.*;
 import static android.support.design.testutils.TestUtilsMatchers.*;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.core.AllOf.allOf;
+import static org.junit.Assert.*;
 
 public class NavigationViewTest
         extends BaseInstrumentationTestCase<NavigationViewActivity> {
@@ -48,6 +55,8 @@ public class NavigationViewTest
     private DrawerLayout mDrawerLayout;
 
     private NavigationView mNavigationView;
+
+    private int mLastSelectedNavigationItemId;
 
     public NavigationViewTest() {
         super(NavigationViewActivity.class);
@@ -76,6 +85,16 @@ public class NavigationViewTest
     public void testBasics() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+
+        // Check the contents of the Menu object
+        final Menu menu = mNavigationView.getMenu();
+        assertNotNull("Menu should not be null", menu);
+        assertEquals("Should have matching number of items", MENU_CONTENT_ITEM_IDS.length,
+                menu.size());
+        for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
+            final MenuItem currItem = menu.getItem(i);
+            assertEquals("ID for Item #" + i, MENU_CONTENT_ITEM_IDS[i], currItem.getItemId());
+        }
 
         // Check that we have the expected menu items in our NavigationView
         for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
@@ -270,5 +289,203 @@ public class NavigationViewTest
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
                 isDescendantOfA(withId(R.id.start_drawer)))).check(matches(
                     withStartDrawableFilledWith(blueIconColor, 0)));
+    }
+
+    /**
+     * Gets the list of header IDs (which can be empty) and verifies that the actual header content
+     * of our navigation view matches the expected header content.
+     */
+    private void verifyHeaders(@IdRes int ... expectedHeaderIds) {
+        final int expectedHeaderCount = (expectedHeaderIds != null) ? expectedHeaderIds.length : 0;
+        final int actualHeaderCount = mNavigationView.getHeaderCount();
+        assertEquals("Header count", expectedHeaderCount, actualHeaderCount);
+
+        if (expectedHeaderCount > 0) {
+            for (int i = 0; i < expectedHeaderCount; i++) {
+                final View currentHeader = mNavigationView.getHeaderView(i);
+                assertEquals("Header at #" + i, expectedHeaderIds[i], currentHeader.getId());
+            }
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void testHeaders() {
+        // Open our drawer
+        onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+
+        // We should have no headers at the start
+        verifyHeaders();
+
+        // Inflate one header and check that it's there in the navigation view
+        onView(withId(R.id.start_drawer)).perform(
+                inflateHeaderView(R.layout.design_navigation_view_header1));
+        verifyHeaders(R.id.header1);
+
+        final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
+
+        // Add one more header and check that it's there in the navigation view
+        onView(withId(R.id.start_drawer)).perform(
+                addHeaderView(inflater, R.layout.design_navigation_view_header2));
+        verifyHeaders(R.id.header1, R.id.header2);
+
+        final View header1 = mNavigationView.findViewById(R.id.header1);
+        // Remove the first header and check that we still have the second header
+        onView(withId(R.id.start_drawer)).perform(removeHeaderView(header1));
+        verifyHeaders(R.id.header2);
+
+        // Add one more header and check that we now have two headers
+        onView(withId(R.id.start_drawer)).perform(
+                inflateHeaderView(R.layout.design_navigation_view_header3));
+        verifyHeaders(R.id.header2, R.id.header3);
+
+        // Add another "copy" of the header from the just-added layout and check that we now
+        // have three headers
+        onView(withId(R.id.start_drawer)).perform(
+                addHeaderView(inflater, R.layout.design_navigation_view_header3));
+        verifyHeaders(R.id.header2, R.id.header3, R.id.header3);
+    }
+
+    @Test
+    @SmallTest
+    public void testNavigationSelectionListener() {
+        // Open our drawer
+        onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+
+        // Click one of our items
+        onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
+                isDescendantOfA(withId(R.id.start_drawer)))).perform(click());
+        // Check that the drawer is still open
+        assertTrue("Drawer is still open after click",
+                mDrawerLayout.isDrawerOpen(GravityCompat.START));
+
+        // Register a listener
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        mLastSelectedNavigationItemId = item.getItemId();
+                        return false;
+                    }
+                });
+
+        // Click one of our items
+        onView(allOf(withText(mMenuStringContent.get(R.id.destination_profile)),
+                isDescendantOfA(withId(R.id.start_drawer)))).perform(click());
+        // Check that the drawer is still open
+        assertTrue("Drawer is still open after click",
+                mDrawerLayout.isDrawerOpen(GravityCompat.START));
+        // And that our listener has been notified of the click
+        assertEquals("Selected item ID", R.id.destination_profile, mLastSelectedNavigationItemId);
+
+        // Reset the tracker field and set null listener
+        mLastSelectedNavigationItemId = -1;
+        mNavigationView.setNavigationItemSelectedListener(null);
+
+        // Click one of our items
+        onView(allOf(withText(mMenuStringContent.get(R.id.destination_settings)),
+                isDescendantOfA(withId(R.id.start_drawer)))).perform(click());
+        // Check that the drawer is still open
+        assertTrue("Drawer is still open after click",
+                mDrawerLayout.isDrawerOpen(GravityCompat.START));
+        // And that our previous listener has not been notified of the click
+        assertEquals("Selected item ID", -1, mLastSelectedNavigationItemId);
+    }
+
+    private void verifyCheckedAppearance(@IdRes int checkedItemId,
+            @ColorInt int uncheckedItemForeground, @ColorInt int checkedItemForeground,
+            @ColorInt int uncheckedItemBackground, @ColorInt int checkedItemBackground) {
+        for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
+            final boolean expectedToBeChecked = (MENU_CONTENT_ITEM_IDS[i] == checkedItemId);
+            final @ColorInt int expectedItemForeground =
+                    expectedToBeChecked ? checkedItemForeground : uncheckedItemForeground;
+            final @ColorInt int expectedItemBackground =
+                    expectedToBeChecked ? checkedItemBackground : uncheckedItemBackground;
+
+            // For the background fill check we need to select a view that has its background
+            // set by the current implementation (see disclaimer in testBackground)
+            Matcher menuItemMatcher = allOf(
+                    hasDescendant(withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
+                    isChildOfA(isAssignableFrom(RecyclerView.class)),
+                    isDescendantOfA(withId(R.id.start_drawer)));
+            onView(menuItemMatcher).check(matches(withBackgroundFill(expectedItemBackground)));
+
+            // And for the foreground color check we need to select a view with the text content
+            Matcher menuItemTextMatcher = allOf(
+                    withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
+                    isDescendantOfA(withId(R.id.start_drawer)));
+            onView(menuItemTextMatcher).check(matches(withTextColor(expectedItemForeground)));
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void testCheckedAppearance() {
+        // Open our drawer
+        onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+
+        // Reconfigure our navigation view to use foreground (text) and background visuals
+        // with explicitly different colors for the checked state
+        final Resources res = mActivityTestRule.getActivity().getResources();
+        onView(withId(R.id.start_drawer)).perform(setItemTextColor(
+                ResourcesCompat.getColorStateList(res, R.color.color_state_list_sand, null)));
+        onView(withId(R.id.start_drawer)).perform(setItemBackgroundResource(
+                R.drawable.test_drawable_state_list));
+
+        final @ColorInt int uncheckedItemForeground = ResourcesCompat.getColor(res,
+                R.color.sand_default, null);
+        final @ColorInt int checkedItemForeground = ResourcesCompat.getColor(res,
+                R.color.sand_checked, null);
+        final @ColorInt int uncheckedItemBackground = ResourcesCompat.getColor(res,
+                R.color.test_green, null);
+        final @ColorInt int checkedItemBackground = ResourcesCompat.getColor(res,
+                R.color.test_blue, null);
+
+        // Verify that all items are rendered with unchecked visuals
+        verifyCheckedAppearance(0, uncheckedItemForeground, checkedItemForeground,
+                uncheckedItemBackground, checkedItemBackground);
+
+        // Mark one of the items as checked
+        onView(withId(R.id.start_drawer)).perform(setCheckedItem(R.id.destination_profile));
+        // And verify that it's now rendered with checked visuals
+        verifyCheckedAppearance(R.id.destination_profile,
+                uncheckedItemForeground, checkedItemForeground,
+                uncheckedItemBackground, checkedItemBackground);
+
+        // Register a navigation listener that "marks" the selected item
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        return true;
+                    }
+                });
+
+        // Click one of our items
+        onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
+                isDescendantOfA(withId(R.id.start_drawer)))).perform(click());
+        // and verify that it's now checked
+        verifyCheckedAppearance(R.id.destination_people,
+                uncheckedItemForeground, checkedItemForeground,
+                uncheckedItemBackground, checkedItemBackground);
+
+        // Register a navigation listener that doesn't "mark" the selected item
+        mNavigationView.setNavigationItemSelectedListener(
+                new NavigationView.OnNavigationItemSelectedListener() {
+                    @Override
+                    public boolean onNavigationItemSelected(MenuItem item) {
+                        return false;
+                    }
+                });
+
+        // Click another items
+        onView(allOf(withText(mMenuStringContent.get(R.id.destination_settings)),
+                isDescendantOfA(withId(R.id.start_drawer)))).perform(click());
+        // and verify that the checked state remains on the previously clicked item
+        // since the current navigation listener returns false from its callback
+        // implementation
+        verifyCheckedAppearance(R.id.destination_people,
+                uncheckedItemForeground, checkedItemForeground,
+                uncheckedItemBackground, checkedItemBackground);
     }
 }

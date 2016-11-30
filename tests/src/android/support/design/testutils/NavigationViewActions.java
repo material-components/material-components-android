@@ -19,12 +19,16 @@ package android.support.design.testutils;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.view.LayoutInflater;
 import android.view.View;
 import org.hamcrest.Matcher;
 
@@ -89,7 +93,7 @@ public class NavigationViewActions {
     /**
      * Sets item background on the content of the navigation view.
      */
-    public static ViewAction setItemBackground(final Drawable itemBackground) {
+    public static ViewAction setItemBackground(final @Nullable Drawable itemBackground) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
@@ -161,6 +165,115 @@ public class NavigationViewActions {
 
                 NavigationView navigationView = (NavigationView) view;
                 navigationView.setItemIconTintList(tint);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Add the specified view as a header to the navigation view.
+     */
+    public static ViewAction addHeaderView(final @NonNull LayoutInflater inflater,
+            final @LayoutRes int res) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Add header view";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                NavigationView navigationView = (NavigationView) view;
+                navigationView.addHeaderView(inflater.inflate(res, null, false));
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Inflates a view from the specified layout ID and adds it as a header to the navigation view.
+     */
+    public static ViewAction inflateHeaderView(final @LayoutRes int res) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Inflate and add header view";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                NavigationView navigationView = (NavigationView) view;
+                navigationView.inflateHeaderView(res);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Removes a previously added header view from the navigation view.
+     */
+    public static ViewAction removeHeaderView(final @Nullable View headerView) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Remove header view";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                NavigationView navigationView = (NavigationView) view;
+                navigationView.removeHeaderView(headerView);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Sets checked item on the navigation view.
+     */
+    public static ViewAction setCheckedItem(final @IdRes int id) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Set checked item";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                NavigationView navigationView = (NavigationView) view;
+                navigationView.setCheckedItem(id);
 
                 uiController.loopMainThreadUntilIdle();
             }

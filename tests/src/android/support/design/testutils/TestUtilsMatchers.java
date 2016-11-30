@@ -119,7 +119,7 @@ public class TestUtilsMatchers {
 
             @Override
             public boolean matchesSafely(final TextView view) {
-                final @ColorInt int ourTextColor = view.getTextColors().getDefaultColor();
+                final @ColorInt int ourTextColor = view.getCurrentTextColor();
                 if (ourTextColor != textColor) {
                     int ourAlpha = Color.alpha(ourTextColor);
                     int ourRed = Color.red(ourTextColor);

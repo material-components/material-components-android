@@ -14,18 +14,8 @@
      limitations under the License.
 -->
 
-<resources>
-    <color name="emerald_translucent">#8020A060</color>
-    <color name="emerald_text">#30B050</color>
-    <color name="red_translucent">#90FF2040</color>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:state_checked="true" android:drawable="@drawable/test_background_blue" />
+    <item android:drawable="@drawable/test_background_green" />
+</selector>
 
-    <color name="lilac_default">#F080F0</color>
-    <color name="lilac_disabled">#F0A0FF</color>
-    <color name="sand_default">#F0B000</color>
-    <color name="sand_disabled">#FFC080</color>
-    <color name="sand_checked">#FFD0A0</color>
-
-    <color name="test_red">#FF6030</color>
-    <color name="test_green">#50E080</color>
-    <color name="test_blue">#3050CF</color>
-</resources>
