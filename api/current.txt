@@ -275,6 +275,8 @@ package android.support.design.widget {
     method public void removeTabAt(int);
     method public void setOnTabSelectedListener(android.support.design.widget.TabLayout.OnTabSelectedListener);
     method public void setScrollPosition(int, float, boolean);
+    method public void setSelectedTabIndicatorColor(int);
+    method public void setSelectedTabIndicatorHeight(int);
     method public void setTabGravity(int);
     method public void setTabMode(int);
     method public void setTabTextColors(android.content.res.ColorStateList);

@@ -279,6 +279,24 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
+     * Sets the tab indicator's color for the currently selected tab.
+     *
+     * @param color color to use for the indicator
+     */
+    public void setSelectedTabIndicatorColor(@ColorInt int color) {
+        mTabStrip.setSelectedIndicatorColor(color);
+    }
+
+    /**
+     * Sets the tab indicator's height for the currently selected tab.
+     *
+     * @param height height to use for the indicator in pixels
+     */
+    public void setSelectedTabIndicatorHeight(int height) {
+        mTabStrip.setSelectedIndicatorHeight(height);
+    }
+
+    /**
      * Set the scroll position of the tabs. This is useful for when the tabs are being displayed as
      * part of a scrolling container such as {@link android.support.v4.view.ViewPager}.
      * <p>
