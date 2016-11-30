@@ -32,6 +32,7 @@
                 android:id="@+id/textinput_edittext"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:imeOptions="flagNoExtractUi"
                 android:hint="@string/textinput_hint"/>
 
     </android.support.design.widget.TextInputLayout>
@@ -46,6 +47,7 @@
             android:id="@+id/textinput_edittext_pwd"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:imeOptions="flagNoExtractUi"
             android:hint="@string/textinput_hint"
             android:inputType="textPassword"/>
 
