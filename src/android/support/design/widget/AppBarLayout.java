@@ -242,7 +242,7 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        setCollapsible(haveCollapsibleChild);
+        setCollapsibleState(haveCollapsibleChild);
     }
 
     private void invalidateScrollRanges() {
@@ -495,14 +495,14 @@ public class AppBarLayout extends LinearLayout {
         return mergeDrawableStates(states, extraStates);
     }
 
-    private void setCollapsible(boolean collapsible) {
+    private void setCollapsibleState(boolean collapsible) {
         if (mCollapsible != collapsible) {
             mCollapsible = collapsible;
             refreshDrawableState();
         }
     }
 
-    private void setCollapsed(boolean collapsed) {
+    private void setCollapsedState(boolean collapsed) {
         if (mCollapsed != collapsed) {
             mCollapsed = collapsed;
             refreshDrawableState();
@@ -733,7 +733,7 @@ public class AppBarLayout extends LinearLayout {
      * scroll handling with offsetting.
      */
     public static class Behavior extends HeaderBehavior<AppBarLayout> {
-        private static final int ANIMATE_OFFSET_DIPS_PER_SECOND = 300;
+        private static final int MAX_OFFSET_ANIMATION_DURATION = 600; // ms
         private static final int INVALID_POSITION = -1;
 
         /**
@@ -862,7 +862,7 @@ public class AppBarLayout extends LinearLayout {
                     if (getTopBottomOffsetForScrollingSibling() < targetScroll) {
                         // If we're currently not expanded more than the target scroll, we'll
                         // animate a fling
-                        animateOffsetTo(coordinatorLayout, child, targetScroll);
+                        animateOffsetTo(coordinatorLayout, child, targetScroll, velocityY);
                         flung = true;
                     }
                 } else {
@@ -871,7 +871,7 @@ public class AppBarLayout extends LinearLayout {
                     if (getTopBottomOffsetForScrollingSibling() > targetScroll) {
                         // If we're currently not expanded less than the target scroll, we'll
                         // animate a fling
-                        animateOffsetTo(coordinatorLayout, child, targetScroll);
+                        animateOffsetTo(coordinatorLayout, child, targetScroll, velocityY);
                         flung = true;
                     }
                 }
@@ -891,7 +891,23 @@ public class AppBarLayout extends LinearLayout {
         }
 
         private void animateOffsetTo(final CoordinatorLayout coordinatorLayout,
-                final AppBarLayout child, final int offset) {
+                final AppBarLayout child, final int offset, float velocity) {
+            final int distance = Math.abs(getTopBottomOffsetForScrollingSibling() - offset);
+
+            final int duration;
+            velocity = Math.abs(velocity);
+            if (velocity > 0) {
+                duration = 3 * Math.round(1000 * (distance / velocity));
+            } else {
+                final float distanceRatio = (float) distance / child.getHeight();
+                duration = (int) ((distanceRatio + 1) * 150);
+            }
+
+            animateOffsetWithDuration(coordinatorLayout, child, offset, duration);
+        }
+
+        private void animateOffsetWithDuration(final CoordinatorLayout coordinatorLayout,
+                final AppBarLayout child, final int offset, final int duration) {
             final int currentOffset = getTopBottomOffsetForScrollingSibling();
             if (currentOffset == offset) {
                 if (mOffsetAnimator != null && mOffsetAnimator.isRunning()) {
@@ -914,12 +930,7 @@ public class AppBarLayout extends LinearLayout {
                 mOffsetAnimator.cancel();
             }
 
-            // Set the duration based on the amount of dips we're travelling in
-            final float distanceDp = Math.abs(currentOffset - offset) /
-                    coordinatorLayout.getResources().getDisplayMetrics().density;
-            mOffsetAnimator.setDuration(
-                    Math.round(distanceDp * 1000 / ANIMATE_OFFSET_DIPS_PER_SECOND));
-
+            mOffsetAnimator.setDuration(Math.min(duration, MAX_OFFSET_ANIMATION_DURATION));
             mOffsetAnimator.setIntValues(currentOffset, offset);
             mOffsetAnimator.start();
         }
@@ -971,7 +982,7 @@ public class AppBarLayout extends LinearLayout {
                             ? snapBottom
                             : snapTop;
                     animateOffsetTo(coordinatorLayout, abl,
-                            MathUtils.constrain(newOffset, -abl.getTotalScrollRange(), 0));
+                            MathUtils.constrain(newOffset, -abl.getTotalScrollRange(), 0), 0);
                 }
             }
         }
@@ -1012,13 +1023,13 @@ public class AppBarLayout extends LinearLayout {
                 if ((pendingAction & PENDING_ACTION_COLLAPSED) != 0) {
                     final int offset = -abl.getUpNestedPreScrollRange();
                     if (animate) {
-                        animateOffsetTo(parent, abl, offset);
+                        animateOffsetTo(parent, abl, offset, 0);
                     } else {
                         setHeaderTopBottomOffset(parent, abl, offset);
                     }
                 } else if ((pendingAction & PENDING_ACTION_EXPANDED) != 0) {
                     if (animate) {
-                        animateOffsetTo(parent, abl, 0);
+                        animateOffsetTo(parent, abl, 0, 0);
                     } else {
                         setHeaderTopBottomOffset(parent, abl, 0);
                     }
@@ -1200,7 +1211,7 @@ public class AppBarLayout extends LinearLayout {
                     }
                 }
 
-                layout.setCollapsed(collapsed);
+                layout.setCollapsedState(collapsed);
             }
         }
 
