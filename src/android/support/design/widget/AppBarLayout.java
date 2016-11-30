@@ -1269,8 +1269,30 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
+        public boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
+            // First lay out the child as normal
+            super.onLayoutChild(parent, child, layoutDirection);
+
+            // Now offset us correctly to be in the correct position. This is important for things
+            // like activity transitions which rely on accurate positioning after the first layout.
+            final List<View> dependencies = parent.getDependencies(child);
+            for (int i = 0, z = dependencies.size(); i < z; i++) {
+                if (updateOffset(parent, child, dependencies.get(i))) {
+                    // If we updated the offset, break out of the loop now
+                    break;
+                }
+            }
+            return true;
+        }
+
+        @Override
         public boolean onDependentViewChanged(CoordinatorLayout parent, View child,
                 View dependency) {
+            updateOffset(parent, child, dependency);
+            return false;
+        }
+
+        private boolean updateOffset(CoordinatorLayout parent, View child, View dependency) {
             final CoordinatorLayout.Behavior behavior =
                     ((CoordinatorLayout.LayoutParams) dependency.getLayoutParams()).getBehavior();
             if (behavior instanceof Behavior) {
@@ -1278,6 +1300,7 @@ public class AppBarLayout extends LinearLayout {
                 final int offset = ((Behavior) behavior).getTopBottomOffsetForScrollingSibling();
                 setTopAndBottomOffset(dependency.getHeight() + offset
                         - getOverlapForOffset(dependency, offset));
+                return true;
             }
             return false;
         }

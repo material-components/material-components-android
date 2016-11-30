@@ -61,6 +61,7 @@ package android.support.design.widget {
     method public int getOverlayTop();
     method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
     method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
+    method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, android.view.View, int);
     method public boolean onMeasureChild(android.support.design.widget.CoordinatorLayout, android.view.View, int, int, int, int);
     method public void setOverlayTop(int);
   }
