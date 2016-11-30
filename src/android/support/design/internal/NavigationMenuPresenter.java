@@ -19,6 +19,7 @@ package android.support.design.internal;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
@@ -515,7 +516,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
                 MenuItem item = textItem.getMenuItem();
                 if (item.getIcon() == null) {
                     if (mTransparentIcon == null) {
-                        mTransparentIcon = new ColorDrawable(android.R.color.transparent);
+                        mTransparentIcon = new ColorDrawable(Color.TRANSPARENT);
                     }
                     item.setIcon(mTransparentIcon);
                 }
