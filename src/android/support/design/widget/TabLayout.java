@@ -56,6 +56,9 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
+import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
+
 /**
  * TabLayout provides a horizontal layout to display tabs.
  *
@@ -1441,6 +1444,7 @@ public class TabLayout extends HorizontalScrollView {
      */
     public static class TabLayoutOnPageChangeListener implements ViewPager.OnPageChangeListener {
         private final WeakReference<TabLayout> mTabLayoutRef;
+        private int mPreviousScrollState;
         private int mScrollState;
 
         public TabLayoutOnPageChangeListener(TabLayout tabLayout) {
@@ -1449,6 +1453,7 @@ public class TabLayout extends HorizontalScrollView {
 
         @Override
         public void onPageScrollStateChanged(int state) {
+            mPreviousScrollState = mScrollState;
             mScrollState = state;
         }
 
@@ -1458,9 +1463,11 @@ public class TabLayout extends HorizontalScrollView {
             final TabLayout tabLayout = mTabLayoutRef.get();
             if (tabLayout != null) {
                 // Update the scroll position, only update the text selection if we're being
-                // dragged
-                tabLayout.setScrollPosition(position, positionOffset,
-                        mScrollState == ViewPager.SCROLL_STATE_DRAGGING);
+                // dragged (or we're settling after a drag)
+                final boolean updateText = (mScrollState == SCROLL_STATE_DRAGGING)
+                        || (mScrollState == SCROLL_STATE_SETTLING
+                        && mPreviousScrollState == SCROLL_STATE_DRAGGING);
+                tabLayout.setScrollPosition(position, positionOffset, updateText);
             }
         }
 
