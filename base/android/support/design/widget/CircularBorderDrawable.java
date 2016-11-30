@@ -50,6 +50,8 @@ class CircularBorderDrawable extends Drawable {
     private int mBottomOuterStrokeColor;
     private int mBottomInnerStrokeColor;
 
+    private int mTintColor;
+
     private boolean mInvalidateShader = true;
 
     public CircularBorderDrawable() {
@@ -113,6 +115,12 @@ class CircularBorderDrawable extends Drawable {
         invalidateSelf();
     }
 
+    void setTintColor(int tintColor) {
+        mTintColor = tintColor;
+        mInvalidateShader = true;
+        invalidateSelf();
+    }
+
     @Override
     public void setColorFilter(ColorFilter colorFilter) {
         mPaint.setColorFilter(colorFilter);
@@ -140,12 +148,14 @@ class CircularBorderDrawable extends Drawable {
         final float borderRatio = mBorderWidth / rect.height();
 
         final int[] colors = new int[6];
-        colors[0] = mTopOuterStrokeColor;
-        colors[1] = mTopInnerStrokeColor;
-        colors[2] = ColorUtils.setAlphaComponent(mTopInnerStrokeColor, 0);
-        colors[3] = ColorUtils.setAlphaComponent(mBottomInnerStrokeColor, 0);
-        colors[4] = mBottomInnerStrokeColor;
-        colors[5] = mBottomOuterStrokeColor;
+        colors[0] = ColorUtils.compositeColors(mTopOuterStrokeColor, mTintColor);
+        colors[1] = ColorUtils.compositeColors(mTopInnerStrokeColor, mTintColor);
+        colors[2] = ColorUtils.compositeColors(
+                ColorUtils.setAlphaComponent(mTopInnerStrokeColor, 0), mTintColor);
+        colors[3] = ColorUtils.compositeColors(
+                ColorUtils.setAlphaComponent(mBottomInnerStrokeColor, 0), mTintColor);
+        colors[4] = ColorUtils.compositeColors(mBottomInnerStrokeColor, mTintColor);
+        colors[5] = ColorUtils.compositeColors(mBottomOuterStrokeColor, mTintColor);
 
         final float[] positions = new float[6];
         positions[0] = 0f;

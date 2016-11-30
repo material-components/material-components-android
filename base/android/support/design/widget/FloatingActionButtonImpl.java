@@ -66,11 +66,8 @@ abstract class FloatingActionButtonImpl {
                 resources.getColor(R.color.fab_stroke_end_inner_color),
                 resources.getColor(R.color.fab_stroke_end_outer_color));
         borderDrawable.setBorderWidth(borderWidth);
-
-        Drawable d = DrawableCompat.wrap(borderDrawable);
-        DrawableCompat.setTintList(d, backgroundTint);
-        DrawableCompat.setTintMode(d, PorterDuff.Mode.DST_OVER);
-        return d;
+        borderDrawable.setTintColor(backgroundTint.getDefaultColor());
+        return borderDrawable;
     }
 
     CircularBorderDrawable newCircularDrawable() {
