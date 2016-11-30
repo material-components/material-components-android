@@ -17,4 +17,5 @@
     <dimen name="tab_width_limit_small">80dip</dimen>
     <dimen name="tab_width_limit_medium">100dip</dimen>
     <dimen name="tab_width_limit_large">120dip</dimen>
+    <dimen name="bottom_sheet_peek_height">128dp</dimen>
 </resources>
