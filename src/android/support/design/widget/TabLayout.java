@@ -1222,6 +1222,10 @@ public class TabLayout extends HorizontalScrollView {
         public Tab setCustomView(@Nullable View view) {
             mCustomView = view;
             updateView();
+
+            final boolean isSelected = (mParent.getSelectedTabPosition() == getPosition());
+            mCustomView.setSelected(isSelected);
+
             return this;
         }
 
