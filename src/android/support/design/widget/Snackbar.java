@@ -477,7 +477,7 @@ public final class Snackbar {
                 });
                 clp.setBehavior(behavior);
                 // Also set the inset edge so that views can dodge the snackbar correctly
-                clp.insetEdge = Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL;
+                clp.insetEdge = Gravity.BOTTOM;
             }
 
             mTargetParent.addView(mView);

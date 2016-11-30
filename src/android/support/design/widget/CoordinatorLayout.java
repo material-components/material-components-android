@@ -1282,7 +1282,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void offsetChildByInset(View child, Rect inset, int layoutDirection) {
-        LayoutParams lp = (LayoutParams) child.getLayoutParams();
+        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
         final int absDodgeInsetEdges = GravityCompat.getAbsoluteGravity(lp.dodgeInsetEdges,
                 layoutDirection);
 
@@ -1295,30 +1295,42 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             rect.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
         }
 
-        switch (absDodgeInsetEdges & Gravity.VERTICAL_GRAVITY_MASK) {
-            case Gravity.TOP: {
-                int distance = rect.top - lp.topMargin - lp.mInsetOffsetY;
-                setInsetOffsetY(child, Math.max(0, inset.top - distance));
-                break;
-            }
-            case Gravity.BOTTOM: {
-                int distance = getHeight() - rect.bottom - lp.bottomMargin + lp.mInsetOffsetY;
-                setInsetOffsetY(child, Math.min(0, distance - inset.bottom));
-                break;
+        boolean offsetY = false;
+        if ((absDodgeInsetEdges & Gravity.TOP) == Gravity.TOP) {
+            int distance = rect.top - lp.topMargin - lp.mInsetOffsetY;
+            if (distance < inset.top) {
+                setInsetOffsetY(child, inset.top - distance);
+                offsetY = true;
             }
         }
+        if ((absDodgeInsetEdges & Gravity.BOTTOM) == Gravity.BOTTOM) {
+            int distance = getHeight() - rect.bottom - lp.bottomMargin + lp.mInsetOffsetY;
+            if (distance < inset.bottom) {
+                setInsetOffsetY(child, distance - inset.bottom);
+                offsetY = true;
+            }
+        }
+        if (!offsetY) {
+            setInsetOffsetY(child, 0);
+        }
 
-        switch (absDodgeInsetEdges & Gravity.HORIZONTAL_GRAVITY_MASK) {
-            case Gravity.LEFT: {
-                int distance = rect.left - lp.leftMargin - lp.mInsetOffsetX;
-                setInsetOffsetX(child, Math.max(0, inset.left - distance));
-                break;
+        boolean offsetX = false;
+        if ((absDodgeInsetEdges & Gravity.LEFT) == Gravity.LEFT) {
+            int distance = rect.left - lp.leftMargin - lp.mInsetOffsetX;
+            if (distance < inset.left) {
+                setInsetOffsetX(child, inset.left - distance);
+                offsetX = true;
             }
-            case Gravity.RIGHT: {
-                int distance = getWidth() - rect.right - lp.rightMargin + lp.mInsetOffsetX;
-                setInsetOffsetX(child, Math.min(0, distance - inset.right));
-                break;
+        }
+        if ((absDodgeInsetEdges & Gravity.RIGHT) == Gravity.RIGHT) {
+            int distance = getWidth() - rect.right - lp.rightMargin + lp.mInsetOffsetX;
+            if (distance < inset.right) {
+                setInsetOffsetX(child, distance - inset.right);
+                offsetX = true;
             }
+        }
+        if (!offsetX) {
+            setInsetOffsetX(child, 0);
         }
     }
 
@@ -2798,18 +2810,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          * Checks whether the view with this LayoutParams should dodge the specified view.
          */
         private boolean shouldDodge(View other, int layoutDirection) {
-            LayoutParams otherLp = (LayoutParams) other.getLayoutParams();
-            final int absInset = GravityCompat.getAbsoluteGravity(
-                    otherLp.insetEdge, layoutDirection);
-            if (absInset != Gravity.NO_GRAVITY) {
-                final int absDodge = GravityCompat.getAbsoluteGravity(
-                        dodgeInsetEdges, layoutDirection);
-                return (absInset & Gravity.HORIZONTAL_GRAVITY_MASK)
-                        == (absDodge & Gravity.HORIZONTAL_GRAVITY_MASK)
-                        || (absInset & Gravity.VERTICAL_GRAVITY_MASK)
-                        == (absDodge & Gravity.VERTICAL_GRAVITY_MASK);
-            }
-            return false;
+            LayoutParams lp = (LayoutParams) other.getLayoutParams();
+            final int absInset = GravityCompat.getAbsoluteGravity(lp.insetEdge, layoutDirection);
+            return absInset != Gravity.NO_GRAVITY && (absInset &
+                    GravityCompat.getAbsoluteGravity(dodgeInsetEdges, layoutDirection)) == absInset;
         }
     }
 

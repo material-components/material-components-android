@@ -106,20 +106,46 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
     @Test
     public void testInsetDependency() {
         final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
+
         final CoordinatorLayout.LayoutParams lpInsetLeft = col.generateDefaultLayoutParams();
         lpInsetLeft.insetEdge = Gravity.LEFT;
+
+        final CoordinatorLayout.LayoutParams lpInsetRight = col.generateDefaultLayoutParams();
+        lpInsetRight.insetEdge = Gravity.RIGHT;
+
         final CoordinatorLayout.LayoutParams lpInsetTop = col.generateDefaultLayoutParams();
         lpInsetTop.insetEdge = Gravity.TOP;
+
+        final CoordinatorLayout.LayoutParams lpInsetBottom = col.generateDefaultLayoutParams();
+        lpInsetBottom.insetEdge = Gravity.BOTTOM;
+
         final CoordinatorLayout.LayoutParams lpDodgeLeft = col.generateDefaultLayoutParams();
         lpDodgeLeft.dodgeInsetEdges = Gravity.LEFT;
+
         final CoordinatorLayout.LayoutParams lpDodgeLeftAndTop = col.generateDefaultLayoutParams();
         lpDodgeLeftAndTop.dodgeInsetEdges = Gravity.LEFT | Gravity.TOP;
+
+        final CoordinatorLayout.LayoutParams lpDodgeAll = col.generateDefaultLayoutParams();
+        lpDodgeAll.dodgeInsetEdges = Gravity.FILL;
+
         final View a = new View(col.getContext());
         final View b = new View(col.getContext());
+
         assertThat(dependsOn(lpDodgeLeft, lpInsetLeft, col, a, b), is(true));
+        assertThat(dependsOn(lpDodgeLeft, lpInsetRight, col, a, b), is(false));
         assertThat(dependsOn(lpDodgeLeft, lpInsetTop, col, a, b), is(false));
+        assertThat(dependsOn(lpDodgeLeft, lpInsetBottom, col, a, b), is(false));
+
         assertThat(dependsOn(lpDodgeLeftAndTop, lpInsetLeft, col, a, b), is(true));
+        assertThat(dependsOn(lpDodgeLeftAndTop, lpInsetRight, col, a, b), is(false));
         assertThat(dependsOn(lpDodgeLeftAndTop, lpInsetTop, col, a, b), is(true));
+        assertThat(dependsOn(lpDodgeLeftAndTop, lpInsetBottom, col, a, b), is(false));
+
+        assertThat(dependsOn(lpDodgeAll, lpInsetLeft, col, a, b), is(true));
+        assertThat(dependsOn(lpDodgeAll, lpInsetRight, col, a, b), is(true));
+        assertThat(dependsOn(lpDodgeAll, lpInsetTop, col, a, b), is(true));
+        assertThat(dependsOn(lpDodgeAll, lpInsetBottom, col, a, b), is(true));
+
         assertThat(dependsOn(lpInsetLeft, lpDodgeLeft, col, a, b), is(false));
     }
 
