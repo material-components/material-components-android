@@ -16,11 +16,14 @@
 
 package android.support.design.widget;
 
+import android.content.Intent;
 import android.support.design.test.R;
 import android.widget.LinearLayout;
 
 
 public class BottomSheetBehaviorActivity extends BaseTestActivity {
+
+    public static String EXTRA_INITIAL_STATE = "initial_state";
 
     CoordinatorLayout mCoordinatorLayout;
 
@@ -38,6 +41,14 @@ public class BottomSheetBehaviorActivity extends BaseTestActivity {
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
         mBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
         mBehavior = BottomSheetBehavior.from(mBottomSheet);
+        Intent intent = getIntent();
+        if (intent != null) {
+            int initialState = intent.getIntExtra(EXTRA_INITIAL_STATE, -1);
+            if (initialState != -1) {
+                //noinspection ResourceType
+                mBehavior.setState(initialState);
+            }
+        }
     }
 
 }

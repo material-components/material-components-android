@@ -442,6 +442,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      */
     public final void setState(@State int state) {
         if (mViewRef == null) {
+            // The view is not laid out yet; modify mState and let onLayoutChild handle it later
+            if (state == STATE_COLLAPSED || state == STATE_EXPANDED ||
+                    (mHideable && state == STATE_HIDDEN)) {
+                mState = state;
+            }
             return;
         }
         V child = mViewRef.get();
