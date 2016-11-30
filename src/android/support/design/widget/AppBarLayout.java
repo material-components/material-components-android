@@ -1243,7 +1243,7 @@ public class AppBarLayout extends LinearLayout {
                     return 0;
                 } else {
                     final int availScrollRange = totalScrollRange - preScrollDown;
-                    if (availScrollRange == 0) {
+                    if (availScrollRange != 0) {
                         // Else we'll use a interpolated ratio of the overlap, depending on offset
                         final float percScrolled = offset / (float) availScrollRange;
                         return MathUtils.constrain(
