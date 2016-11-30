@@ -2273,25 +2273,25 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             super(context, attrs);
 
             final TypedArray a = context.obtainStyledAttributes(attrs,
-                    R.styleable.CoordinatorLayout_LayoutParams);
+                    R.styleable.CoordinatorLayout_Layout);
 
             this.gravity = a.getInteger(
-                    R.styleable.CoordinatorLayout_LayoutParams_android_layout_gravity,
+                    R.styleable.CoordinatorLayout_Layout_android_layout_gravity,
                     Gravity.NO_GRAVITY);
-            mAnchorId = a.getResourceId(R.styleable.CoordinatorLayout_LayoutParams_layout_anchor,
+            mAnchorId = a.getResourceId(R.styleable.CoordinatorLayout_Layout_layout_anchor,
                     View.NO_ID);
             this.anchorGravity = a.getInteger(
-                    R.styleable.CoordinatorLayout_LayoutParams_layout_anchorGravity,
+                    R.styleable.CoordinatorLayout_Layout_layout_anchorGravity,
                     Gravity.NO_GRAVITY);
 
-            this.keyline = a.getInteger(R.styleable.CoordinatorLayout_LayoutParams_layout_keyline,
+            this.keyline = a.getInteger(R.styleable.CoordinatorLayout_Layout_layout_keyline,
                     -1);
 
             mBehaviorResolved = a.hasValue(
-                    R.styleable.CoordinatorLayout_LayoutParams_layout_behavior);
+                    R.styleable.CoordinatorLayout_Layout_layout_behavior);
             if (mBehaviorResolved) {
                 mBehavior = parseBehavior(context, attrs, a.getString(
-                        R.styleable.CoordinatorLayout_LayoutParams_layout_behavior));
+                        R.styleable.CoordinatorLayout_Layout_layout_behavior));
             }
 
             a.recycle();

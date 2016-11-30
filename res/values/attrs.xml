@@ -128,7 +128,7 @@
         <attr name="statusBarBackground" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="CoordinatorLayout_LayoutParams">
+    <declare-styleable name="CoordinatorLayout_Layout">
         <attr name="android:layout_gravity"/>
         <!-- The class name of a Behavior class defining special runtime behavior
              for this child view. -->
@@ -227,7 +227,7 @@
         <attr name="state_collapsible" format="boolean" />
     </declare-styleable>
 
-    <declare-styleable name="AppBarLayout_LayoutParams">
+    <declare-styleable name="AppBarLayout_Layout">
         <attr name="layout_scrollFlags">
             <!-- The view will be scroll in direct relation to scroll events. This flag needs to be
                  set for any of the other flags to take effect. If any sibling views
@@ -357,7 +357,7 @@
         <attr name="title"/>
     </declare-styleable>
 
-    <declare-styleable name="CollapsingAppBarLayout_LayoutParams">
+    <declare-styleable name="CollapsingToolbarLayout_Layout">
         <attr name="layout_collapseMode">
             <!-- The view will act as normal with no collapsing behavior. -->
             <enum name="none" value="0"/>
@@ -373,7 +373,7 @@
         <attr name="layout_collapseParallaxMultiplier" format="float"/>
     </declare-styleable>
 
-    <declare-styleable name="BottomSheetBehavior_Params">
+    <declare-styleable name="BottomSheetBehavior_Layout">
         <!-- The height of the bottom sheet when it is collapsed. -->
         <attr name="behavior_peekHeight" format="dimension"/>
         <attr name="behavior_hideable" format="boolean"/>

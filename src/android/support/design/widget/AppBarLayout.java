@@ -632,11 +632,11 @@ public class AppBarLayout extends LinearLayout {
 
         public LayoutParams(Context c, AttributeSet attrs) {
             super(c, attrs);
-            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.AppBarLayout_LayoutParams);
-            mScrollFlags = a.getInt(R.styleable.AppBarLayout_LayoutParams_layout_scrollFlags, 0);
-            if (a.hasValue(R.styleable.AppBarLayout_LayoutParams_layout_scrollInterpolator)) {
+            TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.AppBarLayout_Layout);
+            mScrollFlags = a.getInt(R.styleable.AppBarLayout_Layout_layout_scrollFlags, 0);
+            if (a.hasValue(R.styleable.AppBarLayout_Layout_layout_scrollInterpolator)) {
                 int resId = a.getResourceId(
-                        R.styleable.AppBarLayout_LayoutParams_layout_scrollInterpolator, 0);
+                        R.styleable.AppBarLayout_Layout_layout_scrollInterpolator, 0);
                 mScrollInterpolator = android.view.animation.AnimationUtils.loadInterpolator(
                         c, resId);
             }
