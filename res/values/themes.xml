@@ -28,4 +28,22 @@
         <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
     </style>
 
+    <style name="Theme.Design" parent="Theme.AppCompat">
+        <item name="textColorError">@color/design_textinput_error_color_dark</item>
+    </style>
+
+    <style name="Theme.Design.Light" parent="Theme.AppCompat.Light">
+        <item name="textColorError">@color/design_textinput_error_color_light</item>
+    </style>
+
+    <style name="Theme.Design.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="Theme.Design.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
 </resources>

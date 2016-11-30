@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -31,6 +32,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -481,7 +483,16 @@ public class TextInputLayout extends LinearLayout {
 
             if (enabled) {
                 mErrorView = new TextView(getContext());
-                mErrorView.setTextAppearance(getContext(), mErrorTextAppearance);
+                try {
+                    mErrorView.setTextAppearance(getContext(), mErrorTextAppearance);
+                } catch (Resources.NotFoundException nfe) {
+                    // Probably caused by our theme not extending from Theme.Design*. Instead
+                    // we manually set something appropriate
+                    mErrorView.setTextAppearance(getContext(),
+                            R.style.TextAppearance_AppCompat_Caption);
+                    mErrorView.setTextColor(ContextCompat.getColor(
+                            getContext(), R.color.design_textinput_error_color_light));
+                }
                 mErrorView.setVisibility(INVISIBLE);
                 ViewCompat.setAccessibilityLiveRegion(mErrorView,
                         ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
@@ -593,7 +604,16 @@ public class TextInputLayout extends LinearLayout {
             if (enabled) {
                 mCounterView = new TextView(getContext());
                 mCounterView.setMaxLines(1);
-                mCounterView.setTextAppearance(getContext(), mCounterTextAppearance);
+                try {
+                    mCounterView.setTextAppearance(getContext(), mCounterTextAppearance);
+                } catch (Resources.NotFoundException nfe) {
+                    // Probably caused by our theme not extending from Theme.Design*. Instead
+                    // we manually set something appropriate
+                    mCounterView.setTextAppearance(getContext(),
+                            R.style.TextAppearance_AppCompat_Caption);
+                    mCounterView.setTextColor(ContextCompat.getColor(
+                            getContext(), R.color.design_textinput_error_color_light));
+                }
                 ViewCompat.setAccessibilityLiveRegion(mCounterView,
                         ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
                 addIndicator(mCounterView, -1);
