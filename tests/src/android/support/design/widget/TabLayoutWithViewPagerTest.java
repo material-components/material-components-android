@@ -41,6 +41,7 @@ import java.util.ArrayList;
 
 import static android.support.design.testutils.TabLayoutActions.setupWithViewPager;
 import static android.support.design.testutils.ViewPagerActions.notifyAdapterContentChange;
+import static android.support.design.testutils.ViewPagerActions.setAdapter;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
@@ -183,7 +184,7 @@ public class TabLayoutWithViewPagerTest
 
         // Configure view pager
         onView(withId(R.id.tabs_viewpager)).perform(
-                ViewPagerActions.setAdapter(mDefaultPagerAdapter),
+                setAdapter(mDefaultPagerAdapter),
                 ViewPagerActions.scrollToPage(0));
     }
 
@@ -381,7 +382,7 @@ public class TabLayoutWithViewPagerTest
             newAdapter.add("Title " + i, "Body " + i);
         }
         // And set it on the ViewPager
-        onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.setAdapter(newAdapter),
+        onView(withId(R.id.tabs_viewpager)).perform(setAdapter(newAdapter),
                 ViewPagerActions.scrollToPage(0));
 
         // As TabLayout doesn't track adapter changes, we need to re-wire the new adapter
@@ -408,7 +409,7 @@ public class TabLayoutWithViewPagerTest
         // Create a new adapter (with no content)
         final TextPagerAdapter newAdapter = new TextPagerAdapter();
         // And set it on the ViewPager
-        onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.setAdapter(newAdapter));
+        onView(withId(R.id.tabs_viewpager)).perform(setAdapter(newAdapter));
         // As TabLayout doesn't track adapter changes, we need to re-wire the new adapter
         onView(withId(R.id.tabs)).perform(setupWithViewPager(mViewPager));
 
@@ -467,7 +468,7 @@ public class TabLayoutWithViewPagerTest
         // Create a new adapter (with no content)
         final TextPagerAdapter newAdapter = new TextPagerAdapter();
         // And set it on the ViewPager
-        onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.setAdapter(newAdapter));
+        onView(withId(R.id.tabs_viewpager)).perform(setAdapter(newAdapter));
 
         // Replace the default TabLayout with the passed one
         onView(withId(R.id.container)).perform(TestUtilsActions.replaceTabLayout(tabLayoutResId));
@@ -556,4 +557,12 @@ public class TabLayoutWithViewPagerTest
         assertEquals("Selected page", selected, mViewPager.getCurrentItem());
         assertEquals("Selected tab", selected, mTabLayout.getSelectedTabPosition());
     }
+
+    @Test
+    @SmallTest
+    public void testEmptyAdapter() {
+        ColorPagerAdapter adapter = new ColorPagerAdapter();
+        onView(withId(R.id.tabs_viewpager)).perform(setAdapter(adapter));
+    }
+
 }
