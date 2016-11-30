@@ -19,11 +19,11 @@
     <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
         <item name="android:background">@drawable/fab_background</item>
         <item name="backgroundTint">?attr/colorAccent</item>
-
         <item name="fabSize">normal</item>
         <item name="elevation">@dimen/fab_elevation</item>
         <item name="pressedTranslationZ">@dimen/fab_translation_z_pressed</item>
         <item name="rippleColor">?attr/colorControlHighlight</item>
+        <item name="borderWidth">@dimen/fab_border_width</item>
     </style>
 
     <style name="Widget.Design.ScrimInsetsFrameLayout" parent="">

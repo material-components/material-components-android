@@ -21,6 +21,7 @@
     <dimen name="fab_content_size">24dp</dimen>
     <dimen name="fab_size_normal">56dp</dimen>
     <dimen name="fab_size_mini">40dp</dimen>
+    <dimen name="fab_border_width">0.5dp</dimen>
 
     <dimen name="navigation_max_width">320dp</dimen>
     <dimen name="navigation_elevation">12dp</dimen>

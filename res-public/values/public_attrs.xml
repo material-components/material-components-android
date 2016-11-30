@@ -18,6 +18,7 @@
 <resources>
     <public type="attr" name="backgroundTint"/>
     <public type="attr" name="backgroundTintMode"/>
+    <public type="attr" name="borderWidth"/>
     <public type="attr" name="collapsedTitleTextAppearance"/>
     <public type="attr" name="contentScrim"/>
     <public type="attr" name="elevation"/>

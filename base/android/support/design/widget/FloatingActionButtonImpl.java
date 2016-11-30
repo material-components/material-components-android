@@ -19,6 +19,9 @@ package android.support.design.widget;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.design.R;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 
 abstract class FloatingActionButtonImpl {
@@ -38,7 +41,7 @@ abstract class FloatingActionButtonImpl {
     }
 
     abstract void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
-            PorterDuff.Mode backgroundTintMode, int rippleColor);
+            PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth);
 
     abstract void setBackgroundTintList(ColorStateList tint);
 
@@ -54,4 +57,12 @@ abstract class FloatingActionButtonImpl {
 
     abstract void jumpDrawableToCurrentState();
 
+    Drawable createBorderDrawable(ColorStateList backgroundTint) {
+        Drawable borderDrawable = ContextCompat.getDrawable(mView.getContext(),
+                R.drawable.fab_border_background);
+        borderDrawable = DrawableCompat.wrap(borderDrawable);
+        DrawableCompat.setTintList(borderDrawable, backgroundTint);
+        DrawableCompat.setTintMode(borderDrawable, PorterDuff.Mode.DST_OVER);
+        return borderDrawable;
+    }
 }

@@ -23,7 +23,7 @@
         <attr name="backgroundTintMode"/>
 
         <!-- Ripple color for the FAB. -->
-        <attr name="rippleColor" format="color|reference"/>
+        <attr name="rippleColor" format="color"/>
         <!-- Size for the FAB. -->
         <attr name="fabSize">
             <enum name="normal" value="0"/>
@@ -32,7 +32,9 @@
         <!-- Elevation value for the FAB -->
         <attr name="elevation"/>
         <!-- TranslationZ value for the FAB when pressed-->
-        <attr name="pressedTranslationZ" format="dimension|reference"/>
+        <attr name="pressedTranslationZ" format="dimension"/>
+        <!-- The width of the border around the FAB. -->
+        <attr name="borderWidth" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="ScrimInsetsFrameLayout">

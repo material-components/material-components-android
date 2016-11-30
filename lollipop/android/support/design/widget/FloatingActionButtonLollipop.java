@@ -23,6 +23,8 @@ import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
+import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -36,32 +38,43 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
 
     private Drawable mShapeDrawable;
     private RippleDrawable mRippleDrawable;
+    private Drawable mBorderDrawable;
 
-    private final Interpolator mInterpolator;
+    private Interpolator mInterpolator;
 
     FloatingActionButtonLollipop(View view, ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
 
         if (!view.isInEditMode()) {
-            mInterpolator = AnimationUtils.loadInterpolator(
-                    mView.getContext(), android.R.interpolator.fast_out_slow_in);
-        } else {
-            mInterpolator = null;
+            mInterpolator = AnimationUtils.loadInterpolator(mView.getContext(),
+                    android.R.interpolator.fast_out_slow_in);
         }
     }
 
     @Override
     void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
-            PorterDuff.Mode backgroundTintMode, int rippleColor) {
-        mShapeDrawable = DrawableCompat.wrap(originalBackground);
-
+            PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth) {
+        // Now we need to tint the original background with the tint, using
+        // an InsetDrawable if we have a border width
+        mShapeDrawable = DrawableCompat.wrap(borderWidth > 0
+                ? new InsetDrawable(originalBackground, borderWidth)
+                : originalBackground);
         DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
             DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
         }
 
+        final Drawable rippleContent;
+        if (borderWidth > 0) {
+            mBorderDrawable = createBorderDrawable(backgroundTint);
+            rippleContent = new LayerDrawable(new Drawable[]{mBorderDrawable, mShapeDrawable});
+        } else {
+            mBorderDrawable = null;
+            rippleContent = mShapeDrawable;
+        }
+
         mRippleDrawable = new RippleDrawable(ColorStateList.valueOf(rippleColor),
-                mShapeDrawable, null);
+                rippleContent, null);
 
         mShadowViewDelegate.setBackgroundDrawable(mRippleDrawable);
         mShadowViewDelegate.setShadowPadding(0, 0, 0, 0);
@@ -70,6 +83,9 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
     @Override
     void setBackgroundTintList(ColorStateList tint) {
         DrawableCompat.setTintList(mShapeDrawable, tint);
+        if (mBorderDrawable != null) {
+            DrawableCompat.setTintList(mBorderDrawable, tint);
+        }
     }
 
     @Override

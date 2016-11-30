@@ -55,6 +55,7 @@ public class FloatingActionButton extends ImageView {
     private ColorStateList mBackgroundTint;
     private PorterDuff.Mode mBackgroundTintMode;
 
+    private int mBorderWidth;
     private int mRippleColor;
     private int mSize;
     private int mContentPadding;
@@ -85,6 +86,7 @@ public class FloatingActionButton extends ImageView {
                 R.styleable.FloatingActionButton_backgroundTintMode, -1), null);
         mRippleColor = a.getColor(R.styleable.FloatingActionButton_rippleColor, 0);
         mSize = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_NORMAL);
+        mBorderWidth = a.getDimensionPixelSize(R.styleable.FloatingActionButton_borderWidth, 0);
         final float elevation = a.getDimension(R.styleable.FloatingActionButton_elevation, 0f);
         final float pressedTranslationZ = a.getDimension(
                 R.styleable.FloatingActionButton_pressedTranslationZ, 0f);
@@ -120,7 +122,7 @@ public class FloatingActionButton extends ImageView {
         mContentPadding = (getSizeDimension() - maxContentSize) / 2;
 
         mImpl.setBackgroundDrawable(background, mBackgroundTint,
-                mBackgroundTintMode, mRippleColor);
+                mBackgroundTintMode, mRippleColor, mBorderWidth);
         mImpl.setElevation(elevation);
         mImpl.setPressedTranslationZ(pressedTranslationZ);
 
@@ -211,7 +213,7 @@ public class FloatingActionButton extends ImageView {
     public void setBackgroundDrawable(Drawable background) {
         if (mImpl != null) {
             mImpl.setBackgroundDrawable(
-                background, mBackgroundTint, mBackgroundTintMode, mRippleColor);
+                background, mBackgroundTint, mBackgroundTintMode, mRippleColor, mBorderWidth);
         }
     }
 
