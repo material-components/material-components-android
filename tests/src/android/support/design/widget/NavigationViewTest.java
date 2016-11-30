@@ -24,6 +24,7 @@ import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.SwitchCompat;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -524,5 +525,34 @@ public class NavigationViewTest
         verifyCheckedAppearance(R.id.destination_people,
                 uncheckedItemForeground, checkedItemForeground,
                 uncheckedItemBackground, checkedItemBackground);
+    }
+
+    @Test
+    @SmallTest
+    public void testActionLayout() {
+        // Open our drawer
+        onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+
+        // There are four conditions to "find" the menu item with action layout (switch):
+        // 1. Is in the NavigationView
+        // 2. Is direct child of a class that extends RecyclerView
+        // 3. Has a child with "people" text
+        // 4. Has fully displayed child that extends SwitchCompat
+        // Note that condition 2 makes a certain assumption about the internal implementation
+        // details of the NavigationMenu, while conditions 3 and 4 aim to be as generic as
+        // possible and to not rely on the internal details of the current layout implementation
+        // of an individual menu item in NavigationMenu.
+        Matcher menuItemMatcher = allOf(
+                isDescendantOfA(withId(R.id.start_drawer)),
+                isChildOfA(isAssignableFrom(RecyclerView.class)),
+                hasDescendant(withText(mMenuStringContent.get(R.id.destination_people))),
+                hasDescendant(allOf(
+                        isAssignableFrom(SwitchCompat.class),
+                        isCompletelyDisplayed())));
+
+        // While we don't need to perform any action on our row, the invocation of perform()
+        // makes our matcher actually run. If for some reason NavigationView fails to inflate and
+        // display our SwitchCompat action layout, the next line will fail in the matcher pass.
+        onView(menuItemMatcher).perform(click());
     }
 }

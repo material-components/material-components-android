@@ -13,7 +13,9 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<menu
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
     <group android:checkableBehavior="single">
         <item android:id="@+id/destination_home"
               android:title="@string/navigate_home"
@@ -23,7 +25,8 @@
               android:icon="@drawable/test_drawable_green" />
         <item android:id="@+id/destination_people"
               android:title="@string/navigate_people"
-              android:icon="@drawable/test_drawable_blue" />
+              android:icon="@drawable/test_drawable_blue"
+              app:actionLayout="@layout/action_layout" />
         <item android:id="@+id/destination_settings"
               android:title="@string/navigate_settings" />
     </group>
