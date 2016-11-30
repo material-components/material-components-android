@@ -538,10 +538,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
 
         private void updateFabTranslationForSnackbar(CoordinatorLayout parent,
                 final FloatingActionButton fab, View snackbar) {
-            if (fab.getVisibility() != View.VISIBLE) {
-                return;
-            }
-
             final float targetTransY = getFabTranslationYForSnackbar(parent, fab);
             if (mFabTranslationY == targetTransY) {
                 // We're already at (or currently animating to) the target value, return...
@@ -555,7 +551,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                 mFabTranslationYAnimator.cancel();
             }
 
-            if (Math.abs(currentTransY - targetTransY) > (fab.getHeight() * 0.667f)) {
+            if (fab.isShown()
+                    && Math.abs(currentTransY - targetTransY) > (fab.getHeight() * 0.667f)) {
                 // If the FAB will be travelling by more than 2/3 of it's height, let's animate
                 // it instead
                 if (mFabTranslationYAnimator == null) {
