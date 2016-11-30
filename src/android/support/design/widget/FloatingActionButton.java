@@ -122,6 +122,8 @@ public class FloatingActionButton extends ImageView {
                 mBackgroundTintMode, mRippleColor);
         mImpl.setElevation(elevation);
         mImpl.setPressedTranslationZ(pressedTranslationZ);
+
+        setClickable(true);
     }
 
     @Override
@@ -206,7 +208,10 @@ public class FloatingActionButton extends ImageView {
 
     @Override
     public void setBackgroundDrawable(Drawable background) {
-        mImpl.setBackgroundDrawable(background, mBackgroundTint, mBackgroundTintMode, mRippleColor);
+        if (mImpl != null) {
+            mImpl.setBackgroundDrawable(
+                background, mBackgroundTint, mBackgroundTintMode, mRippleColor);
+        }
     }
 
     final int getSizeDimension() {
