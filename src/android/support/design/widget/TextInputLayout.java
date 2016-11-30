@@ -30,6 +30,7 @@ import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
+import android.support.v7.internal.widget.TintManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -343,15 +344,23 @@ public class TextInputLayout extends LinearLayout {
         }
 
         if (!TextUtils.isEmpty(error)) {
-            mErrorView.setText(error);
-            mErrorView.setVisibility(VISIBLE);
             ViewCompat.setAlpha(mErrorView, 0f);
+            mErrorView.setText(error);
             ViewCompat.animate(mErrorView)
                     .alpha(1f)
                     .setDuration(ANIMATION_DURATION)
                     .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                    .setListener(null)
+                    .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                        @Override
+                        public void onAnimationStart(View view) {
+                            view.setVisibility(VISIBLE);
+                        }
+                    })
                     .start();
+
+            // Set the EditText's background tint to the error color
+            ViewCompat.setBackgroundTintList(mEditText,
+                    ColorStateList.valueOf(mErrorView.getCurrentTextColor()));
         } else {
             if (mErrorView.getVisibility() == VISIBLE) {
                 ViewCompat.animate(mErrorView)
@@ -362,9 +371,13 @@ public class TextInputLayout extends LinearLayout {
                             @Override
                             public void onAnimationEnd(View view) {
                                 view.setVisibility(INVISIBLE);
-                                mErrorView.setText(null);
                             }
                         }).start();
+
+                // Restore the 'original' tint, using colorControlNormal and colorControlActivated
+                final TintManager tintManager = TintManager.get(getContext());
+                ViewCompat.setBackgroundTintList(mEditText,
+                        tintManager.getTintList(R.drawable.abc_edit_text_material));
             }
         }
 
