@@ -7,10 +7,10 @@ dependencies {
     compile project(':support-appcompat-v7')
     compile project(':support-recyclerview-v7')
 
-    androidTestCompile ('com.android.support.test:runner:0.4.1') {
+    androidTestCompile ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
         exclude module: 'support-annotations'
     }
-    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.1') {
+    androidTestCompile ("com.android.support.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}") {
         exclude module: 'support-annotations'
     }
     androidTestCompile 'org.mockito:mockito-core:1.9.5'
