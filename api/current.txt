@@ -70,6 +70,26 @@ package android.support.design.widget {
     method public void setOverlayTop(int);
   }
 
+  public class BottomSheetBehavior extends android.support.design.widget.CoordinatorLayout.Behavior {
+    ctor public BottomSheetBehavior();
+    ctor public BottomSheetBehavior(android.content.Context, android.util.AttributeSet);
+    method public static android.support.design.widget.BottomSheetBehavior<V> from(V);
+    method public final int getPeekHeight();
+    method public final int getState();
+    method public final void setPeekHeight(int);
+    method public final void setState(int);
+    field public static final int STATE_COLLAPSED = 4; // 0x4
+    field public static final int STATE_DRAGGING = 1; // 0x1
+    field public static final int STATE_EXPANDED = 3; // 0x3
+    field public static final int STATE_SETTLING = 2; // 0x2
+  }
+
+  protected static class BottomSheetBehavior.SavedState extends android.view.View.BaseSavedState {
+    ctor public BottomSheetBehavior.SavedState(android.os.Parcel);
+    ctor public BottomSheetBehavior.SavedState(android.os.Parcelable, int);
+    field public static final android.os.Parcelable.Creator<android.support.design.widget.BottomSheetBehavior.SavedState> CREATOR;
+  }
+
   public class CollapsingToolbarLayout extends android.widget.FrameLayout {
     ctor public CollapsingToolbarLayout(android.content.Context);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet);

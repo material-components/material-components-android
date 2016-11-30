@@ -334,5 +334,10 @@
         <attr name="layout_collapseParallaxMultiplier" format="float"/>
     </declare-styleable>
 
+    <declare-styleable name="BottomSheetBehavior_Params">
+        <!-- The height of the bottom sheet when it is collapsed. -->
+        <attr name="behavior_peekHeight" format="dimension"/>
+    </declare-styleable>
+
 </resources>
 

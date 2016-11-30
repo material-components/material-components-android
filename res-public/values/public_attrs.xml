@@ -70,4 +70,5 @@
     <public type="attr" name="title"/>
     <public type="attr" name="titleEnabled"/>
     <public type="attr" name="toolbarId"/>
+    <public type="attr" name="behavior_peekHeight"/>
 </resources>
