@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
@@ -124,15 +125,18 @@ public class AppBarLayout extends LinearLayout {
     private int mDownPreScrollRange = INVALID_SCROLL_RANGE;
     private int mDownScrollRange = INVALID_SCROLL_RANGE;
 
-    boolean mHaveChildWithInterpolator;
-
-    private float mTargetElevation;
+    private boolean mHaveChildWithInterpolator;
 
     private int mPendingAction = PENDING_ACTION_NONE;
 
     private WindowInsetsCompat mLastInsets;
 
-    private final List<OnOffsetChangedListener> mListeners;
+    private List<OnOffsetChangedListener> mListeners;
+
+    private boolean mCollapsible;
+    private boolean mCollapsed;
+
+    private final int[] mTmpStatesArray = new int[2];
 
     public AppBarLayout(Context context) {
         this(context, null);
@@ -144,21 +148,28 @@ public class AppBarLayout extends LinearLayout {
 
         ThemeUtils.checkAppCompatTheme(context);
 
-        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AppBarLayout,
+        if (Build.VERSION.SDK_INT >= 21) {
+            // Use the bounds view outline provider so that we cast a shadow, even without a
+            // background
+            ViewUtilsLollipop.setBoundsViewOutlineProvider(this);
+
+            // If we're running on API 21+, we should reset any state list animator from our
+            // default style
+            ViewUtilsLollipop.setStateListAnimatorFromAttrs(this, attrs, 0,
+                    R.style.Widget_Design_AppBarLayout);
+        }
+
+        final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AppBarLayout,
                 0, R.style.Widget_Design_AppBarLayout);
-        mTargetElevation = a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0);
         setBackgroundDrawable(a.getDrawable(R.styleable.AppBarLayout_android_background));
         if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
             setExpanded(a.getBoolean(R.styleable.AppBarLayout_expanded, false));
         }
+        if (Build.VERSION.SDK_INT >= 21 && a.hasValue(R.styleable.AppBarLayout_elevation)) {
+            ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(
+                    this, a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0));
+        }
         a.recycle();
-
-        // Use the bounds view outline provider so that we cast a shadow, even without a background
-        ViewUtils.setBoundsViewOutlineProvider(this);
-
-        mListeners = new ArrayList<>();
-
-        ViewCompat.setElevation(this, mTargetElevation);
 
         ViewCompat.setOnApplyWindowInsetsListener(this,
                 new android.support.v4.view.OnApplyWindowInsetsListener() {
@@ -178,6 +189,9 @@ public class AppBarLayout extends LinearLayout {
      * @see #removeOnOffsetChangedListener(OnOffsetChangedListener)
      */
     public void addOnOffsetChangedListener(OnOffsetChangedListener listener) {
+        if (mListeners == null) {
+            mListeners = new ArrayList<>();
+        }
         if (listener != null && !mListeners.contains(listener)) {
             mListeners.add(listener);
         }
@@ -189,7 +203,7 @@ public class AppBarLayout extends LinearLayout {
      * @param listener the listener to remove.
      */
     public void removeOnOffsetChangedListener(OnOffsetChangedListener listener) {
-        if (listener != null) {
+        if (mListeners != null && listener != null) {
             mListeners.remove(listener);
         }
     }
@@ -216,6 +230,19 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
+
+        updateCollapsible();
+    }
+
+    private void updateCollapsible() {
+        boolean haveCollapsibleChild = false;
+        for (int i = 0, z = getChildCount(); i < z; i++) {
+            if (((LayoutParams) getChildAt(i).getLayoutParams()).isCollapsible()) {
+                haveCollapsibleChild = true;
+                break;
+            }
+        }
+        setCollapsible(haveCollapsibleChild);
     }
 
     private void invalidateScrollRanges() {
@@ -422,6 +449,19 @@ public class AppBarLayout extends LinearLayout {
         return mDownScrollRange = Math.max(0, range);
     }
 
+    private void dispatchOffsetUpdates(int offset) {
+        // Iterate backwards through the list so that most recently added listeners
+        // get the first chance to decide
+        if (mListeners != null) {
+            for (int i = 0, z = mListeners.size(); i < z; i++) {
+                final OnOffsetChangedListener listener = mListeners.get(i);
+                if (listener != null) {
+                    listener.onOffsetChanged(this, offset);
+                }
+            }
+        }
+    }
+
     final int getMinimumHeightForVisibleOverlappingContent() {
         final int topInset = getTopInset();
         final int minHeight = ViewCompat.getMinimumHeight(this);
@@ -437,28 +477,54 @@ public class AppBarLayout extends LinearLayout {
                 : 0;
     }
 
-    /**
-     * Set the elevation value to use when this {@link AppBarLayout} should be elevated
-     * above content.
-     * <p>
-     * This method does not do anything itself. A typical use for this method is called from within
-     * an {@link OnOffsetChangedListener} when the offset has changed in such a way to require an
-     * elevation change.
-     *
-     * @param elevation the elevation value to use.
-     *
-     * @see ViewCompat#setElevation(View, float)
-     */
-    public void setTargetElevation(float elevation) {
-        mTargetElevation = elevation;
+    @Override
+    protected int[] onCreateDrawableState(int extraSpace) {
+        final int[] extraStates = mTmpStatesArray;
+        final int[] states = super.onCreateDrawableState(extraSpace + extraStates.length);
+
+        extraStates[0] = mCollapsible ? R.attr.state_collapsible : -R.attr.state_collapsible;
+        extraStates[1] = mCollapsible && mCollapsed
+                ? R.attr.state_collapsed : -R.attr.state_collapsed;
+
+        return mergeDrawableStates(states, extraStates);
+    }
+
+    private void setCollapsible(boolean collapsible) {
+        if (mCollapsible != collapsible) {
+            mCollapsible = collapsible;
+            refreshDrawableState();
+        }
+    }
+
+    private void setCollapsed(boolean collapsed) {
+        if (mCollapsed != collapsed) {
+            mCollapsed = collapsed;
+            refreshDrawableState();
+        }
     }
 
     /**
-     * Returns the elevation value to use when this {@link AppBarLayout} should be elevated
-     * above content.
+     * @deprecated target elevation is now deprecated. AppBarLayout's elevation is now
+     * controlled via a {@link StateListAnimator}. If a target elevation is set, either by this
+     * method or the {@code app:elevation} attibute, a new state list animator is created which
+     * uses the given {@code elevation} value.
+     *
+     * @attr ref android.support.design.R.styleable#AppBarLayout_elevation
      */
+    @Deprecated
+    public void setTargetElevation(float elevation) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(this, elevation);
+        }
+    }
+
+    /**
+     * @deprecated target elevation is now deprecated. AppBarLayout's elevation is now
+     * controlled via a {@link StateListAnimator}. This method now always returns 0.
+     */
+    @Deprecated
     public float getTargetElevation() {
-        return mTargetElevation;
+        return 0;
     }
 
     private int getPendingAction() {
@@ -550,6 +616,8 @@ public class AppBarLayout extends LinearLayout {
          */
         static final int FLAG_QUICK_RETURN = SCROLL_FLAG_SCROLL | SCROLL_FLAG_ENTER_ALWAYS;
         static final int FLAG_SNAP = SCROLL_FLAG_SCROLL | SCROLL_FLAG_SNAP;
+        static final int COLLAPSIBLE_FLAGS = SCROLL_FLAG_EXIT_UNTIL_COLLAPSED
+                | SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED;
 
         int mScrollFlags = SCROLL_FLAG_SCROLL;
         Interpolator mScrollInterpolator;
@@ -642,6 +710,14 @@ public class AppBarLayout extends LinearLayout {
          */
         public Interpolator getScrollInterpolator() {
             return mScrollInterpolator;
+        }
+
+        /**
+         * Returns true if the scroll flags are compatible for 'collapsing'
+         */
+        private boolean isCollapsible() {
+            return (mScrollFlags & SCROLL_FLAG_SCROLL) == SCROLL_FLAG_SCROLL
+                    && (mScrollFlags & COLLAPSIBLE_FLAGS) != 0;
         }
     }
 
@@ -938,8 +1014,8 @@ public class AppBarLayout extends LinearLayout {
             setTopAndBottomOffset(
                     MathUtils.constrain(getTopAndBottomOffset(), -abl.getTotalScrollRange(), 0));
 
-            // Make sure we update the elevation
-            dispatchOffsetUpdates(abl);
+            // Make sure we dispatch the offset update
+            abl.dispatchOffsetUpdates(getTopAndBottomOffset());
 
             return handled;
         }
@@ -995,7 +1071,7 @@ public class AppBarLayout extends LinearLayout {
                             ? interpolateOffset(appBarLayout, newOffset)
                             : newOffset;
 
-                    boolean offsetChanged = setTopAndBottomOffset(interpolatedOffset);
+                    final boolean offsetChanged = setTopAndBottomOffset(interpolatedOffset);
 
                     // Update how much dy we have consumed
                     consumed = curOffset - newOffset;
@@ -1011,7 +1087,11 @@ public class AppBarLayout extends LinearLayout {
                     }
 
                     // Dispatch the updates to any listeners
-                    dispatchOffsetUpdates(appBarLayout);
+                    appBarLayout.dispatchOffsetUpdates(getTopAndBottomOffset());
+
+                    // Update the AppBarLayout's drawable state (for any elevation changes)
+                    updateAppBarLayoutDrawableState(appBarLayout, newOffset,
+                            newOffset < curOffset ? -1 : 1);
                 }
             } else {
                 // Reset the offset delta
@@ -1019,19 +1099,6 @@ public class AppBarLayout extends LinearLayout {
             }
 
             return consumed;
-        }
-
-        private void dispatchOffsetUpdates(AppBarLayout layout) {
-            final List<OnOffsetChangedListener> listeners = layout.mListeners;
-
-            // Iterate backwards through the list so that most recently added listeners
-            // get the first chance to decide
-            for (int i = 0, z = listeners.size(); i < z; i++) {
-                final OnOffsetChangedListener listener = listeners.get(i);
-                if (listener != null) {
-                    listener.onOffsetChanged(layout, getTopAndBottomOffset());
-                }
-            }
         }
 
         private int interpolateOffset(AppBarLayout layout, final int offset) {
@@ -1079,6 +1146,44 @@ public class AppBarLayout extends LinearLayout {
             }
 
             return offset;
+        }
+
+        private void updateAppBarLayoutDrawableState(final AppBarLayout layout,
+                final int offset, final int direction) {
+            final View child = getAppBarChildOnOffset(layout, offset);
+            if (child != null) {
+                final AppBarLayout.LayoutParams childLp = (LayoutParams) child.getLayoutParams();
+                final int flags = childLp.getScrollFlags();
+                boolean collapsed = false;
+
+                if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
+                    final int minHeight = ViewCompat.getMinimumHeight(child);
+
+                    if (direction > 0 && (flags & (LayoutParams.SCROLL_FLAG_ENTER_ALWAYS
+                            | LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED)) != 0) {
+                        // We're set to enter always collapsed so we are only collapsed when
+                        // being scrolled down, and in a collapsed offset
+                        collapsed = -offset >= child.getBottom() - minHeight - layout.getTopInset();
+                    } else if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
+                        // We're set to exit until collapsed, so any offset which results in
+                        // the minimum height (or less) being shown is collapsed
+                        collapsed = -offset >= child.getBottom() - minHeight - layout.getTopInset();
+                    }
+                }
+
+                layout.setCollapsed(collapsed);
+            }
+        }
+
+        private static View getAppBarChildOnOffset(final AppBarLayout layout, final int offset) {
+            final int absOffset = Math.abs(offset);
+            for (int i = 0, z = layout.getChildCount(); i < z; i++) {
+                final View child = layout.getChildAt(i);
+                if (absOffset >= child.getTop() && absOffset <= child.getBottom()) {
+                    return child;
+                }
+            }
+            return null;
         }
 
         @Override

@@ -1117,7 +1117,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mCurrentOffset = verticalOffset;
 
             final int insetTop = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
-            final int scrollRange = layout.getTotalScrollRange();
 
             for (int i = 0, z = getChildCount(); i < z; i++) {
                 final View child = getChildAt(i);
@@ -1151,15 +1150,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
                     CollapsingToolbarLayout.this) - insetTop;
             mCollapsingTextHelper.setExpansionFraction(
                     Math.abs(verticalOffset) / (float) expandRange);
-
-            if (Math.abs(verticalOffset) == scrollRange) {
-                // If we have some pinned children, and we're offset to only show those views,
-                // we want to be elevate
-                ViewCompat.setElevation(layout, layout.getTargetElevation());
-            } else {
-                // Otherwise, we're inline with the content
-                ViewCompat.setElevation(layout, 0f);
-            }
         }
     }
 }

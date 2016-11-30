@@ -4,12 +4,12 @@ package android.support.design.widget {
     ctor public AppBarLayout(android.content.Context);
     ctor public AppBarLayout(android.content.Context, android.util.AttributeSet);
     method public void addOnOffsetChangedListener(android.support.design.widget.AppBarLayout.OnOffsetChangedListener);
-    method public float getTargetElevation();
+    method public deprecated float getTargetElevation();
     method public final int getTotalScrollRange();
     method public void removeOnOffsetChangedListener(android.support.design.widget.AppBarLayout.OnOffsetChangedListener);
     method public void setExpanded(boolean);
     method public void setExpanded(boolean, boolean);
-    method public void setTargetElevation(float);
+    method public deprecated void setTargetElevation(float);
   }
 
   public static class AppBarLayout.Behavior extends android.support.design.widget.HeaderBehavior {

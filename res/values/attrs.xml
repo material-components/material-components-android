@@ -210,11 +210,21 @@
     </declare-styleable>
 
     <declare-styleable name="AppBarLayout">
+        <!-- Deprecated. Elevation is now controlled via a state list animator. -->
         <attr name="elevation" />
         <attr name="android:background" />
         <!-- The initial expanded state for the AppBarLayout. This only takes effect when this
              view is a direct child of a CoordinatorLayout. -->
         <attr name="expanded" format="boolean" />
+    </declare-styleable>
+
+    <declare-styleable name="AppBarLayoutStates">
+        <!-- State value for {@link android.support.design.widget.AppBarLayout} set when the view
+             has been collapsed. -->
+        <attr name="state_collapsed" format="boolean" />
+        <!-- State value for {@link android.support.design.widget.AppBarLayout} set when the view
+             has children which are capable of being collapsed. -->
+        <attr name="state_collapsible" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="AppBarLayout_LayoutParams">

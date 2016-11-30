@@ -101,9 +101,11 @@
         <item name="statusBarScrim">?attr/colorPrimaryDark</item>
     </style>
 
-    <style name="Widget.Design.AppBarLayout" parent="android:Widget">
-        <item name="elevation">@dimen/design_appbar_elevation</item>
+    <style name="Base.Widget.Design.AppBarLayout" parent="android:Widget">
         <item name="android:background">?attr/colorPrimary</item>
+    </style>
+
+    <style name="Widget.Design.AppBarLayout" parent="Base.Widget.Design.AppBarLayout">
     </style>
 
     <style name="Widget.Design.CoordinatorLayout" parent="android:Widget">

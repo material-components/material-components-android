@@ -16,6 +16,7 @@
 
 package android.support.design.widget;
 
+import android.os.Build;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -27,6 +28,7 @@ import android.support.test.espresso.action.CoordinatesProvider;
 import android.support.test.espresso.action.GeneralSwipeAction;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Swipe;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
@@ -38,6 +40,8 @@ import static android.support.design.testutils.TestUtilsActions.setTitle;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
+import static org.junit.Assert.assertEquals;
+
 public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutTest {
 
     protected AppBarLayout mAppBar;
@@ -47,6 +51,8 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
     protected Toolbar mToolbar;
 
     protected TextView mTextView;
+
+    protected float mDefaultElevationValue;
 
     protected static void performVerticalSwipeUpGesture(@IdRes int containerId, final int swipeX,
             final int swipeStartY, final int swipeAmountY) {
@@ -112,6 +118,15 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
         if (dialog != null) {
             onView(withId(R.id.textview_dialogue)).perform(
                     setText(TextUtils.concat(Shakespeare.DIALOGUE)));
+        }
+
+        mDefaultElevationValue = mAppBar.getResources()
+                .getDimensionPixelSize(R.dimen.design_appbar_elevation);
+    }
+
+    protected void assertAppBarElevation(float expectedValue) {
+        if (Build.VERSION.SDK_INT >= 21) {
+            assertEquals(expectedValue, ViewCompat.getElevation(mAppBar), 0.05f);
         }
     }
 }

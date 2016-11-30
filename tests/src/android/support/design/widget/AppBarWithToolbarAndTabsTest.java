@@ -76,6 +76,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the app bar should not be visually "present" on the screen, with its bottom
         // edge aligned with the system status bar. Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform another swipe-up gesture
         performVerticalSwipeUpGesture(
@@ -88,6 +89,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the app bar should still be off the screen. Allow for off-by-a-pixel
         // margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a long swipe-down gesture across the horizontal center of the screen.
         // Note that the swipe down is a bit longer than the swipe up to fully bring down
@@ -104,6 +106,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -117,6 +120,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform yet another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -130,6 +134,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
     }
 
     @Test
@@ -163,6 +168,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the tab bar should be visually snapped below the system status bar.
         // Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform another swipe-up gesture
         performVerticalSwipeUpGesture(
@@ -175,6 +181,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the tab bar should still be visually snapped below the system status bar
         // as it is in the pinned mode. Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a short swipe-down gesture across the horizontal center of the screen.
         // Note that the swipe down is a bit longer than the swipe up to fully bring down
@@ -191,6 +198,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -204,6 +212,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform yet another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -217,6 +226,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
     }
 
     @LargeTest
@@ -264,6 +274,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a slightly longer swipe-up gesture, this time by 75% of the toolbar height.
         // We expect the snap behavior to move the app bar to snap the tab layout below the
@@ -281,6 +292,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the app bar should "snap" the toolbar away and align the tab layout below
         // the system status bar. Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a short swipe-up gesture, this time by 25% of the tab layout height. We expect
         // snap behavior to move the app bar back to snap the tab layout below the system status
@@ -298,6 +310,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the app bar should "snap" back to align the tab layout below
         // the system status bar. Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a longer swipe-up gesture, this time by 75% of the tab layout height. We expect
         // snap behavior to move the app bar fully away from the screen.
@@ -314,6 +327,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the app bar should not be visually "present" on the screen, with its bottom
         // edge aligned with the system status bar. Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a short swipe-down gesture by 25% of the tab layout height. We expect
         // snap behavior to move the app bar back fully away from the screen.
@@ -331,6 +345,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // its bottom edge aligned with the system status bar. Allow for off-by-a-pixel margin
         // of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a longer swipe-up gesture, this time by 75% of the tab layout height. We expect
         // snap behavior to move the app bar to snap the tab layout below the system status
@@ -348,6 +363,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the app bar should "snap" the toolbar away and align the tab layout below
         // the system status bar. Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a short swipe-down gesture by 25% of the toolbar height. We expect
         // snap behavior to align the tab layout below the system status bar
@@ -364,6 +380,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // At this point the app bar should still align the tab layout below
         // the system status bar. Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
 
         // Perform a longer swipe-up gesture, this time by 75% of the toolbar height. We expect
         // snap behavior to move the app bar back to its original place (fully visible).
@@ -381,5 +398,6 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         // Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertAppBarElevation(mDefaultElevationValue);
     }
 }
