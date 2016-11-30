@@ -369,6 +369,9 @@ public class AppBarLayout extends LinearLayout {
                 if ((flags & LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED) != 0) {
                     // If they're set to enter collapsed, use the minimum height
                     range += ViewCompat.getMinimumHeight(child);
+                } else if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
+                    // Only enter by the amount of the collapsed height
+                    range += childHeight - ViewCompat.getMinimumHeight(child);
                 } else {
                     // Else use the full height
                     range += childHeight;
@@ -379,7 +382,7 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        return mDownPreScrollRange = range;
+        return mDownPreScrollRange = Math.max(0, range - getTopInset());
     }
 
     /**
@@ -668,7 +671,7 @@ public class AppBarLayout extends LinearLayout {
         private int mOffsetDelta;
 
         private boolean mSkipNestedPreScroll;
-        private boolean mWasFlung;
+        private boolean mWasNestedFlung;
 
         private ValueAnimatorCompat mAnimator;
 
@@ -743,14 +746,14 @@ public class AppBarLayout extends LinearLayout {
         @Override
         public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout abl,
                 View target) {
-            if (!mWasFlung) {
+            if (!mWasNestedFlung) {
                 // If we haven't been flung then let's see if the current view has been set to snap
                 snapToChildIfNeeded(coordinatorLayout, abl);
             }
 
             // Reset the flags
             mSkipNestedPreScroll = false;
-            mWasFlung = false;
+            mWasNestedFlung = false;
             // Keep a reference to the previous nested scrolling child
             mLastNestedScrollingChildRef = new WeakReference<>(target);
         }
@@ -790,7 +793,7 @@ public class AppBarLayout extends LinearLayout {
                 }
             }
 
-            mWasFlung = flung;
+            mWasNestedFlung = flung;
             return flung;
         }
 
@@ -907,6 +910,11 @@ public class AppBarLayout extends LinearLayout {
             abl.resetPendingAction();
             mOffsetToChildIndexOnLayout = INVALID_POSITION;
 
+            // We may have changed size, so let's constrain the top and bottom offset correctly,
+            // just in case we're out of the bounds
+            setTopAndBottomOffset(
+                    MathUtils.constrain(getTopAndBottomOffset(), -abl.getTotalScrollRange(), 0));
+
             // Make sure we update the elevation
             dispatchOffsetUpdates(abl);
 
@@ -930,6 +938,12 @@ public class AppBarLayout extends LinearLayout {
                 // Otherwise we assume that the scrolling view hasn't been scrolled and can drag.
                 return true;
             }
+        }
+
+        @Override
+        void onFlingFinished(CoordinatorLayout parent, AppBarLayout layout) {
+            // At the end of a manual fling, check to see if we need to snap to the edge-child
+            snapToChildIfNeeded(parent, layout);
         }
 
         @Override

@@ -247,8 +247,18 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
             mFlingRunnable = new FlingRunnable(coordinatorLayout, layout);
             ViewCompat.postOnAnimation(layout, mFlingRunnable);
             return true;
+        } else {
+            onFlingFinished(coordinatorLayout, layout);
+            return false;
         }
-        return false;
+    }
+
+    /**
+     * Called when a fling has finished, or the fling was initiated but there wasn't enough
+     * velocity to start it.
+     */
+    void onFlingFinished(CoordinatorLayout parent, V layout) {
+        // no-op
     }
 
     /**
@@ -286,11 +296,14 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
         @Override
         public void run() {
-            if (mLayout != null && mScroller != null && mScroller.computeScrollOffset()) {
-                setHeaderTopBottomOffset(mParent, mLayout, mScroller.getCurrY());
-
-                // Post ourselves so that we run on the next animation
-                ViewCompat.postOnAnimation(mLayout, this);
+            if (mLayout != null && mScroller != null) {
+                if (mScroller.computeScrollOffset()) {
+                    setHeaderTopBottomOffset(mParent, mLayout, mScroller.getCurrY());
+                    // Post ourselves so that we run on the next animation
+                    ViewCompat.postOnAnimation(mLayout, this);
+                } else {
+                    onFlingFinished(mParent, mLayout);
+                }
             }
         }
     }
