@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -32,12 +31,12 @@ import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import android.widget.LinearLayout;
 
 /**
  * <p>
@@ -96,8 +95,9 @@ public class BottomNavigationView extends FrameLayout {
         mMenu = new BottomNavigationMenu(context);
 
         mMenuView = new BottomNavigationMenuView(context);
-        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        FrameLayout.LayoutParams params = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+        params.gravity = Gravity.CENTER;
         mMenuView.setLayoutParams(params);
 
         mPresenter.setBottomNavigationMenuView(mMenuView);
@@ -133,7 +133,7 @@ public class BottomNavigationView extends FrameLayout {
         }
         a.recycle();
 
-        addView(mMenuView);
+        addView(mMenuView, params);
 
         mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
@@ -154,14 +154,6 @@ public class BottomNavigationView extends FrameLayout {
     public void setOnNavigationItemSelectedListener(
             @Nullable OnNavigationItemSelectedListener listener) {
         mListener = listener;
-    }
-
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        if (mMenuView.updateOnSizeChange(getMeasuredWidth())) {
-            // updateOnSizeChanged has changed LPs, so we need to remeasure
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-        }
     }
 
     /**
@@ -275,7 +267,7 @@ public class BottomNavigationView extends FrameLayout {
          *
          * @return true to display the item as the selected item
          */
-        public boolean onNavigationItemSelected(@NonNull MenuItem item);
+        boolean onNavigationItemSelected(@NonNull MenuItem item);
     }
 
     private MenuInflater getMenuInflater() {

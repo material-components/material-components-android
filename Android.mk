@@ -101,7 +101,8 @@ LOCAL_JAVA_LIBRARIES := \
     android-support-design-res \
     android-support-v4 \
     android-support-v7-appcompat \
-    android-support-v7-recyclerview
+    android-support-v7-recyclerview \
+    android-support-transition
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
@@ -115,7 +116,8 @@ LOCAL_JAVA_LIBRARIES := \
     android-support-design-res \
     android-support-v4 \
     android-support-v7-appcompat \
-    android-support-v7-recyclerview
+    android-support-v7-recyclerview \
+    android-support-transition
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
 

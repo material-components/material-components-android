@@ -6,6 +6,7 @@ dependencies {
     compile project(':support-v4')
     compile project(':support-appcompat-v7')
     compile project(':support-recyclerview-v7')
+    compile project(':support-transition')
 
     androidTestCompile ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
         exclude module: 'support-annotations'
