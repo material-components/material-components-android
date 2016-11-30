@@ -118,7 +118,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private int mScrimAlpha;
     private boolean mScrimsAreShown;
     private ValueAnimatorCompat mScrimAnimator;
-    private int mScrimAnimationDuration;
+    private long mScrimAnimationDuration;
     private int mScrimVisibleHeightTrigger = -1;
 
     private AppBarLayout.OnOffsetChangedListener mOnOffsetChangedListener;
@@ -1041,7 +1041,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     /**
      * Returns the duration in milliseconds used for scrim visibility animations.
      */
-    public int getScrimAnimationDuration() {
+    public long getScrimAnimationDuration() {
         return mScrimAnimationDuration;
     }
 

@@ -100,7 +100,7 @@ class ValueAnimatorCompat {
         abstract int getAnimatedIntValue();
         abstract void setFloatValues(float from, float to);
         abstract float getAnimatedFloatValue();
-        abstract void setDuration(int duration);
+        abstract void setDuration(long duration);
         abstract void cancel();
         abstract float getAnimatedFraction();
         abstract void end();
@@ -177,7 +177,7 @@ class ValueAnimatorCompat {
         return mImpl.getAnimatedFloatValue();
     }
 
-    public void setDuration(int duration) {
+    public void setDuration(long duration) {
         mImpl.setDuration(duration);
     }
 

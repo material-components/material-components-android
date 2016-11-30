@@ -124,7 +124,7 @@ package android.support.design.widget {
     method public int getExpandedTitleMarginStart();
     method public int getExpandedTitleMarginTop();
     method public android.graphics.Typeface getExpandedTitleTypeface();
-    method public int getScrimAnimationDuration();
+    method public long getScrimAnimationDuration();
     method public int getScrimVisibleHeightTrigger();
     method public android.graphics.drawable.Drawable getStatusBarScrim();
     method public java.lang.CharSequence getTitle();
