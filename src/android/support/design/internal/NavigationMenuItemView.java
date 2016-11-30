@@ -110,8 +110,7 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
     @Override
     public void setIcon(Drawable icon) {
         if (icon != null) {
-            icon = DrawableCompat.wrap(icon);
-            icon = icon.mutate();
+            icon = DrawableCompat.wrap(icon.getConstantState().newDrawable()).mutate();
             icon.setBounds(0, 0, mIconSize, mIconSize);
             DrawableCompat.setTintList(icon, mIconTintList);
         }

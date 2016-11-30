@@ -328,7 +328,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     if (mTextColor != null) {
                         itemView.setTextColor(mTextColor);
                     }
-                    itemView.setBackgroundDrawable(mItemBackground);
+                    itemView.setBackgroundDrawable(mItemBackground != null ?
+                            mItemBackground.getConstantState().newDrawable() : null);
                     itemView.initialize(item.getMenuItem(), 0);
                     break;
                 case VIEW_TYPE_SUBHEADER:
