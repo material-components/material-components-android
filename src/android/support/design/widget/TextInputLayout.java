@@ -278,8 +278,6 @@ public class TextInputLayout extends LinearLayout {
 
         if (mCounterOverflowed && mCounterView != null) {
             mCollapsingTextHelper.setCollapsedTextColor(mCounterView.getCurrentTextColor());
-        } else if (isErrorShowing && mErrorView != null) {
-            mCollapsingTextHelper.setCollapsedTextColor(mErrorView.getCurrentTextColor());
         } else if (isFocused && mFocusedTextColor != null) {
             mCollapsingTextHelper.setCollapsedTextColor(mFocusedTextColor.getDefaultColor());
         } else if (mDefaultTextColor != null) {
