@@ -20,6 +20,8 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 
+import java.lang.ref.WeakReference;
+
 /**
  * Manages {@link Snackbar}s.
  */
@@ -84,11 +86,12 @@ class SnackbarManager {
                 mNextSnackbar = new SnackbarRecord(duration, callback);
             }
 
-            if (mCurrentSnackbar != null) {
-                // If the new Snackbar isn't in position 0, we'll cancel the current one and wait
-                // in line
-                cancelSnackbarLocked(mCurrentSnackbar);
+            if (mCurrentSnackbar != null && cancelSnackbarLocked(mCurrentSnackbar)) {
+                // If we currently have a Snackbar, try and cancel it and wait in line
+                return;
             } else {
+                // Clear out the current snackbar
+                mCurrentSnackbar = null;
                 // Otherwise, just show it now
                 showNextSnackbarLocked();
             }
@@ -151,33 +154,49 @@ class SnackbarManager {
     }
 
     private static class SnackbarRecord {
-        private Callback callback;
+        private final WeakReference<Callback> callback;
         private int duration;
 
         SnackbarRecord(int duration, Callback callback) {
-            this.callback = callback;
+            this.callback = new WeakReference<>(callback);
             this.duration = duration;
+        }
+
+        boolean isSnackbar(Callback callback) {
+            return callback != null && this.callback.get() == callback;
         }
     }
 
     private void showNextSnackbarLocked() {
         if (mNextSnackbar != null) {
             mCurrentSnackbar = mNextSnackbar;
-            mCurrentSnackbar.callback.show();
             mNextSnackbar = null;
+
+            final Callback callback = mCurrentSnackbar.callback.get();
+            if (callback != null) {
+                callback.show();
+            } else {
+                // The callback doesn't exist any more, clear out the Snackbar
+                mCurrentSnackbar = null;
+            }
         }
     }
 
-    private void cancelSnackbarLocked(SnackbarRecord record) {
-        record.callback.dismiss();
+    private boolean cancelSnackbarLocked(SnackbarRecord record) {
+        final Callback callback = record.callback.get();
+        if (callback != null) {
+            callback.dismiss();
+            return true;
+        }
+        return false;
     }
 
     private boolean isCurrentSnackbar(Callback callback) {
-        return mCurrentSnackbar != null && mCurrentSnackbar.callback == callback;
+        return mCurrentSnackbar != null && mCurrentSnackbar.isSnackbar(callback);
     }
 
     private boolean isNextSnackbar(Callback callback) {
-        return mNextSnackbar != null && mNextSnackbar.callback == callback;
+        return mNextSnackbar != null && mNextSnackbar.isSnackbar(callback);
     }
 
     private void scheduleTimeoutLocked(SnackbarRecord r) {

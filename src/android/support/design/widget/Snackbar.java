@@ -23,6 +23,7 @@ import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.R;
 import android.support.v4.view.ViewCompat;
@@ -33,8 +34,10 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -116,15 +119,24 @@ public class Snackbar {
     }
 
     /**
-     * Make a Snackbar to display a message.
+     * Make a Snackbar to display a message
      *
-     * @param parent   The parent to add Snackbars to.
+     * <p>Snackbar will try and find a parent view to hold Snackbar's view from the value given
+     * to {@code view}. Snackbar will walk up the view tree trying to find a suitable parent,
+     * which is defined as a {@link CoordinatorLayout} or the window decor's content view,
+     * whichever comes first.
+     *
+     * <p>Having a {@link CoordinatorLayout} in your view hierarchy allows Snackbar to enable
+     * certain features, such as swipe-to-dismiss and automatically moving of widgets like
+     * {@link FloatingActionButton}.
+     *
+     * @param view     The view to find a parent from.
      * @param text     The text to show.  Can be formatted text.
      * @param duration How long to display the message.  Either {@link #LENGTH_SHORT} or {@link
      *                 #LENGTH_LONG}
      */
-    public static Snackbar make(ViewGroup parent, CharSequence text, @Duration int duration) {
-        Snackbar snackbar = new Snackbar(parent);
+    public static Snackbar make(View view, CharSequence text, @Duration int duration) {
+        Snackbar snackbar = new Snackbar(findSuitableParent(view));
         snackbar.setText(text);
         snackbar.setDuration(duration);
         return snackbar;
@@ -133,13 +145,51 @@ public class Snackbar {
     /**
      * Make a Snackbar to display a message.
      *
-     * @param parent   The parent to add Snackbars to.
-     * @param resId    The resource id of the string resource to use.  Can be formatted text.
+     * <p>Snackbar will try and find a parent view to hold Snackbar's view from the value given
+     * to {@code view}. Snackbar will walk up the view tree trying to find a suitable parent,
+     * which is defined as a {@link CoordinatorLayout} or the window decor's content view,
+     * whichever comes first.
+     *
+     * <p>Having a {@link CoordinatorLayout} in your view hierarchy allows Snackbar to enable
+     * certain features, such as swipe-to-dismiss and automatically moving of widgets like
+     * {@link FloatingActionButton}.
+     *
+     * @param view     The view to find a parent from.
+     * @param resId    The resource id of the string resource to use. Can be formatted text.
      * @param duration How long to display the message.  Either {@link #LENGTH_SHORT} or {@link
      *                 #LENGTH_LONG}
      */
-    public static Snackbar make(ViewGroup parent, int resId, @Duration int duration) {
-        return make(parent, parent.getResources().getText(resId), duration);
+    public static Snackbar make(View view, int resId, @Duration int duration) {
+        return make(view, view.getResources().getText(resId), duration);
+    }
+
+    @Nullable
+    private static ViewGroup findSuitableParent(View view) {
+        ViewGroup fallback = null;
+        do {
+            if (view instanceof CoordinatorLayout) {
+                // We've found a CoordinatorLayout, use it
+                return (ViewGroup) view;
+            } else if (view instanceof FrameLayout) {
+                if (view.getId() == android.R.id.content) {
+                    // If we've hit the decor content view, then we didn't find a CoL in the
+                    // hierarchy, so use it.
+                    return (ViewGroup) view;
+                } else {
+                    // It's not the content view but we'll use it as our fallback
+                    fallback = (ViewGroup) view;
+                }
+            }
+
+            if (view != null) {
+                // Else, we will loop and crawl up the view hierarchy and try to find a parent
+                final ViewParent parent = view.getParent();
+                view = parent instanceof View ? (View) parent : null;
+            }
+        } while (view != null);
+
+        // If we reach here then we didn't find a CoL or a suitable content view so we'll fallback
+        return fallback;
     }
 
     /**
