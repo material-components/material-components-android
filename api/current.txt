@@ -15,6 +15,7 @@ package android.support.design.widget {
   public static class AppBarLayout.Behavior extends android.support.design.widget.ViewOffsetBehavior {
     ctor public AppBarLayout.Behavior();
     ctor public AppBarLayout.Behavior(android.content.Context, android.util.AttributeSet);
+    method public boolean onInterceptTouchEvent(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.MotionEvent);
     method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, int);
     method public boolean onNestedFling(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, float, float, boolean);
     method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int[]);
@@ -23,6 +24,7 @@ package android.support.design.widget {
     method public android.os.Parcelable onSaveInstanceState(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout);
     method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, android.view.View, int);
     method public void onStopNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View);
+    method public boolean onTouchEvent(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.MotionEvent);
   }
 
   protected static class AppBarLayout.Behavior.SavedState extends android.view.View.BaseSavedState {

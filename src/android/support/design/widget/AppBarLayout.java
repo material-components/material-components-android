@@ -22,17 +22,21 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.design.R;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -623,6 +627,7 @@ public class AppBarLayout extends LinearLayout {
      * scroll handling with offsetting.
      */
     public static class Behavior extends ViewOffsetBehavior<AppBarLayout> {
+        private static final int INVALID_POINTER = -1;
         private static final int INVALID_POSITION = -1;
 
         private int mOffsetDelta;
@@ -636,6 +641,13 @@ public class AppBarLayout extends LinearLayout {
         private int mOffsetToChildIndexOnLayout = INVALID_POSITION;
         private boolean mOffsetToChildIndexOnLayoutIsMinHeight;
         private float mOffsetToChildIndexOnLayoutPerc;
+
+        private boolean mIsBeingDragged;
+        private int mActivePointerId = INVALID_POINTER;
+        private int mLastMotionY;
+        private int mTouchSlop = -1;
+
+        private WeakReference<View> mLastNestedScrollingChildRef;
 
         public Behavior() {}
 
@@ -656,6 +668,9 @@ public class AppBarLayout extends LinearLayout {
                 // Cancel any offset animation
                 mAnimator.cancel();
             }
+
+            // A new nested scroll has started so clear out the previous ref
+            mLastNestedScrollingChildRef = null;
 
             return started;
         }
@@ -700,6 +715,117 @@ public class AppBarLayout extends LinearLayout {
                 View target) {
             // Reset the skip flag
             mSkipNestedPreScroll = false;
+            // Keep a reference to the previous nested scrolling child
+            mLastNestedScrollingChildRef = new WeakReference<>(target);
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(CoordinatorLayout parent, AppBarLayout child,
+                MotionEvent ev) {
+            if (mTouchSlop < 0) {
+                mTouchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
+            }
+
+            final int action = ev.getAction();
+
+            // Shortcut since we're being dragged
+            if (action == MotionEvent.ACTION_MOVE && mIsBeingDragged) {
+                return true;
+            }
+
+            switch (MotionEventCompat.getActionMasked(ev)) {
+                case MotionEvent.ACTION_MOVE: {
+                    final int activePointerId = mActivePointerId;
+                    if (activePointerId == INVALID_POINTER) {
+                        // If we don't have a valid id, the touch down wasn't on content.
+                        break;
+                    }
+                    final int pointerIndex = MotionEventCompat.findPointerIndex(ev, activePointerId);
+                    if (pointerIndex == -1) {
+                        break;
+                    }
+
+                    final int y = (int) MotionEventCompat.getY(ev, pointerIndex);
+                    final int yDiff = Math.abs(y - mLastMotionY);
+                    if (yDiff > mTouchSlop) {
+                        mIsBeingDragged = true;
+                        mLastMotionY = y;
+                    }
+                    break;
+                }
+
+                case MotionEvent.ACTION_DOWN: {
+                    mIsBeingDragged = false;
+                    final int x = (int) ev.getX();
+                    final int y = (int) ev.getY();
+                    if (parent.isPointInChildBounds(child, x, y) && canDragAppBarLayout()) {
+                        mLastMotionY = y;
+                        mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                    }
+                    break;
+                }
+
+                case MotionEvent.ACTION_CANCEL:
+                case MotionEvent.ACTION_UP:
+                    mIsBeingDragged = false;
+                    mActivePointerId = INVALID_POINTER;
+                    break;
+            }
+
+            return mIsBeingDragged;
+        }
+
+        @Override
+        public boolean onTouchEvent(CoordinatorLayout parent, AppBarLayout child, MotionEvent ev) {
+            if (mTouchSlop < 0) {
+                mTouchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
+            }
+
+            int x = (int) ev.getX();
+            int y = (int) ev.getY();
+
+            switch (MotionEventCompat.getActionMasked(ev)) {
+                case MotionEvent.ACTION_DOWN:
+                    if (parent.isPointInChildBounds(child, x, y) && canDragAppBarLayout()) {
+                        mLastMotionY = y;
+                        mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                    } else {
+                        return false;
+                    }
+                    break;
+                case MotionEvent.ACTION_MOVE:
+                    final int activePointerIndex = MotionEventCompat.findPointerIndex(ev,
+                            mActivePointerId);
+                    if (activePointerIndex == -1) {
+                        return false;
+                    }
+
+                    y = (int) MotionEventCompat.getY(ev, activePointerIndex);
+
+                    int dy = mLastMotionY - y;
+                    if (!mIsBeingDragged && Math.abs(dy) > mTouchSlop) {
+                        mIsBeingDragged = true;
+                        if (dy > 0) {
+                            dy -= mTouchSlop;
+                        } else {
+                            dy += mTouchSlop;
+                        }
+                    }
+
+                    if (mIsBeingDragged) {
+                        mLastMotionY = y;
+                        // We're being dragged so scroll the ABL
+                        scroll(parent, child, dy, -child.getDownNestedScrollRange(), 0);
+                    }
+                    break;
+                case MotionEvent.ACTION_UP:
+                case MotionEvent.ACTION_CANCEL:
+                    mIsBeingDragged = false;
+                    mActivePointerId = INVALID_POINTER;
+                    break;
+            }
+
+            return true;
         }
 
         @Override
@@ -855,6 +981,14 @@ public class AppBarLayout extends LinearLayout {
                 int dy, int minOffset, int maxOffset) {
             return setAppBarTopBottomOffset(coordinatorLayout, appBarLayout,
                     getTopBottomOffsetForScrollingSibling() - dy, minOffset, maxOffset);
+        }
+
+        private boolean canDragAppBarLayout() {
+            if (mLastNestedScrollingChildRef != null) {
+                final View view = mLastNestedScrollingChildRef.get();
+                return view != null && view.isShown() && !ViewCompat.canScrollVertically(view, -1);
+            }
+            return false;
         }
 
         final int setAppBarTopBottomOffset(CoordinatorLayout coordinatorLayout,
