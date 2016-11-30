@@ -122,7 +122,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
     @Override
     void setRippleColor(int rippleColor) {
-        DrawableCompat.setTint(mRippleDrawable, rippleColor);
+        DrawableCompat.setTintList(mRippleDrawable, createColorStateList(rippleColor));
     }
 
     @Override

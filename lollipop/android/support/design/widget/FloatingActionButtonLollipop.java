@@ -91,7 +91,7 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
 
     @Override
     void setRippleColor(int rippleColor) {
-        DrawableCompat.setTint(mRippleDrawable, rippleColor);
+        mRippleDrawable.setColor(ColorStateList.valueOf(rippleColor));
     }
 
     @Override
