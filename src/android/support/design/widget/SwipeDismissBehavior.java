@@ -17,6 +17,7 @@
 package android.support.design.widget;
 
 import android.support.annotation.IntDef;
+import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.view.MotionEvent;
@@ -165,11 +166,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
     @Override
     public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
-        switch (event.getActionMasked()) {
-            case MotionEvent.ACTION_DOWN:
-                mIgnoreEvents = !parent.isPointInChildBounds(child,
-                        (int) event.getX(), (int) event.getY());
-                break;
+        switch (MotionEventCompat.getActionMasked(event)) {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
                 // Reset the ignore flag
@@ -177,6 +174,10 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
                     mIgnoreEvents = false;
                     return false;
                 }
+                break;
+            default:
+                mIgnoreEvents = !parent.isPointInChildBounds(child,
+                        (int) event.getX(), (int) event.getY());
                 break;
         }
 
