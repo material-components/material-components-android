@@ -25,7 +25,12 @@ import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.design.R;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -33,7 +38,6 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.internal.widget.TintManager;
-import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -330,7 +334,7 @@ public class TabLayout extends HorizontalScrollView {
      *
      * @param tab Tab to add
      */
-    public void addTab(Tab tab) {
+    public void addTab(@NonNull Tab tab) {
         addTab(tab, mTabs.isEmpty());
     }
 
@@ -341,7 +345,7 @@ public class TabLayout extends HorizontalScrollView {
      * @param tab The tab to add
      * @param position The new position of the tab
      */
-    public void addTab(Tab tab, int position) {
+    public void addTab(@NonNull Tab tab, int position) {
         addTab(tab, position, mTabs.isEmpty());
     }
 
@@ -351,7 +355,7 @@ public class TabLayout extends HorizontalScrollView {
      * @param tab Tab to add
      * @param setSelected True if the added tab should become the selected tab.
      */
-    public void addTab(Tab tab, boolean setSelected) {
+    public void addTab(@NonNull Tab tab, boolean setSelected) {
         if (tab.mParent != this) {
             throw new IllegalArgumentException("Tab belongs to a different TabLayout.");
         }
@@ -370,7 +374,7 @@ public class TabLayout extends HorizontalScrollView {
      * @param position The new position of the tab
      * @param setSelected True if the added tab should become the selected tab.
      */
-    public void addTab(Tab tab, int position, boolean setSelected) {
+    public void addTab(@NonNull Tab tab, int position, boolean setSelected) {
         if (tab.mParent != this) {
             throw new IllegalArgumentException("Tab belongs to a different TabLayout.");
         }
@@ -399,6 +403,7 @@ public class TabLayout extends HorizontalScrollView {
      * @return A new Tab
      * @see #addTab(Tab)
      */
+    @NonNull
     public Tab newTab() {
         return new Tab(this);
     }
@@ -415,6 +420,7 @@ public class TabLayout extends HorizontalScrollView {
     /**
      * Returns the tab at the specified index.
      */
+    @Nullable
     public Tab getTabAt(int index) {
         return mTabs.get(index);
     }
@@ -529,7 +535,7 @@ public class TabLayout extends HorizontalScrollView {
     /**
      * Sets the text colors for the different states (normal, selected) used for the tabs.
      */
-    public void setTabTextColors(ColorStateList textColor) {
+    public void setTabTextColors(@Nullable ColorStateList textColor) {
         if (mTabTextColors != textColor) {
             mTabTextColors = textColor;
             updateAllTabs();
@@ -539,6 +545,7 @@ public class TabLayout extends HorizontalScrollView {
     /**
      * Gets the text colors for the different states (normal, selected) used for the tabs.
      */
+    @Nullable
     public ColorStateList getTabTextColors() {
         return mTabTextColors;
     }
@@ -567,7 +574,7 @@ public class TabLayout extends HorizontalScrollView {
      * @see TabLayoutOnPageChangeListener
      * @see ViewPagerOnTabSelectedListener
      */
-    public void setupWithViewPager(ViewPager viewPager) {
+    public void setupWithViewPager(@NonNull ViewPager viewPager) {
         final PagerAdapter adapter = viewPager.getAdapter();
         if (adapter == null) {
             throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
@@ -597,7 +604,7 @@ public class TabLayout extends HorizontalScrollView {
      *
      * @param adapter the adapter to populate from
      */
-    public void setTabsFromPagerAdapter(PagerAdapter adapter) {
+    public void setTabsFromPagerAdapter(@NonNull PagerAdapter adapter) {
         removeAllTabs();
         for (int i = 0, count = adapter.getCount(); i < count; i++) {
             addTab(newTab().setText(adapter.getPageTitle(i)));
@@ -880,6 +887,7 @@ public class TabLayout extends HorizontalScrollView {
         /**
          * @return This Tab's tag object.
          */
+        @Nullable
         public Object getTag() {
             return mTag;
         }
@@ -890,7 +898,8 @@ public class TabLayout extends HorizontalScrollView {
          * @param tag Object to store
          * @return The current instance for call chaining
          */
-        public Tab setTag(Object tag) {
+        @NonNull
+        public Tab setTag(@Nullable Object tag) {
             mTag = tag;
             return this;
         }
@@ -900,13 +909,20 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         /**
-         * Set a custom view to be used for this tab. This overrides values set by {@link
-         * #setText(CharSequence)} and {@link #setIcon(Drawable)}.
+         * Set a custom view to be used for this tab.
+         * <p>
+         * If the provided view contains a {@link TextView} with an ID of
+         * {@link android.R.id#text1} then that will be updated with the value given
+         * to {@link #setText(CharSequence)}. Similarly, if this layout contains an
+         * {@link ImageView} with ID {@link android.R.id#icon} then it will be updated with
+         * the value given to {@link #setIcon(Drawable)}.
+         * </p>
          *
          * @param view Custom view to be used as a tab.
          * @return The current instance for call chaining
          */
-        public Tab setCustomView(View view) {
+        @NonNull
+        public Tab setCustomView(@Nullable View view) {
             mCustomView = view;
             if (mPosition >= 0) {
                 mParent.updateTab(mPosition);
@@ -915,13 +931,20 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         /**
-         * Set a custom view to be used for this tab. This overrides values set by {@link
-         * #setText(CharSequence)} and {@link #setIcon(Drawable)}.
+         * Set a custom view to be used for this tab.
+         * <p>
+         * If the inflated layout contains a {@link TextView} with an ID of
+         * {@link android.R.id#text1} then that will be updated with the value given
+         * to {@link #setText(CharSequence)}. Similarly, if this layout contains an
+         * {@link ImageView} with ID {@link android.R.id#icon} then it will be updated with
+         * the value given to {@link #setIcon(Drawable)}.
+         * </p>
          *
          * @param layoutResId A layout resource to inflate and use as a custom tab view
          * @return The current instance for call chaining
          */
-        public Tab setCustomView(int layoutResId) {
+        @NonNull
+        public Tab setCustomView(@LayoutRes int layoutResId) {
             return setCustomView(
                     LayoutInflater.from(mParent.getContext()).inflate(layoutResId, null));
         }
@@ -931,6 +954,7 @@ public class TabLayout extends HorizontalScrollView {
          *
          * @return The tab's icon
          */
+        @Nullable
         public Drawable getIcon() {
             return mIcon;
         }
@@ -954,6 +978,7 @@ public class TabLayout extends HorizontalScrollView {
          *
          * @return The tab's text
          */
+        @Nullable
         public CharSequence getText() {
             return mText;
         }
@@ -964,7 +989,8 @@ public class TabLayout extends HorizontalScrollView {
          * @param icon The drawable to use as an icon
          * @return The current instance for call chaining
          */
-        public Tab setIcon(Drawable icon) {
+        @NonNull
+        public Tab setIcon(@Nullable Drawable icon) {
             mIcon = icon;
             if (mPosition >= 0) {
                 mParent.updateTab(mPosition);
@@ -978,7 +1004,8 @@ public class TabLayout extends HorizontalScrollView {
          * @param resId A resource ID referring to the icon that should be displayed
          * @return The current instance for call chaining
          */
-        public Tab setIcon(int resId) {
+        @NonNull
+        public Tab setIcon(@DrawableRes int resId) {
             return setIcon(TintManager.getDrawable(mParent.getContext(), resId));
         }
 
@@ -989,7 +1016,8 @@ public class TabLayout extends HorizontalScrollView {
          * @param text The text to display
          * @return The current instance for call chaining
          */
-        public Tab setText(CharSequence text) {
+        @NonNull
+        public Tab setText(@Nullable CharSequence text) {
             mText = text;
             if (mPosition >= 0) {
                 mParent.updateTab(mPosition);
@@ -1004,7 +1032,8 @@ public class TabLayout extends HorizontalScrollView {
          * @param resId A resource ID referring to the text that should be displayed
          * @return The current instance for call chaining
          */
-        public Tab setText(int resId) {
+        @NonNull
+        public Tab setText(@StringRes int resId) {
             return setText(mParent.getResources().getText(resId));
         }
 
@@ -1024,7 +1053,8 @@ public class TabLayout extends HorizontalScrollView {
          * @see #setContentDescription(CharSequence)
          * @see #getContentDescription()
          */
-        public Tab setContentDescription(int resId) {
+        @NonNull
+        public Tab setContentDescription(@StringRes int resId) {
             return setContentDescription(mParent.getResources().getText(resId));
         }
 
@@ -1037,7 +1067,8 @@ public class TabLayout extends HorizontalScrollView {
          * @see #setContentDescription(int)
          * @see #getContentDescription()
          */
-        public Tab setContentDescription(CharSequence contentDesc) {
+        @NonNull
+        public Tab setContentDescription(@Nullable CharSequence contentDesc) {
             mContentDesc = contentDesc;
             if (mPosition >= 0) {
                 mParent.updateTab(mPosition);
@@ -1052,6 +1083,7 @@ public class TabLayout extends HorizontalScrollView {
          * @see #setContentDescription(CharSequence)
          * @see #setContentDescription(int)
          */
+        @Nullable
         public CharSequence getContentDescription() {
             return mContentDesc;
         }
@@ -1061,7 +1093,10 @@ public class TabLayout extends HorizontalScrollView {
         private final Tab mTab;
         private TextView mTextView;
         private ImageView mIconView;
+
         private View mCustomView;
+        private TextView mCustomTextView;
+        private ImageView mCustomIconView;
 
         public TabView(Context context, Tab tab) {
             super(context);
@@ -1141,64 +1176,80 @@ public class TabLayout extends HorizontalScrollView {
                     mIconView.setVisibility(GONE);
                     mIconView.setImageDrawable(null);
                 }
+
+                mCustomTextView = (TextView) custom.findViewById(android.R.id.text1);
+                mCustomIconView = (ImageView) custom.findViewById(android.R.id.icon);
             } else {
+                // We do not have a custom view. Remove one if it already exists
                 if (mCustomView != null) {
                     removeView(mCustomView);
                     mCustomView = null;
                 }
+                mCustomTextView = null;
+                mCustomIconView = null;
+            }
 
-                final Drawable icon = tab.getIcon();
-                final CharSequence text = tab.getText();
+            if (mCustomView == null) {
+                // If there isn't a custom view, we'll us our own in-built layouts
+                if (mIconView == null) {
+                    ImageView iconView = (ImageView) LayoutInflater.from(getContext())
+                            .inflate(R.layout.layout_tab_icon, this, false);
+                    addView(iconView, 0);
+                    mIconView = iconView;
+                }
+                if (mTextView == null) {
+                    TextView textView = (TextView) LayoutInflater.from(getContext())
+                            .inflate(R.layout.layout_tab_text, this, false);
+                    addView(textView);
+                    mTextView = textView;
+                }
+                mTextView.setTextAppearance(getContext(), mTabTextAppearance);
+                if (mTabTextColors != null) {
+                    mTextView.setTextColor(mTabTextColors);
+                }
+                updateTextAndIcon(tab, mTextView, mIconView);
+            } else {
+                // Else, we'll see if there is a TextView or ImageView present and update them
+                if (mCustomTextView != null || mCustomIconView != null) {
+                    updateTextAndIcon(tab, mCustomTextView, mCustomIconView);
+                }
+            }
+        }
 
+        private void updateTextAndIcon(Tab tab, TextView textView, ImageView iconView) {
+            final Drawable icon = tab.getIcon();
+            final CharSequence text = tab.getText();
+
+            if (iconView != null) {
                 if (icon != null) {
-                    if (mIconView == null) {
-                        ImageView iconView = new ImageView(getContext());
-                        LayoutParams lp = new LayoutParams(LayoutParams.WRAP_CONTENT,
-                                LayoutParams.WRAP_CONTENT);
-                        lp.gravity = Gravity.CENTER_VERTICAL;
-                        iconView.setLayoutParams(lp);
-                        addView(iconView, 0);
-                        mIconView = iconView;
-                    }
-                    mIconView.setImageDrawable(icon);
-                    mIconView.setVisibility(VISIBLE);
-                } else if (mIconView != null) {
-                    mIconView.setVisibility(GONE);
-                    mIconView.setImageDrawable(null);
-                }
-
-                final boolean hasText = !TextUtils.isEmpty(text);
-                if (hasText) {
-                    if (mTextView == null) {
-                        AppCompatTextView textView = new AppCompatTextView(getContext());
-                        textView.setMaxLines(MAX_TAB_TEXT_LINES);
-                        textView.setEllipsize(TextUtils.TruncateAt.END);
-                        textView.setGravity(Gravity.CENTER);
-                        addView(textView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                        mTextView = textView;
-                    }
-                    mTextView.setTextAppearance(getContext(), mTabTextAppearance);
-                    if (mTabTextColors != null) {
-                        mTextView.setTextColor(mTabTextColors);
-                    }
-                    mTextView.setText(text);
-                    mTextView.setContentDescription(tab.getContentDescription());
-                    mTextView.setVisibility(VISIBLE);
-                } else if (mTextView != null) {
-                    mTextView.setVisibility(GONE);
-                    mTextView.setText(null);
-                }
-
-                if (mIconView != null) {
-                    mIconView.setContentDescription(tab.getContentDescription());
-                }
-
-                if (!hasText && !TextUtils.isEmpty(tab.getContentDescription())) {
-                    setOnLongClickListener(this);
+                    iconView.setImageDrawable(icon);
+                    iconView.setVisibility(VISIBLE);
+                    setVisibility(VISIBLE);
                 } else {
-                    setOnLongClickListener(null);
-                    setLongClickable(false);
+                    iconView.setVisibility(GONE);
+                    iconView.setImageDrawable(null);
                 }
+                iconView.setContentDescription(tab.getContentDescription());
+            }
+
+            final boolean hasText = !TextUtils.isEmpty(text);
+            if (textView != null) {
+                if (hasText) {
+                    textView.setText(text);
+                    textView.setContentDescription(tab.getContentDescription());
+                    textView.setVisibility(VISIBLE);
+                    setVisibility(VISIBLE);
+                } else {
+                    textView.setVisibility(GONE);
+                    textView.setText(null);
+                }
+            }
+
+            if (!hasText && !TextUtils.isEmpty(tab.getContentDescription())) {
+                setOnLongClickListener(this);
+            } else {
+                setOnLongClickListener(null);
+                setLongClickable(false);
             }
         }
 
