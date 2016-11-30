@@ -96,6 +96,7 @@ public class TabLayout extends HorizontalScrollView {
 
     private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72; // dps
     private static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
+    private static final int INVALID_WIDTH = -1;
     private static final int DEFAULT_HEIGHT = 48; // dps
     private static final int TAB_MIN_WIDTH_MARGIN = 56; //dps
     private static final int FIXED_WRAP_GUTTER_MIN = 16; //dps
@@ -199,9 +200,10 @@ public class TabLayout extends HorizontalScrollView {
 
     private final int mTabBackgroundResId;
 
-    private final int mTabMinWidth;
     private int mTabMaxWidth = Integer.MAX_VALUE;
+    private final int mRequestedTabMinWidth;
     private final int mRequestedTabMaxWidth;
+    private final int mScrollableTabMinWidth;
 
     private int mContentInsetStart;
 
@@ -229,8 +231,6 @@ public class TabLayout extends HorizontalScrollView {
 
         // Disable the Scroll Bar
         setHorizontalScrollBarEnabled(false);
-        // Set us to fill the View port
-        setFillViewport(true);
 
         // Add the TabStrip
         mTabStrip = new SlidingTabStrip(context);
@@ -280,17 +280,20 @@ public class TabLayout extends HorizontalScrollView {
             mTabTextColors = createColorStateList(mTabTextColors.getDefaultColor(), selected);
         }
 
-        mTabMinWidth = a.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth, 0);
-        mRequestedTabMaxWidth = a.getDimensionPixelSize(R.styleable.TabLayout_tabMaxWidth, 0);
+        mRequestedTabMinWidth = a.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth,
+                INVALID_WIDTH);
+        mRequestedTabMaxWidth = a.getDimensionPixelSize(R.styleable.TabLayout_tabMaxWidth,
+                INVALID_WIDTH);
         mTabBackgroundResId = a.getResourceId(R.styleable.TabLayout_tabBackground, 0);
         mContentInsetStart = a.getDimensionPixelSize(R.styleable.TabLayout_tabContentStart, 0);
         mMode = a.getInt(R.styleable.TabLayout_tabMode, MODE_FIXED);
         mTabGravity = a.getInt(R.styleable.TabLayout_tabGravity, GRAVITY_FILL);
         a.recycle();
 
-        // TODO add attr for this
-        mTabTextMultiLineSize =
-                getResources().getDimensionPixelSize(R.dimen.design_tab_text_size_2line);
+        // TODO add attr for these
+        final Resources res = getResources();
+        mTabTextMultiLineSize = res.getDimensionPixelSize(R.dimen.design_tab_text_size_2line);
+        mScrollableTabMinWidth = res.getDimensionPixelSize(R.dimen.design_tab_scrollable_min_width);
 
         // Now apply the tab mode and gravity
         applyModeAndGravity();
@@ -650,6 +653,7 @@ public class TabLayout extends HorizontalScrollView {
     private TabView createTabView(Tab tab) {
         final TabView tabView = new TabView(getContext(), tab);
         tabView.setFocusable(true);
+        tabView.setMinimumWidth(getTabMinWidth());
 
         if (mTabClickListener == null) {
             mTabClickListener = new View.OnClickListener() {
@@ -734,38 +738,44 @@ public class TabLayout extends HorizontalScrollView {
                 break;
         }
 
+        final int specWidth = MeasureSpec.getSize(widthMeasureSpec);
+        if (MeasureSpec.getMode(widthMeasureSpec) != MeasureSpec.UNSPECIFIED) {
+            // If we don't have an unspecified width spec, use the given size to calculate
+            // the max tab width
+            mTabMaxWidth = mRequestedTabMaxWidth > 0
+                    ? mRequestedTabMaxWidth
+                    : specWidth - dpToPx(TAB_MIN_WIDTH_MARGIN);
+        }
+
         // Now super measure itself using the (possibly) modified height spec
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-        if (mMode == MODE_FIXED && getChildCount() == 1) {
+        if (getChildCount() == 1) {
             // If we're in fixed mode then we need to make the tab strip is the same width as us
             // so we don't scroll
             final View child = getChildAt(0);
-            final int width = getMeasuredWidth();
+            boolean remeasure = false;
 
-            if (child.getMeasuredWidth() > width) {
-                // If the child is wider than us, re-measure it with a widthSpec set to exact our
-                // measure width
+            switch (mMode) {
+                case MODE_SCROLLABLE:
+                    // We only need to resize the child if it's smaller than us. This is similar
+                    // to fillViewport
+                    remeasure = child.getMeasuredWidth() < getMeasuredWidth();
+                    break;
+                case MODE_FIXED:
+                    // Resize the child so that it doesn't scroll
+                    remeasure = child.getMeasuredWidth() != getMeasuredWidth();
+                    break;
+            }
+
+            if (remeasure) {
+                // Re-measure the child with a widthSpec set to be exactly our measure width
                 int childHeightMeasureSpec = getChildMeasureSpec(heightMeasureSpec, getPaddingTop()
                         + getPaddingBottom(), child.getLayoutParams().height);
-                int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(width, MeasureSpec.EXACTLY);
+                int childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                        getMeasuredWidth(), MeasureSpec.EXACTLY);
                 child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
             }
-        }
-
-        // Now update the tab max width. We do it here as the default tab min width is
-        // layout width - 56dp
-        int maxTabWidth = mRequestedTabMaxWidth;
-        final int defaultTabMaxWidth = getMeasuredWidth() - dpToPx(TAB_MIN_WIDTH_MARGIN);
-        if (maxTabWidth == 0 || maxTabWidth > defaultTabMaxWidth) {
-            // If the request tab max width is 0, or larger than our default, use the default
-            maxTabWidth = defaultTabMaxWidth;
-        }
-
-        if (mTabMaxWidth != maxTabWidth) {
-            // If the tab max width has changed, re-measure
-            mTabMaxWidth = maxTabWidth;
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
         }
     }
 
@@ -835,7 +845,9 @@ public class TabLayout extends HorizontalScrollView {
             }
         } else {
             final int newPosition = tab != null ? tab.getPosition() : Tab.INVALID_POSITION;
-            setSelectedTabView(newPosition);
+            if (newPosition != Tab.INVALID_POSITION) {
+                setSelectedTabView(newPosition);
+            }
             if (updateIndicator) {
                 if ((mSelectedTab == null || mSelectedTab.getPosition() == Tab.INVALID_POSITION)
                         && newPosition != Tab.INVALID_POSITION) {
@@ -889,14 +901,17 @@ public class TabLayout extends HorizontalScrollView {
                 break;
         }
 
-        updateTabViewsLayoutParams();
+        updateTabViews(true);
     }
 
-    private void updateTabViewsLayoutParams() {
+    private void updateTabViews(final boolean requestLayout) {
         for (int i = 0; i < mTabStrip.getChildCount(); i++) {
             View child = mTabStrip.getChildAt(i);
+            child.setMinimumWidth(getTabMinWidth());
             updateTabViewLayoutParams((LinearLayout.LayoutParams) child.getLayoutParams());
-            child.requestLayout();
+            if (requestLayout) {
+                child.requestLayout();
+            }
         }
     }
 
@@ -1203,14 +1218,15 @@ public class TabLayout extends HorizontalScrollView {
 
         @Override
         public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-            final int measuredWidth = getMeasuredWidth();
-            if (measuredWidth < mTabMinWidth || measuredWidth > mTabMaxWidth) {
-                // Re-measure if we are outside our min or max width
-                widthMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        MathUtils.constrain(measuredWidth, mTabMinWidth, mTabMaxWidth),
-                        MeasureSpec.EXACTLY);
+            final int specWidth = MeasureSpec.getSize(widthMeasureSpec);
+            final int maxWidth = getTabMaxWidth();
+            if (maxWidth > 0 && (specWidth == 0 || specWidth > maxWidth)) {
+                // If we have a max width and a given spec size which is either unspecified or
+                // larger than the spec size, use a AT_MOST spec
+                super.onMeasure(MeasureSpec.makeMeasureSpec(mTabMaxWidth, MeasureSpec.AT_MOST),
+                        heightMeasureSpec);
+            } else {
+                // Else, use the original specs
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             }
 
@@ -1466,14 +1482,13 @@ public class TabLayout extends HorizontalScrollView {
             if (mMode == MODE_FIXED && mTabGravity == GRAVITY_CENTER) {
                 final int count = getChildCount();
 
-                final int unspecifiedSpec = MeasureSpec.makeMeasureSpec(0, MeasureSpec.UNSPECIFIED);
-
-                // First we'll find the largest tab
+                // First we'll find the widest tab
                 int largestTabWidth = 0;
                 for (int i = 0, z = count; i < z; i++) {
-                    final View child = getChildAt(i);
-                    child.measure(unspecifiedSpec, heightMeasureSpec);
-                    largestTabWidth = Math.max(largestTabWidth, child.getMeasuredWidth());
+                    View child = getChildAt(i);
+                    if (child.getVisibility() == VISIBLE) {
+                        largestTabWidth = Math.max(largestTabWidth, child.getMeasuredWidth());
+                    }
                 }
 
                 if (largestTabWidth <= 0) {
@@ -1482,24 +1497,32 @@ public class TabLayout extends HorizontalScrollView {
                 }
 
                 final int gutter = dpToPx(FIXED_WRAP_GUTTER_MIN);
+                boolean remeasure = false;
+
                 if (largestTabWidth * count <= getMeasuredWidth() - gutter * 2) {
                     // If the tabs fit within our width minus gutters, we will set all tabs to have
                     // the same width
                     for (int i = 0; i < count; i++) {
-                        final View child = getChildAt(i);
-                        final LinearLayout.LayoutParams lp = (LayoutParams) child.getLayoutParams();
-                        lp.width = largestTabWidth;
-                        lp.weight = 0;
+                        final LinearLayout.LayoutParams lp =
+                                (LayoutParams) getChildAt(i).getLayoutParams();
+                        if (lp.width != largestTabWidth || lp.weight != 0) {
+                            lp.width = largestTabWidth;
+                            lp.weight = 0;
+                            remeasure = true;
+                        }
                     }
                 } else {
                     // If the tabs will wrap to be larger than the width minus gutters, we need
                     // to switch to GRAVITY_FILL
                     mTabGravity = GRAVITY_FILL;
-                    updateTabViewsLayoutParams();
+                    updateTabViews(false);
+                    remeasure = true;
                 }
 
-                // Now re-measure after our changes
-                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+                if (remeasure) {
+                    // Now re-measure after our changes
+                    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+                }
             }
         }
 
@@ -1657,6 +1680,19 @@ public class TabLayout extends HorizontalScrollView {
             }
         }
         return hasIconAndText ? DEFAULT_HEIGHT_WITH_TEXT_ICON : DEFAULT_HEIGHT;
+    }
+
+    private int getTabMinWidth() {
+        if (mRequestedTabMinWidth != INVALID_WIDTH) {
+            // If we have been given a min width, use it
+            return mRequestedTabMinWidth;
+        }
+        // Else, we'll use the default value
+        return mMode == MODE_SCROLLABLE ? mScrollableTabMinWidth : 0;
+    }
+
+    private int getTabMaxWidth() {
+        return mTabMaxWidth;
     }
 
     /**

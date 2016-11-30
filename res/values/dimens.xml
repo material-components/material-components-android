@@ -31,7 +31,7 @@
     <dimen name="design_navigation_padding_top_default">0dp</dimen>
     <dimen name="design_navigation_padding_bottom">8dp</dimen>
 
-    <dimen name="design_tab_min_width">72dp</dimen>
+    <dimen name="design_tab_scrollable_min_width">72dp</dimen>
     <dimen name="design_tab_max_width">264dp</dimen>
     <dimen name="design_tab_text_size">14sp</dimen>
     <dimen name="design_tab_text_size_2line">12sp</dimen>
