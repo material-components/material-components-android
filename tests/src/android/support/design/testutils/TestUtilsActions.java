@@ -16,6 +16,7 @@
 
 package android.support.design.testutils;
 
+import android.graphics.drawable.Drawable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -25,6 +26,7 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -229,6 +231,35 @@ public class TestUtilsActions {
                 uiController.loopMainThreadUntilIdle();
 
                 view.setEnabled(enabled);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Sets compound drawables on {@link TextView}
+     */
+    public static ViewAction setCompoundDrawablesRelative(final @Nullable Drawable start,
+            final @Nullable Drawable top, final @Nullable Drawable end,
+            final @Nullable Drawable bottom) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextView.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "TextView set compound drawables relative";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TextView textView = (TextView) view;
+                TextViewCompat.setCompoundDrawablesRelative(textView, start, top, end, bottom);
 
                 uiController.loopMainThreadUntilIdle();
             }

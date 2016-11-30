@@ -132,6 +132,7 @@ public class TextInputLayout extends LinearLayout {
     private CheckableImageButton mPasswordToggleView;
     private boolean mPasswordToggledVisible;
     private Drawable mPasswordToggleDummyDrawable;
+    private Drawable mOriginalEditTextEndDrawable;
 
     private ColorStateList mPasswordToggleTintList;
     private boolean mHasPasswordToggleTintList;
@@ -987,6 +988,11 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void updatePasswordToggleView() {
+        if (mEditText == null) {
+            // If there is no EditText, there is nothing to update
+            return;
+        }
+
         if (shouldShowPasswordIcon()) {
             if (mPasswordToggleView == null) {
                 mPasswordToggleView = (CheckableImageButton) LayoutInflater.from(getContext())
@@ -1013,8 +1019,12 @@ public class TextInputLayout extends LinearLayout {
             mPasswordToggleDummyDrawable.setBounds(0, 0, mPasswordToggleView.getMeasuredWidth(), 1);
 
             final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(mEditText);
+            // Store the user defined end compound drawable so that we can restore it later
+            if (compounds[2] != mPasswordToggleDummyDrawable) {
+                mOriginalEditTextEndDrawable = compounds[2];
+            }
             TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0], compounds[1],
-                    mPasswordToggleDummyDrawable, compounds[2]);
+                    mPasswordToggleDummyDrawable, compounds[3]);
 
             // Copy over the EditText's padding so that we match
             mPasswordToggleView.setPadding(mEditText.getPaddingLeft(),
@@ -1027,8 +1037,10 @@ public class TextInputLayout extends LinearLayout {
 
             // Make sure that we remove the dummy end compound drawable
             final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(mEditText);
-            TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0], compounds[1],
-                    null, compounds[2]);
+            if (compounds[2] == mPasswordToggleDummyDrawable) {
+                TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0], compounds[1],
+                        mOriginalEditTextEndDrawable, compounds[3]);
+            }
         }
     }
 
@@ -1147,7 +1159,7 @@ public class TextInputLayout extends LinearLayout {
         if (mPasswordToggleEnabled != enabled) {
             mPasswordToggleEnabled = enabled;
 
-            if (!enabled && mPasswordToggledVisible) {
+            if (!enabled && mPasswordToggledVisible && mEditText != null) {
                 // If the toggle is no longer enabled, but we remove the PasswordTransformation
                 // to make the password visible, add it back
                 mEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());

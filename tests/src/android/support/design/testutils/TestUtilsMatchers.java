@@ -26,6 +26,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -412,6 +413,30 @@ public class TestUtilsMatchers {
                     failedCheckDescription = t.getMessage();
                     return false;
                 }
+            }
+        };
+    }
+
+    /**
+     * Returns a matcher that matches FloatingActionButtons with the specified content height
+     */
+    public static Matcher withCompoundDrawable(final int index, final Drawable expected) {
+        return new BoundedMatcher<View, View>(View.class) {
+            private String failedCheckDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText(failedCheckDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final View view) {
+                if (!(view instanceof TextView)) {
+                    return false;
+                }
+
+                final TextView textView = (TextView) view;
+                return expected == TextViewCompat.getCompoundDrawablesRelative(textView)[index];
             }
         };
     }
