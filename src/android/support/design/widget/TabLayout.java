@@ -43,7 +43,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import android.view.animation.Animation;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -57,6 +56,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
+import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
 /**
@@ -206,6 +206,9 @@ public class TabLayout extends HorizontalScrollView {
     private OnTabSelectedListener mOnTabSelectedListener;
     private View.OnClickListener mTabClickListener;
 
+    private ValueAnimatorCompat mScrollAnimator;
+    private ValueAnimatorCompat mIndicatorAnimator;
+
     public TabLayout(Context context) {
         this(context, null);
     }
@@ -286,7 +289,7 @@ public class TabLayout extends HorizontalScrollView {
      * @param updateSelectedText Whether to update the text's selected state.
      */
     public void setScrollPosition(int position, float positionOffset, boolean updateSelectedText) {
-        if (isAnimationRunning(getAnimation())) {
+        if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
             return;
         }
         if (position < 0 || position >= mTabStrip.getChildCount()) {
@@ -449,6 +452,8 @@ public class TabLayout extends HorizontalScrollView {
             tab.setPosition(Tab.INVALID_POSITION);
             i.remove();
         }
+
+        mSelectedTab = null;
     }
 
     /**
@@ -657,15 +662,15 @@ public class TabLayout extends HorizontalScrollView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // If we have a MeasureSpec which allows us to decide our height, try and use the default
         // height
+        final int idealHeight = dpToPx(DEFAULT_HEIGHT) + getPaddingTop() + getPaddingBottom();
         switch (MeasureSpec.getMode(heightMeasureSpec)) {
             case MeasureSpec.AT_MOST:
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(
-                        Math.min(dpToPx(DEFAULT_HEIGHT), MeasureSpec.getSize(heightMeasureSpec)),
+                        Math.min(idealHeight, MeasureSpec.getSize(heightMeasureSpec)),
                         MeasureSpec.EXACTLY);
                 break;
             case MeasureSpec.UNSPECIFIED:
-                heightMeasureSpec = MeasureSpec.makeMeasureSpec(dpToPx(DEFAULT_HEIGHT),
-                        MeasureSpec.EXACTLY);
+                heightMeasureSpec = MeasureSpec.makeMeasureSpec(idealHeight, MeasureSpec.EXACTLY);
                 break;
         }
 
@@ -705,13 +710,12 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     private void animateToTab(int newPosition) {
-        clearAnimation();
-
         if (newPosition == Tab.INVALID_POSITION) {
             return;
         }
 
-        if (getWindowToken() == null || !ViewCompat.isLaidOut(this)) {
+        if (getWindowToken() == null || !ViewCompat.isLaidOut(this)
+                || mTabStrip.childrenNeedLayout()) {
             // If we don't have a window token, or we haven't been laid out yet just draw the new
             // position now
             setScrollPosition(newPosition, 0f, true);
@@ -720,24 +724,26 @@ public class TabLayout extends HorizontalScrollView {
 
         final int startScrollX = getScrollX();
         final int targetScrollX = calculateScrollXForTab(newPosition, 0);
-        final int duration = ANIMATION_DURATION;
 
         if (startScrollX != targetScrollX) {
-            ValueAnimatorCompat animator = ViewUtils.createAnimator();
-            animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-            animator.setDuration(duration);
-            animator.setIntValues(startScrollX, targetScrollX);
-            animator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
-                @Override
-                public void onAnimationUpdate(ValueAnimatorCompat animator) {
-                    scrollTo(animator.getAnimatedIntValue(), 0);
-                }
-            });
-            animator.start();
+            if (mScrollAnimator == null) {
+                mScrollAnimator = ViewUtils.createAnimator();
+                mScrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+                mScrollAnimator.setDuration(ANIMATION_DURATION);
+                mScrollAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+                    @Override
+                    public void onAnimationUpdate(ValueAnimatorCompat animator) {
+                        scrollTo(animator.getAnimatedIntValue(), 0);
+                    }
+                });
+            }
+
+            mScrollAnimator.setIntValues(startScrollX, targetScrollX);
+            mScrollAnimator.start();
         }
 
         // Now animate the indicator
-        mTabStrip.animateIndicatorToPosition(newPosition, duration);
+        mTabStrip.animateIndicatorToPosition(newPosition, ANIMATION_DURATION);
     }
 
     private void setSelectedTabView(int position) {
@@ -746,10 +752,6 @@ public class TabLayout extends HorizontalScrollView {
             final View child = mTabStrip.getChildAt(i);
             child.setSelected(i == position);
         }
-    }
-
-    private static boolean isAnimationRunning(Animation animation) {
-        return animation != null && animation.hasStarted() && !animation.hasEnded();
     }
 
     void selectTab(Tab tab) {
@@ -791,10 +793,10 @@ public class TabLayout extends HorizontalScrollView {
             final int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
             final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
 
-            return (int) (selectedChild.getLeft()
-                    + ((selectedWidth + nextWidth) * positionOffset * 0.5f)
-                    + selectedChild.getWidth() * 0.5f
-                    - getWidth() * 0.5f);
+            return selectedChild.getLeft()
+                    + ((int) ((selectedWidth + nextWidth) * positionOffset * 0.5f))
+                    + (selectedChild.getWidth() / 2)
+                    - (getWidth() / 2);
         }
         return 0;
     }
@@ -1228,8 +1230,18 @@ public class TabLayout extends HorizontalScrollView {
             ViewCompat.postInvalidateOnAnimation(this);
         }
 
+        boolean childrenNeedLayout() {
+            for (int i = 0, z = getChildCount(); i < z; i++) {
+                final View child = getChildAt(i);
+                if (child.getWidth() <= 0) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         void setIndicatorPositionFromTabPosition(int position, float positionOffset) {
-            if (isAnimationRunning(getAnimation())) {
+            if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
                 return;
             }
             mSelectedPosition = position;
@@ -1290,12 +1302,8 @@ public class TabLayout extends HorizontalScrollView {
         @Override
         protected void onLayout(boolean changed, int l, int t, int r, int b) {
             super.onLayout(changed, l, t, r, b);
-
-            if (!isAnimationRunning(getAnimation())) {
-                // If we've been layed out, and we're not currently in an animation, update the
-                // indicator position
-                updateIndicatorPosition();
-            }
+            // If we've been layed out, update the indicator position
+            updateIndicatorPosition();
         }
 
         private void updateIndicatorPosition() {
@@ -1365,7 +1373,7 @@ public class TabLayout extends HorizontalScrollView {
             }
 
             if (startLeft != targetLeft || startRight != targetRight) {
-                ValueAnimatorCompat animator = ViewUtils.createAnimator();
+                ValueAnimatorCompat animator = mIndicatorAnimator = ViewUtils.createAnimator();
                 animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
                 animator.setDuration(duration);
                 animator.setFloatValues(0, 1);
@@ -1474,7 +1482,7 @@ public class TabLayout extends HorizontalScrollView {
         @Override
         public void onPageSelected(int position) {
             final TabLayout tabLayout = mTabLayoutRef.get();
-            if (tabLayout != null) {
+            if (mScrollState == SCROLL_STATE_IDLE && tabLayout != null) {
                 tabLayout.getTabAt(position).select();
             }
         }
