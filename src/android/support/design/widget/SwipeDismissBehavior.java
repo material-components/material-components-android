@@ -80,7 +80,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
     private ViewDragHelper mViewDragHelper;
     private OnDismissListener mListener;
-    private boolean mIgnoreEvents;
+    private boolean mInterceptingEvents;
 
     private float mSensitivity = 0f;
     private boolean mSensitivitySet;
@@ -168,27 +168,26 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
     @Override
     public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+        boolean dispatchEventToHelper = mInterceptingEvents;
+
         switch (MotionEventCompat.getActionMasked(event)) {
+            case MotionEvent.ACTION_DOWN:
+                mInterceptingEvents = parent.isPointInChildBounds(child,
+                        (int) event.getX(), (int) event.getY());
+                dispatchEventToHelper = mInterceptingEvents;
+                break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
-                // Reset the ignore flag
-                if (mIgnoreEvents) {
-                    mIgnoreEvents = false;
-                    return false;
-                }
-                break;
-            default:
-                mIgnoreEvents = !parent.isPointInChildBounds(child,
-                        (int) event.getX(), (int) event.getY());
+                // Reset the ignore flag for next time
+                mInterceptingEvents = false;
                 break;
         }
 
-        if (mIgnoreEvents) {
-            return false;
+        if (dispatchEventToHelper) {
+            ensureViewDragHelper(parent);
+            return mViewDragHelper.shouldInterceptTouchEvent(event);
         }
-
-        ensureViewDragHelper(parent);
-        return mViewDragHelper.shouldInterceptTouchEvent(event);
+        return false;
     }
 
     @Override
