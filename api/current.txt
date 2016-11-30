@@ -17,8 +17,16 @@ package android.support.design.widget {
     method public boolean onNestedFling(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, float, float, boolean);
     method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int[]);
     method public void onNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int, int);
+    method public void onRestoreInstanceState(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.os.Parcelable);
+    method public android.os.Parcelable onSaveInstanceState(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout);
     method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, android.view.View, int);
     method public void onStopNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View);
+  }
+
+  protected static class AppBarLayout.Behavior.SavedState extends android.view.View.BaseSavedState {
+    ctor public AppBarLayout.Behavior.SavedState(android.os.Parcel);
+    ctor public AppBarLayout.Behavior.SavedState(android.os.Parcelable);
+    field public static final android.os.Parcelable.Creator<android.support.design.widget.AppBarLayout.Behavior.SavedState> CREATOR;
   }
 
   public static class AppBarLayout.LayoutParams extends android.widget.LinearLayout.LayoutParams {
@@ -127,6 +135,8 @@ package android.support.design.widget {
     method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View, int, int, int[]);
     method public void onNestedScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View, int, int, int, int);
     method public void onNestedScrollAccepted(android.support.design.widget.CoordinatorLayout, V, android.view.View, android.view.View, int);
+    method public void onRestoreInstanceState(android.support.design.widget.CoordinatorLayout, V, android.os.Parcelable);
+    method public android.os.Parcelable onSaveInstanceState(android.support.design.widget.CoordinatorLayout, V);
     method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View, android.view.View, int);
     method public void onStopNestedScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View);
     method public boolean onTouchEvent(android.support.design.widget.CoordinatorLayout, V, android.view.MotionEvent);
@@ -148,6 +158,12 @@ package android.support.design.widget {
     field public int anchorGravity;
     field public int gravity;
     field public int keyline;
+  }
+
+  protected static class CoordinatorLayout.SavedState extends android.view.View.BaseSavedState {
+    ctor public CoordinatorLayout.SavedState(android.os.Parcel);
+    ctor public CoordinatorLayout.SavedState(android.os.Parcelable);
+    field public static final android.os.Parcelable.Creator<android.support.design.widget.CoordinatorLayout.SavedState> CREATOR;
   }
 
   public class FloatingActionButton extends android.widget.ImageView {

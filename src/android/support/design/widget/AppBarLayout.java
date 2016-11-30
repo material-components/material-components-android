@@ -18,6 +18,8 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.design.R;
 import android.support.v4.view.ViewCompat;
@@ -579,13 +581,19 @@ public class AppBarLayout extends LinearLayout {
      * scroll handling with offsetting.
      */
     public static class Behavior extends ViewOffsetBehavior<AppBarLayout> {
-        private int mLogicalOffsetTop;
+        private static final int INVALID_POSITION = -1;
+
+        private int mOffsetDelta;
 
         private boolean mSkipNestedPreScroll;
         private Runnable mFlingRunnable;
         private ScrollerCompat mScroller;
 
         private ValueAnimatorCompat mAnimator;
+
+        private int mOffsetToChildIndexOnLayout = INVALID_POSITION;
+        private boolean mOffsetToChildIndexOnLayoutIsMinHeight;
+        private float mOffsetToChildIndexOnLayoutPerc;
 
         public Behavior() {}
 
@@ -682,7 +690,7 @@ public class AppBarLayout extends LinearLayout {
                     }
                 }
 
-                if (mLogicalOffsetTop != targetScroll) {
+                if (getTopBottomOffsetForScrollingSibling() != targetScroll) {
                     animateOffsetTo(coordinatorLayout, child, targetScroll);
                     return true;
                 }
@@ -722,7 +730,7 @@ public class AppBarLayout extends LinearLayout {
             }
 
             mScroller.fling(
-                    0, mLogicalOffsetTop, // curr
+                    0, getTopBottomOffsetForScrollingSibling(), // curr
                     0, Math.round(velocityY), // velocity.
                     0, 0, // x
                     minOffset, maxOffset); // y
@@ -758,12 +766,24 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout child,
+        public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout appBarLayout,
                 int layoutDirection) {
-            boolean handled = super.onLayoutChild(parent, child, layoutDirection);
+            boolean handled = super.onLayoutChild(parent, appBarLayout, layoutDirection);
+
+            if (mOffsetToChildIndexOnLayout >= 0) {
+                View child = appBarLayout.getChildAt(mOffsetToChildIndexOnLayout);
+                int offset = -child.getBottom();
+                if (mOffsetToChildIndexOnLayoutIsMinHeight) {
+                    offset += ViewCompat.getMinimumHeight(child);
+                } else {
+                    offset += Math.round(child.getHeight() * mOffsetToChildIndexOnLayoutPerc);
+                }
+                setTopAndBottomOffset(offset);
+                mOffsetToChildIndexOnLayout = INVALID_POSITION;
+            }
 
             // Make sure we update the elevation
-            dispatchOffsetUpdates(child);
+            dispatchOffsetUpdates(appBarLayout);
 
             return handled;
         }
@@ -771,7 +791,7 @@ public class AppBarLayout extends LinearLayout {
         private int scroll(CoordinatorLayout coordinatorLayout, AppBarLayout appBarLayout,
                 int dy, int minOffset, int maxOffset) {
             return setAppBarTopBottomOffset(coordinatorLayout, appBarLayout,
-                    mLogicalOffsetTop - dy, minOffset, maxOffset);
+                    getTopBottomOffsetForScrollingSibling() - dy, minOffset, maxOffset);
         }
 
         final int setAppBarTopBottomOffset(CoordinatorLayout coordinatorLayout,
@@ -782,7 +802,7 @@ public class AppBarLayout extends LinearLayout {
 
         final int setAppBarTopBottomOffset(CoordinatorLayout coordinatorLayout,
                 AppBarLayout appBarLayout, int newOffset, int minOffset, int maxOffset) {
-            final int curOffset = mLogicalOffsetTop;
+            final int curOffset = getTopBottomOffsetForScrollingSibling();
             int consumed = 0;
 
             if (minOffset != 0 && curOffset >= minOffset && curOffset <= maxOffset) {
@@ -791,15 +811,16 @@ public class AppBarLayout extends LinearLayout {
                 newOffset = MathUtils.constrain(newOffset, minOffset, maxOffset);
 
                 if (curOffset != newOffset) {
-                    boolean offsetChanged = setTopAndBottomOffset(
-                            appBarLayout.hasChildWithInterpolator()
-                                    ? interpolateOffset(appBarLayout, newOffset)
-                                    : newOffset);
+                    final int interpolatedOffset = appBarLayout.hasChildWithInterpolator()
+                            ? interpolateOffset(appBarLayout, newOffset)
+                            : newOffset;
+
+                    boolean offsetChanged = setTopAndBottomOffset(interpolatedOffset);
 
                     // Update how much dy we have consumed
                     consumed = curOffset - newOffset;
                     // Update the stored sibling offset
-                    mLogicalOffsetTop = newOffset;
+                    mOffsetDelta = newOffset - interpolatedOffset;
 
                     if (!offsetChanged && appBarLayout.hasChildWithInterpolator()) {
                         // If the offset hasn't changed and we're using an interpolated scroll
@@ -873,7 +894,84 @@ public class AppBarLayout extends LinearLayout {
         }
 
         final int getTopBottomOffsetForScrollingSibling() {
-            return mLogicalOffsetTop;
+            return getTopAndBottomOffset() + mOffsetDelta;
+        }
+
+        @Override
+        public Parcelable onSaveInstanceState(CoordinatorLayout parent, AppBarLayout appBarLayout) {
+            final Parcelable superState = super.onSaveInstanceState(parent, appBarLayout);
+            final int offset = getTopAndBottomOffset();
+
+            // Try and find the first visible child...
+            for (int i = 0, count = appBarLayout.getChildCount(); i < count; i++) {
+                View child = appBarLayout.getChildAt(i);
+                final int visBottom = child.getBottom() + offset;
+
+                if (child.getTop() + offset <= 0 && visBottom >= 0) {
+                    final SavedState ss = new SavedState(superState);
+                    ss.firstVisibleChildIndex = i;
+                    ss.firstVisibileChildAtMinimumHeight =
+                            visBottom == ViewCompat.getMinimumHeight(child);
+                    ss.firstVisibileChildPercentageShown = visBottom / (float) child.getHeight();
+                    return ss;
+                }
+            }
+
+            // Else we'll just return the super state
+            return superState;
+        }
+
+        @Override
+        public void onRestoreInstanceState(CoordinatorLayout parent, AppBarLayout appBarLayout,
+                Parcelable state) {
+            if (state instanceof SavedState) {
+                final SavedState ss = (SavedState) state;
+                super.onRestoreInstanceState(parent, appBarLayout, ss.getSuperState());
+                mOffsetToChildIndexOnLayout = ss.firstVisibleChildIndex;
+                mOffsetToChildIndexOnLayoutPerc = ss.firstVisibileChildPercentageShown;
+                mOffsetToChildIndexOnLayoutIsMinHeight = ss.firstVisibileChildAtMinimumHeight;
+            } else {
+                super.onRestoreInstanceState(parent, appBarLayout, state);
+                mOffsetToChildIndexOnLayout = INVALID_POSITION;
+            }
+        }
+
+        protected static class SavedState extends View.BaseSavedState {
+            int firstVisibleChildIndex;
+            float firstVisibileChildPercentageShown;
+            boolean firstVisibileChildAtMinimumHeight;
+
+            public SavedState(Parcel source) {
+                super(source);
+                firstVisibleChildIndex = source.readInt();
+                firstVisibileChildPercentageShown = source.readFloat();
+                firstVisibileChildAtMinimumHeight = source.readByte() != 0;
+            }
+
+            public SavedState(Parcelable superState) {
+                super(superState);
+            }
+
+            @Override
+            public void writeToParcel(Parcel dest, int flags) {
+                super.writeToParcel(dest, flags);
+                dest.writeInt(firstVisibleChildIndex);
+                dest.writeFloat(firstVisibileChildPercentageShown);
+                dest.writeByte((byte) (firstVisibileChildAtMinimumHeight ? 1 : 0));
+            }
+
+            public static final Parcelable.Creator<SavedState> CREATOR =
+                    new Parcelable.Creator<SavedState>() {
+                        @Override
+                        public SavedState createFromParcel(Parcel source) {
+                            return new SavedState(source);
+                        }
+
+                        @Override
+                        public SavedState[] newArray(int size) {
+                            return new SavedState[size];
+                        }
+                    };
         }
     }
 

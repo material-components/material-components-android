@@ -17,7 +17,6 @@
 package android.support.design.widget;
 
 import android.content.Context;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -27,6 +26,9 @@ import android.view.View;
 class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
     private ViewOffsetHelper mViewOffsetHelper;
+
+    private int mTempTopBottomOffset = 0;
+    private int mTempLeftRightOffset = 0;
 
     public ViewOffsetBehavior() {}
 
@@ -44,12 +46,23 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
         }
         mViewOffsetHelper.onViewLayout();
 
+        if (mTempTopBottomOffset != 0) {
+            mViewOffsetHelper.setTopAndBottomOffset(mTempTopBottomOffset);
+            mTempTopBottomOffset = 0;
+        }
+        if (mTempLeftRightOffset != 0) {
+            mViewOffsetHelper.setLeftAndRightOffset(mTempLeftRightOffset);
+            mTempLeftRightOffset = 0;
+        }
+
         return true;
     }
 
     public boolean setTopAndBottomOffset(int offset) {
         if (mViewOffsetHelper != null) {
             return mViewOffsetHelper.setTopAndBottomOffset(offset);
+        } else {
+            mTempTopBottomOffset = offset;
         }
         return false;
     }
@@ -57,6 +70,8 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
     public boolean setLeftAndRightOffset(int offset) {
         if (mViewOffsetHelper != null) {
             return mViewOffsetHelper.setLeftAndRightOffset(offset);
+        } else {
+            mTempLeftRightOffset = offset;
         }
         return false;
     }
