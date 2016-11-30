@@ -37,6 +37,7 @@ import android.support.design.internal.ScrimInsetsFrameLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -449,11 +450,11 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      * User interface state that is stored by NavigationView for implementing
      * onSaveInstanceState().
      */
-    public static class SavedState extends BaseSavedState {
+    public static class SavedState extends AbsSavedState {
         public Bundle menuState;
 
         public SavedState(Parcel in, ClassLoader loader) {
-            super(in);
+            super(in, loader);
             menuState = in.readBundle(loader);
         }
 

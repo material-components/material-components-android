@@ -37,6 +37,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingParent;
@@ -2658,11 +2659,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return ss;
     }
 
-    protected static class SavedState extends BaseSavedState {
+    protected static class SavedState extends AbsSavedState {
         SparseArray<Parcelable> behaviorStates;
 
         public SavedState(Parcel source, ClassLoader loader) {
-            super(source);
+            super(source, loader);
 
             final int size = source.readInt();
 

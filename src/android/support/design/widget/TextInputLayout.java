@@ -35,6 +35,9 @@ import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableWrapper;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -55,7 +58,6 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 /**
  * Layout which wraps an {@link android.widget.EditText} (or descendant) to show a floating label
@@ -790,15 +792,15 @@ public class TextInputLayout extends LinearLayout {
         }
     }
 
-    static class SavedState extends BaseSavedState {
+    static class SavedState extends AbsSavedState {
         CharSequence error;
 
         SavedState(Parcelable superState) {
             super(superState);
         }
 
-        public SavedState(Parcel source) {
-            super(source);
+        public SavedState(Parcel source, ClassLoader loader) {
+            super(source, loader);
             error = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
 
         }
@@ -816,16 +818,18 @@ public class TextInputLayout extends LinearLayout {
                     + " error=" + error + "}";
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR
-                = new Parcelable.Creator<SavedState>() {
-            public SavedState createFromParcel(Parcel in) {
-                return new SavedState(in);
-            }
+        public static final Creator<SavedState> CREATOR = ParcelableCompat.newCreator(
+                new ParcelableCompatCreatorCallbacks<SavedState>() {
+                    @Override
+                    public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+                        return new SavedState(in, loader);
+                    }
 
-            public SavedState[] newArray(int size) {
-                return new SavedState[size];
-            }
-        };
+                    @Override
+                    public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                    }
+                });
     }
 
     @Override

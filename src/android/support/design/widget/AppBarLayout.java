@@ -27,6 +27,7 @@ import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
@@ -1270,13 +1271,13 @@ public class AppBarLayout extends LinearLayout {
             }
         }
 
-        protected static class SavedState extends BaseSavedState {
+        protected static class SavedState extends AbsSavedState {
             int firstVisibleChildIndex;
             float firstVisibileChildPercentageShown;
             boolean firstVisibileChildAtMinimumHeight;
 
             public SavedState(Parcel source, ClassLoader loader) {
-                super(source);
+                super(source, loader);
                 firstVisibleChildIndex = source.readInt();
                 firstVisibileChildPercentageShown = source.readFloat();
                 firstVisibileChildAtMinimumHeight = source.readByte() != 0;

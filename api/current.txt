@@ -32,7 +32,7 @@ package android.support.design.widget {
     method public abstract boolean canDrag(android.support.design.widget.AppBarLayout);
   }
 
-  protected static class AppBarLayout.Behavior.SavedState extends android.view.View.BaseSavedState {
+  protected static class AppBarLayout.Behavior.SavedState extends android.support.v4.view.AbsSavedState {
     ctor public AppBarLayout.Behavior.SavedState(android.os.Parcel, java.lang.ClassLoader);
     ctor public AppBarLayout.Behavior.SavedState(android.os.Parcelable);
     field public static final android.os.Parcelable.Creator<android.support.design.widget.AppBarLayout.Behavior.SavedState> CREATOR;
@@ -92,8 +92,9 @@ package android.support.design.widget {
     method public abstract void onStateChanged(android.view.View, int);
   }
 
-  protected static class BottomSheetBehavior.SavedState extends android.view.View.BaseSavedState {
+  protected static class BottomSheetBehavior.SavedState extends android.support.v4.view.AbsSavedState {
     ctor public BottomSheetBehavior.SavedState(android.os.Parcel);
+    ctor public BottomSheetBehavior.SavedState(android.os.Parcel, java.lang.ClassLoader);
     ctor public BottomSheetBehavior.SavedState(android.os.Parcelable, int);
     field public static final android.os.Parcelable.Creator<android.support.design.widget.BottomSheetBehavior.SavedState> CREATOR;
   }
@@ -234,7 +235,7 @@ package android.support.design.widget {
     field public int keyline;
   }
 
-  protected static class CoordinatorLayout.SavedState extends android.view.View.BaseSavedState {
+  protected static class CoordinatorLayout.SavedState extends android.support.v4.view.AbsSavedState {
     ctor public CoordinatorLayout.SavedState(android.os.Parcel, java.lang.ClassLoader);
     ctor public CoordinatorLayout.SavedState(android.os.Parcelable);
     field public static final android.os.Parcelable.Creator<android.support.design.widget.CoordinatorLayout.SavedState> CREATOR;
@@ -318,7 +319,7 @@ package android.support.design.widget {
     method public abstract boolean onNavigationItemSelected(android.view.MenuItem);
   }
 
-  public static class NavigationView.SavedState extends android.view.View.BaseSavedState {
+  public static class NavigationView.SavedState extends android.support.v4.view.AbsSavedState {
     ctor public NavigationView.SavedState(android.os.Parcel, java.lang.ClassLoader);
     ctor public NavigationView.SavedState(android.os.Parcelable);
     field public static final android.os.Parcelable.Creator<android.support.design.widget.NavigationView.SavedState> CREATOR;
