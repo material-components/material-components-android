@@ -56,15 +56,26 @@ import android.widget.TextView;
 public class TextInputLayout extends LinearLayout {
 
     private static final int ANIMATION_DURATION = 200;
+    private static final int INVALID_MAX_LENGTH = -1;
 
     private EditText mEditText;
     private CharSequence mHint;
 
     private Paint mTmpPaint;
 
+    private LinearLayout mIndicatorArea;
+
     private boolean mErrorEnabled;
     private TextView mErrorView;
     private int mErrorTextAppearance;
+    private boolean mErrorShown;
+
+    private boolean mCounterEnabled;
+    private TextView mCounterView;
+    private int mCounterMaxLength;
+    private int mCounterTextAppearance;
+    private int mCounterOverflowTextAppearance;
+    private boolean mCounterOverflowed;
 
     private ColorStateList mDefaultTextColor;
     private ColorStateList mFocusedTextColor;
@@ -116,9 +127,19 @@ public class TextInputLayout extends LinearLayout {
 
         mErrorTextAppearance = a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
         final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
+
+        final boolean counterEnabled = a.getBoolean(
+                R.styleable.TextInputLayout_counterEnabled, false);
+        setCounterMaxLength(
+                a.getInt(R.styleable.TextInputLayout_counterMaxLength, INVALID_MAX_LENGTH));
+        mCounterTextAppearance = a.getResourceId(
+                R.styleable.TextInputLayout_counterTextAppearance, 0);
+        mCounterOverflowTextAppearance = a.getResourceId(
+                R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
         a.recycle();
 
         setErrorEnabled(errorEnabled);
+        setCounterEnabled(counterEnabled);
 
         if (ViewCompat.getImportantForAccessibility(this)
                 == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
@@ -167,6 +188,9 @@ public class TextInputLayout extends LinearLayout {
             @Override
             public void afterTextChanged(Editable s) {
                 updateLabelVisibility(true);
+                if (mCounterEnabled) {
+                    updateCounter(s.length());
+                }
             }
 
             @Override
@@ -188,10 +212,12 @@ public class TextInputLayout extends LinearLayout {
             mEditText.setHint(null);
         }
 
-        if (mErrorView != null) {
-            // Add some start/end padding to the error so that it matches the EditText
-            ViewCompat.setPaddingRelative(mErrorView, ViewCompat.getPaddingStart(mEditText),
-                    0, ViewCompat.getPaddingEnd(mEditText), mEditText.getPaddingBottom());
+        if (mCounterView != null) {
+            updateCounter(mEditText.getText().length());
+        }
+
+        if (mIndicatorArea != null) {
+            adjustIndicatorPadding();
         }
 
         // Update the label visibility with no animation
@@ -284,6 +310,31 @@ public class TextInputLayout extends LinearLayout {
         }
     }
 
+    private void addIndicator(TextView indicator, int index, LinearLayout.LayoutParams params) {
+        if (mIndicatorArea == null) {
+            mIndicatorArea = new LinearLayout(getContext());
+            mIndicatorArea.setOrientation(LinearLayout.HORIZONTAL);
+            addView(mIndicatorArea);
+            if (mEditText != null) {
+                adjustIndicatorPadding();
+            }
+        }
+        mIndicatorArea.addView(indicator, index, params);
+    }
+
+    private void adjustIndicatorPadding() {
+        // Add padding to the error and character counter so that they match the EditText
+        ViewCompat.setPaddingRelative(mIndicatorArea, ViewCompat.getPaddingStart(mEditText),
+                0, ViewCompat.getPaddingEnd(mEditText), mEditText.getPaddingBottom());
+    }
+
+    private void removeIndicator(TextView indicator) {
+        mIndicatorArea.removeView(indicator);
+        if (mIndicatorArea.getChildCount() == 0) {
+            removeView(mIndicatorArea);
+        }
+    }
+
     /**
      * Whether the error functionality is enabled or not in this layout. Enabling this
      * functionality before setting an error message via {@link #setError(CharSequence)}, will mean
@@ -301,16 +352,14 @@ public class TextInputLayout extends LinearLayout {
                 mErrorView = new TextView(getContext());
                 mErrorView.setTextAppearance(getContext(), mErrorTextAppearance);
                 mErrorView.setVisibility(INVISIBLE);
-                addView(mErrorView);
-
-                if (mEditText != null) {
-                    // Add some start/end padding to the error so that it matches the EditText
-                    ViewCompat.setPaddingRelative(mErrorView, ViewCompat.getPaddingStart(mEditText),
-                            0, ViewCompat.getPaddingEnd(mEditText), mEditText.getPaddingBottom());
-                }
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        0, LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.weight = 1.f;
+                addIndicator(mErrorView, 0, params);
             } else {
-                updateEditTextBackground(false);
-                removeView(mErrorView);
+                mErrorShown = false;
+                updateEditTextBackground();
+                removeIndicator(mErrorView);
                 mErrorView = null;
             }
             mErrorEnabled = enabled;
@@ -365,7 +414,8 @@ public class TextInputLayout extends LinearLayout {
                     .start();
 
             // Set the EditText's background tint to the error color
-            updateEditTextBackground(true);
+            mErrorShown = true;
+            updateEditTextBackground();
             updateLabelVisibility(true);
         } else {
             if (mErrorView.getVisibility() == VISIBLE) {
@@ -383,18 +433,96 @@ public class TextInputLayout extends LinearLayout {
                         }).start();
 
                 // Restore the 'original' tint, using colorControlNormal and colorControlActivated
-                updateEditTextBackground(false);
+                mErrorShown = false;
+                updateEditTextBackground();
             }
         }
 
         sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
     }
 
-    private void updateEditTextBackground(boolean errorShown) {
-        if (errorShown && mErrorView != null) {
+    /**
+     * Whether the character counter functionality is enabled or not in this layout.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_counterEnabled
+     */
+    public void setCounterEnabled(boolean enabled) {
+        if (mCounterEnabled != enabled) {
+            if (enabled) {
+                mCounterView = new TextView(getContext());
+                mCounterView.setMaxLines(1);
+                mCounterView.setTextAppearance(getContext(), mCounterTextAppearance);
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
+                        LinearLayout.LayoutParams.WRAP_CONTENT,
+                        LinearLayout.LayoutParams.WRAP_CONTENT);
+                params.gravity = (params.gravity & Gravity.VERTICAL_GRAVITY_MASK) |
+                        GravityCompat.END;
+                addIndicator(mCounterView, -1, params);
+                if (mEditText == null) {
+                    updateCounter(0);
+                } else {
+                    updateCounter(mEditText.getText().length());
+                }
+            } else {
+                removeIndicator(mCounterView);
+                mCounterView = null;
+            }
+            mCounterEnabled = enabled;
+        }
+    }
+
+    /**
+     * Sets the max length to display at the character counter.
+     *
+     * @param maxLength maxLength to display. Any value less than or equal to 0 will not be shown.
+     */
+    public void setCounterMaxLength(int maxLength) {
+        if (mCounterMaxLength != maxLength) {
+            if (maxLength > 0) {
+                mCounterMaxLength = maxLength;
+            } else {
+                mCounterMaxLength = INVALID_MAX_LENGTH;
+            }
+            if (mCounterEnabled) {
+                updateCounter(mEditText == null ? 0 : mEditText.getText().length());
+            }
+        }
+    }
+
+    /**
+     * Returns the max length shown at the character counter.
+     */
+    public int getCounterMaxLength() {
+        return mCounterMaxLength;
+    }
+
+    private void updateCounter(int length) {
+        boolean wasCounterOverflowed = mCounterOverflowed;
+        if (mCounterMaxLength == INVALID_MAX_LENGTH) {
+            mCounterView.setText(String.valueOf(length));
+            mCounterOverflowed = false;
+        } else {
+            mCounterOverflowed = length > mCounterMaxLength;
+            if (wasCounterOverflowed != mCounterOverflowed) {
+                mCounterView.setTextAppearance(getContext(), mCounterOverflowed ?
+                        mCounterOverflowTextAppearance : mCounterTextAppearance);
+            }
+            mCounterView.setText(getContext().getString(R.string.character_counter_pattern,
+                    length, mCounterMaxLength));
+        }
+        if (mEditText != null && wasCounterOverflowed != mCounterOverflowed) {
+            updateEditTextBackground();
+        }
+    }
+
+    private void updateEditTextBackground() {
+        if (mErrorShown && mErrorView != null) {
             // Set the EditText's background tint to the error color
             ViewCompat.setBackgroundTintList(mEditText,
                     ColorStateList.valueOf(mErrorView.getCurrentTextColor()));
+        } else if (mCounterOverflowed && mCounterView != null) {
+            ViewCompat.setBackgroundTintList(mEditText,
+                    ColorStateList.valueOf(mCounterView.getCurrentTextColor()));
         } else {
             final TintManager tintManager = TintManager.get(getContext());
             ViewCompat.setBackgroundTintList(mEditText,

@@ -371,6 +371,9 @@ package android.support.design.widget {
     method public boolean isHintAnimationEnabled();
     method public void setError(java.lang.CharSequence);
     method public void setErrorEnabled(boolean);
+    method public void setCounterEnabled(boolean);
+    method public void setCounterMaxLength(int);
+    method public int getCounterMaxLength();
     method public void setHint(java.lang.CharSequence);
     method public void setHintAnimationEnabled(boolean);
     method public void setHintTextAppearance(int);
