@@ -16,11 +16,8 @@
 
 package android.support.design.internal;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.v4.util.Pools;
@@ -172,27 +169,12 @@ public class BottomNavigationMenuView extends LinearLayout implements MenuView {
 
     private void activateNewButton(int newButton) {
         if (mActiveButton == newButton) return;
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
-            AnimatorSet animatorSet = new AnimatorSet();
-            Animator animatorUnfocus = mButtons[mActiveButton].getAnimator(false);
-            Animator animatorFocus = mButtons[newButton].getAnimator(true);
-            if (animatorUnfocus != null) {
-                animatorSet.play(animatorUnfocus);
-            }
-            if (animatorFocus != null) {
-                animatorSet.play(animatorFocus);
-            }
-            animatorSet.start();
-        }
+
         mPresenter.setUpdateSuspended(true);
         mButtons[mActiveButton].setChecked(false);
         mButtons[newButton].setChecked(true);
         mPresenter.setUpdateSuspended(false);
 
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.HONEYCOMB) {
-            // Manually force UI update since we cannot use animations.
-            mPresenter.updateMenuView(true);
-        }
         mActiveButton = newButton;
     }
 

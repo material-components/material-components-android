@@ -19,12 +19,16 @@
         android:id="@+id/icon"
         android:layout_width="24dp"
         android:layout_height="24dp"
+        android:layout_gravity="center_horizontal"
+        android:layout_marginTop="@dimen/design_bottom_navigation_margin"
         android:duplicateParentState="true" />
     <TextView
         android:id="@+id/label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
+        android:layout_gravity="bottom"
         android:textSize="@dimen/design_bottom_navigation_text_size"
-        android:gravity="center"
+        android:gravity="center_horizontal"
         android:duplicateParentState="true" />
 </merge>

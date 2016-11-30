@@ -16,9 +16,6 @@
 
 package android.support.design.internal;
 
-import android.animation.Animator;
-import android.animation.AnimatorSet;
-import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -33,24 +30,24 @@ import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.ViewPropertyAnimator;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 /**
  * @hide
  */
-public class BottomNavigationItemView extends ForegroundLinearLayout implements MenuView.ItemView {
+public class BottomNavigationItemView extends FrameLayout implements MenuView.ItemView {
     public static final int INVALID_ITEM_POSTION = -1;
 
     private static final int[] CHECKED_STATE_SET = { android.R.attr.state_checked };
     private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
 
-    private final int mHorizontalPadding;
-    private final int mBottomPadding;
-    private final int mTopPadding;
-    private final int mActiveTopPadding;
+    private final float mShiftAmount;
+    private final float mScaleUpFactor;
+    private final float mScaleDownFactor;
     private final float mInactiveLabelSize;
     private final float mActiveLabelSize;
 
@@ -61,7 +58,6 @@ public class BottomNavigationItemView extends ForegroundLinearLayout implements 
     private MenuItemImpl mItemData;
 
     private ColorStateList mIconTint;
-    private ColorStateList mTextColor;
 
     public BottomNavigationItemView(@NonNull Context context) {
         this(context, null);
@@ -73,21 +69,14 @@ public class BottomNavigationItemView extends ForegroundLinearLayout implements 
 
     public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mHorizontalPadding = getResources().getDimensionPixelSize(
-                R.dimen.design_bottom_navigation_horizontal_padding);
-        mBottomPadding = getResources().getDimensionPixelSize(
-                R.dimen.design_bottom_navigation_bottom_padding);
-        mTopPadding = getResources().getDimensionPixelSize(
-                R.dimen.design_bottom_navigation_top_padding);
-        mActiveTopPadding = getResources().getDimensionPixelSize(
-                R.dimen.design_bottom_navigation_active_top_padding);
         mInactiveLabelSize =
                 getResources().getDimension(R.dimen.design_bottom_navigation_text_size);
         mActiveLabelSize =
                 getResources().getDimension(R.dimen.design_bottom_navigation_active_text_size);
+        mShiftAmount = mInactiveLabelSize - mActiveLabelSize;
+        mScaleUpFactor = mActiveLabelSize / mInactiveLabelSize;
+        mScaleDownFactor = mInactiveLabelSize / mActiveLabelSize;
 
-        setOrientation(VERTICAL);
-        setGravity(Gravity.CENTER);
         LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
         setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
         mIcon = (ImageView) findViewById(R.id.icon);
@@ -98,7 +87,7 @@ public class BottomNavigationItemView extends ForegroundLinearLayout implements 
     public void initialize(MenuItemImpl itemData, int menuType) {
         mItemData = itemData;
         setCheckable(itemData.isCheckable());
-        setChecked(itemData.isChecked());
+        setChecked(itemData.isChecked(), false);
         setEnabled(itemData.isEnabled());
         setIcon(itemData.getIcon());
         setTitle(itemData.getTitle());
@@ -130,14 +119,22 @@ public class BottomNavigationItemView extends ForegroundLinearLayout implements 
 
     @Override
     public void setChecked(boolean checked) {
+        setChecked(checked, true);
+    }
+
+    public void setChecked(boolean checked, boolean animate) {
         mItemData.setChecked(checked);
-        if (checked) {
-            mLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, mActiveLabelSize);
-            setPadding(mHorizontalPadding, mActiveTopPadding, mHorizontalPadding, mBottomPadding);
-        } else {
-            mLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, mInactiveLabelSize);
-            setPadding(mHorizontalPadding, mTopPadding, mHorizontalPadding, mBottomPadding);
+
+        mLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX,
+                checked ? mActiveLabelSize : mInactiveLabelSize);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB_MR1) {
+            if (animate) {
+                animate(checked);
+            } else {
+                mIcon.setTranslationY(checked ? mShiftAmount : 0f);
+            }
         }
+
         refreshDrawableState();
     }
 
@@ -190,7 +187,6 @@ public class BottomNavigationItemView extends ForegroundLinearLayout implements 
     }
 
     public void setTextColor(ColorStateList color) {
-        mTextColor = color;
         mLabel.setTextColor(color);
     }
 
@@ -200,45 +196,25 @@ public class BottomNavigationItemView extends ForegroundLinearLayout implements 
         setBackgroundDrawable(backgroundDrawable);
     }
 
-    @TargetApi(Build.VERSION_CODES.HONEYCOMB)
-    public Animator getAnimator(boolean active) {
-        final float currentTextSize = mLabel.getTextSize();
-        final int currentTopPadding = getPaddingTop();
-
-        final float finalTextSize = active ? mActiveLabelSize : mInactiveLabelSize;
-        final int finalTopPadding = active ? mActiveTopPadding : mTopPadding;
-
-        if (currentTextSize == finalTextSize && currentTopPadding == finalTopPadding) {
-            return null;
-        }
+    @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)
+    private void animate(final boolean active) {
+        final float startingTextScale = active ? mScaleDownFactor : mScaleUpFactor;
 
         // Grow or shrink the text of the tab.
-        ValueAnimator textAnimator = ValueAnimator.ofFloat(currentTextSize, finalTextSize);
-        textAnimator.setDuration(ACTIVE_ANIMATION_DURATION_MS);
-        textAnimator.setInterpolator(new LinearOutSlowInInterpolator());
-        textAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                float animatedValue = (float) valueAnimator.getAnimatedValue();
-                mLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, animatedValue);
-            }
-        });
+        mLabel.setScaleX(startingTextScale);
+        mLabel.setScaleY(startingTextScale);
+        ViewPropertyAnimator textAnimator = mLabel.animate()
+                .setDuration(ACTIVE_ANIMATION_DURATION_MS)
+                .setInterpolator(new LinearOutSlowInInterpolator())
+                .scaleX(1f)
+                .scaleY(1f);
 
-        // Reduce or increase the padding top of the tab.
-        ValueAnimator paddingTopAnimator = ValueAnimator.ofInt(currentTopPadding, finalTopPadding);
-        paddingTopAnimator.setDuration(ACTIVE_ANIMATION_DURATION_MS);
-        paddingTopAnimator.setInterpolator(new LinearOutSlowInInterpolator());
-        paddingTopAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator valueAnimator) {
-                int animatedValue = (int) valueAnimator.getAnimatedValue();
-                setPadding(mHorizontalPadding, animatedValue,
-                        mHorizontalPadding, mBottomPadding);
-            }
-        });
+        ViewPropertyAnimator translationAnimation = mIcon.animate()
+                .setDuration(ACTIVE_ANIMATION_DURATION_MS)
+                .setInterpolator(new LinearOutSlowInInterpolator())
+                .translationY(active ? mShiftAmount : 0);
 
-        AnimatorSet set = new AnimatorSet();
-        set.playTogether(textAnimator, paddingTopAnimator);
-        return set;
+        textAnimator.start();
+        translationAnimation.start();
     }
 }
