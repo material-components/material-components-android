@@ -22,4 +22,5 @@
         android:paddingBottom="@dimen/design_navigation_padding_bottom"
         android:clipToPadding="false"
         android:divider="@null"
+        android:scrollbars="vertical"
         android:listSelector="?attr/selectableItemBackground"/>
