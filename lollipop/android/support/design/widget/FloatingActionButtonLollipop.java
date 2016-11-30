@@ -86,34 +86,37 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
         // Animate elevation and translationZ to our values when pressed
         AnimatorSet set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0));
-        set.play(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, pressedTranslationZ)
-                .setDuration(PRESSED_ANIM_DURATION));
+        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0))
+                .with(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, pressedTranslationZ)
+                        .setDuration(PRESSED_ANIM_DURATION));
         set.setInterpolator(ANIM_INTERPOLATOR);
         stateListAnimator.addState(PRESSED_ENABLED_STATE_SET, set);
 
         // Same deal for when we're focused
         set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0));
-        set.play(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, pressedTranslationZ)
-                .setDuration(PRESSED_ANIM_DURATION));
+        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0))
+                .with(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, pressedTranslationZ)
+                        .setDuration(PRESSED_ANIM_DURATION));
         set.setInterpolator(ANIM_INTERPOLATOR);
         stateListAnimator.addState(FOCUSED_ENABLED_STATE_SET, set);
 
         // Animate translationZ to 0 if not pressed
         set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0));
-        Animator anim = ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f);
-        anim.setDuration(PRESSED_ANIM_DURATION);
-        anim.setStartDelay(PRESSED_ANIM_DELAY);
-        set.play(anim);
+        // Use an AnimatorSet to set a start delay since there is a bug with ValueAnimator that
+        // prevents it from being cancelled properly when used with a StateListAnimator.
+        AnimatorSet anim = new AnimatorSet();
+        anim.play(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f)
+                        .setDuration(PRESSED_ANIM_DURATION))
+                .after(PRESSED_ANIM_DURATION);
+        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0))
+                .with(anim);
         set.setInterpolator(ANIM_INTERPOLATOR);
         stateListAnimator.addState(ENABLED_STATE_SET, set);
 
         // Animate everything to 0 when disabled
         set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(mView, "elevation", 0f).setDuration(0));
-        set.play(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f).setDuration(0));
+        set.play(ObjectAnimator.ofFloat(mView, "elevation", 0f).setDuration(0))
+                .with(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f).setDuration(0));
         set.setInterpolator(ANIM_INTERPOLATOR);
         stateListAnimator.addState(EMPTY_STATE_SET, set);
 
