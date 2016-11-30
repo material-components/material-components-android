@@ -187,6 +187,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
         // First let the parent lay it out
         if (mState != STATE_DRAGGING && mState != STATE_SETTLING) {
+            if (ViewCompat.getFitsSystemWindows(parent) &&
+                    !ViewCompat.getFitsSystemWindows(child)) {
+                ViewCompat.setFitsSystemWindows(child, true);
+            }
             parent.onLayoutChild(child, layoutDirection);
         }
         // Offset the bottom sheet
