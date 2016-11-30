@@ -18,17 +18,9 @@ package android.support.design.widget;
 
 import android.support.design.test.R;
 
-public class SnackbarBucketTestsActivity extends BaseTestActivity {
-
-    CoordinatorLayout mCoordinatorLayout;
-
+public class SnackbarActivity extends BaseTestActivity {
     @Override
     protected int getContentViewLayoutResId() {
         return R.layout.test_design_snackbar;
-    }
-
-    @Override
-    protected void onContentViewSet() {
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.col);
     }
 }

@@ -32,7 +32,7 @@
 
         <activity
                 android:theme="@style/Theme.AppCompat.NoActionBar"
-                android:name="android.support.design.widget.SnackbarBucketTestsActivity"/>
+                android:name="android.support.design.widget.SnackbarActivity"/>
 
         <activity
                 android:theme="@style/Theme.AppCompat.NoActionBar"
