@@ -77,6 +77,16 @@ import android.widget.TextView;
  * {@link #setError(CharSequence)}, and a character counter via
  * {@link #setCounterEnabled(boolean)}.</p>
  *
+ * <p>Password visibility toggling is also supported via the
+ * {@link #setPasswordVisibilityToggleEnabled(boolean)} API and related attribute.
+ * If enabled, a button is displayed to toggle between the password being displayed as plain-text
+ * or disguised, when your EditText is set to display a password.</p>
+ *
+ * <p><strong>Note:</strong> When using the password toggle functionality, the 'end' compound
+ * drawable of the EditText will be overridden while the toggle is enabled. To ensure that any
+ * existing drawables are restored correctly, you should set those compound drawables relatively
+ * (start/end), opposed to absolutely (left/right).</p>
+ *
  * The {@link TextInputEditText} class is provided to be used as a child of this layout. Using
  * TextInputEditText allows TextInputLayout greater control over the visual aspects of any
  * text input. An example usage is as so:
@@ -219,7 +229,7 @@ public class TextInputLayout extends LinearLayout {
                 R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
 
         mPasswordToggleEnabled = a.getBoolean(
-                R.styleable.TextInputLayout_passwordToggleEnabled, true);
+                R.styleable.TextInputLayout_passwordToggleEnabled, false);
         mPasswordToggleDrawable = a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable);
         mPasswordToggleContentDesc = a.getText(
                 R.styleable.TextInputLayout_passwordToggleContentDescription);
@@ -1041,11 +1051,15 @@ public class TextInputLayout extends LinearLayout {
                 mPasswordToggleView.setVisibility(View.GONE);
             }
 
-            // Make sure that we remove the dummy end compound drawable
-            final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(mEditText);
-            if (compounds[2] == mPasswordToggleDummyDrawable) {
-                TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0], compounds[1],
-                        mOriginalEditTextEndDrawable, compounds[3]);
+            if (mPasswordToggleDummyDrawable != null) {
+                // Make sure that we remove the dummy end compound drawable if it exists, and then
+                // clear it
+                final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(mEditText);
+                if (compounds[2] == mPasswordToggleDummyDrawable) {
+                    TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0],
+                            compounds[1], mOriginalEditTextEndDrawable, compounds[3]);
+                    mPasswordToggleDummyDrawable = null;
+                }
             }
         }
     }
