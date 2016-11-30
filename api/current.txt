@@ -258,6 +258,8 @@ package android.support.design.widget {
     ctor public NavigationView(android.content.Context, android.util.AttributeSet);
     ctor public NavigationView(android.content.Context, android.util.AttributeSet, int);
     method public void addHeaderView(android.view.View);
+    method public int getHeaderCount();
+    method public android.view.View getHeaderView(int);
     method public android.graphics.drawable.Drawable getItemBackground();
     method public android.content.res.ColorStateList getItemIconTintList();
     method public android.content.res.ColorStateList getItemTextColor();

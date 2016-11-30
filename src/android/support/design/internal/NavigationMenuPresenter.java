@@ -205,6 +205,14 @@ public class NavigationMenuPresenter implements MenuPresenter {
         }
     }
 
+    public int getHeaderCount() {
+        return mHeaderLayout.getChildCount();
+    }
+
+    public View getHeaderView(int index) {
+        return mHeaderLayout.getChildAt(index);
+    }
+
     @Nullable
     public ColorStateList getItemTintList() {
         return mIconTintList;

@@ -269,6 +269,26 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     /**
+     * Gets the number of headers in this NavigationView.
+     *
+     * @return A positive integer representing the number of headers.
+     */
+    public int getHeaderCount() {
+        return mPresenter.getHeaderCount();
+    }
+
+    /**
+     * Gets the header view at the specified position.
+     *
+     * @param index The position at which to get the view from.
+     * @return The header view the specified position or null if the position does not exist in this
+     * NavigationView.
+     */
+    public View getHeaderView(int index) {
+        return mPresenter.getHeaderView(index);
+    }
+
+    /**
      * Returns the tint which is applied to our item's icons.
      *
      * @see #setItemIconTintList(ColorStateList)
