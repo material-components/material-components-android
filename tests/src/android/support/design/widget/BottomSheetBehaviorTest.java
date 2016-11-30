@@ -306,6 +306,41 @@ public class BottomSheetBehaviorTest extends
         }
     }
 
+    public void testDragOutside() {
+        // Swipe up outside of the bottom sheet
+        Espresso.onView(ViewMatchers.withId(R.id.coordinator))
+                .perform(DesignViewActions.withCustomConstraints(
+                        new GeneralSwipeAction(Swipe.FAST,
+                                // Just above the bottom sheet
+                                new CoordinatesProvider() {
+                                    @Override
+                                    public float[] calculateCoordinates(View view) {
+                                        return new float[]{
+                                                view.getWidth() / 2,
+                                                view.getHeight() - getBehavior().getPeekHeight() - 9
+                                        };
+                                    }
+                                },
+                                // Top of the CoordinatorLayout
+                                new CoordinatesProvider() {
+                                    @Override
+                                    public float[] calculateCoordinates(View view) {
+                                        return new float[]{view.getWidth() / 2, 1};
+                                    }
+                                }, Press.FINGER),
+                        ViewMatchers.isDisplayed()));
+        // Avoid a deadlock (b/26160710)
+        registerIdlingResourceCallback();
+        try {
+            Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+                    .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+            // The bottom sheet should remain collapsed
+            assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+        } finally {
+            unregisterIdlingResourceCallback();
+        }
+    }
+
     private void checkSetState(final int state, Matcher<View> matcher) {
         registerIdlingResourceCallback();
         try {
