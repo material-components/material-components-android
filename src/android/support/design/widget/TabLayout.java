@@ -213,7 +213,6 @@ public class TabLayout extends HorizontalScrollView {
     private int mMode;
 
     private OnTabSelectedListener mOnTabSelectedListener;
-    private View.OnClickListener mTabClickListener;
 
     private ValueAnimatorCompat mScrollAnimator;
 
@@ -445,8 +444,12 @@ public class TabLayout extends HorizontalScrollView {
      */
     @NonNull
     public Tab newTab() {
-        final Tab poolTab = sTabPool.acquire();
-        return poolTab != null ? poolTab : new Tab(this);
+        Tab tab = sTabPool.acquire();
+        if (tab == null) {
+            tab = new Tab(this);
+        }
+        tab.mView = createTabView(tab);
+        return tab;
     }
 
     /**
@@ -714,8 +717,8 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     private void updateAllTabs() {
-        for (int i = 0, z = mTabStrip.getChildCount(); i < z; i++) {
-            updateTab(i);
+        for (int i = 0, z = mTabs.size(); i < z; i++) {
+            mTabs.get(i).updateView();
         }
     }
 
@@ -727,17 +730,6 @@ public class TabLayout extends HorizontalScrollView {
         tabView.setTab(tab);
         tabView.setFocusable(true);
         tabView.setMinimumWidth(getTabMinWidth());
-
-        if (mTabClickListener == null) {
-            mTabClickListener = new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    TabView tabView = (TabView) view;
-                    tabView.getTab().select();
-                }
-            };
-        }
-        tabView.setOnClickListener(mTabClickListener);
         return tabView;
     }
 
@@ -751,19 +743,8 @@ public class TabLayout extends HorizontalScrollView {
         }
     }
 
-    private void updateTab(int position) {
-        final TabView view = getTabView(position);
-        if (view != null) {
-            view.update();
-        }
-    }
-
-    private TabView getTabView(int position) {
-        return (TabView) mTabStrip.getChildAt(position);
-    }
-
     private void addTabView(Tab tab, boolean setSelected) {
-        final TabView tabView = createTabView(tab);
+        final TabView tabView = tab.mView;
         mTabStrip.addView(tabView, createLayoutParamsForTabs());
         if (setSelected) {
             tabView.setSelected(true);
@@ -771,7 +752,7 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     private void addTabView(Tab tab, int position, boolean setSelected) {
-        final TabView tabView = createTabView(tab);
+        final TabView tabView = tab.mView;
         mTabStrip.addView(tabView, position, createLayoutParamsForTabs());
         if (setSelected) {
             tabView.setSelected(true);
@@ -1017,6 +998,7 @@ public class TabLayout extends HorizontalScrollView {
         private View mCustomView;
 
         private final TabLayout mParent;
+        private TabView mView;
 
         Tab(TabLayout parent) {
             mParent = parent;
@@ -1070,9 +1052,7 @@ public class TabLayout extends HorizontalScrollView {
         @NonNull
         public Tab setCustomView(@Nullable View view) {
             mCustomView = view;
-            if (mPosition >= 0) {
-                mParent.updateTab(mPosition);
-            }
+            updateView();
             return this;
         }
 
@@ -1091,9 +1071,8 @@ public class TabLayout extends HorizontalScrollView {
          */
         @NonNull
         public Tab setCustomView(@LayoutRes int resId) {
-            final TabView tabView = mParent.getTabView(mPosition);
-            final LayoutInflater inflater = LayoutInflater.from(tabView.getContext());
-            return setCustomView(inflater.inflate(resId, tabView, false));
+            final LayoutInflater inflater = LayoutInflater.from(mView.getContext());
+            return setCustomView(inflater.inflate(resId, mView, false));
         }
 
         /**
@@ -1139,9 +1118,7 @@ public class TabLayout extends HorizontalScrollView {
         @NonNull
         public Tab setIcon(@Nullable Drawable icon) {
             mIcon = icon;
-            if (mPosition >= 0) {
-                mParent.updateTab(mPosition);
-            }
+            updateView();
             return this;
         }
 
@@ -1166,9 +1143,7 @@ public class TabLayout extends HorizontalScrollView {
         @NonNull
         public Tab setText(@Nullable CharSequence text) {
             mText = text;
-            if (mPosition >= 0) {
-                mParent.updateTab(mPosition);
-            }
+            updateView();
             return this;
         }
 
@@ -1224,9 +1199,7 @@ public class TabLayout extends HorizontalScrollView {
         @NonNull
         public Tab setContentDescription(@Nullable CharSequence contentDesc) {
             mContentDesc = contentDesc;
-            if (mPosition >= 0) {
-                mParent.updateTab(mPosition);
-            }
+            updateView();
             return this;
         }
 
@@ -1242,7 +1215,14 @@ public class TabLayout extends HorizontalScrollView {
             return mContentDesc;
         }
 
+        private void updateView() {
+            if (mView != null) {
+                mView.update();
+            }
+        }
+
         private void reset() {
+            mView = null;
             mTag = null;
             mIcon = null;
             mText = null;
@@ -1273,6 +1253,19 @@ public class TabLayout extends HorizontalScrollView {
                     mTabPaddingEnd, mTabPaddingBottom);
             setGravity(Gravity.CENTER);
             setOrientation(VERTICAL);
+            setClickable(true);
+        }
+
+        @Override
+        public boolean performClick() {
+            final boolean value = super.performClick();
+
+            if (mTab != null) {
+                mTab.select();
+                return true;
+            } else {
+                return value;
+            }
         }
 
         @Override
