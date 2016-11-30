@@ -390,7 +390,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * Sets the height of the bottom sheet when it is collapsed.
      *
      * @param peekHeight The height of the collapsed bottom sheet in pixels.
-     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Params_behavior_peekHeight
+     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
      */
     public final void setPeekHeight(int peekHeight) {
         mPeekHeight = Math.max(0, peekHeight);
@@ -401,7 +401,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * Gets the height of the bottom sheet when it is collapsed.
      *
      * @return The height of the collapsed bottom sheet.
-     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Params_behavior_peekHeight
+     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
      */
     public final int getPeekHeight() {
         return mPeekHeight;
@@ -411,7 +411,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * Sets whether this bottom sheet can hide when it is swiped down.
      *
      * @param hideable {@code true} to make this bottom sheet hideable.
-     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Params_behavior_hideable
+     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Layout_behavior_hideable
      */
     public void setHideable(boolean hideable) {
         mHideable = hideable;
@@ -421,7 +421,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      * Gets whether this bottom sheet can hide when it is swiped down.
      *
      * @return {@code true} if this bottom sheet can hide.
-     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Params_behavior_hideable
+     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Layout_behavior_hideable
      */
     public boolean isHideable() {
         return mHideable;

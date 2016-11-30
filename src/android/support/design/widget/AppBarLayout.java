@@ -678,7 +678,7 @@ public class AppBarLayout extends LinearLayout {
          *
          * @see #getScrollFlags()
          *
-         * @attr ref android.support.design.R.styleable#AppBarLayout_LayoutParams_layout_scrollFlags
+         * @attr ref android.support.design.R.styleable#AppBarLayout_Layout_layout_scrollFlags
          */
         public void setScrollFlags(@ScrollFlags int flags) {
             mScrollFlags = flags;
@@ -689,7 +689,7 @@ public class AppBarLayout extends LinearLayout {
          *
          * @see #setScrollFlags(int)
          *
-         * @attr ref android.support.design.R.styleable#AppBarLayout_LayoutParams_layout_scrollFlags
+         * @attr ref android.support.design.R.styleable#AppBarLayout_Layout_layout_scrollFlags
          */
         @ScrollFlags
         public int getScrollFlags() {
@@ -702,7 +702,7 @@ public class AppBarLayout extends LinearLayout {
          *
          * @param interpolator the interpolator to use, or null to use normal 1-to-1 scrolling.
          *
-         * @attr ref android.support.design.R.styleable#AppBarLayout_LayoutParams_layout_scrollInterpolator
+         * @attr ref android.support.design.R.styleable#AppBarLayout_Layout_layout_scrollInterpolator
          * @see #getScrollInterpolator()
          */
         public void setScrollInterpolator(Interpolator interpolator) {
@@ -713,7 +713,7 @@ public class AppBarLayout extends LinearLayout {
          * Returns the {@link Interpolator} being used for scrolling the view associated with this
          * {@link LayoutParams}. Null indicates 'normal' 1-to-1 scrolling.
          *
-         * @attr ref android.support.design.R.styleable#AppBarLayout_LayoutParams_layout_scrollInterpolator
+         * @attr ref android.support.design.R.styleable#AppBarLayout_Layout_layout_scrollInterpolator
          * @see #setScrollInterpolator(Interpolator)
          */
         public Interpolator getScrollInterpolator() {
@@ -1322,9 +1322,9 @@ public class AppBarLayout extends LinearLayout {
             super(context, attrs);
 
             final TypedArray a = context.obtainStyledAttributes(attrs,
-                    R.styleable.ScrollingViewBehavior_Params);
+                    R.styleable.ScrollingViewBehavior_Layout);
             setOverlayTop(a.getDimensionPixelSize(
-                    R.styleable.ScrollingViewBehavior_Params_behavior_overlapTop, 0));
+                    R.styleable.ScrollingViewBehavior_Layout_behavior_overlapTop, 0));
             a.recycle();
         }
 

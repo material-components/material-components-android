@@ -259,7 +259,7 @@
         <attr name="layout_scrollInterpolator" format="reference" />
     </declare-styleable>
 
-    <declare-styleable name="ScrollingViewBehavior_Params">
+    <declare-styleable name="ScrollingViewBehavior_Layout">
         <!-- The amount that the scrolling view should overlap the bottom of any AppBarLayout -->
         <attr name="behavior_overlapTop" format="dimension" />
     </declare-styleable>
