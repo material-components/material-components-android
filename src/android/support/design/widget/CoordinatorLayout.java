@@ -566,7 +566,9 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             for (int i = 0; i < childCount; i++) {
                 mDependencySortedChildren.add(getChildAt(i));
             }
-            Collections.sort(mDependencySortedChildren, mLayoutDependencyComparator);
+            // We need to use a selection sort here to make sure that every item is compared
+            // against each other
+            selectionSort(mDependencySortedChildren, mLayoutDependencyComparator);
         }
     }
 
@@ -2636,5 +2638,38 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                         return new SavedState[size];
                     }
                 };
+    }
+
+    private static void selectionSort(final List<View> list, final Comparator<View> comparator) {
+        if (list == null || list.size() < 2) {
+            return;
+        }
+
+        final View[] array = new View[list.size()];
+        list.toArray(array);
+        final int count = array.length;
+
+        for (int i = 0; i < count; i++) {
+            int min = i;
+
+            for (int j = i + 1; j < count; j++) {
+                if (comparator.compare(array[j], array[min]) < 0) {
+                    min = j;
+                }
+            }
+
+            if (i != min) {
+                // We have a different min so swap the items
+                final View minItem = array[min];
+                array[min] = array[i];
+                array[i] = minItem;
+            }
+        }
+
+        // Finally add the array back into the collection
+        list.clear();
+        for (int i = 0; i < count; i++) {
+            list.add(array[i]);
+        }
     }
 }
