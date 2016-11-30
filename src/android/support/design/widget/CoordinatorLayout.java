@@ -815,17 +815,19 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         int left;
         int top;
 
-        // Align to the anchor
+        // Align to the anchor. This puts us in an assumed right/bottom child view gravity.
+        // If this is not the case we will subtract out the appropriate portion of
+        // the child size below.
         switch (anchorHgrav) {
             default:
             case Gravity.LEFT:
                 left = anchorRect.left;
                 break;
             case Gravity.RIGHT:
-                left = anchorRect.right - childWidth;
+                left = anchorRect.right;
                 break;
             case Gravity.CENTER_HORIZONTAL:
-                left = anchorRect.left + (anchorRect.width() - childWidth) / 2;
+                left = anchorRect.left + anchorRect.width() / 2;
                 break;
         }
 
@@ -835,37 +837,37 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 top = anchorRect.top;
                 break;
             case Gravity.BOTTOM:
-                top = anchorRect.bottom - childHeight;
+                top = anchorRect.bottom;
                 break;
             case Gravity.CENTER_VERTICAL:
-                top = anchorRect.top + (anchorRect.height() - childHeight) / 2;
+                top = anchorRect.top + anchorRect.height() / 2;
                 break;
         }
 
-        // Offset by the child view's gravity itself
+        // Offset by the child view's gravity itself. The above assumed right/bottom gravity.
         switch (hgrav) {
             default:
             case Gravity.LEFT:
-                // Do nothing, we're already in position.
+                left -= childWidth;
                 break;
             case Gravity.RIGHT:
-                left += childWidth;
+                // Do nothing, we're already in position.
                 break;
             case Gravity.CENTER_HORIZONTAL:
-                left += childWidth / 2;
+                left -= childWidth / 2;
                 break;
         }
 
         switch (vgrav) {
             default:
             case Gravity.TOP:
-                // Do nothing, we're already in position.
+                top -= childHeight;
                 break;
             case Gravity.BOTTOM:
-                top += childHeight;
+                // Do nothing, we're already in position.
                 break;
             case Gravity.CENTER_VERTICAL:
-                top += childHeight / 2;
+                top -= childHeight / 2;
                 break;
         }
 
