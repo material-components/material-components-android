@@ -25,6 +25,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
@@ -719,6 +720,11 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void ensureBackgroundDrawableStateWorkaround() {
+        final int sdk = Build.VERSION.SDK_INT;
+        if (sdk != 21 || sdk != 22) {
+            // The workaround is only required on API 21-22
+            return;
+        }
         final Drawable bg = mEditText.getBackground();
         if (bg == null) {
             return;
