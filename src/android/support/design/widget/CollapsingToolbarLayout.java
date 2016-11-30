@@ -1052,7 +1052,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      * Returns the amount of visible height in pixels used to define when to trigger a scrim
      * visibility change.
      *
-     * @see #setScrimTriggerOffset(int)
+     * @see #setScrimVisibleHeightTrigger(int)
      */
     public int getScrimVisibleHeightTrigger() {
         if (mScrimVisibleHeightTrigger >= 0) {
