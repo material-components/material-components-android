@@ -1855,7 +1855,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          * in place of the default child layout behavior. The Behavior's implementation can
          * delegate to the standard CoordinatorLayout measurement behavior by calling
          * {@link CoordinatorLayout#onLayoutChild(android.view.View, int)
-         * parent.onMeasureChild}.</p>
+         * parent.onLayoutChild}.</p>
          *
          * <p>If a Behavior implements
          * {@link #onDependentViewChanged(CoordinatorLayout, android.view.View, android.view.View)}
