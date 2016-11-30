@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -606,7 +605,7 @@ public class TextInputLayout extends LinearLayout {
                 mCounterView.setMaxLines(1);
                 try {
                     mCounterView.setTextAppearance(getContext(), mCounterTextAppearance);
-                } catch (Resources.NotFoundException nfe) {
+                } catch (Exception e) {
                     // Probably caused by our theme not extending from Theme.Design*. Instead
                     // we manually set something appropriate
                     mCounterView.setTextAppearance(getContext(),
