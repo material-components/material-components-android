@@ -754,7 +754,7 @@ public class TextInputLayout extends LinearLayout {
 
         public SavedState(Parcel source) {
             super(source);
-            error = source.readString();
+            error = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
 
         }
 
