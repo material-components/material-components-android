@@ -19,5 +19,5 @@
       class="android.support.design.widget.Snackbar$SnackbarLayout"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom|center_vertical"
+      android:layout_gravity="bottom|center_horizontal"
       style="@style/Widget.Design.Snackbar" />
