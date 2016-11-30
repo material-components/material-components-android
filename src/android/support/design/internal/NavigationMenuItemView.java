@@ -108,7 +108,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
     private StateListDrawable createDefaultBackground() {
         TypedValue value = new TypedValue();
-        if (getContext().getTheme().resolveAttribute(R.attr.colorControlHighlight, value, true)) {
+        if (getContext().getTheme().resolveAttribute(
+                android.support.v7.appcompat.R.attr.colorControlHighlight, value, true)) {
             StateListDrawable drawable = new StateListDrawable();
             drawable.addState(CHECKED_STATE_SET, new ColorDrawable(value.data));
             drawable.addState(EMPTY_STATE_SET, new ColorDrawable(Color.TRANSPARENT));

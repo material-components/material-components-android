@@ -413,7 +413,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             return null;
         }
         ColorStateList baseColor = getResources().getColorStateList(value.resourceId);
-        if (!getContext().getTheme().resolveAttribute(R.attr.colorPrimary, value, true)) {
+        if (!getContext().getTheme().resolveAttribute(
+                    android.support.v7.appcompat.R.attr.colorPrimary, value, true)) {
             return null;
         }
         int colorPrimary = value.data;
