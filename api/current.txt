@@ -194,13 +194,13 @@ package android.support.design.widget {
     method public android.view.View inflateHeaderView(int);
     method public void inflateMenu(int);
     method public void removeHeaderView(android.view.View);
+    method public void setCheckedItem(int);
     method public void setItemBackground(android.graphics.drawable.Drawable);
     method public void setItemBackgroundResource(int);
     method public void setItemIconTintList(android.content.res.ColorStateList);
     method public void setItemTextAppearance(int);
     method public void setItemTextColor(android.content.res.ColorStateList);
     method public void setNavigationItemSelectedListener(android.support.design.widget.NavigationView.OnNavigationItemSelectedListener);
-    method public void setCheckedItem(int);
   }
 
   public static abstract interface NavigationView.OnNavigationItemSelectedListener {
