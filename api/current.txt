@@ -3,18 +3,17 @@ package android.support.design.widget {
   public class AppBarLayout extends android.widget.LinearLayout {
     ctor public AppBarLayout(android.content.Context);
     ctor public AppBarLayout(android.content.Context, android.util.AttributeSet);
-  }
-
-  public static abstract interface AppBarLayout.AppBarLayoutChild {
-    method public abstract int onOffsetUpdate(int);
-    field public static final int STATE_ELEVATED_ABOVE = 1; // 0x1
-    field public static final int STATE_ELEVATED_INLINE = 0; // 0x0
+    method public void addOnOffsetChangedListener(android.support.design.widget.AppBarLayout.OnOffsetChangedListener);
+    method public float getTargetElevation();
+    method public void removeOnOffsetChangedListener(android.support.design.widget.AppBarLayout.OnOffsetChangedListener);
+    method public void setTargetElevation(float);
   }
 
   public static class AppBarLayout.Behavior extends android.support.design.widget.ViewOffsetBehavior {
     ctor public AppBarLayout.Behavior();
     ctor public AppBarLayout.Behavior(android.content.Context, android.util.AttributeSet);
     method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, int);
+    method public boolean onNestedFling(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, float, float, boolean);
     method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int[]);
     method public void onNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int, int);
     method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, android.view.View, int);
@@ -39,6 +38,10 @@ package android.support.design.widget {
     field public static final int SCROLL_FLAG_SCROLL = 1; // 0x1
   }
 
+  public static abstract interface AppBarLayout.OnOffsetChangedListener {
+    method public abstract void onOffsetChanged(android.support.design.widget.AppBarLayout, int);
+  }
+
   public static class AppBarLayout.ScrollingViewBehavior extends android.support.design.widget.ViewOffsetBehavior {
     ctor public AppBarLayout.ScrollingViewBehavior();
     ctor public AppBarLayout.ScrollingViewBehavior(android.content.Context, android.util.AttributeSet);
@@ -49,12 +52,11 @@ package android.support.design.widget {
     method public void setOverlayTop(int);
   }
 
-  public class CollapsingToolbarLayout extends android.widget.FrameLayout implements android.support.design.widget.AppBarLayout.AppBarLayoutChild {
+  public class CollapsingToolbarLayout extends android.widget.FrameLayout {
     ctor public CollapsingToolbarLayout(android.content.Context);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet, int);
     method public int getForegroundScrimColor();
-    method public int onOffsetUpdate(int);
     method public void setCollapsedTitleTextAppearance(int);
     method public void setCollapsedTitleTextColor(int);
     method public void setExpandedTitleColor(int);

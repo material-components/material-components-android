@@ -63,12 +63,23 @@ LOCAL_JAVA_LIBRARIES := android-support-design-res \
     android-support-v7-appcompat
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
+# A helper sub-library that makes direct use of Honeycomb MR1 APIs
+include $(CLEAR_VARS)
+LOCAL_MODULE := android-support-design-honeycomb-mr1
+LOCAL_SDK_VERSION := 12
+LOCAL_SRC_FILES := $(call all-java-files-under, honeycomb-mr1)
+LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-honeycomb
+LOCAL_JAVA_LIBRARIES := android-support-design-res \
+    android-support-v4 \
+    android-support-v7-appcompat
+include $(BUILD_STATIC_JAVA_LIBRARY)
+
 # A helper sub-library that makes direct use of Lollipop APIs
 include $(CLEAR_VARS)
 LOCAL_MODULE := android-support-design-lollipop
 LOCAL_SDK_VERSION := 21
 LOCAL_SRC_FILES := $(call all-java-files-under, lollipop)
-LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-honeycomb
+LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-honeycomb-mr1
 LOCAL_JAVA_LIBRARIES := android-support-design-res \
     android-support-v4 \
     android-support-v7-appcompat

@@ -31,6 +31,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -370,40 +371,68 @@ public class FloatingActionButton extends ImageView {
         private void animateIn(FloatingActionButton button) {
             button.setVisibility(View.VISIBLE);
 
-            ViewCompat.animate(button)
-                    .scaleX(1f)
-                    .scaleY(1f)
-                    .alpha(1f)
-                    .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                    .withLayer()
-                    .setListener(null)
-                    .start();
+            if (Build.VERSION.SDK_INT >= 14) {
+                ViewCompat.animate(button)
+                        .scaleX(1f)
+                        .scaleY(1f)
+                        .alpha(1f)
+                        .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
+                        .withLayer()
+                        .setListener(null)
+                        .start();
+            } else {
+                Animation anim = android.view.animation.AnimationUtils.loadAnimation(
+                        button.getContext(), R.anim.fab_in);
+                anim.setDuration(200);
+                anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+                button.startAnimation(anim);
+            }
         }
 
-        private void animateOut(FloatingActionButton button) {
-            ViewCompat.animate(button)
-                    .scaleX(0f)
-                    .scaleY(0f)
-                    .alpha(0f)
-                    .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                    .withLayer()
-                    .setListener(new ViewPropertyAnimatorListener() {
-                        @Override
-                        public void onAnimationStart(View view) {
-                            mIsAnimatingOut = true;
-                        }
+        private void animateOut(final FloatingActionButton button) {
+            if (Build.VERSION.SDK_INT >= 14) {
+                ViewCompat.animate(button)
+                        .scaleX(0f)
+                        .scaleY(0f)
+                        .alpha(0f)
+                        .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
+                        .withLayer()
+                        .setListener(new ViewPropertyAnimatorListener() {
+                            @Override
+                            public void onAnimationStart(View view) {
+                                mIsAnimatingOut = true;
+                            }
 
-                        @Override
-                        public void onAnimationCancel(View view) {
-                            mIsAnimatingOut = false;
-                        }
+                            @Override
+                            public void onAnimationCancel(View view) {
+                                mIsAnimatingOut = false;
+                            }
 
-                        @Override
-                        public void onAnimationEnd(View view) {
-                            mIsAnimatingOut = false;
-                            view.setVisibility(View.GONE);
-                        }
-                    }).start();
+                            @Override
+                            public void onAnimationEnd(View view) {
+                                mIsAnimatingOut = false;
+                                view.setVisibility(View.GONE);
+                            }
+                        }).start();
+            } else {
+                Animation anim = android.view.animation.AnimationUtils.loadAnimation(
+                        button.getContext(), R.anim.fab_out);
+                anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+                anim.setDuration(200);
+                anim.setAnimationListener(new AnimationUtils.AnimationListenerAdapter() {
+                    @Override
+                    public void onAnimationStart(Animation animation) {
+                        mIsAnimatingOut = true;
+                    }
+
+                    @Override
+                    public void onAnimationEnd(Animation animation) {
+                        mIsAnimatingOut = false;
+                        button.setVisibility(View.GONE);
+                    }
+                });
+                button.startAnimation(anim);
+            }
         }
     }
 }

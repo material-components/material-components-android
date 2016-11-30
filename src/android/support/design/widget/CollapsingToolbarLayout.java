@@ -31,6 +31,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.FrameLayout;
@@ -71,7 +72,7 @@ import java.lang.annotation.RetentionPolicy;
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleMarginEnd
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleMarginBottom
  */
-public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout.AppBarLayoutChild {
+public class CollapsingToolbarLayout extends FrameLayout {
 
     private static final int SCRIM_ANIMATION_DURATION = 600;
 
@@ -88,6 +89,8 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
     private int mForegroundScrimColor;
     private int mCurrentForegroundColor;
     private boolean mScrimIsShown;
+
+    private AppBarLayout.OnOffsetChangedListener mOnOffsetChangedListener;
 
     public CollapsingToolbarLayout(Context context) {
         this(context, null);
@@ -152,6 +155,31 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
         a.recycle();
 
         setWillNotDraw(false);
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        // Add an OnOffsetChangedListener if possible
+        final ViewParent parent = getParent();
+        if (parent instanceof AppBarLayout) {
+            if (mOnOffsetChangedListener == null) {
+                mOnOffsetChangedListener = new OffsetUpdateListener();
+            }
+            ((AppBarLayout) parent).addOnOffsetChangedListener(mOnOffsetChangedListener);
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        // Remove our OnOffsetChangedListener if possible and it exists
+        final ViewParent parent = getParent();
+        if (mOnOffsetChangedListener != null && parent instanceof AppBarLayout) {
+            ((AppBarLayout) parent).removeOnOffsetChangedListener(mOnOffsetChangedListener);
+        }
+
+        super.onDetachedFromWindow();
     }
 
     @Override
@@ -232,55 +260,6 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
      */
     public void setTitle(CharSequence title) {
         mCollapsingTextHelper.setText(title);
-    }
-
-    /**
-     * @hide
-     */
-    @Override
-    public int onOffsetUpdate(int verticalOffset) {
-        int pinnedHeight = 0;
-
-        for (int i = 0, z = getChildCount(); i < z; i++) {
-            final View child = getChildAt(i);
-            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            final ViewOffsetHelper offsetHelper = getViewOffsetHelper(child);
-
-            switch (lp.mCollapseMode) {
-                case LayoutParams.COLLAPSE_MODE_PIN:
-                    if (getHeight() + verticalOffset >= child.getHeight()) {
-                        offsetHelper.setTopAndBottomOffset(-verticalOffset);
-                    }
-                    pinnedHeight += child.getHeight();
-                    break;
-                case LayoutParams.COLLAPSE_MODE_PARALLAX:
-                    offsetHelper.setTopAndBottomOffset(
-                            Math.round(-verticalOffset * lp.mParallaxMult));
-                    break;
-            }
-        }
-
-        // Show or hide the scrim if needed
-        if (Color.alpha(mForegroundScrimColor) > 0) {
-            if (getHeight() + verticalOffset < getScrimTriggerOffset()) {
-                showScrim();
-            } else {
-                hideScrim();
-            }
-        }
-
-        // Update the collapsing text's fraction
-        mCollapsingTextHelper.setExpansionFraction(Math.abs(verticalOffset) /
-                (float) (getHeight() - ViewCompat.getMinimumHeight(this)));
-
-        if (pinnedHeight > 0 && (getHeight() + verticalOffset) == pinnedHeight) {
-            // If we have some pinned children, and we're offset to only show those views,
-            // we want to be elevate
-            return STATE_ELEVATED_ABOVE;
-        } else {
-            // Otherwise, we're inline with the content
-            return STATE_ELEVATED_INLINE;
-        }
     }
 
     private void showScrim() {
@@ -540,6 +519,56 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
          */
         public float getParallaxMultiplier() {
             return mParallaxMult;
+        }
+    }
+
+    private class OffsetUpdateListener implements AppBarLayout.OnOffsetChangedListener {
+        @Override
+        public void onOffsetChanged(AppBarLayout layout, int verticalOffset) {
+            int pinnedHeight = 0;
+
+            for (int i = 0, z = getChildCount(); i < z; i++) {
+                final View child = getChildAt(i);
+                final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+                final ViewOffsetHelper offsetHelper = getViewOffsetHelper(child);
+
+                switch (lp.mCollapseMode) {
+                    case LayoutParams.COLLAPSE_MODE_PIN:
+                        if (getHeight() + verticalOffset >= child.getHeight()) {
+                            offsetHelper.setTopAndBottomOffset(-verticalOffset);
+                        }
+                        pinnedHeight += child.getHeight();
+                        break;
+                    case LayoutParams.COLLAPSE_MODE_PARALLAX:
+                        offsetHelper.setTopAndBottomOffset(
+                                Math.round(-verticalOffset * lp.mParallaxMult));
+                        break;
+                }
+            }
+
+            // Show or hide the scrim if needed
+            if (Color.alpha(mForegroundScrimColor) > 0) {
+                if (getHeight() + verticalOffset < getScrimTriggerOffset()) {
+                    showScrim();
+                } else {
+                    hideScrim();
+                }
+            }
+
+            // Update the collapsing text's fraction
+            final int expandRange = getHeight() - ViewCompat.getMinimumHeight(
+                    CollapsingToolbarLayout.this);
+            mCollapsingTextHelper.setExpansionFraction(
+                    Math.abs(verticalOffset) / (float) expandRange);
+
+            if (pinnedHeight > 0 && (getHeight() + verticalOffset) == pinnedHeight) {
+                // If we have some pinned children, and we're offset to only show those views,
+                // we want to be elevate
+                ViewCompat.setElevation(layout, layout.getTargetElevation());
+            } else {
+                // Otherwise, we're inline with the content
+                ViewCompat.setElevation(layout, 0f);
+            }
         }
     }
 }
