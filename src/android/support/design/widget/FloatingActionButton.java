@@ -200,13 +200,25 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     /**
-     * Set the ripple color for this {@link FloatingActionButton}.
-     * <p>
-     * When running on devices with KitKat or below, we draw a fill rather than a ripple.
+     * Returns the ripple color for this button.
      *
-     * @param color ARGB color to use for the ripple.
+     * @return the ARGB color used for the ripple
+     * @see #setRippleColor(int)
+     */
+    @ColorInt
+    public int getRippleColor() {
+        return mRippleColor;
+    }
+
+    /**
+     * Sets the ripple color for this button.
      *
+     * <p>When running on devices with KitKat or below, we draw this color as a filled circle
+     * rather than a ripple.</p>
+     *
+     * @param color ARGB color to use for the ripple
      * @attr ref android.support.design.R.styleable#FloatingActionButton_rippleColor
+     * @see #getRippleColor()
      */
     public void setRippleColor(@ColorInt int color) {
         if (mRippleColor != color) {
@@ -216,7 +228,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     /**
-     * Return the tint applied to the background drawable, if specified.
+     * Returns the tint applied to the background drawable, if specified.
      *
      * @return the tint applied to the background drawable
      * @see #setBackgroundTintList(ColorStateList)
@@ -241,7 +253,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     /**
-     * Return the blending mode used to apply the tint to the background
+     * Returns the blending mode used to apply the tint to the background
      * drawable, if specified.
      *
      * @return the blending mode used to apply the tint to the background
