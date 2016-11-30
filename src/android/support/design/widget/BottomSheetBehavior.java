@@ -719,7 +719,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         View bottomSheet = mViewRef.get();
         if (bottomSheet != null && mCallback != null) {
             if (top > mMaxOffset) {
-                mCallback.onSlide(bottomSheet, (float) (mMaxOffset - top) / mPeekHeight);
+                mCallback.onSlide(bottomSheet, (float) (mMaxOffset - top) /
+                        (mParentHeight - mMaxOffset));
             } else {
                 mCallback.onSlide(bottomSheet,
                         (float) (mMaxOffset - top) / ((mMaxOffset - mMinOffset)));

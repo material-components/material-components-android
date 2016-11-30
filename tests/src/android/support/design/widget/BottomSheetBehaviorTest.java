@@ -20,6 +20,8 @@ package android.support.design.widget;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
+import static org.hamcrest.Matchers.greaterThanOrEqualTo;
+import static org.hamcrest.Matchers.lessThanOrEqualTo;
 
 import android.os.SystemClock;
 import android.support.annotation.LayoutRes;
@@ -86,6 +88,8 @@ public class BottomSheetBehaviorTest extends
 
         @Override
         public void onSlide(@NonNull View bottomSheet, float slideOffset) {
+            assertThat(slideOffset, is(greaterThanOrEqualTo(-1f)));
+            assertThat(slideOffset, is(lessThanOrEqualTo(1f)));
         }
 
         @Override
@@ -332,7 +336,6 @@ public class BottomSheetBehaviorTest extends
                                         view.getHeight() - behavior.getPeekHeight()};
                             }
                         }, Press.FINGER), ViewMatchers.isDisplayingAtLeast(5)));
-        // Avoid a deadlock (b/26160710)
         registerIdlingResourceCallback();
         try {
             Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
@@ -349,7 +352,6 @@ public class BottomSheetBehaviorTest extends
         Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
                 .perform(DesignViewActions.withCustomConstraints(ViewActions.swipeDown(),
                         ViewMatchers.isDisplayingAtLeast(5)));
-        // Avoid a deadlock (b/26160710)
         registerIdlingResourceCallback();
         try {
             Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
@@ -416,7 +418,6 @@ public class BottomSheetBehaviorTest extends
                             }
                         }, Press.FINGER),
                         ViewMatchers.isDisplayingAtLeast(5)));
-        // Avoid a deadlock (b/26160710)
         registerIdlingResourceCallback();
         try {
             Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
@@ -587,7 +588,6 @@ public class BottomSheetBehaviorTest extends
                                     }
                                 }, Press.FINGER),
                         ViewMatchers.isDisplayed()));
-        // Avoid a deadlock (b/26160710)
         registerIdlingResourceCallback();
         try {
             Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
@@ -667,6 +667,20 @@ public class BottomSheetBehaviorTest extends
     }
 
     @Test
+    @MediumTest
+    public void testAutoPeekHeightHide() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                getBehavior().setHideable(true);
+                getBehavior().setPeekHeight(0);
+                getBehavior().setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
+            }
+        });
+        checkSetState(BottomSheetBehavior.STATE_HIDDEN, not(ViewMatchers.isDisplayed()));
+    }
+
+    @Test
     public void testDynamicContent() {
         registerIdlingResourceCallback();
         try {
@@ -716,7 +730,7 @@ public class BottomSheetBehaviorTest extends
     }
 
     private void registerIdlingResourceCallback() {
-        // TODO: Move this to setUp() when b/26160710 is fixed
+        // This cannot be done in setUp(), or swiping action cannot be executed.
         mCallback = new Callback(getBehavior());
         Espresso.registerIdlingResources(mCallback);
     }
