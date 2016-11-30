@@ -238,12 +238,14 @@ public class NavigationMenuPresenter implements MenuPresenter {
         updateMenuView(false);
     }
 
+    @Nullable
     public Drawable getItemBackground() {
         return mItemBackground;
     }
 
-    public void setItemBackground(Drawable itemBackground) {
+    public void setItemBackground(@Nullable Drawable itemBackground) {
         mItemBackground = itemBackground;
+        updateMenuView(false);
     }
 
     public void setUpdateSuspended(boolean updateSuspended) {

@@ -13,12 +13,13 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <style name="TextSmallStyle" parent="@android:style/TextAppearance">
-        <item name="android:textSize">@dimen/text_small_size</item>
-    </style>
 
-    <style name="TextMediumStyle" parent="@android:style/TextAppearance.Medium">
-        <item name="android:textSize">@dimen/text_medium_size</item>
-    </style>
-</resources>
+<shape
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+    <size
+        android:width="@dimen/drawable_medium_size"
+        android:height="@dimen/drawable_large_size" />
+    <solid
+        android:color="@color/test_green" />
+</shape>

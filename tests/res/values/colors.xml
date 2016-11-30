@@ -17,5 +17,16 @@
 <resources>
     <color name="emerald_translucent">#8020A060</color>
     <color name="emerald_text">#30B050</color>
-    <color name="sand_fill">#F0E020</color>
+    <color name="red_translucent">#90FF2040</color>
+
+    <color name="lilac_default">#F080F0</color>
+    <color name="lilac_disabled">#F0A0FF</color>
+    <color name="sand_default">#F0B000</color>
+    <color name="sand_disabled">#FFC080</color>
+    <color name="ocean_default">#50C0FF</color>
+    <color name="ocean_disabled">#90F0FF</color>
+
+    <color name="test_red">#FF6030</color>
+    <color name="test_green">#50E080</color>
+    <color name="test_blue">#3050CF</color>
 </resources>

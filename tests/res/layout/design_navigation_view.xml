@@ -47,7 +47,7 @@
         app:menu="@menu/navigation_view_content"
         app:itemIconTint="@color/emerald_translucent"
         app:itemTextColor="@color/emerald_text"
-        app:itemBackground="@color/sand_fill"
+        app:itemBackground="@color/sand_default"
         app:itemTextAppearance="@style/TextMediumStyle" />
 
 </android.support.v4.widget.DrawerLayout>

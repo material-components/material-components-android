@@ -19,5 +19,10 @@
     <dimen name="tab_width_limit_large">120dip</dimen>
     <dimen name="bottom_sheet_peek_height">128dp</dimen>
 
+    <dimen name="text_small_size">16sp</dimen>
     <dimen name="text_medium_size">20sp</dimen>
+
+    <dimen name="drawable_small_size">12dip</dimen>
+    <dimen name="drawable_medium_size">16dip</dimen>
+    <dimen name="drawable_large_size">20dip</dimen>
 </resources>

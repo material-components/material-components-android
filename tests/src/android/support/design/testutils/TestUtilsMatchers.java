@@ -16,10 +16,18 @@
 
 package android.support.design.testutils;
 
+import android.graphics.Color;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
 import android.support.test.espresso.matcher.BoundedMatcher;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.view.View;
+import android.view.ViewParent;
+import android.widget.TextView;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 public class TestUtilsMatchers {
     /**
@@ -71,4 +79,163 @@ public class TestUtilsMatchers {
             }
         };
     }
+
+    /**
+     * Returns a matcher that matches TextViews with the specified text size.
+     */
+    public static Matcher withTextSize(final float textSize) {
+        return new BoundedMatcher<View, TextView>(TextView.class) {
+            private String failedCheckDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText(failedCheckDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final TextView view) {
+                final float ourTextSize = view.getTextSize();
+                if (Math.abs(textSize - ourTextSize) > 1.0f) {
+                    failedCheckDescription =
+                            "text size " + ourTextSize + " is different than expected " + textSize;
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Returns a matcher that matches TextViews with the specified text color.
+     */
+    public static Matcher withTextColor(final @ColorInt int textColor) {
+        return new BoundedMatcher<View, TextView>(TextView.class) {
+            private String failedCheckDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText(failedCheckDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final TextView view) {
+                final @ColorInt int ourTextColor = view.getTextColors().getDefaultColor();
+                if (ourTextColor != textColor) {
+                    int ourAlpha = Color.alpha(ourTextColor);
+                    int ourRed = Color.red(ourTextColor);
+                    int ourGreen = Color.green(ourTextColor);
+                    int ourBlue = Color.blue(ourTextColor);
+
+                    int expectedAlpha = Color.alpha(textColor);
+                    int expectedRed = Color.red(textColor);
+                    int expectedGreen = Color.green(textColor);
+                    int expectedBlue = Color.blue(textColor);
+
+                    failedCheckDescription =
+                            "expected color to be ["
+                                    + expectedAlpha + "," + expectedRed + ","
+                                    + expectedGreen + "," + expectedBlue
+                                    + "] but found ["
+                                    + ourAlpha + "," + ourRed + ","
+                                    + ourGreen + "," + ourBlue + "]";
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Returns a matcher that matches TextViews whose start drawable is filled with the specified
+     * fill color.
+     */
+    public static Matcher withStartDrawableFilledWith(final @ColorInt int fillColor,
+            final int allowedComponentVariance) {
+        return new BoundedMatcher<View, TextView>(TextView.class) {
+            private String failedCheckDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText(failedCheckDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final TextView view) {
+                Drawable[] compoundDrawables = view.getCompoundDrawables();
+                boolean isRtl =
+                        (ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL);
+                Drawable startDrawable = isRtl ? compoundDrawables[2] : compoundDrawables[0];
+                if (startDrawable == null) {
+                    failedCheckDescription = "no start drawable";
+                    return false;
+                }
+                try {
+                    TestUtils.assertAllPixelsOfColor("",
+                            startDrawable, startDrawable.getIntrinsicWidth(),
+                            startDrawable.getIntrinsicHeight(), true,
+                            fillColor, allowedComponentVariance, true);
+                } catch (Throwable t) {
+                    failedCheckDescription = t.getMessage();
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Returns a matcher that matches Views with the specified background fill color.
+     */
+    public static Matcher withBackgroundFill(final @ColorInt int fillColor) {
+        return new BoundedMatcher<View, View>(View.class) {
+            private String failedCheckDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText(failedCheckDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final View view) {
+                Drawable background = view.getBackground();
+                try {
+                    TestUtils.assertAllPixelsOfColor("",
+                            background, view.getWidth(), view.getHeight(), true,
+                            fillColor, 0, true);
+                } catch (Throwable t) {
+                    failedCheckDescription = t.getMessage();
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Returns a matcher that matches {@link View}s based on the given parent type.
+     *
+     * @param parentMatcher the type of the parent to match on
+     */
+    public static Matcher<View> isChildOfA(final Matcher<View> parentMatcher) {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("is child of a: ");
+                parentMatcher.describeTo(description);
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                final ViewParent viewParent = view.getParent();
+                if (!(viewParent instanceof View)) {
+                    return false;
+                }
+                if (parentMatcher.matches(viewParent)) {
+                    return true;
+                }
+                return false;
+            }
+        };
+    }
+
 }

@@ -297,7 +297,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * Returns the tint which is applied to our item's icons.
+     * Returns the tint which is applied to our menu items' icons.
      *
      * @see #setItemIconTintList(ColorStateList)
      *
@@ -309,7 +309,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * Set the tint which is applied to our item's icons.
+     * Set the tint which is applied to our menu items' icons.
      *
      * @param tint the tint to apply.
      *
@@ -320,7 +320,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * Returns the tint which is applied to our item's icons.
+     * Returns the tint which is applied to our menu items' icons.
      *
      * @see #setItemTextColor(ColorStateList)
      *
@@ -332,7 +332,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * Set the text color which is text to our items.
+     * Set the text color to be used on our menu items.
      *
      * @see #getItemTextColor()
      *
@@ -343,18 +343,19 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * Returns the background drawable for the menu items.
+     * Returns the background drawable for our menu items.
      *
      * @see #setItemBackgroundResource(int)
      *
      * @attr ref R.styleable#NavigationView_itemBackground
      */
+    @Nullable
     public Drawable getItemBackground() {
         return mPresenter.getItemBackground();
     }
 
     /**
-     * Set the background of the menu items to the given resource.
+     * Set the background of our menu items to the given resource.
      *
      * @param resId The identifier of the resource.
      *
@@ -365,12 +366,12 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * Set the background of the menu items to a given resource. The resource should refer to
-     * a Drawable object or 0 to use the background background.
+     * Set the background of our menu items to a given resource. The resource should refer to
+     * a Drawable object or null to use the default background set on this navigation menu.
      *
      * @attr ref R.styleable#NavigationView_itemBackground
      */
-    public void setItemBackground(Drawable itemBackground) {
+    public void setItemBackground(@Nullable Drawable itemBackground) {
         mPresenter.setItemBackground(itemBackground);
     }
 
