@@ -16,10 +16,15 @@
 
 package android.support.design.widget;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+
 import static org.junit.Assert.assertEquals;
 
 import android.support.design.test.R;
+import android.support.v4.view.ViewCompat;
 import android.test.suitebuilder.annotation.MediumTest;
+import android.view.View;
 
 import org.junit.Test;
 
@@ -68,6 +73,57 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+    }
+
+    /**
+     * Tests a AppBarLayout + scrolling content with fitSystemWindows = undefined,
+     * with a fitSystemWindows = true parent
+     */
+    @Test
+    public void testScrollingContentPositionWithFitSystemWindowsParent() {
+        configureContent(R.layout.design_appbar_toolbar_scroll_fitsystemwindows_parent,
+                R.string.design_appbar_toolbar_scroll_tabs_pin);
+
+        final int[] appbarOnScreenXY = new int[2];
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+
+        final View scrollingContent = mCoordinatorLayout.findViewById(R.id.scrolling_content);
+        final int[] scrollingContentOnScreenXY = new int[2];
+        scrollingContent.getLocationOnScreen(scrollingContentOnScreenXY);
+
+        // Assert that they have the same left
+        assertEquals(appbarOnScreenXY[0], scrollingContentOnScreenXY[0]);
+        // ...and the same width
+        assertEquals(mAppBar.getWidth(), scrollingContent.getWidth());
+        // ...and are vertically stacked
+        assertEquals(mAppBar.getBottom(), scrollingContent.getTop());
+    }
+
+    /**
+     * Tests a AppBarLayout + scrolling content with fitSystemWindows = undefined,
+     * with a fitSystemWindows = true parent, in RTL
+     */
+    @Test
+    public void testScrollingContentPositionWithFitSystemWindowsParentInRtl() {
+        configureContent(R.layout.design_appbar_toolbar_scroll_fitsystemwindows_parent,
+                R.string.design_appbar_toolbar_scroll_tabs_pin);
+
+        // Force RTL
+        onView(withId(R.id.app_bar)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
+
+        final int[] appbarOnScreenXY = new int[2];
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+
+        final View scrollingContent = mCoordinatorLayout.findViewById(R.id.scrolling_content);
+        final int[] scrollingContentOnScreenXY = new int[2];
+        scrollingContent.getLocationOnScreen(scrollingContentOnScreenXY);
+
+        // Assert that they have the same left
+        assertEquals(appbarOnScreenXY[0], scrollingContentOnScreenXY[0]);
+        // ...and the same width
+        assertEquals(mAppBar.getWidth(), scrollingContent.getWidth());
+        // ...and are vertically stacked
+        assertEquals(mAppBar.getBottom(), scrollingContent.getTop());
     }
 
 }

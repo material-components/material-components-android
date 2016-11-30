@@ -344,6 +344,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return insets;
     }
 
+    final WindowInsetsCompat getLastWindowInsets() {
+        return mLastInsets;
+    }
+
     /**
      * Reset all Behavior-related tracking records either to clean up or in preparation
      * for a new event stream. This should be called when attached or detached from a window,

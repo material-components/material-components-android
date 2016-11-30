@@ -20,6 +20,7 @@ import android.support.design.test.R;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewStub;
 import org.hamcrest.Description;
@@ -29,6 +30,7 @@ import org.junit.After;
 
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.any;
 
 /**
  * Base class for tests that are exercising various aspects of {@link CoordinatorLayout}.
@@ -97,6 +99,29 @@ public abstract class BaseDynamicCoordinatorLayoutTest
 
                 mCoordinatorLayout = (CoordinatorLayout) mActivityTestRule.getActivity()
                         .findViewById(viewStub.getInflatedId());
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    protected ViewAction setLayoutDirection(final int layoutDir) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return any(View.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets layout direction";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                ViewCompat.setLayoutDirection(view, layoutDir);
 
                 uiController.loopMainThreadUntilIdle();
             }

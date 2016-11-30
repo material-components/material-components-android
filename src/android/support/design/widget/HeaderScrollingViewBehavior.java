@@ -21,6 +21,7 @@ import android.graphics.Rect;
 import android.support.design.widget.CoordinatorLayout.Behavior;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -110,6 +111,16 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
                     parent.getWidth() - parent.getPaddingRight() - lp.rightMargin,
                     parent.getHeight() + header.getBottom()
                             - parent.getPaddingBottom() - lp.bottomMargin);
+
+            final WindowInsetsCompat parentInsets = parent.getLastWindowInsets();
+            if (parentInsets != null && ViewCompat.getFitsSystemWindows(parent)
+                    && !ViewCompat.getFitsSystemWindows(child)) {
+                // If we're set to handle insets but this child isn't, then it has been measured as
+                // if there are no insets. We need to lay it out to match horizontally.
+                // Top and bottom and already handled in the logic above
+                available.left += parentInsets.getSystemWindowInsetLeft();
+                available.right -= parentInsets.getSystemWindowInsetRight();
+            }
 
             final Rect out = mTempRect2;
             GravityCompat.apply(resolveGravity(lp.gravity), child.getMeasuredWidth(),
