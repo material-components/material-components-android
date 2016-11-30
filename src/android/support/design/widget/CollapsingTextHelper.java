@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.support.design.R;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
@@ -188,6 +189,20 @@ final class CollapsingTextHelper {
         a.recycle();
 
         recalculate();
+    }
+
+    void setTypeface(Typeface typeface) {
+        if (typeface == null) {
+            typeface = Typeface.DEFAULT;
+        }
+        if (mTextPaint.getTypeface() != typeface) {
+            mTextPaint.setTypeface(typeface);
+            recalculate();
+        }
+    }
+
+    Typeface getTypeface() {
+        return mTextPaint.getTypeface();
     }
 
     /**

@@ -22,6 +22,7 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Typeface;
 import android.os.Handler;
 import android.os.Message;
 import android.support.design.R;
@@ -144,6 +145,15 @@ public class TextInputLayout extends LinearLayout {
         }
     }
 
+    /**
+     * Set the typeface to use for the both the expanded and floating hint.
+     *
+     * @param typeface typeface to use, or {@code null} to use the default.
+     */
+    public void setTypeface(Typeface typeface) {
+        mCollapsingTextHelper.setTypeface(typeface);
+    }
+
     private LayoutParams setEditText(EditText editText, ViewGroup.LayoutParams lp) {
         // If we already have an EditText, throw an exception
         if (mEditText != null) {
@@ -151,7 +161,8 @@ public class TextInputLayout extends LinearLayout {
         }
         mEditText = editText;
 
-        // Use the EditText's text size for our expanded text
+        // Use the EditText's typeface, and it's text size for our expanded text
+        mCollapsingTextHelper.setTypeface(mEditText.getTypeface());
         mCollapsingTextHelper.setExpandedTextSize(mEditText.getTextSize());
 
         // Add a TextWatcher so that we know when the text input has changed
@@ -199,6 +210,7 @@ public class TextInputLayout extends LinearLayout {
         // to the EditText so make room for the label
         LayoutParams newLp = new LayoutParams(lp);
         Paint paint = new Paint();
+        paint.setTypeface(mCollapsingTextHelper.getTypeface());
         paint.setTextSize(mCollapsingTextHelper.getExpandedTextSize());
         newLp.topMargin = (int) -paint.ascent();
 
