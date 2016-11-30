@@ -56,12 +56,6 @@
         <attr name="headerLayout" format="reference"/>
     </declare-styleable>
 
-    <declare-styleable name="ForegroundLinearLayout">
-        <attr name="android:foreground" />
-        <attr name="android:foregroundGravity" />
-        <attr name="foregroundInsidePadding" format="boolean" />
-    </declare-styleable>
-
     <declare-styleable name="TabLayout">
         <attr name="tabIndicatorColor" format="color"/>
         <attr name="tabIndicatorHeight" format="dimension"/>

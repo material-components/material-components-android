@@ -16,7 +16,6 @@
 -->
 <android.support.design.internal.NavigationMenuView
         xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/design_navigation_padding_top_default"
@@ -24,5 +23,4 @@
         android:clipToPadding="false"
         android:divider="@null"
         android:scrollbars="vertical"
-        android:listSelector="?attr/selectableItemBackground"
-        app:layoutManager="android.support.v7.widget.LinearLayoutManager"/>
+        android:listSelector="?attr/selectableItemBackground"/>
