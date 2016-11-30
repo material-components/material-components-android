@@ -500,18 +500,32 @@ public class AppBarLayout extends LinearLayout {
         return mergeDrawableStates(states, extraStates);
     }
 
-    private void setCollapsibleState(boolean collapsible) {
+    /**
+     * Sets whether the AppBarLayout has collapsible children or not.
+     *
+     * @return true if the collapsible state changed
+     */
+    private boolean setCollapsibleState(boolean collapsible) {
         if (mCollapsible != collapsible) {
             mCollapsible = collapsible;
             refreshDrawableState();
+            return true;
         }
+        return false;
     }
 
-    private void setCollapsedState(boolean collapsed) {
+    /**
+     * Sets whether the AppBarLayout is in a collapsed state or not.
+     *
+     * @return true if the collapsed state changed
+     */
+    private boolean setCollapsedState(boolean collapsed) {
         if (mCollapsed != collapsed) {
             mCollapsed = collapsed;
             refreshDrawableState();
+            return true;
         }
+        return false;
     }
 
     /**
@@ -1136,7 +1150,7 @@ public class AppBarLayout extends LinearLayout {
                     appBarLayout.dispatchOffsetUpdates(getTopAndBottomOffset());
 
                     // Update the AppBarLayout's drawable state (for any elevation changes)
-                    updateAppBarLayoutDrawableState(appBarLayout, newOffset,
+                    updateAppBarLayoutDrawableState(coordinatorLayout, appBarLayout, newOffset,
                             newOffset < curOffset ? -1 : 1);
                 }
             } else {
@@ -1194,8 +1208,8 @@ public class AppBarLayout extends LinearLayout {
             return offset;
         }
 
-        private void updateAppBarLayoutDrawableState(final AppBarLayout layout,
-                final int offset, final int direction) {
+        private void updateAppBarLayoutDrawableState(final CoordinatorLayout parent,
+                final AppBarLayout layout, final int offset, final int direction) {
             final View child = getAppBarChildOnOffset(layout, offset);
             if (child != null) {
                 final AppBarLayout.LayoutParams childLp = (LayoutParams) child.getLayoutParams();
@@ -1217,8 +1231,32 @@ public class AppBarLayout extends LinearLayout {
                     }
                 }
 
-                layout.setCollapsedState(collapsed);
+                final boolean changed = layout.setCollapsedState(collapsed);
+
+                if (changed && Build.VERSION.SDK_INT >= 11
+                        && shouldJumpElevationState(parent, layout)) {
+                    // If the collapsed state changed, we may need to
+                    // jump to the current state if we have an overlapping view
+                    layout.jumpDrawablesToCurrentState();
+                }
             }
+        }
+
+        private boolean shouldJumpElevationState(CoordinatorLayout parent, AppBarLayout layout) {
+            // We should jump the elevated state if we have a dependent scrolling view which has
+            // an overlapping top (i.e. overlaps us)
+            final List<View> dependencies = parent.getDependents(layout);
+            for (int i = 0, size = dependencies.size(); i < size; i++) {
+                final View dependency = dependencies.get(i);
+                final CoordinatorLayout.LayoutParams lp =
+                        (CoordinatorLayout.LayoutParams) dependency.getLayoutParams();
+                final CoordinatorLayout.Behavior behavior = lp.getBehavior();
+
+                if (behavior instanceof ScrollingViewBehavior) {
+                    return ((ScrollingViewBehavior) behavior).getOverlayTop() != 0;
+                }
+            }
+            return false;
         }
 
         private static View getAppBarChildOnOffset(final AppBarLayout layout, final int offset) {

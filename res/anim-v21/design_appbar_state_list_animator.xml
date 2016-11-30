@@ -16,26 +16,23 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android"
           xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <item android:state_enabled="true" app:state_collapsible="true" app:state_collapsed="true">
-        <objectAnimator android:propertyName="elevation"
-                        android:valueTo="@dimen/design_appbar_elevation"
-                        android:valueType="floatType"/>
-    </item>
-
-    <item android:state_enabled="true" app:state_collapsible="true" app:state_collapsed="false">
-        <objectAnimator android:propertyName="elevation"
+    <item android:state_enabled="true" app:state_collapsed="false" app:state_collapsible="true">
+        <objectAnimator android:duration="@integer/app_bar_elevation_anim_duration"
+                        android:propertyName="elevation"
                         android:valueTo="0dp"
                         android:valueType="floatType"/>
     </item>
 
-    <item android:state_enabled="true" app:state_collapsible="false">
-        <objectAnimator android:propertyName="elevation"
+    <item android:state_enabled="true">
+        <objectAnimator android:duration="@integer/app_bar_elevation_anim_duration"
+                        android:propertyName="elevation"
                         android:valueTo="@dimen/design_appbar_elevation"
                         android:valueType="floatType"/>
     </item>
 
     <item>
-        <objectAnimator android:propertyName="elevation"
+        <objectAnimator android:duration="0"
+                        android:propertyName="elevation"
                         android:valueTo="0"
                         android:valueType="floatType"/>
     </item>

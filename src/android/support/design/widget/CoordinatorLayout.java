@@ -1402,6 +1402,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      *
      * @return the list of views which {@code child} depends on.
      */
+    @NonNull
     public List<View> getDependencies(@NonNull View child) {
         prepareChildren(false);
 
@@ -1421,6 +1422,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      *
      * @return the list of views which depend on {@code child}.
      */
+    @NonNull
     public List<View> getDependents(@NonNull View child) {
         prepareChildren(false);
 

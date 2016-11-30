@@ -53,26 +53,23 @@ class ViewUtilsLollipop {
     /**
      * Creates and sets a {@link StateListAnimator} with a custom elevation value
      */
-    static void setDefaultAppBarLayoutStateListAnimator(final View view,
-            final float targetElevation) {
+    static void setDefaultAppBarLayoutStateListAnimator(final View view, final float elevation) {
+        final int dur = view.getResources().getInteger(R.integer.app_bar_elevation_anim_duration);
+
         final StateListAnimator sla = new StateListAnimator();
 
-        // Enabled, collapsible and collapsed == elevated
-        sla.addState(new int[]{android.R.attr.enabled, R.attr.state_collapsible,
-                        R.attr.state_collapsed},
-                ObjectAnimator.ofFloat(view, "elevation", targetElevation));
-
-        // Enabled and collapsible, but not collapsed != elevated
+        // Enabled and collapsible, but not collapsed means not elevated
         sla.addState(new int[]{android.R.attr.enabled, R.attr.state_collapsible,
                         -R.attr.state_collapsed},
-                ObjectAnimator.ofFloat(view, "elevation", 0f));
+                ObjectAnimator.ofFloat(view, "elevation", 0f).setDuration(dur));
 
-        // Enabled but not collapsible == elevated
-        sla.addState(new int[]{android.R.attr.enabled, -R.attr.state_collapsible},
-                ObjectAnimator.ofFloat(view, "elevation", targetElevation));
+        // Default enabled state
+        sla.addState(new int[]{android.R.attr.enabled},
+                ObjectAnimator.ofFloat(view, "elevation", elevation).setDuration(dur));
 
-        // Default, none elevated state
-        sla.addState(new int[0], ObjectAnimator.ofFloat(view, "elevation", 0));
+        // Disabled state
+        sla.addState(new int[0],
+                ObjectAnimator.ofFloat(view, "elevation", 0).setDuration(0));
 
         view.setStateListAnimator(sla);
     }

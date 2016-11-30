@@ -16,4 +16,5 @@
 -->
 <resources>
     <integer name="bottom_sheet_slide_duration">150</integer>
+    <integer name="app_bar_elevation_anim_duration">150</integer>
 </resources>
