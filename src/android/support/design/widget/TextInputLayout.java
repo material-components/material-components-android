@@ -93,6 +93,12 @@ import android.widget.TextView;
  *
  * &lt;/android.support.design.widget.TextInputLayout&gt;
  * </pre>
+ *
+ * <p><strong>Note:</strong> The actual view hierarchy present under TextInputLayout is
+ * <strong>NOT</strong> guaranteed to match the view hierarchy as written in XML. As a result,
+ * calls to getParent() on children of the TextInputLayout -- such as an TextInputEditText --
+ * may not return the TextInputLayout itself, but rather an intermediate View. If you need
+ * to access a View directly, set an {@code android:id} and use {@link View#findViewById(int)}.
  */
 public class TextInputLayout extends LinearLayout {
 
