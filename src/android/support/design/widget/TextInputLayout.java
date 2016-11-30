@@ -19,6 +19,7 @@ package android.support.design.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -557,9 +558,23 @@ public class TextInputLayout extends LinearLayout {
 
             if (enabled) {
                 mErrorView = new TextView(getContext());
+                boolean useDefaultColor = false;
                 try {
                     mErrorView.setTextAppearance(getContext(), mErrorTextAppearance);
+
+                    if (Build.VERSION.SDK_INT >= 23
+                            && mErrorView.getTextColors().getDefaultColor() == Color.MAGENTA) {
+                        // Caused by our theme not extending from Theme.Design*. On API 23 and
+                        // above, unresolved theme attrs result in MAGENTA rather than an exception.
+                        // Flag so that we use a decent default
+                        useDefaultColor = true;
+                    }
                 } catch (Exception e) {
+                    // Caused by our theme not extending from Theme.Design*. Flag so that we use
+                    // a decent default
+                    useDefaultColor = true;
+                }
+                if (useDefaultColor) {
                     // Probably caused by our theme not extending from Theme.Design*. Instead
                     // we manually set something appropriate
                     mErrorView.setTextAppearance(getContext(),
