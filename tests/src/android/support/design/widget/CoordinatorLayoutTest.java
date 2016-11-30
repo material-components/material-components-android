@@ -31,7 +31,9 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import android.app.Instrumentation;
+import android.graphics.Rect;
 import android.support.design.testutils.CoordinatorLayoutUtils;
+import android.support.design.widget.CoordinatorLayout.Behavior;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SdkSuppress;
 import android.support.v4.view.ViewCompat;
@@ -39,7 +41,9 @@ import android.support.v4.view.WindowInsetsCompat;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.view.Gravity;
 import android.view.View;
+import android.view.View.MeasureSpec;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.List;
@@ -48,8 +52,15 @@ import java.util.concurrent.atomic.AtomicInteger;
 @MediumTest
 public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<CoordinatorLayoutActivity> {
 
+    private Instrumentation mInstrumentation;
+
     public CoordinatorLayoutTest() {
         super(CoordinatorLayoutActivity.class);
+    }
+
+    @Before
+    public void setup() {
+        mInstrumentation = InstrumentationRegistry.getInstrumentation();
     }
 
     @Test
@@ -334,4 +345,51 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
         });
     }
 
+    @Test
+    public void testDodgeInsetBeforeLayout() throws Throwable {
+        final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
+
+        // Add a dummy view, which will be used to trigger a hierarchy change.
+        final View dummy = new View(col.getContext());
+
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                col.addView(dummy);
+            }
+        });
+
+        // Wait for a layout.
+        mInstrumentation.waitForIdleSync();
+
+        final View dodge = new View(col.getContext());
+        final CoordinatorLayout.LayoutParams lpDodge = col.generateDefaultLayoutParams();
+        lpDodge.dodgeInsetEdges = Gravity.BOTTOM;
+        lpDodge.setBehavior(new Behavior() {
+            @Override
+            public boolean getInsetDodgeRect(CoordinatorLayout parent, View child, Rect rect) {
+                // Any non-empty rect is fine here.
+                rect.set(0, 0, 10, 10);
+                return true;
+            }
+        });
+
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                col.addView(dodge, lpDodge);
+
+                // Ensure the new view is in the list of children.
+                int heightSpec = MeasureSpec.makeMeasureSpec(col.getHeight(), MeasureSpec.EXACTLY);
+                int widthSpec = MeasureSpec.makeMeasureSpec(col.getWidth(), MeasureSpec.EXACTLY);
+                col.measure(widthSpec, heightSpec);
+
+                // Force a hierarchy change.
+                col.removeView(dummy);
+            }
+        });
+
+        // Wait for a layout.
+        mInstrumentation.waitForIdleSync();
+    }
 }

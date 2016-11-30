@@ -1309,6 +1309,12 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void offsetChildByInset(final View child, final Rect inset, final int layoutDirection) {
+        if (!ViewCompat.isLaidOut(child)) {
+            // The view has not been laid out yet,
+            // so we can't obtain its bounds.
+            return;
+        }
+
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
         final int absDodgeInsetEdges = GravityCompat.getAbsoluteGravity(lp.dodgeInsetEdges,
                 layoutDirection);
