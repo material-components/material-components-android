@@ -19,6 +19,7 @@ package android.support.design.widget;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.atLeastOnce;
@@ -391,5 +392,43 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
 
         // Wait for a layout.
         mInstrumentation.waitForIdleSync();
+    }
+
+    @Test
+    public void testGoneNotMeasuredLaidOut() throws Throwable {
+        final CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
+        final CoordinatorLayout col = activity.mCoordinatorLayout;
+
+        // Now create a GONE view and add it to the CoordinatorLayout
+        final View imageView = new View(activity);
+        imageView.setVisibility(View.GONE);
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                col.addView(imageView, 200, 200);
+            }
+        });
+        // Wait for a layout and measure pass
+        mInstrumentation.waitForIdleSync();
+
+        // And assert that it has not been laid out
+        assertFalse(imageView.getMeasuredWidth() > 0);
+        assertFalse(imageView.getMeasuredHeight() > 0);
+        assertFalse(ViewCompat.isLaidOut(imageView));
+
+        // Now set the view to INVISIBLE
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                imageView.setVisibility(View.INVISIBLE);
+            }
+        });
+        // Wait for a layout and measure pass
+        mInstrumentation.waitForIdleSync();
+
+        // And assert that it has been laid out
+        assertTrue(imageView.getMeasuredWidth() > 0);
+        assertTrue(imageView.getMeasuredHeight() > 0);
+        assertTrue(ViewCompat.isLaidOut(imageView));
     }
 }

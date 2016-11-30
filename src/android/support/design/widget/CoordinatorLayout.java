@@ -731,6 +731,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int childCount = mDependencySortedChildren.size();
         for (int i = 0; i < childCount; i++) {
             final View child = mDependencySortedChildren.get(i);
+            if (child.getVisibility() == GONE) {
+                // If the child is GONE, skip...
+                continue;
+            }
+
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
             int keylineWidthUsed = 0;
@@ -843,6 +848,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int childCount = mDependencySortedChildren.size();
         for (int i = 0; i < childCount; i++) {
             final View child = mDependencySortedChildren.get(i);
+            if (child.getVisibility() == GONE) {
+                // If the child is GONE, skip...
+                continue;
+            }
+
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
             final Behavior behavior = lp.getBehavior();
 
