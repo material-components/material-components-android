@@ -23,8 +23,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
-import android.support.v7.graphics.drawable.TintDrawableWrapper;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Interpolator;
@@ -34,8 +34,8 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
     private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
 
-    private TintDrawableWrapper mShapeDrawable;
-    private TintDrawableWrapper mRippleDrawable;
+    private Drawable mShapeDrawable;
+    private Drawable mRippleDrawable;
 
     private float mElevation;
     private float mPressedTranslationZ;
@@ -67,8 +67,11 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
             PorterDuff.Mode backgroundTintMode, int rippleColor) {
         // First we need to tint the original background with the tint
-        mShapeDrawable = new TintDrawableWrapper(originalBackground,
-                backgroundTint, backgroundTintMode);
+        mShapeDrawable = DrawableCompat.wrap(originalBackground);
+        DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
+        if (backgroundTintMode != null) {
+            DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
+        }
 
         // Now we created a mask Drawable which will be used for touch feedback.
         // As we don't know the actual outline of mShapeDrawable, we'll just guess that it's a
@@ -79,8 +82,9 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         touchFeedbackShape.setCornerRadius(mShadowViewDelegate.getRadius());
 
         // We'll now wrap that touch feedback mask drawable with a ColorStateList
-        mRippleDrawable = new TintDrawableWrapper(touchFeedbackShape,
-                createColorStateList(rippleColor), PorterDuff.Mode.MULTIPLY);
+        mRippleDrawable = DrawableCompat.wrap(touchFeedbackShape);
+        DrawableCompat.setTintList(mRippleDrawable, createColorStateList(rippleColor));
+        DrawableCompat.setTintMode(mRippleDrawable, PorterDuff.Mode.MULTIPLY);
 
         mShadowDrawable = new ShadowDrawableWrapper(
                 mView.getResources(),
@@ -97,17 +101,17 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
     @Override
     void setBackgroundTintList(ColorStateList tint) {
-        mShapeDrawable.setSupportTintList(tint);
+        DrawableCompat.setTintList(mShapeDrawable, tint);
     }
 
     @Override
     void setBackgroundTintMode(PorterDuff.Mode tintMode) {
-        mShapeDrawable.setSupportTintMode(tintMode);
+        DrawableCompat.setTintMode(mShapeDrawable, tintMode);
     }
 
     @Override
     void setRippleColor(int rippleColor) {
-        mRippleDrawable.setSupportTintList(createColorStateList(rippleColor));
+        DrawableCompat.setTint(mRippleDrawable, rippleColor);
     }
 
     @Override

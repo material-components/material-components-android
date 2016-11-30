@@ -23,9 +23,9 @@ import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.animation.AnimationUtils;
@@ -49,16 +49,15 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
     @Override
     void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
             PorterDuff.Mode backgroundTintMode, int rippleColor) {
-        if (backgroundTint != null) {
-            originalBackground.setTintList(backgroundTint);
-        }
+        mShapeDrawable = DrawableCompat.wrap(originalBackground);
+
+        DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
-            originalBackground.setTintMode(backgroundTintMode);
+            DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
         }
-        mShapeDrawable = originalBackground;
 
         mRippleDrawable = new RippleDrawable(ColorStateList.valueOf(rippleColor),
-                originalBackground, null);
+                mShapeDrawable, null);
 
         mShadowViewDelegate.setBackgroundDrawable(mRippleDrawable);
         mShadowViewDelegate.setShadowPadding(0, 0, 0, 0);
@@ -66,17 +65,17 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
 
     @Override
     void setBackgroundTintList(ColorStateList tint) {
-        mShapeDrawable.setTintList(tint);
+        DrawableCompat.setTintList(mShapeDrawable, tint);
     }
 
     @Override
     void setBackgroundTintMode(PorterDuff.Mode tintMode) {
-        mShapeDrawable.setTintMode(tintMode);
+        DrawableCompat.setTintMode(mShapeDrawable, tintMode);
     }
 
     @Override
     void setRippleColor(int rippleColor) {
-        mRippleDrawable.setColor(ColorStateList.valueOf(rippleColor));
+        DrawableCompat.setTint(mRippleDrawable, rippleColor);
     }
 
     @Override
