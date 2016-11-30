@@ -31,6 +31,8 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingParent;
@@ -2586,7 +2588,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     protected static class SavedState extends BaseSavedState {
         SparseArray<Parcelable> behaviorStates;
 
-        public SavedState(Parcel source) {
+        public SavedState(Parcel source, ClassLoader loader) {
             super(source);
 
             final int size = source.readInt();
@@ -2594,8 +2596,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             final int[] ids = new int[size];
             source.readIntArray(ids);
 
-            final Parcelable[] states = source.readParcelableArray(
-                    CoordinatorLayout.class.getClassLoader());
+            final Parcelable[] states = source.readParcelableArray(loader);
 
             behaviorStates = new SparseArray<>(size);
             for (int i = 0; i < size; i++) {
@@ -2626,18 +2627,18 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
         }
 
-        public static final Parcelable.Creator<SavedState> CREATOR =
-                new Parcelable.Creator<SavedState>() {
-                    @Override
-                    public SavedState createFromParcel(Parcel source) {
-                        return new SavedState(source);
-                    }
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+                return new SavedState(in, loader);
+            }
 
-                    @Override
-                    public SavedState[] newArray(int size) {
-                        return new SavedState[size];
-                    }
-                };
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+        });
     }
 
     private static void selectionSort(final List<View> list, final Comparator<View> comparator) {

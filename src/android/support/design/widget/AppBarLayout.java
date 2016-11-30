@@ -24,6 +24,8 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
@@ -1061,12 +1063,12 @@ public class AppBarLayout extends LinearLayout {
             }
         }
 
-        protected static class SavedState extends View.BaseSavedState {
+        protected static class SavedState extends BaseSavedState {
             int firstVisibleChildIndex;
             float firstVisibileChildPercentageShown;
             boolean firstVisibileChildAtMinimumHeight;
 
-            public SavedState(Parcel source) {
+            public SavedState(Parcel source, ClassLoader loader) {
                 super(source);
                 firstVisibleChildIndex = source.readInt();
                 firstVisibileChildPercentageShown = source.readFloat();
@@ -1086,17 +1088,17 @@ public class AppBarLayout extends LinearLayout {
             }
 
             public static final Parcelable.Creator<SavedState> CREATOR =
-                    new Parcelable.Creator<SavedState>() {
+                    ParcelableCompat.newCreator(new ParcelableCompatCreatorCallbacks<SavedState>() {
                         @Override
-                        public SavedState createFromParcel(Parcel source) {
-                            return new SavedState(source);
+                        public SavedState createFromParcel(Parcel source, ClassLoader loader) {
+                            return new SavedState(source, loader);
                         }
 
                         @Override
                         public SavedState[] newArray(int size) {
                             return new SavedState[size];
                         }
-                    };
+                    });
         }
     }
 

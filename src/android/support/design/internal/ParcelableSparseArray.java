@@ -18,6 +18,8 @@ package android.support.design.internal;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.util.SparseArray;
 
 /**
@@ -29,13 +31,12 @@ public class ParcelableSparseArray extends SparseArray<Parcelable> implements Pa
         super();
     }
 
-    public ParcelableSparseArray(Parcel source) {
+    public ParcelableSparseArray(Parcel source, ClassLoader loader) {
         super();
         int size = source.readInt();
         int[] keys = new int[size];
         source.readIntArray(keys);
-        Parcelable[] values = source.readParcelableArray(
-                ParcelableSparseArray.class.getClassLoader());
+        Parcelable[] values = source.readParcelableArray(loader);
         for (int i = 0; i < size; ++i) {
             put(keys[i], values[i]);
         }
@@ -60,17 +61,18 @@ public class ParcelableSparseArray extends SparseArray<Parcelable> implements Pa
         parcel.writeParcelableArray(values, flags);
     }
 
-    public static final Parcelable.Creator<ParcelableSparseArray> CREATOR
-            = new Creator<ParcelableSparseArray>() {
-        @Override
-        public ParcelableSparseArray createFromParcel(Parcel source) {
-            return new ParcelableSparseArray(source);
-        }
+    public static final Parcelable.Creator<ParcelableSparseArray> CREATOR =
+            ParcelableCompat
+                    .newCreator(new ParcelableCompatCreatorCallbacks<ParcelableSparseArray>() {
+                        @Override
+                        public ParcelableSparseArray createFromParcel(Parcel source,
+                                ClassLoader loader) {
+                            return new ParcelableSparseArray(source, loader);
+                        }
 
-        @Override
-        public ParcelableSparseArray[] newArray(int size) {
-            return new ParcelableSparseArray[size];
-        }
-    };
-
+                        @Override
+                        public ParcelableSparseArray[] newArray(int size) {
+                            return new ParcelableSparseArray[size];
+                        }
+                    });
 }

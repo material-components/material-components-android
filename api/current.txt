@@ -32,7 +32,7 @@ package android.support.design.widget {
   }
 
   protected static class AppBarLayout.Behavior.SavedState extends android.view.View.BaseSavedState {
-    ctor public AppBarLayout.Behavior.SavedState(android.os.Parcel);
+    ctor public AppBarLayout.Behavior.SavedState(android.os.Parcel, java.lang.ClassLoader);
     ctor public AppBarLayout.Behavior.SavedState(android.os.Parcelable);
     field public static final android.os.Parcelable.Creator<android.support.design.widget.AppBarLayout.Behavior.SavedState> CREATOR;
   }
@@ -184,7 +184,7 @@ package android.support.design.widget {
   }
 
   protected static class CoordinatorLayout.SavedState extends android.view.View.BaseSavedState {
-    ctor public CoordinatorLayout.SavedState(android.os.Parcel);
+    ctor public CoordinatorLayout.SavedState(android.os.Parcel, java.lang.ClassLoader);
     ctor public CoordinatorLayout.SavedState(android.os.Parcelable);
     field public static final android.os.Parcelable.Creator<android.support.design.widget.CoordinatorLayout.SavedState> CREATOR;
   }
@@ -250,7 +250,7 @@ package android.support.design.widget {
   }
 
   public static class NavigationView.SavedState extends android.view.View.BaseSavedState {
-    ctor public NavigationView.SavedState(android.os.Parcel);
+    ctor public NavigationView.SavedState(android.os.Parcel, java.lang.ClassLoader);
     ctor public NavigationView.SavedState(android.os.Parcelable);
     field public static final android.os.Parcelable.Creator<android.support.design.widget.NavigationView.SavedState> CREATOR;
     field public android.os.Bundle menuState;
