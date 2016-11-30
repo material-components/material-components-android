@@ -93,6 +93,12 @@ final class CollapsingTextHelper {
     private Interpolator mPositionInterpolator;
     private Interpolator mTextSizeInterpolator;
 
+    private float mCollapsedShadowRadius, mCollapsedShadowDx, mCollapsedShadowDy;
+    private int mCollapsedShadowColor;
+
+    private float mExpandedShadowRadius, mExpandedShadowDx, mExpandedShadowDy;
+    private int mExpandedShadowColor;
+
     public CollapsingTextHelper(View view) {
         mView = view;
 
@@ -195,6 +201,10 @@ final class CollapsingTextHelper {
             mCollapsedTextSize = a.getDimensionPixelSize(
                     R.styleable.TextAppearance_android_textSize, (int) mCollapsedTextSize);
         }
+        mCollapsedShadowColor = a.getInt(R.styleable.TextAppearance_android_shadowColor, 0);
+        mCollapsedShadowDx = a.getFloat(R.styleable.TextAppearance_android_shadowDx, 0);
+        mCollapsedShadowDy = a.getFloat(R.styleable.TextAppearance_android_shadowDy, 0);
+        mCollapsedShadowRadius = a.getFloat(R.styleable.TextAppearance_android_shadowRadius, 0);
         a.recycle();
 
         recalculate();
@@ -210,6 +220,10 @@ final class CollapsingTextHelper {
             mExpandedTextSize = a.getDimensionPixelSize(
                     R.styleable.TextAppearance_android_textSize, (int) mExpandedTextSize);
         }
+        mExpandedShadowColor = a.getInt(R.styleable.TextAppearance_android_shadowColor, 0);
+        mExpandedShadowDx = a.getFloat(R.styleable.TextAppearance_android_shadowDx, 0);
+        mExpandedShadowDy = a.getFloat(R.styleable.TextAppearance_android_shadowDy, 0);
+        mExpandedShadowRadius = a.getFloat(R.styleable.TextAppearance_android_shadowRadius, 0);
         a.recycle();
 
         recalculate();
@@ -258,8 +272,10 @@ final class CollapsingTextHelper {
     }
 
     private void calculateCurrentOffsets() {
-        final float fraction = mExpandedFraction;
+        calculateOffsets(mExpandedFraction);
+    }
 
+    private void calculateOffsets(final float fraction) {
         interpolateBounds(fraction);
         mCurrentDrawX = lerp(mExpandedDrawX, mCollapsedDrawX, fraction,
                 mPositionInterpolator);
@@ -276,6 +292,12 @@ final class CollapsingTextHelper {
         } else {
             mTextPaint.setColor(mCollapsedTextColor);
         }
+
+        mTextPaint.setShadowLayer(
+                lerp(mExpandedShadowRadius, mCollapsedShadowRadius, fraction, null),
+                lerp(mExpandedShadowDx, mCollapsedShadowDx, fraction, null),
+                lerp(mExpandedShadowDy, mCollapsedShadowDy, fraction, null),
+                blendColors(mExpandedShadowColor, mCollapsedShadowColor, fraction));
 
         ViewCompat.postInvalidateOnAnimation(mView);
     }
@@ -476,8 +498,7 @@ final class CollapsingTextHelper {
             return;
         }
 
-        mTextPaint.setTextSize(mExpandedTextSize);
-        mTextPaint.setColor(mExpandedTextColor);
+        calculateOffsets(0f);
         mTextureAscent = mTextPaint.ascent();
         mTextureDescent = mTextPaint.descent();
 
