@@ -26,6 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -94,7 +95,7 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class CollapsingToolbarLayout extends FrameLayout {
 
-    private static final int SCRIM_ANIMATION_DURATION = 600;
+    private static final int DEFAULT_SCRIM_ANIMATION_DURATION = 600;
 
     private boolean mRefreshToolbar = true;
     private int mToolbarId;
@@ -117,6 +118,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private int mScrimAlpha;
     private boolean mScrimsAreShown;
     private ValueAnimatorCompat mScrimAnimator;
+    private int mScrimAnimationDuration;
+    private int mScrimVisibleHeightTrigger = -1;
 
     private AppBarLayout.OnOffsetChangedListener mOnOffsetChangedListener;
 
@@ -192,6 +195,13 @@ public class CollapsingToolbarLayout extends FrameLayout {
                     a.getResourceId(
                             R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
         }
+
+        mScrimVisibleHeightTrigger = a.getInt(
+                R.styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger, -1);
+
+        mScrimAnimationDuration = a.getInt(
+                R.styleable.CollapsingToolbarLayout_scrimAnimationDuration,
+                DEFAULT_SCRIM_ANIMATION_DURATION);
 
         setContentScrim(a.getDrawable(R.styleable.CollapsingToolbarLayout_contentScrim));
         setStatusBarScrim(a.getDrawable(R.styleable.CollapsingToolbarLayout_statusBarScrim));
@@ -556,7 +566,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         ensureToolbar();
         if (mScrimAnimator == null) {
             mScrimAnimator = ViewUtils.createAnimator();
-            mScrimAnimator.setDuration(SCRIM_ANIMATION_DURATION);
+            mScrimAnimator.setDuration(mScrimAnimationDuration);
             mScrimAnimator.setInterpolator(
                     targetAlpha > mScrimAlpha
                             ? AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR
@@ -973,10 +983,66 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     /**
-     * The additional offset used to define when to trigger the scrim visibility change.
+     * Set the amount of visible height in pixels used to define when to trigger a scrim
+     * visibility change.
+     *
+     * <p>If the visible height of this view is less than the given value, the scrims will be
+     * made visible, otherwise they are hidden.</p>
+     *
+     * @param height value in pixels used to define when to trigger a scrim visibility change
+     *
+     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_scrimVisibleHeightTrigger
      */
-    final int getScrimTriggerOffset() {
-        return 2 * ViewCompat.getMinimumHeight(this);
+    public void setScrimVisibleHeightTrigger(@IntRange(from = 0) final int height) {
+        if (mScrimVisibleHeightTrigger != height) {
+            mScrimVisibleHeightTrigger = height;
+            // Update the scrim visibilty
+            updateScrimVisibility();
+        }
+    }
+
+    /**
+     * Returns the amount of visible height in pixels used to define when to trigger a scrim
+     * visibility change.
+     *
+     * @see #setScrimTriggerOffset(int)
+     */
+    public int getScrimVisibleHeightTrigger() {
+        if (mScrimVisibleHeightTrigger >= 0) {
+            // If we have one explictly set, return it
+            return mScrimVisibleHeightTrigger;
+        }
+
+        // Otherwise we'll use the default computed value
+        final int insetTop = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
+
+        final int minHeight = ViewCompat.getMinimumHeight(this);
+        if (minHeight > 0) {
+            // If we have a minHeight set, lets use 2 * minHeight (capped at our height)
+            return Math.min((minHeight * 2) + insetTop, getHeight());
+        }
+
+        // If we reach here then we don't have a min height set. Instead we'll take a
+        // guess at 1/3 of our height being visible
+        return getHeight() / 3;
+    }
+
+    /**
+     * Set the duration used for scrim visibility animations.
+     *
+     * @param duration the duration to use in milliseconds
+     *
+     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_scrimAnimationDuration
+     */
+    public void setScrimAnimationDuration(@IntRange(from = 0) final int duration) {
+        mScrimAnimationDuration = duration;
+    }
+
+    /**
+     * Returns the duration in milliseconds used for scrim visibility animations.
+     */
+    public int getScrimAnimationDuration() {
+        return mScrimAnimationDuration;
     }
 
     @Override
@@ -1111,6 +1177,15 @@ public class CollapsingToolbarLayout extends FrameLayout {
         }
     }
 
+    /**
+     * Show or hide the scrims if needed
+     */
+    final void updateScrimVisibility() {
+        if (mContentScrim != null || mStatusBarScrim != null) {
+            setScrimsShown(getHeight() + mCurrentOffset < getScrimVisibleHeightTrigger());
+        }
+    }
+
     private class OffsetUpdateListener implements AppBarLayout.OnOffsetChangedListener {
         @Override
         public void onOffsetChanged(AppBarLayout layout, int verticalOffset) {
@@ -1137,9 +1212,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             }
 
             // Show or hide the scrims if needed
-            if (mContentScrim != null || mStatusBarScrim != null) {
-                setScrimsShown(getHeight() + verticalOffset < getScrimTriggerOffset() + insetTop);
-            }
+            updateScrimVisibility();
 
             if (mStatusBarScrim != null && insetTop > 0) {
                 ViewCompat.postInvalidateOnAnimation(CollapsingToolbarLayout.this);

@@ -121,6 +121,8 @@ package android.support.design.widget {
     method public int getExpandedTitleMarginStart();
     method public int getExpandedTitleMarginTop();
     method public android.graphics.Typeface getExpandedTitleTypeface();
+    method public int getScrimAnimationDuration();
+    method public int getScrimVisibleHeightTrigger();
     method public android.graphics.drawable.Drawable getStatusBarScrim();
     method public java.lang.CharSequence getTitle();
     method public boolean isTitleEnabled();
@@ -140,6 +142,8 @@ package android.support.design.widget {
     method public void setExpandedTitleMarginTop(int);
     method public void setExpandedTitleTextAppearance(int);
     method public void setExpandedTitleTypeface(android.graphics.Typeface);
+    method public void setScrimAnimationDuration(int);
+    method public void setScrimVisibleHeightTrigger(int);
     method public void setScrimsShown(boolean);
     method public void setScrimsShown(boolean, boolean);
     method public void setStatusBarScrim(android.graphics.drawable.Drawable);
