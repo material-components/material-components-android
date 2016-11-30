@@ -28,7 +28,8 @@ LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res \
 LOCAL_AAPT_FLAGS := \
     --auto-add-overlay \
     --extra-packages android.support.v7.appcompat \
-    --extra-packages android.support.v7.recyclerview
+    --extra-packages android.support.v7.recyclerview \
+    --no-version-vectors
 LOCAL_JAR_EXCLUDE_FILES := none
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)

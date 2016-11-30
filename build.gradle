@@ -25,6 +25,8 @@ android {
     defaultConfig {
         minSdkVersion 7
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // This disables the builds tools automatic vector -> PNG generation
+        generatedDensities = []
     }
 
     sourceSets {
@@ -52,6 +54,10 @@ android {
 
     buildTypes.all {
         consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
     }
 }
 
