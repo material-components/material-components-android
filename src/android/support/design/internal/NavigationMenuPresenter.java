@@ -23,7 +23,6 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -40,7 +39,6 @@ import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -54,7 +52,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
     private static final String STATE_ADAPTER = "android:menu:adapter";
 
     private NavigationMenuView mMenuView;
-    private LinearLayout mHeaderLayout;
 
     private Callback mCallback;
     private MenuBuilder mMenu;
@@ -99,9 +96,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
             if (mAdapter == null) {
                 mAdapter = new NavigationMenuAdapter();
             }
-            mHeaderLayout = (LinearLayout) mLayoutInflater
-                    .inflate(R.layout.design_navigation_item_header,
-                            mMenuView, false);
             mMenuView.setAdapter(mAdapter);
         }
         return mMenuView;
@@ -186,21 +180,14 @@ public class NavigationMenuPresenter implements MenuPresenter {
         mAdapter.setCheckedItem(item);
     }
 
-    public View inflateHeaderView(@LayoutRes int res) {
-        View view = mLayoutInflater.inflate(res, mHeaderLayout, false);
-        addHeaderView(view);
-        return view;
-    }
-
     public void addHeaderView(@NonNull View view) {
-        mHeaderLayout.addView(view);
-        // The padding on top should be cleared.
+        // The padding on top should be cleared when there's a header.
         mMenuView.setPadding(0, 0, 0, mMenuView.getPaddingBottom());
     }
 
-    public void removeHeaderView(@NonNull View view) {
-        mHeaderLayout.removeView(view);
-        if (mHeaderLayout.getChildCount() == 0) {
+    public void removeHeaderView(@NonNull View view, boolean hasHeaders) {
+        if (!hasHeaders) {
+            // Padding should be added when there are no headers.
             mMenuView.setPadding(0, mPaddingTopDefault, 0, mMenuView.getPaddingBottom());
         }
     }
@@ -279,14 +266,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
     }
 
-    private static class HeaderViewHolder extends ViewHolder {
-
-        public HeaderViewHolder(View itemView) {
-            super(itemView);
-        }
-
-    }
-
     /**
      * Handles click events for the menu items. The items has to be {@link NavigationMenuItemView}.
      */
@@ -315,7 +294,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
         private static final int VIEW_TYPE_NORMAL = 0;
         private static final int VIEW_TYPE_SUBHEADER = 1;
         private static final int VIEW_TYPE_SEPARATOR = 2;
-        private static final int VIEW_TYPE_HEADER = 3;
 
         private final ArrayList<NavigationMenuItem> mItems = new ArrayList<>();
         private MenuItemImpl mCheckedItem;
@@ -341,8 +319,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
             NavigationMenuItem item = mItems.get(position);
             if (item instanceof NavigationMenuSeparatorItem) {
                 return VIEW_TYPE_SEPARATOR;
-            } else if (item instanceof NavigationMenuHeaderItem) {
-                return VIEW_TYPE_HEADER;
             } else if (item instanceof NavigationMenuTextItem) {
                 NavigationMenuTextItem textItem = (NavigationMenuTextItem) item;
                 if (textItem.getMenuItem().hasSubMenu()) {
@@ -363,8 +339,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
                     return new SubheaderViewHolder(mLayoutInflater, parent);
                 case VIEW_TYPE_SEPARATOR:
                     return new SeparatorViewHolder(mLayoutInflater, parent);
-                case VIEW_TYPE_HEADER:
-                    return new HeaderViewHolder(mHeaderLayout);
             }
             return null;
         }
@@ -400,9 +374,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
                             item.getPaddingBottom());
                     break;
                 }
-                case VIEW_TYPE_HEADER: {
-                    break;
-                }
             }
 
         }
@@ -429,7 +400,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
             }
             mUpdateSuspended = true;
             mItems.clear();
-            mItems.add(new NavigationMenuHeaderItem());
 
             int currentGroupId = -1;
             int currentGroupStart = 0;
@@ -622,12 +592,4 @@ public class NavigationMenuPresenter implements MenuPresenter {
         }
 
     }
-
-    /**
-     * Header (not subheader) items.
-     */
-    private static class NavigationMenuHeaderItem implements NavigationMenuItem {
-        // The actual content is hold by NavigationMenuPresenter#mHeaderLayout.
-    }
-
 }

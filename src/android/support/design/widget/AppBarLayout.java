@@ -25,7 +25,6 @@ import android.support.design.R;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
-import android.support.v4.widget.ScrollerCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
@@ -645,7 +644,7 @@ public class AppBarLayout extends LinearLayout {
      * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested
      * scroll handling with offsetting.
      */
-    public static class Behavior extends ViewOffsetBehavior<AppBarLayout> {
+    public static class Behavior extends HeaderBehavior<AppBarLayout> {
         private static final int INVALID_POINTER = -1;
         private static final int INVALID_POSITION = -1;
 
@@ -653,8 +652,6 @@ public class AppBarLayout extends LinearLayout {
 
         private boolean mSkipNestedPreScroll;
         private boolean mWasFlung;
-        private Runnable mFlingRunnable;
-        private ScrollerCompat mScroller;
 
         private ValueAnimatorCompat mAnimator;
 
@@ -901,7 +898,7 @@ public class AppBarLayout extends LinearLayout {
                 mAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimatorCompat animator) {
-                        setAppBarTopBottomOffset(coordinatorLayout, child,
+                        setHeaderTopBottomOffset(coordinatorLayout, child,
                                 animator.getAnimatedIntValue());
                     }
                 });
@@ -913,31 +910,6 @@ public class AppBarLayout extends LinearLayout {
             mAnimator.start();
         }
 
-        private boolean fling(CoordinatorLayout coordinatorLayout, AppBarLayout layout, int minOffset,
-                int maxOffset, float velocityY) {
-            if (mFlingRunnable != null) {
-                layout.removeCallbacks(mFlingRunnable);
-            }
-
-            if (mScroller == null) {
-                mScroller = ScrollerCompat.create(layout.getContext());
-            }
-
-            mScroller.fling(
-                    0, getTopBottomOffsetForScrollingSibling(), // curr
-                    0, Math.round(velocityY), // velocity.
-                    0, 0, // x
-                    minOffset, maxOffset); // y
-
-            if (mScroller.computeScrollOffset()) {
-                mFlingRunnable = new FlingRunnable(coordinatorLayout, layout);
-                ViewCompat.postOnAnimation(layout, mFlingRunnable);
-                return true;
-            } else {
-                mFlingRunnable = null;
-                return false;
-            }
-        }
 
         private View getChildOnOffset(AppBarLayout abl, final int offset) {
             for (int i = 0, count = abl.getChildCount(); i < count; i++) {
@@ -964,26 +936,6 @@ public class AppBarLayout extends LinearLayout {
             }
         }
 
-        private class FlingRunnable implements Runnable {
-            private final CoordinatorLayout mParent;
-            private final AppBarLayout mLayout;
-
-            FlingRunnable(CoordinatorLayout parent, AppBarLayout layout) {
-                mParent = parent;
-                mLayout = layout;
-            }
-
-            @Override
-            public void run() {
-                if (mLayout != null && mScroller != null && mScroller.computeScrollOffset()) {
-                    setAppBarTopBottomOffset(mParent, mLayout, mScroller.getCurrY());
-
-                    // Post ourselves so that we run on the next animation
-                    ViewCompat.postOnAnimation(mLayout, this);
-                }
-            }
-        }
-
         @Override
         public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout abl,
                 int layoutDirection) {
@@ -997,13 +949,13 @@ public class AppBarLayout extends LinearLayout {
                     if (animate) {
                         animateOffsetTo(parent, abl, offset);
                     } else {
-                        setAppBarTopBottomOffset(parent, abl, offset);
+                        setHeaderTopBottomOffset(parent, abl, offset);
                     }
                 } else if ((pendingAction & PENDING_ACTION_EXPANDED) != 0) {
                     if (animate) {
                         animateOffsetTo(parent, abl, 0);
                     } else {
-                        setAppBarTopBottomOffset(parent, abl, 0);
+                        setHeaderTopBottomOffset(parent, abl, 0);
                     }
                 }
             } else if (mOffsetToChildIndexOnLayout >= 0) {
@@ -1027,12 +979,6 @@ public class AppBarLayout extends LinearLayout {
             return handled;
         }
 
-        private int scroll(CoordinatorLayout coordinatorLayout, AppBarLayout appBarLayout,
-                int dy, int minOffset, int maxOffset) {
-            return setAppBarTopBottomOffset(coordinatorLayout, appBarLayout,
-                    getTopBottomOffsetForScrollingSibling() - dy, minOffset, maxOffset);
-        }
-
         private boolean canDragAppBarLayout() {
             if (mLastNestedScrollingChildRef != null) {
                 final View view = mLastNestedScrollingChildRef.get();
@@ -1041,22 +987,18 @@ public class AppBarLayout extends LinearLayout {
             return false;
         }
 
-        final int setAppBarTopBottomOffset(CoordinatorLayout coordinatorLayout,
-                AppBarLayout appBarLayout, int newOffset) {
-            return setAppBarTopBottomOffset(coordinatorLayout, appBarLayout, newOffset,
-                    Integer.MIN_VALUE, Integer.MAX_VALUE);
-        }
-
-        final int setAppBarTopBottomOffset(CoordinatorLayout coordinatorLayout,
-                AppBarLayout appBarLayout, int newOffset, int minOffset, int maxOffset) {
+        @Override
+        protected int setHeaderTopBottomOffset(CoordinatorLayout coordinatorLayout,
+                View header, int newOffset, int minOffset, int maxOffset) {
             final int curOffset = getTopBottomOffsetForScrollingSibling();
             int consumed = 0;
 
-            if (minOffset != 0 && curOffset >= minOffset && curOffset <= maxOffset) {
+            if ((header instanceof AppBarLayout) && minOffset != 0 && curOffset >= minOffset
+                    && curOffset <= maxOffset) {
                 // If we have some scrolling range, and we're currently within the min and max
                 // offsets, calculate a new offset
                 newOffset = MathUtils.constrain(newOffset, minOffset, maxOffset);
-
+                AppBarLayout appBarLayout = (AppBarLayout) header;
                 if (curOffset != newOffset) {
                     final int interpolatedOffset = appBarLayout.hasChildWithInterpolator()
                             ? interpolateOffset(appBarLayout, newOffset)
@@ -1145,7 +1087,8 @@ public class AppBarLayout extends LinearLayout {
             return offset;
         }
 
-        final int getTopBottomOffsetForScrollingSibling() {
+        @Override
+        protected int getTopBottomOffsetForScrollingSibling() {
             return getTopAndBottomOffset() + mOffsetDelta;
         }
 
@@ -1231,7 +1174,7 @@ public class AppBarLayout extends LinearLayout {
      * Behavior which should be used by {@link View}s which can scroll vertically and support
      * nested scrolling to automatically scroll any {@link AppBarLayout} siblings.
      */
-    public static class ScrollingViewBehavior extends ViewOffsetBehavior<View> {
+    public static class ScrollingViewBehavior extends HeaderScrollingViewBehavior {
         private int mOverlayTop;
 
         public ScrollingViewBehavior() {}
@@ -1250,65 +1193,6 @@ public class AppBarLayout extends LinearLayout {
         public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
             // We depend on any AppBarLayouts
             return dependency instanceof AppBarLayout;
-        }
-
-        @Override
-        public boolean onMeasureChild(CoordinatorLayout parent, final View child,
-                int parentWidthMeasureSpec, int widthUsed,
-                int parentHeightMeasureSpec, int heightUsed) {
-            final int childLpHeight = child.getLayoutParams().height;
-            if (childLpHeight == LayoutParams.MATCH_PARENT
-                    || childLpHeight == LayoutParams.WRAP_CONTENT) {
-                // If the child's height is set to match_parent/wrap_content then measure it
-                // with the maximum visible height
-
-                final List<View> dependencies = parent.getDependencies(child);
-                if (dependencies.isEmpty()) {
-                    // If we don't have any dependencies, return false
-                    return false;
-                }
-
-                final AppBarLayout appBar = findFirstAppBarLayout(dependencies);
-                if (appBar != null && appBar.getVisibility() == View.VISIBLE) {
-                    if (appBar.getMeasuredHeight() <= 0 && appBar.getMeasuredWidth() <= 0) {
-                        // The AppBar hasn't been measured yet, so we'll post a Runnable to delay
-                        // our measure until after the ABLs has happened
-                        child.post(new Runnable() {
-                            @Override
-                            public void run() {
-                                child.requestLayout();
-                            }
-                        });
-                        return false;
-                    }
-
-                    if (ViewCompat.getFitsSystemWindows(appBar)) {
-                        // If the AppBarLayout is fitting system windows then we need to also,
-                        // otherwise we'll get CoL's compatible layout functionality
-                        ViewCompat.setFitsSystemWindows(child, true);
-                    }
-
-                    int availableHeight = MeasureSpec.getSize(parentHeightMeasureSpec);
-                    if (availableHeight == 0) {
-                        // If the measure spec doesn't specify a size, use the current height
-                        availableHeight = parent.getHeight();
-                    }
-
-                    final int height = availableHeight - appBar.getMeasuredHeight()
-                            + appBar.getTotalScrollRange();
-                    final int heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
-                            childLpHeight == LayoutParams.MATCH_PARENT
-                                    ? MeasureSpec.EXACTLY
-                                    : MeasureSpec.AT_MOST);
-
-                    // Now measure the scrolling child with the correct height
-                    parent.onMeasureChild(child, parentWidthMeasureSpec,
-                            widthUsed, heightMeasureSpec, heightUsed);
-
-                    return true;
-                }
-            }
-            return false;
         }
 
         @Override
@@ -1386,7 +1270,8 @@ public class AppBarLayout extends LinearLayout {
             return mOverlayTop;
         }
 
-        private static AppBarLayout findFirstAppBarLayout(List<View> views) {
+        @Override
+        protected View findFirstDependency(List<View> views) {
             for (int i = 0, z = views.size(); i < z; i++) {
                 View view = views.get(i);
                 if (view instanceof AppBarLayout) {
@@ -1394,6 +1279,15 @@ public class AppBarLayout extends LinearLayout {
                 }
             }
             return null;
+        }
+
+        @Override
+        protected int getScrollRange(View v) {
+            if (v instanceof AppBarLayout) {
+                return ((AppBarLayout) v).getTotalScrollRange();
+            } else {
+                return super.getScrollRange(v);
+            }
         }
     }
 }
