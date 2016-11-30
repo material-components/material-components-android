@@ -45,7 +45,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
     boolean mForegroundBoundsChanged = false;
 
     public ForegroundLinearLayout(Context context) {
-        super(context);
+        this(context, null);
     }
 
     public ForegroundLinearLayout(Context context, AttributeSet attrs) {
