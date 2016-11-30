@@ -51,26 +51,17 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     private static final String STATE_HIERARCHY = "android:menu:list";
 
     private NavigationMenuView mMenuView;
+    private View mSpace;
 
     private Callback mCallback;
-
     private MenuBuilder mMenu;
-
-    private ArrayList<NavigationMenuItem> mItems = new ArrayList<>();
-
     private int mId;
 
     private NavigationMenuAdapter mAdapter;
-
     private LayoutInflater mLayoutInflater;
 
-    private View mSpace;
-
     private ColorStateList mItemTintList;
-
     private int mItemBackgroundResource;
-
-    private ColorDrawable mTransparentIcon;
 
     /**
      * Padding to be inserted at the top of the list to avoid the first menu item
@@ -103,75 +94,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     @Override
     public void updateMenuView(boolean cleared) {
         if (mAdapter != null) {
-            prepareMenuItems();
             mAdapter.notifyDataSetChanged();
-        }
-    }
-
-    /**
-     * Flattens the visible menu items of {@link #mMenu} into {@link #mItems},
-     * while inserting separators between items when necessary.
-     */
-    private void prepareMenuItems() {
-        mItems.clear();
-        int currentGroupId = -1;
-        int currentGroupStart = 0;
-        boolean currentGroupHasIcon = false;
-        for (int i = 0, totalSize = mMenu.getVisibleItems().size(); i < totalSize; i++) {
-            MenuItemImpl item = mMenu.getVisibleItems().get(i);
-            if (item.hasSubMenu()) {
-                SubMenu subMenu = item.getSubMenu();
-                if (subMenu.hasVisibleItems()) {
-                    if (i != 0) {
-                        mItems.add(NavigationMenuItem.SEPARATOR);
-                    }
-                    mItems.add(NavigationMenuItem.of(item));
-                    boolean subMenuHasIcon = false;
-                    int subMenuStart = mItems.size();
-                    for (int j = 0, size = subMenu.size(); j < size; j++) {
-                        MenuItem subMenuItem = subMenu.getItem(j);
-                        if (subMenuItem.isVisible()) {
-                            if (!subMenuHasIcon && subMenuItem.getIcon() != null) {
-                                subMenuHasIcon = true;
-                            }
-                            mItems.add(NavigationMenuItem.of((MenuItemImpl) subMenuItem));
-                        }
-                    }
-                    if (subMenuHasIcon) {
-                        appendTransparentIconIfMissing(subMenuStart, mItems.size());
-                    }
-                }
-            } else {
-                int groupId = item.getGroupId();
-                if (groupId != currentGroupId) { // first item in group
-                    currentGroupStart = mItems.size();
-                    currentGroupHasIcon = item.getIcon() != null;
-                    if (i != 0) {
-                        currentGroupStart++;
-                        mItems.add(NavigationMenuItem.SEPARATOR);
-                    }
-                } else if (!currentGroupHasIcon && item.getIcon() != null) {
-                    currentGroupHasIcon = true;
-                    appendTransparentIconIfMissing(currentGroupStart, mItems.size());
-                }
-                if (currentGroupHasIcon && item.getIcon() == null) {
-                    item.setIcon(android.R.color.transparent);
-                }
-                mItems.add(NavigationMenuItem.of(item));
-                currentGroupId = groupId;
-            }
-        }
-    }
-
-    private void appendTransparentIconIfMissing(int startIndex, int endIndex) {
-        for (int i = startIndex; i < endIndex; i++) {
-            MenuItem item = mItems.get(i).getMenuItem();
-            if (item.getIcon() == null) {
-                if (mTransparentIcon == null) {
-                    mTransparentIcon = new ColorDrawable(android.R.color.transparent);
-                }
-                item.setIcon(mTransparentIcon);
-            }
         }
     }
 
@@ -297,12 +220,16 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     }
 
     private class NavigationMenuAdapter extends BaseAdapter {
-
         private static final int VIEW_TYPE_NORMAL = 0;
-
         private static final int VIEW_TYPE_SUBHEADER = 1;
-
         private static final int VIEW_TYPE_SEPARATOR = 2;
+
+        private final ArrayList<NavigationMenuItem> mItems = new ArrayList<>();
+        private ColorDrawable mTransparentIcon;
+
+        NavigationMenuAdapter() {
+            prepareMenuItems();
+        }
 
         @Override
         public int getCount() {
@@ -379,6 +306,78 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             return getItem(position).isEnabled();
         }
 
+        @Override
+        public void notifyDataSetChanged() {
+            prepareMenuItems();
+            super.notifyDataSetChanged();
+        }
+
+        /**
+         * Flattens the visible menu items of {@link #mMenu} into {@link #mItems},
+         * while inserting separators between items when necessary.
+         */
+        private void prepareMenuItems() {
+            mItems.clear();
+            int currentGroupId = -1;
+            int currentGroupStart = 0;
+            boolean currentGroupHasIcon = false;
+            for (int i = 0, totalSize = mMenu.getVisibleItems().size(); i < totalSize; i++) {
+                MenuItemImpl item = mMenu.getVisibleItems().get(i);
+                if (item.hasSubMenu()) {
+                    SubMenu subMenu = item.getSubMenu();
+                    if (subMenu.hasVisibleItems()) {
+                        if (i != 0) {
+                            mItems.add(NavigationMenuItem.SEPARATOR);
+                        }
+                        mItems.add(NavigationMenuItem.of(item));
+                        boolean subMenuHasIcon = false;
+                        int subMenuStart = mItems.size();
+                        for (int j = 0, size = subMenu.size(); j < size; j++) {
+                            MenuItem subMenuItem = subMenu.getItem(j);
+                            if (subMenuItem.isVisible()) {
+                                if (!subMenuHasIcon && subMenuItem.getIcon() != null) {
+                                    subMenuHasIcon = true;
+                                }
+                                mItems.add(NavigationMenuItem.of((MenuItemImpl) subMenuItem));
+                            }
+                        }
+                        if (subMenuHasIcon) {
+                            appendTransparentIconIfMissing(subMenuStart, mItems.size());
+                        }
+                    }
+                } else {
+                    int groupId = item.getGroupId();
+                    if (groupId != currentGroupId) { // first item in group
+                        currentGroupStart = mItems.size();
+                        currentGroupHasIcon = item.getIcon() != null;
+                        if (i != 0) {
+                            currentGroupStart++;
+                            mItems.add(NavigationMenuItem.SEPARATOR);
+                        }
+                    } else if (!currentGroupHasIcon && item.getIcon() != null) {
+                        currentGroupHasIcon = true;
+                        appendTransparentIconIfMissing(currentGroupStart, mItems.size());
+                    }
+                    if (currentGroupHasIcon && item.getIcon() == null) {
+                        item.setIcon(android.R.color.transparent);
+                    }
+                    mItems.add(NavigationMenuItem.of(item));
+                    currentGroupId = groupId;
+                }
+            }
+        }
+
+        private void appendTransparentIconIfMissing(int startIndex, int endIndex) {
+            for (int i = startIndex; i < endIndex; i++) {
+                MenuItem item = mItems.get(i).getMenuItem();
+                if (item.getIcon() == null) {
+                    if (mTransparentIcon == null) {
+                        mTransparentIcon = new ColorDrawable(android.R.color.transparent);
+                    }
+                    item.setIcon(mTransparentIcon);
+                }
+            }
+        }
     }
 
     /**

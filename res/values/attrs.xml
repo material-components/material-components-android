@@ -40,10 +40,12 @@
     </declare-styleable>
 
     <declare-styleable name="NavigationView">
-        <attr name="android:elevation" />
         <attr name="android:background" />
         <attr name="android:fitsSystemWindows" />
         <attr name="android:maxWidth" />
+        <attr name="elevation" />
+        <!-- The menu resource to inflate and populate items from. -->
+        <attr name="menu" format="reference" />
         <attr name="itemTint" format="color|reference" />
         <attr name="itemBackground" format="reference" />
     </declare-styleable>
@@ -154,6 +156,7 @@
 
     <declare-styleable name="SnackbarLayout">
         <attr name="android:maxWidth" />
+        <attr name="elevation" />
         <attr name="maxActionInlineWidth" format="dimension" />
     </declare-styleable>
 

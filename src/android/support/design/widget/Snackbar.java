@@ -441,6 +441,10 @@ public class Snackbar {
             mMaxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
             mMaxInlineActionWidth = a.getDimensionPixelSize(
                     R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
+            if (a.hasValue(R.styleable.SnackbarLayout_elevation)) {
+                ViewCompat.setElevation(this, a.getDimensionPixelSize(
+                        R.styleable.SnackbarLayout_elevation, 0));
+            }
             a.recycle();
 
             setClickable(true);

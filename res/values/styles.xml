@@ -31,7 +31,7 @@
     </style>
 
     <style name="Widget.Design.NavigationView" parent="">
-        <item name="android:elevation">@dimen/navigation_elevation</item>
+        <item name="elevation">@dimen/navigation_elevation</item>
         <item name="android:background">?android:attr/windowBackground</item>
         <item name="android:fitsSystemWindows">true</item>
         <item name="android:maxWidth">@dimen/navigation_max_width</item>
@@ -88,7 +88,7 @@
         <item name="android:background">@drawable/snackbar_background</item>
         <item name="android:paddingLeft">@dimen/snackbar_padding_horizontal</item>
         <item name="android:paddingRight">@dimen/snackbar_padding_horizontal</item>
-        <item name="android:elevation">@dimen/snackbar_elevation</item>
+        <item name="elevation">@dimen/snackbar_elevation</item>
         <item name="maxActionInlineWidth">@dimen/snackbar_action_inline_max_width</item>
     </style>
 

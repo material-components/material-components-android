@@ -30,9 +30,11 @@ import android.support.design.R;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.internal.ScrimInsetsFrameLayout;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.internal.view.SupportMenuInflater;
 import android.support.v7.internal.view.menu.MenuBuilder;
 import android.util.AttributeSet;
 import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 
@@ -55,21 +57,22 @@ import android.view.View;
  *         android:id="@+id/navigation"
  *         android:layout_width="wrap_content"
  *         android:layout_height="match_parent"
- *         android:layout_gravity="start" /&gt;
+ *         android:layout_gravity="start"
+ *         app:menu="@menu/my_navigation_items" /&gt;
  * &lt;/android.support.v4.widget.DrawerLayout&gt;
  * </pre>
  */
 public class NavigationView extends ScrimInsetsFrameLayout {
 
-    private static final int PRESENTER_NAVIGATION_VIEW = 1;
+    private static final int PRESENTER_NAVIGATION_VIEW_ID = 1;
+
+    private final MenuBuilder mMenu;
+    private final NavigationMenuPresenter mPresenter;
 
     private OnNavigationItemSelectedListener mListener;
-
-    private MenuBuilder mMenu;
-
-    private NavigationMenuPresenter mPresenter;
-
     private int mMaxWidth;
+
+    private MenuInflater mMenuInflater;
 
     public NavigationView(Context context) {
         this(context, null);
@@ -82,6 +85,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+        // Create the menu
+        mMenu = new MenuBuilder(context);
+
         // Custom attributes
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.NavigationView, defStyleAttr,
@@ -89,19 +95,25 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
         //noinspection deprecation
         setBackgroundDrawable(a.getDrawable(R.styleable.NavigationView_android_background));
-        ViewCompat.setElevation(this,
-                a.getDimensionPixelSize(R.styleable.NavigationView_android_elevation, 0));
+        if (a.hasValue(R.styleable.NavigationView_elevation)) {
+            ViewCompat.setElevation(this, a.getDimensionPixelSize(
+                    R.styleable.NavigationView_elevation, 0));
+        }
         ViewCompat.setFitsSystemWindows(this,
                 a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
-        mMaxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
-        ColorStateList itemTintList =
-                a.getColorStateList(R.styleable.NavigationView_itemTint);
-        int itemBackgroundResource =
-                a.getResourceId(R.styleable.NavigationView_itemBackground, 0);
-        a.recycle();
 
-        // Set up the menu
-        mMenu = new MenuBuilder(context);
+        mMaxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
+
+        final ColorStateList itemTintList =
+                a.getColorStateList(R.styleable.NavigationView_itemTint);
+
+        final int itemBackgroundResource =
+                a.getResourceId(R.styleable.NavigationView_itemBackground, 0);
+
+        if (a.hasValue(R.styleable.NavigationView_menu)) {
+            inflateMenu(a.getResourceId(R.styleable.NavigationView_menu, 0));
+        }
+
         mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
@@ -109,17 +121,17 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             }
 
             @Override
-            public void onMenuModeChange(MenuBuilder menu) {
-
-            }
+            public void onMenuModeChange(MenuBuilder menu) {}
         });
         mPresenter = new NavigationMenuPresenter();
-        mPresenter.setId(PRESENTER_NAVIGATION_VIEW);
+        mPresenter.setId(PRESENTER_NAVIGATION_VIEW_ID);
         mPresenter.initForMenu(context, mMenu);
         mPresenter.setItemTintList(itemTintList);
         mPresenter.setItemBackgroundResource(itemBackgroundResource);
         mMenu.addMenuPresenter(mPresenter);
         addView((View) mPresenter.getMenuView(this));
+
+        a.recycle();
     }
 
     @Override
@@ -165,8 +177,20 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         super.onMeasure(widthSpec, heightSpec);
     }
 
+
     /**
-     * @return The {@link Menu} associated with this NavigationView.
+     * Inflate a menu resource into this navigation view.
+     *
+     * <p>Existing items in the menu will not be modified or removed.</p>
+     *
+     * @param resId ID of a menu resource to inflate
+     */
+    public void inflateMenu(int resId) {
+        getMenuInflater().inflate(resId, mMenu);
+    }
+
+    /**
+     * Returns the {@link Menu} instance associated with this navigation view.
      */
     public Menu getMenu() {
         return mMenu;
@@ -243,6 +267,13 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      */
     public void setItemBackgroundResource(@DrawableRes int itemBackground) {
         mPresenter.setItemBackgroundResource(itemBackground);
+    }
+
+    private MenuInflater getMenuInflater() {
+        if (mMenuInflater == null) {
+            mMenuInflater = new SupportMenuInflater(getContext());
+        }
+        return mMenuInflater;
     }
 
     /**
