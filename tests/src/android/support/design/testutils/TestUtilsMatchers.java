@@ -20,11 +20,13 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
+import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.TextView;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -202,6 +204,52 @@ public class TestUtilsMatchers {
                     TestUtils.assertAllPixelsOfColor("",
                             background, view.getWidth(), view.getHeight(), true,
                             fillColor, 0, true);
+                } catch (Throwable t) {
+                    failedCheckDescription = t.getMessage();
+                    return false;
+                }
+                return true;
+            }
+        };
+    }
+
+    /**
+     * Returns a matcher that matches FloatingActionButtons with the specified background
+     * fill color.
+     */
+    public static Matcher withFabBackgroundFill(final @ColorInt int fillColor) {
+        return new BoundedMatcher<View, View>(View.class) {
+            private String failedCheckDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText(failedCheckDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final View view) {
+                if (!(view instanceof FloatingActionButton)) {
+                    return false;
+                }
+
+                final FloatingActionButton fab = (FloatingActionButton) view;
+
+                // Since the FAB background is round, and may contain the shadow, we'll look at
+                // just the center half rect of the content area
+                final Rect area = new Rect();
+                fab.getContentRect(area);
+
+                final int rectHeightQuarter = area.height() / 4;
+                final int rectWidthQuarter = area.width() / 4;
+                area.left += rectWidthQuarter;
+                area.top += rectHeightQuarter;
+                area.right -= rectWidthQuarter;
+                area.bottom -= rectHeightQuarter;
+
+                try {
+                    TestUtils.assertAllPixelsOfColor("",
+                            fab.getBackground(), view.getWidth(), view.getHeight(), false,
+                            fillColor, area, 0, true);
                 } catch (Throwable t) {
                     failedCheckDescription = t.getMessage();
                     return false;

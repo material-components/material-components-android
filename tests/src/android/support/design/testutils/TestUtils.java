@@ -16,12 +16,16 @@
 
 package android.support.design.testutils;
 
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+
 import junit.framework.Assert;
 
 public class TestUtils {
@@ -36,6 +40,14 @@ public class TestUtils {
     public static void assertAllPixelsOfColor(String failMessagePrefix, @NonNull Drawable drawable,
             int drawableWidth, int drawableHeight, boolean callSetBounds, @ColorInt int color,
             int allowedComponentVariance, boolean throwExceptionIfFails) {
+        assertAllPixelsOfColor(failMessagePrefix, drawable, drawableWidth, drawableHeight,
+                callSetBounds, color, null, allowedComponentVariance, throwExceptionIfFails);
+    }
+
+    public static void assertAllPixelsOfColor(String failMessagePrefix, @NonNull Drawable drawable,
+            int drawableWidth, int drawableHeight, boolean callSetBounds, @ColorInt int color,
+            Rect checkArea, int allowedComponentVariance, boolean throwExceptionIfFails) {
+
         // Create a bitmap
         Bitmap bitmap = Bitmap.createBitmap(drawableWidth, drawableHeight, Bitmap.Config.ARGB_8888);
         // Create a canvas that wraps the bitmap
@@ -44,23 +56,31 @@ public class TestUtils {
             // Configure the drawable to have bounds that match the passed size
             drawable.setBounds(0, 0, drawableWidth, drawableHeight);
         }
+
         // And ask the drawable to draw itself to the canvas / bitmap
         drawable.draw(canvas);
 
         try {
             int[] rowPixels = new int[drawableWidth];
-            for (int row = 0; row < drawableHeight; row++) {
+
+            final int firstRow = checkArea != null ? checkArea.top : 0;
+            final int lastRow = checkArea != null ? checkArea.bottom : drawableHeight - 1;
+            final int firstCol = checkArea != null ? checkArea.left : 0;
+            final int lastCol = checkArea != null ? checkArea.right : drawableWidth - 1;
+
+            final int expectedAlpha = Color.alpha(color);
+            final int expectedRed = Color.red(color);
+            final int expectedGreen = Color.green(color);
+            final int expectedBlue = Color.blue(color);
+
+            for (int row = firstRow; row <= lastRow; row++) {
                 bitmap.getPixels(rowPixels, 0, drawableWidth, 0, row, drawableWidth, 1);
-                for (int column = 0; column < drawableWidth; column++) {
+
+                for (int column = firstCol; column <= lastCol; column++) {
                     int sourceAlpha = Color.alpha(rowPixels[column]);
                     int sourceRed = Color.red(rowPixels[column]);
                     int sourceGreen = Color.green(rowPixels[column]);
                     int sourceBlue = Color.blue(rowPixels[column]);
-
-                    int expectedAlpha = Color.alpha(color);
-                    int expectedRed = Color.red(color);
-                    int expectedGreen = Color.green(color);
-                    int expectedBlue = Color.blue(color);
 
                     int varianceAlpha = Math.abs(sourceAlpha - expectedAlpha);
                     int varianceRed = Math.abs(sourceRed - expectedRed);
@@ -90,6 +110,18 @@ public class TestUtils {
             }
         } finally {
             bitmap.recycle();
+        }
+    }
+
+    public static int getThemeAttrColor(Context context, final int attr) {
+        TypedArray a = null;
+        try {
+            a = context.obtainStyledAttributes(new int[]{attr});
+            return a.getColor(0, 0);
+        } finally {
+            if (a != null) {
+                a.recycle();
+            }
         }
     }
 }

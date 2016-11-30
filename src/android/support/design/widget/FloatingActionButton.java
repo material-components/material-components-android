@@ -97,7 +97,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private final Rect mShadowPadding = new Rect();
     private final Rect mTouchArea = new Rect();
 
-    private final FloatingActionButtonImpl mImpl = createImpl(this, new ShadowDelegateImpl());
+    private FloatingActionButtonImpl mImpl;
 
     public FloatingActionButton(Context context) {
         this(context, null);
@@ -130,11 +130,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         final int maxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
         mImagePadding = (getSizeDimension() - maxImageSize) / 2;
 
-        mImpl.setBackgroundDrawable(mBackgroundTint, mBackgroundTintMode,
+        getImpl().setBackgroundDrawable(mBackgroundTint, mBackgroundTintMode,
                 mRippleColor, mBorderWidth);
-        mImpl.setElevation(elevation);
-        mImpl.setPressedTranslationZ(pressedTranslationZ);
-        mImpl.updatePadding();
+        getImpl().setElevation(elevation);
+        getImpl().setPressedTranslationZ(pressedTranslationZ);
+        getImpl().updatePadding();
     }
 
     @Override
@@ -166,7 +166,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     public void setRippleColor(@ColorInt int color) {
         if (mRippleColor != color) {
             mRippleColor = color;
-            mImpl.setRippleColor(color);
+            getImpl().setRippleColor(color);
         }
     }
 
@@ -191,7 +191,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     public void setBackgroundTintList(@Nullable ColorStateList tint) {
         if (mBackgroundTint != tint) {
             mBackgroundTint = tint;
-            mImpl.setBackgroundTintList(tint);
+            getImpl().setBackgroundTintList(tint);
         }
     }
 
@@ -220,7 +220,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     public void setBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
         if (mBackgroundTintMode != tintMode) {
             mBackgroundTintMode = tintMode;
-            mImpl.setBackgroundTintMode(tintMode);
+            getImpl().setBackgroundTintMode(tintMode);
         }
     }
 
@@ -258,7 +258,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     private void show(OnVisibilityChangedListener listener, boolean fromUser) {
-        mImpl.show(wrapOnVisibilityChangedListener(listener), fromUser);
+        getImpl().show(wrapOnVisibilityChangedListener(listener), fromUser);
     }
 
     /**
@@ -280,7 +280,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     private void hide(@Nullable OnVisibilityChangedListener listener, boolean fromUser) {
-        mImpl.hide(wrapOnVisibilityChangedListener(listener), fromUser);
+        getImpl().hide(wrapOnVisibilityChangedListener(listener), fromUser);
     }
 
     /**
@@ -296,7 +296,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     public void setUseCompatPadding(boolean useCompatPadding) {
         if (mCompatPadding != useCompatPadding) {
             mCompatPadding = useCompatPadding;
-            mImpl.onCompatShadowChanged();
+            getImpl().onCompatShadowChanged();
         }
     }
 
@@ -346,26 +346,26 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     @Override
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
-        mImpl.onAttachedToWindow();
+        getImpl().onAttachedToWindow();
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
-        mImpl.onDetachedFromWindow();
+        getImpl().onDetachedFromWindow();
     }
 
     @Override
     protected void drawableStateChanged() {
         super.drawableStateChanged();
-        mImpl.onDrawableStateChanged(getDrawableState());
+        getImpl().onDrawableStateChanged(getDrawableState());
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB)
     @Override
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
-        mImpl.jumpDrawableToCurrentState();
+        getImpl().jumpDrawableToCurrentState();
     }
 
     /**
@@ -392,7 +392,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
      */
     @NonNull
     public Drawable getContentBackground() {
-        return mImpl.getContentBackground();
+        return getImpl().getContentBackground();
     }
 
     private static int resolveAdjustedSize(int desiredSize, int measureSpec) {
@@ -631,7 +631,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
      * @see #setCompatElevation(float)
      */
     public float getCompatElevation() {
-        return mImpl.getElevation();
+        return getImpl().getElevation();
     }
 
     /**
@@ -643,18 +643,24 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
      * @see #setUseCompatPadding(boolean)
      */
     public void setCompatElevation(float elevation) {
-        mImpl.setElevation(elevation);
+        getImpl().setElevation(elevation);
     }
 
-    private static FloatingActionButtonImpl createImpl(FloatingActionButton view,
-            ShadowViewDelegate shadowViewDelegate) {
+    private FloatingActionButtonImpl getImpl() {
+        if (mImpl == null) {
+            mImpl = createImpl();
+        }
+        return mImpl;
+    }
+
+    private FloatingActionButtonImpl createImpl() {
         final int sdk = Build.VERSION.SDK_INT;
         if (sdk >= 21) {
-            return new FloatingActionButtonLollipop(view, shadowViewDelegate);
+            return new FloatingActionButtonLollipop(this, new ShadowDelegateImpl());
         } else if (sdk >= 14) {
-            return new FloatingActionButtonIcs(view, shadowViewDelegate);
+            return new FloatingActionButtonIcs(this, new ShadowDelegateImpl());
         } else {
-            return new FloatingActionButtonEclairMr1(view, shadowViewDelegate);
+            return new FloatingActionButtonEclairMr1(this, new ShadowDelegateImpl());
         }
     }
 

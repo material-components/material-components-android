@@ -46,6 +46,10 @@
                 android:name="android.support.design.widget.BottomSheetBehaviorActivity"/>
 
         <activity
+                android:name="android.support.design.widget.FloatingActionButtonActivity"
+                android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+        <activity
             android:theme="@style/Theme.AppCompat.NoActionBar"
             android:name="android.support.design.widget.NavigationViewActivity"/>
 

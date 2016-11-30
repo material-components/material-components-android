@@ -76,7 +76,6 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         // to inset for any border here as LayerDrawable will nest the padding for us
         mRippleDrawable = DrawableCompat.wrap(touchFeedbackShape);
         DrawableCompat.setTintList(mRippleDrawable, createColorStateList(rippleColor));
-        DrawableCompat.setTintMode(mRippleDrawable, PorterDuff.Mode.MULTIPLY);
 
         final Drawable[] layers;
         if (borderWidth > 0) {
@@ -101,7 +100,9 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
     @Override
     void setBackgroundTintList(ColorStateList tint) {
-        DrawableCompat.setTintList(mShapeDrawable, tint);
+        if (mShapeDrawable != null) {
+            DrawableCompat.setTintList(mShapeDrawable, tint);
+        }
         if (mBorderDrawable != null) {
             mBorderDrawable.setBorderTint(tint);
         }
@@ -109,12 +110,16 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
     @Override
     void setBackgroundTintMode(PorterDuff.Mode tintMode) {
-        DrawableCompat.setTintMode(mShapeDrawable, tintMode);
+        if (mShapeDrawable != null) {
+            DrawableCompat.setTintMode(mShapeDrawable, tintMode);
+        }
     }
 
     @Override
     void setRippleColor(int rippleColor) {
-        DrawableCompat.setTintList(mRippleDrawable, createColorStateList(rippleColor));
+        if (mRippleDrawable != null) {
+            DrawableCompat.setTintList(mRippleDrawable, createColorStateList(rippleColor));
+        }
     }
 
     @Override
