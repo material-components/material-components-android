@@ -879,15 +879,6 @@ public class TextInputLayout extends LinearLayout {
         mAnimator.start();
     }
 
-    private int getThemeAttrColor(int attr) {
-        TypedValue tv = new TypedValue();
-        if (getContext().getTheme().resolveAttribute(attr, tv, true)) {
-            return tv.data;
-        } else {
-            return Color.MAGENTA;
-        }
-    }
-
     private class TextInputAccessibilityDelegate extends AccessibilityDelegateCompat {
         @Override
         public void onInitializeAccessibilityEvent(View host, AccessibilityEvent event) {
