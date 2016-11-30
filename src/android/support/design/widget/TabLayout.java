@@ -215,7 +215,6 @@ public class TabLayout extends HorizontalScrollView {
     private View.OnClickListener mTabClickListener;
 
     private ValueAnimatorCompat mScrollAnimator;
-    private ValueAnimatorCompat mIndicatorAnimator;
 
     public TabLayout(Context context) {
         this(context, null);
@@ -329,20 +328,30 @@ public class TabLayout extends HorizontalScrollView {
      * @param updateSelectedText Whether to update the text's selected state.
      */
     public void setScrollPosition(int position, float positionOffset, boolean updateSelectedText) {
-        if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
-            return;
-        }
-        if (position < 0 || position >= mTabStrip.getChildCount()) {
+        setScrollPosition(position, positionOffset, updateSelectedText, true);
+    }
+
+    private void setScrollPosition(int position, float positionOffset, boolean updateSelectedText,
+            boolean updateIndicatorPosition) {
+        final int roundedPosition = Math.round(position + positionOffset);
+        if (roundedPosition < 0 || roundedPosition >= mTabStrip.getChildCount()) {
             return;
         }
 
-        // Set the indicator position and update the scroll to match
-        mTabStrip.setIndicatorPositionFromTabPosition(position, positionOffset);
+        // Set the indicator position, if enabled
+        if (updateIndicatorPosition) {
+            mTabStrip.setIndicatorPositionFromTabPosition(position, positionOffset);
+        }
+
+        // Now update the scroll position, canceling any running animation
+        if (mScrollAnimator != null && mScrollAnimator.isRunning()) {
+            mScrollAnimator.cancel();
+        }
         scrollTo(calculateScrollXForTab(position, positionOffset), 0);
 
-        // Update the 'selected state' view as we scroll
+        // Update the 'selected state' view as we scroll, if enabled
         if (updateSelectedText) {
-            setSelectedTabView(Math.round(position + positionOffset));
+            setSelectedTabView(roundedPosition);
         }
     }
 
@@ -1443,7 +1452,7 @@ public class TabLayout extends HorizontalScrollView {
         private int mIndicatorLeft = -1;
         private int mIndicatorRight = -1;
 
-        private ValueAnimatorCompat mCurrentAnimator;
+        private ValueAnimatorCompat mIndicatorAnimator;
 
         SlidingTabStrip(Context context) {
             super(context);
@@ -1476,6 +1485,10 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         void setIndicatorPositionFromTabPosition(int position, float positionOffset) {
+            if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
+                mIndicatorAnimator.cancel();
+            }
+
             mSelectedPosition = position;
             mSelectionOffset = positionOffset;
             updateIndicatorPosition();
@@ -1546,13 +1559,13 @@ public class TabLayout extends HorizontalScrollView {
         protected void onLayout(boolean changed, int l, int t, int r, int b) {
             super.onLayout(changed, l, t, r, b);
 
-            if (mCurrentAnimator != null && mCurrentAnimator.isRunning()) {
+            if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
                 // If we're currently running an animation, lets cancel it and start a
                 // new animation with the remaining duration
-                mCurrentAnimator.cancel();
-                final long duration = mCurrentAnimator.getDuration();
+                mIndicatorAnimator.cancel();
+                final long duration = mIndicatorAnimator.getDuration();
                 animateIndicatorToPosition(mSelectedPosition,
-                        Math.round((1f - mCurrentAnimator.getAnimatedFraction()) * duration));
+                        Math.round((1f - mIndicatorAnimator.getAnimatedFraction()) * duration));
             } else {
                 // If we've been layed out, update the indicator position
                 updateIndicatorPosition();
@@ -1592,6 +1605,10 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         void animateIndicatorToPosition(final int position, int duration) {
+            if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
+                mIndicatorAnimator.cancel();
+            }
+
             final boolean isRtl = ViewCompat.getLayoutDirection(this)
                     == ViewCompat.LAYOUT_DIRECTION_RTL;
 
@@ -1645,15 +1662,8 @@ public class TabLayout extends HorizontalScrollView {
                         mSelectedPosition = position;
                         mSelectionOffset = 0f;
                     }
-
-                    @Override
-                    public void onAnimationCancel(ValueAnimatorCompat animator) {
-                        mSelectedPosition = position;
-                        mSelectionOffset = 0f;
-                    }
                 });
                 animator.start();
-                mCurrentAnimator = animator;
             }
         }
 
@@ -1746,7 +1756,12 @@ public class TabLayout extends HorizontalScrollView {
                 final boolean updateText = (mScrollState == ViewPager.SCROLL_STATE_DRAGGING)
                         || (mScrollState == ViewPager.SCROLL_STATE_SETTLING
                         && mPreviousScrollState == ViewPager.SCROLL_STATE_DRAGGING);
-                tabLayout.setScrollPosition(position, positionOffset, updateText);
+                // Update the indicator if we're not settling after being idle. This is caused
+                // from a setCurrentItem() call and will be handled by an animation from
+                // onPageSelected() instead.
+                final boolean updateIndicator = !(mScrollState == ViewPager.SCROLL_STATE_SETTLING
+                        && mPreviousScrollState == ViewPager.SCROLL_STATE_IDLE);
+                tabLayout.setScrollPosition(position, positionOffset, updateText, updateIndicator);
             }
         }
 
@@ -1756,8 +1771,10 @@ public class TabLayout extends HorizontalScrollView {
             if (tabLayout != null && tabLayout.getSelectedTabPosition() != position) {
                 // Select the tab, only updating the indicator if we're not being dragged/settled
                 // (since onPageScrolled will handle that).
-                tabLayout.selectTab(tabLayout.getTabAt(position),
-                        mScrollState == ViewPager.SCROLL_STATE_IDLE);
+                final boolean updateIndicator = mScrollState == ViewPager.SCROLL_STATE_IDLE
+                        || (mScrollState == ViewPager.SCROLL_STATE_SETTLING
+                        && mPreviousScrollState == ViewPager.SCROLL_STATE_IDLE);
+                tabLayout.selectTab(tabLayout.getTabAt(position), updateIndicator);
             }
         }
     }
