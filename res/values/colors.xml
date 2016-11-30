@@ -24,4 +24,6 @@
     <!-- Shadow color for the furthest pixels of a shadow -->
     <color name="shadow_end_color">@android:color/transparent</color>
 
+    <color name="error_color">#FFDD2C00</color>
+
 </resources>

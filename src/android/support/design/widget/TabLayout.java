@@ -58,6 +58,8 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import static android.support.design.widget.AnimationUtils.lerp;
+
 /**
  * TabLayout provides a horizontal layout to display tabs. <p> Population of the tabs to display is
  * done through {@link Tab} instances. You create tabs via {@link #newTab()}. From there you can
@@ -1400,14 +1402,6 @@ public class TabLayout extends HorizontalScrollView {
                         mIndicatorRight, getHeight(), mSelectedIndicatorPaint);
             }
         }
-    }
-
-    /**
-     * Linear interpolation between {@code startValue} and {@code endValue} by the fraction {@code
-     * fraction}.
-     */
-    static float lerp(float startValue, float endValue, float fraction) {
-        return startValue + (fraction * (endValue - startValue));
     }
 
 }

@@ -32,8 +32,6 @@ import android.view.animation.Transformation;
 
 class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
-    private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
-
     private Drawable mShapeDrawable;
     private Drawable mRippleDrawable;
 
@@ -149,7 +147,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     }
 
     private Animation setupAnimation(Animation animation) {
-        animation.setInterpolator(INTERPOLATOR);
+        animation.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         animation.setDuration(mAnimationDuration);
         return animation;
     }

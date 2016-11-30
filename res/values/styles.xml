@@ -59,5 +59,18 @@
         <item name="textAllCaps">true</item>
     </style>
 
+    <style name="Widget.Design.TextInputLayout" parent="android:Widget">
+        <item name="hintTextAppearance">@style/TextAppearance.Design.Hint</item>
+        <item name="errorTextAppearance">@style/TextAppearance.Design.Error</item>
+    </style>
+
+    <style name="TextAppearance.Design.Hint" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">?attr/colorControlActivated</item>
+    </style>
+
+    <style name="TextAppearance.Design.Error" parent="TextAppearance.AppCompat.Caption">
+        <item name="android:textColor">@color/error_color</item>
+    </style>
+
 </resources>
 

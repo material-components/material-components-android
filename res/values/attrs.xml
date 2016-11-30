@@ -141,5 +141,16 @@
             <flag name="end" value="0x00800005" />
         </attr>
     </declare-styleable>
+
+    <declare-styleable name="TextInputLayout">
+        <attr name="hintTextAppearance" format="reference" />
+        <!-- The hint to display in the floating label -->
+        <attr name="android:hint" />
+        <!-- Whether the layout is laid out as if an error will be displayed -->
+        <attr name="errorEnabled" format="boolean" />
+        <!-- TextAppearance of any error message displayed -->
+        <attr name="errorTextAppearance" format="reference" />
+    </declare-styleable>
+
 </resources>
 
