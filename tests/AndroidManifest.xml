@@ -39,6 +39,10 @@
 
         <activity
                 android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:name="android.support.design.widget.DynamicCoordinatorLayoutActivity"/>
+
+        <activity
+                android:theme="@style/Theme.AppCompat.NoActionBar"
                 android:name="android.support.design.widget.BottomSheetBehaviorActivity"/>
 
         <activity
