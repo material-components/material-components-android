@@ -26,4 +26,7 @@
     <dimen name="design_snackbar_background_corner_radius">2dp</dimen>
     <dimen name="design_snackbar_action_inline_max_width">0dp</dimen>
 
+    <!-- 5 * standard increment (64dp on tablets) -->
+    <dimen name="design_navigation_max_width">320dp</dimen>
+
 </resources>

@@ -23,7 +23,8 @@
     <dimen name="design_fab_size_mini">40dp</dimen>
     <dimen name="design_fab_border_width">0.5dp</dimen>
 
-    <dimen name="design_navigation_max_width">320dp</dimen>
+    <!-- 5 * standard increment (56dp) -->
+    <dimen name="design_navigation_max_width">280dp</dimen>
     <dimen name="design_navigation_elevation">16dp</dimen>
     <dimen name="design_navigation_icon_padding">32dp</dimen>
     <dimen name="design_navigation_icon_size">24dp</dimen>
