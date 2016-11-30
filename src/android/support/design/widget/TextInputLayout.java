@@ -326,12 +326,12 @@ public class TextInputLayout extends LinearLayout {
         mCollapsingTextHelper.onLayout(changed, left, top, right, bottom);
 
         if (mEditText != null) {
-            final int l = mEditText.getLeft() + mEditText.getPaddingLeft();
-            final int r = mEditText.getRight() - mEditText.getPaddingRight();
+            final int l = mEditText.getLeft() + mEditText.getCompoundPaddingLeft();
+            final int r = mEditText.getRight() - mEditText.getCompoundPaddingRight();
 
             mCollapsingTextHelper.setExpandedBounds(l,
-                    mEditText.getTop() + mEditText.getPaddingTop(),
-                    r, mEditText.getBottom() - mEditText.getPaddingBottom());
+                    mEditText.getTop() + mEditText.getCompoundPaddingTop(),
+                    r, mEditText.getBottom() - mEditText.getCompoundPaddingBottom());
 
             // Set the collapsed bounds to be the the full height (minus padding) to match the
             // EditText's editable area
