@@ -23,6 +23,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.design.R;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.animation.Animation;
@@ -41,6 +42,8 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     private StateListAnimator mStateListAnimator;
 
     ShadowDrawableWrapper mShadowDrawable;
+
+    private boolean mIsHiding;
 
     FloatingActionButtonEclairMr1(View view, ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
@@ -151,6 +154,41 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     @Override
     void jumpDrawableToCurrentState() {
         mStateListAnimator.jumpToCurrentState();
+    }
+
+    @Override
+    void hide() {
+        if (mIsHiding) {
+            // There is currently an hide animation running, return
+            return;
+        }
+
+        Animation anim = android.view.animation.AnimationUtils.loadAnimation(
+                mView.getContext(), R.anim.fab_out);
+        anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+        anim.setDuration(SHOW_HIDE_ANIM_DURATION);
+        anim.setAnimationListener(new AnimationUtils.AnimationListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+                mIsHiding = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mIsHiding = false;
+                mView.setVisibility(View.GONE);
+            }
+        });
+        mView.startAnimation(anim);
+    }
+
+    @Override
+    void show() {
+        Animation anim = android.view.animation.AnimationUtils.loadAnimation(
+                mView.getContext(), R.anim.fab_in);
+        anim.setDuration(SHOW_HIDE_ANIM_DURATION);
+        anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+        mView.startAnimation(anim);
     }
 
     private void updatePadding() {

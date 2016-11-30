@@ -33,7 +33,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
+class FloatingActionButtonLollipop extends FloatingActionButtonHoneycombMr1 {
 
     private Drawable mShapeDrawable;
     private RippleDrawable mRippleDrawable;

@@ -26,6 +26,8 @@ import android.view.View;
 
 abstract class FloatingActionButtonImpl {
 
+    static final int SHOW_HIDE_ANIM_DURATION = 200;
+
     static final int[] PRESSED_ENABLED_STATE_SET = {android.R.attr.state_pressed,
             android.R.attr.state_enabled};
     static final int[] FOCUSED_ENABLED_STATE_SET = {android.R.attr.state_focused,
@@ -56,6 +58,10 @@ abstract class FloatingActionButtonImpl {
     abstract void onDrawableStateChanged(int[] state);
 
     abstract void jumpDrawableToCurrentState();
+
+    abstract void hide();
+
+    abstract void show();
 
     Drawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
         final Resources resources = mView.getResources();

@@ -170,7 +170,9 @@ package android.support.design.widget {
     ctor public FloatingActionButton(android.content.Context);
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet);
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet, int);
+    method public void hide();
     method public void setRippleColor(int);
+    method public void show();
   }
 
   public static class FloatingActionButton.Behavior extends android.support.design.widget.CoordinatorLayout.Behavior {

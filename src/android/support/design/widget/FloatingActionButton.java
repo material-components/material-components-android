@@ -28,10 +28,8 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorListener;
 import android.util.AttributeSet;
 import android.view.View;
-import android.view.animation.Animation;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -120,8 +118,11 @@ public class FloatingActionButton extends ImageView {
             }
         };
 
-        if (Build.VERSION.SDK_INT >= 21) {
+        final int sdk = Build.VERSION.SDK_INT;
+        if (sdk >= 21) {
             mImpl = new FloatingActionButtonLollipop(this, delegate);
+        } else if (sdk >= 12) {
+            mImpl = new FloatingActionButtonHoneycombMr1(this, delegate);
         } else {
             mImpl = new FloatingActionButtonEclairMr1(this, delegate);
         }
@@ -221,7 +222,36 @@ public class FloatingActionButton extends ImageView {
     public void setBackgroundDrawable(Drawable background) {
         if (mImpl != null) {
             mImpl.setBackgroundDrawable(
-                background, mBackgroundTint, mBackgroundTintMode, mRippleColor, mBorderWidth);
+                    background, mBackgroundTint, mBackgroundTintMode, mRippleColor, mBorderWidth);
+        }
+    }
+
+    /**
+     * Shows the button.
+     * <p>This method will animate it the button show if the view has already been laid out.</p>
+     */
+    public void show() {
+        if (getVisibility() == VISIBLE) {
+            return;
+        }
+        setVisibility(VISIBLE);
+        if (ViewCompat.isLaidOut(this)) {
+            mImpl.show();
+        }
+    }
+
+    /**
+     * Hides the button.
+     * <p>This method will animate the button hide if the view has already been laid out.</p>
+     */
+    public void hide() {
+        if (getVisibility() != VISIBLE) {
+            return;
+        }
+        if (ViewCompat.isLaidOut(this)) {
+            mImpl.hide();
+        } else {
+            setVisibility(GONE);
         }
     }
 
@@ -300,13 +330,11 @@ public class FloatingActionButton extends ImageView {
         private static final boolean SNACKBAR_BEHAVIOR_ENABLED = Build.VERSION.SDK_INT >= 11;
 
         private Rect mTmpRect;
-        private boolean mIsAnimatingOut;
         private float mTranslationY;
 
         @Override
         public boolean layoutDependsOn(CoordinatorLayout parent,
-                FloatingActionButton child,
-                View dependency) {
+                FloatingActionButton child, View dependency) {
             // We're dependent on all SnackbarLayouts (if enabled)
             return SNACKBAR_BEHAVIOR_ENABLED && dependency instanceof Snackbar.SnackbarLayout;
         }
@@ -317,32 +345,47 @@ public class FloatingActionButton extends ImageView {
             if (dependency instanceof Snackbar.SnackbarLayout) {
                 updateFabTranslationForSnackbar(parent, child, dependency);
             } else if (dependency instanceof AppBarLayout) {
-                final AppBarLayout appBarLayout = (AppBarLayout) dependency;
-                if (mTmpRect == null) {
-                    mTmpRect = new Rect();
-                }
-
-                // First, let's get the visible rect of the dependency
-                final Rect rect = mTmpRect;
-                ViewGroupUtils.getDescendantRect(parent, dependency, rect);
-
-                if (rect.bottom <= appBarLayout.getMinimumHeightForVisibleOverlappingContent()) {
-                    // If the anchor's bottom is below the seam, we'll animate our FAB out
-                    if (!mIsAnimatingOut && child.getVisibility() == View.VISIBLE) {
-                        animateOut(child);
-                    }
-                } else {
-                    // Else, we'll animate our FAB back in
-                    if (child.getVisibility() != View.VISIBLE) {
-                        animateIn(child);
-                    }
-                }
+                // If we're depending on an AppBarLayout we will show/hide it automatically
+                // if the FAB is anchored to the AppBarLayout
+                updateFabVisibility(parent, (AppBarLayout) dependency, child);
             }
             return false;
         }
 
+        private boolean updateFabVisibility(CoordinatorLayout parent,
+                AppBarLayout appBarLayout, FloatingActionButton child) {
+            final CoordinatorLayout.LayoutParams lp =
+                    (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+            if (lp.getAnchorId() != appBarLayout.getId()) {
+                // The anchor ID doesn't match the dependency, so we won't automatically
+                // show/hide the FAB
+                return false;
+            }
+
+            if (mTmpRect == null) {
+                mTmpRect = new Rect();
+            }
+
+            // First, let's get the visible rect of the dependency
+            final Rect rect = mTmpRect;
+            ViewGroupUtils.getDescendantRect(parent, appBarLayout, rect);
+
+            if (rect.bottom <= appBarLayout.getMinimumHeightForVisibleOverlappingContent()) {
+                // If the anchor's bottom is below the seam, we'll animate our FAB out
+                child.hide();
+            } else {
+                // Else, we'll animate our FAB back in
+                child.show();
+            }
+            return true;
+        }
+
         private void updateFabTranslationForSnackbar(CoordinatorLayout parent,
                 FloatingActionButton fab, View snackbar) {
+            if (fab.getVisibility() != View.VISIBLE) {
+                return;
+            }
+
             final float translationY = getFabTranslationYForSnackbar(parent, fab);
             if (translationY != mTranslationY) {
                 // First, cancel any current animation
@@ -378,81 +421,23 @@ public class FloatingActionButton extends ImageView {
             return minOffset;
         }
 
-        private void animateIn(FloatingActionButton button) {
-            button.setVisibility(View.VISIBLE);
-
-            if (Build.VERSION.SDK_INT >= 14) {
-                ViewCompat.animate(button)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .alpha(1f)
-                        .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                        .withLayer()
-                        .setListener(null)
-                        .start();
-            } else {
-                Animation anim = android.view.animation.AnimationUtils.loadAnimation(
-                        button.getContext(), R.anim.fab_in);
-                anim.setDuration(200);
-                anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-                button.startAnimation(anim);
-            }
-        }
-
         @Override
         public boolean onLayoutChild(CoordinatorLayout parent, FloatingActionButton child,
                 int layoutDirection) {
-            // Let the CoordinatorLayout lay out the FAB
+            // First, lets make sure that the visibility of the FAB is consistent
+            final List<View> dependencies = parent.getDependencies(child);
+            for (int i = 0, count = dependencies.size(); i < count; i++) {
+                final View dependency = dependencies.get(i);
+                if (dependency instanceof AppBarLayout
+                        && updateFabVisibility(parent, (AppBarLayout) dependency, child)) {
+                    break;
+                }
+            }
+            // Now let the CoordinatorLayout lay out the FAB
             parent.onLayoutChild(child, layoutDirection);
             // Now offset it if needed
             offsetIfNeeded(parent, child);
             return true;
-        }
-
-        private void animateOut(final FloatingActionButton button) {
-            if (Build.VERSION.SDK_INT >= 14) {
-                ViewCompat.animate(button)
-                        .scaleX(0f)
-                        .scaleY(0f)
-                        .alpha(0f)
-                        .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                        .withLayer()
-                        .setListener(new ViewPropertyAnimatorListener() {
-                            @Override
-                            public void onAnimationStart(View view) {
-                                mIsAnimatingOut = true;
-                            }
-
-                            @Override
-                            public void onAnimationCancel(View view) {
-                                mIsAnimatingOut = false;
-                            }
-
-                            @Override
-                            public void onAnimationEnd(View view) {
-                                mIsAnimatingOut = false;
-                                view.setVisibility(View.GONE);
-                            }
-                        }).start();
-            } else {
-                Animation anim = android.view.animation.AnimationUtils.loadAnimation(
-                        button.getContext(), R.anim.fab_out);
-                anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-                anim.setDuration(200);
-                anim.setAnimationListener(new AnimationUtils.AnimationListenerAdapter() {
-                    @Override
-                    public void onAnimationStart(Animation animation) {
-                        mIsAnimatingOut = true;
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
-                        mIsAnimatingOut = false;
-                        button.setVisibility(View.GONE);
-                    }
-                });
-                button.startAnimation(anim);
-            }
         }
 
         /**
