@@ -614,8 +614,6 @@ public class TextInputLayout extends LinearLayout {
                     mCounterView.setTextColor(ContextCompat.getColor(
                             getContext(), R.color.design_textinput_error_color_light));
                 }
-                ViewCompat.setAccessibilityLiveRegion(mCounterView,
-                        ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
                 addIndicator(mCounterView, -1);
                 if (mEditText == null) {
                     updateCounter(0);
