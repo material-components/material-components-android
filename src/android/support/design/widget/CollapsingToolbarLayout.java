@@ -129,7 +129,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     public CollapsingToolbarLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.collapsingToolbarLayoutStyle);
+        this(context, attrs, 0);
     }
 
     public CollapsingToolbarLayout(Context context, AttributeSet attrs, int defStyleAttr) {

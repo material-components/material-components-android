@@ -124,7 +124,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     public TextInputLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.textInputLayoutStyle);
+        this(context, attrs, 0);
     }
 
     public TextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {

@@ -104,7 +104,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     public FloatingActionButton(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.floatingActionButtonStyle);
+        this(context, attrs, 0);
     }
 
     public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {

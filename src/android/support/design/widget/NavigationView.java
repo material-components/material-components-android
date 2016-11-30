@@ -92,7 +92,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     public NavigationView(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.navigationViewStyle);
+        this(context, attrs, 0);
     }
 
     public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {

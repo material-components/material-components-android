@@ -173,7 +173,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     }
 
     public CoordinatorLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.coordinatorLayoutStyle);
+        this(context, attrs, 0);
     }
 
     public CoordinatorLayout(Context context, AttributeSet attrs, int defStyleAttr) {

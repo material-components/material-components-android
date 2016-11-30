@@ -258,7 +258,7 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     public TabLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, R.attr.tabLayoutStyle);
+        this(context, attrs, 0);
     }
 
     public TabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
