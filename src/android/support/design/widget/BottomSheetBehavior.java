@@ -110,6 +110,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     /**
      * Peek at the 16:9 ratio keyline of its parent.
+     *
+     * <p>This can be used as a parameter for {@link #setPeekHeight(int)}.
+     * {@link #getPeekHeight()} will return this when the value is set.</p>
      */
     public static final int PEEK_HEIGHT_AUTO = -1;
 
