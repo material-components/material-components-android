@@ -1,0 +1,35 @@
+apply plugin: 'android-library'
+
+archivesBaseName = 'design'
+
+dependencies {
+    compile project(':support-v4')
+}
+
+android {
+    compileSdkVersion 'current'
+
+    sourceSets {
+        main.manifest.srcFile 'AndroidManifest.xml'
+        main.java.srcDir 'src'
+        main.res.srcDir 'res'
+        main.assets.srcDir 'assets'
+        main.resources.srcDir 'src'
+
+        // this moves src/instrumentTest to tests so all folders follow:
+        // tests/java, tests/res, tests/assets, ...
+        // This is a *reset* so it replaces the default paths
+        androidTest.setRoot('tests')
+        androidTest.java.srcDir 'tests/src'
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    lintOptions {
+        // TODO: fix errors and reenable.
+        abortOnError false
+    }
+}
