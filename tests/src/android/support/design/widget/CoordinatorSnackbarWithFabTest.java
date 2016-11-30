@@ -17,6 +17,7 @@
 package android.support.design.widget;
 
 import android.os.Build;
+import android.support.design.custom.TestFloatingBehavior;
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
 import android.support.test.espresso.UiController;
@@ -96,7 +97,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
     }
 
     @Test
-    public void testFabSlidingWithSnackbar() {
+    public void testBuiltInSliding() {
         onView(withId(R.id.coordinator_stub)).perform(
                 inflateViewStub(R.layout.design_snackbar_with_fab));
 
@@ -114,9 +115,11 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
     }
 
     @Test
-    public void testCustomViewSlidingWithSnackbar() {
+    public void testBehaviorBasedSlidingFromLayoutAttribute() {
+        // Use a layout in which an AppCompatTextView child has Behavior object configured via
+        // layout_behavior XML attribute
         onView(withId(R.id.coordinator_stub)).perform(
-                inflateViewStub(R.layout.design_snackbar_with_textview));
+                inflateViewStub(R.layout.design_snackbar_behavior_layout_attr));
 
         // Create and show a snackbar
         mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
@@ -125,6 +128,44 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
 
         final AppCompatTextView textView =
                 (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+        verifySnackbarViewStacking(textView, 0);
+    }
+
+    @Test
+    public void testBehaviorBasedSlidingFromClassAnnotation() {
+        // Use a layout in which a custom child view has Behavior object configured via
+        // annotation on the class that extends AppCompatTextView
+        onView(withId(R.id.coordinator_stub)).perform(
+                inflateViewStub(R.layout.design_snackbar_behavior_annotation));
+
+        // Create and show a snackbar
+        mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+                .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+        SnackbarUtils.showSnackbarAndWaitUntilFullyShown(mSnackbar);
+
+        final AppCompatTextView textView =
+                (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+        verifySnackbarViewStacking(textView, 0);
+    }
+
+    @Test
+    public void testBehaviorBasedSlidingFromRuntimeApiCall() {
+        // Use a layout in which an AppCompatTextView child doesn't have any configured Behavior
+        onView(withId(R.id.coordinator_stub)).perform(
+                inflateViewStub(R.layout.design_snackbar_behavior_runtime));
+
+        // and configure that Behavior at runtime by setting it on its LayoutParams
+        final AppCompatTextView textView =
+                (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+        final CoordinatorLayout.LayoutParams textViewLp =
+                (CoordinatorLayout.LayoutParams) textView.getLayoutParams();
+        textViewLp.setBehavior(new TestFloatingBehavior());
+
+        // Create and show a snackbar
+        mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+                .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+        SnackbarUtils.showSnackbarAndWaitUntilFullyShown(mSnackbar);
+
         verifySnackbarViewStacking(textView, 0);
     }
 }

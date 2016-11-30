@@ -15,6 +15,7 @@
      limitations under the License.
 -->
 
+<!-- Layout for testing CoordinatorLayout.Behavior defined via a runtime API call. -->
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -25,12 +26,11 @@
         android:id="@+id/text"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:layout_gravity="bottom|end"
+        android:layout_gravity="bottom|start"
         android:text="text1"
         android:textSize="18dip"
         android:textStyle="bold"
         android:padding="12dip"
-        app:textAllCaps="true"
-        app:layout_behavior="android.support.design.widget.TestFloatingBehavior" />
+        app:textAllCaps="true" />
 
 </android.support.design.widget.CoordinatorLayout>

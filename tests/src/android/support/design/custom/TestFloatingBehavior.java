@@ -13,15 +13,24 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.support.design.widget;
+package android.support.design.custom;
 
 import android.content.Context;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
 
 public class TestFloatingBehavior extends CoordinatorLayout.Behavior<TextView> {
+    // Default constructor is needed to instantiate a Behavior object when it is attached
+    // to custom view class as class-level annotation
+    public TestFloatingBehavior() {
+    }
+
+    // This constructor is needed to instantiate a Behavior object when it is attached to a
+    // view via layout_behavior XML attribute
     public TestFloatingBehavior(Context context, AttributeSet attrs) {
     }
 
