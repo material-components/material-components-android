@@ -332,7 +332,7 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        return mTotalScrollRange = (range - getTopInset());
+        return mTotalScrollRange = Math.max(0, range - getTopInset());
     }
 
     private boolean hasScrollableChildren() {
@@ -406,9 +406,10 @@ public class AppBarLayout extends LinearLayout {
 
                 if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
                     // For a collapsing exit scroll, we to take the collapsed height into account.
-                    // We also return the range straight away since later views can't scroll
+                    // We also break the range straight away since later views can't scroll
                     // beneath us
-                    return mDownScrollRange = (range - ViewCompat.getMinimumHeight(child));
+                    range -= ViewCompat.getMinimumHeight(child) + getTopInset();
+                    break;
                 }
             } else {
                 // As soon as a view doesn't have the scroll flag, we end the range calculation.
@@ -416,7 +417,7 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        return mDownScrollRange = range;
+        return mDownScrollRange = Math.max(0, range - getTopInset());
     }
 
     final int getMinimumHeightForVisibleOverlappingContent() {
