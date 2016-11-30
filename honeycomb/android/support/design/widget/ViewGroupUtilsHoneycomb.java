@@ -26,7 +26,6 @@ import android.view.ViewParent;
 class ViewGroupUtilsHoneycomb {
     private static final ThreadLocal<Matrix> sMatrix = new ThreadLocal<>();
     private static final ThreadLocal<RectF> sRectF = new ThreadLocal<>();
-    private static final Matrix IDENTITY = new Matrix();
 
     public static void offsetDescendantRect(ViewGroup group, View child, Rect rect) {
         Matrix m = sMatrix.get();
@@ -34,7 +33,7 @@ class ViewGroupUtilsHoneycomb {
             m = new Matrix();
             sMatrix.set(m);
         } else {
-            m.set(IDENTITY);
+            m.reset();
         }
 
         offsetDescendantMatrix(group, child, m);
@@ -42,6 +41,7 @@ class ViewGroupUtilsHoneycomb {
         RectF rectF = sRectF.get();
         if (rectF == null) {
             rectF = new RectF();
+            sRectF.set(rectF);
         }
         rectF.set(rect);
         m.mapRect(rectF);
