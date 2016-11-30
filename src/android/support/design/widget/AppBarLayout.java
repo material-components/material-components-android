@@ -1203,7 +1203,7 @@ public class AppBarLayout extends LinearLayout {
                 // any vertical gap, and overlap
                 final Behavior ablBehavior = (Behavior) behavior;
                 final int offset = ablBehavior.getTopBottomOffsetForScrollingSibling();
-                child.offsetTopAndBottom((dependency.getBottom() - child.getTop())
+                ViewCompat.offsetTopAndBottom(child, (dependency.getBottom() - child.getTop())
                         + ablBehavior.mOffsetDelta
                         + getVerticalLayoutGap()
                         - getOverlapPixelsForOffset(dependency));

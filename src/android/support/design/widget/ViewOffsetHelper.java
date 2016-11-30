@@ -16,10 +16,8 @@
 
 package android.support.design.widget;
 
-import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
-import android.view.ViewParent;
 
 /**
  * Utility helper for moving a {@link android.view.View} around using
@@ -54,21 +52,6 @@ class ViewOffsetHelper {
     private void updateOffsets() {
         ViewCompat.offsetTopAndBottom(mView, mOffsetTop - (mView.getTop() - mLayoutTop));
         ViewCompat.offsetLeftAndRight(mView, mOffsetLeft - (mView.getLeft() - mLayoutLeft));
-
-        // Manually invalidate the view and parent to make sure we get drawn pre-M
-        if (Build.VERSION.SDK_INT < 23) {
-            tickleInvalidationFlag(mView);
-            final ViewParent vp = mView.getParent();
-            if (vp instanceof View) {
-                tickleInvalidationFlag((View) vp);
-            }
-        }
-    }
-
-    private static void tickleInvalidationFlag(View view) {
-        final float y = ViewCompat.getTranslationY(view);
-        ViewCompat.setTranslationY(view, y + 1);
-        ViewCompat.setTranslationY(view, y);
     }
 
     /**
