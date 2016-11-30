@@ -18,16 +18,21 @@ package android.support.design.testutils;
 
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import org.hamcrest.Matcher;
 
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
@@ -96,6 +101,61 @@ public class TestUtilsActions {
                 uiController.loopMainThreadUntilIdle();
 
                 ViewCompat.setLayoutDirection(view, layoutDirection);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Sets title on the {@link CollapsingToolbarLayout}.
+     */
+    public static ViewAction setTitle(final CharSequence title) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(CollapsingToolbarLayout.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "set toolbar title";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                CollapsingToolbarLayout collapsingToolbarLayout =
+                        (CollapsingToolbarLayout) view;
+                collapsingToolbarLayout.setTitle(title);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Sets text content on <code>TextView</code>.
+     */
+    public static ViewAction setText(final @Nullable CharSequence text) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextView.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "TextView set text";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TextView textView = (TextView) view;
+                textView.setText(text);
 
                 uiController.loopMainThreadUntilIdle();
             }

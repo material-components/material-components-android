@@ -25,4 +25,10 @@
     <string name="snackbar_action">Undo</string>
 
     <string name="text1">Text</string>
+
+    <string name="scroll_top">Top</string>
+    <string name="scroll_bottom">Bottom</string>
+    <string name="design_appbar_collapsing_toolbar_pin">AppBar/Collapsing Toolbar (pinned)</string>
+    <string name="design_appbar_collapsing_toolbar_scroll">AppBar/Collapsing Toolbar (scroll off)</string>
+
 </resources>
