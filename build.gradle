@@ -4,6 +4,7 @@ archivesBaseName = 'design'
 
 dependencies {
     compile project(':support-v4')
+    compile project(':support-appcompat-v7')
 }
 
 android {
@@ -11,7 +12,7 @@ android {
 
     sourceSets {
         main.manifest.srcFile 'AndroidManifest.xml'
-        main.java.srcDir 'src'
+        main.java.srcDirs = ['base', 'eclair-mr1', 'lollipop', 'src']
         main.res.srcDir 'res'
         main.assets.srcDir 'assets'
         main.resources.srcDir 'src'
