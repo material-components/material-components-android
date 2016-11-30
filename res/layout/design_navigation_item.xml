@@ -20,4 +20,5 @@
         android:layout_height="?attr/listPreferredItemHeightSmall"
         android:paddingLeft="?attr/listPreferredItemPaddingLeft"
         android:paddingRight="?attr/listPreferredItemPaddingRight"
-        android:foreground="?attr/selectableItemBackground"/>
+        android:foreground="?attr/selectableItemBackground"
+        android:focusable="true"/>
