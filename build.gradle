@@ -7,8 +7,12 @@ dependencies {
     compile project(':support-appcompat-v7')
     compile project(':support-recyclerview-v7')
 
-    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
-    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    androidTestCompile ('com.android.support.test:runner:0.4.1') {
+        exclude module: 'support-annotations'
+    }
+    androidTestCompile ('com.android.support.test.espresso:espresso-core:2.2.1') {
+        exclude module: 'support-annotations'
+    }
     testCompile 'junit:junit:4.12'
 }
 

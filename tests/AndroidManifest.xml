@@ -20,8 +20,8 @@
 
     <uses-sdk
             android:minSdkVersion="7"
-            tools:overrideLibrary="android.support.test, android.support.test.espresso,
-                    android.support.test.espresso.idling"/>
+            tools:overrideLibrary="android.support.test, android.app, android.support.test.rule,
+                      android.support.test.espresso, android.support.test.espresso.idling"/>
 
     <application android:theme="@style/Theme.AppCompat">
         <uses-library android:name="android.test.runner"/>
