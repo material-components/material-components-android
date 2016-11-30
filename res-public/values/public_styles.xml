@@ -28,4 +28,7 @@
     <public type="style" name="Widget.Design.Snackbar"/>
     <public type="style" name="Widget.Design.TabLayout"/>
     <public type="style" name="Widget.Design.TextInputLayout"/>
+    <public type="style" name="Widget.Design.BottomSheet.Modal"/>
+    <public type="style" name="Theme.Design.BottomSheetDialog"/>
+    <public type="style" name="Theme.Design.Light.BottomSheetDialog"/>
 </resources>

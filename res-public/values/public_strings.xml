@@ -17,4 +17,5 @@
 <!-- Definitions of styles to be exposed as public -->
 <resources>
     <public type="string" name="appbar_scrolling_view_behavior"/>
+    <public type="string" name="bottom_sheet_behavior"/>
 </resources>

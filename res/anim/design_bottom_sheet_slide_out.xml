@@ -14,12 +14,16 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
-    <!-- The class name to the ScrollingChildBehavior required for AppBarLayout -->
-    <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
-    <!-- The class name to the BottomSheetBehavior -->
-    <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
-    <!-- The text pattern for the character counter -->
-    <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
-</resources>
+<set xmlns:android="http://schemas.android.com/apk/res/android"
+     android:duration="@integer/bottom_sheet_slide_duration"
+     android:interpolator="@android:anim/accelerate_interpolator">
 
+    <translate
+            android:fromYDelta="0"
+            android:toYDelta="20%p"/>
+
+    <alpha
+            android:fromAlpha="1.0"
+            android:toAlpha="0.0"/>
+
+</set>

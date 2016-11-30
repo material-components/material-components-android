@@ -100,6 +100,16 @@ package android.support.design.widget {
     field public static final android.os.Parcelable.Creator<android.support.design.widget.BottomSheetBehavior.SavedState> CREATOR;
   }
 
+  public class BottomSheetDialog extends android.support.v7.app.AppCompatDialog {
+    ctor public BottomSheetDialog(android.content.Context);
+    ctor public BottomSheetDialog(android.content.Context, int);
+    ctor protected BottomSheetDialog(android.content.Context, boolean, android.content.DialogInterface.OnCancelListener);
+  }
+
+  public class BottomSheetDialogFragment extends android.support.v7.app.AppCompatDialogFragment {
+    ctor public BottomSheetDialogFragment();
+  }
+
   public class CollapsingToolbarLayout extends android.widget.FrameLayout {
     ctor public CollapsingToolbarLayout(android.content.Context);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet);

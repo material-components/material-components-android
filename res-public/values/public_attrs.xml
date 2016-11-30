@@ -71,4 +71,7 @@
     <public type="attr" name="titleEnabled"/>
     <public type="attr" name="toolbarId"/>
     <public type="attr" name="behavior_peekHeight"/>
+    <public type="attr" name="behavior_hideable"/>
+    <public type="attr" name="bottomSheetDialogTheme"/>
+    <public type="attr" name="bottomSheetStyle"/>
 </resources>
