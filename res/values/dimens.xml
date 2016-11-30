@@ -14,6 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
+
 <resources>
 
     <dimen name="fab_elevation">8dp</dimen>
@@ -21,10 +22,5 @@
     <dimen name="fab_content_size">24dp</dimen>
     <dimen name="fab_size_normal">56dp</dimen>
     <dimen name="fab_size_mini">40dp</dimen>
-
-    <dimen name="drawer_max_width">320dp</dimen>
-    <dimen name="drawer_elevation">12dp</dimen>
-    <dimen name="drawer_icon_padding">32dp</dimen>
-    <dimen name="drawer_icon_size">24dp</dimen>
 
 </resources>
