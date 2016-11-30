@@ -118,6 +118,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     private boolean mHideable;
 
+    private boolean mSkipCollapsed;
+
     @State
     private int mState = STATE_COLLAPSED;
 
@@ -164,6 +166,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         setPeekHeight(a.getDimensionPixelSize(
                 R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight, 0));
         setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_hideable, false));
+        setSkipCollapsed(a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed,
+                false));
         a.recycle();
         ViewConfiguration configuration = ViewConfiguration.get(context);
         mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
@@ -428,6 +432,28 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     /**
+     * Sets whether this bottom sheet should skip the collapsed state when it is being hidden
+     * after it is expanded once. Setting this to true has no effect unless the sheet is hideable.
+     *
+     * @param skipCollapsed True if the bottom sheet should skip the collapsed state.
+     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Layout_behavior_skipCollapsed
+     */
+    public void setSkipCollapsed(boolean skipCollapsed) {
+        mSkipCollapsed = skipCollapsed;
+    }
+
+    /**
+     * Sets whether this bottom sheet should skip the collapsed state when it is being hidden
+     * after it is expanded once.
+     *
+     * @return Whether the bottom sheet should skip the collapsed state.
+     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Layout_behavior_skipCollapsed
+     */
+    public boolean getSkipCollapsed() {
+        return mSkipCollapsed;
+    }
+
+    /**
      * Sets a callback to be notified of bottom sheet events.
      *
      * @param callback The callback to notify when bottom sheet events occur.
@@ -506,6 +532,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     private boolean shouldHide(View child, float yvel) {
+        if (mSkipCollapsed) {
+            return true;
+        }
         if (child.getTop() < mMaxOffset) {
             // It should not hide, but collapse.
             return false;

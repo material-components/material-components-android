@@ -308,6 +308,49 @@ public class BottomSheetBehaviorTest extends
     }
 
     @Test
+    public void testSkipCollapsed() {
+        getBehavior().setSkipCollapsed(true);
+        checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
+        Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+                .perform(DesignViewActions.withCustomConstraints(new GeneralSwipeAction(
+                        Swipe.FAST,
+                        // Manually calculate the starting coordinates to make sure that the touch
+                        // actually falls onto the view on Gingerbread
+                        new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                int[] location = new int[2];
+                                view.getLocationInWindow(location);
+                                return new float[]{
+                                        view.getWidth() / 2,
+                                        location[1] + 1
+                                };
+                            }
+                        },
+                        // Manually calculate the ending coordinates to make sure that the bottom
+                        // sheet is collapsed, not hidden
+                        new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                BottomSheetBehavior behavior = getBehavior();
+                                return new float[]{
+                                        // x: center of the bottom sheet
+                                        view.getWidth() / 2,
+                                        // y: just above the peek height
+                                        view.getHeight() - behavior.getPeekHeight()};
+                            }
+                        }, Press.FINGER), ViewMatchers.isDisplayingAtLeast(5)));
+        registerIdlingResourceCallback();
+        try {
+            Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+                    .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())));
+            assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_HIDDEN));
+        } finally {
+            unregisterIdlingResourceCallback();
+        }
+    }
+
+    @Test
     @MediumTest
     public void testSwipeUpToExpand() {
         Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))

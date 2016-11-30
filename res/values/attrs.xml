@@ -376,7 +376,10 @@
     <declare-styleable name="BottomSheetBehavior_Layout">
         <!-- The height of the bottom sheet when it is collapsed. -->
         <attr name="behavior_peekHeight" format="dimension"/>
+        <!-- Whether this bottom sheet can be hidden by dragging it further downwards -->
         <attr name="behavior_hideable" format="boolean"/>
+        <!-- Skip the collapsed state once expanded; no effect unless it is hideable -->
+        <attr name="behavior_skipCollapsed" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="DesignTheme">
