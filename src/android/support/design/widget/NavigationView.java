@@ -409,10 +409,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             return null;
         }
         ColorStateList baseColor = getResources().getColorStateList(value.resourceId);
-        if (!getContext().getTheme().resolveAttribute(R.attr.colorControlActivated, value, true)) {
+        if (!getContext().getTheme().resolveAttribute(R.attr.colorPrimary, value, true)) {
             return null;
         }
-        int colorControlActivated = value.data;
+        int colorPrimary = value.data;
         int defaultColor = baseColor.getDefaultColor();
         return new ColorStateList(new int[][]{
                 DISABLED_STATE_SET,
@@ -420,7 +420,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
                 EMPTY_STATE_SET
         }, new int[]{
                 baseColor.getColorForState(DISABLED_STATE_SET, defaultColor),
-                colorControlActivated,
+                colorPrimary,
                 defaultColor
         });
     }
