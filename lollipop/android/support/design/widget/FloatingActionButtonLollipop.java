@@ -86,7 +86,7 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
         // Animate elevation and translationZ to our values when pressed
         AnimatorSet set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation));
+        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0));
         set.play(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, pressedTranslationZ)
                 .setDuration(PRESSED_ANIM_DURATION));
         set.setInterpolator(ANIM_INTERPOLATOR);
@@ -94,7 +94,7 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
         // Same deal for when we're focused
         set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation));
+        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0));
         set.play(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, pressedTranslationZ)
                 .setDuration(PRESSED_ANIM_DURATION));
         set.setInterpolator(ANIM_INTERPOLATOR);
@@ -102,7 +102,7 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
         // Animate translationZ to 0 if not pressed
         set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation));
+        set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0));
         Animator anim = ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f);
         anim.setDuration(PRESSED_ANIM_DURATION);
         anim.setStartDelay(PRESSED_ANIM_DELAY);
@@ -112,8 +112,8 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
         // Animate everything to 0 when disabled
         set = new AnimatorSet();
-        set.play(ObjectAnimator.ofFloat(mView, "elevation", 0f));
-        set.play(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f));
+        set.play(ObjectAnimator.ofFloat(mView, "elevation", 0f).setDuration(0));
+        set.play(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f).setDuration(0));
         set.setInterpolator(ANIM_INTERPOLATOR);
         stateListAnimator.addState(EMPTY_STATE_SET, set);
 
