@@ -341,9 +341,10 @@ final class CollapsingTextHelper {
     }
 
     private void calculateBaseOffsets() {
+        final float currentTextSize = mCurrentTextSize;
+
         // We then calculate the collapsed text size, using the same logic
-        mTextPaint.setTextSize(mCollapsedTextSize);
-        mTextPaint.setTypeface(mCollapsedTypeface);
+        calculateUsingTextSize(mCollapsedTextSize);
         float width = mTextToDraw != null ?
                 mTextPaint.measureText(mTextToDraw, 0, mTextToDraw.length()) : 0;
         final int collapsedAbsGravity = GravityCompat.getAbsoluteGravity(mCollapsedTextGravity,
@@ -375,8 +376,7 @@ final class CollapsingTextHelper {
                 break;
         }
 
-        mTextPaint.setTextSize(mExpandedTextSize);
-        mTextPaint.setTypeface(mExpandedTypeface);
+        calculateUsingTextSize(mExpandedTextSize);
         width = mTextToDraw != null
                 ? mTextPaint.measureText(mTextToDraw, 0, mTextToDraw.length()) : 0;
         final int expandedAbsGravity = GravityCompat.getAbsoluteGravity(mExpandedTextGravity,
@@ -410,6 +410,8 @@ final class CollapsingTextHelper {
 
         // The bounds have changed so we need to clear the texture
         clearTexture();
+        // Now reset the text size back to the original
+        setInterpolatedTextSize(currentTextSize);
     }
 
     private void interpolateBounds(float fraction) {
@@ -479,7 +481,21 @@ final class CollapsingTextHelper {
                 : TextDirectionHeuristicsCompat.FIRSTSTRONG_LTR).isRtl(text, 0, text.length());
     }
 
-    private void setInterpolatedTextSize(final float textSize) {
+    private void setInterpolatedTextSize(float textSize) {
+        calculateUsingTextSize(textSize);
+
+        // Use our texture if the scale isn't 1.0
+        mUseTexture = USE_SCALING_TEXTURE && mScale != 1f;
+
+        if (mUseTexture) {
+            // Make sure we have an expanded texture if needed
+            ensureExpandedTexture();
+        }
+
+        ViewCompat.postInvalidateOnAnimation(mView);
+    }
+
+    private void calculateUsingTextSize(final float textSize) {
         if (mText == null) return;
 
         final float availableWidth;
@@ -524,21 +540,11 @@ final class CollapsingTextHelper {
             // If we don't currently have text to draw, or the text size has changed, ellipsize...
             final CharSequence title = TextUtils.ellipsize(mText, mTextPaint,
                     availableWidth, TextUtils.TruncateAt.END);
-            if (mTextToDraw == null || !mTextToDraw.equals(title)) {
+            if (!TextUtils.equals(title, mTextToDraw)) {
                 mTextToDraw = title;
+                mIsRtl = calculateIsRtl(mTextToDraw);
             }
-            mIsRtl = calculateIsRtl(mTextToDraw);
         }
-
-        // Use our texture if the scale isn't 1.0
-        mUseTexture = USE_SCALING_TEXTURE && mScale != 1f;
-
-        if (mUseTexture) {
-            // Make sure we have an expanded texture if needed
-            ensureExpandedTexture();
-        }
-
-        ViewCompat.postInvalidateOnAnimation(mView);
     }
 
     private void ensureExpandedTexture() {
