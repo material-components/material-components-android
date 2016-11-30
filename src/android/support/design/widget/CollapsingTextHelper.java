@@ -105,8 +105,7 @@ final class CollapsingTextHelper {
     public CollapsingTextHelper(View view) {
         mView = view;
 
-        mTextPaint = new TextPaint();
-        mTextPaint.setAntiAlias(true);
+        mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
 
         mCollapsedBounds = new Rect();
         mExpandedBounds = new Rect();
@@ -436,10 +435,6 @@ final class CollapsingTextHelper {
 
             final float ascent;
             final float descent;
-
-            // Update the TextPaint to the current text size
-            mTextPaint.setTextSize(mCurrentTextSize);
-
             if (drawTexture) {
                 ascent = mTextureAscent * mScale;
                 descent = mTextureDescent * mScale;
@@ -536,6 +531,8 @@ final class CollapsingTextHelper {
         if (mTextToDraw == null || updateDrawText) {
             mTextPaint.setTextSize(mCurrentTextSize);
             mTextPaint.setTypeface(mCurrentTypeface);
+            // Use linear text scaling if we're scaling the canvas
+            mTextPaint.setLinearText(mScale != 1f);
 
             // If we don't currently have text to draw, or the text size has changed, ellipsize...
             final CharSequence title = TextUtils.ellipsize(mText, mTextPaint,
