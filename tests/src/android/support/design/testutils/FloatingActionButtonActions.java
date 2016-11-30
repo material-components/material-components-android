@@ -129,4 +129,54 @@ public class FloatingActionButtonActions {
         };
     }
 
+    public static ViewAction hideThenShow(final int animDuration) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(FloatingActionButton.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Calls hide() then show()";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                FloatingActionButton fab = (FloatingActionButton) view;
+                fab.hide();
+                fab.show();
+
+                uiController.loopMainThreadForAtLeast(animDuration + 100);
+            }
+        };
+    }
+
+    public static ViewAction showThenHide(final int animDuration) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(FloatingActionButton.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Calls show() then hide()";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                FloatingActionButton fab = (FloatingActionButton) view;
+                fab.show();
+                fab.hide();
+
+                uiController.loopMainThreadForAtLeast(animDuration + 50);
+            }
+        };
+    }
+
 }

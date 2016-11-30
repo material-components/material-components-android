@@ -16,15 +16,19 @@
 
 package android.support.design.widget;
 
+import static android.support.design.testutils.FloatingActionButtonActions.hideThenShow;
 import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintColor;
 import static android.support.design.testutils.FloatingActionButtonActions.setImageResource;
 import static android.support.design.testutils.FloatingActionButtonActions.setLayoutGravity;
 import static android.support.design.testutils.FloatingActionButtonActions.setSize;
+import static android.support.design.testutils.FloatingActionButtonActions.showThenHide;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentAreaOnMargins;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentHeight;
+import static android.support.design.widget.DesignViewActions.setVisibility;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 import android.graphics.Color;
@@ -32,6 +36,7 @@ import android.support.design.test.R;
 import android.support.design.testutils.TestUtils;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.view.Gravity;
+import android.view.View;
 
 import org.junit.Test;
 
@@ -112,6 +117,22 @@ public class FloatingActionButtonTest
         onView(withId(R.id.fab_standard))
                 .perform(setLayoutGravity(Gravity.RIGHT | Gravity.BOTTOM))
                 .check(matches(withFabContentAreaOnMargins(Gravity.RIGHT | Gravity.BOTTOM)));
+    }
+
+    @Test
+    public void testHideShow() {
+        onView(withId(R.id.fab_standard))
+                .perform(setVisibility(View.VISIBLE))
+                .perform(hideThenShow(FloatingActionButtonImpl.SHOW_HIDE_ANIM_DURATION))
+                .check(matches(isDisplayed()));
+    }
+
+    @Test
+    public void testShowHide() {
+        onView(withId(R.id.fab_standard))
+                .perform(setVisibility(View.GONE))
+                .perform(showThenHide(FloatingActionButtonImpl.SHOW_HIDE_ANIM_DURATION))
+                .check(matches(not(isDisplayed())));
     }
 
 }
