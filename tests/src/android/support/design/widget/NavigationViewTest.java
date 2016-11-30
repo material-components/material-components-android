@@ -47,6 +47,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
@@ -55,6 +56,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.content.res.Resources;
+import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.design.test.R;
@@ -130,6 +132,19 @@ public class NavigationViewTest
         for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
             onView(allOf(withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
                     isDescendantOfA(withId(R.id.start_drawer)))).check(matches(isDisplayed()));
+        }
+    }
+
+    @Test
+    @SmallTest
+    public void testWillNotDraw() {
+        // Open our drawer
+        onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+
+        if (Build.VERSION.SDK_INT >= 21) {
+            assertFalse(mNavigationView.willNotDraw());
+        } else {
+            assertTrue(mNavigationView.willNotDraw());
         }
     }
 
