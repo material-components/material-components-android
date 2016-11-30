@@ -20,6 +20,7 @@ package android.support.design.widget;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Outline;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 
@@ -61,6 +62,12 @@ class CircularBorderDrawableLollipop extends CircularBorderDrawable {
         mTintMode = tintMode;
         mTintFilter = updateTintFilter(mTint, tintMode);
         invalidateSelf();
+    }
+
+    @Override
+    public void getOutline(Outline outline) {
+        copyBounds(mRect);
+        outline.setOval(mRect);
     }
 
     /**
