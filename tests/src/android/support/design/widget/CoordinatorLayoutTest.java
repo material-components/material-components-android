@@ -293,4 +293,45 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
         // And assert that View B's Behavior was called appropriately
         verify(behavior, times(1)).onDependentViewRemoved(col, viewB, viewA);
     }
+
+    @Test
+    public void testGetDependenciesAfterDependentViewRemoved() {
+        final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
+
+        // Add two views, A & B, where B depends on A
+        final View viewA = new View(col.getContext());
+        final View viewB = new View(col.getContext());
+        final CoordinatorLayout.LayoutParams lpB = col.generateDefaultLayoutParams();
+        final CoordinatorLayout.Behavior behavior
+                = new CoordinatorLayoutUtils.DependentBehavior(viewA) {
+            @Override
+            public void onDependentViewRemoved(CoordinatorLayout parent, View child,
+                    View dependency) {
+                parent.getDependencies(child);
+            }
+        };
+        lpB.setBehavior(behavior);
+
+        // Now add views
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                col.addView(viewA);
+                col.addView(viewB, lpB);
+            }
+        });
+
+        // Wait for a layout
+        instrumentation.waitForIdleSync();
+
+        // Now remove view A, which will trigger onDependentViewRemoved() on view B's behavior
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                col.removeView(viewA);
+            }
+        });
+    }
+
 }

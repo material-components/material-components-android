@@ -624,13 +624,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return result;
     }
 
-    private void prepareChildren(final boolean forceRefresh) {
-        if (!forceRefresh && mChildDag.size() == getChildCount()
-                && mChildDag.size() == mDependencySortedChildren.size()) {
-            // If we're not being forced and everything looks good, lets skip the call
-            return;
-        }
-
+    private void prepareChildren() {
         mDependencySortedChildren.clear();
         mChildDag.clear();
 
@@ -709,7 +703,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        prepareChildren(true);
+        prepareChildren();
         ensurePreDrawListener();
 
         final int paddingLeft = getPaddingLeft();
@@ -1395,12 +1389,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      * @param view the View to find dependents of to dispatch the call.
      */
     public void dispatchDependentViewsChanged(View view) {
-        prepareChildren(false);
-
         final List<View> dependents = mChildDag.getIncomingEdges(view);
         if (dependents != null && !dependents.isEmpty()) {
             for (int i = 0; i < dependents.size(); i++) {
-                final View child = (View) dependents.get(i);
+                final View child = dependents.get(i);
                 CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)
                         child.getLayoutParams();
                 CoordinatorLayout.Behavior b = lp.getBehavior();
@@ -1421,8 +1413,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      */
     @NonNull
     public List<View> getDependencies(@NonNull View child) {
-        prepareChildren(false);
-
         final List<View> dependencies = mChildDag.getOutgoingEdges(child);
         mTempDependenciesList.clear();
         if (dependencies != null) {
@@ -1441,8 +1431,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      */
     @NonNull
     public List<View> getDependents(@NonNull View child) {
-        prepareChildren(false);
-
         final List<View> edges = mChildDag.getIncomingEdges(child);
         mTempDependenciesList.clear();
         if (edges != null) {
@@ -1453,7 +1441,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     @VisibleForTesting
     final List<View> getDependencySortedChildren() {
-        prepareChildren(true);
+        prepareChildren();
         return Collections.unmodifiableList(mDependencySortedChildren);
     }
 
@@ -1483,8 +1471,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     /**
      * Check if the given child has any layout dependencies on other child views.
      */
-    boolean hasDependencies(View child) {
-        prepareChildren(false);
+    private boolean hasDependencies(View child) {
         return mChildDag.hasOutgoingEdges(child);
     }
 
