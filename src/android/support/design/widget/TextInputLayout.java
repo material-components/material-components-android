@@ -27,6 +27,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v4.view.AccessibilityDelegateCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
@@ -93,7 +94,7 @@ public class TextInputLayout extends LinearLayout {
 
         mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         mCollapsingTextHelper.setPositionInterpolator(new AccelerateInterpolator());
-        mCollapsingTextHelper.setCollapsedTextGravity(Gravity.TOP);
+        mCollapsingTextHelper.setCollapsedTextGravity(Gravity.TOP | GravityCompat.START);
 
         final TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.TextInputLayout, defStyleAttr, R.style.Widget_Design_TextInputLayout);
