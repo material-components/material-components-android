@@ -13,7 +13,7 @@ android {
     sourceSets {
         main.manifest.srcFile 'AndroidManifest.xml'
         main.java.srcDirs = ['base', 'eclair-mr1', 'honeycomb', 'honeycomb-mr1', 'lollipop', 'src']
-        main.res.srcDir 'res'
+        main.res.srcDirs 'res', 'res-public'
         main.assets.srcDir 'assets'
         main.resources.srcDir 'src'
 
