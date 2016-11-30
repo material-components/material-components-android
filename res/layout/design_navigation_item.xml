@@ -19,4 +19,5 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/listPreferredItemHeightSmall"
         android:paddingLeft="?attr/listPreferredItemPaddingLeft"
-        android:paddingRight="?attr/listPreferredItemPaddingRight"/>
+        android:paddingRight="?attr/listPreferredItemPaddingRight"
+        android:foreground="?attr/selectableItemBackground"/>

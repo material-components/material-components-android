@@ -5,6 +5,7 @@ archivesBaseName = 'design'
 dependencies {
     compile project(':support-v4')
     compile project(':support-appcompat-v7')
+    compile project(':support-recyclerview-v7')
 }
 
 android {

@@ -33,14 +33,13 @@ import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.support.v7.internal.view.menu.MenuPresenter;
 import android.support.v7.internal.view.menu.MenuView;
 import android.support.v7.internal.view.menu.SubMenuBuilder;
+import android.support.v7.widget.RecyclerView;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.SubMenu;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -49,13 +48,13 @@ import java.util.ArrayList;
 /**
  * @hide
  */
-public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnItemClickListener {
+public class NavigationMenuPresenter implements MenuPresenter {
 
     private static final String STATE_HIERARCHY = "android:menu:list";
     private static final String STATE_ADAPTER = "android:menu:adapter";
 
     private NavigationMenuView mMenuView;
-    private LinearLayout mHeader;
+    private LinearLayout mHeaderLayout;
 
     private Callback mCallback;
     private MenuBuilder mMenu;
@@ -100,11 +99,10 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             if (mAdapter == null) {
                 mAdapter = new NavigationMenuAdapter();
             }
-            mHeader = (LinearLayout) mLayoutInflater.inflate(R.layout.design_navigation_item_header,
-                    mMenuView, false);
-            mMenuView.addHeaderView(mHeader, null, false);
+            mHeaderLayout = (LinearLayout) mLayoutInflater
+                    .inflate(R.layout.design_navigation_item_header,
+                            mMenuView, false);
             mMenuView.setAdapter(mAdapter);
-            mMenuView.setOnItemClickListener(this);
         }
         return mMenuView;
     }
@@ -112,7 +110,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     @Override
     public void updateMenuView(boolean cleared) {
         if (mAdapter != null) {
-            mAdapter.notifyDataSetChanged();
+            mAdapter.update();
         }
     }
 
@@ -184,40 +182,25 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         }
     }
 
-    @Override
-    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        int positionInAdapter = position - mMenuView.getHeaderViewsCount();
-        if (positionInAdapter >= 0) {
-            setUpdateSuspended(true);
-            MenuItemImpl item = mAdapter.getItem(positionInAdapter).getMenuItem();
-            boolean result = mMenu.performItemAction(item, this, 0);
-            if (item != null && item.isCheckable() && result) {
-                mAdapter.setCheckedItem(item);
-            }
-            setUpdateSuspended(false);
-            updateMenuView(false);
-        }
-    }
-
     public void setCheckedItem(MenuItemImpl item) {
         mAdapter.setCheckedItem(item);
     }
 
     public View inflateHeaderView(@LayoutRes int res) {
-        View view = mLayoutInflater.inflate(res, mHeader, false);
+        View view = mLayoutInflater.inflate(res, mHeaderLayout, false);
         addHeaderView(view);
         return view;
     }
 
     public void addHeaderView(@NonNull View view) {
-        mHeader.addView(view);
+        mHeaderLayout.addView(view);
         // The padding on top should be cleared.
         mMenuView.setPadding(0, 0, 0, mMenuView.getPaddingBottom());
     }
 
     public void removeHeaderView(@NonNull View view) {
-        mHeader.removeView(view);
-        if (mHeader.getChildCount() == 0) {
+        mHeaderLayout.removeView(view);
+        if (mHeaderLayout.getChildCount() == 0) {
             mMenuView.setPadding(0, mPaddingTopDefault, 0, mMenuView.getPaddingBottom());
         }
     }
@@ -262,7 +245,69 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         }
     }
 
-    private class NavigationMenuAdapter extends BaseAdapter {
+    private abstract static class ViewHolder extends RecyclerView.ViewHolder {
+
+        public ViewHolder(View itemView) {
+            super(itemView);
+        }
+
+    }
+
+    private static class NormalViewHolder extends ViewHolder {
+
+        public NormalViewHolder(LayoutInflater inflater, ViewGroup parent,
+                View.OnClickListener listener) {
+            super(inflater.inflate(R.layout.design_navigation_item, parent, false));
+            itemView.setOnClickListener(listener);
+        }
+
+    }
+
+    private static class SubheaderViewHolder extends ViewHolder {
+
+        public SubheaderViewHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.design_navigation_item_subheader, parent, false));
+        }
+
+    }
+
+    private static class SeparatorViewHolder extends ViewHolder {
+
+        public SeparatorViewHolder(LayoutInflater inflater, ViewGroup parent) {
+            super(inflater.inflate(R.layout.design_navigation_item_separator, parent, false));
+        }
+
+    }
+
+    private static class HeaderViewHolder extends ViewHolder {
+
+        public HeaderViewHolder(View itemView) {
+            super(itemView);
+        }
+
+    }
+
+    /**
+     * Handles click events for the menu items. The items has to be {@link NavigationMenuItemView}.
+     */
+    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+
+        @Override
+        public void onClick(View v) {
+            NavigationMenuItemView itemView = (NavigationMenuItemView) v;
+            setUpdateSuspended(true);
+            MenuItemImpl item = itemView.getItemData();
+            boolean result = mMenu.performItemAction(item, NavigationMenuPresenter.this, 0);
+            if (item != null && item.isCheckable() && result) {
+                mAdapter.setCheckedItem(item);
+            }
+            setUpdateSuspended(false);
+            updateMenuView(false);
+        }
+
+    };
+
+    private class NavigationMenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
         private static final String STATE_CHECKED_ITEM = "android:menu:checked";
 
@@ -270,6 +315,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         private static final int VIEW_TYPE_NORMAL = 0;
         private static final int VIEW_TYPE_SUBHEADER = 1;
         private static final int VIEW_TYPE_SEPARATOR = 2;
+        private static final int VIEW_TYPE_HEADER = 3;
 
         private final ArrayList<NavigationMenuItem> mItems = new ArrayList<>();
         private MenuItemImpl mCheckedItem;
@@ -281,48 +327,53 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         }
 
         @Override
-        public int getCount() {
-            return mItems.size();
-        }
-
-        @Override
-        public NavigationMenuItem getItem(int position) {
-            return mItems.get(position);
-        }
-
-        @Override
         public long getItemId(int position) {
             return position;
         }
 
         @Override
-        public int getViewTypeCount() {
-            return 3;
+        public int getItemCount() {
+            return mItems.size();
         }
 
         @Override
         public int getItemViewType(int position) {
-            NavigationMenuItem item = getItem(position);
-            if (item.isSeparator()) {
+            NavigationMenuItem item = mItems.get(position);
+            if (item instanceof NavigationMenuSeparatorItem) {
                 return VIEW_TYPE_SEPARATOR;
-            } else if (item.getMenuItem().hasSubMenu()) {
-                return VIEW_TYPE_SUBHEADER;
-            } else {
-                return VIEW_TYPE_NORMAL;
+            } else if (item instanceof NavigationMenuHeaderItem) {
+                return VIEW_TYPE_HEADER;
+            } else if (item instanceof NavigationMenuTextItem) {
+                NavigationMenuTextItem textItem = (NavigationMenuTextItem) item;
+                if (textItem.getMenuItem().hasSubMenu()) {
+                    return VIEW_TYPE_SUBHEADER;
+                } else {
+                    return VIEW_TYPE_NORMAL;
+                }
             }
+            throw new RuntimeException("Unknown item type.");
         }
 
         @Override
-        public View getView(int position, View convertView, ViewGroup parent) {
-            NavigationMenuItem item = getItem(position);
-            int viewType = getItemViewType(position);
+        public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
-                    if (convertView == null) {
-                        convertView = mLayoutInflater.inflate(R.layout.design_navigation_item,
-                                parent, false);
-                    }
-                    NavigationMenuItemView itemView = (NavigationMenuItemView) convertView;
+                    return new NormalViewHolder(mLayoutInflater, parent, mOnClickListener);
+                case VIEW_TYPE_SUBHEADER:
+                    return new SubheaderViewHolder(mLayoutInflater, parent);
+                case VIEW_TYPE_SEPARATOR:
+                    return new SeparatorViewHolder(mLayoutInflater, parent);
+                case VIEW_TYPE_HEADER:
+                    return new HeaderViewHolder(mHeaderLayout);
+            }
+            return null;
+        }
+
+        @Override
+        public void onBindViewHolder(ViewHolder holder, int position) {
+            switch (getItemViewType(position)) {
+                case VIEW_TYPE_NORMAL: {
+                    NavigationMenuItemView itemView = (NavigationMenuItemView) holder.itemView;
                     itemView.setIconTintList(mIconTintList);
                     if (mTextAppearanceSet) {
                         itemView.setTextAppearance(itemView.getContext(), mTextAppearance);
@@ -332,42 +383,40 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     }
                     itemView.setBackgroundDrawable(mItemBackground != null ?
                             mItemBackground.getConstantState().newDrawable() : null);
+                    NavigationMenuTextItem item = (NavigationMenuTextItem) mItems.get(position);
                     itemView.initialize(item.getMenuItem(), 0);
                     break;
-                case VIEW_TYPE_SUBHEADER:
-                    if (convertView == null) {
-                        convertView = mLayoutInflater.inflate(
-                                R.layout.design_navigation_item_subheader, parent, false);
-                    }
-                    TextView subHeader = (TextView) convertView;
+                }
+                case VIEW_TYPE_SUBHEADER: {
+                    TextView subHeader = (TextView) holder.itemView;
+                    NavigationMenuTextItem item = (NavigationMenuTextItem) mItems.get(position);
                     subHeader.setText(item.getMenuItem().getTitle());
                     break;
-                case VIEW_TYPE_SEPARATOR:
-                    if (convertView == null) {
-                        convertView = mLayoutInflater.inflate(
-                                R.layout.design_navigation_item_separator, parent, false);
-                    }
-                    convertView.setPadding(0, item.getPaddingTop(), 0,
+                }
+                case VIEW_TYPE_SEPARATOR: {
+                    NavigationMenuSeparatorItem item =
+                            (NavigationMenuSeparatorItem) mItems.get(position);
+                    holder.itemView.setPadding(0, item.getPaddingTop(), 0,
                             item.getPaddingBottom());
                     break;
+                }
+                case VIEW_TYPE_HEADER: {
+                    break;
+                }
             }
-            return convertView;
+
         }
 
         @Override
-        public boolean areAllItemsEnabled() {
-            return false;
+        public void onViewRecycled(ViewHolder holder) {
+            if (holder instanceof NormalViewHolder) {
+                ((NavigationMenuItemView) holder.itemView).recycle();
+            }
         }
 
-        @Override
-        public boolean isEnabled(int position) {
-            return getItem(position).isEnabled();
-        }
-
-        @Override
-        public void notifyDataSetChanged() {
+        public void update() {
             prepareMenuItems();
-            super.notifyDataSetChanged();
+            notifyDataSetChanged();
         }
 
         /**
@@ -380,6 +429,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             }
             mUpdateSuspended = true;
             mItems.clear();
+            mItems.add(new NavigationMenuHeaderItem());
+
             int currentGroupId = -1;
             int currentGroupStart = 0;
             boolean currentGroupHasIcon = false;
@@ -395,9 +446,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     SubMenu subMenu = item.getSubMenu();
                     if (subMenu.hasVisibleItems()) {
                         if (i != 0) {
-                            mItems.add(NavigationMenuItem.separator(mPaddingSeparator, 0));
+                            mItems.add(new NavigationMenuSeparatorItem(mPaddingSeparator, 0));
                         }
-                        mItems.add(NavigationMenuItem.of(item));
+                        mItems.add(new NavigationMenuTextItem(item));
                         boolean subMenuHasIcon = false;
                         int subMenuStart = mItems.size();
                         for (int j = 0, size = subMenu.size(); j < size; j++) {
@@ -412,7 +463,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                                 if (item.isChecked()) {
                                     setCheckedItem(item);
                                 }
-                                mItems.add(NavigationMenuItem.of(subMenuItem));
+                                mItems.add(new NavigationMenuTextItem(subMenuItem));
                             }
                         }
                         if (subMenuHasIcon) {
@@ -426,7 +477,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                         currentGroupHasIcon = item.getIcon() != null;
                         if (i != 0) {
                             currentGroupStart++;
-                            mItems.add(NavigationMenuItem.separator(
+                            mItems.add(new NavigationMenuSeparatorItem(
                                     mPaddingSeparator, mPaddingSeparator));
                         }
                     } else if (!currentGroupHasIcon && item.getIcon() != null) {
@@ -436,7 +487,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     if (currentGroupHasIcon && item.getIcon() == null) {
                         item.setIcon(android.R.color.transparent);
                     }
-                    mItems.add(NavigationMenuItem.of(item));
+                    mItems.add(new NavigationMenuTextItem(item));
                     currentGroupId = groupId;
                 }
             }
@@ -445,7 +496,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
 
         private void appendTransparentIconIfMissing(int startIndex, int endIndex) {
             for (int i = startIndex; i < endIndex; i++) {
-                MenuItem item = mItems.get(i).getMenuItem();
+                NavigationMenuTextItem textItem = (NavigationMenuTextItem) mItems.get(i);
+                MenuItem item = textItem.getMenuItem();
                 if (item.getIcon() == null) {
                     if (mTransparentIcon == null) {
                         mTransparentIcon = new ColorDrawable(android.R.color.transparent);
@@ -474,12 +526,14 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             // Store the states of the action views.
             SparseArray<ParcelableSparseArray> actionViewStates = new SparseArray<>();
             for (NavigationMenuItem navigationMenuItem : mItems) {
-                MenuItemImpl item = navigationMenuItem.getMenuItem();
-                View actionView = item != null ? item.getActionView() : null;
-                if (actionView != null) {
-                    ParcelableSparseArray container = new ParcelableSparseArray();
-                    actionView.saveHierarchyState(container);
-                    actionViewStates.put(item.getItemId(), container);
+                if (navigationMenuItem instanceof NavigationMenuTextItem) {
+                    MenuItemImpl item = ((NavigationMenuTextItem) navigationMenuItem).getMenuItem();
+                    View actionView = item != null ? item.getActionView() : null;
+                    if (actionView != null) {
+                        ParcelableSparseArray container = new ParcelableSparseArray();
+                        actionView.saveHierarchyState(container);
+                        actionViewStates.put(item.getItemId(), container);
+                    }
                 }
             }
             state.putSparseParcelableArray(STATE_ACTION_VIEWS, actionViewStates);
@@ -491,10 +545,12 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             if (checkedItem != 0) {
                 mUpdateSuspended = true;
                 for (NavigationMenuItem item : mItems) {
-                    MenuItemImpl menuItem = item.getMenuItem();
-                    if (menuItem != null && menuItem.getItemId() == checkedItem) {
-                        setCheckedItem(menuItem);
-                        break;
+                    if (item instanceof NavigationMenuTextItem) {
+                        MenuItemImpl menuItem = ((NavigationMenuTextItem) item).getMenuItem();
+                        if (menuItem != null && menuItem.getItemId() == checkedItem) {
+                            setCheckedItem(menuItem);
+                            break;
+                        }
                     }
                 }
                 mUpdateSuspended = false;
@@ -504,10 +560,12 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             SparseArray<ParcelableSparseArray> actionViewStates = state
                     .getSparseParcelableArray(STATE_ACTION_VIEWS);
             for (NavigationMenuItem navigationMenuItem : mItems) {
-                MenuItemImpl item = navigationMenuItem.getMenuItem();
-                View actionView = item != null ? item.getActionView() : null;
-                if (actionView != null) {
-                    actionView.restoreHierarchyState(actionViewStates.get(item.getItemId()));
+                if (navigationMenuItem instanceof NavigationMenuTextItem) {
+                    MenuItemImpl item = ((NavigationMenuTextItem) navigationMenuItem).getMenuItem();
+                    View actionView = item != null ? item.getActionView() : null;
+                    if (actionView != null) {
+                        actionView.restoreHierarchyState(actionViewStates.get(item.getItemId()));
+                    }
                 }
             }
         }
@@ -519,35 +577,40 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     }
 
     /**
-     * Wraps {@link MenuItemImpl}. This allows separators to be counted as items in list.
+     * Unified data model for all sorts of navigation menu items.
      */
-    private static class NavigationMenuItem {
+    private interface NavigationMenuItem {
+    }
 
-        /** The item; null for separators */
+    /**
+     * Normal or subheader items.
+     */
+    private static class NavigationMenuTextItem implements NavigationMenuItem {
+
         private final MenuItemImpl mMenuItem;
 
-        /** Padding top; used only for separators */
+        private NavigationMenuTextItem(MenuItemImpl item) {
+            mMenuItem = item;
+        }
+
+        public MenuItemImpl getMenuItem() {
+            return mMenuItem;
+        }
+
+    }
+
+    /**
+     * Separator items.
+     */
+    private static class NavigationMenuSeparatorItem implements NavigationMenuItem {
+
         private final int mPaddingTop;
 
-        /** Padding bottom; used only for separators */
         private final int mPaddingBottom;
 
-        private NavigationMenuItem(MenuItemImpl item, int paddingTop, int paddingBottom) {
-            mMenuItem = item;
+        public NavigationMenuSeparatorItem(int paddingTop, int paddingBottom) {
             mPaddingTop = paddingTop;
             mPaddingBottom = paddingBottom;
-        }
-
-        public static NavigationMenuItem of(MenuItemImpl item) {
-            return new NavigationMenuItem(item, 0, 0);
-        }
-
-        public static NavigationMenuItem separator(int paddingTop, int paddingBottom) {
-            return new NavigationMenuItem(null, paddingTop, paddingBottom);
-        }
-
-        public boolean isSeparator() {
-            return mMenuItem == null;
         }
 
         public int getPaddingTop() {
@@ -558,15 +621,13 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             return mPaddingBottom;
         }
 
-        public MenuItemImpl getMenuItem() {
-            return mMenuItem;
-        }
+    }
 
-        public boolean isEnabled() {
-            // Separators and subheaders never respond to click
-            return mMenuItem != null && !mMenuItem.hasSubMenu() && mMenuItem.isEnabled();
-        }
-
+    /**
+     * Header (not subheader) items.
+     */
+    private static class NavigationMenuHeaderItem implements NavigationMenuItem {
+        // The actual content is hold by NavigationMenuPresenter#mHeaderLayout.
     }
 
 }
