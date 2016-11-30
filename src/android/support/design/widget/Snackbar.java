@@ -499,15 +499,27 @@ public final class Snackbar {
         });
 
         if (ViewCompat.isLaidOut(mView)) {
-            // If the view is already laid out, animate it now
-            animateViewIn();
+            if (shouldAnimate()) {
+                // If animations are enabled, animate it in
+                animateViewIn();
+            } else {
+                // Else if anims are disabled just call back now
+                onViewShown();
+            }
         } else {
-            // Otherwise, add one of our layout change listeners and animate it in when laid out
+            // Otherwise, add one of our layout change listeners and show it in when laid out
             mView.setOnLayoutChangeListener(new SnackbarLayout.OnLayoutChangeListener() {
                 @Override
                 public void onLayoutChange(View view, int left, int top, int right, int bottom) {
-                    animateViewIn();
                     mView.setOnLayoutChangeListener(null);
+
+                    if (shouldAnimate()) {
+                        // If animations are enabled, animate it in
+                        animateViewIn();
+                    } else {
+                        // Else if anims are disabled just call back now
+                        onViewShown();
+                    }
                 }
             });
         }
@@ -523,15 +535,8 @@ public final class Snackbar {
                     .setListener(new ViewPropertyAnimatorListenerAdapter() {
                         @Override
                         public void onAnimationStart(View view) {
-                            if (!mAccessibilityManager.isEnabled()) {
-                                // Animating the children in causes Talkback to think that they're
-                                // not visible when the TYPE_WINDOW_CONTENT_CHANGED event if fired.
-                                // Fixed by skipping the animation when an accessibility manager
-                                // is enabled
-                                mView.animateChildrenIn(
-                                        ANIMATION_DURATION - ANIMATION_FADE_DURATION,
-                                        ANIMATION_FADE_DURATION);
-                            }
+                            mView.animateChildrenIn(ANIMATION_DURATION - ANIMATION_FADE_DURATION,
+                                    ANIMATION_FADE_DURATION);
                         }
 
                         @Override
@@ -567,17 +572,9 @@ public final class Snackbar {
                     .setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR)
                     .setDuration(ANIMATION_DURATION)
                     .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                        boolean mEndCalled = false;
-
                         @Override
                         public void onAnimationStart(View view) {
-                            if (!mAccessibilityManager.isEnabled()) {
-                                // Animating the children in causes Talkback to think that they're
-                                // not visible when the TYPE_WINDOW_CONTENT_CHANGED event if fired.
-                                // Fixed by skipping the animation when an accessibility manager
-                                // is enabled
-                                mView.animateChildrenOut(0, ANIMATION_FADE_DURATION);
-                            }
+                            mView.animateChildrenOut(0, ANIMATION_FADE_DURATION);
                         }
 
                         @Override
@@ -586,7 +583,8 @@ public final class Snackbar {
                         }
                     }).start();
         } else {
-            Animation anim = AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_out);
+            Animation anim = AnimationUtils.loadAnimation(mView.getContext(),
+                    R.anim.design_snackbar_out);
             anim.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
             anim.setDuration(ANIMATION_DURATION);
             anim.setAnimationListener(new Animation.AnimationListener() {
@@ -606,10 +604,11 @@ public final class Snackbar {
     }
 
     final void hideView(@Callback.DismissEvent final int event) {
-        if (mView.getVisibility() != View.VISIBLE) {
-            onViewHidden(event);
-        } else {
+        if (shouldAnimate() && mView.getVisibility() == View.VISIBLE) {
             animateViewOut(event);
+        } else {
+            // If anims are disabled or the view isn't visible, just call back now
+            onViewHidden(event);
         }
     }
 
@@ -632,6 +631,13 @@ public final class Snackbar {
         if (parent instanceof ViewGroup) {
             ((ViewGroup) parent).removeView(mView);
         }
+    }
+
+    /**
+     * Returns true if we should animate the Snackbar view in/out.
+     */
+    private boolean shouldAnimate() {
+        return !mAccessibilityManager.isEnabled();
     }
 
     /**
