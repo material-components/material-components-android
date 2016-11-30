@@ -207,7 +207,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      * @param resId ID of a menu resource to inflate
      */
     public void inflateMenu(int resId) {
+        mPresenter.setUpdateSuspended(true);
         getMenuInflater().inflate(resId, mMenu);
+        mPresenter.setUpdateSuspended(false);
+        mPresenter.updateMenuView(false);
     }
 
     /**

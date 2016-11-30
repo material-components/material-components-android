@@ -233,6 +233,12 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         mItemBackground = itemBackground;
     }
 
+    public void setUpdateSuspended(boolean updateSuspended) {
+        if (mAdapter != null) {
+            mAdapter.setUpdateSuspended(updateSuspended);
+        }
+    }
+
     private class NavigationMenuAdapter extends BaseAdapter {
 
         private static final String STATE_CHECKED_ITEMS = "android:menu:checked";
@@ -430,6 +436,10 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                 mUpdateSuspended = false;
                 prepareMenuItems();
             }
+        }
+
+        public void setUpdateSuspended(boolean updateSuspended) {
+            mUpdateSuspended = updateSuspended;
         }
 
     }
