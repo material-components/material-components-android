@@ -31,6 +31,7 @@ import android.support.design.R;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -53,7 +54,7 @@ import java.util.List;
  * @attr ref android.support.design.R.styleable#FloatingActionButton_fabSize
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
-public class FloatingActionButton extends ImageView {
+public class FloatingActionButton extends ImageButton {
 
     // These values must match those in the attrs declaration
     private static final int SIZE_MINI = 1;

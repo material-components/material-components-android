@@ -178,7 +178,7 @@ package android.support.design.widget {
     field public static final android.os.Parcelable.Creator<android.support.design.widget.CoordinatorLayout.SavedState> CREATOR;
   }
 
-  public class FloatingActionButton extends android.widget.ImageView {
+  public class FloatingActionButton extends android.widget.ImageButton {
     ctor public FloatingActionButton(android.content.Context);
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet);
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet, int);
