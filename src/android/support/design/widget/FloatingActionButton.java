@@ -32,6 +32,7 @@ import android.support.design.widget.FloatingActionButtonImpl.InternalVisibility
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
@@ -91,6 +92,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private int mRippleColor;
     private int mSize;
     private int mImagePadding;
+    private Rect mTouchArea;
 
     private boolean mCompatPadding;
     private final Rect mShadowPadding;
@@ -111,6 +113,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         ThemeUtils.checkAppCompatTheme(context);
 
         mShadowPadding = new Rect();
+        mTouchArea = new Rect();
 
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.FloatingActionButton, defStyleAttr,
@@ -467,6 +470,15 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             default:
                 return defaultMode;
         }
+    }
+
+    @Override
+    public boolean onTouchEvent(MotionEvent ev) {
+        if(getContentRect(mTouchArea) && !mTouchArea.contains((int) ev.getX(), (int) ev.getY())) {
+            return false;
+        }
+
+        return super.onTouchEvent(ev);
     }
 
     /**
