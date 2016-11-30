@@ -239,12 +239,6 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
         @Override
         public void onViewReleased(View child, float xvel, float yvel) {
-            // First allow the parent to intercept again
-            final ViewParent parent = child.getParent();
-            if (parent != null) {
-                parent.requestDisallowInterceptTouchEvent(false);
-            }
-
             final int childWidth = child.getWidth();
             int targetLeft;
             boolean dismiss = false;
