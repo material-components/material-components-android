@@ -581,6 +581,11 @@ public class TabLayout extends HorizontalScrollView {
 
         // Now we'll add a tab selected listener to set ViewPager's current item
         setOnTabSelectedListener(new ViewPagerOnTabSelectedListener(viewPager));
+
+        // Make sure we reflect the currently set ViewPager item
+        if (mSelectedTab == null || (mSelectedTab.getPosition() != viewPager.getCurrentItem())) {
+            getTabAt(viewPager.getCurrentItem()).select();
+        }
     }
 
     /**
