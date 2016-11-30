@@ -52,6 +52,7 @@ import android.view.animation.AccelerateInterpolator;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 /**
  * Layout which wraps an {@link android.widget.EditText} (or descendant) to show a floating label
@@ -690,9 +691,13 @@ public class TextInputLayout extends LinearLayout {
     private void updateEditTextBackground() {
         ensureBackgroundDrawableStateWorkaround();
 
-        final Drawable editTextBackground = mEditText.getBackground();
+        Drawable editTextBackground = mEditText.getBackground();
         if (editTextBackground == null) {
             return;
+        }
+
+        if (android.support.v7.widget.DrawableUtils.canSafelyMutateDrawable(editTextBackground)) {
+            editTextBackground = editTextBackground.mutate();
         }
 
         if (mErrorShown && mErrorView != null) {
