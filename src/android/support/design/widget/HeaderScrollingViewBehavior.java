@@ -38,6 +38,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
     private final Rect mTempRect2 = new Rect();
 
     private int mVerticalLayoutGap = 0;
+    private int mOverlayTop;
 
     public HeaderScrollingViewBehavior() {}
 
@@ -116,13 +117,27 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
             GravityCompat.apply(resolveGravity(lp.gravity), child.getMeasuredWidth(),
                     child.getMeasuredHeight(), available, out, layoutDirection);
 
-            child.layout(out.left, out.top, out.right, out.bottom);
+            final int overlap = getOverlapPixelsForOffset(header);
+
+            child.layout(out.left, out.top - overlap, out.right, out.bottom - overlap);
             mVerticalLayoutGap = out.top - header.getBottom();
         } else {
             // If we don't have a dependency, let super handle it
             super.layoutChild(parent, child, layoutDirection);
             mVerticalLayoutGap = 0;
         }
+    }
+
+    float getOverlapRatioForOffset(final View header) {
+        return 1f;
+    }
+
+    final int getOverlapPixelsForOffset(final View header) {
+        return mOverlayTop == 0
+                ? 0
+                : MathUtils.constrain(Math.round(getOverlapRatioForOffset(header) * mOverlayTop),
+                        0, mOverlayTop);
+
     }
 
     private static int resolveGravity(int gravity) {
@@ -138,7 +153,23 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
     /**
      * The gap between the top of the scrolling view and the bottom of the header layout in pixels.
      */
-    int getVerticalLayoutGap() {
+    final int getVerticalLayoutGap() {
         return mVerticalLayoutGap;
+    }
+
+    /**
+     * Set the distance that this view should overlap any {@link AppBarLayout}.
+     *
+     * @param overlayTop the distance in px
+     */
+    public final void setOverlayTop(int overlayTop) {
+        mOverlayTop = overlayTop;
+    }
+
+    /**
+     * Returns the distance that this view should overlap any {@link AppBarLayout}.
+     */
+    public final int getOverlayTop() {
+        return mOverlayTop;
     }
 }

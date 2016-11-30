@@ -1146,17 +1146,16 @@ public class AppBarLayout extends LinearLayout {
      * nested scrolling to automatically scroll any {@link AppBarLayout} siblings.
      */
     public static class ScrollingViewBehavior extends HeaderScrollingViewBehavior {
-        private int mOverlayTop;
 
         public ScrollingViewBehavior() {}
 
         public ScrollingViewBehavior(Context context, AttributeSet attrs) {
             super(context, attrs);
 
-            TypedArray a = context.obtainStyledAttributes(attrs,
+            final TypedArray a = context.obtainStyledAttributes(attrs,
                     R.styleable.ScrollingViewBehavior_Params);
-            mOverlayTop = a.getDimensionPixelSize(
-                    R.styleable.ScrollingViewBehavior_Params_behavior_overlapTop, 0);
+            setOverlayTop(a.getDimensionPixelSize(
+                    R.styleable.ScrollingViewBehavior_Params_behavior_overlapTop, 0));
             a.recycle();
         }
 
@@ -1184,15 +1183,18 @@ public class AppBarLayout extends LinearLayout {
                 child.offsetTopAndBottom((dependency.getBottom() - child.getTop())
                         + ablBehavior.mOffsetDelta
                         + getVerticalLayoutGap()
-                        - getOverlapForOffset(dependency, offset));
+                        - getOverlapPixelsForOffset(dependency));
             }
         }
 
-        private int getOverlapForOffset(final View dependency, final int offset) {
-            if (mOverlayTop != 0 && dependency instanceof AppBarLayout) {
-                final AppBarLayout abl = (AppBarLayout) dependency;
+
+        @Override
+        float getOverlapRatioForOffset(final View header) {
+            if (header instanceof AppBarLayout) {
+                final AppBarLayout abl = (AppBarLayout) header;
                 final int totalScrollRange = abl.getTotalScrollRange();
                 final int preScrollDown = abl.getDownNestedPreScrollRange();
+                final int offset = getAppBarLayoutOffset(abl);
 
                 if (preScrollDown != 0 && (totalScrollRange + offset) <= preScrollDown) {
                     // If we're in a pre-scroll down. Don't use the offset at all.
@@ -1201,29 +1203,20 @@ public class AppBarLayout extends LinearLayout {
                     final int availScrollRange = totalScrollRange - preScrollDown;
                     if (availScrollRange != 0) {
                         // Else we'll use a interpolated ratio of the overlap, depending on offset
-                        final float percScrolled = offset / (float) availScrollRange;
-                        return MathUtils.constrain(
-                                Math.round((1f + percScrolled) * mOverlayTop), 0, mOverlayTop);
+                        return 1f + (offset / (float) availScrollRange);
                     }
                 }
             }
-            return mOverlayTop;
+            return 0f;
         }
 
-        /**
-         * Set the distance that this view should overlap any {@link AppBarLayout}.
-         *
-         * @param overlayTop the distance in px
-         */
-        public void setOverlayTop(int overlayTop) {
-            mOverlayTop = overlayTop;
-        }
-
-        /**
-         * Returns the distance that this view should overlap any {@link AppBarLayout}.
-         */
-        public int getOverlayTop() {
-            return mOverlayTop;
+        private static int getAppBarLayoutOffset(AppBarLayout abl) {
+            final CoordinatorLayout.Behavior behavior =
+                    ((CoordinatorLayout.LayoutParams) abl.getLayoutParams()).getBehavior();
+            if (behavior instanceof Behavior) {
+                return ((Behavior) behavior).getTopBottomOffsetForScrollingSibling();
+            }
+            return 0;
         }
 
         @Override

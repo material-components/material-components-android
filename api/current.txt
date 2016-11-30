@@ -63,10 +63,8 @@ package android.support.design.widget {
   public static class AppBarLayout.ScrollingViewBehavior extends android.support.design.widget.HeaderScrollingViewBehavior {
     ctor public AppBarLayout.ScrollingViewBehavior();
     ctor public AppBarLayout.ScrollingViewBehavior(android.content.Context, android.util.AttributeSet);
-    method public int getOverlayTop();
     method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
     method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
-    method public void setOverlayTop(int);
   }
 
   public class BottomSheetBehavior extends android.support.design.widget.CoordinatorLayout.Behavior {
@@ -275,8 +273,10 @@ package android.support.design.widget {
    abstract class HeaderScrollingViewBehavior extends android.support.design.widget.ViewOffsetBehavior {
     ctor public HeaderScrollingViewBehavior();
     ctor public HeaderScrollingViewBehavior(android.content.Context, android.util.AttributeSet);
+    method public final int getOverlayTop();
     method protected void layoutChild(android.support.design.widget.CoordinatorLayout, android.view.View, int);
     method public boolean onMeasureChild(android.support.design.widget.CoordinatorLayout, android.view.View, int, int, int, int);
+    method public final void setOverlayTop(int);
   }
 
   public class NavigationView extends android.widget.FrameLayout {
