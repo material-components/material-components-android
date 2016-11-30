@@ -194,6 +194,37 @@ public class BottomSheetBehaviorTest extends
         }
     }
 
+    @Test
+    @MediumTest
+    public void testInvisible() throws Throwable {
+        // Make the bottomsheet invisible
+        runTestOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                getBottomSheet().setVisibility(View.INVISIBLE);
+                assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+            }
+        });
+        // Swipe up as if to expand it
+        Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+                .perform(DesignViewActions.withCustomConstraints(
+                        new GeneralSwipeAction(Swipe.FAST,
+                                GeneralLocation.VISIBLE_CENTER, new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                return new float[]{view.getWidth() / 2, 0};
+                            }
+                        }, Press.FINGER),
+                        not(ViewMatchers.isDisplayed())));
+        // Check that the bottom sheet stays the same collapsed state
+        runTestOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+            }
+        });
+    }
+
     private void checkSetState(int state, Matcher<View> matcher) {
         registerIdlingResourceCallback();
         try {

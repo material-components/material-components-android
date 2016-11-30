@@ -198,6 +198,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     @Override
     public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+        if (!child.isShown()) {
+            return false;
+        }
         int action = MotionEventCompat.getActionMasked(event);
         switch (action) {
             case MotionEvent.ACTION_UP:
@@ -227,6 +230,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     @Override
     public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
+        if (!child.isShown()) {
+            return false;
+        }
         mViewDragHelper.processTouchEvent(event);
         return true;
     }
