@@ -147,8 +147,8 @@ public final class Snackbar {
      */
     public static final int LENGTH_LONG = 0;
 
-    private static final int ANIMATION_DURATION = 250;
-    private static final int ANIMATION_FADE_DURATION = 180;
+    static final int ANIMATION_DURATION = 250;
+    static final int ANIMATION_FADE_DURATION = 180;
 
     private static final Handler sHandler;
     private static final int MSG_SHOW = 0;

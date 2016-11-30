@@ -24,7 +24,7 @@ import android.support.design.test.R;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.ViewActions;
-import android.test.suitebuilder.annotation.SmallTest;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
 
 import java.util.ArrayList;
@@ -44,7 +44,7 @@ public class SnackbarBucketTests extends BaseInstrumentationTestCase<SnackbarBuc
     }
 
     @Test
-    @SmallTest
+    @MediumTest
     public void testActionClickDismiss() {
         testDismissCallback(
                 onView(withId(R.id.snackbar_action)),
@@ -54,7 +54,7 @@ public class SnackbarBucketTests extends BaseInstrumentationTestCase<SnackbarBuc
     }
 
     @Test
-    @SmallTest
+    @MediumTest
     public void testSwipeDismissCallback() {
         testDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
@@ -64,7 +64,7 @@ public class SnackbarBucketTests extends BaseInstrumentationTestCase<SnackbarBuc
     }
 
     @Test
-    @SmallTest
+    @MediumTest
     public void testActionClickListener() {
         final AtomicBoolean clicked = new AtomicBoolean();
 
@@ -78,6 +78,8 @@ public class SnackbarBucketTests extends BaseInstrumentationTestCase<SnackbarBuc
                 });
         // Now show the Snackbar
         snackbar.show();
+        // Sleep for the animation
+        SystemClock.sleep(Snackbar.ANIMATION_DURATION + 50);
         // Perform the action click
         onView(withId(R.id.snackbar_action)).perform(ViewActions.click());
 
@@ -104,6 +106,8 @@ public class SnackbarBucketTests extends BaseInstrumentationTestCase<SnackbarBuc
 
         // Now show the Snackbar
         snackbar.show();
+        // Sleep for the animation
+        SystemClock.sleep(Snackbar.ANIMATION_DURATION + 50);
         // ...and the perform the UI interaction
         interaction.perform(action);
         // Now wait until the Snackbar has been removed from the view hierarchy
