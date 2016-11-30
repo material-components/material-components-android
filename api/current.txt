@@ -7,6 +7,8 @@ package android.support.design.widget {
     method public float getTargetElevation();
     method public final int getTotalScrollRange();
     method public void removeOnOffsetChangedListener(android.support.design.widget.AppBarLayout.OnOffsetChangedListener);
+    method public void setExpanded(boolean);
+    method public void setExpanded(boolean, boolean);
     method public void setTargetElevation(float);
   }
 

@@ -95,6 +95,11 @@ import java.util.List;
 @CoordinatorLayout.DefaultBehavior(AppBarLayout.Behavior.class)
 public class AppBarLayout extends LinearLayout {
 
+    private static final int PENDING_ACTION_NONE = 0x0;
+    private static final int PENDING_ACTION_EXPANDED = 0x1;
+    private static final int PENDING_ACTION_COLLAPSED = 0x2;
+    private static final int PENDING_ACTION_ANIMATE_ENABLED = 0x4;
+
     /**
      * Interface definition for a callback to be invoked when an {@link AppBarLayout}'s vertical
      * offset changes.
@@ -121,6 +126,8 @@ public class AppBarLayout extends LinearLayout {
 
     private float mTargetElevation;
 
+    private int mPendingAction = PENDING_ACTION_NONE;
+
     private WindowInsetsCompat mLastInsets;
 
     private final List<WeakReference<OnOffsetChangedListener>> mListeners;
@@ -137,6 +144,9 @@ public class AppBarLayout extends LinearLayout {
                 0, R.style.Widget_Design_AppBarLayout);
         mTargetElevation = a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0);
         setBackgroundDrawable(a.getDrawable(R.styleable.AppBarLayout_android_background));
+        if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
+            setExpanded(a.getBoolean(R.styleable.AppBarLayout_expanded, false));
+        }
         a.recycle();
 
         // Use the bounds view outline provider so that we cast a shadow, even without a background
@@ -221,6 +231,40 @@ public class AppBarLayout extends LinearLayout {
                     + " not support horizontal orientation");
         }
         super.setOrientation(orientation);
+    }
+
+    /**
+     * Sets whether this {@link AppBarLayout} is expanded or not, animating if it has already
+     * been laid out.
+     *
+     * <p>As with {@link AppBarLayout}'s scrolling, this method relies on this layout being a
+     * direct child of a {@link CoordinatorLayout}.</p>
+     *
+     * @param expanded true if the layout should be fully expanded, false if it should
+     *                 be fully collapsed
+     *
+     * @attr ref android.support.design.R.styleable#AppBarLayout_expanded
+     */
+    public void setExpanded(boolean expanded) {
+        setExpanded(expanded, ViewCompat.isLaidOut(this));
+    }
+
+    /**
+     * Sets whether this {@link AppBarLayout} is expanded or not.
+     *
+     * <p>As with {@link AppBarLayout}'s scrolling, this method relies on this layout being a
+     * direct child of a {@link CoordinatorLayout}.</p>
+     *
+     * @param expanded true if the layout should be fully expanded, false if it should
+     *                 be fully collapsed
+     * @param animate Whether to animate to the new state
+     *
+     * @attr ref android.support.design.R.styleable#AppBarLayout_expanded
+     */
+    public void setExpanded(boolean expanded, boolean animate) {
+        mPendingAction = (expanded ? PENDING_ACTION_EXPANDED : PENDING_ACTION_COLLAPSED)
+                | (animate ? PENDING_ACTION_ANIMATE_ENABLED : 0);
+        requestLayout();
     }
 
     @Override
@@ -417,6 +461,14 @@ public class AppBarLayout extends LinearLayout {
      */
     public float getTargetElevation() {
         return mTargetElevation;
+    }
+
+    int getPendingAction() {
+        return mPendingAction;
+    }
+
+    void resetPendingAction() {
+        mPendingAction = PENDING_ACTION_NONE;
     }
 
     private void setWindowInsets(WindowInsetsCompat insets) {
@@ -771,12 +823,31 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout appBarLayout,
+        public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout abl,
                 int layoutDirection) {
-            boolean handled = super.onLayoutChild(parent, appBarLayout, layoutDirection);
+            boolean handled = super.onLayoutChild(parent, abl, layoutDirection);
 
-            if (mOffsetToChildIndexOnLayout >= 0) {
-                View child = appBarLayout.getChildAt(mOffsetToChildIndexOnLayout);
+            final int pendingAction = abl.getPendingAction();
+            if (pendingAction != PENDING_ACTION_NONE) {
+                final boolean animate = (pendingAction & PENDING_ACTION_ANIMATE_ENABLED) != 0;
+                if ((pendingAction & PENDING_ACTION_COLLAPSED) != 0) {
+                    final int offset = -abl.getUpNestedPreScrollRange();
+                    if (animate) {
+                        animateOffsetTo(parent, abl, offset);
+                    } else {
+                        setAppBarTopBottomOffset(parent, abl, offset);
+                    }
+                } else if ((pendingAction & PENDING_ACTION_EXPANDED) != 0) {
+                    if (animate) {
+                        animateOffsetTo(parent, abl, 0);
+                    } else {
+                        setAppBarTopBottomOffset(parent, abl, 0);
+                    }
+                }
+                // Finally reset the pending state
+                abl.resetPendingAction();
+            } else if (mOffsetToChildIndexOnLayout >= 0) {
+                View child = abl.getChildAt(mOffsetToChildIndexOnLayout);
                 int offset = -child.getBottom();
                 if (mOffsetToChildIndexOnLayoutIsMinHeight) {
                     offset += ViewCompat.getMinimumHeight(child);
@@ -788,7 +859,7 @@ public class AppBarLayout extends LinearLayout {
             }
 
             // Make sure we update the elevation
-            dispatchOffsetUpdates(appBarLayout);
+            dispatchOffsetUpdates(abl);
 
             return handled;
         }

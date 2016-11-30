@@ -85,6 +85,8 @@ final class CollapsingTextHelper {
     private float mScale;
     private float mCurrentTextSize;
 
+    private boolean mBoundsChanged;
+
     private final TextPaint mTextPaint;
 
     private Interpolator mPositionInterpolator;
@@ -140,11 +142,17 @@ final class CollapsingTextHelper {
     }
 
     void setExpandedBounds(int left, int top, int right, int bottom) {
-        mExpandedBounds.set(left, top, right, bottom);
+        if (!rectEquals(mExpandedBounds, left, top, right, bottom)) {
+            mExpandedBounds.set(left, top, right, bottom);
+            mBoundsChanged = true;
+        }
     }
 
     void setCollapsedBounds(int left, int top, int right, int bottom) {
-        mCollapsedBounds.set(left, top, right, bottom);
+        if (!rectEquals(mCollapsedBounds, left, top, right, bottom)) {
+            mCollapsedBounds.set(left, top, right, bottom);
+            mBoundsChanged = true;
+        }
     }
 
     void setExpandedTextGravity(int gravity) {
@@ -424,8 +432,9 @@ final class CollapsingTextHelper {
         }
 
         if (availableWidth > 0) {
-            updateDrawText = mCurrentTextSize != newTextSize;
+            updateDrawText = (mCurrentTextSize != newTextSize) || mBoundsChanged;
             mCurrentTextSize = newTextSize;
+            mBoundsChanged = false;
         }
 
         if (mTextToDraw == null || updateDrawText) {
@@ -551,5 +560,9 @@ final class CollapsingTextHelper {
             fraction = interpolator.getInterpolation(fraction);
         }
         return AnimationUtils.lerp(startValue, endValue, fraction);
+    }
+
+    private static boolean rectEquals(Rect r, int left, int top, int right, int bottom) {
+        return !(r.left != left || r.top != top || r.right != right || r.bottom != bottom);
     }
 }

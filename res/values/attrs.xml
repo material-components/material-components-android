@@ -172,6 +172,9 @@
     <declare-styleable name="AppBarLayout">
         <attr name="elevation" />
         <attr name="android:background" />
+        <!-- The initial expanded state for the AppBarLayout. This only takes effect when this
+             view is a direct child of a CoordinatorLayout. -->
+        <attr name="expanded" format="boolean" />
     </declare-styleable>
 
     <declare-styleable name="AppBarLayout_LayoutParams">
