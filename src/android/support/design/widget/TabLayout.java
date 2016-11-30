@@ -199,7 +199,7 @@ public class TabLayout extends HorizontalScrollView {
     private final int mTabBackgroundResId;
 
     private final int mTabMinWidth;
-    private int mTabMaxWidth;
+    private int mTabMaxWidth = Integer.MAX_VALUE;
     private final int mRequestedTabMaxWidth;
 
     private int mContentInsetStart;
@@ -740,7 +740,12 @@ public class TabLayout extends HorizontalScrollView {
             // If the request tab max width is 0, or larger than our default, use the default
             maxTabWidth = defaultTabMaxWidth;
         }
-        mTabMaxWidth = maxTabWidth;
+
+        if (mTabMaxWidth != maxTabWidth) {
+            // If the tab max width has changed, re-measure
+            mTabMaxWidth = maxTabWidth;
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 
     private void removeTabViewAt(int position) {
