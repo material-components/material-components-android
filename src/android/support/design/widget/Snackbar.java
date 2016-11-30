@@ -452,6 +452,7 @@ public final class Snackbar {
                 behavior.setListener(new SwipeDismissBehavior.OnDismissListener() {
                     @Override
                     public void onDismiss(View view) {
+                        view.setVisibility(View.GONE);
                         dispatchDismiss(Callback.DISMISS_EVENT_SWIPE);
                     }
 
@@ -604,8 +605,8 @@ public final class Snackbar {
         }
     }
 
-    final void hideView(int event) {
-        if (mView.getVisibility() != View.VISIBLE || isBeingDragged()) {
+    final void hideView(@Callback.DismissEvent final int event) {
+        if (mView.getVisibility() != View.VISIBLE) {
             onViewHidden(event);
         } else {
             animateViewOut(event);
@@ -631,24 +632,6 @@ public final class Snackbar {
         if (parent instanceof ViewGroup) {
             ((ViewGroup) parent).removeView(mView);
         }
-    }
-
-    /**
-     * @return if the view is being being dragged or settled by {@link SwipeDismissBehavior}.
-     */
-    private boolean isBeingDragged() {
-        final ViewGroup.LayoutParams lp = mView.getLayoutParams();
-
-        if (lp instanceof CoordinatorLayout.LayoutParams) {
-            final CoordinatorLayout.LayoutParams cllp = (CoordinatorLayout.LayoutParams) lp;
-            final CoordinatorLayout.Behavior behavior = cllp.getBehavior();
-
-            if (behavior instanceof SwipeDismissBehavior) {
-                return ((SwipeDismissBehavior) behavior).getDragState()
-                        != SwipeDismissBehavior.STATE_IDLE;
-            }
-        }
-        return false;
     }
 
     /**
