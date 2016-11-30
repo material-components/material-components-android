@@ -844,11 +844,11 @@ public class TabLayout extends HorizontalScrollView {
                 animateToTab(tab.getPosition());
             }
         } else {
-            final int newPosition = tab != null ? tab.getPosition() : Tab.INVALID_POSITION;
-            if (newPosition != Tab.INVALID_POSITION) {
-                setSelectedTabView(newPosition);
-            }
             if (updateIndicator) {
+                final int newPosition = tab != null ? tab.getPosition() : Tab.INVALID_POSITION;
+                if (newPosition != Tab.INVALID_POSITION) {
+                    setSelectedTabView(newPosition);
+                }
                 if ((mSelectedTab == null || mSelectedTab.getPosition() == Tab.INVALID_POSITION)
                         && newPosition != Tab.INVALID_POSITION) {
                     // If we don't currently have a tab, just draw the indicator
