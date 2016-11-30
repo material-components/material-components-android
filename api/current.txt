@@ -239,8 +239,6 @@ package android.support.design.widget {
     method public void addTab(android.support.design.widget.TabLayout.Tab, int);
     method public void addTab(android.support.design.widget.TabLayout.Tab, boolean);
     method public void addTab(android.support.design.widget.TabLayout.Tab, int, boolean);
-    method public void addTabsFromPagerAdapter(android.support.v4.view.PagerAdapter);
-    method public android.support.v4.view.ViewPager.OnPageChangeListener createOnPageChangeListener();
     method public android.support.design.widget.TabLayout.Tab getTabAt(int);
     method public int getTabCount();
     method public int getTabGravity();
@@ -256,6 +254,8 @@ package android.support.design.widget {
     method public void setTabMode(int);
     method public void setTabTextColors(android.content.res.ColorStateList);
     method public void setTabTextColors(int, int);
+    method public void setTabsFromPagerAdapter(android.support.v4.view.PagerAdapter);
+    method public void setupWithViewPager(android.support.v4.view.ViewPager);
     field public static final int GRAVITY_CENTER = 1; // 0x1
     field public static final int GRAVITY_FILL = 0; // 0x0
     field public static final int MODE_FIXED = 1; // 0x1
@@ -285,6 +285,20 @@ package android.support.design.widget {
     method public android.support.design.widget.TabLayout.Tab setText(java.lang.CharSequence);
     method public android.support.design.widget.TabLayout.Tab setText(int);
     field public static final int INVALID_POSITION = -1; // 0xffffffff
+  }
+
+  public static class TabLayout.TabLayoutOnPageChangeListener implements android.support.v4.view.ViewPager.OnPageChangeListener {
+    ctor public TabLayout.TabLayoutOnPageChangeListener(android.support.design.widget.TabLayout);
+    method public void onPageScrollStateChanged(int);
+    method public void onPageScrolled(int, float, int);
+    method public void onPageSelected(int);
+  }
+
+  public static class TabLayout.ViewPagerOnTabSelectedListener implements android.support.design.widget.TabLayout.OnTabSelectedListener {
+    ctor public TabLayout.ViewPagerOnTabSelectedListener(android.support.v4.view.ViewPager);
+    method public void onTabReselected(android.support.design.widget.TabLayout.Tab);
+    method public void onTabSelected(android.support.design.widget.TabLayout.Tab);
+    method public void onTabUnselected(android.support.design.widget.TabLayout.Tab);
   }
 
   public class TextInputLayout extends android.widget.LinearLayout {

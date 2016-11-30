@@ -52,6 +52,7 @@ import android.widget.Toast;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
 
@@ -71,14 +72,14 @@ import java.util.Iterator;
  * notified when any tab's selection state has been changed.
  * <p>
  * If you're using a {@link android.support.v4.view.ViewPager} together
- * with this layout, you can use {@link #addTabsFromPagerAdapter(PagerAdapter)} which will populate
- * the tabs using the {@link PagerAdapter}'s page titles. You should also use a {@link
- * ViewPager.OnPageChangeListener} to forward the scroll and selection changes to this layout.
- * You can use the one returned {@link #createOnPageChangeListener()} for easy implementation:
+ * with this layout, you can use {@link #setTabsFromPagerAdapter(PagerAdapter)} which will populate
+ * the tabs using the given {@link PagerAdapter}'s page titles. You should also use a
+ * {@link TabLayoutOnPageChangeListener} to forward the scroll and selection changes to this
+ * layout like so:
  * <pre>
  * ViewPager viewPager = ...;
  * TabLayout tabLayout = ...;
- * viewPager.setOnPageChangeListener(tabLayout.createOnPageChangeListener());
+ * viewPager.addOnPageChangeListener(new TabLayoutOnPageChangeListener(tabLayout));
  * </pre>
  *
  * @see <a href="http://www.google.com/design/spec/components/tabs.html">Tabs</a>
@@ -271,7 +272,7 @@ public class TabLayout extends HorizontalScrollView {
 
     /**
      * Set the scroll position of the tabs. This is useful for when the tabs are being displayed as
-     * part of a scrolling container such as {@link ViewPager}.
+     * part of a scrolling container such as {@link android.support.v4.view.ViewPager}.
      * <p>
      * Calling this method does not update the selected tab, it is only used for drawing purposes.
      *
@@ -295,51 +296,6 @@ public class TabLayout extends HorizontalScrollView {
         if (updateSelectedText) {
             setSelectedTabView(Math.round(position + positionOffset));
         }
-    }
-
-    /**
-     * Add new {@link Tab}s populated from a {@link PagerAdapter}. Each tab will have it's text set
-     * to the value returned from {@link PagerAdapter#getPageTitle(int)}.
-     *
-     * @param adapter the adapter to populate from
-     */
-    public void addTabsFromPagerAdapter(PagerAdapter adapter) {
-        for (int i = 0, count = adapter.getCount(); i < count; i++) {
-            addTab(newTab().setText(adapter.getPageTitle(i)));
-        }
-    }
-
-    /**
-     * Create a {@link ViewPager.OnPageChangeListener} which implements the
-     * necessary calls back to this layout so that the tabs position is kept in sync.
-     * <p>
-     * If you need to have a custom {@link ViewPager.OnPageChangeListener} for your own
-     * purposes, you can still use the instance returned from this method, but making sure to call
-     * through to all of the methods.
-     */
-    public ViewPager.OnPageChangeListener createOnPageChangeListener() {
-        return new ViewPager.OnPageChangeListener() {
-            private int mScrollState;
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                mScrollState = state;
-            }
-
-            @Override
-            public void onPageScrolled(int position, float positionOffset,
-                    int positionOffsetPixels) {
-                // Update the scroll position, only update the text selection if we're being
-                // dragged
-                setScrollPosition(position, positionOffset,
-                        mScrollState == ViewPager.SCROLL_STATE_DRAGGING);
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-                getTabAt(position).select();
-            }
-        };
     }
 
     /**
@@ -401,7 +357,8 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
-     * Set the {@link android.support.design.widget.TabLayout.OnTabSelectedListener} that will handle switching to and from tabs.
+     * Set the {@link android.support.design.widget.TabLayout.OnTabSelectedListener} that will
+     * handle switching to and from tabs.
      *
      * @param onTabSelectedListener Listener to handle tab selection events
      */
@@ -497,7 +454,7 @@ public class TabLayout extends HorizontalScrollView {
      * <li>{@link #MODE_SCROLLABLE}: Scrollable tabs display a subset of tabs at any given moment,
      * and can contain longer tab labels and a larger number of tabs. They are best used for
      * browsing contexts in touch interfaces when users don’t need to directly compare the tab
-     * labels. This mode is commonly used with a {@link ViewPager}.</li>
+     * labels. This mode is commonly used with a {@link android.support.v4.view.ViewPager}.</li>
      * </ul>
      *
      * @param mode one of {@link #MODE_FIXED} or {@link #MODE_SCROLLABLE}.
@@ -563,6 +520,55 @@ public class TabLayout extends HorizontalScrollView {
      */
     public void setTabTextColors(int normalColor, int selectedColor) {
         setTabTextColors(createColorStateList(normalColor, selectedColor));
+    }
+
+    /**
+     * The one-stop shop for setting up this {@link TabLayout} with a {@link ViewPager}.
+     *
+     * <p>This method will:
+     * <ul>
+     *     <li>Add a {@link ViewPager.OnPageChangeListener} that will forward events to
+     *     this TabLayout.</li>
+     *     <li>Populate the TabLayout's tabs from the ViewPager's {@link PagerAdapter}.</li>
+     *     <li>Set our {@link TabLayout.OnTabSelectedListener} which will forward
+     *     selected events to the ViewPager</li>
+     * </ul>
+     * </p>
+     *
+     * @see #setTabsFromPagerAdapter(PagerAdapter)
+     * @see TabLayoutOnPageChangeListener
+     * @see ViewPagerOnTabSelectedListener
+     */
+    public void setupWithViewPager(ViewPager viewPager) {
+        final PagerAdapter adapter = viewPager.getAdapter();
+        if (adapter == null) {
+            throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
+        }
+
+        // First we'll add Tabs, using the adapter's page titles
+        setTabsFromPagerAdapter(adapter);
+
+        // Now we'll add our page change listener to the ViewPager
+        viewPager.addOnPageChangeListener(new TabLayoutOnPageChangeListener(this));
+
+        // Now we'll add a tab selected listener to set ViewPager's current item
+        setOnTabSelectedListener(new ViewPagerOnTabSelectedListener(viewPager));
+    }
+
+    /**
+     * Populate our tab content from the given {@link PagerAdapter}.
+     * <p>
+     * Any existing tabs will be removed first. Each tab will have it's text set to the value
+     * returned from {@link PagerAdapter#getPageTitle(int)}
+     * </p>
+     *
+     * @param adapter the adapter to populate from
+     */
+    public void setTabsFromPagerAdapter(PagerAdapter adapter) {
+        removeAllTabs();
+        for (int i = 0, count = adapter.getCount(); i < count; i++) {
+            addTab(newTab().setText(adapter.getPageTitle(i)));
+        }
     }
 
     private void updateAllTabs() {
@@ -1418,6 +1424,77 @@ public class TabLayout extends HorizontalScrollView {
             return a.getColorStateList(R.styleable.TextAppearance_android_textColor);
         } finally {
             a.recycle();
+        }
+    }
+
+    /**
+     * A {@link ViewPager.OnPageChangeListener} class which contains the
+     * necessary calls back to the provided {@link TabLayout} so that the tab position is
+     * kept in sync.
+     *
+     * <p>This class stores the provided TabLayout weakly, meaning that you can use
+     * {@link ViewPager#addOnPageChangeListener(ViewPager.OnPageChangeListener)
+     * addOnPageChangeListener(OnPageChangeListener)} without removing the listener and
+     * not cause a leak.
+     */
+    public static class TabLayoutOnPageChangeListener implements ViewPager.OnPageChangeListener {
+        private final WeakReference<TabLayout> mTabLayoutRef;
+        private int mScrollState;
+
+        public TabLayoutOnPageChangeListener(TabLayout tabLayout) {
+            mTabLayoutRef = new WeakReference<>(tabLayout);
+        }
+
+        @Override
+        public void onPageScrollStateChanged(int state) {
+            mScrollState = state;
+        }
+
+        @Override
+        public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
+            final TabLayout tabLayout = mTabLayoutRef.get();
+            if (tabLayout != null) {
+                // Update the scroll position, only update the text selection if we're being
+                // dragged
+                tabLayout.setScrollPosition(position, positionOffset,
+                        mScrollState == ViewPager.SCROLL_STATE_DRAGGING);
+            }
+        }
+
+        @Override
+        public void onPageSelected(int position) {
+            final TabLayout tabLayout = mTabLayoutRef.get();
+            if (tabLayout != null) {
+                tabLayout.getTabAt(position).select();
+            }
+        }
+    }
+
+    /**
+     * A {@link TabLayout.OnTabSelectedListener} class which contains the necessary calls back
+     * to the provided {@link ViewPager} so that the tab position is kept in sync.
+     */
+    public static class ViewPagerOnTabSelectedListener implements TabLayout.OnTabSelectedListener {
+        private final ViewPager mViewPager;
+
+        public ViewPagerOnTabSelectedListener(ViewPager viewPager) {
+            mViewPager = viewPager;
+        }
+
+        @Override
+        public void onTabSelected(TabLayout.Tab tab) {
+            mViewPager.setCurrentItem(tab.getPosition());
+        }
+
+        @Override
+        public void onTabUnselected(TabLayout.Tab tab) {
+            // No-op
+        }
+
+        @Override
+        public void onTabReselected(TabLayout.Tab tab) {
+            // No-op
         }
     }
 
