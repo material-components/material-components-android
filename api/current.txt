@@ -311,6 +311,7 @@ package android.support.design.widget {
 
   public class SwipeDismissBehavior extends android.support.design.widget.CoordinatorLayout.Behavior {
     ctor public SwipeDismissBehavior();
+    method public boolean canSwipeDismissView(android.view.View);
     method public int getDragState();
     method public void setDragDismissDistance(float);
     method public void setEndAlphaSwipeDistance(float);

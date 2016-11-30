@@ -812,6 +812,11 @@ public final class Snackbar {
 
     final class Behavior extends SwipeDismissBehavior<SnackbarLayout> {
         @Override
+        public boolean canSwipeDismissView(View child) {
+            return child instanceof SnackbarLayout;
+        }
+
+        @Override
         public boolean onInterceptTouchEvent(CoordinatorLayout parent, SnackbarLayout child,
                 MotionEvent event) {
             // We want to make sure that we disable any Snackbar timeouts if the user is

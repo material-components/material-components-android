@@ -17,6 +17,7 @@
 package android.support.design.widget;
 
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -198,13 +199,27 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         return false;
     }
 
+    /**
+     * Called when the user's input indicates that they want to swipe the given view.
+     *
+     * @param view View the user is attempting to swipe
+     * @return true if the view can be dismissed via swiping, false otherwise
+     */
+    public boolean canSwipeDismissView(@NonNull View view) {
+        return true;
+    }
+
     private final ViewDragHelper.Callback mDragCallback = new ViewDragHelper.Callback() {
         private int mOriginalCapturedViewLeft;
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            mOriginalCapturedViewLeft = child.getLeft();
-            return true;
+            return canSwipeDismissView(child);
+        }
+
+        @Override
+        public void onViewCaptured(View capturedChild, int activePointerId) {
+            mOriginalCapturedViewLeft = capturedChild.getLeft();
         }
 
         @Override
