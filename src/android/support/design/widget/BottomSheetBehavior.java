@@ -441,6 +441,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      *              {@link #STATE_HIDDEN}.
      */
     public final void setState(@State int state) {
+        if (mViewRef == null) {
+            return;
+        }
         V child = mViewRef.get();
         if (child == null) {
             return;
