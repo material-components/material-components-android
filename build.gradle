@@ -18,6 +18,8 @@ android {
     defaultConfig {
         minSdkVersion 7
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+        // This disables the builds tools automatic vector -> PNG generation
+        generatedDensities = []
     }
 
     sourceSets {
