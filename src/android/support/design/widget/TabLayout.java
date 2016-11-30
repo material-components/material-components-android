@@ -675,6 +675,17 @@ public class TabLayout extends HorizontalScrollView {
         setPagerAdapter(adapter, false);
     }
 
+    @Override
+    public boolean shouldDelayChildPressedState() {
+        // Only delay the pressed state if the tabs can scroll
+        return getTabScrollRange() > 0;
+    }
+
+    private int getTabScrollRange() {
+        return Math.max(0, mTabStrip.getWidth() - getWidth() - getPaddingLeft()
+                - getPaddingRight());
+    }
+
     private void setPagerAdapter(@Nullable final PagerAdapter adapter, final boolean addObserver) {
         if (mPagerAdapter != null && mPagerAdapterObserver != null) {
             // If we already have a PagerAdapter, unregister our observer
