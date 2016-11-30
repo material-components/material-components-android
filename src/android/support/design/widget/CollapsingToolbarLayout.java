@@ -20,12 +20,14 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
@@ -728,6 +730,40 @@ public class CollapsingToolbarLayout extends FrameLayout {
      */
     public int getExpandedTitleGravity() {
         return mCollapsingTextHelper.getExpandedTextGravity();
+    }
+
+    /**
+     * Set the typeface to use for the collapsed title.
+     *
+     * @param typeface typeface to use, or {@code null} to use the default.
+     */
+    public void setCollapsedTitleTypeface(@Nullable Typeface typeface) {
+        mCollapsingTextHelper.setCollapsedTypeface(typeface);
+    }
+
+    /**
+     * Returns the typeface used for the collapsed title.
+     */
+    @NonNull
+    public Typeface getCollapsedTitleTypeface() {
+        return mCollapsingTextHelper.getCollapsedTypeface();
+    }
+
+    /**
+     * Set the typeface to use for the expanded title.
+     *
+     * @param typeface typeface to use, or {@code null} to use the default.
+     */
+    public void setExpandedTitleTypeface(@Nullable Typeface typeface) {
+        mCollapsingTextHelper.setExpandedTypeface(typeface);
+    }
+
+    /**
+     * Returns the typeface used for the expanded title.
+     */
+    @NonNull
+    public Typeface getExpandedTitleTypeface() {
+        return mCollapsingTextHelper.getExpandedTypeface();
     }
 
     /**

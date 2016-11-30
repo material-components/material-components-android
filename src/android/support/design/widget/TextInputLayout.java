@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
@@ -163,12 +164,21 @@ public class TextInputLayout extends LinearLayout {
     }
 
     /**
-     * Set the typeface to use for the both the expanded and floating hint.
+     * Set the typeface to use for both the expanded and floating hint.
      *
      * @param typeface typeface to use, or {@code null} to use the default.
      */
     public void setTypeface(@Nullable Typeface typeface) {
-        mCollapsingTextHelper.setTypeface(typeface);
+        mCollapsingTextHelper.setTypefaces(typeface);
+    }
+
+    /**
+     * Returns the typeface used for both the expanded and floating hint.
+     */
+    @NonNull
+    public Typeface getTypeface() {
+        // This could be either the collapsed or expanded
+        return mCollapsingTextHelper.getCollapsedTypeface();
     }
 
     private void setEditText(EditText editText) {
@@ -179,7 +189,7 @@ public class TextInputLayout extends LinearLayout {
         mEditText = editText;
 
         // Use the EditText's typeface, and it's text size for our expanded text
-        mCollapsingTextHelper.setTypeface(mEditText.getTypeface());
+        mCollapsingTextHelper.setTypefaces(mEditText.getTypeface());
         mCollapsingTextHelper.setExpandedTextSize(mEditText.getTextSize());
         mCollapsingTextHelper.setExpandedTextGravity(mEditText.getGravity());
 
@@ -232,7 +242,7 @@ public class TextInputLayout extends LinearLayout {
         if (mTmpPaint == null) {
             mTmpPaint = new Paint();
         }
-        mTmpPaint.setTypeface(mCollapsingTextHelper.getTypeface());
+        mTmpPaint.setTypeface(mCollapsingTextHelper.getCollapsedTypeface());
         mTmpPaint.setTextSize(mCollapsingTextHelper.getCollapsedTextSize());
         llp.topMargin = (int) -mTmpPaint.ascent();
 
