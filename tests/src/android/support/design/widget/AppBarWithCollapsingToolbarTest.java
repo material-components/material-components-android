@@ -16,16 +16,16 @@
 
 package android.support.design.widget;
 
+import static org.junit.Assert.assertEquals;
+
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.test.R;
 import android.support.test.InstrumentationRegistry;
 import android.test.suitebuilder.annotation.MediumTest;
-import android.view.View;
 import android.widget.ImageView;
-import org.junit.Test;
 
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 @MediumTest
 public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
@@ -59,7 +59,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
-                originalAppbarBottom + 3 * longSwipeAmount / 2,
+                originalAppbarBottom + longSwipeAmount / 2,
                 longSwipeAmount);
 
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
@@ -157,7 +157,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
-                originalAppbarBottom + 3 * longSwipeAmount / 2,
+                originalAppbarBottom + longSwipeAmount / 2,
                 longSwipeAmount);
 
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
@@ -255,7 +255,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
-                originalAppbarBottom + 3 * longSwipeAmount / 2,
+                originalAppbarBottom + longSwipeAmount / 2,
                 longSwipeAmount);
 
         // Since we the visibility change listener path is only exposed via direct calls to
