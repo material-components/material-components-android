@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.IntDef;
 import android.support.design.R;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
@@ -26,7 +27,8 @@ import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 
-import java.lang.ref.WeakReference;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 /**
@@ -91,15 +93,44 @@ public class AppBarLayout extends LinearLayout {
      * receive offset updates, and provide extra information.
      */
     public interface AppBarLayoutChild {
+
+        /** @hide */
+        @IntDef({
+                STATE_ELEVATED_ABOVE,
+                STATE_ELEVATED_INLINE
+        })
+        @Retention(RetentionPolicy.SOURCE)
+        @interface ElevatedState {}
+
+        /**
+         * The {@link AppBarLayout} should be elevated above any scrolling content, and this cast
+         * a shadow.
+         *
+         * @see #onOffsetUpdate(int)
+         */
+        int STATE_ELEVATED_ABOVE = 1;
+
+        /**
+         * The {@link AppBarLayout} should not be elevated above any scrolling content.
+         *
+         * @see #onOffsetUpdate(int)
+         */
+        int STATE_ELEVATED_INLINE = 0;
+
         /**
          * Called when the {@link AppBarLayout}'s layout offset has been changed. This allows
          * child views to implement custom behavior based on the offset (for instance pinning a
          * view at a certain y value).
          *
-         * @param leftRightOffset the left and right offset, in px
-         * @param topBottomOffset the top and bottom offset, in px
+         * <p>You can influence the elevation of the {@link AppBarLayout} by returning one of
+         * {@link #STATE_ELEVATED_INLINE} or {@link #STATE_ELEVATED_ABOVE}.
+         *
+         * @param verticalOffset the vertical offset for the parent {@link AppBarLayout}, in px
+         *
+         * @return one of {@link #STATE_ELEVATED_INLINE} or {@link #STATE_ELEVATED_ABOVE}.
          */
-        void onOffsetUpdate(int leftRightOffset, int topBottomOffset);
+        @ElevatedState
+        int onOffsetUpdate(int verticalOffset);
     }
 
     private static final int INVALID_SCROLL_RANGE = -1;
@@ -110,6 +141,8 @@ public class AppBarLayout extends LinearLayout {
 
     boolean mHaveChildWithInterpolator;
 
+    private float mTargetElevation;
+
     public AppBarLayout(Context context) {
         this(context, null);
     }
@@ -117,6 +150,14 @@ public class AppBarLayout extends LinearLayout {
     public AppBarLayout(Context context, AttributeSet attrs) {
         super(context, attrs);
         setOrientation(VERTICAL);
+
+        TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AppBarLayout,
+                0, R.style.Widget_Design_AppBarLayout);
+        mTargetElevation = a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0);
+        a.recycle();
+
+        // Use the bounds view outline provider so that we cast a shadow, even without a background
+        ViewUtils.setBoundsViewOutlineProvider(this);
     }
 
     @Override
@@ -225,15 +266,7 @@ public class AppBarLayout extends LinearLayout {
      * Return the scroll range when scrolling up from a nested pre-scroll.
      */
     final int getUpNestedPreScrollRange() {
-        return getTotalScrollRange() - getUpNestedScrollRange();
-    }
-
-    /**
-     * Return the scroll range when scrolling up from a nested scroll.
-     * @return
-     */
-    final int getUpNestedScrollRange() {
-        return 0;
+        return getTotalScrollRange();
     }
 
     /**
@@ -270,20 +303,6 @@ public class AppBarLayout extends LinearLayout {
             }
         }
         return mDownPreScrollRange = range;
-    }
-
-    final int getMinimumHeightForVisibleOverlappingContent() {
-        final int minHeight = ViewCompat.getMinimumHeight(this);
-        if (minHeight != 0) {
-            // If this layout has a min height, use it (doubled)
-            return minHeight * 2;
-        }
-
-        // Otherwise, we'll use twice the min height of our last child
-        final int childCount = getChildCount();
-        return childCount >= 1
-                ? ViewCompat.getMinimumHeight(getChildAt(childCount - 1)) * 2
-                : 0;
     }
 
     /**
@@ -324,7 +343,39 @@ public class AppBarLayout extends LinearLayout {
         return mDownScrollRange = range;
     }
 
+    final int getMinimumHeightForVisibleOverlappingContent() {
+        final int minHeight = ViewCompat.getMinimumHeight(this);
+        if (minHeight != 0) {
+            // If this layout has a min height, use it (doubled)
+            return minHeight * 2;
+        }
+
+        // Otherwise, we'll use twice the min height of our last child
+        final int childCount = getChildCount();
+        return childCount >= 1
+                ? ViewCompat.getMinimumHeight(getChildAt(childCount - 1)) * 2
+                : 0;
+    }
+
+    /**
+     * The elevation value to use when {@link AppBarLayout} is elevated above content.
+     */
+    final float getTargetElevation() {
+        return mTargetElevation;
+    }
+
     public static class LayoutParams extends LinearLayout.LayoutParams {
+
+        /** @hide */
+        @IntDef(flag=true, value={
+                SCROLL_FLAG_SCROLL,
+                SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
+                SCROLL_FLAG_ENTER_ALWAYS,
+                SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED
+        })
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface ScrollFlags {}
+
         /**
          * The view will be scroll in direct relation to scroll events. This flag needs to be
          * set for any of the other flags to take effect. If any sibling views
@@ -417,7 +468,7 @@ public class AppBarLayout extends LinearLayout {
          *
          * @attr ref android.support.design.R.styleable.AppBarLayout_LayoutParams_layout_scrollFlags
          */
-        public void setScrollFlags(int flags) {
+        public void setScrollFlags(@ScrollFlags int flags) {
             mScrollFlags = flags;
         }
 
@@ -428,6 +479,7 @@ public class AppBarLayout extends LinearLayout {
          *
          * @attr ref android.support.design.R.styleable.AppBarLayout_LayoutParams_layout_scrollFlags
          */
+        @ScrollFlags
         public int getScrollFlags() {
             return mScrollFlags;
         }
@@ -464,6 +516,8 @@ public class AppBarLayout extends LinearLayout {
     public static class Behavior extends ViewOffsetBehavior<AppBarLayout> {
         private int mSiblingOffsetTop;
 
+        private boolean mSkipNestedPreScroll;
+
         public Behavior() {}
 
         public Behavior(Context context, AttributeSet attrs) {
@@ -481,10 +535,18 @@ public class AppBarLayout extends LinearLayout {
         @Override
         public void onNestedPreScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child,
                 View target, int dx, int dy, int[] consumed) {
-            if (dy != 0) {
-                consumed[1] = scroll(coordinatorLayout, child, dy, dy < 0
-                        ? -child.getDownNestedPreScrollRange()
-                        : -child.getUpNestedPreScrollRange());
+            if (dy != 0 && !mSkipNestedPreScroll) {
+                int min, max;
+                if (dy < 0) {
+                    // We're scrolling down
+                    min = -child.getTotalScrollRange();
+                    max = min + child.getDownNestedPreScrollRange();
+                } else {
+                    // We're scrolling up
+                    min = -child.getUpNestedPreScrollRange();
+                    max = 0;
+                }
+                consumed[1] = scroll(coordinatorLayout, child, dy, min, max);
             }
         }
 
@@ -492,36 +554,51 @@ public class AppBarLayout extends LinearLayout {
         public void onNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child,
                 View target, int dxConsumed, int dyConsumed,
                 int dxUnconsumed, int dyUnconsumed) {
-            int dy = 0;
-            if (dyConsumed > 0) {
-                // If the scrolling view is scrolling up, we offset
-                dy = dyConsumed;
-            } else if (dyUnconsumed < 0) {
-                // If the scrolling view is scrolling down, we offset anything it doesn't consume
-                dy = dyUnconsumed;
+            if (dyUnconsumed < 0) {
+                // If the scrolling view is scrolling down but not consuming, it's probably be at
+                // the top of it's content
+                scroll(coordinatorLayout, child, dyUnconsumed,
+                        -child.getDownNestedScrollRange(), 0);
+                // Set the expanding flag so that onNestedPreScroll doesn't handle any events
+                mSkipNestedPreScroll = true;
+            } else {
+                // As we're no longer handling nested scrolls, reset the skip flag
+                mSkipNestedPreScroll = false;
             }
+        }
 
-            if (dy != 0) {
-                scroll(coordinatorLayout, child, dy, dy < 0
-                        ? -child.getDownNestedScrollRange()
-                        : -child.getUpNestedScrollRange());
-            }
+        @Override
+        public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child,
+                View target) {
+            // Reset the skip flag
+            mSkipNestedPreScroll = false;
+        }
+
+        @Override
+        public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout child,
+                int layoutDirection) {
+            boolean handled = super.onLayoutChild(parent, child, layoutDirection);
+
+            // Make sure we update the elevation
+            final int elevationState = dispatchOffsetUpdates(child);
+            checkElevation(child, getTopAndBottomOffset(), elevationState);
+
+            return handled;
         }
 
         private int scroll(CoordinatorLayout coordinatorLayout, AppBarLayout appBarLayout,
-                int dy, int minOffset) {
+                int dy, int minOffset, int maxOffset) {
             return setAppBarTopBottomOffset(coordinatorLayout, appBarLayout,
-                    mSiblingOffsetTop - dy,
-                    minOffset);
+                    mSiblingOffsetTop - dy, minOffset, maxOffset);
         }
 
         private int setAppBarTopBottomOffset(CoordinatorLayout coordinatorLayout,
-                AppBarLayout appBarLayout, int newOffset, final int minOffset) {
+                AppBarLayout appBarLayout, int newOffset, int minOffset, int maxOffset) {
             final int curOffset = mSiblingOffsetTop;
             int consumed = 0;
 
-            if (curOffset >= minOffset) {
-                newOffset = MathUtils.constrain(newOffset, minOffset, 0);
+            if (minOffset != 0) {
+                newOffset = MathUtils.constrain(newOffset, minOffset, maxOffset);
 
                 if (curOffset != newOffset) {
                     boolean offsetChanged = setTopAndBottomOffset(
@@ -541,60 +618,78 @@ public class AppBarLayout extends LinearLayout {
                         coordinatorLayout.dispatchDependentViewsChanged(appBarLayout);
                     }
 
-                    dispatchOffsetUpdates(appBarLayout);
+                    // Dispatch the updates to any AppBarLayoutChild children
+                    final int childState = dispatchOffsetUpdates(appBarLayout);
+                    checkElevation(appBarLayout, newOffset, childState);
                 }
             }
 
             return consumed;
         }
 
-        private void dispatchOffsetUpdates(AppBarLayout layout) {
-            for (int i = 0, z = layout.getChildCount(); i < z; i++) {
-                View child = layout.getChildAt(i);
-                if (child instanceof AppBarLayoutChild) {
-                    ((AppBarLayoutChild) child).onOffsetUpdate(
-                            getLeftAndRightOffset(), getTopAndBottomOffset());
+        private void checkElevation(AppBarLayout appBarLayout, int offset, int childState) {
+            if (appBarLayout.getHeight() + offset == 0) {
+                // If we're not visible, clear out the elevation
+                ViewCompat.setElevation(appBarLayout, 0f);
+            } else {
+                if (childState == AppBarLayoutChild.STATE_ELEVATED_ABOVE) {
+                    ViewCompat.setElevation(appBarLayout, appBarLayout.getTargetElevation());
+                } else {
+                    ViewCompat.setElevation(appBarLayout, 0f);
                 }
             }
         }
 
+        private int dispatchOffsetUpdates(AppBarLayout layout) {
+            for (int i = 0, z = layout.getChildCount(); i < z; i++) {
+                View child = layout.getChildAt(i);
+                if (child instanceof AppBarLayoutChild) {
+                    final int childState = ((AppBarLayoutChild) child)
+                            .onOffsetUpdate(getTopAndBottomOffset());
+
+                    if (childState == AppBarLayoutChild.STATE_ELEVATED_INLINE) {
+                        return childState;
+                    }
+                }
+            }
+
+            return AppBarLayoutChild.STATE_ELEVATED_ABOVE;
+        }
+
         private int interpolateOffset(AppBarLayout layout, final int offset) {
-            int heightSoFar = 0;
             final int absOffset = Math.abs(offset);
 
             for (int i = 0, z = layout.getChildCount(); i < z; i++) {
                 final View child = layout.getChildAt(i);
                 final AppBarLayout.LayoutParams childLp = (LayoutParams) child.getLayoutParams();
-                final int scrollFlags = childLp.getScrollFlags();
-                final int previousHeightSoFar = heightSoFar;
-                final int childHeight = child.getHeight();
+                final Interpolator interpolator = childLp.getScrollInterpolator();
 
-                int childScrollableHeight = 0;
-                if ((scrollFlags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
-                    // We're set to scroll so add the child's height
-                    childScrollableHeight += child.getHeight();
-                    if ((scrollFlags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
-                        // For a collapsing scroll, we to take the collapsed height into account.
-                        childScrollableHeight -= ViewCompat.getMinimumHeight(child);
-                    }
-                }
-
-                // Now update the height encountered
-                heightSoFar += childHeight;
-
-                if (absOffset >= previousHeightSoFar && absOffset <= heightSoFar) {
-                    final Interpolator interpolator = childLp.getScrollInterpolator();
-
+                if (absOffset >= child.getTop() && absOffset <= child.getBottom()) {
                     if (interpolator != null) {
-                        final int offsetForView = absOffset - previousHeightSoFar;
-                        final int interpolatedDiff = Math.round(childScrollableHeight *
-                                interpolator.getInterpolation(
-                                        offsetForView / (float) childScrollableHeight));
+                        int childScrollableHeight = 0;
+                        final int flags = childLp.getScrollFlags();
+                        if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
+                            // We're set to scroll so add the child's height
+                            childScrollableHeight += child.getHeight();
+                            if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
+                                // For a collapsing scroll, we to take the collapsed height into account.
+                                childScrollableHeight -= ViewCompat.getMinimumHeight(child);
+                            }
+                        }
 
-                        return Integer.signum(offset) * (previousHeightSoFar + interpolatedDiff);
-                    } else {
-                        break;
+                        if (childScrollableHeight > 0) {
+                            final int offsetForView = absOffset - child.getTop();
+                            final int interpolatedDiff = Math.round(childScrollableHeight *
+                                    interpolator.getInterpolation(
+                                            offsetForView / (float) childScrollableHeight));
+
+                            return Integer.signum(offset) * (child.getTop() + interpolatedDiff);
+                        }
                     }
+
+                    // If we get to here then the view on the offset isn't suitable for interpolated
+                    // scrolling. So break out of the loop
+                    break;
                 }
             }
 

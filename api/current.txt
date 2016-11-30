@@ -6,15 +6,19 @@ package android.support.design.widget {
   }
 
   public static abstract interface AppBarLayout.AppBarLayoutChild {
-    method public abstract void onOffsetUpdate(int, int);
+    method public abstract int onOffsetUpdate(int);
+    field public static final int STATE_ELEVATED_ABOVE = 1; // 0x1
+    field public static final int STATE_ELEVATED_INLINE = 0; // 0x0
   }
 
   public static class AppBarLayout.Behavior extends android.support.design.widget.ViewOffsetBehavior {
     ctor public AppBarLayout.Behavior();
     ctor public AppBarLayout.Behavior(android.content.Context, android.util.AttributeSet);
+    method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, int);
     method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int[]);
     method public void onNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int, int);
     method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, android.view.View, int);
+    method public void onStopNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View);
   }
 
   public static class AppBarLayout.LayoutParams extends android.widget.LinearLayout.LayoutParams {
@@ -50,7 +54,7 @@ package android.support.design.widget {
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet, int);
     method public int getForegroundScrimColor();
-    method public void onOffsetUpdate(int, int);
+    method public int onOffsetUpdate(int);
     method public void setCollapsedTitleTextAppearance(int);
     method public void setCollapsedTitleTextColor(int);
     method public void setExpandedTitleColor(int);
@@ -67,6 +71,8 @@ package android.support.design.widget {
     ctor public CollapsingToolbarLayout.LayoutParams(android.view.ViewGroup.LayoutParams);
     ctor public CollapsingToolbarLayout.LayoutParams(android.view.ViewGroup.MarginLayoutParams);
     ctor public CollapsingToolbarLayout.LayoutParams(android.widget.FrameLayout.LayoutParams);
+    method public int getCollapseMode();
+    method public float getParallaxMultiplier();
     method public void setCollapseMode(int);
     method public void setParallaxMultiplier(float);
     field public static final int COLLAPSE_MODE_OFF = 0; // 0x0

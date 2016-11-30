@@ -160,6 +160,10 @@
         <attr name="maxActionInlineWidth" format="dimension"/>
     </declare-styleable>
 
+    <declare-styleable name="AppBarLayout">
+        <attr name="elevation" />
+    </declare-styleable>
+
     <declare-styleable name="AppBarLayout_LayoutParams">
         <attr name="layout_scrollFlags">
             <!-- The view will be scroll in direct relation to scroll events. This flag needs to be

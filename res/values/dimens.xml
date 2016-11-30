@@ -50,4 +50,6 @@
 
     <dimen name="snackbar_text_size">14sp</dimen>
 
+    <dimen name="appbar_elevation">4dp</dimen>
+
 </resources>

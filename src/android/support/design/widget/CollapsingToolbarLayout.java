@@ -22,6 +22,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.annotation.ColorRes;
+import android.support.annotation.IntDef;
 import android.support.design.R;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.view.ViewCompat;
@@ -34,6 +35,9 @@ import android.view.animation.Animation;
 import android.view.animation.Transformation;
 import android.widget.FrameLayout;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
+
 /**
  * CollapsingToolbarLayout is a wrapper for {@link Toolbar} which implements a collapsing app bar.
  * It is designed to be used as a direct child of a {@link AppBarLayout}.
@@ -45,7 +49,7 @@ import android.widget.FrameLayout;
  * {@link #setTitle(CharSequence)}. The title appearance can be tweaked via the
  * {@code collapsedTextAppearance} and {@code expandedTextAppearance} attributes.
  *
- * <h3>Background scrim</h3>
+ * <h3>Foreground scrim</h3>
  * A full-bleed scrim which is show or hidden when the scroll position has hit a certain threshold.
  * You can change the color via {@link #setForegroundScrimColor(int)}.
  *
@@ -69,7 +73,7 @@ import android.widget.FrameLayout;
  */
 public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout.AppBarLayoutChild {
 
-    private static final int SCRIM_ANIMATION_DURATION = 200;
+    private static final int SCRIM_ANIMATION_DURATION = 600;
 
     private Toolbar mToolbar;
     private View mDummyView;
@@ -165,6 +169,12 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
+        // If we don't have a toolbar, the scrim will be not be drawn in drawChild() below.
+        // Instead, we draw it here, before our collapsing text.
+        if (mToolbar == null && Color.alpha(mCurrentForegroundColor) > 0) {
+            canvas.drawColor(mCurrentForegroundColor);
+        }
+
         // Let the collapsing text helper draw it's text
         mCollapsingTextHelper.draw(canvas);
     }
@@ -177,6 +187,7 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
         if (child == mToolbar && Color.alpha(mCurrentForegroundColor) > 0) {
             canvas.drawColor(mCurrentForegroundColor);
         }
+
         // Carry on drawing the child...
         return super.drawChild(canvas, child, drawingTime);
     }
@@ -227,57 +238,73 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
      * @hide
      */
     @Override
-    public void onOffsetUpdate(int leftRightOffset, int topBottomOffset) {
-        boolean toolbarOffsetChanged = false;
+    public int onOffsetUpdate(int verticalOffset) {
+        int pinnedHeight = 0;
 
         for (int i = 0, z = getChildCount(); i < z; i++) {
             final View child = getChildAt(i);
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
             final ViewOffsetHelper offsetHelper = getViewOffsetHelper(child);
-            boolean offsetChanged = false;
 
             switch (lp.mCollapseMode) {
                 case LayoutParams.COLLAPSE_MODE_PIN:
-                    if (getHeight() + topBottomOffset >= child.getHeight()) {
-                        offsetChanged = offsetHelper.setTopAndBottomOffset(-topBottomOffset);
+                    if (getHeight() + verticalOffset >= child.getHeight()) {
+                        offsetHelper.setTopAndBottomOffset(-verticalOffset);
                     }
+                    pinnedHeight += child.getHeight();
                     break;
                 case LayoutParams.COLLAPSE_MODE_PARALLAX:
-                    offsetChanged = offsetHelper.setTopAndBottomOffset(
-                            Math.round(-topBottomOffset * lp.mParallaxMult));
+                    offsetHelper.setTopAndBottomOffset(
+                            Math.round(-verticalOffset * lp.mParallaxMult));
                     break;
             }
+        }
 
-            toolbarOffsetChanged = child == mToolbar && offsetChanged;
-
-            // Show or hide the scrim if needed
-            if (Color.alpha(mForegroundScrimColor) > 0) {
-                if (Math.abs(topBottomOffset) < getScrimTriggerOffset()) {
-                    hideScrim();
-                } else {
-                    showScrim();
-                }
+        // Show or hide the scrim if needed
+        if (Color.alpha(mForegroundScrimColor) > 0) {
+            if (getHeight() + verticalOffset < getScrimTriggerOffset()) {
+                showScrim();
+            } else {
+                hideScrim();
             }
         }
 
         // Update the collapsing text's fraction
-        mCollapsingTextHelper.setExpansionFraction(Math.abs(topBottomOffset) /
+        mCollapsingTextHelper.setExpansionFraction(Math.abs(verticalOffset) /
                 (float) (getHeight() - ViewCompat.getMinimumHeight(this)));
+
+        if (pinnedHeight > 0 && (getHeight() + verticalOffset) == pinnedHeight) {
+            // If we have some pinned children, and we're offset to only show those views,
+            // we want to be elevate
+            return STATE_ELEVATED_ABOVE;
+        } else {
+            // Otherwise, we're inline with the content
+            return STATE_ELEVATED_INLINE;
+        }
     }
 
     private void showScrim() {
         if (mScrimIsShown) return;
+
         Animation anim = new Animation() {
             @Override
             protected void applyTransformation(float interpolatedTime, Transformation t) {
                 final int originalAlpha = Color.alpha(mForegroundScrimColor);
                 mCurrentForegroundColor = ColorUtils.setAlphaComponent(mForegroundScrimColor,
                         AnimationUtils.lerp(0, originalAlpha, interpolatedTime));
+
+                // We need to manually invalidate ourselves and the Toolbar to ensure the scrim
+                // is drawn
+                invalidate();
+                if (mToolbar != null) {
+                    mToolbar.invalidate();
+                }
             }
         };
         anim.setDuration(SCRIM_ANIMATION_DURATION);
         anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         startAnimation(anim);
+
         mScrimIsShown = true;
     }
 
@@ -290,6 +317,13 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
                 final int originalAlpha = Color.alpha(mForegroundScrimColor);
                 mCurrentForegroundColor = ColorUtils.setAlphaComponent(mForegroundScrimColor,
                         AnimationUtils.lerp(originalAlpha, 0, interpolatedTime));
+
+                // We need to manually invalidate ourselves and the Toolbar to ensure the scrim
+                // is drawn
+                invalidate();
+                if (mToolbar != null) {
+                    mToolbar.invalidate();
+                }
             }
         };
         anim.setDuration(SCRIM_ANIMATION_DURATION);
@@ -401,6 +435,15 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
 
         private static final float DEFAULT_PARALLAX_MULTIPLIER = 0.5f;
 
+        /** @hide */
+        @IntDef({
+                COLLAPSE_MODE_OFF,
+                COLLAPSE_MODE_PIN,
+                COLLAPSE_MODE_PARALLAX
+        })
+        @Retention(RetentionPolicy.SOURCE)
+        @interface CollapseMode {}
+
         /**
          * The view will act as normal with no collapsing behavior.
          */
@@ -461,19 +504,42 @@ public class CollapsingToolbarLayout extends FrameLayout implements AppBarLayout
          * @param collapseMode one of {@link #COLLAPSE_MODE_OFF}, {@link #COLLAPSE_MODE_PIN}
          *                     or {@link #COLLAPSE_MODE_PARALLAX}.
          */
-        public void setCollapseMode(int collapseMode) {
+        public void setCollapseMode(@CollapseMode int collapseMode) {
             mCollapseMode = collapseMode;
         }
 
         /**
-         * Set the parallax scroll multiplier used in conjuction with
+         * Returns the requested collapse mode.
+         *
+         * @return the current mode. One of {@link #COLLAPSE_MODE_OFF}, {@link #COLLAPSE_MODE_PIN}
+         * or {@link #COLLAPSE_MODE_PARALLAX}.
+         */
+        @CollapseMode
+        public int getCollapseMode() {
+            return mCollapseMode;
+        }
+
+        /**
+         * Set the parallax scroll multiplier used in conjunction with
          * {@link #COLLAPSE_MODE_PARALLAX}. A value of {@code 0.0} indicates no movement at all,
          * {@code 1.0f} indicates normal scroll movement.
          *
          * @param multiplier the multiplier.
+         *
+         * @see #getParallaxMultiplier()
          */
         public void setParallaxMultiplier(float multiplier) {
             mParallaxMult = multiplier;
+        }
+
+        /**
+         * Returns the parallax scroll multiplier used in conjunction with
+         * {@link #COLLAPSE_MODE_PARALLAX}.
+         *
+         * @see #setParallaxMultiplier(float)
+         */
+        public float getParallaxMultiplier() {
+            return mParallaxMult;
         }
     }
 }
