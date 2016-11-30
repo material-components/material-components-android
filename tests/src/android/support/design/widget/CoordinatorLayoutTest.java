@@ -25,9 +25,13 @@ import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doCallRealMethod;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.reset;
+import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import android.app.Instrumentation;
+import android.support.design.testutils.CoordinatorLayoutUtils;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SdkSuppress;
 import android.support.v4.view.ViewCompat;
@@ -210,4 +214,83 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
         });
     }
 
+    @Test
+    public void testDependentViewChanged() {
+        final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
+
+        // Add two views, A & B, where B depends on A
+        final View viewA = new View(col.getContext());
+        final CoordinatorLayout.LayoutParams lpA = col.generateDefaultLayoutParams();
+        lpA.width = 100;
+        lpA.height = 100;
+
+        final View viewB = new View(col.getContext());
+        final CoordinatorLayout.LayoutParams lpB = col.generateDefaultLayoutParams();
+        lpB.width = 100;
+        lpB.height = 100;
+        final CoordinatorLayout.Behavior behavior =
+                spy(new CoordinatorLayoutUtils.DependentBehavior(viewA));
+        lpB.setBehavior(behavior);
+
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                col.addView(viewA, lpA);
+                col.addView(viewB, lpB);
+            }
+        });
+        instrumentation.waitForIdleSync();
+
+        // Reset the Behavior since onDependentViewChanged may have already been called as part of
+        // any layout/draw passes already
+        reset(behavior);
+
+        // Now offset view A
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                ViewCompat.offsetLeftAndRight(viewA, 20);
+                ViewCompat.offsetTopAndBottom(viewA, 20);
+            }
+        });
+        instrumentation.waitForIdleSync();
+
+        // And assert that view B's Behavior was called appropriately
+        verify(behavior, times(1)).onDependentViewChanged(col, viewB, viewA);
+    }
+
+    @Test
+    public void testDependentViewRemoved() {
+        final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
+
+        // Add two views, A & B, where B depends on A
+        final View viewA = new View(col.getContext());
+        final View viewB = new View(col.getContext());
+        final CoordinatorLayout.LayoutParams lpB = col.generateDefaultLayoutParams();
+        final CoordinatorLayout.Behavior behavior =
+                spy(new CoordinatorLayoutUtils.DependentBehavior(viewA));
+        lpB.setBehavior(behavior);
+
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                col.addView(viewA);
+                col.addView(viewB, lpB);
+            }
+        });
+        instrumentation.waitForIdleSync();
+
+        // Now remove view A
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                col.removeView(viewA);
+            }
+        });
+
+        // And assert that View B's Behavior was called appropriately
+        verify(behavior, times(1)).onDependentViewRemoved(col, viewB, viewA);
+    }
 }

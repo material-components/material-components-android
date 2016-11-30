@@ -19,6 +19,7 @@ package android.support.design.widget;
 import static org.junit.Assert.assertEquals;
 
 import android.app.Instrumentation;
+import android.support.design.testutils.CoordinatorLayoutUtils;
 import android.support.test.InstrumentationRegistry;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
@@ -85,7 +86,8 @@ public class CoordinatorLayoutSortTest
 
             // Create a Behavior which depends on the previously added view
             View dependency = i > 0 ? views.get(i - 1) : null;
-            CoordinatorLayout.Behavior<View> behavior = createBehaviorWhichDependsOn(dependency);
+            final CoordinatorLayout.Behavior<View> behavior
+                    = new CoordinatorLayoutUtils.DependentBehavior(dependency);
 
             // And set its LayoutParams to use the Behavior
             CoordinatorLayout.LayoutParams lp = col.generateDefaultLayoutParams();
@@ -131,14 +133,4 @@ public class CoordinatorLayoutSortTest
             }
         });
     }
-
-    private static CoordinatorLayout.Behavior<View> createBehaviorWhichDependsOn(final View view) {
-        return new CoordinatorLayout.Behavior<View>() {
-            @Override
-            public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
-                return view != null && dependency == view;
-            }
-        };
-    }
-
 }

@@ -1265,13 +1265,15 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 offsetChildByInset(child, inset, layoutDirection);
             }
 
-            // Did it change? if not continue
-            final Rect lastDrawRect = mTempRect2;
-            getLastChildRect(child, lastDrawRect);
-            if (lastDrawRect.equals(drawRect)) {
-                continue;
+            if (type == EVENT_PRE_DRAW) {
+                // Did it change? if not continue
+                final Rect lastDrawRect = mTempRect2;
+                getLastChildRect(child, lastDrawRect);
+                if (lastDrawRect.equals(drawRect)) {
+                    continue;
+                }
+                recordLastChildRect(child, drawRect);
             }
-            recordLastChildRect(child, drawRect);
 
             // Update any behavior-dependent views for the change
             for (int j = i + 1; j < childCount; j++) {
@@ -2858,7 +2860,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
         @Override
         public void onChildViewRemoved(View parent, View child) {
-            prepareChildren(true);
             onChildViewsChanged(EVENT_VIEW_REMOVED);
 
             if (mOnHierarchyChangeListener != null) {
