@@ -42,8 +42,12 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
     FloatingActionButtonLollipop(View view, ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
 
-        mInterpolator = AnimationUtils.loadInterpolator(
-                mView.getContext(), android.R.interpolator.fast_out_slow_in);
+        if (!view.isInEditMode()) {
+            mInterpolator = AnimationUtils.loadInterpolator(
+                    mView.getContext(), android.R.interpolator.fast_out_slow_in);
+        } else {
+            mInterpolator = null;
+        }
     }
 
     @Override
