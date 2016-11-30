@@ -689,7 +689,7 @@ public class TabLayout extends HorizontalScrollView {
         if (newPosition == Tab.INVALID_POSITION) {
             return;
         }
-        
+
         if (getWindowToken() == null || !ViewCompat.isLaidOut(this)) {
             // If we don't have a window token, or we haven't been laid out yet just draw the new
             // position now
@@ -1065,7 +1065,7 @@ public class TabLayout extends HorizontalScrollView {
         public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-            if (getMeasuredWidth() > mTabMaxWidth) {
+            if (mTabMaxWidth != 0 && getMeasuredWidth() > mTabMaxWidth) {
                 // Re-measure if we went beyond our maximum size.
                 super.onMeasure(MeasureSpec.makeMeasureSpec(
                         mTabMaxWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
