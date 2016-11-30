@@ -23,6 +23,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.view.View;
+import android.view.ViewTreeObserver;
 
 abstract class FloatingActionButtonImpl {
 
@@ -41,6 +42,8 @@ abstract class FloatingActionButtonImpl {
 
     final View mView;
     final ShadowViewDelegate mShadowViewDelegate;
+
+    private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
 
     FloatingActionButtonImpl(View view, ShadowViewDelegate shadowViewDelegate) {
         mView = view;
@@ -68,7 +71,25 @@ abstract class FloatingActionButtonImpl {
 
     abstract void show(@Nullable InternalVisibilityChangedListener listener);
 
-    Drawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
+    void onAttachedToWindow() {
+        if (requirePreDrawListener()) {
+            ensurePreDrawListener();
+            mView.getViewTreeObserver().addOnPreDrawListener(mPreDrawListener);
+        }
+    }
+
+    void onDetachedFromWindow() {
+        if (mPreDrawListener != null) {
+            mView.getViewTreeObserver().removeOnPreDrawListener(mPreDrawListener);
+            mPreDrawListener = null;
+        }
+    }
+
+    boolean requirePreDrawListener() {
+        return false;
+    }
+
+    CircularBorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
         final Resources resources = mView.getResources();
         CircularBorderDrawable borderDrawable = newCircularDrawable();
         borderDrawable.setGradientColors(
@@ -83,5 +104,20 @@ abstract class FloatingActionButtonImpl {
 
     CircularBorderDrawable newCircularDrawable() {
         return new CircularBorderDrawable();
+    }
+
+    void onPreDraw() {
+    }
+
+    private void ensurePreDrawListener() {
+        if (mPreDrawListener == null) {
+            mPreDrawListener = new ViewTreeObserver.OnPreDrawListener() {
+                @Override
+                public boolean onPreDraw() {
+                    FloatingActionButtonImpl.this.onPreDraw();
+                    return true;
+                }
+            };
+        }
     }
 }

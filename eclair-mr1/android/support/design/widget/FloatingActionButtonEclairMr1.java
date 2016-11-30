@@ -34,9 +34,9 @@ import android.view.animation.Transformation;
 
 class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
-    private Drawable mShapeDrawable;
-    private Drawable mRippleDrawable;
-    private Drawable mBorderDrawable;
+    Drawable mShapeDrawable;
+    Drawable mRippleDrawable;
+    CircularBorderDrawable mBorderDrawable;
 
     private float mElevation;
     private float mPressedTranslationZ;

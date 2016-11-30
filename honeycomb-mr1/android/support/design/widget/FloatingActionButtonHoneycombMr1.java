@@ -31,6 +31,16 @@ class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
     }
 
     @Override
+    boolean requirePreDrawListener() {
+        return true;
+    }
+
+    @Override
+    void onPreDraw() {
+        updateFromViewRotation(mView.getRotation());
+    }
+
+    @Override
     void hide(@Nullable final InternalVisibilityChangedListener listener) {
         if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
             // A hide animation is in progress, or we're already hidden. Skip the call
@@ -112,6 +122,16 @@ class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
                     listener.onShown();
                 }
             }
+        }
+    }
+
+    private void updateFromViewRotation(float rotation) {
+        // Offset any View rotation
+        if (mShadowDrawable != null) {
+            mShadowDrawable.setRotation(-rotation);
+        }
+        if (mBorderDrawable != null) {
+            mBorderDrawable.setRotation(-rotation);
         }
     }
 }

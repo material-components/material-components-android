@@ -125,6 +125,11 @@ class FloatingActionButtonLollipop extends FloatingActionButtonHoneycombMr1 {
         // no-op
     }
 
+    @Override
+    boolean requirePreDrawListener() {
+        return false;
+    }
+
     private Animator setupAnimator(Animator animator) {
         animator.setInterpolator(mInterpolator);
         return animator;

@@ -54,6 +54,8 @@ class CircularBorderDrawable extends Drawable {
 
     private boolean mInvalidateShader = true;
 
+    private float mRotation;
+
     public CircularBorderDrawable() {
         mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
         mPaint.setStyle(Paint.Style.STROKE);
@@ -98,8 +100,11 @@ class CircularBorderDrawable extends Drawable {
         rectF.right -= halfBorderWidth;
         rectF.bottom -= halfBorderWidth;
 
+        canvas.save();
+        canvas.rotate(mRotation, rectF.centerX(), rectF.centerY());
         // Draw the oval
         canvas.drawOval(rectF, mPaint);
+        canvas.restore();
     }
 
     @Override
@@ -130,6 +135,13 @@ class CircularBorderDrawable extends Drawable {
     @Override
     public int getOpacity() {
         return mBorderWidth > 0 ? PixelFormat.TRANSLUCENT : PixelFormat.TRANSPARENT;
+    }
+
+    final void setRotation(float rotation) {
+        if (rotation != mRotation) {
+            mRotation = rotation;
+            invalidateSelf();
+        }
     }
 
     @Override

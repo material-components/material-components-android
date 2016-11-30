@@ -324,6 +324,18 @@ public class FloatingActionButton extends ImageButton {
     }
 
     @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+        mImpl.onAttachedToWindow();
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+        mImpl.onDetachedFromWindow();
+    }
+
+    @Override
     protected void drawableStateChanged() {
         super.drawableStateChanged();
         mImpl.onDrawableStateChanged(getDrawableState());

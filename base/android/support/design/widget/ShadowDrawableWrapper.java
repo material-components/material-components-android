@@ -71,6 +71,8 @@ class ShadowDrawableWrapper extends DrawableWrapper {
 
     private boolean mAddPaddingForCorners = true;
 
+    private float mRotation;
+
     /**
      * If shadow size is set to a value above max shadow, we print a warning
      */
@@ -195,7 +197,17 @@ class ShadowDrawableWrapper extends DrawableWrapper {
         super.draw(canvas);
     }
 
+    final void setRotation(float rotation) {
+        if (mRotation != rotation) {
+            mRotation = rotation;
+            invalidateSelf();
+        }
+    }
+
     private void drawShadow(Canvas canvas) {
+        final int rotateSaved = canvas.save();
+        canvas.rotate(mRotation, mContentBounds.centerX(), mContentBounds.centerY());
+
         final float edgeShadowTop = -mCornerRadius - mShadowSize;
         final float shadowOffset = mCornerRadius;
         final boolean drawHorizontalEdges = mContentBounds.width() - 2 * shadowOffset > 0;
@@ -262,6 +274,8 @@ class ShadowDrawableWrapper extends DrawableWrapper {
                     mContentBounds.height() - 2 * shadowOffset, -mCornerRadius, mEdgeShadowPaint);
         }
         canvas.restoreToCount(saved);
+
+        canvas.restoreToCount(rotateSaved);
     }
 
     private void buildShadowCorners() {
