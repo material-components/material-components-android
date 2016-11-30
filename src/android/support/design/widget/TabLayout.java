@@ -494,8 +494,9 @@ public class TabLayout extends HorizontalScrollView {
     public Tab newTab() {
         Tab tab = sTabPool.acquire();
         if (tab == null) {
-            tab = new Tab(this);
+            tab = new Tab();
         }
+        tab.mParent = this;
         tab.mView = createTabView(tab);
         return tab;
     }
@@ -1096,11 +1097,11 @@ public class TabLayout extends HorizontalScrollView {
         private int mPosition = INVALID_POSITION;
         private View mCustomView;
 
-        private final TabLayout mParent;
+        private TabLayout mParent;
         private TabView mView;
 
-        Tab(TabLayout parent) {
-            mParent = parent;
+        private Tab() {
+            // Private constructor
         }
 
         /**
@@ -1229,6 +1230,9 @@ public class TabLayout extends HorizontalScrollView {
          */
         @NonNull
         public Tab setIcon(@DrawableRes int resId) {
+            if (mParent == null) {
+                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+            }
             return setIcon(AppCompatDrawableManager.get().getDrawable(mParent.getContext(), resId));
         }
 
@@ -1255,6 +1259,9 @@ public class TabLayout extends HorizontalScrollView {
          */
         @NonNull
         public Tab setText(@StringRes int resId) {
+            if (mParent == null) {
+                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+            }
             return setText(mParent.getResources().getText(resId));
         }
 
@@ -1262,6 +1269,9 @@ public class TabLayout extends HorizontalScrollView {
          * Select this tab. Only valid if the tab has been added to the action bar.
          */
         public void select() {
+            if (mParent == null) {
+                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+            }
             mParent.selectTab(this);
         }
 
@@ -1269,6 +1279,9 @@ public class TabLayout extends HorizontalScrollView {
          * Returns true if this tab is currently selected.
          */
         public boolean isSelected() {
+            if (mParent == null) {
+                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+            }
             return mParent.getSelectedTabPosition() == mPosition;
         }
 
@@ -1283,6 +1296,9 @@ public class TabLayout extends HorizontalScrollView {
          */
         @NonNull
         public Tab setContentDescription(@StringRes int resId) {
+            if (mParent == null) {
+                throw new IllegalArgumentException("Tab not attached to a TabLayout");
+            }
             return setContentDescription(mParent.getResources().getText(resId));
         }
 
@@ -1321,6 +1337,7 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         private void reset() {
+            mParent = null;
             mView = null;
             mTag = null;
             mIcon = null;

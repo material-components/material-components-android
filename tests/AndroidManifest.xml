@@ -40,6 +40,15 @@
         <activity
                 android:theme="@style/Theme.AppCompat.NoActionBar"
                 android:name="android.support.design.widget.DynamicCoordinatorLayoutActivity"/>
+                android:name="android.support.design.widget.TabLayoutPoolingActivity"/>
+
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="android.support.design.widget.TabLayoutPoolingActivity"/>
+
+        <activity
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:name="android.support.design.widget.SnackbarBucketTestsActivity"/>
 
         <activity
                 android:theme="@style/Theme.AppCompat.NoActionBar"
