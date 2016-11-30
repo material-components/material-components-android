@@ -104,6 +104,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private final Rect mTmpRect = new Rect();
     private final CollapsingTextHelper mCollapsingTextHelper;
     private boolean mCollapsingTitleEnabled;
+    private boolean mDrawCollapsingTitle;
 
     private Drawable mContentScrim;
     private Drawable mStatusBarScrim;
@@ -258,7 +259,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         }
 
         // Let the collapsing text helper draw it's text
-        if (mCollapsingTitleEnabled) {
+        if (mCollapsingTitleEnabled && mDrawCollapsingTitle) {
             mCollapsingTextHelper.draw(canvas);
         }
 
@@ -367,17 +368,23 @@ public class CollapsingToolbarLayout extends FrameLayout {
         // Update the collapsed bounds by getting it's transformed bounds. This needs to be done
         // before the children are offset below
         if (mCollapsingTitleEnabled && mDummyView != null) {
-            ViewGroupUtils.getDescendantRect(this, mDummyView, mTmpRect);
-            mCollapsingTextHelper.setCollapsedBounds(mTmpRect.left, bottom - mTmpRect.height(),
-                    mTmpRect.right, bottom);
-            // Update the expanded bounds
-            mCollapsingTextHelper.setExpandedBounds(
-                    mExpandedMarginLeft,
-                    mTmpRect.bottom + mExpandedMarginTop,
-                    right - left - mExpandedMarginRight,
-                    bottom - top - mExpandedMarginBottom);
+            // We only draw the title if the dummy view is being displayed (Toolbar removes
+            // views if there is no space)
+            mDrawCollapsingTitle = mDummyView.isShown();
 
-            mCollapsingTextHelper.recalculate();
+            if (mDrawCollapsingTitle) {
+                ViewGroupUtils.getDescendantRect(this, mDummyView, mTmpRect);
+                mCollapsingTextHelper.setCollapsedBounds(mTmpRect.left, bottom - mTmpRect.height(),
+                        mTmpRect.right, bottom);
+                // Update the expanded bounds
+                mCollapsingTextHelper.setExpandedBounds(
+                        mExpandedMarginLeft,
+                        mTmpRect.bottom + mExpandedMarginTop,
+                        right - left - mExpandedMarginRight,
+                        bottom - top - mExpandedMarginBottom);
+                // Now recalculate using the new bounds
+                mCollapsingTextHelper.recalculate();
+            }
         }
 
         // Update our child view offset helpers
