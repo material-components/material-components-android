@@ -71,6 +71,7 @@ public class TextInputLayout extends LinearLayout {
     private Paint mTmpPaint;
 
     private LinearLayout mIndicatorArea;
+    private int mIndicatorsAdded;
 
     private boolean mErrorEnabled;
     private TextView mErrorView;
@@ -421,6 +422,7 @@ public class TextInputLayout extends LinearLayout {
         }
         mIndicatorArea.setVisibility(View.VISIBLE);
         mIndicatorArea.addView(indicator, index);
+        mIndicatorsAdded++;
     }
 
     private void adjustIndicatorPadding() {
@@ -432,7 +434,7 @@ public class TextInputLayout extends LinearLayout {
     private void removeIndicator(TextView indicator) {
         if (mIndicatorArea != null) {
             mIndicatorArea.removeView(indicator);
-            if (mIndicatorArea.getChildCount() == 0) {
+            if (--mIndicatorsAdded == 0) {
                 mIndicatorArea.setVisibility(View.GONE);
             }
         }
