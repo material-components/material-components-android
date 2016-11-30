@@ -46,4 +46,38 @@
         <attr name="android:maxWidth" />
     </declare-styleable>
 
+    <declare-styleable name="TabLayout">
+        <attr name="tabIndicatorColor" format="color" />
+        <attr name="tabIndicatorHeight" format="dimension" />
+        <attr name="tabContentStart" format="dimension" />
+
+        <attr name="tabBackground" format="reference" />
+
+        <attr name="tabMode">
+            <enum name="scrollable" value="0" />
+            <enum name="fixed" value="1" />
+        </attr>
+
+        <!-- Standard gravity constant that a child supplies to its parent.
+             Defines how the child view should be positioned, on both the X and Y axes,
+             within its enclosing layout. -->
+        <attr name="tabGravity">
+            <enum name="fill" value="0"/>
+            <enum name="center" value="1"/>
+        </attr>
+
+        <attr name="tabMinWidth" format="dimension" />
+        <attr name="tabMaxWidth" format="dimension" />
+
+        <attr name="tabTextAppearance" format="reference" />
+        <attr name="tabSelectedTextColor" format="color" />
+
+        <attr name="tabPaddingStart" format="dimension" />
+        <attr name="tabPaddingTop" format="dimension" />
+        <attr name="tabPaddingEnd" format="dimension" />
+        <attr name="tabPaddingBottom" format="dimension" />
+        <attr name="tabPadding" format="dimension" />
+    </declare-styleable>
+
 </resources>
+

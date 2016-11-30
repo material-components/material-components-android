@@ -16,19 +16,10 @@
 -->
 <resources>
 
-    <dimen name="fab_elevation">8dp</dimen>
-    <dimen name="fab_translation_z_pressed">6dp</dimen>
-    <dimen name="fab_content_size">24dp</dimen>
-    <dimen name="fab_size_normal">56dp</dimen>
-    <dimen name="fab_size_mini">40dp</dimen>
-
-    <dimen name="drawer_max_width">320dp</dimen>
-    <dimen name="drawer_elevation">12dp</dimen>
-    <dimen name="drawer_icon_padding">32dp</dimen>
-    <dimen name="drawer_icon_size">24dp</dimen>
-
-    <dimen name="tab_min_width">72dp</dimen>
-    <dimen name="tab_max_width">264dp</dimen>
+    <style name="Widget.Design.TabLayout" parent="Base.Widget.Design.TabLayout">
+        <item name="tabGravity">center</item>
+        <item name="tabMode">fixed</item>
+    </style>
 
 </resources>
 
