@@ -31,6 +31,8 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
+import static org.hamcrest.Matchers.not;
+
 import android.graphics.Color;
 import android.support.design.test.R;
 import android.support.design.testutils.TestUtils;
