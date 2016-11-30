@@ -19,6 +19,7 @@
     <public type="attr" name="backgroundTint"/>
     <public type="attr" name="backgroundTintMode"/>
     <public type="attr" name="collapsedTitleTextAppearance"/>
+    <public type="attr" name="contentScrim"/>
     <public type="attr" name="elevation"/>
     <public type="attr" name="errorEnabled"/>
     <public type="attr" name="errorTextAppearance"/>
@@ -28,7 +29,6 @@
     <public type="attr" name="expandedTitleMarginStart"/>
     <public type="attr" name="expandedTitleTextAppearance"/>
     <public type="attr" name="fabSize"/>
-    <public type="attr" name="foregroundScrimColor"/>
     <public type="attr" name="headerLayout"/>
     <public type="attr" name="hintTextAppearance"/>
     <public type="attr" name="itemBackground"/>
@@ -38,6 +38,8 @@
     <public type="attr" name="menu"/>
     <public type="attr" name="pressedTranslationZ"/>
     <public type="attr" name="rippleColor"/>
+    <public type="attr" name="statusBarBackground"/>
+    <public type="attr" name="statusBarScrim"/>
     <public type="attr" name="tabBackground"/>
     <public type="attr" name="tabContentStart"/>
     <public type="attr" name="tabGravity"/>

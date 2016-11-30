@@ -21,6 +21,7 @@ import android.content.res.TypedArray;
 import android.support.annotation.IntDef;
 import android.support.design.R;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -118,6 +119,8 @@ public class AppBarLayout extends LinearLayout {
 
     private float mTargetElevation;
 
+    private WindowInsetsCompat mLastInsets;
+
     private final List<WeakReference<OnOffsetChangedListener>> mListeners;
 
     public AppBarLayout(Context context) {
@@ -140,6 +143,16 @@ public class AppBarLayout extends LinearLayout {
         mListeners = new ArrayList<>();
 
         ViewCompat.setElevation(this, mTargetElevation);
+
+        ViewCompat.setOnApplyWindowInsetsListener(this,
+                new android.support.v4.view.OnApplyWindowInsetsListener() {
+                    @Override
+                    public WindowInsetsCompat onApplyWindowInsets(View v,
+                            WindowInsetsCompat insets) {
+                        setWindowInsets(insets);
+                        return insets.consumeSystemWindowInsets();
+                    }
+                });
     }
 
     /**
@@ -238,11 +251,11 @@ public class AppBarLayout extends LinearLayout {
     }
 
     /**
-     * Return the scroll range of any children
+     * Returns the scroll range of all children.
      *
      * @return the scroll range in px
      */
-    final int getTotalScrollRange() {
+    public final int getTotalScrollRange() {
         if (mTotalScrollRange != INVALID_SCROLL_RANGE) {
             return mTotalScrollRange;
         }
@@ -262,9 +275,10 @@ public class AppBarLayout extends LinearLayout {
 
                 if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
                     // For a collapsing scroll, we to take the collapsed height into account.
-                    // We also return the range straight away since later views can't scroll beneath
+                    // We also break straight away since later views can't scroll beneath
                     // us
-                    return range - ViewCompat.getMinimumHeight(child);
+                    range -= ViewCompat.getMinimumHeight(child);
+                    break;
                 }
             } else {
                 // As soon as a view doesn't have the scroll flag, we end the range calculation.
@@ -272,7 +286,8 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        return mTotalScrollRange = range;
+        final int top = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
+        return mTotalScrollRange = (range - top);
     }
 
     final boolean hasScrollableChildren() {
@@ -361,16 +376,17 @@ public class AppBarLayout extends LinearLayout {
     }
 
     final int getMinimumHeightForVisibleOverlappingContent() {
+        final int topInset = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
         final int minHeight = ViewCompat.getMinimumHeight(this);
         if (minHeight != 0) {
             // If this layout has a min height, use it (doubled)
-            return minHeight * 2;
+            return (minHeight * 2) + topInset;
         }
 
         // Otherwise, we'll use twice the min height of our last child
         final int childCount = getChildCount();
         return childCount >= 1
-                ? ViewCompat.getMinimumHeight(getChildAt(childCount - 1)) * 2
+                ? (ViewCompat.getMinimumHeight(getChildAt(childCount - 1)) * 2) + topInset
                 : 0;
     }
 
@@ -396,6 +412,21 @@ public class AppBarLayout extends LinearLayout {
      */
     public float getTargetElevation() {
         return mTargetElevation;
+    }
+
+    private void setWindowInsets(WindowInsetsCompat insets) {
+        // Invalidate the total scroll range...
+        mTotalScrollRange = INVALID_SCROLL_RANGE;
+        mLastInsets = insets;
+
+        // Now dispatch them to our children
+        for (int i = 0, z = getChildCount(); i < z; i++) {
+            final View child = getChildAt(i);
+            insets = ViewCompat.dispatchApplyWindowInsets(child, insets);
+            if (insets.isConsumed()) {
+                break;
+            }
+        }
     }
 
     public static class LayoutParams extends LinearLayout.LayoutParams {
@@ -886,15 +917,15 @@ public class AppBarLayout extends LinearLayout {
                 }
 
                 final AppBarLayout appBar = findFirstAppBarLayout(dependencies);
-                if (appBar != null) {
-                    if (appBar.getMeasuredWidth() == 0 || appBar.getMeasuredHeight() == 0) {
-                        // If the AppBar hasn't been measured yet, we need to do it now
-                        parent.onMeasureChild(appBar, parentWidthMeasureSpec,
-                                widthUsed, parentHeightMeasureSpec, heightUsed);
+                if (appBar != null && ViewCompat.isLaidOut(appBar)) {
+                    if (ViewCompat.getFitsSystemWindows(appBar)) {
+                        // If the AppBarLayout is fitting system windows then we need to also,
+                        // otherwise we'll get CoL's compatible layout functionality
+                        ViewCompat.setFitsSystemWindows(child, true);
                     }
 
                     final int scrollRange = appBar.getTotalScrollRange();
-                    final int height = MeasureSpec.getSize(parentHeightMeasureSpec)
+                    final int height = parent.getHeight()
                             - appBar.getMeasuredHeight() + scrollRange;
                     final int heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
                             MeasureSpec.AT_MOST);

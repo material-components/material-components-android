@@ -94,6 +94,8 @@
              layout_keyline="index" where index is a 0-based index into
              this array. -->
         <attr name="keylines" format="reference"/>
+        <!-- Drawable to display behind the status bar when the view is set to draw behind it. -->
+        <attr name="statusBarBackground" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="CoordinatorLayout_LayoutParams">
@@ -207,9 +209,19 @@
         <attr name="expandedTitleMarginStart" format="dimension"/>
         <attr name="expandedTitleMarginBottom" format="dimension"/>
         <attr name="expandedTitleMarginEnd" format="dimension"/>
+        <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
+             'expanded' -->
         <attr name="expandedTitleTextAppearance" format="reference"/>
+        <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
+             'collapsed' -->
         <attr name="collapsedTitleTextAppearance" format="reference"/>
-        <attr name="foregroundScrimColor" format="color"/>
+        <!-- The drawable to use as a scrim on top of the CollapsingToolbarLayouts content when
+             it has been scrolled sufficiently off screen. -->
+        <attr name="contentScrim" format="color"/>
+        <!-- The drawable to use as a scrim for the status bar content when the
+             CollapsingToolbarLayout has been scrolled sufficiently off screen. Only works on
+             Lollipop with the correct setup. -->
+        <attr name="statusBarScrim" format="color" />
     </declare-styleable>
 
     <declare-styleable name="CollapsingAppBarLayout_LayoutParams">

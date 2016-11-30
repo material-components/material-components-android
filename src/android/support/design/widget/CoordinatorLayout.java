@@ -23,13 +23,17 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.R;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -82,8 +86,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     static {
         if (Build.VERSION.SDK_INT >= 21) {
             TOP_SORTED_CHILDREN_COMPARATOR = new ViewElevationComparator();
+            INSETS_HELPER = new CoordinatorLayoutInsetsHelperLollipop();
         } else {
             TOP_SORTED_CHILDREN_COMPARATOR = null;
+            INSETS_HELPER = null;
         }
     }
 
@@ -113,6 +119,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     };
 
     static final Comparator<View> TOP_SORTED_CHILDREN_COMPARATOR;
+    static final CoordinatorLayoutInsetsHelper INSETS_HELPER;
 
     private final List<View> mDependencySortedChildren = new ArrayList<View>();
     private final List<View> mTempList1 = new ArrayList<>();
@@ -134,6 +141,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private OnPreDrawListener mOnPreDrawListener;
     private boolean mNeedsPreDrawListener;
 
+    private WindowInsetsCompat mLastInsets;
+    private boolean mDrawStatusBarBackground;
+    private Drawable mStatusBarBackground;
+
     private final NestedScrollingParentHelper mNestedScrollingParentHelper =
             new NestedScrollingParentHelper(this);
 
@@ -149,7 +160,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         super(context, attrs, defStyleAttr);
 
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.CoordinatorLayout,
-                defStyleAttr, 0);
+                defStyleAttr, R.style.Widget_Design_CoordinatorLayout);
         final int keylineArrayRes = a.getResourceId(R.styleable.CoordinatorLayout_keylines, 0);
         if (keylineArrayRes != 0) {
             final Resources res = context.getResources();
@@ -160,7 +171,12 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 mKeylines[i] *= density;
             }
         }
+        mStatusBarBackground = a.getDrawable(R.styleable.CoordinatorLayout_statusBarBackground);
         a.recycle();
+
+        if (INSETS_HELPER != null) {
+            INSETS_HELPER.setupForWindowInsets(this, new ApplyInsetsListener());
+        }
     }
 
     @Override
@@ -189,6 +205,57 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             onStopNestedScroll(mNestedScrollingTarget);
         }
         mIsAttachedToWindow = false;
+    }
+
+    /**
+     * Set a drawable to draw in the insets area for the status bar.
+     * Note that this will only be activated if this DrawerLayout fitsSystemWindows.
+     *
+     * @param bg Background drawable to draw behind the status bar
+     */
+    public void setStatusBarBackground(Drawable bg) {
+        mStatusBarBackground = bg;
+        invalidate();
+    }
+
+    /**
+     * Gets the drawable used to draw in the insets area for the status bar.
+     *
+     * @return The status bar background drawable, or null if none set
+     */
+    public Drawable getStatusBarBackground() {
+        return mStatusBarBackground;
+    }
+
+    /**
+     * Set a drawable to draw in the insets area for the status bar.
+     * Note that this will only be activated if this DrawerLayout fitsSystemWindows.
+     *
+     * @param resId Resource id of a background drawable to draw behind the status bar
+     */
+    public void setStatusBarBackgroundResource(int resId) {
+        setStatusBarBackground(resId != 0 ? ContextCompat.getDrawable(getContext(), resId) : null);
+    }
+
+    /**
+     * Set a drawable to draw in the insets area for the status bar.
+     * Note that this will only be activated if this DrawerLayout fitsSystemWindows.
+     *
+     * @param color Color to use as a background drawable to draw behind the status bar
+     *              in 0xAARRGGBB format.
+     */
+    public void setStatusBarBackgroundColor(int color) {
+        setStatusBarBackground(new ColorDrawable(color));
+    }
+
+    private void setWindowInsets(WindowInsetsCompat insets) {
+        if (mLastInsets != insets) {
+            mLastInsets = insets;
+            mDrawStatusBarBackground = insets != null && insets.getSystemWindowInsetTop() > 0;
+            setWillNotDraw(!mDrawStatusBarBackground && getBackground() == null);
+            dispatchChildApplyWindowInsets(insets);
+            requestLayout();
+        }
     }
 
     /**
@@ -518,12 +585,16 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final boolean isRtl = layoutDirection == ViewCompat.LAYOUT_DIRECTION_RTL;
         final int widthMode = MeasureSpec.getMode(widthMeasureSpec);
         final int widthSize = MeasureSpec.getSize(widthMeasureSpec);
+        final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+        final int heightSize = MeasureSpec.getSize(heightMeasureSpec);
 
         final int widthPadding = paddingLeft + paddingRight;
         final int heightPadding = paddingTop + paddingBottom;
         int widthUsed = getSuggestedMinimumWidth();
         int heightUsed = getSuggestedMinimumHeight();
         int childState = 0;
+
+        final boolean applyInsets = mLastInsets != null && ViewCompat.getFitsSystemWindows(this);
 
         final int childCount = mDependencySortedChildren.size();
         for (int i = 0; i < childCount; i++) {
@@ -545,11 +616,27 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 }
             }
 
+            int childWidthMeasureSpec = widthMeasureSpec;
+            int childHeightMeasureSpec = heightMeasureSpec;
+            if (applyInsets && !ViewCompat.getFitsSystemWindows(child)) {
+                // We're set to handle insets but this child isn't, so we will measure the
+                // child as if there are no insets
+                final int horizInsets = mLastInsets.getSystemWindowInsetLeft()
+                        + mLastInsets.getSystemWindowInsetRight();
+                final int vertInsets = mLastInsets.getSystemWindowInsetTop()
+                        + mLastInsets.getSystemWindowInsetBottom();
+
+                childWidthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                        widthSize - horizInsets, widthMode);
+                childHeightMeasureSpec = MeasureSpec.makeMeasureSpec(
+                        heightSize - vertInsets, heightMode);
+            }
+
             final Behavior b = lp.getBehavior();
-            if (b == null || !b.onMeasureChild(this, child, widthMeasureSpec, keylineWidthUsed,
-                    heightMeasureSpec, 0)) {
-                onMeasureChild(child, widthMeasureSpec, keylineWidthUsed,
-                        heightMeasureSpec, 0);
+            if (b == null || !b.onMeasureChild(this, child, childWidthMeasureSpec, keylineWidthUsed,
+                    childHeightMeasureSpec, 0)) {
+                onMeasureChild(child, childWidthMeasureSpec, keylineWidthUsed,
+                        childHeightMeasureSpec, 0);
             }
 
             widthUsed = Math.max(widthUsed, widthPadding + child.getMeasuredWidth() +
@@ -566,6 +653,35 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int height = ViewCompat.resolveSizeAndState(heightUsed, heightMeasureSpec,
                 childState << ViewCompat.MEASURED_HEIGHT_STATE_SHIFT);
         setMeasuredDimension(width, height);
+    }
+
+    private void dispatchChildApplyWindowInsets(WindowInsetsCompat insets) {
+        if (insets.isConsumed()) {
+            return;
+        }
+
+        for (int i = 0, z = getChildCount(); i < z; i++) {
+            final View child = getChildAt(i);
+            if (ViewCompat.getFitsSystemWindows(child)) {
+                final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+                final Behavior b = lp.getBehavior();
+
+                if (b != null) {
+                    // If the view has a behavior, let it try first
+                    insets = b.onApplyWindowInsets(this, child, insets);
+                    if (insets.isConsumed()) {
+                        // If it consumed the insets, break
+                        break;
+                    }
+                }
+
+                // Now let the view try and consume them
+                insets = ViewCompat.dispatchApplyWindowInsets(child, insets);
+                if (insets.isConsumed()) {
+                    break;
+                }
+            }
+        }
     }
 
     /**
@@ -604,6 +720,18 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
             if (behavior == null || !behavior.onLayoutChild(this, child, layoutDirection)) {
                 onLayoutChild(child, layoutDirection);
+            }
+        }
+    }
+
+    @Override
+    public void onDraw(Canvas c) {
+        super.onDraw(c);
+        if (mDrawStatusBarBackground && mStatusBarBackground != null) {
+            final int inset = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
+            if (inset > 0) {
+                mStatusBarBackground.setBounds(0, 0, getWidth(), inset);
+                mStatusBarBackground.draw(c);
             }
         }
     }
@@ -851,6 +979,17 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 getPaddingTop() + lp.topMargin,
                 getWidth() - getPaddingRight() - lp.rightMargin,
                 getHeight() - getPaddingBottom() - lp.bottomMargin);
+
+        if (mLastInsets != null && ViewCompat.getFitsSystemWindows(this)
+                && !ViewCompat.getFitsSystemWindows(child)) {
+            // If we're set to handle insets but this child isn't, then it has been measured as
+            // if there are no insets. We need to lay it out to match.
+            parent.left += mLastInsets.getSystemWindowInsetLeft();
+            parent.top += mLastInsets.getSystemWindowInsetTop();
+            parent.right -= mLastInsets.getSystemWindowInsetRight();
+            parent.bottom -= mLastInsets.getSystemWindowInsetBottom();
+        }
+
         final Rect out = mTempRect2;
         GravityCompat.apply(resolveGravity(lp.gravity), child.getMeasuredWidth(),
                 child.getMeasuredHeight(), parent, out, layoutDirection);
@@ -1885,6 +2024,25 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 float velocityX, float velocityY) {
             return false;
         }
+
+        /**
+         * Called when the window insets have changed.
+         *
+         * <p>Any Behavior associated with the direct child of the CoordinatorLayout may elect
+         * to handle the window inset change on behalf of it's associated view.
+         * </p>
+         *
+         * @param coordinatorLayout the CoordinatorLayout parent of the view this Behavior is
+         *                          associated with
+         * @param child the child view of the CoordinatorLayout this Behavior is associated with
+         * @param insets the new window insets.
+         *
+         * @return The insets supplied, minus any insets that were consumed
+         */
+        public WindowInsetsCompat onApplyWindowInsets(CoordinatorLayout coordinatorLayout,
+                V child, WindowInsetsCompat insets) {
+            return insets;
+        }
     }
 
     /**
@@ -2245,6 +2403,14 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             }
             mAnchorDirectChild = directChild;
             return true;
+        }
+    }
+
+    final class ApplyInsetsListener implements android.support.v4.view.OnApplyWindowInsetsListener {
+        @Override
+        public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+            setWindowInsets(insets);
+            return insets.consumeSystemWindowInsets();
         }
     }
 }

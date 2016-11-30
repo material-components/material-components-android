@@ -5,6 +5,7 @@ package android.support.design.widget {
     ctor public AppBarLayout(android.content.Context, android.util.AttributeSet);
     method public void addOnOffsetChangedListener(android.support.design.widget.AppBarLayout.OnOffsetChangedListener);
     method public float getTargetElevation();
+    method public final int getTotalScrollRange();
     method public void removeOnOffsetChangedListener(android.support.design.widget.AppBarLayout.OnOffsetChangedListener);
     method public void setTargetElevation(float);
   }
@@ -56,13 +57,18 @@ package android.support.design.widget {
     ctor public CollapsingToolbarLayout(android.content.Context);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet, int);
-    method public int getForegroundScrimColor();
+    method public android.graphics.drawable.Drawable getContentScrim();
+    method public android.graphics.drawable.Drawable getStatusBarScrim();
     method public void setCollapsedTitleTextAppearance(int);
     method public void setCollapsedTitleTextColor(int);
+    method public void setContentScrim(android.graphics.drawable.Drawable);
+    method public void setContentScrimColor(int);
+    method public void setContentScrimResource(int);
     method public void setExpandedTitleColor(int);
     method public void setExpandedTitleTextAppearance(int);
-    method public void setForegroundScrimColor(int);
-    method public void setForegroundScrimColorResource(int);
+    method public void setStatusBarScrim(android.graphics.drawable.Drawable);
+    method public void setStatusBarScrimColor(int);
+    method public void setStatusBarScrimResource(int);
     method public void setTitle(java.lang.CharSequence);
   }
 
@@ -89,12 +95,17 @@ package android.support.design.widget {
     method public void dispatchDependentViewsChanged(android.view.View);
     method public boolean doViewsOverlap(android.view.View, android.view.View);
     method public java.util.List<android.view.View> getDependencies(android.view.View);
+    method public android.graphics.drawable.Drawable getStatusBarBackground();
     method public boolean isPointInChildBounds(android.view.View, int, int);
     method public void onAttachedToWindow();
     method public void onDetachedFromWindow();
+    method public void onDraw(android.graphics.Canvas);
     method protected void onLayout(boolean, int, int, int, int);
     method public void onLayoutChild(android.view.View, int);
     method public void onMeasureChild(android.view.View, int, int, int, int);
+    method public void setStatusBarBackground(android.graphics.drawable.Drawable);
+    method public void setStatusBarBackgroundColor(int);
+    method public void setStatusBarBackgroundResource(int);
   }
 
   public static abstract class CoordinatorLayout.Behavior {
@@ -106,6 +117,7 @@ package android.support.design.widget {
     method public static java.lang.Object getTag(android.view.View);
     method public boolean isDirty(android.support.design.widget.CoordinatorLayout, V);
     method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, V, android.view.View);
+    method public android.support.v4.view.WindowInsetsCompat onApplyWindowInsets(android.support.design.widget.CoordinatorLayout, V, android.support.v4.view.WindowInsetsCompat);
     method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, V, android.view.View);
     method public boolean onInterceptTouchEvent(android.support.design.widget.CoordinatorLayout, V, android.view.MotionEvent);
     method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, V, int);

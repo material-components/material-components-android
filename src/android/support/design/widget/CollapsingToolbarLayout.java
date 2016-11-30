@@ -19,21 +19,22 @@ package android.support.design.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Rect;
-import android.support.annotation.ColorRes;
+import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.Nullable;
 import android.support.design.R;
-import android.support.v4.graphics.ColorUtils;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.FrameLayout;
 
 import java.lang.annotation.Retention;
@@ -52,7 +53,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * <h3>Foreground scrim</h3>
  * A full-bleed scrim which is show or hidden when the scroll position has hit a certain threshold.
- * You can change the color via {@link #setForegroundScrimColor(int)}.
+ * You can change this via {@link #setContentScrim(Drawable)}.
  *
  * <h3>Parallax scrolling children</h3>
  * Child views can opt to be scrolled within this layout in a parallax fashion.
@@ -66,11 +67,12 @@ import java.lang.annotation.RetentionPolicy;
  *
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_collapsedTitleTextAppearance
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleTextAppearance
- * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_foregroundScrimColor
+ * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_contentScrim
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleMargin
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleMarginStart
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleMarginEnd
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleMarginBottom
+ * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_statusBarScrim
  */
 public class CollapsingToolbarLayout extends FrameLayout {
 
@@ -86,12 +88,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private final Rect mRect = new Rect();
     private final CollapsingTextHelper mCollapsingTextHelper;
 
-    private int mForegroundScrimColor;
-    private int mCurrentForegroundColor;
-    private boolean mScrimIsShown;
+    private Drawable mContentScrim;
+    private Drawable mStatusBarScrim;
+    private int mScrimAlpha;
+    private boolean mScrimsAreShown;
     private ValueAnimatorCompat mScrimAnimator;
 
     private AppBarLayout.OnOffsetChangedListener mOnOffsetChangedListener;
+
+    private int mCurrentOffset;
+
+    private WindowInsetsCompat mLastInsets;
 
     public CollapsingToolbarLayout(Context context) {
         this(context, null);
@@ -150,12 +157,31 @@ public class CollapsingToolbarLayout extends FrameLayout {
                 R.style.TextAppearance_AppCompat_Widget_ActionBar_Title);
         mCollapsingTextHelper.setCollapsedTextAppearance(tp);
 
-        mForegroundScrimColor = a.getColor(
-                R.styleable.CollapsingToolbarLayout_foregroundScrimColor, 0);
+        setContentScrim(a.getDrawable(R.styleable.CollapsingToolbarLayout_contentScrim));
+        setStatusBarScrim(a.getDrawable(R.styleable.CollapsingToolbarLayout_statusBarScrim));
 
         a.recycle();
 
         setWillNotDraw(false);
+
+        ViewCompat.setOnApplyWindowInsetsListener(this,
+                new android.support.v4.view.OnApplyWindowInsetsListener() {
+                    @Override
+                    public WindowInsetsCompat onApplyWindowInsets(View v,
+                            WindowInsetsCompat insets) {
+                        mLastInsets = insets;
+
+                        for (int i = 0, z = getChildCount(); i < z; i++) {
+                            View child = getChildAt(i);
+                            LayoutParams lp = (LayoutParams) child.getLayoutParams();
+
+                            if (lp.height != LayoutParams.MATCH_PARENT) {
+                                lp.topMargin = insets.getSystemWindowInsetTop();
+                            }
+                        }
+                        return insets.consumeSystemWindowInsets();
+                    }
+                });
     }
 
     @Override
@@ -200,12 +226,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
         // If we don't have a toolbar, the scrim will be not be drawn in drawChild() below.
         // Instead, we draw it here, before our collapsing text.
-        if (mToolbar == null && Color.alpha(mCurrentForegroundColor) > 0) {
-            canvas.drawColor(mCurrentForegroundColor);
+        if (mToolbar == null && mContentScrim != null && mScrimAlpha > 0) {
+            mContentScrim.mutate().setAlpha(mScrimAlpha);
+            mContentScrim.draw(canvas);
         }
 
         // Let the collapsing text helper draw it's text
         mCollapsingTextHelper.draw(canvas);
+
+        // Now draw the status bar scrim
+        if (mStatusBarScrim != null && mScrimAlpha > 0) {
+            final int topInset = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
+            if (topInset > 0) {
+                mStatusBarScrim.setBounds(0, -mCurrentOffset, getWidth(),
+                        topInset - mCurrentOffset);
+                mStatusBarScrim.mutate().setAlpha(mScrimAlpha);
+                mStatusBarScrim.draw(canvas);
+            }
+        }
     }
 
     @Override
@@ -213,12 +251,21 @@ public class CollapsingToolbarLayout extends FrameLayout {
         // This is a little weird. Our scrim needs to be behind the Toolbar (if it is present),
         // but in front of any other children which are behind it. To do this we intercept the
         // drawChild() call, and draw our scrim first when drawing the toolbar
-        if (child == mToolbar && Color.alpha(mCurrentForegroundColor) > 0) {
-            canvas.drawColor(mCurrentForegroundColor);
+        if (child == mToolbar && mContentScrim != null && mScrimAlpha > 0) {
+            mContentScrim.mutate().setAlpha(mScrimAlpha);
+            mContentScrim.draw(canvas);
         }
 
         // Carry on drawing the child...
         return super.drawChild(canvas, child, drawingTime);
+    }
+
+    @Override
+    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
+        super.onSizeChanged(w, h, oldw, oldh);
+        if (mContentScrim != null) {
+            mContentScrim.setBounds(0, 0, w, h);
+        }
     }
 
     @Override
@@ -264,16 +311,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     private void showScrim() {
-        if (!mScrimIsShown) {
-            animateScrim(Color.alpha(mForegroundScrimColor));
-            mScrimIsShown = true;
+        if (!mScrimsAreShown) {
+            animateScrim(255);
+            mScrimsAreShown = true;
         }
     }
 
     private void hideScrim() {
-        if (mScrimIsShown) {
+        if (mScrimsAreShown) {
             animateScrim(0);
-            mScrimIsShown = false;
+            mScrimsAreShown = false;
         }
     }
 
@@ -285,18 +332,14 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mScrimAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimatorCompat animator) {
-                    final int newColor = ColorUtils.setAlphaComponent(
-                            mForegroundScrimColor, animator.getAnimatedIntValue());
-
-                    if (newColor != mCurrentForegroundColor) {
-                        mCurrentForegroundColor = newColor;
-
-                        // We need to manually invalidate ourselves and the Toolbar to ensure the scrim
-                        // is drawn
-                        invalidate();
-                        if (mToolbar != null) {
-                            mToolbar.invalidate();
+                    final int newAlpha = animator.getAnimatedIntValue();
+                    if (newAlpha != mScrimAlpha) {
+                        final Drawable contentScrim = mContentScrim;
+                        if (contentScrim != null && mToolbar != null) {
+                            ViewCompat.postInvalidateOnAnimation(mToolbar);
                         }
+                        mScrimAlpha = newAlpha;
+                        ViewCompat.postInvalidateOnAnimation(CollapsingToolbarLayout.this);
                     }
                 }
             });
@@ -304,44 +347,126 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mScrimAnimator.cancel();
         }
 
-        mScrimAnimator.setIntValues(Color.alpha(mCurrentForegroundColor), targetAlpha);
+        mScrimAnimator.setIntValues(mScrimAlpha, targetAlpha);
         mScrimAnimator.start();
     }
 
     /**
-     * Set the color to use for the  foreground scrim. Providing a transparent color which disable
-     * the scrim.
+     * Set the drawable to use for the content scrim from resources. Providing null will disable
+     * the scrim functionality.
      *
-     * @param color ARGB color to use
+     * @param drawable the drawable to display
      *
-     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_foregroundScrimColor
-     * @see #getForegroundScrimColor()
+     * @attr ref R.styleable#CollapsingToolbarLayout_contentScrim
+     * @see #getContentScrim()
      */
-    public void setForegroundScrimColor(int color) {
-        mForegroundScrimColor = color;
+    public void setContentScrim(@Nullable Drawable drawable) {
+        if (mContentScrim != drawable) {
+            if (mContentScrim != null) {
+                mContentScrim.setCallback(null);
+            }
+
+            mContentScrim = drawable;
+            drawable.setBounds(0, 0, getWidth(), getHeight());
+            drawable.setCallback(this);
+            drawable.mutate().setAlpha(mScrimAlpha);
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
     }
 
     /**
-     * Set the color to use for the  foreground scrim from resources. Providing a transparent color
-     * which disable the scrim.
+     * Set the color to use for the content scrim.
      *
-     * @param resId color resource id
+     * @param color the color to display
      *
-     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_foregroundScrimColor
-     * @see #getForegroundScrimColor()
+     * @attr ref R.styleable#CollapsingToolbarLayout_contentScrim
+     * @see #getContentScrim()
      */
-    public void setForegroundScrimColorResource(@ColorRes int resId) {
-        mForegroundScrimColor = getResources().getColor(resId);
+    public void setContentScrimColor(int color) {
+        setContentScrim(new ColorDrawable(color));
     }
 
     /**
-     * Returns the color which is used for the foreground scrim.
+     * Set the drawable to use for the content scrim from resources.
      *
-     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_foregroundScrimColor
-     * @see #setForegroundScrimColor(int)
+     * @param resId drawable resource id
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_contentScrim
+     * @see #getContentScrim()
      */
-    public int getForegroundScrimColor() {
-        return mForegroundScrimColor;
+    public void setContentScrimResource(@DrawableRes int resId) {
+        setContentScrim(ContextCompat.getDrawable(getContext(), resId));
+
+    }
+
+    /**
+     * Returns the drawable which is used for the foreground scrim.
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_contentScrim
+     * @see #setContentScrim(Drawable)
+     */
+    public Drawable getContentScrim() {
+        return mContentScrim;
+    }
+
+    /**
+     * Set the drawable to use for the status bar scrim from resources.
+     * Providing null will disable the scrim functionality.
+     *
+     * <p>This scrim is only shown when we have been given a top system inset.</p>
+     *
+     * @param drawable the drawable to display
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim
+     * @see #getStatusBarScrim()
+     */
+    public void setStatusBarScrim(@Nullable Drawable drawable) {
+        if (mStatusBarScrim != drawable) {
+            if (mStatusBarScrim != null) {
+                mStatusBarScrim.setCallback(null);
+            }
+
+            mStatusBarScrim = drawable;
+            drawable.setCallback(this);
+            drawable.mutate().setAlpha(mScrimAlpha);
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
+    /**
+     * Set the color to use for the status bar scrim.
+     *
+     * <p>This scrim is only shown when we have been given a top system inset.</p>
+     *
+     * @param color the color to display
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim
+     * @see #getStatusBarScrim()
+     */
+    public void setStatusBarScrimColor(int color) {
+        setStatusBarScrim(new ColorDrawable(color));
+    }
+
+    /**
+     * Set the drawable to use for the content scrim from resources.
+     *
+     * @param resId drawable resource id
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim
+     * @see #getStatusBarScrim()
+     */
+    public void setStatusBarScrimResource(@DrawableRes int resId) {
+        setStatusBarScrim(ContextCompat.getDrawable(getContext(), resId));
+    }
+
+    /**
+     * Returns the drawable which is used for the status bar scrim.
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim
+     * @see #setStatusBarScrim(Drawable)
+     */
+    public Drawable getStatusBarScrim() {
+        return mStatusBarScrim;
     }
 
     /**
@@ -382,6 +507,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
         mCollapsingTextHelper.setExpandedTextColor(color);
     }
 
+    /**
+     * The additional offset used to define when to trigger the scrim visibility change.
+     */
     final int getScrimTriggerOffset() {
         return 2 * ViewCompat.getMinimumHeight(this);
     }
@@ -521,7 +649,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private class OffsetUpdateListener implements AppBarLayout.OnOffsetChangedListener {
         @Override
         public void onOffsetChanged(AppBarLayout layout, int verticalOffset) {
-            int pinnedHeight = 0;
+            mCurrentOffset = verticalOffset;
+
+            final int insetTop = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
+            final int scrollRange = layout.getTotalScrollRange();
 
             for (int i = 0, z = getChildCount(); i < z; i++) {
                 final View child = getChildAt(i);
@@ -530,10 +661,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
                 switch (lp.mCollapseMode) {
                     case LayoutParams.COLLAPSE_MODE_PIN:
-                        if (getHeight() + verticalOffset >= child.getHeight()) {
+                        if (getHeight() - insetTop + verticalOffset >= child.getHeight()) {
                             offsetHelper.setTopAndBottomOffset(-verticalOffset);
                         }
-                        pinnedHeight += child.getHeight();
                         break;
                     case LayoutParams.COLLAPSE_MODE_PARALLAX:
                         offsetHelper.setTopAndBottomOffset(
@@ -542,22 +672,26 @@ public class CollapsingToolbarLayout extends FrameLayout {
                 }
             }
 
-            // Show or hide the scrim if needed
-            if (Color.alpha(mForegroundScrimColor) > 0) {
-                if (getHeight() + verticalOffset < getScrimTriggerOffset()) {
+            // Show or hide the scrims if needed
+            if (mContentScrim != null || mStatusBarScrim != null) {
+                if (getHeight() + verticalOffset < getScrimTriggerOffset() + insetTop) {
                     showScrim();
                 } else {
                     hideScrim();
                 }
             }
 
+            if (mStatusBarScrim != null && insetTop > 0) {
+                ViewCompat.postInvalidateOnAnimation(CollapsingToolbarLayout.this);
+            }
+
             // Update the collapsing text's fraction
             final int expandRange = getHeight() - ViewCompat.getMinimumHeight(
-                    CollapsingToolbarLayout.this);
+                    CollapsingToolbarLayout.this) - insetTop;
             mCollapsingTextHelper.setExpansionFraction(
                     Math.abs(verticalOffset) / (float) expandRange);
 
-            if (pinnedHeight > 0 && (getHeight() + verticalOffset) == pinnedHeight) {
+            if (Math.abs(verticalOffset) == scrollRange) {
                 // If we have some pinned children, and we're offset to only show those views,
                 // we want to be elevate
                 ViewCompat.setElevation(layout, layout.getTargetElevation());

@@ -21,6 +21,7 @@
     <public type="style" name="TextAppearance.Design.Tab"/>
     <public type="style" name="Widget.Design.AppBarLayout"/>
     <public type="style" name="Widget.Design.CollapsingToolbar"/>
+    <public type="style" name="Widget.Design.CoordinatorLayout"/>
     <public type="style" name="Widget.Design.FloatingActionButton"/>
     <public type="style" name="Widget.Design.NavigationView"/>
     <public type="style" name="Widget.Design.Snackbar"/>
