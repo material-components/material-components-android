@@ -15,4 +15,5 @@
 # CoordinatorLayout resolves the behaviors of its child components with reflection.
 -keep public class * extends android.support.design.widget.CoordinatorLayout$Behavior {
     public <init>(android.content.Context, android.util.AttributeSet);
+    public <init>();
 }
