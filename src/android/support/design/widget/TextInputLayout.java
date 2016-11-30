@@ -216,6 +216,8 @@ public class TextInputLayout extends LinearLayout {
     private void updateLabelVisibility(boolean animate) {
         boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
         boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
+        boolean isErrorShowing = !TextUtils.isEmpty(getError());
+
 
         if (mDefaultTextColor != null && mFocusedTextColor != null) {
             mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor.getDefaultColor());
@@ -224,7 +226,7 @@ public class TextInputLayout extends LinearLayout {
                     : mDefaultTextColor.getDefaultColor());
         }
 
-        if (hasText || isFocused) {
+        if (hasText || isFocused || isErrorShowing) {
             // We should be showing the label so do so if it isn't already
             collapseHint(animate);
         } else {
@@ -364,6 +366,9 @@ public class TextInputLayout extends LinearLayout {
             // Set the EditText's background tint to the error color
             ViewCompat.setBackgroundTintList(mEditText,
                     ColorStateList.valueOf(mErrorView.getCurrentTextColor()));
+
+            updateLabelVisibility(true);
+
         } else {
             if (mErrorView.getVisibility() == VISIBLE) {
                 ViewCompat.animate(mErrorView)
@@ -374,6 +379,8 @@ public class TextInputLayout extends LinearLayout {
                             @Override
                             public void onAnimationEnd(View view) {
                                 view.setVisibility(INVISIBLE);
+
+                                updateLabelVisibility(true);
                             }
                         }).start();
 
