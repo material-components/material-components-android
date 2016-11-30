@@ -14,7 +14,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
 <resources>
 
     <declare-styleable name="FloatingActionButton">
@@ -34,6 +33,17 @@
         <attr name="elevation" />
         <!-- TranslationZ value for the FAB when pressed-->
         <attr name="pressedTranslationZ" format="dimension|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ScrimInsetsFrameLayout">
+        <attr name="insetForeground" format="color|reference" />
+    </declare-styleable>
+
+    <declare-styleable name="NavigationDrawerView">
+        <attr name="android:elevation" />
+        <attr name="android:background" />
+        <attr name="android:fitsSystemWindows" />
+        <attr name="android:maxWidth" />
     </declare-styleable>
 
 </resources>
