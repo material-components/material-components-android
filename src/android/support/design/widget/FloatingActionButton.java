@@ -25,6 +25,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
@@ -89,7 +90,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private int mBorderWidth;
     private int mRippleColor;
     private int mSize;
-    private int mContentPadding;
+    private int mImagePadding;
 
     private final Rect mShadowPadding;
 
@@ -134,8 +135,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             public void setShadowPadding(int left, int top, int right, int bottom) {
                 mShadowPadding.set(left, top, right, bottom);
 
-                setPadding(left + mContentPadding, top + mContentPadding,
-                        right + mContentPadding, bottom + mContentPadding);
+                setPadding(left + mImagePadding, top + mImagePadding,
+                        right + mImagePadding, bottom + mImagePadding);
             }
 
             @Override
@@ -153,9 +154,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             mImpl = new FloatingActionButtonEclairMr1(this, delegate);
         }
 
-        final int maxContentSize = (int) getResources().getDimension(
-                R.dimen.design_fab_content_size);
-        mContentPadding = (getSizeDimension() - maxContentSize) / 2;
+        final int maxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
+        mImagePadding = (getSizeDimension() - maxImageSize) / 2;
 
         mImpl.setBackgroundDrawable(mBackgroundTint, mBackgroundTintMode,
                 mRippleColor, mBorderWidth);
@@ -361,6 +361,25 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
         mImpl.jumpDrawableToCurrentState();
+    }
+
+    /**
+     * Return in {@code rect} the bounds of the actual floating action button content in view-local
+     * coordinates. This is defined as anything within any visible shadow.
+     *
+     * @return true if this view actually has been laid out and has a content rect, else false.
+     */
+    public boolean getContentRect(@NonNull Rect rect) {
+        if (ViewCompat.isLaidOut(this)) {
+            rect.set(0, 0, getWidth(), getHeight());
+            rect.left += mShadowPadding.left;
+            rect.top += mShadowPadding.top;
+            rect.right -= mShadowPadding.right;
+            rect.bottom -= mShadowPadding.bottom;
+            return true;
+        } else {
+            return false;
+        }
     }
 
     private static int resolveAdjustedSize(int desiredSize, int measureSpec) {
