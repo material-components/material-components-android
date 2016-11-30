@@ -90,8 +90,6 @@
 
     <style name="Widget.Design.CollapsingToolbar" parent="android:Widget">
         <item name="expandedTitleMargin">32dp</item>
-        <item name="expandedTitleTextAppearance">@style/TextAppearance.Design.CollapsingToolbar.Expanded</item>
-        <item name="collapsedTitleTextAppearance">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
         <item name="statusBarScrim">?attr/colorPrimaryDark</item>
     </style>
 

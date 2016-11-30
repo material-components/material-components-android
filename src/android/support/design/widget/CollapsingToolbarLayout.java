@@ -168,15 +168,24 @@ public class CollapsingToolbarLayout extends FrameLayout {
                     R.styleable.CollapsingToolbarLayout_expandedTitleMarginBottom, 0);
         }
 
-        int tp = a.getResourceId(
-                R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance,
-                R.style.TextAppearance_AppCompat_Title);
-        mCollapsingTextHelper.setExpandedTextAppearance(tp);
-
-        tp = a.getResourceId(
-                R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance,
+        // First load the default text appearances
+        mCollapsingTextHelper.setExpandedTextAppearance(
+                R.style.TextAppearance_Design_CollapsingToolbar_Expanded);
+        mCollapsingTextHelper.setCollapsedTextAppearance(
                 R.style.TextAppearance_AppCompat_Widget_ActionBar_Title);
-        mCollapsingTextHelper.setCollapsedTextAppearance(tp);
+
+        // Now overlay any custom text appearances
+        if (a.hasValue(R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance)) {
+            mCollapsingTextHelper.setExpandedTextAppearance(
+                    a.getResourceId(
+                            R.styleable.CollapsingToolbarLayout_expandedTitleTextAppearance, 0));
+        }
+        if (a.hasValue(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance)) {
+            mCollapsingTextHelper.setCollapsedTextAppearance(
+                    a.getResourceId(
+                            R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
+
+        }
 
         setContentScrim(a.getDrawable(R.styleable.CollapsingToolbarLayout_contentScrim));
         setStatusBarScrim(a.getDrawable(R.styleable.CollapsingToolbarLayout_statusBarScrim));
@@ -352,7 +361,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
                     mTmpRect.right, bottom);
             // Update the expanded bounds
             mCollapsingTextHelper.setExpandedBounds(
-                    mExpandedMarginLeft, mTmpRect.bottom,
+                    mExpandedMarginLeft,
+                    mTmpRect.bottom + mExpandedMarginTop,
                     right - left - mExpandedMarginRight,
                     bottom - top - mExpandedMarginBottom);
 

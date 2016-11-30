@@ -61,8 +61,8 @@ final class CollapsingTextHelper {
     private final RectF mCurrentBounds;
     private int mExpandedTextGravity = Gravity.CENTER_VERTICAL;
     private int mCollapsedTextGravity = Gravity.CENTER_VERTICAL;
-    private float mExpandedTextSize;
-    private float mCollapsedTextSize;
+    private float mExpandedTextSize = 15;
+    private float mCollapsedTextSize = 15;
     private int mExpandedTextColor;
     private int mCollapsedTextColor;
 
@@ -188,11 +188,12 @@ final class CollapsingTextHelper {
     void setCollapsedTextAppearance(int resId) {
         TypedArray a = mView.getContext().obtainStyledAttributes(resId, R.styleable.TextAppearance);
         if (a.hasValue(R.styleable.TextAppearance_android_textColor)) {
-            mCollapsedTextColor = a.getColor(R.styleable.TextAppearance_android_textColor, 0);
+            mCollapsedTextColor = a.getColor(
+                    R.styleable.TextAppearance_android_textColor, mCollapsedTextColor);
         }
         if (a.hasValue(R.styleable.TextAppearance_android_textSize)) {
             mCollapsedTextSize = a.getDimensionPixelSize(
-                    R.styleable.TextAppearance_android_textSize, 0);
+                    R.styleable.TextAppearance_android_textSize, (int) mCollapsedTextSize);
         }
         a.recycle();
 
@@ -202,11 +203,12 @@ final class CollapsingTextHelper {
     void setExpandedTextAppearance(int resId) {
         TypedArray a = mView.getContext().obtainStyledAttributes(resId, R.styleable.TextAppearance);
         if (a.hasValue(R.styleable.TextAppearance_android_textColor)) {
-            mExpandedTextColor = a.getColor(R.styleable.TextAppearance_android_textColor, 0);
+            mExpandedTextColor = a.getColor(
+                    R.styleable.TextAppearance_android_textColor, mExpandedTextColor);
         }
         if (a.hasValue(R.styleable.TextAppearance_android_textSize)) {
             mExpandedTextSize = a.getDimensionPixelSize(
-                    R.styleable.TextAppearance_android_textSize, 0);
+                    R.styleable.TextAppearance_android_textSize, (int) mExpandedTextSize);
         }
         a.recycle();
 
