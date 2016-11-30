@@ -788,8 +788,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                     offsetTB = -padding.top;
                 }
 
-                fab.offsetTopAndBottom(offsetTB);
-                fab.offsetLeftAndRight(offsetLR);
+                if (offsetTB != 0) {
+                    ViewCompat.offsetTopAndBottom(fab, offsetTB);
+                }
+                if (offsetLR != 0) {
+                    ViewCompat.offsetLeftAndRight(fab, offsetLR);
+                }
             }
         }
     }

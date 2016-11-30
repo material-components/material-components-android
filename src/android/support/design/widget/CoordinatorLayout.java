@@ -1495,10 +1495,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             final int dy = desiredChildRect.top - childRect.top;
 
             if (dx != 0) {
-                child.offsetLeftAndRight(dx);
+                ViewCompat.offsetLeftAndRight(child, dx);
             }
             if (dy != 0) {
-                child.offsetTopAndBottom(dy);
+                ViewCompat.offsetTopAndBottom(child, dy);
             }
 
             if (changed) {
