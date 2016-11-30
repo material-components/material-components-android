@@ -162,6 +162,8 @@
         <!-- TextAppearance of any error message displayed -->
         <attr name="errorTextAppearance" format="reference"/>
         <attr name="android:textColorHint"/>
+        <!-- Whether to animate hint state changes. -->
+        <attr name="hintAnimationEnabled" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="SnackbarLayout">

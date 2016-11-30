@@ -69,6 +69,7 @@ public class TextInputLayout extends LinearLayout {
 
     private final CollapsingTextHelper mCollapsingTextHelper = new CollapsingTextHelper(this);
 
+    private boolean mHintAnimationEnabled;
     private ValueAnimatorCompat mAnimator;
 
     public TextInputLayout(Context context) {
@@ -94,6 +95,8 @@ public class TextInputLayout extends LinearLayout {
         final TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.TextInputLayout, defStyleAttr, R.style.Widget_Design_TextInputLayout);
         mHint = a.getText(R.styleable.TextInputLayout_android_hint);
+        mHintAnimationEnabled = a.getBoolean(
+                R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
         if (a.hasValue(R.styleable.TextInputLayout_android_textColorHint)) {
             mDefaultTextColor = mFocusedTextColor =
@@ -153,6 +156,7 @@ public class TextInputLayout extends LinearLayout {
         // Use the EditText's typeface, and it's text size for our expanded text
         mCollapsingTextHelper.setTypeface(mEditText.getTypeface());
         mCollapsingTextHelper.setExpandedTextSize(mEditText.getTextSize());
+        mCollapsingTextHelper.setExpandedTextGravity(mEditText.getGravity());
 
         // Add a TextWatcher so that we know when the text input has changed
         mEditText.addTextChangedListener(new TextWatcher() {
@@ -374,11 +378,36 @@ public class TextInputLayout extends LinearLayout {
      *
      * @see #setError(CharSequence)
      */
+    @Nullable
     public CharSequence getError() {
         if (mErrorEnabled && mErrorView != null && mErrorView.getVisibility() == VISIBLE) {
             return mErrorView.getText();
         }
         return null;
+    }
+
+    /**
+     * Returns whether any hint state changes, due to being focused or non-empty text, are
+     * animated.
+     *
+     * @see #setHintAnimationEnabled(boolean)
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_hintAnimationEnabled
+     */
+    public boolean isHintAnimationEnabled() {
+        return mHintAnimationEnabled;
+    }
+
+    /**
+     * Set whether any hint state changes, due to being focused or non-empty text, are
+     * animated.
+     *
+     * @see #isHintAnimationEnabled()
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_hintAnimationEnabled
+     */
+    public void setHintAnimationEnabled(boolean enabled) {
+        mHintAnimationEnabled = enabled;
     }
 
     @Override
@@ -419,7 +448,7 @@ public class TextInputLayout extends LinearLayout {
         if (mAnimator != null && mAnimator.isRunning()) {
             mAnimator.cancel();
         }
-        if (animate) {
+        if (animate && mHintAnimationEnabled) {
             animateToExpansionFraction(1f);
         } else {
             mCollapsingTextHelper.setExpansionFraction(1f);
@@ -430,7 +459,7 @@ public class TextInputLayout extends LinearLayout {
         if (mAnimator != null && mAnimator.isRunning()) {
             mAnimator.cancel();
         }
-        if (animate) {
+        if (animate && mHintAnimationEnabled) {
             animateToExpansionFraction(0f);
         } else {
             mCollapsingTextHelper.setExpansionFraction(0f);

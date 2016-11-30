@@ -361,9 +361,11 @@ package android.support.design.widget {
     method public java.lang.CharSequence getError();
     method public java.lang.CharSequence getHint();
     method public boolean isErrorEnabled();
+    method public boolean isHintAnimationEnabled();
     method public void setError(java.lang.CharSequence);
     method public void setErrorEnabled(boolean);
     method public void setHint(java.lang.CharSequence);
+    method public void setHintAnimationEnabled(boolean);
     method public void setHintTextAppearance(int);
     method public void setTypeface(android.graphics.Typeface);
   }
