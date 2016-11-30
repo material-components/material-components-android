@@ -449,8 +449,12 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     LayoutParams getResolvedLayoutParams(View child) {
         final LayoutParams result = (LayoutParams) child.getLayoutParams();
         if (!result.mBehaviorResolved) {
-            final Class<?> childClass = child.getClass();
-            final DefaultBehavior defaultBehavior = childClass.getAnnotation(DefaultBehavior.class);
+            Class<?> childClass = child.getClass();
+            DefaultBehavior defaultBehavior = null;
+            while (childClass != null &&
+                    (defaultBehavior = childClass.getAnnotation(DefaultBehavior.class)) == null) {
+                childClass = childClass.getSuperclass();
+            }
             if (defaultBehavior != null) {
                 try {
                     result.setBehavior(defaultBehavior.value().newInstance());

@@ -57,7 +57,7 @@ class CoordinatorLayoutHoneycomb {
             m.preTranslate(-vp.getScrollX(), -vp.getScrollY());
         }
 
-        m.preTranslate(view.getX(), view.getY());
+        m.preTranslate(view.getLeft(), view.getTop());
 
         if (!view.getMatrix().isIdentity()) {
             m.preConcat(view.getMatrix());
