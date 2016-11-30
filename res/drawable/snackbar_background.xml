@@ -13,17 +13,10 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
--->
+  -->
 
-<resources>
-
-    <dimen name="tab_min_width">160dp</dimen>
-
-    <dimen name="snackbar_min_width">320dp</dimen>
-    <dimen name="snackbar_max_width">576dp</dimen>
-    <dimen name="snackbar_padding_vertical_2lines">@dimen/snackbar_padding_vertical</dimen>
-    <dimen name="snackbar_extra_spacing_horizontal">24dp</dimen>
-    <dimen name="snackbar_background_corner_radius">2dp</dimen>
-    <dimen name="snackbar_action_inline_max_width">0dp</dimen>
-
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+       android:shape="rectangle">
+    <corners android:radius="@dimen/snackbar_background_corner_radius"/>
+    <solid android:color="@color/snackbar_background_color"/>
+</shape>

@@ -26,4 +26,6 @@
 
     <color name="error_color">#FFDD2C00</color>
 
+    <color name="snackbar_background_color">#323232</color>
+
 </resources>

@@ -32,4 +32,21 @@
     <dimen name="tab_min_width">72dp</dimen>
     <dimen name="tab_max_width">264dp</dimen>
 
+    <dimen name="snackbar_min_width">-1px</dimen>
+    <dimen name="snackbar_max_width">-1px</dimen>
+    <dimen name="snackbar_elevation">2dp</dimen>
+    <dimen name="snackbar_background_corner_radius">0dp</dimen>
+
+    <dimen name="snackbar_padding_horizontal">12dp</dimen>
+    <dimen name="snackbar_padding_vertical">14dp</dimen>
+    <dimen name="snackbar_padding_vertical_2lines">24dp</dimen>
+
+    <!-- Extra spacing between the action and message views -->
+    <dimen name="snackbar_extra_spacing_horizontal">0dp</dimen>
+    <!-- The maximum width for a Snackbar's inline action. If the view is width than this then
+         the Snackbar will change to vertical stacking -->
+    <dimen name="snackbar_action_inline_max_width">128dp</dimen>
+
+    <dimen name="snackbar_text_size">14sp</dimen>
+
 </resources>

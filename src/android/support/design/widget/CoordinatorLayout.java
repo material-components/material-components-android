@@ -962,7 +962,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             final Rect oldRect = mTempRect1;
             final Rect newRect = mTempRect2;
             getLastChildRect(child, oldRect);
-            getChildRect(child, false, newRect);
+            getChildRect(child, true, newRect);
             if (oldRect.equals(newRect)) {
                 continue;
             }
@@ -1103,6 +1103,27 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final Rect r = mTempRect1;
         getDescendantRect(child, r);
         return r.contains(x, y);
+    }
+
+    /**
+     * Check whether two views overlap each other. The views need to be descendants of this
+     * {@link CoordinatorLayout} in the view hierarchy.
+     *
+     * @param first first child view to test
+     * @param second second child view to test
+     * @return true if both views are visible and overlap each other
+     */
+    public boolean doViewsOverlap(View first, View second) {
+        if (first.getVisibility() == VISIBLE && second.getVisibility() == VISIBLE) {
+            final Rect firstRect = mTempRect1;
+            getChildRect(first, first.getParent() != this, firstRect);
+            final Rect secondRect = mTempRect2;
+            getChildRect(second, second.getParent() != this, secondRect);
+
+            return !(firstRect.left > secondRect.right || firstRect.top > secondRect.bottom
+                    || firstRect.right < secondRect.left || firstRect.bottom < secondRect.top);
+        }
+        return false;
     }
 
     @Override

@@ -17,13 +17,6 @@
 
 <resources>
 
-    <dimen name="tab_min_width">160dp</dimen>
-
-    <dimen name="snackbar_min_width">320dp</dimen>
-    <dimen name="snackbar_max_width">576dp</dimen>
-    <dimen name="snackbar_padding_vertical_2lines">@dimen/snackbar_padding_vertical</dimen>
-    <dimen name="snackbar_extra_spacing_horizontal">24dp</dimen>
-    <dimen name="snackbar_background_corner_radius">2dp</dimen>
-    <dimen name="snackbar_action_inline_max_width">0dp</dimen>
+    <integer name="snackbar_text_max_lines">2</integer>
 
 </resources>

@@ -27,11 +27,17 @@ import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
+
+import java.lang.ref.WeakReference;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Set;
 
 /**
  * Floating action buttons are used for a special type of promoted action. They are distinguished
@@ -42,6 +48,7 @@ import android.widget.ImageView;
  * the mini, which should only be used to create visual continuity with other elements on the
  * screen.
  */
+@CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends ImageView {
 
     // These values must match those in the attrs declaration
@@ -282,7 +289,7 @@ public class FloatingActionButton extends ImageView {
      * our parent's edges.
      */
     private void updateOffset() {
-        if (mShadowPadding.width() > 0 && mShadowPadding.height() > 0) {
+        if (mShadowPadding.centerX() != 0 || mShadowPadding.centerY() != 0) {
             int offsetTB = 0, offsetLR = 0;
 
             if (isOnRightParentEdge()) {
@@ -333,5 +340,98 @@ public class FloatingActionButton extends ImageView {
             return getBottom() >= (((View) getParent()).getHeight() - margin);
         }
         return false;
+    }
+
+    /**
+     * Behavior designed for use with {@link FloatingActionButton} instances. It's main function
+     * is to move {@link FloatingActionButton} views so that any displayed {@link Snackbar}s do
+     * not cover them.
+     */
+    public static class Behavior extends CoordinatorLayout.Behavior<FloatingActionButton> {
+        // We only support the FAB <> Snackbar shift movement on Honeycomb and above. This is
+        // because we can use view translation properties which greatly simplifies the code.
+        private static final boolean SNACKBAR_BEHAVIOR_ENABLED = Build.VERSION.SDK_INT >= 11;
+
+        private float mTranslationY;
+        private Set<WeakReference<View>> mSnackbars;
+
+        @Override
+        public boolean layoutDependsOn(CoordinatorLayout parent,
+                FloatingActionButton child,
+                View dependency) {
+            // We're dependent on all SnackbarLayouts
+            if (SNACKBAR_BEHAVIOR_ENABLED && dependency instanceof Snackbar.SnackbarLayout) {
+                if (!containsView(dependency)) {
+                    if (mSnackbars == null) mSnackbars = new HashSet<>();
+                    mSnackbars.add(new WeakReference<>(dependency));
+                }
+                cleanUpSet();
+                return true;
+            }
+            return false;
+        }
+
+        @Override
+        public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child,
+                View snackbar) {
+            updateFabTranslation(parent, child, snackbar);
+            return false;
+        }
+
+        private void updateFabTranslation(CoordinatorLayout parent, FloatingActionButton fab,
+                View snackbar) {
+            final float translationY = getTranslationYForFab(parent, fab);
+            if (translationY != mTranslationY) {
+                // First, cancel any current animation
+                ViewCompat.animate(fab).cancel();
+
+                if (Math.abs(translationY - mTranslationY) == snackbar.getHeight()) {
+                    // If we're travelling by the height of the Snackbar then we probably need to
+                    // animate to the value
+                    ViewCompat.animate(fab).translationY(translationY)
+                            .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+                } else {
+                    // Else we'll set use setTranslationY
+                    ViewCompat.setTranslationY(fab, translationY);
+                }
+                mTranslationY = translationY;
+            }
+        }
+
+        private float getTranslationYForFab(CoordinatorLayout parent, FloatingActionButton fab) {
+            float minOffset = 0;
+            if (mSnackbars != null && !mSnackbars.isEmpty()) {
+                for (WeakReference<View> viewRef : mSnackbars) {
+                    final View view = viewRef.get();
+                    if (view != null && parent.doViewsOverlap(fab, view)) {
+                        minOffset = Math.min(minOffset,
+                                ViewCompat.getTranslationY(view) - view.getHeight());
+                    }
+                }
+            }
+            return minOffset;
+        }
+
+        private void cleanUpSet() {
+            if (mSnackbars != null && !mSnackbars.isEmpty()) {
+                for (final Iterator<WeakReference<View>> i = mSnackbars.iterator(); i.hasNext();) {
+                    WeakReference<View> ref = i.next();
+                    if (ref == null || ref.get() == null) {
+                        i.remove();
+                    }
+                }
+            }
+        }
+
+        private boolean containsView(View dependency) {
+            if (mSnackbars != null && !mSnackbars.isEmpty()) {
+                for (WeakReference<View> viewRef : mSnackbars) {
+                    if (viewRef.get() == dependency) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
     }
 }

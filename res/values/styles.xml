@@ -72,5 +72,25 @@
         <item name="android:textColor">@color/error_color</item>
     </style>
 
+    <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance">
+        <item name="android:textSize">@dimen/snackbar_text_size</item>
+        <item name="android:textColor">?android:textColorPrimary</item>
+    </style>
+
+    <style name="TextAppearance.Design.Snackbar.Action" parent="TextAppearance.AppCompat.Button">
+        <item name="android:textColor">?colorAccent</item>
+    </style>
+
+    <style name="Widget.Design.Snackbar" parent="android:Widget">
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
+        <item name="android:minWidth">@dimen/snackbar_min_width</item>
+        <item name="android:maxWidth">@dimen/snackbar_max_width</item>
+        <item name="android:background">@drawable/snackbar_background</item>
+        <item name="android:paddingLeft">@dimen/snackbar_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/snackbar_padding_horizontal</item>
+        <item name="android:elevation">@dimen/snackbar_elevation</item>
+        <item name="maxActionInlineWidth">@dimen/snackbar_action_inline_max_width</item>
+    </style>
+
 </resources>
 

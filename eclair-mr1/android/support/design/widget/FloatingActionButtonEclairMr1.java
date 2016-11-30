@@ -24,10 +24,8 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
 
 class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {

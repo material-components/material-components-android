@@ -31,7 +31,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.ActionBar;
 import android.support.v7.internal.widget.TintManager;
 import android.support.v7.widget.AppCompatTextView;
@@ -45,7 +44,6 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.Animation;
-import android.view.animation.Interpolator;
 import android.view.animation.Transformation;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
@@ -90,7 +88,6 @@ import static android.support.design.widget.AnimationUtils.lerp;
  */
 public class TabLayout extends HorizontalScrollView {
 
-    private static final Interpolator INTERPOLATOR = new FastOutSlowInInterpolator();
     private static final int MAX_TAB_TEXT_LINES = 2;
 
     private static final int DEFAULT_HEIGHT = 48; // dps
@@ -708,11 +705,12 @@ public class TabLayout extends HorizontalScrollView {
             final Animation animation = new Animation() {
                 @Override
                 protected void applyTransformation(float interpolatedTime, Transformation t) {
-                    final float value = lerp(startScrollX, targetScrollX, interpolatedTime);
+                    final float value = AnimationUtils.lerp(startScrollX, targetScrollX,
+                            interpolatedTime);
                     scrollTo((int) value, 0);
                 }
             };
-            animation.setInterpolator(INTERPOLATOR);
+            animation.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
             animation.setDuration(duration);
             startAnimation(animation);
         }
@@ -1368,11 +1366,11 @@ public class TabLayout extends HorizontalScrollView {
                     @Override
                     protected void applyTransformation(float interpolatedTime, Transformation t) {
                         setIndicatorPosition(
-                                (int) lerp(startLeft, targetLeft, interpolatedTime),
-                                (int) lerp(startRight, targetRight, interpolatedTime));
+                                (int) AnimationUtils.lerp(startLeft, targetLeft, interpolatedTime),
+                                (int) AnimationUtils.lerp(startRight, targetRight, interpolatedTime));
                     }
                 };
-                anim.setInterpolator(INTERPOLATOR);
+                anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
                 anim.setDuration(duration);
                 anim.setAnimationListener(new Animation.AnimationListener() {
                     @Override
