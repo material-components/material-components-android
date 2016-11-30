@@ -23,7 +23,6 @@ import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
@@ -66,7 +65,8 @@ import java.lang.annotation.RetentionPolicy;
  * <h4>Status bar scrim</h4>
  * A scrim which is show or hidden behind the status bar when the scroll position has hit a certain
  * threshold. You can change this via {@link #setStatusBarScrim(Drawable)}. This only works
- * on {@link Build.VERSION_CODES#LOLLIPOP LOLLIPOP} devices when we set to fit system windows.
+ * on {@link android.os.Build.VERSION_CODES#LOLLIPOP LOLLIPOP} devices when we set to fit system
+ * windows.
  *
  * <h4>Parallax scrolling children</h4>
  * Child views can opt to be scrolled within this layout in a parallax fashion.
@@ -207,9 +207,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
                     @Override
                     public WindowInsetsCompat onApplyWindowInsets(View v,
                             WindowInsetsCompat insets) {
-                        mLastInsets = insets;
-                        requestLayout();
-                        return insets.consumeSystemWindowInsets();
+                        return setWindowInsets(insets);
                     }
                 });
     }
@@ -226,6 +224,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
             }
             ((AppBarLayout) parent).addOnOffsetChangedListener(mOnOffsetChangedListener);
         }
+
+        // We're attached, so lets request an inset dispatch
+        ViewCompat.requestApplyInsets(this);
     }
 
     @Override
@@ -237,6 +238,14 @@ public class CollapsingToolbarLayout extends FrameLayout {
         }
 
         super.onDetachedFromWindow();
+    }
+
+    private WindowInsetsCompat setWindowInsets(WindowInsetsCompat insets) {
+        if (mLastInsets != insets) {
+            mLastInsets = insets;
+            requestLayout();
+        }
+        return insets.consumeSystemWindowInsets();
     }
 
     @Override
@@ -417,7 +426,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
                 if (child.getTop() < insetTop) {
                     // If the child isn't set to fit system windows but is drawing within the inset
                     // offset it down
-                    child.offsetTopAndBottom(insetTop);
+                    ViewCompat.offsetTopAndBottom(child, insetTop);
                 }
             }
 

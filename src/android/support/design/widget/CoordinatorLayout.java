@@ -328,14 +328,17 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         setStatusBarBackground(new ColorDrawable(color));
     }
 
-    private void setWindowInsets(WindowInsetsCompat insets) {
+    private WindowInsetsCompat setWindowInsets(WindowInsetsCompat insets) {
         if (mLastInsets != insets) {
             mLastInsets = insets;
             mDrawStatusBarBackground = insets != null && insets.getSystemWindowInsetTop() > 0;
             setWillNotDraw(!mDrawStatusBarBackground && getBackground() == null);
-            dispatchChildApplyWindowInsets(insets);
+
+            // Now dispatch to the Behaviors
+            insets = dispatchApplyWindowInsetsToBehaviors(insets);
             requestLayout();
         }
+        return insets;
     }
 
     /**
@@ -745,9 +748,9 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         setMeasuredDimension(width, height);
     }
 
-    private void dispatchChildApplyWindowInsets(WindowInsetsCompat insets) {
+    private WindowInsetsCompat dispatchApplyWindowInsetsToBehaviors(WindowInsetsCompat insets) {
         if (insets.isConsumed()) {
-            return;
+            return insets;
         }
 
         for (int i = 0, z = getChildCount(); i < z; i++) {
@@ -764,14 +767,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                         break;
                     }
                 }
-
-                // Now let the view try and consume them
-                insets = ViewCompat.dispatchApplyWindowInsets(child, insets);
-                if (insets.isConsumed()) {
-                    break;
-                }
             }
         }
+
+        return insets;
     }
 
     /**
@@ -2579,15 +2578,15 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
-    final class ApplyInsetsListener implements android.support.v4.view.OnApplyWindowInsetsListener {
+    private class ApplyInsetsListener
+            implements android.support.v4.view.OnApplyWindowInsetsListener {
         @Override
         public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-            setWindowInsets(insets);
-            return insets.consumeSystemWindowInsets();
+            return setWindowInsets(insets);
         }
     }
 
-    final class HierarchyChangeListener implements OnHierarchyChangeListener {
+    private class HierarchyChangeListener implements OnHierarchyChangeListener {
         @Override
         public void onChildViewAdded(View parent, View child) {
             if (mOnHierarchyChangeListener != null) {

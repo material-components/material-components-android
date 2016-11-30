@@ -165,8 +165,7 @@ public class AppBarLayout extends LinearLayout {
                     @Override
                     public WindowInsetsCompat onApplyWindowInsets(View v,
                             WindowInsetsCompat insets) {
-                        setWindowInsets(insets);
-                        return insets.consumeSystemWindowInsets();
+                        return setWindowInsets(insets);
                     }
                 });
     }
@@ -424,7 +423,7 @@ public class AppBarLayout extends LinearLayout {
     }
 
     final int getMinimumHeightForVisibleOverlappingContent() {
-        final int topInset = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
+        final int topInset = getTopInset();
         final int minHeight = ViewCompat.getMinimumHeight(this);
         if (minHeight != 0) {
             // If this layout has a min height, use it (doubled)
@@ -474,19 +473,11 @@ public class AppBarLayout extends LinearLayout {
         return mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
     }
 
-    private void setWindowInsets(WindowInsetsCompat insets) {
+    private WindowInsetsCompat setWindowInsets(WindowInsetsCompat insets) {
         // Invalidate the total scroll range...
         mTotalScrollRange = INVALID_SCROLL_RANGE;
         mLastInsets = insets;
-
-        // Now dispatch them to our children
-        for (int i = 0, z = getChildCount(); i < z; i++) {
-            final View child = getChildAt(i);
-            insets = ViewCompat.dispatchApplyWindowInsets(child, insets);
-            if (insets.isConsumed()) {
-                break;
-            }
-        }
+        return insets;
     }
 
     public static class LayoutParams extends LinearLayout.LayoutParams {
