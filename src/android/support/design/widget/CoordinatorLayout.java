@@ -1984,7 +1984,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
         /**
          * @deprecated this method is not called anymore. You can safely remove all usages
-         * and implementations.
+         * and implementations. This method will be removed in a future release.
          */
         @Deprecated
         public boolean isDirty(CoordinatorLayout parent, V child) {
@@ -2310,7 +2310,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          * @return true if the Behavior handled the request
          * @see ViewParent#requestChildRectangleOnScreen(View, Rect, boolean)
          */
-        public boolean onChildRectangleRequestedOnScreen(CoordinatorLayout coordinatorLayout,
+        public boolean onRequestChildRectangleOnScreen(CoordinatorLayout coordinatorLayout,
                 V child, Rect rectangle, boolean immediate) {
             return false;
         }
@@ -2801,7 +2801,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final Behavior behavior = lp.getBehavior();
 
         if (behavior != null
-                && behavior.onChildRectangleRequestedOnScreen(this, child, rectangle, immediate)) {
+                && behavior.onRequestChildRectangleOnScreen(this, child, rectangle, immediate)) {
             return true;
         }
 

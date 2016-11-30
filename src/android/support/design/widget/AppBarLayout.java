@@ -1347,7 +1347,7 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        public boolean onChildRectangleRequestedOnScreen(CoordinatorLayout parent, View child,
+        public boolean onRequestChildRectangleOnScreen(CoordinatorLayout parent, View child,
                 Rect rectangle, boolean immediate) {
             final AppBarLayout header = findFirstDependency(parent.getDependencies(child));
             if (header != null) {

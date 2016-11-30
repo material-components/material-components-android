@@ -535,42 +535,44 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         private float mFabTranslationY;
         private Rect mTmpRect;
         private OnVisibilityChangedListener mInternalAutoHideListener;
-        private boolean mAutoHide;
+        private boolean mAutoHideEnabled;
 
         public Behavior() {
             super();
-            mAutoHide = AUTO_HIDE_DEFAULT;
+            mAutoHideEnabled = AUTO_HIDE_DEFAULT;
         }
 
         public Behavior(Context context, AttributeSet attrs) {
             super(context, attrs);
             TypedArray a = context.obtainStyledAttributes(attrs,
                     R.styleable.FloatingActionButton_Behavior_Layout);
-            mAutoHide = a.getBoolean(
+            mAutoHideEnabled = a.getBoolean(
                     R.styleable.FloatingActionButton_Behavior_Layout_behavior_autoHide,
                     AUTO_HIDE_DEFAULT);
             a.recycle();
         }
 
         /**
-         * Sets whether this FAB should automatically hide when there is not enough space. This
-         * works with {@link AppBarLayout} and {@link BottomSheetBehavior}.
+         * Sets whether the associated FloatingActionButton automatically hides when there is
+         * not enough space to be displayed. This works with {@link AppBarLayout}
+         * and {@link BottomSheetBehavior}.
          *
          * @attr ref android.support.design.R.styleable#FloatingActionButton_Behavior_Layout_behavior_autoHide
-         * @param autoHide {@code true} to hide automatically.
+         * @param autoHide true to enable automatic hiding
          */
-        public void setAutoHide(boolean autoHide) {
-            mAutoHide = autoHide;
+        public void setAutoHideEnabled(boolean autoHide) {
+            mAutoHideEnabled = autoHide;
         }
 
         /**
-         * Returns whether this FAB automatically hides when there is not enough space.
+         * Returns whether the associated FloatingActionButton automatically hides when there is
+         * not enough space to be displayed.
          *
          * @attr ref android.support.design.R.styleable#FloatingActionButton_Behavior_Layout_behavior_autoHide
-         * @return {@code true} if it hides automatically.
+         * @return true if enabled
          */
-        public boolean getAutoHide() {
-            return mAutoHide;
+        public boolean isAutoHideEnabled() {
+            return mAutoHideEnabled;
         }
 
         @Override
@@ -617,7 +619,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         private boolean shouldUpdateVisibility(View dependency, FloatingActionButton child) {
             final CoordinatorLayout.LayoutParams lp =
                     (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            if (!mAutoHide) {
+            if (!mAutoHideEnabled) {
                 return false;
             }
 
