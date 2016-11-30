@@ -259,7 +259,7 @@ public class FloatingActionButton extends ImageButton {
 
     /**
      * Shows the button.
-     * <p>This method will animate it the button show if the view has already been laid out.</p>
+     * <p>This method will animate the button show if the view has already been laid out.</p>
      */
     public void show() {
         mImpl.show(null);
@@ -267,7 +267,7 @@ public class FloatingActionButton extends ImageButton {
 
     /**
      * Shows the button.
-     * <p>This method will animate it the button show if the view has already been laid out.</p>
+     * <p>This method will animate the button show if the view has already been laid out.</p>
      *
      * @param listener the listener to notify when this view is shown
      */
