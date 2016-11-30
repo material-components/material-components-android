@@ -1539,10 +1539,11 @@ public class TabLayout extends HorizontalScrollView {
                         // If we're in fixed mode, going up in text size and currently have 1 line
                         // then it's very easy to get into an infinite recursion.
                         // To combat that we check to see if the change in text size
-                        // will cause a line count change. If so, abort the size change.
+                        // will cause a line count change. If so, abort the size change and stick
+                        // to the smaller size.
                         final Layout layout = mTextView.getLayout();
-                        if (layout == null
-                                || approximateLineWidth(layout, 0, textSize) > layout.getWidth()) {
+                        if (layout == null || approximateLineWidth(layout, 0, textSize)
+                                > getMeasuredWidth() - getPaddingLeft() - getPaddingRight()) {
                             updateTextView = false;
                         }
                     }
