@@ -59,12 +59,12 @@ import android.widget.LinearLayout;
  * <pre>
  * &lt;android.support.design.widget.BottomNavigationView
  *     xmlns:android="http://schemas.android.com/apk/res/android"
- *     xmlns:app="http://schemas.android.com/apk/res-auto"
+ *     xmlns:design="http://schema.android.com/apk/res/android.support.design"
  *     android:id="@+id/navigation"
  *     android:layout_width="wrap_content"
  *     android:layout_height="match_parent"
  *     android:layout_gravity="start"
- *     app:menu="@menu/my_navigation_items" /&gt;
+ *     design:menu="@menu/my_navigation_items" /&gt;
  * </pre>
  */
 public class BottomNavigationView extends FrameLayout {
