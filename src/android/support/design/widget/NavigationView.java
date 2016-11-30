@@ -32,7 +32,6 @@ import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.design.internal.NavigationMenu;
 import android.support.design.internal.NavigationMenuPresenter;
-import android.support.design.internal.NavigationMenuView;
 import android.support.design.internal.ScrimInsetsFrameLayout;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.os.ParcelableCompat;
@@ -43,12 +42,10 @@ import android.support.v7.internal.view.menu.MenuBuilder;
 import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.LinearLayout;
 
 /**
  * Represents a standard navigation menu for application. The menu contents can be populated
@@ -84,14 +81,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     private final NavigationMenu mMenu;
     private final NavigationMenuPresenter mPresenter = new NavigationMenuPresenter();
 
-    private final CoordinatorLayout mCoordinatorLayout;
-    private final LinearLayout mHeaderContainer;
-
     private OnNavigationItemSelectedListener mListener;
     private int mMaxWidth;
 
     private MenuInflater mMenuInflater;
-    private LayoutInflater mLayoutInflater;
 
     public NavigationView(Context context) {
         this(context, null);
@@ -169,32 +162,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         mPresenter.setItemTextColor(itemTextColor);
         mPresenter.setItemBackground(itemBackground);
         mMenu.addMenuPresenter(mPresenter);
-
-        // Create the coordinator layout and add the header and menu view.
-        mCoordinatorLayout = new CoordinatorLayout(context);
-        mLayoutInflater = LayoutInflater.from(context);
-
-        mHeaderContainer = (LinearLayout) mLayoutInflater.inflate(R.layout.design_navigation_item_header,
-                this, false);
-        mCoordinatorLayout.addView(mHeaderContainer);
-
-        NavigationMenuView menuView = (NavigationMenuView) mPresenter.getMenuView(this);
-        mCoordinatorLayout.addView(menuView);
-
-        // Set the header behavior
-        CoordinatorLayout.LayoutParams headerParams =
-                (CoordinatorLayout.LayoutParams) mHeaderContainer.getLayoutParams();
-        headerParams.setBehavior(new NavigationHeaderBehavior());
-        mHeaderContainer.setLayoutParams(headerParams);
-
-        // Set the menu behavior
-        CoordinatorLayout.LayoutParams menuParams =
-                (CoordinatorLayout.LayoutParams) menuView.getLayoutParams();
-        menuParams.setBehavior(new NavigationHeaderBehavior.MenuViewBehavior());
-        menuView.setLayoutParams(menuParams);
-
-        // Add coordinator to hierarchy
-        addView(mCoordinatorLayout);
+        addView((View) mPresenter.getMenuView(this));
 
         if (a.hasValue(R.styleable.NavigationView_menu)) {
             inflateMenu(a.getResourceId(R.styleable.NavigationView_menu, 0));
@@ -279,9 +247,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      * @return a newly inflated View.
      */
     public View inflateHeaderView(@LayoutRes int res) {
-        View view = mLayoutInflater.inflate(res, mHeaderContainer, false);
-        addHeaderView(view);
-        return view;
+        return mPresenter.inflateHeaderView(res);
     }
 
     /**
@@ -291,7 +257,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      */
     public void addHeaderView(@NonNull View view) {
         mPresenter.addHeaderView(view);
-        mHeaderContainer.addView(view);
     }
 
     /**
@@ -300,8 +265,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      * @param view The view to remove
      */
     public void removeHeaderView(@NonNull View view) {
-        mPresenter.removeHeaderView(view, (mHeaderContainer.getChildCount() > 0) /* hasHeaders */);
-        mHeaderContainer.removeView(view);
+        mPresenter.removeHeaderView(view);
     }
 
     /**

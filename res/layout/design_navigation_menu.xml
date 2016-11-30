@@ -17,6 +17,7 @@
 <android.support.design.internal.NavigationMenuView
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/design_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/design_navigation_padding_top_default"
