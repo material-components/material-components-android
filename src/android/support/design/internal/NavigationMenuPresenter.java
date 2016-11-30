@@ -282,7 +282,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     NavigationMenuItemView itemView = (NavigationMenuItemView) convertView;
                     itemView.setIconTintList(mIconTintList);
                     itemView.setTextColor(mTextColor);
-                    itemView.setBackground(mItemBackground);
+                    itemView.setBackgroundDrawable(mItemBackground);
                     itemView.initialize(item.getMenuItem(), 0);
                     break;
                 case VIEW_TYPE_SUBHEADER:

@@ -39,8 +39,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AccelerateInterpolator;
-import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -73,11 +71,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     public TextInputLayout(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public TextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        super(context, attrs);
 
         setOrientation(VERTICAL);
         setWillNotDraw(false);
@@ -100,7 +94,7 @@ public class TextInputLayout extends LinearLayout {
         mCollapsingTextHelper.setCollapsedTextVerticalGravity(Gravity.TOP);
 
         final TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.TextInputLayout, defStyleAttr, R.style.Widget_Design_TextInputLayout);
+                R.styleable.TextInputLayout, 0, R.style.Widget_Design_TextInputLayout);
         mHint = a.getText(R.styleable.TextInputLayout_android_hint);
 
         final int hintAppearance = a.getResourceId(
