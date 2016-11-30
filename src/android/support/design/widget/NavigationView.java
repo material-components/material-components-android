@@ -187,6 +187,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
     @Override
     protected void onRestoreInstanceState(Parcelable savedState) {
+        if (!(savedState instanceof SavedState)) {
+            super.onRestoreInstanceState(savedState);
+            return;
+        }
         SavedState state = (SavedState) savedState;
         super.onRestoreInstanceState(state.getSuperState());
         mMenu.restorePresenterStates(state.menuState);
