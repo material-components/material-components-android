@@ -24,6 +24,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.os.Build;
 import android.support.design.R;
+import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -66,6 +67,7 @@ final class CollapsingTextHelper {
     private CharSequence mText;
     private CharSequence mTextToDraw;
     private float mTextWidth;
+    private boolean mIsRtl;
 
     private boolean mUseTexture;
     private Bitmap mExpandedTitleTexture;
@@ -282,8 +284,7 @@ final class CollapsingTextHelper {
         final int saveCount = canvas.save();
 
         if (mTextToDraw != null) {
-            final boolean isRtl = ViewCompat.getLayoutDirection(mView)
-                    == ViewCompat.LAYOUT_DIRECTION_RTL;
+            final boolean isRtl = mIsRtl;
 
             float x = isRtl ? mCurrentRight : mCurrentLeft;
             float y = mCurrentTop;
@@ -333,6 +334,14 @@ final class CollapsingTextHelper {
         canvas.restoreToCount(saveCount);
     }
 
+    private boolean calculateIsRtl(CharSequence text) {
+        final boolean defaultIsRtl = ViewCompat.getLayoutDirection(mView)
+                == ViewCompat.LAYOUT_DIRECTION_RTL;
+        return (defaultIsRtl
+                ? TextDirectionHeuristicsCompat.FIRSTSTRONG_RTL
+                : TextDirectionHeuristicsCompat.FIRSTSTRONG_LTR).isRtl(text, 0, text.length());
+    }
+
     private void setInterpolatedTextSize(final float textSize) {
         if (mText == null) return;
 
@@ -371,6 +380,7 @@ final class CollapsingTextHelper {
             if (mTextToDraw == null || !mTextToDraw.equals(title)) {
                 mTextToDraw = title;
             }
+            mIsRtl = calculateIsRtl(mTextToDraw);
             mTextWidth = mTextPaint.measureText(mTextToDraw, 0, mTextToDraw.length());
         }
 
