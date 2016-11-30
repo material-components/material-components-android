@@ -20,6 +20,7 @@ import org.hamcrest.Matcher;
 
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 
 public final class DesignViewActions {
@@ -46,6 +47,27 @@ public final class DesignViewActions {
             @Override
             public void perform(UiController uiController, View view) {
                 action.perform(uiController, view);
+            }
+        };
+    }
+
+    public static ViewAction setVisibility(final int visibility) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return ViewMatchers.isEnabled();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Set view visibility";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+                view.setVisibility(visibility);
+                uiController.loopMainThreadUntilIdle();
             }
         };
     }

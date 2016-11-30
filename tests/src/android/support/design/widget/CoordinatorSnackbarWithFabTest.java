@@ -30,6 +30,7 @@ import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Test;
 
+import static android.support.design.widget.DesignViewActions.setVisibility;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
@@ -108,6 +109,26 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
 
         // Take into account bottom padding and bottom margin to account for how drop shadow is
         // emulated on pre-Lollipop devices
+        final FloatingActionButton fab =
+                (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+        verifySnackbarViewStacking(fab, fab.getPaddingBottom()
+                - ((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin);
+    }
+
+    @Test
+    public void testBuiltInSlidingFromHiddenFab() {
+        onView(withId(R.id.coordinator_stub)).perform(
+                inflateViewStub(R.layout.design_snackbar_with_fab));
+        onView(withId(R.id.fab)).perform(setVisibility(View.GONE));
+
+        // Create and show a snackbar
+        mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+                .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+        SnackbarUtils.showSnackbarAndWaitUntilFullyShown(mSnackbar);
+
+        // Take into account bottom padding and bottom margin to account for how drop shadow is
+        // emulated on pre-Lollipop devices
+        onView(withId(R.id.fab)).perform(setVisibility(View.VISIBLE));
         final FloatingActionButton fab =
                 (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
         verifySnackbarViewStacking(fab, fab.getPaddingBottom()

@@ -561,7 +561,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child,
                 View dependency) {
             if (dependency instanceof Snackbar.SnackbarLayout) {
-                updateFabTranslationForSnackbar(parent, child, dependency);
+                updateFabTranslationForSnackbar(parent, child, true);
             } else if (dependency instanceof AppBarLayout) {
                 // If we're depending on an AppBarLayout we will show/hide it automatically
                 // if the FAB is anchored to the AppBarLayout
@@ -604,7 +604,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         }
 
         private void updateFabTranslationForSnackbar(CoordinatorLayout parent,
-                final FloatingActionButton fab, View snackbar) {
+                final FloatingActionButton fab, boolean animationAllowed) {
             final float targetTransY = getFabTranslationYForSnackbar(parent, fab);
             if (mFabTranslationY == targetTransY) {
                 // We're already at (or currently animating to) the target value, return...
@@ -618,7 +618,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                 mFabTranslationYAnimator.cancel();
             }
 
-            if (fab.isShown()
+            if (animationAllowed && fab.isShown()
                     && Math.abs(currentTransY - targetTransY) > (fab.getHeight() * 0.667f)) {
                 // If the FAB will be travelling by more than 2/3 of its height, let's animate
                 // it instead
@@ -676,6 +676,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             parent.onLayoutChild(child, layoutDirection);
             // Now offset it if needed
             offsetIfNeeded(parent, child);
+            // Make sure we translate the FAB for any displayed Snackbars (without an animation)
+            updateFabTranslationForSnackbar(parent, child, false);
             return true;
         }
 
