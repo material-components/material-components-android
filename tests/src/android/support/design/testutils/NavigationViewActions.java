@@ -25,7 +25,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.NavigationView;
-import android.support.design.widget.TabLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.LayoutInflater;
@@ -33,7 +32,6 @@ import android.view.View;
 import org.hamcrest.Matcher;
 
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
 public class NavigationViewActions {
     /**
@@ -274,6 +272,34 @@ public class NavigationViewActions {
 
                 NavigationView navigationView = (NavigationView) view;
                 navigationView.setCheckedItem(id);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Sets icon for the menu item of the navigation view.
+     */
+    public static ViewAction setIconForMenuItem(final @IdRes int menuItemId,
+            final Drawable iconDrawable) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String getDescription() {
+                return "Set menu item icon";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                NavigationView navigationView = (NavigationView) view;
+                navigationView.getMenu().findItem(menuItemId).setIcon(iconDrawable);
 
                 uiController.loopMainThreadUntilIdle();
             }

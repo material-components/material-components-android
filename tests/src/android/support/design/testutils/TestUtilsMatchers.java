@@ -17,11 +17,11 @@
 package android.support.design.testutils;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.TextViewCompat;
 import android.view.View;
 import android.view.ViewParent;
 import android.widget.TextView;
@@ -161,18 +161,18 @@ public class TestUtilsMatchers {
 
             @Override
             public boolean matchesSafely(final TextView view) {
-                Drawable[] compoundDrawables = view.getCompoundDrawables();
-                boolean isRtl =
+                final Drawable[] compoundDrawables = view.getCompoundDrawables();
+                final boolean isRtl =
                         (ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL);
-                Drawable startDrawable = isRtl ? compoundDrawables[2] : compoundDrawables[0];
+                final Drawable startDrawable = isRtl ? compoundDrawables[2] : compoundDrawables[0];
                 if (startDrawable == null) {
                     failedCheckDescription = "no start drawable";
                     return false;
                 }
                 try {
+                    final Rect bounds = startDrawable.getBounds();
                     TestUtils.assertAllPixelsOfColor("",
-                            startDrawable, startDrawable.getIntrinsicWidth(),
-                            startDrawable.getIntrinsicHeight(), true,
+                            startDrawable, bounds.width(), bounds.height(), true,
                             fillColor, allowedComponentVariance, true);
                 } catch (Throwable t) {
                     failedCheckDescription = t.getMessage();

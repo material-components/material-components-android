@@ -16,6 +16,7 @@
 package android.support.design.widget;
 
 import android.content.res.Resources;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.design.test.R;
@@ -220,6 +221,35 @@ public class NavigationViewTest
         }
     }
 
+    /**
+     * Custom drawable class that provides a reliable way for testing various tinting scenarios
+     * across a range of platform versions. ColorDrawable doesn't support tinting on Kitkat and
+     * below, and BitmapDrawable (PNG sources) appears to slightly alter green and blue channels
+     * by a few units on some of the older platform versions (Gingerbread). Using GradientDrawable
+     * allows doing reliable tests at the level of individual channels (alpha / red / green / blue)
+     * for tinted and untinted icons in the testIconTinting method.
+     */
+    private class TestDrawable extends GradientDrawable {
+        private int mWidth;
+        private int mHeight;
+
+        public TestDrawable(@ColorInt int color, int width, int height) {
+            super(Orientation.TOP_BOTTOM, new int[] { color, color });
+            mWidth = width;
+            mHeight = height;
+        }
+
+        @Override
+        public int getIntrinsicWidth() {
+            return mWidth;
+        }
+
+        @Override
+        public int getIntrinsicHeight() {
+            return mHeight;
+        }
+    }
+
     @Test
     @SmallTest
     public void testIconTinting() {
@@ -227,6 +257,17 @@ public class NavigationViewTest
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
 
         final Resources res = mActivityTestRule.getActivity().getResources();
+        final @ColorInt int redFill = ResourcesCompat.getColor(res, R.color.test_red, null);
+        final @ColorInt int greenFill = ResourcesCompat.getColor(res, R.color.test_green, null);
+        final @ColorInt int blueFill = ResourcesCompat.getColor(res, R.color.test_blue, null);
+        final int iconSize = res.getDimensionPixelSize(R.dimen.drawable_small_size);
+        onView(withId(R.id.start_drawer)).perform(setIconForMenuItem(R.id.destination_home,
+                new TestDrawable(redFill, iconSize, iconSize)));
+        onView(withId(R.id.start_drawer)).perform(setIconForMenuItem(R.id.destination_profile,
+                new TestDrawable(greenFill, iconSize, iconSize)));
+        onView(withId(R.id.start_drawer)).perform(setIconForMenuItem(R.id.destination_people,
+                new TestDrawable(blueFill, iconSize, iconSize)));
+
         final @ColorInt int defaultTintColor = ResourcesCompat.getColor(res,
                 R.color.emerald_translucent, null);
 
@@ -276,19 +317,15 @@ public class NavigationViewTest
         // And verify that all menu items with icons now have the original colors for their icons.
         // Note that since there is no tinting at this point, we don't allow any color variance
         // in these checks.
-        final @ColorInt int redIconColor = ResourcesCompat.getColor(res, R.color.test_red, null);
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_home)),
                 isDescendantOfA(withId(R.id.start_drawer)))).check(matches(
-                    withStartDrawableFilledWith(redIconColor, 0)));
-        final @ColorInt int greenIconColor = ResourcesCompat.getColor(res, R.color.test_green,
-                null);
+                    withStartDrawableFilledWith(redFill, 0)));
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_profile)),
                 isDescendantOfA(withId(R.id.start_drawer)))).check(matches(
-                    withStartDrawableFilledWith(greenIconColor, 0)));
-        final @ColorInt int blueIconColor = ResourcesCompat.getColor(res, R.color.test_blue, null);
+                    withStartDrawableFilledWith(greenFill, 0)));
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
                 isDescendantOfA(withId(R.id.start_drawer)))).check(matches(
-                    withStartDrawableFilledWith(blueIconColor, 0)));
+                    withStartDrawableFilledWith(blueFill, 0)));
     }
 
     /**
