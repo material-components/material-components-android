@@ -32,6 +32,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
+import android.support.v4.widget.Space;
 import android.support.v7.internal.widget.AppCompatDrawableManager;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -250,16 +251,22 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void updateLabelVisibility(boolean animate) {
-        boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
-        boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
-        boolean isErrorShowing = !TextUtils.isEmpty(getError());
+        final boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
+        final boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
+        final boolean isErrorShowing = !TextUtils.isEmpty(getError());
 
-
-        if (mDefaultTextColor != null && mFocusedTextColor != null) {
+        if (mDefaultTextColor != null) {
             mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor.getDefaultColor());
-            mCollapsingTextHelper.setCollapsedTextColor(isFocused
-                    ? mFocusedTextColor.getDefaultColor()
-                    : mDefaultTextColor.getDefaultColor());
+        }
+
+        if (mCounterOverflowed && mCounterView != null) {
+            mCollapsingTextHelper.setCollapsedTextColor(mCounterView.getCurrentTextColor());
+        } else if (isErrorShowing && mErrorView != null) {
+            mCollapsingTextHelper.setCollapsedTextColor(mErrorView.getCurrentTextColor());
+        } else if (isFocused && mFocusedTextColor != null) {
+            mCollapsingTextHelper.setCollapsedTextColor(mFocusedTextColor.getDefaultColor());
+        } else if (mDefaultTextColor != null) {
+            mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor.getDefaultColor());
         }
 
         if (hasText || isFocused || isErrorShowing) {
@@ -320,16 +327,24 @@ public class TextInputLayout extends LinearLayout {
         }
     }
 
-    private void addIndicator(TextView indicator, int index, LinearLayout.LayoutParams params) {
+    private void addIndicator(TextView indicator, int index) {
         if (mIndicatorArea == null) {
             mIndicatorArea = new LinearLayout(getContext());
             mIndicatorArea.setOrientation(LinearLayout.HORIZONTAL);
-            addView(mIndicatorArea);
+            addView(mIndicatorArea, LinearLayout.LayoutParams.MATCH_PARENT,
+                    LinearLayout.LayoutParams.WRAP_CONTENT);
+
+            // Add a flexible spacer in the middle so that the left/right views stay pinned
+            final Space spacer = new Space(getContext());
+            final LinearLayout.LayoutParams spacerLp = new LinearLayout.LayoutParams(0, 0, 1f);
+            mIndicatorArea.addView(spacer, spacerLp);
+
             if (mEditText != null) {
                 adjustIndicatorPadding();
             }
         }
-        mIndicatorArea.addView(indicator, index, params);
+        mIndicatorArea.setVisibility(View.VISIBLE);
+        mIndicatorArea.addView(indicator, index);
     }
 
     private void adjustIndicatorPadding() {
@@ -339,9 +354,11 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void removeIndicator(TextView indicator) {
-        mIndicatorArea.removeView(indicator);
-        if (mIndicatorArea.getChildCount() == 0) {
-            removeView(mIndicatorArea);
+        if (mIndicatorArea != null) {
+            mIndicatorArea.removeView(indicator);
+            if (mIndicatorArea.getChildCount() == 0) {
+                mIndicatorArea.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -364,10 +381,7 @@ public class TextInputLayout extends LinearLayout {
                 mErrorView.setVisibility(INVISIBLE);
                 ViewCompat.setAccessibilityLiveRegion(mErrorView,
                         ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        0, LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.weight = 1.f;
-                addIndicator(mErrorView, 0, params);
+                addIndicator(mErrorView, 0);
             } else {
                 mErrorShown = false;
                 updateEditTextBackground();
@@ -462,14 +476,9 @@ public class TextInputLayout extends LinearLayout {
                 mCounterView = new TextView(getContext());
                 mCounterView.setMaxLines(1);
                 mCounterView.setTextAppearance(getContext(), mCounterTextAppearance);
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.WRAP_CONTENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT);
-                params.gravity = (params.gravity & Gravity.VERTICAL_GRAVITY_MASK) |
-                        GravityCompat.END;
                 ViewCompat.setAccessibilityLiveRegion(mCounterView,
                         ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-                addIndicator(mCounterView, -1, params);
+                addIndicator(mCounterView, -1);
                 if (mEditText == null) {
                     updateCounter(0);
                 } else {
@@ -538,6 +547,7 @@ public class TextInputLayout extends LinearLayout {
                     length, mCounterMaxLength));
         }
         if (mEditText != null && wasCounterOverflowed != mCounterOverflowed) {
+            updateLabelVisibility(false);
             updateEditTextBackground();
         }
     }

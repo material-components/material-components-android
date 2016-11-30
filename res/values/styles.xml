@@ -74,9 +74,7 @@
         <item name="android:textColor">@color/design_textinput_error_color</item>
     </style>
 
-    <style name="TextAppearance.Design.Counter" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">?attr/colorControlActivated</item>
-    </style>
+    <style name="TextAppearance.Design.Counter" parent="TextAppearance.AppCompat.Caption"/>
 
     <style name="TextAppearance.Design.Counter.Overflow" parent="TextAppearance.AppCompat.Caption">
         <item name="android:textColor">@color/design_textinput_error_color</item>

@@ -18,6 +18,6 @@
     <!-- The class name to the ScrollingChildBehavior required for AppBarLayout -->
     <string name="appbar_scrolling_view_behavior" translatable="false">android.support.design.widget.AppBarLayout$ScrollingViewBehavior</string>
     <!-- The text pattern for the character counter -->
-    <string name="character_counter_pattern" translatable="false">%1$d/%2$d</string>
+    <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
 </resources>
 
