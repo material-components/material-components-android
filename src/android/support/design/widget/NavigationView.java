@@ -131,6 +131,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         mMenu.addMenuPresenter(mPresenter);
         addView((View) mPresenter.getMenuView(this));
 
+        if (a.hasValue(R.styleable.NavigationView_headerLayout)) {
+            inflateHeaderView(a.getResourceId(R.styleable.NavigationView_headerLayout, 0));
+        }
+
         a.recycle();
     }
 
