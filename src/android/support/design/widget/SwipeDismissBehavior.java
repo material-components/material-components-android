@@ -305,8 +305,10 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
         @Override
         public void onViewPositionChanged(View child, int left, int top, int dx, int dy) {
-            final float startAlphaDistance = child.getWidth() * mAlphaStartSwipeDistance;
-            final float endAlphaDistance = child.getWidth() * mAlphaEndSwipeDistance;
+            final float startAlphaDistance = mOriginalCapturedViewLeft
+                    + child.getWidth() * mAlphaStartSwipeDistance;
+            final float endAlphaDistance = mOriginalCapturedViewLeft
+                    + child.getWidth() * mAlphaEndSwipeDistance;
 
             if (left <= startAlphaDistance) {
                 ViewCompat.setAlpha(child, 1f);
@@ -365,14 +367,6 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
      */
     public int getDragState() {
         return mViewDragHelper != null ? mViewDragHelper.getViewDragState() : STATE_IDLE;
-    }
-
-    /**
-     * Linear interpolation between {@code startValue} and {@code endValue} by the fraction {@code
-     * fraction}.
-     */
-    static float lerp(float startValue, float endValue, float fraction) {
-        return startValue + (fraction * (endValue - startValue));
     }
 
     /**
