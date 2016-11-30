@@ -725,7 +725,7 @@ public class TextInputLayout extends LinearLayout {
 
     private void ensureBackgroundDrawableStateWorkaround() {
         final int sdk = Build.VERSION.SDK_INT;
-        if (sdk != 21 || sdk != 22) {
+        if (sdk != 21 && sdk != 22) {
             // The workaround is only required on API 21-22
             return;
         }
