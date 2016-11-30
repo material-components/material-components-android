@@ -17,11 +17,14 @@
 package android.support.design.widget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.ViewCompat;
@@ -55,12 +58,14 @@ public class TextInputLayout extends LinearLayout {
     private EditText mEditText;
     private CharSequence mHint;
 
+    private Paint mTmpPaint;
+
     private boolean mErrorEnabled;
     private TextView mErrorView;
     private int mErrorTextAppearance;
 
-    private int mDefaultTextColor;
-    private int mFocusedTextColor;
+    private ColorStateList mDefaultTextColor;
+    private ColorStateList mFocusedTextColor;
 
     private final CollapsingTextHelper mCollapsingTextHelper = new CollapsingTextHelper(this);
 
@@ -71,6 +76,11 @@ public class TextInputLayout extends LinearLayout {
     }
 
     public TextInputLayout(Context context, AttributeSet attrs) {
+        this(context, attrs, 0);
+    }
+
+    public TextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+        // Can't call through to super(Context, AttributeSet, int) since it doesn't exist on API 10
         super(context, attrs);
 
         setOrientation(VERTICAL);
@@ -82,29 +92,26 @@ public class TextInputLayout extends LinearLayout {
         mCollapsingTextHelper.setCollapsedTextGravity(Gravity.TOP);
 
         final TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.TextInputLayout, 0, R.style.Widget_Design_TextInputLayout);
+                R.styleable.TextInputLayout, defStyleAttr, R.style.Widget_Design_TextInputLayout);
         mHint = a.getText(R.styleable.TextInputLayout_android_hint);
+
+        if (a.hasValue(R.styleable.TextInputLayout_android_textColorHint)) {
+            mDefaultTextColor = mFocusedTextColor =
+                    a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
+        }
 
         final int hintAppearance = a.getResourceId(
                 R.styleable.TextInputLayout_hintTextAppearance, -1);
         if (hintAppearance != -1) {
-            mCollapsingTextHelper.setCollapsedTextAppearance(hintAppearance);
+            setHintTextAppearance(
+                    a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, 0));
         }
 
         mErrorTextAppearance = a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
         final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
-        
-        mDefaultTextColor = getThemeAttrColor(android.R.attr.textColorHint);
-        mFocusedTextColor = mCollapsingTextHelper.getCollapsedTextColor();
-
-        mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor);
-        mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
-
         a.recycle();
 
-        if (errorEnabled) {
-            setErrorEnabled(true);
-        }
+        setErrorEnabled(errorEnabled);
 
         if (ViewCompat.getImportantForAccessibility(this)
                 == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
@@ -119,8 +126,8 @@ public class TextInputLayout extends LinearLayout {
     @Override
     public void addView(View child, int index, ViewGroup.LayoutParams params) {
         if (child instanceof EditText) {
-            params = setEditText((EditText) child, params);
-            super.addView(child, 0, params);
+            setEditText((EditText) child);
+            super.addView(child, 0, updateEditTextMargin(params));
         } else {
             // Carry on adding the View...
             super.addView(child, index, params);
@@ -132,11 +139,11 @@ public class TextInputLayout extends LinearLayout {
      *
      * @param typeface typeface to use, or {@code null} to use the default.
      */
-    public void setTypeface(Typeface typeface) {
+    public void setTypeface(@Nullable Typeface typeface) {
         mCollapsingTextHelper.setTypeface(typeface);
     }
 
-    private LayoutParams setEditText(EditText editText, ViewGroup.LayoutParams lp) {
+    private void setEditText(EditText editText) {
         // If we already have an EditText, throw an exception
         if (mEditText != null) {
             throw new IllegalArgumentException("We already have an EditText, can only have one");
@@ -155,16 +162,16 @@ public class TextInputLayout extends LinearLayout {
             }
 
             @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-            }
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
 
             @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-            }
+            public void onTextChanged(CharSequence s, int start, int before, int count) {}
         });
 
-        // Use the EditText's hint colors since the developer may have changed it
-        mDefaultTextColor = mEditText.getHintTextColors().getDefaultColor();
+        // Use the EditText's hint colors if we don't have one set
+        if (mDefaultTextColor == null) {
+            mDefaultTextColor = mEditText.getHintTextColors();
+        }
 
         // If we do not have a valid hint, try and retrieve it from the EditText
         if (TextUtils.isEmpty(mHint)) {
@@ -181,25 +188,33 @@ public class TextInputLayout extends LinearLayout {
 
         // Update the label visibility with no animation
         updateLabelVisibility(false);
+    }
 
-        // Create a new FrameLayout.LayoutParams so that we can add enough top margin
+    private LayoutParams updateEditTextMargin(ViewGroup.LayoutParams lp) {
+        // Create/update the LayoutParams so that we can add enough top margin
         // to the EditText so make room for the label
-        LayoutParams newLp = new LayoutParams(lp);
-        Paint paint = new Paint();
-        paint.setTypeface(mCollapsingTextHelper.getTypeface());
-        paint.setTextSize(mCollapsingTextHelper.getExpandedTextSize());
-        newLp.topMargin = (int) -paint.ascent();
+        LayoutParams llp = lp instanceof LayoutParams ? (LayoutParams) lp : new LayoutParams(lp);
 
-        return newLp;
+        if (mTmpPaint == null) {
+            mTmpPaint = new Paint();
+        }
+        mTmpPaint.setTypeface(mCollapsingTextHelper.getTypeface());
+        mTmpPaint.setTextSize(mCollapsingTextHelper.getCollapsedTextSize());
+        llp.topMargin = (int) -mTmpPaint.ascent();
+
+        return llp;
     }
 
     private void updateLabelVisibility(boolean animate) {
         boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
         boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
 
-        mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
-        mCollapsingTextHelper.setCollapsedTextColor(
-                isFocused ? mFocusedTextColor : mDefaultTextColor);
+        if (mDefaultTextColor != null && mFocusedTextColor != null) {
+            mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor.getDefaultColor());
+            mCollapsingTextHelper.setCollapsedTextColor(isFocused
+                    ? mFocusedTextColor.getDefaultColor()
+                    : mDefaultTextColor.getDefaultColor());
+        }
 
         if (hasText || isFocused) {
             // We should be showing the label so do so if it isn't already
@@ -211,16 +226,19 @@ public class TextInputLayout extends LinearLayout {
     }
 
     /**
-     * @return the {@link android.widget.EditText} text input
+     * Returns the {@link android.widget.EditText} used for text input.
      */
+    @Nullable
     public EditText getEditText() {
         return mEditText;
     }
 
     /**
      * Set the hint to be displayed in the floating label
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_android_hint
      */
-    public void setHint(CharSequence hint) {
+    public void setHint(@Nullable CharSequence hint) {
         mHint = hint;
         mCollapsingTextHelper.setText(hint);
 
@@ -228,9 +246,40 @@ public class TextInputLayout extends LinearLayout {
     }
 
     /**
+     * Returns the hint which is displayed in the floating label.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_android_hint
+     */
+    @Nullable
+    public CharSequence getHint() {
+        return mHint;
+    }
+
+    /**
+     * Sets the hint text color, size, style from the specified TextAppearance resource.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_hintTextAppearance
+     */
+    public void setHintTextAppearance(@StyleRes int resId) {
+        mCollapsingTextHelper.setCollapsedTextAppearance(resId);
+        mFocusedTextColor = ColorStateList.valueOf(mCollapsingTextHelper.getCollapsedTextColor());
+
+        if (mEditText != null) {
+            updateLabelVisibility(false);
+
+            // Text size might have changed so update the top margin
+            LayoutParams lp = updateEditTextMargin(mEditText.getLayoutParams());
+            mEditText.setLayoutParams(lp);
+            mEditText.requestLayout();
+        }
+    }
+
+    /**
      * Whether the error functionality is enabled or not in this layout. Enabling this
      * functionality before setting an error message via {@link #setError(CharSequence)}, will mean
      * that this layout will not change size when an error is displayed.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_errorEnabled
      */
     public void setErrorEnabled(boolean enabled) {
         if (mErrorEnabled != enabled) {
@@ -258,6 +307,17 @@ public class TextInputLayout extends LinearLayout {
     }
 
     /**
+     * Returns whether the error functionality is enabled or not in this layout.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_errorEnabled
+     *
+     * @see #setErrorEnabled(boolean)
+     */
+    public boolean isErrorEnabled() {
+        return mErrorEnabled;
+    }
+
+    /**
      * Sets an error message that will be displayed below our {@link EditText}. If the
      * {@code error} is {@code null}, the error message will be cleared.
      * <p>
@@ -265,8 +325,10 @@ public class TextInputLayout extends LinearLayout {
      * it will be automatically enabled if {@code error} is not empty.
      *
      * @param error Error message to display, or null to clear
+     *
+     * @see #getError()
      */
-    public void setError(CharSequence error) {
+    public void setError(@Nullable CharSequence error) {
         if (!mErrorEnabled) {
             if (TextUtils.isEmpty(error)) {
                 // If error isn't enabled, and the error is empty, just return
@@ -296,12 +358,27 @@ public class TextInputLayout extends LinearLayout {
                             @Override
                             public void onAnimationEnd(View view) {
                                 view.setVisibility(INVISIBLE);
+                                mErrorView.setText(null);
                             }
                         }).start();
             }
         }
 
         sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
+    }
+
+    /**
+     * Returns the error message that was set to be displayed with
+     * {@link #setError(CharSequence)}, or <code>null</code> if no error was set
+     * or if error displaying is not enabled.
+     *
+     * @see #setError(CharSequence)
+     */
+    public CharSequence getError() {
+        if (mErrorEnabled && mErrorView != null && mErrorView.getVisibility() == VISIBLE) {
+            return mErrorView.getText();
+        }
+        return null;
     }
 
     @Override
@@ -335,7 +412,7 @@ public class TextInputLayout extends LinearLayout {
     public void refreshDrawableState() {
         super.refreshDrawableState();
         // Drawable state has changed so see if we need to update the label
-        updateLabelVisibility(true);
+        updateLabelVisibility(ViewCompat.isLaidOut(this));
     }
 
     private void collapseHint(boolean animate) {

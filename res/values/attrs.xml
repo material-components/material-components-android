@@ -161,6 +161,7 @@
         <attr name="errorEnabled" format="boolean"/>
         <!-- TextAppearance of any error message displayed -->
         <attr name="errorTextAppearance" format="reference"/>
+        <attr name="android:textColorHint"/>
     </declare-styleable>
 
     <declare-styleable name="SnackbarLayout">
