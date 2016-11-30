@@ -22,6 +22,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
@@ -723,6 +724,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                         (float) (mMaxOffset - top) / ((mMaxOffset - mMinOffset)));
             }
         }
+    }
+
+    @VisibleForTesting
+    int getPeekHeightMin() {
+        return mPeekHeightMin;
     }
 
     private class SettleRunnable implements Runnable {

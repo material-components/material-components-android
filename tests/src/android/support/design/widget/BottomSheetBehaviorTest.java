@@ -491,7 +491,7 @@ public class BottomSheetBehaviorTest extends
         // Swipe from the very bottom of the bottom sheet to the top edge of the screen so that the
         // scrolling content is also scrolled
         Espresso.onView(ViewMatchers.withId(R.id.coordinator))
-                .perform(new GeneralSwipeAction(Swipe.FAST,
+                .perform(new GeneralSwipeAction(Swipe.SLOW,
                         new CoordinatesProvider() {
                             @Override
                             public float[] calculateCoordinates(View view) {
@@ -618,8 +618,10 @@ public class BottomSheetBehaviorTest extends
         InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run() {
+                CoordinatorLayout col = getCoordinatorLayout();
                 assertThat(getBottomSheet().getTop(),
-                        is(getCoordinatorLayout().getWidth() * 9 / 16));
+                        is(Math.min(col.getWidth() * 9 / 16,
+                                col.getHeight() - getBehavior().getPeekHeightMin())));
             }
         });
     }
