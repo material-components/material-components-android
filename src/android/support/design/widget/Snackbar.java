@@ -598,17 +598,17 @@ public final class Snackbar {
     }
 
     private void onViewHidden(int event) {
-        // First remove the view from the parent (if attached)
-        final ViewParent parent = mView.getParent();
-        if (parent instanceof ViewGroup) {
-            ((ViewGroup) parent).removeView(mView);
-        }
+        // First tell the SnackbarManager that it has been dismissed
+        SnackbarManager.getInstance().onDismissed(mManagerCallback);
         // Now call the dismiss listener (if available)
         if (mCallback != null) {
             mCallback.onDismissed(this, event);
         }
-        // Finally, tell the SnackbarManager that it has been dismissed
-        SnackbarManager.getInstance().onDismissed(mManagerCallback);
+        // Lastly, remove the view from the parent (if attached)
+        final ViewParent parent = mView.getParent();
+        if (parent instanceof ViewGroup) {
+            ((ViewGroup) parent).removeView(mView);
+        }
     }
 
     /**
