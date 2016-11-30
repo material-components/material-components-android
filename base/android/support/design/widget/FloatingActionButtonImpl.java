@@ -28,6 +28,14 @@ import android.view.ViewTreeObserver;
 
 abstract class FloatingActionButtonImpl {
 
+    Drawable mShapeDrawable;
+    Drawable mRippleDrawable;
+    CircularBorderDrawable mBorderDrawable;
+    Drawable mContentBackground;
+
+    float mElevation;
+    float mPressedTranslationZ;
+
     interface InternalVisibilityChangedListener {
         public void onShown();
         public void onHidden();
@@ -61,9 +69,23 @@ abstract class FloatingActionButtonImpl {
 
     abstract void setRippleColor(int rippleColor);
 
-    abstract void setElevation(float elevation);
+    final void setElevation(float elevation) {
+        if (mElevation != elevation) {
+            mElevation = elevation;
+            onElevationChanged(elevation);
+        }
+    }
 
-    abstract void setPressedTranslationZ(float translationZ);
+    final void setPressedTranslationZ(float translationZ) {
+        if (mPressedTranslationZ != translationZ) {
+            mPressedTranslationZ = translationZ;
+            onTranslationZChanged(translationZ);
+        }
+    }
+
+    abstract void onElevationChanged(float elevation);
+
+    abstract void onTranslationZChanged(float translationZ);
 
     abstract void onDrawableStateChanged(int[] state);
 
@@ -72,6 +94,10 @@ abstract class FloatingActionButtonImpl {
     abstract void hide(@Nullable InternalVisibilityChangedListener listener, boolean fromUser);
 
     abstract void show(@Nullable InternalVisibilityChangedListener listener, boolean fromUser);
+
+    final Drawable getContentBackground() {
+        return mContentBackground;
+    }
 
     void onAttachedToWindow() {
         if (requirePreDrawListener()) {

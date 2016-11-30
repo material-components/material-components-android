@@ -23,7 +23,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
-import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.widget.AnimationUtils.AnimationListenerAdapter;
@@ -34,19 +33,11 @@ import android.view.animation.Transformation;
 
 class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
-    Drawable mShapeDrawable;
-    Drawable mRippleDrawable;
-    CircularBorderDrawable mBorderDrawable;
-
-    private float mElevation;
-    private float mPressedTranslationZ;
     private int mAnimationDuration;
-
     private StateListAnimator mStateListAnimator;
+    private boolean mIsHiding;
 
     ShadowDrawableWrapper mShadowDrawable;
-
-    private boolean mIsHiding;
 
     FloatingActionButtonEclairMr1(VisibilityAwareImageButton view,
             ShadowViewDelegate shadowViewDelegate) {
@@ -96,9 +87,11 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
             layers = new Drawable[] {mShapeDrawable, mRippleDrawable};
         }
 
+        mContentBackground = new LayerDrawable(layers);
+
         mShadowDrawable = new ShadowDrawableWrapper(
                 mView.getResources(),
-                new LayerDrawable(layers),
+                mContentBackground,
                 mShadowViewDelegate.getRadius(),
                 mElevation,
                 mElevation + mPressedTranslationZ);
@@ -128,18 +121,16 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     }
 
     @Override
-    void setElevation(float elevation) {
-        if (mElevation != elevation && mShadowDrawable != null) {
+    void onElevationChanged(float elevation) {
+        if (mShadowDrawable != null) {
             mShadowDrawable.setShadowSize(elevation, elevation + mPressedTranslationZ);
-            mElevation = elevation;
             updatePadding();
         }
     }
 
     @Override
-    void setPressedTranslationZ(float translationZ) {
-        if (mPressedTranslationZ != translationZ && mShadowDrawable != null) {
-            mPressedTranslationZ = translationZ;
+    void onTranslationZChanged(float translationZ) {
+        if (mShadowDrawable != null) {
             mShadowDrawable.setMaxShadowSize(mElevation + translationZ);
             updatePadding();
         }

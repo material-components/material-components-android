@@ -382,6 +382,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         }
     }
 
+    /**
+     * Returns the FloatingActionButton's background, minus any compatible shadow implementation.
+     */
+    @NonNull
+    public Drawable getContentBackground() {
+        return mImpl.getContentBackground();
+    }
+
     private static int resolveAdjustedSize(int desiredSize, int measureSpec) {
         int result = desiredSize;
         int specMode = MeasureSpec.getMode(measureSpec);

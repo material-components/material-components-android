@@ -34,16 +34,15 @@ import android.view.animation.Interpolator;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
-    private Interpolator mInterpolator;
+    private final Interpolator mInterpolator;
 
     FloatingActionButtonLollipop(VisibilityAwareImageButton view,
             ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
 
-        if (!view.isInEditMode()) {
-            mInterpolator = AnimationUtils.loadInterpolator(mView.getContext(),
-                    android.R.interpolator.fast_out_slow_in);
-        }
+        mInterpolator = view.isInEditMode() ? null
+                : AnimationUtils.loadInterpolator(mView.getContext(),
+                        android.R.interpolator.fast_out_slow_in);
     }
 
     @Override
@@ -68,6 +67,8 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
         mRippleDrawable = new RippleDrawable(ColorStateList.valueOf(rippleColor),
                 rippleContent, null);
 
+        mContentBackground = mRippleDrawable;
+
         mShadowViewDelegate.setBackgroundDrawable(mRippleDrawable);
         mShadowViewDelegate.setShadowPadding(0, 0, 0, 0);
     }
@@ -82,12 +83,12 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
     }
 
     @Override
-    public void setElevation(float elevation) {
+    public void onElevationChanged(float elevation) {
         ViewCompat.setElevation(mView, elevation);
     }
 
     @Override
-    void setPressedTranslationZ(float translationZ) {
+    void onTranslationZChanged(float translationZ) {
         StateListAnimator stateListAnimator = new StateListAnimator();
 
         // Animate translationZ to our value when pressed or focused
