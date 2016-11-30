@@ -26,6 +26,7 @@ import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v7.internal.view.menu.MenuBuilder;
 import android.support.v7.internal.view.menu.MenuItemImpl;
@@ -63,6 +64,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     private NavigationMenuAdapter mAdapter;
     private LayoutInflater mLayoutInflater;
 
+    private int mTextAppearance;
+    private boolean mTextAppearanceSet;
     private ColorStateList mTextColor;
     private ColorStateList mIconTintList;
     private Drawable mItemBackground;
@@ -225,6 +228,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
 
     public void setItemIconTintList(@Nullable ColorStateList tint) {
         mIconTintList = tint;
+        updateMenuView(false);
     }
 
     @Nullable
@@ -234,6 +238,13 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
 
     public void setItemTextColor(@Nullable ColorStateList textColor) {
         mTextColor = textColor;
+        updateMenuView(false);
+    }
+
+    public void setItemTextAppearance(@StyleRes int resId) {
+        mTextAppearance = resId;
+        mTextAppearanceSet = true;
+        updateMenuView(false);
     }
 
     public Drawable getItemBackground() {
@@ -311,7 +322,12 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     }
                     NavigationMenuItemView itemView = (NavigationMenuItemView) convertView;
                     itemView.setIconTintList(mIconTintList);
-                    itemView.setTextColor(mTextColor);
+                    if (mTextAppearanceSet) {
+                        itemView.setTextAppearance(itemView.getContext(), mTextAppearance);
+                    }
+                    if (mTextColor != null) {
+                        itemView.setTextColor(mTextColor);
+                    }
                     itemView.setBackgroundDrawable(mItemBackground);
                     itemView.initialize(item.getMenuItem(), 0);
                     break;

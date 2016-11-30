@@ -28,6 +28,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.internal.ScrimInsetsFrameLayout;
@@ -119,10 +120,20 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             itemIconTint = createDefaultColorStateList(android.R.attr.textColorSecondary);
         }
 
-        final ColorStateList itemTextColor;
+        boolean textAppearanceSet = false;
+        int textAppearance = 0;
+        if (a.hasValue(R.styleable.NavigationView_itemTextAppearance)) {
+            textAppearance = a.getResourceId(R.styleable.NavigationView_itemTextAppearance, 0);
+            textAppearanceSet = true;
+        }
+
+        ColorStateList itemTextColor = null;
         if (a.hasValue(R.styleable.NavigationView_itemTextColor)) {
             itemTextColor = a.getColorStateList(R.styleable.NavigationView_itemTextColor);
-        } else {
+        }
+
+        if (!textAppearanceSet && itemTextColor == null) {
+            // If there isn't a text appearance set, we'll use a default text color
             itemTextColor = createDefaultColorStateList(android.R.attr.textColorPrimary);
         }
 
@@ -145,6 +156,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         mPresenter.setId(PRESENTER_NAVIGATION_VIEW_ID);
         mPresenter.initForMenu(context, mMenu);
         mPresenter.setItemIconTintList(itemIconTint);
+        if (textAppearanceSet) {
+            mPresenter.setItemTextAppearance(textAppearance);
+        }
         mPresenter.setItemTextColor(itemTextColor);
         mPresenter.setItemBackground(itemBackground);
         mMenu.addMenuPresenter(mPresenter);
@@ -342,6 +356,15 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         if (item != null) {
             mPresenter.setCheckedItem((MenuItemImpl) item);
         }
+    }
+
+    /**
+     * Set the text appearance of the menu items to a given resource.
+     *
+     * @attr ref R.styleable#NavigationView_itemTextAppearance
+     */
+    public void setItemTextAppearance(@StyleRes int resId) {
+        mPresenter.setItemTextAppearance(resId);
     }
 
     private MenuInflater getMenuInflater() {
