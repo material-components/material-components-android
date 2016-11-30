@@ -27,6 +27,7 @@
     <public type="attr" name="expandedTitleMarginBottom"/>
     <public type="attr" name="expandedTitleMarginEnd"/>
     <public type="attr" name="expandedTitleMarginStart"/>
+    <public type="attr" name="expandedTitleMarginTop"/>
     <public type="attr" name="expandedTitleTextAppearance"/>
     <public type="attr" name="fabSize"/>
     <public type="attr" name="headerLayout"/>
@@ -56,4 +57,5 @@
     <public type="attr" name="tabSelectedTextColor"/>
     <public type="attr" name="tabTextAppearance"/>
     <public type="attr" name="tabTextColor"/>
+    <public type="attr" name="toolbarId"/>
 </resources>
