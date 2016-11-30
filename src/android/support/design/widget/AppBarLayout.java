@@ -33,9 +33,7 @@ import android.widget.LinearLayout;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
-import java.lang.ref.WeakReference;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -130,7 +128,7 @@ public class AppBarLayout extends LinearLayout {
 
     private WindowInsetsCompat mLastInsets;
 
-    private final List<WeakReference<OnOffsetChangedListener>> mListeners;
+    private final List<OnOffsetChangedListener> mListeners;
 
     public AppBarLayout(Context context) {
         this(context, null);
@@ -175,14 +173,9 @@ public class AppBarLayout extends LinearLayout {
      * @see #removeOnOffsetChangedListener(OnOffsetChangedListener)
      */
     public void addOnOffsetChangedListener(OnOffsetChangedListener listener) {
-        for (int i = 0, z = mListeners.size(); i < z; i++) {
-            final WeakReference<OnOffsetChangedListener> ref = mListeners.get(i);
-            if (ref != null && ref.get() == listener) {
-                // Listener already added
-                return;
-            }
+        if (listener != null && !mListeners.contains(listener)) {
+            mListeners.add(listener);
         }
-        mListeners.add(new WeakReference<>(listener));
     }
 
     /**
@@ -191,14 +184,8 @@ public class AppBarLayout extends LinearLayout {
      * @param listener the listener to remove.
      */
     public void removeOnOffsetChangedListener(OnOffsetChangedListener listener) {
-        final Iterator<WeakReference<OnOffsetChangedListener>> i = mListeners.iterator();
-        while (i.hasNext()) {
-            final WeakReference<OnOffsetChangedListener> ref = i.next();
-            final OnOffsetChangedListener item = ref.get();
-            if (item == listener || item == null) {
-                // If the item is null, or is our given listener, remove
-                i.remove();
-            }
+        if (listener != null) {
+            mListeners.remove(listener);
         }
     }
 
@@ -915,14 +902,12 @@ public class AppBarLayout extends LinearLayout {
         }
 
         private void dispatchOffsetUpdates(AppBarLayout layout) {
-            final List<WeakReference<OnOffsetChangedListener>> listeners = layout.mListeners;
+            final List<OnOffsetChangedListener> listeners = layout.mListeners;
 
             // Iterate backwards through the list so that most recently added listeners
             // get the first chance to decide
             for (int i = 0, z = listeners.size(); i < z; i++) {
-                final WeakReference<OnOffsetChangedListener> ref = listeners.get(i);
-                final OnOffsetChangedListener listener = ref != null ? ref.get() : null;
-
+                final OnOffsetChangedListener listener = listeners.get(i);
                 if (listener != null) {
                     listener.onOffsetChanged(layout, getTopAndBottomOffset());
                 }
