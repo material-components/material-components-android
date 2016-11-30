@@ -177,6 +177,7 @@ public class BottomSheetBehaviorTest extends
                 .perform(DesignViewActions.withCustomConstraints(ViewActions.swipeDown(),
                         ViewMatchers.isDisplayingAtLeast(5)));
         // Avoid a deadlock (b/26160710)
+        registerIdlingResourceCallback();
         try {
             Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
                     .check(ViewAssertions.matches(not(ViewMatchers.isDisplayed())));
