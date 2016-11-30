@@ -72,26 +72,24 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
                     }
                 }
 
-                if (ViewCompat.isLaidOut(header)) {
-                    int availableHeight = View.MeasureSpec.getSize(parentHeightMeasureSpec);
-                    if (availableHeight == 0) {
-                        // If the measure spec doesn't specify a size, use the current height
-                        availableHeight = parent.getHeight();
-                    }
-
-                    final int height = availableHeight - header.getMeasuredHeight()
-                            + getScrollRange(header);
-                    final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(height,
-                            childLpHeight == ViewGroup.LayoutParams.MATCH_PARENT
-                                    ? View.MeasureSpec.EXACTLY
-                                    : View.MeasureSpec.AT_MOST);
-
-                    // Now measure the scrolling view with the correct height
-                    parent.onMeasureChild(child, parentWidthMeasureSpec,
-                            widthUsed, heightMeasureSpec, heightUsed);
-
-                    return true;
+                int availableHeight = View.MeasureSpec.getSize(parentHeightMeasureSpec);
+                if (availableHeight == 0) {
+                    // If the measure spec doesn't specify a size, use the current height
+                    availableHeight = parent.getHeight();
                 }
+
+                final int height = availableHeight - header.getMeasuredHeight()
+                        + getScrollRange(header);
+                final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(height,
+                        childLpHeight == ViewGroup.LayoutParams.MATCH_PARENT
+                                ? View.MeasureSpec.EXACTLY
+                                : View.MeasureSpec.AT_MOST);
+
+                // Now measure the scrolling view with the correct height
+                parent.onMeasureChild(child, parentWidthMeasureSpec,
+                        widthUsed, heightMeasureSpec, heightUsed);
+
+                return true;
             }
         }
         return false;
