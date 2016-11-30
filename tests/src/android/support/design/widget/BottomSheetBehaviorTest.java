@@ -129,7 +129,20 @@ public class BottomSheetBehaviorTest extends
         checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
         Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
                 .perform(DesignViewActions.withCustomConstraints(new GeneralSwipeAction(
-                        Swipe.FAST, GeneralLocation.TOP_CENTER,
+                        Swipe.FAST,
+                        // Manually calculate the starting coordinates to make sure that the touch
+                        // actually falls onto the view on Gingerbread
+                        new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                int[] location = new int[2];
+                                view.getLocationInWindow(location);
+                                return new float[]{
+                                        view.getWidth() / 2,
+                                        location[1] + 1
+                                };
+                            }
+                        },
                         // Manually calculate the ending coordinates to make sure that the bottom
                         // sheet is collapsed, not hidden
                         new CoordinatesProvider() {
