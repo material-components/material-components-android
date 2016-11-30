@@ -304,7 +304,6 @@ package android.support.design.widget {
   public class TextInputLayout extends android.widget.LinearLayout {
     ctor public TextInputLayout(android.content.Context);
     ctor public TextInputLayout(android.content.Context, android.util.AttributeSet);
-    ctor public TextInputLayout(android.content.Context, android.util.AttributeSet, int);
     method public android.widget.EditText getEditText();
     method public void setError(java.lang.CharSequence);
     method public void setErrorEnabled(boolean);
