@@ -27,7 +27,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.support.v7.internal.view.menu.MenuView;
-import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -39,7 +38,7 @@ import android.widget.FrameLayout;
 /**
  * @hide
  */
-public class NavigationMenuItemView extends LinearLayoutCompat implements MenuView.ItemView {
+public class NavigationMenuItemView extends ForegroundLinearLayout implements MenuView.ItemView {
 
     private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
@@ -69,8 +68,6 @@ public class NavigationMenuItemView extends LinearLayoutCompat implements MenuVi
                 R.dimen.design_navigation_icon_size);
         mTextView = (CheckedTextView) findViewById(R.id.design_menu_item_text);
         mTextView.setDuplicateParentStateEnabled(true);
-        // Prevent the action view from stealing the event on the item row.
-        setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
     }
 
     @Override
@@ -89,6 +86,13 @@ public class NavigationMenuItemView extends LinearLayoutCompat implements MenuVi
         setTitle(itemData.getTitle());
         setIcon(itemData.getIcon());
         setActionView(itemData.getActionView());
+    }
+
+    public void recycle() {
+        if (mActionArea != null) {
+            mActionArea.removeAllViews();
+        }
+        mTextView.setCompoundDrawables(null, null, null, null);
     }
 
     private void setActionView(View actionView) {

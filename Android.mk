@@ -23,10 +23,12 @@ LOCAL_MODULE := android-support-design-res
 LOCAL_SDK_VERSION := current
 LOCAL_SRC_FILES := $(call all-java-files-under, dummy)
 LOCAL_RESOURCE_DIR := $(LOCAL_PATH)/res \
-    frameworks/support/v7/appcompat/res
+    frameworks/support/v7/appcompat/res \
+    frameworks/support/v7/recyclerview/res
 LOCAL_AAPT_FLAGS := \
     --auto-add-overlay \
-    --extra-packages android.support.v7.appcompat
+    --extra-packages android.support.v7.appcompat \
+    --extra-packages android.support.v7.recyclerview
 LOCAL_JAR_EXCLUDE_FILES := none
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
@@ -38,7 +40,8 @@ LOCAL_SDK_VERSION := 7
 LOCAL_SRC_FILES := $(call all-java-files-under, base)
 LOCAL_JAVA_LIBRARIES := android-support-design-res \
     android-support-v4 \
-    android-support-v7-appcompat
+    android-support-v7-appcompat \
+    android-support-v7-recyclerview
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # A helper sub-library that makes direct use of Eclair MR1 APIs
@@ -49,7 +52,8 @@ LOCAL_SRC_FILES := $(call all-java-files-under, eclair-mr1)
 LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-base
 LOCAL_JAVA_LIBRARIES := android-support-design-res \
     android-support-v4 \
-    android-support-v7-appcompat
+    android-support-v7-appcompat \
+    android-support-v7-recyclerview
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # A helper sub-library that makes direct use of Honeycomb APIs
@@ -60,7 +64,8 @@ LOCAL_SRC_FILES := $(call all-java-files-under, honeycomb)
 LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-eclair-mr1
 LOCAL_JAVA_LIBRARIES := android-support-design-res \
     android-support-v4 \
-    android-support-v7-appcompat
+    android-support-v7-appcompat \
+    android-support-v7-recyclerview
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # A helper sub-library that makes direct use of Honeycomb MR1 APIs
@@ -71,7 +76,8 @@ LOCAL_SRC_FILES := $(call all-java-files-under, honeycomb-mr1)
 LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-honeycomb
 LOCAL_JAVA_LIBRARIES := android-support-design-res \
     android-support-v4 \
-    android-support-v7-appcompat
+    android-support-v7-appcompat \
+    android-support-v7-recyclerview
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # A helper sub-library that makes direct use of Lollipop APIs
@@ -82,7 +88,8 @@ LOCAL_SRC_FILES := $(call all-java-files-under, lollipop)
 LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-honeycomb-mr1
 LOCAL_JAVA_LIBRARIES := android-support-design-res \
     android-support-v4 \
-    android-support-v7-appcompat
+    android-support-v7-appcompat \
+    android-support-v7-recyclerview
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # Here is the final static library that apps can link against.
@@ -96,7 +103,8 @@ LOCAL_SRC_FILES := $(call all-java-files-under, src)
 LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-lollipop
 LOCAL_JAVA_LIBRARIES := android-support-design-res \
     android-support-v4 \
-    android-support-v7-appcompat
+    android-support-v7-appcompat \
+    android-support-v7-recyclerview
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
 # API Check
