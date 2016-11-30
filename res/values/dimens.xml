@@ -33,6 +33,8 @@
 
     <dimen name="design_tab_min_width">72dp</dimen>
     <dimen name="design_tab_max_width">264dp</dimen>
+    <dimen name="design_tab_text_size">14sp</dimen>
+    <dimen name="design_tab_text_size_2line">12sp</dimen>
 
     <dimen name="design_snackbar_min_width">-1px</dimen>
     <dimen name="design_snackbar_max_width">-1px</dimen>

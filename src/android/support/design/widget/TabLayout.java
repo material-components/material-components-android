@@ -19,6 +19,7 @@ package android.support.design.widget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
@@ -38,8 +39,10 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.internal.widget.TintManager;
+import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -58,10 +61,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
-import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
 /**
  * TabLayout provides a horizontal layout to display tabs.
@@ -95,6 +94,8 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
  */
 public class TabLayout extends HorizontalScrollView {
 
+    private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72; // dps
+    private static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
     private static final int DEFAULT_HEIGHT = 48; // dps
     private static final int TAB_MIN_WIDTH_MARGIN = 56; //dps
     private static final int FIXED_WRAP_GUTTER_MIN = 16; //dps
@@ -193,6 +194,8 @@ public class TabLayout extends HorizontalScrollView {
 
     private int mTabTextAppearance;
     private ColorStateList mTabTextColors;
+    private float mTabTextSize;
+    private float mTabTextMultiLineSize;
 
     private final int mTabBackgroundResId;
 
@@ -240,9 +243,6 @@ public class TabLayout extends HorizontalScrollView {
                 a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, 0));
         mTabStrip.setSelectedIndicatorColor(a.getColor(R.styleable.TabLayout_tabIndicatorColor, 0));
 
-        mTabTextAppearance = a.getResourceId(R.styleable.TabLayout_tabTextAppearance,
-                R.style.TextAppearance_Design_Tab);
-
         mTabPaddingStart = mTabPaddingTop = mTabPaddingEnd = mTabPaddingBottom = a
                 .getDimensionPixelSize(R.styleable.TabLayout_tabPadding, 0);
         mTabPaddingStart = a.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingStart,
@@ -254,8 +254,18 @@ public class TabLayout extends HorizontalScrollView {
         mTabPaddingBottom = a.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingBottom,
                 mTabPaddingBottom);
 
-        // Text colors come from the text appearance first
-        mTabTextColors = loadTextColorFromTextAppearance(mTabTextAppearance);
+        mTabTextAppearance = a.getResourceId(R.styleable.TabLayout_tabTextAppearance,
+                R.style.TextAppearance_Design_Tab);
+
+        // Text colors/sizes come from the text appearance first
+        final TypedArray ta = context.obtainStyledAttributes(mTabTextAppearance,
+                R.styleable.TextAppearance);
+        try {
+            mTabTextSize = ta.getDimensionPixelSize(R.styleable.TextAppearance_android_textSize, 0);
+            mTabTextColors = ta.getColorStateList(R.styleable.TextAppearance_android_textColor);
+        } finally {
+            ta.recycle();
+        }
 
         if (a.hasValue(R.styleable.TabLayout_tabTextColor)) {
             // If we have an explicit text color set, use it instead
@@ -277,6 +287,10 @@ public class TabLayout extends HorizontalScrollView {
         mMode = a.getInt(R.styleable.TabLayout_tabMode, MODE_FIXED);
         mTabGravity = a.getInt(R.styleable.TabLayout_tabGravity, GRAVITY_FILL);
         a.recycle();
+
+        // TODO add attr for this
+        mTabTextMultiLineSize =
+                getResources().getDimensionPixelSize(R.dimen.design_tab_text_size_2line);
 
         // Now apply the tab mode and gravity
         applyModeAndGravity();
@@ -708,7 +722,7 @@ public class TabLayout extends HorizontalScrollView {
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         // If we have a MeasureSpec which allows us to decide our height, try and use the default
         // height
-        final int idealHeight = dpToPx(DEFAULT_HEIGHT) + getPaddingTop() + getPaddingBottom();
+        final int idealHeight = dpToPx(getDefaultHeight()) + getPaddingTop() + getPaddingBottom();
         switch (MeasureSpec.getMode(heightMeasureSpec)) {
             case MeasureSpec.AT_MOST:
                 heightMeasureSpec = MeasureSpec.makeMeasureSpec(
@@ -1140,6 +1154,8 @@ public class TabLayout extends HorizontalScrollView {
         private TextView mCustomTextView;
         private ImageView mCustomIconView;
 
+        private int mDefaultMaxLines = 2;
+
         public TabView(Context context, Tab tab) {
             super(context);
             mTab = tab;
@@ -1149,6 +1165,7 @@ public class TabLayout extends HorizontalScrollView {
             ViewCompat.setPaddingRelative(this, mTabPaddingStart, mTabPaddingTop,
                     mTabPaddingEnd, mTabPaddingBottom);
             setGravity(Gravity.CENTER);
+            setOrientation(VERTICAL);
             update();
         }
 
@@ -1196,6 +1213,47 @@ public class TabLayout extends HorizontalScrollView {
                         MeasureSpec.EXACTLY);
                 super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             }
+
+            // We need to switch the text size based on whether the text is spanning 2 lines or not
+            if (mTextView != null) {
+                final Resources res = getResources();
+                float textSize = mTabTextSize;
+                int maxLines = mDefaultMaxLines;
+
+                if (mIconView != null && mIconView.getVisibility() == VISIBLE) {
+                    // If the icon view is being displayed, we limit the text to 1 line
+                    maxLines = 1;
+                } else if (mTextView != null && mTextView.getLineCount() > 1) {
+                    // Otherwise when we have text which wraps we reduce the text size
+                    textSize = mTabTextMultiLineSize;
+                }
+
+                final float curTextSize = mTextView.getTextSize();
+                final int curLineCount = mTextView.getLineCount();
+
+                if (textSize != curTextSize || maxLines != mTextView.getMaxLines()) {
+                    // We've got a new text size and/or max lines...
+                    boolean updateTextView = true;
+
+                    if (mMode == MODE_FIXED && textSize > curTextSize && curLineCount == 1) {
+                        // If we're in fixed mode, going up in text size and currently have 1 line
+                        // then it's very easy to get into an infinite recursion.
+                        // To combat that we check to see if the change in text size
+                        // will cause a line count change. If so, abort the size change.
+                        final Layout layout = mTextView.getLayout();
+                        if (layout == null
+                                || approximateLineWidth(layout, 0, textSize) > layout.getWidth()) {
+                            updateTextView = false;
+                        }
+                    }
+
+                    if (updateTextView) {
+                        mTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+                        mTextView.setMaxLines(maxLines);
+                        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+                    }
+                }
+            }
         }
 
         final void update() {
@@ -1219,6 +1277,9 @@ public class TabLayout extends HorizontalScrollView {
                 }
 
                 mCustomTextView = (TextView) custom.findViewById(android.R.id.text1);
+                if (mCustomTextView != null) {
+                    mDefaultMaxLines = mCustomTextView.getMaxLines();
+                }
                 mCustomIconView = (ImageView) custom.findViewById(android.R.id.icon);
             } else {
                 // We do not have a custom view. Remove one if it already exists
@@ -1243,6 +1304,7 @@ public class TabLayout extends HorizontalScrollView {
                             .inflate(R.layout.design_layout_tab_text, this, false);
                     addView(textView);
                     mTextView = textView;
+                    mDefaultMaxLines = mTextView.getMaxLines();
                 }
                 mTextView.setTextAppearance(getContext(), mTabTextAppearance);
                 if (mTabTextColors != null) {
@@ -1286,6 +1348,19 @@ public class TabLayout extends HorizontalScrollView {
                 }
             }
 
+            if (iconView != null) {
+                MarginLayoutParams lp = ((MarginLayoutParams) iconView.getLayoutParams());
+                int bottomMargin = 0;
+                if (hasText && iconView.getVisibility() == VISIBLE) {
+                    // If we're showing both text and icon, add some margin bottom to the icon
+                    bottomMargin = dpToPx(DEFAULT_GAP_TEXT_ICON);
+                }
+                if (bottomMargin != lp.bottomMargin) {
+                    lp.bottomMargin = bottomMargin;
+                    iconView.requestLayout();
+                }
+            }
+
             if (!hasText && !TextUtils.isEmpty(tab.getContentDescription())) {
                 setOnLongClickListener(this);
             } else {
@@ -1316,6 +1391,13 @@ public class TabLayout extends HorizontalScrollView {
 
         public Tab getTab() {
             return mTab;
+        }
+
+        /**
+         * Approximates a given lines width with the new provided text size.
+         */
+        private float approximateLineWidth(Layout layout, int line, float textSize) {
+            return layout.getLineWidth(line) * (textSize / layout.getPaint().getTextSize());
         }
     }
 
@@ -1565,14 +1647,16 @@ public class TabLayout extends HorizontalScrollView {
         return new ColorStateList(states, colors);
     }
 
-    private ColorStateList loadTextColorFromTextAppearance(int textAppearanceResId) {
-        TypedArray a = getContext().obtainStyledAttributes(textAppearanceResId,
-                R.styleable.TextAppearance);
-        try {
-            return a.getColorStateList(R.styleable.TextAppearance_android_textColor);
-        } finally {
-            a.recycle();
+    private int getDefaultHeight() {
+        boolean hasIconAndText = false;
+        for (int i = 0, count = mTabs.size(); i < count; i++) {
+            Tab tab = mTabs.get(i);
+            if (tab != null && tab.getIcon() != null && !TextUtils.isEmpty(tab.getText())) {
+                hasIconAndText = true;
+                break;
+            }
         }
+        return hasIconAndText ? DEFAULT_HEIGHT_WITH_TEXT_ICON : DEFAULT_HEIGHT;
     }
 
     /**

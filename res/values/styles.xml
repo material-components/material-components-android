@@ -54,7 +54,7 @@
     </style>
 
     <style name="TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textSize">14sp</item>
+        <item name="android:textSize">@dimen/design_tab_text_size</item>
         <item name="android:textColor">?android:textColorSecondary</item>
         <item name="textAllCaps">true</item>
     </style>
