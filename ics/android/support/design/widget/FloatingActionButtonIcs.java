@@ -22,11 +22,11 @@ import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 
-class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
+class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
 
     private boolean mIsHiding;
 
-    FloatingActionButtonHoneycombMr1(View view, ShadowViewDelegate shadowViewDelegate) {
+    FloatingActionButtonIcs(View view, ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
     }
 

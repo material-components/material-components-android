@@ -33,7 +33,7 @@ import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
-class FloatingActionButtonLollipop extends FloatingActionButtonHoneycombMr1 {
+class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
     private Interpolator mInterpolator;
 

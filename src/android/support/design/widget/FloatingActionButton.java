@@ -147,8 +147,8 @@ public class FloatingActionButton extends ImageButton {
         final int sdk = Build.VERSION.SDK_INT;
         if (sdk >= 21) {
             mImpl = new FloatingActionButtonLollipop(this, delegate);
-        } else if (sdk >= 12) {
-            mImpl = new FloatingActionButtonHoneycombMr1(this, delegate);
+        } else if (sdk >= 14) {
+            mImpl = new FloatingActionButtonIcs(this, delegate);
         } else {
             mImpl = new FloatingActionButtonEclairMr1(this, delegate);
         }
