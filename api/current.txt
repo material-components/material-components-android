@@ -219,12 +219,19 @@ package android.support.design.widget {
     method public android.support.design.widget.Snackbar setAction(java.lang.CharSequence, android.view.View.OnClickListener);
     method public android.support.design.widget.Snackbar setActionTextColor(android.content.res.ColorStateList);
     method public android.support.design.widget.Snackbar setActionTextColor(int);
+    method public void setCallback(android.support.design.widget.Snackbar.Callback);
     method public android.support.design.widget.Snackbar setDuration(int);
     method public android.support.design.widget.Snackbar setText(java.lang.CharSequence);
     method public android.support.design.widget.Snackbar setText(int);
     method public void show();
     field public static final int LENGTH_LONG = 0; // 0x0
     field public static final int LENGTH_SHORT = -1; // 0xffffffff
+  }
+
+  public static abstract class Snackbar.Callback {
+    ctor public Snackbar.Callback();
+    method public void onDismissed(android.support.design.widget.Snackbar);
+    method public void onShown(android.support.design.widget.Snackbar);
   }
 
   public class SwipeDismissBehavior extends android.support.design.widget.CoordinatorLayout.Behavior {

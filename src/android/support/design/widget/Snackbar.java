@@ -58,8 +58,39 @@ import static android.support.design.widget.AnimationUtils.FAST_OUT_SLOW_IN_INTE
  * <p>
  * Snackbars can contain an action which is set via
  * {@link #setAction(CharSequence, android.view.View.OnClickListener)}.
+ * <p>
+ * To be notified when a snackbar has been shown or dismissed, you can provide a {@link Callback}
+ * via {@link #setCallback(Callback)}.</p>
  */
 public class Snackbar {
+
+    /**
+     * Callback class for {@link Snackbar} instances.
+     *
+     * @see Snackbar#setCallback(Callback)
+     */
+    public static abstract class Callback {
+        /**
+         * Called when the given {@link Snackbar} has been dismissed, either through a time-out,
+         * having been manually dismissed, or an action being clicked.
+         *
+         * @param snackbar The snackbar which has been dismissed.
+         * @see Snackbar#dismiss()
+         */
+        public void onDismissed(Snackbar snackbar) {
+            // empty
+        }
+
+        /**
+         * Called when the given {@link Snackbar} is visible.
+         *
+         * @param snackbar The snackbar which is now visible.
+         * @see Snackbar#show()
+         */
+        public void onShown(Snackbar snackbar) {
+            // empty
+        }
+    }
 
     /**
      * @hide
@@ -110,6 +141,7 @@ public class Snackbar {
     private final Context mContext;
     private final SnackbarLayout mView;
     private int mDuration;
+    private Callback mCallback;
 
     Snackbar(ViewGroup parent) {
         mParent = parent;
@@ -314,6 +346,13 @@ public class Snackbar {
         SnackbarManager.getInstance().dismiss(mManagerCallback);
     }
 
+    /**
+     * Set a callback to be called when this the visibility of this {@link Snackbar} changes.
+     */
+    public void setCallback(Callback callback) {
+        mCallback = callback;
+    }
+
     private final SnackbarManager.Callback mManagerCallback = new SnackbarManager.Callback() {
         @Override
         public void show() {
@@ -394,6 +433,9 @@ public class Snackbar {
 
                         @Override
                         public void onAnimationEnd(View view) {
+                            if (mCallback != null) {
+                                mCallback.onShown(Snackbar.this);
+                            }
                             SnackbarManager.getInstance().onShown(mManagerCallback);
                         }
                     }).start();
@@ -404,6 +446,9 @@ public class Snackbar {
             anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationEnd(Animation animation) {
+                    if (mCallback != null) {
+                        mCallback.onShown(Snackbar.this);
+                    }
                     SnackbarManager.getInstance().onShown(mManagerCallback);
                 }
 
@@ -464,7 +509,11 @@ public class Snackbar {
     private void onViewHidden() {
         // First remove the view from the parent
         mParent.removeView(mView);
-        // Now, tell the SnackbarManager that it has been dismissed
+        // Now call the dismiss listener (if available)
+        if (mCallback != null) {
+            mCallback.onDismissed(this);
+        }
+        // Finally, tell the SnackbarManager that it has been dismissed
         SnackbarManager.getInstance().onDismissed(mManagerCallback);
     }
 
