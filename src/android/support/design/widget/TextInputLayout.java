@@ -20,7 +20,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Typeface;
@@ -43,8 +42,7 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.util.AttributeSet;
-import android.util.SparseArray;
-import android.util.TypedValue;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -58,13 +56,33 @@ import android.widget.TextView;
  * Layout which wraps an {@link android.widget.EditText} (or descendant) to show a floating label
  * when the hint is hidden due to the user inputting text.
  *
- * Also supports showing an error via {@link #setErrorEnabled(boolean)} and
- * {@link #setError(CharSequence)}.
+ * <p>Also supports showing an error via {@link #setErrorEnabled(boolean)} and
+ * {@link #setError(CharSequence)}, and a character counter via
+ * {@link #setCounterEnabled(boolean)}.</p>
+ *
+ * The {@link TextInputEditText} class is provided to be used as a child of this layout. Using
+ * TextInputEditText allows TextInputLayout greater control over the visual aspects of any
+ * text input. An example usage is as so:
+ *
+ * <pre>
+ * &lt;android.support.design.widget.TextInputLayout
+ *         android:layout_width=&quot;match_parent&quot;
+ *         android:layout_height=&quot;wrap_content&quot;&gt;
+ *
+ *     &lt;android.support.design.widget.TextInputEditText
+ *             android:layout_width=&quot;match_parent&quot;
+ *             android:layout_height=&quot;wrap_content&quot;
+ *             android:hint=&quot;@string/form_username&quot;/&gt;
+ *
+ * &lt;/android.support.design.widget.TextInputLayout&gt;
+ * </pre>
  */
 public class TextInputLayout extends LinearLayout {
 
     private static final int ANIMATION_DURATION = 200;
     private static final int INVALID_MAX_LENGTH = -1;
+
+    private static final String LOG_TAG = "TextInputLayout";
 
     private EditText mEditText;
 
@@ -200,6 +218,12 @@ public class TextInputLayout extends LinearLayout {
         if (mEditText != null) {
             throw new IllegalArgumentException("We already have an EditText, can only have one");
         }
+
+        if (!(editText instanceof TextInputEditText)) {
+            Log.i(LOG_TAG, "EditText added is not a TextInputEditText. Please switch to using that"
+                    + " class instead.");
+        }
+
         mEditText = editText;
 
         // Use the EditText's typeface, and it's text size for our expanded text

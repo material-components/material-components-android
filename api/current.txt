@@ -444,6 +444,12 @@ package android.support.design.widget {
     method public void onTabUnselected(android.support.design.widget.TabLayout.Tab);
   }
 
+  public class TextInputEditText extends android.support.v7.widget.AppCompatEditText {
+    ctor public TextInputEditText(android.content.Context);
+    ctor public TextInputEditText(android.content.Context, android.util.AttributeSet);
+    ctor public TextInputEditText(android.content.Context, android.util.AttributeSet, int);
+  }
+
   public class TextInputLayout extends android.widget.LinearLayout {
     ctor public TextInputLayout(android.content.Context);
     ctor public TextInputLayout(android.content.Context, android.util.AttributeSet);
