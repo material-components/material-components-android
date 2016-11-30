@@ -604,9 +604,11 @@ public class AppBarLayout extends LinearLayout {
         @Override
         public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child,
                 View directTargetChild, View target, int nestedScrollAxes) {
-            // Return true if we're nested scrolling vertically and we have scrollable children
+            // Return true if we're nested scrolling vertically, and we have scrollable children
+            // and the scrolling view is big enough to scroll
             final boolean started = (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0
-                    && child.hasScrollableChildren();
+                    && child.hasScrollableChildren()
+                    && coordinatorLayout.getHeight() - target.getHeight() <= child.getHeight();
 
             if (started && mAnimator != null) {
                 // Cancel any offset animation
@@ -1005,8 +1007,8 @@ public class AppBarLayout extends LinearLayout {
                 int parentWidthMeasureSpec, int widthUsed,
                 int parentHeightMeasureSpec, int heightUsed) {
             if (child.getLayoutParams().height == LayoutParams.MATCH_PARENT) {
-                // If the child's height is set to match_parent then it with it's maximum visible
-                // visible height
+                // If the child's height is set to match_parent then measure it with it's
+                // maximum visible visible height
 
                 final List<View> dependencies = parent.getDependencies(child);
                 if (dependencies.isEmpty()) {
@@ -1022,9 +1024,8 @@ public class AppBarLayout extends LinearLayout {
                         ViewCompat.setFitsSystemWindows(child, true);
                     }
 
-                    final int scrollRange = appBar.getTotalScrollRange();
-                    final int height = parent.getHeight()
-                            - appBar.getMeasuredHeight() + scrollRange;
+                    final int height = parent.getHeight() - appBar.getMeasuredHeight()
+                            + appBar.getTotalScrollRange();
                     final int heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
                             MeasureSpec.AT_MOST);
 
@@ -1059,9 +1060,7 @@ public class AppBarLayout extends LinearLayout {
                     setTopAndBottomOffset(AnimationUtils.lerp(expandedMax, collapsedMin,
                             Math.abs(appBarOffset) / (float) scrollRange));
                 } else {
-                    setTopAndBottomOffset(MathUtils.constrain(
-                            dependency.getHeight() - mOverlayTop + appBarOffset,
-                            collapsedMin, expandedMax));
+                    setTopAndBottomOffset(dependency.getHeight() - mOverlayTop + appBarOffset);
                 }
             }
             return false;
