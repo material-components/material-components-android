@@ -33,7 +33,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.widget.Space;
-import android.support.v7.internal.widget.AppCompatDrawableManager;
+import android.support.v7.widget.AppCompatDrawableManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;

@@ -17,10 +17,9 @@
 package android.support.design.internal;
 
 import android.content.Context;
-import android.support.v7.internal.view.menu.MenuBuilder;
-import android.support.v7.internal.view.menu.MenuItemImpl;
-import android.support.v7.internal.view.menu.SubMenuBuilder;
-import android.view.MenuItem;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuItemImpl;
+import android.support.v7.view.menu.SubMenuBuilder;
 
 /**
  * This is a {@link SubMenuBuilder} that it notifies the parent {@link NavigationMenu} of its menu

@@ -17,9 +17,9 @@
 package android.support.design.internal;
 
 import android.content.Context;
-import android.support.v7.internal.view.menu.MenuBuilder;
-import android.support.v7.internal.view.menu.MenuItemImpl;
-import android.support.v7.internal.view.menu.SubMenuBuilder;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.view.menu.MenuItemImpl;
+import android.support.v7.view.menu.SubMenuBuilder;
 import android.view.SubMenu;
 
 /**

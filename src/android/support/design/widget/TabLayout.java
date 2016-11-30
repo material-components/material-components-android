@@ -39,7 +39,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.internal.widget.AppCompatDrawableManager;
+import android.support.v7.widget.AppCompatDrawableManager;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
