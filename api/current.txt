@@ -217,6 +217,8 @@ package android.support.design.widget {
     method public static android.support.design.widget.Snackbar make(android.view.View, int, int);
     method public android.support.design.widget.Snackbar setAction(int, android.view.View.OnClickListener);
     method public android.support.design.widget.Snackbar setAction(java.lang.CharSequence, android.view.View.OnClickListener);
+    method public android.support.design.widget.Snackbar setActionTextColor(android.content.res.ColorStateList);
+    method public android.support.design.widget.Snackbar setActionTextColor(int);
     method public android.support.design.widget.Snackbar setDuration(int);
     method public android.support.design.widget.Snackbar setText(java.lang.CharSequence);
     method public android.support.design.widget.Snackbar setText(int);

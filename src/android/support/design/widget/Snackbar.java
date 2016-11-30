@@ -17,6 +17,7 @@
 package android.support.design.widget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Handler;
@@ -227,6 +228,26 @@ public class Snackbar {
                 }
             });
         }
+        return this;
+    }
+
+    /**
+     * Sets the text color of the action specified in
+     * {@link #setAction(CharSequence, View.OnClickListener)}.
+     */
+    public Snackbar setActionTextColor(ColorStateList colors) {
+        final TextView tv = mView.getActionView();
+        tv.setTextColor(colors);
+        return this;
+    }
+
+    /**
+     * Sets the text color of the action specified in
+     * {@link #setAction(CharSequence, View.OnClickListener)}.
+     */
+    public Snackbar setActionTextColor(int color) {
+        final TextView tv = mView.getActionView();
+        tv.setTextColor(color);
         return this;
     }
 
