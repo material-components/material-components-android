@@ -539,6 +539,13 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
+     * Remove all previously added {@link TabLayout.OnTabSelectedListener}s.
+     */
+    public void clearOnTabSelectedListeners() {
+        mSelectedListeners.clear();
+    }
+
+    /**
      * Create and return a new {@link Tab}. You need to manually add this using
      * {@link #addTab(Tab)} or a related method.
      *
