@@ -1034,7 +1034,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      *
      * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_scrimAnimationDuration
      */
-    public void setScrimAnimationDuration(@IntRange(from = 0) final int duration) {
+    public void setScrimAnimationDuration(@IntRange(from = 0) final long duration) {
         mScrimAnimationDuration = duration;
     }
 

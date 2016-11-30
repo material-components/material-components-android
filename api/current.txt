@@ -145,7 +145,7 @@ package android.support.design.widget {
     method public void setExpandedTitleMarginTop(int);
     method public void setExpandedTitleTextAppearance(int);
     method public void setExpandedTitleTypeface(android.graphics.Typeface);
-    method public void setScrimAnimationDuration(int);
+    method public void setScrimAnimationDuration(long);
     method public void setScrimVisibleHeightTrigger(int);
     method public void setScrimsShown(boolean);
     method public void setScrimsShown(boolean, boolean);
