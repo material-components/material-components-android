@@ -416,7 +416,7 @@ public class TextInputLayout extends LinearLayout {
             ViewCompat.animate(mErrorView)
                     .alpha(1f)
                     .setDuration(ANIMATION_DURATION)
-                    .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
+                    .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
                     .setListener(new ViewPropertyAnimatorListenerAdapter() {
                         @Override
                         public void onAnimationStart(View view) {
@@ -434,7 +434,7 @@ public class TextInputLayout extends LinearLayout {
                 ViewCompat.animate(mErrorView)
                         .alpha(0f)
                         .setDuration(ANIMATION_DURATION)
-                        .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
+                        .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
                         .setListener(new ViewPropertyAnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(View view) {

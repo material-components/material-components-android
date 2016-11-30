@@ -514,7 +514,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
         if (mScrimAnimator == null) {
             mScrimAnimator = ViewUtils.createAnimator();
             mScrimAnimator.setDuration(SCRIM_ANIMATION_DURATION);
-            mScrimAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+            mScrimAnimator.setInterpolator(
+                    targetAlpha > mScrimAlpha
+                            ? AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR
+                            : AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
             mScrimAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimatorCompat animator) {
