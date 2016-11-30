@@ -16,6 +16,7 @@
 
 package android.support.design.internal;
 
+import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -177,9 +178,14 @@ public class BottomNavigationMenuView extends LinearLayout implements MenuView {
         if (mActiveButton == newButton) return;
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
             AnimatorSet animatorSet = new AnimatorSet();
-            animatorSet.playTogether(
-                    mButtons[mActiveButton].getAnimator(false),
-                    mButtons[newButton].getAnimator(true));
+            Animator animatorUnfocus = mButtons[mActiveButton].getAnimator(false);
+            Animator animatorFocus = mButtons[newButton].getAnimator(true);
+            if (animatorUnfocus != null) {
+                animatorSet.play(animatorUnfocus);
+            }
+            if (animatorFocus != null) {
+                animatorSet.play(animatorFocus);
+            }
             animatorSet.start();
         }
         mPresenter.setUpdateSuspended(true);
@@ -194,20 +200,26 @@ public class BottomNavigationMenuView extends LinearLayout implements MenuView {
         mActiveButton = newButton;
     }
 
-    public void updateOnSizeChange(int width) {
-        if (getChildCount() == 0) return;
+    public boolean updateOnSizeChange(int width) {
+        if (getChildCount() == 0) {
+            return false;
+        }
         int available = width / getChildCount();
         int itemWidth = Math.min(available, mActiveItemMaxWidth);
+
+        boolean changed = false;
 
         for (int i = 0; i < mButtons.length; i++) {
             ViewGroup.LayoutParams params = mButtons[i].getLayoutParams();
             if (params.width == itemWidth) {
                 continue;
             }
+            changed = true;
             params.width = itemWidth;
             params.height = ViewGroup.LayoutParams.MATCH_PARENT;
             mButtons[i].setLayoutParams(params);
         }
+        return changed;
     }
 
     private BottomNavigationItemView getNewItem() {

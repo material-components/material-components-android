@@ -18,10 +18,12 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
 import android.support.v7.content.res.AppCompatResources;
@@ -82,7 +84,7 @@ public class BottomNavigationView extends FrameLayout {
         ThemeUtils.checkAppCompatTheme(context);
 
         // Create the menu
-        mMenu = new MenuBuilder(context);
+        mMenu = new BottomNavigationMenu(context);
 
         mMenuView = new BottomNavigationMenuView(context);
         LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
@@ -145,17 +147,12 @@ public class BottomNavigationView extends FrameLayout {
         mListener = listener;
     }
 
-    @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        // TODO: move updateOnSizeChange to a different location that is less expensive.
-        mMenuView.updateOnSizeChange(MeasureSpec.getSize(widthMeasureSpec));
         super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    }
-
-    @Override
-    protected void onSizeChanged(int w, int h, int oldw, int oldh) {
-        super.onSizeChanged(w, h, oldw, oldh);
-        mMenuView.updateOnSizeChange(w);
+        if (mMenuView.updateOnSizeChange(getMeasuredWidth())) {
+            // updateOnSizeChanged has changed LPs, so we need to remeasure
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+        }
     }
 
     /**
@@ -182,6 +179,13 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     /**
+     * @return The maximum number of items that can be shown in BottomNavigationView.
+     */
+    public int getMaxItemCount() {
+        return BottomNavigationMenu.MAX_ITEM_COUNT;
+    }
+
+    /**
      * Returns the tint which is applied to our menu items' icons.
      *
      * @see #setItemIconTintList(ColorStateList)
@@ -204,7 +208,6 @@ public class BottomNavigationView extends FrameLayout {
         mMenuView.setIconTintList(tint);
     }
 
-
     /**
      * Returns the tint which is applied to menu items' icons.
      *
@@ -226,6 +229,18 @@ public class BottomNavigationView extends FrameLayout {
      */
     public void setItemTextColor(@Nullable ColorStateList textColor) {
         mMenuView.setItemTextColor(textColor);
+    }
+
+    /**
+     * Returns the background resource of the menu items.
+     *
+     * @see #setItemBackgroundResource(int)
+     *
+     * @attr ref R.styleable#BottomNavigationView_itemBackground
+     */
+    @DrawableRes
+    public int getItemBackgroundResource() {
+        return mMenuView.getItemBackgroundRes();
     }
 
     /**
