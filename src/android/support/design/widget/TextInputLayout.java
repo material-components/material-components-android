@@ -868,7 +868,7 @@ public class TextInputLayout extends LinearLayout {
                 // as the background. This has the unfortunate side-effect of wiping out any
                 // user set padding, but I'd hope that use of custom padding on an EditText
                 // is limited.
-                ViewCompat.setBackground(mEditText, newBg);
+                ViewCompat.setBackground(mErrorView, newBg);
                 mHasReconstructedEditTextBackground = true;
             }
         }

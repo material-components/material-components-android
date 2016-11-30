@@ -216,18 +216,6 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
         onView(withId(R.id.textinput_edittext)).check(matches(not(isEnabled())));
     }
 
-    /**
-     * Regression test for b/31663756.
-     */
-    @Test
-    public void testDrawableStateChanged() {
-        final Activity activity = mActivityTestRule.getActivity();
-        final TextInputLayout layout = activity.findViewById(R.id.textinput);
-
-        // Force a drawable state change.
-        layout.drawableStateChanged();
-    }
-
     static ViewAssertion isHintExpanded(final boolean expanded) {
         return new ViewAssertion() {
             @Override
