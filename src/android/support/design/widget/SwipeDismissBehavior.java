@@ -24,6 +24,7 @@ import android.support.v4.widget.ViewDragHelper;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -220,6 +221,13 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         @Override
         public void onViewCaptured(View capturedChild, int activePointerId) {
             mOriginalCapturedViewLeft = capturedChild.getLeft();
+
+            // The view has been captured, and thus a drag is about to start so stop any parents
+            // intercepting
+            final ViewParent parent = capturedChild.getParent();
+            if (parent != null) {
+                parent.requestDisallowInterceptTouchEvent(true);
+            }
         }
 
         @Override
@@ -231,6 +239,12 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
         @Override
         public void onViewReleased(View child, float xvel, float yvel) {
+            // First allow the parent to intercept again
+            final ViewParent parent = child.getParent();
+            if (parent != null) {
+                parent.requestDisallowInterceptTouchEvent(false);
+            }
+
             final int childWidth = child.getWidth();
             int targetLeft;
             boolean dismiss = false;
