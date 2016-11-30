@@ -1024,7 +1024,12 @@ public class AppBarLayout extends LinearLayout {
                         ViewCompat.setFitsSystemWindows(child, true);
                     }
 
-                    final int height = parent.getHeight() - appBar.getMeasuredHeight()
+                    int availableHeight = MeasureSpec.getSize(parentHeightMeasureSpec);
+                    if (availableHeight == 0) {
+                        // If the measure spec doesn't specify a size, use the current height
+                        availableHeight = parent.getHeight();
+                    }
+                    final int height = availableHeight - appBar.getMeasuredHeight()
                             + appBar.getTotalScrollRange();
                     final int heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
                             MeasureSpec.AT_MOST);
