@@ -73,6 +73,8 @@ package android.support.design.widget {
     method public android.graphics.drawable.Drawable getContentScrim();
     method public int getExpandedTitleGravity();
     method public android.graphics.drawable.Drawable getStatusBarScrim();
+    method public java.lang.CharSequence getTitle();
+    method public boolean isTitleEnabled();
     method public void setCollapsedTitleGravity(int);
     method public void setCollapsedTitleTextAppearance(int);
     method public void setCollapsedTitleTextColor(int);
@@ -86,6 +88,7 @@ package android.support.design.widget {
     method public void setStatusBarScrimColor(int);
     method public void setStatusBarScrimResource(int);
     method public void setTitle(java.lang.CharSequence);
+    method public void setTitleEnabled(boolean);
   }
 
   public static class CollapsingToolbarLayout.LayoutParams extends android.widget.FrameLayout.LayoutParams {

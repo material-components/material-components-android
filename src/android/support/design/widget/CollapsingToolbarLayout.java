@@ -23,9 +23,11 @@ import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.GravityCompat;
@@ -99,6 +101,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     private final Rect mTmpRect = new Rect();
     private final CollapsingTextHelper mCollapsingTextHelper;
+    private boolean mCollapsingTitleEnabled;
 
     private Drawable mContentScrim;
     private Drawable mStatusBarScrim;
@@ -168,6 +171,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mExpandedMarginBottom = a.getDimensionPixelSize(
                     R.styleable.CollapsingToolbarLayout_expandedTitleMarginBottom, 0);
         }
+
+        mCollapsingTitleEnabled = a.getBoolean(
+                R.styleable.CollapsingToolbarLayout_titleEnabled, true);
+        setTitle(a.getText(R.styleable.CollapsingToolbarLayout_title));
 
         // First load the default text appearances
         mCollapsingTextHelper.setExpandedTextAppearance(
@@ -247,7 +254,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
         }
 
         // Let the collapsing text helper draw it's text
-        mCollapsingTextHelper.draw(canvas);
+        if (mCollapsingTitleEnabled) {
+            mCollapsingTextHelper.draw(canvas);
+        }
 
         // Now draw the status bar scrim
         if (mStatusBarScrim != null && mScrimAlpha > 0) {
@@ -318,15 +327,27 @@ public class CollapsingToolbarLayout extends FrameLayout {
             selected = fallback;
         }
 
-        if (selected != null) {
-            mToolbar = selected;
-            mDummyView = new View(getContext());
-            mToolbar.addView(mDummyView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-        } else {
-            mToolbar = null;
-            mDummyView = null;
-        }
+        mToolbar = selected;
+        updateDummyView();
         mRefreshToolbar = false;
+    }
+
+    private void updateDummyView() {
+        if (!mCollapsingTitleEnabled && mDummyView != null) {
+            // If we have a dummy view and we have our title disabled, remove it from its parent
+            final ViewParent parent = mDummyView.getParent();
+            if (parent instanceof ViewGroup) {
+                ((ViewGroup) parent).removeView(mDummyView);
+            }
+        }
+        if (mCollapsingTitleEnabled && mToolbar != null) {
+            if (mDummyView == null) {
+                mDummyView = new View(getContext());
+            }
+            if (mDummyView.getParent() == null) {
+                mToolbar.addView(mDummyView, LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+            }
+        }
     }
 
     @Override
@@ -356,7 +377,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         }
 
         // Update the collapsed bounds by getting it's transformed bounds
-        if (mDummyView != null) {
+        if (mCollapsingTitleEnabled && mDummyView != null) {
             ViewGroupUtils.getDescendantRect(this, mDummyView, mTmpRect);
             mCollapsingTextHelper.setCollapsedBounds(mTmpRect.left, bottom - mTmpRect.height(),
                     mTmpRect.right, bottom);
@@ -372,7 +393,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
         // Finally, set our minimum height to enable proper AppBarLayout collapsing
         if (mToolbar != null) {
-            if (TextUtils.isEmpty(mCollapsingTextHelper.getText())) {
+            if (mCollapsingTitleEnabled && TextUtils.isEmpty(mCollapsingTextHelper.getText())) {
                 // If we do not currently have a title, try and grab it from the Toolbar
                 mCollapsingTextHelper.setText(mToolbar.getTitle());
             }
@@ -390,12 +411,55 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     /**
-     * Set the title to display
+     * Sets the title to be displayed by this view, if enabled.
      *
-     * @param title
+     * @see #setTitleEnabled(boolean)
+     * @see #getTitle()
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_title
      */
-    public void setTitle(CharSequence title) {
+    public void setTitle(@Nullable CharSequence title) {
         mCollapsingTextHelper.setText(title);
+    }
+
+    /**
+     * Returns the title currently being displayed by this view. If the title is not enabled, then
+     * this will return {@code null}.
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_title
+     */
+    @Nullable
+    public CharSequence getTitle() {
+        return mCollapsingTitleEnabled ? mCollapsingTextHelper.getText() : null;
+    }
+
+    /**
+     * Sets whether this view should display its own title.
+     *
+     * <p>The title displayed by this view will shrink and grow based on the scroll offset.</p>
+     *
+     * @see #setTitle(CharSequence)
+     * @see #isTitleEnabled()
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_titleEnabled
+     */
+    public void setTitleEnabled(boolean enabled) {
+        if (enabled != mCollapsingTitleEnabled) {
+            mCollapsingTitleEnabled = enabled;
+            updateDummyView();
+            requestLayout();
+        }
+    }
+
+    /**
+     * Returns whether this view is currently displaying its own title.
+     *
+     * @see #setTitleEnabled(boolean)
+     *
+     * @attr ref R.styleable#CollapsingToolbarLayout_titleEnabled
+     */
+    public boolean isTitleEnabled() {
+        return mCollapsingTitleEnabled;
     }
 
     private void showScrim() {
@@ -482,7 +546,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      * @attr ref R.styleable#CollapsingToolbarLayout_contentScrim
      * @see #getContentScrim()
      */
-    public void setContentScrimColor(int color) {
+    public void setContentScrimColor(@ColorInt int color) {
         setContentScrim(new ColorDrawable(color));
     }
 
@@ -543,7 +607,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim
      * @see #getStatusBarScrim()
      */
-    public void setStatusBarScrimColor(int color) {
+    public void setStatusBarScrimColor(@ColorInt int color) {
         setStatusBarScrim(new ColorDrawable(color));
     }
 
@@ -575,7 +639,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      *
      * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_collapsedTitleTextAppearance
      */
-    public void setCollapsedTitleTextAppearance(int resId) {
+    public void setCollapsedTitleTextAppearance(@StyleRes int resId) {
         mCollapsingTextHelper.setCollapsedTextAppearance(resId);
     }
 
@@ -584,7 +648,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      *
      * @param color The new text color in ARGB format
      */
-    public void setCollapsedTitleTextColor(int color) {
+    public void setCollapsedTitleTextColor(@ColorInt int color) {
         mCollapsingTextHelper.setCollapsedTextColor(color);
     }
 
@@ -614,7 +678,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      *
      * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleTextAppearance
      */
-    public void setExpandedTitleTextAppearance(int resId) {
+    public void setExpandedTitleTextAppearance(@StyleRes int resId) {
         mCollapsingTextHelper.setExpandedTextAppearance(resId);
     }
 
@@ -623,7 +687,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      *
      * @param color The new text color in ARGB format
      */
-    public void setExpandedTitleColor(int color) {
+    public void setExpandedTitleColor(@ColorInt int color) {
         mCollapsingTextHelper.setExpandedTextColor(color);
     }
 

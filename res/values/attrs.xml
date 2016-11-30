@@ -293,6 +293,11 @@
             <!-- Push title to the end of its container, not changing its size. -->
             <flag name="end" value="0x00800005"/>
         </attr>
+
+        <!-- Whether the CollapsingToolbarLayout should draw its own shrinking/growing title. -->
+        <attr name="titleEnabled" format="boolean"/>
+        <!-- The title to show when titleEnabled is set to true. -->
+        <attr name="title"/>
     </declare-styleable>
 
     <declare-styleable name="CollapsingAppBarLayout_LayoutParams">
