@@ -270,6 +270,7 @@ package android.support.design.widget {
     method public void addTab(android.support.design.widget.TabLayout.Tab, int);
     method public void addTab(android.support.design.widget.TabLayout.Tab, boolean);
     method public void addTab(android.support.design.widget.TabLayout.Tab, int, boolean);
+    method public int getSelectedTabPosition();
     method public android.support.design.widget.TabLayout.Tab getTabAt(int);
     method public int getTabCount();
     method public int getTabGravity();
@@ -307,6 +308,7 @@ package android.support.design.widget {
     method public int getPosition();
     method public java.lang.Object getTag();
     method public java.lang.CharSequence getText();
+    method public boolean isSelected();
     method public void select();
     method public android.support.design.widget.TabLayout.Tab setContentDescription(int);
     method public android.support.design.widget.TabLayout.Tab setContentDescription(java.lang.CharSequence);

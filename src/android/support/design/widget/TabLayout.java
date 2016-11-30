@@ -426,6 +426,15 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
+     * Returns the position of the current selected tab.
+     *
+     * @return selected tab position, or {@code -1} if there isn't a selected tab.
+     */
+    public int getSelectedTabPosition() {
+        return mSelectedTab != null ? mSelectedTab.getPosition() : -1;
+    }
+
+    /**
      * Remove a tab from the layout. If the removed tab was selected it will be deselected
      * and another tab will be selected if present.
      *
@@ -1046,6 +1055,13 @@ public class TabLayout extends HorizontalScrollView {
          */
         public void select() {
             mParent.selectTab(this);
+        }
+
+        /**
+         * Returns true if this tab is currently selected.
+         */
+        public boolean isSelected() {
+            return mParent.getSelectedTabPosition() == mPosition;
         }
 
         /**
