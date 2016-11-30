@@ -349,7 +349,7 @@ public class AppBarLayout extends LinearLayout {
         }
 
         int range = 0;
-        for (int i = getChildCount() - 1; i >= 0; i--) {
+        for (int i = 0, z = getChildCount(); i < z; i++) {
             final View child = getChildAt(i);
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
             final int childHeight = ViewCompat.isLaidOut(child)
