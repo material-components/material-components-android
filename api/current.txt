@@ -15,7 +15,6 @@ package android.support.design.widget {
   public static class AppBarLayout.Behavior extends android.support.design.widget.HeaderBehavior {
     ctor public AppBarLayout.Behavior();
     ctor public AppBarLayout.Behavior(android.content.Context, android.util.AttributeSet);
-    method public boolean onInterceptTouchEvent(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.MotionEvent);
     method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, int);
     method public boolean onNestedFling(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, float, float, boolean);
     method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int[]);
@@ -24,7 +23,12 @@ package android.support.design.widget {
     method public android.os.Parcelable onSaveInstanceState(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout);
     method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, android.view.View, int);
     method public void onStopNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View);
-    method public boolean onTouchEvent(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.MotionEvent);
+    method public void setDragCallback(android.support.design.widget.AppBarLayout.Behavior.DragCallback);
+  }
+
+  public static abstract class AppBarLayout.Behavior.DragCallback {
+    ctor public AppBarLayout.Behavior.DragCallback();
+    method public abstract boolean canDrag(android.support.design.widget.AppBarLayout);
   }
 
   protected static class AppBarLayout.Behavior.SavedState extends android.view.View.BaseSavedState {
@@ -59,7 +63,6 @@ package android.support.design.widget {
   public static class AppBarLayout.ScrollingViewBehavior extends android.support.design.widget.HeaderScrollingViewBehavior {
     ctor public AppBarLayout.ScrollingViewBehavior();
     ctor public AppBarLayout.ScrollingViewBehavior(android.content.Context, android.util.AttributeSet);
-    method protected android.view.View findFirstDependency(java.util.List<android.view.View>);
     method public int getOverlayTop();
     method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
     method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
@@ -206,37 +209,12 @@ package android.support.design.widget {
    abstract class HeaderBehavior extends android.support.design.widget.ViewOffsetBehavior {
     ctor public HeaderBehavior();
     ctor public HeaderBehavior(android.content.Context, android.util.AttributeSet);
-    method protected boolean fling(android.support.design.widget.CoordinatorLayout, android.view.View, int, int, float);
-    method protected int getTopBottomOffsetForScrollingSibling();
-    method protected int scroll(android.support.design.widget.CoordinatorLayout, android.view.View, int, int, int);
-    method protected int setHeaderTopBottomOffset(android.support.design.widget.CoordinatorLayout, android.view.View, int);
-    method protected int setHeaderTopBottomOffset(android.support.design.widget.CoordinatorLayout, android.view.View, int, int, int);
   }
 
    abstract class HeaderScrollingViewBehavior extends android.support.design.widget.ViewOffsetBehavior {
     ctor public HeaderScrollingViewBehavior();
     ctor public HeaderScrollingViewBehavior(android.content.Context, android.util.AttributeSet);
-    method protected abstract android.view.View findFirstDependency(java.util.List<android.view.View>);
-    method protected int getScrollRange(android.view.View);
     method public boolean onMeasureChild(android.support.design.widget.CoordinatorLayout, android.view.View, int, int, int, int);
-  }
-
-  public final class NavigationHeaderBehavior extends android.support.design.widget.HeaderBehavior {
-    ctor public NavigationHeaderBehavior();
-    ctor public NavigationHeaderBehavior(android.content.Context, android.util.AttributeSet);
-    method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
-    method public boolean onNestedFling(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View, float, float, boolean);
-    method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View, int, int, int[]);
-    method public void onNestedScroll(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View, int, int, int, int);
-    method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View, android.view.View, int);
-  }
-
-  public static class NavigationHeaderBehavior.MenuViewBehavior extends android.support.design.widget.HeaderScrollingViewBehavior {
-    ctor public NavigationHeaderBehavior.MenuViewBehavior();
-    ctor public NavigationHeaderBehavior.MenuViewBehavior(android.content.Context, android.util.AttributeSet);
-    method protected android.view.View findFirstDependency(java.util.List<android.view.View>);
-    method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
-    method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
   }
 
   public class NavigationView extends android.widget.FrameLayout {
@@ -404,17 +382,17 @@ package android.support.design.widget {
     ctor public TextInputLayout(android.content.Context);
     ctor public TextInputLayout(android.content.Context, android.util.AttributeSet);
     ctor public TextInputLayout(android.content.Context, android.util.AttributeSet, int);
+    method public int getCounterMaxLength();
     method public android.widget.EditText getEditText();
     method public java.lang.CharSequence getError();
     method public java.lang.CharSequence getHint();
     method public android.graphics.Typeface getTypeface();
     method public boolean isErrorEnabled();
     method public boolean isHintAnimationEnabled();
-    method public void setError(java.lang.CharSequence);
-    method public void setErrorEnabled(boolean);
     method public void setCounterEnabled(boolean);
     method public void setCounterMaxLength(int);
-    method public int getCounterMaxLength();
+    method public void setError(java.lang.CharSequence);
+    method public void setErrorEnabled(boolean);
     method public void setHint(java.lang.CharSequence);
     method public void setHintAnimationEnabled(boolean);
     method public void setHintTextAppearance(int);

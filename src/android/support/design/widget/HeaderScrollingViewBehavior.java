@@ -31,15 +31,11 @@ import java.util.List;
  */
 abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
-    public HeaderScrollingViewBehavior() {
-        super();
-    }
+    public HeaderScrollingViewBehavior() {}
 
     public HeaderScrollingViewBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
     }
-
-    protected abstract View findFirstDependency(List<View> views);
 
     @Override
     public boolean onMeasureChild(CoordinatorLayout parent, View child,
@@ -88,7 +84,9 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
         return false;
     }
 
-    protected int getScrollRange(View v) {
+    abstract View findFirstDependency(List<View> views);
+
+    int getScrollRange(View v) {
         return v.getMeasuredHeight();
     }
 }

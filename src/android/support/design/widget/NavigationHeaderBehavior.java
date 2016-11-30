@@ -30,11 +30,9 @@ import java.util.List;
  * The {@link Behavior} for the {@link NavigationView} header. This handles scrolling the
  * header view with the list that displays the menu in {@link NavigationView}.
  */
-public final class NavigationHeaderBehavior extends HeaderBehavior<View> {
+class NavigationHeaderBehavior extends HeaderBehavior<View> {
 
-    public NavigationHeaderBehavior() {
-        super();
-    }
+    public NavigationHeaderBehavior() {}
 
     public NavigationHeaderBehavior(Context context, AttributeSet attrs) {
         super(context, attrs);
@@ -45,16 +43,13 @@ public final class NavigationHeaderBehavior extends HeaderBehavior<View> {
         return dependency instanceof RecyclerView;
     }
 
+    @Override
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, View header,
             View directTargetChild, View target, int nestedScrollAxes) {
         // Return true if we're nested scrolling vertically, and the scrolling view is big enough
         // to scroll.
-        boolean canTargetScroll = ViewCompat.canScrollVertically(target, -1)
-                || ViewCompat.canScrollVertically(target,1);
-        final boolean started = (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0
-                && coordinatorLayout.getHeight() - target.getHeight() <= header.getHeight()
-                && canTargetScroll;
-        return started;
+        return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0
+                && coordinatorLayout.getHeight() - target.getHeight() <= header.getHeight();
     }
 
     @Override
@@ -89,10 +84,9 @@ public final class NavigationHeaderBehavior extends HeaderBehavior<View> {
     /**
      * Defines the behavior for the scrolling view used to back {@link NavigationView}.
      */
-    public static class MenuViewBehavior extends HeaderScrollingViewBehavior {
+    static final class MenuViewBehavior extends HeaderScrollingViewBehavior {
 
-        public MenuViewBehavior() {
-        }
+        public MenuViewBehavior() {}
 
         public MenuViewBehavior(Context context, AttributeSet attrs) {
             super(context, attrs);
@@ -112,14 +106,14 @@ public final class NavigationHeaderBehavior extends HeaderBehavior<View> {
             if (behavior instanceof NavigationHeaderBehavior) {
                 // Offset the menu so that it is below the header.
                 final int headerOffset = ((NavigationHeaderBehavior) behavior)
-                        .getTopAndBottomOffset();
+                        .getTopBottomOffsetForScrollingSibling();
                 setTopAndBottomOffset(dependency.getHeight() + headerOffset);
             }
             return false;
         }
 
         @Override
-        protected View findFirstDependency(List<View> views) {
+        View findFirstDependency(List<View> views) {
             for (int i = 0, z = views.size(); i < z; i++) {
                 View view = views.get(i);
                 if (view.getId() == R.id.navigation_header_container) {

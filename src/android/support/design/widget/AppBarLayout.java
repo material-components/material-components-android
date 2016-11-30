@@ -21,14 +21,13 @@ import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.R;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
-import android.view.MotionEvent;
 import android.view.View;
-import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
@@ -645,8 +644,23 @@ public class AppBarLayout extends LinearLayout {
      * scroll handling with offsetting.
      */
     public static class Behavior extends HeaderBehavior<AppBarLayout> {
-        private static final int INVALID_POINTER = -1;
         private static final int INVALID_POSITION = -1;
+
+        /**
+         * Callback to allow control over any {@link AppBarLayout} dragging.
+         */
+        public static abstract class DragCallback {
+            /**
+             * Allows control over whether the given {@link AppBarLayout} can be dragged or not.
+             *
+             * <p>Dragging is defined as a direct touch on the AppBarLayout with movement. This
+             * call does not affect any nested scrolling.</p>
+             *
+             * @return true if we are in a position to scroll the AppBarLayout via a drag, false
+             *         if not.
+             */
+            public abstract boolean canDrag(@NonNull AppBarLayout appBarLayout);
+        }
 
         private int mOffsetDelta;
 
@@ -659,12 +673,8 @@ public class AppBarLayout extends LinearLayout {
         private boolean mOffsetToChildIndexOnLayoutIsMinHeight;
         private float mOffsetToChildIndexOnLayoutPerc;
 
-        private boolean mIsBeingDragged;
-        private int mActivePointerId = INVALID_POINTER;
-        private int mLastMotionY;
-        private int mTouchSlop = -1;
-
         private WeakReference<View> mLastNestedScrollingChildRef;
+        private DragCallback mOnDragCallback;
 
         public Behavior() {}
 
@@ -743,115 +753,6 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        public boolean onInterceptTouchEvent(CoordinatorLayout parent, AppBarLayout child,
-                MotionEvent ev) {
-            if (mTouchSlop < 0) {
-                mTouchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
-            }
-
-            final int action = ev.getAction();
-
-            // Shortcut since we're being dragged
-            if (action == MotionEvent.ACTION_MOVE && mIsBeingDragged) {
-                return true;
-            }
-
-            switch (MotionEventCompat.getActionMasked(ev)) {
-                case MotionEvent.ACTION_MOVE: {
-                    final int activePointerId = mActivePointerId;
-                    if (activePointerId == INVALID_POINTER) {
-                        // If we don't have a valid id, the touch down wasn't on content.
-                        break;
-                    }
-                    final int pointerIndex = MotionEventCompat.findPointerIndex(ev, activePointerId);
-                    if (pointerIndex == -1) {
-                        break;
-                    }
-
-                    final int y = (int) MotionEventCompat.getY(ev, pointerIndex);
-                    final int yDiff = Math.abs(y - mLastMotionY);
-                    if (yDiff > mTouchSlop) {
-                        mIsBeingDragged = true;
-                        mLastMotionY = y;
-                    }
-                    break;
-                }
-
-                case MotionEvent.ACTION_DOWN: {
-                    mIsBeingDragged = false;
-                    final int x = (int) ev.getX();
-                    final int y = (int) ev.getY();
-                    if (parent.isPointInChildBounds(child, x, y) && canDragAppBarLayout()) {
-                        mLastMotionY = y;
-                        mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
-                    }
-                    break;
-                }
-
-                case MotionEvent.ACTION_CANCEL:
-                case MotionEvent.ACTION_UP:
-                    mIsBeingDragged = false;
-                    mActivePointerId = INVALID_POINTER;
-                    break;
-            }
-
-            return mIsBeingDragged;
-        }
-
-        @Override
-        public boolean onTouchEvent(CoordinatorLayout parent, AppBarLayout child, MotionEvent ev) {
-            if (mTouchSlop < 0) {
-                mTouchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
-            }
-
-            int x = (int) ev.getX();
-            int y = (int) ev.getY();
-
-            switch (MotionEventCompat.getActionMasked(ev)) {
-                case MotionEvent.ACTION_DOWN:
-                    if (parent.isPointInChildBounds(child, x, y) && canDragAppBarLayout()) {
-                        mLastMotionY = y;
-                        mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
-                    } else {
-                        return false;
-                    }
-                    break;
-                case MotionEvent.ACTION_MOVE:
-                    final int activePointerIndex = MotionEventCompat.findPointerIndex(ev,
-                            mActivePointerId);
-                    if (activePointerIndex == -1) {
-                        return false;
-                    }
-
-                    y = (int) MotionEventCompat.getY(ev, activePointerIndex);
-
-                    int dy = mLastMotionY - y;
-                    if (!mIsBeingDragged && Math.abs(dy) > mTouchSlop) {
-                        mIsBeingDragged = true;
-                        if (dy > 0) {
-                            dy -= mTouchSlop;
-                        } else {
-                            dy += mTouchSlop;
-                        }
-                    }
-
-                    if (mIsBeingDragged) {
-                        mLastMotionY = y;
-                        // We're being dragged so scroll the ABL
-                        scroll(parent, child, dy, -child.getDownNestedScrollRange(), 0);
-                    }
-                    break;
-                case MotionEvent.ACTION_UP:
-                case MotionEvent.ACTION_CANCEL:
-                    mIsBeingDragged = false;
-                    mActivePointerId = INVALID_POINTER;
-                    break;
-            }
-
-            return true;
-        }
-
-        @Override
         public boolean onNestedFling(final CoordinatorLayout coordinatorLayout,
                 final AppBarLayout child, View target, float velocityX, float velocityY,
                 boolean consumed) {
@@ -890,6 +791,15 @@ public class AppBarLayout extends LinearLayout {
             return flung;
         }
 
+        /**
+         * Set a callback to control any {@link AppBarLayout} dragging.
+         *
+         * @param callback the callback to use, or {@code null} to use the default behavior.
+         */
+        public void setDragCallback(@Nullable DragCallback callback) {
+            mOnDragCallback = callback;
+        }
+
         private void animateOffsetTo(final CoordinatorLayout coordinatorLayout,
                 final AppBarLayout child, int offset) {
             if (mAnimator == null) {
@@ -909,7 +819,6 @@ public class AppBarLayout extends LinearLayout {
             mAnimator.setIntValues(getTopBottomOffsetForScrollingSibling(), offset);
             mAnimator.start();
         }
-
 
         private View getChildOnOffset(AppBarLayout abl, final int offset) {
             for (int i = 0, count = abl.getChildCount(); i < count; i++) {
@@ -979,21 +888,42 @@ public class AppBarLayout extends LinearLayout {
             return handled;
         }
 
-        private boolean canDragAppBarLayout() {
-            if (mLastNestedScrollingChildRef != null) {
-                final View view = mLastNestedScrollingChildRef.get();
-                return view != null && view.isShown() && !ViewCompat.canScrollVertically(view, -1);
+        @Override
+        boolean canDragView(AppBarLayout view) {
+            if (mOnDragCallback != null) {
+                // If there is a drag callback set, it's in control
+                return mOnDragCallback.canDrag(view);
             }
-            return false;
+
+            // Else we'll use the default behaviour of seeing if it can scroll down
+            if (mLastNestedScrollingChildRef != null) {
+                // If we have a reference to a scrolling view, check it
+                final View scrollingView = mLastNestedScrollingChildRef.get();
+                return scrollingView != null && scrollingView.isShown()
+                        && !ViewCompat.canScrollVertically(scrollingView, -1);
+            } else {
+                // Otherwise we assume that the scrolling view hasn't been scrolled and can drag.
+                return true;
+            }
         }
 
         @Override
-        protected int setHeaderTopBottomOffset(CoordinatorLayout coordinatorLayout,
-                View header, int newOffset, int minOffset, int maxOffset) {
+        int getMaxDragOffset(AppBarLayout view) {
+            return -view.getDownNestedScrollRange();
+        }
+
+        @Override
+        int getScrollRangeForDragFling(AppBarLayout view) {
+            return view.getTotalScrollRange();
+        }
+
+        @Override
+        int setHeaderTopBottomOffset(CoordinatorLayout coordinatorLayout,
+                AppBarLayout header, int newOffset, int minOffset, int maxOffset) {
             final int curOffset = getTopBottomOffsetForScrollingSibling();
             int consumed = 0;
 
-            if ((header instanceof AppBarLayout) && minOffset != 0 && curOffset >= minOffset
+            if (minOffset != 0 && curOffset >= minOffset
                     && curOffset <= maxOffset) {
                 // If we have some scrolling range, and we're currently within the min and max
                 // offsets, calculate a new offset
@@ -1088,7 +1018,7 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        protected int getTopBottomOffsetForScrollingSibling() {
+        int getTopBottomOffsetForScrollingSibling() {
             return getTopAndBottomOffset() + mOffsetDelta;
         }
 
@@ -1271,18 +1201,18 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        protected View findFirstDependency(List<View> views) {
+        View findFirstDependency(List<View> views) {
             for (int i = 0, z = views.size(); i < z; i++) {
                 View view = views.get(i);
                 if (view instanceof AppBarLayout) {
-                    return (AppBarLayout) view;
+                    return view;
                 }
             }
             return null;
         }
 
         @Override
-        protected int getScrollRange(View v) {
+        int getScrollRange(View v) {
             if (v instanceof AppBarLayout) {
                 return ((AppBarLayout) v).getTotalScrollRange();
             } else {
