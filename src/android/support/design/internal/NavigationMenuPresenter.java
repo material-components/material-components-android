@@ -377,6 +377,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             if (mUpdateSuspended) {
                 return;
             }
+            mUpdateSuspended = true;
             mItems.clear();
             int currentGroupId = -1;
             int currentGroupStart = 0;
@@ -438,6 +439,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     currentGroupId = groupId;
                 }
             }
+            mUpdateSuspended = false;
         }
 
         private void appendTransparentIconIfMissing(int startIndex, int endIndex) {
