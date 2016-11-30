@@ -158,4 +158,29 @@ public class SnackbarUtils {
             snackbar.setCallback(null);
         }
     }
+
+    /**
+     * Helper method that waits until the given Snackbar has been fully dismissed. Note that
+     * calling this method will reset the currently set {@link Snackbar.Callback}.
+     */
+    public static void waitUntilFullyDismissed(Snackbar snackbar) {
+        SnackbarDismissedCallback snackbarCallback = new SnackbarDismissedCallback();
+        snackbar.setCallback(snackbarCallback);
+        try {
+            // Register our listener as idling resource so that Espresso waits until the
+            // the snackbar has been fully dismissed
+            Espresso.registerIdlingResources(snackbarCallback);
+            // Mark the callback to require waiting for idle state
+            snackbarCallback.mNeedsIdle = true;
+            // Perform a dummy Espresso action that loops until the UI thread is idle. This
+            // effectively blocks us until the Snackbar has completed its sliding animation.
+            onView(isRoot()).perform(waitUntilIdle());
+            snackbarCallback.mNeedsIdle = false;
+        } finally {
+            // Unregister our idling resource
+            Espresso.unregisterIdlingResources(snackbarCallback);
+            // And remove our tracker listener from Snackbar
+            snackbar.setCallback(null);
+        }
+    }
 }

@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The Android Open Source Project
+ * Copyright (C) 2016 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -13,14 +13,13 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-
 package android.support.design.widget;
 
-import android.support.v4.view.OnApplyWindowInsetsListener;
-import android.view.View;
+import android.support.design.test.R;
 
-interface CoordinatorLayoutInsetsHelper {
-
-    void setupForWindowInsets(View view, OnApplyWindowInsetsListener insetsListener);
-
+public class BottomNavigationViewActivity extends BaseTestActivity {
+    @Override
+    protected int getContentViewLayoutResId() {
+        return R.layout.design_bottom_navigation_view;
+    }
 }

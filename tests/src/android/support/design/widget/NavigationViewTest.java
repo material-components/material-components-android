@@ -15,11 +15,50 @@
  */
 package android.support.design.widget;
 
+import static android.support.design.testutils.DrawerLayoutActions.closeDrawer;
+import static android.support.design.testutils.DrawerLayoutActions.openDrawer;
+import static android.support.design.testutils.NavigationViewActions.addHeaderView;
+import static android.support.design.testutils.NavigationViewActions.inflateHeaderView;
+import static android.support.design.testutils.NavigationViewActions.removeHeaderView;
+import static android.support.design.testutils.NavigationViewActions.setCheckedItem;
+import static android.support.design.testutils.NavigationViewActions.setIconForMenuItem;
+import static android.support.design.testutils.NavigationViewActions.setItemBackground;
+import static android.support.design.testutils.NavigationViewActions.setItemBackgroundResource;
+import static android.support.design.testutils.NavigationViewActions.setItemIconTintList;
+import static android.support.design.testutils.NavigationViewActions.setItemTextAppearance;
+import static android.support.design.testutils.NavigationViewActions.setItemTextColor;
+import static android.support.design.testutils.TestUtilsMatchers.isChildOfA;
+import static android.support.design.testutils.TestUtilsMatchers.withBackgroundFill;
+import static android.support.design.testutils.TestUtilsMatchers.withStartDrawableFilledWith;
+import static android.support.design.testutils.TestUtilsMatchers.withTextColor;
+import static android.support.design.testutils.TestUtilsMatchers.withTextSize;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.Visibility;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.core.AllOf.allOf;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import android.content.res.Resources;
-import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.design.test.R;
+import android.support.design.testutils.TestDrawable;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -30,24 +69,14 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
+
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.HashMap;
 import java.util.Map;
-
-import static android.support.design.testutils.DrawerLayoutActions.closeDrawer;
-import static android.support.design.testutils.DrawerLayoutActions.openDrawer;
-import static android.support.design.testutils.NavigationViewActions.*;
-import static android.support.design.testutils.TestUtilsMatchers.*;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static org.hamcrest.core.AllOf.allOf;
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
 
 public class NavigationViewTest
         extends BaseInstrumentationTestCase<NavigationViewActivity> {
@@ -90,7 +119,7 @@ public class NavigationViewTest
         // Check the contents of the Menu object
         final Menu menu = mNavigationView.getMenu();
         assertNotNull("Menu should not be null", menu);
-        assertEquals("Should have matching number of items", MENU_CONTENT_ITEM_IDS.length,
+        assertEquals("Should have matching number of items", MENU_CONTENT_ITEM_IDS.length + 1,
                 menu.size());
         for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
             final MenuItem currItem = menu.getItem(i);
@@ -218,35 +247,6 @@ public class NavigationViewTest
                     isDescendantOfA(withId(R.id.start_drawer)));
 
             onView(menuItemMatcher).check(matches(withBackgroundFill(newFillColorGreen)));
-        }
-    }
-
-    /**
-     * Custom drawable class that provides a reliable way for testing various tinting scenarios
-     * across a range of platform versions. ColorDrawable doesn't support tinting on Kitkat and
-     * below, and BitmapDrawable (PNG sources) appears to slightly alter green and blue channels
-     * by a few units on some of the older platform versions (Gingerbread). Using GradientDrawable
-     * allows doing reliable tests at the level of individual channels (alpha / red / green / blue)
-     * for tinted and untinted icons in the testIconTinting method.
-     */
-    private class TestDrawable extends GradientDrawable {
-        private int mWidth;
-        private int mHeight;
-
-        public TestDrawable(@ColorInt int color, int width, int height) {
-            super(Orientation.TOP_BOTTOM, new int[] { color, color });
-            mWidth = width;
-            mHeight = height;
-        }
-
-        @Override
-        public int getIntrinsicWidth() {
-            return mWidth;
-        }
-
-        @Override
-        public int getIntrinsicHeight() {
-            return mHeight;
         }
     }
 
@@ -549,5 +549,16 @@ public class NavigationViewTest
         // makes our matcher actually run. If for some reason NavigationView fails to inflate and
         // display our SwitchCompat action layout, the next line will fail in the matcher pass.
         onView(menuItemMatcher).perform(click());
+
+        // Check that the full custom view is displayed without title and icon.
+        final Resources res = mActivityTestRule.getActivity().getResources();
+        Matcher customItemMatcher = allOf(
+                isDescendantOfA(withId(R.id.start_drawer)),
+                isChildOfA(isAssignableFrom(RecyclerView.class)),
+                hasDescendant(withText(res.getString(R.string.navigate_custom))),
+                hasDescendant(allOf(
+                        isAssignableFrom(TextView.class),
+                        withEffectiveVisibility(Visibility.GONE))));
+        onView(customItemMatcher).perform(click());
     }
 }

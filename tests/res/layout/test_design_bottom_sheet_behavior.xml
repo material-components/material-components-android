@@ -33,4 +33,14 @@
 
     </LinearLayout>
 
+    <android.support.design.widget.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_add"
+            app:layout_anchor="@id/bottom_sheet"
+            app:layout_anchorGravity="top|end"
+            app:useCompatPadding="true"
+            app:backgroundTint="#f00"/>
+
 </android.support.design.widget.CoordinatorLayout>

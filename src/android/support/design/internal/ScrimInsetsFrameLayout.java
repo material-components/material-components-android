@@ -70,7 +70,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
                                 insets.getSystemWindowInsetTop(),
                                 insets.getSystemWindowInsetRight(),
                                 insets.getSystemWindowInsetBottom());
-                        onInsetsChanged(mInsets);
+                        onInsetsChanged(insets);
                         setWillNotDraw(mInsets.isEmpty() || mInsetForeground == null);
                         ViewCompat.postInvalidateOnAnimation(ScrimInsetsFrameLayout.this);
                         return insets.consumeSystemWindowInsets();
@@ -128,7 +128,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
         }
     }
 
-    protected void onInsetsChanged(Rect insets) {
+    protected void onInsetsChanged(WindowInsetsCompat insets) {
     }
 
 }

@@ -29,8 +29,10 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.StringRes;
 import android.support.design.R;
+import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
+import android.support.v4.view.WindowInsetsCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -689,6 +691,20 @@ public final class Snackbar {
                     ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
             ViewCompat.setImportantForAccessibility(this,
                     ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+
+            // Make sure that we fit system windows and have a listener to apply any insets
+            ViewCompat.setFitsSystemWindows(this, true);
+            ViewCompat.setOnApplyWindowInsetsListener(this,
+                    new android.support.v4.view.OnApplyWindowInsetsListener() {
+                @Override
+                public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+                    // Copy over the bottom inset as padding so that we're displayed above the
+                    // navigation bar
+                    v.setPadding(v.getPaddingLeft(), v.getPaddingTop(),
+                            v.getPaddingRight(), insets.getSystemWindowInsetBottom());
+                    return insets;
+                }
+            });
         }
 
         @Override
@@ -778,6 +794,8 @@ public final class Snackbar {
             if (mOnAttachStateChangeListener != null) {
                 mOnAttachStateChangeListener.onViewAttachedToWindow(this);
             }
+
+            ViewCompat.requestApplyInsets(this);
         }
 
         @Override

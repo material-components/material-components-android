@@ -21,8 +21,7 @@
     <android.support.design.widget.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/appbar_height"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
+        android:layout_height="@dimen/appbar_height">
 
         <android.support.design.widget.CollapsingToolbarLayout
             android:id="@+id/collapsing_app_bar"

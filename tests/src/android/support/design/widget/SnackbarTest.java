@@ -49,7 +49,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     private CoordinatorLayout mCoordinatorLayout;
 
-    private static interface DismissAction {
+    private interface DismissAction {
         void dismiss(Snackbar snackbar);
     }
 

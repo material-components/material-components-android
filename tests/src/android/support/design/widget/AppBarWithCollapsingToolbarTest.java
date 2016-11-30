@@ -19,7 +19,9 @@ package android.support.design.widget;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.test.R;
+import android.support.test.InstrumentationRegistry;
 import android.test.suitebuilder.annotation.MediumTest;
+import android.view.View;
 import android.widget.ImageView;
 import org.junit.Test;
 
@@ -365,5 +367,74 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         parallaxImageView.getLocationOnScreen(parallaxImageOnScreenXY);
         assertEquals(parallaxMultiplier * (appbarOnScreenXY[1] - originalAppbarTop),
                 parallaxImageOnScreenXY[1] - originalParallaxImageTop, 1);
+    }
+
+    @Test
+    public void testAddViewWithDefaultLayoutParams() {
+        configureContent(R.layout.design_appbar_toolbar_collapse_pin,
+                R.string.design_appbar_collapsing_toolbar_pin);
+
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                ImageView view = new ImageView(mCollapsingToolbar.getContext());
+                mCollapsingToolbar.addView(view);
+            }
+        });
+
+    }
+
+    @Test
+    public void testPinnedToolbarWithMargins() throws Throwable {
+        configureContent(R.layout.design_appbar_toolbar_collapse_pin_margins,
+                R.string.design_appbar_collapsing_toolbar_pin_margins);
+
+        CollapsingToolbarLayout.LayoutParams toolbarLp =
+                (CollapsingToolbarLayout.LayoutParams) mToolbar.getLayoutParams();
+        assertEquals(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN,
+                toolbarLp.getCollapseMode());
+
+        final int[] appbarOnScreenXY = new int[2];
+        final int[] toolbarOnScreenXY = new int[2];
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        mToolbar.getLocationOnScreen(toolbarOnScreenXY);
+
+        final int originalAppbarTop = appbarOnScreenXY[1];
+        final int originalAppbarBottom = originalAppbarTop + mAppBar.getHeight();
+        final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
+
+        final int toolbarHeight = mToolbar.getHeight();
+        final int toolbarVerticalMargins = toolbarLp.topMargin + toolbarLp.bottomMargin;
+        final int appbarHeight = mAppBar.getHeight();
+
+        // Perform a swipe-up gesture across the horizontal center of the screen.
+        int swipeAmount = appbarHeight - toolbarHeight - toolbarVerticalMargins;
+        performVerticalSwipeUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + (3 * swipeAmount / 2),
+                swipeAmount);
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        mToolbar.getLocationOnScreen(toolbarOnScreenXY);
+        // At this point the toolbar should be visually pinned to the bottom of the appbar layout,
+        // observing it's margins
+        // The toolbar should still be visually pinned to the bottom of the appbar layout
+        assertEquals(originalAppbarTop, toolbarOnScreenXY[1] - toolbarLp.topMargin, 1);
+
+        // Swipe up again, this time just 50% of the margin size
+        swipeAmount = toolbarVerticalMargins / 2;
+        performVerticalSwipeUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + (3 * swipeAmount / 2),
+                swipeAmount);
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        mToolbar.getLocationOnScreen(toolbarOnScreenXY);
+
+        // The toolbar should still be visually pinned to the bottom of the appbar layout
+        assertEquals(appbarOnScreenXY[1] + appbarHeight,
+                toolbarOnScreenXY[1] + toolbarHeight + toolbarLp.bottomMargin, 1);
     }
 }

@@ -26,8 +26,13 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.view.ViewTreeObserver;
+import android.view.animation.Interpolator;
 
 abstract class FloatingActionButtonImpl {
+
+    static final Interpolator ANIM_INTERPOLATOR = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
+    static final long PRESSED_ANIM_DURATION = 100;
+    static final long PRESSED_ANIM_DELAY = 100;
 
     Drawable mShapeDrawable;
     Drawable mRippleDrawable;
@@ -48,6 +53,7 @@ abstract class FloatingActionButtonImpl {
             android.R.attr.state_enabled};
     static final int[] FOCUSED_ENABLED_STATE_SET = {android.R.attr.state_focused,
             android.R.attr.state_enabled};
+    static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
     static final int[] EMPTY_STATE_SET = new int[0];
 
     final VisibilityAwareImageButton mView;
@@ -74,7 +80,7 @@ abstract class FloatingActionButtonImpl {
     final void setElevation(float elevation) {
         if (mElevation != elevation) {
             mElevation = elevation;
-            onElevationChanged(elevation);
+            onElevationsChanged(elevation, mPressedTranslationZ);
         }
     }
 
@@ -83,13 +89,11 @@ abstract class FloatingActionButtonImpl {
     final void setPressedTranslationZ(float translationZ) {
         if (mPressedTranslationZ != translationZ) {
             mPressedTranslationZ = translationZ;
-            onTranslationZChanged(translationZ);
+            onElevationsChanged(mElevation, translationZ);
         }
     }
 
-    abstract void onElevationChanged(float elevation);
-
-    abstract void onTranslationZChanged(float translationZ);
+    abstract void onElevationsChanged(float elevation, float pressedTranslationZ);
 
     abstract void onDrawableStateChanged(int[] state);
 

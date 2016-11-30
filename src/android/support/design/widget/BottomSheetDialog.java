@@ -17,6 +17,7 @@
 package android.support.design.widget;
 
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
@@ -35,6 +36,12 @@ import android.widget.FrameLayout;
  */
 public class BottomSheetDialog extends AppCompatDialog {
 
+    private BottomSheetBehavior<FrameLayout> mBehavior;
+
+    private boolean mCancelable = true;
+    private boolean mCanceledOnTouchOutside = true;
+    private boolean mCanceledOnTouchOutsideSet;
+
     public BottomSheetDialog(@NonNull Context context) {
         this(context, 0);
     }
@@ -50,6 +57,7 @@ public class BottomSheetDialog extends AppCompatDialog {
             OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
         supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
+        mCancelable = cancelable;
     }
 
     @Override
@@ -74,6 +82,27 @@ public class BottomSheetDialog extends AppCompatDialog {
         super.setContentView(wrapInBottomSheet(0, view, params));
     }
 
+    @Override
+    public void setCancelable(boolean cancelable) {
+        super.setCancelable(cancelable);
+        if (mCancelable != cancelable) {
+            mCancelable = cancelable;
+            if (mBehavior != null) {
+                mBehavior.setHideable(cancelable);
+            }
+        }
+    }
+
+    @Override
+    public void setCanceledOnTouchOutside(boolean cancel) {
+        super.setCanceledOnTouchOutside(cancel);
+        if (cancel && !mCancelable) {
+            mCancelable = true;
+        }
+        mCanceledOnTouchOutside = cancel;
+        mCanceledOnTouchOutsideSet = true;
+    }
+
     private View wrapInBottomSheet(int layoutResId, View view, ViewGroup.LayoutParams params) {
         final CoordinatorLayout coordinator = (CoordinatorLayout) View.inflate(getContext(),
                 R.layout.design_bottom_sheet_dialog, null);
@@ -81,38 +110,39 @@ public class BottomSheetDialog extends AppCompatDialog {
             view = getLayoutInflater().inflate(layoutResId, coordinator, false);
         }
         FrameLayout bottomSheet = (FrameLayout) coordinator.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior.from(bottomSheet).setBottomSheetCallback(mBottomSheetCallback);
+        mBehavior = BottomSheetBehavior.from(bottomSheet);
+        mBehavior.setBottomSheetCallback(mBottomSheetCallback);
+        mBehavior.setHideable(mCancelable);
         if (params == null) {
             bottomSheet.addView(view);
         } else {
             bottomSheet.addView(view, params);
         }
         // We treat the CoordinatorLayout as outside the dialog though it is technically inside
-        if (shouldWindowCloseOnTouchOutside()) {
-            coordinator.findViewById(R.id.touch_outside).setOnClickListener(
-                    new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (isShowing()) {
-                                cancel();
-                            }
-                        }
-                    });
-        }
+        coordinator.findViewById(R.id.touch_outside).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                if (mCancelable && isShowing() && shouldWindowCloseOnTouchOutside()) {
+                    cancel();
+                }
+            }
+        });
         return coordinator;
     }
 
     private boolean shouldWindowCloseOnTouchOutside() {
-        if (Build.VERSION.SDK_INT < 11) {
-            return true;
+        if (!mCanceledOnTouchOutsideSet) {
+            if (Build.VERSION.SDK_INT < 11) {
+                mCanceledOnTouchOutside = true;
+            } else {
+                TypedArray a = getContext().obtainStyledAttributes(
+                        new int[]{android.R.attr.windowCloseOnTouchOutside});
+                mCanceledOnTouchOutside = a.getBoolean(0, true);
+                a.recycle();
+            }
+            mCanceledOnTouchOutsideSet = true;
         }
-        TypedValue value = new TypedValue();
-        //noinspection SimplifiableIfStatement
-        if (getContext().getTheme()
-                .resolveAttribute(android.R.attr.windowCloseOnTouchOutside, value, true)) {
-            return value.data != 0;
-        }
-        return false;
+        return mCanceledOnTouchOutside;
     }
 
     private static int getThemeResId(Context context, int themeId) {

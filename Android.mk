@@ -35,13 +35,11 @@ LOCAL_JAR_EXCLUDE_FILES := none
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
-support_module_src_files := $(LOCAL_SRC_FILES)
-
 # A helper sub-library to resolve cyclic dependencies between src and the platform dependent
 # implementations
 include $(CLEAR_VARS)
 LOCAL_MODULE := android-support-design-base
-LOCAL_SDK_VERSION := 7
+LOCAL_SDK_VERSION := 9
 LOCAL_SRC_FILES := $(call all-java-files-under, base)
 LOCAL_JAVA_LIBRARIES := \
     android-support-design-res \
@@ -51,13 +49,11 @@ LOCAL_JAVA_LIBRARIES := \
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
-support_module_src_files += $(LOCAL_SRC_FILES)
-
-# A helper sub-library that makes direct use of Eclair MR1 APIs
+# A helper sub-library that makes direct use of Gingerbread APIs
 include $(CLEAR_VARS)
-LOCAL_MODULE := android-support-design-eclair-mr1
-LOCAL_SDK_VERSION := 7
-LOCAL_SRC_FILES := $(call all-java-files-under, eclair-mr1)
+LOCAL_MODULE := android-support-design-gingerbread
+LOCAL_SDK_VERSION := 9
+LOCAL_SRC_FILES := $(call all-java-files-under, gingerbread)
 LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-base
 LOCAL_JAVA_LIBRARIES := \
     android-support-design-res \
@@ -67,14 +63,12 @@ LOCAL_JAVA_LIBRARIES := \
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
-support_module_src_files += $(LOCAL_SRC_FILES)
-
 # A helper sub-library that makes direct use of Honeycomb APIs
 include $(CLEAR_VARS)
 LOCAL_MODULE := android-support-design-honeycomb
 LOCAL_SDK_VERSION := 11
 LOCAL_SRC_FILES := $(call all-java-files-under, honeycomb)
-LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-eclair-mr1
+LOCAL_STATIC_JAVA_LIBRARIES := android-support-design-gingerbread
 LOCAL_JAVA_LIBRARIES := \
     android-support-design-res \
     android-support-v4 \
@@ -82,8 +76,6 @@ LOCAL_JAVA_LIBRARIES := \
     android-support-v7-recyclerview
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
-
-support_module_src_files += $(LOCAL_SRC_FILES)
 
 # A helper sub-library that makes direct use of Honeycomb MR1 APIs
 include $(CLEAR_VARS)
@@ -99,8 +91,6 @@ LOCAL_JAVA_LIBRARIES := \
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
-support_module_src_files += $(LOCAL_SRC_FILES)
-
 # A helper sub-library that makes direct use of ICS APIs
 include $(CLEAR_VARS)
 LOCAL_MODULE := android-support-design-ics
@@ -115,8 +105,6 @@ LOCAL_JAVA_LIBRARIES := \
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
 
-support_module_src_files += $(LOCAL_SRC_FILES)
-
 # A helper sub-library that makes direct use of Lollipop APIs
 include $(CLEAR_VARS)
 LOCAL_MODULE := android-support-design-lollipop
@@ -130,8 +118,6 @@ LOCAL_JAVA_LIBRARIES := \
     android-support-v7-recyclerview
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 include $(BUILD_STATIC_JAVA_LIBRARY)
-
-support_module_src_files += $(LOCAL_SRC_FILES)
 
 # Here is the final static library that apps can link against.
 # Applications that use this library must specify
@@ -155,13 +141,3 @@ LOCAL_JAR_EXCLUDE_FILES := none
 LOCAL_JAVA_LANGUAGE_VERSION := 1.7
 LOCAL_AAPT_FLAGS := --add-javadoc-annotation doconly
 include $(BUILD_STATIC_JAVA_LIBRARY)
-
-support_module_src_files += $(LOCAL_SRC_FILES)
-
-# API Check
-# ---------------------------------------------
-support_module := $(LOCAL_MODULE)
-support_module_api_dir := $(LOCAL_PATH)/api
-support_module_java_libraries := $(LOCAL_JAVA_LIBRARIES)
-support_module_java_packages := android.support.design.*
-include $(SUPPORT_API_CHECK)

@@ -31,6 +31,8 @@ public class BottomSheetBehaviorActivity extends BaseTestActivity {
 
     BottomSheetBehavior mBehavior;
 
+    FloatingActionButton mFab;
+
     @Override
     protected int getContentViewLayoutResId() {
         return R.layout.test_design_bottom_sheet_behavior;
@@ -41,6 +43,7 @@ public class BottomSheetBehaviorActivity extends BaseTestActivity {
         mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
         mBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
         mBehavior = BottomSheetBehavior.from(mBottomSheet);
+        mFab = (FloatingActionButton) findViewById(R.id.fab);
         Intent intent = getIntent();
         if (intent != null) {
             int initialState = intent.getIntExtra(EXTRA_INITIAL_STATE, -1);

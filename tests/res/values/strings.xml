@@ -19,6 +19,7 @@
     <string name="navigate_home">Home</string>
     <string name="navigate_profile">Profile</string>
     <string name="navigate_people">People</string>
+    <string name="navigate_custom">Custom</string>
     <string name="navigate_settings">Settings</string>
 
     <string name="snackbar_text">This is a test message</string>
@@ -34,6 +35,7 @@
     <string name="design_appbar_toolbar_scroll_tabs_scroll">AppBar/Toolbar Scroll + Tabs Scroll</string>
     <string name="design_appbar_toolbar_scroll_tabs_scroll_snap">AppBar/Toolbar Scroll + Tabs Scroll + Snap</string>
     <string name="design_appbar_toolbar_scroll_tabs_pin">AppBar/Toolbar Scroll + Tabs Pin</string>
+    <string name="design_appbar_collapsing_toolbar_pin_margins">AppBar/Collapsing Toolbar (pinned + margins)</string>
     <string name="design_appbar_collapsing_toolbar_with_image">AppBar/Collapsing Toolbar + Parallax Image</string>
     <string name="design_appbar_anchored_fab_margin_bottom">AppBar + anchored FAB with bottom margin</string>
     <string name="design_appbar_anchored_fab_margin_top">AppBar + anchored FAB with top margin</string>

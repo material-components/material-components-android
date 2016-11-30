@@ -22,11 +22,12 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.support.design.test.R;
-import android.support.test.InstrumentationRegistry;
+import android.support.test.annotation.UiThreadTest;
 import android.support.v7.app.AppCompatActivity;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.view.InflateException;
 import android.view.LayoutInflater;
+import android.view.View;
 
 import org.junit.Test;
 
@@ -37,103 +38,116 @@ public class TabLayoutTest extends BaseInstrumentationTestCase<AppCompatActivity
     }
 
     @Test
+    @UiThreadTest
     public void testInflateTabLayoutWithTabItems() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                final LayoutInflater inflater =
-                        LayoutInflater.from(mActivityTestRule.getActivity());
-                final TabLayout tabLayout = (TabLayout) inflater.inflate(
-                        R.layout.design_tabs_items, null);
+        final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
+        final TabLayout tabLayout = (TabLayout) inflater.inflate(R.layout.design_tabs_items, null);
 
-                assertEquals(3, tabLayout.getTabCount());
+        assertEquals(3, tabLayout.getTabCount());
 
-                // Tab 0 has text, but no icon or custom view
-                TabLayout.Tab tab = tabLayout.getTabAt(0);
-                assertEquals(mActivityTestRule.getActivity().getString(R.string.tab_layout_text),
-                        tab.getText());
-                assertNull(tab.getIcon());
-                assertNull(tab.getCustomView());
+        // Tab 0 has text, but no icon or custom view
+        TabLayout.Tab tab = tabLayout.getTabAt(0);
+        assertEquals(mActivityTestRule.getActivity().getString(R.string.tab_layout_text),
+                tab.getText());
+        assertNull(tab.getIcon());
+        assertNull(tab.getCustomView());
 
-                // Tab 1 has an icon, but no text or custom view
-                tab = tabLayout.getTabAt(1);
-                assertNull(tab.getText());
-                assertNotNull(tab.getIcon());
-                assertNull(tab.getCustomView());
+        // Tab 1 has an icon, but no text or custom view
+        tab = tabLayout.getTabAt(1);
+        assertNull(tab.getText());
+        assertNotNull(tab.getIcon());
+        assertNull(tab.getCustomView());
 
-                // Tab 2 has a custom view, but no text or icon
-                tab = tabLayout.getTabAt(2);
-                assertNull(tab.getText());
-                assertNull(tab.getIcon());
-                assertNotNull(tab.getCustomView());
-                assertEquals(R.id.my_custom_tab, tab.getCustomView().getId());
-            }
-        });
+        // Tab 2 has a custom view, but no text or icon
+        tab = tabLayout.getTabAt(2);
+        assertNull(tab.getText());
+        assertNull(tab.getIcon());
+        assertNotNull(tab.getCustomView());
+        assertEquals(R.id.my_custom_tab, tab.getCustomView().getId());
     }
 
     @Test
+    @UiThreadTest
     public void testInflateTabLayoutWithNonTabItem() throws Throwable {
-        final Throwable[] exceptions = new Throwable[1];
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            public void run() {
-                try {
-                    final LayoutInflater inflater =
-                            LayoutInflater.from(mActivityTestRule.getActivity());
-                    inflater.inflate(R.layout.design_tabs_with_non_tabitems, null);
-                } catch (Throwable throwable) {
-                    exceptions[0] = throwable;
-                }
-            }
-        });
-
-        final Throwable thrown = exceptions[0];
-        assertNotNull(thrown);
-        // M+ will wrap the exception in an InflateException so we have to check for both
-        assertTrue(thrown instanceof InflateException
-                || thrown instanceof IllegalArgumentException);
+        try {
+            final LayoutInflater inflater =
+                    LayoutInflater.from(mActivityTestRule.getActivity());
+            inflater.inflate(R.layout.design_tabs_with_non_tabitems, null);
+        } catch (Throwable throwable) {
+            assertTrue(throwable instanceof InflateException
+                    || throwable instanceof IllegalArgumentException);
+        }
     }
 
     @Test
+    @UiThreadTest
     public void testTabWithCustomLayoutSelection1() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                final LayoutInflater inflater =
-                        LayoutInflater.from(mActivityTestRule.getActivity());
+        final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
 
-                final TabLayout tabLayout =
-                        (TabLayout) inflater.inflate(R.layout.design_tabs, null);
-                final TabLayout.Tab tab = tabLayout.newTab();
-                tab.setCustomView(R.layout.design_tab_item_custom);
-                tabLayout.addTab(tab);
+        final TabLayout tabLayout = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+        final TabLayout.Tab tab = tabLayout.newTab();
+        tab.setCustomView(R.layout.design_tab_item_custom);
+        tabLayout.addTab(tab);
 
-                assertNotNull("Tab has custom view", tab.getCustomView());
-                assertEquals("First tab is selected", 0, tabLayout.getSelectedTabPosition());
-                assertTrue("Custom view for first tab is selected",
-                        tab.getCustomView().isSelected());
-            }
-        });
+        assertNotNull("Tab has custom view", tab.getCustomView());
+        assertEquals("First tab is selected", 0, tabLayout.getSelectedTabPosition());
+        assertTabCustomViewSelected(tabLayout);
     }
 
     @Test
+    @UiThreadTest
     public void testTabWithCustomLayoutSelection2() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                final LayoutInflater inflater =
-                        LayoutInflater.from(mActivityTestRule.getActivity());
+        final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
 
-                final TabLayout tabLayout =
-                        (TabLayout) inflater.inflate(R.layout.design_tabs, null);
-                final TabLayout.Tab tab = tabLayout.newTab();
-                tabLayout.addTab(tab);
-                tab.setCustomView(R.layout.design_tab_item_custom);
+        final TabLayout tabLayout = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+        final TabLayout.Tab tab = tabLayout.newTab();
+        tabLayout.addTab(tab);
+        tab.setCustomView(R.layout.design_tab_item_custom);
 
-                assertNotNull("Tab has custom view", tab.getCustomView());
-                assertEquals("First tab is selected", 0, tabLayout.getSelectedTabPosition());
-                assertTrue("Custom view for first tab is selected",
-                        tab.getCustomView().isSelected());
+        assertNotNull("Tab has custom view", tab.getCustomView());
+        assertEquals("First tab is selected", 0, tabLayout.getSelectedTabPosition());
+        assertTabCustomViewSelected(tabLayout);
+    }
+
+    @Test
+    @UiThreadTest
+    public void testMultipleTabsWithCustomLayoutSelection1() {
+        final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
+        final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+        tabs.addTab(tabs.newTab().setCustomView(R.layout.design_tab_item_custom));
+        tabs.addTab(tabs.newTab().setCustomView(R.layout.design_tab_item_custom), true);
+        tabs.addTab(tabs.newTab().setCustomView(R.layout.design_tab_item_custom));
+
+        assertEquals("Second tab is selected", 1, tabs.getSelectedTabPosition());
+        assertTabCustomViewSelected(tabs);
+    }
+
+    @Test
+    @UiThreadTest
+    public void testMultipleTabsWithCustomLayoutSelection2() {
+        final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
+        final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+
+        tabs.addTab(tabs.newTab());
+        tabs.addTab(tabs.newTab(), true);
+        tabs.addTab(tabs.newTab());
+
+        tabs.getTabAt(0).setCustomView(R.layout.design_tab_item_custom);
+        tabs.getTabAt(1).setCustomView(R.layout.design_tab_item_custom);
+        tabs.getTabAt(2).setCustomView(R.layout.design_tab_item_custom);
+
+        assertEquals("Second tab is selected", 1, tabs.getSelectedTabPosition());
+        assertTabCustomViewSelected(tabs);
+    }
+
+    private static void assertTabCustomViewSelected(final TabLayout tabLayout) {
+        for (int i = 0, count = tabLayout.getTabCount(); i < count; i++) {
+            final TabLayout.Tab tab = tabLayout.getTabAt(i);
+            final View tabCustomView = tab.getCustomView();
+            if (tabCustomView != null) {
+                assertEquals(tab.isSelected(), tabCustomView.isSelected());
             }
-        });
+        }
     }
 }

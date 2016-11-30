@@ -25,6 +25,7 @@ import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewParent;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import org.hamcrest.Description;
@@ -186,6 +187,46 @@ public class TestUtilsMatchers {
     }
 
     /**
+     * Returns a matcher that matches <code>ImageView</code>s which have drawable flat-filled
+     * with the specific color.
+     */
+    public static Matcher drawable(@ColorInt final int color, final int allowedComponentVariance) {
+        return new BoundedMatcher<View, ImageView>(ImageView.class) {
+            private String mFailedComparisonDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("with drawable of color: ");
+
+                description.appendText(mFailedComparisonDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final ImageView view) {
+                Drawable drawable = view.getDrawable();
+                if (drawable == null) {
+                    return false;
+                }
+
+                // One option is to check if we have a ColorDrawable and then call getColor
+                // but that API is v11+. Instead, we call our helper method that checks whether
+                // all pixels in a Drawable are of the same specified color.
+                try {
+                    TestUtils.assertAllPixelsOfColor("", drawable, view.getWidth(),
+                            view.getHeight(), true, color, allowedComponentVariance, true);
+                    // If we are here, the color comparison has passed.
+                    mFailedComparisonDescription = null;
+                    return true;
+                } catch (Throwable t) {
+                    // If we are here, the color comparison has failed.
+                    mFailedComparisonDescription = t.getMessage();
+                    return false;
+                }
+            }
+        };
+    }
+
+    /**
      * Returns a matcher that matches Views with the specified background fill color.
      */
     public static Matcher withBackgroundFill(final @ColorInt int fillColor) {
@@ -312,5 +353,4 @@ public class TestUtilsMatchers {
             }
         };
     }
-
 }

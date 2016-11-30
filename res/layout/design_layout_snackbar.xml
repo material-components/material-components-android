@@ -20,4 +20,5 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
+      android:theme="@style/ThemeOverlay.AppCompat.Dark"
       style="@style/Widget.Design.Snackbar" />

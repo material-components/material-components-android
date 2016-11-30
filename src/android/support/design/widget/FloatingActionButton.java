@@ -30,11 +30,11 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import android.support.v4.content.res.ConfigurationHelper;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.widget.AppCompatDrawableManager;
 import android.support.v7.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -156,7 +156,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                 R.styleable.FloatingActionButton, defStyleAttr,
                 R.style.Widget_Design_FloatingActionButton);
         mBackgroundTint = a.getColorStateList(R.styleable.FloatingActionButton_backgroundTint);
-        mBackgroundTintMode = parseTintMode(a.getInt(
+        mBackgroundTintMode = ViewUtils.parseTintMode(a.getInt(
                 R.styleable.FloatingActionButton_backgroundTintMode, -1), null);
         mRippleColor = a.getColor(R.styleable.FloatingActionButton_rippleColor, 0);
         mSize = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_AUTO);
@@ -167,7 +167,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         mCompatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
         a.recycle();
 
-        mImageHelper = new AppCompatImageHelper(this, AppCompatDrawableManager.get());
+        mImageHelper = new AppCompatImageHelper(this);
         mImageHelper.loadFromAttributes(attrs, defStyleAttr);
 
         mMaxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
@@ -510,23 +510,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         return result;
     }
 
-    static PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
-        switch (value) {
-            case 3:
-                return PorterDuff.Mode.SRC_OVER;
-            case 5:
-                return PorterDuff.Mode.SRC_IN;
-            case 9:
-                return PorterDuff.Mode.SRC_ATOP;
-            case 14:
-                return PorterDuff.Mode.MULTIPLY;
-            case 15:
-                return PorterDuff.Mode.SCREEN;
-            default:
-                return defaultMode;
-        }
-    }
-
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
         if(getContentRect(mTouchArea) && !mTouchArea.contains((int) ev.getX(), (int) ev.getY())) {
@@ -546,16 +529,48 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         // because we can use view translation properties which greatly simplifies the code.
         private static final boolean SNACKBAR_BEHAVIOR_ENABLED = Build.VERSION.SDK_INT >= 11;
 
+        private static final boolean AUTO_HIDE_DEFAULT = true;
+
         private ValueAnimatorCompat mFabTranslationYAnimator;
         private float mFabTranslationY;
         private Rect mTmpRect;
+        private OnVisibilityChangedListener mInternalAutoHideListener;
+        private boolean mAutoHide;
 
         public Behavior() {
             super();
+            mAutoHide = AUTO_HIDE_DEFAULT;
         }
 
         public Behavior(Context context, AttributeSet attrs) {
             super(context, attrs);
+            TypedArray a = context.obtainStyledAttributes(attrs,
+                    R.styleable.FloatingActionButton_Behavior_Layout);
+            mAutoHide = a.getBoolean(
+                    R.styleable.FloatingActionButton_Behavior_Layout_behavior_autoHide,
+                    AUTO_HIDE_DEFAULT);
+            a.recycle();
+        }
+
+        /**
+         * Sets whether this FAB should automatically hide when there is not enough space. This
+         * works with {@link AppBarLayout} and {@link BottomSheetBehavior}.
+         *
+         * @attr ref android.support.design.R.styleable#FloatingActionButton_Behavior_Layout_behavior_autoHide
+         * @param autoHide {@code true} to hide automatically.
+         */
+        public void setAutoHide(boolean autoHide) {
+            mAutoHide = autoHide;
+        }
+
+        /**
+         * Returns whether this FAB automatically hides when there is not enough space.
+         *
+         * @attr ref android.support.design.R.styleable#FloatingActionButton_Behavior_Layout_behavior_autoHide
+         * @return {@code true} if it hides automatically.
+         */
+        public boolean getAutoHide() {
+            return mAutoHide;
         }
 
         @Override
@@ -573,7 +588,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             } else if (dependency instanceof AppBarLayout) {
                 // If we're depending on an AppBarLayout we will show/hide it automatically
                 // if the FAB is anchored to the AppBarLayout
-                updateFabVisibility(parent, (AppBarLayout) dependency, child);
+                updateFabVisibilityForAppBarLayout(parent, (AppBarLayout) dependency, child);
+            } else if (isBottomSheet(dependency)) {
+                updateFabVisibilityForBottomSheet(dependency, child);
             }
             return false;
         }
@@ -586,18 +603,42 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             }
         }
 
-        private boolean updateFabVisibility(CoordinatorLayout parent,
-                AppBarLayout appBarLayout, FloatingActionButton child) {
+        private static boolean isBottomSheet(View view) {
+            CoordinatorLayout.LayoutParams lp =
+                    (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+            return lp != null && lp.getBehavior() instanceof BottomSheetBehavior;
+        }
+
+        @VisibleForTesting
+        void setInternalAutoHideListener(OnVisibilityChangedListener listener) {
+            mInternalAutoHideListener = listener;
+        }
+
+        private boolean shouldUpdateVisibility(View dependency, FloatingActionButton child) {
             final CoordinatorLayout.LayoutParams lp =
                     (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            if (lp.getAnchorId() != appBarLayout.getId()) {
+            if (!mAutoHide) {
+                return false;
+            }
+
+            if (lp.getAnchorId() != dependency.getId()) {
                 // The anchor ID doesn't match the dependency, so we won't automatically
                 // show/hide the FAB
                 return false;
             }
 
+            //noinspection RedundantIfStatement
             if (child.getUserSetVisibility() != VISIBLE) {
                 // The view isn't set to be visible so skip changing its visibility
+                return false;
+            }
+
+            return true;
+        }
+
+        private boolean updateFabVisibilityForAppBarLayout(CoordinatorLayout parent,
+                AppBarLayout appBarLayout, FloatingActionButton child) {
+            if (!shouldUpdateVisibility(appBarLayout, child)) {
                 return false;
             }
 
@@ -611,10 +652,25 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
 
             if (rect.bottom <= appBarLayout.getMinimumHeightForVisibleOverlappingContent()) {
                 // If the anchor's bottom is below the seam, we'll animate our FAB out
-                child.hide(null, false);
+                child.hide(mInternalAutoHideListener, false);
             } else {
                 // Else, we'll animate our FAB back in
-                child.show(null, false);
+                child.show(mInternalAutoHideListener, false);
+            }
+            return true;
+        }
+
+        private boolean updateFabVisibilityForBottomSheet(View bottomSheet,
+                FloatingActionButton child) {
+            if (!shouldUpdateVisibility(bottomSheet, child)) {
+                return false;
+            }
+            CoordinatorLayout.LayoutParams lp =
+                    (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+            if (bottomSheet.getTop() < child.getHeight() / 2 + lp.topMargin) {
+                child.hide(mInternalAutoHideListener, false);
+            } else {
+                child.show(mInternalAutoHideListener, false);
             }
             return true;
         }
@@ -683,9 +739,15 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             final List<View> dependencies = parent.getDependencies(child);
             for (int i = 0, count = dependencies.size(); i < count; i++) {
                 final View dependency = dependencies.get(i);
-                if (dependency instanceof AppBarLayout
-                        && updateFabVisibility(parent, (AppBarLayout) dependency, child)) {
-                    break;
+                if (dependency instanceof AppBarLayout) {
+                    if (updateFabVisibilityForAppBarLayout(
+                            parent, (AppBarLayout) dependency, child)) {
+                        break;
+                    }
+                } else if (isBottomSheet(dependency)) {
+                    if (updateFabVisibilityForBottomSheet(dependency, child)) {
+                        break;
+                    }
                 }
             }
             // Now let the CoordinatorLayout lay out the FAB
@@ -769,7 +831,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         } else if (sdk >= 14) {
             return new FloatingActionButtonIcs(this, new ShadowDelegateImpl());
         } else {
-            return new FloatingActionButtonEclairMr1(this, new ShadowDelegateImpl());
+            return new FloatingActionButtonGingerbread(this, new ShadowDelegateImpl());
         }
     }
 

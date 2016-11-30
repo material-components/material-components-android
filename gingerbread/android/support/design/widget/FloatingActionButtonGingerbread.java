@@ -31,19 +31,16 @@ import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.Transformation;
 
-class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
+class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
 
-    private int mAnimationDuration;
     private StateListAnimator mStateListAnimator;
     private boolean mIsHiding;
 
     ShadowDrawableWrapper mShadowDrawable;
 
-    FloatingActionButtonEclairMr1(VisibilityAwareImageButton view,
+    FloatingActionButtonGingerbread(VisibilityAwareImageButton view,
             ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
-
-        mAnimationDuration = view.getResources().getInteger(android.R.integer.config_shortAnimTime);
 
         mStateListAnimator = new StateListAnimator();
         mStateListAnimator.setTarget(view);
@@ -54,8 +51,11 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         mStateListAnimator.addState(FOCUSED_ENABLED_STATE_SET,
                 setupAnimation(new ElevateToTranslationZAnimation()));
         // Reset back to elevation by default
-        mStateListAnimator.addState(EMPTY_STATE_SET,
+        mStateListAnimator.addState(ENABLED_STATE_SET,
                 setupAnimation(new ResetElevationAnimation()));
+        // Set to 0 when disabled
+        mStateListAnimator.addState(EMPTY_STATE_SET,
+                setupAnimation(new DisabledElevationAnimation()));
     }
 
     @Override
@@ -128,17 +128,9 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     }
 
     @Override
-    void onElevationChanged(float elevation) {
+    void onElevationsChanged(float elevation, float pressedTranslationZ) {
         if (mShadowDrawable != null) {
             mShadowDrawable.setShadowSize(elevation, elevation + mPressedTranslationZ);
-            updatePadding();
-        }
-    }
-
-    @Override
-    void onTranslationZChanged(float translationZ) {
-        if (mShadowDrawable != null) {
-            mShadowDrawable.setMaxShadowSize(mElevation + translationZ);
             updatePadding();
         }
     }
@@ -217,13 +209,14 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         // Ignore pre-v21
     }
 
+    @Override
     void getPadding(Rect rect) {
         mShadowDrawable.getPadding(rect);
     }
 
     private Animation setupAnimation(Animation animation) {
-        animation.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-        animation.setDuration(mAnimationDuration);
+        animation.setInterpolator(ANIM_INTERPOLATOR);
+        animation.setDuration(PRESSED_ANIM_DURATION);
         return animation;
     }
 
@@ -261,6 +254,13 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         @Override
         protected float getTargetShadowSize() {
             return mElevation + mPressedTranslationZ;
+        }
+    }
+
+    private class DisabledElevationAnimation extends BaseShadowAnimation {
+        @Override
+        protected float getTargetShadowSize() {
+            return 0f;
         }
     }
 

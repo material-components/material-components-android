@@ -18,23 +18,25 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
-import android.graphics.drawable.InsetDrawable;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableWrapper;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.AbsSavedState;
@@ -44,18 +46,24 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.widget.Space;
+import android.support.v4.widget.TextViewCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatDrawableManager;
+import android.support.v7.widget.TintTypedArray;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.animation.AccelerateInterpolator;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
@@ -91,12 +99,14 @@ public class TextInputLayout extends LinearLayout {
 
     private static final String LOG_TAG = "TextInputLayout";
 
+    private final FrameLayout mInputFrame;
     private EditText mEditText;
 
     private boolean mHintEnabled;
     private CharSequence mHint;
 
     private Paint mTmpPaint;
+    private final Rect mTmpRect = new Rect();
 
     private LinearLayout mIndicatorArea;
     private int mIndicatorsAdded;
@@ -113,6 +123,18 @@ public class TextInputLayout extends LinearLayout {
     private int mCounterTextAppearance;
     private int mCounterOverflowTextAppearance;
     private boolean mCounterOverflowed;
+
+    private boolean mPasswordToggleEnabled;
+    private Drawable mPasswordToggleDrawable;
+    private CharSequence mPasswordToggleContentDesc;
+    private CheckableImageButton mPasswordToggleView;
+    private boolean mPasswordToggledVisible;
+    private Drawable mPasswordToggleDummyDrawable;
+
+    private ColorStateList mPasswordToggleTintList;
+    private boolean mHasPasswordToggleTintList;
+    private PorterDuff.Mode mPasswordToggleTintMode;
+    private boolean mHasPasswordToggleTintMode;
 
     private ColorStateList mDefaultTextColor;
     private ColorStateList mFocusedTextColor;
@@ -142,11 +164,14 @@ public class TextInputLayout extends LinearLayout {
         setWillNotDraw(false);
         setAddStatesFromChildren(true);
 
+        mInputFrame = new FrameLayout(context);
+        addView(mInputFrame);
+
         mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         mCollapsingTextHelper.setPositionInterpolator(new AccelerateInterpolator());
         mCollapsingTextHelper.setCollapsedTextGravity(Gravity.TOP | GravityCompat.START);
 
-        final TypedArray a = context.obtainStyledAttributes(attrs,
+        final TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attrs,
                 R.styleable.TextInputLayout, defStyleAttr, R.style.Widget_Design_TextInputLayout);
         mHintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
         setHint(a.getText(R.styleable.TextInputLayout_android_hint));
@@ -176,10 +201,28 @@ public class TextInputLayout extends LinearLayout {
                 R.styleable.TextInputLayout_counterTextAppearance, 0);
         mCounterOverflowTextAppearance = a.getResourceId(
                 R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
+
+        mPasswordToggleEnabled = a.getBoolean(
+                R.styleable.TextInputLayout_passwordToggleEnabled, true);
+        mPasswordToggleDrawable = a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable);
+        mPasswordToggleContentDesc = a.getText(
+                R.styleable.TextInputLayout_passwordToggleContentDescription);
+        if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
+            mHasPasswordToggleTintList = true;
+            mPasswordToggleTintList = a.getColorStateList(
+                    R.styleable.TextInputLayout_passwordToggleTint);
+        }
+        if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
+            mHasPasswordToggleTintMode = true;
+            mPasswordToggleTintMode = ViewUtils.parseTintMode(
+                    a.getInt(R.styleable.TextInputLayout_passwordToggleTintMode, -1), null);
+        }
+
         a.recycle();
 
         setErrorEnabled(errorEnabled);
         setCounterEnabled(counterEnabled);
+        applyPasswordToggleTint();
 
         if (ViewCompat.getImportantForAccessibility(this)
                 == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
@@ -192,10 +235,16 @@ public class TextInputLayout extends LinearLayout {
     }
 
     @Override
-    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+    public void addView(View child, int index, final ViewGroup.LayoutParams params) {
         if (child instanceof EditText) {
+            mInputFrame.addView(child, new FrameLayout.LayoutParams(params));
+
+            // Now use the EditText's LayoutParams as our own and update them to make enough space
+            // for the label
+            mInputFrame.setLayoutParams(params);
+            updateInputLayoutMargins();
+
             setEditText((EditText) child);
-            super.addView(child, 0, updateEditTextMargin(params));
         } else {
             // Carry on adding the View...
             super.addView(child, index, params);
@@ -233,8 +282,13 @@ public class TextInputLayout extends LinearLayout {
 
         mEditText = editText;
 
+        final boolean hasPasswordTransformation = hasPasswordTransformation();
+
         // Use the EditText's typeface, and it's text size for our expanded text
-        mCollapsingTextHelper.setTypefaces(mEditText.getTypeface());
+        if (!hasPasswordTransformation) {
+            // We don't want a monospace font just because we have a password field
+            mCollapsingTextHelper.setTypefaces(mEditText.getTypeface());
+        }
         mCollapsingTextHelper.setExpandedTextSize(mEditText.getTextSize());
 
         final int editTextGravity = mEditText.getGravity();
@@ -279,14 +333,17 @@ public class TextInputLayout extends LinearLayout {
             adjustIndicatorPadding();
         }
 
+        updatePasswordToggleView();
+
         // Update the label visibility with no animation
         updateLabelState(false);
     }
 
-    private LayoutParams updateEditTextMargin(ViewGroup.LayoutParams lp) {
+    private void updateInputLayoutMargins() {
         // Create/update the LayoutParams so that we can add enough top margin
         // to the EditText so make room for the label
-        LayoutParams llp = lp instanceof LayoutParams ? (LayoutParams) lp : new LayoutParams(lp);
+        final LayoutParams lp = (LayoutParams) mInputFrame.getLayoutParams();
+        final int newTopMargin;
 
         if (mHintEnabled) {
             if (mTmpPaint == null) {
@@ -294,12 +351,15 @@ public class TextInputLayout extends LinearLayout {
             }
             mTmpPaint.setTypeface(mCollapsingTextHelper.getCollapsedTypeface());
             mTmpPaint.setTextSize(mCollapsingTextHelper.getCollapsedTextSize());
-            llp.topMargin = (int) -mTmpPaint.ascent();
+            newTopMargin = (int) -mTmpPaint.ascent();
         } else {
-            llp.topMargin = 0;
+            newTopMargin = 0;
         }
 
-        return llp;
+        if (newTopMargin != lp.topMargin) {
+            lp.topMargin = newTopMargin;
+            mInputFrame.requestLayout();
+        }
     }
 
     private void updateLabelState(boolean animate) {
@@ -405,8 +465,7 @@ public class TextInputLayout extends LinearLayout {
 
             // Now update the EditText top margin
             if (mEditText != null) {
-                final LayoutParams lp = updateEditTextMargin(mEditText.getLayoutParams());
-                mEditText.setLayoutParams(lp);
+                updateInputLayoutMargins();
             }
         }
     }
@@ -433,11 +492,8 @@ public class TextInputLayout extends LinearLayout {
 
         if (mEditText != null) {
             updateLabelState(false);
-
             // Text size might have changed so update the top margin
-            LayoutParams lp = updateEditTextMargin(mEditText.getLayoutParams());
-            mEditText.setLayoutParams(lp);
-            mEditText.requestLayout();
+            updateInputLayoutMargins();
         }
     }
 
@@ -725,33 +781,8 @@ public class TextInputLayout extends LinearLayout {
         } else {
             // Else reset the color filter and refresh the drawable state so that the
             // normal tint is used
-            clearColorFilter(editTextBackground);
+            DrawableCompat.clearColorFilter(editTextBackground);
             mEditText.refreshDrawableState();
-        }
-    }
-
-    private static void clearColorFilter(@NonNull Drawable drawable) {
-        drawable.clearColorFilter();
-
-        if (Build.VERSION.SDK_INT == 21 || Build.VERSION.SDK_INT == 22) {
-            // API 21 + 22 have an issue where clearing a color filter on a DrawableContainer
-            // will not propagate to all of its children. To workaround this we unwrap the drawable
-            // to find any DrawableContainers, and then unwrap those to clear the filter on its
-            // children manually
-            if (drawable instanceof InsetDrawable) {
-                clearColorFilter(((InsetDrawable) drawable).getDrawable());
-            } else if (drawable instanceof DrawableWrapper) {
-                clearColorFilter(((DrawableWrapper) drawable).getWrappedDrawable());
-            } else if (drawable instanceof DrawableContainer) {
-                final DrawableContainer container = (DrawableContainer) drawable;
-                final DrawableContainer.DrawableContainerState state =
-                        (DrawableContainer.DrawableContainerState) container.getConstantState();
-                if (state != null) {
-                    for (int i = 0, count = state.getChildCount(); i < count; i++) {
-                        clearColorFilter(state.getChild(i));
-                    }
-                }
-            }
         }
     }
 
@@ -768,7 +799,7 @@ public class TextInputLayout extends LinearLayout {
 
         if (!mHasReconstructedEditTextBackground) {
             // This is gross. There is an issue in the platform which affects container Drawables
-            // where the first drawable retrieved from resources will propogate any changes
+            // where the first drawable retrieved from resources will propagate any changes
             // (like color filter) to all instances from the cache. We'll try to workaround it...
 
             final Drawable newBg = bg.getConstantState().newDrawable();
@@ -900,16 +931,280 @@ public class TextInputLayout extends LinearLayout {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        updatePasswordToggleView();
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    private void updatePasswordToggleView() {
+        if (shouldShowPasswordIcon()) {
+            if (mPasswordToggleView == null) {
+                mPasswordToggleView = (CheckableImageButton) LayoutInflater.from(getContext())
+                        .inflate(R.layout.design_text_input_password_icon, mInputFrame, false);
+                mPasswordToggleView.setImageDrawable(mPasswordToggleDrawable);
+                mPasswordToggleView.setContentDescription(mPasswordToggleContentDesc);
+                mInputFrame.addView(mPasswordToggleView);
+
+                mPasswordToggleView.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        passwordVisibilityToggleRequested();
+                    }
+                });
+            }
+
+            mPasswordToggleView.setVisibility(VISIBLE);
+
+            // We need to add a dummy drawable as the end compound drawable so that the text is
+            // indented and doesn't display below the toggle view
+            if (mPasswordToggleDummyDrawable == null) {
+                mPasswordToggleDummyDrawable = new ColorDrawable();
+            }
+            mPasswordToggleDummyDrawable.setBounds(0, 0, mPasswordToggleView.getMeasuredWidth(), 1);
+
+            final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(mEditText);
+            TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0], compounds[1],
+                    mPasswordToggleDummyDrawable, compounds[2]);
+
+            // Copy over the EditText's padding so that we match
+            mPasswordToggleView.setPadding(mEditText.getPaddingLeft(),
+                    mEditText.getPaddingTop(), mEditText.getPaddingRight(),
+                    mEditText.getPaddingBottom());
+        } else {
+            if (mPasswordToggleView != null && mPasswordToggleView.getVisibility() == VISIBLE) {
+                mPasswordToggleView.setVisibility(View.GONE);
+            }
+
+            // Make sure that we remove the dummy end compound drawable
+            final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(mEditText);
+            TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0], compounds[1],
+                    null, compounds[2]);
+        }
+    }
+
+    /**
+     * Set the icon to use for the password visibility toggle button.
+     *
+     * <p>If you use an icon you should also set a description for its action
+     * using {@link #setPasswordVisibilityToggleContentDescription(CharSequence)}.
+     * This is used for accessibility.</p>
+     *
+     * @param resId resource id of the drawable to set, or 0 to clear the icon
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_passwordToggleDrawable
+     */
+    public void setPasswordVisibilityToggleDrawable(@DrawableRes int resId) {
+        setPasswordVisibilityToggleDrawable(resId != 0
+                ? AppCompatResources.getDrawable(getContext(), resId)
+                : null);
+    }
+
+    /**
+     * Set the icon to use for the password visibility toggle button.
+     *
+     * <p>If you use an icon you should also set a description for its action
+     * using {@link #setPasswordVisibilityToggleContentDescription(CharSequence)}.
+     * This is used for accessibility.</p>
+     *
+     * @param icon Drawable to set, may be null to clear the icon
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_passwordToggleDrawable
+     */
+    public void setPasswordVisibilityToggleDrawable(@Nullable Drawable icon) {
+        mPasswordToggleDrawable = icon;
+        if (mPasswordToggleView != null) {
+            mPasswordToggleView.setImageDrawable(icon);
+        }
+    }
+
+    /**
+     * Set a content description for the navigation button if one is present.
+     *
+     * <p>The content description will be read via screen readers or other accessibility
+     * systems to explain the action of the password visibility toggle.</p>
+     *
+     * @param resId Resource ID of a content description string to set,
+     *              or 0 to clear the description
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_passwordToggleContentDescription
+     */
+    public void setPasswordVisibilityToggleContentDescription(@StringRes int resId) {
+        setPasswordVisibilityToggleContentDescription(
+                resId != 0 ? getResources().getText(resId) : null);
+    }
+
+    /**
+     * Set a content description for the navigation button if one is present.
+     *
+     * <p>The content description will be read via screen readers or other accessibility
+     * systems to explain the action of the password visibility toggle.</p>
+     *
+     * @param description Content description to set, or null to clear the content description
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_passwordToggleContentDescription
+     */
+    public void setPasswordVisibilityToggleContentDescription(@Nullable CharSequence description) {
+        mPasswordToggleContentDesc = description;
+        if (mPasswordToggleView != null) {
+            mPasswordToggleView.setContentDescription(description);
+        }
+    }
+
+    /**
+     * Returns the icon currently used for the password visibility toggle button.
+     *
+     * @see #setPasswordVisibilityToggleDrawable(Drawable)
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_passwordToggleDrawable
+     */
+    @Nullable
+    public Drawable getPasswordVisibilityToggleDrawable() {
+        return mPasswordToggleDrawable;
+    }
+
+    /**
+     * Returns the currently configured content description for the password visibility
+     * toggle button.
+     *
+     * <p>This will be used to describe the navigation action to users through mechanisms
+     * such as screen readers.</p>
+     */
+    @Nullable
+    public CharSequence getPasswordVisibilityToggleContentDescription() {
+        return mPasswordToggleContentDesc;
+    }
+
+    /**
+     * Returns whether the password visibility toggle functionality is currently enabled.
+     *
+     * @see #setPasswordVisibilityToggleEnabled(boolean)
+     */
+    public boolean isPasswordVisibilityToggleEnabled() {
+        return mPasswordToggleEnabled;
+    }
+
+    /**
+     * Returns whether the password visibility toggle functionality is enabled or not.
+     *
+     * <p>When enabled, a button is placed at the end of the EditText which enables the user
+     * to switch between the field's input being visibly disguised or not.</p>
+     *
+     * @param enabled true to enable the functionality
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_passwordToggleEnabled
+     */
+    public void setPasswordVisibilityToggleEnabled(final boolean enabled) {
+        if (mPasswordToggleEnabled != enabled) {
+            mPasswordToggleEnabled = enabled;
+
+            if (!enabled && mPasswordToggledVisible) {
+                // If the toggle is no longer enabled, but we remove the PasswordTransformation
+                // to make the password visible, add it back
+                mEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+            }
+
+            // Reset the visibility tracking flag
+            mPasswordToggledVisible = false;
+
+            updatePasswordToggleView();
+        }
+    }
+
+    /**
+     * Applies a tint to the the password visibility toggle drawable. Does not modify the current
+     * tint mode, which is {@link PorterDuff.Mode#SRC_IN} by default.
+     *
+     * <p>Subsequent calls to {@link #setPasswordVisibilityToggleDrawable(Drawable)} will
+     * automatically mutate the drawable and apply the specified tint and tint mode using
+     * {@link DrawableCompat#setTintList(Drawable, ColorStateList)}.</p>
+     *
+     * @param tintList the tint to apply, may be null to clear tint
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_passwordToggleTint
+     */
+    public void setPasswordVisibilityToggleTintList(@Nullable ColorStateList tintList) {
+        mPasswordToggleTintList = tintList;
+        mHasPasswordToggleTintList = true;
+        applyPasswordToggleTint();
+    }
+
+    /**
+     * Specifies the blending mode used to apply the tint specified by
+     * {@link #setPasswordVisibilityToggleTintList(ColorStateList)} to the password
+     * visibility toggle drawable. The default mode is {@link PorterDuff.Mode#SRC_IN}.</p>
+     *
+     * @param mode the blending mode used to apply the tint, may be null to clear tint
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_passwordToggleTintMode
+     */
+    public void setPasswordVisibilityToggleTintMode(@Nullable PorterDuff.Mode mode) {
+        mPasswordToggleTintMode = mode;
+        mHasPasswordToggleTintMode = true;
+        applyPasswordToggleTint();
+    }
+
+   private void passwordVisibilityToggleRequested() {
+       if (mPasswordToggleEnabled) {
+           // Store the current cursor position
+           final int selection = mEditText.getSelectionEnd();
+
+           if (hasPasswordTransformation()) {
+               mEditText.setTransformationMethod(null);
+               mPasswordToggledVisible = true;
+           } else {
+               mEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+               mPasswordToggledVisible = false;
+           }
+
+           mPasswordToggleView.setChecked(mPasswordToggledVisible);
+
+           // And restore the cursor position
+           mEditText.setSelection(selection);
+       }
+    }
+
+    private boolean hasPasswordTransformation() {
+        return mEditText != null
+                && mEditText.getTransformationMethod() instanceof PasswordTransformationMethod;
+    }
+
+    private boolean shouldShowPasswordIcon() {
+        return mPasswordToggleEnabled && (hasPasswordTransformation() || mPasswordToggledVisible);
+    }
+
+    private void applyPasswordToggleTint() {
+        if (mPasswordToggleDrawable != null
+                && (mHasPasswordToggleTintList || mHasPasswordToggleTintMode)) {
+            mPasswordToggleDrawable = DrawableCompat.wrap(mPasswordToggleDrawable).mutate();
+
+            if (mHasPasswordToggleTintList) {
+                DrawableCompat.setTintList(mPasswordToggleDrawable, mPasswordToggleTintList);
+            }
+            if (mHasPasswordToggleTintMode) {
+                DrawableCompat.setTintMode(mPasswordToggleDrawable, mPasswordToggleTintMode);
+            }
+
+            if (mPasswordToggleView != null
+                    && mPasswordToggleView.getDrawable() != mPasswordToggleDrawable) {
+                mPasswordToggleView.setImageDrawable(mPasswordToggleDrawable);
+            }
+        }
+    }
+
+    @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
         if (mHintEnabled && mEditText != null) {
-            final int l = mEditText.getLeft() + mEditText.getCompoundPaddingLeft();
-            final int r = mEditText.getRight() - mEditText.getCompoundPaddingRight();
+            final Rect rect = mTmpRect;
+            ViewGroupUtils.getDescendantRect(this, mEditText, rect);
 
-            mCollapsingTextHelper.setExpandedBounds(l,
-                    mEditText.getTop() + mEditText.getCompoundPaddingTop(),
-                    r, mEditText.getBottom() - mEditText.getCompoundPaddingBottom());
+            final int l = rect.left + mEditText.getCompoundPaddingLeft();
+            final int r = rect.right - mEditText.getCompoundPaddingRight();
+
+            mCollapsingTextHelper.setExpandedBounds(
+                    l, rect.top + mEditText.getCompoundPaddingTop(),
+                    r, rect.bottom - mEditText.getCompoundPaddingBottom());
 
             // Set the collapsed bounds to be the the full height (minus padding) to match the
             // EditText's editable area

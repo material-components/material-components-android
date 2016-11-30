@@ -31,6 +31,7 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
@@ -42,6 +43,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.NestedScrollingParentHelper;
+import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.text.TextUtils;
@@ -64,6 +66,8 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.support.design.widget.ViewUtils.objectEquals;
 
 /**
  * CoordinatorLayout is a super-powered {@link android.widget.FrameLayout FrameLayout}.
@@ -105,10 +109,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     static {
         if (Build.VERSION.SDK_INT >= 21) {
             TOP_SORTED_CHILDREN_COMPARATOR = new ViewElevationComparator();
-            INSETS_HELPER = new CoordinatorLayoutInsetsHelperLollipop();
         } else {
             TOP_SORTED_CHILDREN_COMPARATOR = null;
-            INSETS_HELPER = null;
         }
     }
 
@@ -138,7 +140,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     };
 
     static final Comparator<View> TOP_SORTED_CHILDREN_COMPARATOR;
-    static final CoordinatorLayoutInsetsHelper INSETS_HELPER;
 
     private final List<View> mDependencySortedChildren = new ArrayList<View>();
     private final List<View> mTempList1 = new ArrayList<>();
@@ -167,6 +168,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private Drawable mStatusBarBackground;
 
     private OnHierarchyChangeListener mOnHierarchyChangeListener;
+    private android.support.v4.view.OnApplyWindowInsetsListener mApplyWindowInsetsListener;
 
     private final NestedScrollingParentHelper mNestedScrollingParentHelper =
             new NestedScrollingParentHelper(this);
@@ -199,9 +201,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         mStatusBarBackground = a.getDrawable(R.styleable.CoordinatorLayout_statusBarBackground);
         a.recycle();
 
-        if (INSETS_HELPER != null) {
-            INSETS_HELPER.setupForWindowInsets(this, new ApplyInsetsListener());
-        }
+        setupForInsets();
         super.setOnHierarchyChangeListener(new HierarchyChangeListener());
     }
 
@@ -331,8 +331,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         setStatusBarBackground(new ColorDrawable(color));
     }
 
-    private WindowInsetsCompat setWindowInsets(WindowInsetsCompat insets) {
-        if (mLastInsets != insets) {
+    final WindowInsetsCompat setWindowInsets(WindowInsetsCompat insets) {
+        if (!objectEquals(mLastInsets, insets)) {
             mLastInsets = insets;
             mDrawStatusBarBackground = insets != null && insets.getSystemWindowInsetTop() > 0;
             setWillNotDraw(!mDrawStatusBarBackground && getBackground() == null);
@@ -834,6 +834,12 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
+    @Override
+    public void setFitsSystemWindows(boolean fitSystemWindows) {
+        super.setFitsSystemWindows(fitSystemWindows);
+        setupForInsets();
+    }
+
     /**
      * Mark the last known child position rect for the given child view.
      * This will be used when checking if a child view's position has changed between frames.
@@ -882,17 +888,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
-    /**
-     * Calculate the desired child rect relative to an anchor rect, respecting both
-     * gravity and anchorGravity.
-     *
-     * @param child child view to calculate a rect for
-     * @param layoutDirection the desired layout direction for the CoordinatorLayout
-     * @param anchorRect rect in CoordinatorLayout coordinates of the anchor view area
-     * @param out rect to set to the output values
-     */
-    void getDesiredAnchoredChildRect(View child, int layoutDirection, Rect anchorRect, Rect out) {
-        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+    private void getDesiredAnchoredChildRectWithoutConstraints(View child, int layoutDirection,
+            Rect anchorRect, Rect out, LayoutParams lp, int childWidth, int childHeight) {
         final int absGravity = GravityCompat.getAbsoluteGravity(
                 resolveAnchoredChildGravity(lp.gravity), layoutDirection);
         final int absAnchorGravity = GravityCompat.getAbsoluteGravity(
@@ -903,9 +900,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int vgrav = absGravity & Gravity.VERTICAL_GRAVITY_MASK;
         final int anchorHgrav = absAnchorGravity & Gravity.HORIZONTAL_GRAVITY_MASK;
         final int anchorVgrav = absAnchorGravity & Gravity.VERTICAL_GRAVITY_MASK;
-
-        final int childWidth = child.getMeasuredWidth();
-        final int childHeight = child.getMeasuredHeight();
 
         int left;
         int top;
@@ -966,18 +960,40 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 break;
         }
 
+        out.set(left, top, left + childWidth, top + childHeight);
+    }
+
+    private void constrainChildRect(LayoutParams lp, Rect out, int childWidth, int childHeight) {
         final int width = getWidth();
         final int height = getHeight();
 
         // Obey margins and padding
-        left = Math.max(getPaddingLeft() + lp.leftMargin,
-                Math.min(left,
+        int left = Math.max(getPaddingLeft() + lp.leftMargin,
+                Math.min(out.left,
                         width - getPaddingRight() - childWidth - lp.rightMargin));
-        top = Math.max(getPaddingTop() + lp.topMargin,
-                Math.min(top,
+        int top = Math.max(getPaddingTop() + lp.topMargin,
+                Math.min(out.top,
                         height - getPaddingBottom() - childHeight - lp.bottomMargin));
 
         out.set(left, top, left + childWidth, top + childHeight);
+    }
+
+    /**
+     * Calculate the desired child rect relative to an anchor rect, respecting both
+     * gravity and anchorGravity.
+     *
+     * @param child child view to calculate a rect for
+     * @param layoutDirection the desired layout direction for the CoordinatorLayout
+     * @param anchorRect rect in CoordinatorLayout coordinates of the anchor view area
+     * @param out rect to set to the output values
+     */
+    void getDesiredAnchoredChildRect(View child, int layoutDirection, Rect anchorRect, Rect out) {
+        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+        final int childWidth = child.getMeasuredWidth();
+        final int childHeight = child.getMeasuredHeight();
+        getDesiredAnchoredChildRectWithoutConstraints(child, layoutDirection, anchorRect, out, lp,
+                childWidth, childHeight);
+        constrainChildRect(lp, out, childWidth, childHeight);
     }
 
     /**
@@ -1381,7 +1397,14 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
             getDescendantRect(lp.mAnchorView, anchorRect);
             getChildRect(child, false, childRect);
-            getDesiredAnchoredChildRect(child, layoutDirection, anchorRect, desiredChildRect);
+
+            int childWidth = child.getMeasuredWidth();
+            int childHeight = child.getMeasuredHeight();
+            getDesiredAnchoredChildRectWithoutConstraints(child, layoutDirection, anchorRect,
+                    desiredChildRect, lp, childWidth, childHeight);
+            boolean changed = desiredChildRect.left != childRect.left ||
+                    desiredChildRect.top != childRect.top;
+            constrainChildRect(lp, desiredChildRect, childWidth, childHeight);
 
             final int dx = desiredChildRect.left - childRect.left;
             final int dy = desiredChildRect.top - childRect.top;
@@ -1393,7 +1416,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 child.offsetTopAndBottom(dy);
             }
 
-            if (dx != 0 || dy != 0) {
+            if (changed) {
                 // If we have needed to move, make sure to notify the child's Behavior
                 final Behavior b = lp.getBehavior();
                 if (b != null) {
@@ -1464,6 +1487,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return p instanceof LayoutParams && super.checkLayoutParams(p);
     }
 
+    @Override
     public boolean onStartNestedScroll(View child, View target, int nestedScrollAxes) {
         boolean handled = false;
 
@@ -1485,6 +1509,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return handled;
     }
 
+    @Override
     public void onNestedScrollAccepted(View child, View target, int nestedScrollAxes) {
         mNestedScrollingParentHelper.onNestedScrollAccepted(child, target, nestedScrollAxes);
         mNestedScrollingDirectChild = child;
@@ -1505,6 +1530,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
+    @Override
     public void onStopNestedScroll(View target) {
         mNestedScrollingParentHelper.onStopNestedScroll(target);
 
@@ -1528,6 +1554,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         mNestedScrollingTarget = null;
     }
 
+    @Override
     public void onNestedScroll(View target, int dxConsumed, int dyConsumed,
             int dxUnconsumed, int dyUnconsumed) {
         final int childCount = getChildCount();
@@ -1553,6 +1580,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
+    @Override
     public void onNestedPreScroll(View target, int dx, int dy, int[] consumed) {
         int xConsumed = 0;
         int yConsumed = 0;
@@ -1588,6 +1616,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
+    @Override
     public boolean onNestedFling(View target, float velocityX, float velocityY, boolean consumed) {
         boolean handled = false;
 
@@ -1611,6 +1640,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return handled;
     }
 
+    @Override
     public boolean onNestedPreFling(View target, float velocityX, float velocityY) {
         boolean handled = false;
 
@@ -1630,6 +1660,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return handled;
     }
 
+    @Override
     public int getNestedScrollAxes() {
         return mNestedScrollingParentHelper.getNestedScrollAxes();
     }
@@ -2177,6 +2208,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          *
          * @return The insets supplied, minus any insets that were consumed
          */
+        @NonNull
         public WindowInsetsCompat onApplyWindowInsets(CoordinatorLayout coordinatorLayout,
                 V child, WindowInsetsCompat insets) {
             return insets;
@@ -2587,14 +2619,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
-    private class ApplyInsetsListener
-            implements android.support.v4.view.OnApplyWindowInsetsListener {
-        @Override
-        public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-            return setWindowInsets(insets);
-        }
-    }
-
     private class HierarchyChangeListener implements OnHierarchyChangeListener {
         @Override
         public void onChildViewAdded(View parent, View child) {
@@ -2661,6 +2685,33 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
         ss.behaviorStates = behaviorStates;
         return ss;
+    }
+
+    private void setupForInsets() {
+        if (Build.VERSION.SDK_INT < 21) {
+            return;
+        }
+
+        if (ViewCompat.getFitsSystemWindows(this)) {
+            if (mApplyWindowInsetsListener == null) {
+                mApplyWindowInsetsListener =
+                        new android.support.v4.view.OnApplyWindowInsetsListener() {
+                            @Override
+                            public WindowInsetsCompat onApplyWindowInsets(View v,
+                                    WindowInsetsCompat insets) {
+                                return setWindowInsets(insets);
+                            }
+                        };
+            }
+            // First apply the insets listener
+            ViewCompat.setOnApplyWindowInsetsListener(this, mApplyWindowInsetsListener);
+
+            // Now set the sys ui flags to enable us to lay out in the window insets
+            setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_STABLE
+                    | View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN);
+        } else {
+            ViewCompat.setOnApplyWindowInsetsListener(this, null);
+        }
     }
 
     protected static class SavedState extends AbsSavedState {

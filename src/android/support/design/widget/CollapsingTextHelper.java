@@ -458,7 +458,7 @@ final class CollapsingTextHelper {
             }
 
             if (DEBUG_DRAW) {
-                // Just a debug tool, which drawn a Magneta rect in the text bounds
+                // Just a debug tool, which drawn a magenta rect in the text bounds
                 canvas.drawRect(mCurrentBounds.left, y + ascent, mCurrentBounds.right, y + descent,
                         DEBUG_DRAW_PAINT);
             }
@@ -507,32 +507,48 @@ final class CollapsingTextHelper {
     private void calculateUsingTextSize(final float textSize) {
         if (mText == null) return;
 
+        final float collapsedWidth = mCollapsedBounds.width();
+        final float expandedWidth = mExpandedBounds.width();
+
         final float availableWidth;
         final float newTextSize;
         boolean updateDrawText = false;
 
         if (isClose(textSize, mCollapsedTextSize)) {
-            availableWidth = mCollapsedBounds.width();
             newTextSize = mCollapsedTextSize;
             mScale = 1f;
             if (mCurrentTypeface != mCollapsedTypeface) {
                 mCurrentTypeface = mCollapsedTypeface;
                 updateDrawText = true;
             }
+            availableWidth = collapsedWidth;
         } else {
-            availableWidth = mExpandedBounds.width();
             newTextSize = mExpandedTextSize;
             if (mCurrentTypeface != mExpandedTypeface) {
                 mCurrentTypeface = mExpandedTypeface;
                 updateDrawText = true;
             }
-
             if (isClose(textSize, mExpandedTextSize)) {
                 // If we're close to the expanded text size, snap to it and use a scale of 1
                 mScale = 1f;
             } else {
                 // Else, we'll scale down from the expanded text size
                 mScale = textSize / mExpandedTextSize;
+            }
+
+            final float textSizeRatio = mCollapsedTextSize / mExpandedTextSize;
+            // This is the size of the expanded bounds when it is scaled to match the
+            // collapsed text size
+            final float scaledDownWidth = expandedWidth * textSizeRatio;
+
+            if (scaledDownWidth > collapsedWidth) {
+                // If the scaled down size is larger than the actual collapsed width, we need to
+                // cap the available width so that when the expanded text scales down, it matches
+                // the collapsed width
+                availableWidth = Math.min(collapsedWidth / textSizeRatio, expandedWidth);
+            } else {
+                // Otherwise we'll just use the expanded width
+                availableWidth = expandedWidth;
             }
         }
 

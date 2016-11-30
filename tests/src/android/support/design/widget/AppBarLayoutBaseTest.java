@@ -121,7 +121,7 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
         }
 
         mDefaultElevationValue = mAppBar.getResources()
-                .getDimensionPixelSize(R.dimen.design_appbar_elevation);
+                .getDimension(R.dimen.design_appbar_elevation);
     }
 
     protected void assertAppBarElevation(float expectedValue) {

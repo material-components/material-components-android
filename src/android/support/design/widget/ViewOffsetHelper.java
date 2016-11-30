@@ -91,4 +91,12 @@ class ViewOffsetHelper {
     public int getLeftAndRightOffset() {
         return mOffsetLeft;
     }
+
+    public int getLayoutTop() {
+        return mLayoutTop;
+    }
+
+    public int getLayoutLeft() {
+        return mLayoutLeft;
+    }
 }

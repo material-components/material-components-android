@@ -16,28 +16,36 @@
 
 package android.support.design.widget;
 
+import android.app.Activity;
+import android.support.design.test.R;
+import android.support.test.annotation.UiThreadTest;
+import android.test.suitebuilder.annotation.SmallTest;
+import android.widget.EditText;
+
+import org.junit.Test;
+
+import static android.support.design.testutils.TestUtilsActions.setText;
 import static android.support.design.testutils.TextInputLayoutActions.setError;
 import static android.support.design.testutils.TextInputLayoutActions.setErrorEnabled;
+import static android.support.design.testutils.TextInputLayoutActions.setPasswordVisibilityToggleEnabled;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.withChild;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-
-import static org.hamcrest.CoreMatchers.not;
-
-import android.support.design.test.R;
-import android.test.suitebuilder.annotation.SmallTest;
-
-import org.junit.Test;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 @SmallTest
 public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLayoutActivity> {
 
     private static final String ERROR_MESSAGE_1 = "An error has occured";
     private static final String ERROR_MESSAGE_2 = "Some other error has occured";
+
+    private static final String INPUT_TEXT = "Random input text";
 
     public TextInputLayoutTest() {
         super(TextInputLayoutActivity.class);
@@ -73,4 +81,61 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
         onView(withText(ERROR_MESSAGE_2)).check(matches(isDisplayed()));
     }
 
+    @Test
+    public void testPasswordToggleClick() {
+        // Set some text on the EditText
+        onView(withId(R.id.textinput_edittext_pwd)).perform(setText(INPUT_TEXT));
+
+        final Activity activity = mActivityTestRule.getActivity();
+        final EditText textInput = (EditText) activity.findViewById(R.id.textinput_edittext_pwd);
+
+        // Assert that the password is disguised
+        assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+
+        // Now click the toggle button
+        onView(withId(R.id.text_input_password_toggle)).perform(click());
+
+        // And assert that the password is not disguised
+        assertEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+    }
+
+    @Test
+    public void testPasswordToggleDisable() {
+        final Activity activity = mActivityTestRule.getActivity();
+        final EditText textInput = (EditText) activity.findViewById(R.id.textinput_edittext_pwd);
+
+        // Set some text on the EditText
+        onView(withId(R.id.textinput_edittext_pwd)).perform(setText(INPUT_TEXT));
+        // Assert that the password is disguised
+        assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+
+        // Disable the password toggle
+        onView(withId(R.id.textinput_password))
+                .perform(setPasswordVisibilityToggleEnabled(false));
+
+        // Check that the password toggle view is not visible
+        onView(withId(R.id.text_input_password_toggle)).check(matches(not(isDisplayed())));
+        // ...and that the password is disguised still
+        assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+    }
+
+    @Test
+    public void testPasswordToggleDisableWhenVisible() {
+        final Activity activity = mActivityTestRule.getActivity();
+        final EditText textInput = (EditText) activity.findViewById(R.id.textinput_edittext_pwd);
+
+        // Set some text on the EditText
+        onView(withId(R.id.textinput_edittext_pwd)).perform(setText(INPUT_TEXT));
+        // Assert that the password is disguised
+        assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+
+        // Now click the toggle button
+        onView(withId(R.id.text_input_password_toggle)).perform(click());
+        // Disable the password toggle
+        onView(withId(R.id.textinput_password))
+                .perform(setPasswordVisibilityToggleEnabled(false));
+
+        // Check that the password is disguised again
+        assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+    }
 }

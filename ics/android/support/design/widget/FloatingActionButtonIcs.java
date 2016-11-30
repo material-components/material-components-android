@@ -18,17 +18,20 @@ package android.support.design.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 
-class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
+class FloatingActionButtonIcs extends FloatingActionButtonGingerbread {
 
     private boolean mIsHiding;
+    private float mRotation;
 
     FloatingActionButtonIcs(VisibilityAwareImageButton view,
             ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
+        mRotation = mView.getRotation();
     }
 
     @Override
@@ -38,7 +41,11 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
 
     @Override
     void onPreDraw() {
-        updateFromViewRotation(mView.getRotation());
+        final float rotation = mView.getRotation();
+        if (mRotation != rotation) {
+            mRotation = rotation;
+            updateFromViewRotation();
+        }
     }
 
     @Override
@@ -137,13 +144,27 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
         }
     }
 
-    private void updateFromViewRotation(float rotation) {
+    private void updateFromViewRotation() {
+        if (Build.VERSION.SDK_INT == 19) {
+            // KitKat seems to have an issue with views which are rotated with angles which are
+            // not divisible by 90. Worked around by moving to software rendering in these cases.
+            if ((mRotation % 90) != 0) {
+                if (mView.getLayerType() != View.LAYER_TYPE_SOFTWARE) {
+                    mView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+                }
+            } else {
+                if (mView.getLayerType() != View.LAYER_TYPE_NONE) {
+                    mView.setLayerType(View.LAYER_TYPE_NONE, null);
+                }
+            }
+        }
+
         // Offset any View rotation
         if (mShadowDrawable != null) {
-            mShadowDrawable.setRotation(-rotation);
+            mShadowDrawable.setRotation(-mRotation);
         }
         if (mBorderDrawable != null) {
-            mBorderDrawable.setRotation(-rotation);
+            mBorderDrawable.setRotation(-mRotation);
         }
     }
 }

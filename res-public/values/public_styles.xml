@@ -24,6 +24,7 @@
     <public type="style" name="TextAppearance.Design.Snackbar.Message"/>
     <public type="style" name="TextAppearance.Design.Tab"/>
     <public type="style" name="Theme.Design"/>
+    <public type="style" name="Theme.Design.BottomNavigationView"/>
     <public type="style" name="Theme.Design.BottomSheetDialog"/>
     <public type="style" name="Theme.Design.Light"/>
     <public type="style" name="Theme.Design.Light.BottomSheetDialog"/>

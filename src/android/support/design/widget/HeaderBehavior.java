@@ -71,7 +71,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
                 final int y = (int) ev.getY();
                 if (canDragView(child) && parent.isPointInChildBounds(child, x, y)) {
                     mLastMotionY = y;
-                    mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                    mActivePointerId = ev.getPointerId(0);
                     ensureVelocityTracker();
                 }
                 break;
@@ -83,12 +83,12 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
                     // If we don't have a valid id, the touch down wasn't on content.
                     break;
                 }
-                final int pointerIndex = MotionEventCompat.findPointerIndex(ev, activePointerId);
+                final int pointerIndex = ev.findPointerIndex(activePointerId);
                 if (pointerIndex == -1) {
                     break;
                 }
 
-                final int y = (int) MotionEventCompat.getY(ev, pointerIndex);
+                final int y = (int) ev.getY(pointerIndex);
                 final int yDiff = Math.abs(y - mLastMotionY);
                 if (yDiff > mTouchSlop) {
                     mIsBeingDragged = true;
@@ -129,7 +129,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
                 if (parent.isPointInChildBounds(child, x, y) && canDragView(child)) {
                     mLastMotionY = y;
-                    mActivePointerId = MotionEventCompat.getPointerId(ev, 0);
+                    mActivePointerId = ev.getPointerId(0);
                     ensureVelocityTracker();
                 } else {
                     return false;
@@ -138,13 +138,12 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
             }
 
             case MotionEvent.ACTION_MOVE: {
-                final int activePointerIndex = MotionEventCompat.findPointerIndex(ev,
-                        mActivePointerId);
+                final int activePointerIndex = ev.findPointerIndex(mActivePointerId);
                 if (activePointerIndex == -1) {
                     return false;
                 }
 
-                final int y = (int) MotionEventCompat.getY(ev, activePointerIndex);
+                final int y = (int) ev.getY(activePointerIndex);
                 int dy = mLastMotionY - y;
 
                 if (!mIsBeingDragged && Math.abs(dy) > mTouchSlop) {

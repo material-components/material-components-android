@@ -29,5 +29,7 @@
               app:actionLayout="@layout/action_layout" />
         <item android:id="@+id/destination_settings"
               android:title="@string/navigate_settings" />
+        <item android:id="@+id/desitination_custom"
+              app:actionLayout="@layout/action_layout_custom" />
     </group>
 </menu>

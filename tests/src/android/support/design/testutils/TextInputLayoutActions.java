@@ -23,6 +23,7 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
+import android.widget.TextView;
 
 import org.hamcrest.Matcher;
 
@@ -75,4 +76,30 @@ public class TextInputLayoutActions {
             }
         };
     }
+
+    public static ViewAction setPasswordVisibilityToggleEnabled(final boolean enabled) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextInputLayout.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets the error";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TextInputLayout layout = (TextInputLayout) view;
+                layout.setPasswordVisibilityToggleEnabled(enabled);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+
 }
