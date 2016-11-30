@@ -16,14 +16,19 @@
 
 package android.support.design.widget;
 
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+
 import android.support.design.test.R;
 import android.support.test.InstrumentationRegistry;
 import android.support.v7.app.AppCompatActivity;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.view.InflateException;
 import android.view.LayoutInflater;
-import org.junit.Test;
 
-import static org.junit.Assert.*;
+import org.junit.Test;
 
 public class TabLayoutWithLayoutItems extends BaseInstrumentationTestCase<AppCompatActivity> {
 
@@ -67,7 +72,7 @@ public class TabLayoutWithLayoutItems extends BaseInstrumentationTestCase<AppCom
         });
     }
 
-    @Test(expected = IllegalArgumentException.class)
+    @Test
     @SmallTest
     public void testInflateTabLayoutWithNonTabItem() throws Throwable {
         final Throwable[] exceptions = new Throwable[1];
@@ -82,8 +87,11 @@ public class TabLayoutWithLayoutItems extends BaseInstrumentationTestCase<AppCom
                 }
             }
         });
-        if (exceptions[0] != null) {
-            throw exceptions[0];
-        }
+
+        final Throwable thrown = exceptions[0];
+        assertNotNull(thrown);
+        // M+ will wrap the exception in an InflateException so we have to check for both
+        assertTrue(thrown instanceof InflateException
+                || thrown instanceof IllegalArgumentException);
     }
 }
