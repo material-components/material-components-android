@@ -2248,10 +2248,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         /**
          * Get the id of this view's anchor.
          *
-         * <p>The view with this id must be a descendant of the CoordinatorLayout containing
-         * the child view this LayoutParams belongs to. It may not be the child view with
-         * this LayoutParams or a descendant of it.</p>
-         *
          * @return A {@link View#getId() view id} or {@link View#NO_ID} if there is no anchor
          */
         public int getAnchorId() {
@@ -2259,7 +2255,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
 
         /**
-         * Get the id of this view's anchor.
+         * Set the id of this view's anchor.
          *
          * <p>The view with this id must be a descendant of the CoordinatorLayout containing
          * the child view this LayoutParams belongs to. It may not be the child view with
