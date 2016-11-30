@@ -24,6 +24,7 @@ import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
@@ -409,7 +410,7 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        return mDownPreScrollRange = Math.max(0, range - getTopInset());
+        return mDownPreScrollRange = Math.max(0, range);
     }
 
     /**
@@ -543,7 +544,8 @@ public class AppBarLayout extends LinearLayout {
         mPendingAction = PENDING_ACTION_NONE;
     }
 
-    private int getTopInset() {
+    @VisibleForTesting
+    final int getTopInset() {
         return mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
     }
 

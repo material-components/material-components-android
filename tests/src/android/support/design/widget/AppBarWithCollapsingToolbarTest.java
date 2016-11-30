@@ -138,6 +138,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
         mCoordinatorLayout.getLocationOnScreen(coordinatorLayoutOnScreenXY);
 
+        final int topInset = mAppBar.getTopInset();
+
         final int originalAppbarTop = appbarOnScreenXY[1];
         final int originalAppbarBottom = appbarOnScreenXY[1] + mAppBar.getHeight();
         final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
@@ -158,9 +160,10 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
 
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
         // At this point the app bar should not be visually "present" on the screen, with its bottom
-        // edge aligned with the system status bar.
+        // edge aligned with the bottom of system status bar. If we're running on a device which
+        // supports a translucent status bar, we need to take the status bar height into account.
         // Allow for off-by-a-pixel margin of error.
-        assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight - topInset, 1);
         assertAppBarElevation(0f);
 
         // Perform another swipe-up gesture
@@ -173,7 +176,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
         // At this point the app bar should still be off the screen. Allow for off-by-a-pixel
         // margin of error.
-        assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight - topInset, 1);
         assertAppBarElevation(0f);
 
         // Perform a short swipe-down gesture across the horizontal center of the screen.
@@ -189,7 +192,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         // At this point the app bar should be visually snapped below the system status bar as it
         // in scrolling mode and we've swiped down, but not fully. Allow for off-by-a-pixel
         // margin of error.
-        assertEquals(originalAppbarTop + toolbarHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertEquals(originalAppbarTop + toolbarHeight + topInset,
+                appbarOnScreenXY[1] + appbarHeight, 1);
         assertAppBarElevation(mDefaultElevationValue);
 
         // Perform another swipe-down gesture across the horizontal center of the screen.
