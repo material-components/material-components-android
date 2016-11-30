@@ -1737,7 +1737,7 @@ public class TabLayout extends HorizontalScrollView {
         @Override
         public void onPageSelected(int position) {
             final TabLayout tabLayout = mTabLayoutRef.get();
-            if (tabLayout != null) {
+            if (tabLayout != null && tabLayout.getSelectedTabPosition() != position) {
                 // Select the tab, only updating the indicator if we're not being dragged/settled
                 // (since onPageScrolled will handle that).
                 tabLayout.selectTab(tabLayout.getTabAt(position),
