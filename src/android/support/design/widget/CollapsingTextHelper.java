@@ -53,6 +53,7 @@ final class CollapsingTextHelper {
 
     private final View mView;
 
+    private boolean mDrawTitle;
     private float mExpandedFraction;
 
     private final Rect mExpandedBounds;
@@ -145,6 +146,7 @@ final class CollapsingTextHelper {
         if (!rectEquals(mExpandedBounds, left, top, right, bottom)) {
             mExpandedBounds.set(left, top, right, bottom);
             mBoundsChanged = true;
+            onBoundsChanged();
         }
     }
 
@@ -152,7 +154,13 @@ final class CollapsingTextHelper {
         if (!rectEquals(mCollapsedBounds, left, top, right, bottom)) {
             mCollapsedBounds.set(left, top, right, bottom);
             mBoundsChanged = true;
+            onBoundsChanged();
         }
+    }
+
+    void onBoundsChanged() {
+        mDrawTitle = mCollapsedBounds.width() > 0 && mCollapsedBounds.height() > 0
+                && mExpandedBounds.width() > 0 && mExpandedBounds.height() > 0;
     }
 
     void setExpandedTextGravity(int gravity) {
@@ -354,7 +362,7 @@ final class CollapsingTextHelper {
     public void draw(Canvas canvas) {
         final int saveCount = canvas.save();
 
-        if (mTextToDraw != null) {
+        if (mTextToDraw != null && mDrawTitle) {
             float x = mCurrentDrawX;
             float y = mCurrentDrawY;
 
