@@ -260,6 +260,7 @@ package android.support.design.widget {
 
   public static class FloatingActionButton.Behavior extends android.support.design.widget.CoordinatorLayout.Behavior {
     ctor public FloatingActionButton.Behavior();
+    ctor public FloatingActionButton.Behavior(android.content.Context, android.util.AttributeSet);
     method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
     method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
     method public void onDependentViewRemoved(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);

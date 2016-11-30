@@ -550,6 +550,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         private float mFabTranslationY;
         private Rect mTmpRect;
 
+        public Behavior() {
+            super();
+        }
+
+        public Behavior(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
         @Override
         public boolean layoutDependsOn(CoordinatorLayout parent,
                 FloatingActionButton child, View dependency) {
