@@ -39,6 +39,10 @@
                 android:name="android.support.design.widget.BottomSheetBehaviorActivity"/>
 
         <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="android.support.design.widget.NavigationViewActivity"/>
+
+        <activity
                 android:name="android.support.v7.app.AppCompatActivity"/>
 
     </application>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2016 The Android Open Source Project
+<!-- Copyright (C) 2016 Google Inc.
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,11 +13,13 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <string name="tab_layout_text">Tab text!</string>
-
-    <string name="navigate_home">Home</string>
-    <string name="navigate_profile">Profile</string>
-    <string name="navigate_people">People</string>
-    <string name="navigate_settings">Settings</string>
-</resources>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:id="@+id/destination_home"
+          android:title="@string/navigate_home" />
+    <item android:id="@+id/destination_profile"
+          android:title="@string/navigate_profile" />
+    <item android:id="@+id/destination_people"
+          android:title="@string/navigate_people" />
+    <item android:id="@+id/destination_settings"
+          android:title="@string/navigate_settings" />
+</menu>

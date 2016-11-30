@@ -13,11 +13,9 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<resources>
-    <string name="tab_layout_text">Tab text!</string>
 
-    <string name="navigate_home">Home</string>
-    <string name="navigate_profile">Profile</string>
-    <string name="navigate_people">People</string>
-    <string name="navigate_settings">Settings</string>
+<resources>
+    <color name="emerald_translucent">#8020A060</color>
+    <color name="emerald_text">#30B050</color>
+    <color name="sand_fill">#F0E020</color>
 </resources>
