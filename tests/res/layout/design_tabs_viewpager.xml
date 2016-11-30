@@ -17,6 +17,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
+              android:id="@+id/container"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
               android:orientation="vertical">
@@ -30,14 +31,7 @@
             app:contentInsetStart="72dp"
             app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
 
-    <android.support.design.widget.TabLayout
-            android:id="@+id/tabs"
-            android:layout_height="wrap_content"
-            android:layout_width="match_parent"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-            app:tabMode="scrollable"
-            app:tabContentStart="72dp"/>
+    <include layout="@layout/tab_layout_unbound" />
 
     <android.support.v4.view.ViewPager
             android:id="@+id/tabs_viewpager"

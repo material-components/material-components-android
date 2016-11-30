@@ -1313,7 +1313,7 @@ public class TabLayout extends HorizontalScrollView {
                     || specWidthSize > maxWidth)) {
                 // If we have a max width and a given spec which is either unspecified or
                 // larger than the max width, update the width spec using the same mode
-                widthMeasureSpec = MeasureSpec.makeMeasureSpec(mTabMaxWidth, specWidthMode);
+                widthMeasureSpec = MeasureSpec.makeMeasureSpec(mTabMaxWidth, MeasureSpec.AT_MOST);
             } else {
                 // Else, use the original width spec
                 widthMeasureSpec = origWidthMeasureSpec;

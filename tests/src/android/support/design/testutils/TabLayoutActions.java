@@ -74,7 +74,7 @@ public class TabLayoutActions {
 
             @Override
             public String getDescription() {
-                return "Setup with ViewPager content";
+                return "Selects tab";
             }
 
             @Override
@@ -83,6 +83,33 @@ public class TabLayoutActions {
 
                 TabLayout tabLayout = (TabLayout) view;
                 tabLayout.getTabAt(tabIndex).select();
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Sets the specified tab mode in the <code>TabLayout</code>.
+     */
+    public static ViewAction setTabMode(final int tabMode) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayingAtLeast(90);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets tab mode";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TabLayout tabLayout = (TabLayout) view;
+                tabLayout.setTabMode(tabMode);
 
                 uiController.loopMainThreadUntilIdle();
             }

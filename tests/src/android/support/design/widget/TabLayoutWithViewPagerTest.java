@@ -16,23 +16,30 @@
 package android.support.design.widget;
 
 import android.graphics.Color;
+import android.support.design.test.R;
 import android.support.design.testutils.TabLayoutActions;
+import android.support.design.testutils.TestUtilsActions;
+import android.support.design.testutils.TestUtilsMatchers;
 import android.support.design.testutils.ViewPagerActions;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.design.test.R;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+import org.hamcrest.Matcher;
 import org.junit.Test;
-
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 import java.util.ArrayList;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
 
 public class TabLayoutWithViewPagerTest
         extends BaseInstrumentationTestCase<TabLayoutWithViewPagerActivity> {
@@ -329,5 +336,158 @@ public class TabLayoutWithViewPagerTest
 
         verifyViewPagerSelection();
         verifyTabLayoutSelection();
+    }
+
+    @Test
+    @MediumTest
+    public void testFixedTabMode() {
+        // Create a new adapter (with no content)
+        final TextPagerAdapter newAdapter = new TextPagerAdapter();
+        // And set it on the ViewPager
+        onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.setAdapter(newAdapter));
+        // As TabLayout doesn't track adapter changes, we need to re-wire the new adapter
+        onView(withId(R.id.tabs)).perform(TabLayoutActions.setupWithViewPager(mViewPager));
+
+        // Set fixed mode on the TabLayout
+        onView(withId(R.id.tabs)).perform(TabLayoutActions.setTabMode(TabLayout.MODE_FIXED));
+        assertEquals("Fixed tab mode", TabLayout.MODE_FIXED, mTabLayout.getTabMode());
+
+        // Add a bunch of tabs and verify that all of them are visible on the screen
+        for (int i = 0; i < 8; i++) {
+            newAdapter.add("Title " + i, "Body " + i);
+            onView(withId(R.id.tabs_viewpager)).perform(
+                    ViewPagerActions.notifyAdapterContentChange());
+
+            int expectedTabCount = i + 1;
+            assertEquals("Tab count after adding #" + i, expectedTabCount,
+                    mTabLayout.getTabCount());
+            assertEquals("Page count after adding #" + i, expectedTabCount,
+                    mViewPager.getAdapter().getCount());
+
+            verifyViewPagerSelection();
+            verifyTabLayoutSelection();
+
+            // Check that all tabs are fully visible (the content may or may not be elided)
+            for (int j = 0; j < expectedTabCount; j++) {
+                onView(allOf(isDescendantOfA(withId(R.id.tabs)), withText("Title " + j))).
+                        check(matches(isCompletelyDisplayed()));
+            }
+        }
+    }
+
+    @Test
+    @MediumTest
+    public void testMinTabWidth() {
+        // Create a new adapter (with no content)
+        final TextPagerAdapter newAdapter = new TextPagerAdapter();
+        // And set it on the ViewPager
+        onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.setAdapter(newAdapter));
+
+        // Replace the default TabLayout with the one configured to have min tab width
+        onView(withId(R.id.container)).perform(
+                TestUtilsActions.replaceTabLayout(R.layout.tab_layout_bound_min));
+
+        // Now that we have a new TabLayout, wire it to the new content of our ViewPager
+        onView(withId(R.id.tabs)).perform(TabLayoutActions.setupWithViewPager(mViewPager));
+
+        // Since TabLayout doesn't expose a getter for fetching the configured min tab width,
+        // start adding a variety of tabs with progressively longer tab titles and test that
+        // no tab is more narrow than the configured min width. Before we start that test,
+        // verify that we're in the scrollable mode so that each tab title gets as much width
+        // as needed to display its text.
+        assertEquals("Scrollable tab mode", TabLayout.MODE_SCROLLABLE, mTabLayout.getTabMode());
+
+        final int minTabWidth = getActivity().getResources().getDimensionPixelSize(
+                R.dimen.tab_width_limit_medium);
+        final StringBuilder tabTitleBuilder = new StringBuilder();
+        for (int i = 0; i < 40; i++) {
+            final char titleComponent = (char) ('A' + i);
+            for (int j = 0; j <= (i + 1); j++) {
+                tabTitleBuilder.append(titleComponent);
+            }
+            final String tabTitle = tabTitleBuilder.toString();
+            newAdapter.add(tabTitle, "Body " + i);
+            onView(withId(R.id.tabs_viewpager)).perform(
+                    ViewPagerActions.notifyAdapterContentChange());
+
+            int expectedTabCount = i + 1;
+            // Check that all tabs are at least as wide as min width specified in the XML
+            // for the newly loaded TabLayout
+            for (int j = 0; j < expectedTabCount; j++) {
+                // Find the view that is our tab title. It should be:
+                // 1. Descendant of our TabLayout
+                // 2. But not a direct child of the horizontal scroller
+                // 3. With just-added title text
+                // These conditions make sure that we're selecting the "top-level" tab view
+                // instead of the inner (and narrower) TextView
+                Matcher<View> tabMatcher = allOf(
+                        isDescendantOfA(withId(R.id.tabs)),
+                        not(withParent(isAssignableFrom(HorizontalScrollView.class))),
+                        hasDescendant(withText(tabTitle)));
+                onView(tabMatcher).check(matches(TestUtilsMatchers.isNotNarrowerThan(minTabWidth)));
+            }
+
+            // Reset the title builder for the next tab
+            tabTitleBuilder.setLength(0);
+            tabTitleBuilder.trimToSize();
+        }
+    }
+
+    @Test
+    @MediumTest
+    public void testMaxTabWidth() {
+        // Create a new adapter (with no content)
+        final TextPagerAdapter newAdapter = new TextPagerAdapter();
+        // And set it on the ViewPager
+        onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.setAdapter(newAdapter));
+
+        // Replace the default TabLayout with the one configured to have max tab width
+        onView(withId(R.id.container)).perform(
+                TestUtilsActions.replaceTabLayout(R.layout.tab_layout_bound_max));
+
+        // Now that we have a new TabLayout, wire it to the new content of our ViewPager
+        onView(withId(R.id.tabs)).perform(TabLayoutActions.setupWithViewPager(mViewPager));
+
+        // Since TabLayout doesn't expose a getter for fetching the configured max tab width,
+        // start adding a variety of tabs with progressively longer tab titles and test that
+        // no tab is wider than the configured max width. Before we start that test,
+        // verify that we're in the scrollable mode so that each tab title gets as much width
+        // as needed to display its text.
+        assertEquals("Scrollable tab mode", TabLayout.MODE_SCROLLABLE, mTabLayout.getTabMode());
+
+        final int maxTabWidth = getActivity().getResources().getDimensionPixelSize(
+                R.dimen.tab_width_limit_medium);
+        final StringBuilder tabTitleBuilder = new StringBuilder();
+        for (int i = 0; i < 40; i++) {
+            final char titleComponent = (char) ('A' + i);
+            for (int j = 0; j <= (i + 1); j++) {
+                tabTitleBuilder.append(titleComponent);
+            }
+            final String tabTitle = tabTitleBuilder.toString();
+            newAdapter.add(tabTitle, "Body " + i);
+            onView(withId(R.id.tabs_viewpager)).perform(
+                    ViewPagerActions.notifyAdapterContentChange());
+
+            int expectedTabCount = i + 1;
+            // Check that all tabs are at most as wide as max width specified in the XML
+            // for the newly loaded TabLayout
+            for (int j = 0; j < expectedTabCount; j++) {
+                // Find the view that is our tab title. It should be:
+                // 1. Descendant of our TabLayout
+                // 2. But not a direct child of the horizontal scroller
+                // 3. With just-added title text
+                // These conditions make sure that we're selecting the "top-level" tab view
+                // instead of the inner (and narrower) TextView
+                Matcher<View> tabMatcher = allOf(
+                        isDescendantOfA(withId(R.id.tabs)),
+                        not(withParent(isAssignableFrom(HorizontalScrollView.class))),
+                        hasDescendant(withText(tabTitle)));
+                onView(tabMatcher).check(matches(TestUtilsMatchers.isNotWiderThan(maxTabWidth)));
+            }
+
+            // Reset the title builder for the next tab
+            tabTitleBuilder.setLength(0);
+            tabTitleBuilder.trimToSize();
+        }
     }
 }
