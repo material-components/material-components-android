@@ -142,6 +142,8 @@ public class AppBarLayout extends LinearLayout {
         super(context, attrs);
         setOrientation(VERTICAL);
 
+        ThemeUtils.checkAppCompatTheme(context);
+
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AppBarLayout,
                 0, R.style.Widget_Design_AppBarLayout);
         mTargetElevation = a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0);

@@ -181,6 +181,8 @@ public final class Snackbar {
         mParent = parent;
         mContext = parent.getContext();
 
+        ThemeUtils.checkAppCompatTheme(mContext);
+
         LayoutInflater inflater = LayoutInflater.from(mContext);
         mView = (SnackbarLayout) inflater.inflate(R.layout.design_layout_snackbar, mParent, false);
     }

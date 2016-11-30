@@ -222,6 +222,8 @@ public class TabLayout extends HorizontalScrollView {
     public TabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+        ThemeUtils.checkAppCompatTheme(context);
+
         // Disable the Scroll Bar
         setHorizontalScrollBarEnabled(false);
         // Set us to fill the View port

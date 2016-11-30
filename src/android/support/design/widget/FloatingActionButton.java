@@ -82,6 +82,8 @@ public class FloatingActionButton extends ImageView {
     public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+        ThemeUtils.checkAppCompatTheme(context);
+
         mShadowPadding = new Rect();
 
         TypedArray a = context.obtainStyledAttributes(attrs,

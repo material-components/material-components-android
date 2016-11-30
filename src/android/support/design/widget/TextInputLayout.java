@@ -85,6 +85,8 @@ public class TextInputLayout extends LinearLayout {
         // Can't call through to super(Context, AttributeSet, int) since it doesn't exist on API 10
         super(context, attrs);
 
+        ThemeUtils.checkAppCompatTheme(context);
+
         setOrientation(VERTICAL);
         setWillNotDraw(false);
         setAddStatesFromChildren(true);

@@ -95,6 +95,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
+        ThemeUtils.checkAppCompatTheme(context);
+
         // Create the menu
         mMenu = new NavigationMenu(context);
 
