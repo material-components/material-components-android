@@ -20,6 +20,12 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.support.design.test.R;
 import android.support.test.annotation.UiThreadTest;
@@ -82,12 +88,17 @@ public class TabLayoutTest extends BaseInstrumentationTestCase<AppCompatActivity
     @Test
     @UiThreadTest
     public void testTabWithCustomLayoutSelection1() {
+        final TabLayout.OnTabSelectedListener mockListener =
+                mock(TabLayout.OnTabSelectedListener.class);
         final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
 
         final TabLayout tabLayout = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+        tabLayout.addOnTabSelectedListener(mockListener);
         final TabLayout.Tab tab = tabLayout.newTab();
         tab.setCustomView(R.layout.design_tab_item_custom);
         tabLayout.addTab(tab);
+        verify(mockListener, times(1)).onTabSelected(eq(tab));
+        verify(mockListener, times(0)).onTabUnselected(any(TabLayout.Tab.class));
 
         assertNotNull("Tab has custom view", tab.getCustomView());
         assertEquals("First tab is selected", 0, tabLayout.getSelectedTabPosition());
@@ -97,11 +108,16 @@ public class TabLayoutTest extends BaseInstrumentationTestCase<AppCompatActivity
     @Test
     @UiThreadTest
     public void testTabWithCustomLayoutSelection2() {
+        final TabLayout.OnTabSelectedListener mockListener =
+                mock(TabLayout.OnTabSelectedListener.class);
         final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
 
         final TabLayout tabLayout = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+        tabLayout.addOnTabSelectedListener(mockListener);
         final TabLayout.Tab tab = tabLayout.newTab();
         tabLayout.addTab(tab);
+        verify(mockListener, times(1)).onTabSelected(eq(tab));
+        verify(mockListener, times(0)).onTabUnselected(any(TabLayout.Tab.class));
         tab.setCustomView(R.layout.design_tab_item_custom);
 
         assertNotNull("Tab has custom view", tab.getCustomView());
@@ -112,12 +128,23 @@ public class TabLayoutTest extends BaseInstrumentationTestCase<AppCompatActivity
     @Test
     @UiThreadTest
     public void testMultipleTabsWithCustomLayoutSelection1() {
+        final TabLayout.OnTabSelectedListener mockListener =
+                mock(TabLayout.OnTabSelectedListener.class);
         final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
         final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+        tabs.addOnTabSelectedListener(mockListener);
 
-        tabs.addTab(tabs.newTab().setCustomView(R.layout.design_tab_item_custom));
-        tabs.addTab(tabs.newTab().setCustomView(R.layout.design_tab_item_custom), true);
-        tabs.addTab(tabs.newTab().setCustomView(R.layout.design_tab_item_custom));
+        final TabLayout.Tab tab1 = tabs.newTab().setCustomView(R.layout.design_tab_item_custom);
+        tabs.addTab(tab1);
+        verify(mockListener, times(1)).onTabSelected(eq(tab1));
+        verify(mockListener, times(0)).onTabUnselected(any(TabLayout.Tab.class));
+        final TabLayout.Tab tab2 = tabs.newTab().setCustomView(R.layout.design_tab_item_custom);
+        tabs.addTab(tab2, true);
+        verify(mockListener, times(1)).onTabSelected(eq(tab2));
+        verify(mockListener, times(1)).onTabUnselected(eq(tab1));
+        final TabLayout.Tab tab3 = tabs.newTab().setCustomView(R.layout.design_tab_item_custom);
+        tabs.addTab(tab3);
+        verifyNoMoreInteractions(mockListener);
 
         assertEquals("Second tab is selected", 1, tabs.getSelectedTabPosition());
         assertTabCustomViewSelected(tabs);
@@ -126,12 +153,23 @@ public class TabLayoutTest extends BaseInstrumentationTestCase<AppCompatActivity
     @Test
     @UiThreadTest
     public void testMultipleTabsWithCustomLayoutSelection2() {
+        final TabLayout.OnTabSelectedListener mockListener =
+                mock(TabLayout.OnTabSelectedListener.class);
         final LayoutInflater inflater = LayoutInflater.from(mActivityTestRule.getActivity());
         final TabLayout tabs = (TabLayout) inflater.inflate(R.layout.design_tabs, null);
+        tabs.addOnTabSelectedListener(mockListener);
 
-        tabs.addTab(tabs.newTab());
-        tabs.addTab(tabs.newTab(), true);
-        tabs.addTab(tabs.newTab());
+        final TabLayout.Tab tab1 = tabs.newTab();
+        tabs.addTab(tab1);
+        verify(mockListener, times(1)).onTabSelected(eq(tab1));
+        verify(mockListener, times(0)).onTabUnselected(any(TabLayout.Tab.class));
+        final TabLayout.Tab tab2 = tabs.newTab();
+        tabs.addTab(tab2, true);
+        verify(mockListener, times(1)).onTabSelected(eq(tab2));
+        verify(mockListener, times(1)).onTabUnselected(eq(tab1));
+        final TabLayout.Tab tab3 = tabs.newTab();
+        tabs.addTab(tab3);
+        verifyNoMoreInteractions(mockListener);
 
         tabs.getTabAt(0).setCustomView(R.layout.design_tab_item_custom);
         tabs.getTabAt(1).setCustomView(R.layout.design_tab_item_custom);
