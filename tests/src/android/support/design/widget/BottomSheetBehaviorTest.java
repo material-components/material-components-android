@@ -23,6 +23,7 @@ import android.support.annotation.NonNull;
 import android.support.design.test.R;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.action.CoordinatesProvider;
 import android.support.test.espresso.action.GeneralLocation;
 import android.support.test.espresso.action.GeneralSwipeAction;
 import android.support.test.espresso.action.Press;
@@ -127,8 +128,21 @@ public class BottomSheetBehaviorTest extends
     public void testSwipeDownToCollapse() {
         checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
         Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
-                .perform(DesignViewActions.withCustomConstraints(ViewActions.swipeDown(),
-                        ViewMatchers.isDisplayingAtLeast(5)));
+                .perform(DesignViewActions.withCustomConstraints(new GeneralSwipeAction(
+                        Swipe.FAST, GeneralLocation.TOP_CENTER,
+                        // Manually calculate the ending coordinates to make sure that the bottom
+                        // sheet is collapsed, not hidden
+                        new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                BottomSheetBehavior behavior = getBehavior();
+                                return new float[]{
+                                        // x: center of the bottom sheet
+                                        view.getWidth() / 2,
+                                        // y: just above the peek height
+                                        view.getHeight() - behavior.getPeekHeight()};
+                            }
+                        }, Press.FINGER), ViewMatchers.isDisplayingAtLeast(5)));
         // Avoid a deadlock (b/26160710)
         registerIdlingResourceCallback();
         try {
@@ -162,8 +176,12 @@ public class BottomSheetBehaviorTest extends
         Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
                 .perform(DesignViewActions.withCustomConstraints(
                         new GeneralSwipeAction(Swipe.FAST,
-                                GeneralLocation.VISIBLE_CENTER, GeneralLocation.TOP_CENTER,
-                                Press.FINGER),
+                                GeneralLocation.VISIBLE_CENTER, new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                return new float[]{view.getWidth() / 2, 0};
+                            }
+                        }, Press.FINGER),
                         ViewMatchers.isDisplayingAtLeast(5)));
         // Avoid a deadlock (b/26160710)
         registerIdlingResourceCallback();
