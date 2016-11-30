@@ -2461,9 +2461,18 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          * Determine the anchor view for the child view this LayoutParams is assigned to.
          * Assumes mAnchorId is valid.
          */
-        private void resolveAnchorView(View forChild, CoordinatorLayout parent) {
+        private void resolveAnchorView(final View forChild, final CoordinatorLayout parent) {
             mAnchorView = parent.findViewById(mAnchorId);
             if (mAnchorView != null) {
+                if (mAnchorView == parent) {
+                    if (parent.isInEditMode()) {
+                        mAnchorView = mAnchorDirectChild = null;
+                        return;
+                    }
+                    throw new IllegalStateException(
+                            "View can not be anchored to the the parent CoordinatorLayout");
+                }
+
                 View directChild = mAnchorView;
                 for (ViewParent p = mAnchorView.getParent();
                         p != parent && p != null;
