@@ -37,6 +37,8 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
     private final Rect mTempRect1 = new Rect();
     private final Rect mTempRect2 = new Rect();
 
+    private int mVerticalLayoutGap = 0;
+
     public HeaderScrollingViewBehavior() {}
 
     public HeaderScrollingViewBehavior(Context context, AttributeSet attrs) {
@@ -115,9 +117,11 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
                     child.getMeasuredHeight(), available, out, layoutDirection);
 
             child.layout(out.left, out.top, out.right, out.bottom);
+            mVerticalLayoutGap = out.top - header.getBottom();
         } else {
             // If we don't have a dependency, let super handle it
             super.layoutChild(parent, child, layoutDirection);
+            mVerticalLayoutGap = 0;
         }
     }
 
@@ -129,5 +133,12 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
     int getScrollRange(View v) {
         return v.getMeasuredHeight();
+    }
+
+    /**
+     * The gap between the top of the scrolling view and the bottom of the header layout in pixels.
+     */
+    int getVerticalLayoutGap() {
+        return mVerticalLayoutGap;
     }
 }

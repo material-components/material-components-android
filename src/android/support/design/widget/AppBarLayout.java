@@ -962,8 +962,7 @@ public class AppBarLayout extends LinearLayout {
             final int curOffset = getTopBottomOffsetForScrollingSibling();
             int consumed = 0;
 
-            if (minOffset != 0 && curOffset >= minOffset
-                    && curOffset <= maxOffset) {
+            if (minOffset != 0 && curOffset >= minOffset && curOffset <= maxOffset) {
                 // If we have some scrolling range, and we're currently within the min and max
                 // offsets, calculate a new offset
                 newOffset = MathUtils.constrain(newOffset, minOffset, maxOffset);
@@ -991,6 +990,9 @@ public class AppBarLayout extends LinearLayout {
                     // Dispatch the updates to any listeners
                     dispatchOffsetUpdates(appBarLayout);
                 }
+            } else {
+                // Reset the offset delta
+                mOffsetDelta = 0;
             }
 
             return consumed;
@@ -1165,39 +1167,25 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        public boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
-            // First lay out the child as normal
-            super.onLayoutChild(parent, child, layoutDirection);
-
-            // Now offset us correctly to be in the correct position. This is important for things
-            // like activity transitions which rely on accurate positioning after the first layout.
-            final List<View> dependencies = parent.getDependencies(child);
-            for (int i = 0, z = dependencies.size(); i < z; i++) {
-                if (updateOffset(parent, child, dependencies.get(i))) {
-                    // If we updated the offset, break out of the loop now
-                    break;
-                }
-            }
-            return true;
-        }
-
-        @Override
         public boolean onDependentViewChanged(CoordinatorLayout parent, View child,
                 View dependency) {
-            updateOffset(parent, child, dependency);
+            offsetChildAsNeeded(parent, child, dependency);
             return false;
         }
 
-        private boolean updateOffset(CoordinatorLayout parent, View child, View dependency) {
+        private void offsetChildAsNeeded(CoordinatorLayout parent, View child, View dependency) {
             final CoordinatorLayout.Behavior behavior =
                     ((CoordinatorLayout.LayoutParams) dependency.getLayoutParams()).getBehavior();
             if (behavior instanceof Behavior) {
-                // Offset the child so that it is below the app-bar (with any overlap)
-                final int offset = ((Behavior) behavior).getTopBottomOffsetForScrollingSibling();
-                setTopAndBottomOffset(offset - getOverlapForOffset(dependency, offset));
-                return true;
+                // Offset the child, pinning it to the bottom the header-dependency, maintaining
+                // any vertical gap, and overlap
+                final Behavior ablBehavior = (Behavior) behavior;
+                final int offset = ablBehavior.getTopBottomOffsetForScrollingSibling();
+                child.offsetTopAndBottom((dependency.getBottom() - child.getTop())
+                        + ablBehavior.mOffsetDelta
+                        + getVerticalLayoutGap()
+                        - getOverlapForOffset(dependency, offset));
             }
-            return false;
         }
 
         private int getOverlapForOffset(final View dependency, final int offset) {
