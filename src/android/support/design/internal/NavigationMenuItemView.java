@@ -27,19 +27,30 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.support.v7.internal.view.menu.MenuView;
+import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.widget.TextView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewStub;
+import android.widget.CheckedTextView;
+import android.widget.FrameLayout;
 
 /**
  * @hide
  */
-public class NavigationMenuItemView extends TextView implements MenuView.ItemView {
+public class NavigationMenuItemView extends LinearLayoutCompat implements MenuView.ItemView {
 
     private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
-    private int mIconSize;
+    private final int mIconSize;
+
+    private final CheckedTextView mTextView;
+
+    private FrameLayout mActionArea;
+
     private MenuItemImpl mItemData;
+
     private ColorStateList mIconTintList;
 
     public NavigationMenuItemView(Context context) {
@@ -52,8 +63,14 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
 
     public NavigationMenuItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
+        setOrientation(HORIZONTAL);
+        LayoutInflater.from(context).inflate(R.layout.design_navigation_menu_item, this, true);
         mIconSize = context.getResources().getDimensionPixelSize(
                 R.dimen.design_navigation_icon_size);
+        mTextView = (CheckedTextView) findViewById(R.id.design_menu_item_text);
+        mTextView.setDuplicateParentStateEnabled(true);
+        // Prevent the action view from stealing the event on the item row.
+        setDescendantFocusability(FOCUS_BLOCK_DESCENDANTS);
     }
 
     @Override
@@ -71,6 +88,18 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
         setEnabled(itemData.isEnabled());
         setTitle(itemData.getTitle());
         setIcon(itemData.getIcon());
+        setActionView(itemData.getActionView());
+    }
+
+    private void setActionView(View actionView) {
+        if (mActionArea == null) {
+            mActionArea = (FrameLayout) ((ViewStub) findViewById(
+                    R.id.design_menu_item_action_area_stub)).inflate();
+        }
+        mActionArea.removeAllViews();
+        if (actionView != null) {
+            mActionArea.addView(actionView);
+        }
     }
 
     private StateListDrawable createDefaultBackground() {
@@ -91,7 +120,7 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
 
     @Override
     public void setTitle(CharSequence title) {
-        setText(title);
+        mTextView.setText(title);
     }
 
     @Override
@@ -102,6 +131,7 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
     @Override
     public void setChecked(boolean checked) {
         refreshDrawableState();
+        mTextView.setChecked(checked);
     }
 
     @Override
@@ -115,7 +145,7 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
             icon.setBounds(0, 0, mIconSize, mIconSize);
             DrawableCompat.setTintList(icon, mIconTintList);
         }
-        TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
+        TextViewCompat.setCompoundDrawablesRelative(mTextView, icon, null, null, null);
     }
 
     @Override
@@ -144,4 +174,13 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
             setIcon(mItemData.getIcon());
         }
     }
+
+    public void setTextAppearance(Context context, int textAppearance) {
+        mTextView.setTextAppearance(context, textAppearance);
+    }
+
+    public void setTextColor(ColorStateList colors) {
+        mTextView.setTextColor(colors);
+    }
+
 }

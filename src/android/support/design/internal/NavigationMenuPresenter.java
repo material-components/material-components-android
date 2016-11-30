@@ -266,6 +266,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
 
         private static final String STATE_CHECKED_ITEM = "android:menu:checked";
 
+        private static final String STATE_ACTION_VIEWS = "android:menu:action_views";
         private static final int VIEW_TYPE_NORMAL = 0;
         private static final int VIEW_TYPE_SUBHEADER = 1;
         private static final int VIEW_TYPE_SEPARATOR = 2;
@@ -470,6 +471,18 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             if (mCheckedItem != null) {
                 state.putInt(STATE_CHECKED_ITEM, mCheckedItem.getItemId());
             }
+            // Store the states of the action views.
+            SparseArray<ParcelableSparseArray> actionViewStates = new SparseArray<>();
+            for (NavigationMenuItem navigationMenuItem : mItems) {
+                MenuItemImpl item = navigationMenuItem.getMenuItem();
+                View actionView = item != null ? item.getActionView() : null;
+                if (actionView != null) {
+                    ParcelableSparseArray container = new ParcelableSparseArray();
+                    actionView.saveHierarchyState(container);
+                    actionViewStates.put(item.getItemId(), container);
+                }
+            }
+            state.putSparseParcelableArray(STATE_ACTION_VIEWS, actionViewStates);
             return state;
         }
 
@@ -479,13 +492,23 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                 mUpdateSuspended = true;
                 for (NavigationMenuItem item : mItems) {
                     MenuItemImpl menuItem = item.getMenuItem();
-                    if (menuItem !=  null && menuItem.getItemId() == checkedItem) {
+                    if (menuItem != null && menuItem.getItemId() == checkedItem) {
                         setCheckedItem(menuItem);
                         break;
                     }
                 }
                 mUpdateSuspended = false;
                 prepareMenuItems();
+            }
+            // Restore the states of the action views.
+            SparseArray<ParcelableSparseArray> actionViewStates = state
+                    .getSparseParcelableArray(STATE_ACTION_VIEWS);
+            for (NavigationMenuItem navigationMenuItem : mItems) {
+                MenuItemImpl item = navigationMenuItem.getMenuItem();
+                View actionView = item != null ? item.getActionView() : null;
+                if (actionView != null) {
+                    actionView.restoreHierarchyState(actionViewStates.get(item.getItemId()));
+                }
             }
         }
 
