@@ -18,6 +18,7 @@ package android.support.design.internal;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -31,6 +32,7 @@ import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.support.v7.internal.view.menu.MenuPresenter;
 import android.support.v7.internal.view.menu.MenuView;
 import android.support.v7.internal.view.menu.SubMenuBuilder;
+import android.support.v7.internal.widget.ListViewCompat;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -39,6 +41,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
+import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -69,12 +72,19 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
      */
     private int mPaddingTopDefault;
 
+    /**
+     * Padding for separators between items
+     */
+    private int mPaddingSeparator;
+
     @Override
     public void initForMenu(Context context, MenuBuilder menu) {
         mLayoutInflater = LayoutInflater.from(context);
         mMenu = menu;
-        mPaddingTopDefault = context.getResources().getDimensionPixelOffset(
-                R.dimen.navigation_padding_top_default);
+        Resources res = context.getResources();
+        mPaddingTopDefault = res.getDimensionPixelOffset(R.dimen.navigation_padding_top_default);
+        mPaddingSeparator = res.getDimensionPixelOffset(
+                R.dimen.navigation_separator_vertical_padding);
     }
 
     @Override
@@ -175,7 +185,12 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     }
 
     public void addHeaderView(@NonNull View view) {
+        ListAdapter adapter = mMenuView.getAdapter();
+        if (adapter != null) {
+            mMenuView.setAdapter(null);
+        }
         mMenuView.addHeaderView(view);
+        mMenuView.setAdapter(adapter);
         onHeaderAdded();
     }
 
@@ -188,7 +203,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             mMenuView.addHeaderView(mSpace);
         }
         // The padding on top should be cleared.
-        mMenuView.setPadding(0, 0, 0, 0);
+        mMenuView.setPadding(0, 0, 0, mMenuView.getPaddingBottom());
     }
 
     public void removeHeaderView(@NonNull View view) {
@@ -196,7 +211,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             // Remove the space if it is the only remained header
             if (mMenuView.getHeaderViewsCount() == 1) {
                 mMenuView.removeHeaderView(mSpace);
-                mMenuView.setPadding(0, mPaddingTopDefault, 0, 0);
+                mMenuView.setPadding(0, mPaddingTopDefault, 0, mMenuView.getPaddingBottom());
             }
         }
     }
@@ -291,6 +306,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                         convertView = mLayoutInflater.inflate(
                                 R.layout.design_navigation_item_separator, parent, false);
                     }
+                    convertView.setPadding(0, item.getPaddingTop(), 0,
+                            item.getPaddingBottom());
                     break;
             }
             return convertView;
@@ -327,7 +344,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     SubMenu subMenu = item.getSubMenu();
                     if (subMenu.hasVisibleItems()) {
                         if (i != 0) {
-                            mItems.add(NavigationMenuItem.SEPARATOR);
+                            mItems.add(NavigationMenuItem.separator(mPaddingSeparator, 0));
                         }
                         mItems.add(NavigationMenuItem.of(item));
                         boolean subMenuHasIcon = false;
@@ -352,7 +369,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                         currentGroupHasIcon = item.getIcon() != null;
                         if (i != 0) {
                             currentGroupStart++;
-                            mItems.add(NavigationMenuItem.SEPARATOR);
+                            mItems.add(NavigationMenuItem.separator(
+                                    mPaddingSeparator, mPaddingSeparator));
                         }
                     } else if (!currentGroupHasIcon && item.getIcon() != null) {
                         currentGroupHasIcon = true;
@@ -385,20 +403,39 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
      */
     private static class NavigationMenuItem {
 
-        private static final NavigationMenuItem SEPARATOR = new NavigationMenuItem(null);
-
+        /** The item; null for separators */
         private final MenuItemImpl mMenuItem;
 
-        private NavigationMenuItem(MenuItemImpl item) {
+        /** Padding top; used only for separators */
+        private final int mPaddingTop;
+
+        /** Padding bottom; used only for separators */
+        private final int mPaddingBottom;
+
+        private NavigationMenuItem(MenuItemImpl item, int paddingTop, int paddingBottom) {
             mMenuItem = item;
+            mPaddingTop = paddingTop;
+            mPaddingBottom = paddingBottom;
         }
 
         public static NavigationMenuItem of(MenuItemImpl item) {
-            return new NavigationMenuItem(item);
+            return new NavigationMenuItem(item, 0, 0);
+        }
+
+        public static NavigationMenuItem separator(int paddingTop, int paddingBottom) {
+            return new NavigationMenuItem(null, paddingTop, paddingBottom);
         }
 
         public boolean isSeparator() {
-            return this == SEPARATOR;
+            return mMenuItem == null;
+        }
+
+        public int getPaddingTop() {
+            return mPaddingTop;
+        }
+
+        public int getPaddingBottom() {
+            return mPaddingBottom;
         }
 
         public MenuItemImpl getMenuItem() {

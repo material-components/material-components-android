@@ -19,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:paddingTop="@dimen/navigation_padding_top_default"
+        android:paddingBottom="@dimen/navigation_padding_bottom"
         android:clipToPadding="false"
         android:divider="@null"
         android:listSelector="?attr/selectableItemBackground"/>

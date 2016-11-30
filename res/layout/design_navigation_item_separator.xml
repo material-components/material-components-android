@@ -16,9 +16,7 @@
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
              android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:paddingTop="@dimen/navigation_separator_vertical_padding"
-             android:paddingBottom="@dimen/navigation_separator_vertical_padding">
+             android:layout_height="wrap_content">
 
     <View android:layout_width="match_parent"
           android:layout_height="1dp"

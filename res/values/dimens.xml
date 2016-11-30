@@ -28,6 +28,7 @@
     <dimen name="navigation_icon_size">24dp</dimen>
     <dimen name="navigation_separator_vertical_padding">8dp</dimen>
     <dimen name="navigation_padding_top_default">0dp</dimen>
+    <dimen name="navigation_padding_bottom">8dp</dimen>
 
     <dimen name="tab_min_width">72dp</dimen>
     <dimen name="tab_max_width">264dp</dimen>
