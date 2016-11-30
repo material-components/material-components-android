@@ -23,6 +23,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.Region;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -31,6 +32,7 @@ import android.os.Parcelable;
 import android.os.SystemClock;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.FloatRange;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -1172,15 +1174,28 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     @Override
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-        if (lp.mBehavior != null && lp.mBehavior.getScrimOpacity(this, child) > 0.f) {
-            if (mScrimPaint == null) {
-                mScrimPaint = new Paint();
-            }
-            mScrimPaint.setColor(lp.mBehavior.getScrimColor(this, child));
+        if (lp.mBehavior != null) {
+            final float scrimAlpha = lp.mBehavior.getScrimOpacity(this, child);
+            if (scrimAlpha > 0f) {
+                if (mScrimPaint == null) {
+                    mScrimPaint = new Paint();
+                }
+                mScrimPaint.setColor(lp.mBehavior.getScrimColor(this, child));
+                mScrimPaint.setAlpha(MathUtils.constrain(Math.round(255 * scrimAlpha), 0, 255));
 
-            // TODO: Set the clip appropriately to avoid unnecessary overdraw.
-            canvas.drawRect(getPaddingLeft(), getPaddingTop(),
-                    getWidth() - getPaddingRight(), getHeight() - getPaddingBottom(), mScrimPaint);
+                final int saved = canvas.save();
+                if (child.isOpaque()) {
+                    // If the child is opaque, there is no need to draw behind it so we'll inverse
+                    // clip the canvas
+                    canvas.clipRect(child.getLeft(), child.getTop(), child.getRight(),
+                            child.getBottom(), Region.Op.DIFFERENCE);
+                }
+                // Now draw the rectangle for the scrim
+                canvas.drawRect(getPaddingLeft(), getPaddingTop(),
+                        getWidth() - getPaddingRight(), getHeight() - getPaddingBottom(),
+                        mScrimPaint);
+                canvas.restoreToCount(saved);
+            }
         }
         return super.drawChild(canvas, child, drawingTime);
     }
@@ -1933,6 +1948,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          *         {@link Color#BLACK}.
          * @see #getScrimOpacity(CoordinatorLayout, android.view.View)
          */
+        @ColorInt
         public int getScrimColor(CoordinatorLayout parent, V child) {
             return Color.BLACK;
         }
@@ -1950,6 +1966,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          * @param child the child view above the scrim
          * @return the desired scrim opacity from 0.0f to 1.0f. The default return value is 0.0f.
          */
+        @FloatRange(from = 0, to = 1)
         public float getScrimOpacity(CoordinatorLayout parent, V child) {
             return 0.f;
         }
