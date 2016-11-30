@@ -550,28 +550,18 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void prepareChildren() {
-        final int childCount = getChildCount();
-
-        boolean resortRequired = mDependencySortedChildren.size() != childCount;
-
-        for (int i = 0; i < childCount; i++) {
+        mDependencySortedChildren.clear();
+        for (int i = 0, count = getChildCount(); i < count; i++) {
             final View child = getChildAt(i);
-            final LayoutParams lp = getResolvedLayoutParams(child);
-            if (!resortRequired && lp.isDirty(this, child)) {
-                resortRequired = true;
-            }
-            lp.findAnchorView(this, child);
-        }
 
-        if (resortRequired) {
-            mDependencySortedChildren.clear();
-            for (int i = 0; i < childCount; i++) {
-                mDependencySortedChildren.add(getChildAt(i));
-            }
-            // We need to use a selection sort here to make sure that every item is compared
-            // against each other
-            selectionSort(mDependencySortedChildren, mLayoutDependencyComparator);
+            final LayoutParams lp = getResolvedLayoutParams(child);
+            lp.findAnchorView(this, child);
+
+            mDependencySortedChildren.add(child);
         }
+        // We need to use a selection sort here to make sure that every item is compared
+        // against each other
+        selectionSort(mDependencySortedChildren, mLayoutDependencyComparator);
     }
 
     /**
@@ -1149,15 +1139,23 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
-    void dispatchDependentViewRemoved(View removedChild) {
-        final int childCount = getChildCount();
+    void dispatchDependentViewRemoved(View view) {
+        final int childCount = mDependencySortedChildren.size();
+        boolean viewSeen = false;
         for (int i = 0; i < childCount; i++) {
-            final View child = getChildAt(i);
-            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            final Behavior b = lp.getBehavior();
-
-            if (b != null && b.layoutDependsOn(this, child, removedChild)) {
-                b.onDependentViewRemoved(this, child, removedChild);
+            final View child = mDependencySortedChildren.get(i);
+            if (child == view) {
+                // We've seen our view, which means that any Views after this could be dependent
+                viewSeen = true;
+                continue;
+            }
+            if (viewSeen) {
+                CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)
+                        child.getLayoutParams();
+                CoordinatorLayout.Behavior b = lp.getBehavior();
+                if (b != null && lp.dependsOn(this, child, view)) {
+                    b.onDependentViewRemoved(this, child, view);
+                }
             }
         }
     }
