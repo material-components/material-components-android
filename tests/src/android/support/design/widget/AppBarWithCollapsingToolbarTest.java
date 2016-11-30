@@ -20,6 +20,7 @@ import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.test.R;
 import android.test.suitebuilder.annotation.MediumTest;
+import android.widget.ImageView;
 import org.junit.Test;
 
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -31,6 +32,11 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     public void testPinnedToolbar() {
         configureContent(R.layout.design_appbar_toolbar_collapse_pin,
                 R.string.design_appbar_collapsing_toolbar_pin);
+
+        CollapsingToolbarLayout.LayoutParams toolbarLp =
+                (CollapsingToolbarLayout.LayoutParams) mToolbar.getLayoutParams();
+        assertEquals(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN,
+                toolbarLp.getCollapseMode());
 
         final int[] appbarOnScreenXY = new int[2];
         final int[] coordinatorLayoutOnScreenXY = new int[2];
@@ -116,6 +122,11 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     public void testScrollingToolbar() {
         configureContent(R.layout.design_appbar_toolbar_collapse_scroll,
                 R.string.design_appbar_collapsing_toolbar_scroll);
+
+        CollapsingToolbarLayout.LayoutParams toolbarLp =
+                (CollapsingToolbarLayout.LayoutParams) mToolbar.getLayoutParams();
+        assertEquals(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN,
+                toolbarLp.getCollapseMode());
 
         final int[] appbarOnScreenXY = new int[2];
         final int[] coordinatorLayoutOnScreenXY = new int[2];
@@ -203,6 +214,11 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         configureContent(R.layout.design_appbar_toolbar_collapse_pin_with_fab,
                 R.string.design_appbar_collapsing_toolbar_pin_fab);
 
+        CollapsingToolbarLayout.LayoutParams toolbarLp =
+                (CollapsingToolbarLayout.LayoutParams) mToolbar.getLayoutParams();
+        assertEquals(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN,
+                toolbarLp.getCollapseMode());
+
         final FloatingActionButton fab =
                 (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
 
@@ -257,5 +273,81 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
             assertEquals(1.0f, fab.getScaleY(), 0.0f);
             assertEquals(1.0f, fab.getAlpha(), 0.0f);
         }
+    }
+
+    @Test
+    public void testPinnedToolbarAndParallaxImage() {
+        configureContent(R.layout.design_appbar_toolbar_collapse_with_image,
+                R.string.design_appbar_collapsing_toolbar_with_image);
+
+        final ImageView parallaxImageView =
+                (ImageView) mCoordinatorLayout.findViewById(R.id.app_bar_image);
+
+        CollapsingToolbarLayout.LayoutParams parallaxImageViewLp =
+                (CollapsingToolbarLayout.LayoutParams) parallaxImageView.getLayoutParams();
+        assertEquals(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX,
+                parallaxImageViewLp.getCollapseMode());
+
+        final float parallaxMultiplier = parallaxImageViewLp.getParallaxMultiplier();
+
+        final int[] appbarOnScreenXY = new int[2];
+        final int[] parallaxImageOnScreenXY = new int[2];
+        final int appbarHeight = mAppBar.getHeight();
+        final int toolbarHeight = mToolbar.getHeight();
+        final int parallaxImageHeight = parallaxImageView.getHeight();
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        parallaxImageView.getLocationOnScreen(parallaxImageOnScreenXY);
+
+        final int originalAppbarTop = appbarOnScreenXY[1];
+        final int originalAppbarBottom = appbarOnScreenXY[1] + mAppBar.getHeight();
+        final int originalParallaxImageTop = parallaxImageOnScreenXY[1];
+        final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
+
+        // Test that at the beginning our image is top-aligned with the app bar
+        assertEquals(appbarOnScreenXY[1], parallaxImageOnScreenXY[1]);
+
+        // Swipe up by the toolbar's height
+        performVerticalSwipeUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom,
+                toolbarHeight);
+
+        // Test that the top edge of the image (in the screen coordinates) has "moved" by half
+        // the amount that the top edge of the app bar (in the screen coordinates) has.
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        parallaxImageView.getLocationOnScreen(parallaxImageOnScreenXY);
+        assertEquals(parallaxMultiplier * (appbarOnScreenXY[1] - originalAppbarTop),
+                parallaxImageOnScreenXY[1] - originalParallaxImageTop, 1);
+
+        // Swipe up by another toolbar's height
+        performVerticalSwipeUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom,
+                toolbarHeight);
+
+        // Test that the top edge of the image (in the screen coordinates) has "moved" by half
+        // the amount that the top edge of the app bar (in the screen coordinates) has.
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        parallaxImageView.getLocationOnScreen(parallaxImageOnScreenXY);
+        assertEquals(parallaxMultiplier * (appbarOnScreenXY[1] - originalAppbarTop),
+                parallaxImageOnScreenXY[1] - originalParallaxImageTop, 1);
+
+        // Swipe down by a different value (150% of the toolbar's height) to test parallax going the
+        // other way
+        performVerticalSwipeDownGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom,
+                3 * toolbarHeight / 2);
+
+        // Test that the top edge of the image (in the screen coordinates) has "moved" by half
+        // the amount that the top edge of the app bar (in the screen coordinates) has.
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        parallaxImageView.getLocationOnScreen(parallaxImageOnScreenXY);
+        assertEquals(parallaxMultiplier * (appbarOnScreenXY[1] - originalAppbarTop),
+                parallaxImageOnScreenXY[1] - originalParallaxImageTop, 1);
     }
 }
