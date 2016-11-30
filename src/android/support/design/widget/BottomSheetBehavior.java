@@ -138,6 +138,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     private int mActivePointerId;
 
+    private int mInitialY;
+
     /**
      * Default constructor for instantiating BottomSheetBehaviors.
      */
@@ -229,17 +231,27 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 }
                 break;
             case MotionEvent.ACTION_DOWN:
-                int x = (int) event.getX();
-                int y = (int) event.getY();
+                int initialX = (int) event.getX();
+                mInitialY = (int) event.getY();
                 View scroll = mNestedScrollingChildRef.get();
-                if (scroll != null && parent.isPointInChildBounds(scroll, x, y)) {
+                if (scroll != null && parent.isPointInChildBounds(scroll, initialX, mInitialY)) {
                     mActivePointerId = event.getPointerId(event.getActionIndex());
                 }
                 mIgnoreEvents = mActivePointerId == MotionEvent.INVALID_POINTER_ID &&
-                        !parent.isPointInChildBounds(child, x, y);
+                        !parent.isPointInChildBounds(child, initialX, mInitialY);
                 break;
         }
-        return !mIgnoreEvents && mViewDragHelper.shouldInterceptTouchEvent(event);
+        if (!mIgnoreEvents && mViewDragHelper.shouldInterceptTouchEvent(event)) {
+            return true;
+        }
+        // We have to handle cases that the ViewDragHelper does not capture the bottom sheet because
+        // it is not the top most view of its parent. This is not necessary when the touch event is
+        // happening over the scrolling content as nested scrolling logic handles that case.
+        View scroll = mNestedScrollingChildRef.get();
+        return action == MotionEvent.ACTION_MOVE && scroll != null &&
+                !mIgnoreEvents && mState != STATE_DRAGGING &&
+                !parent.isPointInChildBounds(scroll, (int) event.getX(), (int) event.getY()) &&
+                Math.abs(mInitialY - event.getY()) > mViewDragHelper.getTouchSlop();
     }
 
     @Override
@@ -260,6 +272,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             mVelocityTracker = VelocityTracker.obtain();
         }
         mVelocityTracker.addMovement(event);
+        // The ViewDragHelper tries to capture only the top-most View. We have to explicitly tell it
+        // to capture the bottom sheet in case it is not captured and the touch slop is passed.
+        if (action == MotionEvent.ACTION_MOVE) {
+            if (Math.abs(mInitialY - event.getY()) > mViewDragHelper.getTouchSlop()) {
+                mViewDragHelper.captureChildView(child, event.getPointerId(event.getActionIndex()));
+            }
+        }
         return true;
     }
 
