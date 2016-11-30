@@ -47,6 +47,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 public class NavigationViewTest
         extends BaseInstrumentationTestCase<NavigationViewActivity> {
@@ -57,8 +58,6 @@ public class NavigationViewTest
     private DrawerLayout mDrawerLayout;
 
     private NavigationView mNavigationView;
-
-    private int mLastSelectedNavigationItemId;
 
     public NavigationViewTest() {
         super(NavigationViewActivity.class);
@@ -398,14 +397,9 @@ public class NavigationViewTest
                 mDrawerLayout.isDrawerOpen(GravityCompat.START));
 
         // Register a listener
-        mNavigationView.setNavigationItemSelectedListener(
-                new NavigationView.OnNavigationItemSelectedListener() {
-                    @Override
-                    public boolean onNavigationItemSelected(MenuItem item) {
-                        mLastSelectedNavigationItemId = item.getItemId();
-                        return false;
-                    }
-                });
+        NavigationView.OnNavigationItemSelectedListener mockedListener =
+                mock(NavigationView.OnNavigationItemSelectedListener.class);
+        mNavigationView.setNavigationItemSelectedListener(mockedListener);
 
         // Click one of our items
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_profile)),
@@ -414,10 +408,11 @@ public class NavigationViewTest
         assertTrue("Drawer is still open after click",
                 mDrawerLayout.isDrawerOpen(GravityCompat.START));
         // And that our listener has been notified of the click
-        assertEquals("Selected item ID", R.id.destination_profile, mLastSelectedNavigationItemId);
+        verify(mockedListener, times(1)).onNavigationItemSelected(
+                mNavigationView.getMenu().findItem(R.id.destination_profile));
 
-        // Reset the tracker field and set null listener
-        mLastSelectedNavigationItemId = -1;
+        // Set null listener to test that the next click is not going to notify the
+        // previously set listener
         mNavigationView.setNavigationItemSelectedListener(null);
 
         // Click one of our items
@@ -427,7 +422,7 @@ public class NavigationViewTest
         assertTrue("Drawer is still open after click",
                 mDrawerLayout.isDrawerOpen(GravityCompat.START));
         // And that our previous listener has not been notified of the click
-        assertEquals("Selected item ID", -1, mLastSelectedNavigationItemId);
+        verifyNoMoreInteractions(mockedListener);
     }
 
     private void verifyCheckedAppearance(@IdRes int checkedItemId,
