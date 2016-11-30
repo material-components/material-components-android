@@ -23,6 +23,7 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.os.Build;
 import android.support.design.R;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
@@ -68,7 +69,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
             PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth) {
         // Now we need to tint the original background with the tint, using
         // an InsetDrawable if we have a border width
-        mShapeDrawable = DrawableCompat.wrap(originalBackground.mutate());
+        mShapeDrawable = DrawableCompat.wrap(mutateDrawable(originalBackground));
         DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
             DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
@@ -108,6 +109,15 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         mShadowViewDelegate.setBackgroundDrawable(mShadowDrawable);
 
         updatePadding();
+    }
+
+    private static Drawable mutateDrawable(Drawable drawable) {
+        if (Build.VERSION.SDK_INT < 14 && drawable instanceof GradientDrawable) {
+            // GradientDrawable pre-ICS does not copy over it's color when mutated. We just skip
+            // the mutate and hope for the best.
+            return drawable;
+        }
+        return drawable.mutate();
     }
 
     @Override
