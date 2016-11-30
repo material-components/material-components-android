@@ -16,7 +16,7 @@
 -->
 <resources>
 
-    <dimen name="design_fab_elevation">8dp</dimen>
+    <dimen name="design_fab_elevation">6dp</dimen>
     <dimen name="design_fab_translation_z_pressed">6dp</dimen>
     <dimen name="design_fab_content_size">24dp</dimen>
     <dimen name="design_fab_size_normal">56dp</dimen>
@@ -24,7 +24,7 @@
     <dimen name="design_fab_border_width">0.5dp</dimen>
 
     <dimen name="design_navigation_max_width">320dp</dimen>
-    <dimen name="design_navigation_elevation">12dp</dimen>
+    <dimen name="design_navigation_elevation">16dp</dimen>
     <dimen name="design_navigation_icon_padding">32dp</dimen>
     <dimen name="design_navigation_icon_size">24dp</dimen>
     <dimen name="design_navigation_separator_vertical_padding">8dp</dimen>
@@ -36,7 +36,7 @@
 
     <dimen name="design_snackbar_min_width">-1px</dimen>
     <dimen name="design_snackbar_max_width">-1px</dimen>
-    <dimen name="design_snackbar_elevation">2dp</dimen>
+    <dimen name="design_snackbar_elevation">6dp</dimen>
     <dimen name="design_snackbar_background_corner_radius">0dp</dimen>
 
     <dimen name="design_snackbar_padding_horizontal">12dp</dimen>
