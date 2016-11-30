@@ -313,6 +313,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+        ensureToolbar();
+        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
+
+    @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
@@ -331,8 +337,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
             getViewOffsetHelper(child).onViewLayout();
         }
-
-        ensureToolbar();
 
         // Update the collapsed bounds by getting it's transformed bounds
         if (mDummyView != null) {
