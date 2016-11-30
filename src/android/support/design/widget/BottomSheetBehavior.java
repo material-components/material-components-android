@@ -47,9 +47,9 @@ import java.lang.ref.WeakReference;
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
     /**
-     * Listener for monitoring events about bottom sheets.
+     * Callback for monitoring events about bottom sheets.
      */
-    public abstract static class BottomSheetListener {
+    public abstract static class BottomSheetCallback {
 
         /**
          * Called when the bottom sheet changes its state.
@@ -129,7 +129,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     private WeakReference<V> mViewRef;
 
-    private BottomSheetListener mListener;
+    private BottomSheetCallback mCallback;
 
     private VelocityTracker mVelocityTracker;
 
@@ -366,12 +366,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     /**
-     * Sets a listener to be notified of bottom sheet events.
+     * Sets a callback to be notified of bottom sheet events.
      *
-     * @param listener The listener to notify when bottom sheet events occur.
+     * @param callback The callback to notify when bottom sheet events occur.
      */
-    public void setBottomSheetListener(BottomSheetListener listener) {
-        mListener = listener;
+    public void setBottomSheetCallback(BottomSheetCallback callback) {
+        mCallback = callback;
     }
 
     /**
@@ -418,8 +418,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             return;
         }
         mState = state;
-        if (mListener != null) {
-            mListener.onStateChanged(state);
+        if (mCallback != null) {
+            mCallback.onStateChanged(state);
         }
     }
 
@@ -512,11 +512,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     };
 
     private void dispatchOnSlide(int top) {
-        if (mListener != null) {
+        if (mCallback != null) {
             if (top > mMaxOffset) {
-                mListener.onSlide((float) (mMaxOffset - top) / mPeekHeight);
+                mCallback.onSlide((float) (mMaxOffset - top) / mPeekHeight);
             } else {
-                mListener.onSlide((float) (mMaxOffset - top) / ((mMaxOffset - mMinOffset)));
+                mCallback.onSlide((float) (mMaxOffset - top) / ((mMaxOffset - mMinOffset)));
             }
         }
     }

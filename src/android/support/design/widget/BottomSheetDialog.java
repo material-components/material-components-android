@@ -76,7 +76,7 @@ public class BottomSheetDialog extends AppCompatDialog {
             view = getLayoutInflater().inflate(layoutResId, coordinator, false);
         }
         FrameLayout bottomSheet = (FrameLayout) coordinator.findViewById(R.id.design_bottom_sheet);
-        BottomSheetBehavior.from(bottomSheet).setBottomSheetListener(mBottomSheetListener);
+        BottomSheetBehavior.from(bottomSheet).setBottomSheetCallback(mBottomSheetCallback);
         if (params == null) {
             bottomSheet.addView(view);
         } else {
@@ -130,8 +130,8 @@ public class BottomSheetDialog extends AppCompatDialog {
         return themeId;
     }
 
-    private BottomSheetBehavior.BottomSheetListener mBottomSheetListener
-            = new BottomSheetBehavior.BottomSheetListener() {
+    private BottomSheetBehavior.BottomSheetCallback mBottomSheetCallback
+            = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
         public void onStateChanged(@BottomSheetBehavior.State int newState) {
             if (newState == BottomSheetBehavior.STATE_HIDDEN) {
