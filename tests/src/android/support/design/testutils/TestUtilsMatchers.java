@@ -16,14 +16,19 @@
 
 package android.support.design.testutils;
 
+import static org.junit.Assert.assertEquals;
+
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.matcher.BoundedMatcher;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -350,6 +355,63 @@ public class TestUtilsMatchers {
                 fab.getContentRect(area);
 
                 return area.height() == size;
+            }
+        };
+    }
+
+    /**
+     * Returns a matcher that matches FloatingActionButtons with the specified gravity.
+     */
+    public static Matcher withFabContentAreaOnMargins(final int gravity) {
+        return new BoundedMatcher<View, View>(View.class) {
+            private String failedCheckDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText(failedCheckDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final View view) {
+                if (!(view instanceof FloatingActionButton)) {
+                    return false;
+                }
+
+                final FloatingActionButton fab = (FloatingActionButton) view;
+                final ViewGroup.MarginLayoutParams lp =
+                        (ViewGroup.MarginLayoutParams) fab.getLayoutParams();
+                final ViewGroup parent = (ViewGroup) view.getParent();
+
+                final Rect area = new Rect();
+                fab.getContentRect(area);
+
+                final int absGravity = GravityCompat.getAbsoluteGravity(gravity,
+                        ViewCompat.getLayoutDirection(view));
+
+                try {
+                    switch (absGravity & Gravity.VERTICAL_GRAVITY_MASK) {
+                        case Gravity.TOP:
+                            assertEquals(lp.topMargin, fab.getTop() + area.top);
+                            break;
+                        case Gravity.BOTTOM:
+                            assertEquals(parent.getHeight() - lp.bottomMargin,
+                                    fab.getTop() + area.bottom);
+                            break;
+                    }
+                    switch (absGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+                        case Gravity.LEFT:
+                            assertEquals(lp.leftMargin, fab.getLeft() + area.left);
+                            break;
+                        case Gravity.RIGHT:
+                            assertEquals(parent.getWidth() - lp.rightMargin,
+                                    fab.getLeft() + area.right);
+                            break;
+                    }
+                    return true;
+                } catch (Throwable t) {
+                    failedCheckDescription = t.getMessage();
+                    return false;
+                }
             }
         };
     }

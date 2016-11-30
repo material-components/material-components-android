@@ -774,13 +774,13 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                 int offsetTB = 0, offsetLR = 0;
 
                 if (fab.getRight() >= parent.getWidth() - lp.rightMargin) {
-                    // If we're on the left edge, shift it the right
+                    // If we're on the right edge, shift it the right
                     offsetLR = padding.right;
                 } else if (fab.getLeft() <= lp.leftMargin) {
                     // If we're on the left edge, shift it the left
                     offsetLR = -padding.left;
                 }
-                if (fab.getBottom() >= parent.getBottom() - lp.bottomMargin) {
+                if (fab.getBottom() >= parent.getHeight() - lp.bottomMargin) {
                     // If we're on the bottom edge, shift it down
                     offsetTB = padding.bottom;
                 } else if (fab.getTop() <= lp.topMargin) {

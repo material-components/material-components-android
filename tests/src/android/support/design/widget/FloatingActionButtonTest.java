@@ -18,8 +18,10 @@ package android.support.design.widget;
 
 import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintColor;
 import static android.support.design.testutils.FloatingActionButtonActions.setImageResource;
+import static android.support.design.testutils.FloatingActionButtonActions.setLayoutGravity;
 import static android.support.design.testutils.FloatingActionButtonActions.setSize;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
+import static android.support.design.testutils.TestUtilsMatchers.withFabContentAreaOnMargins;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentHeight;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -29,6 +31,7 @@ import android.graphics.Color;
 import android.support.design.test.R;
 import android.support.design.testutils.TestUtils;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.view.Gravity;
 
 import org.junit.Test;
 
@@ -98,6 +101,17 @@ public class FloatingActionButtonTest
         onView(withId(R.id.fab_standard))
                 .perform(setSize(FloatingActionButton.SIZE_NORMAL))
                 .check(matches(withFabContentHeight(normalSize)));
+    }
+
+    @Test
+    public void testOffset() {
+        onView(withId(R.id.fab_standard))
+                .perform(setLayoutGravity(Gravity.LEFT | Gravity.TOP))
+                .check(matches(withFabContentAreaOnMargins(Gravity.LEFT | Gravity.TOP)));
+
+        onView(withId(R.id.fab_standard))
+                .perform(setLayoutGravity(Gravity.RIGHT | Gravity.BOTTOM))
+                .check(matches(withFabContentAreaOnMargins(Gravity.RIGHT | Gravity.BOTTOM)));
     }
 
 }

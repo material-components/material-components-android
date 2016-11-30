@@ -15,7 +15,8 @@
      limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.design.widget.CoordinatorLayout
+              xmlns:android="http://schemas.android.com/apk/res/android"
               xmlns:app="http://schemas.android.com/apk/res-auto"
               android:id="@+id/container"
               android:layout_width="match_parent"
@@ -43,4 +44,4 @@
         android:src="@drawable/ic_add"
         app:backgroundTint="#FF00FF"/>
 
-</LinearLayout>
+</android.support.design.widget.CoordinatorLayout>

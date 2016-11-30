@@ -21,6 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -96,6 +97,32 @@ public class FloatingActionButtonActions {
 
                 final FloatingActionButton fab = (FloatingActionButton) view;
                 fab.setSize(size);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    public static ViewAction setLayoutGravity(final int gravity) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(View.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets Views layout_gravity";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                CoordinatorLayout.LayoutParams lp =
+                        (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+                lp.gravity = gravity;
+                view.requestLayout();
 
                 uiController.loopMainThreadUntilIdle();
             }
