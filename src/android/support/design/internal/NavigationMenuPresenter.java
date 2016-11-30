@@ -101,7 +101,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             }
             mHeader = (LinearLayout) mLayoutInflater.inflate(R.layout.design_navigation_item_header,
                     mMenuView, false);
-            mMenuView.addHeaderView(mHeader);
+            mMenuView.addHeaderView(mHeader, null, false);
             mMenuView.setAdapter(mAdapter);
             mMenuView.setOnItemClickListener(this);
         }
