@@ -96,10 +96,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
                 mElevation,
                 mElevation + mPressedTranslationZ);
         mShadowDrawable.setAddPaddingForCorners(false);
-
         mShadowViewDelegate.setBackgroundDrawable(mShadowDrawable);
-
-        updatePadding();
     }
 
     @Override
@@ -118,6 +115,11 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     @Override
     void setRippleColor(int rippleColor) {
         DrawableCompat.setTintList(mRippleDrawable, createColorStateList(rippleColor));
+    }
+
+    @Override
+    float getElevation() {
+        return mElevation;
     }
 
     @Override
@@ -205,10 +207,13 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         }
     }
 
-    private void updatePadding() {
-        Rect rect = new Rect();
+    @Override
+    void onCompatShadowChanged() {
+        // Ignore pre-v21
+    }
+
+    void getPadding(Rect rect) {
         mShadowDrawable.getPadding(rect);
-        mShadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
     }
 
     private Animation setupAnimation(Animation animation) {

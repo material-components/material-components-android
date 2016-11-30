@@ -20,6 +20,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;
@@ -52,6 +53,7 @@ abstract class FloatingActionButtonImpl {
     final VisibilityAwareImageButton mView;
     final ShadowViewDelegate mShadowViewDelegate;
 
+    private final Rect mTmpRect = new Rect();
     private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
 
     FloatingActionButtonImpl(VisibilityAwareImageButton view,
@@ -76,6 +78,8 @@ abstract class FloatingActionButtonImpl {
         }
     }
 
+    abstract float getElevation();
+
     final void setPressedTranslationZ(float translationZ) {
         if (mPressedTranslationZ != translationZ) {
             mPressedTranslationZ = translationZ;
@@ -98,6 +102,19 @@ abstract class FloatingActionButtonImpl {
     final Drawable getContentBackground() {
         return mContentBackground;
     }
+
+    abstract void onCompatShadowChanged();
+
+    final void updatePadding() {
+        Rect rect = mTmpRect;
+        getPadding(rect);
+        onPaddingUpdated(rect);
+        mShadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
+    }
+
+    abstract void getPadding(Rect rect);
+
+    void onPaddingUpdated(Rect padding) {}
 
     void onAttachedToWindow() {
         if (requirePreDrawListener()) {

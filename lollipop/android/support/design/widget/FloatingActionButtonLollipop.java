@@ -22,7 +22,9 @@ import android.animation.StateListAnimator;
 import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
@@ -35,6 +37,7 @@ import android.view.animation.Interpolator;
 class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
     private final Interpolator mInterpolator;
+    private InsetDrawable mInsetDrawable;
 
     FloatingActionButtonLollipop(VisibilityAwareImageButton view,
             ShadowViewDelegate shadowViewDelegate) {
@@ -70,7 +73,6 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
         mContentBackground = mRippleDrawable;
 
         mShadowViewDelegate.setBackgroundDrawable(mRippleDrawable);
-        mShadowViewDelegate.setShadowPadding(0, 0, 0, 0);
     }
 
     @Override
@@ -84,13 +86,15 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
     @Override
     public void onElevationChanged(float elevation) {
-        ViewCompat.setElevation(mView, elevation);
+        mView.setElevation(elevation);
+        if (mShadowViewDelegate.isCompatPaddingEnabled()) {
+            updatePadding();
+        }
     }
 
     @Override
     void onTranslationZChanged(float translationZ) {
         StateListAnimator stateListAnimator = new StateListAnimator();
-
         // Animate translationZ to our value when pressed or focused
         stateListAnimator.addState(PRESSED_ENABLED_STATE_SET,
                 setupAnimator(ObjectAnimator.ofFloat(mView, "translationZ", translationZ)));
@@ -99,8 +103,32 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
         // Animate translationZ to 0 otherwise
         stateListAnimator.addState(EMPTY_STATE_SET,
                 setupAnimator(ObjectAnimator.ofFloat(mView, "translationZ", 0f)));
-
         mView.setStateListAnimator(stateListAnimator);
+
+        if (mShadowViewDelegate.isCompatPaddingEnabled()) {
+            updatePadding();
+        }
+    }
+
+    @Override
+    public float getElevation() {
+        return mView.getElevation();
+    }
+
+    @Override
+    void onCompatShadowChanged() {
+        updatePadding();
+    }
+
+    @Override
+    void onPaddingUpdated(Rect padding) {
+        if (mShadowViewDelegate.isCompatPaddingEnabled()) {
+            mInsetDrawable = new InsetDrawable(mRippleDrawable,
+                    padding.left, padding.top, padding.right, padding.bottom);
+            mShadowViewDelegate.setBackgroundDrawable(mInsetDrawable);
+        } else {
+            mShadowViewDelegate.setBackgroundDrawable(mRippleDrawable);
+        }
     }
 
     @Override
@@ -126,5 +154,19 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
     @Override
     CircularBorderDrawable newCircularDrawable() {
         return new CircularBorderDrawableLollipop();
+    }
+
+    void getPadding(Rect rect) {
+        if (mShadowViewDelegate.isCompatPaddingEnabled()) {
+            final float radius = mShadowViewDelegate.getRadius();
+            final float maxShadowSize = getElevation() + mPressedTranslationZ;
+            final int hPadding = (int) Math.ceil(
+                    ShadowDrawableWrapper.calculateHorizontalPadding(maxShadowSize, radius, false));
+            final int vPadding = (int) Math.ceil(
+                    ShadowDrawableWrapper.calculateVerticalPadding(maxShadowSize, radius, false));
+            rect.set(hPadding, vPadding, hPadding, vPadding);
+        } else {
+            rect.set(0, 0, 0, 0);
+        }
     }
 }

@@ -224,9 +224,13 @@ package android.support.design.widget {
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet, int);
     method public android.graphics.drawable.Drawable getContentBackground();
     method public boolean getContentRect(android.graphics.Rect);
+    method public float getFloatingActionButtonElevation();
+    method public boolean getUseCompatPadding();
     method public void hide();
     method public void hide(android.support.design.widget.FloatingActionButton.OnVisibilityChangedListener);
+    method public void setFloatingActionButtonElevation(float);
     method public void setRippleColor(int);
+    method public void setUseCompatPadding(boolean);
     method public void show();
     method public void show(android.support.design.widget.FloatingActionButton.OnVisibilityChangedListener);
   }

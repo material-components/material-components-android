@@ -34,6 +34,8 @@
         <attr name="pressedTranslationZ" format="dimension"/>
         <!-- The width of the border around the FAB. -->
         <attr name="borderWidth" format="dimension"/>
+        <!-- Enable compat padding. -->
+        <attr name="useCompatPadding" format="boolean"/>
     </declare-styleable>
 
     <declare-styleable name="ScrimInsetsFrameLayout">
