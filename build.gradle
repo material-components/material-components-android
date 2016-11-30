@@ -6,10 +6,19 @@ dependencies {
     compile project(':support-v4')
     compile project(':support-appcompat-v7')
     compile project(':support-recyclerview-v7')
+
+    androidTestCompile 'com.android.support.test:testing-support-lib:0.1'
+    androidTestCompile 'com.android.support.test.espresso:espresso-core:2.0'
+    testCompile 'junit:junit:4.12'
 }
 
 android {
     compileSdkVersion 'current'
+
+    defaultConfig {
+        minSdkVersion 7
+        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    }
 
     sourceSets {
         main.manifest.srcFile 'AndroidManifest.xml'
@@ -18,11 +27,10 @@ android {
         main.assets.srcDir 'assets'
         main.resources.srcDir 'src'
 
-        // this moves src/instrumentTest to tests so all folders follow:
-        // tests/java, tests/res, tests/assets, ...
-        // This is a *reset* so it replaces the default paths
         androidTest.setRoot('tests')
         androidTest.java.srcDir 'tests/src'
+        androidTest.res.srcDir 'tests/res'
+        androidTest.manifest.srcFile 'tests/AndroidManifest.xml'
     }
 
     compileOptions {
@@ -37,6 +45,10 @@ android {
 
     buildTypes.all {
         consumerProguardFiles 'proguard-rules.pro'
+    }
+
+    aaptOptions {
+        additionalParameters "--no-version-vectors"
     }
 }
 
