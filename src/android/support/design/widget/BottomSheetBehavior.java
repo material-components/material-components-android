@@ -287,7 +287,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 mViewDragHelper.captureChildView(child, event.getPointerId(event.getActionIndex()));
             }
         }
-        return true;
+        return !mIgnoreEvents;
     }
 
     @Override
