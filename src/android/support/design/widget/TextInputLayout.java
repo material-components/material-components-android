@@ -95,7 +95,7 @@ public class TextInputLayout extends LinearLayout {
 
         final TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.TextInputLayout, defStyleAttr, R.style.Widget_Design_TextInputLayout);
-        mHint = a.getText(R.styleable.TextInputLayout_android_hint);
+        setHint(a.getText(R.styleable.TextInputLayout_android_hint));
         mHintAnimationEnabled = a.getBoolean(
                 R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
