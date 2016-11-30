@@ -73,11 +73,13 @@ package android.support.design.widget {
     ctor public BottomSheetBehavior(android.content.Context, android.util.AttributeSet);
     method public static android.support.design.widget.BottomSheetBehavior<V> from(V);
     method public final int getPeekHeight();
+    method public boolean getSkipCollapsed();
     method public final int getState();
     method public boolean isHideable();
     method public void setBottomSheetCallback(android.support.design.widget.BottomSheetBehavior.BottomSheetCallback);
     method public void setHideable(boolean);
     method public final void setPeekHeight(int);
+    method public void setSkipCollapsed(boolean);
     method public final void setState(int);
     field public static final int STATE_COLLAPSED = 4; // 0x4
     field public static final int STATE_DRAGGING = 1; // 0x1
