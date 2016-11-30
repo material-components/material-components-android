@@ -1329,6 +1329,8 @@ public class TabLayout extends HorizontalScrollView {
         private int mIndicatorLeft = -1;
         private int mIndicatorRight = -1;
 
+        private ValueAnimatorCompat mCurrentAnimator;
+
         SlidingTabStrip(Context context) {
             super(context);
             setWillNotDraw(false);
@@ -1422,8 +1424,18 @@ public class TabLayout extends HorizontalScrollView {
         @Override
         protected void onLayout(boolean changed, int l, int t, int r, int b) {
             super.onLayout(changed, l, t, r, b);
-            // If we've been layed out, update the indicator position
-            updateIndicatorPosition();
+
+            if (mCurrentAnimator != null && mCurrentAnimator.isRunning()) {
+                // If we're currently running an animation, lets cancel it and start a
+                // new animation with the remaining duration
+                mCurrentAnimator.cancel();
+                final long duration = mCurrentAnimator.getDuration();
+                animateIndicatorToPosition(mSelectedPosition,
+                        Math.round((1f - mCurrentAnimator.getAnimatedFraction()) * duration));
+            } else {
+                // If we've been layed out, update the indicator position
+                updateIndicatorPosition();
+            }
         }
 
         private void updateIndicatorPosition() {
@@ -1520,6 +1532,7 @@ public class TabLayout extends HorizontalScrollView {
                     }
                 });
                 animator.start();
+                mCurrentAnimator = animator;
             }
         }
 

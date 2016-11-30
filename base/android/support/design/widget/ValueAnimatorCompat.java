@@ -104,6 +104,7 @@ class ValueAnimatorCompat {
         abstract void cancel();
         abstract float getAnimatedFraction();
         abstract void end();
+        abstract long getDuration();
     }
 
     private final Impl mImpl;
@@ -190,5 +191,9 @@ class ValueAnimatorCompat {
 
     public void end() {
         mImpl.end();
+    }
+
+    public long getDuration() {
+        return mImpl.getDuration();
     }
 }
