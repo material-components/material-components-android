@@ -680,10 +680,14 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     private void updateTab(int position) {
-        final TabView view = (TabView) mTabStrip.getChildAt(position);
+        final TabView view = getTabView(position);
         if (view != null) {
             view.update();
         }
+    }
+
+    private TabView getTabView(int position) {
+        return (TabView) mTabStrip.getChildAt(position);
     }
 
     private void addTabView(Tab tab, boolean setSelected) {
@@ -1005,13 +1009,14 @@ public class TabLayout extends HorizontalScrollView {
          * the value given to {@link #setIcon(Drawable)}.
          * </p>
          *
-         * @param layoutResId A layout resource to inflate and use as a custom tab view
+         * @param resId A layout resource to inflate and use as a custom tab view
          * @return The current instance for call chaining
          */
         @NonNull
-        public Tab setCustomView(@LayoutRes int layoutResId) {
-            return setCustomView(
-                    LayoutInflater.from(mParent.getContext()).inflate(layoutResId, null));
+        public Tab setCustomView(@LayoutRes int resId) {
+            final TabView tabView = mParent.getTabView(mPosition);
+            final LayoutInflater inflater = LayoutInflater.from(tabView.getContext());
+            return setCustomView(inflater.inflate(resId, tabView, false));
         }
 
         /**
