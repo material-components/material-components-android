@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import static org.hamcrest.CoreMatchers.is;
+import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.same;
@@ -28,11 +30,16 @@ import static org.mockito.Mockito.verify;
 import android.app.Instrumentation;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SdkSuppress;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.test.suitebuilder.annotation.MediumTest;
+import android.view.Gravity;
 import android.view.View;
 
 import org.junit.Test;
+
+import java.util.List;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @MediumTest
 public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<CoordinatorLayoutActivity> {
@@ -94,6 +101,87 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
         // Verify that onApplyWindowInsets() has been called with some insets
         verify(mockBehavior, atLeastOnce())
                 .onApplyWindowInsets(same(col), same(view), any(WindowInsetsCompat.class));
+    }
+
+    @Test
+    public void testInsetDependency() {
+        final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
+        final CoordinatorLayout.LayoutParams lpInsetLeft = col.generateDefaultLayoutParams();
+        lpInsetLeft.insetEdge = Gravity.LEFT;
+        final CoordinatorLayout.LayoutParams lpInsetTop = col.generateDefaultLayoutParams();
+        lpInsetTop.insetEdge = Gravity.TOP;
+        final CoordinatorLayout.LayoutParams lpDodgeLeft = col.generateDefaultLayoutParams();
+        lpDodgeLeft.dodgeInsetEdges = Gravity.LEFT;
+        final CoordinatorLayout.LayoutParams lpDodgeLeftAndTop = col.generateDefaultLayoutParams();
+        lpDodgeLeftAndTop.dodgeInsetEdges = Gravity.LEFT | Gravity.TOP;
+        final View a = new View(col.getContext());
+        final View b = new View(col.getContext());
+        assertThat(dependsOn(lpDodgeLeft, lpInsetLeft, col, a, b), is(true));
+        assertThat(dependsOn(lpDodgeLeft, lpInsetTop, col, a, b), is(false));
+        assertThat(dependsOn(lpDodgeLeftAndTop, lpInsetLeft, col, a, b), is(true));
+        assertThat(dependsOn(lpDodgeLeftAndTop, lpInsetTop, col, a, b), is(true));
+        assertThat(dependsOn(lpInsetLeft, lpDodgeLeft, col, a, b), is(false));
+    }
+
+    private static boolean dependsOn(CoordinatorLayout.LayoutParams lpChild,
+            CoordinatorLayout.LayoutParams lpDependency, CoordinatorLayout col,
+            View child, View dependency) {
+        child.setLayoutParams(lpChild);
+        dependency.setLayoutParams(lpDependency);
+        return lpChild.dependsOn(col, child, dependency);
+    }
+
+    @Test
+    public void testInsetEdge() {
+        final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
+        final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
+
+        final View insetView = new View(col.getContext());
+        final View dodgeInsetView = new View(col.getContext());
+        final AtomicInteger originalTop = new AtomicInteger();
+
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                CoordinatorLayout.LayoutParams lpInsetView = col.generateDefaultLayoutParams();
+                lpInsetView.width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
+                lpInsetView.height = 100;
+                lpInsetView.gravity = Gravity.TOP | Gravity.LEFT;
+                lpInsetView.insetEdge = Gravity.TOP;
+                col.addView(insetView, lpInsetView);
+                insetView.setBackgroundColor(0xFF0000FF);
+
+                CoordinatorLayout.LayoutParams lpDodgeInsetView = col.generateDefaultLayoutParams();
+                lpDodgeInsetView.width = 100;
+                lpDodgeInsetView.height = 100;
+                lpDodgeInsetView.gravity = Gravity.TOP | Gravity.LEFT;
+                lpDodgeInsetView.dodgeInsetEdges = Gravity.TOP;
+                col.addView(dodgeInsetView, lpDodgeInsetView);
+                dodgeInsetView.setBackgroundColor(0xFFFF0000);
+            }
+        });
+        instrumentation.waitForIdleSync();
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                List<View> dependencies = col.getDependencies(dodgeInsetView);
+                assertThat(dependencies.size(), is(1));
+                assertThat(dependencies.get(0), is(insetView));
+
+                // Move the insetting view
+                originalTop.set(dodgeInsetView.getTop());
+                assertThat(originalTop.get(), is(insetView.getBottom()));
+                ViewCompat.offsetTopAndBottom(insetView, 123);
+            }
+        });
+        instrumentation.waitForIdleSync();
+        instrumentation.runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                // Confirm that the dodging view was moved by the same size
+                assertThat(dodgeInsetView.getTop() - originalTop.get(), is(123));
+            }
+        });
     }
 
 }

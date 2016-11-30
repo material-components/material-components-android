@@ -183,6 +183,44 @@
             <!-- Push object to the end of its container, not changing its size. -->
             <flag name="end" value="0x00800005"/>
         </attr>
+
+        <!-- Specifies how this view insets the CoordinatorLayout and make some other views
+             dodge it. -->
+        <attr name="layout_insetEdge" format="enum">
+            <!-- Don't inset. -->
+            <enum name="none" value="0x0"/>
+            <!-- Inset the top edge. -->
+            <enum name="top" value="0x30"/>
+            <!-- Inset the bottom edge. -->
+            <enum name="bottom" value="0x50"/>
+            <!-- Inset the left edge. -->
+            <enum name="left" value="0x03"/>
+            <!-- Inset the right edge. -->
+            <enum name="right" value="0x03"/>
+            <!-- Inset the start edge. -->
+            <enum name="start" value="0x00800003"/>
+            <!-- Inset the end edge. -->
+            <enum name="end" value="0x00800005"/>
+        </attr>
+        <!-- Specifies how this view dodges the inset edges of the CoordinatorLayout. -->
+        <attr name="layout_dodgeInsetEdges">
+            <!-- Don't dodge any edges -->
+            <flag name="none" value="0x0"/>
+            <!-- Dodge the top inset edge. -->
+            <flag name="top" value="0x30"/>
+            <!-- Dodge the bottom inset edge. -->
+            <flag name="bottom" value="0x50"/>
+            <!-- Dodge the left inset edge. -->
+            <flag name="left" value="0x03"/>
+            <!-- Dodge the right inset edge. -->
+            <flag name="right" value="0x03"/>
+            <!-- Dodge the start inset edge. -->
+            <flag name="start" value="0x00800003"/>
+            <!-- Dodge the end inset edge. -->
+            <flag name="end" value="0x00800005"/>
+            <!-- Dodge all the inset edges. -->
+            <flag name="all" value="0x77"/>
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="TextInputLayout">

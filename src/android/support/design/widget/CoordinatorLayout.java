@@ -146,6 +146,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private final Rect mTempRect1 = new Rect();
     private final Rect mTempRect2 = new Rect();
     private final Rect mTempRect3 = new Rect();
+    private final Rect mTempRect4 = new Rect();
     private final int[] mTempIntPair = new int[2];
     private Paint mScrimPaint;
 
@@ -1109,6 +1110,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         GravityCompat.apply(resolveGravity(lp.gravity), child.getMeasuredWidth(),
                 child.getMeasuredHeight(), parent, out, layoutDirection);
         child.layout(out.left, out.top, out.right, out.bottom);
+        ViewCompat.offsetLeftAndRight(child, lp.mInsetOffsetX);
+        ViewCompat.offsetTopAndBottom(child, lp.mInsetOffsetY);
     }
 
     /**
@@ -1171,6 +1174,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     void dispatchOnDependentViewChanged(final boolean fromNestedScroll) {
         final int layoutDirection = ViewCompat.getLayoutDirection(this);
         final int childCount = mDependencySortedChildren.size();
+        final Rect inset = mTempRect4;
+        inset.setEmpty();
         for (int i = 0; i < childCount; i++) {
             final View child = mDependencySortedChildren.get(i);
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
@@ -1182,6 +1187,31 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 if (lp.mAnchorDirectChild == checkChild) {
                     offsetChildToAnchor(child, layoutDirection);
                 }
+            }
+
+            // Accumulate inset sizes
+            if (lp.insetEdge > 0) {
+                final int absInsetEdge = GravityCompat.getAbsoluteGravity(
+                        lp.insetEdge, layoutDirection);
+                switch (absInsetEdge) {
+                    case Gravity.TOP:
+                        inset.top = Math.max(inset.top, child.getBottom());
+                        break;
+                    case Gravity.BOTTOM:
+                        inset.bottom = Math.max(inset.bottom, getHeight() - child.getTop());
+                        break;
+                    case Gravity.LEFT:
+                        inset.left = Math.max(inset.left, child.getRight());
+                        break;
+                    case Gravity.RIGHT:
+                        inset.right = Math.max(inset.right, getWidth() - child.getLeft());
+                        break;
+                }
+            }
+
+            // Dodge inset edges if necessary
+            if (lp.dodgeInsetEdges > 0) {
+                offsetChildByInset(child, inset, layoutDirection);
             }
 
             // Did it change? if not continue
@@ -1217,6 +1247,62 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                     }
                 }
             }
+        }
+    }
+
+    private void offsetChildByInset(View child, Rect inset, int layoutDirection) {
+        LayoutParams lp = (LayoutParams) child.getLayoutParams();
+        final int absDodgeInsetEdges = GravityCompat.getAbsoluteGravity(lp.dodgeInsetEdges,
+                layoutDirection);
+        if ((absDodgeInsetEdges & Gravity.TOP) == Gravity.TOP) {
+            int distance = child.getTop() - lp.topMargin - lp.mInsetOffsetY;
+            if (distance < inset.top) {
+                setInsetOffsetY(child, inset.top - distance);
+            } else {
+                setInsetOffsetY(child, 0);
+            }
+        }
+        if ((absDodgeInsetEdges & Gravity.BOTTOM) == Gravity.BOTTOM) {
+            int distance = getHeight() - child.getBottom() - lp.bottomMargin + lp.mInsetOffsetY;
+            if (distance < inset.bottom) {
+                setInsetOffsetY(child, -inset.bottom + distance);
+            } else {
+                setInsetOffsetY(child, 0);
+            }
+        }
+        if ((absDodgeInsetEdges & Gravity.LEFT) == Gravity.LEFT) {
+            int distance = child.getLeft() - lp.leftMargin - lp.mInsetOffsetX;
+            if (distance < inset.left) {
+                setInsetOffsetX(child, inset.left - distance);
+            } else {
+                setInsetOffsetX(child, 0);
+            }
+        }
+        if ((absDodgeInsetEdges & Gravity.RIGHT) == Gravity.RIGHT) {
+            int distance = getWidth() - child.getRight() - lp.rightMargin + lp.mInsetOffsetX;
+            if (distance < inset.right) {
+                setInsetOffsetX(child, -inset.right + distance);
+            } else {
+                setInsetOffsetX(child, 0);
+            }
+        }
+    }
+
+    private void setInsetOffsetX(View child, int offsetX) {
+        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+        if (lp.mInsetOffsetX != offsetX) {
+            final int dx = offsetX - lp.mInsetOffsetX;
+            ViewCompat.offsetLeftAndRight(child, dx);
+            lp.mInsetOffsetX = offsetX;
+        }
+    }
+
+    private void setInsetOffsetY(View child, int offsetY) {
+        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+        if (lp.mInsetOffsetY != offsetY) {
+            final int dy = offsetY - lp.mInsetOffsetY;
+            ViewCompat.offsetTopAndBottom(child, dy);
+            lp.mInsetOffsetY = offsetY;
         }
     }
 
@@ -2305,6 +2391,12 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          */
         int mAnchorId = View.NO_ID;
 
+        public int insetEdge = Gravity.NO_GRAVITY;
+        public int dodgeInsetEdges = Gravity.NO_GRAVITY;
+
+        private int mInsetOffsetX;
+        private int mInsetOffsetY;
+
         View mAnchorView;
         View mAnchorDirectChild;
 
@@ -2337,6 +2429,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
             this.keyline = a.getInteger(R.styleable.CoordinatorLayout_Layout_layout_keyline,
                     -1);
+
+            insetEdge = a.getInt(R.styleable.CoordinatorLayout_Layout_layout_insetEdge, 0);
+            dodgeInsetEdges = a.getInt(
+                    R.styleable.CoordinatorLayout_Layout_layout_dodgeInsetEdges, 0);
 
             mBehaviorResolved = a.hasValue(
                     R.styleable.CoordinatorLayout_Layout_layout_behavior);
@@ -2515,6 +2611,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          */
         boolean dependsOn(CoordinatorLayout parent, View child, View dependency) {
             return dependency == mAnchorDirectChild
+                    || shouldDodge(dependency, ViewCompat.getLayoutDirection(parent))
                     || (mBehavior != null && mBehavior.layoutDependsOn(parent, child, dependency));
         }
 
@@ -2617,6 +2714,16 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             }
             mAnchorDirectChild = directChild;
             return true;
+        }
+
+        /**
+         * Checks whether the view with this LayoutParams should dodge the specified view.
+         */
+        private boolean shouldDodge(View view, int layoutDirection) {
+            LayoutParams params = (LayoutParams) view.getLayoutParams();
+            int insetEdge = GravityCompat.getAbsoluteGravity(params.insetEdge, layoutDirection);
+            return insetEdge > 0 && (insetEdge & GravityCompat.getAbsoluteGravity(dodgeInsetEdges,
+                            layoutDirection)) == insetEdge;
         }
     }
 
