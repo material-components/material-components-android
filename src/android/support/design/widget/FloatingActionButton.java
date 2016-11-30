@@ -352,6 +352,19 @@ public class FloatingActionButton extends ImageView {
             return false;
         }
 
+        @Override
+        public void onDependentViewRemoved(CoordinatorLayout parent, FloatingActionButton child,
+                View dependency) {
+            if (dependency instanceof Snackbar.SnackbarLayout) {
+                // If the removed view is a SnackbarLayout, we will animate back to our normal
+                // position
+                ViewCompat.animate(child)
+                        .translationY(0f)
+                        .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
+                        .setListener(null);
+            }
+        }
+
         private boolean updateFabVisibility(CoordinatorLayout parent,
                 AppBarLayout appBarLayout, FloatingActionButton child) {
             final CoordinatorLayout.LayoutParams lp =
@@ -390,18 +403,8 @@ public class FloatingActionButton extends ImageView {
             if (translationY != mTranslationY) {
                 // First, cancel any current animation
                 ViewCompat.animate(fab).cancel();
-
-                if (Math.abs(translationY - mTranslationY) == snackbar.getHeight()) {
-                    // If we're travelling by the height of the Snackbar then we probably need to
-                    // animate to the value
-                    ViewCompat.animate(fab)
-                            .translationY(translationY)
-                            .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                            .setListener(null);
-                } else {
-                    // Else we'll set use setTranslationY
-                    ViewCompat.setTranslationY(fab, translationY);
-                }
+                // Else we'll set use setTranslationY
+                ViewCompat.setTranslationY(fab, translationY);
                 mTranslationY = translationY;
             }
         }

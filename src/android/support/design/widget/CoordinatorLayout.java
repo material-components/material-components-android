@@ -149,6 +149,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private boolean mDrawStatusBarBackground;
     private Drawable mStatusBarBackground;
 
+    private OnHierarchyChangeListener mOnHierarchyChangeListener;
+
     private final NestedScrollingParentHelper mNestedScrollingParentHelper =
             new NestedScrollingParentHelper(this);
 
@@ -181,6 +183,12 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         if (INSETS_HELPER != null) {
             INSETS_HELPER.setupForWindowInsets(this, new ApplyInsetsListener());
         }
+        super.setOnHierarchyChangeListener(new HierarchyChangeListener());
+    }
+
+    @Override
+    public void setOnHierarchyChangeListener(OnHierarchyChangeListener onHierarchyChangeListener) {
+        mOnHierarchyChangeListener = onHierarchyChangeListener;
     }
 
     @Override
@@ -1111,6 +1119,19 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
     }
 
+    void dispatchDependentViewRemoved(View removedChild) {
+        final int childCount = getChildCount();
+        for (int i = 0; i < childCount; i++) {
+            final View child = getChildAt(i);
+            final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            final Behavior b = lp.getBehavior();
+
+            if (b != null && b.layoutDependsOn(this, child, removedChild)) {
+                b.onDependentViewRemoved(this, child, removedChild);
+            }
+        }
+    }
+
     /**
      * Allows the caller to manually dispatch
      * {@link Behavior#onDependentViewChanged(CoordinatorLayout, View, View)} to the associated
@@ -1732,6 +1753,23 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          */
         public boolean onDependentViewChanged(CoordinatorLayout parent, V child, View dependency) {
             return false;
+        }
+
+        /**
+         * Respond to a child's dependent view being removed.
+         *
+         * <p>This method is called after a dependent view has been removed from the parent.
+         * A Behavior may use this method to appropriately update the child view in response.</p>
+         *
+         * <p>A view's dependency is determined by
+         * {@link #layoutDependsOn(CoordinatorLayout, android.view.View, android.view.View)} or
+         * if {@code child} has set another view as it's anchor.</p>
+         *
+         * @param parent the parent view of the given child
+         * @param child the child view to manipulate
+         * @param dependency the dependent view that has been removed
+         */
+        public void onDependentViewRemoved(CoordinatorLayout parent, V child, View dependency) {
         }
 
         /**
@@ -2455,6 +2493,24 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
             setWindowInsets(insets);
             return insets.consumeSystemWindowInsets();
+        }
+    }
+
+    final class HierarchyChangeListener implements OnHierarchyChangeListener {
+        @Override
+        public void onChildViewAdded(View parent, View child) {
+            if (mOnHierarchyChangeListener != null) {
+                mOnHierarchyChangeListener.onChildViewAdded(parent, child);
+            }
+        }
+
+        @Override
+        public void onChildViewRemoved(View parent, View child) {
+            dispatchDependentViewRemoved(child);
+
+            if (mOnHierarchyChangeListener != null) {
+                mOnHierarchyChangeListener.onChildViewRemoved(parent, child);
+            }
         }
     }
 
