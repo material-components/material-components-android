@@ -46,7 +46,8 @@
         <attr name="elevation"/>
         <!-- The menu resource to inflate and populate items from. -->
         <attr name="menu" format="reference"/>
-        <attr name="itemTint" format="color|reference"/>
+        <attr name="itemIconTint" format="color"/>
+        <attr name="itemTextColor" format="color"/>
         <attr name="itemBackground" format="reference"/>
         <!-- Layout resource to inflate as the header -->
         <attr name="headerLayout" format="reference"/>

@@ -20,9 +20,9 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -62,8 +62,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     private NavigationMenuAdapter mAdapter;
     private LayoutInflater mLayoutInflater;
 
-    private ColorStateList mItemTintList;
-    private int mItemBackgroundResource;
+    private ColorStateList mTextColor;
+    private ColorStateList mIconTintList;
+    private Drawable mItemBackground;
 
     /**
      * Padding to be inserted at the top of the list to avoid the first menu item
@@ -200,20 +201,28 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
 
     @Nullable
     public ColorStateList getItemTintList() {
-        return mItemTintList;
+        return mIconTintList;
     }
 
-    public void setItemTintList(@Nullable ColorStateList itemTintList) {
-        mItemTintList = itemTintList;
+    public void setItemIconTintList(@Nullable ColorStateList tint) {
+        mIconTintList = tint;
     }
 
-    @DrawableRes
-    public int getItemBackgroundResource() {
-        return mItemBackgroundResource;
+    @Nullable
+    public ColorStateList getItemTextColor() {
+        return mTextColor;
     }
 
-    public void setItemBackgroundResource(@DrawableRes int itemBackgroundResource) {
-        mItemBackgroundResource = itemBackgroundResource;
+    public void setItemTextColor(@Nullable ColorStateList textColor) {
+        mTextColor = textColor;
+    }
+
+    public Drawable getItemBackground() {
+        return mItemBackground;
+    }
+
+    public void setItemBackground(Drawable itemBackground) {
+        mItemBackground = itemBackground;
     }
 
     private class NavigationMenuAdapter extends BaseAdapter {
@@ -271,8 +280,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                                 parent, false);
                     }
                     NavigationMenuItemView itemView = (NavigationMenuItemView) convertView;
-                    itemView.setTintList(mItemTintList);
-                    itemView.setBackgroundResource(mItemBackgroundResource);
+                    itemView.setIconTintList(mIconTintList);
+                    itemView.setTextColor(mTextColor);
+                    itemView.setBackground(mItemBackground);
                     itemView.initialize(item.getMenuItem(), 0);
                     break;
                 case VIEW_TYPE_SUBHEADER:

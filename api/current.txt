@@ -156,14 +156,17 @@ package android.support.design.widget {
     ctor public NavigationView(android.content.Context, android.util.AttributeSet);
     ctor public NavigationView(android.content.Context, android.util.AttributeSet, int);
     method public void addHeaderView(android.view.View);
-    method public int getItemBackgroundResource();
-    method public android.content.res.ColorStateList getItemTintList();
+    method public android.graphics.drawable.Drawable getItemBackground();
+    method public android.content.res.ColorStateList getItemIconTintList();
+    method public android.content.res.ColorStateList getItemTextColor();
     method public android.view.Menu getMenu();
     method public android.view.View inflateHeaderView(int);
     method public void inflateMenu(int);
     method public void removeHeaderView(android.view.View);
+    method public void setItemBackground(android.graphics.drawable.Drawable);
     method public void setItemBackgroundResource(int);
-    method public void setItemTintList(android.content.res.ColorStateList);
+    method public void setItemIconTintList(android.content.res.ColorStateList);
+    method public void setItemTextColor(android.content.res.ColorStateList);
     method public void setNavigationItemSelectedListener(android.support.design.widget.NavigationView.OnNavigationItemSelectedListener);
   }
 

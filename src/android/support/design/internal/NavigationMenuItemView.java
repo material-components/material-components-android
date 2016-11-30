@@ -29,7 +29,6 @@ import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.support.v7.internal.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
 import android.widget.TextView;
 
 /**
@@ -39,13 +38,9 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
 
     private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
-    private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
-
     private int mIconSize;
-
     private MenuItemImpl mItemData;
-
-    private ColorStateList mTintList;
+    private ColorStateList mIconTintList;
 
     public NavigationMenuItemView(Context context) {
         this(context, null);
@@ -64,50 +59,22 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
     public void initialize(MenuItemImpl itemData, int menuType) {
         mItemData = itemData;
 
-        setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
+        setVisibility(itemData.isVisible() ? VISIBLE : GONE);
 
-        if (mTintList == null && (itemData.isChecked() || !itemData.isEnabled())) {
-            mTintList = createDefaultTintList();
-            setTextColor(mTintList);
-        }
         if (getBackground() == null) {
             setBackgroundDrawable(createDefaultBackground());
         }
 
         setCheckable(itemData.isCheckable());
         setChecked(itemData.isChecked());
+        setEnabled(itemData.isEnabled());
         setTitle(itemData.getTitle());
         setIcon(itemData.getIcon());
-        setEnabled(itemData.isEnabled());
-    }
-
-    private ColorStateList createDefaultTintList() {
-        TypedValue value = new TypedValue();
-        if (!getContext().getTheme()
-                .resolveAttribute(android.R.attr.textColorPrimary, value, true)) {
-            return null;
-        }
-        ColorStateList base = getResources().getColorStateList(value.resourceId);
-        if (!getContext().getTheme().resolveAttribute(R.attr.colorPrimary, value, true)) {
-            return null;
-        }
-        int colorPrimary = value.data;
-        int defaultColor = base.getDefaultColor();
-        return new ColorStateList(new int[][]{
-                DISABLED_STATE_SET,
-                CHECKED_STATE_SET,
-                EMPTY_STATE_SET
-        }, new int[]{
-                base.getColorForState(DISABLED_STATE_SET, defaultColor),
-                colorPrimary,
-                defaultColor
-        });
     }
 
     private StateListDrawable createDefaultBackground() {
         TypedValue value = new TypedValue();
-        if (getContext().getTheme()
-                .resolveAttribute(R.attr.colorControlHighlight, value, true)) {
+        if (getContext().getTheme().resolveAttribute(R.attr.colorControlHighlight, value, true)) {
             StateListDrawable drawable = new StateListDrawable();
             drawable.addState(CHECKED_STATE_SET, new ColorDrawable(value.data));
             drawable.addState(EMPTY_STATE_SET, new ColorDrawable(Color.TRANSPARENT));
@@ -128,9 +95,7 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
 
     @Override
     public void setCheckable(boolean checkable) {
-        if (checkable && mTintList != null) {
-            setTextColor(mTintList);
-        }
+        refreshDrawableState();
     }
 
     @Override
@@ -146,13 +111,9 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
     public void setIcon(Drawable icon) {
         if (icon != null) {
             icon = DrawableCompat.wrap(icon);
-            icon.setBounds(0, 0, mIconSize, mIconSize);
             icon = icon.mutate();
-            if (mItemData.isChecked() || !mItemData.isEnabled()) {
-                DrawableCompat.setTintList(icon, mTintList);
-            } else {
-                DrawableCompat.setTintList(icon, null);
-            }
+            icon.setBounds(0, 0, mIconSize, mIconSize);
+            DrawableCompat.setTintList(icon, mIconTintList);
         }
         TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
     }
@@ -169,19 +130,18 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
 
     @Override
     protected int[] onCreateDrawableState(int extraSpace) {
-        if (mItemData != null && mItemData.isChecked()) {
-            return mergeDrawableStates(super.onCreateDrawableState(extraSpace + 1),
-                    CHECKED_STATE_SET);
-        } else {
-            return super.onCreateDrawableState(extraSpace);
+        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+        if (mItemData != null && mItemData.isCheckable() && mItemData.isChecked()) {
+            mergeDrawableStates(drawableState, CHECKED_STATE_SET);
         }
+        return drawableState;
     }
 
-    public void setTintList(ColorStateList tintList) {
-        mTintList = tintList;
-        if (tintList != null) {
-            setTextColor(tintList);
+    void setIconTintList(ColorStateList tintList) {
+        mIconTintList = tintList;
+        if (mItemData != null) {
+            // Update the icon so that the tint takes effect
+            setIcon(mItemData.getIcon());
         }
     }
-
 }

@@ -19,6 +19,7 @@ package android.support.design.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -29,10 +30,12 @@ import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.internal.ScrimInsetsFrameLayout;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.internal.view.SupportMenuInflater;
 import android.support.v7.internal.view.menu.MenuBuilder;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -63,6 +66,9 @@ import android.view.View;
  * </pre>
  */
 public class NavigationView extends ScrimInsetsFrameLayout {
+
+    private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
+    private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
     private static final int PRESENTER_NAVIGATION_VIEW_ID = 1;
 
@@ -104,11 +110,21 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
         mMaxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
 
-        final ColorStateList itemTintList =
-                a.getColorStateList(R.styleable.NavigationView_itemTint);
+        final ColorStateList itemIconTint;
+        if (a.hasValue(R.styleable.NavigationView_itemIconTint)) {
+            itemIconTint = a.getColorStateList(R.styleable.NavigationView_itemIconTint);
+        } else {
+            itemIconTint = createDefaultColorStateList(android.R.attr.textColorSecondary);
+        }
 
-        final int itemBackgroundResource =
-                a.getResourceId(R.styleable.NavigationView_itemBackground, 0);
+        final ColorStateList itemTextColor;
+        if (a.hasValue(R.styleable.NavigationView_itemTextColor)) {
+            itemTextColor = a.getColorStateList(R.styleable.NavigationView_itemTextColor);
+        } else {
+            itemTextColor = createDefaultColorStateList(android.R.attr.textColorPrimary);
+        }
+
+        final Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
 
         if (a.hasValue(R.styleable.NavigationView_menu)) {
             inflateMenu(a.getResourceId(R.styleable.NavigationView_menu, 0));
@@ -126,8 +142,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         mPresenter = new NavigationMenuPresenter();
         mPresenter.setId(PRESENTER_NAVIGATION_VIEW_ID);
         mPresenter.initForMenu(context, mMenu);
-        mPresenter.setItemTintList(itemTintList);
-        mPresenter.setItemBackgroundResource(itemBackgroundResource);
+        mPresenter.setItemIconTintList(itemIconTint);
+        mPresenter.setItemTextColor(itemTextColor);
+        mPresenter.setItemBackground(itemBackground);
         mMenu.addMenuPresenter(mPresenter);
         addView((View) mPresenter.getMenuView(this));
 
@@ -229,48 +246,81 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * Return the tint applied to the icon and text of the menu items, if specified.
+     * Returns the tint which is applied to our item's icons.
      *
-     * @return the tint applied to the icon and text of the menu items
-     * @see #setItemTintList(ColorStateList)
-     * @attr ref R.styleable#NavigationView_itemTint
+     * @see #setItemIconTintList(ColorStateList)
+     *
+     * @attr ref R.styleable#NavigationView_itemIconTint
      */
     @Nullable
-    public ColorStateList getItemTintList() {
+    public ColorStateList getItemIconTintList() {
         return mPresenter.getItemTintList();
     }
 
     /**
-     * Applies a tint to the icon and text of the menu items.
+     * Set the tint which is applied to our item's icons.
      *
-     * @param itemTintList the tint to apply, may be {@code null} to use default tint.
-     * @attr ref R.styleable#NavigationView_itemTint
+     * @param tint the tint to apply.
+     *
+     * @attr ref R.styleable#NavigationView_itemIconTint
      */
-    public void setItemTintList(@Nullable ColorStateList itemTintList) {
-        mPresenter.setItemTintList(itemTintList);
+    public void setItemIconTintList(@Nullable ColorStateList tint) {
+        mPresenter.setItemIconTintList(tint);
     }
 
     /**
-     * Return the resource ID of background drawable for the menu items.
+     * Returns the tint which is applied to our item's icons.
      *
-     * @return The resource ID
+     * @see #setItemTextColor(ColorStateList)
+     *
+     * @attr ref R.styleable#NavigationView_itemTextColor
+     */
+    @Nullable
+    public ColorStateList getItemTextColor() {
+        return mPresenter.getItemTextColor();
+    }
+
+    /**
+     * Set the text color which is text to our items.
+     *
+     * @see #getItemTextColor()
+     *
+     * @attr ref R.styleable#NavigationView_itemTextColor
+     */
+    public void setItemTextColor(@Nullable ColorStateList textColor) {
+        mPresenter.setItemTextColor(textColor);
+    }
+
+    /**
+     * Returns the background drawable for the menu items.
+     *
      * @see #setItemBackgroundResource(int)
+     *
      * @attr ref R.styleable#NavigationView_itemBackground
      */
-    @DrawableRes
-    public int getItemBackgroundResource() {
-        return mPresenter.getItemBackgroundResource();
+    public Drawable getItemBackground() {
+        return mPresenter.getItemBackground();
+    }
+
+    /**
+     * Set the background of the menu items to the given resource.
+     *
+     * @param resId The identifier of the resource.
+     *
+     * @attr ref R.styleable#NavigationView_itemBackground
+     */
+    public void setItemBackgroundResource(@DrawableRes int resId) {
+        setItemBackground(ContextCompat.getDrawable(getContext(), resId));
     }
 
     /**
      * Set the background of the menu items to a given resource. The resource should refer to
      * a Drawable object or 0 to use the background background.
      *
-     * @param itemBackground The identifier of the resource.
      * @attr ref R.styleable#NavigationView_itemBackground
      */
-    public void setItemBackgroundResource(@DrawableRes int itemBackground) {
-        mPresenter.setItemBackgroundResource(itemBackground);
+    public void setItemBackground(Drawable itemBackground) {
+        mPresenter.setItemBackground(itemBackground);
     }
 
     private MenuInflater getMenuInflater() {
@@ -278,6 +328,28 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             mMenuInflater = new SupportMenuInflater(getContext());
         }
         return mMenuInflater;
+    }
+
+    private ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
+        TypedValue value = new TypedValue();
+        if (!getContext().getTheme().resolveAttribute(baseColorThemeAttr, value, true)) {
+            return null;
+        }
+        ColorStateList baseColor = getResources().getColorStateList(value.resourceId);
+        if (!getContext().getTheme().resolveAttribute(R.attr.colorPrimary, value, true)) {
+            return null;
+        }
+        int colorPrimary = value.data;
+        int defaultColor = baseColor.getDefaultColor();
+        return new ColorStateList(new int[][]{
+                DISABLED_STATE_SET,
+                CHECKED_STATE_SET,
+                EMPTY_STATE_SET
+        }, new int[]{
+                baseColor.getColorForState(DISABLED_STATE_SET, defaultColor),
+                colorPrimary,
+                defaultColor
+        });
     }
 
     /**
@@ -289,6 +361,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
          * Called when an item in the navigation menu is selected.
          *
          * @param item The selected item
+         *
+         * @return true to display the item as the selected item
          */
         public boolean onNavigationItemSelected(MenuItem item);
     }
@@ -298,7 +372,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      * onSaveInstanceState().
      */
     public static class SavedState extends BaseSavedState {
-
         public Bundle menuState;
 
         public SavedState(Parcel in) {
@@ -318,7 +391,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
         public static final Parcelable.Creator<SavedState> CREATOR
                 = new Parcelable.Creator<SavedState>() {
-
             @Override
             public SavedState createFromParcel(Parcel parcel) {
                 return new SavedState(parcel);
@@ -328,9 +400,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             public SavedState[] newArray(int size) {
                 return new SavedState[size];
             }
-
         };
-
     }
 
 }
