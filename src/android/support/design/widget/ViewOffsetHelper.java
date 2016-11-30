@@ -57,8 +57,15 @@ class ViewOffsetHelper {
         // Manually invalidate the parent to make sure we get drawn
         ViewParent parent = mView.getParent();
         if (parent instanceof View) {
-            ((View) parent).invalidate();
+            tickleParentInvalidationFlag((View) parent);
         }
+    }
+
+    private static void tickleParentInvalidationFlag(View view) {
+        // TODO Bug: 21413554
+        final float x = ViewCompat.getTranslationX(view);
+        ViewCompat.setTranslationX(view, x + 1);
+        ViewCompat.setTranslationX(view, x);
     }
 
     /**
