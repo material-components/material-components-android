@@ -197,6 +197,7 @@ package android.support.design.widget {
     method public void setItemIconTintList(android.content.res.ColorStateList);
     method public void setItemTextColor(android.content.res.ColorStateList);
     method public void setNavigationItemSelectedListener(android.support.design.widget.NavigationView.OnNavigationItemSelectedListener);
+    method public void setCheckedItem(int);
   }
 
   public static abstract interface NavigationView.OnNavigationItemSelectedListener {

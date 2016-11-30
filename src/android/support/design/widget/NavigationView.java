@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +35,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.internal.view.SupportMenuInflater;
 import android.support.v7.internal.view.menu.MenuBuilder;
+import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -328,6 +330,18 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      */
     public void setItemBackground(Drawable itemBackground) {
         mPresenter.setItemBackground(itemBackground);
+    }
+
+    /**
+     * Sets the currently checked item in this navigation menu.
+     *
+     * @param id The item ID of the currently checked item.
+     */
+    public void setCheckedItem(@IdRes int id) {
+        MenuItem item = mMenu.findItem(id);
+        if (item != null) {
+            mPresenter.setCheckedItem((MenuItemImpl) item);
+        }
     }
 
     private MenuInflater getMenuInflater() {

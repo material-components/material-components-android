@@ -184,8 +184,19 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         int positionInAdapter = position - mMenuView.getHeaderViewsCount();
         if (positionInAdapter >= 0) {
-            mMenu.performItemAction(mAdapter.getItem(positionInAdapter).getMenuItem(), this, 0);
+            setUpdateSuspended(true);
+            MenuItemImpl item = mAdapter.getItem(positionInAdapter).getMenuItem();
+            if (item != null && item.isCheckable()) {
+                setCheckedItem(item);
+            }
+            mMenu.performItemAction(item, this, 0);
+            setUpdateSuspended(false);
+            updateMenuView(false);
         }
+    }
+
+    public void setCheckedItem(MenuItemImpl item) {
+        mAdapter.setCheckedItem(item);
     }
 
     public View inflateHeaderView(@LayoutRes int res) {
@@ -241,13 +252,14 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
 
     private class NavigationMenuAdapter extends BaseAdapter {
 
-        private static final String STATE_CHECKED_ITEMS = "android:menu:checked";
+        private static final String STATE_CHECKED_ITEM = "android:menu:checked";
 
         private static final int VIEW_TYPE_NORMAL = 0;
         private static final int VIEW_TYPE_SUBHEADER = 1;
         private static final int VIEW_TYPE_SEPARATOR = 2;
 
         private final ArrayList<NavigationMenuItem> mItems = new ArrayList<>();
+        private MenuItemImpl mCheckedItem;
         private ColorDrawable mTransparentIcon;
         private boolean mUpdateSuspended;
 
@@ -353,6 +365,12 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             boolean currentGroupHasIcon = false;
             for (int i = 0, totalSize = mMenu.getVisibleItems().size(); i < totalSize; i++) {
                 MenuItemImpl item = mMenu.getVisibleItems().get(i);
+                if (item.isChecked()) {
+                    setCheckedItem(item);
+                }
+                if (item.isCheckable()) {
+                    item.setExclusiveCheckable(false);
+                }
                 if (item.hasSubMenu()) {
                     SubMenu subMenu = item.getSubMenu();
                     if (subMenu.hasVisibleItems()) {
@@ -363,12 +381,18 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                         boolean subMenuHasIcon = false;
                         int subMenuStart = mItems.size();
                         for (int j = 0, size = subMenu.size(); j < size; j++) {
-                            MenuItem subMenuItem = subMenu.getItem(j);
+                            MenuItemImpl subMenuItem = (MenuItemImpl) subMenu.getItem(j);
                             if (subMenuItem.isVisible()) {
                                 if (!subMenuHasIcon && subMenuItem.getIcon() != null) {
                                     subMenuHasIcon = true;
                                 }
-                                mItems.add(NavigationMenuItem.of((MenuItemImpl) subMenuItem));
+                                if (subMenuItem.isCheckable()) {
+                                    subMenuItem.setExclusiveCheckable(false);
+                                }
+                                if (item.isChecked()) {
+                                    setCheckedItem(item);
+                                }
+                                mItems.add(NavigationMenuItem.of(subMenuItem));
                             }
                         }
                         if (subMenuHasIcon) {
@@ -410,27 +434,32 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             }
         }
 
+        public void setCheckedItem(MenuItemImpl checkedItem) {
+            if (mCheckedItem == checkedItem || !checkedItem.isCheckable()) {
+                return;
+            }
+            if (mCheckedItem != null) {
+                mCheckedItem.setChecked(false);
+            }
+            mCheckedItem = checkedItem;
+            checkedItem.setChecked(true);
+        }
+
         public Bundle createInstanceState() {
             Bundle state = new Bundle();
-            ArrayList<Integer> checkedItems = new ArrayList<>();
-            for (NavigationMenuItem item : mItems) {
-                MenuItemImpl menuItem = item.getMenuItem();
-                if (menuItem != null && menuItem.isChecked()) {
-                    checkedItems.add(menuItem.getItemId());
-                }
-            }
-            state.putIntegerArrayList(STATE_CHECKED_ITEMS, checkedItems);
+            state.putInt(STATE_CHECKED_ITEM, mCheckedItem.getItemId());
             return state;
         }
 
         public void restoreInstanceState(Bundle state) {
-            ArrayList<Integer> checkedItems = state.getIntegerArrayList(STATE_CHECKED_ITEMS);
-            if (checkedItems != null) {
+            int checkedItem = state.getInt(STATE_CHECKED_ITEM, 0);
+            if (checkedItem != 0) {
                 mUpdateSuspended = true;
                 for (NavigationMenuItem item : mItems) {
                     MenuItemImpl menuItem = item.getMenuItem();
-                    if (menuItem != null && checkedItems.contains(menuItem.getItemId())) {
-                        menuItem.setChecked(true);
+                    if (menuItem !=  null && menuItem.getItemId() == checkedItem) {
+                        setCheckedItem(menuItem);
+                        break;
                     }
                 }
                 mUpdateSuspended = false;
