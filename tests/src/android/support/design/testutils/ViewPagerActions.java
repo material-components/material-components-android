@@ -16,6 +16,7 @@
 
 package android.support.design.testutils;
 
+import android.support.annotation.Nullable;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.action.CoordinatesProvider;
@@ -177,9 +178,9 @@ public class ViewPagerActions {
     }
 
     /**
-     * Moves <code>ViewPager</code> to specific page.
+     * Sets the specified adapter on <code>ViewPager</code>.
      */
-    public static ViewAction setAdapter(final PagerAdapter adapter) {
+    public static ViewAction setAdapter(final @Nullable PagerAdapter adapter) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
@@ -197,6 +198,33 @@ public class ViewPagerActions {
 
                 ViewPager viewPager = (ViewPager) view;
                 viewPager.setAdapter(adapter);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Moves <code>ViewPager</code> to specific page.
+     */
+    public static ViewAction notifyAdapterContentChange() {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(ViewPager.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "ViewPager notify on adapter content change";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                ViewPager viewPager = (ViewPager) view;
+                viewPager.getAdapter().notifyDataSetChanged();
 
                 uiController.loopMainThreadUntilIdle();
             }

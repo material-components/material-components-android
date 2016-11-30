@@ -61,4 +61,31 @@ public class TabLayoutActions {
             }
         };
     }
+
+    /**
+     * Selects the specified tab in the <code>TabLayout</code>.
+     */
+    public static ViewAction selectTab(final int tabIndex) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayingAtLeast(90);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Setup with ViewPager content";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TabLayout tabLayout = (TabLayout) view;
+                tabLayout.getTabAt(tabIndex).select();
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
 }
