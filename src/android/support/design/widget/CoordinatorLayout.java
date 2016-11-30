@@ -94,6 +94,11 @@ import static android.support.design.widget.ViewUtils.objectEquals;
  * to an arbitrary descendant of the CoordinatorLayout, but it may not be the anchored child itself
  * or a descendant of the anchored child. This can be used to place floating views relative to
  * other arbitrary content panes.</p>
+ *
+ * <p>Children can specify {@link CoordinatorLayout.LayoutParams#insetEdge} to describe how the
+ * view insets the CoordinatorLayout. Any child views which are set to dodge the same inset edges by
+ * {@link CoordinatorLayout.LayoutParams#dodgeInsetEdges} will be moved appropriately so that the
+ * views do not overlap.</p>
  */
 public class CoordinatorLayout extends ViewGroup implements NestedScrollingParent {
     static final String TAG = "CoordinatorLayout";
@@ -2438,7 +2443,18 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          */
         int mAnchorId = View.NO_ID;
 
+        /**
+         * A {@link Gravity} value describing how this child view insets the CoordinatorLayout.
+         * Other child views which are set to dodge the same inset edges will be moved appropriately
+         * so that the views do not overlap.
+         */
         public int insetEdge = Gravity.NO_GRAVITY;
+
+        /**
+         * A {@link Gravity} value describing how this child view dodges any inset child views in
+         * the CoordinatorLayout. Any views which are inset on the same edge as this view is set to
+         * dodge will result in this view being moved so that the views do not overlap.
+         */
         public int dodgeInsetEdges = Gravity.NO_GRAVITY;
 
         private int mInsetOffsetX;
