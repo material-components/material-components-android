@@ -16,12 +16,14 @@
 
 package android.support.design.widget;
 
-import org.junit.Test;
-
 import android.support.design.test.R;
+import android.support.test.InstrumentationRegistry;
 import android.support.v7.app.AppCompatActivity;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.view.LayoutInflater;
+import org.junit.Test;
+
+import static org.junit.Assert.*;
 
 public class TabLayoutWithLayoutItems extends BaseInstrumentationTestCase<AppCompatActivity> {
 
@@ -31,11 +33,12 @@ public class TabLayoutWithLayoutItems extends BaseInstrumentationTestCase<AppCom
 
     @Test
     @SmallTest
-    public void testInflateTabLayoutWithTabItems() throws Throwable {
-        runTestOnUiThread(new Runnable() {
+    public void testInflateTabLayoutWithTabItems() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run() {
-                final LayoutInflater inflater = LayoutInflater.from(getActivity());
+                final LayoutInflater inflater =
+                        LayoutInflater.from(mActivityTestRule.getActivity());
                 final TabLayout tabLayout = (TabLayout) inflater.inflate(
                         R.layout.design_tabs_items, null);
 
@@ -43,7 +46,8 @@ public class TabLayoutWithLayoutItems extends BaseInstrumentationTestCase<AppCom
 
                 // Tab 0 has text, but no icon or custom view
                 TabLayout.Tab tab = tabLayout.getTabAt(0);
-                assertEquals(getActivity().getString(R.string.tab_layout_text), tab.getText());
+                assertEquals(mActivityTestRule.getActivity().getString(R.string.tab_layout_text),
+                        tab.getText());
                 assertNull(tab.getIcon());
                 assertNull(tab.getCustomView());
 
@@ -66,12 +70,20 @@ public class TabLayoutWithLayoutItems extends BaseInstrumentationTestCase<AppCom
     @Test(expected = IllegalArgumentException.class)
     @SmallTest
     public void testInflateTabLayoutWithNonTabItem() throws Throwable {
-        runTestOnUiThread(new Runnable() {
-            @Override
+        final Throwable[] exceptions = new Throwable[1];
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             public void run() {
-                final LayoutInflater inflater = LayoutInflater.from(getActivity());
-                inflater.inflate(R.layout.design_tabs_with_non_tabitems, null);
+                try {
+                    final LayoutInflater inflater =
+                            LayoutInflater.from(mActivityTestRule.getActivity());
+                    inflater.inflate(R.layout.design_tabs_with_non_tabitems, null);
+                } catch (Throwable throwable) {
+                    exceptions[0] = throwable;
+                }
             }
         });
+        if (exceptions[0] != null) {
+            throw exceptions[0];
+        }
     }
 }

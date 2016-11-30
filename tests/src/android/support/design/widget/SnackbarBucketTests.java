@@ -16,9 +16,6 @@
 
 package android.support.design.widget;
 
-import org.junit.Test;
-
-import android.content.Intent;
 import android.os.SystemClock;
 import android.support.design.test.R;
 import android.support.test.espresso.ViewAction;
@@ -26,6 +23,7 @@ import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.ViewActions;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
+import org.junit.Test;
 
 import java.util.ArrayList;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -33,6 +31,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 public class SnackbarBucketTests extends BaseInstrumentationTestCase<SnackbarBucketTestsActivity> {
 
@@ -121,6 +121,6 @@ public class SnackbarBucketTests extends BaseInstrumentationTestCase<SnackbarBuc
     }
 
     private CoordinatorLayout getCoordinatorLayout() {
-        return getActivity().mCoordinatorLayout;
+        return mActivityTestRule.getActivity().mCoordinatorLayout;
     }
 }

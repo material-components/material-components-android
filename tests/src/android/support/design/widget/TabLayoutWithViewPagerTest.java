@@ -34,6 +34,7 @@ import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import org.hamcrest.Matcher;
+import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -43,6 +44,7 @@ import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
 
 public class TabLayoutWithViewPagerTest
         extends BaseInstrumentationTestCase<TabLayoutWithViewPagerActivity> {
@@ -165,10 +167,9 @@ public class TabLayoutWithViewPagerTest
         super(TabLayoutWithViewPagerActivity.class);
     }
 
+    @Before
     public void setUp() throws Exception {
-        super.setUp();
-
-        final TabLayoutWithViewPagerActivity activity = getActivity();
+        final TabLayoutWithViewPagerActivity activity = mActivityTestRule.getActivity();
         mTabLayout = (TabLayout) activity.findViewById(R.id.tabs);
         mViewPager = (ViewPager) activity.findViewById(R.id.tabs_viewpager);
 
@@ -395,7 +396,7 @@ public class TabLayoutWithViewPagerTest
             @DimenRes int tabMaxWidthResId) {
         assertEquals("Scrollable tab mode", TabLayout.MODE_SCROLLABLE, mTabLayout.getTabMode());
 
-        final Resources res = getActivity().getResources();
+        final Resources res = mActivityTestRule.getActivity().getResources();
         final int minTabWidth = (tabMinWidthResId == 0) ? -1 :
                 res.getDimensionPixelSize(tabMinWidthResId);
         final int maxTabWidth = (tabMaxWidthResId == 0) ? -1 :

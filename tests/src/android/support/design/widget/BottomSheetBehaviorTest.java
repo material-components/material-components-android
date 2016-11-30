@@ -16,11 +16,9 @@
 
 package android.support.design.widget;
 
-import org.hamcrest.Matcher;
-import org.junit.Test;
-
 import android.support.annotation.NonNull;
 import android.support.design.test.R;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.action.CoordinatesProvider;
@@ -35,6 +33,8 @@ import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.view.View;
 import android.view.ViewGroup;
+import org.hamcrest.Matcher;
+import org.junit.Test;
 
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.not;
@@ -196,9 +196,9 @@ public class BottomSheetBehaviorTest extends
 
     @Test
     @MediumTest
-    public void testInvisible() throws Throwable {
+    public void testInvisible() {
         // Make the bottomsheet invisible
-        runTestOnUiThread(new Runnable() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run() {
                 getBottomSheet().setVisibility(View.INVISIBLE);
@@ -217,7 +217,7 @@ public class BottomSheetBehaviorTest extends
                         }, Press.FINGER),
                         not(ViewMatchers.isDisplayed())));
         // Check that the bottom sheet stays the same collapsed state
-        runTestOnUiThread(new Runnable() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
             @Override
             public void run() {
                 assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
@@ -225,10 +225,15 @@ public class BottomSheetBehaviorTest extends
         });
     }
 
-    private void checkSetState(int state, Matcher<View> matcher) {
+    private void checkSetState(final int state, Matcher<View> matcher) {
         registerIdlingResourceCallback();
         try {
-            getBehavior().setState(state);
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+                @Override
+                public void run() {
+                    getBehavior().setState(state);
+                }
+            });
             Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
                     .check(ViewAssertions.matches(matcher));
             assertThat(getBehavior().getState(), is(state));
@@ -251,15 +256,15 @@ public class BottomSheetBehaviorTest extends
     }
 
     private ViewGroup getBottomSheet() {
-        return getActivity().mBottomSheet;
+        return mActivityTestRule.getActivity().mBottomSheet;
     }
 
     private BottomSheetBehavior getBehavior() {
-        return getActivity().mBehavior;
+        return mActivityTestRule.getActivity().mBehavior;
     }
 
     private CoordinatorLayout getCoordinatorLayout() {
-        return getActivity().mCoordinatorLayout;
+        return mActivityTestRule.getActivity().mCoordinatorLayout;
     }
 
 }
