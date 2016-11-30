@@ -408,7 +408,7 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        return mDownPreScrollRange = Math.max(0, range);
+        return mDownPreScrollRange = Math.max(0, range - getTopInset());
     }
 
     /**
@@ -924,38 +924,60 @@ public class AppBarLayout extends LinearLayout {
             mOffsetAnimator.start();
         }
 
-        private View getChildOnOffset(AppBarLayout abl, final int offset) {
+        private int getChildIndexOnOffset(AppBarLayout abl, final int offset) {
             for (int i = 0, count = abl.getChildCount(); i < count; i++) {
                 View child = abl.getChildAt(i);
                 if (child.getTop() <= -offset && child.getBottom() >= -offset) {
-                    return child;
+                    return i;
                 }
             }
-            return null;
+            return -1;
         }
 
         private void snapToChildIfNeeded(CoordinatorLayout coordinatorLayout, AppBarLayout abl) {
             final int offset = getTopBottomOffsetForScrollingSibling();
-            final View offsetChild = getChildOnOffset(abl, offset);
-            if (offsetChild != null) {
+            final int offsetChildIndex = getChildIndexOnOffset(abl, offset);
+            if (offsetChildIndex >= 0) {
+                final View offsetChild = abl.getChildAt(offsetChildIndex);
                 final LayoutParams lp = (LayoutParams) offsetChild.getLayoutParams();
-                if ((lp.getScrollFlags() & LayoutParams.FLAG_SNAP) == LayoutParams.FLAG_SNAP) {
-                    // We're set the snap, so animate the offset to the nearest edge
-                    int childTop = -offsetChild.getTop();
-                    int childBottom = -offsetChild.getBottom();
+                final int flags = lp.getScrollFlags();
 
-                    // If the view is set only exit until it is collapsed, we'll abide by that
-                    if ((lp.getScrollFlags() & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)
-                            == LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) {
-                        childBottom += ViewCompat.getMinimumHeight(offsetChild);
+                if ((flags & LayoutParams.FLAG_SNAP) == LayoutParams.FLAG_SNAP) {
+                    // We're set the snap, so animate the offset to the nearest edge
+                    int snapTop = -offsetChild.getTop();
+                    int snapBottom = -offsetChild.getBottom();
+
+                    if (offsetChildIndex == abl.getChildCount() - 1) {
+                        // If this is the last child, we need to take the top inset into account
+                        snapBottom += abl.getTopInset();
                     }
 
-                    final int newOffset = offset < (childBottom + childTop) / 2
-                            ? childBottom : childTop;
+                    if (checkFlag(flags, LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)) {
+                        // If the view is set only exit until it is collapsed, we'll abide by that
+                        snapBottom += ViewCompat.getMinimumHeight(offsetChild);
+                    } else if (checkFlag(flags, LayoutParams.FLAG_QUICK_RETURN
+                            | LayoutParams.SCROLL_FLAG_ENTER_ALWAYS)) {
+                        // If it's set to always enter collapsed, it actually has two states. We
+                        // select the state and then snap within the state
+                        final int seam = snapBottom + ViewCompat.getMinimumHeight(offsetChild);
+                        if (offset < seam) {
+                            snapTop = seam;
+                        } else {
+                            snapBottom = seam;
+                        }
+                    }
+
+                    final int newOffset = offset < (snapBottom + snapTop) / 2
+                            ? snapBottom
+                            : snapTop;
                     animateOffsetTo(coordinatorLayout, abl,
                             MathUtils.constrain(newOffset, -abl.getTotalScrollRange(), 0));
                 }
             }
+        }
+
+        private static boolean checkFlag(final int flags, final int check) {
+            return (flags & check) == check;
         }
 
         @Override
