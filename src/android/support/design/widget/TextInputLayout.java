@@ -44,8 +44,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 /**
- * Layout which wraps an {@link android.widget.EditText} to show a floating label when
- * the hint is hidden due to the user inputting text.
+ * Layout which wraps an {@link android.widget.EditText} (or descendant) to show a floating label
+ * when the hint is hidden due to the user inputting text.
+ *
+ * Also supports showing an error via {@link #setErrorEnabled(boolean)} and
+ * {@link #setError(CharSequence)}.
  */
 public class TextInputLayout extends LinearLayout {
 

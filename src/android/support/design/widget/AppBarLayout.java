@@ -40,7 +40,7 @@ import java.util.List;
 
 /**
  * AppBarLayout is a vertical {@link LinearLayout} which implements many of the features of
- * material design's app bar concept, namely scrolling gestures.
+ * material designs app bar concept, namely scrolling gestures.
  * <p>
  * Children should provide their desired scrolling behavior through
  * {@link LayoutParams#setScrollFlags(int)} and the associated layout xml attribute:
@@ -51,10 +51,10 @@ import java.util.List;
  * If you use AppBarLayout within a different {@link ViewGroup}, most of it's functionality will
  * not work.
  * <p>
- * AppBarLayout also requires a separate scrolling sibling in order to. The binding is done through
- * the {@link ScrollingViewBehavior} beahior class, meaning that you should set your scrolling
- * view's behavior to be an instance of {@link ScrollingViewBehavior}. A string resource containing
- * the full class name is available.
+ * AppBarLayout also requires a separate scrolling sibling in order to know when to scroll.
+ * The binding is done through the {@link ScrollingViewBehavior} behavior class, meaning that you
+ * should set your scrolling view's behavior to be an instance of {@link ScrollingViewBehavior}.
+ * A string resource containing the full class name is available.
  *
  * <pre>
  * &lt;android.support.design.widget.CoordinatorLayout

@@ -41,9 +41,17 @@ import java.util.List;
  * by a circled icon floating above the UI and have special motion behaviors related to morphing,
  * launching, and the transferring anchor point.
  *
- * Floating action buttons come in two sizes: the default, which should be used in most cases, and
- * the mini, which should only be used to create visual continuity with other elements on the
- * screen.
+ * <p>Floating action buttons come in two sizes: the default and the mini. The size can be
+ * controlled with the {@code fabSize} attribute.</p>
+ *
+ * <p>As this class descends from {@link ImageView}, you can control the icon which is displayed
+ * via {@link #setImageDrawable(Drawable)}.</p>
+ *
+ * <p>The background color of this view defaults to the your theme's {@code colorAccent}. If you
+ * wish to change this at runtime then you can do so via
+ * {@link #setBackgroundTintList(ColorStateList)}.</p>
+ *
+ * @attr ref android.support.design.R.styleable#FloatingActionButton_fabSize
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends ImageView {

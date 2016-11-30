@@ -57,11 +57,13 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 /**
- * TabLayout provides a horizontal layout to display tabs. <p> Population of the tabs to display is
+ * TabLayout provides a horizontal layout to display tabs.
+ *
+ * <p>Population of the tabs to display is
  * done through {@link Tab} instances. You create tabs via {@link #newTab()}. From there you can
  * change the tab's label or icon via {@link Tab#setText(int)} and {@link Tab#setIcon(int)}
- * respectively. To display the tab, you need to add it to the layout via one of the {@link
- * #addTab(Tab)} methods. For example:
+ * respectively. To display the tab, you need to add it to the layout via one of the
+ * {@link #addTab(Tab)} methods. For example:
  * <pre>
  * TabLayout tabLayout = ...;
  * tabLayout.addTab(tabLayout.newTab().setText("Tab 1"));
