@@ -128,6 +128,12 @@ public class BottomSheetBehaviorTest extends
 
     @Test
     @MediumTest
+    public void testSetStateCollapsedToCollapsed() {
+        checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
+    }
+
+    @Test
+    @MediumTest
     public void testSwipeDownToCollapse() {
         checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
         Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
