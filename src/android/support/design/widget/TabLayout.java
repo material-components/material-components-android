@@ -922,7 +922,15 @@ public class TabLayout extends HorizontalScrollView {
             return this;
         }
 
-        View getCustomView() {
+
+        /**
+         * Returns the custom view used for this tab.
+         *
+         * @see #setCustomView(View)
+         * @see #setCustomView(int)
+         */
+        @Nullable
+        public View getCustomView() {
             return mCustomView;
         }
 

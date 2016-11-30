@@ -306,6 +306,7 @@ package android.support.design.widget {
 
   public static final class TabLayout.Tab {
     method public java.lang.CharSequence getContentDescription();
+    method public android.view.View getCustomView();
     method public android.graphics.drawable.Drawable getIcon();
     method public int getPosition();
     method public java.lang.Object getTag();
