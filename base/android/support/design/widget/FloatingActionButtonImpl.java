@@ -24,7 +24,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.R;
-import android.view.View;
 import android.view.ViewTreeObserver;
 
 abstract class FloatingActionButtonImpl {
@@ -42,12 +41,13 @@ abstract class FloatingActionButtonImpl {
             android.R.attr.state_enabled};
     static final int[] EMPTY_STATE_SET = new int[0];
 
-    final View mView;
+    final VisibilityAwareImageButton mView;
     final ShadowViewDelegate mShadowViewDelegate;
 
     private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
 
-    FloatingActionButtonImpl(View view, ShadowViewDelegate shadowViewDelegate) {
+    FloatingActionButtonImpl(VisibilityAwareImageButton view,
+            ShadowViewDelegate shadowViewDelegate) {
         mView = view;
         mShadowViewDelegate = shadowViewDelegate;
     }
@@ -69,9 +69,9 @@ abstract class FloatingActionButtonImpl {
 
     abstract void jumpDrawableToCurrentState();
 
-    abstract void hide(@Nullable InternalVisibilityChangedListener listener);
+    abstract void hide(@Nullable InternalVisibilityChangedListener listener, boolean fromUser);
 
-    abstract void show(@Nullable InternalVisibilityChangedListener listener);
+    abstract void show(@Nullable InternalVisibilityChangedListener listener, boolean fromUser);
 
     void onAttachedToWindow() {
         if (requirePreDrawListener()) {

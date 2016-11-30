@@ -33,7 +33,6 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 
 import java.util.List;
@@ -56,7 +55,7 @@ import java.util.List;
  * @attr ref android.support.design.R.styleable#FloatingActionButton_fabSize
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
-public class FloatingActionButton extends ImageButton {
+public class FloatingActionButton extends VisibilityAwareImageButton {
 
     private static final String LOG_TAG = "FloatingActionButton";
 
@@ -271,7 +270,7 @@ public class FloatingActionButton extends ImageButton {
      * <p>This method will animate the button show if the view has already been laid out.</p>
      */
     public void show() {
-        mImpl.show(null);
+        show(null);
     }
 
     /**
@@ -281,7 +280,11 @@ public class FloatingActionButton extends ImageButton {
      * @param listener the listener to notify when this view is shown
      */
     public void show(@Nullable final OnVisibilityChangedListener listener) {
-        mImpl.show(wrapOnVisibilityChangedListener(listener));
+        show(listener, true);
+    }
+
+    private void show(OnVisibilityChangedListener listener, boolean fromUser) {
+        mImpl.show(wrapOnVisibilityChangedListener(listener), fromUser);
     }
 
     /**
@@ -289,7 +292,7 @@ public class FloatingActionButton extends ImageButton {
      * <p>This method will animate the button hide if the view has already been laid out.</p>
      */
     public void hide() {
-        mImpl.hide(null);
+        hide(null);
     }
 
     /**
@@ -299,7 +302,11 @@ public class FloatingActionButton extends ImageButton {
      * @param listener the listener to notify when this view is hidden
      */
     public void hide(@Nullable OnVisibilityChangedListener listener) {
-        mImpl.hide(wrapOnVisibilityChangedListener(listener));
+        hide(listener, true);
+    }
+
+    private void hide(@Nullable OnVisibilityChangedListener listener, boolean fromUser) {
+        mImpl.hide(wrapOnVisibilityChangedListener(listener), fromUser);
     }
 
     @Nullable
@@ -441,6 +448,11 @@ public class FloatingActionButton extends ImageButton {
                 return false;
             }
 
+            if (child.getUserSetVisibility() != VISIBLE) {
+                // The view isn't set to be visible so skip changing it's visibility
+                return false;
+            }
+
             if (mTmpRect == null) {
                 mTmpRect = new Rect();
             }
@@ -451,10 +463,10 @@ public class FloatingActionButton extends ImageButton {
 
             if (rect.bottom <= appBarLayout.getMinimumHeightForVisibleOverlappingContent()) {
                 // If the anchor's bottom is below the seam, we'll animate our FAB out
-                child.hide();
+                child.hide(null, false);
             } else {
                 // Else, we'll animate our FAB back in
-                child.show();
+                child.show(null, false);
             }
             return true;
         }

@@ -28,7 +28,6 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
-import android.view.View;
 import android.view.animation.AnimationUtils;
 import android.view.animation.Interpolator;
 
@@ -37,7 +36,8 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
     private Interpolator mInterpolator;
 
-    FloatingActionButtonLollipop(View view, ShadowViewDelegate shadowViewDelegate) {
+    FloatingActionButtonLollipop(VisibilityAwareImageButton view,
+            ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
 
         if (!view.isInEditMode()) {

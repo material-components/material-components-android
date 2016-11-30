@@ -218,7 +218,7 @@ package android.support.design.widget {
     field public static final android.os.Parcelable.Creator<android.support.design.widget.CoordinatorLayout.SavedState> CREATOR;
   }
 
-  public class FloatingActionButton extends android.widget.ImageButton {
+  public class FloatingActionButton extends android.support.design.widget.VisibilityAwareImageButton {
     ctor public FloatingActionButton(android.content.Context);
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet);
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet, int);
@@ -444,6 +444,12 @@ package android.support.design.widget {
     method public int getTopAndBottomOffset();
     method public boolean setLeftAndRightOffset(int);
     method public boolean setTopAndBottomOffset(int);
+  }
+
+   class VisibilityAwareImageButton extends android.support.v7.widget.AppCompatImageButton {
+    ctor public VisibilityAwareImageButton(android.content.Context);
+    ctor public VisibilityAwareImageButton(android.content.Context, android.util.AttributeSet);
+    ctor public VisibilityAwareImageButton(android.content.Context, android.util.AttributeSet, int);
   }
 
 }

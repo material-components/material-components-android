@@ -48,7 +48,8 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
     private boolean mIsHiding;
 
-    FloatingActionButtonEclairMr1(View view, ShadowViewDelegate shadowViewDelegate) {
+    FloatingActionButtonEclairMr1(VisibilityAwareImageButton view,
+            ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
 
         mAnimationDuration = view.getResources().getInteger(android.R.integer.config_shortAnimTime);
@@ -155,7 +156,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     }
 
     @Override
-    void hide(@Nullable final InternalVisibilityChangedListener listener) {
+    void hide(@Nullable final InternalVisibilityChangedListener listener, final boolean fromUser) {
         if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
             // A hide animation is in progress, or we're already hidden. Skip the call
             if (listener != null) {
@@ -177,7 +178,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
             @Override
             public void onAnimationEnd(Animation animation) {
                 mIsHiding = false;
-                mView.setVisibility(View.GONE);
+                mView.internalSetVisibility(View.GONE, fromUser);
                 if (listener != null) {
                     listener.onHidden();
                 }
@@ -187,12 +188,12 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     }
 
     @Override
-    void show(@Nullable final InternalVisibilityChangedListener listener) {
+    void show(@Nullable final InternalVisibilityChangedListener listener, final boolean fromUser) {
         if (mView.getVisibility() != View.VISIBLE || mIsHiding) {
             // If the view is not visible, or is visible and currently being hidden, run
             // the show animation
             mView.clearAnimation();
-            mView.setVisibility(View.VISIBLE);
+            mView.internalSetVisibility(View.VISIBLE, fromUser);
             Animation anim = android.view.animation.AnimationUtils.loadAnimation(
                     mView.getContext(), R.anim.design_fab_in);
             anim.setDuration(SHOW_HIDE_ANIM_DURATION);

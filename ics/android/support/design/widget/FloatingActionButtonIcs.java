@@ -26,7 +26,8 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
 
     private boolean mIsHiding;
 
-    FloatingActionButtonIcs(View view, ShadowViewDelegate shadowViewDelegate) {
+    FloatingActionButtonIcs(VisibilityAwareImageButton view,
+            ShadowViewDelegate shadowViewDelegate) {
         super(view, shadowViewDelegate);
     }
 
@@ -41,7 +42,7 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
     }
 
     @Override
-    void hide(@Nullable final InternalVisibilityChangedListener listener) {
+    void hide(@Nullable final InternalVisibilityChangedListener listener, final boolean fromUser) {
         if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
             // A hide animation is in progress, or we're already hidden. Skip the call
             if (listener != null) {
@@ -52,7 +53,7 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
 
         if (!ViewCompat.isLaidOut(mView) || mView.isInEditMode()) {
             // If the view isn't laid out, or we're in the editor, don't run the animation
-            mView.setVisibility(View.GONE);
+            mView.internalSetVisibility(View.GONE, fromUser);
             if (listener != null) {
                 listener.onHidden();
             }
@@ -71,7 +72,7 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
                         public void onAnimationStart(Animator animation) {
                             mIsHiding = true;
                             mCancelled = false;
-                            mView.setVisibility(View.VISIBLE);
+                            mView.internalSetVisibility(View.VISIBLE, fromUser);
                         }
 
                         @Override
@@ -84,7 +85,7 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
                         public void onAnimationEnd(Animator animation) {
                             mIsHiding = false;
                             if (!mCancelled) {
-                                mView.setVisibility(View.GONE);
+                                mView.internalSetVisibility(View.GONE, fromUser);
                                 if (listener != null) {
                                     listener.onHidden();
                                 }
@@ -95,7 +96,7 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
     }
 
     @Override
-    void show(@Nullable final InternalVisibilityChangedListener listener) {
+    void show(@Nullable final InternalVisibilityChangedListener listener, final boolean fromUser) {
         if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
             if (ViewCompat.isLaidOut(mView) && !mView.isInEditMode()) {
                 mView.animate().cancel();
@@ -114,7 +115,7 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
                         .setListener(new AnimatorListenerAdapter() {
                             @Override
                             public void onAnimationStart(Animator animation) {
-                                mView.setVisibility(View.VISIBLE);
+                                mView.internalSetVisibility(View.VISIBLE, fromUser);
                             }
 
                             @Override
@@ -125,7 +126,7 @@ class FloatingActionButtonIcs extends FloatingActionButtonEclairMr1 {
                             }
                         });
             } else {
-                mView.setVisibility(View.VISIBLE);
+                mView.internalSetVisibility(View.VISIBLE, fromUser);
                 mView.setAlpha(1f);
                 mView.setScaleY(1f);
                 mView.setScaleX(1f);
