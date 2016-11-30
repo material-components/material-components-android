@@ -68,7 +68,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
             PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth) {
         // Now we need to tint the original background with the tint, using
         // an InsetDrawable if we have a border width
-        mShapeDrawable = DrawableCompat.wrap(originalBackground);
+        mShapeDrawable = DrawableCompat.wrap(originalBackground.mutate());
         DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
             DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);

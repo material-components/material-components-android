@@ -54,7 +54,7 @@ class FloatingActionButtonLollipop extends FloatingActionButtonHoneycombMr1 {
     void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
             PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth) {
         // Now we need to tint the original background with the tint
-        mShapeDrawable = DrawableCompat.wrap(originalBackground);
+        mShapeDrawable = DrawableCompat.wrap(originalBackground.mutate());
         DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
             DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
