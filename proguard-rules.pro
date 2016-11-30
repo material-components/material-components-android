@@ -19,4 +19,4 @@
 }
 
 # Make sure we keep annotations for CoordinatorLayout's DefaultBehavior
--keepattributes *Annotation*
+-keep android.support.design.widget.CoordinatorLayout.DefaultBehavior
