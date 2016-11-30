@@ -744,9 +744,6 @@ public class TextInputLayout extends LinearLayout {
         };
     }
 
-    /**
-     * @hide
-     */
     @Override
     public Parcelable onSaveInstanceState() {
         Parcelable superState = super.onSaveInstanceState();
