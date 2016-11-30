@@ -51,7 +51,7 @@ import android.widget.TextView;
  */
 public class TextInputLayout extends LinearLayout {
 
-    private static final long ANIMATION_DURATION = 200;
+    private static final int ANIMATION_DURATION = 200;
     private static final int MSG_UPDATE_LABEL = 0;
 
     private EditText mEditText;
@@ -65,6 +65,8 @@ public class TextInputLayout extends LinearLayout {
 
     private final CollapsingTextHelper mCollapsingTextHelper;
     private final Handler mHandler;
+
+    private ValueAnimatorCompat mAnimator;
 
     public TextInputLayout(Context context) {
         this(context, null);
@@ -360,18 +362,22 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void animateToExpansionFraction(final float target) {
-        final float current = mCollapsingTextHelper.getExpansionFraction();
+        if (mAnimator == null) {
+            mAnimator = ViewUtils.createAnimator();
+            mAnimator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
+            mAnimator.setDuration(ANIMATION_DURATION);
+            mAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimatorCompat animator) {
+                    mCollapsingTextHelper.setExpansionFraction(animator.getAnimatedFloatValue());
+                }
+            });
+        } else if (mAnimator.isRunning()) {
+            mAnimator.cancel();
+        }
 
-        Animation anim = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                mCollapsingTextHelper.setExpansionFraction(
-                        AnimationUtils.lerp(current, target, interpolatedTime));
-            }
-        };
-        anim.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
-        anim.setDuration(ANIMATION_DURATION);
-        startAnimation(anim);
+        mAnimator.setFloatValues(mCollapsingTextHelper.getExpansionFraction(), target);
+        mAnimator.start();
     }
 
     private ColorStateList createLabelTextColorStateList(int color) {

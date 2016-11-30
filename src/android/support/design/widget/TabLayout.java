@@ -56,8 +56,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import static android.support.design.widget.AnimationUtils.lerp;
-
 /**
  * TabLayout provides a horizontal layout to display tabs. <p> Population of the tabs to display is
  * done through {@link Tab} instances. You create tabs via {@link #newTab()}. From there you can
@@ -702,17 +700,17 @@ public class TabLayout extends HorizontalScrollView {
         final int duration = ANIMATION_DURATION;
 
         if (startScrollX != targetScrollX) {
-            final Animation animation = new Animation() {
+            ValueAnimatorCompat animator = ViewUtils.createAnimator();
+            animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+            animator.setDuration(duration);
+            animator.setIntValues(startScrollX, targetScrollX);
+            animator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                 @Override
-                protected void applyTransformation(float interpolatedTime, Transformation t) {
-                    final float value = AnimationUtils.lerp(startScrollX, targetScrollX,
-                            interpolatedTime);
-                    scrollTo((int) value, 0);
+                public void onAnimationUpdate(ValueAnimatorCompat animator) {
+                    scrollTo(animator.getAnimatedIntValue(), 0);
                 }
-            };
-            animation.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-            animation.setDuration(duration);
-            startAnimation(animation);
+            });
+            animator.start();
         }
 
         // Now animate the indicator
@@ -1363,33 +1361,33 @@ public class TabLayout extends HorizontalScrollView {
             }
 
             if (startLeft != targetLeft || startRight != targetRight) {
-                final Animation anim = new Animation() {
+                ValueAnimatorCompat animator = ViewUtils.createAnimator();
+                animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+                animator.setDuration(duration);
+                animator.setFloatValues(0, 1);
+                animator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                     @Override
-                    protected void applyTransformation(float interpolatedTime, Transformation t) {
+                    public void onAnimationUpdate(ValueAnimatorCompat animator) {
+                        final float fraction = animator.getAnimatedFraction();
                         setIndicatorPosition(
-                                (int) AnimationUtils.lerp(startLeft, targetLeft, interpolatedTime),
-                                (int) AnimationUtils.lerp(startRight, targetRight, interpolatedTime));
+                                AnimationUtils.lerp(startLeft, targetLeft, fraction),
+                                AnimationUtils.lerp(startRight, targetRight, fraction));
                     }
-                };
-                anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-                anim.setDuration(duration);
-                anim.setAnimationListener(new Animation.AnimationListener() {
+                });
+                animator.setListener(new ValueAnimatorCompat.AnimatorListenerAdapter() {
                     @Override
-                    public void onAnimationStart(Animation animation) {
-                    }
-
-                    @Override
-                    public void onAnimationEnd(Animation animation) {
+                    public void onAnimationEnd(ValueAnimatorCompat animator) {
                         mSelectedPosition = position;
                         mSelectionOffset = 0f;
                     }
 
                     @Override
-                    public void onAnimationRepeat(Animation animation) {
+                    public void onAnimationCancel(ValueAnimatorCompat animator) {
+                        mSelectedPosition = position;
+                        mSelectionOffset = 0f;
                     }
                 });
-
-                startAnimation(anim);
+                animator.start();
             }
         }
 

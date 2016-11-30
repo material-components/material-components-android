@@ -89,6 +89,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private int mForegroundScrimColor;
     private int mCurrentForegroundColor;
     private boolean mScrimIsShown;
+    private ValueAnimatorCompat mScrimAnimator;
 
     private AppBarLayout.OnOffsetChangedListener mOnOffsetChangedListener;
 
@@ -263,53 +264,48 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     private void showScrim() {
-        if (mScrimIsShown) return;
-
-        Animation anim = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                final int originalAlpha = Color.alpha(mForegroundScrimColor);
-                mCurrentForegroundColor = ColorUtils.setAlphaComponent(mForegroundScrimColor,
-                        AnimationUtils.lerp(0, originalAlpha, interpolatedTime));
-
-                // We need to manually invalidate ourselves and the Toolbar to ensure the scrim
-                // is drawn
-                invalidate();
-                if (mToolbar != null) {
-                    mToolbar.invalidate();
-                }
-            }
-        };
-        anim.setDuration(SCRIM_ANIMATION_DURATION);
-        anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-        startAnimation(anim);
-
-        mScrimIsShown = true;
+        if (!mScrimIsShown) {
+            animateScrim(Color.alpha(mForegroundScrimColor));
+            mScrimIsShown = true;
+        }
     }
 
     private void hideScrim() {
-        if (!mScrimIsShown) return;
+        if (mScrimIsShown) {
+            animateScrim(0);
+            mScrimIsShown = false;
+        }
+    }
 
-        Animation anim = new Animation() {
-            @Override
-            protected void applyTransformation(float interpolatedTime, Transformation t) {
-                final int originalAlpha = Color.alpha(mForegroundScrimColor);
-                mCurrentForegroundColor = ColorUtils.setAlphaComponent(mForegroundScrimColor,
-                        AnimationUtils.lerp(originalAlpha, 0, interpolatedTime));
+    private void animateScrim(int targetAlpha) {
+        if (mScrimAnimator == null) {
+            mScrimAnimator = ViewUtils.createAnimator();
+            mScrimAnimator.setDuration(SCRIM_ANIMATION_DURATION);
+            mScrimAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+            mScrimAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+                @Override
+                public void onAnimationUpdate(ValueAnimatorCompat animator) {
+                    final int newColor = ColorUtils.setAlphaComponent(
+                            mForegroundScrimColor, animator.getAnimatedIntValue());
 
-                // We need to manually invalidate ourselves and the Toolbar to ensure the scrim
-                // is drawn
-                invalidate();
-                if (mToolbar != null) {
-                    mToolbar.invalidate();
+                    if (newColor != mCurrentForegroundColor) {
+                        mCurrentForegroundColor = newColor;
+
+                        // We need to manually invalidate ourselves and the Toolbar to ensure the scrim
+                        // is drawn
+                        invalidate();
+                        if (mToolbar != null) {
+                            mToolbar.invalidate();
+                        }
+                    }
                 }
-            }
-        };
-        anim.setDuration(SCRIM_ANIMATION_DURATION);
-        anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-        startAnimation(anim);
+            });
+        } else if (mScrimAnimator.isRunning()) {
+            mScrimAnimator.cancel();
+        }
 
-        mScrimIsShown = false;
+        mScrimAnimator.setIntValues(Color.alpha(mCurrentForegroundColor), targetAlpha);
+        mScrimAnimator.start();
     }
 
     /**
