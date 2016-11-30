@@ -93,9 +93,8 @@
     </style>
 
     <style name="Widget.Design.CollapsingToolbar" parent="android:Widget">
-        <item name="expandedTitleMargin">16dp</item>
-        <item name="expandedTitleMarginBottom">20dp</item>
-        <item name="expandedTitleTextAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="expandedTitleMargin">32dp</item>
+        <item name="expandedTitleTextAppearance">@style/TextAppearance.Design.CollapsingToolbar.Expanded</item>
         <item name="collapsedTitleTextAppearance">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
         <item name="statusBarScrim">?attr/colorPrimaryDark</item>
     </style>
@@ -107,6 +106,10 @@
 
     <style name="Widget.Design.CoordinatorLayout" parent="android:Widget">
         <item name="statusBarBackground">?attr/colorPrimaryDark</item>
+    </style>
+
+    <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Display1">
+        <item name="android:textColor">?android:attr/textColorPrimary</item>
     </style>
 
 </resources>
