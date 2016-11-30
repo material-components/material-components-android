@@ -66,9 +66,9 @@ class ViewOffsetHelper {
     }
 
     private static void tickleInvalidationFlag(View view) {
-        final float x = ViewCompat.getTranslationX(view);
-        ViewCompat.setTranslationY(view, x + 1);
-        ViewCompat.setTranslationY(view, x);
+        final float y = ViewCompat.getTranslationY(view);
+        ViewCompat.setTranslationY(view, y + 1);
+        ViewCompat.setTranslationY(view, y);
     }
 
     /**
