@@ -25,7 +25,6 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
@@ -415,6 +414,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         // because we can use view translation properties which greatly simplifies the code.
         private static final boolean SNACKBAR_BEHAVIOR_ENABLED = Build.VERSION.SDK_INT >= 11;
 
+        private ValueAnimatorCompat mFabTranslationYAnimator;
         private float mFabTranslationY;
         private Rect mTmpRect;
 
@@ -472,7 +472,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         }
 
         private void updateFabTranslationForSnackbar(CoordinatorLayout parent,
-                FloatingActionButton fab, View snackbar) {
+                final FloatingActionButton fab, View snackbar) {
             if (fab.getVisibility() != View.VISIBLE) {
                 return;
             }
@@ -483,26 +483,37 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                 return;
             }
 
-            mFabTranslationY = targetTransY;
             final float currentTransY = ViewCompat.getTranslationY(fab);
-            final float dy = currentTransY - targetTransY;
 
-            if (Math.abs(dy) > (fab.getHeight() * 0.667f)) {
+            // Make sure that any current animation is cancelled
+            if (mFabTranslationYAnimator != null && mFabTranslationYAnimator.isRunning()) {
+                mFabTranslationYAnimator.cancel();
+            }
+
+            if (Math.abs(currentTransY - targetTransY) > (fab.getHeight() * 0.667f)) {
                 // If the FAB will be travelling by more than 2/3 of it's height, let's animate
                 // it instead
-                ViewCompat.animate(fab)
-                        .translationY(targetTransY)
-                        .scaleX(1f)
-                        .scaleY(1f)
-                        .alpha(1f)
-                        .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                        .setListener(null);
+                if (mFabTranslationYAnimator == null) {
+                    mFabTranslationYAnimator = ViewUtils.createAnimator();
+                    mFabTranslationYAnimator.setInterpolator(
+                            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+                    mFabTranslationYAnimator.setUpdateListener(
+                            new ValueAnimatorCompat.AnimatorUpdateListener() {
+                                @Override
+                                public void onAnimationUpdate(ValueAnimatorCompat animator) {
+                                    ViewCompat.setTranslationY(fab,
+                                            animator.getAnimatedFloatValue());
+                                }
+                            });
+                }
+                mFabTranslationYAnimator.setFloatValues(currentTransY, targetTransY);
+                mFabTranslationYAnimator.start();
             } else {
-                // Make sure that any current animation is cancelled
-                ViewCompat.animate(fab).cancel();
                 // Now update the translation Y
                 ViewCompat.setTranslationY(fab, targetTransY);
             }
+
+            mFabTranslationY = targetTransY;
         }
 
         private float getFabTranslationYForSnackbar(CoordinatorLayout parent,
