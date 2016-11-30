@@ -207,6 +207,10 @@
                  reached the end of it's scroll range, the remainder of this view will be scrolled
                  into view. -->
             <flag name="enterAlwaysCollapsed" value="0x8"/>
+
+            <!-- Upon a scroll ending, if the view is only partially visible then it will be
+                 snapped and scrolled to it's closest edge. -->
+            <flag name="snap" value="0x10"/>
         </attr>
 
         <!-- An interpolator to use when scrolling this View. Only takes effect when View

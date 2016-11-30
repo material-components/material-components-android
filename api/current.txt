@@ -49,6 +49,7 @@ package android.support.design.widget {
     field public static final int SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED = 8; // 0x8
     field public static final int SCROLL_FLAG_EXIT_UNTIL_COLLAPSED = 2; // 0x2
     field public static final int SCROLL_FLAG_SCROLL = 1; // 0x1
+    field public static final int SCROLL_FLAG_SNAP = 16; // 0x10
   }
 
   public static abstract interface AppBarLayout.OnOffsetChangedListener {

@@ -492,7 +492,8 @@ public class AppBarLayout extends LinearLayout {
                 SCROLL_FLAG_SCROLL,
                 SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
                 SCROLL_FLAG_ENTER_ALWAYS,
-                SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED
+                SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED,
+                SCROLL_FLAG_SNAP
         })
         @Retention(RetentionPolicy.SOURCE)
         public @interface ScrollFlags {}
@@ -532,9 +533,18 @@ public class AppBarLayout extends LinearLayout {
         public static final int SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED = 0x8;
 
         /**
-         * Internal flag which allows quick checking of 'quick return'
+         * Upon a scroll ending, if the view is only partially visible then it will be snapped
+         * and scrolled to it's closest edge. For example, if the view only has it's bottom 25%
+         * displayed, it will be scrolled off screen completely. Conversely, if it's bottom 75%
+         * is visible then it will be scrolled fully into view.
+         */
+        public static final int SCROLL_FLAG_SNAP = 0x10;
+
+        /**
+         * Internal flags which allows quick checking features
          */
         static final int FLAG_QUICK_RETURN = SCROLL_FLAG_SCROLL | SCROLL_FLAG_ENTER_ALWAYS;
+        static final int FLAG_SNAP = SCROLL_FLAG_SCROLL | SCROLL_FLAG_SNAP;
 
         int mScrollFlags = SCROLL_FLAG_SCROLL;
         Interpolator mScrollInterpolator;
@@ -582,8 +592,8 @@ public class AppBarLayout extends LinearLayout {
          * Set the scrolling flags.
          *
          * @param flags bitwise int of {@link #SCROLL_FLAG_SCROLL},
-         *             {@link #SCROLL_FLAG_EXIT_UNTIL_COLLAPSED}, {@link #SCROLL_FLAG_ENTER_ALWAYS}
-         *             and {@link #SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED}.
+         *             {@link #SCROLL_FLAG_EXIT_UNTIL_COLLAPSED}, {@link #SCROLL_FLAG_ENTER_ALWAYS},
+         *             {@link #SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED} and {@link #SCROLL_FLAG_SNAP }.
          *
          * @see #getScrollFlags()
          *
@@ -641,6 +651,7 @@ public class AppBarLayout extends LinearLayout {
         private int mOffsetDelta;
 
         private boolean mSkipNestedPreScroll;
+        private boolean mWasFlung;
         private Runnable mFlingRunnable;
         private ScrollerCompat mScroller;
 
@@ -719,10 +730,16 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout child,
+        public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, AppBarLayout abl,
                 View target) {
-            // Reset the skip flag
+            if (!mWasFlung) {
+                // If we haven't been flung then let's see if the current view has been set to snap
+                snapToChildIfNeeded(coordinatorLayout, abl);
+            }
+
+            // Reset the flags
             mSkipNestedPreScroll = false;
+            mWasFlung = false;
             // Keep a reference to the previous nested scrolling child
             mLastNestedScrollingChildRef = new WeakReference<>(target);
         }
@@ -840,41 +857,39 @@ public class AppBarLayout extends LinearLayout {
         public boolean onNestedFling(final CoordinatorLayout coordinatorLayout,
                 final AppBarLayout child, View target, float velocityX, float velocityY,
                 boolean consumed) {
+            boolean flung = false;
+
             if (!consumed) {
                 // It has been consumed so let's fling ourselves
-                return fling(coordinatorLayout, child, -child.getTotalScrollRange(), 0, -velocityY);
+                flung = fling(coordinatorLayout, child, -child.getTotalScrollRange(),
+                        0, -velocityY);
             } else {
                 // If we're scrolling up and the child also consumed the fling. We'll fake scroll
                 // upto our 'collapsed' offset
-                int targetScroll;
                 if (velocityY < 0) {
                     // We're scrolling down
-                    targetScroll = -child.getTotalScrollRange()
+                    final int targetScroll = -child.getTotalScrollRange()
                             + child.getDownNestedPreScrollRange();
-
-                    if (getTopBottomOffsetForScrollingSibling() > targetScroll) {
-                        // If we're currently expanded more than the target scroll, we'll return false
-                        // now. This is so that we don't 'scroll' the wrong way.
-                        return false;
+                    if (getTopBottomOffsetForScrollingSibling() < targetScroll) {
+                        // If we're currently not expanded more than the target scroll, we'll
+                        // animate a fling
+                        animateOffsetTo(coordinatorLayout, child, targetScroll);
+                        flung = true;
                     }
                 } else {
                     // We're scrolling up
-                    targetScroll = -child.getUpNestedPreScrollRange();
-
-                    if (getTopBottomOffsetForScrollingSibling() < targetScroll) {
-                        // If we're currently expanded less than the target scroll, we'll return
-                        // false now. This is so that we don't 'scroll' the wrong way.
-                        return false;
+                    final int targetScroll = -child.getUpNestedPreScrollRange();
+                    if (getTopBottomOffsetForScrollingSibling() > targetScroll) {
+                        // If we're currently not expanded less than the target scroll, we'll
+                        // animate a fling
+                        animateOffsetTo(coordinatorLayout, child, targetScroll);
+                        flung = true;
                     }
-                }
-
-                if (getTopBottomOffsetForScrollingSibling() != targetScroll) {
-                    animateOffsetTo(coordinatorLayout, child, targetScroll);
-                    return true;
                 }
             }
 
-            return false;
+            mWasFlung = flung;
+            return flung;
         }
 
         private void animateOffsetTo(final CoordinatorLayout coordinatorLayout,
@@ -920,6 +935,31 @@ public class AppBarLayout extends LinearLayout {
             } else {
                 mFlingRunnable = null;
                 return false;
+            }
+        }
+
+        private View getChildOnOffset(AppBarLayout abl, final int offset) {
+            for (int i = 0, count = abl.getChildCount(); i < count; i++) {
+                View child = abl.getChildAt(i);
+                if (child.getTop() <= -offset && child.getBottom() >= -offset) {
+                    return child;
+                }
+            }
+            return null;
+        }
+
+        private void snapToChildIfNeeded(CoordinatorLayout coordinatorLayout, AppBarLayout abl) {
+            final int offset = getTopBottomOffsetForScrollingSibling();
+            final View offsetChild = getChildOnOffset(abl, offset);
+            if (offsetChild != null) {
+                final LayoutParams lp = (LayoutParams) offsetChild.getLayoutParams();
+                if ((lp.getScrollFlags() & LayoutParams.FLAG_SNAP) == LayoutParams.FLAG_SNAP) {
+                    // We're set the snap, so animate the offset to the nearest edge
+                    final int childTop = -offsetChild.getTop();
+                    final int childBottom = -offsetChild.getBottom();
+                    animateOffsetTo(coordinatorLayout, abl,
+                            offset < (childBottom + childTop) / 2 ? childBottom : childTop);
+                }
             }
         }
 
