@@ -17,6 +17,7 @@
 package android.support.design.widget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
@@ -724,6 +725,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
         if (d != null && d.isStateful()) {
             changed |= d.setState(state);
         }
+        if (mCollapsingTextHelper != null) {
+            changed |= mCollapsingTextHelper.setState(state);
+        }
 
         if (changed) {
             invalidate();
@@ -801,7 +805,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
      * @param color The new text color in ARGB format
      */
     public void setCollapsedTitleTextColor(@ColorInt int color) {
-        mCollapsingTextHelper.setCollapsedTextColor(color);
+        setCollapsedTitleTextColor(ColorStateList.valueOf(color));
+    }
+
+    /**
+     * Sets the text colors of the collapsed title.
+     *
+     * @param colors ColorStateList containing the new text colors
+     */
+    public void setCollapsedTitleTextColor(@NonNull ColorStateList colors) {
+        mCollapsingTextHelper.setCollapsedTextColor(colors);
     }
 
     /**
@@ -840,7 +853,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
      * @param color The new text color in ARGB format
      */
     public void setExpandedTitleColor(@ColorInt int color) {
-        mCollapsingTextHelper.setExpandedTextColor(color);
+        setExpandedTitleTextColor(ColorStateList.valueOf(color));
+    }
+
+    /**
+     * Sets the text colors of the expanded title.
+     *
+     * @param colors ColorStateList containing the new text colors
+     */
+    public void setExpandedTitleTextColor(@NonNull ColorStateList colors) {
+        mCollapsingTextHelper.setExpandedTextColor(colors);
     }
 
     /**

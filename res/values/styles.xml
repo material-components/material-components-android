@@ -77,13 +77,13 @@
     </style>
 
     <style name="TextAppearance.Design.Error" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">?attr/textColorError</item>
+        <item name="android:textColor">@color/design_error</item>
     </style>
 
     <style name="TextAppearance.Design.Counter" parent="TextAppearance.AppCompat.Caption"/>
 
     <style name="TextAppearance.Design.Counter.Overflow" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">?attr/textColorError</item>
+        <item name="android:textColor">@color/design_error</item>
     </style>
 
     <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance">

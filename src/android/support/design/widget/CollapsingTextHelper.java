@@ -16,6 +16,7 @@
 
 package android.support.design.widget;
 
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -25,10 +26,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.design.R;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.TintTypedArray;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -63,8 +66,8 @@ final class CollapsingTextHelper {
     private int mCollapsedTextGravity = Gravity.CENTER_VERTICAL;
     private float mExpandedTextSize = 15;
     private float mCollapsedTextSize = 15;
-    private int mExpandedTextColor;
-    private int mCollapsedTextColor;
+    private ColorStateList mExpandedTextColor;
+    private ColorStateList mCollapsedTextColor;
 
     private float mExpandedDrawY;
     private float mCollapsedDrawY;
@@ -88,6 +91,8 @@ final class CollapsingTextHelper {
 
     private float mScale;
     private float mCurrentTextSize;
+
+    private int[] mState;
 
     private boolean mBoundsChanged;
 
@@ -136,14 +141,14 @@ final class CollapsingTextHelper {
         }
     }
 
-    void setCollapsedTextColor(int textColor) {
+    void setCollapsedTextColor(ColorStateList textColor) {
         if (mCollapsedTextColor != textColor) {
             mCollapsedTextColor = textColor;
             recalculate();
         }
     }
 
-    void setExpandedTextColor(int textColor) {
+    void setExpandedTextColor(ColorStateList textColor) {
         if (mExpandedTextColor != textColor) {
             mExpandedTextColor = textColor;
             recalculate();
@@ -194,12 +199,11 @@ final class CollapsingTextHelper {
     }
 
     void setCollapsedTextAppearance(int resId) {
-        TypedArray a = mView.getContext().obtainStyledAttributes(resId,
+        TintTypedArray a = TintTypedArray.obtainStyledAttributes(mView.getContext(), resId,
                 android.support.v7.appcompat.R.styleable.TextAppearance);
         if (a.hasValue(android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor)) {
-            mCollapsedTextColor = a.getColor(
-                    android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor,
-                    mCollapsedTextColor);
+            mCollapsedTextColor = a.getColorStateList(
+                    android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor);
         }
         if (a.hasValue(android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize)) {
             mCollapsedTextSize = a.getDimensionPixelSize(
@@ -224,12 +228,11 @@ final class CollapsingTextHelper {
     }
 
     void setExpandedTextAppearance(int resId) {
-        TypedArray a = mView.getContext().obtainStyledAttributes(resId,
+        TintTypedArray a = TintTypedArray.obtainStyledAttributes(mView.getContext(), resId,
                 android.support.v7.appcompat.R.styleable.TextAppearance);
         if (a.hasValue(android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor)) {
-            mExpandedTextColor = a.getColor(
-                    android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor,
-                    mExpandedTextColor);
+            mExpandedTextColor = a.getColorStateList(
+                    android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor);
         }
         if (a.hasValue(android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize)) {
             mExpandedTextSize = a.getDimensionPixelSize(
@@ -310,6 +313,22 @@ final class CollapsingTextHelper {
         }
     }
 
+    final boolean setState(final int[] state) {
+        mState = state;
+
+        if (isStateful()) {
+            recalculate();
+            return true;
+        }
+
+        return false;
+    }
+
+    final boolean isStateful() {
+        return (mCollapsedTextColor != null && mCollapsedTextColor.isStateful())
+                || (mExpandedTextColor != null && mExpandedTextColor.isStateful());
+    }
+
     float getExpansionFraction() {
         return mExpandedFraction;
     }
@@ -339,9 +358,10 @@ final class CollapsingTextHelper {
         if (mCollapsedTextColor != mExpandedTextColor) {
             // If the collapsed and expanded text colors are different, blend them based on the
             // fraction
-            mTextPaint.setColor(blendColors(mExpandedTextColor, mCollapsedTextColor, fraction));
+            mTextPaint.setColor(blendColors(
+                    getCurrentExpandedTextColor(), getCurrentCollapsedTextColor(), fraction));
         } else {
-            mTextPaint.setColor(mCollapsedTextColor);
+            mTextPaint.setColor(getCurrentCollapsedTextColor());
         }
 
         mTextPaint.setShadowLayer(
@@ -351,6 +371,24 @@ final class CollapsingTextHelper {
                 blendColors(mExpandedShadowColor, mCollapsedShadowColor, fraction));
 
         ViewCompat.postInvalidateOnAnimation(mView);
+    }
+
+    @ColorInt
+    private int getCurrentExpandedTextColor() {
+        if (mState != null) {
+            return mExpandedTextColor.getColorForState(mState, 0);
+        } else {
+            return mExpandedTextColor.getDefaultColor();
+        }
+    }
+
+    @ColorInt
+    private int getCurrentCollapsedTextColor() {
+        if (mState != null) {
+            return mCollapsedTextColor.getColorForState(mState, 0);
+        } else {
+            return mCollapsedTextColor.getDefaultColor();
+        }
     }
 
     private void calculateBaseOffsets() {
@@ -644,11 +682,11 @@ final class CollapsingTextHelper {
         return Math.abs(value - targetValue) < 0.001f;
     }
 
-    int getExpandedTextColor() {
+    ColorStateList getExpandedTextColor() {
         return mExpandedTextColor;
     }
 
-    int getCollapsedTextColor() {
+    ColorStateList getCollapsedTextColor() {
         return mCollapsedTextColor;
     }
 

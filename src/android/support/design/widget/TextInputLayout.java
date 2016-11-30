@@ -34,6 +34,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -139,12 +140,16 @@ public class TextInputLayout extends LinearLayout {
     private ColorStateList mDefaultTextColor;
     private ColorStateList mFocusedTextColor;
 
+    // Only used for testing
+    private boolean mHintExpanded;
+
     private final CollapsingTextHelper mCollapsingTextHelper = new CollapsingTextHelper(this);
 
     private boolean mHintAnimationEnabled;
     private ValueAnimatorCompat mAnimator;
 
     private boolean mHasReconstructedEditTextBackground;
+    private boolean mInDrawableStateChanged;
 
     public TextInputLayout(Context context) {
         this(context, null);
@@ -165,11 +170,14 @@ public class TextInputLayout extends LinearLayout {
         setAddStatesFromChildren(true);
 
         mInputFrame = new FrameLayout(context);
+        mInputFrame.setAddStatesFromChildren(true);
         addView(mInputFrame);
 
         mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         mCollapsingTextHelper.setPositionInterpolator(new AccelerateInterpolator());
         mCollapsingTextHelper.setCollapsedTextGravity(Gravity.TOP | GravityCompat.START);
+
+        mHintExpanded = mCollapsingTextHelper.getExpansionFraction() == 1f;
 
         final TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attrs,
                 R.styleable.TextInputLayout, defStyleAttr, R.style.Widget_Design_TextInputLayout);
@@ -363,23 +371,24 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void updateLabelState(boolean animate) {
+        final boolean isEnabled = isEnabled();
         final boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
         final boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
         final boolean isErrorShowing = !TextUtils.isEmpty(getError());
 
         if (mDefaultTextColor != null) {
-            mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor.getDefaultColor());
+            mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
         }
 
-        if (mCounterOverflowed && mCounterView != null) {
-            mCollapsingTextHelper.setCollapsedTextColor(mCounterView.getCurrentTextColor());
-        } else if (isFocused && mFocusedTextColor != null) {
-            mCollapsingTextHelper.setCollapsedTextColor(mFocusedTextColor.getDefaultColor());
+        if (isEnabled && mCounterOverflowed && mCounterView != null) {
+            mCollapsingTextHelper.setCollapsedTextColor(mCounterView.getTextColors());
+        } else if (isEnabled && isFocused && mFocusedTextColor != null) {
+            mCollapsingTextHelper.setCollapsedTextColor(mFocusedTextColor);
         } else if (mDefaultTextColor != null) {
-            mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor.getDefaultColor());
+            mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor);
         }
 
-        if (hasText || isFocused || isErrorShowing) {
+        if (hasText || (isEnabled() && (isFocused || isErrorShowing))) {
             // We should be showing the label so do so if it isn't already
             collapseHint(animate);
         } else {
@@ -488,7 +497,7 @@ public class TextInputLayout extends LinearLayout {
      */
     public void setHintTextAppearance(@StyleRes int resId) {
         mCollapsingTextHelper.setCollapsedTextAppearance(resId);
-        mFocusedTextColor = ColorStateList.valueOf(mCollapsingTextHelper.getCollapsedTextColor());
+        mFocusedTextColor = mCollapsingTextHelper.getCollapsedTextColor();
 
         if (mEditText != null) {
             updateLabelState(false);
@@ -595,6 +604,12 @@ public class TextInputLayout extends LinearLayout {
      * @see #getError()
      */
     public void setError(@Nullable final CharSequence error) {
+        // Only animate if we're enabled, laid out, and we have a different error message
+        setError(error, ViewCompat.isLaidOut(this) && isEnabled()
+                && (mErrorView == null || !TextUtils.equals(mErrorView.getText(), error)));
+    }
+
+    private void setError(@Nullable final CharSequence error, final boolean animate) {
         mError = error;
 
         if (!mErrorEnabled) {
@@ -606,9 +621,6 @@ public class TextInputLayout extends LinearLayout {
             setErrorEnabled(true);
         }
 
-        // Only animate if we've been laid out already and we have a different error
-        final boolean animate = ViewCompat.isLaidOut(this)
-                && !TextUtils.equals(mErrorView.getText(), error);
         mErrorShown = !TextUtils.isEmpty(error);
 
         // Cancel any on-going animation
@@ -659,7 +671,7 @@ public class TextInputLayout extends LinearLayout {
         }
 
         updateEditTextBackground();
-        updateLabelState(true);
+        updateLabelState(animate);
     }
 
     /**
@@ -727,6 +739,25 @@ public class TextInputLayout extends LinearLayout {
         }
     }
 
+    @Override
+    public void setEnabled(boolean enabled) {
+        // Since we're set to addStatesFromChildren, we need to make sure that we set all
+        // children to enabled/disabled otherwise any enabled children will wipe out our disabled
+        // drawable state
+        recursiveSetEnabled(this, enabled);
+        super.setEnabled(enabled);
+    }
+
+    private static void recursiveSetEnabled(final ViewGroup vg, final boolean enabled) {
+        for (int i = 0, count = vg.getChildCount(); i < count; i++) {
+            final View child = vg.getChildAt(i);
+            child.setEnabled(enabled);
+            if (child instanceof ViewGroup) {
+                recursiveSetEnabled((ViewGroup) child, enabled);
+            }
+        }
+    }
+
     /**
      * Returns the max length shown at the character counter.
      *
@@ -757,12 +788,16 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void updateEditTextBackground() {
-        ensureBackgroundDrawableStateWorkaround();
+        if (mEditText == null) {
+            return;
+        }
 
         Drawable editTextBackground = mEditText.getBackground();
         if (editTextBackground == null) {
             return;
         }
+
+        ensureBackgroundDrawableStateWorkaround();
 
         if (android.support.v7.widget.DrawableUtils.canSafelyMutateDrawable(editTextBackground)) {
             editTextBackground = editTextBackground.mutate();
@@ -1215,13 +1250,6 @@ public class TextInputLayout extends LinearLayout {
         }
     }
 
-    @Override
-    public void refreshDrawableState() {
-        super.refreshDrawableState();
-        // Drawable state has changed so see if we need to update the label
-        updateLabelState(ViewCompat.isLaidOut(this));
-    }
-
     private void collapseHint(boolean animate) {
         if (mAnimator != null && mAnimator.isRunning()) {
             mAnimator.cancel();
@@ -1231,6 +1259,39 @@ public class TextInputLayout extends LinearLayout {
         } else {
             mCollapsingTextHelper.setExpansionFraction(1f);
         }
+        mHintExpanded = false;
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        if (mInDrawableStateChanged) {
+            // Some of the calls below will update the drawable state of child views. Since we're
+            // using addStatesFromChildren we can get into infinite recursion, hence we'll just
+            // exit in this instance
+            return;
+        }
+
+        mInDrawableStateChanged = true;
+
+        super.drawableStateChanged();
+
+        final int[] state = getDrawableState();
+        boolean changed = false;
+
+        // Drawable state has changed so see if we need to update the label
+        updateLabelState(ViewCompat.isLaidOut(this) && isEnabled());
+
+        updateEditTextBackground();
+
+        if (mCollapsingTextHelper != null) {
+            changed |= mCollapsingTextHelper.setState(state);
+        }
+
+        if (changed) {
+            invalidate();
+        }
+
+        mInDrawableStateChanged = false;
     }
 
     private void expandHint(boolean animate) {
@@ -1242,6 +1303,7 @@ public class TextInputLayout extends LinearLayout {
         } else {
             mCollapsingTextHelper.setExpansionFraction(0f);
         }
+        mHintExpanded = true;
     }
 
     private void animateToExpansionFraction(final float target) {
@@ -1261,6 +1323,11 @@ public class TextInputLayout extends LinearLayout {
         }
         mAnimator.setFloatValues(mCollapsingTextHelper.getExpansionFraction(), target);
         mAnimator.start();
+    }
+
+    @VisibleForTesting
+    final boolean isHintExpanded() {
+        return mHintExpanded;
     }
 
     private class TextInputAccessibilityDelegate extends AccessibilityDelegateCompat {
