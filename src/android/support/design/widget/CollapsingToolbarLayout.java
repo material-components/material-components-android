@@ -200,7 +200,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
                             R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
         }
 
-        mScrimVisibleHeightTrigger = a.getInt(
+        mScrimVisibleHeightTrigger = a.getDimensionPixelSize(
                 R.styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger, -1);
 
         mScrimAnimationDuration = a.getInt(
