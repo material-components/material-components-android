@@ -32,7 +32,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
-import android.support.v7.internal.widget.TintManager;
+import android.support.v7.internal.widget.AppCompatDrawableManager;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -536,9 +536,9 @@ public class TextInputLayout extends LinearLayout {
             ViewCompat.setBackgroundTintList(mEditText,
                     ColorStateList.valueOf(mCounterView.getCurrentTextColor()));
         } else {
-            final TintManager tintManager = TintManager.get(getContext());
             ViewCompat.setBackgroundTintList(mEditText,
-                    tintManager.getTintList(R.drawable.abc_edit_text_material));
+                    AppCompatDrawableManager.get()
+                            .getTintList(getContext(), R.drawable.abc_edit_text_material));
         }
     }
 

@@ -39,7 +39,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBar;
-import android.support.v7.internal.widget.TintManager;
+import android.support.v7.internal.widget.AppCompatDrawableManager;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -1071,7 +1071,7 @@ public class TabLayout extends HorizontalScrollView {
          */
         @NonNull
         public Tab setIcon(@DrawableRes int resId) {
-            return setIcon(TintManager.getDrawable(mParent.getContext(), resId));
+            return setIcon(AppCompatDrawableManager.get().getDrawable(mParent.getContext(), resId));
         }
 
         /**
@@ -1176,7 +1176,8 @@ public class TabLayout extends HorizontalScrollView {
             super(context);
             mTab = tab;
             if (mTabBackgroundResId != 0) {
-                setBackgroundDrawable(TintManager.getDrawable(context, mTabBackgroundResId));
+                setBackgroundDrawable(
+                        AppCompatDrawableManager.get().getDrawable(context, mTabBackgroundResId));
             }
             ViewCompat.setPaddingRelative(this, mTabPaddingStart, mTabPaddingTop,
                     mTabPaddingEnd, mTabPaddingBottom);
