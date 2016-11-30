@@ -55,20 +55,20 @@ class ViewOffsetHelper {
         ViewCompat.offsetTopAndBottom(mView, mOffsetTop - (mView.getTop() - mLayoutTop));
         ViewCompat.offsetLeftAndRight(mView, mOffsetLeft - (mView.getLeft() - mLayoutLeft));
 
-        // Manually invalidate the parent to make sure we get drawn pre-M
+        // Manually invalidate the view and parent to make sure we get drawn pre-M
         if (Build.VERSION.SDK_INT < 23) {
-            tickleParentInvalidationFlag(mView);
+            tickleInvalidationFlag(mView);
+            final ViewParent vp = mView.getParent();
+            if (vp instanceof View) {
+                tickleInvalidationFlag((View) vp);
+            }
         }
     }
 
-    private static void tickleParentInvalidationFlag(View view) {
-        ViewParent vp = view.getParent();
-        if (vp instanceof View) {
-            View parent = (View) vp;
-            final float x = ViewCompat.getTranslationX(parent);
-            ViewCompat.setTranslationX(parent, x + 1);
-            ViewCompat.setTranslationX(parent, x);
-        }
+    private static void tickleInvalidationFlag(View view) {
+        final float x = ViewCompat.getTranslationX(view);
+        ViewCompat.setTranslationY(view, x + 1);
+        ViewCompat.setTranslationY(view, x);
     }
 
     /**
