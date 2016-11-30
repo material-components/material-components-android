@@ -77,6 +77,7 @@ final class CollapsingTextHelper {
     private float mCurrentRight;
     private float mCurrentTop;
     private float mScale;
+    private float mCurrentTextSize;
 
     private final TextPaint mTextPaint;
 
@@ -195,6 +196,8 @@ final class CollapsingTextHelper {
      * A value of {@code 1.0} indicates that the layout is fully collapsed.
      */
     void setExpansionFraction(float fraction) {
+        fraction = MathUtils.constrain(fraction, 0f, 1f);
+
         if (fraction != mExpandedFraction) {
             mExpandedFraction = fraction;
             calculateOffsets();
@@ -290,6 +293,9 @@ final class CollapsingTextHelper {
             final float ascent;
             final float descent;
 
+            // Update the TextPaint to the current text size
+            mTextPaint.setTextSize(mCurrentTextSize);
+
             if (drawTexture) {
                 ascent = mTextureAscent * mScale;
                 descent = mTextureDescent * mScale;
@@ -330,17 +336,17 @@ final class CollapsingTextHelper {
     private void setInterpolatedTextSize(final float textSize) {
         if (mText == null) return;
 
-        boolean textSizeChanged;
-        float availableWidth;
+        final float availableWidth;
+        final float newTextSize;
+        boolean updateDrawText = false;
 
         if (isClose(textSize, mCollapsedTextSize)) {
-            textSizeChanged = mTextPaint.getTextSize() != mCollapsedTextSize;
-            mTextPaint.setTextSize(mCollapsedTextSize);
-            mScale = 1f;
             availableWidth = mCollapsedBounds.width();
+            newTextSize = mCollapsedTextSize;
+            mScale = 1f;
         } else {
-            textSizeChanged = mTextPaint.getTextSize() != mExpandedTextSize;
-            mTextPaint.setTextSize(mExpandedTextSize);
+            availableWidth = mExpandedBounds.width();
+            newTextSize = mExpandedTextSize;
 
             if (isClose(textSize, mExpandedTextSize)) {
                 // If we're close to the expanded text size, snap to it and use a scale of 1
@@ -349,10 +355,16 @@ final class CollapsingTextHelper {
                 // Else, we'll scale down from the expanded text size
                 mScale = textSize / mExpandedTextSize;
             }
-            availableWidth = mExpandedBounds.width();
         }
 
-        if (mTextToDraw == null || textSizeChanged) {
+        if (availableWidth > 0) {
+            updateDrawText = mCurrentTextSize != newTextSize;
+            mCurrentTextSize = newTextSize;
+        }
+
+        if (mTextToDraw == null || updateDrawText) {
+            mTextPaint.setTextSize(mCurrentTextSize);
+
             // If we don't currently have text to draw, or the text size has changed, ellipsize...
             final CharSequence title = TextUtils.ellipsize(mText, mTextPaint,
                     availableWidth, TextUtils.TruncateAt.END);

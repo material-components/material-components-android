@@ -1,10 +1,86 @@
 package android.support.design.widget {
 
+  public class AppBarLayout extends android.widget.LinearLayout {
+    ctor public AppBarLayout(android.content.Context);
+    ctor public AppBarLayout(android.content.Context, android.util.AttributeSet);
+  }
+
+  public static abstract interface AppBarLayout.AppBarLayoutChild {
+    method public abstract void onOffsetUpdate(int, int);
+  }
+
+  public static class AppBarLayout.Behavior extends android.support.design.widget.ViewOffsetBehavior {
+    ctor public AppBarLayout.Behavior();
+    ctor public AppBarLayout.Behavior(android.content.Context, android.util.AttributeSet);
+    method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int[]);
+    method public void onNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, int, int, int, int);
+    method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, android.support.design.widget.AppBarLayout, android.view.View, android.view.View, int);
+  }
+
+  public static class AppBarLayout.LayoutParams extends android.widget.LinearLayout.LayoutParams {
+    ctor public AppBarLayout.LayoutParams(android.content.Context, android.util.AttributeSet);
+    ctor public AppBarLayout.LayoutParams(int, int);
+    ctor public AppBarLayout.LayoutParams(int, int, float);
+    ctor public AppBarLayout.LayoutParams(android.view.ViewGroup.LayoutParams);
+    ctor public AppBarLayout.LayoutParams(android.view.ViewGroup.MarginLayoutParams);
+    ctor public AppBarLayout.LayoutParams(android.widget.LinearLayout.LayoutParams);
+    ctor public AppBarLayout.LayoutParams(android.support.design.widget.AppBarLayout.LayoutParams);
+    method public int getScrollFlags();
+    method public android.view.animation.Interpolator getScrollInterpolator();
+    method public void setScrollFlags(int);
+    method public void setScrollInterpolator(android.view.animation.Interpolator);
+    field public static final int SCROLL_FLAG_ENTER_ALWAYS = 4; // 0x4
+    field public static final int SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED = 8; // 0x8
+    field public static final int SCROLL_FLAG_EXIT_UNTIL_COLLAPSED = 2; // 0x2
+    field public static final int SCROLL_FLAG_SCROLL = 1; // 0x1
+  }
+
+  public static class AppBarLayout.ScrollingViewBehavior extends android.support.design.widget.ViewOffsetBehavior {
+    ctor public AppBarLayout.ScrollingViewBehavior();
+    ctor public AppBarLayout.ScrollingViewBehavior(android.content.Context, android.util.AttributeSet);
+    method public int getOverlayTop();
+    method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
+    method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.view.View, android.view.View);
+    method public boolean onMeasureChild(android.support.design.widget.CoordinatorLayout, android.view.View, int, int, int, int);
+    method public void setOverlayTop(int);
+  }
+
+  public class CollapsingToolbarLayout extends android.widget.FrameLayout implements android.support.design.widget.AppBarLayout.AppBarLayoutChild {
+    ctor public CollapsingToolbarLayout(android.content.Context);
+    ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet);
+    ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet, int);
+    method public int getForegroundScrimColor();
+    method public void onOffsetUpdate(int, int);
+    method public void setCollapsedTitleTextAppearance(int);
+    method public void setCollapsedTitleTextColor(int);
+    method public void setExpandedTitleColor(int);
+    method public void setExpandedTitleTextAppearance(int);
+    method public void setForegroundScrimColor(int);
+    method public void setForegroundScrimColorResource(int);
+    method public void setTitle(java.lang.CharSequence);
+  }
+
+  public static class CollapsingToolbarLayout.LayoutParams extends android.widget.FrameLayout.LayoutParams {
+    ctor public CollapsingToolbarLayout.LayoutParams(android.content.Context, android.util.AttributeSet);
+    ctor public CollapsingToolbarLayout.LayoutParams(int, int);
+    ctor public CollapsingToolbarLayout.LayoutParams(int, int, int);
+    ctor public CollapsingToolbarLayout.LayoutParams(android.view.ViewGroup.LayoutParams);
+    ctor public CollapsingToolbarLayout.LayoutParams(android.view.ViewGroup.MarginLayoutParams);
+    ctor public CollapsingToolbarLayout.LayoutParams(android.widget.FrameLayout.LayoutParams);
+    method public void setCollapseMode(int);
+    method public void setParallaxMultiplier(float);
+    field public static final int COLLAPSE_MODE_OFF = 0; // 0x0
+    field public static final int COLLAPSE_MODE_PARALLAX = 2; // 0x2
+    field public static final int COLLAPSE_MODE_PIN = 1; // 0x1
+  }
+
   public class CoordinatorLayout extends android.view.ViewGroup {
     ctor public CoordinatorLayout(android.content.Context);
     ctor public CoordinatorLayout(android.content.Context, android.util.AttributeSet);
     ctor public CoordinatorLayout(android.content.Context, android.util.AttributeSet, int);
+    method public void dispatchDependentViewsChanged(android.view.View);
     method public boolean doViewsOverlap(android.view.View, android.view.View);
+    method public java.util.List<android.view.View> getDependencies(android.view.View);
     method public boolean isPointInChildBounds(android.view.View, int, int);
     method public void onAttachedToWindow();
     method public void onDetachedFromWindow();
@@ -195,6 +271,15 @@ package android.support.design.widget {
     method public void setError(java.lang.CharSequence);
     method public void setErrorEnabled(boolean);
     method public void setHint(java.lang.CharSequence);
+  }
+
+   class ViewOffsetBehavior extends android.support.design.widget.CoordinatorLayout.Behavior {
+    ctor public ViewOffsetBehavior();
+    ctor public ViewOffsetBehavior(android.content.Context, android.util.AttributeSet);
+    method public int getLeftAndRightOffset();
+    method public int getTopAndBottomOffset();
+    method public boolean setLeftAndRightOffset(int);
+    method public boolean setTopAndBottomOffset(int);
   }
 
 }

@@ -92,5 +92,13 @@
         <item name="maxActionInlineWidth">@dimen/snackbar_action_inline_max_width</item>
     </style>
 
+    <style name="Widget.Design.CollapsingToolbar" parent="android:Widget">
+        <item name="expandedTitleMargin">16dp</item>
+        <item name="expandedTitleMarginBottom">20dp</item>
+        <item name="expandedTitleTextAppearance">@style/TextAppearance.AppCompat.Headline</item>
+        <item name="collapsedTitleTextAppearance">@style/TextAppearance.AppCompat.Widget.ActionBar.Title</item>
+        <item name="foregroundScrimColor">@android:color/transparent</item>
+    </style>
+
 </resources>
 

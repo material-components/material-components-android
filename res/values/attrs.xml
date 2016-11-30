@@ -18,48 +18,48 @@
 
     <declare-styleable name="FloatingActionButton">
         <!-- Background for the FloatingActionButton -->
-        <attr name="android:background" />
-        <attr name="backgroundTint" />
-        <attr name="backgroundTintMode" />
+        <attr name="android:background"/>
+        <attr name="backgroundTint"/>
+        <attr name="backgroundTintMode"/>
 
         <!-- Ripple color for the FAB. -->
-        <attr name="rippleColor" format="color|reference" />
+        <attr name="rippleColor" format="color|reference"/>
         <!-- Size for the FAB. -->
         <attr name="fabSize">
-            <enum name="normal" value="0" />
-            <enum name="mini" value="1" />
+            <enum name="normal" value="0"/>
+            <enum name="mini" value="1"/>
         </attr>
         <!-- Elevation value for the FAB -->
-        <attr name="elevation" />
+        <attr name="elevation"/>
         <!-- TranslationZ value for the FAB when pressed-->
-        <attr name="pressedTranslationZ" format="dimension|reference" />
+        <attr name="pressedTranslationZ" format="dimension|reference"/>
     </declare-styleable>
 
     <declare-styleable name="ScrimInsetsFrameLayout">
-        <attr name="insetForeground" format="color|reference" />
+        <attr name="insetForeground" format="color|reference"/>
     </declare-styleable>
 
     <declare-styleable name="NavigationView">
-        <attr name="android:background" />
-        <attr name="android:fitsSystemWindows" />
-        <attr name="android:maxWidth" />
-        <attr name="elevation" />
+        <attr name="android:background"/>
+        <attr name="android:fitsSystemWindows"/>
+        <attr name="android:maxWidth"/>
+        <attr name="elevation"/>
         <!-- The menu resource to inflate and populate items from. -->
-        <attr name="menu" format="reference" />
-        <attr name="itemTint" format="color|reference" />
-        <attr name="itemBackground" format="reference" />
+        <attr name="menu" format="reference"/>
+        <attr name="itemTint" format="color|reference"/>
+        <attr name="itemBackground" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="TabLayout">
-        <attr name="tabIndicatorColor" format="color" />
-        <attr name="tabIndicatorHeight" format="dimension" />
-        <attr name="tabContentStart" format="dimension" />
+        <attr name="tabIndicatorColor" format="color"/>
+        <attr name="tabIndicatorHeight" format="dimension"/>
+        <attr name="tabContentStart" format="dimension"/>
 
-        <attr name="tabBackground" format="reference" />
+        <attr name="tabBackground" format="reference"/>
 
         <attr name="tabMode">
-            <enum name="scrollable" value="0" />
-            <enum name="fixed" value="1" />
+            <enum name="scrollable" value="0"/>
+            <enum name="fixed" value="1"/>
         </attr>
 
         <!-- Standard gravity constant that a child supplies to its parent.
@@ -70,17 +70,17 @@
             <enum name="center" value="1"/>
         </attr>
 
-        <attr name="tabMinWidth" format="dimension" />
-        <attr name="tabMaxWidth" format="dimension" />
+        <attr name="tabMinWidth" format="dimension"/>
+        <attr name="tabMaxWidth" format="dimension"/>
 
-        <attr name="tabTextAppearance" format="reference" />
-        <attr name="tabSelectedTextColor" format="color" />
+        <attr name="tabTextAppearance" format="reference"/>
+        <attr name="tabSelectedTextColor" format="color"/>
 
-        <attr name="tabPaddingStart" format="dimension" />
-        <attr name="tabPaddingTop" format="dimension" />
-        <attr name="tabPaddingEnd" format="dimension" />
-        <attr name="tabPaddingBottom" format="dimension" />
-        <attr name="tabPadding" format="dimension" />
+        <attr name="tabPaddingStart" format="dimension"/>
+        <attr name="tabPaddingTop" format="dimension"/>
+        <attr name="tabPaddingEnd" format="dimension"/>
+        <attr name="tabPaddingBottom" format="dimension"/>
+        <attr name="tabPadding" format="dimension"/>
     </declare-styleable>
 
     <declare-styleable name="CoordinatorLayout">
@@ -89,75 +89,134 @@
              Child views can refer to these keylines for alignment using
              layout_keyline="index" where index is a 0-based index into
              this array. -->
-        <attr name="keylines" format="reference" />
+        <attr name="keylines" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="CoordinatorLayout_LayoutParams">
-        <attr name="android:layout_gravity" />
+        <attr name="android:layout_gravity"/>
         <!-- The class name of a Behavior class defining special runtime behavior
              for this child view. -->
-        <attr name="layout_behavior" format="string" />
+        <attr name="layout_behavior" format="string"/>
         <!-- The id of an anchor view that this view should position relative to. -->
-        <attr name="layout_anchor" format="reference" />
+        <attr name="layout_anchor" format="reference"/>
         <!-- The index of a keyline this view should position relative to.
              android:layout_gravity will affect how the view aligns to the
              specified keyline. -->
-        <attr name="layout_keyline" format="integer" />
+        <attr name="layout_keyline" format="integer"/>
 
         <!-- Specifies how an object should position relative to an anchor, on both the X and Y axes,
              within its parent's bounds.  -->
         <attr name="layout_anchorGravity">
             <!-- Push object to the top of its container, not changing its size. -->
-            <flag name="top" value="0x30" />
+            <flag name="top" value="0x30"/>
             <!-- Push object to the bottom of its container, not changing its size. -->
-            <flag name="bottom" value="0x50" />
+            <flag name="bottom" value="0x50"/>
             <!-- Push object to the left of its container, not changing its size. -->
-            <flag name="left" value="0x03" />
+            <flag name="left" value="0x03"/>
             <!-- Push object to the right of its container, not changing its size. -->
-            <flag name="right" value="0x05" />
+            <flag name="right" value="0x05"/>
             <!-- Place object in the vertical center of its container, not changing its size. -->
-            <flag name="center_vertical" value="0x10" />
+            <flag name="center_vertical" value="0x10"/>
             <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
-            <flag name="fill_vertical" value="0x70" />
+            <flag name="fill_vertical" value="0x70"/>
             <!-- Place object in the horizontal center of its container, not changing its size. -->
-            <flag name="center_horizontal" value="0x01" />
+            <flag name="center_horizontal" value="0x01"/>
             <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
-            <flag name="fill_horizontal" value="0x07" />
+            <flag name="fill_horizontal" value="0x07"/>
             <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
-            <flag name="center" value="0x11" />
+            <flag name="center" value="0x11"/>
             <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
-            <flag name="fill" value="0x77" />
+            <flag name="fill" value="0x77"/>
             <!-- Additional option that can be set to have the top and/or bottom edges of
                  the child clipped to its container's bounds.
                  The clip will be based on the vertical gravity: a top gravity will clip the bottom
                  edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
-            <flag name="clip_vertical" value="0x80" />
+            <flag name="clip_vertical" value="0x80"/>
             <!-- Additional option that can be set to have the left and/or right edges of
                  the child clipped to its container's bounds.
                  The clip will be based on the horizontal gravity: a left gravity will clip the right
                  edge, a right gravity will clip the left edge, and neither will clip both edges. -->
-            <flag name="clip_horizontal" value="0x08" />
+            <flag name="clip_horizontal" value="0x08"/>
             <!-- Push object to the beginning of its container, not changing its size. -->
-            <flag name="start" value="0x00800003" />
+            <flag name="start" value="0x00800003"/>
             <!-- Push object to the end of its container, not changing its size. -->
-            <flag name="end" value="0x00800005" />
+            <flag name="end" value="0x00800005"/>
         </attr>
     </declare-styleable>
 
     <declare-styleable name="TextInputLayout">
-        <attr name="hintTextAppearance" format="reference" />
+        <attr name="hintTextAppearance" format="reference"/>
         <!-- The hint to display in the floating label -->
-        <attr name="android:hint" />
+        <attr name="android:hint"/>
         <!-- Whether the layout is laid out as if an error will be displayed -->
-        <attr name="errorEnabled" format="boolean" />
+        <attr name="errorEnabled" format="boolean"/>
         <!-- TextAppearance of any error message displayed -->
-        <attr name="errorTextAppearance" format="reference" />
+        <attr name="errorTextAppearance" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="SnackbarLayout">
-        <attr name="android:maxWidth" />
-        <attr name="elevation" />
-        <attr name="maxActionInlineWidth" format="dimension" />
+        <attr name="android:maxWidth"/>
+        <attr name="elevation"/>
+        <attr name="maxActionInlineWidth" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="AppBarLayout_LayoutParams">
+        <attr name="layout_scrollFlags">
+            <!-- The view will be scroll in direct relation to scroll events. This flag needs to be
+                 set for any of the other flags to take effect. If any sibling views
+                 before this one do not have this flag, then this value has no effect. -->
+            <flag name="scroll" value="0x1"/>
+
+            <!-- When exiting (scrolling off screen) the view will be scrolled until it is
+                 'collapsed'. The collapsed height is defined by the view's minimum height. -->
+            <flag name="exitUntilCollapsed" value="0x2"/>
+
+            <!-- When entering (scrolling on screen) the view will scroll on any downwards
+                 scroll event, regardless of whether the scrolling view is also scrolling. This
+                 is commonly referred to as the 'quick return' pattern. -->
+            <flag name="enterAlways" value="0x4"/>
+
+            <!-- An additional flag for 'enterAlways' which modifies the returning view to
+                 only initially scroll back to it's collapsed height. Once the scrolling view has
+                 reached the end of it's scroll range, the remainder of this view will be scrolled
+                 into view. -->
+            <flag name="enterAlwaysCollapsed" value="0x8"/>
+        </attr>
+
+        <!-- An interpolator to use when scrolling this View. Only takes effect when View
+             is scrollable. -->
+        <attr name="layout_scrollInterpolator" format="reference" />
+    </declare-styleable>
+
+    <declare-styleable name="ScrollingViewBehavior_Params">
+        <!-- The amount that the scrolling view should overlap the bottom of any AppBarLayout -->
+        <attr name="behavior_overlapTop" format="dimension" />
+    </declare-styleable>
+
+    <declare-styleable name="CollapsingToolbarLayout">
+        <attr name="expandedTitleMargin" format="dimension"/>
+        <attr name="expandedTitleMarginStart" format="dimension"/>
+        <attr name="expandedTitleMarginBottom" format="dimension"/>
+        <attr name="expandedTitleMarginEnd" format="dimension"/>
+        <attr name="expandedTitleTextAppearance" format="reference"/>
+        <attr name="collapsedTitleTextAppearance" format="reference"/>
+        <attr name="foregroundScrimColor" format="color"/>
+    </declare-styleable>
+
+    <declare-styleable name="CollapsingAppBarLayout_LayoutParams">
+        <attr name="layout_collapseMode">
+            <!-- The view will act as normal with no collapsing behavior. -->
+            <enum name="none" value="0"/>
+            <!-- The view will pin in place. -->
+            <enum name="pin" value="1"/>
+            <!-- The view will scroll in a parallax fashion. See the
+                 layout_collapseParallaxMultiplier attribute to change the multiplier. -->
+            <enum name="parallax" value="2"/>
+        </attr>
+
+        <!-- The multiplier used when layout_collapseMode is set to 'parallax'. The value should
+             be between 0.0 and 1.0. -->
+        <attr name="layout_collapseParallaxMultiplier" format="float"/>
     </declare-styleable>
 
 </resources>
