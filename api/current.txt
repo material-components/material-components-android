@@ -256,6 +256,7 @@ package android.support.design.widget {
    abstract class HeaderScrollingViewBehavior extends android.support.design.widget.ViewOffsetBehavior {
     ctor public HeaderScrollingViewBehavior();
     ctor public HeaderScrollingViewBehavior(android.content.Context, android.util.AttributeSet);
+    method protected void layoutChild(android.support.design.widget.CoordinatorLayout, android.view.View, int);
     method public boolean onMeasureChild(android.support.design.widget.CoordinatorLayout, android.view.View, int, int, int, int);
   }
 
@@ -454,6 +455,7 @@ package android.support.design.widget {
     ctor public ViewOffsetBehavior(android.content.Context, android.util.AttributeSet);
     method public int getLeftAndRightOffset();
     method public int getTopAndBottomOffset();
+    method protected void layoutChild(android.support.design.widget.CoordinatorLayout, V, int);
     method public boolean setLeftAndRightOffset(int);
     method public boolean setTopAndBottomOffset(int);
   }

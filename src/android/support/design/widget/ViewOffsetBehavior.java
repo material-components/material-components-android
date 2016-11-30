@@ -38,8 +38,8 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
     @Override
     public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
-        // First let the parent lay it out
-        parent.onLayoutChild(child, layoutDirection);
+        // First let lay the child out
+        layoutChild(parent, child, layoutDirection);
 
         if (mViewOffsetHelper == null) {
             mViewOffsetHelper = new ViewOffsetHelper(child);
@@ -56,6 +56,11 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
         }
 
         return true;
+    }
+
+    protected void layoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
+        // Let the parent lay it out by default
+        parent.onLayoutChild(child, layoutDirection);
     }
 
     public boolean setTopAndBottomOffset(int offset) {

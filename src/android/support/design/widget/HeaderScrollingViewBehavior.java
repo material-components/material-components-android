@@ -17,9 +17,12 @@
 package android.support.design.widget;
 
 import android.content.Context;
+import android.graphics.Rect;
 import android.support.design.widget.CoordinatorLayout.Behavior;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -30,6 +33,9 @@ import java.util.List;
  * See {@link HeaderBehavior}.
  */
 abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
+
+    private final Rect mTempRect1 = new Rect();
+    private final Rect mTempRect2 = new Rect();
 
     public HeaderScrollingViewBehavior() {}
 
@@ -48,40 +54,76 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
             // with the maximum visible height
 
             final List<View> dependencies = parent.getDependencies(child);
-            if (dependencies.isEmpty()) {
-                // If we don't have any dependencies, return false
-                return false;
-            }
-
             final View header = findFirstDependency(dependencies);
-            if (header != null && ViewCompat.isLaidOut(header)) {
-                if (ViewCompat.getFitsSystemWindows(header)) {
+            if (header != null) {
+                if (ViewCompat.getFitsSystemWindows(header)
+                        && !ViewCompat.getFitsSystemWindows(child)) {
                     // If the header is fitting system windows then we need to also,
-                    // otherwise we'll get CoL's compatible layout functionality
+                    // otherwise we'll get CoL's compatible measuring
                     ViewCompat.setFitsSystemWindows(child, true);
+
+                    if (ViewCompat.getFitsSystemWindows(child)) {
+                        // If the set succeeded, trigger a new layout and return true
+                        child.requestLayout();
+                        return true;
+                    }
                 }
 
-                int availableHeight = View.MeasureSpec.getSize(parentHeightMeasureSpec);
-                if (availableHeight == 0) {
-                    // If the measure spec doesn't specify a size, use the current height
-                    availableHeight = parent.getHeight();
+                if (ViewCompat.isLaidOut(header)) {
+                    int availableHeight = View.MeasureSpec.getSize(parentHeightMeasureSpec);
+                    if (availableHeight == 0) {
+                        // If the measure spec doesn't specify a size, use the current height
+                        availableHeight = parent.getHeight();
+                    }
+
+                    final int height = availableHeight - header.getMeasuredHeight()
+                            + getScrollRange(header);
+                    final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(height,
+                            childLpHeight == ViewGroup.LayoutParams.MATCH_PARENT
+                                    ? View.MeasureSpec.EXACTLY
+                                    : View.MeasureSpec.AT_MOST);
+
+                    // Now measure the scrolling view with the correct height
+                    parent.onMeasureChild(child, parentWidthMeasureSpec,
+                            widthUsed, heightMeasureSpec, heightUsed);
+
+                    return true;
                 }
-
-                final int height = availableHeight - header.getMeasuredHeight()
-                        + getScrollRange(header);
-                final int heightMeasureSpec = View.MeasureSpec.makeMeasureSpec(height,
-                        childLpHeight == ViewGroup.LayoutParams.MATCH_PARENT
-                                ? View.MeasureSpec.EXACTLY
-                                : View.MeasureSpec.AT_MOST);
-
-                // Now measure the scrolling menu with the correct height
-                parent.onMeasureChild(child, parentWidthMeasureSpec,
-                        widthUsed, heightMeasureSpec, heightUsed);
-
-                return true;
             }
         }
         return false;
+    }
+
+    @Override
+    protected void layoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
+        final List<View> dependencies = parent.getDependencies(child);
+        final View header = findFirstDependency(dependencies);
+
+        if (header != null) {
+            final CoordinatorLayout.LayoutParams lp =
+                    (CoordinatorLayout.LayoutParams) child.getLayoutParams();
+            final Rect parentRect = mTempRect1;
+            parentRect.set(parent.getPaddingLeft() + lp.leftMargin,
+                    parent.getPaddingTop() + lp.topMargin,
+                    parent.getWidth() - parent.getPaddingRight() - lp.rightMargin,
+                    parent.getHeight() - parent.getPaddingBottom() - lp.bottomMargin);
+
+            parentRect.top += header.getMeasuredHeight();
+            parentRect.bottom += header.getMeasuredHeight();
+
+            final Rect out = mTempRect2;
+            GravityCompat.apply(resolveGravity(lp.gravity), child.getMeasuredWidth(),
+                    child.getMeasuredHeight(), parentRect, out, layoutDirection);
+
+            child.layout(out.left, out.top, out.right, out.bottom);
+        } else {
+            // If we don't have a dependency, let super handle it
+            super.layoutChild(parent, child, layoutDirection);
+        }
+    }
+
+    private static int resolveGravity(int gravity) {
+        return gravity == Gravity.NO_GRAVITY ? GravityCompat.START | Gravity.TOP : gravity;
     }
 
     abstract View findFirstDependency(List<View> views);
