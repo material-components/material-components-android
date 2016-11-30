@@ -38,6 +38,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.Button;
@@ -177,6 +178,8 @@ public final class Snackbar {
     private int mDuration;
     private Callback mCallback;
 
+    private final AccessibilityManager mAccessibilityManager;
+
     private Snackbar(ViewGroup parent) {
         mTargetParent = parent;
         mContext = parent.getContext();
@@ -186,6 +189,9 @@ public final class Snackbar {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         mView = (SnackbarLayout) inflater.inflate(
                 R.layout.design_layout_snackbar, mTargetParent, false);
+
+        mAccessibilityManager = (AccessibilityManager)
+                mContext.getSystemService(Context.ACCESSIBILITY_SERVICE);
     }
 
     /**
@@ -516,8 +522,15 @@ public final class Snackbar {
                     .setListener(new ViewPropertyAnimatorListenerAdapter() {
                         @Override
                         public void onAnimationStart(View view) {
-                            mView.animateChildrenIn(ANIMATION_DURATION - ANIMATION_FADE_DURATION,
-                                    ANIMATION_FADE_DURATION);
+                            if (!mAccessibilityManager.isEnabled()) {
+                                // Animating the children in causes Talkback to think that they're
+                                // not visible when the TYPE_WINDOW_CONTENT_CHANGED event if fired.
+                                // Fixed by skipping the animation when an accessibility manager
+                                // is enabled
+                                mView.animateChildrenIn(
+                                        ANIMATION_DURATION - ANIMATION_FADE_DURATION,
+                                        ANIMATION_FADE_DURATION);
+                            }
                         }
 
                         @Override
@@ -557,7 +570,13 @@ public final class Snackbar {
 
                         @Override
                         public void onAnimationStart(View view) {
-                            mView.animateChildrenOut(0, ANIMATION_FADE_DURATION);
+                            if (!mAccessibilityManager.isEnabled()) {
+                                // Animating the children in causes Talkback to think that they're
+                                // not visible when the TYPE_WINDOW_CONTENT_CHANGED event if fired.
+                                // Fixed by skipping the animation when an accessibility manager
+                                // is enabled
+                                mView.animateChildrenOut(0, ANIMATION_FADE_DURATION);
+                            }
                         }
 
                         @Override
@@ -679,6 +698,8 @@ public final class Snackbar {
 
             ViewCompat.setAccessibilityLiveRegion(this,
                     ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+            ViewCompat.setImportantForAccessibility(this,
+                    ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
         }
 
         @Override
