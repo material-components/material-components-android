@@ -28,6 +28,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -55,6 +56,27 @@ import java.util.List;
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends ImageButton {
+
+    /**
+     * Callback to be invoked when the visibility of a FloatingActionButton changes.
+     */
+    public abstract static class OnVisibilityChangedListener {
+        /**
+         * Called when a FloatingActionButton has been
+         * {@link #show(OnVisibilityChangedListener) shown}.
+         *
+         * @param fab the FloatingActionButton that was shown.
+         */
+        public void onShown(FloatingActionButton fab) {}
+
+        /**
+         * Called when a FloatingActionButton has been
+         * {@link #hide(OnVisibilityChangedListener) hidden}.
+         *
+         * @param fab the FloatingActionButton that was hidden.
+         */
+        public void onHidden(FloatingActionButton fab) {}
+    }
 
     // These values must match those in the attrs declaration
     private static final int SIZE_MINI = 1;
@@ -242,7 +264,17 @@ public class FloatingActionButton extends ImageButton {
      * <p>This method will animate it the button show if the view has already been laid out.</p>
      */
     public void show() {
-        mImpl.show();
+        mImpl.show(null);
+    }
+
+    /**
+     * Shows the button.
+     * <p>This method will animate it the button show if the view has already been laid out.</p>
+     *
+     * @param listener the listener to notify when this view is shown
+     */
+    public void show(@Nullable final OnVisibilityChangedListener listener) {
+        mImpl.show(wrapOnVisibilityChangedListener(listener));
     }
 
     /**
@@ -250,7 +282,37 @@ public class FloatingActionButton extends ImageButton {
      * <p>This method will animate the button hide if the view has already been laid out.</p>
      */
     public void hide() {
-        mImpl.hide();
+        mImpl.hide(null);
+    }
+
+    /**
+     * Hides the button.
+     * <p>This method will animate the button hide if the view has already been laid out.</p>
+     *
+     * @param listener the listener to notify when this view is hidden
+     */
+    public void hide(@Nullable OnVisibilityChangedListener listener) {
+        mImpl.hide(wrapOnVisibilityChangedListener(listener));
+    }
+
+    @Nullable
+    private InternalVisibilityChangedListener wrapOnVisibilityChangedListener(
+            @Nullable final OnVisibilityChangedListener listener) {
+        if (listener == null) {
+            return null;
+        }
+
+        return new InternalVisibilityChangedListener() {
+            @Override
+            public void onShown() {
+                listener.onShown(FloatingActionButton.this);
+            }
+
+            @Override
+            public void onHidden() {
+                listener.onHidden(FloatingActionButton.this);
+            }
+        };
     }
 
     final int getSizeDimension() {

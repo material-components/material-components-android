@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.support.annotation.Nullable;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 
@@ -30,15 +31,21 @@ class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
     }
 
     @Override
-    void hide() {
+    void hide(@Nullable final InternalVisibilityChangedListener listener) {
         if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
             // A hide animation is in progress, or we're already hidden. Skip the call
+            if (listener != null) {
+                listener.onHidden();
+            }
             return;
         }
 
         if (!ViewCompat.isLaidOut(mView) || mView.isInEditMode()) {
             // If the view isn't laid out, or we're in the editor, don't run the animation
             mView.setVisibility(View.GONE);
+            if (listener != null) {
+                listener.onHidden();
+            }
         } else {
             mView.animate()
                     .scaleX(0f)
@@ -62,13 +69,16 @@ class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
                         public void onAnimationEnd(Animator animation) {
                             mIsHiding = false;
                             mView.setVisibility(View.GONE);
+                            if (listener != null) {
+                                listener.onHidden();
+                            }
                         }
                     });
         }
     }
 
     @Override
-    void show() {
+    void show(@Nullable final InternalVisibilityChangedListener listener) {
         if (mView.getVisibility() != View.VISIBLE) {
             if (ViewCompat.isLaidOut(mView) && !mView.isInEditMode()) {
                 mView.setAlpha(0f);
@@ -85,12 +95,22 @@ class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
                             public void onAnimationStart(Animator animation) {
                                 mView.setVisibility(View.VISIBLE);
                             }
+
+                            @Override
+                            public void onAnimationEnd(Animator animation) {
+                                if (listener != null) {
+                                    listener.onShown();
+                                }
+                            }
                         });
             } else {
                 mView.setVisibility(View.VISIBLE);
                 mView.setAlpha(1f);
                 mView.setScaleY(1f);
                 mView.setScaleX(1f);
+                if (listener != null) {
+                    listener.onShown();
+                }
             }
         }
     }

@@ -20,10 +20,16 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.view.View;
 
 abstract class FloatingActionButtonImpl {
+
+    interface InternalVisibilityChangedListener {
+        public void onShown();
+        public void onHidden();
+    }
 
     static final int SHOW_HIDE_ANIM_DURATION = 200;
 
@@ -58,9 +64,9 @@ abstract class FloatingActionButtonImpl {
 
     abstract void jumpDrawableToCurrentState();
 
-    abstract void hide();
+    abstract void hide(@Nullable InternalVisibilityChangedListener listener);
 
-    abstract void show();
+    abstract void show(@Nullable InternalVisibilityChangedListener listener);
 
     Drawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
         final Resources resources = mView.getResources();

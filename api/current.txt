@@ -194,8 +194,10 @@ package android.support.design.widget {
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet);
     ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet, int);
     method public void hide();
+    method public void hide(android.support.design.widget.FloatingActionButton.OnVisibilityChangedListener);
     method public void setRippleColor(int);
     method public void show();
+    method public void show(android.support.design.widget.FloatingActionButton.OnVisibilityChangedListener);
   }
 
   public static class FloatingActionButton.Behavior extends android.support.design.widget.CoordinatorLayout.Behavior {
@@ -204,6 +206,12 @@ package android.support.design.widget {
     method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
     method public void onDependentViewRemoved(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
     method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, int);
+  }
+
+  public static abstract class FloatingActionButton.OnVisibilityChangedListener {
+    ctor public FloatingActionButton.OnVisibilityChangedListener();
+    method public void onHidden(android.support.design.widget.FloatingActionButton);
+    method public void onShown(android.support.design.widget.FloatingActionButton);
   }
 
    abstract class HeaderBehavior extends android.support.design.widget.ViewOffsetBehavior {

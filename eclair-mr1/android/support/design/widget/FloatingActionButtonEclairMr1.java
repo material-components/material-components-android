@@ -24,7 +24,9 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
+import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.design.widget.AnimationUtils.AnimationListenerAdapter;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.animation.Animation;
@@ -167,9 +169,12 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     }
 
     @Override
-    void hide() {
+    void hide(@Nullable final InternalVisibilityChangedListener listener) {
         if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
             // A hide animation is in progress, or we're already hidden. Skip the call
+            if (listener != null) {
+                listener.onHidden();
+            }
             return;
         }
 
@@ -187,13 +192,16 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
             public void onAnimationEnd(Animation animation) {
                 mIsHiding = false;
                 mView.setVisibility(View.GONE);
+                if (listener != null) {
+                    listener.onHidden();
+                }
             }
         });
         mView.startAnimation(anim);
     }
 
     @Override
-    void show() {
+    void show(@Nullable final InternalVisibilityChangedListener listener) {
         if (mView.getVisibility() != View.VISIBLE || mIsHiding) {
             // If the view is not visible, or is visible and currently being hidden, run
             // the show animation
@@ -203,7 +211,19 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
                     mView.getContext(), R.anim.design_fab_in);
             anim.setDuration(SHOW_HIDE_ANIM_DURATION);
             anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+            anim.setAnimationListener(new AnimationListenerAdapter() {
+                @Override
+                public void onAnimationEnd(Animation animation) {
+                    if (listener != null) {
+                        listener.onShown();
+                    }
+                }
+            });
             mView.startAnimation(anim);
+        } else {
+            if (listener != null) {
+                listener.onShown();
+            }
         }
     }
 
