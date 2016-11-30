@@ -76,12 +76,22 @@ package android.support.design.widget {
     method public static android.support.design.widget.BottomSheetBehavior<V> from(V);
     method public final int getPeekHeight();
     method public final int getState();
+    method public boolean isHideable();
+    method public void setBottomSheetListener(android.support.design.widget.BottomSheetBehavior.BottomSheetListener);
+    method public void setHideable(boolean);
     method public final void setPeekHeight(int);
     method public final void setState(int);
     field public static final int STATE_COLLAPSED = 4; // 0x4
     field public static final int STATE_DRAGGING = 1; // 0x1
     field public static final int STATE_EXPANDED = 3; // 0x3
+    field public static final int STATE_HIDDEN = 5; // 0x5
     field public static final int STATE_SETTLING = 2; // 0x2
+  }
+
+  public static abstract class BottomSheetBehavior.BottomSheetListener {
+    ctor public BottomSheetBehavior.BottomSheetListener();
+    method public abstract void onSlide(float);
+    method public abstract void onStateChanged(int);
   }
 
   protected static class BottomSheetBehavior.SavedState extends android.view.View.BaseSavedState {

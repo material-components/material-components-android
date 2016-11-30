@@ -18,17 +18,22 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.design.R;
 import android.support.v4.view.MotionEventCompat;
+import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -40,6 +45,29 @@ import java.lang.ref.WeakReference;
  * a bottom sheet.
  */
 public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
+
+    /**
+     * Listener for monitoring events about bottom sheets.
+     */
+    public abstract static class BottomSheetListener {
+
+        /**
+         * Called when the bottom sheet changes its state.
+         *
+         * @param newState The new state. This will be one of {@link #STATE_DRAGGING},
+         *                 {@link #STATE_SETTLING}, {@link #STATE_EXPANDED},
+         *                 {@link #STATE_COLLAPSED}, or {@link #STATE_HIDDEN}.
+         */
+        public abstract void onStateChanged(@State int newState);
+
+        /**
+         * Called when the bottom sheet is being dragged.
+         *
+         * @param slideOffset The new offset of this bottom sheet within its range, from 0 to 1
+         *                    when it is moving upward, and from 0 to -1 when it moving downward.
+         */
+        public abstract void onSlide(float slideOffset);
+    }
 
     /**
      * The bottom sheet is dragging.
@@ -61,16 +89,32 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
      */
     public static final int STATE_COLLAPSED = 4;
 
+    /**
+     * The bottom sheet is hidden.
+     */
+    public static final int STATE_HIDDEN = 5;
+
     /** @hide */
-    @IntDef({STATE_EXPANDED, STATE_COLLAPSED, STATE_DRAGGING, STATE_SETTLING})
+    @IntDef({STATE_EXPANDED, STATE_COLLAPSED, STATE_DRAGGING, STATE_SETTLING, STATE_HIDDEN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface State {}
+
+    private static final float HIDE_THRESHOLD = 0.5f;
+
+    private static final float HIDE_FRICTION = 0.1f;
+
+    // Whether to enable workaround for black non-rendered square
+    private static final boolean NEEDS_INVALIDATING = Build.VERSION.SDK_INT < 23;
+
+    private float mMaximumVelocity;
 
     private int mPeekHeight;
 
     private int mMinOffset;
 
     private int mMaxOffset;
+
+    private boolean mHideable;
 
     @State
     private int mState = STATE_COLLAPSED;
@@ -84,6 +128,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     private int mParentHeight;
 
     private WeakReference<V> mViewRef;
+
+    private BottomSheetListener mListener;
+
+    private VelocityTracker mVelocityTracker;
+
+    private int mActivePointerId;
 
     /**
      * Default constructor for instantiating BottomSheetBehaviors.
@@ -103,7 +153,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 R.styleable.BottomSheetBehavior_Params);
         setPeekHeight(a.getDimensionPixelSize(
                 R.styleable.BottomSheetBehavior_Params_behavior_peekHeight, 0));
+        setHideable(a.getBoolean(R.styleable.BottomSheetBehavior_Params_behavior_hideable, false));
         a.recycle();
+        ViewConfiguration configuration = ViewConfiguration.get(context);
+        mMaximumVelocity = configuration.getScaledMaximumFlingVelocity();
     }
 
     @Override
@@ -115,26 +168,30 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     public void onRestoreInstanceState(CoordinatorLayout parent, V child, Parcelable state) {
         SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(parent, child, ss.getSuperState());
-        mState = ss.state;
         // Intermediate states are restored as collapsed state
-        if (mState == STATE_DRAGGING || mState == STATE_SETTLING) {
+        if (ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING) {
             mState = STATE_COLLAPSED;
+        } else {
+            mState = ss.state;
         }
     }
 
     @Override
     public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
         // First let the parent lay it out
-        parent.onLayoutChild(child, layoutDirection);
+        if (mState != STATE_DRAGGING && mState != STATE_SETTLING) {
+            parent.onLayoutChild(child, layoutDirection);
+        }
         // Offset the bottom sheet
         mParentHeight = parent.getHeight();
         mMinOffset = Math.max(0, mParentHeight - child.getHeight());
         mMaxOffset = mParentHeight - mPeekHeight;
         if (mState == STATE_EXPANDED) {
             ViewCompat.offsetTopAndBottom(child, mMinOffset);
-        } else {
+        } else if (mHideable && mState == STATE_HIDDEN) {
+            ViewCompat.offsetTopAndBottom(child, mParentHeight);
+        } else if (mState == STATE_COLLAPSED) {
             ViewCompat.offsetTopAndBottom(child, mMaxOffset);
-            mState = STATE_COLLAPSED;
         }
         if (mViewDragHelper == null) {
             mViewDragHelper = ViewDragHelper.create(parent, mDragCallback);
@@ -146,6 +203,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     @Override
     public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
         int action = MotionEventCompat.getActionMasked(event);
+        // Record the velocity
+        if (action == MotionEvent.ACTION_DOWN) {
+            reset();
+        }
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(event);
         switch (action) {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
@@ -158,6 +223,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             case MotionEvent.ACTION_DOWN:
                 mIgnoreEvents = !parent.isPointInChildBounds(child,
                         (int) event.getX(), (int) event.getY());
+                mActivePointerId = MotionEventCompat.getPointerId(event, 0);
                 break;
         }
         return !mIgnoreEvents && mViewDragHelper.shouldInterceptTouchEvent(event);
@@ -166,6 +232,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     @Override
     public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
         mViewDragHelper.processTouchEvent(event);
+        // Record the velocity
+        if (MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_DOWN) {
+            reset();
+        }
+        if (mVelocityTracker == null) {
+            mVelocityTracker = VelocityTracker.obtain();
+        }
+        mVelocityTracker.addMovement(event);
         return true;
     }
 
@@ -181,35 +255,46 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             int dy, int[] consumed) {
         int currentTop = child.getTop();
         int newTop = currentTop - dy;
-        if (dy > 0) { // Scrolling up
+        if (dy > 0) { // Upward
             if (newTop < mMinOffset) {
                 consumed[1] = currentTop - mMinOffset;
                 child.offsetTopAndBottom(-consumed[1]);
+                if (NEEDS_INVALIDATING && mState != STATE_EXPANDED) {
+                    child.invalidate();
+                }
                 setStateInternal(STATE_EXPANDED);
             } else {
                 consumed[1] = dy;
                 child.offsetTopAndBottom(-dy);
                 setStateInternal(STATE_DRAGGING);
+                if (NEEDS_INVALIDATING) {
+                    child.invalidate();
+                }
             }
-        } else if (dy < 0) { // Scrolling down
+        } else if (dy < 0) { // Downward
             if (!ViewCompat.canScrollVertically(target, -1)) {
-                if (newTop > mMaxOffset) {
-                    consumed[1] = currentTop - mMaxOffset;
-                    child.offsetTopAndBottom(-consumed[1]);
-                    setStateInternal(STATE_COLLAPSED);
-                } else {
+                if (newTop <= mMaxOffset || mHideable) {
                     consumed[1] = dy;
                     child.offsetTopAndBottom(-dy);
                     setStateInternal(STATE_DRAGGING);
+                    if (NEEDS_INVALIDATING) {
+                        coordinatorLayout.invalidate(child.getLeft(), currentTop,
+                                child.getRight(), coordinatorLayout.getHeight());
+                    }
+                } else {
+                    consumed[1] = currentTop - mMaxOffset;
+                    child.offsetTopAndBottom(-consumed[1]);
+                    setStateInternal(STATE_COLLAPSED);
                 }
             }
         }
+        dispatchOnSlide(child.getTop());
         mLastNestedScrollDy = dy;
     }
 
     @Override
     public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target) {
-        if (mLastNestedScrollDy == 0 || child.getTop() == mMinOffset) {
+        if (child.getTop() == mMinOffset) {
             return;
         }
         int top;
@@ -217,14 +302,26 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         if (mLastNestedScrollDy > 0) {
             top = mMinOffset;
             targetState = STATE_EXPANDED;
+        } else if (mHideable && shouldHide(child, getYVelocity())) {
+            top = mParentHeight;
+            targetState = STATE_HIDDEN;
         } else {
             top = mMaxOffset;
             targetState = STATE_COLLAPSED;
         }
-        setStateInternal(STATE_SETTLING);
         if (mViewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
+            setStateInternal(STATE_SETTLING);
             ViewCompat.postOnAnimation(child, new SettleRunnable(child, targetState));
+        } else {
+            setStateInternal(targetState);
         }
+    }
+
+    @Override
+    public boolean onNestedPreFling(CoordinatorLayout coordinatorLayout, V child, View target,
+            float velocityX, float velocityY) {
+        return mState != STATE_EXPANDED ||
+                super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY);
     }
 
     /**
@@ -249,10 +346,40 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
 
     /**
+     * Sets whether this bottom sheet can hide when it is swiped down.
+     *
+     * @param hideable {@code true} to make this bottom sheet hideable.
+     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Params_behavior_hideable
+     */
+    public void setHideable(boolean hideable) {
+        mHideable = hideable;
+    }
+
+    /**
+     * Gets whether this bottom sheet can hide when it is swiped down.
+     *
+     * @return {@code true} if this bottom sheet can hide.
+     * @attr ref android.support.design.R.styleable#BottomSheetBehavior_Params_behavior_hideable
+     */
+    public boolean isHideable() {
+        return mHideable;
+    }
+
+    /**
+     * Sets a listener to be notified of bottom sheet events.
+     *
+     * @param listener The listener to notify when bottom sheet events occur.
+     */
+    public void setBottomSheetListener(BottomSheetListener listener) {
+        mListener = listener;
+    }
+
+    /**
      * Sets the state of the bottom sheet. The bottom sheet will transition to that state with
      * animation.
      *
-     * @param state Either {@link #STATE_COLLAPSED} or {@link #STATE_EXPANDED}.
+     * @param state One of {@link #STATE_COLLAPSED}, {@link #STATE_EXPANDED}, or
+     *              {@link #STATE_HIDDEN}.
      */
     public final void setState(@State int state) {
         V child = mViewRef.get();
@@ -264,6 +391,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             top = mMaxOffset;
         } else if (state == STATE_EXPANDED) {
             top = mMinOffset;
+        } else if (mHideable && state == STATE_HIDDEN) {
+            top = mParentHeight;
         } else {
             throw new IllegalArgumentException("Illegal state argument: " + state);
         }
@@ -289,14 +418,55 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             return;
         }
         mState = state;
-        // TODO: Invoke listeners.
+        if (mListener != null) {
+            mListener.onStateChanged(state);
+        }
+    }
+
+    private void reset() {
+        mActivePointerId = ViewDragHelper.INVALID_POINTER;
+        if (mVelocityTracker != null) {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
+        }
+    }
+
+    private boolean shouldHide(View child, float yvel) {
+        if (child.getTop() < mMaxOffset) {
+            // It should not hide, but collapse.
+            return false;
+        }
+        final float newTop = child.getTop() + yvel * HIDE_FRICTION;
+        return Math.abs(newTop - mMaxOffset) / (float) mPeekHeight > HIDE_THRESHOLD;
+    }
+
+    private float getYVelocity() {
+        mVelocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
+        return VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId);
     }
 
     private final ViewDragHelper.Callback mDragCallback = new ViewDragHelper.Callback() {
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            return true;
+            return mViewRef != null && mViewRef.get() == child;
+        }
+
+        @Override
+        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+            dispatchOnSlide(top);
+            if (NEEDS_INVALIDATING) {
+                if (dy < 0) { // Upward
+                    changedView.invalidate();
+                } else { // Downward
+                    ViewParent parent = changedView.getParent();
+                    if (parent instanceof View) {
+                        View v = (View) parent;
+                        v.invalidate(changedView.getLeft(), top - dy,
+                                changedView.getRight(), v.getHeight());
+                    }
+                }
+            }
         }
 
         @Override
@@ -310,30 +480,46 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         public void onViewReleased(View releasedChild, float xvel, float yvel) {
             int top;
             @State int targetState;
-            if (yvel < 0) {
+            if (yvel < 0) { // Moving up
                 top = mMinOffset;
                 targetState = STATE_EXPANDED;
+            } else if (mHideable && shouldHide(releasedChild, yvel)) {
+                top = mParentHeight;
+                targetState = STATE_HIDDEN;
             } else {
                 top = mMaxOffset;
                 targetState = STATE_COLLAPSED;
             }
-            setStateInternal(STATE_SETTLING);
             if (mViewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
+                setStateInternal(STATE_SETTLING);
                 ViewCompat.postOnAnimation(releasedChild,
                         new SettleRunnable(releasedChild, targetState));
+            } else {
+                setStateInternal(targetState);
             }
         }
 
         @Override
         public int clampViewPositionVertical(View child, int top, int dy) {
-            return MathUtils.constrain(top, mMinOffset, mMaxOffset);
+            return MathUtils.constrain(top, mMinOffset, mHideable ? mParentHeight : mMaxOffset);
         }
 
         @Override
         public int clampViewPositionHorizontal(View child, int left, int dx) {
             return child.getLeft();
         }
+
     };
+
+    private void dispatchOnSlide(int top) {
+        if (mListener != null) {
+            if (top > mMaxOffset) {
+                mListener.onSlide((float) (mMaxOffset - top) / mPeekHeight);
+            } else {
+                mListener.onSlide((float) (mMaxOffset - top) / ((mMaxOffset - mMinOffset)));
+            }
+        }
+    }
 
     private class SettleRunnable implements Runnable {
 
@@ -345,6 +531,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         SettleRunnable(View view, @State int targetState) {
             mView = view;
             mTargetState = targetState;
+            if (NEEDS_INVALIDATING) {
+                // We need to invalidate the parent here, or the following animation won't be drawn.
+                ViewParent parent = mView.getParent();
+                if (parent instanceof View) {
+                    ((View) parent).invalidate();
+                }
+            }
         }
 
         @Override
@@ -393,7 +586,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 };
     }
 
-    /*
+    /**
      * A utility function to get the {@link BottomSheetBehavior} associated with the {@code view}.
      *
      * @param view The {@link View} with {@link BottomSheetBehavior}.

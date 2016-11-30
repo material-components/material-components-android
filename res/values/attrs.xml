@@ -340,6 +340,7 @@
     <declare-styleable name="BottomSheetBehavior_Params">
         <!-- The height of the bottom sheet when it is collapsed. -->
         <attr name="behavior_peekHeight" format="dimension"/>
+        <attr name="behavior_hideable" format="boolean"/>
     </declare-styleable>
 
 </resources>
