@@ -92,12 +92,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private int mRippleColor;
     private int mSize;
     private int mImagePadding;
-    private Rect mTouchArea;
 
     private boolean mCompatPadding;
-    private final Rect mShadowPadding;
+    private final Rect mShadowPadding = new Rect();
+    private final Rect mTouchArea = new Rect();
 
-    private final FloatingActionButtonImpl mImpl;
+    private final FloatingActionButtonImpl mImpl = createImpl(this, new ShadowDelegateImpl());
 
     public FloatingActionButton(Context context) {
         this(context, null);
@@ -111,9 +111,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         super(context, attrs, defStyleAttr);
 
         ThemeUtils.checkAppCompatTheme(context);
-
-        mShadowPadding = new Rect();
-        mTouchArea = new Rect();
 
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.FloatingActionButton, defStyleAttr,
@@ -129,39 +126,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                 R.styleable.FloatingActionButton_pressedTranslationZ, 0f);
         mCompatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
         a.recycle();
-
-        final ShadowViewDelegate delegate = new ShadowViewDelegate() {
-            @Override
-            public float getRadius() {
-                return getSizeDimension() / 2f;
-            }
-
-            @Override
-            public void setShadowPadding(int left, int top, int right, int bottom) {
-                mShadowPadding.set(left, top, right, bottom);
-                setPadding(left + mImagePadding, top + mImagePadding,
-                        right + mImagePadding, bottom + mImagePadding);
-            }
-
-            @Override
-            public void setBackgroundDrawable(Drawable background) {
-                FloatingActionButton.super.setBackgroundDrawable(background);
-            }
-
-            @Override
-            public boolean isCompatPaddingEnabled() {
-                return mCompatPadding;
-            }
-        };
-
-        final int sdk = Build.VERSION.SDK_INT;
-        if (sdk >= 21) {
-            mImpl = new FloatingActionButtonLollipop(this, delegate);
-        } else if (sdk >= 14) {
-            mImpl = new FloatingActionButtonIcs(this, delegate);
-        } else {
-            mImpl = new FloatingActionButtonEclairMr1(this, delegate);
-        }
 
         final int maxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
         mImagePadding = (getSizeDimension() - maxImageSize) / 2;
@@ -680,5 +644,41 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
      */
     public void setCompatElevation(float elevation) {
         mImpl.setElevation(elevation);
+    }
+
+    private static FloatingActionButtonImpl createImpl(FloatingActionButton view,
+            ShadowViewDelegate shadowViewDelegate) {
+        final int sdk = Build.VERSION.SDK_INT;
+        if (sdk >= 21) {
+            return new FloatingActionButtonLollipop(view, shadowViewDelegate);
+        } else if (sdk >= 14) {
+            return new FloatingActionButtonIcs(view, shadowViewDelegate);
+        } else {
+            return new FloatingActionButtonEclairMr1(view, shadowViewDelegate);
+        }
+    }
+
+    private class ShadowDelegateImpl implements ShadowViewDelegate {
+        @Override
+        public float getRadius() {
+            return getSizeDimension() / 2f;
+        }
+
+        @Override
+        public void setShadowPadding(int left, int top, int right, int bottom) {
+            mShadowPadding.set(left, top, right, bottom);
+            setPadding(left + mImagePadding, top + mImagePadding,
+                    right + mImagePadding, bottom + mImagePadding);
+        }
+
+        @Override
+        public void setBackgroundDrawable(Drawable background) {
+            FloatingActionButton.super.setBackgroundDrawable(background);
+        }
+
+        @Override
+        public boolean isCompatPaddingEnabled() {
+            return mCompatPadding;
+        }
     }
 }
