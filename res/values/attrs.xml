@@ -469,6 +469,7 @@
         <attr name="itemIconTint"/>
         <attr name="itemTextColor"/>
         <attr name="itemBackground"/>
+        <attr name="elevation"/>
     </declare-styleable>
 
 </resources>

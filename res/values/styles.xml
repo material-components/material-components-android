@@ -44,6 +44,7 @@
 
     <style name="Widget.Design.BottomNavigationView" parent="">
         <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
+        <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
     </style>
 
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">

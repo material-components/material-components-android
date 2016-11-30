@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,6 +26,8 @@ import android.support.design.R;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -35,6 +38,7 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -138,6 +142,10 @@ public class BottomNavigationView extends FrameLayout {
             mMenuView.setItemTextColor(
                     createDefaultColorStateList(android.R.attr.textColorSecondary));
         }
+        if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
+            ViewCompat.setElevation(this, a.getDimensionPixelSize(
+                    R.styleable.BottomNavigationView_elevation, 0));
+        }
 
         int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
         mMenuView.setItemBackgroundRes(itemBackground);
@@ -148,6 +156,9 @@ public class BottomNavigationView extends FrameLayout {
         a.recycle();
 
         addView(mMenuView, params);
+        if (Build.VERSION.SDK_INT < 21) {
+            addCompatibilityTopDivider(context);
+        }
 
         mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
@@ -283,6 +294,18 @@ public class BottomNavigationView extends FrameLayout {
          *         make them appear non-interactive.
          */
         boolean onNavigationItemSelected(@NonNull MenuItem item);
+    }
+
+    private void addCompatibilityTopDivider(Context context) {
+        View divider = new View(context);
+        divider.setBackgroundColor(
+                ContextCompat.getColor(context, R.color.design_bottom_navigation_shadow_color));
+        FrameLayout.LayoutParams dividerParams = new FrameLayout.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT,
+                getResources().getDimensionPixelSize(
+                        R.dimen.design_bottom_navigation_shadow_height));
+        divider.setLayoutParams(dividerParams);
+        addView(divider);
     }
 
     private MenuInflater getMenuInflater() {
