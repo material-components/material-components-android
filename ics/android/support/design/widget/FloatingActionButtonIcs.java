@@ -25,11 +25,6 @@ import android.view.View;
 
 class FloatingActionButtonIcs extends FloatingActionButtonGingerbread {
 
-    private static final int ANIM_STATE_NONE = 0;
-    private static final int ANIM_STATE_HIDING = 1;
-    private static final int ANIM_STATE_SHOWING = 2;
-
-    private int mAnimState = ANIM_STATE_NONE;
     private float mRotation;
 
     FloatingActionButtonIcs(VisibilityAwareImageButton view,
@@ -152,26 +147,6 @@ class FloatingActionButtonIcs extends FloatingActionButtonGingerbread {
             if (listener != null) {
                 listener.onShown();
             }
-        }
-    }
-
-    private boolean isOrWillBeShown() {
-        if (mView.getVisibility() != View.VISIBLE) {
-            // If we not currently visible, return true if we're animating to be shown
-            return mAnimState == ANIM_STATE_SHOWING;
-        } else {
-            // Otherwise if we're visible, return true if we're not animating to be hidden
-            return mAnimState != ANIM_STATE_HIDING;
-        }
-    }
-
-    private boolean isOrWillBeHidden() {
-        if (mView.getVisibility() == View.VISIBLE) {
-            // If we currently visible, return true if we're animating to be hidden
-            return mAnimState == ANIM_STATE_HIDING;
-        } else {
-            // Otherwise if we're not visible, return true if we're not animating to be shown
-            return mAnimState != ANIM_STATE_SHOWING;
         }
     }
 

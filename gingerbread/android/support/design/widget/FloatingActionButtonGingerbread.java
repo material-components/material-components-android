@@ -34,7 +34,6 @@ import android.view.animation.Animation;
 class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
 
     private final StateListAnimator mStateListAnimator;
-    private boolean mIsHiding;
 
     ShadowDrawableWrapper mShadowDrawable;
 
@@ -146,13 +145,12 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
 
     @Override
     void hide(@Nullable final InternalVisibilityChangedListener listener, final boolean fromUser) {
-        if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
-            // A hide animation is in progress, or we're already hidden. Skip the call
-            if (listener != null) {
-                listener.onHidden();
-            }
+        if (isOrWillBeHidden()) {
+            // We either are or will soon be hidden, skip the call
             return;
         }
+
+        mAnimState = ANIM_STATE_HIDING;
 
         Animation anim = android.view.animation.AnimationUtils.loadAnimation(
                 mView.getContext(), R.anim.design_fab_out);
@@ -160,13 +158,8 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
         anim.setDuration(SHOW_HIDE_ANIM_DURATION);
         anim.setAnimationListener(new AnimationUtils.AnimationListenerAdapter() {
             @Override
-            public void onAnimationStart(Animation animation) {
-                mIsHiding = true;
-            }
-
-            @Override
             public void onAnimationEnd(Animation animation) {
-                mIsHiding = false;
+                mAnimState = ANIM_STATE_NONE;
                 mView.internalSetVisibility(View.GONE, fromUser);
                 if (listener != null) {
                     listener.onHidden();
@@ -178,29 +171,28 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
 
     @Override
     void show(@Nullable final InternalVisibilityChangedListener listener, final boolean fromUser) {
-        if (mView.getVisibility() != View.VISIBLE || mIsHiding) {
-            // If the view is not visible, or is visible and currently being hidden, run
-            // the show animation
-            mView.clearAnimation();
-            mView.internalSetVisibility(View.VISIBLE, fromUser);
-            Animation anim = android.view.animation.AnimationUtils.loadAnimation(
-                    mView.getContext(), R.anim.design_fab_in);
-            anim.setDuration(SHOW_HIDE_ANIM_DURATION);
-            anim.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-            anim.setAnimationListener(new AnimationListenerAdapter() {
-                @Override
-                public void onAnimationEnd(Animation animation) {
-                    if (listener != null) {
-                        listener.onShown();
-                    }
-                }
-            });
-            mView.startAnimation(anim);
-        } else {
-            if (listener != null) {
-                listener.onShown();
-            }
+        if (isOrWillBeShown()) {
+            // We either are or will soon be visible, skip the call
+            return;
         }
+
+        mAnimState = ANIM_STATE_SHOWING;
+
+        mView.internalSetVisibility(View.VISIBLE, fromUser);
+        Animation anim = android.view.animation.AnimationUtils.loadAnimation(
+                mView.getContext(), R.anim.design_fab_in);
+        anim.setDuration(SHOW_HIDE_ANIM_DURATION);
+        anim.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+        anim.setAnimationListener(new AnimationListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                mAnimState = ANIM_STATE_NONE;
+                if (listener != null) {
+                    listener.onShown();
+                }
+            }
+        });
+        mView.startAnimation(anim);
     }
 
     @Override

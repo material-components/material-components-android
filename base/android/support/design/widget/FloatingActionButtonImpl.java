@@ -25,6 +25,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
 
@@ -33,6 +34,12 @@ abstract class FloatingActionButtonImpl {
     static final Interpolator ANIM_INTERPOLATOR = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
     static final long PRESSED_ANIM_DURATION = 100;
     static final long PRESSED_ANIM_DELAY = 100;
+
+    static final int ANIM_STATE_NONE = 0;
+    static final int ANIM_STATE_HIDING = 1;
+    static final int ANIM_STATE_SHOWING = 2;
+
+    int mAnimState = ANIM_STATE_NONE;
 
     Drawable mShapeDrawable;
     Drawable mRippleDrawable;
@@ -177,5 +184,25 @@ abstract class FloatingActionButtonImpl {
         d.setShape(GradientDrawable.OVAL);
         d.setColor(Color.WHITE);
         return d;
+    }
+
+    boolean isOrWillBeShown() {
+        if (mView.getVisibility() != View.VISIBLE) {
+            // If we not currently visible, return true if we're animating to be shown
+            return mAnimState == ANIM_STATE_SHOWING;
+        } else {
+            // Otherwise if we're visible, return true if we're not animating to be hidden
+            return mAnimState != ANIM_STATE_HIDING;
+        }
+    }
+
+    boolean isOrWillBeHidden() {
+        if (mView.getVisibility() == View.VISIBLE) {
+            // If we currently visible, return true if we're animating to be hidden
+            return mAnimState == ANIM_STATE_HIDING;
+        } else {
+            // Otherwise if we're not visible, return true if we're not animating to be shown
+            return mAnimState != ANIM_STATE_SHOWING;
+        }
     }
 }
