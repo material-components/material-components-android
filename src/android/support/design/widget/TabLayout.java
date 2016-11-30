@@ -1497,7 +1497,9 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         @Override
-        protected void onDraw(Canvas canvas) {
+        public void draw(Canvas canvas) {
+            super.draw(canvas);
+
             // Thick colored underline below the current selection
             if (mIndicatorLeft >= 0 && mIndicatorRight > mIndicatorLeft) {
                 canvas.drawRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
