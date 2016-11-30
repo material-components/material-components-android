@@ -205,11 +205,22 @@
     </declare-styleable>
 
     <declare-styleable name="CollapsingToolbarLayout">
+        <!--  Specifies extra space on the start, top, end and bottom
+              sides of the the expanded title text. Margin values should be positive. -->
         <attr name="expandedTitleMargin" format="dimension"/>
+        <!--  Specifies extra space on the start side of the the expanded title text.
+              Margin values should be positive. -->
         <attr name="expandedTitleMarginStart" format="dimension"/>
-        <attr name="expandedTitleMarginBottom" format="dimension"/>
+        <!--  Specifies extra space on the top side of the the expanded title text.
+              Margin values should be positive. -->
+        <attr name="expandedTitleMarginTop" format="dimension"/>
+        <!--  Specifies extra space on the end side of the the expanded title text.
+              Margin values should be positive. -->
         <attr name="expandedTitleMarginEnd" format="dimension"/>
-        <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
+        <!--  Specifies extra space on the bottom side of the the expanded title text.
+              Margin values should be positive. -->
+        <attr name="expandedTitleMarginBottom" format="dimension"/>
+        <!-- The text appearance of the CollapsingToolbarLayout's title when it is fully
              'expanded' -->
         <attr name="expandedTitleTextAppearance" format="reference"/>
         <!-- The text appearance of the CollapsingToolbarLayouts title when it is fully
@@ -222,6 +233,9 @@
              CollapsingToolbarLayout has been scrolled sufficiently off screen. Only works on
              Lollipop with the correct setup. -->
         <attr name="statusBarScrim" format="color" />
+        <!-- The id of the primary Toolbar child that you wish to use for the purpose of collapsing.
+             If you do not set this then the first Toolbar child found will be used. -->
+        <attr name="toolbarId" format="reference"/>
     </declare-styleable>
 
     <declare-styleable name="CollapsingAppBarLayout_LayoutParams">
