@@ -785,6 +785,10 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     void selectTab(Tab tab) {
+        selectTab(tab, true);
+    }
+
+    void selectTab(Tab tab, boolean updateIndicator) {
         if (mSelectedTab == tab) {
             if (mSelectedTab != null) {
                 if (mOnTabSelectedListener != null) {
@@ -795,15 +799,15 @@ public class TabLayout extends HorizontalScrollView {
         } else {
             final int newPosition = tab != null ? tab.getPosition() : Tab.INVALID_POSITION;
             setSelectedTabView(newPosition);
-
-            if ((mSelectedTab == null || mSelectedTab.getPosition() == Tab.INVALID_POSITION)
-                    && newPosition != Tab.INVALID_POSITION) {
-                // If we don't currently have a tab, just draw the indicator
-                setScrollPosition(newPosition, 0f, true);
-            } else {
-                animateToTab(newPosition);
+            if (updateIndicator) {
+                if ((mSelectedTab == null || mSelectedTab.getPosition() == Tab.INVALID_POSITION)
+                        && newPosition != Tab.INVALID_POSITION) {
+                    // If we don't currently have a tab, just draw the indicator
+                    setScrollPosition(newPosition, 0f, true);
+                } else {
+                    animateToTab(newPosition);
+                }
             }
-
             if (mSelectedTab != null && mOnTabSelectedListener != null) {
                 mOnTabSelectedListener.onTabUnselected(mSelectedTab);
             }
@@ -1556,8 +1560,11 @@ public class TabLayout extends HorizontalScrollView {
         @Override
         public void onPageSelected(int position) {
             final TabLayout tabLayout = mTabLayoutRef.get();
-            if (mScrollState == SCROLL_STATE_IDLE && tabLayout != null) {
-                tabLayout.getTabAt(position).select();
+            if (tabLayout != null) {
+                // Select the tab, only updating the indicator if we're not being dragged/settled
+                // (since onPageScrolled will handle that).
+                tabLayout.selectTab(tabLayout.getTabAt(position),
+                        mScrollState == SCROLL_STATE_IDLE);
             }
         }
     }
