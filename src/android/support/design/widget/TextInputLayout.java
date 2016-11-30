@@ -484,6 +484,17 @@ public class TextInputLayout extends LinearLayout {
     }
 
     /**
+     * Returns whether the character counter functionality is enabled or not in this layout.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_counterEnabled
+     *
+     * @see #setCounterEnabled(boolean)
+     */
+    public boolean isCounterEnabled() {
+        return mCounterEnabled;
+    }
+
+    /**
      * Sets the max length to display at the character counter.
      *
      * @param maxLength maxLength to display. Any value less than or equal to 0 will not be shown.

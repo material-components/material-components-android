@@ -427,6 +427,7 @@ package android.support.design.widget {
     method public java.lang.CharSequence getError();
     method public java.lang.CharSequence getHint();
     method public android.graphics.Typeface getTypeface();
+    method public boolean isCounterEnabled();
     method public boolean isErrorEnabled();
     method public boolean isHintAnimationEnabled();
     method public void setCounterEnabled(boolean);
