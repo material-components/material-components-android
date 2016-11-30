@@ -30,6 +30,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
+import android.support.design.internal.NavigationMenu;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.internal.ScrimInsetsFrameLayout;
 import android.support.v4.content.ContextCompat;
@@ -75,7 +76,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
     private static final int PRESENTER_NAVIGATION_VIEW_ID = 1;
 
-    private final MenuBuilder mMenu;
+    private final NavigationMenu mMenu;
     private final NavigationMenuPresenter mPresenter;
 
     private OnNavigationItemSelectedListener mListener;
@@ -95,7 +96,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         super(context, attrs, defStyleAttr);
 
         // Create the menu
-        mMenu = new MenuBuilder(context);
+        mMenu = new NavigationMenu(context);
 
         // Custom attributes
         TypedArray a = context.obtainStyledAttributes(attrs,

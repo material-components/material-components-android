@@ -191,7 +191,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             setUpdateSuspended(true);
             MenuItemImpl item = mAdapter.getItem(positionInAdapter).getMenuItem();
             if (item != null && item.isCheckable()) {
-                setCheckedItem(item);
+                mAdapter.setCheckedItem(item);
             }
             mMenu.performItemAction(item, this, 0);
             setUpdateSuspended(false);
