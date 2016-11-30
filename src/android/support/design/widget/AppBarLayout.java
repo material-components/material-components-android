@@ -165,7 +165,7 @@ public class AppBarLayout extends LinearLayout {
                     @Override
                     public WindowInsetsCompat onApplyWindowInsets(View v,
                             WindowInsetsCompat insets) {
-                        return setWindowInsets(insets);
+                        return onWindowInsetChanged(insets);
                     }
                 });
     }
@@ -473,10 +473,20 @@ public class AppBarLayout extends LinearLayout {
         return mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
     }
 
-    private WindowInsetsCompat setWindowInsets(WindowInsetsCompat insets) {
-        // Invalidate the total scroll range...
-        mTotalScrollRange = INVALID_SCROLL_RANGE;
-        mLastInsets = insets;
+    private WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
+        WindowInsetsCompat newInsets = null;
+
+        if (ViewCompat.getFitsSystemWindows(this)) {
+            // If we're set to fit system windows, keep the insets
+            newInsets = insets;
+        }
+
+        // If our insets have changed, keep them and invalidate the scroll ranges...
+        if (newInsets != mLastInsets) {
+            mLastInsets = newInsets;
+            invalidateScrollRanges();
+        }
+
         return insets;
     }
 
