@@ -194,26 +194,19 @@ final class CollapsingTextHelper {
     }
 
     void setCollapsedTextAppearance(int resId) {
-        TypedArray a = mView.getContext().obtainStyledAttributes(resId,
-                android.support.v7.appcompat.R.styleable.TextAppearance);
-        if (a.hasValue(android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor)) {
+        TypedArray a = mView.getContext().obtainStyledAttributes(resId, R.styleable.TextAppearance);
+        if (a.hasValue(R.styleable.TextAppearance_android_textColor)) {
             mCollapsedTextColor = a.getColor(
-                    android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor,
-                    mCollapsedTextColor);
+                    R.styleable.TextAppearance_android_textColor, mCollapsedTextColor);
         }
-        if (a.hasValue(android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize)) {
+        if (a.hasValue(R.styleable.TextAppearance_android_textSize)) {
             mCollapsedTextSize = a.getDimensionPixelSize(
-                    android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize,
-                    (int) mCollapsedTextSize);
+                    R.styleable.TextAppearance_android_textSize, (int) mCollapsedTextSize);
         }
-        mCollapsedShadowColor = a.getInt(
-                android.support.v7.appcompat.R.styleable.TextAppearance_android_shadowColor, 0);
-        mCollapsedShadowDx = a.getFloat(
-                android.support.v7.appcompat.R.styleable.TextAppearance_android_shadowDx, 0);
-        mCollapsedShadowDy = a.getFloat(
-                android.support.v7.appcompat.R.styleable.TextAppearance_android_shadowDy, 0);
-        mCollapsedShadowRadius = a.getFloat(
-                android.support.v7.appcompat.R.styleable.TextAppearance_android_shadowRadius, 0);
+        mCollapsedShadowColor = a.getInt(R.styleable.TextAppearance_android_shadowColor, 0);
+        mCollapsedShadowDx = a.getFloat(R.styleable.TextAppearance_android_shadowDx, 0);
+        mCollapsedShadowDy = a.getFloat(R.styleable.TextAppearance_android_shadowDy, 0);
+        mCollapsedShadowRadius = a.getFloat(R.styleable.TextAppearance_android_shadowRadius, 0);
         a.recycle();
 
         if (Build.VERSION.SDK_INT >= 16) {
@@ -224,26 +217,19 @@ final class CollapsingTextHelper {
     }
 
     void setExpandedTextAppearance(int resId) {
-        TypedArray a = mView.getContext().obtainStyledAttributes(resId,
-                android.support.v7.appcompat.R.styleable.TextAppearance);
-        if (a.hasValue(android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor)) {
+        TypedArray a = mView.getContext().obtainStyledAttributes(resId, R.styleable.TextAppearance);
+        if (a.hasValue(R.styleable.TextAppearance_android_textColor)) {
             mExpandedTextColor = a.getColor(
-                    android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor,
-                    mExpandedTextColor);
+                    R.styleable.TextAppearance_android_textColor, mExpandedTextColor);
         }
-        if (a.hasValue(android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize)) {
+        if (a.hasValue(R.styleable.TextAppearance_android_textSize)) {
             mExpandedTextSize = a.getDimensionPixelSize(
-                    android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize,
-                    (int) mExpandedTextSize);
+                    R.styleable.TextAppearance_android_textSize, (int) mExpandedTextSize);
         }
-        mExpandedShadowColor = a.getInt(
-                android.support.v7.appcompat.R.styleable.TextAppearance_android_shadowColor, 0);
-        mExpandedShadowDx = a.getFloat(
-                android.support.v7.appcompat.R.styleable.TextAppearance_android_shadowDx, 0);
-        mExpandedShadowDy = a.getFloat(
-                android.support.v7.appcompat.R.styleable.TextAppearance_android_shadowDy, 0);
-        mExpandedShadowRadius = a.getFloat(
-                android.support.v7.appcompat.R.styleable.TextAppearance_android_shadowRadius, 0);
+        mExpandedShadowColor = a.getInt(R.styleable.TextAppearance_android_shadowColor, 0);
+        mExpandedShadowDx = a.getFloat(R.styleable.TextAppearance_android_shadowDx, 0);
+        mExpandedShadowDy = a.getFloat(R.styleable.TextAppearance_android_shadowDy, 0);
+        mExpandedShadowRadius = a.getFloat(R.styleable.TextAppearance_android_shadowRadius, 0);
         a.recycle();
 
         if (Build.VERSION.SDK_INT >= 16) {

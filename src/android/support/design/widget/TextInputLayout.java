@@ -494,7 +494,7 @@ public class TextInputLayout extends LinearLayout {
                     // Probably caused by our theme not extending from Theme.Design*. Instead
                     // we manually set something appropriate
                     mErrorView.setTextAppearance(getContext(),
-                            android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Caption);
+                            R.style.TextAppearance_AppCompat_Caption);
                     mErrorView.setTextColor(ContextCompat.getColor(
                             getContext(), R.color.design_textinput_error_color_light));
                 }
@@ -615,7 +615,7 @@ public class TextInputLayout extends LinearLayout {
                     // Probably caused by our theme not extending from Theme.Design*. Instead
                     // we manually set something appropriate
                     mCounterView.setTextAppearance(getContext(),
-                            android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Caption);
+                            R.style.TextAppearance_AppCompat_Caption);
                     mCounterView.setTextColor(ContextCompat.getColor(
                             getContext(), R.color.design_textinput_error_color_light));
                 }
