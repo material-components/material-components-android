@@ -372,7 +372,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
         if (mCollapsingTitleEnabled && mDummyView != null) {
             // We only draw the title if the dummy view is being displayed (Toolbar removes
             // views if there is no space)
-            mDrawCollapsingTitle = mDummyView.isShown();
+            mDrawCollapsingTitle = ViewCompat.isAttachedToWindow(mDummyView)
+                    && mDummyView.getVisibility() == VISIBLE;
 
             if (mDrawCollapsingTitle) {
                 final boolean isRtl = ViewCompat.getLayoutDirection(this)
