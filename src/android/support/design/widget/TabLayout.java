@@ -1706,6 +1706,12 @@ public class TabLayout extends HorizontalScrollView {
                     == ViewCompat.LAYOUT_DIRECTION_RTL;
 
             final View targetView = getChildAt(position);
+            if (targetView == null) {
+                // If we don't have a view, just update the position now and return
+                updateIndicatorPosition();
+                return;
+            }
+
             final int targetLeft = targetView.getLeft();
             final int targetRight = targetView.getRight();
             final int startLeft;
