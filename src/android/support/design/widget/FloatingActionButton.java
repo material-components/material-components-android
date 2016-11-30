@@ -384,7 +384,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     /**
      * Returns the chosen size for this button.
      *
-     * @returns one of {@link #SIZE_NORMAL}, {@link #SIZE_MINI} or {@link #SIZE_AUTO}
+     * @return one of {@link #SIZE_NORMAL}, {@link #SIZE_MINI} or {@link #SIZE_AUTO}
      * @see #setSize(int)
      */
     @Size
