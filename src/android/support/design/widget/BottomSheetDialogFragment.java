@@ -29,7 +29,7 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new BottomSheetDialog(getActivity(), getTheme());
+        return new BottomSheetDialog(getContext(), getTheme());
     }
 
 }
