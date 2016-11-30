@@ -85,10 +85,6 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
  * </pre>
  * You should set a listener via {@link #setOnTabSelectedListener(OnTabSelectedListener)} to be
  * notified when any tab's selection state has been changed.
- * <p>
- * If you're using a {@link android.support.v4.view.ViewPager} together
- * with this layout, you can use {@link #setupWithViewPager(ViewPager)} to link the two together.
- * This layout will be automatically populated from the {@link PagerAdapter}'s page titles.</p>
  *
  * <p>You can also add items to TabLayout in your layout through the use of {@link TabItem}.
  * An example usage is like so:</p>
@@ -107,6 +103,28 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
  * &lt;/android.support.design.widget.TabLayout&gt;
  * </pre>
  *
+ * <h3>ViewPager integration</h3>
+ * <p>
+ * If you're using a {@link android.support.v4.view.ViewPager} together
+ * with this layout, you can call {@link #setupWithViewPager(ViewPager)} to link the two together.
+ * This layout will be automatically populated from the {@link PagerAdapter}'s page titles.</p>
+ *
+ * <p>
+ * This view also supports being used as part of a ViewPager's decor, and can be added
+ * directly to the ViewPager in a layout resource file like so:</p>
+ *
+ * <pre>
+ * &lt;android.support.v4.view.ViewPager
+ *     android:layout_width=&quot;match_parent&quot;
+ *     android:layout_height=&quot;match_parent&quot;&gt;
+ *
+ *     &lt;android.support.design.widget.TabLayout
+ *         android:layout_width=&quot;match_parent&quot;
+ *         android:layout_height=&quot;wrap_content&quot;
+ *         android:layout_gravity=&quot;top&quot; /&gt;
+ *
+ * &lt;/android.support.v4.view.ViewPager&gt;
+ * </pre>
  *
  * @see <a href="http://www.google.com/design/spec/components/tabs.html">Tabs</a>
  *
@@ -251,6 +269,8 @@ public class TabLayout extends HorizontalScrollView {
     private PagerAdapter mPagerAdapter;
     private DataSetObserver mPagerAdapterObserver;
     private TabLayoutOnPageChangeListener mPageChangeListener;
+    private AdapterChangeListener mAdapterChangeListener;
+    private boolean mSetupViewPagerImplicitly;
 
     // Pool we use as a simple RecyclerBin
     private final Pools.Pool<TabView> mTabViewPool = new Pools.SimplePool<>(12);
@@ -741,9 +761,19 @@ public class TabLayout extends HorizontalScrollView {
      *                    content changes
      */
     public void setupWithViewPager(@Nullable final ViewPager viewPager, boolean autoRefresh) {
-        if (mViewPager != null && mPageChangeListener != null) {
+        setupWithViewPager(viewPager, autoRefresh, false);
+    }
+
+    private void setupWithViewPager(@Nullable final ViewPager viewPager, boolean autoRefresh,
+            boolean implicitSetup) {
+        if (mViewPager != null) {
             // If we've already been setup with a ViewPager, remove us from it
-            mViewPager.removeOnPageChangeListener(mPageChangeListener);
+            if (mPageChangeListener != null) {
+                mViewPager.removeOnPageChangeListener(mPageChangeListener);
+            }
+            if (mAdapterChangeListener != null) {
+                mViewPager.removeOnAdapterChangeListener(mAdapterChangeListener);
+            }
         }
 
         if (mCurrentVpSelectedListener != null) {
@@ -753,11 +783,6 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         if (viewPager != null) {
-            final PagerAdapter adapter = viewPager.getAdapter();
-            if (adapter == null) {
-                throw new IllegalArgumentException("ViewPager does not have a PagerAdapter set");
-            }
-
             mViewPager = viewPager;
 
             // Add our custom OnPageChangeListener to the ViewPager
@@ -771,9 +796,19 @@ public class TabLayout extends HorizontalScrollView {
             mCurrentVpSelectedListener = new ViewPagerOnTabSelectedListener(viewPager);
             addOnTabSelectedListener(mCurrentVpSelectedListener);
 
-            // Now we'll populate ourselves from the pager adapter, adding an observer is
-            // autoRefresh is enabled
-            setPagerAdapter(adapter, autoRefresh);
+            final PagerAdapter adapter = viewPager.getAdapter();
+            if (adapter != null) {
+                // Now we'll populate ourselves from the pager adapter, adding an observer if
+                // autoRefresh is enabled
+                setPagerAdapter(adapter, autoRefresh);
+            }
+
+            // Add a listener so that we're notified of any adapter changes
+            if (mAdapterChangeListener == null) {
+                mAdapterChangeListener = new AdapterChangeListener();
+            }
+            mAdapterChangeListener.setAutoRefresh(autoRefresh);
+            viewPager.addOnAdapterChangeListener(mAdapterChangeListener);
 
             // Now update the scroll position to match the ViewPager's current item
             setScrollPosition(viewPager.getCurrentItem(), 0f, true);
@@ -783,6 +818,8 @@ public class TabLayout extends HorizontalScrollView {
             mViewPager = null;
             setPagerAdapter(null, false);
         }
+
+        mSetupViewPagerImplicitly = implicitSetup;
     }
 
     /**
@@ -799,6 +836,33 @@ public class TabLayout extends HorizontalScrollView {
     public boolean shouldDelayChildPressedState() {
         // Only delay the pressed state if the tabs can scroll
         return getTabScrollRange() > 0;
+    }
+
+    @Override
+    protected void onAttachedToWindow() {
+        super.onAttachedToWindow();
+
+        if (mViewPager == null) {
+            // If we don't have a ViewPager already, check if our parent is a ViewPager to
+            // setup with it automatically
+            final ViewParent vp = getParent();
+            if (vp instanceof ViewPager) {
+                // If we have a ViewPager parent and we've been added as part of its decor, let's
+                // assume that we should automatically setup to display any titles
+                setupWithViewPager((ViewPager) vp, true, true);
+            }
+        }
+    }
+
+    @Override
+    protected void onDetachedFromWindow() {
+        super.onDetachedFromWindow();
+
+        if (mSetupViewPagerImplicitly) {
+            // If we've been setup with a ViewPager implicitly, let's clear out any listeners, etc
+            setupWithViewPager(null);
+            mSetupViewPagerImplicitly = false;
+        }
     }
 
     private int getTabScrollRange() {
@@ -2111,4 +2175,19 @@ public class TabLayout extends HorizontalScrollView {
         }
     }
 
+    private class AdapterChangeListener implements ViewPager.OnAdapterChangeListener {
+        private boolean mAutoRefresh;
+
+        @Override
+        public void onAdapterChanged(@NonNull ViewPager viewPager,
+                @Nullable PagerAdapter oldAdapter, @Nullable PagerAdapter newAdapter) {
+            if (mViewPager == viewPager) {
+                setPagerAdapter(newAdapter, mAutoRefresh);
+            }
+        }
+
+        void setAutoRefresh(boolean autoRefresh) {
+            mAutoRefresh = autoRefresh;
+        }
+    }
 }
