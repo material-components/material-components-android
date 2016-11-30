@@ -41,6 +41,7 @@ import android.util.Log;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import java.lang.annotation.Retention;
@@ -604,10 +605,13 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             return false;
         }
 
-        private static boolean isBottomSheet(View view) {
-            CoordinatorLayout.LayoutParams lp =
-                    (CoordinatorLayout.LayoutParams) view.getLayoutParams();
-            return lp != null && lp.getBehavior() instanceof BottomSheetBehavior;
+        private static boolean isBottomSheet(@NonNull View view) {
+            final ViewGroup.LayoutParams lp = view.getLayoutParams();
+            if (lp instanceof CoordinatorLayout.LayoutParams) {
+                return ((CoordinatorLayout.LayoutParams) lp)
+                        .getBehavior() instanceof BottomSheetBehavior;
+            }
+            return false;
         }
 
         @VisibleForTesting
