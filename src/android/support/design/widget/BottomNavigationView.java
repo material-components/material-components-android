@@ -56,14 +56,28 @@ import android.widget.FrameLayout;
  * </p>
  *
  * <pre>
+ * layout resource file:
  * &lt;android.support.design.widget.BottomNavigationView
  *     xmlns:android="http://schemas.android.com/apk/res/android"
  *     xmlns:design="http://schema.android.com/apk/res/android.support.design"
  *     android:id="@+id/navigation"
- *     android:layout_width="wrap_content"
- *     android:layout_height="match_parent"
+ *     android:layout_width="match_parent"
+ *     android:layout_height="56dp"
  *     android:layout_gravity="start"
  *     design:menu="@menu/my_navigation_items" /&gt;
+ *
+ * res/menu/my_navigation_items.xml:
+ * &lt;menu xmlns:android="http://schemas.android.com/apk/res/android"&gt;
+ *     &lt;item android:id="@+id/action_search"
+ *          android:title="@string/menu_search"
+ *          android:icon="@drawable/ic_search" /&gt;
+ *     &lt;item android:id="@+id/action_settings"
+ *          android:title="@string/menu_settings"
+ *          android:icon="@drawable/ic_add" /&gt;
+ *     &lt;item android:id="@+id/action_navigation"
+ *          android:title="@string/menu_navigation"
+ *          android:icon="@drawable/ic_action_navigation_menu" /&gt;
+ * &lt;/menu&gt;
  * </pre>
  */
 public class BottomNavigationView extends FrameLayout {
@@ -138,7 +152,7 @@ public class BottomNavigationView extends FrameLayout {
         mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                return mListener != null && mListener.onNavigationItemSelected(item);
+                return mListener != null && !mListener.onNavigationItemSelected(item);
             }
 
             @Override
@@ -210,7 +224,7 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     /**
-     * Returns the tint which is applied to menu items' icons.
+     * Returns the text color used on menu items.
      *
      * @see #setItemTextColor(ColorStateList)
      *
@@ -265,7 +279,9 @@ public class BottomNavigationView extends FrameLayout {
          *
          * @param item The selected item
          *
-         * @return true to display the item as the selected item
+         * @return true to display the item as the selected item and false if the item should not
+         *         be selected. Consider setting non-selectable items as disabled preemptively to
+         *         make them appear non-interactive.
          */
         boolean onNavigationItemSelected(@NonNull MenuItem item);
     }

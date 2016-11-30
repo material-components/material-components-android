@@ -16,6 +16,8 @@
 
 package android.support.design.internal;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -31,8 +33,6 @@ import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
-
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 /**
  * @hide For internal use only.
@@ -55,6 +55,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     private ColorStateList mItemIconTint;
     private ColorStateList mItemTextColor;
     private int mItemBackgroundRes;
+    private int[] mTempChildWidths;
 
     private BottomNavigationPresenter mPresenter;
     private MenuBuilder mMenu;
@@ -85,10 +86,12 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             public void onClick(View v) {
                 final BottomNavigationItemView itemView = (BottomNavigationItemView) v;
                 final int itemPosition = itemView.getItemPosition();
-                activateNewButton(itemPosition);
-                mMenu.performItemAction(itemView.getItemData(), mPresenter, 0);
+                if (!mMenu.performItemAction(itemView.getItemData(), mPresenter, 0)) {
+                    activateNewButton(itemPosition);
+                }
             }
         };
+        mTempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
     }
 
     @Override
@@ -105,10 +108,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         final int width = MeasureSpec.getSize(widthMeasureSpec);
         final int count = getChildCount();
 
-        final int childState = 0;
         final int heightSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
 
-        final int[] childWidths = new int[count];
         if (mShiftingMode) {
             final int inactiveCount = count - 1;
             final int activeMaxAvailable = width - inactiveCount * mInactiveItemMinWidth;
@@ -117,9 +118,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
             int extra = width - activeWidth - inactiveWidth * inactiveCount;
             for (int i = 0; i < count; i++) {
-                childWidths[i] = (i == mActiveButton) ? activeWidth : inactiveWidth;
+                mTempChildWidths[i] = (i == mActiveButton) ? activeWidth : inactiveWidth;
                 if (extra > 0) {
-                    childWidths[i]++;
+                    mTempChildWidths[i]++;
                     extra--;
                 }
             }
@@ -128,9 +129,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             final int childWidth = Math.min(maxAvailable, mActiveItemMaxWidth);
             int extra = width - childWidth * count;
             for (int i = 0; i < count; i++) {
-                childWidths[i] = childWidth;
+                mTempChildWidths[i] = childWidth;
                 if (extra > 0) {
-                    childWidths[i]++;
+                    mTempChildWidths[i]++;
                     extra--;
                 }
             }
@@ -142,7 +143,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             if (child.getVisibility() == GONE) {
                 continue;
             }
-            child.measure(MeasureSpec.makeMeasureSpec(childWidths[i], MeasureSpec.EXACTLY),
+            child.measure(MeasureSpec.makeMeasureSpec(mTempChildWidths[i], MeasureSpec.EXACTLY),
                     heightSpec);
             ViewGroup.LayoutParams params = child.getLayoutParams();
             params.width = child.getMeasuredWidth();
@@ -150,9 +151,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         }
         setMeasuredDimension(
                 ViewCompat.resolveSizeAndState(totalWidth,
-                        MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY), childState),
-                ViewCompat.resolveSizeAndState(mItemHeight, heightSpec,
-                        childState << MEASURED_HEIGHT_STATE_SHIFT));
+                        MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY), 0),
+                ViewCompat.resolveSizeAndState(mItemHeight, heightSpec, 0));
     }
 
     @Override
@@ -180,19 +180,34 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         return 0;
     }
 
-    public void setIconTintList(ColorStateList color) {
-        mItemIconTint = color;
+    /**
+     * Set the tint which is applied to the menu items' icons.
+     *
+     * @param tint the tint to apply.
+     */
+    public void setIconTintList(ColorStateList tint) {
+        mItemIconTint = tint;
         if (mButtons == null) return;
         for (BottomNavigationItemView item : mButtons) {
-            item.setIconTintList(color);
+            item.setIconTintList(tint);
         }
     }
 
+    /**
+     * Returns the tint which is applied to menu items' icons.
+     *
+     * @return The ColorStateList that is used to tint menu items' icons.
+     */
     @Nullable
     public ColorStateList getIconTintList() {
         return mItemIconTint;
     }
 
+    /**
+     * Set the text color to be used on menu items.
+     *
+     * @param color the ColorStateList used for menu items' text.
+     */
     public void setItemTextColor(ColorStateList color) {
         mItemTextColor = color;
         if (mButtons == null) return;
@@ -201,10 +216,19 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         }
     }
 
+    /**
+     * Returns the text color used on menu items.
+     *
+     * @return the ColorStateList used for menu items' text.
+     */
     public ColorStateList getItemTextColor() {
         return mItemTextColor;
     }
 
+    /**
+     * Sets the resource id to be used for item background.
+     * @param background the resource id of the background.
+     */
     public void setItemBackgroundRes(int background) {
         mItemBackgroundRes = background;
         if (mButtons == null) return;
@@ -213,6 +237,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         }
     }
 
+    /**
+     * Returns the background resource of the menu items.
+     *
+     * @return the resource id of the background.
+     */
     public int getItemBackgroundRes() {
         return mItemBackgroundRes;
     }
