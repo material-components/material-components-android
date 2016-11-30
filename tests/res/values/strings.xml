@@ -20,4 +20,7 @@
     <string name="navigate_profile">Profile</string>
     <string name="navigate_people">People</string>
     <string name="navigate_settings">Settings</string>
+
+    <string name="snackbar_text">This is a test message</string>
+    <string name="snackbar_action">Undo</string>
 </resources>

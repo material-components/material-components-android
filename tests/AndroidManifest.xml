@@ -20,10 +20,13 @@
 
     <uses-sdk
             android:minSdkVersion="7"
+            android:targetSdkVersion="23"
             tools:overrideLibrary="android.support.test, android.app, android.support.test.rule,
                       android.support.test.espresso, android.support.test.espresso.idling"/>
 
-    <application android:theme="@style/Theme.AppCompat">
+    <application
+            android:supportsRtl="true"
+            android:theme="@style/Theme.AppCompat">
         <uses-library android:name="android.test.runner"/>
 
         <activity

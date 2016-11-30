@@ -21,12 +21,14 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import org.hamcrest.Matcher;
 
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
 public class TestUtilsActions {
@@ -68,6 +70,32 @@ public class TestUtilsActions {
                         break;
                     }
                 }
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Sets layout direction on the view.
+     */
+    public static ViewAction setLayoutDirection(final int layoutDirection) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String getDescription() {
+                return "set layout direction";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                ViewCompat.setLayoutDirection(view, layoutDirection);
 
                 uiController.loopMainThreadUntilIdle();
             }
