@@ -472,9 +472,15 @@ public class AppBarLayout extends LinearLayout {
 
         // Otherwise, we'll use twice the min height of our last child
         final int childCount = getChildCount();
-        return childCount >= 1
-                ? (ViewCompat.getMinimumHeight(getChildAt(childCount - 1)) * 2) + topInset
-                : 0;
+        final int lastChildMinHeight = childCount >= 1
+                ? ViewCompat.getMinimumHeight(getChildAt(childCount - 1)) : 0;
+        if (lastChildMinHeight != 0) {
+            return (lastChildMinHeight * 2) + topInset;
+        }
+
+        // If we reach here then we don't have a min height explicitly set. Instead we'll take a
+        // guess at 1/3 of our height being visible
+        return getHeight() / 3;
     }
 
     @Override
