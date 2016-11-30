@@ -1202,9 +1202,11 @@ public class AppBarLayout extends LinearLayout {
         public boolean onMeasureChild(CoordinatorLayout parent, View child,
                 int parentWidthMeasureSpec, int widthUsed,
                 int parentHeightMeasureSpec, int heightUsed) {
-            if (child.getLayoutParams().height == LayoutParams.MATCH_PARENT) {
-                // If the child's height is set to match_parent then measure it with it's
-                // maximum visible visible height
+            final int childLpHeight = child.getLayoutParams().height;
+            if (childLpHeight == LayoutParams.MATCH_PARENT
+                    || childLpHeight == LayoutParams.WRAP_CONTENT) {
+                // If the child's height is set to match_parent/wrap_content then measure it
+                // with the maximum visible height
 
                 final List<View> dependencies = parent.getDependencies(child);
                 if (dependencies.isEmpty()) {
@@ -1228,7 +1230,9 @@ public class AppBarLayout extends LinearLayout {
                     final int height = availableHeight - appBar.getMeasuredHeight()
                             + appBar.getTotalScrollRange();
                     final int heightMeasureSpec = MeasureSpec.makeMeasureSpec(height,
-                            MeasureSpec.AT_MOST);
+                            childLpHeight == LayoutParams.MATCH_PARENT
+                                    ? MeasureSpec.EXACTLY
+                                    : MeasureSpec.AT_MOST);
 
                     // Now measure the scrolling child with the correct height
                     parent.onMeasureChild(child, parentWidthMeasureSpec,
