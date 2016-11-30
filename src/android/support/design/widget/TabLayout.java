@@ -44,7 +44,6 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.view.animation.Animation;
-import android.view.animation.Transformation;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -184,9 +183,9 @@ public class TabLayout extends HorizontalScrollView {
     private int mTabPaddingEnd;
     private int mTabPaddingBottom;
 
-    private final int mTabTextAppearance;
-    private int mTabSelectedTextColor;
-    private boolean mTabSelectedTextColorSet;
+    private int mTabTextAppearance;
+    private ColorStateList mTabTextColors;
+
     private final int mTabBackgroundResId;
 
     private final int mTabMinWidth;
@@ -242,9 +241,20 @@ public class TabLayout extends HorizontalScrollView {
         mTabPaddingBottom = a.getDimensionPixelSize(R.styleable.TabLayout_tabPaddingBottom,
                 mTabPaddingBottom);
 
+        // Text colors come from the text appearance first
+        mTabTextColors = loadTextColorFromTextAppearance(mTabTextAppearance);
+
+        if (a.hasValue(R.styleable.TabLayout_tabTextColor)) {
+            // If we have an explicit text color set, use it instead
+            mTabTextColors = a.getColorStateList(R.styleable.TabLayout_tabTextColor);
+        }
+
         if (a.hasValue(R.styleable.TabLayout_tabSelectedTextColor)) {
-            mTabSelectedTextColor = a.getColor(R.styleable.TabLayout_tabSelectedTextColor, 0);
-            mTabSelectedTextColorSet = true;
+            // We have an explicit selected text color set, so we need to make merge it with the
+            // current colors. This is exposed so that developers can use theme attributes to set
+            // this (theme attrs in ColorStateLists are Lollipop+)
+            final int selected = a.getColor(R.styleable.TabLayout_tabSelectedTextColor, 0);
+            mTabTextColors = createColorStateList(mTabTextColors.getDefaultColor(), selected);
         }
 
         mTabMinWidth = a.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth, 0);
@@ -534,27 +544,33 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
-     * Set the text color to use when a tab is selected.
-     *
-     * @param textColor
+     * Sets the text colors for the different states (normal, selected) used for the tabs.
      */
-    public void setTabSelectedTextColor(@ColorInt int textColor) {
-        if (!mTabSelectedTextColorSet || mTabSelectedTextColor != textColor) {
-            mTabSelectedTextColor = textColor;
-            mTabSelectedTextColorSet = true;
-
-            for (int i = 0, z = mTabStrip.getChildCount(); i < z; i++) {
-                updateTab(i);
-            }
+    public void setTabTextColors(ColorStateList textColor) {
+        if (mTabTextColors != textColor) {
+            mTabTextColors = textColor;
+            updateAllTabs();
         }
     }
 
     /**
-     * Returns the text color currently used when a tab is selected.
+     * Gets the text colors for the different states (normal, selected) used for the tabs.
      */
-    @ColorInt
-    public int getTabSelectedTextColor() {
-        return mTabSelectedTextColor;
+    public ColorStateList getTabTextColors() {
+        return mTabTextColors;
+    }
+
+    /**
+     * Sets the text colors for the different states (normal, selected) used for the tabs.
+     */
+    public void setTabTextColors(int normalColor, int selectedColor) {
+        setTabTextColors(createColorStateList(normalColor, selectedColor));
+    }
+
+    private void updateAllTabs() {
+        for (int i = 0, z = mTabStrip.getChildCount(); i < z; i++) {
+            updateTab(i);
+        }
     }
 
     private TabView createTabView(Tab tab) {
@@ -1125,11 +1141,9 @@ public class TabLayout extends HorizontalScrollView {
                         textView.setMaxLines(MAX_TAB_TEXT_LINES);
                         textView.setEllipsize(TextUtils.TruncateAt.END);
                         textView.setGravity(Gravity.CENTER);
-                        if (mTabSelectedTextColorSet) {
-                            textView.setTextColor(createColorStateList(
-                                    textView.getCurrentTextColor(), mTabSelectedTextColor));
+                        if (mTabTextColors != null) {
+                            textView.setTextColor(mTabTextColors);
                         }
-
                         addView(textView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                         mTextView = textView;
                     }
@@ -1172,23 +1186,6 @@ public class TabLayout extends HorizontalScrollView {
 
             cheatSheet.show();
             return true;
-        }
-
-        private ColorStateList createColorStateList(int defaultColor, int selectedColor) {
-            final int[][] states = new int[2][];
-            final int[] colors = new int[2];
-            int i = 0;
-
-            states[i] = SELECTED_STATE_SET;
-            colors[i] = selectedColor;
-            i++;
-
-            // Default enabled state
-            states[i] = EMPTY_STATE_SET;
-            colors[i] = defaultColor;
-            i++;
-
-            return new ColorStateList(states, colors);
         }
 
         public Tab getTab() {
@@ -1396,6 +1393,33 @@ public class TabLayout extends HorizontalScrollView {
                 canvas.drawRect(mIndicatorLeft, getHeight() - mSelectedIndicatorHeight,
                         mIndicatorRight, getHeight(), mSelectedIndicatorPaint);
             }
+        }
+    }
+
+    private static ColorStateList createColorStateList(int defaultColor, int selectedColor) {
+        final int[][] states = new int[2][];
+        final int[] colors = new int[2];
+        int i = 0;
+
+        states[i] = SELECTED_STATE_SET;
+        colors[i] = selectedColor;
+        i++;
+
+        // Default enabled state
+        states[i] = EMPTY_STATE_SET;
+        colors[i] = defaultColor;
+        i++;
+
+        return new ColorStateList(states, colors);
+    }
+
+    private ColorStateList loadTextColorFromTextAppearance(int textAppearanceResId) {
+        TypedArray a = getContext().obtainStyledAttributes(textAppearanceResId,
+                R.styleable.TextAppearance);
+        try {
+            return a.getColorStateList(R.styleable.TextAppearance_android_textColor);
+        } finally {
+            a.recycle();
         }
     }
 
