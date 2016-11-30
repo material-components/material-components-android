@@ -309,6 +309,7 @@ public class TextInputLayout extends LinearLayout {
                             0, ViewCompat.getPaddingEnd(mEditText), mEditText.getPaddingBottom());
                 }
             } else {
+                updateEditTextBackground(false);
                 removeView(mErrorView);
                 mErrorView = null;
             }
@@ -364,11 +365,8 @@ public class TextInputLayout extends LinearLayout {
                     .start();
 
             // Set the EditText's background tint to the error color
-            ViewCompat.setBackgroundTintList(mEditText,
-                    ColorStateList.valueOf(mErrorView.getCurrentTextColor()));
-
+            updateEditTextBackground(true);
             updateLabelVisibility(true);
-
         } else {
             if (mErrorView.getVisibility() == VISIBLE) {
                 ViewCompat.animate(mErrorView)
@@ -385,13 +383,23 @@ public class TextInputLayout extends LinearLayout {
                         }).start();
 
                 // Restore the 'original' tint, using colorControlNormal and colorControlActivated
-                final TintManager tintManager = TintManager.get(getContext());
-                ViewCompat.setBackgroundTintList(mEditText,
-                        tintManager.getTintList(R.drawable.abc_edit_text_material));
+                updateEditTextBackground(false);
             }
         }
 
         sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
+    }
+
+    private void updateEditTextBackground(boolean errorShown) {
+        if (errorShown && mErrorView != null) {
+            // Set the EditText's background tint to the error color
+            ViewCompat.setBackgroundTintList(mEditText,
+                    ColorStateList.valueOf(mErrorView.getCurrentTextColor()));
+        } else {
+            final TintManager tintManager = TintManager.get(getContext());
+            ViewCompat.setBackgroundTintList(mEditText,
+                    tintManager.getTintList(R.drawable.abc_edit_text_material));
+        }
     }
 
     /**
