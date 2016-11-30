@@ -38,6 +38,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -548,7 +549,7 @@ public class Snackbar {
      */
     public static class SnackbarLayout extends LinearLayout {
         private TextView mMessageView;
-        private TextView mActionView;
+        private Button mActionView;
 
         private int mMaxWidth;
         private int mMaxInlineActionWidth;
@@ -587,14 +588,14 @@ public class Snackbar {
         protected void onFinishInflate() {
             super.onFinishInflate();
             mMessageView = (TextView) findViewById(R.id.snackbar_text);
-            mActionView = (TextView) findViewById(R.id.snackbar_action);
+            mActionView = (Button) findViewById(R.id.snackbar_action);
         }
 
         TextView getMessageView() {
             return mMessageView;
         }
 
-        TextView getActionView() {
+        Button getActionView() {
             return mActionView;
         }
 

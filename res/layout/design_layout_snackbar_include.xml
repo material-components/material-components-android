@@ -31,19 +31,19 @@
             android:layout_gravity="center_vertical|left|start"
             android:ellipsize="end"/>
 
-    <TextView
+    <Button
             android:id="@+id/snackbar_action"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="@dimen/design_snackbar_extra_spacing_horizontal"
             android:layout_marginStart="@dimen/design_snackbar_extra_spacing_horizontal"
             android:layout_gravity="center_vertical|right|end"
-            android:background="?attr/selectableItemBackground"
             android:paddingTop="@dimen/design_snackbar_padding_vertical"
             android:paddingBottom="@dimen/design_snackbar_padding_vertical"
             android:paddingLeft="@dimen/design_snackbar_padding_horizontal"
             android:paddingRight="@dimen/design_snackbar_padding_horizontal"
             android:visibility="gone"
-            android:textAppearance="@style/TextAppearance.Design.Snackbar.Action"/>
+            android:textColor="?attr/colorAccent"
+            style="?attr/borderlessButtonStyle"/>
 
 </merge>

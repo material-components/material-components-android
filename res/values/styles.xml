@@ -77,10 +77,6 @@
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
-    <style name="TextAppearance.Design.Snackbar.Action" parent="TextAppearance.AppCompat.Button">
-        <item name="android:textColor">?colorAccent</item>
-    </style>
-
     <style name="Widget.Design.Snackbar" parent="android:Widget">
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
         <item name="android:minWidth">@dimen/design_snackbar_min_width</item>
