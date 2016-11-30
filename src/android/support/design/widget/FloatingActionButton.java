@@ -574,7 +574,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         public void onDependentViewRemoved(CoordinatorLayout parent, FloatingActionButton child,
                 View dependency) {
             if (dependency instanceof Snackbar.SnackbarLayout) {
-                updateFabTranslationForSnackbar(parent, child, dependency);
+                updateFabTranslationForSnackbar(parent, child, true);
             }
         }
 
