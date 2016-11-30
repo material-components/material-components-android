@@ -254,6 +254,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     @Override
     public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
         if (!child.isShown()) {
+            mIgnoreEvents = true;
             return false;
         }
         int action = MotionEventCompat.getActionMasked(event);

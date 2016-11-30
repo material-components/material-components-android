@@ -55,6 +55,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import org.hamcrest.Matcher;
+import org.hamcrest.Matchers;
 import org.junit.Test;
 
 public class BottomSheetBehaviorTest extends
@@ -183,7 +184,7 @@ public class BottomSheetBehaviorTest extends
 
         @Override
         public Matcher<View> getConstraints() {
-            return ViewMatchers.isDisplayed();
+            return Matchers.any(View.class);
         }
 
         @Override
@@ -213,7 +214,6 @@ public class BottomSheetBehaviorTest extends
                         MotionEvents.sendCancel(uiController, downEvent);
                         throw new RuntimeException("Cannot drag: failed to send a move event.");
                     }
-                    BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
                 }
                 int duration = ViewConfiguration.getPressedStateDuration();
                 if (duration > 0) {
@@ -456,6 +456,46 @@ public class BottomSheetBehaviorTest extends
                 assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
             }
         });
+    }
+
+    @Test
+    @MediumTest
+    public void testInvisibleThenVisible() {
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                // The bottom sheet is initially invisible
+                getBottomSheet().setVisibility(View.INVISIBLE);
+                // Then it becomes visible when the CoL is touched
+                getCoordinatorLayout().setOnTouchListener(new View.OnTouchListener() {
+                    @Override
+                    public boolean onTouch(View view, MotionEvent e) {
+                        if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                            getBottomSheet().setVisibility(View.VISIBLE);
+                            return true;
+                        }
+                        return false;
+                    }
+                });
+                assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+            }
+        });
+        // Drag over the CoL
+        Espresso.onView(ViewMatchers.withId(R.id.coordinator))
+                // Drag (and not release)
+                .perform(new DragAction(
+                        GeneralLocation.BOTTOM_CENTER,
+                        GeneralLocation.TOP_CENTER,
+                        Press.FINGER))
+                .check(new ViewAssertion() {
+                    @Override
+                    public void check(View view, NoMatchingViewException e) {
+                        // The bottom sheet should not react to the touch events
+                        assertThat(getBottomSheet(), is(ViewMatchers.isDisplayed()));
+                        assertThat(getBehavior().getState(),
+                                is(BottomSheetBehavior.STATE_COLLAPSED));
+                    }
+                });
     }
 
     @Test
