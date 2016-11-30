@@ -95,25 +95,24 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
     }
 
     @Override
-    protected void layoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
+    protected void layoutChild(final CoordinatorLayout parent, final View child,
+            final int layoutDirection) {
         final List<View> dependencies = parent.getDependencies(child);
         final View header = findFirstDependency(dependencies);
 
         if (header != null) {
             final CoordinatorLayout.LayoutParams lp =
                     (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-            final Rect parentRect = mTempRect1;
-            parentRect.set(parent.getPaddingLeft() + lp.leftMargin,
-                    parent.getPaddingTop() + lp.topMargin,
+            final Rect available = mTempRect1;
+            available.set(parent.getPaddingLeft() + lp.leftMargin,
+                    header.getBottom() + lp.topMargin,
                     parent.getWidth() - parent.getPaddingRight() - lp.rightMargin,
-                    parent.getHeight() - parent.getPaddingBottom() - lp.bottomMargin);
-
-            parentRect.top += header.getMeasuredHeight();
-            parentRect.bottom += header.getMeasuredHeight();
+                    parent.getHeight() + header.getBottom()
+                            - parent.getPaddingBottom() - lp.bottomMargin);
 
             final Rect out = mTempRect2;
             GravityCompat.apply(resolveGravity(lp.gravity), child.getMeasuredWidth(),
-                    child.getMeasuredHeight(), parentRect, out, layoutDirection);
+                    child.getMeasuredHeight(), available, out, layoutDirection);
 
             child.layout(out.left, out.top, out.right, out.bottom);
         } else {
