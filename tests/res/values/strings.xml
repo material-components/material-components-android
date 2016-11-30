@@ -35,4 +35,6 @@
     <string name="design_appbar_toolbar_scroll_tabs_scroll_snap">AppBar/Toolbar Scroll + Tabs Scroll + Snap</string>
     <string name="design_appbar_toolbar_scroll_tabs_pin">AppBar/Toolbar Scroll + Tabs Pin</string>
 
+    <string name="textinput_hint">Hint to the user</string>
+
 </resources>

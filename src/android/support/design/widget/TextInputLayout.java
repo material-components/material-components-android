@@ -530,11 +530,6 @@ public class TextInputLayout extends LinearLayout {
      * @see #getError()
      */
     public void setError(@Nullable final CharSequence error) {
-        if (TextUtils.equals(mError, error)) {
-            // If we already have the same error, ignore
-            return;
-        }
-
         mError = error;
 
         if (!mErrorEnabled) {
@@ -546,8 +541,9 @@ public class TextInputLayout extends LinearLayout {
             setErrorEnabled(true);
         }
 
-        // Only animate if we've been laid out already
-        final boolean animate = ViewCompat.isLaidOut(this);
+        // Only animate if we've been laid out already and we have a different error
+        final boolean animate = ViewCompat.isLaidOut(this)
+                && !TextUtils.equals(mErrorView.getText(), error);
         mErrorShown = !TextUtils.isEmpty(error);
 
         if (mErrorShown) {
@@ -569,6 +565,9 @@ public class TextInputLayout extends LinearLayout {
                                 view.setVisibility(VISIBLE);
                             }
                         }).start();
+            } else {
+                // Set alpha to 1f, just in case
+                ViewCompat.setAlpha(mErrorView, 1f);
             }
         } else {
             if (mErrorView.getVisibility() == VISIBLE) {
@@ -585,6 +584,7 @@ public class TextInputLayout extends LinearLayout {
                                 }
                             }).start();
                 } else {
+                    mErrorView.setText(error);
                     mErrorView.setVisibility(INVISIBLE);
                 }
             }
