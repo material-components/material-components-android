@@ -38,6 +38,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
@@ -525,14 +526,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
      * not cover them.
      */
     public static class Behavior extends CoordinatorLayout.Behavior<FloatingActionButton> {
-        // We only support the FAB <> Snackbar shift movement on Honeycomb and above. This is
-        // because we can use view translation properties which greatly simplifies the code.
-        private static final boolean SNACKBAR_BEHAVIOR_ENABLED = Build.VERSION.SDK_INT >= 11;
-
         private static final boolean AUTO_HIDE_DEFAULT = true;
 
-        private ValueAnimatorCompat mFabTranslationYAnimator;
-        private float mFabTranslationY;
         private Rect mTmpRect;
         private OnVisibilityChangedListener mInternalAutoHideListener;
         private boolean mAutoHideEnabled;
@@ -576,18 +571,18 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         }
 
         @Override
-        public boolean layoutDependsOn(CoordinatorLayout parent,
-                FloatingActionButton child, View dependency) {
-            // We're dependent on all SnackbarLayouts (if enabled)
-            return SNACKBAR_BEHAVIOR_ENABLED && dependency instanceof Snackbar.SnackbarLayout;
+        public void onAttachedToLayoutParams(@NonNull CoordinatorLayout.LayoutParams lp) {
+            if (lp.dodgeInsetEdges == Gravity.NO_GRAVITY) {
+                // If the developer hasn't set dodgeInsetEdges, lets set it to BOTTOM so that
+                // we dodge any Snackbars
+                lp.dodgeInsetEdges = Gravity.BOTTOM;
+            }
         }
 
         @Override
         public boolean onDependentViewChanged(CoordinatorLayout parent, FloatingActionButton child,
                 View dependency) {
-            if (dependency instanceof Snackbar.SnackbarLayout) {
-                updateFabTranslationForSnackbar(parent, child, true);
-            } else if (dependency instanceof AppBarLayout) {
+            if (dependency instanceof AppBarLayout) {
                 // If we're depending on an AppBarLayout we will show/hide it automatically
                 // if the FAB is anchored to the AppBarLayout
                 updateFabVisibilityForAppBarLayout(parent, (AppBarLayout) dependency, child);
@@ -595,14 +590,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                 updateFabVisibilityForBottomSheet(dependency, child);
             }
             return false;
-        }
-
-        @Override
-        public void onDependentViewRemoved(CoordinatorLayout parent, FloatingActionButton child,
-                View dependency) {
-            if (dependency instanceof Snackbar.SnackbarLayout) {
-                updateFabTranslationForSnackbar(parent, child, true);
-            }
         }
 
         private static boolean isBottomSheet(View view) {
@@ -677,63 +664,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             return true;
         }
 
-        private void updateFabTranslationForSnackbar(CoordinatorLayout parent,
-                final FloatingActionButton fab, boolean animationAllowed) {
-            final float targetTransY = getFabTranslationYForSnackbar(parent, fab);
-            if (mFabTranslationY == targetTransY) {
-                // We're already at (or currently animating to) the target value, return...
-                return;
-            }
-
-            final float currentTransY = ViewCompat.getTranslationY(fab);
-
-            // Make sure that any current animation is cancelled
-            if (mFabTranslationYAnimator != null && mFabTranslationYAnimator.isRunning()) {
-                mFabTranslationYAnimator.cancel();
-            }
-
-            if (animationAllowed && fab.isShown()
-                    && Math.abs(currentTransY - targetTransY) > (fab.getHeight() * 0.667f)) {
-                // If the FAB will be travelling by more than 2/3 of its height, let's animate
-                // it instead
-                if (mFabTranslationYAnimator == null) {
-                    mFabTranslationYAnimator = ViewUtils.createAnimator();
-                    mFabTranslationYAnimator.setInterpolator(
-                            AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-                    mFabTranslationYAnimator.addUpdateListener(
-                            new ValueAnimatorCompat.AnimatorUpdateListener() {
-                                @Override
-                                public void onAnimationUpdate(ValueAnimatorCompat animator) {
-                                    ViewCompat.setTranslationY(fab,
-                                            animator.getAnimatedFloatValue());
-                                }
-                            });
-                }
-                mFabTranslationYAnimator.setFloatValues(currentTransY, targetTransY);
-                mFabTranslationYAnimator.start();
-            } else {
-                // Now update the translation Y
-                ViewCompat.setTranslationY(fab, targetTransY);
-            }
-
-            mFabTranslationY = targetTransY;
-        }
-
-        private float getFabTranslationYForSnackbar(CoordinatorLayout parent,
-                FloatingActionButton fab) {
-            float minOffset = 0;
-            final List<View> dependencies = parent.getDependencies(fab);
-            for (int i = 0, z = dependencies.size(); i < z; i++) {
-                final View view = dependencies.get(i);
-                if (view instanceof Snackbar.SnackbarLayout && parent.doViewsOverlap(fab, view)) {
-                    minOffset = Math.min(minOffset,
-                            ViewCompat.getTranslationY(view) - view.getHeight());
-                }
-            }
-
-            return minOffset;
-        }
-
         @Override
         public boolean onLayoutChild(CoordinatorLayout parent, FloatingActionButton child,
                 int layoutDirection) {
@@ -756,8 +686,19 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             parent.onLayoutChild(child, layoutDirection);
             // Now offset it if needed
             offsetIfNeeded(parent, child);
-            // Make sure we translate the FAB for any displayed Snackbars (without an animation)
-            updateFabTranslationForSnackbar(parent, child, false);
+            return true;
+        }
+
+        @Override
+        public boolean getInsetDodgeRect(@NonNull CoordinatorLayout parent,
+                @NonNull FloatingActionButton child, @NonNull Rect rect) {
+            // Since we offset so that any internal shadow padding isn't shown, we need to make
+            // sure that the shadow isn't used for any dodge inset calculations
+            final Rect shadowPadding = child.mShadowPadding;
+            rect.set(child.getLeft() + shadowPadding.left,
+                    child.getTop() + shadowPadding.top,
+                    child.getRight() - shadowPadding.right,
+                    child.getBottom() - shadowPadding.bottom);
             return true;
         }
 

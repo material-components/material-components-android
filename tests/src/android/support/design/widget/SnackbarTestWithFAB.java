@@ -20,7 +20,6 @@ import static org.junit.Assert.assertEquals;
 
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
-import android.support.test.filters.SdkSuppress;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
 
@@ -45,8 +44,7 @@ public class SnackbarTestWithFAB extends BaseInstrumentationTestCase<SnackbarAct
     }
 
     @Test
-    @SdkSuppress(minSdkVersion = 11)
-    public void testShortSnackBarDodgesFab() {
+    public void testShortSnackbarDodgesFab() {
         final int[] originalFabPosition = new int[2];
         final View fab = mCoordinatorLayout.findViewById(R.id.fab);
         fab.getLocationOnScreen(originalFabPosition);
@@ -72,8 +70,7 @@ public class SnackbarTestWithFAB extends BaseInstrumentationTestCase<SnackbarAct
     }
 
     @Test
-    @SdkSuppress(minSdkVersion = 11)
-    public void testIndefiniteSnackBarDodgesFab() {
+    public void testIndefiniteSnackbarDodgesFab() {
         final int[] originalFabPosition = new int[2];
         final View fab = mCoordinatorLayout.findViewById(R.id.fab);
         fab.getLocationOnScreen(originalFabPosition);
