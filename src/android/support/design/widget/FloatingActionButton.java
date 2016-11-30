@@ -31,6 +31,7 @@ import android.support.design.R;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.widget.ImageButton;
 import android.widget.ImageView;
@@ -56,6 +57,8 @@ import java.util.List;
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends ImageButton {
+
+    private static final String LOG_TAG = "FloatingActionButton";
 
     /**
      * Callback to be invoked when the visibility of a FloatingActionButton changes.
@@ -112,7 +115,6 @@ public class FloatingActionButton extends ImageButton {
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.FloatingActionButton, defStyleAttr,
                 R.style.Widget_Design_FloatingActionButton);
-        Drawable background = a.getDrawable(R.styleable.FloatingActionButton_android_background);
         mBackgroundTint = a.getColorStateList(R.styleable.FloatingActionButton_backgroundTint);
         mBackgroundTintMode = parseTintMode(a.getInt(
                 R.styleable.FloatingActionButton_backgroundTintMode, -1), null);
@@ -157,8 +159,8 @@ public class FloatingActionButton extends ImageButton {
                 R.dimen.design_fab_content_size);
         mContentPadding = (getSizeDimension() - maxContentSize) / 2;
 
-        mImpl.setBackgroundDrawable(background, mBackgroundTint,
-                mBackgroundTintMode, mRippleColor, mBorderWidth);
+        mImpl.setBackgroundDrawable(mBackgroundTint, mBackgroundTintMode,
+                mRippleColor, mBorderWidth);
         mImpl.setElevation(elevation);
         mImpl.setPressedTranslationZ(pressedTranslationZ);
     }
@@ -250,11 +252,18 @@ public class FloatingActionButton extends ImageButton {
     }
 
     @Override
-    public void setBackgroundDrawable(@NonNull Drawable background) {
-        if (mImpl != null) {
-            mImpl.setBackgroundDrawable(
-                    background, mBackgroundTint, mBackgroundTintMode, mRippleColor, mBorderWidth);
-        }
+    public void setBackgroundDrawable(Drawable background) {
+        Log.i(LOG_TAG, "Setting a custom background is not supported.");
+    }
+
+    @Override
+    public void setBackgroundResource(int resid) {
+        Log.i(LOG_TAG, "Setting a custom background is not supported.");
+    }
+
+    @Override
+    public void setBackgroundColor(int color) {
+        Log.i(LOG_TAG, "Setting a custom background is not supported.");
     }
 
     /**

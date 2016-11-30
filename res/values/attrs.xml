@@ -18,7 +18,6 @@
 
     <declare-styleable name="FloatingActionButton">
         <!-- Background for the FloatingActionButton -->
-        <attr name="android:background"/>
         <attr name="backgroundTint"/>
         <attr name="backgroundTintMode"/>
 

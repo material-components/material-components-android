@@ -47,10 +47,10 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
     }
 
     @Override
-    void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
+    void setBackgroundDrawable(ColorStateList backgroundTint,
             PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth) {
-        // Now we need to tint the original background with the tint
-        mShapeDrawable = DrawableCompat.wrap(originalBackground.mutate());
+        // Now we need to tint the shape background with the tint
+        mShapeDrawable = DrawableCompat.wrap(createShapeDrawable());
         DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
             DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);

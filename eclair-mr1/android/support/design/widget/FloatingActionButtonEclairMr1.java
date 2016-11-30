@@ -67,22 +67,18 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     }
 
     @Override
-    void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
+    void setBackgroundDrawable(ColorStateList backgroundTint,
             PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth) {
         // Now we need to tint the original background with the tint, using
         // an InsetDrawable if we have a border width
-        mShapeDrawable = DrawableCompat.wrap(mutateDrawable(originalBackground));
+        mShapeDrawable = DrawableCompat.wrap(createShapeDrawable());
         DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
             DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
         }
 
         // Now we created a mask Drawable which will be used for touch feedback.
-        // As we don't know the actual outline of mShapeDrawable, we'll just guess that it's a
-        // circle
-        GradientDrawable touchFeedbackShape = new GradientDrawable();
-        touchFeedbackShape.setShape(GradientDrawable.OVAL);
-        touchFeedbackShape.setColor(Color.WHITE);
+        GradientDrawable touchFeedbackShape = createShapeDrawable();
 
         // We'll now wrap that touch feedback mask drawable with a ColorStateList. We do not need
         // to inset for any border here as LayerDrawable will nest the padding for us
@@ -110,15 +106,6 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         mShadowViewDelegate.setBackgroundDrawable(mShadowDrawable);
 
         updatePadding();
-    }
-
-    private static Drawable mutateDrawable(Drawable drawable) {
-        if (Build.VERSION.SDK_INT < 14 && drawable instanceof GradientDrawable) {
-            // GradientDrawable pre-ICS does not copy over it's color when mutated. We just skip
-            // the mutate and hope for the best.
-            return drawable;
-        }
-        return drawable.mutate();
     }
 
     @Override

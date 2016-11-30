@@ -18,8 +18,10 @@ package android.support.design.widget;
 
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.view.View;
@@ -50,7 +52,7 @@ abstract class FloatingActionButtonImpl {
         mShadowViewDelegate = shadowViewDelegate;
     }
 
-    abstract void setBackgroundDrawable(Drawable originalBackground, ColorStateList backgroundTint,
+    abstract void setBackgroundDrawable(ColorStateList backgroundTint,
             PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth);
 
     abstract void setBackgroundTintList(ColorStateList tint);
@@ -119,5 +121,12 @@ abstract class FloatingActionButtonImpl {
                 }
             };
         }
+    }
+
+    GradientDrawable createShapeDrawable() {
+        GradientDrawable d = new GradientDrawable();
+        d.setShape(GradientDrawable.OVAL);
+        d.setColor(Color.WHITE);
+        return d;
     }
 }
