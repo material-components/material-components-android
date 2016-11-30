@@ -463,7 +463,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
 
         public Bundle createInstanceState() {
             Bundle state = new Bundle();
-            state.putInt(STATE_CHECKED_ITEM, mCheckedItem.getItemId());
+            if (mCheckedItem != null) {
+                state.putInt(STATE_CHECKED_ITEM, mCheckedItem.getItemId());
+            }
             return state;
         }
 
