@@ -32,6 +32,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.widget.Toolbar;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -371,6 +372,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
         // Finally, set our minimum height to enable proper AppBarLayout collapsing
         if (mToolbar != null) {
+            if (TextUtils.isEmpty(mCollapsingTextHelper.getText())) {
+                // If we do not currently have a title, try and grab it from the Toolbar
+                mCollapsingTextHelper.setText(mToolbar.getTitle());
+            }
             setMinimumHeight(mToolbar.getHeight());
         }
     }
