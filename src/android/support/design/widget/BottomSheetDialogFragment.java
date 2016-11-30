@@ -31,10 +31,7 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
 
     @Override
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        Dialog dialog = new BottomSheetDialog(getActivity(), getTheme());
-        dialog.getWindow().setLayout(
-                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-        return dialog;
+        return new BottomSheetDialog(getActivity(), getTheme());
     }
 
     /** @hide */
