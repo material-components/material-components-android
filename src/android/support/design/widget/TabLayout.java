@@ -241,9 +241,7 @@ public class TabLayout extends HorizontalScrollView {
     private int mTabGravity;
     private int mMode;
 
-    private OnTabSelectedListener mSelectedListener;
-    private final ArrayList<OnTabSelectedListener> mSelectedListeners = new ArrayList<>();
-    private OnTabSelectedListener mCurrentVpSelectedListener;
+    private OnTabSelectedListener mOnTabSelectedListener;
 
     private ValueAnimatorCompat mScrollAnimator;
 
@@ -476,48 +474,13 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
-     * @deprecated Use {@link #addOnTabSelectedListener(OnTabSelectedListener)} and
-     * {@link #removeOnTabSelectedListener(OnTabSelectedListener)}.
-     */
-    @Deprecated
-    public void setOnTabSelectedListener(@Nullable OnTabSelectedListener listener) {
-        // The logic in this method emulates what we had before support for multiple
-        // registered listeners.
-        if (mSelectedListener != null) {
-            removeOnTabSelectedListener(mSelectedListener);
-        }
-        // Update the deprecated field so that we can remove the passed listener the next
-        // time we're called
-        mSelectedListener = listener;
-        if (listener != null) {
-            addOnTabSelectedListener(listener);
-        }
-    }
-
-    /**
-     * Add a {@link TabLayout.OnTabSelectedListener} that will be invoked when tab selection
-     * changes.
+     * Set the {@link android.support.design.widget.TabLayout.OnTabSelectedListener} that will
+     * handle switching to and from tabs.
      *
-     * <p>Components that add a listener should take care to remove it when finished.
-     * Other components that take ownership of a view may call
-     * {@link #clearOnTabSelectedListeners()} to remove all attached listeners.</p>
-     *
-     * @param listener listener to add
+     * @param onTabSelectedListener Listener to handle tab selection events
      */
-    public void addOnTabSelectedListener(@NonNull OnTabSelectedListener listener) {
-        if (!mSelectedListeners.contains(listener)) {
-            mSelectedListeners.add(listener);
-        }
-    }
-
-    /**
-     * Remove the given {@link TabLayout.OnTabSelectedListener} that was previously added via
-     * {@link #addOnTabSelectedListener(OnTabSelectedListener)}.
-     *
-     * @param listener listener to remove
-     */
-    public void removeOnTabSelectedListener(@NonNull OnTabSelectedListener listener) {
-        mSelectedListeners.remove(listener);
+    public void setOnTabSelectedListener(OnTabSelectedListener onTabSelectedListener) {
+        mOnTabSelectedListener = onTabSelectedListener;
     }
 
     /**
@@ -730,12 +693,6 @@ public class TabLayout extends HorizontalScrollView {
             mViewPager.removeOnPageChangeListener(mPageChangeListener);
         }
 
-        if (mCurrentVpSelectedListener != null) {
-            // If we already have a tab selected listener for the ViewPager, remove it
-            removeOnTabSelectedListener(mCurrentVpSelectedListener);
-            mCurrentVpSelectedListener = null;
-        }
-
         if (viewPager != null) {
             final PagerAdapter adapter = viewPager.getAdapter();
             if (adapter == null) {
@@ -752,8 +709,7 @@ public class TabLayout extends HorizontalScrollView {
             viewPager.addOnPageChangeListener(mPageChangeListener);
 
             // Now we'll add a tab selected listener to set ViewPager's current item
-            mCurrentVpSelectedListener = new ViewPagerOnTabSelectedListener(viewPager);
-            addOnTabSelectedListener(mCurrentVpSelectedListener);
+            setOnTabSelectedListener(new ViewPagerOnTabSelectedListener(viewPager));
 
             // Now we'll populate ourselves from the pager adapter
             setPagerAdapter(adapter, true);
@@ -764,6 +720,7 @@ public class TabLayout extends HorizontalScrollView {
             // We've been given a null ViewPager so we need to clear out the internal state,
             // listeners and observers
             mViewPager = null;
+            setOnTabSelectedListener(null);
             setPagerAdapter(null, true);
         }
     }
@@ -1040,12 +997,12 @@ public class TabLayout extends HorizontalScrollView {
         selectTab(tab, true);
     }
 
-    void selectTab(final Tab tab, boolean updateIndicator) {
-        final Tab currentTab = mSelectedTab;
-
-        if (currentTab == tab) {
-            if (currentTab != null) {
-                dispatchTabReselected(tab);
+    void selectTab(Tab tab, boolean updateIndicator) {
+        if (mSelectedTab == tab) {
+            if (mSelectedTab != null) {
+                if (mOnTabSelectedListener != null) {
+                    mOnTabSelectedListener.onTabReselected(mSelectedTab);
+                }
                 animateToTab(tab.getPosition());
             }
         } else {
@@ -1054,7 +1011,7 @@ public class TabLayout extends HorizontalScrollView {
                 if (newPosition != Tab.INVALID_POSITION) {
                     setSelectedTabView(newPosition);
                 }
-                if ((currentTab == null || currentTab.getPosition() == Tab.INVALID_POSITION)
+                if ((mSelectedTab == null || mSelectedTab.getPosition() == Tab.INVALID_POSITION)
                         && newPosition != Tab.INVALID_POSITION) {
                     // If we don't currently have a tab, just draw the indicator
                     setScrollPosition(newPosition, 0f, true);
@@ -1062,27 +1019,13 @@ public class TabLayout extends HorizontalScrollView {
                     animateToTab(newPosition);
                 }
             }
-            dispatchTabUnselected(currentTab);
+            if (mSelectedTab != null && mOnTabSelectedListener != null) {
+                mOnTabSelectedListener.onTabUnselected(mSelectedTab);
+            }
             mSelectedTab = tab;
-            dispatchTabSelected(tab);
-        }
-    }
-
-    private void dispatchTabSelected(@NonNull final Tab tab) {
-        for (int i = mSelectedListeners.size() - 1; i >= 0; i--) {
-            mSelectedListeners.get(i).onTabSelected(tab);
-        }
-    }
-
-    private void dispatchTabUnselected(@NonNull final Tab tab) {
-        for (int i = mSelectedListeners.size() - 1; i >= 0; i--) {
-            mSelectedListeners.get(i).onTabUnselected(tab);
-        }
-    }
-
-    private void dispatchTabReselected(@NonNull final Tab tab) {
-        for (int i = mSelectedListeners.size() - 1; i >= 0; i--) {
-            mSelectedListeners.get(i).onTabReselected(tab);
+            if (mSelectedTab != null && mOnTabSelectedListener != null) {
+                mOnTabSelectedListener.onTabSelected(mSelectedTab);
+            }
         }
     }
 
