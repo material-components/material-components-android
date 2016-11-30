@@ -262,6 +262,7 @@ package android.support.design.widget {
     method public int getDuration();
     method public android.view.View getView();
     method public boolean isShown();
+    method public boolean isShownOrQueued();
     method public static android.support.design.widget.Snackbar make(android.view.View, java.lang.CharSequence, int);
     method public static android.support.design.widget.Snackbar make(android.view.View, int, int);
     method public android.support.design.widget.Snackbar setAction(int, android.view.View.OnClickListener);

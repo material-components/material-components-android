@@ -171,20 +171,21 @@ public final class Snackbar {
         });
     }
 
-    private final ViewGroup mParent;
+    private final ViewGroup mTargetParent;
     private final Context mContext;
     private final SnackbarLayout mView;
     private int mDuration;
     private Callback mCallback;
 
     private Snackbar(ViewGroup parent) {
-        mParent = parent;
+        mTargetParent = parent;
         mContext = parent.getContext();
 
         ThemeUtils.checkAppCompatTheme(mContext);
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        mView = (SnackbarLayout) inflater.inflate(R.layout.design_layout_snackbar, mParent, false);
+        mView = (SnackbarLayout) inflater.inflate(
+                R.layout.design_layout_snackbar, mTargetParent, false);
     }
 
     /**
@@ -405,10 +406,18 @@ public final class Snackbar {
     }
 
     /**
-     * Return whether this Snackbar is currently being shown.
+     * Return whether this {@link Snackbar} is currently being shown.
      */
     public boolean isShown() {
-        return mView.isShown();
+        return SnackbarManager.getInstance().isCurrent(mManagerCallback);
+    }
+
+    /**
+     * Returns whether this {@link Snackbar} is currently being shown, or is queued to be
+     * shown next.
+     */
+    public boolean isShownOrQueued() {
+        return SnackbarManager.getInstance().isCurrentOrNext(mManagerCallback);
     }
 
     private final SnackbarManager.Callback mManagerCallback = new SnackbarManager.Callback() {
@@ -458,8 +467,29 @@ public final class Snackbar {
                 ((CoordinatorLayout.LayoutParams) lp).setBehavior(behavior);
             }
 
-            mParent.addView(mView);
+            mTargetParent.addView(mView);
         }
+
+        mView.setOnAttachStateChangeListener(new SnackbarLayout.OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {}
+
+            @Override
+            public void onViewDetachedFromWindow(View v) {
+                if (isShownOrQueued()) {
+                    // If we haven't already been dismissed then this event is coming from a
+                    // non-user initiated action. Hence we need to make sure that we callback
+                    // and keep our state up to date. We need to post the call since removeView()
+                    // will call through to onDetachedFromWindow and thus overflow.
+                    sHandler.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            onViewHidden(Callback.DISMISS_EVENT_MANUAL);
+                        }
+                    });
+                }
+            }
+        });
 
         if (ViewCompat.isLaidOut(mView)) {
             // If the view is already laid out, animate it now
@@ -565,8 +595,11 @@ public final class Snackbar {
     }
 
     private void onViewHidden(int event) {
-        // First remove the view from the parent
-        mParent.removeView(mView);
+        // First remove the view from the parent (if attached)
+        final ViewParent parent = mView.getParent();
+        if (parent instanceof ViewGroup) {
+            ((ViewGroup) parent).removeView(mView);
+        }
         // Now call the dismiss listener (if available)
         if (mCallback != null) {
             mCallback.onDismissed(this, event);
@@ -604,10 +637,16 @@ public final class Snackbar {
         private int mMaxInlineActionWidth;
 
         interface OnLayoutChangeListener {
-            public void onLayoutChange(View view, int left, int top, int right, int bottom);
+            void onLayoutChange(View view, int left, int top, int right, int bottom);
+        }
+
+        interface OnAttachStateChangeListener {
+            void onViewAttachedToWindow(View v);
+            void onViewDetachedFromWindow(View v);
         }
 
         private OnLayoutChangeListener mOnLayoutChangeListener;
+        private OnAttachStateChangeListener mOnAttachStateChangeListener;
 
         public SnackbarLayout(Context context) {
             this(context, null);
@@ -714,8 +753,28 @@ public final class Snackbar {
             }
         }
 
+        @Override
+        protected void onAttachedToWindow() {
+            super.onAttachedToWindow();
+            if (mOnAttachStateChangeListener != null) {
+                mOnAttachStateChangeListener.onViewAttachedToWindow(this);
+            }
+        }
+
+        @Override
+        protected void onDetachedFromWindow() {
+            super.onDetachedFromWindow();
+            if (mOnAttachStateChangeListener != null) {
+                mOnAttachStateChangeListener.onViewDetachedFromWindow(this);
+            }
+        }
+
         void setOnLayoutChangeListener(OnLayoutChangeListener onLayoutChangeListener) {
             mOnLayoutChangeListener = onLayoutChangeListener;
+        }
+
+        void setOnAttachStateChangeListener(OnAttachStateChangeListener listener) {
+            mOnAttachStateChangeListener = listener;
         }
 
         private boolean updateViewsWithinLayout(final int orientation,
