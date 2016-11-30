@@ -1224,18 +1224,26 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         @Override
-        public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-            final int specWidth = MeasureSpec.getSize(widthMeasureSpec);
+        public void onMeasure(final int origWidthMeasureSpec, final int origHeightMeasureSpec) {
+            final int specWidthSize = MeasureSpec.getSize(origWidthMeasureSpec);
+            final int specWidthMode = MeasureSpec.getMode(origWidthMeasureSpec);
             final int maxWidth = getTabMaxWidth();
-            if (maxWidth > 0 && (specWidth == 0 || specWidth > maxWidth)) {
-                // If we have a max width and a given spec size which is either unspecified or
-                // larger than the spec size, use a AT_MOST spec
-                super.onMeasure(MeasureSpec.makeMeasureSpec(mTabMaxWidth, MeasureSpec.AT_MOST),
-                        heightMeasureSpec);
+
+            final int widthMeasureSpec;
+            final int heightMeasureSpec = origHeightMeasureSpec;
+
+            if (maxWidth > 0 && (specWidthMode == MeasureSpec.UNSPECIFIED
+                    || specWidthSize > maxWidth)) {
+                // If we have a max width and a given spec which is either unspecified or
+                // larger than the max width, update the width spec using the same mode
+                widthMeasureSpec = MeasureSpec.makeMeasureSpec(mTabMaxWidth, specWidthMode);
             } else {
-                // Else, use the original specs
-                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+                // Else, use the original width spec
+                widthMeasureSpec = origWidthMeasureSpec;
             }
+
+            // Now lets measure
+            super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
             // We need to switch the text size based on whether the text is spanning 2 lines or not
             if (mTextView != null) {
