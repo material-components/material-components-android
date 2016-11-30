@@ -349,7 +349,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         if (mBehaviorTouchView != null || (cancelSuper = performIntercept(ev))) {
             // Safe since performIntercept guarantees that
             // mBehaviorTouchView != null if it returns true
-            mBehaviorTouchView.onTouchEvent(ev);
+            final LayoutParams lp = (LayoutParams) mBehaviorTouchView.getLayoutParams();
+            final Behavior b = lp.getBehavior();
+            if (b != null) {
+                b.onTouchEvent(this, mBehaviorTouchView, ev);
+            }
         }
 
         // Keep the super implementation correct
