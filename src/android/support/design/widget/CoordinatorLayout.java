@@ -37,6 +37,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
@@ -71,6 +72,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
 /**
@@ -137,6 +139,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     static final int EVENT_VIEW_REMOVED = 2;
 
     /** @hide */
+    @RestrictTo(GROUP_ID)
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({EVENT_PRE_DRAW, EVENT_NESTED_SCROLL, EVENT_VIEW_REMOVED})
     public @interface DispatchChangeEvent {}

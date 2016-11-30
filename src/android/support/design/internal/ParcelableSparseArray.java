@@ -18,13 +18,17 @@ package android.support.design.internal;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.RestrictTo;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.util.SparseArray;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+
 /**
  * @hide
  */
+@RestrictTo(GROUP_ID)
 public class ParcelableSparseArray extends SparseArray<Parcelable> implements Parcelable {
 
     public ParcelableSparseArray() {

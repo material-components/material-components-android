@@ -21,6 +21,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -34,9 +35,12 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+
 /**
  * @hide
  */
+@RestrictTo(GROUP_ID)
 public class BottomNavigationItemView extends FrameLayout implements MenuView.ItemView {
     public static final int INVALID_ITEM_POSITION = -1;
 

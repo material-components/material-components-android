@@ -27,6 +27,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.design.internal.NavigationMenu;
@@ -49,6 +50,8 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 /**
  * Represents a standard navigation menu for application. The menu contents can be populated
@@ -229,6 +232,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     /**
      * @hide
      */
+    @RestrictTo(GROUP_ID)
     @Override
     protected void onInsetsChanged(WindowInsetsCompat insets) {
         mPresenter.dispatchApplyWindowInsets(insets);

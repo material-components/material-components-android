@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -28,6 +29,8 @@ import android.view.ViewParent;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 /**
  * An interaction behavior plugin for child views of {@link CoordinatorLayout} to provide support
@@ -53,6 +56,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
     public static final int STATE_SETTLING = ViewDragHelper.STATE_SETTLING;
 
     /** @hide */
+    @RestrictTo(GROUP_ID)
     @IntDef({SWIPE_DIRECTION_START_TO_END, SWIPE_DIRECTION_END_TO_START, SWIPE_DIRECTION_ANY})
     @Retention(RetentionPolicy.SOURCE)
     private @interface SwipeDirection {}

@@ -30,6 +30,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
@@ -47,6 +48,8 @@ import android.widget.ImageView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
+
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 /**
  * Floating action buttons are used for a special type of promoted action. They are distinguished
@@ -120,6 +123,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private static final int AUTO_MINI_LARGEST_SCREEN_WIDTH = 470;
 
     /** @hide */
+    @RestrictTo(GROUP_ID)
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({SIZE_MINI, SIZE_NORMAL, SIZE_AUTO})
     public @interface Size {}

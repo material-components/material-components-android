@@ -25,6 +25,7 @@ import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.v4.os.ParcelableCompat;
@@ -44,6 +45,7 @@ import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
 /**
@@ -586,6 +588,7 @@ public class AppBarLayout extends LinearLayout {
     public static class LayoutParams extends LinearLayout.LayoutParams {
 
         /** @hide */
+        @RestrictTo(GROUP_ID)
         @IntDef(flag=true, value={
                 SCROLL_FLAG_SCROLL,
                 SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,

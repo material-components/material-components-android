@@ -27,6 +27,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.design.R;
 import android.support.v4.view.OnApplyWindowInsetsListener;
@@ -52,6 +53,7 @@ import android.widget.TextView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 
 /**
@@ -89,6 +91,7 @@ public final class Snackbar {
         public static final int DISMISS_EVENT_CONSECUTIVE = 4;
 
         /** @hide */
+        @RestrictTo(GROUP_ID)
         @IntDef({DISMISS_EVENT_SWIPE, DISMISS_EVENT_ACTION, DISMISS_EVENT_TIMEOUT,
                 DISMISS_EVENT_MANUAL, DISMISS_EVENT_CONSECUTIVE})
         @Retention(RetentionPolicy.SOURCE)
@@ -124,6 +127,7 @@ public final class Snackbar {
     /**
      * @hide
      */
+    @RestrictTo(GROUP_ID)
     @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
     @IntRange(from = 1)
     @Retention(RetentionPolicy.SOURCE)
@@ -657,6 +661,7 @@ public final class Snackbar {
     /**
      * @hide
      */
+    @RestrictTo(GROUP_ID)
     public static class SnackbarLayout extends LinearLayout {
         private TextView mMessageView;
         private Button mActionView;

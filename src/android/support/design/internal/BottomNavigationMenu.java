@@ -17,13 +17,17 @@
 package android.support.design.internal;
 
 import android.content.Context;
+import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.MenuBuilder;
 import android.view.MenuItem;
 import android.view.SubMenu;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+
 /**
  * @hide
  */
+@RestrictTo(GROUP_ID)
 public final class BottomNavigationMenu extends MenuBuilder {
     public static final int MAX_ITEM_COUNT = 5;
 

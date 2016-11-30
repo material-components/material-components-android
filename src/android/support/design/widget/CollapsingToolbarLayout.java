@@ -30,6 +30,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
@@ -49,6 +50,7 @@ import android.widget.FrameLayout;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.MathUtils.constrain;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
@@ -1117,6 +1119,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         private static final float DEFAULT_PARALLAX_MULTIPLIER = 0.5f;
 
         /** @hide */
+        @RestrictTo(GROUP_ID)
         @IntDef({
                 COLLAPSE_MODE_OFF,
                 COLLAPSE_MODE_PIN,

@@ -21,6 +21,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.os.Build;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.v4.util.Pools;
 import android.support.v4.view.ViewCompat;
@@ -31,11 +32,13 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 
-/**
- * @hide
- */
-public class BottomNavigationMenuView extends ViewGroup implements MenuView {
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
+/**
+ * @hide For internal use only.
+ */
+@RestrictTo(GROUP_ID)
+public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     private final int mInactiveItemMaxWidth;
     private final int mInactiveItemMinWidth;
     private final int mActiveItemMaxWidth;

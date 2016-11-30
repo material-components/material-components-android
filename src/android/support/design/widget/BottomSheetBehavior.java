@@ -22,6 +22,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.v4.os.ParcelableCompat;
@@ -44,6 +45,8 @@ import android.view.ViewParent;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
+
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 
 /**
@@ -105,6 +108,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     public static final int STATE_HIDDEN = 5;
 
     /** @hide */
+    @RestrictTo(GROUP_ID)
     @IntDef({STATE_EXPANDED, STATE_COLLAPSED, STATE_DRAGGING, STATE_SETTLING, STATE_HIDDEN})
     @Retention(RetentionPolicy.SOURCE)
     public @interface State {}

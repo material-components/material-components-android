@@ -22,14 +22,18 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.v7.widget.LinearLayoutCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+
 /**
  * @hide
  */
+@RestrictTo(GROUP_ID)
 public class ForegroundLinearLayout extends LinearLayoutCompat {
 
     private Drawable mForeground;

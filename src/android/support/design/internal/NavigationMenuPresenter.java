@@ -26,6 +26,7 @@ import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v4.view.ViewCompat;
@@ -46,9 +47,12 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+
 /**
  * @hide
  */
+@RestrictTo(GROUP_ID)
 public class NavigationMenuPresenter implements MenuPresenter {
 
     private static final String STATE_HIERARCHY = "android:menu:list";
