@@ -2553,7 +2553,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          *
          * @return The current behavior or null if no behavior is specified
          */
-        @NonNull
+        @Nullable
         public Behavior getBehavior() {
             return mBehavior;
         }
