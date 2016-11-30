@@ -53,6 +53,7 @@ import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
@@ -1501,13 +1502,16 @@ public class TabLayout extends HorizontalScrollView {
 
         @Override
         public boolean performClick() {
-            final boolean value = super.performClick();
+            final boolean handled = super.performClick();
 
             if (mTab != null) {
+                if (!handled) {
+                    playSoundEffect(SoundEffectConstants.CLICK);
+                }
                 mTab.select();
                 return true;
             } else {
-                return value;
+                return handled;
             }
         }
 
