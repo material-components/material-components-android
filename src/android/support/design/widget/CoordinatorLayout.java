@@ -155,6 +155,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private final Rect mTempRect2 = new Rect();
     private final Rect mTempRect3 = new Rect();
     private final Rect mTempRect4 = new Rect();
+    private final Rect mTempRect5 = new Rect();
     private final int[] mTempIntPair = new int[2];
     private Paint mScrimPaint;
 
@@ -1332,7 +1333,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final Behavior behavior = lp.getBehavior();
         final Rect rect = mTempRect3;
         rect.setEmpty();
-        final Rect bounds = mTempRect4;
+        final Rect bounds = mTempRect5;
         bounds.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
 
         if (behavior != null && behavior.getInsetDodgeRect(this, child, rect)) {
