@@ -1150,14 +1150,13 @@ public class TabLayout extends HorizontalScrollView {
         public void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
             super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-            if (mTabMaxWidth != 0 && getMeasuredWidth() > mTabMaxWidth) {
-                // Re-measure if we went beyond our maximum size.
-                super.onMeasure(MeasureSpec.makeMeasureSpec(
-                        mTabMaxWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
-            } else if (mTabMinWidth > 0 && getMeasuredHeight() < mTabMinWidth) {
-                // Re-measure if we're below our minimum size.
-                super.onMeasure(MeasureSpec.makeMeasureSpec(
-                        mTabMinWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
+            final int measuredWidth = getMeasuredWidth();
+            if (measuredWidth < mTabMinWidth || measuredWidth > mTabMaxWidth) {
+                // Re-measure if we are outside our min or max width
+                widthMeasureSpec = MeasureSpec.makeMeasureSpec(
+                        MathUtils.constrain(measuredWidth, mTabMinWidth, mTabMaxWidth),
+                        MeasureSpec.EXACTLY);
+                super.onMeasure(widthMeasureSpec, heightMeasureSpec);
             }
         }
 
