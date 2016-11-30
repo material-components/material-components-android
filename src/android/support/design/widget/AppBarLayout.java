@@ -154,6 +154,7 @@ public class AppBarLayout extends LinearLayout {
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AppBarLayout,
                 0, R.style.Widget_Design_AppBarLayout);
         mTargetElevation = a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0);
+        setBackgroundDrawable(a.getDrawable(R.styleable.AppBarLayout_android_background));
         a.recycle();
 
         // Use the bounds view outline provider so that we cast a shadow, even without a background

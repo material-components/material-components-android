@@ -162,6 +162,7 @@
 
     <declare-styleable name="AppBarLayout">
         <attr name="elevation" />
+        <attr name="android:background" />
     </declare-styleable>
 
     <declare-styleable name="AppBarLayout_LayoutParams">

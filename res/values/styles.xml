@@ -102,6 +102,7 @@
 
     <style name="Widget.Design.AppBarLayout" parent="android:Widget">
         <item name="elevation">@dimen/appbar_elevation</item>
+        <item name="android:background">?attr/colorPrimary</item>
     </style>
 
 </resources>
