@@ -205,6 +205,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             final ViewTreeObserver vto = getViewTreeObserver();
             vto.addOnPreDrawListener(mOnPreDrawListener);
         }
+        if (mLastInsets == null && ViewCompat.getFitsSystemWindows(this)) {
+            // We're set to fitSystemWindows but we haven't had any insets yet...
+            // We should request a new dispatch of window insets
+            ViewCompat.requestApplyInsets(this);
+        }
         mIsAttachedToWindow = true;
     }
 
