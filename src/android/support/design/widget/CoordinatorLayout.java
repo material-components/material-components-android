@@ -35,6 +35,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -128,22 +129,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     static final ThreadLocal<Map<String, Constructor<Behavior>>> sConstructors =
             new ThreadLocal<>();
 
-    final Comparator<View> mLayoutDependencyComparator = new Comparator<View>() {
-        @Override
-        public int compare(View lhs, View rhs) {
-            if (lhs == rhs) {
-                return 0;
-            } else if (((LayoutParams) lhs.getLayoutParams()).dependsOn(
-                    CoordinatorLayout.this, lhs, rhs)) {
-                return 1;
-            } else if (((LayoutParams) rhs.getLayoutParams()).dependsOn(
-                    CoordinatorLayout.this, rhs, lhs)) {
-                return -1;
-            } else {
-                return 0;
-            }
-        }
-    };
 
     private static final int EVENT_PRE_DRAW = 0;
     private static final int EVENT_NESTED_SCROLL = 1;
@@ -156,7 +141,9 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     static final Comparator<View> TOP_SORTED_CHILDREN_COMPARATOR;
 
-    private final List<View> mDependencySortedChildren = new ArrayList<View>();
+    private final List<View> mDependencySortedChildren = new ArrayList<>();
+    private final DirectedAcyclicGraph<View> mChildDag = new DirectedAcyclicGraph<>();
+
     private final List<View> mTempList1 = new ArrayList<>();
     private final List<View> mTempDependenciesList = new ArrayList<>();
     private final Rect mTempRect1 = new Rect();
@@ -635,19 +622,47 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         return result;
     }
 
-    private void prepareChildren() {
-        mDependencySortedChildren.clear();
-        for (int i = 0, count = getChildCount(); i < count; i++) {
-            final View child = getChildAt(i);
-
-            final LayoutParams lp = getResolvedLayoutParams(child);
-            lp.findAnchorView(this, child);
-
-            mDependencySortedChildren.add(child);
+    private void prepareChildren(final boolean forceRefresh) {
+        if (!forceRefresh && mChildDag.size() == getChildCount()
+                && mChildDag.size() == mDependencySortedChildren.size()) {
+            // If we're not being forced and everything looks good, lets skip the call
+            return;
         }
-        // We need to use a selection sort here to make sure that every item is compared
-        // against each other
-        selectionSort(mDependencySortedChildren, mLayoutDependencyComparator);
+
+        mDependencySortedChildren.clear();
+        mChildDag.clear();
+
+        for (int i = 0, count = getChildCount(); i < count; i++) {
+            final View view = getChildAt(i);
+
+            final LayoutParams lp = getResolvedLayoutParams(view);
+            lp.findAnchorView(this, view);
+
+            mChildDag.addNode(view);
+
+            // Now iterate again over the other children, adding any dependencies to the graph
+            for (int j = 0; j < count; j++) {
+                if (j == i) {
+                    continue;
+                }
+                final View other = getChildAt(j);
+                final LayoutParams otherLp = getResolvedLayoutParams(other);
+                if (otherLp.dependsOn(this, other, view)) {
+                    if (!mChildDag.contains(other)) {
+                        // Make sure that the other node is added
+                        mChildDag.addNode(other);
+                    }
+                    // Now add the dependency to the graph
+                    mChildDag.addEdge(view, other);
+                }
+            }
+        }
+
+        // Finally add the sorted graph list to our list
+        mDependencySortedChildren.addAll(mChildDag.getSortedList());
+        // We also need to reverse the result since we want the start of the list to contain
+        // Views which have no dependencies, then dependent views after that
+        Collections.reverse(mDependencySortedChildren);
     }
 
     /**
@@ -692,7 +707,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        prepareChildren();
+        prepareChildren(true);
         ensurePreDrawListener();
 
         final int paddingLeft = getPaddingLeft();
@@ -1363,20 +1378,16 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      * @param view the View to find dependents of to dispatch the call.
      */
     public void dispatchDependentViewsChanged(View view) {
-        final int childCount = mDependencySortedChildren.size();
-        boolean viewSeen = false;
-        for (int i = 0; i < childCount; i++) {
-            final View child = mDependencySortedChildren.get(i);
-            if (child == view) {
-                // We've seen our view, which means that any Views after this could be dependent
-                viewSeen = true;
-                continue;
-            }
-            if (viewSeen) {
+        prepareChildren(false);
+
+        final List<View> dependents = mChildDag.getIncomingEdges(view);
+        if (dependents != null && !dependents.isEmpty()) {
+            for (int i = 0; i < dependents.size(); i++) {
+                final View child = (View) dependents.get(i);
                 CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams)
                         child.getLayoutParams();
                 CoordinatorLayout.Behavior b = lp.getBehavior();
-                if (b != null && lp.dependsOn(this, child, view)) {
+                if (b != null) {
                     b.onDependentViewChanged(this, child, view);
                 }
             }
@@ -1384,32 +1395,47 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     }
 
     /**
-     * Returns the list of views which the provided view depends on. Do not store this list as it's
+     * Returns the list of views which the provided view depends on. Do not store this list as its
      * contents may not be valid beyond the caller.
      *
      * @param child the view to find dependencies for.
      *
      * @return the list of views which {@code child} depends on.
      */
-    public List<View> getDependencies(View child) {
-        // TODO The result of this is probably a good candidate for caching
+    public List<View> getDependencies(@NonNull View child) {
+        prepareChildren(false);
 
-        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-        final List<View> list = mTempDependenciesList;
-        list.clear();
-
-        final int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View other = getChildAt(i);
-            if (other == child) {
-                continue;
-            }
-            if (lp.dependsOn(this, child, other)) {
-                list.add(other);
-            }
+        final List<View> dependencies = mChildDag.getOutgoingEdges(child);
+        mTempDependenciesList.clear();
+        if (dependencies != null) {
+            mTempDependenciesList.addAll(dependencies);
         }
+        return mTempDependenciesList;
+    }
 
-        return list;
+    /**
+     * Returns the list of views which depend on the provided view. Do not store this list as its
+     * contents may not be valid beyond the caller.
+     *
+     * @param child the view to find dependents of.
+     *
+     * @return the list of views which depend on {@code child}.
+     */
+    public List<View> getDependents(@NonNull View child) {
+        prepareChildren(false);
+
+        final List<View> edges = mChildDag.getIncomingEdges(child);
+        mTempDependenciesList.clear();
+        if (edges != null) {
+            mTempDependenciesList.addAll(edges);
+        }
+        return mTempDependenciesList;
+    }
+
+    @VisibleForTesting
+    final List<View> getDependencySortedChildren() {
+        prepareChildren(true);
+        return Collections.unmodifiableList(mDependencySortedChildren);
     }
 
     /**
@@ -1439,22 +1465,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      * Check if the given child has any layout dependencies on other child views.
      */
     boolean hasDependencies(View child) {
-        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-        if (lp.mAnchorView != null) {
-            return true;
-        }
-
-        final int childCount = getChildCount();
-        for (int i = 0; i < childCount; i++) {
-            final View other = getChildAt(i);
-            if (other == child) {
-                continue;
-            }
-            if (lp.dependsOn(this, child, other)) {
-                return true;
-            }
-        }
-        return false;
+        prepareChildren(false);
+        return mChildDag.hasOutgoingEdges(child);
     }
 
     /**
@@ -2827,7 +2839,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
         @Override
         public void onChildViewRemoved(View parent, View child) {
-            prepareChildren();
+            prepareChildren(true);
             onChildViewsChanged(EVENT_VIEW_REMOVED);
 
             if (mOnHierarchyChangeListener != null) {
@@ -2980,38 +2992,5 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
                 return new SavedState[size];
             }
         });
-    }
-
-    private static void selectionSort(final List<View> list, final Comparator<View> comparator) {
-        if (list == null || list.size() < 2) {
-            return;
-        }
-
-        final View[] array = new View[list.size()];
-        list.toArray(array);
-        final int count = array.length;
-
-        for (int i = 0; i < count; i++) {
-            int min = i;
-
-            for (int j = i + 1; j < count; j++) {
-                if (comparator.compare(array[j], array[min]) < 0) {
-                    min = j;
-                }
-            }
-
-            if (i != min) {
-                // We have a different min so swap the items
-                final View minItem = array[min];
-                array[min] = array[i];
-                array[i] = minItem;
-            }
-        }
-
-        // Finally add the array back into the collection
-        list.clear();
-        for (int i = 0; i < count; i++) {
-            list.add(array[i]);
-        }
     }
 }
