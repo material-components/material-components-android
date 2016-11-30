@@ -365,6 +365,18 @@
         <attr name="bottomSheetDialogTheme" format="reference" />
         <!-- Style to use for modal bottom sheets in this theme. -->
         <attr name="bottomSheetStyle" format="reference" />
+        <!-- Default style to use for CoordinatorLayouts in this theme. -->
+        <attr name="coordinatorLayoutStyle" format="reference"/>
+        <!-- Default style to use for CollapsingToolbarLayouts in this theme. -->
+        <attr name="collapsingToolbarLayoutStyle" format="reference"/>
+        <!-- Default style to use for FloatingActionButtons in this theme. -->
+        <attr name="floatingActionButtonStyle" format="reference"/>
+        <!-- Default style to use for NavigationViews in this theme. -->
+        <attr name="navigationViewStyle" format="reference"/>
+        <!-- Default style to use for TabLayouts in this theme. -->
+        <attr name="tabLayoutStyle" format="reference"/>
+        <!-- Default style to use for TextInputLayouts in this theme. -->
+        <attr name="textInputLayoutStyle" format="reference"/>
 
         <!-- Text color used to indicate an error has occurred. -->
         <attr name="textColorError" format="color" />
