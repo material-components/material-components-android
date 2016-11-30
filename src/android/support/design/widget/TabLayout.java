@@ -711,20 +711,34 @@ public class TabLayout extends HorizontalScrollView {
     /**
      * The one-stop shop for setting up this {@link TabLayout} with a {@link ViewPager}.
      *
-     * <p>This method will link the given ViewPager and this TabLayout together so that any
-     * changes in one are automatically reflected in the other. This includes adapter changes,
-     * scroll state changes, and clicks. The tabs displayed in this layout will be populated
+     * <p>This is the same as calling {@link #setupWithViewPager(ViewPager, boolean)} with
+     * auto-refresh enabled.</p>
+     *
+     * @param viewPager the ViewPager to link to, or {@code null} to clear any previous link
+     */
+    public void setupWithViewPager(@Nullable ViewPager viewPager) {
+        setupWithViewPager(viewPager, true);
+    }
+
+    /**
+     * The one-stop shop for setting up this {@link TabLayout} with a {@link ViewPager}.
+     *
+     * <p>This method will link the given ViewPager and this TabLayout together so that
+     * changes in one are automatically reflected in the other. This includes scroll state changes
+     * and clicks. The tabs displayed in this layout will be populated
      * from the ViewPager adapter's page titles.</p>
      *
-     * <p>After this method is called, you will not need this method again unless you want
-     * to change the linked ViewPager.</p>
+     * <p>If {@code autoRefresh} is {@code true}, any changes in the {@link PagerAdapter} will
+     * trigger this layout to re-populate itself from the adapter's titles.</p>
      *
      * <p>If the given ViewPager is non-null, it needs to already have a
      * {@link PagerAdapter} set.</p>
      *
-     * @param viewPager The ViewPager to link, or {@code null} to clear any previous link.
+     * @param viewPager   the ViewPager to link to, or {@code null} to clear any previous link
+     * @param autoRefresh whether this layout should refresh its contents if the given ViewPager's
+     *                    content changes
      */
-    public void setupWithViewPager(@Nullable final ViewPager viewPager) {
+    public void setupWithViewPager(@Nullable final ViewPager viewPager, boolean autoRefresh) {
         if (mViewPager != null && mPageChangeListener != null) {
             // If we've already been setup with a ViewPager, remove us from it
             mViewPager.removeOnPageChangeListener(mPageChangeListener);
@@ -755,8 +769,9 @@ public class TabLayout extends HorizontalScrollView {
             mCurrentVpSelectedListener = new ViewPagerOnTabSelectedListener(viewPager);
             addOnTabSelectedListener(mCurrentVpSelectedListener);
 
-            // Now we'll populate ourselves from the pager adapter
-            setPagerAdapter(adapter, true);
+            // Now we'll populate ourselves from the pager adapter, adding an observer is
+            // autoRefresh is enabled
+            setPagerAdapter(adapter, autoRefresh);
 
             // Now update the scroll position to match the ViewPager's current item
             setScrollPosition(viewPager.getCurrentItem(), 0f, true);
@@ -764,7 +779,7 @@ public class TabLayout extends HorizontalScrollView {
             // We've been given a null ViewPager so we need to clear out the internal state,
             // listeners and observers
             mViewPager = null;
-            setPagerAdapter(null, true);
+            setPagerAdapter(null, false);
         }
     }
 
@@ -825,8 +840,6 @@ public class TabLayout extends HorizontalScrollView {
                     selectTab(getTabAt(curItem));
                 }
             }
-        } else {
-            removeAllTabs();
         }
     }
 
@@ -2010,14 +2023,14 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         @Override
-        public void onPageScrollStateChanged(int state) {
+        public void onPageScrollStateChanged(final int state) {
             mPreviousScrollState = mScrollState;
             mScrollState = state;
         }
 
         @Override
-        public void onPageScrolled(int position, float positionOffset,
-                int positionOffsetPixels) {
+        public void onPageScrolled(final int position, final float positionOffset,
+                final int positionOffsetPixels) {
             final TabLayout tabLayout = mTabLayoutRef.get();
             if (tabLayout != null) {
                 // Only update the text selection if we're not settling, or we are settling after
@@ -2034,9 +2047,10 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         @Override
-        public void onPageSelected(int position) {
+        public void onPageSelected(final int position) {
             final TabLayout tabLayout = mTabLayoutRef.get();
-            if (tabLayout != null && tabLayout.getSelectedTabPosition() != position) {
+            if (tabLayout != null && tabLayout.getSelectedTabPosition() != position
+                    && position < tabLayout.getTabCount()) {
                 // Select the tab, only updating the indicator if we're not being dragged/settled
                 // (since onPageScrolled will handle that).
                 final boolean updateIndicator = mScrollState == SCROLL_STATE_IDLE

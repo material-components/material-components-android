@@ -39,12 +39,15 @@ import org.junit.Test;
 
 import java.util.ArrayList;
 
+import static android.support.design.testutils.TabLayoutActions.setupWithViewPager;
+import static android.support.design.testutils.ViewPagerActions.notifyAdapterContentChange;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.*;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
 public class TabLayoutWithViewPagerTest
         extends BaseInstrumentationTestCase<TabLayoutWithViewPagerActivity> {
@@ -186,7 +189,7 @@ public class TabLayoutWithViewPagerTest
 
     private void setupTabLayoutWithViewPager() {
         // And wire the tab layout to it
-        onView(withId(R.id.tabs)).perform(TabLayoutActions.setupWithViewPager(mViewPager));
+        onView(withId(R.id.tabs)).perform(setupWithViewPager(mViewPager));
     }
 
     /**
@@ -294,10 +297,10 @@ public class TabLayoutWithViewPagerTest
         assertEquals("Initial adapter page count", 3, initialAdapter.getCount());
 
         // Add two more entries to our adapter
-        final int newItemCount = 5;
         mDefaultPagerAdapter.add("Yellow", Color.YELLOW);
         mDefaultPagerAdapter.add("Magenta", Color.MAGENTA);
-        onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.notifyAdapterContentChange());
+        final int newItemCount = mDefaultPagerAdapter.getCount();
+        onView(withId(R.id.tabs_viewpager)).perform(notifyAdapterContentChange());
 
         // We have more comprehensive test coverage for changing the ViewPager adapter in v4/tests.
         // Here we are focused on testing the continuous integration of TabLayout with the new
@@ -312,6 +315,53 @@ public class TabLayoutWithViewPagerTest
 
         verifyViewPagerSelection();
         verifyTabLayoutSelection();
+    }
+
+    @Test
+    @SmallTest
+    public void testAdapterContentChangeWithAutoRefreshDisabled() {
+        onView(withId(R.id.tabs)).perform(setupWithViewPager(mViewPager, false));
+
+        // Verify that we have the expected initial adapter
+        PagerAdapter initialAdapter = mViewPager.getAdapter();
+        assertEquals("Initial adapter class", ColorPagerAdapter.class, initialAdapter.getClass());
+        assertEquals("Initial adapter page count", 3, initialAdapter.getCount());
+
+        // Add two more entries to our adapter
+        mDefaultPagerAdapter.add("Yellow", Color.YELLOW);
+        mDefaultPagerAdapter.add("Magenta", Color.MAGENTA);
+        final int newItemCount = mDefaultPagerAdapter.getCount();
+
+        // Notify the adapter that it has changed
+        onView(withId(R.id.tabs_viewpager)).perform(notifyAdapterContentChange());
+
+        // Assert that the TabLayout did not update and add the new items
+        assertNotEquals("Matching item count", newItemCount, mTabLayout.getTabCount());
+    }
+
+    @Test
+    @SmallTest
+    public void testBasicAutoRefreshDisabled() {
+        onView(withId(R.id.tabs)).perform(setupWithViewPager(mViewPager, false));
+
+        // Check that the TabLayout has the same number of items are the adapter
+        PagerAdapter initialAdapter = mViewPager.getAdapter();
+        assertEquals("Initial adapter page count", initialAdapter.getCount(),
+                mTabLayout.getTabCount());
+
+        // Add two more entries to our adapter
+        mDefaultPagerAdapter.add("Yellow", Color.YELLOW);
+        mDefaultPagerAdapter.add("Magenta", Color.MAGENTA);
+        final int newItemCount = mDefaultPagerAdapter.getCount();
+
+        // Assert that the TabLayout did not update and add the new items
+        assertNotEquals("Matching item count", newItemCount, mTabLayout.getTabCount());
+
+        // Now setup again to update the tabs
+        onView(withId(R.id.tabs)).perform(setupWithViewPager(mViewPager, false));
+
+        // Assert that the TabLayout updated and added the new items
+        assertEquals("Matching item count", newItemCount, mTabLayout.getTabCount());
     }
 
     @Test
@@ -335,7 +385,7 @@ public class TabLayoutWithViewPagerTest
                 ViewPagerActions.scrollToPage(0));
 
         // As TabLayout doesn't track adapter changes, we need to re-wire the new adapter
-        onView(withId(R.id.tabs)).perform(TabLayoutActions.setupWithViewPager(mViewPager));
+        onView(withId(R.id.tabs)).perform(setupWithViewPager(mViewPager));
 
         // We have more comprehensive test coverage for changing the ViewPager adapter in v4/tests.
         // Here we are focused on testing the integration of TabLayout with the new
@@ -360,7 +410,7 @@ public class TabLayoutWithViewPagerTest
         // And set it on the ViewPager
         onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.setAdapter(newAdapter));
         // As TabLayout doesn't track adapter changes, we need to re-wire the new adapter
-        onView(withId(R.id.tabs)).perform(TabLayoutActions.setupWithViewPager(mViewPager));
+        onView(withId(R.id.tabs)).perform(setupWithViewPager(mViewPager));
 
         // Set fixed mode on the TabLayout
         onView(withId(R.id.tabs)).perform(TabLayoutActions.setTabMode(TabLayout.MODE_FIXED));
@@ -370,7 +420,7 @@ public class TabLayoutWithViewPagerTest
         for (int i = 0; i < 8; i++) {
             newAdapter.add("Title " + i, "Body " + i);
             onView(withId(R.id.tabs_viewpager)).perform(
-                    ViewPagerActions.notifyAdapterContentChange());
+                    notifyAdapterContentChange());
 
             int expectedTabCount = i + 1;
             assertEquals("Tab count after adding #" + i, expectedTabCount,
@@ -423,7 +473,7 @@ public class TabLayoutWithViewPagerTest
         onView(withId(R.id.container)).perform(TestUtilsActions.replaceTabLayout(tabLayoutResId));
 
         // Now that we have a new TabLayout, wire it to the new content of our ViewPager
-        onView(withId(R.id.tabs)).perform(TabLayoutActions.setupWithViewPager(mViewPager));
+        onView(withId(R.id.tabs)).perform(setupWithViewPager(mViewPager));
 
         // Since TabLayout doesn't expose a getter for fetching the configured max tab width,
         // start adding a variety of tabs with progressively longer tab titles and test that
@@ -441,7 +491,7 @@ public class TabLayoutWithViewPagerTest
             final String tabTitle = tabTitleBuilder.toString();
             newAdapter.add(tabTitle, "Body " + i);
             onView(withId(R.id.tabs_viewpager)).perform(
-                    ViewPagerActions.notifyAdapterContentChange());
+                    notifyAdapterContentChange());
 
             int expectedTabCount = i + 1;
             // Check that all tabs are at least as wide as min width *and* at most as wide as max

@@ -63,6 +63,34 @@ public class TabLayoutActions {
     }
 
     /**
+     * Wires <code>TabLayout</code> to <code>ViewPager</code> content.
+     */
+    public static ViewAction setupWithViewPager(final @Nullable ViewPager viewPager,
+            final boolean autoRefresh) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayingAtLeast(90);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Setup with ViewPager content";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TabLayout tabLayout = (TabLayout) view;
+                tabLayout.setupWithViewPager(viewPager, autoRefresh);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
      * Selects the specified tab in the <code>TabLayout</code>.
      */
     public static ViewAction selectTab(final int tabIndex) {

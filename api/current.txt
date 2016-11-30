@@ -404,6 +404,7 @@ package android.support.design.widget {
     method public void setTabTextColors(int, int);
     method public deprecated void setTabsFromPagerAdapter(android.support.v4.view.PagerAdapter);
     method public void setupWithViewPager(android.support.v4.view.ViewPager);
+    method public void setupWithViewPager(android.support.v4.view.ViewPager, boolean);
     field public static final int GRAVITY_CENTER = 1; // 0x1
     field public static final int GRAVITY_FILL = 0; // 0x0
     field public static final int MODE_FIXED = 1; // 0x1
