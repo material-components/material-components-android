@@ -87,7 +87,12 @@ import java.util.Map;
  */
 public class CoordinatorLayout extends ViewGroup implements NestedScrollingParent {
     static final String TAG = "CoordinatorLayout";
-    static final String WIDGET_PACKAGE_NAME = CoordinatorLayout.class.getPackage().getName();
+    static final String WIDGET_PACKAGE_NAME;
+
+    static {
+        final Package pkg = CoordinatorLayout.class.getPackage();
+        WIDGET_PACKAGE_NAME = pkg != null ? pkg.getName() : null;
+    }
 
     private static final int TYPE_ON_INTERCEPT = 0;
     private static final int TYPE_ON_TOUCH = 1;
@@ -503,8 +508,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             // Fully qualified package name.
             fullName = name;
         } else {
-            // Assume stock behavior in this package.
-            fullName = WIDGET_PACKAGE_NAME + '.' + name;
+            // Assume stock behavior in this package (if we have one)
+            fullName = !TextUtils.isEmpty(WIDGET_PACKAGE_NAME)
+                    ? (WIDGET_PACKAGE_NAME + '.' + name)
+                    : name;
         }
 
         try {
