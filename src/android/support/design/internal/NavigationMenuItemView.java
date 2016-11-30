@@ -250,8 +250,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
         }
     }
 
-    public void setTextAppearance(Context context, int textAppearance) {
-        mTextView.setTextAppearance(context, textAppearance);
+    public void setTextAppearance(int textAppearance) {
+        TextViewCompat.setTextAppearance(mTextView, textAppearance);
     }
 
     public void setTextColor(ColorStateList colors) {

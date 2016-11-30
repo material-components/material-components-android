@@ -403,7 +403,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
                     NavigationMenuItemView itemView = (NavigationMenuItemView) holder.itemView;
                     itemView.setIconTintList(mIconTintList);
                     if (mTextAppearanceSet) {
-                        itemView.setTextAppearance(itemView.getContext(), mTextAppearance);
+                        itemView.setTextAppearance(mTextAppearance);
                     }
                     if (mTextColor != null) {
                         itemView.setTextColor(mTextColor);

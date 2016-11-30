@@ -1688,7 +1688,7 @@ public class TabLayout extends HorizontalScrollView {
                     mTextView = textView;
                     mDefaultMaxLines = TextViewCompat.getMaxLines(mTextView);
                 }
-                mTextView.setTextAppearance(getContext(), mTabTextAppearance);
+                TextViewCompat.setTextAppearance(mTextView, mTabTextAppearance);
                 if (mTabTextColors != null) {
                     mTextView.setTextColor(mTabTextColors);
                 }

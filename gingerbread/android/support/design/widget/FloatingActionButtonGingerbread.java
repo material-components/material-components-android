@@ -87,7 +87,7 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
         mContentBackground = new LayerDrawable(layers);
 
         mShadowDrawable = new ShadowDrawableWrapper(
-                mView.getResources(),
+                mView.getContext(),
                 mContentBackground,
                 mShadowViewDelegate.getRadius(),
                 mElevation,

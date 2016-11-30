@@ -16,6 +16,7 @@
 
 package android.support.design.widget;
 
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.Color;
@@ -25,6 +26,7 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.animation.Interpolator;
@@ -148,13 +150,13 @@ abstract class FloatingActionButtonImpl {
     }
 
     CircularBorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
-        final Resources resources = mView.getResources();
+        final Context context = mView.getContext();
         CircularBorderDrawable borderDrawable = newCircularDrawable();
         borderDrawable.setGradientColors(
-                resources.getColor(R.color.design_fab_stroke_top_outer_color),
-                resources.getColor(R.color.design_fab_stroke_top_inner_color),
-                resources.getColor(R.color.design_fab_stroke_end_inner_color),
-                resources.getColor(R.color.design_fab_stroke_end_outer_color));
+                ContextCompat.getColor(context, R.color.design_fab_stroke_top_outer_color),
+                ContextCompat.getColor(context, R.color.design_fab_stroke_top_inner_color),
+                ContextCompat.getColor(context, R.color.design_fab_stroke_end_inner_color),
+                ContextCompat.getColor(context, R.color.design_fab_stroke_end_outer_color));
         borderDrawable.setBorderWidth(borderWidth);
         borderDrawable.setBorderTint(backgroundTint);
         return borderDrawable;

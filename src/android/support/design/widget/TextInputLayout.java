@@ -560,7 +560,7 @@ public class TextInputLayout extends LinearLayout {
                 mErrorView = new TextView(getContext());
                 boolean useDefaultColor = false;
                 try {
-                    mErrorView.setTextAppearance(getContext(), mErrorTextAppearance);
+                    TextViewCompat.setTextAppearance(mErrorView, mErrorTextAppearance);
 
                     if (Build.VERSION.SDK_INT >= 23
                             && mErrorView.getTextColors().getDefaultColor() == Color.MAGENTA) {
@@ -577,7 +577,7 @@ public class TextInputLayout extends LinearLayout {
                 if (useDefaultColor) {
                     // Probably caused by our theme not extending from Theme.Design*. Instead
                     // we manually set something appropriate
-                    mErrorView.setTextAppearance(getContext(),
+                    TextViewCompat.setTextAppearance(mErrorView,
                             android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Caption);
                     mErrorView.setTextColor(ContextCompat.getColor(
                             getContext(), R.color.design_textinput_error_color_light));
@@ -700,11 +700,11 @@ public class TextInputLayout extends LinearLayout {
                 mCounterView = new TextView(getContext());
                 mCounterView.setMaxLines(1);
                 try {
-                    mCounterView.setTextAppearance(getContext(), mCounterTextAppearance);
+                    TextViewCompat.setTextAppearance(mCounterView, mCounterTextAppearance);
                 } catch (Exception e) {
                     // Probably caused by our theme not extending from Theme.Design*. Instead
                     // we manually set something appropriate
-                    mCounterView.setTextAppearance(getContext(),
+                    TextViewCompat.setTextAppearance(mCounterView,
                             android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Caption);
                     mCounterView.setTextColor(ContextCompat.getColor(
                             getContext(), R.color.design_textinput_error_color_light));
@@ -790,7 +790,7 @@ public class TextInputLayout extends LinearLayout {
         } else {
             mCounterOverflowed = length > mCounterMaxLength;
             if (wasCounterOverflowed != mCounterOverflowed) {
-                mCounterView.setTextAppearance(getContext(), mCounterOverflowed ?
+                TextViewCompat.setTextAppearance(mCounterView, mCounterOverflowed ?
                         mCounterOverflowTextAppearance : mCounterTextAppearance);
             }
             mCounterView.setText(getContext().getString(R.string.character_counter_pattern,
