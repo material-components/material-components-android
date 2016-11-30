@@ -57,6 +57,7 @@ class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
                 listener.onHidden();
             }
         } else {
+            mView.animate().cancel();
             mView.animate()
                     .scaleX(0f)
                     .scaleY(0f)
@@ -64,23 +65,29 @@ class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
                     .setDuration(SHOW_HIDE_ANIM_DURATION)
                     .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
                     .setListener(new AnimatorListenerAdapter() {
+                        private boolean mCancelled;
+
                         @Override
                         public void onAnimationStart(Animator animation) {
                             mIsHiding = true;
+                            mCancelled = false;
                             mView.setVisibility(View.VISIBLE);
                         }
 
                         @Override
                         public void onAnimationCancel(Animator animation) {
                             mIsHiding = false;
+                            mCancelled = true;
                         }
 
                         @Override
                         public void onAnimationEnd(Animator animation) {
                             mIsHiding = false;
-                            mView.setVisibility(View.GONE);
-                            if (listener != null) {
-                                listener.onHidden();
+                            if (!mCancelled) {
+                                mView.setVisibility(View.GONE);
+                                if (listener != null) {
+                                    listener.onHidden();
+                                }
                             }
                         }
                     });
@@ -89,11 +96,15 @@ class FloatingActionButtonHoneycombMr1 extends FloatingActionButtonEclairMr1 {
 
     @Override
     void show(@Nullable final InternalVisibilityChangedListener listener) {
-        if (mView.getVisibility() != View.VISIBLE) {
+        if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
             if (ViewCompat.isLaidOut(mView) && !mView.isInEditMode()) {
-                mView.setAlpha(0f);
-                mView.setScaleY(0f);
-                mView.setScaleX(0f);
+                mView.animate().cancel();
+                if (mView.getVisibility() != View.VISIBLE) {
+                    // If the view isn't visible currently, we'll animate it from a single pixel
+                    mView.setAlpha(0f);
+                    mView.setScaleY(0f);
+                    mView.setScaleX(0f);
+                }
                 mView.animate()
                         .scaleX(1f)
                         .scaleY(1f)
