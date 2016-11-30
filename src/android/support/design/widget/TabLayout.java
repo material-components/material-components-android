@@ -24,6 +24,7 @@ import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Paint;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
@@ -494,6 +495,9 @@ public class TabLayout extends HorizontalScrollView {
         }
         if (item.mCustomLayout != 0) {
             tab.setCustomView(item.mCustomLayout);
+        }
+        if (!TextUtils.isEmpty(item.getContentDescription())) {
+            tab.setContentDescription(item.getContentDescription());
         }
         addTab(tab);
     }
@@ -1750,21 +1754,32 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         @Override
-        public boolean onLongClick(View v) {
+        public boolean onLongClick(final View v) {
             final int[] screenPos = new int[2];
+            final Rect displayFrame = new Rect();
             getLocationOnScreen(screenPos);
+            getWindowVisibleDisplayFrame(displayFrame);
 
             final Context context = getContext();
             final int width = getWidth();
             final int height = getHeight();
-            final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+            final int midy = screenPos[1] + height / 2;
+            int referenceX = screenPos[0] + width / 2;
+            if (ViewCompat.getLayoutDirection(v) == ViewCompat.LAYOUT_DIRECTION_LTR) {
+                final int screenWidth = context.getResources().getDisplayMetrics().widthPixels;
+                referenceX = screenWidth - referenceX; // mirror
+            }
 
             Toast cheatSheet = Toast.makeText(context, mTab.getContentDescription(),
                     Toast.LENGTH_SHORT);
-            // Show under the tab
-            cheatSheet.setGravity(Gravity.TOP | Gravity.CENTER_HORIZONTAL,
-                    (screenPos[0] + width / 2) - screenWidth / 2, height);
-
+            if (midy < displayFrame.height()) {
+                // Show below the tab view
+                cheatSheet.setGravity(Gravity.TOP | GravityCompat.END, referenceX,
+                        screenPos[1] + height - displayFrame.top);
+            } else {
+                // Show along the bottom center
+                cheatSheet.setGravity(Gravity.BOTTOM | Gravity.CENTER_HORIZONTAL, 0, height);
+            }
             cheatSheet.show();
             return true;
         }
