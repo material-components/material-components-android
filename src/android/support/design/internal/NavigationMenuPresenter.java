@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
@@ -155,28 +156,36 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
     @Override
     public Parcelable onSaveInstanceState() {
-        Bundle state = new Bundle();
-        if (mMenuView != null) {
-            SparseArray<Parcelable> hierarchy = new SparseArray<>();
-            mMenuView.saveHierarchyState(hierarchy);
-            state.putSparseParcelableArray(STATE_HIERARCHY, hierarchy);
+        if (Build.VERSION.SDK_INT >= 11) {
+            // API 9-10 does not support ClassLoaderCreator, therefore things can crash if they're
+            // loaded via different loaders. Rather than crash we just won't save state on those
+            // platforms
+            final Bundle state = new Bundle();
+            if (mMenuView != null) {
+                SparseArray<Parcelable> hierarchy = new SparseArray<>();
+                mMenuView.saveHierarchyState(hierarchy);
+                state.putSparseParcelableArray(STATE_HIERARCHY, hierarchy);
+            }
+            if (mAdapter != null) {
+                state.putBundle(STATE_ADAPTER, mAdapter.createInstanceState());
+            }
+            return state;
         }
-        if (mAdapter != null) {
-            state.putBundle(STATE_ADAPTER, mAdapter.createInstanceState());
-        }
-        return state;
+        return null;
     }
 
     @Override
-    public void onRestoreInstanceState(Parcelable parcelable) {
-        Bundle state = (Bundle) parcelable;
-        SparseArray<Parcelable> hierarchy = state.getSparseParcelableArray(STATE_HIERARCHY);
-        if (hierarchy != null) {
-            mMenuView.restoreHierarchyState(hierarchy);
-        }
-        Bundle adapterState = state.getBundle(STATE_ADAPTER);
-        if (adapterState != null) {
-            mAdapter.restoreInstanceState(adapterState);
+    public void onRestoreInstanceState(final Parcelable parcelable) {
+        if (parcelable instanceof Bundle) {
+            Bundle state = (Bundle) parcelable;
+            SparseArray<Parcelable> hierarchy = state.getSparseParcelableArray(STATE_HIERARCHY);
+            if (hierarchy != null) {
+                mMenuView.restoreHierarchyState(hierarchy);
+            }
+            Bundle adapterState = state.getBundle(STATE_ADAPTER);
+            if (adapterState != null) {
+                mAdapter.restoreInstanceState(adapterState);
+            }
         }
     }
 
