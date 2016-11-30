@@ -40,15 +40,23 @@ import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 
 /**
- * Represents a standard bottom navigation bar for application. It is an implementation of material
- * design bottom navigation. See https://material.google.com/components/bottom-navigation.html
+ * <p>
+ * Represents a standard bottom navigation bar for application. It is an implementation of
+ * <a href="https://material.google.com/components/bottom-navigation.html">material design bottom
+ * navigation</a>.
+ * </p>
  *
+ * <p>
  * Bottom navigation bars make it easy for users to explore and switch between top-level views in
  * a single tap. It should be used when application has three to five top-level destinations.
+ * </p>
  *
+ * <p>
  * The bar contents can be populated by specifying a menu resource file. Each menu item title, icon
  * and enabled state will be used for displaying bottom navigation bar items.
+ * </p>
  *
+ * <pre>
  * &lt;android.support.design.widget.BottomNavigationView
  *     xmlns:android="http://schemas.android.com/apk/res/android"
  *     xmlns:app="http://schemas.android.com/apk/res-auto"
@@ -57,6 +65,7 @@ import android.widget.LinearLayout;
  *     android:layout_height="match_parent"
  *     android:layout_gravity="start"
  *     app:menu="@menu/my_navigation_items" /&gt;
+ * </pre>
  */
 public class BottomNavigationView extends FrameLayout {
 

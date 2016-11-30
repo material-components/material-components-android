@@ -57,11 +57,7 @@ public class BottomNavigationMenuView extends LinearLayout implements MenuView {
     }
 
     public BottomNavigationMenuView(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public BottomNavigationMenuView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
+        super(context, attrs);
         setGravity(Gravity.CENTER);
         setOrientation(HORIZONTAL);
 
