@@ -232,7 +232,11 @@ public class TextInputLayout extends LinearLayout {
         // Use the EditText's typeface, and it's text size for our expanded text
         mCollapsingTextHelper.setTypefaces(mEditText.getTypeface());
         mCollapsingTextHelper.setExpandedTextSize(mEditText.getTextSize());
-        mCollapsingTextHelper.setExpandedTextGravity(mEditText.getGravity());
+
+        final int editTextGravity = mEditText.getGravity();
+        mCollapsingTextHelper.setCollapsedTextGravity(
+                Gravity.TOP | (editTextGravity & GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK));
+        mCollapsingTextHelper.setExpandedTextGravity(editTextGravity);
 
         // Add a TextWatcher so that we know when the text input has changed
         mEditText.addTextChangedListener(new TextWatcher() {

@@ -362,7 +362,7 @@ final class CollapsingTextHelper {
                 mCollapsedDrawY = mCollapsedBounds.centerY() + textOffset;
                 break;
         }
-        switch (collapsedAbsGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+        switch (collapsedAbsGravity & GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
             case Gravity.CENTER_HORIZONTAL:
                 mCollapsedDrawX = mCollapsedBounds.centerX() - (width / 2);
                 break;
@@ -394,7 +394,7 @@ final class CollapsingTextHelper {
                 mExpandedDrawY = mExpandedBounds.centerY() + textOffset;
                 break;
         }
-        switch (expandedAbsGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+        switch (expandedAbsGravity & GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK) {
             case Gravity.CENTER_HORIZONTAL:
                 mExpandedDrawX = mExpandedBounds.centerX() - (width / 2);
                 break;
