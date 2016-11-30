@@ -38,7 +38,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtL
 
 public class TestUtilsActions {
     /**
-     * Replaces an existing <code>TabLayout</code> with a new one inflated from the specified
+     * Replaces an existing {@link TabLayout} with a new one inflated from the specified
      * layout resource.
      */
     public static ViewAction replaceTabLayout(final @LayoutRes int tabLayoutResId) {
@@ -136,7 +136,7 @@ public class TestUtilsActions {
     }
 
     /**
-     * Sets text content on <code>TextView</code>.
+     * Sets text content on {@link TextView}
      */
     public static ViewAction setText(final @Nullable CharSequence text) {
         return new ViewAction() {
@@ -156,6 +156,35 @@ public class TestUtilsActions {
 
                 TextView textView = (TextView) view;
                 textView.setText(text);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Adds tabs to {@link TabLayout}
+     */
+    public static ViewAction addTabs(final String... tabs) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TabLayout.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "TabLayout add tabs";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TabLayout tabLayout = (TabLayout) view;
+                for (int i = 0; i < tabs.length; i++) {
+                    tabLayout.addTab(tabLayout.newTab().setText(tabs[i]));
+                }
 
                 uiController.loopMainThreadUntilIdle();
             }

@@ -16,113 +16,36 @@
 
 package android.support.design.widget;
 
-import android.os.Build;
-import android.os.SystemClock;
-import android.support.annotation.IdRes;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.StringRes;
 import android.support.design.test.R;
-import android.support.test.espresso.action.CoordinatesProvider;
-import android.support.test.espresso.action.GeneralSwipeAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Swipe;
+import android.support.design.testutils.Cheeses;
 import android.test.suitebuilder.annotation.MediumTest;
-import android.view.View;
 import org.junit.Test;
 
+import java.util.Arrays;
+
+import static android.support.design.testutils.TestUtilsActions.addTabs;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 @MediumTest
-public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
-    @Test
-    public void testPinnedToolbar() {
-        configureContent(R.layout.design_appbar_toolbar_collapse_pin,
-                R.string.design_appbar_collapsing_toolbar_pin);
+public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
+    private TabLayout mTabLayout;
 
-        final int[] appbarOnScreenXY = new int[2];
-        final int[] coordinatorLayoutOnScreenXY = new int[2];
-        mAppBar.getLocationOnScreen(appbarOnScreenXY);
-        mCoordinatorLayout.getLocationOnScreen(coordinatorLayoutOnScreenXY);
+    @Override
+    protected void configureContent(@LayoutRes int layoutResId, @StringRes int titleResId) {
+        super.configureContent(layoutResId, titleResId);
 
-        final int originalAppbarTop = appbarOnScreenXY[1];
-        final int originalAppbarBottom = appbarOnScreenXY[1] + mAppBar.getHeight();
-        final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
-
-        final int toolbarHeight = mToolbar.getHeight();
-        final int appbarHeight = mAppBar.getHeight();
-        final int longSwipeAmount = 3 * appbarHeight / 2;
-        final int shortSwipeAmount = toolbarHeight;
-
-        // Perform a swipe-up gesture across the horizontal center of the screen.
-        performVerticalUpGesture(
-                R.id.coordinator_layout,
-                centerX,
-                originalAppbarBottom + 3 * longSwipeAmount / 2,
-                longSwipeAmount);
-
-        mAppBar.getLocationOnScreen(appbarOnScreenXY);
-        // At this point the app bar should be visually snapped below the system status bar.
-        // Allow for off-by-a-pixel margin of error.
-        assertEquals(originalAppbarTop + toolbarHeight, appbarOnScreenXY[1] + appbarHeight, 1);
-
-        // Perform another swipe-up gesture
-        performVerticalUpGesture(
-                R.id.coordinator_layout,
-                centerX,
-                originalAppbarBottom,
-                shortSwipeAmount);
-
-        mAppBar.getLocationOnScreen(appbarOnScreenXY);
-        // At this point the app bar should still be visually snapped below the system status bar
-        // as it is in the pinned mode. Allow for off-by-a-pixel margin of error.
-        assertEquals(originalAppbarTop + toolbarHeight, appbarOnScreenXY[1] + appbarHeight, 1);
-
-        // Perform a short swipe-down gesture across the horizontal center of the screen.
-        // Note that the swipe down is a bit longer than the swipe up to check that the app bar
-        // is not starting to expand too early.
-        performVerticalSwipeDownGesture(
-                R.id.coordinator_layout,
-                centerX,
-                originalAppbarBottom - shortSwipeAmount,
-                3 * shortSwipeAmount / 2);
-
-        mAppBar.getLocationOnScreen(appbarOnScreenXY);
-        // At this point the app bar should still be visually snapped below the system status bar
-        // as it is in the pinned mode and we haven't fully swiped down the content below the
-        // app bar. Allow for off-by-a-pixel margin of error.
-        assertEquals(originalAppbarTop + toolbarHeight, appbarOnScreenXY[1] + appbarHeight, 1);
-
-        // Perform another swipe-down gesture across the horizontal center of the screen.
-        performVerticalSwipeDownGesture(
-                R.id.coordinator_layout,
-                centerX,
-                originalAppbarBottom,
-                longSwipeAmount);
-
-        mAppBar.getLocationOnScreen(appbarOnScreenXY);
-        // At this point the app bar should be in its original position.
-        // Allow for off-by-a-pixel margin of error.
-        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
-        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
-
-        // Perform yet another swipe-down gesture across the horizontal center of the screen.
-        performVerticalSwipeDownGesture(
-                R.id.coordinator_layout,
-                centerX,
-                originalAppbarBottom,
-                longSwipeAmount);
-
-        mAppBar.getLocationOnScreen(appbarOnScreenXY);
-        // At this point the app bar should still be in its original position.
-        // Allow for off-by-a-pixel margin of error.
-        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
-        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+        mTabLayout = (TabLayout) mAppBar.findViewById(R.id.tabs);
+        onView(withId(R.id.tabs)).perform(addTabs(Arrays.copyOf(Cheeses.sCheeseStrings, 5)));
     }
 
     @Test
-    public void testScrollingToolbar() {
-        configureContent(R.layout.design_appbar_toolbar_collapse_scroll,
-                R.string.design_appbar_collapsing_toolbar_scroll);
+    public void testScrollingToolbarAndScrollingTabs() {
+        configureContent(R.layout.design_appbar_toolbar_scroll_tabs_scroll,
+                R.string.design_appbar_toolbar_scroll_tabs_scroll);
 
         final int[] appbarOnScreenXY = new int[2];
         final int[] coordinatorLayoutOnScreenXY = new int[2];
@@ -134,6 +57,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
 
         final int toolbarHeight = mToolbar.getHeight();
+        final int tabsHeight = mTabLayout.getHeight();
         final int appbarHeight = mAppBar.getHeight();
         final int longSwipeAmount = 3 * appbarHeight / 2;
         final int shortSwipeAmount = toolbarHeight;
@@ -147,8 +71,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
 
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
         // At this point the app bar should not be visually "present" on the screen, with its bottom
-        // edge aligned with the system status bar.
-        // Allow for off-by-a-pixel margin of error.
+        // edge aligned with the system status bar. Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
 
         // Perform another swipe-up gesture
@@ -163,20 +86,21 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         // margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
 
-        // Perform a short swipe-down gesture across the horizontal center of the screen.
+        // Perform a long swipe-down gesture across the horizontal center of the screen.
         // Note that the swipe down is a bit longer than the swipe up to fully bring down
-        // the scrolled-away toolbar
+        // the scrolled-away toolbar and tab layout
         performVerticalSwipeDownGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom,
-                3 * shortSwipeAmount / 2);
+                longSwipeAmount * 3 / 2);
 
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
         // At this point the app bar should be visually snapped below the system status bar as it
-        // in scrolling mode and we've swiped down, but not fully. Allow for off-by-a-pixel
+        // in scrolling mode and we've swiped down. Allow for off-by-a-pixel
         // margin of error.
-        assertEquals(originalAppbarTop + toolbarHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
+        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
 
         // Perform another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -188,8 +112,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
         // At this point the app bar should be in its original position.
         // Allow for off-by-a-pixel margin of error.
-        assertEquals(originalAppbarTop, appbarOnScreenXY[1]);
-        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight);
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
+        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
 
         // Perform yet another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -206,23 +130,24 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     }
 
     @Test
-    public void testPinnedToolbarAndAnchoredFab() throws Throwable {
-        configureContent(R.layout.design_appbar_toolbar_collapse_pin_with_fab,
-                R.string.design_appbar_collapsing_toolbar_pin_fab);
-
-        final FloatingActionButton fab =
-                (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    public void testPinnedToolbar() {
+        configureContent(R.layout.design_appbar_toolbar_scroll_tabs_pinned,
+                R.string.design_appbar_toolbar_scroll_tabs_pin);
 
         final int[] appbarOnScreenXY = new int[2];
         final int[] coordinatorLayoutOnScreenXY = new int[2];
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
         mCoordinatorLayout.getLocationOnScreen(coordinatorLayoutOnScreenXY);
 
+        final int originalAppbarTop = appbarOnScreenXY[1];
         final int originalAppbarBottom = appbarOnScreenXY[1] + mAppBar.getHeight();
         final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
 
+        final int toolbarHeight = mToolbar.getHeight();
+        final int tabsHeight = mTabLayout.getHeight();
         final int appbarHeight = mAppBar.getHeight();
         final int longSwipeAmount = 3 * appbarHeight / 2;
+        final int shortSwipeAmount = toolbarHeight;
 
         // Perform a swipe-up gesture across the horizontal center of the screen.
         performVerticalUpGesture(
@@ -231,38 +156,64 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
                 originalAppbarBottom + 3 * longSwipeAmount / 2,
                 longSwipeAmount);
 
-        // Since we the visibility change listener path is only exposed via direct calls to
-        // FloatingActionButton.show and not the internal path that FAB's behavior is using,
-        // this test needs to be tied to the internal implementation details of running animation
-        // that scales the FAB to 0/0 scales and interpolates its alpha to 0. Since that animation
-        // starts running partway through our swipe gesture and may complete a bit later then
-        // the swipe gesture, sleep for a bit to catch the "final" state of the FAB.
-        SystemClock.sleep(200);
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the tab bar should be visually snapped below the system status bar.
+        // Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
 
-        // At this point the FAB should be scaled to 0/0 and set at alpha 0. Since the relevant
-        // getter methods are only available on v11+, wrap the asserts with build version check.
-        if (Build.VERSION.SDK_INT >= 11) {
-            assertEquals(0.0f, fab.getScaleX(), 0.0f);
-            assertEquals(0.0f, fab.getScaleY(), 0.0f);
-            assertEquals(0.0f, fab.getAlpha(), 0.0f);
-        }
+        // Perform another swipe-up gesture
+        performVerticalUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom,
+                shortSwipeAmount);
 
-        // Perform a swipe-down gesture across the horizontal center of the screen.
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the tab bar should still be visually snapped below the system status bar
+        // as it is in the pinned mode. Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform a short swipe-down gesture across the horizontal center of the screen.
+        // Note that the swipe down is a bit longer than the swipe up to fully bring down
+        // the scrolled-away toolbar and tab layout
+        performVerticalSwipeDownGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom - shortSwipeAmount,
+                3 * shortSwipeAmount / 2);
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should be in its original position as it
+        // in scrolling mode and we've swiped down. Allow for off-by-a-pixel
+        // margin of error.
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
+        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom,
                 longSwipeAmount);
 
-        // Same as for swipe-up gesture - sleep for a bit to catch the "final" visible state of
-        // the FAB.
-        SystemClock.sleep(200);
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should be in its original position.
+        // Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
+        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
 
-        // At this point the FAB should be scaled back to its original size and be at full opacity.
-        if (Build.VERSION.SDK_INT >= 11) {
-            assertEquals(1.0f, fab.getScaleX(), 0.0f);
-            assertEquals(1.0f, fab.getScaleY(), 0.0f);
-            assertEquals(1.0f, fab.getAlpha(), 0.0f);
-        }
+        // Perform yet another swipe-down gesture across the horizontal center of the screen.
+        performVerticalSwipeDownGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom,
+                longSwipeAmount);
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should still be in its original position.
+        // Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
+        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
     }
+
 }
