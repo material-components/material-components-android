@@ -77,6 +77,7 @@ public class TextInputLayout extends LinearLayout {
     private TextView mErrorView;
     private int mErrorTextAppearance;
     private boolean mErrorShown;
+    private CharSequence mError;
 
     private boolean mCounterEnabled;
     private TextView mCounterView;
@@ -492,7 +493,14 @@ public class TextInputLayout extends LinearLayout {
      *
      * @see #getError()
      */
-    public void setError(@Nullable CharSequence error) {
+    public void setError(@Nullable final CharSequence error) {
+        if (TextUtils.equals(mError, error)) {
+            // If we already have the same error, ignore
+            return;
+        }
+
+        mError = error;
+
         if (!mErrorEnabled) {
             if (TextUtils.isEmpty(error)) {
                 // If error isn't enabled, and the error is empty, just return
@@ -502,15 +510,13 @@ public class TextInputLayout extends LinearLayout {
             setErrorEnabled(true);
         }
 
-        if (!TextUtils.isEmpty(error)) {
-            boolean animate;
-            if (TextUtils.equals(error, mErrorView.getText())) {
-                // We've been given the same error message, so only animate if needed
-                animate = !mErrorView.isShown() || ViewCompat.getAlpha(mErrorView) < 1f;
-            } else {
-                animate = true;
-                mErrorView.setText(error);
-            }
+        // Only animate if we've been laid out already
+        final boolean animate = ViewCompat.isLaidOut(this);
+        mErrorShown = !TextUtils.isEmpty(error);
+
+        if (mErrorShown) {
+            mErrorView.setText(error);
+            mErrorView.setVisibility(VISIBLE);
 
             if (animate) {
                 if (ViewCompat.getAlpha(mErrorView) == 1f) {
@@ -526,34 +532,30 @@ public class TextInputLayout extends LinearLayout {
                             public void onAnimationStart(View view) {
                                 view.setVisibility(VISIBLE);
                             }
-                        })
-                        .start();
+                        }).start();
             }
-
-            // Set the EditText's background tint to the error color
-            mErrorShown = true;
-            updateEditTextBackground();
-            updateLabelState(true);
         } else {
             if (mErrorView.getVisibility() == VISIBLE) {
-                ViewCompat.animate(mErrorView)
-                        .alpha(0f)
-                        .setDuration(ANIMATION_DURATION)
-                        .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
-                        .setListener(new ViewPropertyAnimatorListenerAdapter() {
-                            @Override
-                            public void onAnimationEnd(View view) {
-                                view.setVisibility(INVISIBLE);
-
-                                updateLabelState(true);
-                            }
-                        }).start();
-
-                // Restore the 'original' tint, using colorControlNormal and colorControlActivated
-                mErrorShown = false;
-                updateEditTextBackground();
+                if (animate) {
+                    ViewCompat.animate(mErrorView)
+                            .alpha(0f)
+                            .setDuration(ANIMATION_DURATION)
+                            .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
+                            .setListener(new ViewPropertyAnimatorListenerAdapter() {
+                                @Override
+                                public void onAnimationEnd(View view) {
+                                    mErrorView.setText(error);
+                                    view.setVisibility(INVISIBLE);
+                                }
+                            }).start();
+                } else {
+                    mErrorView.setVisibility(INVISIBLE);
+                }
             }
         }
+
+        updateEditTextBackground();
+        updateLabelState(true);
     }
 
     /**
@@ -710,10 +712,7 @@ public class TextInputLayout extends LinearLayout {
      */
     @Nullable
     public CharSequence getError() {
-        if (mErrorEnabled && mErrorView != null && mErrorView.getVisibility() == VISIBLE) {
-            return mErrorView.getText();
-        }
-        return null;
+        return mErrorEnabled ? mError : null;
     }
 
     /**
