@@ -1148,15 +1148,15 @@ public class TabLayout extends HorizontalScrollView {
                 if (hasText) {
                     if (mTextView == null) {
                         AppCompatTextView textView = new AppCompatTextView(getContext());
-                        textView.setTextAppearance(getContext(), mTabTextAppearance);
                         textView.setMaxLines(MAX_TAB_TEXT_LINES);
                         textView.setEllipsize(TextUtils.TruncateAt.END);
                         textView.setGravity(Gravity.CENTER);
-                        if (mTabTextColors != null) {
-                            textView.setTextColor(mTabTextColors);
-                        }
                         addView(textView, LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                         mTextView = textView;
+                    }
+                    mTextView.setTextAppearance(getContext(), mTabTextAppearance);
+                    if (mTabTextColors != null) {
+                        mTextView.setTextColor(mTabTextColors);
                     }
                     mTextView.setText(text);
                     mTextView.setContentDescription(tab.getContentDescription());
