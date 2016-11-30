@@ -399,6 +399,16 @@ public class FloatingActionButton extends ImageView {
             }
         }
 
+        @Override
+        public boolean onLayoutChild(CoordinatorLayout parent, FloatingActionButton child,
+                int layoutDirection) {
+            // Let the CoordinatorLayout lay out the FAB
+            parent.onLayoutChild(child, layoutDirection);
+            // Now offset it if needed
+            offsetIfNeeded(parent, child);
+            return true;
+        }
+
         private void animateOut(final FloatingActionButton button) {
             if (Build.VERSION.SDK_INT >= 14) {
                 ViewCompat.animate(button)
@@ -442,6 +452,40 @@ public class FloatingActionButton extends ImageView {
                     }
                 });
                 button.startAnimation(anim);
+            }
+        }
+
+        /**
+         * Pre-Lollipop we use padding so that the shadow has enough space to be drawn. This method
+         * offsets our layout position so that we're positioned correctly if we're on one of
+         * our parent's edges.
+         */
+        private void offsetIfNeeded(CoordinatorLayout parent, FloatingActionButton fab) {
+            final Rect padding = fab.mShadowPadding;
+
+            if (padding != null && padding.centerX() > 0 && padding.centerY() > 0) {
+                final CoordinatorLayout.LayoutParams lp =
+                        (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+
+                int offsetTB = 0, offsetLR = 0;
+
+                if (fab.getRight() >= parent.getWidth() - lp.rightMargin) {
+                    // If we're on the left edge, shift it the right
+                    offsetLR = padding.right;
+                } else if (fab.getLeft() <= lp.leftMargin) {
+                    // If we're on the left edge, shift it the left
+                    offsetLR = -padding.left;
+                }
+                if (fab.getBottom() >= parent.getBottom() - lp.bottomMargin) {
+                    // If we're on the bottom edge, shift it down
+                    offsetTB = padding.bottom;
+                } else if (fab.getTop() <= lp.topMargin) {
+                    // If we're on the top edge, shift it up
+                    offsetTB = -padding.top;
+                }
+
+                fab.offsetTopAndBottom(offsetTB);
+                fab.offsetLeftAndRight(offsetLR);
             }
         }
     }
