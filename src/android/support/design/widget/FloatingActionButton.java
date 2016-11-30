@@ -653,7 +653,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     /**
      * Returns the backward compatible elevation of the FloatingActionButton.
      *
-     * @returns the backward compatible elevation in pixels.
+     * @return the backward compatible elevation in pixels.
      * @attr ref android.support.design.R.styleable#FloatingActionButton_elevation
      * @see #setFloatingActionButtonElevation(float)
      */
