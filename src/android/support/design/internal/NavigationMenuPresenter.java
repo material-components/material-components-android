@@ -32,7 +32,6 @@ import android.support.v7.internal.view.menu.MenuItemImpl;
 import android.support.v7.internal.view.menu.MenuPresenter;
 import android.support.v7.internal.view.menu.MenuView;
 import android.support.v7.internal.view.menu.SubMenuBuilder;
-import android.support.v7.internal.widget.ListViewCompat;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -41,7 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.BaseAdapter;
-import android.widget.ListAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -54,7 +53,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     private static final String STATE_HIERARCHY = "android:menu:list";
 
     private NavigationMenuView mMenuView;
-    private View mSpace;
+    private LinearLayout mHeader;
 
     private Callback mCallback;
     private MenuBuilder mMenu;
@@ -95,6 +94,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             if (mAdapter == null) {
                 mAdapter = new NavigationMenuAdapter();
             }
+            mHeader = (LinearLayout) mLayoutInflater.inflate(R.layout.design_navigation_item_header,
+                    mMenuView, false);
+            mMenuView.addHeaderView(mHeader);
             mMenuView.setAdapter(mAdapter);
             mMenuView.setOnItemClickListener(this);
         }
@@ -178,41 +180,21 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     }
 
     public View inflateHeaderView(@LayoutRes int res) {
-        View view = mLayoutInflater.inflate(res, mMenuView, false);
+        View view = mLayoutInflater.inflate(res, mHeader, false);
         addHeaderView(view);
-        onHeaderAdded();
         return view;
     }
 
     public void addHeaderView(@NonNull View view) {
-        ListAdapter adapter = mMenuView.getAdapter();
-        if (adapter != null) {
-            mMenuView.setAdapter(null);
-        }
-        mMenuView.addHeaderView(view);
-        mMenuView.setAdapter(adapter);
-        onHeaderAdded();
-    }
-
-    private void onHeaderAdded() {
-        // If we have just added the first header, we also need to insert a space
-        // between the header and the menu items.
-        if (mMenuView.getHeaderViewsCount() == 1) {
-            mSpace = mLayoutInflater.inflate(R.layout.design_navigation_item_space, mMenuView,
-                    false);
-            mMenuView.addHeaderView(mSpace);
-        }
+        mHeader.addView(view);
         // The padding on top should be cleared.
         mMenuView.setPadding(0, 0, 0, mMenuView.getPaddingBottom());
     }
 
     public void removeHeaderView(@NonNull View view) {
-        if (mMenuView.removeHeaderView(view)) {
-            // Remove the space if it is the only remained header
-            if (mMenuView.getHeaderViewsCount() == 1) {
-                mMenuView.removeHeaderView(mSpace);
-                mMenuView.setPadding(0, mPaddingTopDefault, 0, mMenuView.getPaddingBottom());
-            }
+        mHeader.removeView(view);
+        if (mHeader.getChildCount() == 0) {
+            mMenuView.setPadding(0, mPaddingTopDefault, 0, mMenuView.getPaddingBottom());
         }
     }
 
