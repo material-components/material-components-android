@@ -21,6 +21,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
@@ -96,7 +97,7 @@ public class BottomNavigationViewTest
 
         // Click one of our items
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_profile)),
-                isDescendantOfA(withId(R.id.bottom_navigation)))).perform(click());
+                isDescendantOfA(withId(R.id.bottom_navigation)), isDisplayed())).perform(click());
         // And that our listener has been notified of the click
         verify(mockedListener, times(1)).onNavigationItemSelected(
                 mBottomNavigation.getMenu().findItem(R.id.destination_profile));
@@ -107,7 +108,7 @@ public class BottomNavigationViewTest
 
         // Click one of our items
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
-                isDescendantOfA(withId(R.id.bottom_navigation)))).perform(click());
+                isDescendantOfA(withId(R.id.bottom_navigation)), isDisplayed())).perform(click());
         // And that our previous listener has not been notified of the click
         verifyNoMoreInteractions(mockedListener);
     }
