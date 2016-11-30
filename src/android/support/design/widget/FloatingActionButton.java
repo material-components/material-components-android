@@ -239,13 +239,7 @@ public class FloatingActionButton extends ImageView {
      * <p>This method will animate it the button show if the view has already been laid out.</p>
      */
     public void show() {
-        if (getVisibility() == VISIBLE) {
-            return;
-        }
-        setVisibility(VISIBLE);
-        if (ViewCompat.isLaidOut(this)) {
-            mImpl.show();
-        }
+        mImpl.show();
     }
 
     /**
@@ -253,14 +247,7 @@ public class FloatingActionButton extends ImageView {
      * <p>This method will animate the button hide if the view has already been laid out.</p>
      */
     public void hide() {
-        if (getVisibility() != VISIBLE) {
-            return;
-        }
-        if (ViewCompat.isLaidOut(this) && !isInEditMode()) {
-            mImpl.hide();
-        } else {
-            setVisibility(GONE);
-        }
+        mImpl.hide();
     }
 
     final int getSizeDimension() {
@@ -338,7 +325,6 @@ public class FloatingActionButton extends ImageView {
         private static final boolean SNACKBAR_BEHAVIOR_ENABLED = Build.VERSION.SDK_INT >= 11;
 
         private Rect mTmpRect;
-        private float mTranslationY;
 
         @Override
         public boolean layoutDependsOn(CoordinatorLayout parent,
@@ -366,10 +352,15 @@ public class FloatingActionButton extends ImageView {
             if (dependency instanceof Snackbar.SnackbarLayout) {
                 // If the removed view is a SnackbarLayout, we will animate back to our normal
                 // position
-                ViewCompat.animate(child)
-                        .translationY(0f)
-                        .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
-                        .setListener(null);
+                if (ViewCompat.getTranslationY(child) != 0f) {
+                    ViewCompat.animate(child)
+                            .translationY(0f)
+                            .scaleX(1f)
+                            .scaleY(1f)
+                            .alpha(1f)
+                            .setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR)
+                            .setListener(null);
+                }
             }
         }
 
@@ -408,13 +399,7 @@ public class FloatingActionButton extends ImageView {
             }
 
             final float translationY = getFabTranslationYForSnackbar(parent, fab);
-            if (translationY != mTranslationY) {
-                // First, cancel any current animation
-                ViewCompat.animate(fab).cancel();
-                // Else we'll set use setTranslationY
-                ViewCompat.setTranslationY(fab, translationY);
-                mTranslationY = translationY;
-            }
+            ViewCompat.setTranslationY(fab, translationY);
         }
 
         private float getFabTranslationYForSnackbar(CoordinatorLayout parent,

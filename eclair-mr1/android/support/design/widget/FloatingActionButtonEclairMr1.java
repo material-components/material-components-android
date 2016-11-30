@@ -158,8 +158,8 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
     @Override
     void hide() {
-        if (mIsHiding) {
-            // There is currently an hide animation running, return
+        if (mIsHiding || mView.getVisibility() != View.VISIBLE) {
+            // A hide animation is in progress, or we're already hidden. Skip the call
             return;
         }
 
@@ -184,11 +184,17 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
     @Override
     void show() {
-        Animation anim = android.view.animation.AnimationUtils.loadAnimation(
-                mView.getContext(), R.anim.design_fab_in);
-        anim.setDuration(SHOW_HIDE_ANIM_DURATION);
-        anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-        mView.startAnimation(anim);
+        if (mView.getVisibility() != View.VISIBLE || mIsHiding) {
+            // If the view is not visible, or is visible and currently being hidden, run
+            // the show animation
+            mView.clearAnimation();
+            mView.setVisibility(View.VISIBLE);
+            Animation anim = android.view.animation.AnimationUtils.loadAnimation(
+                    mView.getContext(), R.anim.design_fab_in);
+            anim.setDuration(SHOW_HIDE_ANIM_DURATION);
+            anim.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+            mView.startAnimation(anim);
+        }
     }
 
     private void updatePadding() {
