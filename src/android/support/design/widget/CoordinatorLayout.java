@@ -29,8 +29,12 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.os.SystemClock;
+import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
+import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.GravityCompat;
@@ -242,9 +246,23 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      *
      * @param bg Background drawable to draw behind the status bar
      */
-    public void setStatusBarBackground(Drawable bg) {
-        mStatusBarBackground = bg;
-        invalidate();
+    public void setStatusBarBackground(@Nullable final Drawable bg) {
+        if (mStatusBarBackground != bg) {
+            if (mStatusBarBackground != null) {
+                mStatusBarBackground.setCallback(null);
+            }
+            mStatusBarBackground = bg != null ? bg.mutate() : null;
+            if (mStatusBarBackground != null) {
+                if (mStatusBarBackground.isStateful()) {
+                    mStatusBarBackground.setState(getDrawableState());
+                }
+                DrawableCompat.setLayoutDirection(mStatusBarBackground,
+                        ViewCompat.getLayoutDirection(this));
+                mStatusBarBackground.setVisible(getVisibility() == VISIBLE, false);
+                mStatusBarBackground.setCallback(this);
+            }
+            ViewCompat.postInvalidateOnAnimation(this);
+        }
     }
 
     /**
@@ -252,8 +270,41 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      *
      * @return The status bar background drawable, or null if none set
      */
+    @Nullable
     public Drawable getStatusBarBackground() {
         return mStatusBarBackground;
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+
+        final int[] state = getDrawableState();
+        boolean changed = false;
+
+        Drawable d = mStatusBarBackground;
+        if (d != null && d.isStateful()) {
+            changed |= d.setState(state);
+        }
+
+        if (changed) {
+            invalidate();
+        }
+    }
+
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        return super.verifyDrawable(who) || who == mStatusBarBackground;
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+
+        final boolean visible = visibility == VISIBLE;
+        if (mStatusBarBackground != null && mStatusBarBackground.isVisible() != visible) {
+            mStatusBarBackground.setVisible(visible, false);
+        }
     }
 
     /**
@@ -262,7 +313,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      *
      * @param resId Resource id of a background drawable to draw behind the status bar
      */
-    public void setStatusBarBackgroundResource(int resId) {
+    public void setStatusBarBackgroundResource(@DrawableRes int resId) {
         setStatusBarBackground(resId != 0 ? ContextCompat.getDrawable(getContext(), resId) : null);
     }
 
@@ -273,7 +324,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
      * @param color Color to use as a background drawable to draw behind the status bar
      *              in 0xAARRGGBB format.
      */
-    public void setStatusBarBackgroundColor(int color) {
+    public void setStatusBarBackgroundColor(@ColorInt int color) {
         setStatusBarBackground(new ColorDrawable(color));
     }
 

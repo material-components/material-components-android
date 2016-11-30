@@ -32,6 +32,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -590,13 +591,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
             if (mContentScrim != null) {
                 mContentScrim.setCallback(null);
             }
-            if (drawable != null) {
-                mContentScrim = drawable.mutate();
-                drawable.setBounds(0, 0, getWidth(), getHeight());
-                drawable.setCallback(this);
-                drawable.setAlpha(mScrimAlpha);
-            } else {
-                mContentScrim = null;
+            mContentScrim = drawable != null ? drawable.mutate() : null;
+            if (mContentScrim != null) {
+                mContentScrim.setBounds(0, 0, getWidth(), getHeight());
+                mContentScrim.setCallback(this);
+                mContentScrim.setAlpha(mScrimAlpha);
             }
             ViewCompat.postInvalidateOnAnimation(this);
         }
@@ -633,6 +632,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      * @attr ref R.styleable#CollapsingToolbarLayout_contentScrim
      * @see #setContentScrim(Drawable)
      */
+    @Nullable
     public Drawable getContentScrim() {
         return mContentScrim;
     }
@@ -653,11 +653,57 @@ public class CollapsingToolbarLayout extends FrameLayout {
             if (mStatusBarScrim != null) {
                 mStatusBarScrim.setCallback(null);
             }
-
-            mStatusBarScrim = drawable;
-            drawable.setCallback(this);
-            drawable.mutate().setAlpha(mScrimAlpha);
+            mStatusBarScrim = drawable != null ? drawable.mutate() : null;
+            if (mStatusBarScrim != null) {
+                if (mStatusBarScrim.isStateful()) {
+                    mStatusBarScrim.setState(getDrawableState());
+                }
+                DrawableCompat.setLayoutDirection(mStatusBarScrim,
+                        ViewCompat.getLayoutDirection(this));
+                mStatusBarScrim.setVisible(getVisibility() == VISIBLE, false);
+                mStatusBarScrim.setCallback(this);
+                mStatusBarScrim.setAlpha(mScrimAlpha);
+            }
             ViewCompat.postInvalidateOnAnimation(this);
+        }
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+        super.drawableStateChanged();
+
+        final int[] state = getDrawableState();
+        boolean changed = false;
+
+        Drawable d = mStatusBarScrim;
+        if (d != null && d.isStateful()) {
+            changed |= d.setState(state);
+        }
+        d = mContentScrim;
+        if (d != null && d.isStateful()) {
+            changed |= d.setState(state);
+        }
+
+        if (changed) {
+            invalidate();
+        }
+    }
+
+    @Override
+    protected boolean verifyDrawable(Drawable who) {
+        return super.verifyDrawable(who) || who == mContentScrim || who == mStatusBarScrim;
+    }
+
+    @Override
+    public void setVisibility(int visibility) {
+        super.setVisibility(visibility);
+
+        final boolean visible = visibility == VISIBLE;
+        if (mStatusBarScrim != null && mStatusBarScrim.isVisible() != visible) {
+            mStatusBarScrim.setVisible(visible, false);
+        }
+        if (mContentScrim != null && mContentScrim.isVisible() != visible) {
+            mContentScrim.setVisible(visible, false);
         }
     }
 
@@ -693,6 +739,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim
      * @see #setStatusBarScrim(Drawable)
      */
+    @Nullable
     public Drawable getStatusBarScrim() {
         return mStatusBarScrim;
     }
