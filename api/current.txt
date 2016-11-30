@@ -242,14 +242,19 @@ package android.support.design.widget {
     method public float getCompatElevation();
     method public android.graphics.drawable.Drawable getContentBackground();
     method public boolean getContentRect(android.graphics.Rect);
+    method public int getSize();
     method public boolean getUseCompatPadding();
     method public void hide();
     method public void hide(android.support.design.widget.FloatingActionButton.OnVisibilityChangedListener);
     method public void setCompatElevation(float);
     method public void setRippleColor(int);
+    method public void setSize(int);
     method public void setUseCompatPadding(boolean);
     method public void show();
     method public void show(android.support.design.widget.FloatingActionButton.OnVisibilityChangedListener);
+    field public static final int SIZE_AUTO = -1; // 0xffffffff
+    field public static final int SIZE_MINI = 1; // 0x1
+    field public static final int SIZE_NORMAL = 0; // 0x0
   }
 
   public static class FloatingActionButton.Behavior extends android.support.design.widget.CoordinatorLayout.Behavior {

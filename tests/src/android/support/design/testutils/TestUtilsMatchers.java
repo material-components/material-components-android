@@ -286,4 +286,31 @@ public class TestUtilsMatchers {
         };
     }
 
+    /**
+     * Returns a matcher that matches FloatingActionButtons with the specified content height
+     */
+    public static Matcher withFabContentHeight(final int size) {
+        return new BoundedMatcher<View, View>(View.class) {
+            private String failedCheckDescription;
+
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText(failedCheckDescription);
+            }
+
+            @Override
+            public boolean matchesSafely(final View view) {
+                if (!(view instanceof FloatingActionButton)) {
+                    return false;
+                }
+
+                final FloatingActionButton fab = (FloatingActionButton) view;
+                final Rect area = new Rect();
+                fab.getContentRect(area);
+
+                return area.height() == size;
+            }
+        };
+    }
+
 }

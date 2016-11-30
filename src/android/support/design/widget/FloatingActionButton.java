@@ -19,6 +19,7 @@ package android.support.design.widget;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -26,10 +27,12 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
+import android.support.v4.content.res.ConfigurationHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatDrawableManager;
 import android.support.v7.widget.AppCompatImageHelper;
@@ -39,6 +42,8 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.ImageView;
 
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 /**
@@ -55,8 +60,6 @@ import java.util.List;
  * <p>The background color of this view defaults to the your theme's {@code colorAccent}. If you
  * wish to change this at runtime then you can do so via
  * {@link #setBackgroundTintList(ColorStateList)}.</p>
- *
- * @attr ref android.support.design.R.styleable#FloatingActionButton_fabSize
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends VisibilityAwareImageButton {
@@ -85,8 +88,39 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     // These values must match those in the attrs declaration
-    private static final int SIZE_MINI = 1;
-    private static final int SIZE_NORMAL = 0;
+
+    /**
+     * The mini sized button. Will always been smaller than {@link #SIZE_NORMAL}.
+     *
+     * @see #setSize(int)
+     */
+    public static final int SIZE_MINI = 1;
+
+    /**
+     * The normal sized button. Will always been larger than {@link #SIZE_MINI}.
+     *
+     * @see #setSize(int)
+     */
+    public static final int SIZE_NORMAL = 0;
+
+    /**
+     * Size which will change based on the window size. For small sized windows
+     * (largest screen dimension < 470dp) this will select a small sized button, and for
+     * larger sized windows it will select a larger size.
+     *
+     * @see #setSize(int)
+     */
+    public static final int SIZE_AUTO = -1;
+
+    /**
+     * The switch point for the largest screen edge where SIZE_AUTO switches from mini to normal.
+     */
+    private static final int AUTO_MINI_LARGEST_SCREEN_WIDTH = 470;
+
+    /** @hide */
+    @Retention(RetentionPolicy.SOURCE)
+    @IntDef({SIZE_MINI, SIZE_NORMAL, SIZE_AUTO})
+    public @interface Size {}
 
     private ColorStateList mBackgroundTint;
     private PorterDuff.Mode mBackgroundTintMode;
@@ -95,6 +129,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private int mRippleColor;
     private int mSize;
     private int mImagePadding;
+    private int mMaxImageSize;
 
     private boolean mCompatPadding;
     private final Rect mShadowPadding = new Rect();
@@ -124,7 +159,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         mBackgroundTintMode = parseTintMode(a.getInt(
                 R.styleable.FloatingActionButton_backgroundTintMode, -1), null);
         mRippleColor = a.getColor(R.styleable.FloatingActionButton_rippleColor, 0);
-        mSize = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_NORMAL);
+        mSize = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_AUTO);
         mBorderWidth = a.getDimensionPixelSize(R.styleable.FloatingActionButton_borderWidth, 0);
         final float elevation = a.getDimension(R.styleable.FloatingActionButton_elevation, 0f);
         final float pressedTranslationZ = a.getDimension(
@@ -135,19 +170,20 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         mImageHelper = new AppCompatImageHelper(this, AppCompatDrawableManager.get());
         mImageHelper.loadFromAttributes(attrs, defStyleAttr);
 
-        final int maxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
-        mImagePadding = (getSizeDimension() - maxImageSize) / 2;
+        mMaxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
 
         getImpl().setBackgroundDrawable(mBackgroundTint, mBackgroundTintMode,
                 mRippleColor, mBorderWidth);
         getImpl().setElevation(elevation);
         getImpl().setPressedTranslationZ(pressedTranslationZ);
-        getImpl().updatePadding();
     }
 
     @Override
     protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
         final int preferredSize = getSizeDimension();
+
+        mImagePadding = (preferredSize - mMaxImageSize) / 2;
+        getImpl().updatePadding();
 
         final int w = resolveAdjustedSize(preferredSize, widthMeasureSpec);
         final int h = resolveAdjustedSize(preferredSize, heightMeasureSpec);
@@ -327,6 +363,35 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         return mCompatPadding;
     }
 
+    /**
+     * Sets the size of the button.
+     *
+     * <p>The options relate to the options available on the material design specification.
+     * {@link #SIZE_NORMAL} is larger than {@link #SIZE_MINI}. {@link #SIZE_AUTO} will choose
+     * an appropriate size based on the screen size.</p>
+     *
+     * @param size one of {@link #SIZE_NORMAL}, {@link #SIZE_MINI} or {@link #SIZE_AUTO}
+     *
+     * @attr ref android.support.design.R.styleable#FloatingActionButton_fabSize
+     */
+    public void setSize(@Size int size) {
+        if (size != mSize) {
+            mSize = size;
+            requestLayout();
+        }
+    }
+
+    /**
+     * Returns the chosen size for this button.
+     *
+     * @returns one of {@link #SIZE_NORMAL}, {@link #SIZE_MINI} or {@link #SIZE_AUTO}
+     * @see #setSize(int)
+     */
+    @Size
+    public int getSize() {
+        return mSize;
+    }
+
     @Nullable
     private InternalVisibilityChangedListener wrapOnVisibilityChangedListener(
             @Nullable final OnVisibilityChangedListener listener) {
@@ -347,13 +412,25 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         };
     }
 
-    final int getSizeDimension() {
-        switch (mSize) {
+    private int getSizeDimension() {
+        return getSizeDimension(mSize);
+    }
+
+    private int getSizeDimension(@Size final int size) {
+        final Resources res = getResources();
+        switch (size) {
+            case SIZE_AUTO:
+                // If we're set to auto, grab the size from resources and refresh
+                final int width = ConfigurationHelper.getScreenWidthDp(res);
+                final int height = ConfigurationHelper.getScreenHeightDp(res);
+                return Math.max(width, height) < AUTO_MINI_LARGEST_SCREEN_WIDTH
+                        ? getSizeDimension(SIZE_MINI)
+                        : getSizeDimension(SIZE_NORMAL);
             case SIZE_MINI:
-                return getResources().getDimensionPixelSize(R.dimen.design_fab_size_mini);
+                return res.getDimensionPixelSize(R.dimen.design_fab_size_mini);
             case SIZE_NORMAL:
             default:
-                return getResources().getDimensionPixelSize(R.dimen.design_fab_size_normal);
+                return res.getDimensionPixelSize(R.dimen.design_fab_size_normal);
         }
     }
 

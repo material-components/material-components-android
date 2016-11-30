@@ -18,7 +18,9 @@ package android.support.design.widget;
 
 import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintColor;
 import static android.support.design.testutils.FloatingActionButtonActions.setImageResource;
+import static android.support.design.testutils.FloatingActionButtonActions.setSize;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
+import static android.support.design.testutils.TestUtilsMatchers.withFabContentHeight;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -70,6 +72,32 @@ public class FloatingActionButtonTest
     public void setVectorDrawableSrc() {
         onView(withId(R.id.fab_standard))
                 .perform(setImageResource(R.drawable.vector_icon));
+    }
+
+    @Test
+    public void testSetMiniSize() {
+        final int miniSize = mActivityTestRule.getActivity().getResources()
+                .getDimensionPixelSize(R.dimen.fab_mini_height);
+
+        onView(withId(R.id.fab_standard))
+                .perform(setSize(FloatingActionButton.SIZE_MINI))
+                .check(matches(withFabContentHeight(miniSize)));
+    }
+
+    @Test
+    public void testSetSizeToggle() {
+        final int miniSize = mActivityTestRule.getActivity().getResources()
+                .getDimensionPixelSize(R.dimen.fab_mini_height);
+        final int normalSize = mActivityTestRule.getActivity().getResources()
+                .getDimensionPixelSize(R.dimen.fab_normal_height);
+
+        onView(withId(R.id.fab_standard))
+                .perform(setSize(FloatingActionButton.SIZE_MINI))
+                .check(matches(withFabContentHeight(miniSize)));
+
+        onView(withId(R.id.fab_standard))
+                .perform(setSize(FloatingActionButton.SIZE_NORMAL))
+                .check(matches(withFabContentHeight(normalSize)));
     }
 
 }

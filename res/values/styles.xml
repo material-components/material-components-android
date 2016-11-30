@@ -19,7 +19,7 @@
     <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
         <item name="android:background">@drawable/design_fab_background</item>
         <item name="backgroundTint">?attr/colorAccent</item>
-        <item name="fabSize">normal</item>
+        <item name="fabSize">auto</item>
         <item name="elevation">@dimen/design_fab_elevation</item>
         <item name="pressedTranslationZ">@dimen/design_fab_translation_z_pressed</item>
         <item name="rippleColor">?attr/colorControlHighlight</item>

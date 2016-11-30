@@ -28,4 +28,8 @@
 
     <dimen name="appbar_height">128dip</dimen>
     <dimen name="fab_margin">32dip</dimen>
+
+    <dimen name="fab_mini_height">40dp</dimen>
+    <dimen name="fab_normal_height">56dip</dimen>
+
 </resources>

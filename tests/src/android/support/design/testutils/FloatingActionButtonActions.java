@@ -78,4 +78,28 @@ public class FloatingActionButtonActions {
         };
     }
 
+    public static ViewAction setSize(@FloatingActionButton.Size final int size) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(FloatingActionButton.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets FloatingActionButton size";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                final FloatingActionButton fab = (FloatingActionButton) view;
+                fab.setSize(size);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
 }

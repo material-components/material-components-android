@@ -25,7 +25,11 @@
         <attr name="rippleColor" format="color"/>
         <!-- Size for the FAB. -->
         <attr name="fabSize">
+            <!-- A size which will change based on the window size. -->
+            <enum name="auto" value="-1"/>
+            <!-- The normal sized button. -->
             <enum name="normal" value="0"/>
+            <!-- The mini sized button. -->
             <enum name="mini" value="1"/>
         </attr>
         <!-- Elevation value for the FAB -->
