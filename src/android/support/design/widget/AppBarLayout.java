@@ -500,7 +500,7 @@ public class AppBarLayout extends LinearLayout {
          *
          * @see #getScrollFlags()
          *
-         * @attr ref android.support.design.R.styleable.AppBarLayout_LayoutParams_layout_scrollFlags
+         * @attr ref android.support.design.R.styleable#AppBarLayout_LayoutParams_layout_scrollFlags
          */
         public void setScrollFlags(@ScrollFlags int flags) {
             mScrollFlags = flags;
@@ -511,7 +511,7 @@ public class AppBarLayout extends LinearLayout {
          *
          * @see #setScrollFlags(int)
          *
-         * @attr ref android.support.design.R.styleable.AppBarLayout_LayoutParams_layout_scrollFlags
+         * @attr ref android.support.design.R.styleable#AppBarLayout_LayoutParams_layout_scrollFlags
          */
         @ScrollFlags
         public int getScrollFlags() {
@@ -524,7 +524,7 @@ public class AppBarLayout extends LinearLayout {
          *
          * @param interpolator the interpolator to use, or null to use normal 1-to-1 scrolling.
          *
-         * @attr ref android.support.design.R.styleable.AppBarLayout_LayoutParams_layout_scrollInterpolator
+         * @attr ref android.support.design.R.styleable#AppBarLayout_LayoutParams_layout_scrollInterpolator
          * @see #getScrollInterpolator()
          */
         public void setScrollInterpolator(Interpolator interpolator) {
@@ -535,7 +535,7 @@ public class AppBarLayout extends LinearLayout {
          * Returns the {@link Interpolator} being used for scrolling the view associated with this
          * {@link LayoutParams}. Null indicates 'normal' 1-to-1 scrolling.
          *
-         * @attr ref android.support.design.R.styleable.AppBarLayout_LayoutParams_layout_scrollInterpolator
+         * @attr ref android.support.design.R.styleable#AppBarLayout_LayoutParams_layout_scrollInterpolator
          * @see #setScrollInterpolator(Interpolator)
          */
         public Interpolator getScrollInterpolator() {
@@ -942,8 +942,6 @@ public class AppBarLayout extends LinearLayout {
          * Set the distance that this view should overlap any {@link AppBarLayout}.
          *
          * @param overlayTop the distance in px
-         *
-         * @attr ref android.support.design.R.styleable.ScrollingViewBehavior_LayoutParams_layout_overlapTop
          */
         public void setOverlayTop(int overlayTop) {
             mOverlayTop = overlayTop;
@@ -951,8 +949,6 @@ public class AppBarLayout extends LinearLayout {
 
         /**
          * Returns the distance that this view should overlap any {@link AppBarLayout}.
-         *
-         * @attr ref android.support.design.R.styleable.ScrollingViewBehavior_LayoutParams_layout_overlapTop
          */
         public int getOverlayTop() {
             return mOverlayTop;

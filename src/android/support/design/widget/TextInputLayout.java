@@ -246,8 +246,6 @@ public class TextInputLayout extends LinearLayout {
      * Whether the error functionality is enabled or not in this layout. Enabling this
      * functionality before setting an error message via {@link #setError(CharSequence)}, will mean
      * that this layout will not change size when an error is displayed.
-     *
-     * @attr R.attr.errorEnabled
      */
     public void setErrorEnabled(boolean enabled) {
         if (mErrorEnabled != enabled) {

@@ -100,7 +100,6 @@ public class TabLayout extends HorizontalScrollView {
      * labels and a larger number of tabs. They are best used for browsing contexts in touch
      * interfaces when users don’t need to directly compare the tab labels.
      *
-     * @attr android.support.design.R.attr.tabMode
      * @see #setTabMode(int)
      * @see #getTabMode()
      */
@@ -111,7 +110,6 @@ public class TabLayout extends HorizontalScrollView {
      * quick pivots between tabs. The maximum number of tabs is limited by the view’s width.
      * Fixed tabs have equal width, based on the widest tab label.
      *
-     * @attr android.support.design.R.attr.tabMode
      * @see #setTabMode(int)
      * @see #getTabMode()
      */
@@ -128,7 +126,6 @@ public class TabLayout extends HorizontalScrollView {
      * Gravity used to fill the {@link TabLayout} as much as possible. This option only takes effect
      * when used with {@link #MODE_FIXED}.
      *
-     * @attr android.support.design.R.attr.tabGravity
      * @see #setTabGravity(int)
      * @see #getTabGravity()
      */
@@ -137,7 +134,6 @@ public class TabLayout extends HorizontalScrollView {
     /**
      * Gravity used to lay out the tabs in the center of the {@link TabLayout}.
      *
-     * @attr android.support.design.R.attr.tabGravity
      * @see #setTabGravity(int)
      * @see #getTabGravity()
      */
