@@ -200,11 +200,14 @@ class SnackbarManager {
     }
 
     private void scheduleTimeoutLocked(SnackbarRecord r) {
+        int durationMs = LONG_DURATION_MS;
+        if (r.duration > 0) {
+            durationMs = r.duration;
+        } else if (r.duration == Snackbar.LENGTH_SHORT) {
+            durationMs = SHORT_DURATION_MS;
+        }
         mHandler.removeCallbacksAndMessages(r);
-        mHandler.sendMessageDelayed(Message.obtain(mHandler, MSG_TIMEOUT, r),
-                r.duration == Snackbar.LENGTH_LONG
-                        ? LONG_DURATION_MS
-                        : SHORT_DURATION_MS);
+        mHandler.sendMessageDelayed(Message.obtain(mHandler, MSG_TIMEOUT, r), durationMs);
     }
 
     private void handleTimeout(SnackbarRecord record) {
