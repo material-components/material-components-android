@@ -64,11 +64,12 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         final int longSwipeAmount = 3 * appbarHeight / 2;
         final int shortSwipeAmount = toolbarHeight;
 
-        // Perform a swipe-up gesture across the horizontal center of the screen.
+        // Perform a swipe-up gesture across the horizontal center of the screen, starting from
+        // just below the AppBarLayout
         performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
-                originalAppbarBottom + 3 * longSwipeAmount / 2,
+                originalAppbarBottom + 20,
                 longSwipeAmount);
 
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
@@ -156,11 +157,12 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         final int longSwipeAmount = 3 * appbarHeight / 2;
         final int shortSwipeAmount = toolbarHeight;
 
-        // Perform a swipe-up gesture across the horizontal center of the screen.
+        // Perform a swipe-up gesture across the horizontal center of the screen, starting from
+        // just below the AppBarLayout
         performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
-                originalAppbarBottom + 3 * longSwipeAmount / 2,
+                originalAppbarBottom + 20,
                 longSwipeAmount);
 
         mAppBar.getLocationOnScreen(appbarOnScreenXY);

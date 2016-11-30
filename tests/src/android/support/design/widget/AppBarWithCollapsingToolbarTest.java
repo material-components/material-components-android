@@ -159,11 +159,12 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
 
         assertAppBarElevation(0f);
 
-        // Perform a swipe-up gesture across the horizontal center of the screen.
+        // Perform a swipe-up gesture across the horizontal center of the screen, starting from
+        // just below the AppBarLayout
         performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
-                originalAppbarBottom + longSwipeAmount / 2,
+                originalAppbarBottom + 20,
                 longSwipeAmount);
 
         mAppBar.getLocationOnScreen(appbarOnScreenXY);
