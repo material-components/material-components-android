@@ -95,8 +95,6 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
  */
 public class TabLayout extends HorizontalScrollView {
 
-    private static final int MAX_TAB_TEXT_LINES = 2;
-
     private static final int DEFAULT_HEIGHT = 48; // dps
     private static final int TAB_MIN_WIDTH_MARGIN = 56; //dps
     private static final int FIXED_WRAP_GUTTER_MIN = 16; //dps
@@ -326,6 +324,10 @@ public class TabLayout extends HorizontalScrollView {
         if (updateSelectedText) {
             setSelectedTabView(Math.round(position + positionOffset));
         }
+    }
+
+    private float getScrollPosition() {
+        return mTabStrip.getIndicatorPosition();
     }
 
     /**
@@ -599,8 +601,11 @@ public class TabLayout extends HorizontalScrollView {
         setOnTabSelectedListener(new ViewPagerOnTabSelectedListener(viewPager));
 
         // Make sure we reflect the currently set ViewPager item
-        if (mSelectedTab == null || (mSelectedTab.getPosition() != viewPager.getCurrentItem())) {
-            getTabAt(viewPager.getCurrentItem()).select();
+        if (adapter.getCount() > 0) {
+            final int curItem = viewPager.getCurrentItem();
+            if (getSelectedTabPosition() != curItem) {
+                selectTab(getTabAt(curItem));
+            }
         }
     }
 
@@ -792,9 +797,11 @@ public class TabLayout extends HorizontalScrollView {
 
     private void setSelectedTabView(int position) {
         final int tabCount = mTabStrip.getChildCount();
-        for (int i = 0; i < tabCount; i++) {
-            final View child = mTabStrip.getChildAt(i);
-            child.setSelected(i == position);
+        if (position < tabCount && !mTabStrip.getChildAt(position).isSelected()) {
+            for (int i = 0; i < tabCount; i++) {
+                final View child = mTabStrip.getChildAt(i);
+                child.setSelected(i == position);
+            }
         }
     }
 
@@ -1327,13 +1334,17 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         void setSelectedIndicatorColor(int color) {
-            mSelectedIndicatorPaint.setColor(color);
-            ViewCompat.postInvalidateOnAnimation(this);
+            if (mSelectedIndicatorPaint.getColor() != color) {
+                mSelectedIndicatorPaint.setColor(color);
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
         }
 
         void setSelectedIndicatorHeight(int height) {
-            mSelectedIndicatorHeight = height;
-            ViewCompat.postInvalidateOnAnimation(this);
+            if (mSelectedIndicatorHeight != height) {
+                mSelectedIndicatorHeight = height;
+                ViewCompat.postInvalidateOnAnimation(this);
+            }
         }
 
         boolean childrenNeedLayout() {
@@ -1347,12 +1358,13 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         void setIndicatorPositionFromTabPosition(int position, float positionOffset) {
-            if (mIndicatorAnimator != null && mIndicatorAnimator.isRunning()) {
-                return;
-            }
             mSelectedPosition = position;
             mSelectionOffset = positionOffset;
             updateIndicatorPosition();
+        }
+
+        float getIndicatorPosition() {
+            return mSelectedPosition + mSelectionOffset;
         }
 
         @Override
@@ -1560,7 +1572,7 @@ public class TabLayout extends HorizontalScrollView {
      */
     public static class TabLayoutOnPageChangeListener implements ViewPager.OnPageChangeListener {
         private final WeakReference<TabLayout> mTabLayoutRef;
-        private int mPreviousScrollState;
+        private int mPendingSelection = -1;
         private int mScrollState;
 
         public TabLayoutOnPageChangeListener(TabLayout tabLayout) {
@@ -1569,33 +1581,33 @@ public class TabLayout extends HorizontalScrollView {
 
         @Override
         public void onPageScrollStateChanged(int state) {
-            mPreviousScrollState = mScrollState;
             mScrollState = state;
         }
 
         @Override
-        public void onPageScrolled(int position, float positionOffset,
-                int positionOffsetPixels) {
+        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
             final TabLayout tabLayout = mTabLayoutRef.get();
             if (tabLayout != null) {
-                // Update the scroll position, only update the text selection if we're being
-                // dragged (or we're settling after a drag)
-                final boolean updateText = (mScrollState == SCROLL_STATE_DRAGGING)
-                        || (mScrollState == SCROLL_STATE_SETTLING
-                        && mPreviousScrollState == SCROLL_STATE_DRAGGING);
-                tabLayout.setScrollPosition(position, positionOffset, updateText);
+                if (mPendingSelection == -1 || tabLayout.getScrollPosition() != mPendingSelection) {
+                    // If we don't have a pending selection, or the drawn position is not already
+                    // at the selection, move the draw position
+                    tabLayout.setScrollPosition(position, positionOffset, true);
+                }
+                if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
+                    // As we're now idle, if we have a pending selection select it now
+                    if (mPendingSelection != -1) {
+                        tabLayout.selectTab(tabLayout.getTabAt(mPendingSelection));
+                        mPendingSelection = -1;
+                    }
+                }
             }
         }
 
         @Override
         public void onPageSelected(int position) {
-            final TabLayout tabLayout = mTabLayoutRef.get();
-            if (tabLayout != null) {
-                // Select the tab, only updating the indicator if we're not being dragged/settled
-                // (since onPageScrolled will handle that).
-                tabLayout.selectTab(tabLayout.getTabAt(position),
-                        mScrollState == SCROLL_STATE_IDLE);
-            }
+            // This call is made before onPageScrolled() which can lead to a jerk if we just
+            // selected the tab now. So we'll keep the position, and set it when we're idle again
+            mPendingSelection = position;
         }
     }
 
