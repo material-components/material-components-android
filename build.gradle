@@ -39,3 +39,70 @@ android {
         consumerProguardFiles 'proguard-rules.pro'
     }
 }
+
+android.libraryVariants.all { variant ->
+    def name = variant.buildType.name
+
+    if (name.equals(com.android.builder.core.BuilderConstants.DEBUG)) {
+        return; // Skip debug builds.
+    }
+    def suffix = name.capitalize()
+
+    def jarTask = project.tasks.create(name: "jar${suffix}", type: Jar){
+        dependsOn variant.javaCompile
+        from variant.javaCompile.destinationDir
+        from 'LICENSE.txt'
+    }
+    def javadocTask = project.tasks.create(name: "javadoc${suffix}", type: Javadoc) {
+        source android.sourceSets.main.java
+        classpath = files(variant.javaCompile.classpath.files) + files(
+                "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+    }
+
+    def javadocJarTask = project.tasks.create(name: "javadocJar${suffix}", type: Jar) {
+        classifier = 'javadoc'
+        from 'build/docs/javadoc'
+    }
+
+    def sourcesJarTask = project.tasks.create(name: "sourceJar${suffix}", type: Jar) {
+        classifier = 'sources'
+        from android.sourceSets.main.java.srcDirs
+    }
+
+    artifacts.add('archives', javadocJarTask);
+    artifacts.add('archives', sourcesJarTask);
+}
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            repository(url: uri(rootProject.ext.supportRepoOut)) {
+            }
+
+            pom.project {
+                name 'Android Design Support Library'
+                description "The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs. Compatible on devices running API 4 or later."
+                url 'http://developer.android.com/tools/extras/support-library.html'
+                inceptionYear '2011'
+
+                licenses {
+                    license {
+                        name 'The Apache Software License, Version 2.0'
+                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                        distribution 'repo'
+                    }
+                }
+
+                scm {
+                    url "http://source.android.com"
+                    connection "scm:git:https://android.googlesource.com/platform/frameworks/support"
+                }
+                developers {
+                    developer {
+                        name 'The Android Open Source Project'
+                    }
+                }
+            }
+        }
+    }
+}
