@@ -76,6 +76,7 @@ package android.support.design.widget {
     method public android.content.res.ColorStateList getItemTintList();
     method public android.view.Menu getMenu();
     method public android.view.View inflateHeaderView(int);
+    method public void inflateMenu(int);
     method public void removeHeaderView(android.view.View);
     method public void setItemBackgroundResource(int);
     method public void setItemTintList(android.content.res.ColorStateList);
