@@ -646,6 +646,7 @@ public class AppBarLayout extends LinearLayout {
      * scroll handling with offsetting.
      */
     public static class Behavior extends HeaderBehavior<AppBarLayout> {
+        private static final int ANIMATE_OFFSET_DIPS_PER_SECOND = 300;
         private static final int INVALID_POSITION = -1;
 
         /**
@@ -803,7 +804,15 @@ public class AppBarLayout extends LinearLayout {
         }
 
         private void animateOffsetTo(final CoordinatorLayout coordinatorLayout,
-                final AppBarLayout child, int offset) {
+                final AppBarLayout child, final int offset) {
+            final int currentOffset = getTopBottomOffsetForScrollingSibling();
+            if (currentOffset == offset) {
+                if (mAnimator != null && mAnimator.isRunning()) {
+                    mAnimator.cancel();
+                }
+                return;
+            }
+
             if (mAnimator == null) {
                 mAnimator = ViewUtils.createAnimator();
                 mAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
@@ -818,7 +827,12 @@ public class AppBarLayout extends LinearLayout {
                 mAnimator.cancel();
             }
 
-            mAnimator.setIntValues(getTopBottomOffsetForScrollingSibling(), offset);
+            // Set the duration based on the amount of dips we're travelling in
+            final float distanceDp = Math.abs(currentOffset - offset) /
+                    coordinatorLayout.getResources().getDisplayMetrics().density;
+            mAnimator.setDuration(Math.round(distanceDp * 1000 / ANIMATE_OFFSET_DIPS_PER_SECOND));
+
+            mAnimator.setIntValues(currentOffset, offset);
             mAnimator.start();
         }
 
@@ -839,10 +853,19 @@ public class AppBarLayout extends LinearLayout {
                 final LayoutParams lp = (LayoutParams) offsetChild.getLayoutParams();
                 if ((lp.getScrollFlags() & LayoutParams.FLAG_SNAP) == LayoutParams.FLAG_SNAP) {
                     // We're set the snap, so animate the offset to the nearest edge
-                    final int childTop = -offsetChild.getTop();
-                    final int childBottom = -offsetChild.getBottom();
+                    int childTop = -offsetChild.getTop();
+                    int childBottom = -offsetChild.getBottom();
+
+                    // If the view is set only exit until it is collapsed, we'll abide by that
+                    if ((lp.getScrollFlags() & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)
+                            == LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) {
+                        childBottom += ViewCompat.getMinimumHeight(offsetChild);
+                    }
+
+                    final int newOffset = offset < (childBottom + childTop) / 2
+                            ? childBottom : childTop;
                     animateOffsetTo(coordinatorLayout, abl,
-                            offset < (childBottom + childTop) / 2 ? childBottom : childTop);
+                            MathUtils.constrain(newOffset, -abl.getTotalScrollRange(), 0));
                 }
             }
         }
