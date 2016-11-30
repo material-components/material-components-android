@@ -16,23 +16,37 @@
 
 package android.support.design.widget;
 
+
+import android.os.SystemClock;
+import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.test.R;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
+import android.support.test.espresso.NoMatchingViewException;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.ViewAssertion;
 import android.support.test.espresso.action.CoordinatesProvider;
 import android.support.test.espresso.action.GeneralLocation;
 import android.support.test.espresso.action.GeneralSwipeAction;
+import android.support.test.espresso.action.MotionEvents;
+import android.support.test.espresso.action.PrecisionDescriber;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Swipe;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
+import android.support.test.espresso.core.deps.guava.base.Preconditions;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
+import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
@@ -93,6 +107,106 @@ public class BottomSheetBehaviorTest extends
                     state != BottomSheetBehavior.STATE_SETTLING;
         }
 
+    }
+
+    /**
+     * This is like {@link GeneralSwipeAction}, but it does not send ACTION_UP at the end.
+     */
+    private static class DragAction implements ViewAction {
+
+        private static final int STEPS = 10;
+        private static final int DURATION = 100;
+
+        private final CoordinatesProvider mStart;
+        private final CoordinatesProvider mEnd;
+        private final PrecisionDescriber mPrecisionDescriber;
+
+        public DragAction(CoordinatesProvider start, CoordinatesProvider end,
+                PrecisionDescriber precisionDescriber) {
+            mStart = start;
+            mEnd = end;
+            mPrecisionDescriber = precisionDescriber;
+        }
+
+        @Override
+        public Matcher<View> getConstraints() {
+            return ViewMatchers.isDisplayed();
+        }
+
+        @Override
+        public String getDescription() {
+            return "drag";
+        }
+
+        @Override
+        public void perform(UiController uiController, View view) {
+            float[] precision = mPrecisionDescriber.describePrecision();
+            float[] start = mStart.calculateCoordinates(view);
+            float[] end = mEnd.calculateCoordinates(view);
+            float[][] steps = interpolate(start, end, STEPS);
+            int delayBetweenMovements = DURATION / steps.length;
+            // Down
+            MotionEvent downEvent = MotionEvents.sendDown(uiController, start, precision).down;
+            try {
+                for (int i = 0; i < steps.length; i++) {
+                    // Wait
+                    long desiredTime = downEvent.getDownTime() + (long)(delayBetweenMovements * i);
+                    long timeUntilDesired = desiredTime - SystemClock.uptimeMillis();
+                    if (timeUntilDesired > 10L) {
+                        uiController.loopMainThreadForAtLeast(timeUntilDesired);
+                    }
+                    // Move
+                    if (!MotionEvents.sendMovement(uiController, downEvent, steps[i])) {
+                        MotionEvents.sendCancel(uiController, downEvent);
+                        throw new RuntimeException("Cannot drag: failed to send a move event.");
+                    }
+                    BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
+                }
+                int duration = ViewConfiguration.getPressedStateDuration();
+                if (duration > 0) {
+                    uiController.loopMainThreadForAtLeast((long) duration);
+                }
+            } finally {
+                downEvent.recycle();
+            }
+        }
+
+        private static float[][] interpolate(float[] start, float[] end, int steps) {
+            Preconditions.checkElementIndex(1, start.length);
+            Preconditions.checkElementIndex(1, end.length);
+            float[][] res = new float[steps][2];
+            for(int i = 1; i < steps + 1; ++i) {
+                res[i - 1][0] = start[0] + (end[0] - start[0]) * (float)i / ((float)steps + 2.0F);
+                res[i - 1][1] = start[1] + (end[1] - start[1]) * (float)i / ((float)steps + 2.0F);
+            }
+            return res;
+        }
+    }
+
+    private static class AddViewAction implements ViewAction {
+
+        private final int mLayout;
+
+        public AddViewAction(@LayoutRes int layout) {
+            mLayout = layout;
+        }
+
+        @Override
+        public Matcher<View> getConstraints() {
+            return ViewMatchers.isAssignableFrom(ViewGroup.class);
+        }
+
+        @Override
+        public String getDescription() {
+            return "add view";
+        }
+
+        @Override
+        public void perform(UiController uiController, View view) {
+            ViewGroup parent = (ViewGroup) view;
+            View child = LayoutInflater.from(view.getContext()).inflate(mLayout, parent, false);
+            parent.addView(child);
+        }
     }
 
     private Callback mCallback;
@@ -312,6 +426,8 @@ public class BottomSheetBehaviorTest extends
         }
     }
 
+    @Test
+    @MediumTest
     public void testDragOutside() {
         // Swipe up outside of the bottom sheet
         Espresso.onView(ViewMatchers.withId(R.id.coordinator))
@@ -345,6 +461,38 @@ public class BottomSheetBehaviorTest extends
         } finally {
             unregisterIdlingResourceCallback();
         }
+    }
+
+    @Test
+    @MediumTest
+    public void testLayoutWhileDragging() {
+        Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+                // Drag (and not release)
+                .perform(new DragAction(
+                        GeneralLocation.VISIBLE_CENTER,
+                        GeneralLocation.TOP_CENTER,
+                        Press.FINGER))
+                // Check that the bottom sheet is in STATE_DRAGGING
+                .check(new ViewAssertion() {
+                    @Override
+                    public void check(View view, NoMatchingViewException e) {
+                        assertThat(view, is(ViewMatchers.isDisplayed()));
+                        BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
+                        assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_DRAGGING));
+                    }
+                })
+                // Add a new view
+                .perform(new AddViewAction(R.layout.frame_layout))
+                // Check that the newly added view is properly laid out
+                .check(new ViewAssertion() {
+                    @Override
+                    public void check(View view, NoMatchingViewException e) {
+                        ViewGroup parent = (ViewGroup) view;
+                        assertThat(parent.getChildCount(), is(1));
+                        View child = parent.getChildAt(0);
+                        assertThat(ViewCompat.isLaidOut(child), is(true));
+                    }
+                });
     }
 
     private void checkSetState(final int state, Matcher<View> matcher) {

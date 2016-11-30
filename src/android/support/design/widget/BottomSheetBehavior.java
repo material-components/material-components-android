@@ -185,14 +185,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     @Override
     public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
-        // First let the parent lay it out
-        if (mState != STATE_DRAGGING && mState != STATE_SETTLING) {
-            if (ViewCompat.getFitsSystemWindows(parent) &&
-                    !ViewCompat.getFitsSystemWindows(child)) {
-                ViewCompat.setFitsSystemWindows(child, true);
-            }
-            parent.onLayoutChild(child, layoutDirection);
+        if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
+            ViewCompat.setFitsSystemWindows(child, true);
         }
+        int savedTop = child.getTop();
+        // First let the parent lay it out
+        parent.onLayoutChild(child, layoutDirection);
         // Offset the bottom sheet
         mParentHeight = parent.getHeight();
         mMinOffset = Math.max(0, mParentHeight - child.getHeight());
@@ -203,6 +201,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             ViewCompat.offsetTopAndBottom(child, mParentHeight);
         } else if (mState == STATE_COLLAPSED) {
             ViewCompat.offsetTopAndBottom(child, mMaxOffset);
+        } else if (mState == STATE_DRAGGING || mState == STATE_SETTLING) {
+            ViewCompat.offsetTopAndBottom(child, savedTop - child.getTop());
         }
         if (mViewDragHelper == null) {
             mViewDragHelper = ViewDragHelper.create(parent, mDragCallback);
