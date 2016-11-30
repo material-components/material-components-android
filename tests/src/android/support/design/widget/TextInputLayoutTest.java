@@ -43,6 +43,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.support.design.test.R;
+import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
 import android.test.suitebuilder.annotation.SmallTest;
@@ -214,6 +215,19 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
 
         // Now check that the EditText is no longer enabled
         onView(withId(R.id.textinput_edittext)).check(matches(not(isEnabled())));
+    }
+
+    /**
+     * Regression test for b/31663756.
+     */
+    @UiThreadTest
+    @Test
+    public void testDrawableStateChanged() {
+        final Activity activity = mActivityTestRule.getActivity();
+        final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
+
+        // Force a drawable state change.
+        layout.drawableStateChanged();
     }
 
     static ViewAssertion isHintExpanded(final boolean expanded) {
