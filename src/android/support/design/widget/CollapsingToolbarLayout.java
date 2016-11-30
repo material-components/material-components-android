@@ -373,9 +373,20 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mDrawCollapsingTitle = mDummyView.isShown();
 
             if (mDrawCollapsingTitle) {
+                final boolean isRtl = ViewCompat.getLayoutDirection(this)
+                        == ViewCompat.LAYOUT_DIRECTION_RTL;
+
+                // Update the collapsed bounds
                 ViewGroupUtils.getDescendantRect(this, mDummyView, mTmpRect);
-                mCollapsingTextHelper.setCollapsedBounds(mTmpRect.left, bottom - mTmpRect.height(),
-                        mTmpRect.right, bottom);
+                mCollapsingTextHelper.setCollapsedBounds(
+                        mTmpRect.left + (isRtl
+                                ? mToolbar.getTitleMarginEnd()
+                                : mToolbar.getTitleMarginStart()),
+                        bottom + mToolbar.getTitleMarginTop() - mTmpRect.height(),
+                        mTmpRect.right + (isRtl
+                                ? mToolbar.getTitleMarginStart()
+                                : mToolbar.getTitleMarginEnd()),
+                        bottom - mToolbar.getTitleMarginBottom());
                 // Update the expanded bounds
                 mCollapsingTextHelper.setExpandedBounds(
                         mExpandedMarginLeft,
