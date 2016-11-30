@@ -28,6 +28,7 @@ import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
 import android.support.test.espresso.action.ViewActions;
 import android.support.v4.view.MotionEventCompat;
+import android.test.suitebuilder.annotation.MediumTest;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -35,6 +36,7 @@ import android.widget.FrameLayout;
 import org.junit.Before;
 import org.junit.Test;
 
+@MediumTest
 public class BottomSheetBehaviorTouchTest extends
         BaseInstrumentationTestCase<CoordinatorLayoutActivity> {
 
