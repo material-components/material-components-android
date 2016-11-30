@@ -415,7 +415,7 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        return mDownScrollRange = Math.max(0, range - getTopInset());
+        return mDownScrollRange = Math.max(0, range);
     }
 
     final int getMinimumHeightForVisibleOverlappingContent() {
