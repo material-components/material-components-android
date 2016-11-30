@@ -273,7 +273,7 @@ public class AppBarLayout extends LinearLayout {
 
             if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
                 // We're set to scroll so add the child's height
-                range += childHeight;
+                range += childHeight + lp.topMargin + lp.bottomMargin;
 
                 if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
                     // For a collapsing scroll, we to take the collapsed height into account.
@@ -322,6 +322,8 @@ public class AppBarLayout extends LinearLayout {
             final int flags = lp.mScrollFlags;
 
             if ((flags & LayoutParams.FLAG_QUICK_RETURN) == LayoutParams.FLAG_QUICK_RETURN) {
+                // First take the margin into account
+                range += lp.topMargin + lp.bottomMargin;
                 // The view has the quick return flag combination...
                 if ((flags & LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED) != 0) {
                     // If they're set to enter collapsed, use the minimum height
@@ -352,9 +354,10 @@ public class AppBarLayout extends LinearLayout {
         for (int i = 0, z = getChildCount(); i < z; i++) {
             final View child = getChildAt(i);
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-            final int childHeight = ViewCompat.isLaidOut(child)
+            int childHeight = ViewCompat.isLaidOut(child)
                     ? child.getHeight()
                     : child.getMeasuredHeight();
+            childHeight += lp.topMargin + lp.bottomMargin;
 
             final int flags = lp.mScrollFlags;
 
@@ -868,10 +871,13 @@ public class AppBarLayout extends LinearLayout {
                         int childScrollableHeight = 0;
                         final int flags = childLp.getScrollFlags();
                         if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
-                            // We're set to scroll so add the child's height
-                            childScrollableHeight += child.getHeight();
+                            // We're set to scroll so add the child's height plus margin
+                            childScrollableHeight += child.getHeight() + childLp.topMargin
+                                    + childLp.bottomMargin;
+
                             if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
-                                // For a collapsing scroll, we to take the collapsed height into account.
+                                // For a collapsing scroll, we to take the collapsed height
+                                // into account.
                                 childScrollableHeight -= ViewCompat.getMinimumHeight(child);
                             }
                         }
