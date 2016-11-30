@@ -197,6 +197,8 @@ class SnackbarManager {
     private boolean cancelSnackbarLocked(SnackbarRecord record, int event) {
         final Callback callback = record.callback.get();
         if (callback != null) {
+            // Make sure we remove any timeouts for the SnackbarRecord
+            mHandler.removeCallbacksAndMessages(record);
             callback.dismiss(event);
             return true;
         }

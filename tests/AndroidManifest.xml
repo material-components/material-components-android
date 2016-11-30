@@ -30,6 +30,10 @@
                 android:theme="@style/Theme.AppCompat.NoActionBar"
                 android:name="android.support.design.widget.TabLayoutWithViewPagerActivity"/>
 
+        <activity
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:name="android.support.design.widget.SnackbarBucketTestsActivity"/>
+
     </application>
 
     <instrumentation
