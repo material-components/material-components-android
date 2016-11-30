@@ -437,6 +437,7 @@ package android.support.design.widget {
     method public boolean isErrorEnabled();
     method public boolean isHintAnimationEnabled();
     method public boolean isHintEnabled();
+    method public android.os.Parcelable onSaveInstanceState();
     method public void setCounterEnabled(boolean);
     method public void setCounterMaxLength(int);
     method public void setError(java.lang.CharSequence);
