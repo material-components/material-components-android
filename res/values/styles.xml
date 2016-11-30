@@ -14,7 +14,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-
 <resources>
 
     <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
@@ -25,6 +24,17 @@
         <item name="elevation">@dimen/fab_elevation</item>
         <item name="pressedTranslationZ">@dimen/fab_translation_z_pressed</item>
         <item name="rippleColor">?attr/colorControlHighlight</item>
+    </style>
+
+    <style name="Widget.Design.ScrimInsetsFrameLayout" parent="">
+        <item name="insetForeground">#4000</item>
+    </style>
+
+    <style name="Widget.Design.NavigationDrawerView" parent="">
+        <item name="android:elevation">@dimen/drawer_elevation</item>
+        <item name="android:background">?android:attr/windowBackground</item>
+        <item name="android:fitsSystemWindows">true</item>
+        <item name="android:maxWidth">@dimen/drawer_max_width</item>
     </style>
 
 </resources>
