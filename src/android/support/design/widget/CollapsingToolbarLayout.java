@@ -362,6 +362,22 @@ public class CollapsingToolbarLayout extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
+        // Update the collapsed bounds by getting it's transformed bounds. This needs to be done
+        // before the children are offset below
+        if (mCollapsingTitleEnabled && mDummyView != null) {
+            ViewGroupUtils.getDescendantRect(this, mDummyView, mTmpRect);
+            mCollapsingTextHelper.setCollapsedBounds(mTmpRect.left, bottom - mTmpRect.height(),
+                    mTmpRect.right, bottom);
+            // Update the expanded bounds
+            mCollapsingTextHelper.setExpandedBounds(
+                    mExpandedMarginLeft,
+                    mTmpRect.bottom + mExpandedMarginTop,
+                    right - left - mExpandedMarginRight,
+                    bottom - top - mExpandedMarginBottom);
+
+            mCollapsingTextHelper.recalculate();
+        }
+
         // Update our child view offset helpers
         for (int i = 0, z = getChildCount(); i < z; i++) {
             final View child = getChildAt(i);
@@ -376,21 +392,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
             }
 
             getViewOffsetHelper(child).onViewLayout();
-        }
-
-        // Update the collapsed bounds by getting it's transformed bounds
-        if (mCollapsingTitleEnabled && mDummyView != null) {
-            ViewGroupUtils.getDescendantRect(this, mDummyView, mTmpRect);
-            mCollapsingTextHelper.setCollapsedBounds(mTmpRect.left, bottom - mTmpRect.height(),
-                    mTmpRect.right, bottom);
-            // Update the expanded bounds
-            mCollapsingTextHelper.setExpandedBounds(
-                    mExpandedMarginLeft,
-                    mTmpRect.bottom + mExpandedMarginTop,
-                    right - left - mExpandedMarginRight,
-                    bottom - top - mExpandedMarginBottom);
-
-            mCollapsingTextHelper.recalculate();
         }
 
         // Finally, set our minimum height to enable proper AppBarLayout collapsing

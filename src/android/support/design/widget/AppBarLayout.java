@@ -204,6 +204,7 @@ public class AppBarLayout extends LinearLayout {
     @Override
     protected void onLayout(boolean changed, int l, int t, int r, int b) {
         super.onLayout(changed, l, t, r, b);
+        invalidateScrollRanges();
 
         mHaveChildWithInterpolator = false;
         for (int i = 0, z = getChildCount(); i < z; i++) {
@@ -964,8 +965,6 @@ public class AppBarLayout extends LinearLayout {
                         setAppBarTopBottomOffset(parent, abl, 0);
                     }
                 }
-                // Finally reset the pending state
-                abl.resetPendingAction();
             } else if (mOffsetToChildIndexOnLayout >= 0) {
                 View child = abl.getChildAt(mOffsetToChildIndexOnLayout);
                 int offset = -child.getBottom();
@@ -975,8 +974,11 @@ public class AppBarLayout extends LinearLayout {
                     offset += Math.round(child.getHeight() * mOffsetToChildIndexOnLayoutPerc);
                 }
                 setTopAndBottomOffset(offset);
-                mOffsetToChildIndexOnLayout = INVALID_POSITION;
             }
+
+            // Finally reset any pending states
+            abl.resetPendingAction();
+            mOffsetToChildIndexOnLayout = INVALID_POSITION;
 
             // Make sure we update the elevation
             dispatchOffsetUpdates(abl);
