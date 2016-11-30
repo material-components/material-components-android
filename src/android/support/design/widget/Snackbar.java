@@ -64,7 +64,7 @@ import static android.support.design.widget.AnimationUtils.FAST_OUT_SLOW_IN_INTE
  * To be notified when a snackbar has been shown or dismissed, you can provide a {@link Callback}
  * via {@link #setCallback(Callback)}.</p>
  */
-public class Snackbar {
+public final class Snackbar {
 
     /**
      * Callback class for {@link Snackbar} instances.
@@ -72,14 +72,36 @@ public class Snackbar {
      * @see Snackbar#setCallback(Callback)
      */
     public static abstract class Callback {
+        /** Indicates that the Snackbar was dismissed via a swipe.*/
+        public static final int DISMISS_EVENT_SWIPE = 0;
+        /** Indicates that the Snackbar was dismissed via an action click.*/
+        public static final int DISMISS_EVENT_ACTION = 1;
+        /** Indicates that the Snackbar was dismissed via a timeout.*/
+        public static final int DISMISS_EVENT_TIMEOUT = 2;
+        /** Indicates that the Snackbar was dismissed via a call to {@link #dismiss()}.*/
+        public static final int DISMISS_EVENT_MANUAL = 3;
+        /** Indicates that the Snackbar was dismissed from a new Snackbar being shown.*/
+        public static final int DISMISS_EVENT_CONSECUTIVE = 4;
+
+        /** @hide */
+        @IntDef({DISMISS_EVENT_SWIPE, DISMISS_EVENT_ACTION, DISMISS_EVENT_TIMEOUT,
+                DISMISS_EVENT_MANUAL, DISMISS_EVENT_CONSECUTIVE})
+        @Retention(RetentionPolicy.SOURCE)
+        public @interface DismissEvent {}
+
         /**
          * Called when the given {@link Snackbar} has been dismissed, either through a time-out,
          * having been manually dismissed, or an action being clicked.
          *
          * @param snackbar The snackbar which has been dismissed.
+         * @param event The event which caused the dismissal. One of either:
+         *              {@link #DISMISS_EVENT_SWIPE}, {@link #DISMISS_EVENT_ACTION},
+         *              {@link #DISMISS_EVENT_TIMEOUT}, {@link #DISMISS_EVENT_MANUAL} or
+         *              {@link #DISMISS_EVENT_CONSECUTIVE}.
+         *
          * @see Snackbar#dismiss()
          */
-        public void onDismissed(Snackbar snackbar) {
+        public void onDismissed(Snackbar snackbar, @DismissEvent int event) {
             // empty
         }
 
@@ -139,7 +161,7 @@ public class Snackbar {
                         ((Snackbar) message.obj).showView();
                         return true;
                     case MSG_DISMISS:
-                        ((Snackbar) message.obj).hideView();
+                        ((Snackbar) message.obj).hideView(message.arg1);
                         return true;
                 }
                 return false;
@@ -153,7 +175,7 @@ public class Snackbar {
     private int mDuration;
     private Callback mCallback;
 
-    Snackbar(ViewGroup parent) {
+    private Snackbar(ViewGroup parent) {
         mParent = parent;
         mContext = parent.getContext();
 
@@ -178,6 +200,7 @@ public class Snackbar {
      * @param duration How long to display the message.  Either {@link #LENGTH_SHORT} or {@link
      *                 #LENGTH_LONG}
      */
+    @NonNull
     public static Snackbar make(@NonNull View view, @NonNull CharSequence text,
             @Duration int duration) {
         Snackbar snackbar = new Snackbar(findSuitableParent(view));
@@ -203,6 +226,7 @@ public class Snackbar {
      * @param duration How long to display the message.  Either {@link #LENGTH_SHORT} or {@link
      *                 #LENGTH_LONG}
      */
+    @NonNull
     public static Snackbar make(@NonNull View view, @StringRes int resId, @Duration int duration) {
         return make(view, view.getResources().getText(resId), duration);
     }
@@ -241,6 +265,7 @@ public class Snackbar {
      * @param resId    String resource to display
      * @param listener callback to be invoked when the action is clicked
      */
+    @NonNull
     public Snackbar setAction(@StringRes int resId, View.OnClickListener listener) {
         return setAction(mContext.getText(resId), listener);
     }
@@ -251,6 +276,7 @@ public class Snackbar {
      * @param text     Text to display
      * @param listener callback to be invoked when the action is clicked
      */
+    @NonNull
     public Snackbar setAction(CharSequence text, final View.OnClickListener listener) {
         final TextView tv = mView.getActionView();
 
@@ -264,9 +290,8 @@ public class Snackbar {
                 @Override
                 public void onClick(View view) {
                     listener.onClick(view);
-
                     // Now dismiss the Snackbar
-                    dismiss();
+                    dispatchDismiss(Callback.DISMISS_EVENT_ACTION);
                 }
             });
         }
@@ -277,6 +302,7 @@ public class Snackbar {
      * Sets the text color of the action specified in
      * {@link #setAction(CharSequence, View.OnClickListener)}.
      */
+    @NonNull
     public Snackbar setActionTextColor(ColorStateList colors) {
         final TextView tv = mView.getActionView();
         tv.setTextColor(colors);
@@ -287,6 +313,7 @@ public class Snackbar {
      * Sets the text color of the action specified in
      * {@link #setAction(CharSequence, View.OnClickListener)}.
      */
+    @NonNull
     public Snackbar setActionTextColor(@ColorInt int color) {
         final TextView tv = mView.getActionView();
         tv.setTextColor(color);
@@ -298,6 +325,7 @@ public class Snackbar {
      *
      * @param message The new text for the Toast.
      */
+    @NonNull
     public Snackbar setText(@NonNull CharSequence message) {
         final TextView tv = mView.getMessageView();
         tv.setText(message);
@@ -309,6 +337,7 @@ public class Snackbar {
      *
      * @param resId The new text for the Toast.
      */
+    @NonNull
     public Snackbar setText(@StringRes int resId) {
         return setText(mContext.getText(resId));
     }
@@ -320,6 +349,7 @@ public class Snackbar {
      *                 {@link #LENGTH_SHORT}, {@link #LENGTH_LONG}, or a custom duration
      *                 in milliseconds.
      */
+    @NonNull
     public Snackbar setDuration(@Duration int duration) {
         mDuration = duration;
         return this;
@@ -354,14 +384,27 @@ public class Snackbar {
      * Dismiss the {@link Snackbar}.
      */
     public void dismiss() {
-        SnackbarManager.getInstance().dismiss(mManagerCallback);
+        dispatchDismiss(Callback.DISMISS_EVENT_MANUAL);
+    }
+
+    private void dispatchDismiss(@Callback.DismissEvent int event) {
+        SnackbarManager.getInstance().dismiss(mManagerCallback, event);
     }
 
     /**
      * Set a callback to be called when this the visibility of this {@link Snackbar} changes.
      */
-    public void setCallback(Callback callback) {
+    @NonNull
+    public Snackbar setCallback(Callback callback) {
         mCallback = callback;
+        return this;
+    }
+
+    /**
+     * Return whether this Snackbar is currently being shown.
+     */
+    public boolean isShown() {
+        return mView.isShown();
     }
 
     private final SnackbarManager.Callback mManagerCallback = new SnackbarManager.Callback() {
@@ -371,8 +414,8 @@ public class Snackbar {
         }
 
         @Override
-        public void dismiss() {
-            sHandler.sendMessage(sHandler.obtainMessage(MSG_DISMISS, Snackbar.this));
+        public void dismiss(int event) {
+            sHandler.sendMessage(sHandler.obtainMessage(MSG_DISMISS, event, 0, Snackbar.this));
         }
     };
 
@@ -390,7 +433,7 @@ public class Snackbar {
                 behavior.setListener(new SwipeDismissBehavior.OnDismissListener() {
                     @Override
                     public void onDismiss(View view) {
-                        dismiss();
+                        dispatchDismiss(Callback.DISMISS_EVENT_SWIPE);
                     }
 
                     @Override
@@ -473,7 +516,7 @@ public class Snackbar {
         }
     }
 
-    private void animateViewOut() {
+    private void animateViewOut(final int event) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             ViewCompat.animate(mView).translationY(mView.getHeight())
                     .setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR)
@@ -486,7 +529,7 @@ public class Snackbar {
 
                         @Override
                         public void onAnimationEnd(View view) {
-                            onViewHidden();
+                            onViewHidden(event);
                         }
                     }).start();
         } else {
@@ -496,7 +539,7 @@ public class Snackbar {
             anim.setAnimationListener(new Animation.AnimationListener() {
                 @Override
                 public void onAnimationEnd(Animation animation) {
-                    onViewHidden();
+                    onViewHidden(event);
                 }
 
                 @Override
@@ -509,20 +552,20 @@ public class Snackbar {
         }
     }
 
-    final void hideView() {
+    final void hideView(int event) {
         if (mView.getVisibility() != View.VISIBLE || isBeingDragged()) {
-            onViewHidden();
+            onViewHidden(event);
         } else {
-            animateViewOut();
+            animateViewOut(event);
         }
     }
 
-    private void onViewHidden() {
+    private void onViewHidden(int event) {
         // First remove the view from the parent
         mParent.removeView(mView);
         // Now call the dismiss listener (if available)
         if (mCallback != null) {
-            mCallback.onDismissed(this);
+            mCallback.onDismissed(this, event);
         }
         // Finally, tell the SnackbarManager that it has been dismissed
         SnackbarManager.getInstance().onDismissed(mManagerCallback);

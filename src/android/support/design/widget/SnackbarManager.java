@@ -64,7 +64,7 @@ class SnackbarManager {
 
     interface Callback {
         void show();
-        void dismiss();
+        void dismiss(int event);
     }
 
     public void show(int duration, Callback callback) {
@@ -86,7 +86,8 @@ class SnackbarManager {
                 mNextSnackbar = new SnackbarRecord(duration, callback);
             }
 
-            if (mCurrentSnackbar != null && cancelSnackbarLocked(mCurrentSnackbar)) {
+            if (mCurrentSnackbar != null && cancelSnackbarLocked(mCurrentSnackbar,
+                    Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE)) {
                 // If we currently have a Snackbar, try and cancel it and wait in line
                 return;
             } else {
@@ -98,13 +99,12 @@ class SnackbarManager {
         }
     }
 
-    public void dismiss(Callback callback) {
+    public void dismiss(Callback callback, int event) {
         synchronized (mLock) {
             if (isCurrentSnackbar(callback)) {
-                cancelSnackbarLocked(mCurrentSnackbar);
-            }
-            if (isNextSnackbar(callback)) {
-                cancelSnackbarLocked(mNextSnackbar);
+                cancelSnackbarLocked(mCurrentSnackbar, event);
+            } else if (isNextSnackbar(callback)) {
+                cancelSnackbarLocked(mNextSnackbar, event);
             }
         }
     }
@@ -182,10 +182,10 @@ class SnackbarManager {
         }
     }
 
-    private boolean cancelSnackbarLocked(SnackbarRecord record) {
+    private boolean cancelSnackbarLocked(SnackbarRecord record, int event) {
         final Callback callback = record.callback.get();
         if (callback != null) {
-            callback.dismiss();
+            callback.dismiss(event);
             return true;
         }
         return false;
@@ -218,7 +218,7 @@ class SnackbarManager {
     private void handleTimeout(SnackbarRecord record) {
         synchronized (mLock) {
             if (mCurrentSnackbar == record || mNextSnackbar == record) {
-                cancelSnackbarLocked(record);
+                cancelSnackbarLocked(record, Snackbar.Callback.DISMISS_EVENT_TIMEOUT);
             }
         }
     }
