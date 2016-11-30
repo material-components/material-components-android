@@ -17,7 +17,6 @@
 package android.support.design.widget;
 
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -81,7 +80,8 @@ public class TextInputLayout extends LinearLayout {
     private TextView mErrorView;
     private int mErrorTextAppearance;
 
-    private ColorStateList mLabelTextColor;
+    private int mDefaultTextColor;
+    private int mFocusedTextColor;
 
     private final CollapsingTextHelper mCollapsingTextHelper;
     private final Handler mHandler;
@@ -127,14 +127,12 @@ public class TextInputLayout extends LinearLayout {
 
         mErrorTextAppearance = a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
         final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
+        
+        mDefaultTextColor = getThemeAttrColor(android.R.attr.textColorHint);
+        mFocusedTextColor = mCollapsingTextHelper.getCollapsedTextColor();
 
-        // We create a ColorStateList using the specified text color, combining it with our
-        // theme's textColorHint
-        mLabelTextColor = createLabelTextColorStateList(
-                mCollapsingTextHelper.getCollapsedTextColor());
-
-        mCollapsingTextHelper.setCollapsedTextColor(mLabelTextColor.getDefaultColor());
-        mCollapsingTextHelper.setExpandedTextColor(mLabelTextColor.getDefaultColor());
+        mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor);
+        mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
 
         a.recycle();
 
@@ -199,6 +197,9 @@ public class TextInputLayout extends LinearLayout {
             }
         });
 
+        // Use the EditText's hint colors since the developer may have changed it
+        mDefaultTextColor = mEditText.getHintTextColors().getDefaultColor();
+
         // Add focus listener to the EditText so that we can notify the label that it is activated.
         // Allows the use of a ColorStateList for the text color on the label
         mEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
@@ -239,9 +240,9 @@ public class TextInputLayout extends LinearLayout {
         boolean hasText = !TextUtils.isEmpty(mEditText.getText());
         boolean isFocused = mEditText.isFocused();
 
-        mCollapsingTextHelper.setCollapsedTextColor(mLabelTextColor.getColorForState(
-                isFocused ? FOCUSED_STATE_SET : EMPTY_STATE_SET,
-                mLabelTextColor.getDefaultColor()));
+        mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
+        mCollapsingTextHelper.setCollapsedTextColor(
+                isFocused ? mFocusedTextColor : mDefaultTextColor);
 
         if (hasText || isFocused) {
             // We should be showing the label so do so if it isn't already
@@ -402,23 +403,6 @@ public class TextInputLayout extends LinearLayout {
         }
         mAnimator.setFloatValues(mCollapsingTextHelper.getExpansionFraction(), target);
         mAnimator.start();
-    }
-
-    private ColorStateList createLabelTextColorStateList(int color) {
-        final int[][] states = new int[2][];
-        final int[] colors = new int[2];
-        int i = 0;
-
-        // Focused
-        states[i] = FOCUSED_STATE_SET;
-        colors[i] = color;
-        i++;
-
-        states[i] = EMPTY_STATE_SET;
-        colors[i] = getThemeAttrColor(android.R.attr.textColorHint);
-        i++;
-
-        return new ColorStateList(states, colors);
     }
 
     private int getThemeAttrColor(int attr) {
