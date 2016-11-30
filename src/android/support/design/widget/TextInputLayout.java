@@ -22,8 +22,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Typeface;
-import android.os.Handler;
-import android.os.Message;
 import android.support.design.R;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.ViewCompat;
@@ -49,29 +47,10 @@ import android.widget.TextView;
  *
  * Also supports showing an error via {@link #setErrorEnabled(boolean)} and
  * {@link #setError(CharSequence)}.
- *
- * <p>Please note: this class sets a {@link android.view.View.OnFocusChangeListener} on the wrapped
- * {@link EditText}. If you need to set your own listener, then you should wrap the existing one
- * and forward the call like so:
- * <pre>
- * TextInputLayout inputLayout = ...;
- * EditText editText = inputLayout.getEditText();
- * final OnFocusChangeListener existing = editText.getOnFocusChangeListener();
- *
- * editText.setOnFocusChangeListener(new OnFocusChangeListener() {
- *     public void onFocusChange(View view, boolean focused) {
- *         existing.onFocusChange(view, focused);
- *
- *         // Your custom logic
- *     }
- * });
- * </pre>
- * </p>
  */
 public class TextInputLayout extends LinearLayout {
 
     private static final int ANIMATION_DURATION = 200;
-    private static final int MSG_UPDATE_LABEL = 0;
 
     private EditText mEditText;
     private CharSequence mHint;
@@ -83,8 +62,7 @@ public class TextInputLayout extends LinearLayout {
     private int mDefaultTextColor;
     private int mFocusedTextColor;
 
-    private final CollapsingTextHelper mCollapsingTextHelper;
-    private final Handler mHandler;
+    private final CollapsingTextHelper mCollapsingTextHelper = new CollapsingTextHelper(this);
 
     private ValueAnimatorCompat mAnimator;
 
@@ -97,19 +75,7 @@ public class TextInputLayout extends LinearLayout {
 
         setOrientation(VERTICAL);
         setWillNotDraw(false);
-
-        mCollapsingTextHelper = new CollapsingTextHelper(this);
-        mHandler = new Handler(new Handler.Callback() {
-            @Override
-            public boolean handleMessage(Message message) {
-                switch (message.what) {
-                    case MSG_UPDATE_LABEL:
-                        updateLabelVisibility(true);
-                        return true;
-                }
-                return false;
-            }
-        });
+        setAddStatesFromChildren(true);
 
         mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         mCollapsingTextHelper.setPositionInterpolator(new AccelerateInterpolator());
@@ -185,7 +151,7 @@ public class TextInputLayout extends LinearLayout {
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                mHandler.sendEmptyMessage(MSG_UPDATE_LABEL);
+                updateLabelVisibility(true);
             }
 
             @Override
@@ -199,15 +165,6 @@ public class TextInputLayout extends LinearLayout {
 
         // Use the EditText's hint colors since the developer may have changed it
         mDefaultTextColor = mEditText.getHintTextColors().getDefaultColor();
-
-        // Add focus listener to the EditText so that we can notify the label that it is activated.
-        // Allows the use of a ColorStateList for the text color on the label
-        mEditText.setOnFocusChangeListener(new OnFocusChangeListener() {
-            @Override
-            public void onFocusChange(View view, boolean focused) {
-                mHandler.sendEmptyMessage(MSG_UPDATE_LABEL);
-            }
-        });
 
         // If we do not have a valid hint, try and retrieve it from the EditText
         if (TextUtils.isEmpty(mHint)) {
@@ -237,8 +194,8 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void updateLabelVisibility(boolean animate) {
-        boolean hasText = !TextUtils.isEmpty(mEditText.getText());
-        boolean isFocused = mEditText.isFocused();
+        boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
+        boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
 
         mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
         mCollapsingTextHelper.setCollapsedTextColor(
@@ -374,7 +331,17 @@ public class TextInputLayout extends LinearLayout {
         }
     }
 
+    @Override
+    public void refreshDrawableState() {
+        super.refreshDrawableState();
+        // Drawable state has changed so see if we need to update the label
+        updateLabelVisibility(true);
+    }
+
     private void collapseHint(boolean animate) {
+        if (mAnimator != null && mAnimator.isRunning()) {
+            mAnimator.cancel();
+        }
         if (animate) {
             animateToExpansionFraction(1f);
         } else {
@@ -383,6 +350,9 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void expandHint(boolean animate) {
+        if (mAnimator != null && mAnimator.isRunning()) {
+            mAnimator.cancel();
+        }
         if (animate) {
             animateToExpansionFraction(0f);
         } else {
@@ -391,6 +361,9 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void animateToExpansionFraction(final float target) {
+        if (mCollapsingTextHelper.getExpansionFraction() == target) {
+            return;
+        }
         if (mAnimator == null) {
             mAnimator = ViewUtils.createAnimator();
             mAnimator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
@@ -401,8 +374,6 @@ public class TextInputLayout extends LinearLayout {
                     mCollapsingTextHelper.setExpansionFraction(animator.getAnimatedFloatValue());
                 }
             });
-        } else if (mAnimator.isRunning()) {
-            mAnimator.cancel();
         }
         mAnimator.setFloatValues(mCollapsingTextHelper.getExpansionFraction(), target);
         mAnimator.start();
@@ -452,5 +423,14 @@ public class TextInputLayout extends LinearLayout {
                 info.setError(error);
             }
         }
+    }
+
+    private static boolean arrayContains(int[] array, int value) {
+        for (int v : array) {
+            if (v == value) {
+                return true;
+            }
+        }
+        return false;
     }
 }
