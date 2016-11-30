@@ -77,7 +77,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     private static final int PRESENTER_NAVIGATION_VIEW_ID = 1;
 
     private final NavigationMenu mMenu;
-    private final NavigationMenuPresenter mPresenter;
+    private final NavigationMenuPresenter mPresenter = new NavigationMenuPresenter();
 
     private OnNavigationItemSelectedListener mListener;
     private int mMaxWidth;
@@ -140,10 +140,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
         final Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
 
-        if (a.hasValue(R.styleable.NavigationView_menu)) {
-            inflateMenu(a.getResourceId(R.styleable.NavigationView_menu, 0));
-        }
-
         mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
@@ -153,7 +149,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             @Override
             public void onMenuModeChange(MenuBuilder menu) {}
         });
-        mPresenter = new NavigationMenuPresenter();
         mPresenter.setId(PRESENTER_NAVIGATION_VIEW_ID);
         mPresenter.initForMenu(context, mMenu);
         mPresenter.setItemIconTintList(itemIconTint);
@@ -164,6 +159,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         mPresenter.setItemBackground(itemBackground);
         mMenu.addMenuPresenter(mPresenter);
         addView((View) mPresenter.getMenuView(this));
+
+        if (a.hasValue(R.styleable.NavigationView_menu)) {
+            inflateMenu(a.getResourceId(R.styleable.NavigationView_menu, 0));
+        }
 
         if (a.hasValue(R.styleable.NavigationView_headerLayout)) {
             inflateHeaderView(a.getResourceId(R.styleable.NavigationView_headerLayout, 0));
@@ -224,14 +223,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
      * @param resId ID of a menu resource to inflate
      */
     public void inflateMenu(int resId) {
-        if (mPresenter != null) {
-            mPresenter.setUpdateSuspended(true);
-        }
+        mPresenter.setUpdateSuspended(true);
         getMenuInflater().inflate(resId, mMenu);
-        if (mPresenter != null) {
-            mPresenter.setUpdateSuspended(false);
-            mPresenter.updateMenuView(false);
-        }
+        mPresenter.setUpdateSuspended(false);
+        mPresenter.updateMenuView(false);
     }
 
     /**
