@@ -25,11 +25,14 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import android.support.v4.view.ViewCompat;
+import android.support.v7.widget.AppCompatDrawableManager;
+import android.support.v7.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -97,6 +100,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private final Rect mShadowPadding = new Rect();
     private final Rect mTouchArea = new Rect();
 
+    private AppCompatImageHelper mImageHelper;
+
     private FloatingActionButtonImpl mImpl;
 
     public FloatingActionButton(Context context) {
@@ -126,6 +131,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                 R.styleable.FloatingActionButton_pressedTranslationZ, 0f);
         mCompatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
         a.recycle();
+
+        mImageHelper = new AppCompatImageHelper(this, AppCompatDrawableManager.get());
+        mImageHelper.loadFromAttributes(attrs, defStyleAttr);
 
         final int maxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
         mImagePadding = (getSizeDimension() - maxImageSize) / 2;
@@ -237,6 +245,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     @Override
     public void setBackgroundColor(int color) {
         Log.i(LOG_TAG, "Setting a custom background is not supported.");
+    }
+
+    @Override
+    public void setImageResource(@DrawableRes int resId) {
+        // Intercept this call and instead retrieve the Drawable via the image helper
+        mImageHelper.setImageResource(resId);
     }
 
     /**

@@ -16,19 +16,21 @@
 
 package android.support.design.widget;
 
+import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintColor;
+import static android.support.design.testutils.FloatingActionButtonActions.setImageResource;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-import android.support.annotation.ColorInt;
-import android.support.annotation.IdRes;
+import android.graphics.Color;
 import android.support.design.test.R;
 import android.support.design.testutils.TestUtils;
 import android.test.suitebuilder.annotation.SmallTest;
 
 import org.junit.Test;
 
+@SmallTest
 public class FloatingActionButtonTest
         extends BaseInstrumentationTestCase<FloatingActionButtonActivity> {
 
@@ -37,20 +39,37 @@ public class FloatingActionButtonTest
     }
 
     @Test
-    @SmallTest
-    public void testDefaultBackgroundColor() {
-        checkBackgroundColor(R.id.fab_standard,
-                TestUtils.getThemeAttrColor(mActivityTestRule.getActivity(), R.attr.colorAccent));
+    public void testDefaultBackgroundTint() {
+        final int colorAccent = TestUtils.getThemeAttrColor(
+                mActivityTestRule.getActivity(), R.attr.colorAccent);
+        onView(withId(R.id.fab_standard))
+                .check(matches(withFabBackgroundFill(colorAccent)));
     }
 
     @Test
-    @SmallTest
-    public void testTintedBackgroundColor() {
-        checkBackgroundColor(R.id.fab_tint, 0xFFFF00FF);
+    public void testSetTintOnDefaultBackgroundTint() {
+        onView(withId(R.id.fab_standard))
+                .perform(setBackgroundTintColor(Color.GREEN))
+                .check(matches(withFabBackgroundFill(Color.GREEN)));
     }
 
-    private void checkBackgroundColor(@IdRes int id, @ColorInt int exceptedColor) {
-        onView(withId(id)).check(matches(withFabBackgroundFill(exceptedColor)));
+    @Test
+    public void testDeclaredBackgroundTint() {
+        onView(withId(R.id.fab_tint))
+                .check(matches(withFabBackgroundFill(Color.MAGENTA)));
+    }
+
+    @Test
+    public void testSetTintOnDeclaredBackgroundTint() {
+        onView(withId(R.id.fab_tint))
+                .perform(setBackgroundTintColor(Color.GREEN))
+                .check(matches(withFabBackgroundFill(Color.GREEN)));
+    }
+
+    @Test
+    public void setVectorDrawableSrc() {
+        onView(withId(R.id.fab_standard))
+                .perform(setImageResource(R.drawable.vector_icon));
     }
 
 }
