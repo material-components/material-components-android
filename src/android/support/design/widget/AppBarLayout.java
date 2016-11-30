@@ -381,7 +381,7 @@ public class AppBarLayout extends LinearLayout {
                 break;
             }
         }
-        return mDownPreScrollRange = Math.max(0, range - getTopInset());
+        return mDownPreScrollRange = Math.max(0, range);
     }
 
     /**
