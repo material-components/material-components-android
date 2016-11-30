@@ -16,9 +16,9 @@
 
 package android.support.design.widget;
 
-import android.os.Build;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
+import android.view.ViewParent;
 
 /**
  * Utility helper for moving a {@link android.view.View} around using
@@ -51,15 +51,15 @@ class ViewOffsetHelper {
     }
 
     private void updateOffsets()  {
-        if (Build.VERSION.SDK_INT == 22) {
-            // FIXME When running on L MR1, we have a problem with view's which are offset off
-            // screen then back on. Using translationX/Y fixes it for now.
-            ViewCompat.setTranslationY(mView, mOffsetTop);
-            ViewCompat.setTranslationX(mView, mOffsetLeft);
-        } else {
-            // Else we can use the offset position methods
-            ViewCompat.offsetTopAndBottom(mView, mOffsetTop - mView.getTop() - mLayoutTop);
-            ViewCompat.offsetLeftAndRight(mView, mOffsetLeft - mView.getLeft() - mLayoutLeft);
+        if (mOffsetLeft != 0 || mOffsetTop != 0) {
+            ViewCompat.offsetTopAndBottom(mView, mOffsetTop - (mView.getTop() - mLayoutTop));
+            ViewCompat.offsetLeftAndRight(mView, mOffsetLeft - (mView.getLeft() - mLayoutLeft));
+
+            // Manually invalidate the parent to make sure we get drawn
+            ViewParent parent = mView.getParent();
+            if (parent instanceof View) {
+                ((View) parent).invalidate();
+            }
         }
     }
 
