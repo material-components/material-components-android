@@ -59,6 +59,9 @@ class ValueAnimatorCompatImplEclairMr1 extends ValueAnimatorCompat.Impl {
         mStartTime = SystemClock.uptimeMillis();
         mIsRunning = true;
 
+        // Reset the animated fraction
+        mAnimatedFraction = 0f;
+
         if (mListener != null) {
             mListener.onAnimationStart();
         }
@@ -120,6 +123,7 @@ class ValueAnimatorCompatImplEclairMr1 extends ValueAnimatorCompat.Impl {
 
         if (mListener != null) {
             mListener.onAnimationCancel();
+            mListener.onAnimationEnd();
         }
     }
 
@@ -156,7 +160,7 @@ class ValueAnimatorCompatImplEclairMr1 extends ValueAnimatorCompat.Impl {
         if (mIsRunning) {
             // Update the animated fraction
             final long elapsed = SystemClock.uptimeMillis() - mStartTime;
-            final float linearFraction = elapsed / (float) mDuration;
+            final float linearFraction = MathUtils.constrain(elapsed / (float) mDuration, 0f, 1f);
             mAnimatedFraction = mInterpolator != null
                     ? mInterpolator.getInterpolation(linearFraction)
                     : linearFraction;

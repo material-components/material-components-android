@@ -45,7 +45,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
         final int longSwipeAmount = 3 * appbarHeight / 2;
 
         // Perform a swipe-up gesture across the horizontal center of the screen.
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom + 3 * longSwipeAmount / 2,

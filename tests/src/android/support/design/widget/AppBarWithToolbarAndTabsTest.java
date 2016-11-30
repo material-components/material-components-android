@@ -20,13 +20,14 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.design.test.R;
 import android.support.design.testutils.Cheeses;
+import android.test.suitebuilder.annotation.LargeTest;
 import android.test.suitebuilder.annotation.MediumTest;
 import org.junit.Test;
 
-import java.util.Arrays;
-
 import static android.support.design.testutils.TestUtilsActions.addTabs;
+import static android.support.design.testutils.TestUtilsActions.waitUntilIdle;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
@@ -39,7 +40,9 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         super.configureContent(layoutResId, titleResId);
 
         mTabLayout = (TabLayout) mAppBar.findViewById(R.id.tabs);
-        onView(withId(R.id.tabs)).perform(addTabs(Arrays.copyOf(Cheeses.sCheeseStrings, 5)));
+        String[] tabTitles = new String[5];
+        System.arraycopy(Cheeses.sCheeseStrings, 0, tabTitles, 0, 5);
+        onView(withId(R.id.tabs)).perform(addTabs(tabTitles));
     }
 
     @Test
@@ -63,7 +66,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         final int shortSwipeAmount = toolbarHeight;
 
         // Perform a swipe-up gesture across the horizontal center of the screen.
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom + 3 * longSwipeAmount / 2,
@@ -75,7 +78,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
 
         // Perform another swipe-up gesture
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom,
@@ -130,7 +133,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     }
 
     @Test
-    public void testPinnedToolbar() {
+    public void testScrollingToolbarAndPinnedTabs() {
         configureContent(R.layout.design_appbar_toolbar_scroll_tabs_pinned,
                 R.string.design_appbar_toolbar_scroll_tabs_pin);
 
@@ -150,7 +153,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         final int shortSwipeAmount = toolbarHeight;
 
         // Perform a swipe-up gesture across the horizontal center of the screen.
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom + 3 * longSwipeAmount / 2,
@@ -162,7 +165,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
 
         // Perform another swipe-up gesture
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom,
@@ -216,4 +219,167 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
     }
 
+    @LargeTest
+    @Test
+    public void testSnappingToolbarAndSnappingTabs() {
+        configureContent(R.layout.design_appbar_toolbar_scroll_tabs_scroll_snap,
+                R.string.design_appbar_toolbar_scroll_tabs_scroll_snap);
+
+        final int[] appbarOnScreenXY = new int[2];
+        final int[] coordinatorLayoutOnScreenXY = new int[2];
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        mCoordinatorLayout.getLocationOnScreen(coordinatorLayoutOnScreenXY);
+
+        final int originalAppbarTop = appbarOnScreenXY[1];
+        final int originalAppbarBottom = appbarOnScreenXY[1] + mAppBar.getHeight();
+        final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
+
+        final int toolbarHeight = mToolbar.getHeight();
+        final int tabsHeight = mTabLayout.getHeight();
+        final int appbarHeight = mAppBar.getHeight();
+
+        // Since AppBarLayout doesn't expose a way to track snap animations, the three possible
+        // options are
+        // a) track how vertical offsets and invalidation is propagated through the
+        // view hierarchy and wait until there are no more events of that kind
+        // b) run a dummy Espresso action that waits until the main thread is idle
+        // c) sleep for a hardcoded period of time to "wait" until the snap animation is done
+        // In this test method we go with option b)
+
+        // Perform a swipe-up gesture across the horizontal center of the screen. The amount
+        // of swipe is 25% of the toolbar height and we expect the snap behavior to "move"
+        // the app bar back to its original position.
+        performVerticalSwipeUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + toolbarHeight,
+                toolbarHeight / 4);
+
+        // Wait for the snap animation to be done
+        onView(isRoot()).perform(waitUntilIdle());
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should be in its original position as it
+        // in snapping mode and we haven't swiped "enough". Allow for off-by-a-pixel
+        // margin of error.
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
+        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform a slightly longer swipe-up gesture, this time by 75% of the toolbar height.
+        // We expect the snap behavior to move the app bar to snap the tab layout below the
+        // system status bar.
+        performVerticalSwipeUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + toolbarHeight,
+                3 * toolbarHeight / 4);
+
+        // Wait for the snap animation to be done
+        onView(isRoot()).perform(waitUntilIdle());
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should "snap" the toolbar away and align the tab layout below
+        // the system status bar. Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform a short swipe-up gesture, this time by 25% of the tab layout height. We expect
+        // snap behavior to move the app bar back to snap the tab layout below the system status
+        // bar.
+        performVerticalSwipeUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + toolbarHeight,
+                tabsHeight / 4);
+
+        // Wait for the snap animation to be done
+        onView(isRoot()).perform(waitUntilIdle());
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should "snap" back to align the tab layout below
+        // the system status bar. Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform a longer swipe-up gesture, this time by 75% of the tab layout height. We expect
+        // snap behavior to move the app bar fully away from the screen.
+        performVerticalSwipeUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + toolbarHeight,
+                3 * tabsHeight / 4);
+
+        // Wait for the snap animation to be done
+        onView(isRoot()).perform(waitUntilIdle());
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should not be visually "present" on the screen, with its bottom
+        // edge aligned with the system status bar. Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform a short swipe-down gesture by 25% of the tab layout height. We expect
+        // snap behavior to move the app bar back fully away from the screen.
+        performVerticalSwipeDownGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + toolbarHeight,
+                tabsHeight / 4);
+
+        // Wait for the snap animation to be done
+        onView(isRoot()).perform(waitUntilIdle());
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should still not be visually "present" on the screen, with
+        // its bottom edge aligned with the system status bar. Allow for off-by-a-pixel margin
+        // of error.
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform a longer swipe-up gesture, this time by 75% of the tab layout height. We expect
+        // snap behavior to move the app bar to snap the tab layout below the system status
+        // bar.
+        performVerticalSwipeDownGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + toolbarHeight,
+                3 * tabsHeight / 4);
+
+        // Wait for the snap animation to be done
+        onView(isRoot()).perform(waitUntilIdle());
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should "snap" the toolbar away and align the tab layout below
+        // the system status bar. Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform a short swipe-down gesture by 25% of the toolbar height. We expect
+        // snap behavior to align the tab layout below the system status bar
+        performVerticalSwipeDownGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + toolbarHeight,
+                toolbarHeight / 4);
+
+        // Wait for the snap animation to be done
+        onView(isRoot()).perform(waitUntilIdle());
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should still align the tab layout below
+        // the system status bar. Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop + tabsHeight, appbarOnScreenXY[1] + appbarHeight, 1);
+
+        // Perform a longer swipe-up gesture, this time by 75% of the toolbar height. We expect
+        // snap behavior to move the app bar back to its original place (fully visible).
+        performVerticalSwipeDownGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + toolbarHeight,
+                3 * tabsHeight / 4);
+
+        // Wait for the snap animation to be done
+        onView(isRoot()).perform(waitUntilIdle());
+
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        // At this point the app bar should be in its original position.
+        // Allow for off-by-a-pixel margin of error.
+        assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
+        assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+    }
 }

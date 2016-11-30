@@ -18,17 +18,10 @@ package android.support.design.widget;
 
 import android.os.Build;
 import android.os.SystemClock;
-import android.support.annotation.IdRes;
 import android.support.design.test.R;
-import android.support.test.espresso.action.CoordinatesProvider;
-import android.support.test.espresso.action.GeneralSwipeAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Swipe;
 import android.test.suitebuilder.annotation.MediumTest;
-import android.view.View;
 import org.junit.Test;
 
-import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
@@ -54,7 +47,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final int shortSwipeAmount = toolbarHeight;
 
         // Perform a swipe-up gesture across the horizontal center of the screen.
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom + 3 * longSwipeAmount / 2,
@@ -66,7 +59,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop + toolbarHeight, appbarOnScreenXY[1] + appbarHeight, 1);
 
         // Perform another swipe-up gesture
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom,
@@ -139,7 +132,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final int shortSwipeAmount = toolbarHeight;
 
         // Perform a swipe-up gesture across the horizontal center of the screen.
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom + 3 * longSwipeAmount / 2,
@@ -152,7 +145,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight, 1);
 
         // Perform another swipe-up gesture
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom,
@@ -225,7 +218,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final int longSwipeAmount = 3 * appbarHeight / 2;
 
         // Perform a swipe-up gesture across the horizontal center of the screen.
-        performVerticalUpGesture(
+        performVerticalSwipeUpGesture(
                 R.id.coordinator_layout,
                 centerX,
                 originalAppbarBottom + 3 * longSwipeAmount / 2,

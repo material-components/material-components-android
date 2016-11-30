@@ -24,6 +24,7 @@ import android.support.test.espresso.ViewAction;
 import android.view.View;
 import org.hamcrest.Matcher;
 
+import static android.support.design.testutils.TestUtilsActions.waitUntilIdle;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 
@@ -100,29 +101,6 @@ public class SnackbarUtils {
                 mCallback.onTransitionToIdle();
             }
         }
-    }
-
-    /**
-     * Dummy Espresso action that waits until the UI thread is idle. This action can be performed
-     * on the root view to wait for an ongoing animation to be completed.
-     */
-    private static ViewAction waitUntilIdle() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isRoot();
-            }
-
-            @Override
-            public String getDescription() {
-                return "wait for idle";
-            }
-
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
     }
 
     /**

@@ -48,7 +48,7 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
 
     protected TextView mTextView;
 
-    protected static void performVerticalUpGesture(@IdRes int containerId, final int swipeX,
+    protected static void performVerticalSwipeUpGesture(@IdRes int containerId, final int swipeX,
             final int swipeStartY, final int swipeAmountY) {
         onView(withId(containerId)).perform(new GeneralSwipeAction(
                 Swipe.SLOW,

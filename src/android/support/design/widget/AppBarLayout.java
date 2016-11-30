@@ -674,7 +674,7 @@ public class AppBarLayout extends LinearLayout {
         private boolean mSkipNestedPreScroll;
         private boolean mWasNestedFlung;
 
-        private ValueAnimatorCompat mAnimator;
+        private ValueAnimatorCompat mOffsetAnimator;
 
         private int mOffsetToChildIndexOnLayout = INVALID_POSITION;
         private boolean mOffsetToChildIndexOnLayoutIsMinHeight;
@@ -698,9 +698,9 @@ public class AppBarLayout extends LinearLayout {
                     && child.hasScrollableChildren()
                     && parent.getHeight() - directTargetChild.getHeight() <= child.getHeight();
 
-            if (started && mAnimator != null) {
+            if (started && mOffsetAnimator != null) {
                 // Cancel any offset animation
-                mAnimator.cancel();
+                mOffsetAnimator.cancel();
             }
 
             // A new nested scroll has started so clear out the previous ref
@@ -811,16 +811,16 @@ public class AppBarLayout extends LinearLayout {
                 final AppBarLayout child, final int offset) {
             final int currentOffset = getTopBottomOffsetForScrollingSibling();
             if (currentOffset == offset) {
-                if (mAnimator != null && mAnimator.isRunning()) {
-                    mAnimator.cancel();
+                if (mOffsetAnimator != null && mOffsetAnimator.isRunning()) {
+                    mOffsetAnimator.cancel();
                 }
                 return;
             }
 
-            if (mAnimator == null) {
-                mAnimator = ViewUtils.createAnimator();
-                mAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
-                mAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+            if (mOffsetAnimator == null) {
+                mOffsetAnimator = ViewUtils.createAnimator();
+                mOffsetAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
+                mOffsetAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimatorCompat animator) {
                         setHeaderTopBottomOffset(coordinatorLayout, child,
@@ -828,16 +828,17 @@ public class AppBarLayout extends LinearLayout {
                     }
                 });
             } else {
-                mAnimator.cancel();
+                mOffsetAnimator.cancel();
             }
 
             // Set the duration based on the amount of dips we're travelling in
             final float distanceDp = Math.abs(currentOffset - offset) /
                     coordinatorLayout.getResources().getDisplayMetrics().density;
-            mAnimator.setDuration(Math.round(distanceDp * 1000 / ANIMATE_OFFSET_DIPS_PER_SECOND));
+            mOffsetAnimator.setDuration(
+                    Math.round(distanceDp * 1000 / ANIMATE_OFFSET_DIPS_PER_SECOND));
 
-            mAnimator.setIntValues(currentOffset, offset);
-            mAnimator.start();
+            mOffsetAnimator.setIntValues(currentOffset, offset);
+            mOffsetAnimator.start();
         }
 
         private View getChildOnOffset(AppBarLayout abl, final int offset) {

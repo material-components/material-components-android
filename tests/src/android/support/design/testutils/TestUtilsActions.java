@@ -32,9 +32,7 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import org.hamcrest.Matcher;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
+import static android.support.test.espresso.matcher.ViewMatchers.*;
 
 public class TestUtilsActions {
     /**
@@ -186,6 +184,29 @@ public class TestUtilsActions {
                     tabLayout.addTab(tabLayout.newTab().setText(tabs[i]));
                 }
 
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    /**
+     * Dummy Espresso action that waits until the UI thread is idle. This action can be performed
+     * on the root view to wait for an ongoing animation to be completed.
+     */
+    public static ViewAction waitUntilIdle() {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isRoot();
+            }
+
+            @Override
+            public String getDescription() {
+                return "wait for idle";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
                 uiController.loopMainThreadUntilIdle();
             }
         };
