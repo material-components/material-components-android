@@ -1130,9 +1130,9 @@ public class TabLayout extends HorizontalScrollView {
                 } else {
                     animateToTab(newPosition);
                 }
-            }
-            if (newPosition != Tab.INVALID_POSITION) {
-                setSelectedTabView(newPosition);
+                if (newPosition != Tab.INVALID_POSITION) {
+                    setSelectedTabView(newPosition);
+                }
             }
             dispatchTabUnselected(currentTab);
             mSelectedTab = tab;
