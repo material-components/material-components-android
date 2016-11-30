@@ -470,7 +470,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     /**
-     * Behavior designed for use with {@link FloatingActionButton} instances. It's main function
+     * Behavior designed for use with {@link FloatingActionButton} instances. Its main function
      * is to move {@link FloatingActionButton} views so that any displayed {@link Snackbar}s do
      * not cover them.
      */
@@ -514,7 +514,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
             }
 
             if (child.getUserSetVisibility() != VISIBLE) {
-                // The view isn't set to be visible so skip changing it's visibility
+                // The view isn't set to be visible so skip changing its visibility
                 return false;
             }
 
@@ -553,7 +553,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
 
             if (fab.isShown()
                     && Math.abs(currentTransY - targetTransY) > (fab.getHeight() * 0.667f)) {
-                // If the FAB will be travelling by more than 2/3 of it's height, let's animate
+                // If the FAB will be travelling by more than 2/3 of its height, let's animate
                 // it instead
                 if (mFabTranslationYAnimator == null) {
                     mFabTranslationYAnimator = ViewUtils.createAnimator();
@@ -596,7 +596,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         @Override
         public boolean onLayoutChild(CoordinatorLayout parent, FloatingActionButton child,
                 int layoutDirection) {
-            // First, lets make sure that the visibility of the FAB is consistent
+            // First, let's make sure that the visibility of the FAB is consistent
             final List<View> dependencies = parent.getDependencies(child);
             for (int i = 0, count = dependencies.size(); i < count; i++) {
                 final View dependency = dependencies.get(i);

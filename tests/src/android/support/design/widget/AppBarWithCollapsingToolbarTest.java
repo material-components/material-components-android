@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.os.Build;
+import android.os.SystemClock;
 import android.support.annotation.IdRes;
 import android.support.design.test.R;
 import android.support.test.espresso.action.CoordinatesProvider;
@@ -87,10 +89,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final int longSwipeAmount = 3 * appbarHeight / 2;
         final int shortSwipeAmount = toolbarHeight;
 
-        // Perform a swipe-up gesture across the horizontal center of the screen. Start
-        // below the app bar and end the gesture "inside" the app bar. This way we are testing
-        // the nested scrolling that crosses the boundary between the NestedScrollView that
-        // shows our texts and the AppBarLayout.
+        // Perform a swipe-up gesture across the horizontal center of the screen.
         performVerticalUpGesture(
                 R.id.coordinator_layout,
                 centerX,
@@ -175,10 +174,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final int longSwipeAmount = 3 * appbarHeight / 2;
         final int shortSwipeAmount = toolbarHeight;
 
-        // Perform a swipe-up gesture across the horizontal center of the screen. Start
-        // below the app bar and end the gesture "inside" the app bar. This way we are testing
-        // the nested scrolling that crosses the boundary between the NestedScrollView that
-        // shows our texts and the AppBarLayout.
+        // Perform a swipe-up gesture across the horizontal center of the screen.
         performVerticalUpGesture(
                 R.id.coordinator_layout,
                 centerX,
@@ -243,5 +239,66 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         // Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+    }
+
+    @Test
+    public void testPinnedToolbarAndAnchoredFab() throws Throwable {
+        configureContent(R.layout.design_appbar_toolbar_collapse_pin_with_fab,
+                R.string.design_appbar_collapsing_toolbar_pin_fab);
+
+        final FloatingActionButton fab =
+                (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+
+        final int[] appbarOnScreenXY = new int[2];
+        final int[] coordinatorLayoutOnScreenXY = new int[2];
+        mAppBar.getLocationOnScreen(appbarOnScreenXY);
+        mCoordinatorLayout.getLocationOnScreen(coordinatorLayoutOnScreenXY);
+
+        final int originalAppbarBottom = appbarOnScreenXY[1] + mAppBar.getHeight();
+        final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
+
+        final int appbarHeight = mAppBar.getHeight();
+        final int longSwipeAmount = 3 * appbarHeight / 2;
+
+        // Perform a swipe-up gesture across the horizontal center of the screen.
+        performVerticalUpGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom + 3 * longSwipeAmount / 2,
+                longSwipeAmount);
+
+        // Since we the visibility change listener path is only exposed via direct calls to
+        // FloatingActionButton.show and not the internal path that FAB's behavior is using,
+        // this test needs to be tied to the internal implementation details of running animation
+        // that scales the FAB to 0/0 scales and interpolates its alpha to 0. Since that animation
+        // starts running partway through our swipe gesture and may complete a bit later then
+        // the swipe gesture, sleep for a bit to catch the "final" state of the FAB.
+        SystemClock.sleep(200);
+
+        // At this point the FAB should be scaled to 0/0 and set at alpha 0. Since the relevant
+        // getter methods are only available on v11+, wrap the asserts with build version check.
+        if (Build.VERSION.SDK_INT >= 11) {
+            assertEquals(0.0f, fab.getScaleX(), 0.0f);
+            assertEquals(0.0f, fab.getScaleY(), 0.0f);
+            assertEquals(0.0f, fab.getAlpha(), 0.0f);
+        }
+
+        // Perform a swipe-down gesture across the horizontal center of the screen.
+        performVerticalSwipeDownGesture(
+                R.id.coordinator_layout,
+                centerX,
+                originalAppbarBottom,
+                longSwipeAmount);
+
+        // Same as for swipe-up gesture - sleep for a bit to catch the "final" visible state of
+        // the FAB.
+        SystemClock.sleep(200);
+
+        // At this point the FAB should be scaled back to its original size and be at full opacity.
+        if (Build.VERSION.SDK_INT >= 11) {
+            assertEquals(1.0f, fab.getScaleX(), 0.0f);
+            assertEquals(1.0f, fab.getScaleY(), 0.0f);
+            assertEquals(1.0f, fab.getAlpha(), 0.0f);
+        }
     }
 }

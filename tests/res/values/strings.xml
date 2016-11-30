@@ -30,5 +30,6 @@
     <string name="scroll_bottom">Bottom</string>
     <string name="design_appbar_collapsing_toolbar_pin">AppBar/Collapsing Toolbar (pinned)</string>
     <string name="design_appbar_collapsing_toolbar_scroll">AppBar/Collapsing Toolbar (scroll off)</string>
+    <string name="design_appbar_collapsing_toolbar_pin_fab">AppBar/Collapsing Toolbar (pinned with FAB)</string>
 
 </resources>
