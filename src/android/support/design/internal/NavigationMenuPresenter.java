@@ -18,6 +18,7 @@ package android.support.design.internal;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
@@ -69,6 +70,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
 
     private int mItemBackgroundResource;
 
+    private ColorDrawable mTransparentIcon;
+
     /**
      * Padding to be inserted at the top of the list to avoid the first menu item
      * from being placed underneath the status bar.
@@ -111,7 +114,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
      */
     private void prepareMenuItems() {
         mItems.clear();
-        int currentGroupId = 0;
+        int currentGroupId = -1;
+        int currentGroupStart = 0;
+        boolean currentGroupHasIcon = false;
         for (int i = 0, totalSize = mMenu.getVisibleItems().size(); i < totalSize; i++) {
             MenuItemImpl item = mMenu.getVisibleItems().get(i);
             if (item.hasSubMenu()) {
@@ -121,20 +126,51 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                         mItems.add(NavigationMenuItem.SEPARATOR);
                     }
                     mItems.add(NavigationMenuItem.of(item));
+                    boolean subMenuHasIcon = false;
+                    int subMenuStart = mItems.size();
                     for (int j = 0, size = subMenu.size(); j < size; j++) {
                         MenuItem subMenuItem = subMenu.getItem(j);
                         if (subMenuItem.isVisible()) {
+                            if (!subMenuHasIcon && subMenuItem.getIcon() != null) {
+                                subMenuHasIcon = true;
+                            }
                             mItems.add(NavigationMenuItem.of((MenuItemImpl) subMenuItem));
                         }
+                    }
+                    if (subMenuHasIcon) {
+                        appendTransparentIconIfMissing(subMenuStart, mItems.size());
                     }
                 }
             } else {
                 int groupId = item.getGroupId();
-                if (groupId != currentGroupId && i != 0) {
-                    mItems.add(NavigationMenuItem.SEPARATOR);
+                if (groupId != currentGroupId) { // first item in group
+                    currentGroupStart = mItems.size();
+                    currentGroupHasIcon = item.getIcon() != null;
+                    if (i != 0) {
+                        currentGroupStart++;
+                        mItems.add(NavigationMenuItem.SEPARATOR);
+                    }
+                } else if (!currentGroupHasIcon && item.getIcon() != null) {
+                    currentGroupHasIcon = true;
+                    appendTransparentIconIfMissing(currentGroupStart, mItems.size());
+                }
+                if (currentGroupHasIcon && item.getIcon() == null) {
+                    item.setIcon(android.R.color.transparent);
                 }
                 mItems.add(NavigationMenuItem.of(item));
                 currentGroupId = groupId;
+            }
+        }
+    }
+
+    private void appendTransparentIconIfMissing(int startIndex, int endIndex) {
+        for (int i = startIndex; i < endIndex; i++) {
+            MenuItem item = mItems.get(i).getMenuItem();
+            if (item.getIcon() == null) {
+                if (mTransparentIcon == null) {
+                    mTransparentIcon = new ColorDrawable(android.R.color.transparent);
+                }
+                item.setIcon(mTransparentIcon);
             }
         }
     }
