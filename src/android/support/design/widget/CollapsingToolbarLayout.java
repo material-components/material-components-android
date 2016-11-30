@@ -377,14 +377,22 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     private void showScrim() {
         if (!mScrimsAreShown) {
-            animateScrim(255);
+            if (ViewCompat.isLaidOut(this) && !isInEditMode()) {
+                animateScrim(255);
+            } else {
+                setScrimAlpha(255);
+            }
             mScrimsAreShown = true;
         }
     }
 
     private void hideScrim() {
         if (mScrimsAreShown) {
-            animateScrim(0);
+            if (ViewCompat.isLaidOut(this) && !isInEditMode()) {
+                animateScrim(0);
+            } else {
+                setScrimAlpha(0);
+            }
             mScrimsAreShown = false;
         }
     }
@@ -398,15 +406,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mScrimAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimatorCompat animator) {
-                    final int newAlpha = animator.getAnimatedIntValue();
-                    if (newAlpha != mScrimAlpha) {
-                        final Drawable contentScrim = mContentScrim;
-                        if (contentScrim != null && mToolbar != null) {
-                            ViewCompat.postInvalidateOnAnimation(mToolbar);
-                        }
-                        mScrimAlpha = newAlpha;
-                        ViewCompat.postInvalidateOnAnimation(CollapsingToolbarLayout.this);
-                    }
+                    setScrimAlpha(animator.getAnimatedIntValue());
                 }
             });
         } else if (mScrimAnimator.isRunning()) {
@@ -415,6 +415,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
         mScrimAnimator.setIntValues(mScrimAlpha, targetAlpha);
         mScrimAnimator.start();
+    }
+
+    private void setScrimAlpha(int alpha) {
+        if (alpha != mScrimAlpha) {
+            final Drawable contentScrim = mContentScrim;
+            if (contentScrim != null && mToolbar != null) {
+                ViewCompat.postInvalidateOnAnimation(mToolbar);
+            }
+            mScrimAlpha = alpha;
+            ViewCompat.postInvalidateOnAnimation(CollapsingToolbarLayout.this);
+        }
     }
 
     /**

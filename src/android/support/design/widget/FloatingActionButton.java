@@ -248,7 +248,7 @@ public class FloatingActionButton extends ImageView {
         if (getVisibility() != VISIBLE) {
             return;
         }
-        if (ViewCompat.isLaidOut(this)) {
+        if (ViewCompat.isLaidOut(this) && !isInEditMode()) {
             mImpl.hide();
         } else {
             setVisibility(GONE);
