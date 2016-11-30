@@ -37,6 +37,7 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.internal.widget.TintManager;
 import android.text.Layout;
@@ -1246,8 +1247,9 @@ public class TabLayout extends HorizontalScrollView {
 
                 final float curTextSize = mTextView.getTextSize();
                 final int curLineCount = mTextView.getLineCount();
+                final int curMaxLines = TextViewCompat.getMaxLines(mTextView);
 
-                if (textSize != curTextSize || maxLines != mTextView.getMaxLines()) {
+                if (textSize != curTextSize || (curMaxLines >= 0 && maxLines != curMaxLines)) {
                     // We've got a new text size and/or max lines...
                     boolean updateTextView = true;
 
@@ -1294,7 +1296,7 @@ public class TabLayout extends HorizontalScrollView {
 
                 mCustomTextView = (TextView) custom.findViewById(android.R.id.text1);
                 if (mCustomTextView != null) {
-                    mDefaultMaxLines = mCustomTextView.getMaxLines();
+                    mDefaultMaxLines = TextViewCompat.getMaxLines(mCustomTextView);
                 }
                 mCustomIconView = (ImageView) custom.findViewById(android.R.id.icon);
             } else {
@@ -1320,7 +1322,7 @@ public class TabLayout extends HorizontalScrollView {
                             .inflate(R.layout.design_layout_tab_text, this, false);
                     addView(textView);
                     mTextView = textView;
-                    mDefaultMaxLines = mTextView.getMaxLines();
+                    mDefaultMaxLines = TextViewCompat.getMaxLines(mTextView);
                 }
                 mTextView.setTextAppearance(getContext(), mTabTextAppearance);
                 if (mTabTextColors != null) {
