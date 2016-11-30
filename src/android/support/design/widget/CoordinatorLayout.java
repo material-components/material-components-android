@@ -1698,7 +1698,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          *         {@link Color#BLACK}.
          * @see #getScrimOpacity(CoordinatorLayout, android.view.View)
          */
-        public final int getScrimColor(CoordinatorLayout parent, V child) {
+        public int getScrimColor(CoordinatorLayout parent, V child) {
             return Color.BLACK;
         }
 
@@ -1715,7 +1715,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          * @param child the child view above the scrim
          * @return the desired scrim opacity from 0.0f to 1.0f. The default return value is 0.0f.
          */
-        public final float getScrimOpacity(CoordinatorLayout parent, V child) {
+        public float getScrimOpacity(CoordinatorLayout parent, V child) {
             return 0.f;
         }
 

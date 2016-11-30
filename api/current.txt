@@ -188,8 +188,8 @@ package android.support.design.widget {
     ctor public CoordinatorLayout.Behavior();
     ctor public CoordinatorLayout.Behavior(android.content.Context, android.util.AttributeSet);
     method public boolean blocksInteractionBelow(android.support.design.widget.CoordinatorLayout, V);
-    method public final int getScrimColor(android.support.design.widget.CoordinatorLayout, V);
-    method public final float getScrimOpacity(android.support.design.widget.CoordinatorLayout, V);
+    method public int getScrimColor(android.support.design.widget.CoordinatorLayout, V);
+    method public float getScrimOpacity(android.support.design.widget.CoordinatorLayout, V);
     method public static java.lang.Object getTag(android.view.View);
     method public boolean isDirty(android.support.design.widget.CoordinatorLayout, V);
     method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, V, android.view.View);
