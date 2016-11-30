@@ -148,6 +148,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private final int[] mTempIntPair = new int[2];
     private Paint mScrimPaint;
 
+    private boolean mDisallowInterceptReset;
+
     private boolean mIsAttachedToWindow;
 
     private int[] mKeylines;
@@ -366,6 +368,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
             lp.resetTouchBehaviorTracking();
         }
+        mDisallowInterceptReset = false;
     }
 
     /**
@@ -530,8 +533,9 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     @Override
     public void requestDisallowInterceptTouchEvent(boolean disallowIntercept) {
         super.requestDisallowInterceptTouchEvent(disallowIntercept);
-        if (disallowIntercept) {
+        if (disallowIntercept && !mDisallowInterceptReset) {
             resetTouchBehaviors();
+            mDisallowInterceptReset = true;
         }
     }
 

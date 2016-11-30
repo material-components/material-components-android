@@ -211,15 +211,20 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
     }
 
     private final ViewDragHelper.Callback mDragCallback = new ViewDragHelper.Callback() {
+        private static final int INVALID_POINTER_ID = -1;
+
         private int mOriginalCapturedViewLeft;
+        private int mActivePointerId = INVALID_POINTER_ID;
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
-            return canSwipeDismissView(child);
+            // Only capture if we don't already have an active pointer id
+            return mActivePointerId == INVALID_POINTER_ID && canSwipeDismissView(child);
         }
 
         @Override
         public void onViewCaptured(View capturedChild, int activePointerId) {
+            mActivePointerId = activePointerId;
             mOriginalCapturedViewLeft = capturedChild.getLeft();
 
             // The view has been captured, and thus a drag is about to start so stop any parents
@@ -239,6 +244,9 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
         @Override
         public void onViewReleased(View child, float xvel, float yvel) {
+            // Reset the active pointer ID
+            mActivePointerId = INVALID_POINTER_ID;
+
             final int childWidth = child.getWidth();
             int targetLeft;
             boolean dismiss = false;
