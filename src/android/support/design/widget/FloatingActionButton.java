@@ -27,13 +27,14 @@ import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.util.AttributeSet;
-import android.widget.Checkable;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.ViewParent;
 import android.widget.ImageView;
 
 /**
  * Floating action buttons are used for a special type of promoted action. They are distinguished
- * by
- * a circled icon floating above the UI and have special motion behaviors related to morphing,
+ * by a circled icon floating above the UI and have special motion behaviors related to morphing,
  * launching, and the transferring anchor point.
  *
  * Floating action buttons come in two sizes: the default, which should be used in most cases, and
@@ -134,6 +135,12 @@ public class FloatingActionButton extends ImageView {
         setMeasuredDimension(
                 d + mShadowPadding.left + mShadowPadding.right,
                 d + mShadowPadding.top + mShadowPadding.bottom);
+    }
+
+    @Override
+    protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+        super.onLayout(changed, left, top, right, bottom);
+        updateOffset();
     }
 
     /**
@@ -266,5 +273,64 @@ public class FloatingActionButton extends ImageView {
             default:
                 return defaultMode;
         }
+    }
+
+    /**
+     * Pre-Lollipop we use padding so that the shadow has enough space to be drawn. This method
+     * offsets our layout position so that we're positioned correctly if we're on one of
+     * our parent's edges.
+     */
+    private void updateOffset() {
+        if (mShadowPadding.width() > 0 && mShadowPadding.height() > 0) {
+            int offsetTB = 0, offsetLR = 0;
+
+            if (isOnRightParentEdge()) {
+                offsetLR = mShadowPadding.right;
+            } else if (isOnLeftParentEdge()) {
+                offsetLR = -mShadowPadding.left;
+            }
+            if (isOnBottomParentEdge()) {
+                offsetTB = mShadowPadding.bottom;
+            } else if (isOnTopParentEdge()) {
+                offsetTB = -mShadowPadding.top;
+            }
+
+            offsetTopAndBottom(offsetTB);
+            offsetLeftAndRight(offsetLR);
+        }
+    }
+
+    private boolean isOnLeftParentEdge() {
+        final int margin = getLayoutParams() instanceof ViewGroup.MarginLayoutParams ?
+                ((ViewGroup.MarginLayoutParams) getLayoutParams()).leftMargin : 0;
+        return getLeft() <= margin;
+    }
+
+    private boolean isOnTopParentEdge() {
+        final int margin = getLayoutParams() instanceof ViewGroup.MarginLayoutParams ?
+                ((ViewGroup.MarginLayoutParams) getLayoutParams()).topMargin : 0;
+        return getTop() <= margin;
+    }
+
+    private boolean isOnRightParentEdge() {
+        final int margin = getLayoutParams() instanceof ViewGroup.MarginLayoutParams ?
+                ((ViewGroup.MarginLayoutParams) getLayoutParams()).rightMargin : 0;
+
+        ViewParent parent = getParent();
+        if (parent instanceof View) {
+            return getRight() >= (((View) getParent()).getWidth() - margin);
+        }
+        return false;
+    }
+
+    private boolean isOnBottomParentEdge() {
+        final int margin = getLayoutParams() instanceof ViewGroup.MarginLayoutParams ?
+                ((ViewGroup.MarginLayoutParams) getLayoutParams()).bottomMargin : 0;
+
+        ViewParent parent = getParent();
+        if (parent instanceof View) {
+            return getBottom() >= (((View) getParent()).getHeight() - margin);
+        }
+        return false;
     }
 }
