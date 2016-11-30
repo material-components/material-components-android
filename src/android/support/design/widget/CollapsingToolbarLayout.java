@@ -457,7 +457,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
                 // Update the expanded bounds
                 mCollapsingTextHelper.setExpandedBounds(
                         isRtl ? mExpandedMarginEnd : mExpandedMarginStart,
-                        mExpandedMarginTop,
+                        mTmpRect.top + mExpandedMarginTop,
                         right - left - (isRtl ? mExpandedMarginStart : mExpandedMarginEnd),
                         bottom - top - mExpandedMarginBottom);
                 // Now recalculate using the new bounds
