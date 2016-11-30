@@ -487,6 +487,8 @@ public class TextInputLayout extends LinearLayout {
      * Sets the max length to display at the character counter.
      *
      * @param maxLength maxLength to display. Any value less than or equal to 0 will not be shown.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_counterMaxLength
      */
     public void setCounterMaxLength(int maxLength) {
         if (mCounterMaxLength != maxLength) {
@@ -503,6 +505,8 @@ public class TextInputLayout extends LinearLayout {
 
     /**
      * Returns the max length shown at the character counter.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_counterMaxLength
      */
     public int getCounterMaxLength() {
         return mCounterMaxLength;
