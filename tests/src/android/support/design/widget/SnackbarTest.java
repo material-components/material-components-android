@@ -21,6 +21,7 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.test.R;
+import android.support.design.testutils.SnackbarUtils;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
@@ -64,10 +65,8 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     private void verifySnackbarContent(final Snackbar snackbar, final String expectedMessage,
             final String expectedAction) {
-        // Now show the Snackbar
-        snackbar.show();
-        // Sleep for the animation
-        SystemClock.sleep(Snackbar.ANIMATION_DURATION + 50);
+        // Show the snackbar
+        SnackbarUtils.showSnackbarAndWaitUntilFullyShown(snackbar);
 
         // Verify that we're showing the message
         withText(expectedMessage).matches(allOf(
@@ -82,12 +81,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
         }
 
         // Dismiss the snackbar
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                snackbar.dismiss();
-            }
-        });
+        SnackbarUtils.dismissSnackbarAndWaitUntilFullyDismissed(snackbar);
     }
 
     @Test
@@ -136,11 +130,17 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
                 .setAction(ACTION_TEXT, mock(View.OnClickListener.class))
                 .setCallback(mockCallback);
 
+        // Note that unlike other tests around Snackbar that use Espresso's IdlingResources
+        // to wait until the snackbar is shown (SnackbarUtils.showSnackbarAndWaitUntilFullyShown),
+        // here we want to verify our callback has been called with onShown after snackbar is shown
+        // and with onDismissed after snackbar is dismissed.
+
         // Now show the Snackbar
         snackbar.show();
-        // Sleep for the animation
+        // sleep for the animation
         SystemClock.sleep(Snackbar.ANIMATION_DURATION + 50);
-        // ...and perform the UI interaction
+
+        // Now perform the UI interaction
         if (action != null) {
             interaction.perform(action);
         } else if (dismissAction != null) {
@@ -151,11 +151,11 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
                 }
             });
         }
-        // Now wait until the Snackbar has been removed from the view hierarchy
+        // wait until the Snackbar has been removed from the view hierarchy
         while (snackbar.isShownOrQueued()) {
             SystemClock.sleep(20);
         }
-
+        // and verify that our callback was invoked with onShown and onDismissed
         verify(mockCallback, times(1)).onShown(snackbar);
         verify(mockCallback, times(1)).onDismissed(snackbar, expectedEvent);
         verifyNoMoreInteractions(mockCallback);
@@ -247,12 +247,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
                 Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
 
         // And dismiss the second snackbar to get back to clean state
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                anotherSnackbar.dismiss();
-            }
-        });
+        SnackbarUtils.dismissSnackbarAndWaitUntilFullyDismissed(anotherSnackbar);
     }
 
     @Test
@@ -262,13 +257,12 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
         final Snackbar snackbar =
                 Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
                     .setAction(ACTION_TEXT, mockClickListener);
-        // Now show the Snackbar
-        snackbar.show();
-        // Sleep for the animation
-        SystemClock.sleep(Snackbar.ANIMATION_DURATION + 50);
-        // Perform the action click
-        onView(withId(R.id.snackbar_action)).perform(click());
 
+        // Show the snackbar
+        SnackbarUtils.showSnackbarAndWaitUntilFullyShown(snackbar);
+        // perform the action click
+        onView(withId(R.id.snackbar_action)).perform(click());
+        // and verify that our click listener has been called
         verify(mockClickListener, times(1)).onClick(any(View.class));
     }
 }

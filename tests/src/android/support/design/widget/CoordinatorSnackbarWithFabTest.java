@@ -19,7 +19,6 @@ package android.support.design.widget;
 import android.os.Build;
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.v7.widget.AppCompatTextView;
@@ -48,12 +47,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
     public void teardown() {
         // Dismiss the snackbar to get back to clean state for the next test
         if (mSnackbar != null) {
-            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-                @Override
-                public void run() {
-                    mSnackbar.dismiss();
-                }
-            });
+            SnackbarUtils.dismissSnackbarAndWaitUntilFullyDismissed(mSnackbar);
         }
     }
 

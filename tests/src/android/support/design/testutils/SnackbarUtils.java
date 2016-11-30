@@ -28,7 +28,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 
 public class SnackbarUtils {
-    private static class CustomSnackbarCallback extends Snackbar.Callback
+    private static class SnackbarShownCallback extends Snackbar.Callback
             implements IdlingResource {
         private boolean mIsShown = false;
 
@@ -44,7 +44,7 @@ public class SnackbarUtils {
 
         @Override
         public String getName() {
-            return "Snackbar callback";
+            return "Snackbar shown callback";
         }
 
         @Override
@@ -59,6 +59,43 @@ public class SnackbarUtils {
         @Override
         public void onShown(Snackbar snackbar) {
             mIsShown = true;
+            if (mCallback != null) {
+                mCallback.onTransitionToIdle();
+            }
+        }
+    }
+
+    private static class SnackbarDismissedCallback extends Snackbar.Callback
+            implements IdlingResource {
+        private boolean mIsDismissed = false;
+
+        @Nullable
+        private IdlingResource.ResourceCallback mCallback;
+
+        private boolean mNeedsIdle = false;
+
+        @Override
+        public void registerIdleTransitionCallback(ResourceCallback resourceCallback) {
+            mCallback = resourceCallback;
+        }
+
+        @Override
+        public String getName() {
+            return "Snackbar dismissed callback";
+        }
+
+        @Override
+        public boolean isIdleNow() {
+            if (!mNeedsIdle) {
+                return true;
+            } else {
+                return mIsDismissed;
+            }
+        }
+
+        @Override
+        public void onDismissed(Snackbar snackbar, @DismissEvent int event) {
+            mIsDismissed = true;
             if (mCallback != null) {
                 mCallback.onTransitionToIdle();
             }
@@ -88,15 +125,48 @@ public class SnackbarUtils {
         };
     }
 
+    /**
+     * Helper method that shows that specified {@link Snackbar} and waits until
+     * it has been fully shown. Note that calling this method will reset the currently
+     * set {@link Snackbar.Callback}.
+     */
     public static void showSnackbarAndWaitUntilFullyShown(Snackbar snackbar) {
-        CustomSnackbarCallback snackbarCallback = new CustomSnackbarCallback();
+        SnackbarShownCallback snackbarCallback = new SnackbarShownCallback();
         snackbar.setCallback(snackbarCallback);
         try {
             // Register our listener as idling resource so that Espresso waits until the
-            // the snackbar being fully shown
+            // the snackbar has been fully shown
             Espresso.registerIdlingResources(snackbarCallback);
             // Show the snackbar
             snackbar.show();
+            // Mark the callback to require waiting for idle state
+            snackbarCallback.mNeedsIdle = true;
+            // Perform a dummy Espresso action that loops until the UI thread is idle. This
+            // effectively blocks us until the Snackbar has completed its sliding animation.
+            onView(isRoot()).perform(waitUntilIdle());
+            snackbarCallback.mNeedsIdle = false;
+        } finally {
+            // Unregister our idling resource
+            Espresso.unregisterIdlingResources(snackbarCallback);
+            // And remove our tracker listener from Snackbar
+            snackbar.setCallback(null);
+        }
+    }
+
+    /**
+     * Helper method that dismissed that specified {@link Snackbar} and waits until
+     * it has been fully dismissed. Note that calling this method will reset the currently
+     * set {@link Snackbar.Callback}.
+     */
+    public static void dismissSnackbarAndWaitUntilFullyDismissed(Snackbar snackbar) {
+        SnackbarDismissedCallback snackbarCallback = new SnackbarDismissedCallback();
+        snackbar.setCallback(snackbarCallback);
+        try {
+            // Register our listener as idling resource so that Espresso waits until the
+            // the snackbar has been fully dismissed
+            Espresso.registerIdlingResources(snackbarCallback);
+            // Dismiss the snackbar
+            snackbar.dismiss();
             // Mark the callback to require waiting for idle state
             snackbarCallback.mNeedsIdle = true;
             // Perform a dummy Espresso action that loops until the UI thread is idle. This
