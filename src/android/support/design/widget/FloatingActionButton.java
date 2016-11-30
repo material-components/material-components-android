@@ -127,7 +127,8 @@ public class FloatingActionButton extends ImageView {
             mImpl = new FloatingActionButtonEclairMr1(this, delegate);
         }
 
-        final int maxContentSize = (int) getResources().getDimension(R.dimen.fab_content_size);
+        final int maxContentSize = (int) getResources().getDimension(
+                R.dimen.design_fab_content_size);
         mContentPadding = (getSizeDimension() - maxContentSize) / 2;
 
         mImpl.setBackgroundDrawable(background, mBackgroundTint,
@@ -258,10 +259,10 @@ public class FloatingActionButton extends ImageView {
     final int getSizeDimension() {
         switch (mSize) {
             case SIZE_MINI:
-                return getResources().getDimensionPixelSize(R.dimen.fab_size_mini);
+                return getResources().getDimensionPixelSize(R.dimen.design_fab_size_mini);
             case SIZE_NORMAL:
             default:
-                return getResources().getDimensionPixelSize(R.dimen.fab_size_normal);
+                return getResources().getDimensionPixelSize(R.dimen.design_fab_size_normal);
         }
     }
 

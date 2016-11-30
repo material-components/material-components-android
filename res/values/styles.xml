@@ -17,13 +17,13 @@
 <resources>
 
     <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
-        <item name="android:background">@drawable/fab_background</item>
+        <item name="android:background">@drawable/design_fab_background</item>
         <item name="backgroundTint">?attr/colorAccent</item>
         <item name="fabSize">normal</item>
-        <item name="elevation">@dimen/fab_elevation</item>
-        <item name="pressedTranslationZ">@dimen/fab_translation_z_pressed</item>
+        <item name="elevation">@dimen/design_fab_elevation</item>
+        <item name="pressedTranslationZ">@dimen/design_fab_translation_z_pressed</item>
         <item name="rippleColor">?attr/colorControlHighlight</item>
-        <item name="borderWidth">@dimen/fab_border_width</item>
+        <item name="borderWidth">@dimen/design_fab_border_width</item>
     </style>
 
     <style name="Widget.Design.ScrimInsetsFrameLayout" parent="">
@@ -31,10 +31,10 @@
     </style>
 
     <style name="Widget.Design.NavigationView" parent="">
-        <item name="elevation">@dimen/navigation_elevation</item>
+        <item name="elevation">@dimen/design_navigation_elevation</item>
         <item name="android:background">?android:attr/windowBackground</item>
         <item name="android:fitsSystemWindows">true</item>
-        <item name="android:maxWidth">@dimen/navigation_max_width</item>
+        <item name="android:maxWidth">@dimen/design_navigation_max_width</item>
     </style>
 
     <style name="Widget.Design.TabLayout" parent="Base.Widget.Design.TabLayout">
@@ -43,7 +43,7 @@
     </style>
 
     <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
-        <item name="tabMaxWidth">@dimen/tab_max_width</item>
+        <item name="tabMaxWidth">@dimen/design_tab_max_width</item>
         <item name="tabIndicatorColor">?attr/colorAccent</item>
         <item name="tabIndicatorHeight">2dp</item>
         <item name="tabPaddingStart">12dp</item>
@@ -69,11 +69,11 @@
     </style>
 
     <style name="TextAppearance.Design.Error" parent="TextAppearance.AppCompat.Caption">
-        <item name="android:textColor">@color/error_color</item>
+        <item name="android:textColor">@color/design_textinput_error_color</item>
     </style>
 
     <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance">
-        <item name="android:textSize">@dimen/snackbar_text_size</item>
+        <item name="android:textSize">@dimen/design_snackbar_text_size</item>
         <item name="android:textColor">?android:textColorPrimary</item>
     </style>
 
@@ -83,13 +83,13 @@
 
     <style name="Widget.Design.Snackbar" parent="android:Widget">
         <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark</item>
-        <item name="android:minWidth">@dimen/snackbar_min_width</item>
-        <item name="android:maxWidth">@dimen/snackbar_max_width</item>
-        <item name="android:background">@drawable/snackbar_background</item>
-        <item name="android:paddingLeft">@dimen/snackbar_padding_horizontal</item>
-        <item name="android:paddingRight">@dimen/snackbar_padding_horizontal</item>
-        <item name="elevation">@dimen/snackbar_elevation</item>
-        <item name="maxActionInlineWidth">@dimen/snackbar_action_inline_max_width</item>
+        <item name="android:minWidth">@dimen/design_snackbar_min_width</item>
+        <item name="android:maxWidth">@dimen/design_snackbar_max_width</item>
+        <item name="android:background">@drawable/design_snackbar_background</item>
+        <item name="android:paddingLeft">@dimen/design_snackbar_padding_horizontal</item>
+        <item name="android:paddingRight">@dimen/design_snackbar_padding_horizontal</item>
+        <item name="elevation">@dimen/design_snackbar_elevation</item>
+        <item name="maxActionInlineWidth">@dimen/design_snackbar_action_inline_max_width</item>
     </style>
 
     <style name="Widget.Design.CollapsingToolbar" parent="android:Widget">
@@ -100,7 +100,7 @@
     </style>
 
     <style name="Widget.Design.AppBarLayout" parent="android:Widget">
-        <item name="elevation">@dimen/appbar_elevation</item>
+        <item name="elevation">@dimen/design_appbar_elevation</item>
         <item name="android:background">?attr/colorPrimary</item>
     </style>
 

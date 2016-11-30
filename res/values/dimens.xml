@@ -16,41 +16,41 @@
 -->
 <resources>
 
-    <dimen name="fab_elevation">8dp</dimen>
-    <dimen name="fab_translation_z_pressed">6dp</dimen>
-    <dimen name="fab_content_size">24dp</dimen>
-    <dimen name="fab_size_normal">56dp</dimen>
-    <dimen name="fab_size_mini">40dp</dimen>
-    <dimen name="fab_border_width">0.5dp</dimen>
+    <dimen name="design_fab_elevation">8dp</dimen>
+    <dimen name="design_fab_translation_z_pressed">6dp</dimen>
+    <dimen name="design_fab_content_size">24dp</dimen>
+    <dimen name="design_fab_size_normal">56dp</dimen>
+    <dimen name="design_fab_size_mini">40dp</dimen>
+    <dimen name="design_fab_border_width">0.5dp</dimen>
 
-    <dimen name="navigation_max_width">320dp</dimen>
-    <dimen name="navigation_elevation">12dp</dimen>
-    <dimen name="navigation_icon_padding">32dp</dimen>
-    <dimen name="navigation_icon_size">24dp</dimen>
-    <dimen name="navigation_separator_vertical_padding">8dp</dimen>
-    <dimen name="navigation_padding_top_default">0dp</dimen>
-    <dimen name="navigation_padding_bottom">8dp</dimen>
+    <dimen name="design_navigation_max_width">320dp</dimen>
+    <dimen name="design_navigation_elevation">12dp</dimen>
+    <dimen name="design_navigation_icon_padding">32dp</dimen>
+    <dimen name="design_navigation_icon_size">24dp</dimen>
+    <dimen name="design_navigation_separator_vertical_padding">8dp</dimen>
+    <dimen name="design_navigation_padding_top_default">0dp</dimen>
+    <dimen name="design_navigation_padding_bottom">8dp</dimen>
 
-    <dimen name="tab_min_width">72dp</dimen>
-    <dimen name="tab_max_width">264dp</dimen>
+    <dimen name="design_tab_min_width">72dp</dimen>
+    <dimen name="design_tab_max_width">264dp</dimen>
 
-    <dimen name="snackbar_min_width">-1px</dimen>
-    <dimen name="snackbar_max_width">-1px</dimen>
-    <dimen name="snackbar_elevation">2dp</dimen>
-    <dimen name="snackbar_background_corner_radius">0dp</dimen>
+    <dimen name="design_snackbar_min_width">-1px</dimen>
+    <dimen name="design_snackbar_max_width">-1px</dimen>
+    <dimen name="design_snackbar_elevation">2dp</dimen>
+    <dimen name="design_snackbar_background_corner_radius">0dp</dimen>
 
-    <dimen name="snackbar_padding_horizontal">12dp</dimen>
-    <dimen name="snackbar_padding_vertical">14dp</dimen>
-    <dimen name="snackbar_padding_vertical_2lines">24dp</dimen>
+    <dimen name="design_snackbar_padding_horizontal">12dp</dimen>
+    <dimen name="design_snackbar_padding_vertical">14dp</dimen>
+    <dimen name="design_snackbar_padding_vertical_2lines">24dp</dimen>
 
     <!-- Extra spacing between the action and message views -->
-    <dimen name="snackbar_extra_spacing_horizontal">0dp</dimen>
+    <dimen name="design_snackbar_extra_spacing_horizontal">0dp</dimen>
     <!-- The maximum width for a Snackbar's inline action. If the view is width than this then
          the Snackbar will change to vertical stacking -->
-    <dimen name="snackbar_action_inline_max_width">128dp</dimen>
+    <dimen name="design_snackbar_action_inline_max_width">128dp</dimen>
 
-    <dimen name="snackbar_text_size">14sp</dimen>
+    <dimen name="design_snackbar_text_size">14sp</dimen>
 
-    <dimen name="appbar_elevation">4dp</dimen>
+    <dimen name="design_appbar_elevation">4dp</dimen>
 
 </resources>

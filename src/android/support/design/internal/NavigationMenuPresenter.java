@@ -86,9 +86,10 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         mLayoutInflater = LayoutInflater.from(context);
         mMenu = menu;
         Resources res = context.getResources();
-        mPaddingTopDefault = res.getDimensionPixelOffset(R.dimen.navigation_padding_top_default);
+        mPaddingTopDefault = res.getDimensionPixelOffset(
+                R.dimen.design_navigation_padding_top_default);
         mPaddingSeparator = res.getDimensionPixelOffset(
-                R.dimen.navigation_separator_vertical_padding);
+                R.dimen.design_navigation_separator_vertical_padding);
     }
 
     @Override

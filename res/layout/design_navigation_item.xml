@@ -20,7 +20,7 @@
         android:layout_height="?attr/listPreferredItemHeightSmall"
         android:paddingLeft="?attr/listPreferredItemPaddingLeft"
         android:paddingRight="?attr/listPreferredItemPaddingRight"
-        android:drawablePadding="@dimen/navigation_icon_padding"
+        android:drawablePadding="@dimen/design_navigation_icon_padding"
         android:gravity="center_vertical|start"
         android:maxLines="1"
         android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>

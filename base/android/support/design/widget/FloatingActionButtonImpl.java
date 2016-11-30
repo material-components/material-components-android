@@ -21,7 +21,6 @@ import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.design.R;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 
 abstract class FloatingActionButtonImpl {
@@ -67,10 +66,10 @@ abstract class FloatingActionButtonImpl {
         final Resources resources = mView.getResources();
         CircularBorderDrawable borderDrawable = newCircularDrawable();
         borderDrawable.setGradientColors(
-                resources.getColor(R.color.fab_stroke_top_outer_color),
-                resources.getColor(R.color.fab_stroke_top_inner_color),
-                resources.getColor(R.color.fab_stroke_end_inner_color),
-                resources.getColor(R.color.fab_stroke_end_outer_color));
+                resources.getColor(R.color.design_fab_stroke_top_outer_color),
+                resources.getColor(R.color.design_fab_stroke_top_inner_color),
+                resources.getColor(R.color.design_fab_stroke_end_inner_color),
+                resources.getColor(R.color.design_fab_stroke_end_outer_color));
         borderDrawable.setBorderWidth(borderWidth);
         borderDrawable.setTintColor(backgroundTint.getDefaultColor());
         return borderDrawable;

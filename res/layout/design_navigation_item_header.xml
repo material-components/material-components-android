@@ -18,4 +18,4 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:orientation="vertical"
-      android:paddingBottom="@dimen/navigation_separator_vertical_padding" />
+      android:paddingBottom="@dimen/design_navigation_separator_vertical_padding" />

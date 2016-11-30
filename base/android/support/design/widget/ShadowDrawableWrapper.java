@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import android.content.res.Resources;
 import android.graphics.Canvas;
-import android.graphics.ColorFilter;
 import android.graphics.LinearGradient;
 import android.graphics.Paint;
 import android.graphics.Path;
@@ -81,9 +80,9 @@ class ShadowDrawableWrapper extends DrawableWrapper {
             float shadowSize, float maxShadowSize) {
         super(content);
 
-        mShadowStartColor = resources.getColor(R.color.shadow_start_color);
-        mShadowMiddleColor = resources.getColor(R.color.shadow_mid_color);
-        mShadowEndColor = resources.getColor(R.color.shadow_end_color);
+        mShadowStartColor = resources.getColor(R.color.design_fab_shadow_start_color);
+        mShadowMiddleColor = resources.getColor(R.color.design_fab_shadow_mid_color);
+        mShadowEndColor = resources.getColor(R.color.design_fab_shadow_end_color);
 
         mCornerShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
         mCornerShadowPaint.setStyle(Paint.Style.FILL);

@@ -156,7 +156,7 @@ public class Snackbar {
         mContext = parent.getContext();
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
-        mView = (SnackbarLayout) inflater.inflate(R.layout.layout_snackbar, mParent, false);
+        mView = (SnackbarLayout) inflater.inflate(R.layout.design_layout_snackbar, mParent, false);
     }
 
     /**
@@ -448,7 +448,7 @@ public class Snackbar {
                         }
                     }).start();
         } else {
-            Animation anim = AnimationUtils.loadAnimation(mView.getContext(), R.anim.snackbar_in);
+            Animation anim = AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_in);
             anim.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
             anim.setDuration(ANIMATION_DURATION);
             anim.setAnimationListener(new Animation.AnimationListener() {
@@ -487,7 +487,7 @@ public class Snackbar {
                         }
                     }).start();
         } else {
-            Animation anim = AnimationUtils.loadAnimation(mView.getContext(), R.anim.snackbar_out);
+            Animation anim = AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_out);
             anim.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
             anim.setDuration(ANIMATION_DURATION);
             anim.setAnimationListener(new Animation.AnimationListener() {
@@ -580,7 +580,7 @@ public class Snackbar {
             // Now inflate our content. We need to do this manually rather than using an <include>
             // in the layout since older versions of the Android do not inflate includes with
             // the correct Context.
-            LayoutInflater.from(context).inflate(R.layout.layout_snackbar_include, this);
+            LayoutInflater.from(context).inflate(R.layout.design_layout_snackbar_include, this);
         }
 
         @Override
@@ -608,9 +608,9 @@ public class Snackbar {
             }
 
             final int multiLineVPadding = getResources().getDimensionPixelSize(
-                    R.dimen.snackbar_padding_vertical_2lines);
+                    R.dimen.design_snackbar_padding_vertical_2lines);
             final int singleLineVPadding = getResources().getDimensionPixelSize(
-                    R.dimen.snackbar_padding_vertical);
+                    R.dimen.design_snackbar_padding_vertical);
             final boolean isMultiLine = mMessageView.getLayout().getLineCount() > 1;
 
             boolean remeasure = false;
