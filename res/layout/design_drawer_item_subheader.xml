@@ -14,11 +14,12 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<android.support.design.internal.NavigationMenuView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingTop="@dimen/drawer_padding_top_default"
-        android:clipToPadding="false"
-        android:divider="@null"
-        android:listSelector="?attr/selectableItemBackground"/>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+          android:layout_width="match_parent"
+          android:layout_height="?attr/listPreferredItemHeightSmall"
+          android:gravity="center_vertical|start"
+          android:maxLines="1"
+          android:paddingLeft="?attr/listPreferredItemPaddingLeft"
+          android:paddingRight="?attr/listPreferredItemPaddingRight"
+          android:textAppearance="?attr/textAppearanceListItem"
+          android:textColor="?android:textColorSecondary"/>

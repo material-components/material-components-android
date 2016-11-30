@@ -18,6 +18,11 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
+import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.design.R;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.internal.ScrimInsetsFrameLayout;
@@ -54,9 +59,13 @@ import android.view.View;
  */
 public class NavigationDrawerView extends ScrimInsetsFrameLayout {
 
+    private static final int PRESENTER_NAVIGATION_DRAWER_VIEW = 1;
+
     private OnNavigationItemSelectedListener mListener;
 
     private MenuBuilder mMenu;
+
+    private NavigationMenuPresenter mPresenter;
 
     private int mMaxWidth;
 
@@ -87,7 +96,7 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
 
         // Set up the menu
         mMenu = new MenuBuilder(context);
-        MenuBuilder.Callback menuCallback = new MenuBuilder.Callback() {
+        mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
                 return mListener != null && mListener.onNavigationItemSelected(item);
@@ -97,11 +106,28 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
             public void onMenuModeChange(MenuBuilder menu) {
 
             }
-        };
-        mMenu.setCallback(menuCallback);
-        NavigationMenuPresenter presenter = new NavigationMenuPresenter();
-        presenter.initForMenu(context, mMenu);
-        addView((View) presenter.getMenuView(this));
+        });
+        mPresenter = new NavigationMenuPresenter();
+        mPresenter.setId(PRESENTER_NAVIGATION_DRAWER_VIEW);
+        mPresenter.initForMenu(context, mMenu);
+        mMenu.addMenuPresenter(mPresenter);
+        addView((View) mPresenter.getMenuView(this));
+    }
+
+    @Override
+    protected Parcelable onSaveInstanceState() {
+        Parcelable superState = super.onSaveInstanceState();
+        SavedState state = new SavedState(superState);
+        state.menuState = new Bundle();
+        mMenu.savePresenterStates(state.menuState);
+        return state;
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Parcelable savedState) {
+        SavedState state = (SavedState) savedState;
+        super.onRestoreInstanceState(state.getSuperState());
+        mMenu.restorePresenterStates(state.menuState);
     }
 
     /**
@@ -139,6 +165,34 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
     }
 
     /**
+     * Inflates a View and add it as a header of the navigation menu.
+     *
+     * @param res The layout resource ID.
+     * @return a newly inflated View.
+     */
+    public View inflateHeaderView(@LayoutRes int res) {
+        return mPresenter.inflateHeaderView(res);
+    }
+
+    /**
+     * Adds a View as a header of the navigation menu.
+     *
+     * @param view The view to be added as a header of the navigation menu.
+     */
+    public void addHeaderView(@NonNull View view) {
+        mPresenter.addHeaderView(view);
+    }
+
+    /**
+     * Removes a previously-added header view.
+     *
+     * @param view The view to remove
+     */
+    public void removeHeaderView(@NonNull View view) {
+        mPresenter.removeHeaderView(view);
+    }
+
+    /**
      * Listener for handling events on navigation drawer items.
      */
     public interface OnNavigationItemSelectedListener {
@@ -149,6 +203,46 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
          * @param item The selected item
          */
         public boolean onNavigationItemSelected(MenuItem item);
+    }
+
+    /**
+     * User interface state that is stored by NavigationDrawerView for implementing
+     * onSaveInstanceState().
+     */
+    public static class SavedState extends BaseSavedState {
+
+        public Bundle menuState;
+
+        public SavedState(Parcel in) {
+            super(in);
+            menuState = in.readBundle();
+        }
+
+        public SavedState(Parcelable superState) {
+            super(superState);
+        }
+
+        @Override
+        public void writeToParcel(@NonNull Parcel dest, int flags) {
+            super.writeToParcel(dest, flags);
+            dest.writeBundle(menuState);
+        }
+
+        public static final Parcelable.Creator<SavedState> CREATOR
+                = new Parcelable.Creator<SavedState>() {
+
+            @Override
+            public SavedState createFromParcel(Parcel parcel) {
+                return new SavedState(parcel);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+                return new SavedState[size];
+            }
+
+        };
+
     }
 
 }
