@@ -17,10 +17,11 @@
 package android.support.design.widget;
 
 import android.content.Context;
+import android.support.v7.widget.AppCompatImageButton;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
-class VisibilityAwareImageButton extends ImageButton {
+class VisibilityAwareImageButton extends AppCompatImageButton {
 
     private int mUserSetVisibility;
 

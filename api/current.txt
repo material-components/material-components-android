@@ -490,7 +490,7 @@ package android.support.design.widget {
     method public boolean setTopAndBottomOffset(int);
   }
 
-   class VisibilityAwareImageButton extends android.widget.ImageButton {
+   class VisibilityAwareImageButton extends android.support.v7.widget.AppCompatImageButton {
     ctor public VisibilityAwareImageButton(android.content.Context);
     ctor public VisibilityAwareImageButton(android.content.Context, android.util.AttributeSet);
     ctor public VisibilityAwareImageButton(android.content.Context, android.util.AttributeSet, int);
