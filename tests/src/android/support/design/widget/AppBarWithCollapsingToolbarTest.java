@@ -308,6 +308,13 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final ImageView parallaxImageView =
                 (ImageView) mCoordinatorLayout.findViewById(R.id.app_bar_image);
 
+        // We have not set any padding on the ImageView, so ensure that none is set via
+        // window insets handling
+        assertEquals(0, parallaxImageView.getPaddingLeft());
+        assertEquals(0, parallaxImageView.getPaddingTop());
+        assertEquals(0, parallaxImageView.getPaddingRight());
+        assertEquals(0, parallaxImageView.getPaddingBottom());
+
         CollapsingToolbarLayout.LayoutParams parallaxImageViewLp =
                 (CollapsingToolbarLayout.LayoutParams) parallaxImageView.getLayoutParams();
         assertEquals(CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PARALLAX,

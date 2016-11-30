@@ -272,7 +272,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
             requestLayout();
         }
 
-        return insets;
+        // Consume the insets. This is done so that child views with fitSystemWindows=true do not
+        // get the default padding functionality from View
+        return insets.consumeSystemWindowInsets();
     }
 
     @Override
