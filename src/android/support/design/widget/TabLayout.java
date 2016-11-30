@@ -1495,7 +1495,8 @@ public class TabLayout extends HorizontalScrollView {
         public TabView(Context context) {
             super(context);
             if (mTabBackgroundResId != 0) {
-                setBackgroundDrawable(AppCompatResources.getDrawable(context, mTabBackgroundResId));
+                ViewCompat.setBackground(
+                        this, AppCompatResources.getDrawable(context, mTabBackgroundResId));
             }
             ViewCompat.setPaddingRelative(this, mTabPaddingStart, mTabPaddingTop,
                     mTabPaddingEnd, mTabPaddingBottom);

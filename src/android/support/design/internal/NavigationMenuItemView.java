@@ -103,7 +103,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
         setVisibility(itemData.isVisible() ? VISIBLE : GONE);
 
         if (getBackground() == null) {
-            setBackgroundDrawable(createDefaultBackground());
+            ViewCompat.setBackground(this, createDefaultBackground());
         }
 
         setCheckable(itemData.isCheckable());

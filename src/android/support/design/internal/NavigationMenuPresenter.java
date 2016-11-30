@@ -408,7 +408,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
                     if (mTextColor != null) {
                         itemView.setTextColor(mTextColor);
                     }
-                    itemView.setBackgroundDrawable(mItemBackground != null ?
+                    ViewCompat.setBackground(itemView, mItemBackground != null ?
                             mItemBackground.getConstantState().newDrawable() : null);
                     NavigationMenuTextItem item = (NavigationMenuTextItem) mItems.get(position);
                     itemView.setNeedsEmptyIcon(item.needsEmptyIcon);

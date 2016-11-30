@@ -25,6 +25,7 @@ import android.support.annotation.NonNull;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
@@ -193,7 +194,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     public void setItemBackground(int background) {
         Drawable backgroundDrawable = background == 0
                 ? null : ContextCompat.getDrawable(getContext(), background);
-        setBackgroundDrawable(backgroundDrawable);
+        ViewCompat.setBackground(this, backgroundDrawable);
     }
 
     @TargetApi(Build.VERSION_CODES.HONEYCOMB_MR1)

@@ -110,8 +110,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
                 R.styleable.NavigationView, defStyleAttr,
                 R.style.Widget_Design_NavigationView);
 
-        //noinspection deprecation
-        setBackgroundDrawable(a.getDrawable(R.styleable.NavigationView_android_background));
+        ViewCompat.setBackground(
+                this, a.getDrawable(R.styleable.NavigationView_android_background));
         if (a.hasValue(R.styleable.NavigationView_elevation)) {
             ViewCompat.setElevation(this, a.getDimensionPixelSize(
                     R.styleable.NavigationView_elevation, 0));

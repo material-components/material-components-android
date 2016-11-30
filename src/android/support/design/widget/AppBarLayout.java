@@ -166,7 +166,7 @@ public class AppBarLayout extends LinearLayout {
 
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.AppBarLayout,
                 0, R.style.Widget_Design_AppBarLayout);
-        setBackgroundDrawable(a.getDrawable(R.styleable.AppBarLayout_android_background));
+        ViewCompat.setBackground(this, a.getDrawable(R.styleable.AppBarLayout_android_background));
         if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
             setExpanded(a.getBoolean(R.styleable.AppBarLayout_expanded, false));
         }
