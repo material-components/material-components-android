@@ -22,10 +22,12 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
 import android.support.design.R;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -55,19 +57,23 @@ final class CollapsingTextHelper {
 
     private final Rect mExpandedBounds;
     private final Rect mCollapsedBounds;
-    private int mExpandedTextVerticalGravity = Gravity.CENTER_VERTICAL;
-    private int mCollapsedTextVerticalGravity = Gravity.CENTER_VERTICAL;
+    private final RectF mCurrentBounds;
+    private int mExpandedTextGravity = Gravity.CENTER_VERTICAL;
+    private int mCollapsedTextGravity = Gravity.CENTER_VERTICAL;
     private float mExpandedTextSize;
     private float mCollapsedTextSize;
     private int mExpandedTextColor;
     private int mCollapsedTextColor;
 
-    private float mExpandedTop;
-    private float mCollapsedTop;
+    private float mExpandedDrawY;
+    private float mCollapsedDrawY;
+    private float mExpandedDrawX;
+    private float mCollapsedDrawX;
+    private float mCurrentDrawX;
+    private float mCurrentDrawY;
 
     private CharSequence mText;
     private CharSequence mTextToDraw;
-    private float mTextWidth;
     private boolean mIsRtl;
 
     private boolean mUseTexture;
@@ -76,9 +82,6 @@ final class CollapsingTextHelper {
     private float mTextureAscent;
     private float mTextureDescent;
 
-    private float mCurrentLeft;
-    private float mCurrentRight;
-    private float mCurrentTop;
     private float mScale;
     private float mCurrentTextSize;
 
@@ -95,6 +98,7 @@ final class CollapsingTextHelper {
 
         mCollapsedBounds = new Rect();
         mExpandedBounds = new Rect();
+        mCurrentBounds = new RectF();
     }
 
     void setTextSizeInterpolator(Interpolator interpolator) {
@@ -143,22 +147,26 @@ final class CollapsingTextHelper {
         mCollapsedBounds.set(left, top, right, bottom);
     }
 
-    void setExpandedTextVerticalGravity(int gravity) {
-        gravity &= Gravity.VERTICAL_GRAVITY_MASK;
-
-        if (mExpandedTextVerticalGravity != gravity) {
-            mExpandedTextVerticalGravity = gravity;
+    void setExpandedTextGravity(int gravity) {
+        if (mExpandedTextGravity != gravity) {
+            mExpandedTextGravity = gravity;
             recalculate();
         }
     }
 
-    void setCollapsedTextVerticalGravity(int gravity) {
-        gravity &= Gravity.VERTICAL_GRAVITY_MASK;
+    int getExpandedTextGravity() {
+        return mExpandedTextGravity;
+    }
 
-        if (mCollapsedTextVerticalGravity != gravity) {
-            mCollapsedTextVerticalGravity = gravity;
+    void setCollapsedTextGravity(int gravity) {
+        if (mCollapsedTextGravity != gravity) {
+            mCollapsedTextGravity = gravity;
             recalculate();
         }
+    }
+
+    int getCollapsedTextGravity() {
+        return mCollapsedTextGravity;
     }
 
     void setCollapsedTextAppearance(int resId) {
@@ -215,7 +223,7 @@ final class CollapsingTextHelper {
 
         if (fraction != mExpandedFraction) {
             mExpandedFraction = fraction;
-            calculateOffsets();
+            calculateCurrentOffsets();
         }
     }
 
@@ -231,15 +239,16 @@ final class CollapsingTextHelper {
         return mExpandedTextSize;
     }
 
-    private void calculateOffsets() {
+    private void calculateCurrentOffsets() {
         final float fraction = mExpandedFraction;
 
-        mCurrentLeft = interpolate(mExpandedBounds.left, mCollapsedBounds.left,
-                fraction, mPositionInterpolator);
-        mCurrentTop = interpolate(mExpandedTop, mCollapsedTop, fraction, mPositionInterpolator);
-        mCurrentRight = interpolate(mExpandedBounds.right, mCollapsedBounds.right,
-                fraction, mPositionInterpolator);
-        setInterpolatedTextSize(interpolate(mExpandedTextSize, mCollapsedTextSize,
+        interpolateBounds(fraction);
+        mCurrentDrawX = lerp(mExpandedDrawX, mCollapsedDrawX, fraction,
+                mPositionInterpolator);
+        mCurrentDrawY = lerp(mExpandedDrawY, mCollapsedDrawY, fraction,
+                mPositionInterpolator);
+
+        setInterpolatedTextSize(lerp(mExpandedTextSize, mCollapsedTextSize,
                 fraction, mTextSizeInterpolator));
 
         if (mCollapsedTextColor != mExpandedTextColor) {
@@ -253,54 +262,93 @@ final class CollapsingTextHelper {
         ViewCompat.postInvalidateOnAnimation(mView);
     }
 
-    private void calculateBaselines() {
+    private void calculateBaseOffsets() {
         // We then calculate the collapsed text size, using the same logic
         mTextPaint.setTextSize(mCollapsedTextSize);
-        switch (mCollapsedTextVerticalGravity) {
+        float width = mTextToDraw != null ?
+                mTextPaint.measureText(mTextToDraw, 0, mTextToDraw.length()) : 0;
+        final int collapsedAbsGravity = GravityCompat.getAbsoluteGravity(mCollapsedTextGravity,
+                mIsRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+        switch (collapsedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
             case Gravity.BOTTOM:
-                mCollapsedTop = mCollapsedBounds.bottom;
+                mCollapsedDrawY = mCollapsedBounds.bottom;
                 break;
             case Gravity.TOP:
-                mCollapsedTop = mCollapsedBounds.top - mTextPaint.ascent();
+                mCollapsedDrawY = mCollapsedBounds.top - mTextPaint.ascent();
                 break;
             case Gravity.CENTER_VERTICAL:
             default:
                 float textHeight = mTextPaint.descent() - mTextPaint.ascent();
                 float textOffset = (textHeight / 2) - mTextPaint.descent();
-                mCollapsedTop = mCollapsedBounds.centerY() + textOffset;
+                mCollapsedDrawY = mCollapsedBounds.centerY() + textOffset;
+                break;
+        }
+        switch (collapsedAbsGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+            case Gravity.CENTER_HORIZONTAL:
+                mCollapsedDrawX = mCollapsedBounds.centerX() - (width / 2);
+                break;
+            case Gravity.RIGHT:
+                mCollapsedDrawX = mCollapsedBounds.right - width;
+                break;
+            case Gravity.LEFT:
+            default:
+                mCollapsedDrawX = mCollapsedBounds.left;
                 break;
         }
 
         mTextPaint.setTextSize(mExpandedTextSize);
-        switch (mExpandedTextVerticalGravity) {
+        width = mTextToDraw != null
+                ? mTextPaint.measureText(mTextToDraw, 0, mTextToDraw.length()) : 0;
+        final int expandedAbsGravity = GravityCompat.getAbsoluteGravity(mExpandedTextGravity,
+                mIsRtl ? ViewCompat.LAYOUT_DIRECTION_RTL : ViewCompat.LAYOUT_DIRECTION_LTR);
+        switch (expandedAbsGravity & Gravity.VERTICAL_GRAVITY_MASK) {
             case Gravity.BOTTOM:
-                mExpandedTop = mExpandedBounds.bottom;
+                mExpandedDrawY = mExpandedBounds.bottom;
                 break;
             case Gravity.TOP:
-                mExpandedTop = mExpandedBounds.top - mTextPaint.ascent();
+                mExpandedDrawY = mExpandedBounds.top - mTextPaint.ascent();
                 break;
             case Gravity.CENTER_VERTICAL:
             default:
                 float textHeight = mTextPaint.descent() - mTextPaint.ascent();
                 float textOffset = (textHeight / 2) - mTextPaint.descent();
-                mExpandedTop = mExpandedBounds.centerY() + textOffset;
+                mExpandedDrawY = mExpandedBounds.centerY() + textOffset;
                 break;
         }
-        mTextureAscent = mTextPaint.ascent();
-        mTextureDescent = mTextPaint.descent();
+        switch (expandedAbsGravity & Gravity.HORIZONTAL_GRAVITY_MASK) {
+            case Gravity.CENTER_HORIZONTAL:
+                mExpandedDrawX = mExpandedBounds.centerX() - (width / 2);
+                break;
+            case Gravity.RIGHT:
+                mExpandedDrawX = mExpandedBounds.right - width;
+                break;
+            case Gravity.LEFT:
+            default:
+                mExpandedDrawX = mExpandedBounds.left;
+                break;
+        }
 
         // The bounds have changed so we need to clear the texture
         clearTexture();
+    }
+
+    private void interpolateBounds(float fraction) {
+        mCurrentBounds.left = lerp(mExpandedBounds.left, mCollapsedBounds.left,
+                fraction, mPositionInterpolator);
+        mCurrentBounds.top = lerp(mExpandedDrawY, mCollapsedDrawY,
+                fraction, mPositionInterpolator);
+        mCurrentBounds.right = lerp(mExpandedBounds.right, mCollapsedBounds.right,
+                fraction, mPositionInterpolator);
+        mCurrentBounds.bottom = lerp(mExpandedBounds.bottom, mCollapsedBounds.bottom,
+                fraction, mPositionInterpolator);
     }
 
     public void draw(Canvas canvas) {
         final int saveCount = canvas.save();
 
         if (mTextToDraw != null) {
-            final boolean isRtl = mIsRtl;
-
-            float x = isRtl ? mCurrentRight : mCurrentLeft;
-            float y = mCurrentTop;
+            float x = mCurrentDrawX;
+            float y = mCurrentDrawY;
 
             final boolean drawTexture = mUseTexture && mExpandedTitleTexture != null;
 
@@ -320,7 +368,7 @@ final class CollapsingTextHelper {
 
             if (DEBUG_DRAW) {
                 // Just a debug tool, which drawn a Magneta rect in the text bounds
-                canvas.drawRect(mCurrentLeft, y + ascent, mCurrentRight, y + descent,
+                canvas.drawRect(mCurrentBounds.left, y + ascent, mCurrentBounds.right, y + descent,
                         DEBUG_DRAW_PAINT);
             }
 
@@ -330,10 +378,6 @@ final class CollapsingTextHelper {
 
             if (mScale != 1f) {
                 canvas.scale(mScale, mScale, x, y);
-            }
-
-            if (isRtl) {
-                x -= mTextWidth;
             }
 
             if (drawTexture) {
@@ -394,7 +438,6 @@ final class CollapsingTextHelper {
                 mTextToDraw = title;
             }
             mIsRtl = calculateIsRtl(mTextToDraw);
-            mTextWidth = mTextPaint.measureText(mTextToDraw, 0, mTextToDraw.length());
         }
 
         // Use our texture if the scale isn't 1.0
@@ -416,10 +459,11 @@ final class CollapsingTextHelper {
 
         mTextPaint.setTextSize(mExpandedTextSize);
         mTextPaint.setColor(mExpandedTextColor);
+        mTextureAscent = mTextPaint.ascent();
+        mTextureDescent = mTextPaint.descent();
 
         final int w = Math.round(mTextPaint.measureText(mTextToDraw, 0, mTextToDraw.length()));
-        final int h = Math.round(mTextPaint.descent() - mTextPaint.ascent());
-        mTextWidth = w;
+        final int h = Math.round(mTextureDescent - mTextureAscent);
 
         if (w <= 0 && h <= 0) {
             return; // If the width or height are 0, return
@@ -432,9 +476,7 @@ final class CollapsingTextHelper {
 
         if (mTexturePaint == null) {
             // Make sure we have a paint
-            mTexturePaint = new Paint();
-            mTexturePaint.setAntiAlias(true);
-            mTexturePaint.setFilterBitmap(true);
+            mTexturePaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG);
         }
     }
 
@@ -442,8 +484,8 @@ final class CollapsingTextHelper {
         if (mView.getHeight() > 0 && mView.getWidth() > 0) {
             // If we've already been laid out, calculate everything now otherwise we'll wait
             // until a layout
-            calculateBaselines();
-            calculateOffsets();
+            calculateBaseOffsets();
+            calculateCurrentOffsets();
         }
     }
 
@@ -503,7 +545,7 @@ final class CollapsingTextHelper {
         return Color.argb((int) a, (int) r, (int) g, (int) b);
     }
 
-    private static float interpolate(float startValue, float endValue, float fraction,
+    private static float lerp(float startValue, float endValue, float fraction,
             Interpolator interpolator) {
         if (interpolator != null) {
             fraction = interpolator.getInterpolation(fraction);

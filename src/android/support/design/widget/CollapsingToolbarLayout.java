@@ -28,6 +28,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.widget.Toolbar;
@@ -122,12 +123,18 @@ public class CollapsingToolbarLayout extends FrameLayout {
         super(context, attrs, defStyleAttr);
 
         mCollapsingTextHelper = new CollapsingTextHelper(this);
-        mCollapsingTextHelper.setExpandedTextVerticalGravity(Gravity.BOTTOM);
         mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
 
         TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.CollapsingToolbarLayout, defStyleAttr,
                 R.style.Widget_Design_CollapsingToolbar);
+
+        mCollapsingTextHelper.setExpandedTextGravity(
+                a.getInt(R.styleable.CollapsingToolbarLayout_expandedTitleGravity,
+                        GravityCompat.START | Gravity.BOTTOM));
+        mCollapsingTextHelper.setCollapsedTextGravity(
+                a.getInt(R.styleable.CollapsingToolbarLayout_collapsedTitleGravity,
+                        GravityCompat.START | Gravity.CENTER_VERTICAL));
 
         mExpandedMarginLeft = mExpandedMarginTop = mExpandedMarginRight = mExpandedMarginBottom =
                 a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_expandedTitleMargin, 0);
@@ -344,9 +351,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mCollapsingTextHelper.setCollapsedBounds(mTmpRect.left, bottom - mTmpRect.height(),
                     mTmpRect.right, bottom);
             // Update the expanded bounds
-            mCollapsingTextHelper.setExpandedBounds(left + mExpandedMarginLeft,
-                    mTmpRect.bottom + mExpandedMarginTop, right - mExpandedMarginRight,
-                    bottom - mExpandedMarginBottom);
+            mCollapsingTextHelper.setExpandedBounds(
+                    mExpandedMarginLeft, mTmpRect.bottom,
+                    right - left - mExpandedMarginRight,
+                    bottom - top - mExpandedMarginBottom);
 
             mCollapsingTextHelper.recalculate();
         }
@@ -566,6 +574,26 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     /**
+     * Sets the horizontal alignment of the collapsed title and the vertical gravity that will
+     * be used when there is extra space in the collapsed bounds beyond what is required for
+     * the title itself.
+     *
+     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_collapsedTitleGravity
+     */
+    public void setCollapsedTitleGravity(int gravity) {
+        mCollapsingTextHelper.setExpandedTextGravity(gravity);
+    }
+
+    /**
+     * Returns the horizontal and vertical alignment for title when collapsed.
+     *
+     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_collapsedTitleGravity
+     */
+    public int getCollapsedTitleGravity() {
+        return mCollapsingTextHelper.getCollapsedTextGravity();
+    }
+
+    /**
      * Sets the text color and size for the expanded title from the specified
      * TextAppearance resource.
      *
@@ -582,6 +610,26 @@ public class CollapsingToolbarLayout extends FrameLayout {
      */
     public void setExpandedTitleColor(int color) {
         mCollapsingTextHelper.setExpandedTextColor(color);
+    }
+
+    /**
+     * Sets the horizontal alignment of the expanded title and the vertical gravity that will
+     * be used when there is extra space in the expanded bounds beyond what is required for
+     * the title itself.
+     *
+     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleGravity
+     */
+    public void setExpandedTitleGravity(int gravity) {
+        mCollapsingTextHelper.setExpandedTextGravity(gravity);
+    }
+
+    /**
+     * Returns the horizontal and vertical alignment for title when expanded.
+     *
+     * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleGravity
+     */
+    public int getExpandedTitleGravity() {
+        return mCollapsingTextHelper.getExpandedTextGravity();
     }
 
     /**

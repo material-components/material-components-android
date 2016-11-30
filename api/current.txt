@@ -65,14 +65,18 @@ package android.support.design.widget {
     ctor public CollapsingToolbarLayout(android.content.Context);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet);
     ctor public CollapsingToolbarLayout(android.content.Context, android.util.AttributeSet, int);
+    method public int getCollapsedTitleGravity();
     method public android.graphics.drawable.Drawable getContentScrim();
+    method public int getExpandedTitleGravity();
     method public android.graphics.drawable.Drawable getStatusBarScrim();
+    method public void setCollapsedTitleGravity(int);
     method public void setCollapsedTitleTextAppearance(int);
     method public void setCollapsedTitleTextColor(int);
     method public void setContentScrim(android.graphics.drawable.Drawable);
     method public void setContentScrimColor(int);
     method public void setContentScrimResource(int);
     method public void setExpandedTitleColor(int);
+    method public void setExpandedTitleGravity(int);
     method public void setExpandedTitleTextAppearance(int);
     method public void setStatusBarScrim(android.graphics.drawable.Drawable);
     method public void setStatusBarScrimColor(int);

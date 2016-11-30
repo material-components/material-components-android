@@ -113,7 +113,7 @@ public class TextInputLayout extends LinearLayout {
 
         mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         mCollapsingTextHelper.setPositionInterpolator(new AccelerateInterpolator());
-        mCollapsingTextHelper.setCollapsedTextVerticalGravity(Gravity.TOP);
+        mCollapsingTextHelper.setCollapsedTextGravity(Gravity.TOP);
 
         final TypedArray a = context.obtainStyledAttributes(attrs,
                 R.styleable.TextInputLayout, 0, R.style.Widget_Design_TextInputLayout);
