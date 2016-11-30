@@ -39,10 +39,7 @@
             android:layout_marginLeft="@dimen/design_snackbar_extra_spacing_horizontal"
             android:layout_marginStart="@dimen/design_snackbar_extra_spacing_horizontal"
             android:layout_gravity="center_vertical|right|end"
-            android:paddingTop="@dimen/design_snackbar_padding_vertical"
-            android:paddingBottom="@dimen/design_snackbar_padding_vertical"
-            android:paddingLeft="@dimen/design_snackbar_padding_horizontal"
-            android:paddingRight="@dimen/design_snackbar_padding_horizontal"
+            android:minWidth="48dp"
             android:visibility="gone"
             android:textColor="?attr/colorAccent"
             style="?attr/borderlessButtonStyle"/>
