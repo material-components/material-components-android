@@ -19,11 +19,14 @@
     <public type="attr" name="backgroundTint"/>
     <public type="attr" name="backgroundTintMode"/>
     <public type="attr" name="borderWidth"/>
+    <public type="attr" name="collapsedTitleGravity"/>
     <public type="attr" name="collapsedTitleTextAppearance"/>
     <public type="attr" name="contentScrim"/>
     <public type="attr" name="elevation"/>
     <public type="attr" name="errorEnabled"/>
     <public type="attr" name="errorTextAppearance"/>
+    <public type="attr" name="expanded"/>
+    <public type="attr" name="expandedTitleGravity"/>
     <public type="attr" name="expandedTitleMargin"/>
     <public type="attr" name="expandedTitleMarginBottom"/>
     <public type="attr" name="expandedTitleMarginEnd"/>
@@ -32,9 +35,11 @@
     <public type="attr" name="expandedTitleTextAppearance"/>
     <public type="attr" name="fabSize"/>
     <public type="attr" name="headerLayout"/>
+    <public type="attr" name="hintAnimationEnabled"/>
     <public type="attr" name="hintTextAppearance"/>
     <public type="attr" name="itemBackground"/>
     <public type="attr" name="itemIconTint"/>
+    <public type="attr" name="itemTextAppearance"/>
     <public type="attr" name="itemTextColor"/>
     <public type="attr" name="keylines"/>
     <public type="attr" name="menu"/>
@@ -58,5 +63,7 @@
     <public type="attr" name="tabSelectedTextColor"/>
     <public type="attr" name="tabTextAppearance"/>
     <public type="attr" name="tabTextColor"/>
+    <public type="attr" name="title"/>
+    <public type="attr" name="titleEnabled"/>
     <public type="attr" name="toolbarId"/>
 </resources>

@@ -16,6 +16,7 @@
 
 <!-- Definitions of styles to be exposed as public -->
 <resources>
+    <public type="style" name="TextAppearance.Design.CollapsingToolbar.Expanded"/>
     <public type="style" name="TextAppearance.Design.Error"/>
     <public type="style" name="TextAppearance.Design.Hint"/>
     <public type="style" name="TextAppearance.Design.Tab"/>
