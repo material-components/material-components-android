@@ -457,6 +457,7 @@ final class CollapsingTextHelper {
     void setText(CharSequence text) {
         if (text == null || !text.equals(mText)) {
             mText = text;
+            mTextToDraw = null;
             clearTexture();
             recalculate();
         }
