@@ -58,14 +58,16 @@ abstract class FloatingActionButtonImpl {
 
     final VisibilityAwareImageButton mView;
     final ShadowViewDelegate mShadowViewDelegate;
+    final ValueAnimatorCompat.Creator mAnimatorCreator;
 
     private final Rect mTmpRect = new Rect();
     private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
 
     FloatingActionButtonImpl(VisibilityAwareImageButton view,
-            ShadowViewDelegate shadowViewDelegate) {
+            ShadowViewDelegate shadowViewDelegate, ValueAnimatorCompat.Creator animatorCreator) {
         mView = view;
         mShadowViewDelegate = shadowViewDelegate;
+        mAnimatorCreator = animatorCreator;
     }
 
     abstract void setBackgroundDrawable(ColorStateList backgroundTint,

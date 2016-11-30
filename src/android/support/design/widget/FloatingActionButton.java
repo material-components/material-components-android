@@ -698,7 +698,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
                     mFabTranslationYAnimator = ViewUtils.createAnimator();
                     mFabTranslationYAnimator.setInterpolator(
                             AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-                    mFabTranslationYAnimator.setUpdateListener(
+                    mFabTranslationYAnimator.addUpdateListener(
                             new ValueAnimatorCompat.AnimatorUpdateListener() {
                                 @Override
                                 public void onAnimationUpdate(ValueAnimatorCompat animator) {
@@ -831,11 +831,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private FloatingActionButtonImpl createImpl() {
         final int sdk = Build.VERSION.SDK_INT;
         if (sdk >= 21) {
-            return new FloatingActionButtonLollipop(this, new ShadowDelegateImpl());
+            return new FloatingActionButtonLollipop(this, new ShadowDelegateImpl(),
+                    ViewUtils.DEFAULT_ANIMATOR_CREATOR);
         } else if (sdk >= 14) {
-            return new FloatingActionButtonIcs(this, new ShadowDelegateImpl());
+            return new FloatingActionButtonIcs(this, new ShadowDelegateImpl(),
+                    ViewUtils.DEFAULT_ANIMATOR_CREATOR);
         } else {
-            return new FloatingActionButtonGingerbread(this, new ShadowDelegateImpl());
+            return new FloatingActionButtonGingerbread(this, new ShadowDelegateImpl(),
+                    ViewUtils.DEFAULT_ANIMATOR_CREATOR);
         }
     }
 

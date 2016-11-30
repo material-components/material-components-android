@@ -1075,7 +1075,7 @@ public class TabLayout extends HorizontalScrollView {
                 mScrollAnimator = ViewUtils.createAnimator();
                 mScrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
                 mScrollAnimator.setDuration(ANIMATION_DURATION);
-                mScrollAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+                mScrollAnimator.addUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimatorCompat animator) {
                         scrollTo(animator.getAnimatedIntValue(), 0);
@@ -1994,7 +1994,7 @@ public class TabLayout extends HorizontalScrollView {
                 animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
                 animator.setDuration(duration);
                 animator.setFloatValues(0, 1);
-                animator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+                animator.addUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimatorCompat animator) {
                         final float fraction = animator.getAnimatedFraction();
@@ -2003,7 +2003,7 @@ public class TabLayout extends HorizontalScrollView {
                                 AnimationUtils.lerp(startRight, targetRight, fraction));
                     }
                 });
-                animator.setListener(new ValueAnimatorCompat.AnimatorListenerAdapter() {
+                animator.addListener(new ValueAnimatorCompat.AnimatorListenerAdapter() {
                     @Override
                     public void onAnimationEnd(ValueAnimatorCompat animator) {
                         mSelectedPosition = position;

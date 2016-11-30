@@ -40,8 +40,8 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
     private InsetDrawable mInsetDrawable;
 
     FloatingActionButtonLollipop(VisibilityAwareImageButton view,
-            ShadowViewDelegate shadowViewDelegate) {
-        super(view, shadowViewDelegate);
+            ShadowViewDelegate shadowViewDelegate, ValueAnimatorCompat.Creator animatorCreator) {
+        super(view, shadowViewDelegate, animatorCreator);
     }
 
     @Override

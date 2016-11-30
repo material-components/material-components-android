@@ -29,8 +29,8 @@ class FloatingActionButtonIcs extends FloatingActionButtonGingerbread {
     private float mRotation;
 
     FloatingActionButtonIcs(VisibilityAwareImageButton view,
-            ShadowViewDelegate shadowViewDelegate) {
-        super(view, shadowViewDelegate);
+            ShadowViewDelegate shadowViewDelegate, ValueAnimatorCompat.Creator animatorCreator) {
+        super(view, shadowViewDelegate, animatorCreator);
         mRotation = mView.getRotation();
     }
 

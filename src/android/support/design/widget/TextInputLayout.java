@@ -1252,7 +1252,7 @@ public class TextInputLayout extends LinearLayout {
             mAnimator = ViewUtils.createAnimator();
             mAnimator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
             mAnimator.setDuration(ANIMATION_DURATION);
-            mAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+            mAnimator.addUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimatorCompat animator) {
                     mCollapsingTextHelper.setExpansionFraction(animator.getAnimatedFloatValue());

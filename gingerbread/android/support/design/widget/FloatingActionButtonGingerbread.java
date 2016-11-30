@@ -23,39 +23,38 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.widget.AnimationUtils.AnimationListenerAdapter;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import android.view.animation.Animation;
-import android.view.animation.Transformation;
 
 class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
 
-    private StateListAnimator mStateListAnimator;
+    private final StateListAnimator mStateListAnimator;
     private boolean mIsHiding;
 
     ShadowDrawableWrapper mShadowDrawable;
 
     FloatingActionButtonGingerbread(VisibilityAwareImageButton view,
-            ShadowViewDelegate shadowViewDelegate) {
-        super(view, shadowViewDelegate);
+            ShadowViewDelegate shadowViewDelegate, ValueAnimatorCompat.Creator animatorCreator) {
+        super(view, shadowViewDelegate, animatorCreator);
 
         mStateListAnimator = new StateListAnimator();
-        mStateListAnimator.setTarget(view);
 
         // Elevate with translationZ when pressed or focused
         mStateListAnimator.addState(PRESSED_ENABLED_STATE_SET,
-                setupAnimation(new ElevateToTranslationZAnimation()));
+                createAnimator(new ElevateToTranslationZAnimation()));
         mStateListAnimator.addState(FOCUSED_ENABLED_STATE_SET,
-                setupAnimation(new ElevateToTranslationZAnimation()));
+                createAnimator(new ElevateToTranslationZAnimation()));
         // Reset back to elevation by default
         mStateListAnimator.addState(ENABLED_STATE_SET,
-                setupAnimation(new ResetElevationAnimation()));
+                createAnimator(new ResetElevationAnimation()));
         // Set to 0 when disabled
         mStateListAnimator.addState(EMPTY_STATE_SET,
-                setupAnimation(new DisabledElevationAnimation()));
+                createAnimator(new DisabledElevationAnimation()));
     }
 
     @Override
@@ -214,27 +213,38 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
         mShadowDrawable.getPadding(rect);
     }
 
-    private Animation setupAnimation(Animation animation) {
-        animation.setInterpolator(ANIM_INTERPOLATOR);
-        animation.setDuration(PRESSED_ANIM_DURATION);
-        return animation;
+    private ValueAnimatorCompat createAnimator(@NonNull ShadowAnimatorImpl impl) {
+        final ValueAnimatorCompat animator = mAnimatorCreator.createAnimator();
+        animator.setInterpolator(ANIM_INTERPOLATOR);
+        animator.setDuration(PRESSED_ANIM_DURATION);
+        animator.addListener(impl);
+        animator.addUpdateListener(impl);
+        animator.setFloatValues(0, 1);
+        return animator;
     }
 
-    private abstract class BaseShadowAnimation extends Animation {
+    private abstract class ShadowAnimatorImpl extends ValueAnimatorCompat.AnimatorListenerAdapter
+            implements ValueAnimatorCompat.AnimatorUpdateListener {
+        private boolean mValidValues;
         private float mShadowSizeStart;
-        private float mShadowSizeDiff;
+        private float mShadowSizeEnd;
 
         @Override
-        public void reset() {
-            super.reset();
+        public void onAnimationUpdate(ValueAnimatorCompat animator) {
+            if (!mValidValues) {
+                mShadowSizeStart = mShadowDrawable.getShadowSize();
+                mShadowSizeEnd = getTargetShadowSize();
+                mValidValues = true;
+            }
 
-            mShadowSizeStart = mShadowDrawable.getShadowSize();
-            mShadowSizeDiff = getTargetShadowSize() - mShadowSizeStart;
+            mShadowDrawable.setShadowSize(mShadowSizeStart
+                    + ((mShadowSizeEnd - mShadowSizeStart) * animator.getAnimatedFraction()));
         }
 
         @Override
-        protected void applyTransformation(float interpolatedTime, Transformation t) {
-            mShadowDrawable.setShadowSize(mShadowSizeStart + (mShadowSizeDiff * interpolatedTime));
+        public void onAnimationEnd(ValueAnimatorCompat animator) {
+            mShadowDrawable.setShadowSize(mShadowSizeEnd);
+            mValidValues = false;
         }
 
         /**
@@ -243,21 +253,21 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
         protected abstract float getTargetShadowSize();
     }
 
-    private class ResetElevationAnimation extends BaseShadowAnimation {
+    private class ResetElevationAnimation extends ShadowAnimatorImpl {
         @Override
         protected float getTargetShadowSize() {
             return mElevation;
         }
     }
 
-    private class ElevateToTranslationZAnimation extends BaseShadowAnimation {
+    private class ElevateToTranslationZAnimation extends ShadowAnimatorImpl {
         @Override
         protected float getTargetShadowSize() {
             return mElevation + mPressedTranslationZ;
         }
     }
 
-    private class DisabledElevationAnimation extends BaseShadowAnimation {
+    private class DisabledElevationAnimation extends ShadowAnimatorImpl {
         @Override
         protected float getTargetShadowSize() {
             return 0f;

@@ -23,7 +23,7 @@ import android.view.animation.Interpolator;
 
 class ValueAnimatorCompatImplHoneycombMr1 extends ValueAnimatorCompat.Impl {
 
-    final ValueAnimator mValueAnimator;
+    private final ValueAnimator mValueAnimator;
 
     ValueAnimatorCompatImplHoneycombMr1() {
         mValueAnimator = new ValueAnimator();
@@ -45,7 +45,7 @@ class ValueAnimatorCompatImplHoneycombMr1 extends ValueAnimatorCompat.Impl {
     }
 
     @Override
-    public void setUpdateListener(final AnimatorUpdateListenerProxy updateListener) {
+    public void addUpdateListener(final AnimatorUpdateListenerProxy updateListener) {
         mValueAnimator.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             @Override
             public void onAnimationUpdate(ValueAnimator valueAnimator) {
@@ -55,7 +55,7 @@ class ValueAnimatorCompatImplHoneycombMr1 extends ValueAnimatorCompat.Impl {
     }
 
     @Override
-    public void setListener(final AnimatorListenerProxy listener) {
+    public void addListener(final AnimatorListenerProxy listener) {
         mValueAnimator.addListener(new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animator) {

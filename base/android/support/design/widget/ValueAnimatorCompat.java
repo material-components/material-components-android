@@ -16,6 +16,7 @@
 
 package android.support.design.widget;
 
+import android.support.annotation.NonNull;
 import android.view.animation.Interpolator;
 
 /**
@@ -77,6 +78,7 @@ class ValueAnimatorCompat {
     }
 
     interface Creator {
+        @NonNull
         ValueAnimatorCompat createAnimator();
     }
 
@@ -94,8 +96,8 @@ class ValueAnimatorCompat {
         abstract void start();
         abstract boolean isRunning();
         abstract void setInterpolator(Interpolator interpolator);
-        abstract void setListener(AnimatorListenerProxy listener);
-        abstract void setUpdateListener(AnimatorUpdateListenerProxy updateListener);
+        abstract void addListener(AnimatorListenerProxy listener);
+        abstract void addUpdateListener(AnimatorUpdateListenerProxy updateListener);
         abstract void setIntValues(int from, int to);
         abstract int getAnimatedIntValue();
         abstract void setFloatValues(float from, float to);
@@ -125,22 +127,22 @@ class ValueAnimatorCompat {
         mImpl.setInterpolator(interpolator);
     }
 
-    public void setUpdateListener(final AnimatorUpdateListener updateListener) {
+    public void addUpdateListener(final AnimatorUpdateListener updateListener) {
         if (updateListener != null) {
-            mImpl.setUpdateListener(new Impl.AnimatorUpdateListenerProxy() {
+            mImpl.addUpdateListener(new Impl.AnimatorUpdateListenerProxy() {
                 @Override
                 public void onAnimationUpdate() {
                     updateListener.onAnimationUpdate(ValueAnimatorCompat.this);
                 }
             });
         } else {
-            mImpl.setUpdateListener(null);
+            mImpl.addUpdateListener(null);
         }
     }
 
-    public void setListener(final AnimatorListener listener) {
+    public void addListener(final AnimatorListener listener) {
         if (listener != null) {
-            mImpl.setListener(new Impl.AnimatorListenerProxy() {
+            mImpl.addListener(new Impl.AnimatorListenerProxy() {
                 @Override
                 public void onAnimationStart() {
                     listener.onAnimationStart(ValueAnimatorCompat.this);
@@ -157,7 +159,7 @@ class ValueAnimatorCompat {
                 }
             });
         } else {
-            mImpl.setListener(null);
+            mImpl.addListener(null);
         }
     }
 

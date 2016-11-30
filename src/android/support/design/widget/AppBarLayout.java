@@ -925,7 +925,7 @@ public class AppBarLayout extends LinearLayout {
             if (mOffsetAnimator == null) {
                 mOffsetAnimator = ViewUtils.createAnimator();
                 mOffsetAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
-                mOffsetAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+                mOffsetAnimator.addUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                     @Override
                     public void onAnimationUpdate(ValueAnimatorCompat animator) {
                         setHeaderTopBottomOffset(coordinatorLayout, child,

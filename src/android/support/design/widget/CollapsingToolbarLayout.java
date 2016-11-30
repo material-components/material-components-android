@@ -593,7 +593,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
                     targetAlpha > mScrimAlpha
                             ? AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR
                             : AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-            mScrimAnimator.setUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
+            mScrimAnimator.addUpdateListener(new ValueAnimatorCompat.AnimatorUpdateListener() {
                 @Override
                 public void onAnimationUpdate(ValueAnimatorCompat animator) {
                     setScrimAlpha(animator.getAnimatedIntValue());
