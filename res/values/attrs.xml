@@ -109,7 +109,7 @@
         <attr name="android:text" />
         <!-- Icon to display in the tab. -->
         <attr name="android:icon" />
-        <!-- A reference to a layout to be displayed in the tab. -->
+        <!-- A reference to a layout resource to be displayed in the tab. -->
         <attr name="android:layout" />
     </declare-styleable>
 
