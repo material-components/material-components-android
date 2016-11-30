@@ -234,14 +234,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
         // Add an OnOffsetChangedListener if possible
         final ViewParent parent = getParent();
         if (parent instanceof AppBarLayout) {
+            // Copy over from the ABL whether we should fit system windows
+            ViewCompat.setFitsSystemWindows(this, ViewCompat.getFitsSystemWindows((View) parent));
+
             if (mOnOffsetChangedListener == null) {
                 mOnOffsetChangedListener = new OffsetUpdateListener();
             }
             ((AppBarLayout) parent).addOnOffsetChangedListener(mOnOffsetChangedListener);
-        }
 
-        // We're attached, so lets request an inset dispatch
-        ViewCompat.requestApplyInsets(this);
+            // We're attached, so lets request an inset dispatch
+            ViewCompat.requestApplyInsets(this);
+        }
     }
 
     @Override
