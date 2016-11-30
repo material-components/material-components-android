@@ -24,6 +24,7 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.util.AttributeSet;
@@ -150,7 +151,7 @@ public class FloatingActionButton extends ImageView {
      *
      * @param color ARGB color to use for the ripple.
      */
-    public void setRippleColor(int color) {
+    public void setRippleColor(@ColorInt int color) {
         if (mRippleColor != color) {
             mRippleColor = color;
             mImpl.setRippleColor(color);

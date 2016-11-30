@@ -24,6 +24,7 @@ import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.design.R;
 import android.support.v4.view.GravityCompat;
@@ -526,7 +527,7 @@ public class TabLayout extends HorizontalScrollView {
      *
      * @param textColor
      */
-    public void setTabSelectedTextColor(int textColor) {
+    public void setTabSelectedTextColor(@ColorInt int textColor) {
         if (!mTabSelectedTextColorSet || mTabSelectedTextColor != textColor) {
             mTabSelectedTextColor = textColor;
             mTabSelectedTextColorSet = true;
@@ -540,6 +541,7 @@ public class TabLayout extends HorizontalScrollView {
     /**
      * Returns the text color currently used when a tab is selected.
      */
+    @ColorInt
     public int getTabSelectedTextColor() {
         return mTabSelectedTextColor;
     }
