@@ -43,7 +43,6 @@ import android.support.v4.view.GravityCompat;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.NestedScrollingParentHelper;
-import android.support.v4.view.OnApplyWindowInsetsListener;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.text.TextUtils;
@@ -1898,16 +1897,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
 
         /**
-         * Determine whether the given child view should be considered dirty.
-         *
-         * <p>If a property determined by the Behavior such as other dependent views would change,
-         * the Behavior should report a child view as dirty. This will prompt the CoordinatorLayout
-         * to re-query Behavior-determined properties as appropriate.</p>
-         *
-         * @param parent the parent view of the given child
-         * @param child the child view to check
-         * @return true if child is dirty
+         * @deprecated this method is not called anymore. You can safely remove all usages
+         * and implementations.
          */
+        @Deprecated
         public boolean isDirty(CoordinatorLayout parent, V child) {
             return false;
         }
@@ -2212,6 +2205,28 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         public WindowInsetsCompat onApplyWindowInsets(CoordinatorLayout coordinatorLayout,
                 V child, WindowInsetsCompat insets) {
             return insets;
+        }
+
+        /**
+         * Called when a child of the view associated with this behavior wants a particular
+         * rectangle to be positioned onto the screen.
+         *
+         * <p>The contract for this method is the same as
+         * {@link ViewParent#requestChildRectangleOnScreen(View, Rect, boolean)}.</p>
+         *
+         * @param coordinatorLayout the CoordinatorLayout parent of the view this Behavior is
+         *                          associated with
+         * @param child             the child view of the CoordinatorLayout this Behavior is
+         *                          associated with
+         * @param rectangle         The rectangle which the child wishes to be on the screen
+         *                          in the child's coordinates
+         * @param immediate         true to forbid animated or delayed scrolling, false otherwise
+         * @return true if the Behavior handled the request
+         * @see ViewParent#requestChildRectangleOnScreen(View, Rect, boolean)
+         */
+        public boolean onChildRectangleRequestedOnScreen(CoordinatorLayout coordinatorLayout,
+                V child, Rect rectangle, boolean immediate) {
+            return false;
         }
 
         /**
@@ -2535,20 +2550,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
 
         /**
-         * Check if the child associated with this LayoutParams is currently considered
-         * "dirty" and needs to be updated. A Behavior should consider a child dirty
-         * whenever a property returned by another Behavior method would have changed,
-         * such as dependencies.
-         *
-         * @param parent the parent CoordinatorLayout
-         * @param child the child view associated with this LayoutParams
-         * @return true if this child view should be considered dirty
-         */
-        boolean isDirty(CoordinatorLayout parent, View child) {
-            return mBehavior != null && mBehavior.isDirty(parent, child);
-        }
-
-        /**
          * Determine the anchor view for the child view this LayoutParams is assigned to.
          * Assumes mAnchorId is valid.
          */
@@ -2685,6 +2686,19 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         }
         ss.behaviorStates = behaviorStates;
         return ss;
+    }
+
+    @Override
+    public boolean requestChildRectangleOnScreen(View child, Rect rectangle, boolean immediate) {
+        final CoordinatorLayout.LayoutParams lp = (LayoutParams) child.getLayoutParams();
+        final Behavior behavior = lp.getBehavior();
+
+        if (behavior != null
+                && behavior.onChildRectangleRequestedOnScreen(this, child, rectangle, immediate)) {
+            return true;
+        }
+
+        return super.requestChildRectangleOnScreen(child, rectangle, immediate);
     }
 
     private void setupForInsets() {

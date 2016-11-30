@@ -61,6 +61,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
     private ColorStateList mIconTintList;
 
+    private boolean mHasIconTintList;
+
     private Drawable mEmptyDrawable;
 
     private final AccessibilityDelegateCompat mAccessibilityDelegate
@@ -201,10 +203,12 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     @Override
     public void setIcon(Drawable icon) {
         if (icon != null) {
-            Drawable.ConstantState state = icon.getConstantState();
-            icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
+            if (mHasIconTintList) {
+                Drawable.ConstantState state = icon.getConstantState();
+                icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
+                DrawableCompat.setTintList(icon, mIconTintList);
+            }
             icon.setBounds(0, 0, mIconSize, mIconSize);
-            DrawableCompat.setTintList(icon, mIconTintList);
         } else if (mNeedsEmptyIcon) {
             if (mEmptyDrawable == null) {
                 mEmptyDrawable = ResourcesCompat.getDrawable(getResources(),
@@ -239,6 +243,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
     void setIconTintList(ColorStateList tintList) {
         mIconTintList = tintList;
+        mHasIconTintList = mIconTintList != null;
         if (mItemData != null) {
             // Update the icon so that the tint takes effect
             setIcon(mItemData.getIcon());

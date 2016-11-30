@@ -35,8 +35,8 @@ import java.util.List;
  */
 abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
-    private final Rect mTempRect1 = new Rect();
-    private final Rect mTempRect2 = new Rect();
+    final Rect mTempRect1 = new Rect();
+    final Rect mTempRect2 = new Rect();
 
     private int mVerticalLayoutGap = 0;
     private int mOverlayTop;

@@ -105,6 +105,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private Toolbar mToolbar;
     private View mToolbarDirectChild;
     private View mDummyView;
+    private int mToolbarDrawIndex;
 
     private int mExpandedMarginStart;
     private int mExpandedMarginTop;
@@ -303,15 +304,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         // This is a little weird. Our scrim needs to be behind the Toolbar (if it is present),
         // but in front of any other children which are behind it. To do this we intercept the
-        // drawChild() call, and draw our scrim first when drawing the toolbar
-        ensureToolbar();
-        if (child == mToolbar && mContentScrim != null && mScrimAlpha > 0) {
+        // drawChild() call, and draw our scrim after the preceding view is drawn
+        boolean invalidate = super.drawChild(canvas, child, drawingTime);
+
+        if (mContentScrim != null && mScrimAlpha > 0 && isToolbarChildDrawnNext(child)) {
             mContentScrim.mutate().setAlpha(mScrimAlpha);
             mContentScrim.draw(canvas);
+            invalidate = true;
         }
 
-        // Carry on drawing the child...
-        return super.drawChild(canvas, child, drawingTime);
+        return invalidate;
     }
 
     @Override
@@ -355,6 +357,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
         updateDummyView();
         mRefreshToolbar = false;
+    }
+
+    private boolean isToolbarChildDrawnNext(View child) {
+        return mToolbarDrawIndex >= 0 && mToolbarDrawIndex == indexOfChild(child) + 1;
     }
 
     /**
@@ -452,6 +458,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             getViewOffsetHelper(child).onViewLayout();
         }
 
+        ensureToolbar();
         // Finally, set our minimum height to enable proper AppBarLayout collapsing
         if (mToolbar != null) {
             if (mCollapsingTitleEnabled && TextUtils.isEmpty(mCollapsingTextHelper.getText())) {
@@ -460,10 +467,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
             }
             if (mToolbarDirectChild == null || mToolbarDirectChild == this) {
                 setMinimumHeight(getHeightWithMargins(mToolbar));
+                mToolbarDrawIndex = indexOfChild(mToolbar);
             } else {
                 setMinimumHeight(getHeightWithMargins(mToolbarDirectChild));
+                mToolbarDrawIndex = indexOfChild(mToolbarDirectChild);
             }
+        } else {
+            mToolbarDrawIndex = -1;
         }
+
+        updateScrimVisibility();
     }
 
     private static int getHeightWithMargins(@NonNull final View view) {
@@ -1198,7 +1211,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
     final int getMaxOffsetForPinChild(View child) {
         final ViewOffsetHelper offsetHelper = getViewOffsetHelper(child);
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-        return getHeight() - (offsetHelper.getLayoutTop() + child.getHeight() + lp.bottomMargin);
+        return getHeight()
+                + (mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0)
+                - offsetHelper.getLayoutTop()
+                - child.getHeight()
+                - lp.bottomMargin;
     }
 
     private class OffsetUpdateListener implements AppBarLayout.OnOffsetChangedListener {

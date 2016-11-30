@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -1345,6 +1346,27 @@ public class AppBarLayout extends LinearLayout {
             return false;
         }
 
+        @Override
+        public boolean onChildRectangleRequestedOnScreen(CoordinatorLayout parent, View child,
+                Rect rectangle, boolean immediate) {
+            final AppBarLayout header = findFirstDependency(parent.getDependencies(child));
+            if (header != null) {
+                // Offset the rect by the child's left/top
+                rectangle.offset(child.getLeft(), child.getTop());
+
+                final Rect parentRect = mTempRect1;
+                parentRect.set(0, 0, parent.getWidth(), parent.getHeight());
+
+                if (!parentRect.contains(rectangle)) {
+                    // If the rectangle can not be fully seen the visible bounds, collapse
+                    // the AppBarLayout
+                    header.setExpanded(false, !immediate);
+                    return true;
+                }
+            }
+            return false;
+        }
+
         private void offsetChildAsNeeded(CoordinatorLayout parent, View child, View dependency) {
             final CoordinatorLayout.Behavior behavior =
                     ((CoordinatorLayout.LayoutParams) dependency.getLayoutParams()).getBehavior();
@@ -1359,7 +1381,6 @@ public class AppBarLayout extends LinearLayout {
                         - getOverlapPixelsForOffset(dependency));
             }
         }
-
 
         @Override
         float getOverlapRatioForOffset(final View header) {
@@ -1393,11 +1414,11 @@ public class AppBarLayout extends LinearLayout {
         }
 
         @Override
-        View findFirstDependency(List<View> views) {
+        AppBarLayout findFirstDependency(List<View> views) {
             for (int i = 0, z = views.size(); i < z; i++) {
                 View view = views.get(i);
                 if (view instanceof AppBarLayout) {
-                    return view;
+                    return (AppBarLayout) view;
                 }
             }
             return null;

@@ -20,11 +20,15 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 
+import android.graphics.Rect;
 import android.support.design.test.R;
+import android.support.test.InstrumentationRegistry;
 import android.support.v4.view.ViewCompat;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
+import android.view.ViewGroup;
 
 import org.junit.Test;
 
@@ -124,6 +128,71 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(mAppBar.getWidth(), scrollingContent.getWidth());
         // ...and are vertically stacked
         assertEquals(mAppBar.getBottom(), scrollingContent.getTop());
+    }
+
+    @Test
+    public void testRequestRectangleWithChildThatDoesNotRequireScroll() {
+        configureContent(R.layout.design_appbar_toolbar_scroll_fitsystemwindows_parent,
+                R.string.design_appbar_toolbar_scroll_tabs_pin);
+
+        final View scrollingContent = mCoordinatorLayout.findViewById(R.id.scrolling_content);
+
+        // Get the initial XY
+        final int[] originalScrollingXY = new int[2];
+        scrollingContent.getLocationInWindow(originalScrollingXY);
+
+        // Now request that the first child has its full rectangle displayed
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                final ViewGroup scrollingContentInner = (ViewGroup) scrollingContent
+                        .findViewById(R.id.scrolling_content_inner);
+                View child = scrollingContentInner.getChildAt(0);
+                Rect rect = new Rect(0, 0, child.getWidth(), child.getHeight());
+                child.requestRectangleOnScreen(rect, true);
+            }
+        });
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+        final int[] newScrollingXY = new int[2];
+        scrollingContent.getLocationInWindow(newScrollingXY);
+
+        // Assert that the scrolling view has not moved
+        assertEquals(originalScrollingXY[0], newScrollingXY[0]);
+        assertEquals(originalScrollingXY[1], newScrollingXY[1]);
+    }
+
+    @Test
+    public void testRequestRectangleWithChildThatDoesRequireScroll() {
+        configureContent(R.layout.design_appbar_toolbar_scroll_fitsystemwindows_parent,
+                R.string.design_appbar_toolbar_scroll_tabs_pin);
+
+        final View scrollingContent = mCoordinatorLayout.findViewById(R.id.scrolling_content);
+
+        // Get the initial XY
+        final int[] originalScrollingXY = new int[2];
+        scrollingContent.getLocationInWindow(originalScrollingXY);
+
+        // Now request that the first child has its full rectangle displayed
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                final ViewGroup scrollingContentInner = (ViewGroup) scrollingContent
+                        .findViewById(R.id.scrolling_content_inner);
+                View child = scrollingContentInner
+                        .getChildAt(scrollingContentInner.getChildCount() - 1);
+                Rect rect = new Rect(0, 0, child.getWidth(), child.getHeight());
+                child.requestRectangleOnScreen(rect, true);
+            }
+        });
+        InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+
+        final int[] newScrollingXY = new int[2];
+        scrollingContent.getLocationInWindow(newScrollingXY);
+
+        // Assert that the appbar has collapsed vertically
+        assertEquals(originalScrollingXY[0], newScrollingXY[0]);
+        assertEquals(originalScrollingXY[1] - mAppBar.getHeight(), newScrollingXY[1]);
     }
 
 }
