@@ -1671,7 +1671,7 @@ public class TabLayout extends HorizontalScrollView {
      */
     public static class TabLayoutOnPageChangeListener implements ViewPager.OnPageChangeListener {
         private final WeakReference<TabLayout> mTabLayoutRef;
-        private int mPendingSelection = -1;
+        private int mPreviousScrollState;
         private int mScrollState;
 
         public TabLayoutOnPageChangeListener(TabLayout tabLayout) {
@@ -1680,33 +1680,33 @@ public class TabLayout extends HorizontalScrollView {
 
         @Override
         public void onPageScrollStateChanged(int state) {
+            mPreviousScrollState = mScrollState;
             mScrollState = state;
         }
 
         @Override
-        public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+        public void onPageScrolled(int position, float positionOffset,
+                int positionOffsetPixels) {
             final TabLayout tabLayout = mTabLayoutRef.get();
             if (tabLayout != null) {
-                if (mPendingSelection == -1 || tabLayout.getScrollPosition() != mPendingSelection) {
-                    // If we don't have a pending selection, or the drawn position is not already
-                    // at the selection, move the draw position
-                    tabLayout.setScrollPosition(position, positionOffset, true);
-                }
-                if (mScrollState == ViewPager.SCROLL_STATE_IDLE) {
-                    // As we're now idle, if we have a pending selection select it now
-                    if (mPendingSelection != -1) {
-                        tabLayout.selectTab(tabLayout.getTabAt(mPendingSelection));
-                        mPendingSelection = -1;
-                    }
-                }
+                // Update the scroll position, only update the text selection if we're being
+                // dragged (or we're settling after a drag)
+                final boolean updateText = (mScrollState == ViewPager.SCROLL_STATE_DRAGGING)
+                        || (mScrollState == ViewPager.SCROLL_STATE_SETTLING
+                        && mPreviousScrollState == ViewPager.SCROLL_STATE_DRAGGING);
+                tabLayout.setScrollPosition(position, positionOffset, updateText);
             }
         }
 
         @Override
         public void onPageSelected(int position) {
-            // This call is made before onPageScrolled() which can lead to a jerk if we just
-            // selected the tab now. So we'll keep the position, and set it when we're idle again
-            mPendingSelection = position;
+            final TabLayout tabLayout = mTabLayoutRef.get();
+            if (tabLayout != null) {
+                // Select the tab, only updating the indicator if we're not being dragged/settled
+                // (since onPageScrolled will handle that).
+                tabLayout.selectTab(tabLayout.getTabAt(position),
+                        mScrollState == ViewPager.SCROLL_STATE_IDLE);
+            }
         }
     }
 
