@@ -277,6 +277,10 @@ public class TextInputLayout extends LinearLayout {
      */
     public void setErrorEnabled(boolean enabled) {
         if (mErrorEnabled != enabled) {
+            if (mErrorView != null) {
+                ViewCompat.animate(mErrorView).cancel();
+            }
+
             if (enabled) {
                 mErrorView = new TextView(getContext());
                 mErrorView.setTextAppearance(getContext(), mErrorTextAppearance);
@@ -334,8 +338,7 @@ public class TextInputLayout extends LinearLayout {
                         .setListener(new ViewPropertyAnimatorListenerAdapter() {
                             @Override
                             public void onAnimationEnd(View view) {
-                                mErrorView.setText(null);
-                                mErrorView.setVisibility(INVISIBLE);
+                                view.setVisibility(INVISIBLE);
                             }
                         }).start();
             }
