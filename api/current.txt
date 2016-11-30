@@ -84,6 +84,8 @@ package android.support.design.widget {
     method public void setExpandedTitleColor(int);
     method public void setExpandedTitleGravity(int);
     method public void setExpandedTitleTextAppearance(int);
+    method public void setScrimsShown(boolean);
+    method public void setScrimsShown(boolean, boolean);
     method public void setStatusBarScrim(android.graphics.drawable.Drawable);
     method public void setStatusBarScrimColor(int);
     method public void setStatusBarScrimResource(int);

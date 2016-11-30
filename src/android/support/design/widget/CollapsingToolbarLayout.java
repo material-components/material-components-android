@@ -464,25 +464,38 @@ public class CollapsingToolbarLayout extends FrameLayout {
         return mCollapsingTitleEnabled;
     }
 
-    private void showScrim() {
-        if (!mScrimsAreShown) {
-            if (ViewCompat.isLaidOut(this) && !isInEditMode()) {
-                animateScrim(255);
-            } else {
-                setScrimAlpha(255);
-            }
-            mScrimsAreShown = true;
-        }
+    /**
+     * Set whether the content scrim and/or status bar scrim should be shown or not. Any change
+     * in the vertical scroll may overwrite this value. Any visibility change will be animated if
+     * this view has already been laid out.
+     *
+     * @param shown whether the scrims should be shown
+     *
+     * @see #getStatusBarScrim()
+     * @see #getContentScrim()
+     */
+    public void setScrimsShown(boolean shown) {
+        setScrimsShown(shown, ViewCompat.isLaidOut(this) && !isInEditMode());
     }
 
-    private void hideScrim() {
-        if (mScrimsAreShown) {
-            if (ViewCompat.isLaidOut(this) && !isInEditMode()) {
-                animateScrim(0);
+    /**
+     * Set whether the content scrim and/or status bar scrim should be shown or not. Any change
+     * in the vertical scroll may overwrite this value.
+     *
+     * @param shown whether the scrims should be shown
+     * @param animate whether to animate the visibility change
+     *
+     * @see #getStatusBarScrim()
+     * @see #getContentScrim()
+     */
+    public void setScrimsShown(boolean shown, boolean animate) {
+        if (mScrimsAreShown != shown) {
+            if (animate) {
+                animateScrim(shown ? 0xFF : 0x0);
             } else {
-                setScrimAlpha(0);
+                setScrimAlpha(shown ? 0xFF : 0x0);
             }
-            mScrimsAreShown = false;
+            mScrimsAreShown = shown;
         }
     }
 
@@ -531,11 +544,14 @@ public class CollapsingToolbarLayout extends FrameLayout {
             if (mContentScrim != null) {
                 mContentScrim.setCallback(null);
             }
-
-            mContentScrim = drawable;
-            drawable.setBounds(0, 0, getWidth(), getHeight());
-            drawable.setCallback(this);
-            drawable.mutate().setAlpha(mScrimAlpha);
+            if (drawable != null) {
+                mContentScrim = drawable.mutate();
+                drawable.setBounds(0, 0, getWidth(), getHeight());
+                drawable.setCallback(this);
+                drawable.setAlpha(mScrimAlpha);
+            } else {
+                mContentScrim = null;
+            }
             ViewCompat.postInvalidateOnAnimation(this);
         }
     }
@@ -880,11 +896,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
             // Show or hide the scrims if needed
             if (mContentScrim != null || mStatusBarScrim != null) {
-                if (getHeight() + verticalOffset < getScrimTriggerOffset() + insetTop) {
-                    showScrim();
-                } else {
-                    hideScrim();
-                }
+                setScrimsShown(getHeight() + verticalOffset < getScrimTriggerOffset() + insetTop);
             }
 
             if (mStatusBarScrim != null && insetTop > 0) {
