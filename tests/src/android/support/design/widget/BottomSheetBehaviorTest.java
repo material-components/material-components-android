@@ -29,10 +29,13 @@ import android.support.test.espresso.action.Swipe;
 import android.support.test.espresso.action.ViewActions;
 import android.support.test.espresso.assertion.ViewAssertions;
 import android.support.test.espresso.matcher.ViewMatchers;
+import android.support.v4.widget.NestedScrollView;
 import android.test.suitebuilder.annotation.MediumTest;
 import android.test.suitebuilder.annotation.SmallTest;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
+
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
@@ -236,6 +239,70 @@ public class BottomSheetBehaviorTest extends
                 assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
             }
         });
+    }
+
+    @Test
+    @MediumTest
+    public void testNestedScroll() {
+        final ViewGroup bottomSheet = getBottomSheet();
+        final BottomSheetBehavior behavior = getBehavior();
+        final NestedScrollView scroll = new NestedScrollView(mActivityTestRule.getActivity());
+        // Set up nested scrolling area
+        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            @Override
+            public void run() {
+                bottomSheet.addView(scroll, new ViewGroup.LayoutParams(
+                        ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+                TextView view = new TextView(mActivityTestRule.getActivity());
+                StringBuilder sb = new StringBuilder();
+                for (int i = 0; i < 500; ++i) {
+                    sb.append("It is fine today. ");
+                }
+                view.setText(sb);
+                view.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        // Do nothing
+                    }
+                });
+                scroll.addView(view);
+                assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+                // The scroll offset is 0 at first
+                assertThat(scroll.getScrollY(), is(0));
+            }
+        });
+        // Swipe from the very bottom of the bottom sheet to the top edge of the screen so that the
+        // scrolling content is also scrolled
+        Espresso.onView(ViewMatchers.withId(R.id.coordinator))
+                .perform(new GeneralSwipeAction(Swipe.FAST,
+                        new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                return new float[]{view.getWidth() / 2, view.getHeight() - 1};
+                            }
+                        },
+                        new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                return new float[]{view.getWidth() / 2, 1};
+                            }
+                        }, Press.FINGER));
+        registerIdlingResourceCallback();
+        try {
+            Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+                    .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+                @Override
+                public void run() {
+                    assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+                    // This confirms that the nested scrolling area was scrolled continuously after
+                    // the bottom sheet is expanded.
+                    assertThat(scroll.getScrollY(), is(not(0)));
+                }
+            });
+        } finally {
+            unregisterIdlingResourceCallback();
+        }
     }
 
     private void checkSetState(final int state, Matcher<View> matcher) {

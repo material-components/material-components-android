@@ -140,6 +140,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     private int mInitialY;
 
+    private boolean mTouchingScrollingChild;
+
     /**
      * Default constructor for instantiating BottomSheetBehaviors.
      */
@@ -223,6 +225,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         switch (action) {
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
+                mTouchingScrollingChild = false;
                 mActivePointerId = MotionEvent.INVALID_POINTER_ID;
                 // Reset the ignore flag
                 if (mIgnoreEvents) {
@@ -236,6 +239,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 View scroll = mNestedScrollingChildRef.get();
                 if (scroll != null && parent.isPointInChildBounds(scroll, initialX, mInitialY)) {
                     mActivePointerId = event.getPointerId(event.getActionIndex());
+                    mTouchingScrollingChild = true;
                 }
                 mIgnoreEvents = mActivePointerId == MotionEvent.INVALID_POINTER_ID &&
                         !parent.isPointInChildBounds(child, initialX, mInitialY);
@@ -329,8 +333,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     @Override
     public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target) {
-        if (child.getTop() == mMinOffset || target != mNestedScrollingChildRef.get() ||
-                !mNestedScrolled) {
+        if (child.getTop() == mMinOffset) {
+            setStateInternal(STATE_EXPANDED);
+            return;
+        }
+        if (target != mNestedScrollingChildRef.get() || !mNestedScrolled) {
             return;
         }
         int top;
@@ -515,6 +522,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
             if (mState == STATE_DRAGGING) {
+                return false;
+            }
+            if (mTouchingScrollingChild) {
                 return false;
             }
             if (mState == STATE_EXPANDED && mActivePointerId == pointerId) {
