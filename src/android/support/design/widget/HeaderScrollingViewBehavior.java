@@ -142,11 +142,8 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
     }
 
     final int getOverlapPixelsForOffset(final View header) {
-        return mOverlayTop == 0
-                ? 0
-                : MathUtils.constrain(Math.round(getOverlapRatioForOffset(header) * mOverlayTop),
-                        0, mOverlayTop);
-
+        return mOverlayTop == 0 ? 0 : MathUtils.constrain(
+                (int) (getOverlapRatioForOffset(header) * mOverlayTop), 0, mOverlayTop);
     }
 
     private static int resolveGravity(int gravity) {

@@ -409,8 +409,23 @@ public class CollapsingToolbarLayout extends FrameLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        // Update the collapsed bounds by getting it's transformed bounds. This needs to be done
-        // before the children are offset below
+        // Update our child view offset helpers
+        for (int i = 0, z = getChildCount(); i < z; i++) {
+            final View child = getChildAt(i);
+
+            if (mLastInsets != null && !ViewCompat.getFitsSystemWindows(child)) {
+                final int insetTop = mLastInsets.getSystemWindowInsetTop();
+                if (child.getTop() < insetTop) {
+                    // If the child isn't set to fit system windows but is drawing within the inset
+                    // offset it down
+                    ViewCompat.offsetTopAndBottom(child, insetTop);
+                }
+            }
+
+            getViewOffsetHelper(child).onViewLayout();
+        }
+
+        // Update the collapsed bounds by getting it's transformed bounds
         if (mCollapsingTitleEnabled && mDummyView != null) {
             // We only draw the title if the dummy view is being displayed (Toolbar removes
             // views if there is no space)
@@ -446,23 +461,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
             }
         }
 
-        // Update our child view offset helpers
-        for (int i = 0, z = getChildCount(); i < z; i++) {
-            final View child = getChildAt(i);
-
-            if (mLastInsets != null && !ViewCompat.getFitsSystemWindows(child)) {
-                final int insetTop = mLastInsets.getSystemWindowInsetTop();
-                if (child.getTop() < insetTop) {
-                    // If the child isn't set to fit system windows but is drawing within the inset
-                    // offset it down
-                    ViewCompat.offsetTopAndBottom(child, insetTop);
-                }
-            }
-
-            getViewOffsetHelper(child).onViewLayout();
-        }
-
-        ensureToolbar();
         // Finally, set our minimum height to enable proper AppBarLayout collapsing
         if (mToolbar != null) {
             if (mCollapsingTitleEnabled && TextUtils.isEmpty(mCollapsingTextHelper.getText())) {
@@ -1237,7 +1235,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
         final ViewOffsetHelper offsetHelper = getViewOffsetHelper(child);
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
         return getHeight()
-                + (mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0)
                 - offsetHelper.getLayoutTop()
                 - child.getHeight()
                 - lp.bottomMargin;

@@ -1117,7 +1117,7 @@ public class AppBarLayout extends LinearLayout {
 
         @Override
         int setHeaderTopBottomOffset(CoordinatorLayout coordinatorLayout,
-                AppBarLayout header, int newOffset, int minOffset, int maxOffset) {
+                AppBarLayout appBarLayout, int newOffset, int minOffset, int maxOffset) {
             final int curOffset = getTopBottomOffsetForScrollingSibling();
             int consumed = 0;
 
@@ -1125,7 +1125,6 @@ public class AppBarLayout extends LinearLayout {
                 // If we have some scrolling range, and we're currently within the min and max
                 // offsets, calculate a new offset
                 newOffset = MathUtils.constrain(newOffset, minOffset, maxOffset);
-                AppBarLayout appBarLayout = (AppBarLayout) header;
                 if (curOffset != newOffset) {
                     final int interpolatedOffset = appBarLayout.hasChildWithInterpolator()
                             ? interpolateOffset(appBarLayout, newOffset)
@@ -1159,6 +1158,11 @@ public class AppBarLayout extends LinearLayout {
             }
 
             return consumed;
+        }
+
+        @VisibleForTesting
+        boolean isOffsetAnimatorRunning() {
+            return mOffsetAnimator != null && mOffsetAnimator.isRunning();
         }
 
         private int interpolateOffset(AppBarLayout layout, final int offset) {
@@ -1410,9 +1414,8 @@ public class AppBarLayout extends LinearLayout {
                     ((CoordinatorLayout.LayoutParams) dependency.getLayoutParams()).getBehavior();
             if (behavior instanceof Behavior) {
                 // Offset the child, pinning it to the bottom the header-dependency, maintaining
-                // any vertical gap, and overlap
+                // any vertical gap and overlap
                 final Behavior ablBehavior = (Behavior) behavior;
-                final int offset = ablBehavior.getTopBottomOffsetForScrollingSibling();
                 ViewCompat.offsetTopAndBottom(child, (dependency.getBottom() - child.getTop())
                         + ablBehavior.mOffsetDelta
                         + getVerticalLayoutGap()

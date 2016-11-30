@@ -21,7 +21,5 @@
         android:id="@+id/tabs"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:tabMode="scrollable"
         app:tabContentStart="72dp"/>

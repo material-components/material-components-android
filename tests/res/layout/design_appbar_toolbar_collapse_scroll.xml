@@ -32,8 +32,7 @@
             android:id="@+id/collapsing_app_bar"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed"
-            android:fitsSystemWindows="true">
+            app:layout_scrollFlags="scroll|enterAlways|enterAlwaysCollapsed">
 
             <android.support.v7.widget.Toolbar
                 android:id="@+id/toolbar"

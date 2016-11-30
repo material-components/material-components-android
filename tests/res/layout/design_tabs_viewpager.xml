@@ -28,9 +28,7 @@
         android:layout_width="match_parent"
         android:layout_height="?attr/actionBarSize"
         android:background="?attr/colorPrimary"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:contentInsetStart="72dp"
-        app:popupTheme="@style/ThemeOverlay.AppCompat.Light"/>
+        app:contentInsetStart="72dp"/>
 
     <include layout="@layout/tab_layout_unbound" />
 

@@ -26,7 +26,7 @@
     <dimen name="drawable_medium_size">16dip</dimen>
     <dimen name="drawable_large_size">20dip</dimen>
 
-    <dimen name="appbar_height">128dip</dimen>
+    <dimen name="appbar_height">192dip</dimen>
     <dimen name="fab_margin">32dip</dimen>
 
     <dimen name="fab_mini_height">40dp</dimen>

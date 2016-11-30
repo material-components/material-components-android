@@ -19,7 +19,8 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
     <include layout="@layout/design_content_appbar_toolbar_collapse_pin" />
 
@@ -29,8 +30,8 @@
         android:layout_width="wrap_content"
         app:layout_anchor="@+id/app_bar"
         app:layout_anchorGravity="bottom|right|end"
-        android:src="@drawable/ic_add"
         android:layout_marginRight="16dp"
-        android:clickable="true" />
+        android:clickable="true"
+        app:backgroundTint="#FF0000"/>
 
 </android.support.design.widget.CoordinatorLayout>
