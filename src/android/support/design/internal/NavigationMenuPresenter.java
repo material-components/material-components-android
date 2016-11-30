@@ -51,6 +51,7 @@ import java.util.ArrayList;
 public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnItemClickListener {
 
     private static final String STATE_HIERARCHY = "android:menu:list";
+    private static final String STATE_ADAPTER = "android:menu:adapter";
 
     private NavigationMenuView mMenuView;
     private LinearLayout mHeader;
@@ -155,11 +156,14 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     @Override
     public Parcelable onSaveInstanceState() {
         Bundle state = new Bundle();
-        SparseArray<Parcelable> hierarchy = new SparseArray<>();
         if (mMenuView != null) {
+            SparseArray<Parcelable> hierarchy = new SparseArray<>();
             mMenuView.saveHierarchyState(hierarchy);
+            state.putSparseParcelableArray(STATE_HIERARCHY, hierarchy);
         }
-        state.putSparseParcelableArray(STATE_HIERARCHY, hierarchy);
+        if (mAdapter != null) {
+            state.putBundle(STATE_ADAPTER, mAdapter.createInstanceState());
+        }
         return state;
     }
 
@@ -169,6 +173,10 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         SparseArray<Parcelable> hierarchy = state.getSparseParcelableArray(STATE_HIERARCHY);
         if (hierarchy != null) {
             mMenuView.restoreHierarchyState(hierarchy);
+        }
+        Bundle adapterState = state.getBundle(STATE_ADAPTER);
+        if (adapterState != null) {
+            mAdapter.restoreInstanceState(adapterState);
         }
     }
 
@@ -226,12 +234,16 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     }
 
     private class NavigationMenuAdapter extends BaseAdapter {
+
+        private static final String STATE_CHECKED_ITEMS = "android:menu:checked";
+
         private static final int VIEW_TYPE_NORMAL = 0;
         private static final int VIEW_TYPE_SUBHEADER = 1;
         private static final int VIEW_TYPE_SEPARATOR = 2;
 
         private final ArrayList<NavigationMenuItem> mItems = new ArrayList<>();
         private ColorDrawable mTransparentIcon;
+        private boolean mUpdateSuspended;
 
         NavigationMenuAdapter() {
             prepareMenuItems();
@@ -326,6 +338,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
          * while inserting separators between items when necessary.
          */
         private void prepareMenuItems() {
+            if (mUpdateSuspended) {
+                return;
+            }
             mItems.clear();
             int currentGroupId = -1;
             int currentGroupStart = 0;
@@ -388,6 +403,35 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                 }
             }
         }
+
+        public Bundle createInstanceState() {
+            Bundle state = new Bundle();
+            ArrayList<Integer> checkedItems = new ArrayList<>();
+            for (NavigationMenuItem item : mItems) {
+                MenuItemImpl menuItem = item.getMenuItem();
+                if (menuItem != null && menuItem.isChecked()) {
+                    checkedItems.add(menuItem.getItemId());
+                }
+            }
+            state.putIntegerArrayList(STATE_CHECKED_ITEMS, checkedItems);
+            return state;
+        }
+
+        public void restoreInstanceState(Bundle state) {
+            ArrayList<Integer> checkedItems = state.getIntegerArrayList(STATE_CHECKED_ITEMS);
+            if (checkedItems != null) {
+                mUpdateSuspended = true;
+                for (NavigationMenuItem item : mItems) {
+                    MenuItemImpl menuItem = item.getMenuItem();
+                    if (menuItem != null && checkedItems.contains(menuItem.getItemId())) {
+                        menuItem.setChecked(true);
+                    }
+                }
+                mUpdateSuspended = false;
+                prepareMenuItems();
+            }
+        }
+
     }
 
     /**
