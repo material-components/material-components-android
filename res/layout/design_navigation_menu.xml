@@ -19,7 +19,6 @@
         android:id="@+id/design_navigation_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:paddingTop="@dimen/design_navigation_padding_top_default"
         android:paddingBottom="@dimen/design_navigation_padding_bottom"
         android:clipToPadding="false"
         android:scrollbars="vertical"/>

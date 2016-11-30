@@ -19,6 +19,7 @@ package android.support.design.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -218,6 +219,13 @@ public class NavigationView extends ScrimInsetsFrameLayout {
         super.onMeasure(widthSpec, heightSpec);
     }
 
+    /**
+     * @hide
+     */
+    @Override
+    protected void onInsetsChanged(Rect insets) {
+        mPresenter.setPaddingTopDefault(insets.top);
+    }
 
     /**
      * Inflate a menu resource into this navigation view.

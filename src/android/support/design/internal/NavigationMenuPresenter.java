@@ -85,8 +85,6 @@ public class NavigationMenuPresenter implements MenuPresenter {
         mLayoutInflater = LayoutInflater.from(context);
         mMenu = menu;
         Resources res = context.getResources();
-        mPaddingTopDefault = res.getDimensionPixelOffset(
-                R.dimen.design_navigation_padding_top_default);
         mPaddingSeparator = res.getDimensionPixelOffset(
                 R.dimen.design_navigation_separator_vertical_padding);
     }
@@ -250,6 +248,15 @@ public class NavigationMenuPresenter implements MenuPresenter {
     public void setUpdateSuspended(boolean updateSuspended) {
         if (mAdapter != null) {
             mAdapter.setUpdateSuspended(updateSuspended);
+        }
+    }
+
+    public void setPaddingTopDefault(int paddingTopDefault) {
+        if (mPaddingTopDefault != paddingTopDefault) {
+            mPaddingTopDefault = paddingTopDefault;
+            if (mHeaderLayout.getChildCount() == 0) {
+                mMenuView.setPadding(0, mPaddingTopDefault, 0, mMenuView.getPaddingBottom());
+            }
         }
     }
 
