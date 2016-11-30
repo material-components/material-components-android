@@ -182,7 +182,9 @@ public class TabLayoutWithViewPagerTest
         onView(withId(R.id.tabs_viewpager)).perform(
                 ViewPagerActions.setAdapter(mDefaultPagerAdapter),
                 ViewPagerActions.scrollToPage(0));
+    }
 
+    private void setupTabLayoutWithViewPager() {
         // And wire the tab layout to it
         onView(withId(R.id.tabs)).perform(TabLayoutActions.setupWithViewPager(mViewPager));
     }
@@ -253,6 +255,8 @@ public class TabLayoutWithViewPagerTest
     @Test
     @SmallTest
     public void testBasics() {
+        setupTabLayoutWithViewPager();
+
         final int itemCount = mViewPager.getAdapter().getCount();
 
         assertEquals("Matching item count", itemCount, mTabLayout.getTabCount());
@@ -271,6 +275,8 @@ public class TabLayoutWithViewPagerTest
     @Test
     @SmallTest
     public void testInteraction() {
+        setupTabLayoutWithViewPager();
+
         assertEquals("Default selected page", 0, mViewPager.getCurrentItem());
         assertEquals("Default selected tab", 0, mTabLayout.getSelectedTabPosition());
 
@@ -280,6 +286,8 @@ public class TabLayoutWithViewPagerTest
     @Test
     @SmallTest
     public void testAdapterContentChange() {
+        setupTabLayoutWithViewPager();
+
         // Verify that we have the expected initial adapter
         PagerAdapter initialAdapter = mViewPager.getAdapter();
         assertEquals("Initial adapter class", ColorPagerAdapter.class, initialAdapter.getClass());
@@ -309,6 +317,8 @@ public class TabLayoutWithViewPagerTest
     @Test
     @SmallTest
     public void testAdapterChange() {
+        setupTabLayoutWithViewPager();
+
         // Verify that we have the expected initial adapter
         PagerAdapter initialAdapter = mViewPager.getAdapter();
         assertEquals("Initial adapter class", ColorPagerAdapter.class, initialAdapter.getClass());
@@ -394,6 +404,8 @@ public class TabLayoutWithViewPagerTest
      */
     private void verifyMinMaxTabWidth(@LayoutRes int tabLayoutResId, @DimenRes int tabMinWidthResId,
             @DimenRes int tabMaxWidthResId) {
+        setupTabLayoutWithViewPager();
+
         assertEquals("Scrollable tab mode", TabLayout.MODE_SCROLLABLE, mTabLayout.getTabMode());
 
         final Resources res = mActivityTestRule.getActivity().getResources();
@@ -479,5 +491,19 @@ public class TabLayoutWithViewPagerTest
     public void testMinMaxTabWidth() {
         verifyMinMaxTabWidth(R.layout.tab_layout_bound_minmax, R.dimen.tab_width_limit_small,
                 R.dimen.tab_width_limit_large);
+    }
+
+    @Test
+    @SmallTest
+    public void testSetupAfterViewPagerScrolled() {
+        // Scroll to the last item
+        final int selected = mViewPager.getAdapter().getCount() - 1;
+        onView(withId(R.id.tabs_viewpager)).perform(ViewPagerActions.scrollToPage(selected));
+
+        // Now setup the TabLayout with the ViewPager
+        setupTabLayoutWithViewPager();
+
+        assertEquals("Selected page", selected, mViewPager.getCurrentItem());
+        assertEquals("Selected tab", selected, mTabLayout.getSelectedTabPosition());
     }
 }

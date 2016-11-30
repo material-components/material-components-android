@@ -713,6 +713,9 @@ public class TabLayout extends HorizontalScrollView {
 
             // Now we'll populate ourselves from the pager adapter
             setPagerAdapter(adapter, true);
+
+            // Now update the scroll position to match the ViewPager's current item
+            setScrollPosition(viewPager.getCurrentItem(), 0f, true);
         } else {
             // We've been given a null ViewPager so we need to clear out the internal state,
             // listeners and observers
