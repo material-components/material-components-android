@@ -98,6 +98,10 @@ package android.support.design.widget {
     method public android.graphics.Typeface getCollapsedTitleTypeface();
     method public android.graphics.drawable.Drawable getContentScrim();
     method public int getExpandedTitleGravity();
+    method public int getExpandedTitleMarginBottom();
+    method public int getExpandedTitleMarginEnd();
+    method public int getExpandedTitleMarginStart();
+    method public int getExpandedTitleMarginTop();
     method public android.graphics.Typeface getExpandedTitleTypeface();
     method public android.graphics.drawable.Drawable getStatusBarScrim();
     method public java.lang.CharSequence getTitle();
@@ -111,6 +115,11 @@ package android.support.design.widget {
     method public void setContentScrimResource(int);
     method public void setExpandedTitleColor(int);
     method public void setExpandedTitleGravity(int);
+    method public void setExpandedTitleMargin(int, int, int, int);
+    method public void setExpandedTitleMarginBottom(int);
+    method public void setExpandedTitleMarginEnd(int);
+    method public void setExpandedTitleMarginStart(int);
+    method public void setExpandedTitleMarginTop(int);
     method public void setExpandedTitleTextAppearance(int);
     method public void setExpandedTitleTypeface(android.graphics.Typeface);
     method public void setScrimsShown(boolean);
