@@ -443,7 +443,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         if (mBehaviorTouchView == null) {
             handled |= super.onTouchEvent(ev);
         } else if (cancelSuper) {
-            if (cancelEvent != null) {
+            if (cancelEvent == null) {
                 final long now = SystemClock.uptimeMillis();
                 cancelEvent = MotionEvent.obtain(now, now,
                         MotionEvent.ACTION_CANCEL, 0.0f, 0.0f, 0);
