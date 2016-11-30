@@ -17,10 +17,20 @@
 <!-- Definitions of styles to be exposed as public -->
 <resources>
     <public type="style" name="TextAppearance.Design.CollapsingToolbar.Expanded"/>
+    <public type="style" name="TextAppearance.Design.Counter"/>
+    <public type="style" name="TextAppearance.Design.Counter.Overflow"/>
     <public type="style" name="TextAppearance.Design.Error"/>
     <public type="style" name="TextAppearance.Design.Hint"/>
+    <public type="style" name="TextAppearance.Design.Snackbar.Message"/>
     <public type="style" name="TextAppearance.Design.Tab"/>
+    <public type="style" name="Theme.Design"/>
+    <public type="style" name="Theme.Design.BottomSheetDialog"/>
+    <public type="style" name="Theme.Design.Light"/>
+    <public type="style" name="Theme.Design.Light.BottomSheetDialog"/>
+    <public type="style" name="Theme.Design.Light.NoActionBar"/>
+    <public type="style" name="Theme.Design.NoActionBar"/>
     <public type="style" name="Widget.Design.AppBarLayout"/>
+    <public type="style" name="Widget.Design.BottomSheet.Modal"/>
     <public type="style" name="Widget.Design.CollapsingToolbar"/>
     <public type="style" name="Widget.Design.CoordinatorLayout"/>
     <public type="style" name="Widget.Design.FloatingActionButton"/>
@@ -28,7 +38,4 @@
     <public type="style" name="Widget.Design.Snackbar"/>
     <public type="style" name="Widget.Design.TabLayout"/>
     <public type="style" name="Widget.Design.TextInputLayout"/>
-    <public type="style" name="Widget.Design.BottomSheet.Modal"/>
-    <public type="style" name="Theme.Design.BottomSheetDialog"/>
-    <public type="style" name="Theme.Design.Light.BottomSheetDialog"/>
 </resources>
