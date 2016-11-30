@@ -23,7 +23,6 @@ import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
@@ -63,9 +62,8 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
 
         final Drawable rippleContent;
         if (borderWidth > 0) {
-            mBorderDrawable = createBorderDrawable(backgroundTint);
-            rippleContent = new LayerDrawable(new Drawable[]{
-                    mBorderDrawable, new InsetDrawable(mShapeDrawable, borderWidth)});
+            mBorderDrawable = createBorderDrawable(borderWidth, backgroundTint);
+            rippleContent = new LayerDrawable(new Drawable[]{mBorderDrawable, mShapeDrawable});
         } else {
             mBorderDrawable = null;
             rippleContent = mShapeDrawable;
@@ -130,5 +128,10 @@ class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
     private Animator setupAnimator(Animator animator) {
         animator.setInterpolator(mInterpolator);
         return animator;
+    }
+
+    @Override
+    CircularBorderDrawable newCircularDrawable() {
+        return new CircularBorderDrawableLollipop();
     }
 }

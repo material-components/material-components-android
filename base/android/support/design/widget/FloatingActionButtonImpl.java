@@ -17,10 +17,10 @@
 package android.support.design.widget;
 
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.support.design.R;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 
@@ -57,12 +57,23 @@ abstract class FloatingActionButtonImpl {
 
     abstract void jumpDrawableToCurrentState();
 
-    Drawable createBorderDrawable(ColorStateList backgroundTint) {
-        Drawable borderDrawable = ContextCompat.getDrawable(mView.getContext(),
-                R.drawable.fab_border_background);
-        borderDrawable = DrawableCompat.wrap(borderDrawable);
-        DrawableCompat.setTintList(borderDrawable, backgroundTint);
-        DrawableCompat.setTintMode(borderDrawable, PorterDuff.Mode.DST_OVER);
-        return borderDrawable;
+    Drawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
+        final Resources resources = mView.getResources();
+        CircularBorderDrawable borderDrawable = newCircularDrawable();
+        borderDrawable.setGradientColors(
+                resources.getColor(R.color.fab_stroke_top_outer_color),
+                resources.getColor(R.color.fab_stroke_top_inner_color),
+                resources.getColor(R.color.fab_stroke_end_inner_color),
+                resources.getColor(R.color.fab_stroke_end_outer_color));
+        borderDrawable.setBorderWidth(borderWidth);
+
+        Drawable d = DrawableCompat.wrap(borderDrawable);
+        DrawableCompat.setTintList(d, backgroundTint);
+        DrawableCompat.setTintMode(d, PorterDuff.Mode.DST_OVER);
+        return d;
+    }
+
+    CircularBorderDrawable newCircularDrawable() {
+        return new CircularBorderDrawable();
     }
 }

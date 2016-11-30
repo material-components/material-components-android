@@ -22,7 +22,6 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
@@ -66,9 +65,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
             PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth) {
         // Now we need to tint the original background with the tint, using
         // an InsetDrawable if we have a border width
-        mShapeDrawable = DrawableCompat.wrap(borderWidth > 0
-                ? new InsetDrawable(originalBackground, borderWidth)
-                : originalBackground);
+        mShapeDrawable = DrawableCompat.wrap(originalBackground);
         DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
         if (backgroundTintMode != null) {
             DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
@@ -90,7 +87,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
 
         final Drawable[] layers;
         if (borderWidth > 0) {
-            mBorderDrawable = createBorderDrawable(backgroundTint);
+            mBorderDrawable = createBorderDrawable(borderWidth, backgroundTint);
             layers = new Drawable[] {mBorderDrawable, mShapeDrawable, mRippleDrawable};
         } else {
             mBorderDrawable = null;

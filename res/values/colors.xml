@@ -17,12 +17,14 @@
 
 <resources>
 
-    <!-- Color for the top pixels in the stroke: 18% white (these are multiplied) -->
-    <color name="fab_stroke_start_color">#2EFFFFFF</color>
-    <!-- Color for the center pixels in the stroke: transparent (these are multiplied) -->
-    <color name="fab_stroke_center_color">@android:color/transparent</color>
-    <!-- Color for the bottom pixels in the stroke: 6% black (these are multiplied) -->
-    <color name="fab_stroke_end_color">#0F000000</color>
+    <!-- Color for the top outer pixels in the stroke: 18% white (these are multiplied) -->
+    <color name="fab_stroke_top_outer_color">#2EFFFFFF</color>
+    <!-- Color for the top inner pixels in the stroke: 10% white (these are multiplied) -->
+    <color name="fab_stroke_top_inner_color">#1AFFFFFF</color>
+    <!-- Color for the bottom outer pixels in the stroke: 6% black (these are multiplied) -->
+    <color name="fab_stroke_end_outer_color">#0F000000</color>
+    <!-- Color for the bottom inner pixels in the stroke: 4% black (these are multiplied) -->
+    <color name="fab_stroke_end_inner_color">#0A000000</color>
 
     <!-- Shadow color for the first pixels of a shadow -->
     <color name="shadow_start_color">#44000000</color>
