@@ -262,6 +262,7 @@ package android.support.design.widget {
     ctor public FloatingActionButton.Behavior();
     method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
     method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
+    method public boolean onDependentViewRemoved(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
     method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, int);
   }
 
