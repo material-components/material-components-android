@@ -246,6 +246,9 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
     }
 
     private class ResetElevationAnimation extends ShadowAnimatorImpl {
+        ResetElevationAnimation() {
+        }
+
         @Override
         protected float getTargetShadowSize() {
             return mElevation;
@@ -253,6 +256,9 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
     }
 
     private class ElevateToTranslationZAnimation extends ShadowAnimatorImpl {
+        ElevateToTranslationZAnimation() {
+        }
+
         @Override
         protected float getTargetShadowSize() {
             return mElevation + mPressedTranslationZ;
@@ -260,6 +266,9 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
     }
 
     private class DisabledElevationAnimation extends ShadowAnimatorImpl {
+        DisabledElevationAnimation() {
+        }
+
         @Override
         protected float getTargetShadowSize() {
             return 0f;

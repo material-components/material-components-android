@@ -129,18 +129,18 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     private int mPeekHeightMin;
 
-    private int mMinOffset;
+    int mMinOffset;
 
-    private int mMaxOffset;
+    int mMaxOffset;
 
-    private boolean mHideable;
+    boolean mHideable;
 
     private boolean mSkipCollapsed;
 
     @State
-    private int mState = STATE_COLLAPSED;
+    int mState = STATE_COLLAPSED;
 
-    private ViewDragHelper mViewDragHelper;
+    ViewDragHelper mViewDragHelper;
 
     private boolean mIgnoreEvents;
 
@@ -148,21 +148,21 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     private boolean mNestedScrolled;
 
-    private int mParentHeight;
+    int mParentHeight;
 
-    private WeakReference<V> mViewRef;
+    WeakReference<V> mViewRef;
 
-    private WeakReference<View> mNestedScrollingChildRef;
+    WeakReference<View> mNestedScrollingChildRef;
 
     private BottomSheetCallback mCallback;
 
     private VelocityTracker mVelocityTracker;
 
-    private int mActivePointerId;
+    int mActivePointerId;
 
     private int mInitialY;
 
-    private boolean mTouchingScrollingChild;
+    boolean mTouchingScrollingChild;
 
     /**
      * Default constructor for instantiating BottomSheetBehaviors.
@@ -562,7 +562,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         return mState;
     }
 
-    private void setStateInternal(@State int state) {
+    void setStateInternal(@State int state) {
         if (mState == state) {
             return;
         }
@@ -581,7 +581,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
     }
 
-    private boolean shouldHide(View child, float yvel) {
+    boolean shouldHide(View child, float yvel) {
         if (mSkipCollapsed) {
             return true;
         }
@@ -614,7 +614,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         return VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId);
     }
 
-    private void startSettlingAnimation(View child, int state) {
+    void startSettlingAnimation(View child, int state) {
         int top;
         if (state == STATE_COLLAPSED) {
             top = mMaxOffset;
@@ -715,7 +715,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
     };
 
-    private void dispatchOnSlide(int top) {
+    void dispatchOnSlide(int top) {
         View bottomSheet = mViewRef.get();
         if (bottomSheet != null && mCallback != null) {
             if (top > mMaxOffset) {

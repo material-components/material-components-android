@@ -34,9 +34,9 @@ import android.widget.FrameLayout;
  */
 public class ScrimInsetsFrameLayout extends FrameLayout {
 
-    private Drawable mInsetForeground;
+    Drawable mInsetForeground;
 
-    private Rect mInsets;
+    Rect mInsets;
 
     private Rect mTempRect = new Rect();
 

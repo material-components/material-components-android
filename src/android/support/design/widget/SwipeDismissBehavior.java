@@ -78,17 +78,17 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
     private static final float DEFAULT_ALPHA_START_DISTANCE = 0f;
     private static final float DEFAULT_ALPHA_END_DISTANCE = DEFAULT_DRAG_DISMISS_THRESHOLD;
 
-    private ViewDragHelper mViewDragHelper;
-    private OnDismissListener mListener;
+    ViewDragHelper mViewDragHelper;
+    OnDismissListener mListener;
     private boolean mInterceptingEvents;
 
     private float mSensitivity = 0f;
     private boolean mSensitivitySet;
 
-    private int mSwipeDirection = SWIPE_DIRECTION_ANY;
-    private float mDragDismissThreshold = DEFAULT_DRAG_DISMISS_THRESHOLD;
-    private float mAlphaStartSwipeDistance = DEFAULT_ALPHA_START_DISTANCE;
-    private float mAlphaEndSwipeDistance = DEFAULT_ALPHA_END_DISTANCE;
+    int mSwipeDirection = SWIPE_DIRECTION_ANY;
+    float mDragDismissThreshold = DEFAULT_DRAG_DISMISS_THRESHOLD;
+    float mAlphaStartSwipeDistance = DEFAULT_ALPHA_START_DISTANCE;
+    float mAlphaEndSwipeDistance = DEFAULT_ALPHA_END_DISTANCE;
 
     /**
      * Callback interface used to notify the application that the view has been dismissed.
@@ -381,11 +381,11 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         }
     }
 
-    private static float clamp(float min, float value, float max) {
+    static float clamp(float min, float value, float max) {
         return Math.min(Math.max(min, value), max);
     }
 
-    private static int clamp(int min, int value, int max) {
+    static int clamp(int min, int value, int max) {
         return Math.min(Math.max(min, value), max);
     }
 

@@ -25,7 +25,7 @@ final class StateListAnimator {
     private final ArrayList<Tuple> mTuples = new ArrayList<>();
 
     private Tuple mLastMatch = null;
-    private ValueAnimatorCompat mRunningAnimator = null;
+    ValueAnimatorCompat mRunningAnimator = null;
 
     private final ValueAnimatorCompat.AnimatorListener mAnimationListener
             = new ValueAnimatorCompat.AnimatorListenerAdapter() {
@@ -105,7 +105,7 @@ final class StateListAnimator {
         final int[] mSpecs;
         final ValueAnimatorCompat mAnimator;
 
-        private Tuple(int[] specs, ValueAnimatorCompat animator) {
+        Tuple(int[] specs, ValueAnimatorCompat animator) {
             mSpecs = specs;
             mAnimator = animator;
         }

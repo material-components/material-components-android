@@ -130,11 +130,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private int mBorderWidth;
     private int mRippleColor;
     private int mSize;
-    private int mImagePadding;
+    int mImagePadding;
     private int mMaxImageSize;
 
-    private boolean mCompatPadding;
-    private final Rect mShadowPadding = new Rect();
+    boolean mCompatPadding;
+    final Rect mShadowPadding = new Rect();
     private final Rect mTouchArea = new Rect();
 
     private AppCompatImageHelper mImageHelper;
@@ -321,7 +321,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         show(listener, true);
     }
 
-    private void show(OnVisibilityChangedListener listener, boolean fromUser) {
+    void show(OnVisibilityChangedListener listener, boolean fromUser) {
         getImpl().show(wrapOnVisibilityChangedListener(listener), fromUser);
     }
 
@@ -343,7 +343,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         hide(listener, true);
     }
 
-    private void hide(@Nullable OnVisibilityChangedListener listener, boolean fromUser) {
+    void hide(@Nullable OnVisibilityChangedListener listener, boolean fromUser) {
         getImpl().hide(wrapOnVisibilityChangedListener(listener), fromUser);
     }
 
@@ -426,7 +426,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         };
     }
 
-    private int getSizeDimension() {
+    int getSizeDimension() {
         return getSizeDimension(mSize);
     }
 
@@ -802,6 +802,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     }
 
     private class ShadowDelegateImpl implements ShadowViewDelegate {
+        ShadowDelegateImpl() {
+        }
+
         @Override
         public float getRadius() {
             return getSizeDimension() / 2f;

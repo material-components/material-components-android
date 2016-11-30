@@ -27,7 +27,7 @@ import java.lang.ref.WeakReference;
  */
 class SnackbarManager {
 
-    private static final int MSG_TIMEOUT = 0;
+    static final int MSG_TIMEOUT = 0;
 
     private static final int SHORT_DURATION_MS = 1500;
     private static final int LONG_DURATION_MS = 2750;
@@ -166,8 +166,8 @@ class SnackbarManager {
     }
 
     private static class SnackbarRecord {
-        private final WeakReference<Callback> callback;
-        private int duration;
+        final WeakReference<Callback> callback;
+        int duration;
 
         SnackbarRecord(int duration, Callback callback) {
             this.callback = new WeakReference<>(callback);
@@ -229,7 +229,7 @@ class SnackbarManager {
         mHandler.sendMessageDelayed(Message.obtain(mHandler, MSG_TIMEOUT, r), durationMs);
     }
 
-    private void handleTimeout(SnackbarRecord record) {
+    void handleTimeout(SnackbarRecord record) {
         synchronized (mLock) {
             if (mCurrentSnackbar == record || mNextSnackbar == record) {
                 cancelSnackbarLocked(record, Snackbar.Callback.DISMISS_EVENT_TIMEOUT);

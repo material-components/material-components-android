@@ -84,7 +84,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     private final NavigationMenu mMenu;
     private final NavigationMenuPresenter mPresenter = new NavigationMenuPresenter();
 
-    private OnNavigationItemSelectedListener mListener;
+    OnNavigationItemSelectedListener mListener;
     private int mMaxWidth;
 
     private MenuInflater mMenuInflater;

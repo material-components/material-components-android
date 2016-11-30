@@ -51,7 +51,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
     private boolean mNeedsEmptyIcon;
 
-    private boolean mCheckable;
+    boolean mCheckable;
 
     private final CheckedTextView mTextView;
 

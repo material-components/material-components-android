@@ -37,7 +37,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
     private static final int INVALID_POINTER = -1;
 
     private Runnable mFlingRunnable;
-    private ScrollerCompat mScroller;
+    ScrollerCompat mScroller;
 
     private boolean mIsBeingDragged;
     private int mActivePointerId = INVALID_POINTER;

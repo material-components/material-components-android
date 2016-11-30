@@ -114,12 +114,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private int mExpandedMarginBottom;
 
     private final Rect mTmpRect = new Rect();
-    private final CollapsingTextHelper mCollapsingTextHelper;
+    final CollapsingTextHelper mCollapsingTextHelper;
     private boolean mCollapsingTitleEnabled;
     private boolean mDrawCollapsingTitle;
 
     private Drawable mContentScrim;
-    private Drawable mStatusBarScrim;
+    Drawable mStatusBarScrim;
     private int mScrimAlpha;
     private boolean mScrimsAreShown;
     private ValueAnimatorCompat mScrimAnimator;
@@ -128,9 +128,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     private AppBarLayout.OnOffsetChangedListener mOnOffsetChangedListener;
 
-    private int mCurrentOffset;
+    int mCurrentOffset;
 
-    private WindowInsetsCompat mLastInsets;
+    WindowInsetsCompat mLastInsets;
 
     public CollapsingToolbarLayout(Context context) {
         this(context, null);
@@ -258,7 +258,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         super.onDetachedFromWindow();
     }
 
-    private WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
+    WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
         WindowInsetsCompat newInsets = null;
 
         if (ViewCompat.getFitsSystemWindows(this)) {
@@ -492,7 +492,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         return view.getHeight();
     }
 
-    private static ViewOffsetHelper getViewOffsetHelper(View view) {
+    static ViewOffsetHelper getViewOffsetHelper(View view) {
         ViewOffsetHelper offsetHelper = (ViewOffsetHelper) view.getTag(R.id.view_offset_helper);
         if (offsetHelper == null) {
             offsetHelper = new ViewOffsetHelper(view);
@@ -611,7 +611,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         mScrimAnimator.start();
     }
 
-    private void setScrimAlpha(int alpha) {
+    void setScrimAlpha(int alpha) {
         if (alpha != mScrimAlpha) {
             final Drawable contentScrim = mContentScrim;
             if (contentScrim != null && mToolbar != null) {
@@ -1243,6 +1243,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     private class OffsetUpdateListener implements AppBarLayout.OnOffsetChangedListener {
+        OffsetUpdateListener() {
+        }
+
         @Override
         public void onOffsetChanged(AppBarLayout layout, int verticalOffset) {
             mCurrentOffset = verticalOffset;

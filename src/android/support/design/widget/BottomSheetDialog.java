@@ -38,7 +38,7 @@ public class BottomSheetDialog extends AppCompatDialog {
 
     private BottomSheetBehavior<FrameLayout> mBehavior;
 
-    private boolean mCancelable = true;
+    boolean mCancelable = true;
     private boolean mCanceledOnTouchOutside = true;
     private boolean mCanceledOnTouchOutsideSet;
 
@@ -130,7 +130,7 @@ public class BottomSheetDialog extends AppCompatDialog {
         return coordinator;
     }
 
-    private boolean shouldWindowCloseOnTouchOutside() {
+    boolean shouldWindowCloseOnTouchOutside() {
         if (!mCanceledOnTouchOutsideSet) {
             if (Build.VERSION.SDK_INT < 11) {
                 mCanceledOnTouchOutside = true;

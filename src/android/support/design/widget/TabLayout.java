@@ -145,12 +145,12 @@ import java.util.Iterator;
 public class TabLayout extends HorizontalScrollView {
 
     private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72; // dps
-    private static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
+    static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
     private static final int INVALID_WIDTH = -1;
     private static final int DEFAULT_HEIGHT = 48; // dps
     private static final int TAB_MIN_WIDTH_MARGIN = 56; //dps
-    private static final int FIXED_WRAP_GUTTER_MIN = 16; //dps
-    private static final int MOTION_NON_ADJACENT_OFFSET = 24;
+    static final int FIXED_WRAP_GUTTER_MIN = 16; //dps
+    static final int MOTION_NON_ADJACENT_OFFSET = 24;
 
     private static final int ANIMATION_DURATION = 300;
 
@@ -240,27 +240,27 @@ public class TabLayout extends HorizontalScrollView {
 
     private final SlidingTabStrip mTabStrip;
 
-    private int mTabPaddingStart;
-    private int mTabPaddingTop;
-    private int mTabPaddingEnd;
-    private int mTabPaddingBottom;
+    int mTabPaddingStart;
+    int mTabPaddingTop;
+    int mTabPaddingEnd;
+    int mTabPaddingBottom;
 
-    private int mTabTextAppearance;
-    private ColorStateList mTabTextColors;
-    private float mTabTextSize;
-    private float mTabTextMultiLineSize;
+    int mTabTextAppearance;
+    ColorStateList mTabTextColors;
+    float mTabTextSize;
+    float mTabTextMultiLineSize;
 
-    private final int mTabBackgroundResId;
+    final int mTabBackgroundResId;
 
-    private int mTabMaxWidth = Integer.MAX_VALUE;
+    int mTabMaxWidth = Integer.MAX_VALUE;
     private final int mRequestedTabMinWidth;
     private final int mRequestedTabMaxWidth;
     private final int mScrollableTabMinWidth;
 
     private int mContentInsetStart;
 
-    private int mTabGravity;
-    private int mMode;
+    int mTabGravity;
+    int mMode;
 
     private OnTabSelectedListener mSelectedListener;
     private final ArrayList<OnTabSelectedListener> mSelectedListeners = new ArrayList<>();
@@ -268,7 +268,7 @@ public class TabLayout extends HorizontalScrollView {
 
     private ValueAnimatorCompat mScrollAnimator;
 
-    private ViewPager mViewPager;
+    ViewPager mViewPager;
     private PagerAdapter mPagerAdapter;
     private DataSetObserver mPagerAdapterObserver;
     private TabLayoutOnPageChangeListener mPageChangeListener;
@@ -400,7 +400,7 @@ public class TabLayout extends HorizontalScrollView {
         setScrollPosition(position, positionOffset, updateSelectedText, true);
     }
 
-    private void setScrollPosition(int position, float positionOffset, boolean updateSelectedText,
+    void setScrollPosition(int position, float positionOffset, boolean updateSelectedText,
             boolean updateIndicatorPosition) {
         final int roundedPosition = Math.round(position + positionOffset);
         if (roundedPosition < 0 || roundedPosition >= mTabStrip.getChildCount()) {
@@ -875,7 +875,7 @@ public class TabLayout extends HorizontalScrollView {
                 - getPaddingRight());
     }
 
-    private void setPagerAdapter(@Nullable final PagerAdapter adapter, final boolean addObserver) {
+    void setPagerAdapter(@Nullable final PagerAdapter adapter, final boolean addObserver) {
         if (mPagerAdapter != null && mPagerAdapterObserver != null) {
             // If we already have a PagerAdapter, unregister our observer
             mPagerAdapter.unregisterDataSetObserver(mPagerAdapterObserver);
@@ -895,7 +895,7 @@ public class TabLayout extends HorizontalScrollView {
         populateFromPagerAdapter();
     }
 
-    private void populateFromPagerAdapter() {
+    void populateFromPagerAdapter() {
         removeAllTabs();
 
         if (mPagerAdapter != null) {
@@ -991,7 +991,7 @@ public class TabLayout extends HorizontalScrollView {
         }
     }
 
-    private int dpToPx(int dps) {
+    int dpToPx(int dps) {
         return Math.round(getResources().getDisplayMetrics().density * dps);
     }
 
@@ -1200,7 +1200,7 @@ public class TabLayout extends HorizontalScrollView {
         updateTabViews(true);
     }
 
-    private void updateTabViews(final boolean requestLayout) {
+    void updateTabViews(final boolean requestLayout) {
         for (int i = 0; i < mTabStrip.getChildCount(); i++) {
             View child = mTabStrip.getChildAt(i);
             child.setMinimumWidth(getTabMinWidth());
@@ -1230,10 +1230,10 @@ public class TabLayout extends HorizontalScrollView {
         private int mPosition = INVALID_POSITION;
         private View mCustomView;
 
-        private TabLayout mParent;
-        private TabView mView;
+        TabLayout mParent;
+        TabView mView;
 
-        private Tab() {
+        Tab() {
             // Private constructor
         }
 
@@ -1463,13 +1463,13 @@ public class TabLayout extends HorizontalScrollView {
             return mContentDesc;
         }
 
-        private void updateView() {
+        void updateView() {
             if (mView != null) {
                 mView.update();
             }
         }
 
-        private void reset() {
+        void reset() {
             mParent = null;
             mView = null;
             mTag = null;
@@ -1626,14 +1626,14 @@ public class TabLayout extends HorizontalScrollView {
             }
         }
 
-        private void setTab(@Nullable final Tab tab) {
+        void setTab(@Nullable final Tab tab) {
             if (tab != mTab) {
                 mTab = tab;
                 update();
             }
         }
 
-        private void reset() {
+        void reset() {
             setTab(null);
             setSelected(false);
         }
@@ -1803,8 +1803,8 @@ public class TabLayout extends HorizontalScrollView {
         private int mSelectedIndicatorHeight;
         private final Paint mSelectedIndicatorPaint;
 
-        private int mSelectedPosition = -1;
-        private float mSelectionOffset;
+        int mSelectedPosition = -1;
+        float mSelectionOffset;
 
         private int mIndicatorLeft = -1;
         private int mIndicatorRight = -1;
@@ -1952,7 +1952,7 @@ public class TabLayout extends HorizontalScrollView {
             setIndicatorPosition(left, right);
         }
 
-        private void setIndicatorPosition(int left, int right) {
+        void setIndicatorPosition(int left, int right) {
             if (left != mIndicatorLeft || right != mIndicatorRight) {
                 // If the indicator's left/right has changed, invalidate
                 mIndicatorLeft = left;
@@ -2089,7 +2089,7 @@ public class TabLayout extends HorizontalScrollView {
         return generateDefaultLayoutParams();
     }
 
-    private int getTabMaxWidth() {
+    int getTabMaxWidth() {
         return mTabMaxWidth;
     }
 
@@ -2150,7 +2150,7 @@ public class TabLayout extends HorizontalScrollView {
             }
         }
 
-        private void reset() {
+        void reset() {
             mPreviousScrollState = mScrollState = SCROLL_STATE_IDLE;
         }
     }
@@ -2183,6 +2183,9 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     private class PagerAdapterObserver extends DataSetObserver {
+        PagerAdapterObserver() {
+        }
+
         @Override
         public void onChanged() {
             populateFromPagerAdapter();
@@ -2196,6 +2199,9 @@ public class TabLayout extends HorizontalScrollView {
 
     private class AdapterChangeListener implements ViewPager.OnAdapterChangeListener {
         private boolean mAutoRefresh;
+
+        AdapterChangeListener() {
+        }
 
         @Override
         public void onAdapterChanged(@NonNull ViewPager viewPager,

@@ -102,7 +102,7 @@ public class TextInputLayout extends LinearLayout {
     private static final String LOG_TAG = "TextInputLayout";
 
     private final FrameLayout mInputFrame;
-    private EditText mEditText;
+    EditText mEditText;
 
     private boolean mHintEnabled;
     private CharSequence mHint;
@@ -114,12 +114,12 @@ public class TextInputLayout extends LinearLayout {
     private int mIndicatorsAdded;
 
     private boolean mErrorEnabled;
-    private TextView mErrorView;
+    TextView mErrorView;
     private int mErrorTextAppearance;
     private boolean mErrorShown;
     private CharSequence mError;
 
-    private boolean mCounterEnabled;
+    boolean mCounterEnabled;
     private TextView mCounterView;
     private int mCounterMaxLength;
     private int mCounterTextAppearance;
@@ -144,7 +144,7 @@ public class TextInputLayout extends LinearLayout {
     // Only used for testing
     private boolean mHintExpanded;
 
-    private final CollapsingTextHelper mCollapsingTextHelper = new CollapsingTextHelper(this);
+    final CollapsingTextHelper mCollapsingTextHelper = new CollapsingTextHelper(this);
 
     private boolean mHintAnimationEnabled;
     private ValueAnimatorCompat mAnimator;
@@ -371,7 +371,7 @@ public class TextInputLayout extends LinearLayout {
         }
     }
 
-    private void updateLabelState(boolean animate) {
+    void updateLabelState(boolean animate) {
         final boolean isEnabled = isEnabled();
         final boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
         final boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
@@ -782,7 +782,7 @@ public class TextInputLayout extends LinearLayout {
         return mCounterMaxLength;
     }
 
-    private void updateCounter(int length) {
+    void updateCounter(int length) {
         boolean wasCounterOverflowed = mCounterOverflowed;
         if (mCounterMaxLength == INVALID_MAX_LENGTH) {
             mCounterView.setText(String.valueOf(length));
@@ -1193,7 +1193,7 @@ public class TextInputLayout extends LinearLayout {
         applyPasswordToggleTint();
     }
 
-   private void passwordVisibilityToggleRequested() {
+   void passwordVisibilityToggleRequested() {
        if (mPasswordToggleEnabled) {
            // Store the current cursor position
            final int selection = mEditText.getSelectionEnd();
@@ -1346,6 +1346,9 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private class TextInputAccessibilityDelegate extends AccessibilityDelegateCompat {
+        TextInputAccessibilityDelegate() {
+        }
+
         @Override
         public void onInitializeAccessibilityEvent(View host, AccessibilityEvent event) {
             super.onInitializeAccessibilityEvent(host, event);

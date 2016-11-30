@@ -103,10 +103,10 @@ import static android.support.design.widget.ViewUtils.objectEquals;
 @CoordinatorLayout.DefaultBehavior(AppBarLayout.Behavior.class)
 public class AppBarLayout extends LinearLayout {
 
-    private static final int PENDING_ACTION_NONE = 0x0;
-    private static final int PENDING_ACTION_EXPANDED = 0x1;
-    private static final int PENDING_ACTION_COLLAPSED = 0x2;
-    private static final int PENDING_ACTION_ANIMATE_ENABLED = 0x4;
+    static final int PENDING_ACTION_NONE = 0x0;
+    static final int PENDING_ACTION_EXPANDED = 0x1;
+    static final int PENDING_ACTION_COLLAPSED = 0x2;
+    static final int PENDING_ACTION_ANIMATE_ENABLED = 0x4;
 
     /**
      * Interface definition for a callback to be invoked when an {@link AppBarLayout}'s vertical
@@ -325,7 +325,7 @@ public class AppBarLayout extends LinearLayout {
         return new LayoutParams(p);
     }
 
-    private boolean hasChildWithInterpolator() {
+    boolean hasChildWithInterpolator() {
         return mHaveChildWithInterpolator;
     }
 
@@ -366,21 +366,21 @@ public class AppBarLayout extends LinearLayout {
         return mTotalScrollRange = Math.max(0, range - getTopInset());
     }
 
-    private boolean hasScrollableChildren() {
+    boolean hasScrollableChildren() {
         return getTotalScrollRange() != 0;
     }
 
     /**
      * Return the scroll range when scrolling up from a nested pre-scroll.
      */
-    private int getUpNestedPreScrollRange() {
+    int getUpNestedPreScrollRange() {
         return getTotalScrollRange();
     }
 
     /**
      * Return the scroll range when scrolling down from a nested pre-scroll.
      */
-    private int getDownNestedPreScrollRange() {
+    int getDownNestedPreScrollRange() {
         if (mDownPreScrollRange != INVALID_SCROLL_RANGE) {
             // If we already have a valid value, return it
             return mDownPreScrollRange;
@@ -419,7 +419,7 @@ public class AppBarLayout extends LinearLayout {
     /**
      * Return the scroll range when scrolling down from a nested scroll.
      */
-    private int getDownNestedScrollRange() {
+    int getDownNestedScrollRange() {
         if (mDownScrollRange != INVALID_SCROLL_RANGE) {
             // If we already have a valid value, return it
             return mDownScrollRange;
@@ -454,7 +454,7 @@ public class AppBarLayout extends LinearLayout {
         return mDownScrollRange = Math.max(0, range);
     }
 
-    private void dispatchOffsetUpdates(int offset) {
+    void dispatchOffsetUpdates(int offset) {
         // Iterate backwards through the list so that most recently added listeners
         // get the first chance to decide
         if (mListeners != null) {
@@ -519,7 +519,7 @@ public class AppBarLayout extends LinearLayout {
      *
      * @return true if the collapsed state changed
      */
-    private boolean setCollapsedState(boolean collapsed) {
+    boolean setCollapsedState(boolean collapsed) {
         if (mCollapsed != collapsed) {
             mCollapsed = collapsed;
             refreshDrawableState();
@@ -553,11 +553,11 @@ public class AppBarLayout extends LinearLayout {
         return 0;
     }
 
-    private int getPendingAction() {
+    int getPendingAction() {
         return mPendingAction;
     }
 
-    private void resetPendingAction() {
+    void resetPendingAction() {
         mPendingAction = PENDING_ACTION_NONE;
     }
 
@@ -566,7 +566,7 @@ public class AppBarLayout extends LinearLayout {
         return mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
     }
 
-    private WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
+    WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
         WindowInsetsCompat newInsets = null;
 
         if (ViewCompat.getFitsSystemWindows(this)) {
@@ -742,7 +742,7 @@ public class AppBarLayout extends LinearLayout {
         /**
          * Returns true if the scroll flags are compatible for 'collapsing'
          */
-        private boolean isCollapsible() {
+        boolean isCollapsible() {
             return (mScrollFlags & SCROLL_FLAG_SCROLL) == SCROLL_FLAG_SCROLL
                     && (mScrollFlags & COLLAPSIBLE_FLAGS) != 0;
         }

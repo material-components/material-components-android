@@ -55,20 +55,20 @@ public class NavigationMenuPresenter implements MenuPresenter {
     private static final String STATE_ADAPTER = "android:menu:adapter";
 
     private NavigationMenuView mMenuView;
-    private LinearLayout mHeaderLayout;
+    LinearLayout mHeaderLayout;
 
     private Callback mCallback;
-    private MenuBuilder mMenu;
+    MenuBuilder mMenu;
     private int mId;
 
-    private NavigationMenuAdapter mAdapter;
-    private LayoutInflater mLayoutInflater;
+    NavigationMenuAdapter mAdapter;
+    LayoutInflater mLayoutInflater;
 
-    private int mTextAppearance;
-    private boolean mTextAppearanceSet;
-    private ColorStateList mTextColor;
-    private ColorStateList mIconTintList;
-    private Drawable mItemBackground;
+    int mTextAppearance;
+    boolean mTextAppearanceSet;
+    ColorStateList mTextColor;
+    ColorStateList mIconTintList;
+    Drawable mItemBackground;
 
     /**
      * Padding to be inserted at the top of the list to avoid the first menu item
@@ -79,7 +79,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     /**
      * Padding for separators between items
      */
-    private int mPaddingSeparator;
+    int mPaddingSeparator;
 
     @Override
     public void initForMenu(Context context, MenuBuilder menu) {
@@ -318,7 +318,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     /**
      * Handles click events for the menu items. The items has to be {@link NavigationMenuItemView}.
      */
-    private final View.OnClickListener mOnClickListener = new View.OnClickListener() {
+    final View.OnClickListener mOnClickListener = new View.OnClickListener() {
 
         @Override
         public void onClick(View v) {
@@ -612,7 +612,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
         boolean needsEmptyIcon;
 
-        private NavigationMenuTextItem(MenuItemImpl item) {
+        NavigationMenuTextItem(MenuItemImpl item) {
             mMenuItem = item;
         }
 
@@ -650,6 +650,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
      * Header (not subheader) items.
      */
     private static class NavigationMenuHeaderItem implements NavigationMenuItem {
+        NavigationMenuHeaderItem() {
+        }
         // The actual content is hold by NavigationMenuPresenter#mHeaderLayout.
     }
 

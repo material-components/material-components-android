@@ -132,9 +132,9 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
             new ThreadLocal<>();
 
 
-    private static final int EVENT_PRE_DRAW = 0;
-    private static final int EVENT_NESTED_SCROLL = 1;
-    private static final int EVENT_VIEW_REMOVED = 2;
+    static final int EVENT_PRE_DRAW = 0;
+    static final int EVENT_NESTED_SCROLL = 1;
+    static final int EVENT_VIEW_REMOVED = 2;
 
     /** @hide */
     @Retention(RetentionPolicy.SOURCE)
@@ -172,7 +172,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private boolean mDrawStatusBarBackground;
     private Drawable mStatusBarBackground;
 
-    private OnHierarchyChangeListener mOnHierarchyChangeListener;
+    OnHierarchyChangeListener mOnHierarchyChangeListener;
     private android.support.v4.view.OnApplyWindowInsetsListener mApplyWindowInsetsListener;
 
     private final NestedScrollingParentHelper mNestedScrollingParentHelper =
@@ -2489,8 +2489,8 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          */
         public int dodgeInsetEdges = Gravity.NO_GRAVITY;
 
-        private int mInsetOffsetX;
-        private int mInsetOffsetY;
+        int mInsetOffsetX;
+        int mInsetOffsetY;
 
         View mAnchorView;
         View mAnchorDirectChild;
@@ -2838,6 +2838,9 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private class HierarchyChangeListener implements OnHierarchyChangeListener {
+        HierarchyChangeListener() {
+        }
+
         @Override
         public void onChildViewAdded(View parent, View child) {
             if (mOnHierarchyChangeListener != null) {

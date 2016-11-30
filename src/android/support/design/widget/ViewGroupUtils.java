@@ -28,6 +28,9 @@ class ViewGroupUtils {
     }
 
     private static class ViewGroupUtilsImplBase implements ViewGroupUtilsImpl {
+        ViewGroupUtilsImplBase() {
+        }
+
         @Override
         public void offsetDescendantRect(ViewGroup parent, View child, Rect rect) {
             parent.offsetDescendantRectToMyCoords(child, rect);
@@ -39,6 +42,9 @@ class ViewGroupUtils {
     }
 
     private static class ViewGroupUtilsImplHoneycomb implements ViewGroupUtilsImpl {
+        ViewGroupUtilsImplHoneycomb() {
+        }
+
         @Override
         public void offsetDescendantRect(ViewGroup parent, View child, Rect rect) {
             ViewGroupUtilsHoneycomb.offsetDescendantRect(parent, child, rect);
