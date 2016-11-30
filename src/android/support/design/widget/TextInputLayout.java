@@ -362,6 +362,8 @@ public class TextInputLayout extends LinearLayout {
                 mErrorView = new TextView(getContext());
                 mErrorView.setTextAppearance(getContext(), mErrorTextAppearance);
                 mErrorView.setVisibility(INVISIBLE);
+                ViewCompat.setAccessibilityLiveRegion(mErrorView,
+                        ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
                 LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(
                         0, LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.weight = 1.f;
@@ -447,8 +449,6 @@ public class TextInputLayout extends LinearLayout {
                 updateEditTextBackground();
             }
         }
-
-        sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
     }
 
     /**
@@ -467,6 +467,8 @@ public class TextInputLayout extends LinearLayout {
                         LinearLayout.LayoutParams.WRAP_CONTENT);
                 params.gravity = (params.gravity & Gravity.VERTICAL_GRAVITY_MASK) |
                         GravityCompat.END;
+                ViewCompat.setAccessibilityLiveRegion(mCounterView,
+                        ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
                 addIndicator(mCounterView, -1, params);
                 if (mEditText == null) {
                     updateCounter(0);
