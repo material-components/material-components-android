@@ -23,12 +23,11 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.FrameLayout;
 
 /**
@@ -42,11 +41,15 @@ public class BottomSheetDialog extends AppCompatDialog {
 
     public BottomSheetDialog(@NonNull Context context, @StyleRes int theme) {
         super(context, getThemeResId(context, theme));
+        // We hide the title bar for any style configuration. Otherwise, there will be a gap
+        // above the bottom sheet when it is expanded.
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
     protected BottomSheetDialog(@NonNull Context context, boolean cancelable,
             OnCancelListener cancelListener) {
         super(context, cancelable, cancelListener);
+        supportRequestWindowFeature(Window.FEATURE_NO_TITLE);
     }
 
     @Override
@@ -86,20 +89,15 @@ public class BottomSheetDialog extends AppCompatDialog {
         }
         // We treat the CoordinatorLayout as outside the dialog though it is technically inside
         if (shouldWindowCloseOnTouchOutside()) {
-            final View finalView = view;
-            coordinator.setOnTouchListener(new View.OnTouchListener() {
-                @Override
-                public boolean onTouch(View v, MotionEvent event) {
-                    if (isShowing() &&
-                            MotionEventCompat.getActionMasked(event) == MotionEvent.ACTION_UP &&
-                            !coordinator.isPointInChildBounds(finalView,
-                                    (int) event.getX(), (int) event.getY())) {
-                        cancel();
-                        return true;
-                    }
-                    return false;
-                }
-            });
+            coordinator.findViewById(R.id.touch_outside).setOnClickListener(
+                    new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (isShowing()) {
+                                cancel();
+                            }
+                        }
+                    });
         }
         return coordinator;
     }

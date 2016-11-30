@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The Android Open Source Project
+ * Copyright (C) 2016 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -16,20 +16,14 @@
 
 package android.support.design.widget;
 
-import android.app.Dialog;
-import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatDialogFragment;
+import android.support.design.test.R;
 
-/**
- * Modal bottom sheet. This is a version of {@link DialogFragment} that shows a bottom sheet
- * using {@link BottomSheetDialog} instead of a floating dialog.
- */
-public class BottomSheetDialogFragment extends AppCompatDialogFragment {
+public class BottomSheetDialogActivity extends BaseTestActivity {
 
     @Override
-    public Dialog onCreateDialog(Bundle savedInstanceState) {
-        return new BottomSheetDialog(getActivity(), getTheme());
+    protected int getContentViewLayoutResId() {
+        return R.layout.frame_layout;
     }
 
 }
+

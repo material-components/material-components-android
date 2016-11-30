@@ -192,7 +192,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         // Offset the bottom sheet
         mParentHeight = parent.getHeight();
         mMinOffset = Math.max(0, mParentHeight - child.getHeight());
-        mMaxOffset = mParentHeight - mPeekHeight;
+        mMaxOffset = Math.max(mParentHeight - mPeekHeight, mMinOffset);
         if (mState == STATE_EXPANDED) {
             ViewCompat.offsetTopAndBottom(child, mMinOffset);
         } else if (mHideable && mState == STATE_HIDDEN) {

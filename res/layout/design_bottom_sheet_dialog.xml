@@ -18,14 +18,20 @@
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:soundEffectsEnabled="false">
+        android:layout_height="match_parent">
+
+    <View
+            android:id="@+id/touch_outside"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:soundEffectsEnabled="false"/>
 
     <FrameLayout
             android:id="@+id/design_bottom_sheet"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_gravity="center_horizontal"
+            android:layout_gravity="center_horizontal|top"
+            android:clickable="true"
             app:layout_behavior="@string/bottom_sheet_behavior"
             style="?attr/bottomSheetStyle"/>
 

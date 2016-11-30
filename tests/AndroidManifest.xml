@@ -55,6 +55,10 @@
                 android:name="android.support.design.widget.BottomSheetBehaviorActivity"/>
 
         <activity
+                android:theme="@style/Theme.AppCompat.NoActionBar"
+                android:name="android.support.design.widget.BottomSheetDialogActivity"/>
+
+        <activity
                 android:name="android.support.design.widget.FloatingActionButtonActivity"
                 android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
