@@ -32,8 +32,8 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.ActionBar;
-import android.support.v7.internal.widget.CompatTextView;
 import android.support.v7.internal.widget.TintManager;
+import android.support.v7.widget.AppCompatTextView;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -1107,7 +1107,7 @@ public class TabLayout extends HorizontalScrollView {
                 final boolean hasText = !TextUtils.isEmpty(text);
                 if (hasText) {
                     if (mTextView == null) {
-                        CompatTextView textView = new CompatTextView(getContext());
+                        AppCompatTextView textView = new AppCompatTextView(getContext());
                         textView.setTextAppearance(getContext(), mTabTextAppearance);
                         textView.setMaxLines(MAX_TAB_TEXT_LINES);
                         textView.setEllipsize(TextUtils.TruncateAt.END);
