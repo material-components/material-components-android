@@ -17,10 +17,13 @@
 package android.support.design.internal;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.v7.internal.view.menu.MenuBuilder;
 import android.support.v7.internal.view.menu.MenuItemImpl;
@@ -61,6 +64,10 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     private LayoutInflater mLayoutInflater;
 
     private View mSpace;
+
+    private ColorStateList mItemTintList;
+
+    private int mItemBackgroundResource;
 
     /**
      * Padding to be inserted at the top of the list to avoid the first menu item
@@ -105,14 +112,17 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
     private void prepareMenuItems() {
         mItems.clear();
         int currentGroupId = 0;
-        for (MenuItemImpl item : mMenu.getVisibleItems()) {
+        for (int i = 0, totalSize = mMenu.getVisibleItems().size(); i < totalSize; i++) {
+            MenuItemImpl item = mMenu.getVisibleItems().get(i);
             if (item.hasSubMenu()) {
                 SubMenu subMenu = item.getSubMenu();
                 if (subMenu.hasVisibleItems()) {
-                    mItems.add(NavigationMenuItem.SEPARATOR);
+                    if (i != 0) {
+                        mItems.add(NavigationMenuItem.SEPARATOR);
+                    }
                     mItems.add(NavigationMenuItem.of(item));
-                    for (int i = 0, size = subMenu.size(); i < size; i++) {
-                        MenuItem subMenuItem = subMenu.getItem(i);
+                    for (int j = 0, size = subMenu.size(); j < size; j++) {
+                        MenuItem subMenuItem = subMenu.getItem(j);
                         if (subMenuItem.isVisible()) {
                             mItems.add(NavigationMenuItem.of((MenuItemImpl) subMenuItem));
                         }
@@ -120,7 +130,7 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                 }
             } else {
                 int groupId = item.getGroupId();
-                if (groupId != currentGroupId) {
+                if (groupId != currentGroupId && i != 0) {
                     mItems.add(NavigationMenuItem.SEPARATOR);
                 }
                 mItems.add(NavigationMenuItem.of(item));
@@ -231,6 +241,24 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         }
     }
 
+    @Nullable
+    public ColorStateList getItemTintList() {
+        return mItemTintList;
+    }
+
+    public void setItemTintList(@Nullable ColorStateList itemTintList) {
+        mItemTintList = itemTintList;
+    }
+
+    @DrawableRes
+    public int getItemBackgroundResource() {
+        return mItemBackgroundResource;
+    }
+
+    public void setItemBackgroundResource(@DrawableRes int itemBackgroundResource) {
+        mItemBackgroundResource = itemBackgroundResource;
+    }
+
     private class NavigationMenuAdapter extends BaseAdapter {
 
         private static final int VIEW_TYPE_NORMAL = 0;
@@ -281,7 +309,9 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                         convertView = mLayoutInflater.inflate(R.layout.design_drawer_item, parent,
                                 false);
                     }
-                    MenuView.ItemView itemView = (MenuView.ItemView) convertView;
+                    NavigationMenuItemView itemView = (NavigationMenuItemView) convertView;
+                    itemView.setTintList(mItemTintList);
+                    itemView.setBackgroundResource(mItemBackgroundResource);
                     itemView.initialize(item.getMenuItem(), 0);
                     break;
                 case VIEW_TYPE_SUBHEADER:

@@ -26,13 +26,10 @@
     <dimen name="drawer_elevation">12dp</dimen>
     <dimen name="drawer_icon_padding">32dp</dimen>
     <dimen name="drawer_icon_size">24dp</dimen>
+    <dimen name="drawer_separator_vertical_padding">8dp</dimen>
+    <dimen name="drawer_padding_top_default">0dp</dimen>
 
     <dimen name="tab_min_width">72dp</dimen>
     <dimen name="tab_max_width">264dp</dimen>
-
-    <dimen name="drawer_separator_vertical_margin">8dp</dimen>
-    <!-- This needs to be drawer_separator_vertical_margin * 2 + 1 -->
-    <dimen name="drawer_separator_overall_height">17dp</dimen>
-    <dimen name="drawer_padding_top_default">0dp</dimen>
 
 </resources>

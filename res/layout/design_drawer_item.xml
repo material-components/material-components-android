@@ -23,5 +23,4 @@
         android:drawablePadding="@dimen/drawer_icon_padding"
         android:gravity="center_vertical|start"
         android:maxLines="1"
-        android:textAppearance="?attr/textAppearanceListItem"
-        android:textColor="?android:attr/textColorPrimary"/>
+        android:textAppearance="?attr/textAppearanceListItem"/>

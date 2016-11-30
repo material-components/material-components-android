@@ -17,12 +17,15 @@
 package android.support.design.widget;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.internal.ScrimInsetsFrameLayout;
@@ -92,6 +95,10 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
         ViewCompat.setFitsSystemWindows(this,
                 a.getBoolean(R.styleable.NavigationDrawerView_android_fitsSystemWindows, false));
         mMaxWidth = a.getDimensionPixelSize(R.styleable.NavigationDrawerView_android_maxWidth, 0);
+        ColorStateList itemTintList =
+                a.getColorStateList(R.styleable.NavigationDrawerView_itemTint);
+        int itemBackgroundResource =
+                a.getResourceId(R.styleable.NavigationDrawerView_itemBackground, 0);
         a.recycle();
 
         // Set up the menu
@@ -110,6 +117,8 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
         mPresenter = new NavigationMenuPresenter();
         mPresenter.setId(PRESENTER_NAVIGATION_DRAWER_VIEW);
         mPresenter.initForMenu(context, mMenu);
+        mPresenter.setItemTintList(itemTintList);
+        mPresenter.setItemBackgroundResource(itemBackgroundResource);
         mMenu.addMenuPresenter(mPresenter);
         addView((View) mPresenter.getMenuView(this));
     }
@@ -190,6 +199,51 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
      */
     public void removeHeaderView(@NonNull View view) {
         mPresenter.removeHeaderView(view);
+    }
+
+    /**
+     * Return the tint applied to the icon and text of the menu items, if specified.
+     *
+     * @return the tint applied to the icon and text of the menu items
+     * @see #setItemTintList(ColorStateList)
+     * @attr ref R.styleable#NavigationDrawerView_itemTint
+     */
+    @Nullable
+    public ColorStateList getItemTintList() {
+        return mPresenter.getItemTintList();
+    }
+
+    /**
+     * Applies a tint to the icon and text of the menu items.
+     *
+     * @param itemTintList the tint to apply, may be {@code null} to use default tint.
+     * @attr ref R.styleable#NavigationDrawerView_itemTint
+     */
+    public void setItemTintList(@Nullable ColorStateList itemTintList) {
+        mPresenter.setItemTintList(itemTintList);
+    }
+
+    /**
+     * Return the resource ID of background drawable for the menu items.
+     *
+     * @return The resource ID
+     * @see #setItemBackgroundResource(int)
+     * @attr ref R.styleable#NavigationDrawerView_itemBackground
+     */
+    @DrawableRes
+    public int getItemBackgroundResource() {
+        return mPresenter.getItemBackgroundResource();
+    }
+
+    /**
+     * Set the background of the menu items to a given resource. The resource should refer to
+     * a Drawable object or 0 to use the background background.
+     *
+     * @param itemBackground The identifier of the resource.
+     * @attr ref R.styleable#NavigationDrawerView_itemBackground
+     */
+    public void setItemBackgroundResource(@DrawableRes int itemBackground) {
+        mPresenter.setItemBackgroundResource(itemBackground);
     }
 
     /**
