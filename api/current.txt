@@ -378,6 +378,7 @@ package android.support.design.widget {
     ctor public TabLayout(android.content.Context);
     ctor public TabLayout(android.content.Context, android.util.AttributeSet);
     ctor public TabLayout(android.content.Context, android.util.AttributeSet, int);
+    method public void addOnTabSelectedListener(android.support.design.widget.TabLayout.OnTabSelectedListener);
     method public void addTab(android.support.design.widget.TabLayout.Tab);
     method public void addTab(android.support.design.widget.TabLayout.Tab, int);
     method public void addTab(android.support.design.widget.TabLayout.Tab, boolean);
@@ -390,9 +391,10 @@ package android.support.design.widget {
     method public android.content.res.ColorStateList getTabTextColors();
     method public android.support.design.widget.TabLayout.Tab newTab();
     method public void removeAllTabs();
+    method public void removeOnTabSelectedListener(android.support.design.widget.TabLayout.OnTabSelectedListener);
     method public void removeTab(android.support.design.widget.TabLayout.Tab);
     method public void removeTabAt(int);
-    method public void setOnTabSelectedListener(android.support.design.widget.TabLayout.OnTabSelectedListener);
+    method public deprecated void setOnTabSelectedListener(android.support.design.widget.TabLayout.OnTabSelectedListener);
     method public void setScrollPosition(int, float, boolean);
     method public void setSelectedTabIndicatorColor(int);
     method public void setSelectedTabIndicatorHeight(int);
