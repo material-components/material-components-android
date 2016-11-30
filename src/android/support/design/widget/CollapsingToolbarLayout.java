@@ -689,7 +689,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
      * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_collapsedTitleGravity
      */
     public void setCollapsedTitleGravity(int gravity) {
-        mCollapsingTextHelper.setExpandedTextGravity(gravity);
+        mCollapsingTextHelper.setCollapsedTextGravity(gravity);
     }
 
     /**
