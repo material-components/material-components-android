@@ -162,7 +162,7 @@ public class ViewPagerActions {
 
             @Override
             public String getDescription() {
-                return "ViewPager move one page to the right";
+                return "ViewPager move to a specific page";
             }
 
             @Override
