@@ -35,10 +35,6 @@ import android.view.animation.Interpolator;
 @TargetApi(Build.VERSION_CODES.LOLLIPOP)
 class FloatingActionButtonLollipop extends FloatingActionButtonHoneycombMr1 {
 
-    private Drawable mShapeDrawable;
-    private RippleDrawable mRippleDrawable;
-    private Drawable mBorderDrawable;
-
     private Interpolator mInterpolator;
 
     FloatingActionButtonLollipop(View view, ShadowViewDelegate shadowViewDelegate) {
@@ -77,21 +73,12 @@ class FloatingActionButtonLollipop extends FloatingActionButtonHoneycombMr1 {
     }
 
     @Override
-    void setBackgroundTintList(ColorStateList tint) {
-        DrawableCompat.setTintList(mShapeDrawable, tint);
-        if (mBorderDrawable != null) {
-            DrawableCompat.setTintList(mBorderDrawable, tint);
-        }
-    }
-
-    @Override
-    void setBackgroundTintMode(PorterDuff.Mode tintMode) {
-        DrawableCompat.setTintMode(mShapeDrawable, tintMode);
-    }
-
-    @Override
     void setRippleColor(int rippleColor) {
-        mRippleDrawable.setColor(ColorStateList.valueOf(rippleColor));
+        if (mRippleDrawable instanceof RippleDrawable) {
+            ((RippleDrawable) mRippleDrawable).setColor(ColorStateList.valueOf(rippleColor));
+        } else {
+            super.setRippleColor(rippleColor);
+        }
     }
 
     @Override

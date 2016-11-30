@@ -83,7 +83,6 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
         GradientDrawable touchFeedbackShape = new GradientDrawable();
         touchFeedbackShape.setShape(GradientDrawable.OVAL);
         touchFeedbackShape.setColor(Color.WHITE);
-        touchFeedbackShape.setCornerRadius(mShadowViewDelegate.getRadius());
 
         // We'll now wrap that touch feedback mask drawable with a ColorStateList. We do not need
         // to inset for any border here as LayerDrawable will nest the padding for us
@@ -126,7 +125,7 @@ class FloatingActionButtonEclairMr1 extends FloatingActionButtonImpl {
     void setBackgroundTintList(ColorStateList tint) {
         DrawableCompat.setTintList(mShapeDrawable, tint);
         if (mBorderDrawable != null) {
-            DrawableCompat.setTintList(mBorderDrawable, tint);
+            mBorderDrawable.setBorderTint(tint);
         }
     }
 

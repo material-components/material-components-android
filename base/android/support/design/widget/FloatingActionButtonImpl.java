@@ -98,7 +98,7 @@ abstract class FloatingActionButtonImpl {
                 resources.getColor(R.color.design_fab_stroke_end_inner_color),
                 resources.getColor(R.color.design_fab_stroke_end_outer_color));
         borderDrawable.setBorderWidth(borderWidth);
-        borderDrawable.setTintColor(backgroundTint.getDefaultColor());
+        borderDrawable.setBorderTint(backgroundTint);
         return borderDrawable;
     }
 
