@@ -19,6 +19,7 @@ package android.support.design.widget;
 import org.hamcrest.Matcher;
 import org.junit.Test;
 
+import android.support.annotation.NonNull;
 import android.support.design.test.R;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
@@ -55,7 +56,8 @@ public class BottomSheetBehaviorTest extends
         }
 
         @Override
-        public void onStateChanged(@BottomSheetBehavior.State int newState) {
+        public void onStateChanged(@NonNull View bottomSheet,
+                @BottomSheetBehavior.State int newState) {
             boolean wasIdle = mIsIdle;
             mIsIdle = isIdleState(newState);
             if (!wasIdle && mIsIdle && mResourceCallback != null) {
@@ -64,7 +66,7 @@ public class BottomSheetBehaviorTest extends
         }
 
         @Override
-        public void onSlide(float slideOffset) {
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
 
         @Override

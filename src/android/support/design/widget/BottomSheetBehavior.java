@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.design.R;
 import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingChild;
@@ -52,19 +53,21 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         /**
          * Called when the bottom sheet changes its state.
          *
-         * @param newState The new state. This will be one of {@link #STATE_DRAGGING},
-         *                 {@link #STATE_SETTLING}, {@link #STATE_EXPANDED},
-         *                 {@link #STATE_COLLAPSED}, or {@link #STATE_HIDDEN}.
+         * @param bottomSheet The bottom sheet view.
+         * @param newState    The new state. This will be one of {@link #STATE_DRAGGING},
+         *                    {@link #STATE_SETTLING}, {@link #STATE_EXPANDED},
+         *                    {@link #STATE_COLLAPSED}, or {@link #STATE_HIDDEN}.
          */
-        public abstract void onStateChanged(@State int newState);
+        public abstract void onStateChanged(@NonNull View bottomSheet, @State int newState);
 
         /**
          * Called when the bottom sheet is being dragged.
          *
+         * @param bottomSheet The bottom sheet view.
          * @param slideOffset The new offset of this bottom sheet within its range, from 0 to 1
          *                    when it is moving upward, and from 0 to -1 when it moving downward.
          */
-        public abstract void onSlide(float slideOffset);
+        public abstract void onSlide(@NonNull View bottomSheet, float slideOffset);
     }
 
     /**
@@ -322,8 +325,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             return;
         }
         mState = state;
-        if (mCallback != null) {
-            mCallback.onStateChanged(state);
+        View bottomSheet = mViewRef.get();
+        if (bottomSheet != null && mCallback != null) {
+            mCallback.onStateChanged(bottomSheet, state);
         }
     }
 
@@ -434,11 +438,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     };
 
     private void dispatchOnSlide(int top) {
-        if (mCallback != null) {
+        View bottomSheet = mViewRef.get();
+        if (bottomSheet != null && mCallback != null) {
             if (top > mMaxOffset) {
-                mCallback.onSlide((float) (mMaxOffset - top) / mPeekHeight);
+                mCallback.onSlide(bottomSheet, (float) (mMaxOffset - top) / mPeekHeight);
             } else {
-                mCallback.onSlide((float) (mMaxOffset - top) / ((mMaxOffset - mMinOffset)));
+                mCallback.onSlide(bottomSheet,
+                        (float) (mMaxOffset - top) / ((mMaxOffset - mMinOffset)));
             }
         }
     }

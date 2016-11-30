@@ -89,8 +89,8 @@ package android.support.design.widget {
 
   public static abstract class BottomSheetBehavior.BottomSheetCallback {
     ctor public BottomSheetBehavior.BottomSheetCallback();
-    method public abstract void onSlide(float);
-    method public abstract void onStateChanged(int);
+    method public abstract void onSlide(android.view.View, float);
+    method public abstract void onStateChanged(android.view.View, int);
   }
 
   protected static class BottomSheetBehavior.SavedState extends android.view.View.BaseSavedState {

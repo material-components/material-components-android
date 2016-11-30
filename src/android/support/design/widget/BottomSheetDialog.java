@@ -135,14 +135,15 @@ public class BottomSheetDialog extends AppCompatDialog {
     private BottomSheetBehavior.BottomSheetCallback mBottomSheetCallback
             = new BottomSheetBehavior.BottomSheetCallback() {
         @Override
-        public void onStateChanged(@BottomSheetBehavior.State int newState) {
+        public void onStateChanged(@NonNull View bottomSheet,
+                @BottomSheetBehavior.State int newState) {
             if (newState == BottomSheetBehavior.STATE_HIDDEN) {
                 dismiss();
             }
         }
 
         @Override
-        public void onSlide(float slideOffset) {
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {
         }
     };
 
