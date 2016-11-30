@@ -21,35 +21,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
-        android:id="@+id/app_bar"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/appbar_height"
-        android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar">
-
-        <android.support.design.widget.CollapsingToolbarLayout
-            android:id="@+id/collapsing_app_bar"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-            <android.support.v7.widget.Toolbar
-                android:id="@+id/toolbar"
-                android:layout_height="?attr/actionBarSize"
-                android:layout_width="match_parent"
-                app:layout_collapseMode="pin"/>
-
-        </android.support.design.widget.CollapsingToolbarLayout>
-
-    </android.support.design.widget.AppBarLayout>
-
-    <include layout="@layout/include_appbar_scrollview"/>
+    <include layout="@layout/design_content_appbar_toolbar_collapse_pin" />
 
     <android.support.design.widget.FloatingActionButton
         android:id="@+id/fab"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        app:layout_anchor="@id/app_bar"
+        app:layout_anchor="@+id/app_bar"
         app:layout_anchorGravity="bottom|right|end"
         android:src="@drawable/ic_add"
         android:layout_marginRight="16dp"

@@ -35,6 +35,10 @@
     <string name="design_appbar_toolbar_scroll_tabs_scroll_snap">AppBar/Toolbar Scroll + Tabs Scroll + Snap</string>
     <string name="design_appbar_toolbar_scroll_tabs_pin">AppBar/Toolbar Scroll + Tabs Pin</string>
     <string name="design_appbar_collapsing_toolbar_with_image">AppBar/Collapsing Toolbar + Parallax Image</string>
+    <string name="design_appbar_anchored_fab_margin_bottom">AppBar + anchored FAB with bottom margin</string>
+    <string name="design_appbar_anchored_fab_margin_top">AppBar + anchored FAB with top margin</string>
+    <string name="design_appbar_anchored_fab_margin_left">AppBar + anchored FAB with left margin</string>
+    <string name="design_appbar_anchored_fab_margin_right">AppBar + anchored FAB with right margin</string>
 
     <string name="textinput_hint">Hint to the user</string>
 

@@ -23,7 +23,6 @@ import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.ImageView;
 import org.junit.Test;
 
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 @MediumTest
