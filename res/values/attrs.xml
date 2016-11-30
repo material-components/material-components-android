@@ -64,37 +64,53 @@
     </declare-styleable>
 
     <declare-styleable name="TabLayout">
+        <!-- Color of the indicator used to show the currently selected tab. -->
         <attr name="tabIndicatorColor" format="color"/>
+        <!-- Height of the indicator used to show the currently selected tab. -->
         <attr name="tabIndicatorHeight" format="dimension"/>
+        <!-- Position in the Y axis from the starting edge that tabs should be positioned from. -->
         <attr name="tabContentStart" format="dimension"/>
-
+        <!-- Reference to a background to be applied to tabs. -->
         <attr name="tabBackground" format="reference"/>
-
+        <!-- The behavior mode for the Tabs in this layout -->
         <attr name="tabMode">
             <enum name="scrollable" value="0"/>
             <enum name="fixed" value="1"/>
         </attr>
-
-        <!-- Standard gravity constant that a child supplies to its parent.
-             Defines how the child view should be positioned, on both the X and Y axes,
-             within its enclosing layout. -->
+        <!-- Gravity constant for tabs. -->
         <attr name="tabGravity">
             <enum name="fill" value="0"/>
             <enum name="center" value="1"/>
         </attr>
-
+        <!-- The minimum width for tabs. -->
         <attr name="tabMinWidth" format="dimension"/>
+        <!-- The maximum width for tabs. -->
         <attr name="tabMaxWidth" format="dimension"/>
-
+        <!-- A reference to a TextAppearance style to be applied to tabs. -->
         <attr name="tabTextAppearance" format="reference"/>
+        <!-- The default text color to be applied to tabs. -->
         <attr name="tabTextColor" format="color"/>
+        <!-- The text color to be applied to the currently selected tab. -->
         <attr name="tabSelectedTextColor" format="color"/>
-
+        <!-- The preferred padding along the start edge of tabs. -->
         <attr name="tabPaddingStart" format="dimension"/>
+        <!-- The preferred padding along the top edge of tabs. -->
         <attr name="tabPaddingTop" format="dimension"/>
+        <!-- The preferred padding along the end edge of tabs. -->
         <attr name="tabPaddingEnd" format="dimension"/>
+        <!-- The preferred padding along the bottom edge of tabs. -->
         <attr name="tabPaddingBottom" format="dimension"/>
+        <!-- The preferred padding along all edges of tabs. -->
         <attr name="tabPadding" format="dimension"/>
+    </declare-styleable>
+
+    <declare-styleable name="TabItem">
+        <!-- Text to display in the tab. -->
+        <attr name="android:text" />
+        <!-- Icon to display in the tab. -->
+        <attr name="android:icon" />
+        <!-- A reference to a layout to be displayed in the tab. -->
+        <attr name="android:layout" />
     </declare-styleable>
 
     <declare-styleable name="CoordinatorLayout">

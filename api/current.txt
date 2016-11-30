@@ -369,6 +369,11 @@ package android.support.design.widget {
     method public abstract void onDragStateChanged(int);
   }
 
+  public final class TabItem extends android.view.View {
+    ctor public TabItem(android.content.Context);
+    ctor public TabItem(android.content.Context, android.util.AttributeSet);
+  }
+
   public class TabLayout extends android.widget.HorizontalScrollView {
     ctor public TabLayout(android.content.Context);
     ctor public TabLayout(android.content.Context, android.util.AttributeSet);

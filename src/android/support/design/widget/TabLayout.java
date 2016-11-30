@@ -90,7 +90,36 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
  * with this layout, you can use {@link #setupWithViewPager(ViewPager)} to link the two together.
  * This layout will be automatically populated from the {@link PagerAdapter}'s page titles.</p>
  *
+ * <p>You can also add items to TabLayout in your layout through the use of {@link TabItem}.
+ * An example usage is like so:</p>
+ *
+ * <pre>
+ * &lt;android.support.design.widget.TabLayout
+ *         android:layout_height=&quot;wrap_content&quot;
+ *         android:layout_width=&quot;match_parent&quot;&gt;
+ *
+ *     &lt;android.support.design.widget.TabItem
+ *             android:text=&quot;@string/tab_text&quot;/&gt;
+ *
+ *     &lt;android.support.design.widget.TabItem
+ *             android:icon=&quot;@drawable/ic_android&quot;/&gt;
+ *
+ * &lt;/android.support.design.widget.TabLayout&gt;
+ * </pre>
+ *
+ *
  * @see <a href="http://www.google.com/design/spec/components/tabs.html">Tabs</a>
+ *
+ * @attr ref android.support.design.R.styleable#TabLayout_tabPadding
+ * @attr ref android.support.design.R.styleable#TabLayout_tabPaddingStart
+ * @attr ref android.support.design.R.styleable#TabLayout_tabPaddingTop
+ * @attr ref android.support.design.R.styleable#TabLayout_tabPaddingEnd
+ * @attr ref android.support.design.R.styleable#TabLayout_tabPaddingBottom
+ * @attr ref android.support.design.R.styleable#TabLayout_tabContentStart
+ * @attr ref android.support.design.R.styleable#TabLayout_tabBackground
+ * @attr ref android.support.design.R.styleable#TabLayout_tabMinWidth
+ * @attr ref android.support.design.R.styleable#TabLayout_tabMaxWidth
+ * @attr ref android.support.design.R.styleable#TabLayout_tabTextAppearance
  */
 public class TabLayout extends HorizontalScrollView {
 
@@ -242,7 +271,8 @@ public class TabLayout extends HorizontalScrollView {
 
         // Add the TabStrip
         mTabStrip = new SlidingTabStrip(context);
-        addView(mTabStrip, LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT);
+        super.addView(mTabStrip, 0, new HorizontalScrollView.LayoutParams(
+                LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 
         TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.TabLayout,
                 defStyleAttr, R.style.Widget_Design_TabLayout);
@@ -311,6 +341,8 @@ public class TabLayout extends HorizontalScrollView {
      * Sets the tab indicator's color for the currently selected tab.
      *
      * @param color color to use for the indicator
+     *
+     * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorColor
      */
     public void setSelectedTabIndicatorColor(@ColorInt int color) {
         mTabStrip.setSelectedIndicatorColor(color);
@@ -320,6 +352,8 @@ public class TabLayout extends HorizontalScrollView {
      * Sets the tab indicator's height for the currently selected tab.
      *
      * @param height height to use for the indicator in pixels
+     *
+     * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorHeight
      */
     public void setSelectedTabIndicatorHeight(int height) {
         mTabStrip.setSelectedIndicatorHeight(height);
@@ -423,6 +457,20 @@ public class TabLayout extends HorizontalScrollView {
         if (setSelected) {
             tab.select();
         }
+    }
+
+    private void addTabFromItemView(@NonNull TabItem item) {
+        final Tab tab = newTab();
+        if (item.mText != null) {
+            tab.setText(item.mText);
+        }
+        if (item.mIcon != null) {
+            tab.setIcon(item.mIcon);
+        }
+        if (item.mCustomLayout != 0) {
+            tab.setCustomView(item.mCustomLayout);
+        }
+        addTab(tab);
     }
 
     /**
@@ -549,6 +597,8 @@ public class TabLayout extends HorizontalScrollView {
      * </ul>
      *
      * @param mode one of {@link #MODE_FIXED} or {@link #MODE_SCROLLABLE}.
+     *
+     * @attr ref android.support.design.R.styleable#TabLayout_tabMode
      */
     public void setTabMode(@Mode int mode) {
         if (mode != mMode) {
@@ -571,6 +621,8 @@ public class TabLayout extends HorizontalScrollView {
      * Set the gravity to use when laying out the tabs.
      *
      * @param gravity one of {@link #GRAVITY_CENTER} or {@link #GRAVITY_FILL}.
+     *
+     * @attr ref android.support.design.R.styleable#TabLayout_tabGravity
      */
     public void setTabGravity(@TabGravity int gravity) {
         if (mTabGravity != gravity) {
@@ -591,6 +643,8 @@ public class TabLayout extends HorizontalScrollView {
 
     /**
      * Sets the text colors for the different states (normal, selected) used for the tabs.
+     *
+     * @see #getTabTextColors()
      */
     public void setTabTextColors(@Nullable ColorStateList textColor) {
         if (mTabTextColors != textColor) {
@@ -609,6 +663,9 @@ public class TabLayout extends HorizontalScrollView {
 
     /**
      * Sets the text colors for the different states (normal, selected) used for the tabs.
+     *
+     * @attr ref android.support.design.R.styleable#TabLayout_tabTextColor
+     * @attr ref android.support.design.R.styleable#TabLayout_tabSelectedTextColor
      */
     public void setTabTextColors(int normalColor, int selectedColor) {
         setTabTextColors(createColorStateList(normalColor, selectedColor));
@@ -767,6 +824,34 @@ public class TabLayout extends HorizontalScrollView {
         mTabStrip.addView(tabView, position, createLayoutParamsForTabs());
         if (setSelected) {
             tabView.setSelected(true);
+        }
+    }
+
+    @Override
+    public void addView(View child) {
+        addViewInternal(child);
+    }
+
+    @Override
+    public void addView(View child, int index) {
+        addViewInternal(child);
+    }
+
+    @Override
+    public void addView(View child, ViewGroup.LayoutParams params) {
+        addViewInternal(child);
+    }
+
+    @Override
+    public void addView(View child, int index, ViewGroup.LayoutParams params) {
+        addViewInternal(child);
+    }
+
+    private void addViewInternal(final View child) {
+        if (child instanceof TabItem) {
+            addTabFromItemView((TabItem) child);
+        } else {
+            throw new IllegalArgumentException("Only TabItem instances can be added to TabLayout");
         }
     }
 
@@ -1814,6 +1899,15 @@ public class TabLayout extends HorizontalScrollView {
         }
         // Else, we'll use the default value
         return mMode == MODE_SCROLLABLE ? mScrollableTabMinWidth : 0;
+    }
+
+    @Override
+    public LayoutParams generateLayoutParams(AttributeSet attrs) {
+        // We don't care about the layout params of any views added to us, since we don't actually
+        // add them. The only view we add is the SlidingTabStrip, which is done manually.
+        // We return the default layout params so that we don't blow up if we're given a TabItem
+        // without android:layout_* values.
+        return generateDefaultLayoutParams();
     }
 
     private int getTabMaxWidth() {
