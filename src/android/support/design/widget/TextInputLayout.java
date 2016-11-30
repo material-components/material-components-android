@@ -485,7 +485,7 @@ public class TextInputLayout extends LinearLayout {
                 mErrorView = new TextView(getContext());
                 try {
                     mErrorView.setTextAppearance(getContext(), mErrorTextAppearance);
-                } catch (Resources.NotFoundException nfe) {
+                } catch (Exception e) {
                     // Probably caused by our theme not extending from Theme.Design*. Instead
                     // we manually set something appropriate
                     mErrorView.setTextAppearance(getContext(),
