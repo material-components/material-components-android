@@ -30,11 +30,11 @@
         <item name="insetForeground">#4000</item>
     </style>
 
-    <style name="Widget.Design.NavigationDrawerView" parent="">
-        <item name="android:elevation">@dimen/drawer_elevation</item>
+    <style name="Widget.Design.NavigationView" parent="">
+        <item name="android:elevation">@dimen/navigation_elevation</item>
         <item name="android:background">?android:attr/windowBackground</item>
         <item name="android:fitsSystemWindows">true</item>
-        <item name="android:maxWidth">@dimen/drawer_max_width</item>
+        <item name="android:maxWidth">@dimen/navigation_max_width</item>
     </style>
 
     <style name="Widget.Design.TabLayout" parent="Base.Widget.Design.TabLayout">

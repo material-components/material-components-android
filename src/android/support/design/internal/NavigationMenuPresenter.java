@@ -80,14 +80,14 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         mLayoutInflater = LayoutInflater.from(context);
         mMenu = menu;
         mPaddingTopDefault = context.getResources().getDimensionPixelOffset(
-                R.dimen.drawer_padding_top_default);
+                R.dimen.navigation_padding_top_default);
     }
 
     @Override
     public MenuView getMenuView(ViewGroup root) {
         if (mMenuView == null) {
             mMenuView = (NavigationMenuView) mLayoutInflater.inflate(
-                    R.layout.design_drawer_menu, root, false);
+                    R.layout.design_navigation_menu, root, false);
             if (mAdapter == null) {
                 mAdapter = new NavigationMenuAdapter();
             }
@@ -224,7 +224,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
         // If we have just added the first header, we also need to insert a space
         // between the header and the menu items.
         if (mMenuView.getHeaderViewsCount() == 1) {
-            mSpace = mLayoutInflater.inflate(R.layout.design_drawer_item_space, mMenuView, false);
+            mSpace = mLayoutInflater.inflate(R.layout.design_navigation_item_space, mMenuView,
+                    false);
             mMenuView.addHeaderView(mSpace);
         }
         // The padding on top should be cleared.
@@ -306,8 +307,8 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
             switch (viewType) {
                 case VIEW_TYPE_NORMAL:
                     if (convertView == null) {
-                        convertView = mLayoutInflater.inflate(R.layout.design_drawer_item, parent,
-                                false);
+                        convertView = mLayoutInflater.inflate(R.layout.design_navigation_item,
+                                parent, false);
                     }
                     NavigationMenuItemView itemView = (NavigationMenuItemView) convertView;
                     itemView.setTintList(mItemTintList);
@@ -316,16 +317,16 @@ public class NavigationMenuPresenter implements MenuPresenter, AdapterView.OnIte
                     break;
                 case VIEW_TYPE_SUBHEADER:
                     if (convertView == null) {
-                        convertView = mLayoutInflater.inflate(R.layout.design_drawer_item_subheader,
-                                parent, false);
+                        convertView = mLayoutInflater.inflate(
+                                R.layout.design_navigation_item_subheader, parent, false);
                     }
                     TextView subHeader = (TextView) convertView;
                     subHeader.setText(item.getMenuItem().getTitle());
                     break;
                 case VIEW_TYPE_SEPARATOR:
                     if (convertView == null) {
-                        convertView = mLayoutInflater.inflate(R.layout.design_drawer_item_separator,
-                                parent, false);
+                        convertView = mLayoutInflater.inflate(
+                                R.layout.design_navigation_item_separator, parent, false);
                     }
                     break;
             }

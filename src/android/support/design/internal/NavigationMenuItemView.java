@@ -57,7 +57,7 @@ public class NavigationMenuItemView extends TextView implements MenuView.ItemVie
 
     public NavigationMenuItemView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
-        mIconSize = context.getResources().getDimensionPixelSize(R.dimen.drawer_icon_size);
+        mIconSize = context.getResources().getDimensionPixelSize(R.dimen.navigation_icon_size);
     }
 
     @Override

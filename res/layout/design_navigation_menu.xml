@@ -14,14 +14,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content"
-             android:paddingTop="@dimen/drawer_separator_vertical_padding"
-             android:paddingBottom="@dimen/drawer_separator_vertical_padding">
-
-    <View android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?android:attr/listDivider"/>
-
-</FrameLayout>
+<android.support.design.internal.NavigationMenuView
+        xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:paddingTop="@dimen/navigation_padding_top_default"
+        android:clipToPadding="false"
+        android:divider="@null"
+        android:listSelector="?attr/selectableItemBackground"/>

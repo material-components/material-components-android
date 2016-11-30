@@ -37,10 +37,9 @@ import android.view.MenuItem;
 import android.view.View;
 
 /**
- * Represents a standard navigation drawer for application. The drawer contents can be populated by
- * a menu resource
- * file.
- * <p>NavigationDrawer needs to be placed inside a {@link android.support.v4.widget.DrawerLayout}.
+ * Represents a standard navigation menu for application. The menu contents can be populated
+ * by a menu resource file.
+ * <p>NavigationView is typically placed inside a {@link android.support.v4.widget.DrawerLayout}.
  * </p>
  * <pre>
  * &lt;android.support.v4.widget.DrawerLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -52,17 +51,17 @@ import android.view.View;
  *
  *     &lt;!-- Your contents --&gt;
  *
- *     &lt;android.support.design.widget.NavigationDrawerView
- *         android:id="@+id/navigation_drawer"
+ *     &lt;android.support.design.widget.NavigationView
+ *         android:id="@+id/navigation"
  *         android:layout_width="wrap_content"
  *         android:layout_height="match_parent"
  *         android:layout_gravity="start" /&gt;
  * &lt;/android.support.v4.widget.DrawerLayout&gt;
  * </pre>
  */
-public class NavigationDrawerView extends ScrimInsetsFrameLayout {
+public class NavigationView extends ScrimInsetsFrameLayout {
 
-    private static final int PRESENTER_NAVIGATION_DRAWER_VIEW = 1;
+    private static final int PRESENTER_NAVIGATION_VIEW = 1;
 
     private OnNavigationItemSelectedListener mListener;
 
@@ -72,33 +71,33 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
 
     private int mMaxWidth;
 
-    public NavigationDrawerView(Context context) {
+    public NavigationView(Context context) {
         this(context, null);
     }
 
-    public NavigationDrawerView(Context context, AttributeSet attrs) {
+    public NavigationView(Context context, AttributeSet attrs) {
         this(context, attrs, 0);
     }
 
-    public NavigationDrawerView(Context context, AttributeSet attrs, int defStyleAttr) {
+    public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
         super(context, attrs, defStyleAttr);
 
         // Custom attributes
         TypedArray a = context.obtainStyledAttributes(attrs,
-                R.styleable.NavigationDrawerView, defStyleAttr,
-                R.style.Widget_Design_NavigationDrawerView);
+                R.styleable.NavigationView, defStyleAttr,
+                R.style.Widget_Design_NavigationView);
 
         //noinspection deprecation
-        setBackgroundDrawable(a.getDrawable(R.styleable.NavigationDrawerView_android_background));
+        setBackgroundDrawable(a.getDrawable(R.styleable.NavigationView_android_background));
         ViewCompat.setElevation(this,
-                a.getDimensionPixelSize(R.styleable.NavigationDrawerView_android_elevation, 0));
+                a.getDimensionPixelSize(R.styleable.NavigationView_android_elevation, 0));
         ViewCompat.setFitsSystemWindows(this,
-                a.getBoolean(R.styleable.NavigationDrawerView_android_fitsSystemWindows, false));
-        mMaxWidth = a.getDimensionPixelSize(R.styleable.NavigationDrawerView_android_maxWidth, 0);
+                a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
+        mMaxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
         ColorStateList itemTintList =
-                a.getColorStateList(R.styleable.NavigationDrawerView_itemTint);
+                a.getColorStateList(R.styleable.NavigationView_itemTint);
         int itemBackgroundResource =
-                a.getResourceId(R.styleable.NavigationDrawerView_itemBackground, 0);
+                a.getResourceId(R.styleable.NavigationView_itemBackground, 0);
         a.recycle();
 
         // Set up the menu
@@ -115,7 +114,7 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
             }
         });
         mPresenter = new NavigationMenuPresenter();
-        mPresenter.setId(PRESENTER_NAVIGATION_DRAWER_VIEW);
+        mPresenter.setId(PRESENTER_NAVIGATION_VIEW);
         mPresenter.initForMenu(context, mMenu);
         mPresenter.setItemTintList(itemTintList);
         mPresenter.setItemBackgroundResource(itemBackgroundResource);
@@ -167,7 +166,7 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * @return The {@link Menu} associated with this NavigationDrawerView.
+     * @return The {@link Menu} associated with this NavigationView.
      */
     public Menu getMenu() {
         return mMenu;
@@ -206,7 +205,7 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
      *
      * @return the tint applied to the icon and text of the menu items
      * @see #setItemTintList(ColorStateList)
-     * @attr ref R.styleable#NavigationDrawerView_itemTint
+     * @attr ref R.styleable#NavigationView_itemTint
      */
     @Nullable
     public ColorStateList getItemTintList() {
@@ -217,7 +216,7 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
      * Applies a tint to the icon and text of the menu items.
      *
      * @param itemTintList the tint to apply, may be {@code null} to use default tint.
-     * @attr ref R.styleable#NavigationDrawerView_itemTint
+     * @attr ref R.styleable#NavigationView_itemTint
      */
     public void setItemTintList(@Nullable ColorStateList itemTintList) {
         mPresenter.setItemTintList(itemTintList);
@@ -228,7 +227,7 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
      *
      * @return The resource ID
      * @see #setItemBackgroundResource(int)
-     * @attr ref R.styleable#NavigationDrawerView_itemBackground
+     * @attr ref R.styleable#NavigationView_itemBackground
      */
     @DrawableRes
     public int getItemBackgroundResource() {
@@ -240,19 +239,19 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
      * a Drawable object or 0 to use the background background.
      *
      * @param itemBackground The identifier of the resource.
-     * @attr ref R.styleable#NavigationDrawerView_itemBackground
+     * @attr ref R.styleable#NavigationView_itemBackground
      */
     public void setItemBackgroundResource(@DrawableRes int itemBackground) {
         mPresenter.setItemBackgroundResource(itemBackground);
     }
 
     /**
-     * Listener for handling events on navigation drawer items.
+     * Listener for handling events on navigation items.
      */
     public interface OnNavigationItemSelectedListener {
 
         /**
-         * Called when an item in the navigation drawer is selected.
+         * Called when an item in the navigation menu is selected.
          *
          * @param item The selected item
          */
@@ -260,7 +259,7 @@ public class NavigationDrawerView extends ScrimInsetsFrameLayout {
     }
 
     /**
-     * User interface state that is stored by NavigationDrawerView for implementing
+     * User interface state that is stored by NavigationView for implementing
      * onSaveInstanceState().
      */
     public static class SavedState extends BaseSavedState {

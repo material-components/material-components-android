@@ -39,7 +39,7 @@
         <attr name="insetForeground" format="color|reference" />
     </declare-styleable>
 
-    <declare-styleable name="NavigationDrawerView">
+    <declare-styleable name="NavigationView">
         <attr name="android:elevation" />
         <attr name="android:background" />
         <attr name="android:fitsSystemWindows" />
