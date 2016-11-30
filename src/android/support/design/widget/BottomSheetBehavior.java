@@ -124,6 +124,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
     private int mLastNestedScrollDy;
 
+    private boolean mNestedScrolled;
+
     private int mParentHeight;
 
     private WeakReference<V> mViewRef;
@@ -265,6 +267,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, V child,
             View directTargetChild, View target, int nestedScrollAxes) {
         mLastNestedScrollDy = 0;
+        mNestedScrolled = false;
         return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
     }
 
@@ -302,12 +305,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
         dispatchOnSlide(child.getTop());
         mLastNestedScrollDy = dy;
+        mNestedScrolled = true;
     }
 
     @Override
     public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target) {
         if (child.getTop() == mMinOffset || target != mNestedScrollingChildRef.get() ||
-                mLastNestedScrollDy == 0) {
+                !mNestedScrolled) {
             return;
         }
         int top;
@@ -318,6 +322,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         } else if (mHideable && shouldHide(child, getYVelocity())) {
             top = mParentHeight;
             targetState = STATE_HIDDEN;
+        } else if (mLastNestedScrollDy == 0) {
+            int currentTop = child.getTop();
+            if (Math.abs(currentTop - mMinOffset) < Math.abs(currentTop - mMaxOffset)) {
+                top = mMinOffset;
+                targetState = STATE_EXPANDED;
+            } else {
+                top = mMaxOffset;
+                targetState = STATE_COLLAPSED;
+            }
         } else {
             top = mMaxOffset;
             targetState = STATE_COLLAPSED;
@@ -328,6 +341,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         } else {
             setStateInternal(targetState);
         }
+        mNestedScrolled = false;
     }
 
     @Override
@@ -516,6 +530,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             } else if (mHideable && shouldHide(releasedChild, yvel)) {
                 top = mParentHeight;
                 targetState = STATE_HIDDEN;
+            } else if (yvel == 0.f) {
+                int currentTop = releasedChild.getTop();
+                if (Math.abs(currentTop - mMinOffset) < Math.abs(currentTop - mMaxOffset)) {
+                    top = mMinOffset;
+                    targetState = STATE_EXPANDED;
+                } else {
+                    top = mMaxOffset;
+                    targetState = STATE_COLLAPSED;
+                }
             } else {
                 top = mMaxOffset;
                 targetState = STATE_COLLAPSED;
