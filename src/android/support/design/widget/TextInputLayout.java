@@ -22,7 +22,10 @@ import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
 import android.graphics.Typeface;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.DrawableContainer;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -88,6 +91,8 @@ public class TextInputLayout extends LinearLayout {
 
     private boolean mHintAnimationEnabled;
     private ValueAnimatorCompat mAnimator;
+
+    private boolean mHasReconstructedEditTextBackground;
 
     public TextInputLayout(Context context) {
         this(context, null);
@@ -624,17 +629,60 @@ public class TextInputLayout extends LinearLayout {
     }
 
     private void updateEditTextBackground() {
+        ensureBackgroundDrawableStateWorkaround();
+
+        final Drawable editTextBackground = mEditText.getBackground();
+        if (editTextBackground == null) {
+            return;
+        }
+
         if (mErrorShown && mErrorView != null) {
-            // Set the EditText's background tint to the error color
-            ViewCompat.setBackgroundTintList(mEditText,
-                    ColorStateList.valueOf(mErrorView.getCurrentTextColor()));
+            // Set a color filter of the error color
+            editTextBackground.setColorFilter(
+                    AppCompatDrawableManager.getPorterDuffColorFilter(
+                            mErrorView.getCurrentTextColor(), PorterDuff.Mode.SRC_IN));
         } else if (mCounterOverflowed && mCounterView != null) {
-            ViewCompat.setBackgroundTintList(mEditText,
-                    ColorStateList.valueOf(mCounterView.getCurrentTextColor()));
+            // Set a color filter of the counter color
+            editTextBackground.setColorFilter(
+                    AppCompatDrawableManager.getPorterDuffColorFilter(
+                            mCounterView.getCurrentTextColor(), PorterDuff.Mode.SRC_IN));
         } else {
-            ViewCompat.setBackgroundTintList(mEditText,
-                    AppCompatDrawableManager.get()
-                            .getTintList(getContext(), R.drawable.abc_edit_text_material));
+            // Else reset the color filter and refresh the drawable state so that the
+            // normal tint is used
+            editTextBackground.clearColorFilter();
+            mEditText.refreshDrawableState();
+        }
+    }
+
+    private void ensureBackgroundDrawableStateWorkaround() {
+        final Drawable bg = mEditText.getBackground();
+        if (bg == null) {
+            return;
+        }
+
+        if (!mHasReconstructedEditTextBackground) {
+            // This is gross. There is an issue in the platform which affects container Drawables
+            // where the first drawable retrieved from resources will propogate any changes
+            // (like color filter) to all instances from the cache. We'll try to workaround it...
+
+            final Drawable newBg = bg.getConstantState().newDrawable();
+
+            if (bg instanceof DrawableContainer) {
+                // If we have a Drawable container, we can try and set it's constant state via
+                // reflection from the new Drawable
+                mHasReconstructedEditTextBackground =
+                        DrawableUtils.setContainerConstantState(
+                                (DrawableContainer) bg, newBg.getConstantState());
+            }
+
+            if (!mHasReconstructedEditTextBackground) {
+                // If we reach here then we just need to set a brand new instance of the Drawable
+                // as the background. This has the unfortunate side-effect of wiping out any
+                // user set padding, but I'd hope that use of custom padding on an EditText
+                // is limited.
+                mEditText.setBackgroundDrawable(newBg);
+                mHasReconstructedEditTextBackground = true;
+            }
         }
     }
 
