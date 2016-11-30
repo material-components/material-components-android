@@ -52,30 +52,34 @@ import java.lang.annotation.RetentionPolicy;
  * It is designed to be used as a direct child of a {@link AppBarLayout}.
  * CollapsingToolbarLayout contains the following features:
  *
- * <h3>Collapsing title</h3>
+ * <h4>Collapsing title</h4>
  * A title which is larger when the layout is fully visible but collapses and becomes smaller as
  * the layout is scrolled off screen. You can set the title to display via
  * {@link #setTitle(CharSequence)}. The title appearance can be tweaked via the
  * {@code collapsedTextAppearance} and {@code expandedTextAppearance} attributes.
  *
- * <h3>Content scrim</h3>
+ * <h4>Content scrim</h4>
  * A full-bleed scrim which is show or hidden when the scroll position has hit a certain threshold.
  * You can change this via {@link #setContentScrim(Drawable)}.
  *
- * <h3>Status bar scrim</h3>
+ * <h4>Status bar scrim</h4>
  * A scrim which is show or hidden behind the status bar when the scroll position has hit a certain
  * threshold. You can change this via {@link #setStatusBarScrim(Drawable)}. This only works
  * on {@link Build.VERSION_CODES#LOLLIPOP LOLLIPOP} devices when we set to fit system windows.
  *
- * <h3>Parallax scrolling children</h3>
+ * <h4>Parallax scrolling children</h4>
  * Child views can opt to be scrolled within this layout in a parallax fashion.
  * See {@link LayoutParams#COLLAPSE_MODE_PARALLAX} and
  * {@link LayoutParams#setParallaxMultiplier(float)}.
  *
- * <h3>Pinned position children</h3>
+ * <h4>Pinned position children</h4>
  * Child views can opt to be pinned in space globally. This is useful when implementing a
  * collapsing as it allows the {@link Toolbar} to be fixed in place even though this layout is
  * moving. See {@link LayoutParams#COLLAPSE_MODE_PIN}.
+ *
+ * <p><strong>Do not manually add views to the Toolbar at run time</strong>.
+ * We will add a 'dummy view' to the Toolbar which allows us to work out the available space
+ * for the title. This can interfere with any views which you add.</p>
  *
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_collapsedTitleTextAppearance
  * @attr ref android.support.design.R.styleable#CollapsingToolbarLayout_expandedTitleTextAppearance
@@ -94,6 +98,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private boolean mRefreshToolbar = true;
     private int mToolbarId;
     private Toolbar mToolbar;
+    private View mToolbarDirectChild;
     private View mDummyView;
 
     private int mExpandedMarginStart;
@@ -245,7 +250,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mContentScrim.draw(canvas);
         }
 
-        // Let the collapsing text helper draw it's text
+        // Let the collapsing text helper draw its text
         if (mCollapsingTitleEnabled && mDrawCollapsingTitle) {
             mCollapsingTextHelper.draw(canvas);
         }
@@ -290,38 +295,48 @@ public class CollapsingToolbarLayout extends FrameLayout {
             return;
         }
 
-        Toolbar fallback = null, selected = null;
+        // First clear out the current Toolbar
+        mToolbar = null;
+        mToolbarDirectChild = null;
 
-        for (int i = 0, count = getChildCount(); i < count; i++) {
-            final View child = getChildAt(i);
-            if (child instanceof Toolbar) {
-                if (mToolbarId != -1) {
-                    // There's a toolbar id set so try and find it...
-                    if (mToolbarId == child.getId()) {
-                        // We found the primary Toolbar, use it
-                        selected = (Toolbar) child;
-                        break;
-                    }
-                    if (fallback == null) {
-                        // We'll record the first Toolbar as our fallback
-                        fallback = (Toolbar) child;
-                    }
-                } else {
-                    // We don't have a id to check for so just use the first we come across
-                    selected = (Toolbar) child;
-                    break;
-                }
+        if (mToolbarId != -1) {
+            // If we have an ID set, try and find it and it's direct parent to us
+            mToolbar = (Toolbar) findViewById(mToolbarId);
+            if (mToolbar != null) {
+                mToolbarDirectChild = findDirectChild(mToolbar);
             }
         }
 
-        if (selected == null) {
-            // If we didn't find a primary Toolbar, use the fallback
-            selected = fallback;
+        if (mToolbar == null) {
+            // If we don't have an ID, or couldn't find a Toolbar with the correct ID, try and find
+            // one from our direct children
+            Toolbar toolbar = null;
+            for (int i = 0, count = getChildCount(); i < count; i++) {
+                final View child = getChildAt(i);
+                if (child instanceof Toolbar) {
+                    toolbar = (Toolbar) child;
+                    break;
+                }
+            }
+            mToolbar = toolbar;
         }
 
-        mToolbar = selected;
         updateDummyView();
         mRefreshToolbar = false;
+    }
+
+    /**
+     * Returns the direct child of this layout, which itself is the ancestor of the
+     * given view.
+     */
+    private View findDirectChild(final View descendant) {
+        View directChild = descendant;
+        for (ViewParent p = descendant.getParent(); p != this && p != null; p = p.getParent()) {
+            if (p instanceof View) {
+                directChild = (View) p;
+            }
+        }
+        return directChild;
     }
 
     private void updateDummyView() {
@@ -364,16 +379,22 @@ public class CollapsingToolbarLayout extends FrameLayout {
                         == ViewCompat.LAYOUT_DIRECTION_RTL;
 
                 // Update the collapsed bounds
+                int bottomOffset = 0;
+                if (mToolbarDirectChild != null && mToolbarDirectChild != this) {
+                    final LayoutParams lp = (LayoutParams) mToolbarDirectChild.getLayoutParams();
+                    bottomOffset = lp.bottomMargin;
+                }
                 ViewGroupUtils.getDescendantRect(this, mDummyView, mTmpRect);
                 mCollapsingTextHelper.setCollapsedBounds(
                         mTmpRect.left + (isRtl
                                 ? mToolbar.getTitleMarginEnd()
                                 : mToolbar.getTitleMarginStart()),
-                        bottom + mToolbar.getTitleMarginTop() - mTmpRect.height(),
+                        bottom + mToolbar.getTitleMarginTop() - mTmpRect.height() - bottomOffset,
                         mTmpRect.right + (isRtl
                                 ? mToolbar.getTitleMarginStart()
                                 : mToolbar.getTitleMarginEnd()),
-                        bottom - mToolbar.getTitleMarginBottom());
+                        bottom - bottomOffset - mToolbar.getTitleMarginBottom());
+
                 // Update the expanded bounds
                 mCollapsingTextHelper.setExpandedBounds(
                         isRtl ? mExpandedMarginEnd : mExpandedMarginStart,
@@ -407,8 +428,21 @@ public class CollapsingToolbarLayout extends FrameLayout {
                 // If we do not currently have a title, try and grab it from the Toolbar
                 mCollapsingTextHelper.setText(mToolbar.getTitle());
             }
-            setMinimumHeight(mToolbar.getHeight());
+            if (mToolbarDirectChild == null || mToolbarDirectChild == this) {
+                setMinimumHeight(getHeightWithMargins(mToolbar));
+            } else {
+                setMinimumHeight(getHeightWithMargins(mToolbarDirectChild));
+            }
         }
+    }
+
+    private static int getHeightWithMargins(@NonNull final View view) {
+        final ViewGroup.LayoutParams lp = view.getLayoutParams();
+        if (lp instanceof MarginLayoutParams) {
+            final MarginLayoutParams mlp = (MarginLayoutParams) lp;
+            return view.getHeight() + mlp.topMargin + mlp.bottomMargin;
+        }
+        return view.getHeight();
     }
 
     private static ViewOffsetHelper getViewOffsetHelper(View view) {

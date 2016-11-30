@@ -264,7 +264,8 @@
              Lollipop with the correct setup. -->
         <attr name="statusBarScrim" format="color" />
         <!-- The id of the primary Toolbar child that you wish to use for the purpose of collapsing.
-             If you do not set this then the first Toolbar child found will be used. -->
+             This Toolbar descendant view does not need to be a direct child of the layout.
+             If you do not set this, the first direct Toolbar child found will be used. -->
         <attr name="toolbarId" format="reference"/>
 
         <!-- Specifies how the title should be positioned when collapsed. -->
