@@ -50,6 +50,24 @@ import android.widget.TextView;
  *
  * Also supports showing an error via {@link #setErrorEnabled(boolean)} and
  * {@link #setError(CharSequence)}.
+ *
+ * <p>Please note: this class sets a {@link android.view.View.OnFocusChangeListener} on the wrapped
+ * {@link EditText}. If you need to set your own listener, then you should wrap the existing one
+ * and forward the call like so:
+ * <pre>
+ * TextInputLayout inputLayout = ...;
+ * EditText editText = inputLayout.getEditText();
+ * final OnFocusChangeListener existing = editText.getOnFocusChangeListener();
+ *
+ * editText.setOnFocusChangeListener(new OnFocusChangeListener() {
+ *     public void onFocusChange(View view, boolean focused) {
+ *         existing.onFocusChange(view, focused);
+ *
+ *         // Your custom logic
+ *     }
+ * });
+ * </pre>
+ * </p>
  */
 public class TextInputLayout extends LinearLayout {
 
@@ -335,8 +353,6 @@ public class TextInputLayout extends LinearLayout {
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-        mCollapsingTextHelper.onLayout(changed, left, top, right, bottom);
-
         if (mEditText != null) {
             final int l = mEditText.getLeft() + mEditText.getCompoundPaddingLeft();
             final int r = mEditText.getRight() - mEditText.getCompoundPaddingRight();
@@ -349,6 +365,8 @@ public class TextInputLayout extends LinearLayout {
             // EditText's editable area
             mCollapsingTextHelper.setCollapsedBounds(l, getPaddingTop(),
                     r, bottom - top - getPaddingBottom());
+
+            mCollapsingTextHelper.recalculate();
         }
     }
 
@@ -382,7 +400,6 @@ public class TextInputLayout extends LinearLayout {
         } else if (mAnimator.isRunning()) {
             mAnimator.cancel();
         }
-
         mAnimator.setFloatValues(mCollapsingTextHelper.getExpansionFraction(), target);
         mAnimator.start();
     }

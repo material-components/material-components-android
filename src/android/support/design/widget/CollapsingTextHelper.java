@@ -137,12 +137,10 @@ final class CollapsingTextHelper {
 
     void setExpandedBounds(int left, int top, int right, int bottom) {
         mExpandedBounds.set(left, top, right, bottom);
-        recalculate();
     }
 
     void setCollapsedBounds(int left, int top, int right, int bottom) {
         mCollapsedBounds.set(left, top, right, bottom);
-        recalculate();
     }
 
     void setExpandedTextVerticalGravity(int gravity) {
@@ -440,8 +438,8 @@ final class CollapsingTextHelper {
         }
     }
 
-    private void recalculate() {
-        if (ViewCompat.isLaidOut(mView)) {
+    public void recalculate() {
+        if (mView.getHeight() > 0 && mView.getWidth() > 0) {
             // If we've already been laid out, calculate everything now otherwise we'll wait
             // until a layout
             calculateBaselines();
@@ -472,10 +470,6 @@ final class CollapsingTextHelper {
             mExpandedTitleTexture.recycle();
             mExpandedTitleTexture = null;
         }
-    }
-
-    public void onLayout(boolean changed, int left, int top, int right, int bottom) {
-        recalculate();
     }
 
     /**

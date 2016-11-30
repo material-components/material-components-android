@@ -332,9 +332,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
             getViewOffsetHelper(child).onViewLayout();
         }
 
-        // Now let the collapsing text helper update itself
-        mCollapsingTextHelper.onLayout(changed, left, top, right, bottom);
-
         ensureToolbar();
 
         // Update the collapsed bounds by getting it's transformed bounds
@@ -346,6 +343,8 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mCollapsingTextHelper.setExpandedBounds(left + mExpandedMarginLeft,
                     mTmpRect.bottom + mExpandedMarginTop, right - mExpandedMarginRight,
                     bottom - mExpandedMarginBottom);
+
+            mCollapsingTextHelper.recalculate();
         }
 
         // Finally, set our minimum height to enable proper AppBarLayout collapsing
