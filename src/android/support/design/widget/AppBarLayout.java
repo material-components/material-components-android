@@ -505,9 +505,9 @@ public class AppBarLayout extends LinearLayout {
 
     /**
      * @deprecated target elevation is now deprecated. AppBarLayout's elevation is now
-     * controlled via a {@link StateListAnimator}. If a target elevation is set, either by this
-     * method or the {@code app:elevation} attibute, a new state list animator is created which
-     * uses the given {@code elevation} value.
+     * controlled via a {@link android.animation.StateListAnimator}. If a target
+     * elevation is set, either by this method or the {@code app:elevation} attibute,
+     * a new state list animator is created which uses the given {@code elevation} value.
      *
      * @attr ref android.support.design.R.styleable#AppBarLayout_elevation
      */
@@ -520,7 +520,8 @@ public class AppBarLayout extends LinearLayout {
 
     /**
      * @deprecated target elevation is now deprecated. AppBarLayout's elevation is now
-     * controlled via a {@link StateListAnimator}. This method now always returns 0.
+     * controlled via a {@link android.animation.StateListAnimator}. This method now
+     * always returns 0.
      */
     @Deprecated
     public float getTargetElevation() {
