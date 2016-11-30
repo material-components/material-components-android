@@ -1,0 +1,200 @@
+package android.support.design.widget {
+
+  public class CoordinatorLayout extends android.view.ViewGroup {
+    ctor public CoordinatorLayout(android.content.Context);
+    ctor public CoordinatorLayout(android.content.Context, android.util.AttributeSet);
+    ctor public CoordinatorLayout(android.content.Context, android.util.AttributeSet, int);
+    method public boolean doViewsOverlap(android.view.View, android.view.View);
+    method public boolean isPointInChildBounds(android.view.View, int, int);
+    method public void onAttachedToWindow();
+    method public void onDetachedFromWindow();
+    method protected void onLayout(boolean, int, int, int, int);
+    method public void onLayoutChild(android.view.View, int);
+    method public void onMeasureChild(android.view.View, int, int, int, int);
+  }
+
+  public static abstract class CoordinatorLayout.Behavior {
+    ctor public CoordinatorLayout.Behavior();
+    ctor public CoordinatorLayout.Behavior(android.content.Context, android.util.AttributeSet);
+    method public boolean blocksInteractionBelow(android.support.design.widget.CoordinatorLayout, V);
+    method public final int getScrimColor(android.support.design.widget.CoordinatorLayout, V);
+    method public final float getScrimOpacity(android.support.design.widget.CoordinatorLayout, V);
+    method public static java.lang.Object getTag(android.view.View);
+    method public boolean isDirty(android.support.design.widget.CoordinatorLayout, V);
+    method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, V, android.view.View);
+    method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, V, android.view.View);
+    method public boolean onInterceptTouchEvent(android.support.design.widget.CoordinatorLayout, V, android.view.MotionEvent);
+    method public boolean onLayoutChild(android.support.design.widget.CoordinatorLayout, V, int);
+    method public boolean onMeasureChild(android.support.design.widget.CoordinatorLayout, V, int, int, int, int);
+    method public boolean onNestedFling(android.support.design.widget.CoordinatorLayout, V, android.view.View, float, float, boolean);
+    method public boolean onNestedPreFling(android.support.design.widget.CoordinatorLayout, V, android.view.View, float, float);
+    method public void onNestedPreScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View, int, int, int[]);
+    method public void onNestedScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View, int, int, int, int);
+    method public void onNestedScrollAccepted(android.support.design.widget.CoordinatorLayout, V, android.view.View, android.view.View, int);
+    method public boolean onStartNestedScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View, android.view.View, int);
+    method public void onStopNestedScroll(android.support.design.widget.CoordinatorLayout, V, android.view.View);
+    method public boolean onTouchEvent(android.support.design.widget.CoordinatorLayout, V, android.view.MotionEvent);
+    method public static void setTag(android.view.View, java.lang.Object);
+  }
+
+  public static abstract class CoordinatorLayout.DefaultBehavior implements java.lang.annotation.Annotation {
+  }
+
+  public static class CoordinatorLayout.LayoutParams extends android.view.ViewGroup.MarginLayoutParams {
+    ctor public CoordinatorLayout.LayoutParams(int, int);
+    ctor public CoordinatorLayout.LayoutParams(android.support.design.widget.CoordinatorLayout.LayoutParams);
+    ctor public CoordinatorLayout.LayoutParams(android.view.ViewGroup.MarginLayoutParams);
+    ctor public CoordinatorLayout.LayoutParams(android.view.ViewGroup.LayoutParams);
+    method public int getAnchorId();
+    method public android.support.design.widget.CoordinatorLayout.Behavior getBehavior();
+    method public void setAnchorId(int);
+    method public void setBehavior(android.support.design.widget.CoordinatorLayout.Behavior);
+    field public int anchorGravity;
+    field public int gravity;
+    field public int keyline;
+  }
+
+  public class FloatingActionButton extends android.widget.ImageView {
+    ctor public FloatingActionButton(android.content.Context);
+    ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet);
+    ctor public FloatingActionButton(android.content.Context, android.util.AttributeSet, int);
+    method public void setRippleColor(int);
+  }
+
+  public static class FloatingActionButton.Behavior extends android.support.design.widget.CoordinatorLayout.Behavior {
+    ctor public FloatingActionButton.Behavior();
+    method public boolean layoutDependsOn(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
+    method public boolean onDependentViewChanged(android.support.design.widget.CoordinatorLayout, android.support.design.widget.FloatingActionButton, android.view.View);
+  }
+
+  public class NavigationView extends android.widget.FrameLayout {
+    ctor public NavigationView(android.content.Context);
+    ctor public NavigationView(android.content.Context, android.util.AttributeSet);
+    ctor public NavigationView(android.content.Context, android.util.AttributeSet, int);
+    method public void addHeaderView(android.view.View);
+    method public int getItemBackgroundResource();
+    method public android.content.res.ColorStateList getItemTintList();
+    method public android.view.Menu getMenu();
+    method public android.view.View inflateHeaderView(int);
+    method public void removeHeaderView(android.view.View);
+    method public void setItemBackgroundResource(int);
+    method public void setItemTintList(android.content.res.ColorStateList);
+    method public void setNavigationItemSelectedListener(android.support.design.widget.NavigationView.OnNavigationItemSelectedListener);
+  }
+
+  public static abstract interface NavigationView.OnNavigationItemSelectedListener {
+    method public abstract boolean onNavigationItemSelected(android.view.MenuItem);
+  }
+
+  public static class NavigationView.SavedState extends android.view.View.BaseSavedState {
+    ctor public NavigationView.SavedState(android.os.Parcel);
+    ctor public NavigationView.SavedState(android.os.Parcelable);
+    field public static final android.os.Parcelable.Creator<android.support.design.widget.NavigationView.SavedState> CREATOR;
+    field public android.os.Bundle menuState;
+  }
+
+  public class Snackbar {
+    method public void dismiss();
+    method public int getDuration();
+    method public android.view.View getView();
+    method public static android.support.design.widget.Snackbar make(android.view.ViewGroup, java.lang.CharSequence, int);
+    method public static android.support.design.widget.Snackbar make(android.view.ViewGroup, int, int);
+    method public android.support.design.widget.Snackbar setAction(int, android.view.View.OnClickListener);
+    method public android.support.design.widget.Snackbar setAction(java.lang.CharSequence, android.view.View.OnClickListener);
+    method public android.support.design.widget.Snackbar setDuration(int);
+    method public android.support.design.widget.Snackbar setText(java.lang.CharSequence);
+    method public android.support.design.widget.Snackbar setText(int);
+    method public void show();
+    field public static final int LENGTH_LONG = 0; // 0x0
+    field public static final int LENGTH_SHORT = -1; // 0xffffffff
+  }
+
+  public class SwipeDismissBehavior extends android.support.design.widget.CoordinatorLayout.Behavior {
+    ctor public SwipeDismissBehavior();
+    method public int getDragState();
+    method public void setDragDismissDistance(float);
+    method public void setEndAlphaSwipeDistance(float);
+    method public void setListener(android.support.design.widget.SwipeDismissBehavior.OnDismissListener);
+    method public void setSensitivity(float);
+    method public void setStartAlphaSwipeDistance(float);
+    method public void setSwipeDirection(int);
+    field public static final int STATE_DRAGGING = 1; // 0x1
+    field public static final int STATE_IDLE = 0; // 0x0
+    field public static final int STATE_SETTLING = 2; // 0x2
+    field public static final int SWIPE_DIRECTION_ANY = 2; // 0x2
+    field public static final int SWIPE_DIRECTION_END_TO_START = 1; // 0x1
+    field public static final int SWIPE_DIRECTION_START_TO_END = 0; // 0x0
+  }
+
+  public static abstract interface SwipeDismissBehavior.OnDismissListener {
+    method public abstract void onDismiss(android.view.View);
+    method public abstract void onDragStateChanged(int);
+  }
+
+  public class TabLayout extends android.widget.HorizontalScrollView {
+    ctor public TabLayout(android.content.Context);
+    ctor public TabLayout(android.content.Context, android.util.AttributeSet);
+    ctor public TabLayout(android.content.Context, android.util.AttributeSet, int);
+    method public void addTab(android.support.design.widget.TabLayout.Tab);
+    method public void addTab(android.support.design.widget.TabLayout.Tab, int);
+    method public void addTab(android.support.design.widget.TabLayout.Tab, boolean);
+    method public void addTab(android.support.design.widget.TabLayout.Tab, int, boolean);
+    method public void addTabsFromPagerAdapter(android.support.v4.view.PagerAdapter);
+    method public android.support.v4.view.ViewPager.OnPageChangeListener createOnPageChangeListener();
+    method public android.support.design.widget.TabLayout.Tab getTabAt(int);
+    method public int getTabCount();
+    method public int getTabGravity();
+    method public int getTabMode();
+    method public int getTabSelectedTextColor();
+    method public android.support.design.widget.TabLayout.Tab newTab();
+    method public void removeAllTabs();
+    method public void removeTab(android.support.design.widget.TabLayout.Tab);
+    method public void removeTabAt(int);
+    method public void setOnTabSelectedListener(android.support.design.widget.TabLayout.OnTabSelectedListener);
+    method public void setScrollPosition(int, float, boolean);
+    method public void setTabGravity(int);
+    method public void setTabMode(int);
+    method public void setTabSelectedTextColor(int);
+    field public static final int GRAVITY_CENTER = 1; // 0x1
+    field public static final int GRAVITY_FILL = 0; // 0x0
+    field public static final int MODE_FIXED = 1; // 0x1
+    field public static final int MODE_SCROLLABLE = 0; // 0x0
+  }
+
+  public static abstract interface TabLayout.OnTabSelectedListener {
+    method public abstract void onTabReselected(android.support.design.widget.TabLayout.Tab);
+    method public abstract void onTabSelected(android.support.design.widget.TabLayout.Tab);
+    method public abstract void onTabUnselected(android.support.design.widget.TabLayout.Tab);
+  }
+
+  public static final class TabLayout.Tab {
+    method public java.lang.CharSequence getContentDescription();
+    method public android.graphics.drawable.Drawable getIcon();
+    method public int getPosition();
+    method public java.lang.Object getTag();
+    method public java.lang.CharSequence getText();
+    method public void select();
+    method public android.support.design.widget.TabLayout.Tab setContentDescription(int);
+    method public android.support.design.widget.TabLayout.Tab setContentDescription(java.lang.CharSequence);
+    method public android.support.design.widget.TabLayout.Tab setCustomView(android.view.View);
+    method public android.support.design.widget.TabLayout.Tab setCustomView(int);
+    method public android.support.design.widget.TabLayout.Tab setIcon(android.graphics.drawable.Drawable);
+    method public android.support.design.widget.TabLayout.Tab setIcon(int);
+    method public android.support.design.widget.TabLayout.Tab setTag(java.lang.Object);
+    method public android.support.design.widget.TabLayout.Tab setText(java.lang.CharSequence);
+    method public android.support.design.widget.TabLayout.Tab setText(int);
+    field public static final int INVALID_POSITION = -1; // 0xffffffff
+  }
+
+  public class TextInputLayout extends android.widget.LinearLayout {
+    ctor public TextInputLayout(android.content.Context);
+    ctor public TextInputLayout(android.content.Context, android.util.AttributeSet);
+    ctor public TextInputLayout(android.content.Context, android.util.AttributeSet, int);
+    method public android.widget.EditText getEditText();
+    method public void setError(java.lang.CharSequence);
+    method public void setErrorEnabled(boolean);
+    method public void setHint(java.lang.CharSequence);
+  }
+
+}
+
