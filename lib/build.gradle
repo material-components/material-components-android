@@ -3,10 +3,10 @@ apply plugin: 'com.android.library'
 archivesBaseName = 'design'
 
 dependencies {
-    compile project(':support-v4')
-    compile project(':support-appcompat-v7')
-    compile project(':support-recyclerview-v7')
-    compile project(':support-transition')
+    compile 'com.android.support:support-v4:25.0.1'
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+    compile 'com.android.support:transition:25.0.1'
 
     androidTestCompile ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
         exclude module: 'support-annotations'
@@ -21,10 +21,12 @@ dependencies {
 }
 
 android {
-    compileSdkVersion project.ext.currentSdk
+    compileSdkVersion rootProject.ext.compileSdkVersion
+    buildToolsVersion rootProject.ext.buildToolsVersion
 
     defaultConfig {
-        minSdkVersion 9
+        minSdkVersion rootProject.ext.minSdkVersion
+        targetSdkVersion rootProject.ext.targetSdkVersion
         testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
         // This disables the builds tools automatic vector -> PNG generation
         generatedDensities = []
@@ -95,38 +97,4 @@ android.libraryVariants.all { variant ->
 
     artifacts.add('archives', javadocJarTask);
     artifacts.add('archives', sourcesJarTask);
-}
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            repository(url: uri(rootProject.ext.supportRepoOut)) {
-            }
-
-            pom.project {
-                name 'Android Design Support Library'
-                description "The Support Library is a static library that you can add to your Android application in order to use APIs that are either not available for older platform versions or utility APIs that aren't a part of the framework APIs. Compatible on devices running API 4 or later."
-                url 'http://developer.android.com/tools/extras/support-library.html'
-                inceptionYear '2011'
-
-                licenses {
-                    license {
-                        name 'The Apache Software License, Version 2.0'
-                        url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                        distribution 'repo'
-                    }
-                }
-
-                scm {
-                    url "http://source.android.com"
-                    connection "scm:git:https://android.googlesource.com/platform/frameworks/support"
-                }
-                developers {
-                    developer {
-                        name 'The Android Open Source Project'
-                    }
-                }
-            }
-        }
-    }
 }

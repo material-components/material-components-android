@@ -1,0 +1,70 @@
+buildscript {
+  repositories {
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:2.2.2'
+  }
+}
+
+allprojects {
+  repositories {
+    jcenter()
+  }
+}
+
+ext {
+  extraVersion = 40
+  buildNumber = Integer.toString(extraVersion)
+  buildToolsVersion = '24.0.1'
+  compileSdkVersion = 25
+  minSdkVersion = 9
+  targetSdkVersion = 25
+  supportVersion = '25.1.0-SNAPSHOT'
+
+  testRunnerVersion = '0.6-alpha'
+  espressoVersion = '2.3-alpha'
+
+  // Enforce the use of prebuilt dependencies in all sub-projects. This is
+  // required for the doclava dependency.
+  usePrebuilts = "true"
+}
+
+// lint every library
+task(lint) << {
+}
+
+// TODO: setup docs build and API txt generation
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}
+
+subprojects {
+  version = rootProject.ext.supportVersion
+  group = 'com.android.support'
+
+  project.plugins.whenPluginAdded { plugin ->
+    def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)
+    def isAndroidApp = "com.android.build.gradle.AppPlugin".equals(plugin.class.name)
+    def isJavaLibrary = "org.gradle.api.plugins.JavaPlugin".equals(plugin.class.name)
+
+    if (isAndroidLibrary || isAndroidApp) {
+      // Enable code coverage for debug builds only if we are not running inside the IDE,
+      // since enabling coverage reports breaks the method parameter resolution in the IDE
+      // debugger.
+      project.android.buildTypes.debug.testCoverageEnabled = !hasProperty('android.injected.invoked.from.ide')
+
+      // TODO: setup code coverage collection for tests
+
+      // Enforce NewApi lint check as fatal.
+      project.android.lintOptions.check 'NewApi'
+      project.android.lintOptions.fatal 'NewApi'
+      project.parent.lint.dependsOn project.lint
+    }
+
+    if (isAndroidLibrary || isJavaLibrary) {
+      // TODO: setup maven release building?
+    }
+  }
+}
