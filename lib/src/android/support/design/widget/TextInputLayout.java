@@ -1030,6 +1030,7 @@ public class TextInputLayout extends LinearLayout {
             }
 
             mPasswordToggleView.setVisibility(VISIBLE);
+            mPasswordToggleView.setChecked(mPasswordToggledVisible);
 
             // We need to add a dummy drawable as the end compound drawable so that the text is
             // indented and doesn't display below the toggle view

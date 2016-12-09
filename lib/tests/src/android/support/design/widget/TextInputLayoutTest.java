@@ -28,6 +28,7 @@ import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -218,6 +219,25 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
                 .check(matches(withCompoundDrawable(1, top)))
                 .check(matches(withCompoundDrawable(2, end)))
                 .check(matches(withCompoundDrawable(3, bottom)));
+    }
+
+    @Test
+    public void testPasswordToggleIsHiddenAfterReenable() {
+        final Activity activity = mActivityTestRule.getActivity();
+        final EditText textInput = (EditText) activity.findViewById(R.id.textinput_edittext_pwd);
+
+        // Type some text on the EditText and then click the toggle button
+        onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
+        onView(withId(R.id.text_input_password_toggle)).perform(click());
+
+        // Disable the password toggle, and then re-enable it
+        onView(withId(R.id.textinput_password))
+                .perform(setPasswordVisibilityToggleEnabled(false))
+                .perform(setPasswordVisibilityToggleEnabled(true));
+
+        // Check that the password is disguised and the toggle button reflects the same state
+        assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+        onView(withId(R.id.text_input_password_toggle)).check(matches(not(isChecked())));
     }
 
     @Test
