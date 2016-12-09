@@ -1335,14 +1335,18 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
         final Behavior behavior = lp.getBehavior();
         final Rect rect = mTempRect3;
+        rect.setEmpty();
+        final Rect bounds = mTempRect4;
+        bounds.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+
         if (behavior != null && behavior.getInsetDodgeRect(this, child, rect)) {
-            // Make sure that it intersects the views bounds
-            if (!rect.intersect(child.getLeft(), child.getTop(),
-                    child.getRight(), child.getBottom())) {
-                throw new IllegalArgumentException("Rect should intersect with child's bounds.");
+            // Make sure that the rect is within the view's bounds
+            if (!bounds.contains(rect)) {
+                throw new IllegalArgumentException("Rect should be within the child's bounds."
+                        + " Rect:" + rect.toShortString() + " | Bounds:" + bounds.toShortString());
             }
         } else {
-            rect.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+            rect.set(bounds);
         }
 
         if (rect.isEmpty()) {
