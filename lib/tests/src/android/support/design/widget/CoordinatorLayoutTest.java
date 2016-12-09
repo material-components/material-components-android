@@ -17,6 +17,7 @@
 package android.support.design.widget;
 
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
@@ -48,6 +49,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.widget.ImageView;
@@ -569,6 +571,34 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
                 eq(col), // parent
                 eq(imageView), // child
                 any(View.class)); // target
+    }
+
+    @Test
+    public void testDispatchingTouchEventsToBehaviorWithGoneView() throws Throwable {
+        final CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
+        final CoordinatorLayout col = activity.mCoordinatorLayout;
+
+        // Now create a GONE view and add it to the CoordinatorLayout with the spy behavior
+        final ImageView imageView = new ImageView(activity);
+        imageView.setVisibility(View.GONE);
+        final CoordinatorLayout.Behavior behavior = spy(new NestedScrollingBehavior());
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CoordinatorLayout.LayoutParams clp = new CoordinatorLayout.LayoutParams(200, 200);
+                clp.setBehavior(behavior);
+                col.addView(imageView, clp);
+            }
+        });
+
+        // Now click on the coordinator layout
+        onView(withId(R.id.coordinator)).perform(click());
+
+        // And verify that the Behavior for the hidden view did not receive any touch events
+        verify(behavior, never())
+                .onInterceptTouchEvent(same(col), same(imageView), any(MotionEvent.class));
+        verify(behavior, never())
+                .onTouchEvent(same(col), same(imageView), any(MotionEvent.class));
     }
 
     public static class NestedScrollingBehavior extends CoordinatorLayout.Behavior<ImageView> {
