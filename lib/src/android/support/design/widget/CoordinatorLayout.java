@@ -1954,6 +1954,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          * <p>Once a Behavior intercepts touch events, the rest of the event stream will
          * be sent to the {@link #onTouchEvent} method.</p>
          *
+         * <p>This method will be called regardless of the visibility of the associated child
+         * of the behavior. If you only wish to handle touch events when the child is visible, you
+         * should add a check to {@link View#isShown()} on the given child.</p>
+         *
          * <p>The default implementation of this method always returns false.</p>
          *
          * @param parent the parent view currently receiving this touch event
@@ -1974,6 +1978,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
          * manipulate its child views. For example, a Behavior may allow a user to drag a
          * UI pane open or closed. This method should perform actual mutations of view
          * layout state.</p>
+         *
+         * <p>This method will be called regardless of the visibility of the associated child
+         * of the behavior. If you only wish to handle touch events when the child is visible, you
+         * should add a check to {@link View#isShown()} on the given child.</p>
          *
          * @param parent the parent view currently receiving this touch event
          * @param child the child view associated with this Behavior
