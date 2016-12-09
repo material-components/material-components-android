@@ -37,7 +37,6 @@ import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.MediumTest;
@@ -142,7 +141,8 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
 
     private void verifyDismissCallback(final ViewInteraction interaction,
             @Nullable final ViewAction action, @Nullable final DismissAction dismissAction,
-            final int length, @Snackbar.Callback.DismissEvent final int expectedEvent) {
+            final int length, @Snackbar.Callback.DismissEvent final int expectedEvent)
+            throws Throwable {
         final BaseTransientBottomBar.BaseCallback mockCallback =
                 mock(BaseTransientBottomBar.BaseCallback.class);
         final CustomSnackbar snackbar = makeCustomSnackbar().setTitle(TITLE_TEXT)
@@ -164,7 +164,7 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
         if (action != null) {
             interaction.perform(action);
         } else if (dismissAction != null) {
-            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            mActivityTestRule.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     dismissAction.dismiss(snackbar);
@@ -183,7 +183,7 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
 
     @Test
     @MediumTest
-    public void testDismissViaSwipe() {
+    public void testDismissViaSwipe() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 swipeRight(),
@@ -194,7 +194,7 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
 
     @Test
     @MediumTest
-    public void testDismissViaSwipeRtl() {
+    public void testDismissViaSwipeRtl() throws Throwable {
         onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
         if (ViewCompat.getLayoutDirection(mCoordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
             // On devices that support RTL layout, the start-to-end dismiss swipe is done
@@ -210,7 +210,7 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
 
     @Test
     @MediumTest
-    public void testDismissViaApi() {
+    public void testDismissViaApi() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 null,
@@ -226,7 +226,7 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
 
     @Test
     @MediumTest
-    public void testDismissViaTimeout() {
+    public void testDismissViaTimeout() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 null,
@@ -237,7 +237,7 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
 
     @Test
     @MediumTest
-    public void testDismissViaAnotherSnackbar() {
+    public void testDismissViaAnotherSnackbar() throws Throwable {
         final CustomSnackbar anotherSnackbar =
                 makeCustomSnackbar().setTitle("Different title")
                         .setSubtitle("Different subtitle").setDuration(Snackbar.LENGTH_SHORT);

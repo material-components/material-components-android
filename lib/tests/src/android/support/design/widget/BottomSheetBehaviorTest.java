@@ -21,12 +21,12 @@ import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
+import static org.junit.Assert.fail;
 
 import android.os.SystemClock;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.design.test.R;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoMatchingViewException;
@@ -284,27 +284,27 @@ public class BottomSheetBehaviorTest extends
 
     @Test
     @MediumTest
-    public void testSetStateExpandedToCollapsed() {
+    public void testSetStateExpandedToCollapsed() throws Throwable {
         checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
         checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
     }
 
     @Test
     @MediumTest
-    public void testSetStateHiddenToCollapsed() {
+    public void testSetStateHiddenToCollapsed() throws Throwable {
         checkSetState(BottomSheetBehavior.STATE_HIDDEN, not(ViewMatchers.isDisplayed()));
         checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
     }
 
     @Test
     @MediumTest
-    public void testSetStateCollapsedToCollapsed() {
+    public void testSetStateCollapsedToCollapsed() throws Throwable {
         checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
     }
 
     @Test
     @MediumTest
-    public void testSwipeDownToCollapse() {
+    public void testSwipeDownToCollapse() throws Throwable {
         checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
         Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
                 .perform(DesignViewActions.withCustomConstraints(new GeneralSwipeAction(
@@ -362,7 +362,7 @@ public class BottomSheetBehaviorTest extends
     }
 
     @Test
-    public void testSkipCollapsed() {
+    public void testSkipCollapsed() throws Throwable {
         getBehavior().setSkipCollapsed(true);
         checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
         Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
@@ -548,7 +548,7 @@ public class BottomSheetBehaviorTest extends
         try {
             Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
                     .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            mActivityTestRule.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_EXPANDED));
@@ -635,13 +635,21 @@ public class BottomSheetBehaviorTest extends
         withFabVisibilityChange(false, new Runnable() {
             @Override
             public void run() {
-                checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
+                try {
+                    checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
+                } catch (Throwable throwable) {
+                    fail(throwable.getMessage());
+                }
             }
         });
         withFabVisibilityChange(true, new Runnable() {
             @Override
             public void run() {
-                checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
+                try {
+                    checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
+                } catch (Throwable throwable) {
+                    fail(throwable.getMessage());
+                }
             }
         });
     }
@@ -680,10 +688,10 @@ public class BottomSheetBehaviorTest extends
     }
 
     @Test
-    public void testDynamicContent() {
+    public void testDynamicContent() throws Throwable {
         registerIdlingResourceCallback();
         try {
-            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            mActivityTestRule.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     ViewGroup.LayoutParams params = getBottomSheet().getLayoutParams();
@@ -711,10 +719,10 @@ public class BottomSheetBehaviorTest extends
         }
     }
 
-    private void checkSetState(final int state, Matcher<View> matcher) {
+    private void checkSetState(final int state, Matcher<View> matcher) throws Throwable {
         registerIdlingResourceCallback();
         try {
-            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            mActivityTestRule.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     getBehavior().setState(state);
