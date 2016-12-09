@@ -38,4 +38,6 @@
 
     <color name="design_snackbar_background_color">#323232</color>
 
+    <color name="design_bottom_navigation_shadow_color">#14000000</color>
+
 </resources>
