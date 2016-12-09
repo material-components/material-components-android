@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import static android.support.design.testutils.TestUtilsActions.setLayoutDirection;
 import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
@@ -28,7 +27,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.core.AllOf.allOf;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
@@ -37,33 +35,30 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import android.content.res.Resources;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
+import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.MediumTest;
-import android.support.test.filters.SmallTest;
 import android.support.v4.view.ViewCompat;
-import android.text.TextUtils;
-import android.view.View;
+import android.test.suitebuilder.annotation.SmallTest;
+import android.view.LayoutInflater;
 
 import org.junit.Before;
 import org.junit.Test;
 
-public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> {
-    private static final String MESSAGE_TEXT = "Test Message";
-    private static final @StringRes int MESSAGE_ID = R.string.snackbar_text;
-    private static final String ACTION_TEXT = "Action";
-    private static final @StringRes int ACTION_ID = R.string.snackbar_action;
+public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> {
+    private static final String TITLE_TEXT = "Test title";
+    private static final String SUBTITLE_TEXT = "Test subtitle";
 
     private CoordinatorLayout mCoordinatorLayout;
 
     private interface DismissAction {
-        void dismiss(Snackbar snackbar);
+        void dismiss(CustomSnackbar snackbar);
     }
 
-    public SnackbarTest() {
+    public CustomSnackbarTest() {
         super(SnackbarActivity.class);
     }
 
@@ -73,72 +68,85 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
                 (CoordinatorLayout) mActivityTestRule.getActivity().findViewById(R.id.col);
     }
 
-    private void verifySnackbarContent(final Snackbar snackbar, final String expectedMessage,
-            final String expectedAction) {
+    private void verifySnackbarContent(final CustomSnackbar snackbar, final String expectedTitle,
+            final String expectedSubtitle) {
         // Show the snackbar
         SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
-        // Verify that we're showing the message
-        withText(expectedMessage).matches(allOf(
+        // Verify that we're showing the title
+        withText(expectedTitle).matches(allOf(
                 isDescendantOfA(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+                isDescendantOfA(isAssignableFrom(CustomSnackbarMainContent.class)),
                 isCompletelyDisplayed()));
 
-        // If the action is not empty, verify that we're showing it
-        if (!TextUtils.isEmpty(expectedAction)) {
-            withText(expectedAction).matches(allOf(
-                    isDescendantOfA(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-                    isCompletelyDisplayed()));
-        }
+        // Verify that we're showing the subtitle
+        withText(expectedSubtitle).matches(allOf(
+                isDescendantOfA(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+                isDescendantOfA(isAssignableFrom(CustomSnackbarMainContent.class)),
+                isCompletelyDisplayed()));
 
         // Dismiss the snackbar
         SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
     }
 
+    private CustomSnackbar makeCustomSnackbar() {
+        final LayoutInflater inflater = LayoutInflater.from(mCoordinatorLayout.getContext());
+        final CustomSnackbarMainContent content =
+                (CustomSnackbarMainContent) inflater.inflate(
+                        R.layout.custom_snackbar_include, mCoordinatorLayout, false);
+        final BaseTransientBottomBar.ContentViewCallback contentViewCallback =
+                new BaseTransientBottomBar.ContentViewCallback() {
+                    @Override
+                    public void animateContentIn(int delay, int duration) {
+                        ViewCompat.setAlpha(content, 0f);
+                        ViewCompat.animate(content).alpha(1f).setDuration(duration)
+                                .setStartDelay(delay).start();
+                    }
+
+                    @Override
+                    public void animateContentOut(int delay, int duration) {
+                        ViewCompat.setAlpha(content, 1f);
+                        ViewCompat.animate(content).alpha(0f).setDuration(duration)
+                                .setStartDelay(delay).start();
+                    }
+                };
+        return new CustomSnackbar(mCoordinatorLayout, content, contentViewCallback);
+    }
+
     @Test
     @SmallTest
     public void testBasicContent() {
-        // Verify different combinations of snackbar content (message and action) and duration
+        // Verify different combinations of snackbar content (title / subtitle and action)
+        // and duration
 
         final Resources res = mActivityTestRule.getActivity().getResources();
-        final String resolvedMessage = res.getString(MESSAGE_ID);
-        final String resolvedAction = res.getString(ACTION_ID);
 
-        // String message and no action
+        // Short duration
         verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT),
-                MESSAGE_TEXT, null);
+                makeCustomSnackbar().setTitle(TITLE_TEXT)
+                        .setSubtitle(SUBTITLE_TEXT).setDuration(Snackbar.LENGTH_SHORT),
+                TITLE_TEXT, SUBTITLE_TEXT);
 
-        // Resource message and no action
+        // Long duration
         verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG),
-                resolvedMessage, null);
+                makeCustomSnackbar().setTitle(TITLE_TEXT)
+                        .setSubtitle(SUBTITLE_TEXT).setDuration(Snackbar.LENGTH_LONG),
+                TITLE_TEXT, SUBTITLE_TEXT);
 
-        // String message and string action
+        // Indefinite duration
         verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(ACTION_TEXT, mock(View.OnClickListener.class)),
-                MESSAGE_TEXT, ACTION_TEXT);
-
-        // String message and resource action
-        verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
-                        .setAction(ACTION_ID, mock(View.OnClickListener.class)),
-                MESSAGE_TEXT, resolvedAction);
-
-        // Resource message and resource action
-        verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG)
-                        .setAction(ACTION_ID, mock(View.OnClickListener.class)),
-                resolvedMessage, resolvedAction);
+                makeCustomSnackbar().setTitle(TITLE_TEXT)
+                        .setSubtitle(SUBTITLE_TEXT).setDuration(Snackbar.LENGTH_INDEFINITE),
+                TITLE_TEXT, SUBTITLE_TEXT);
     }
 
     private void verifyDismissCallback(final ViewInteraction interaction,
-            final @Nullable ViewAction action, final @Nullable DismissAction dismissAction,
-            final int length, @Snackbar.Callback.DismissEvent final int expectedEvent)
-            throws Throwable {
-        final Snackbar.Callback mockCallback = mock(Snackbar.Callback.class);
-        final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, length)
-                .setAction(ACTION_TEXT, mock(View.OnClickListener.class))
+            @Nullable final ViewAction action, @Nullable final DismissAction dismissAction,
+            final int length, @Snackbar.Callback.DismissEvent final int expectedEvent) {
+        final BaseTransientBottomBar.BaseCallback mockCallback =
+                mock(BaseTransientBottomBar.BaseCallback.class);
+        final CustomSnackbar snackbar = makeCustomSnackbar().setTitle(TITLE_TEXT)
+                .setSubtitle(SUBTITLE_TEXT).setDuration(length)
                 .setCallback(mockCallback);
 
         // Note that unlike other tests around Snackbar that use Espresso's IdlingResources
@@ -156,7 +164,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
         if (action != null) {
             interaction.perform(action);
         } else if (dismissAction != null) {
-            mActivityTestRule.runOnUiThread(new Runnable() {
+            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
                 @Override
                 public void run() {
                     dismissAction.dismiss(snackbar);
@@ -175,18 +183,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaActionClick() throws Throwable {
-        verifyDismissCallback(
-                onView(withId(R.id.snackbar_action)),
-                click(),
-                null,
-                Snackbar.LENGTH_LONG,
-                Snackbar.Callback.DISMISS_EVENT_ACTION);
-    }
-
-    @Test
-    @MediumTest
-    public void testDismissViaSwipe() throws Throwable {
+    public void testDismissViaSwipe() {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 swipeRight(),
@@ -197,7 +194,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaSwipeRtl() throws Throwable {
+    public void testDismissViaSwipeRtl() {
         onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
         if (ViewCompat.getLayoutDirection(mCoordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
             // On devices that support RTL layout, the start-to-end dismiss swipe is done
@@ -213,13 +210,13 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaApi() throws Throwable {
+    public void testDismissViaApi() {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 null,
                 new DismissAction() {
                     @Override
-                    public void dismiss(Snackbar snackbar) {
+                    public void dismiss(CustomSnackbar snackbar) {
                         snackbar.dismiss();
                     }
                 },
@@ -229,7 +226,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaTimeout() throws Throwable {
+    public void testDismissViaTimeout() {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 null,
@@ -240,9 +237,10 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaAnotherSnackbar() throws Throwable {
-        final Snackbar anotherSnackbar =
-                Snackbar.make(mCoordinatorLayout, "A different message", Snackbar.LENGTH_SHORT);
+    public void testDismissViaAnotherSnackbar() {
+        final CustomSnackbar anotherSnackbar =
+                makeCustomSnackbar().setTitle("Different title")
+                        .setSubtitle("Different subtitle").setDuration(Snackbar.LENGTH_SHORT);
 
         // Our dismiss action is to show another snackbar (and verify that the original snackbar
         // is now dismissed with CONSECUTIVE event)
@@ -251,7 +249,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
                 null,
                 new DismissAction() {
                     @Override
-                    public void dismiss(Snackbar snackbar) {
+                    public void dismiss(CustomSnackbar snackbar) {
                         anotherSnackbar.show();
                     }
                 },
@@ -260,21 +258,5 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
         // And dismiss the second snackbar to get back to clean state
         SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(anotherSnackbar);
-    }
-
-    @Test
-    @MediumTest
-    public void testActionClickListener() {
-        final View.OnClickListener mockClickListener = mock(View.OnClickListener.class);
-        final Snackbar snackbar =
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
-                    .setAction(ACTION_TEXT, mockClickListener);
-
-        // Show the snackbar
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
-        // perform the action click
-        onView(withId(R.id.snackbar_action)).perform(click());
-        // and verify that our click listener has been called
-        verify(mockClickListener, times(1)).onClick(any(View.class));
     }
 }

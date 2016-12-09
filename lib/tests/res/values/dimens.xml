@@ -32,4 +32,5 @@
     <dimen name="fab_mini_height">40dp</dimen>
     <dimen name="fab_normal_height">56dip</dimen>
 
+    <dimen name="custom_snackbar_max_width">-1px</dimen>
 </resources>

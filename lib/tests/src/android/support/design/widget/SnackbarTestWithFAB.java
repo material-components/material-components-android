@@ -52,7 +52,7 @@ public class SnackbarTestWithFAB extends BaseInstrumentationTestCase<SnackbarAct
         // Show a simple Snackbar and wait for it to be shown
         final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT,
                 Snackbar.LENGTH_SHORT);
-        SnackbarUtils.showSnackbarAndWaitUntilFullyShown(snackbar);
+        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
         // Now check that the FAB has shifted up to make space for the Snackbar
         final int[] fabPosition = new int[2];
@@ -78,7 +78,7 @@ public class SnackbarTestWithFAB extends BaseInstrumentationTestCase<SnackbarAct
         // Show a simple Snackbar and wait for it to be shown
         final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT,
                 Snackbar.LENGTH_INDEFINITE);
-        SnackbarUtils.showSnackbarAndWaitUntilFullyShown(snackbar);
+        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
         // Now check that the FAB has shifted up to make space for the Snackbar
         final int[] fabPosition = new int[2];
@@ -87,7 +87,7 @@ public class SnackbarTestWithFAB extends BaseInstrumentationTestCase<SnackbarAct
         assertEquals(originalFabPosition[1] - snackbar.getView().getHeight(), fabPosition[1]);
 
         // Now dismiss the Snackbar and wait for it to be dismissed
-        SnackbarUtils.dismissSnackbarAndWaitUntilFullyDismissed(snackbar);
+        SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
 
         // And check that the FAB is back in it's original position
         fab.getLocationOnScreen(fabPosition);
