@@ -28,11 +28,10 @@ import android.support.annotation.StringRes;
 import android.support.design.test.R;
 import android.support.design.testutils.Cheeses;
 import android.support.test.filters.LargeTest;
-import android.support.test.filters.MediumTest;
 
 import org.junit.Test;
 
-@MediumTest
+@LargeTest
 public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     private TabLayout mTabLayout;
 

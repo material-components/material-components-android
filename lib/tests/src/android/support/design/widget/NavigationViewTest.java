@@ -65,7 +65,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.design.test.R;
 import android.support.design.testutils.TestDrawable;
-import android.support.test.filters.SmallTest;
+import android.support.test.filters.MediumTest;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
@@ -85,6 +85,7 @@ import org.junit.Test;
 import java.util.HashMap;
 import java.util.Map;
 
+@MediumTest
 public class NavigationViewTest
         extends BaseInstrumentationTestCase<NavigationViewActivity> {
     private static final int[] MENU_CONTENT_ITEM_IDS = { R.id.destination_home,
@@ -118,7 +119,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testBasics() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -141,7 +141,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testWillNotDraw() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -154,7 +153,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testTextAppearance() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -182,7 +180,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testTextColor() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -213,7 +210,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testBackground() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -271,7 +267,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testIconTinting() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -366,7 +361,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testHeaders() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -404,7 +398,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testHeaderState() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -443,7 +436,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testNavigationSelectionListener() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -511,7 +503,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testCheckedAppearance() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
@@ -582,7 +573,6 @@ public class NavigationViewTest
     }
 
     @Test
-    @SmallTest
     public void testActionLayout() {
         // Open our drawer
         onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));

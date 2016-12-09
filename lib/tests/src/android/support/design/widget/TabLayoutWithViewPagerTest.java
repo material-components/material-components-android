@@ -42,6 +42,7 @@ import android.support.design.testutils.TabLayoutActions;
 import android.support.design.testutils.TestUtilsActions;
 import android.support.design.testutils.TestUtilsMatchers;
 import android.support.design.testutils.ViewPagerActions;
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.MediumTest;
 import android.support.test.filters.SmallTest;
 import android.support.v4.view.PagerAdapter;
@@ -534,19 +535,19 @@ public class TabLayoutWithViewPagerTest
     }
 
     @Test
-    @MediumTest
+    @LargeTest
     public void testMinTabWidth() {
         verifyMinMaxTabWidth(R.layout.tab_layout_bound_min, R.dimen.tab_width_limit_medium, 0);
     }
 
     @Test
-    @MediumTest
+    @LargeTest
     public void testMaxTabWidth() {
         verifyMinMaxTabWidth(R.layout.tab_layout_bound_max, 0, R.dimen.tab_width_limit_medium);
     }
 
     @Test
-    @MediumTest
+    @LargeTest
     public void testMinMaxTabWidth() {
         verifyMinMaxTabWidth(R.layout.tab_layout_bound_minmax, R.dimen.tab_width_limit_small,
                 R.dimen.tab_width_limit_large);

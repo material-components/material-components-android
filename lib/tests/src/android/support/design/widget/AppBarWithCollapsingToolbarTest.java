@@ -21,13 +21,13 @@ import static org.junit.Assert.assertEquals;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.test.R;
-import android.support.test.filters.MediumTest;
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.SdkSuppress;
 import android.widget.ImageView;
 
 import org.junit.Test;
 
-@MediumTest
+@LargeTest
 public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     @Test
     public void testPinnedToolbar() throws Throwable {

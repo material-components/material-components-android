@@ -46,7 +46,6 @@ import android.support.design.testutils.SnackbarUtils;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.MediumTest;
-import android.support.test.filters.SmallTest;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
@@ -54,6 +53,7 @@ import android.view.View;
 import org.junit.Before;
 import org.junit.Test;
 
+@MediumTest
 public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> {
     private static final String MESSAGE_TEXT = "Test Message";
     private static final @StringRes int MESSAGE_ID = R.string.snackbar_text;
@@ -98,7 +98,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @SmallTest
     public void testBasicContent() throws Throwable {
         // Verify different combinations of snackbar content (message and action) and duration
 
@@ -181,7 +180,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testDismissViaActionClick() throws Throwable {
         verifyDismissCallback(
                 onView(withId(R.id.snackbar_action)),
@@ -192,7 +190,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testDismissViaSwipe() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
@@ -203,7 +200,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testDismissViaSwipeRtl() throws Throwable {
         onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
         if (ViewCompat.getLayoutDirection(mCoordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
@@ -219,7 +215,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testDismissViaApi() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
@@ -235,7 +230,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testDismissViaTimeout() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
@@ -246,7 +240,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testDismissViaAnotherSnackbar() throws Throwable {
         final Snackbar anotherSnackbar =
                 Snackbar.make(mCoordinatorLayout, "A different message", Snackbar.LENGTH_SHORT);
@@ -270,7 +263,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testActionClickListener() {
         final View.OnClickListener mockClickListener = mock(View.OnClickListener.class);
         final Snackbar snackbar =
@@ -286,7 +278,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testSetCallback() throws Throwable {
         final Snackbar snackbar =
                 Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
@@ -304,7 +295,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testSingleCallback() throws Throwable {
         final Snackbar snackbar =
                 Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
@@ -327,7 +317,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testMultipleCallbacks() throws Throwable {
         final Snackbar snackbar =
                 Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
@@ -351,7 +340,6 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
     }
 
     @Test
-    @MediumTest
     public void testMultipleCallbacksWithRemoval() throws Throwable {
         final Snackbar snackbar =
                 Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
