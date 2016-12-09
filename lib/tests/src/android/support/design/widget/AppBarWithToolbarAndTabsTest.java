@@ -16,26 +16,29 @@
 
 package android.support.design.widget;
 
+import static android.support.design.testutils.TestUtilsActions.addTabs;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+
+import static org.junit.Assert.assertEquals;
+
 import android.os.SystemClock;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.design.test.R;
 import android.support.design.testutils.Cheeses;
-import android.test.suitebuilder.annotation.LargeTest;
-import android.test.suitebuilder.annotation.MediumTest;
-import org.junit.Test;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.MediumTest;
 
-import static android.support.design.testutils.TestUtilsActions.addTabs;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-import static org.junit.Assert.assertEquals;
+import org.junit.Test;
 
 @MediumTest
 public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     private TabLayout mTabLayout;
 
     @Override
-    protected void configureContent(@LayoutRes int layoutResId, @StringRes int titleResId) {
+    protected void configureContent(@LayoutRes int layoutResId, @StringRes int titleResId)
+            throws Throwable {
         super.configureContent(layoutResId, titleResId);
 
         mTabLayout = (TabLayout) mAppBar.findViewById(R.id.tabs);
@@ -45,7 +48,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     }
 
     @Test
-    public void testScrollingToolbarAndScrollingTabs() {
+    public void testScrollingToolbarAndScrollingTabs() throws Throwable {
         configureContent(R.layout.design_appbar_toolbar_scroll_tabs_scroll,
                 R.string.design_appbar_toolbar_scroll_tabs_scroll);
 
@@ -138,7 +141,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     }
 
     @Test
-    public void testScrollingToolbarAndPinnedTabs() {
+    public void testScrollingToolbarAndPinnedTabs() throws Throwable {
         configureContent(R.layout.design_appbar_toolbar_scroll_tabs_pinned,
                 R.string.design_appbar_toolbar_scroll_tabs_pin);
 
@@ -232,7 +235,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
 
     @LargeTest
     @Test
-    public void testSnappingToolbarAndSnappingTabs() {
+    public void testSnappingToolbarAndSnappingTabs() throws Throwable {
         configureContent(R.layout.design_appbar_toolbar_scroll_tabs_scroll_snap,
                 R.string.design_appbar_toolbar_scroll_tabs_scroll_snap);
 

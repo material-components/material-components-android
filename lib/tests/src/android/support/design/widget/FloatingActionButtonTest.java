@@ -36,7 +36,7 @@ import static org.hamcrest.Matchers.not;
 import android.graphics.Color;
 import android.support.design.test.R;
 import android.support.design.testutils.TestUtils;
-import android.test.suitebuilder.annotation.SmallTest;
+import android.support.test.filters.SmallTest;
 import android.view.Gravity;
 import android.view.View;
 

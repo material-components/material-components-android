@@ -20,8 +20,8 @@ import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.support.design.test.R;
-import android.support.test.InstrumentationRegistry;
-import android.test.suitebuilder.annotation.SmallTest;
+import android.support.test.annotation.UiThreadTest;
+import android.support.test.filters.SmallTest;
 
 import org.junit.Test;
 
@@ -31,29 +31,25 @@ public class TabLayoutPoolingTest extends BaseInstrumentationTestCase<TabLayoutP
         super(TabLayoutPoolingActivity.class);
     }
 
+    @UiThreadTest
     @SmallTest
     @Test
     public void testUsingTabsFromOtherInstance() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                final Activity activity = mActivityTestRule.getActivity();
+        final Activity activity = mActivityTestRule.getActivity();
 
-                // TabLayout1 has items added via the layout, so we'll just check they're
-                // there first
-                final TabLayout tabLayout1 = (TabLayout) activity.findViewById(R.id.tabs_1);
-                assertTrue(tabLayout1.getTabCount() > 0);
+        // TabLayout1 has items added via the layout, so we'll just check they're
+        // there first
+        final TabLayout tabLayout1 = (TabLayout) activity.findViewById(R.id.tabs_1);
+        assertTrue(tabLayout1.getTabCount() > 0);
 
-                // Now remove all tabs. TabLayout will pool the Tab instances...
-                tabLayout1.removeAllTabs();
+        // Now remove all tabs. TabLayout will pool the Tab instances...
+        tabLayout1.removeAllTabs();
 
-                // Now add some tabs to the second TabLayout and make sure that we don't crash
-                final TabLayout tabLayout2 = (TabLayout) activity.findViewById(R.id.tabs_2);
-                tabLayout2.addTab(tabLayout2.newTab());
-                tabLayout2.addTab(tabLayout2.newTab());
-                tabLayout2.addTab(tabLayout2.newTab());
-            }
-        });
+        // Now add some tabs to the second TabLayout and make sure that we don't crash
+        final TabLayout tabLayout2 = (TabLayout) activity.findViewById(R.id.tabs_2);
+        tabLayout2.addTab(tabLayout2.newTab());
+        tabLayout2.addTab(tabLayout2.newTab());
+        tabLayout2.addTab(tabLayout2.newTab());
     }
 
 }

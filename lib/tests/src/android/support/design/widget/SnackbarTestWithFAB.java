@@ -20,7 +20,7 @@ import static org.junit.Assert.assertEquals;
 
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
-import android.test.suitebuilder.annotation.MediumTest;
+import android.support.test.filters.MediumTest;
 import android.view.View;
 
 import org.junit.Before;

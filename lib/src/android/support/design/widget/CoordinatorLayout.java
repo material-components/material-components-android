@@ -155,7 +155,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     private final Rect mTempRect2 = new Rect();
     private final Rect mTempRect3 = new Rect();
     private final Rect mTempRect4 = new Rect();
-    private final Rect mTempRect5 = new Rect();
     private final int[] mTempIntPair = new int[2];
     private Paint mScrimPaint;
 
@@ -732,11 +731,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int childCount = mDependencySortedChildren.size();
         for (int i = 0; i < childCount; i++) {
             final View child = mDependencySortedChildren.get(i);
-            if (child.getVisibility() == GONE) {
-                // If the child is GONE, skip...
-                continue;
-            }
-
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
 
             int keylineWidthUsed = 0;
@@ -849,11 +843,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int childCount = mDependencySortedChildren.size();
         for (int i = 0; i < childCount; i++) {
             final View child = mDependencySortedChildren.get(i);
-            if (child.getVisibility() == GONE) {
-                // If the child is GONE, skip...
-                continue;
-            }
-
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
             final Behavior behavior = lp.getBehavior();
 
@@ -1320,30 +1309,20 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     }
 
     private void offsetChildByInset(final View child, final Rect inset, final int layoutDirection) {
-        if (!ViewCompat.isLaidOut(child)) {
-            // The view has not been laid out yet,
-            // so we can't obtain its bounds.
-            return;
-        }
-
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
         final int absDodgeInsetEdges = GravityCompat.getAbsoluteGravity(lp.dodgeInsetEdges,
                 layoutDirection);
 
         final Behavior behavior = lp.getBehavior();
         final Rect rect = mTempRect3;
-        rect.setEmpty();
-        final Rect bounds = mTempRect5;
-        bounds.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
-
         if (behavior != null && behavior.getInsetDodgeRect(this, child, rect)) {
-            // Make sure that the rect is within the view's bounds
-            if (!bounds.contains(rect)) {
-                throw new IllegalArgumentException("Rect should be within the child's bounds."
-                        + " Rect:" + rect.toShortString() + " | Bounds:" + bounds.toShortString());
+            // Make sure that it intersects the views bounds
+            if (!rect.intersect(child.getLeft(), child.getTop(),
+                    child.getRight(), child.getBottom())) {
+                throw new IllegalArgumentException("Rect should intersect with child's bounds.");
             }
         } else {
-            rect.set(bounds);
+            rect.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
         }
 
         if (rect.isEmpty()) {

@@ -24,4 +24,6 @@
     <item name="page_7" type="id"/>
     <item name="page_8" type="id"/>
     <item name="page_9" type="id"/>
+    <item name="textinputlayout" type="id"/>
+    <item name="textinputedittext" type="id"/>
 </resources>

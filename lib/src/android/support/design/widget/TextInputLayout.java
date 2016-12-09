@@ -58,6 +58,7 @@ import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.SparseArray;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -76,16 +77,6 @@ import android.widget.TextView;
  * <p>Also supports showing an error via {@link #setErrorEnabled(boolean)} and
  * {@link #setError(CharSequence)}, and a character counter via
  * {@link #setCounterEnabled(boolean)}.</p>
- *
- * <p>Password visibility toggling is also supported via the
- * {@link #setPasswordVisibilityToggleEnabled(boolean)} API and related attribute.
- * If enabled, a button is displayed to toggle between the password being displayed as plain-text
- * or disguised, when your EditText is set to display a password.</p>
- *
- * <p><strong>Note:</strong> When using the password toggle functionality, the 'end' compound
- * drawable of the EditText will be overridden while the toggle is enabled. To ensure that any
- * existing drawables are restored correctly, you should set those compound drawables relatively
- * (start/end), opposed to absolutely (left/right).</p>
  *
  * The {@link TextInputEditText} class is provided to be used as a child of this layout. Using
  * TextInputEditText allows TextInputLayout greater control over the visual aspects of any
@@ -169,6 +160,8 @@ public class TextInputLayout extends LinearLayout {
     private boolean mHasReconstructedEditTextBackground;
     private boolean mInDrawableStateChanged;
 
+    private boolean mRestoringSavedState;
+
     public TextInputLayout(Context context) {
         this(context, null);
     }
@@ -229,7 +222,7 @@ public class TextInputLayout extends LinearLayout {
                 R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
 
         mPasswordToggleEnabled = a.getBoolean(
-                R.styleable.TextInputLayout_passwordToggleEnabled, false);
+                R.styleable.TextInputLayout_passwordToggleEnabled, true);
         mPasswordToggleDrawable = a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable);
         mPasswordToggleContentDesc = a.getText(
                 R.styleable.TextInputLayout_passwordToggleContentDescription);
@@ -326,7 +319,7 @@ public class TextInputLayout extends LinearLayout {
         mEditText.addTextChangedListener(new TextWatcher() {
             @Override
             public void afterTextChanged(Editable s) {
-                updateLabelState(true);
+                updateLabelState(!mRestoringSavedState);
                 if (mCounterEnabled) {
                     updateCounter(s.length());
                 }
@@ -408,10 +401,14 @@ public class TextInputLayout extends LinearLayout {
 
         if (hasText || (isEnabled() && (isFocused || isErrorShowing))) {
             // We should be showing the label so do so if it isn't already
-            collapseHint(animate);
+            if (mHintExpanded) {
+                collapseHint(animate);
+            }
         } else {
             // We should not be showing the label so hide it
-            expandHint(animate);
+            if (!mHintExpanded) {
+                expandHint(animate);
+            }
         }
     }
 
@@ -807,8 +804,8 @@ public class TextInputLayout extends LinearLayout {
         } else {
             mCounterOverflowed = length > mCounterMaxLength;
             if (wasCounterOverflowed != mCounterOverflowed) {
-                TextViewCompat.setTextAppearance(mCounterView, mCounterOverflowed ?
-                        mCounterOverflowTextAppearance : mCounterTextAppearance);
+                TextViewCompat.setTextAppearance(mCounterView, mCounterOverflowed
+                        ? mCounterOverflowTextAppearance : mCounterTextAppearance);
             }
             mCounterView.setText(getContext().getString(R.string.character_counter_pattern,
                     length, mCounterMaxLength));
@@ -897,7 +894,7 @@ public class TextInputLayout extends LinearLayout {
             super(superState);
         }
 
-        public SavedState(Parcel source, ClassLoader loader) {
+        SavedState(Parcel source, ClassLoader loader) {
             super(source, loader);
             error = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
 
@@ -950,6 +947,13 @@ public class TextInputLayout extends LinearLayout {
         super.onRestoreInstanceState(ss.getSuperState());
         setError(ss.error);
         requestLayout();
+    }
+
+    @Override
+    protected void dispatchRestoreInstanceState(SparseArray<Parcelable> container) {
+        mRestoringSavedState = true;
+        super.dispatchRestoreInstanceState(container);
+        mRestoringSavedState = false;
     }
 
     /**
@@ -1051,15 +1055,11 @@ public class TextInputLayout extends LinearLayout {
                 mPasswordToggleView.setVisibility(View.GONE);
             }
 
-            if (mPasswordToggleDummyDrawable != null) {
-                // Make sure that we remove the dummy end compound drawable if it exists, and then
-                // clear it
-                final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(mEditText);
-                if (compounds[2] == mPasswordToggleDummyDrawable) {
-                    TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0],
-                            compounds[1], mOriginalEditTextEndDrawable, compounds[3]);
-                    mPasswordToggleDummyDrawable = null;
-                }
+            // Make sure that we remove the dummy end compound drawable
+            final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(mEditText);
+            if (compounds[2] == mPasswordToggleDummyDrawable) {
+                TextViewCompat.setCompoundDrawablesRelative(mEditText, compounds[0], compounds[1],
+                        mOriginalEditTextEndDrawable, compounds[3]);
             }
         }
     }
@@ -1225,24 +1225,24 @@ public class TextInputLayout extends LinearLayout {
         applyPasswordToggleTint();
     }
 
-   void passwordVisibilityToggleRequested() {
-       if (mPasswordToggleEnabled) {
-           // Store the current cursor position
-           final int selection = mEditText.getSelectionEnd();
+    void passwordVisibilityToggleRequested() {
+        if (mPasswordToggleEnabled) {
+            // Store the current cursor position
+            final int selection = mEditText.getSelectionEnd();
 
-           if (hasPasswordTransformation()) {
-               mEditText.setTransformationMethod(null);
-               mPasswordToggledVisible = true;
-           } else {
-               mEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-               mPasswordToggledVisible = false;
-           }
+            if (hasPasswordTransformation()) {
+                mEditText.setTransformationMethod(null);
+                mPasswordToggledVisible = true;
+            } else {
+                mEditText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+                mPasswordToggledVisible = false;
+            }
 
-           mPasswordToggleView.setChecked(mPasswordToggledVisible);
+            mPasswordToggleView.setChecked(mPasswordToggledVisible);
 
-           // And restore the cursor position
-           mEditText.setSelection(selection);
-       }
+            // And restore the cursor position
+            mEditText.setSelection(selection);
+        }
     }
 
     private boolean hasPasswordTransformation() {
@@ -1353,7 +1353,8 @@ public class TextInputLayout extends LinearLayout {
         mHintExpanded = true;
     }
 
-    private void animateToExpansionFraction(final float target) {
+    @VisibleForTesting
+    void animateToExpansionFraction(final float target) {
         if (mCollapsingTextHelper.getExpansionFraction() == target) {
             return;
         }

@@ -16,8 +16,6 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -27,6 +25,7 @@ import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.PointerIconCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
@@ -36,6 +35,8 @@ import android.view.LayoutInflater;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 /**
  * @hide
@@ -87,7 +88,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         mIcon = (ImageView) findViewById(R.id.icon);
         mSmallLabel = (TextView) findViewById(R.id.smallLabel);
         mLargeLabel = (TextView) findViewById(R.id.largeLabel);
-
     }
 
     @Override
@@ -131,6 +131,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
     @Override
     public void setChecked(boolean checked) {
+        mItemData.setChecked(checked);
+
         ViewCompat.setPivotX(mLargeLabel, mLargeLabel.getWidth() / 2);
         ViewCompat.setPivotY(mLargeLabel, mLargeLabel.getBaseline());
         ViewCompat.setPivotX(mSmallLabel, mSmallLabel.getWidth() / 2);
@@ -191,6 +193,14 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         mSmallLabel.setEnabled(enabled);
         mLargeLabel.setEnabled(enabled);
         mIcon.setEnabled(enabled);
+
+        if (enabled) {
+            ViewCompat.setPointerIcon(this,
+                    PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
+        } else {
+            ViewCompat.setPointerIcon(this, null);
+        }
+
     }
 
     @Override

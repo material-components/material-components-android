@@ -19,8 +19,8 @@ package android.support.design.widget;
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
+import android.support.test.filters.SmallTest;
 import android.support.v4.view.ViewCompat;
-import android.test.suitebuilder.annotation.SmallTest;
 import android.view.ViewGroup;
 
 import org.junit.Test;

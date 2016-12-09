@@ -36,21 +36,22 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
+import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.support.design.test.R;
 import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
-import android.support.v4.widget.TextViewCompat;
-import android.test.suitebuilder.annotation.SmallTest;
+import android.support.test.filters.SmallTest;
+import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.view.View;
-import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import org.junit.Test;
@@ -62,6 +63,30 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
     private static final String ERROR_MESSAGE_2 = "Some other error has occured";
 
     private static final String INPUT_TEXT = "Random input text";
+
+    public class TestTextInputLayout extends TextInputLayout {
+        public int animateToExpansionFractionCount = 0;
+        public float animateToExpansionFractionRecentValue = -1;
+
+        public TestTextInputLayout(Context context) {
+            super(context);
+        }
+
+        public TestTextInputLayout(Context context, AttributeSet attrs) {
+            super(context, attrs);
+        }
+
+        public TestTextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+            super(context, attrs, defStyleAttr);
+        }
+
+        @Override
+        protected void animateToExpansionFraction(float target) {
+            super.animateToExpansionFraction(target);
+            animateToExpansionFractionRecentValue = target;
+            animateToExpansionFractionCount++;
+        }
+    }
 
     public TextInputLayoutTest() {
         super(TextInputLayoutActivity.class);
@@ -220,25 +245,6 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
         onView(withId(R.id.textinput_edittext)).check(matches(not(isEnabled())));
     }
 
-    @UiThreadTest
-    @Test
-    public void testExtractUiHintSet() {
-        final Activity activity = mActivityTestRule.getActivity();
-
-        // Set a hint on the TextInputLayout
-        final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
-        layout.setHint(INPUT_TEXT);
-
-        final EditText editText = (EditText) activity.findViewById(R.id.textinput_edittext);
-
-        // Now manually pass in a EditorInfo to the EditText and make sure it updates the
-        // hintText to our known value
-        final EditorInfo info = new EditorInfo();
-        editText.onCreateInputConnection(info);
-
-        assertEquals(INPUT_TEXT, info.hintText);
-    }
-
     /**
      * Regression test for b/31663756.
      */
@@ -252,66 +258,33 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
         layout.drawableStateChanged();
     }
 
+    @UiThreadTest
     @Test
-    public void testMaintainsLeftRightCompoundDrawables() throws Throwable {
+    public void testSaveRestoreStateAnimation() {
         final Activity activity = mActivityTestRule.getActivity();
-
-        // Set a known set of test compound drawables on the EditText
-        final Drawable left = new ColorDrawable(Color.RED);
-        final Drawable top = new ColorDrawable(Color.GREEN);
-        final Drawable right = new ColorDrawable(Color.BLUE);
-        final Drawable bottom = new ColorDrawable(Color.BLACK);
-
+        final TestTextInputLayout layout = new TestTextInputLayout(activity);
+        layout.setId(R.id.textinputlayout);
         final TextInputEditText editText = new TextInputEditText(activity);
-        editText.setCompoundDrawables(left, top, right, bottom);
+        editText.setText(INPUT_TEXT);
+        editText.setId(R.id.textinputedittext);
+        layout.addView(editText);
 
-        // Now add the EditText to a TextInputLayout
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextInputLayout til = (TextInputLayout)
-                        activity.findViewById(R.id.textinput_noedittext);
-                til.addView(editText);
-            }
-        });
+        SparseArray<Parcelable> container = new SparseArray<>();
+        layout.saveHierarchyState(container);
+        layout.restoreHierarchyState(container);
+        assertEquals("Expected no animations since we simply saved/restored state",
+                0, layout.animateToExpansionFractionCount);
 
-        // Finally assert that all of the drawables are untouched
-        final Drawable[] compoundDrawables = editText.getCompoundDrawables();
-        assertSame(left, compoundDrawables[0]);
-        assertSame(top, compoundDrawables[1]);
-        assertSame(right, compoundDrawables[2]);
-        assertSame(bottom, compoundDrawables[3]);
-    }
+        editText.setText("");
+        assertEquals("Expected one call to animate because we cleared text in editText",
+                1, layout.animateToExpansionFractionCount);
+        assertEquals(0f, layout.animateToExpansionFractionRecentValue, 0f);
 
-    @Test
-    public void testMaintainsStartEndCompoundDrawables() throws Throwable {
-        final Activity activity = mActivityTestRule.getActivity();
-
-        // Set a known set of test compound drawables on the EditText
-        final Drawable start = new ColorDrawable(Color.RED);
-        final Drawable top = new ColorDrawable(Color.GREEN);
-        final Drawable end = new ColorDrawable(Color.BLUE);
-        final Drawable bottom = new ColorDrawable(Color.BLACK);
-
-        final TextInputEditText editText = new TextInputEditText(activity);
-        TextViewCompat.setCompoundDrawablesRelative(editText, start, top, end, bottom);
-
-        // Now add the EditText to a TextInputLayout
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                TextInputLayout til = (TextInputLayout)
-                        activity.findViewById(R.id.textinput_noedittext);
-                til.addView(editText);
-            }
-        });
-
-        // Finally assert that all of the drawables are untouched
-        final Drawable[] compoundDrawables = TextViewCompat.getCompoundDrawablesRelative(editText);
-        assertSame(start, compoundDrawables[0]);
-        assertSame(top, compoundDrawables[1]);
-        assertSame(end, compoundDrawables[2]);
-        assertSame(bottom, compoundDrawables[3]);
+        container = new SparseArray<>();
+        layout.saveHierarchyState(container);
+        layout.restoreHierarchyState(container);
+        assertEquals("Expected no additional animations since we simply saved/restored state",
+                1, layout.animateToExpansionFractionCount);
     }
 
     static ViewAssertion isHintExpanded(final boolean expanded) {

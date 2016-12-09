@@ -17,7 +17,7 @@
 <resources>
 
     <style name="Widget.Design.AppBarLayout" parent="Base.Widget.Design.AppBarLayout">
-        <item name="android:stateListAnimator">@anim/design_appbar_state_list_animator</item>
+        <item name="android:stateListAnimator">@animator/design_appbar_state_list_animator</item>
     </style>
 
 </resources>

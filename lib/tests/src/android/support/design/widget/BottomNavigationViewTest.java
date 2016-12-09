@@ -27,24 +27,19 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
-import static org.mockito.Mockito.when;
 
 import android.content.res.Resources;
 import android.support.annotation.ColorInt;
 import android.support.design.test.R;
 import android.support.design.testutils.TestDrawable;
 import android.support.design.testutils.TestUtilsMatchers;
-import android.support.test.annotation.UiThreadTest;
+import android.support.test.filters.SmallTest;
 import android.support.v4.content.res.ResourcesCompat;
-import android.test.suitebuilder.annotation.SmallTest;
 import android.view.Menu;
 import android.view.MenuItem;
 
@@ -78,20 +73,6 @@ public class BottomNavigationViewTest
         mMenuStringContent.put(R.id.destination_people, res.getString(R.string.navigate_people));
     }
 
-    @UiThreadTest
-    @Test
-    @SmallTest
-    public void testAddItemsWithoutMenuInflation() {
-        BottomNavigationView navigation = new BottomNavigationView(mActivityTestRule.getActivity());
-        mActivityTestRule.getActivity().setContentView(navigation);
-        navigation.getMenu().add("Item1");
-        navigation.getMenu().add("Item2");
-        assertEquals(2, navigation.getMenu().size());
-        navigation.getMenu().removeItem(0);
-        navigation.getMenu().removeItem(0);
-        assertEquals(0, navigation.getMenu().size());
-    }
-
     @Test
     @SmallTest
     public void testBasics() {
@@ -114,38 +95,22 @@ public class BottomNavigationViewTest
                 mock(BottomNavigationView.OnNavigationItemSelectedListener.class);
         mBottomNavigation.setOnNavigationItemSelectedListener(mockedListener);
 
-        // Make the listener return true to allow selecting the item.
-        when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(true);
+        // Click one of our items
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_profile)),
                 isDescendantOfA(withId(R.id.bottom_navigation)), isDisplayed())).perform(click());
-        // Verify our listener has been notified of the click
+        // And that our listener has been notified of the click
         verify(mockedListener, times(1)).onNavigationItemSelected(
                 mBottomNavigation.getMenu().findItem(R.id.destination_profile));
-        // Verify the item is now selected
-        assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
-
-        // Make the listener return false to disallow selecting the item.
-        when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(false);
-        onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
-                isDescendantOfA(withId(R.id.bottom_navigation)), isDisplayed())).perform(click());
-        // Verify our listener has been notified of the click
-        verify(mockedListener, times(1)).onNavigationItemSelected(
-                mBottomNavigation.getMenu().findItem(R.id.destination_people));
-        // Verify the previous item is still selected
-        assertFalse(mBottomNavigation.getMenu().findItem(R.id.destination_people).isChecked());
-        assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
 
         // Set null listener to test that the next click is not going to notify the
-        // previously set listener and will allow selecting items.
+        // previously set listener
         mBottomNavigation.setOnNavigationItemSelectedListener(null);
 
         // Click one of our items
-        onView(allOf(withText(mMenuStringContent.get(R.id.destination_home)),
+        onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
                 isDescendantOfA(withId(R.id.bottom_navigation)), isDisplayed())).perform(click());
         // And that our previous listener has not been notified of the click
         verifyNoMoreInteractions(mockedListener);
-        // Verify the correct item is now selected.
-        assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_home).isChecked());
     }
 
     @Test
@@ -210,28 +175,5 @@ public class BottomNavigationViewTest
                 matches(TestUtilsMatchers.drawable(greenFill, allowedComponentVariance)));
         onView(allOf(withId(R.id.icon), isDescendantOfA(withId(R.id.destination_people)))).check(
                 matches(TestUtilsMatchers.drawable(blueFill, allowedComponentVariance)));
-    }
-
-    @UiThreadTest
-    @Test
-    @SmallTest
-    public void testItemChecking() throws Throwable {
-        final Menu menu = mBottomNavigation.getMenu();
-        assertTrue(menu.getItem(0).isChecked());
-        checkAndVerifyExclusiveItem(menu, R.id.destination_home);
-        checkAndVerifyExclusiveItem(menu, R.id.destination_profile);
-        checkAndVerifyExclusiveItem(menu, R.id.destination_people);
-    }
-
-    private void checkAndVerifyExclusiveItem(final Menu menu, final int id) throws Throwable {
-        menu.findItem(id).setChecked(true);
-        for (int i = 0; i < menu.size(); i++) {
-            final MenuItem item = menu.getItem(i);
-            if (item.getItemId() == id) {
-                assertTrue(item.isChecked());
-            } else {
-                assertFalse(item.isChecked());
-            }
-        }
     }
 }

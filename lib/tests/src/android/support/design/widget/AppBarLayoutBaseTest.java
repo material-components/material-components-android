@@ -16,6 +16,13 @@
 
 package android.support.design.widget;
 
+import static android.support.design.testutils.TestUtilsActions.setText;
+import static android.support.design.testutils.TestUtilsActions.setTitle;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+
+import static org.junit.Assert.assertEquals;
+
 import android.os.Build;
 import android.support.annotation.CallSuper;
 import android.support.annotation.IdRes;
@@ -23,7 +30,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import android.support.design.test.R;
 import android.support.design.testutils.Shakespeare;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.action.CoordinatesProvider;
 import android.support.test.espresso.action.GeneralSwipeAction;
 import android.support.test.espresso.action.Press;
@@ -34,13 +40,6 @@ import android.support.v7.widget.Toolbar;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
-
-import static android.support.design.testutils.TestUtilsActions.setText;
-import static android.support.design.testutils.TestUtilsActions.setTitle;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
-
-import static org.junit.Assert.assertEquals;
 
 public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutTest {
 
@@ -91,8 +90,8 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
     }
 
     @CallSuper
-    protected void configureContent(final @LayoutRes int layoutResId,
-            final @StringRes int titleResId) {
+    protected void configureContent(@LayoutRes final int layoutResId,
+            @StringRes final int titleResId) throws Throwable {
         onView(withId(R.id.coordinator_stub)).perform(inflateViewStub(layoutResId));
 
         mAppBar = (AppBarLayout) mCoordinatorLayout.findViewById(R.id.app_bar);
@@ -101,7 +100,7 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
         mToolbar = (Toolbar) mAppBar.findViewById(R.id.toolbar);
 
         final AppCompatActivity activity = mActivityTestRule.getActivity();
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+        mActivityTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 activity.setSupportActionBar(mToolbar);

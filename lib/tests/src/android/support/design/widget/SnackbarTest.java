@@ -16,30 +16,40 @@
 
 package android.support.design.widget;
 
+import static android.support.design.testutils.TestUtilsActions.setLayoutDirection;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.action.ViewActions.swipeLeft;
+import static android.support.test.espresso.action.ViewActions.swipeRight;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.core.AllOf.allOf;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
 import android.content.res.Resources;
 import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.filters.MediumTest;
+import android.support.test.filters.SmallTest;
 import android.support.v4.view.ViewCompat;
-import android.test.suitebuilder.annotation.MediumTest;
-import android.test.suitebuilder.annotation.SmallTest;
 import android.text.TextUtils;
 import android.view.View;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static android.support.design.testutils.TestUtilsActions.setLayoutDirection;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.*;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static org.hamcrest.core.AllOf.allOf;
-import static org.mockito.Matchers.any;
-import static org.mockito.Mockito.*;
 
 public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> {
     private static final String MESSAGE_TEXT = "Test Message";
@@ -124,7 +134,8 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     private void verifyDismissCallback(final ViewInteraction interaction,
             final @Nullable ViewAction action, final @Nullable DismissAction dismissAction,
-            final int length, @Snackbar.Callback.DismissEvent final int expectedEvent) {
+            final int length, @Snackbar.Callback.DismissEvent final int expectedEvent)
+            throws Throwable {
         final Snackbar.Callback mockCallback = mock(Snackbar.Callback.class);
         final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, length)
                 .setAction(ACTION_TEXT, mock(View.OnClickListener.class))
@@ -144,7 +155,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
         if (action != null) {
             interaction.perform(action);
         } else if (dismissAction != null) {
-            InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+            mActivityTestRule.runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
                     dismissAction.dismiss(snackbar);
@@ -163,7 +174,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaActionClick() {
+    public void testDismissViaActionClick() throws Throwable {
         verifyDismissCallback(
                 onView(withId(R.id.snackbar_action)),
                 click(),
@@ -174,7 +185,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaSwipe() {
+    public void testDismissViaSwipe() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 swipeRight(),
@@ -185,7 +196,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaSwipeRtl() {
+    public void testDismissViaSwipeRtl() throws Throwable {
         onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
         if (ViewCompat.getLayoutDirection(mCoordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
             // On devices that support RTL layout, the start-to-end dismiss swipe is done
@@ -201,7 +212,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaApi() {
+    public void testDismissViaApi() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 null,
@@ -217,7 +228,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaTimeout() {
+    public void testDismissViaTimeout() throws Throwable {
         verifyDismissCallback(
                 onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 null,
@@ -228,7 +239,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
 
     @Test
     @MediumTest
-    public void testDismissViaAnotherSnackbar() {
+    public void testDismissViaAnotherSnackbar() throws Throwable {
         final Snackbar anotherSnackbar =
                 Snackbar.make(mCoordinatorLayout, "A different message", Snackbar.LENGTH_SHORT);
 

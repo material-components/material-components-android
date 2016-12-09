@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.os.Build;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -26,8 +25,6 @@ import android.support.design.R;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -38,7 +35,6 @@ import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
 
@@ -60,28 +56,14 @@ import android.widget.FrameLayout;
  * </p>
  *
  * <pre>
- * layout resource file:
  * &lt;android.support.design.widget.BottomNavigationView
  *     xmlns:android="http://schemas.android.com/apk/res/android"
  *     xmlns:design="http://schema.android.com/apk/res/android.support.design"
  *     android:id="@+id/navigation"
- *     android:layout_width="match_parent"
- *     android:layout_height="56dp"
+ *     android:layout_width="wrap_content"
+ *     android:layout_height="match_parent"
  *     android:layout_gravity="start"
  *     design:menu="@menu/my_navigation_items" /&gt;
- *
- * res/menu/my_navigation_items.xml:
- * &lt;menu xmlns:android="http://schemas.android.com/apk/res/android"&gt;
- *     &lt;item android:id="@+id/action_search"
- *          android:title="@string/menu_search"
- *          android:icon="@drawable/ic_search" /&gt;
- *     &lt;item android:id="@+id/action_settings"
- *          android:title="@string/menu_settings"
- *          android:icon="@drawable/ic_add" /&gt;
- *     &lt;item android:id="@+id/action_navigation"
- *          android:title="@string/menu_navigation"
- *          android:icon="@drawable/ic_action_navigation_menu" /&gt;
- * &lt;/menu&gt;
  * </pre>
  */
 public class BottomNavigationView extends FrameLayout {
@@ -121,7 +103,7 @@ public class BottomNavigationView extends FrameLayout {
         mPresenter.setBottomNavigationMenuView(mMenuView);
         mMenuView.setPresenter(mPresenter);
         mMenu.addMenuPresenter(mPresenter);
-        mPresenter.initForMenu(getContext(), mMenu);
+
 
         // Custom attributes
         TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attrs,
@@ -142,10 +124,6 @@ public class BottomNavigationView extends FrameLayout {
             mMenuView.setItemTextColor(
                     createDefaultColorStateList(android.R.attr.textColorSecondary));
         }
-        if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
-            ViewCompat.setElevation(this, a.getDimensionPixelSize(
-                    R.styleable.BottomNavigationView_elevation, 0));
-        }
 
         int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
         mMenuView.setItemBackgroundRes(itemBackground);
@@ -156,14 +134,11 @@ public class BottomNavigationView extends FrameLayout {
         a.recycle();
 
         addView(mMenuView, params);
-        if (Build.VERSION.SDK_INT < 21) {
-            addCompatibilityTopDivider(context);
-        }
 
         mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                return mListener != null && !mListener.onNavigationItemSelected(item);
+                return mListener != null && mListener.onNavigationItemSelected(item);
             }
 
             @Override
@@ -199,6 +174,7 @@ public class BottomNavigationView extends FrameLayout {
     public void inflateMenu(int resId) {
         mPresenter.setUpdateSuspended(true);
         getMenuInflater().inflate(resId, mMenu);
+        mPresenter.initForMenu(getContext(), mMenu);
         mPresenter.setUpdateSuspended(false);
         mPresenter.updateMenuView(true);
     }
@@ -234,12 +210,9 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     /**
-     * Returns colors used for the different states (normal, selected, focused, etc.) of the menu
-     * item text.
+     * Returns the text color used on menu items.
      *
      * @see #setItemTextColor(ColorStateList)
-     *
-     * @return the ColorStateList of colors used for the different states of the menu items text.
      *
      * @attr ref R.styleable#BottomNavigationView_itemTextColor
      */
@@ -249,8 +222,7 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     /**
-     * Set the colors to use for the different states (normal, selected, focused, etc.) of the menu
-     * item text.
+     * Set the text color to be used on menu items.
      *
      * @see #getItemTextColor()
      *
@@ -293,23 +265,9 @@ public class BottomNavigationView extends FrameLayout {
          *
          * @param item The selected item
          *
-         * @return true to display the item as the selected item and false if the item should not
-         *         be selected. Consider setting non-selectable items as disabled preemptively to
-         *         make them appear non-interactive.
+         * @return true to display the item as the selected item
          */
         boolean onNavigationItemSelected(@NonNull MenuItem item);
-    }
-
-    private void addCompatibilityTopDivider(Context context) {
-        View divider = new View(context);
-        divider.setBackgroundColor(
-                ContextCompat.getColor(context, R.color.design_bottom_navigation_shadow_color));
-        FrameLayout.LayoutParams dividerParams = new FrameLayout.LayoutParams(
-                ViewGroup.LayoutParams.MATCH_PARENT,
-                getResources().getDimensionPixelSize(
-                        R.dimen.design_bottom_navigation_shadow_height));
-        divider.setLayoutParams(dividerParams);
-        addView(divider);
     }
 
     private MenuInflater getMenuInflater() {

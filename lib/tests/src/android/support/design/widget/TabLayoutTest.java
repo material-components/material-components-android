@@ -29,8 +29,8 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.support.design.test.R;
 import android.support.test.annotation.UiThreadTest;
+import android.support.test.filters.SmallTest;
 import android.support.v7.app.AppCompatActivity;
-import android.test.suitebuilder.annotation.SmallTest;
 import android.view.InflateException;
 import android.view.LayoutInflater;
 import android.view.View;

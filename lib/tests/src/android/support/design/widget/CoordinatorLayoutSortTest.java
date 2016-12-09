@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import android.app.Instrumentation;
 import android.support.design.testutils.CoordinatorLayoutUtils;
 import android.support.test.InstrumentationRegistry;
-import android.test.suitebuilder.annotation.MediumTest;
+import android.support.test.filters.MediumTest;
 import android.view.View;
 
 import org.junit.Test;
@@ -68,7 +68,7 @@ public class CoordinatorLayoutSortTest
     }
 
     @Test
-    public void testDependencySortingOrder() {
+    public void testDependencySortingOrder() throws Throwable {
         final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
 
         // Let's create some views where each view depends on the previous view.
@@ -107,12 +107,12 @@ public class CoordinatorLayoutSortTest
         addViewsAndAssertOrdering(col, views, testOrder);
     }
 
-    private static void addViewsAndAssertOrdering(final CoordinatorLayout col,
-            final List<View> expectedOrder, final List<View> addOrder) {
+    private void addViewsAndAssertOrdering(final CoordinatorLayout col,
+            final List<View> expectedOrder, final List<View> addOrder) throws Throwable {
         final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
 
         // Add the Views in the given order
-        instrumentation.runOnMainSync(new Runnable() {
+        mActivityTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 for (int i = 0; i < addOrder.size(); i++) {
@@ -126,7 +126,7 @@ public class CoordinatorLayoutSortTest
         assertEquals(expectedOrder, col.getDependencySortedChildren());
 
         // Finally remove all of the views
-        instrumentation.runOnMainSync(new Runnable() {
+        mActivityTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 col.removeAllViews();

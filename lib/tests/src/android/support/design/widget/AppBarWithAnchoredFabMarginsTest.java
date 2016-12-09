@@ -16,12 +16,13 @@
 
 package android.support.design.widget;
 
+import static org.junit.Assert.assertEquals;
+
 import android.support.design.test.R;
-import android.test.suitebuilder.annotation.SmallTest;
+import android.support.test.filters.SmallTest;
+
 import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
 
 @SmallTest
 public class AppBarWithAnchoredFabMarginsTest extends AppBarLayoutBaseTest {

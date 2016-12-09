@@ -15,22 +15,24 @@
  */
 package android.support.design.widget;
 
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+
+import static org.hamcrest.CoreMatchers.allOf;
+import static org.hamcrest.Matchers.any;
+
 import android.support.annotation.LayoutRes;
 import android.support.design.test.R;
-import android.support.test.InstrumentationRegistry;
+import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewStub;
+
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.After;
-
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.any;
 
 /**
  * Base class for tests that are exercising various aspects of {@link CoordinatorLayout}.
@@ -43,18 +45,14 @@ public abstract class BaseDynamicCoordinatorLayoutTest
         super(DynamicCoordinatorLayoutActivity.class);
     }
 
+    @UiThreadTest
     @After
-    public void tearDown() throws Exception {
+    public void tearDown() {
         // Now that the test is done, replace the activity content view with ViewStub so
         // that it's ready to be replaced for the next test.
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                final DynamicCoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
-                activity.setContentView(R.layout.dynamic_coordinator_layout);
-                mCoordinatorLayout = null;
-            }
-        });
+        final DynamicCoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
+        activity.setContentView(R.layout.dynamic_coordinator_layout);
+        mCoordinatorLayout = null;
     }
 
     /**

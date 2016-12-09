@@ -21,9 +21,9 @@ import static org.junit.Assert.assertNotNull;
 
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
+import android.support.test.filters.MediumTest;
 import android.support.test.filters.SdkSuppress;
 import android.support.v4.view.WindowInsetsCompat;
-import android.test.suitebuilder.annotation.MediumTest;
 import android.view.View;
 
 import org.junit.Before;

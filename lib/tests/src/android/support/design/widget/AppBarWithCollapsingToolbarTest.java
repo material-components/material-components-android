@@ -21,9 +21,8 @@ import static org.junit.Assert.assertEquals;
 import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.test.R;
-import android.support.test.InstrumentationRegistry;
+import android.support.test.filters.MediumTest;
 import android.support.test.filters.SdkSuppress;
-import android.test.suitebuilder.annotation.MediumTest;
 import android.widget.ImageView;
 
 import org.junit.Test;
@@ -31,7 +30,7 @@ import org.junit.Test;
 @MediumTest
 public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     @Test
-    public void testPinnedToolbar() {
+    public void testPinnedToolbar() throws Throwable {
         configureContent(R.layout.design_appbar_toolbar_collapse_pin,
                 R.string.design_appbar_collapsing_toolbar_pin);
 
@@ -131,7 +130,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     }
 
     @Test
-    public void testScrollingToolbar() {
+    public void testScrollingToolbar() throws Throwable {
         configureContent(R.layout.design_appbar_toolbar_collapse_scroll,
                 R.string.design_appbar_collapsing_toolbar_scroll);
 
@@ -301,7 +300,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     }
 
     @Test
-    public void testPinnedToolbarAndParallaxImage() {
+    public void testPinnedToolbarAndParallaxImage() throws Throwable {
         configureContent(R.layout.design_appbar_toolbar_collapse_with_image,
                 R.string.design_appbar_collapsing_toolbar_with_image);
 
@@ -384,11 +383,11 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     }
 
     @Test
-    public void testAddViewWithDefaultLayoutParams() {
+    public void testAddViewWithDefaultLayoutParams() throws Throwable {
         configureContent(R.layout.design_appbar_toolbar_collapse_pin,
                 R.string.design_appbar_collapsing_toolbar_pin);
 
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
+        mActivityTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 ImageView view = new ImageView(mCollapsingToolbar.getContext());
@@ -405,7 +404,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
      */
     @Test
     @SdkSuppress(minSdkVersion = 11)
-    public void testPinnedToolbarWithMargins() {
+    public void testPinnedToolbarWithMargins() throws Throwable {
         configureContent(R.layout.design_appbar_toolbar_collapse_pin_margins,
                 R.string.design_appbar_collapsing_toolbar_pin_margins);
 

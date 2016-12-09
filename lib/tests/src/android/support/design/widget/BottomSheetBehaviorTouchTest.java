@@ -22,13 +22,13 @@ import static org.hamcrest.CoreMatchers.nullValue;
 import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
-import android.support.test.InstrumentationRegistry;
+import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
 import android.support.test.espresso.action.ViewActions;
+import android.support.test.filters.MediumTest;
 import android.support.v4.view.MotionEventCompat;
-import android.test.suitebuilder.annotation.MediumTest;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -66,23 +66,19 @@ public class BottomSheetBehaviorTouchTest extends
         super(CoordinatorLayoutActivity.class);
     }
 
+    @UiThreadTest
     @Before
     public void setUpBottomSheet() {
-        InstrumentationRegistry.getInstrumentation().runOnMainSync(new Runnable() {
-            @Override
-            public void run() {
-                CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
-                activity.mContainer.setOnTouchListener(mOnTouchListener);
-                mBottomSheet = new FrameLayout(activity);
-                CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
-                        CoordinatorLayout.LayoutParams.MATCH_PARENT,
-                        CoordinatorLayout.LayoutParams.MATCH_PARENT);
-                mBehavior = new BottomSheetBehavior<>();
-                mBehavior.setPeekHeight(PEEK_HEIGHT);
-                params.setBehavior(mBehavior);
-                activity.mCoordinatorLayout.addView(mBottomSheet, params);
-            }
-        });
+        CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
+        activity.mContainer.setOnTouchListener(mOnTouchListener);
+        mBottomSheet = new FrameLayout(activity);
+        CoordinatorLayout.LayoutParams params = new CoordinatorLayout.LayoutParams(
+                CoordinatorLayout.LayoutParams.MATCH_PARENT,
+                CoordinatorLayout.LayoutParams.MATCH_PARENT);
+        mBehavior = new BottomSheetBehavior<>();
+        mBehavior.setPeekHeight(PEEK_HEIGHT);
+        params.setBehavior(mBehavior);
+        activity.mCoordinatorLayout.addView(mBottomSheet, params);
     }
 
     @Test

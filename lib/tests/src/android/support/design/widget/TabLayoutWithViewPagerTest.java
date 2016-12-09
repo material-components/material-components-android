@@ -15,6 +15,24 @@
  */
 package android.support.design.widget;
 
+import static android.support.design.testutils.TabLayoutActions.setupWithViewPager;
+import static android.support.design.testutils.ViewPagerActions.notifyAdapterContentChange;
+import static android.support.design.testutils.ViewPagerActions.setAdapter;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasDescendant;
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static android.support.test.espresso.matcher.ViewMatchers.withParent;
+import static android.support.test.espresso.matcher.ViewMatchers.withText;
+
+import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.Matchers.not;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.support.annotation.DimenRes;
@@ -24,31 +42,21 @@ import android.support.design.testutils.TabLayoutActions;
 import android.support.design.testutils.TestUtilsActions;
 import android.support.design.testutils.TestUtilsMatchers;
 import android.support.design.testutils.ViewPagerActions;
+import android.support.test.filters.MediumTest;
+import android.support.test.filters.SmallTest;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.test.suitebuilder.annotation.MediumTest;
-import android.test.suitebuilder.annotation.SmallTest;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+
 import org.hamcrest.Matcher;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-
-import static android.support.design.testutils.TabLayoutActions.setupWithViewPager;
-import static android.support.design.testutils.ViewPagerActions.notifyAdapterContentChange;
-import static android.support.design.testutils.ViewPagerActions.setAdapter;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.assertion.ViewAssertions.matches;
-import static android.support.test.espresso.matcher.ViewMatchers.*;
-import static org.hamcrest.Matchers.allOf;
-import static org.hamcrest.Matchers.not;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
 
 public class TabLayoutWithViewPagerTest
         extends BaseInstrumentationTestCase<TabLayoutWithViewPagerActivity> {
