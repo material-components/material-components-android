@@ -55,6 +55,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final int shortSwipeAmount = toolbarHeight;
 
         assertAppBarElevation(0f);
+        assertScrimAlpha(0);
 
         // Perform a swipe-up gesture across the horizontal center of the screen.
         performVerticalSwipeUpGesture(
@@ -82,6 +83,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop + toolbarHeight + mAppBar.getTopInset(),
                 appbarOnScreenXY[1] + appbarHeight, 1);
         assertAppBarElevation(mDefaultElevationValue);
+        assertScrimAlpha(255);
 
         // Perform a short swipe-down gesture across the horizontal center of the screen.
         // Note that the swipe down is a bit longer than the swipe up to check that the app bar
@@ -99,6 +101,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop + toolbarHeight + mAppBar.getTopInset(),
                 appbarOnScreenXY[1] + appbarHeight, 1);
         assertAppBarElevation(mDefaultElevationValue);
+        assertScrimAlpha(255);
 
         // Perform another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -113,6 +116,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
         assertAppBarElevation(0f);
+        assertScrimAlpha(0);
 
         // Perform yet another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -127,6 +131,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
         assertAppBarElevation(0f);
+        assertScrimAlpha(0);
     }
 
     @Test
@@ -157,6 +162,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         final int shortSwipeAmount = toolbarHeight;
 
         assertAppBarElevation(0f);
+        assertScrimAlpha(0);
 
         // Perform a swipe-up gesture across the horizontal center of the screen, starting from
         // just below the AppBarLayout
@@ -173,6 +179,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         // Allow for off-by-a-pixel margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight - topInset, 1);
         assertAppBarElevation(0f);
+        assertScrimAlpha(255);
 
         // Perform another swipe-up gesture
         performVerticalSwipeUpGesture(
@@ -186,6 +193,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         // margin of error.
         assertEquals(originalAppbarTop, appbarOnScreenXY[1] + appbarHeight - topInset, 1);
         assertAppBarElevation(0f);
+        assertScrimAlpha(255);
 
         // Perform a short swipe-down gesture across the horizontal center of the screen.
         // Note that the swipe down is a bit longer than the swipe up to fully bring down
@@ -203,6 +211,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop + toolbarHeight + topInset,
                 appbarOnScreenXY[1] + appbarHeight, 1);
         assertAppBarElevation(mDefaultElevationValue);
+        assertScrimAlpha(255);
 
         // Perform another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -217,6 +226,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop, appbarOnScreenXY[1]);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight);
         assertAppBarElevation(0f);
+        assertScrimAlpha(0);
 
         // Perform yet another swipe-down gesture across the horizontal center of the screen.
         performVerticalSwipeDownGesture(
@@ -231,6 +241,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
         assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
         assertAppBarElevation(0f);
+        assertScrimAlpha(0);
     }
 
     @Test

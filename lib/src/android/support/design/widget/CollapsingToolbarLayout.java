@@ -110,7 +110,6 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private Toolbar mToolbar;
     private View mToolbarDirectChild;
     private View mDummyView;
-    private int mToolbarDrawIndex;
 
     private int mExpandedMarginStart;
     private int mExpandedMarginTop;
@@ -314,16 +313,14 @@ public class CollapsingToolbarLayout extends FrameLayout {
     protected boolean drawChild(Canvas canvas, View child, long drawingTime) {
         // This is a little weird. Our scrim needs to be behind the Toolbar (if it is present),
         // but in front of any other children which are behind it. To do this we intercept the
-        // drawChild() call, and draw our scrim after the preceding view is drawn
-        boolean invalidate = super.drawChild(canvas, child, drawingTime);
-
-        if (mContentScrim != null && mScrimAlpha > 0 && isToolbarChildDrawnNext(child)) {
+        // drawChild() call, and draw our scrim just before the Toolbar is drawn
+        boolean invalidated = false;
+        if (mContentScrim != null && mScrimAlpha > 0 && isToolbarChild(child)) {
             mContentScrim.mutate().setAlpha(mScrimAlpha);
             mContentScrim.draw(canvas);
-            invalidate = true;
+            invalidated = true;
         }
-
-        return invalidate;
+        return super.drawChild(canvas, child, drawingTime) || invalidated;
     }
 
     @Override
@@ -369,8 +366,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
         mRefreshToolbar = false;
     }
 
-    private boolean isToolbarChildDrawnNext(View child) {
-        return mToolbarDrawIndex >= 0 && mToolbarDrawIndex == indexOfChild(child) + 1;
+    private boolean isToolbarChild(View child) {
+        return (mToolbarDirectChild == null || mToolbarDirectChild == this)
+                ? child == mToolbar
+                : child == mToolbarDirectChild;
     }
 
     /**
@@ -480,13 +479,9 @@ public class CollapsingToolbarLayout extends FrameLayout {
             }
             if (mToolbarDirectChild == null || mToolbarDirectChild == this) {
                 setMinimumHeight(getHeightWithMargins(mToolbar));
-                mToolbarDrawIndex = indexOfChild(mToolbar);
             } else {
                 setMinimumHeight(getHeightWithMargins(mToolbarDirectChild));
-                mToolbarDrawIndex = indexOfChild(mToolbarDirectChild);
             }
-        } else {
-            mToolbarDrawIndex = -1;
         }
 
         updateScrimVisibility();
@@ -629,6 +624,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
             mScrimAlpha = alpha;
             ViewCompat.postInvalidateOnAnimation(CollapsingToolbarLayout.this);
         }
+    }
+
+    int getScrimAlpha() {
+        return mScrimAlpha;
     }
 
     /**
