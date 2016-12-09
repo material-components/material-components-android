@@ -18,10 +18,12 @@ package android.support.design.widget;
 
 import static android.support.design.testutils.FloatingActionButtonActions.hideThenShow;
 import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintColor;
+import static android.support.design.testutils.FloatingActionButtonActions.setCompatElevation;
 import static android.support.design.testutils.FloatingActionButtonActions.setImageResource;
 import static android.support.design.testutils.FloatingActionButtonActions.setLayoutGravity;
 import static android.support.design.testutils.FloatingActionButtonActions.setSize;
 import static android.support.design.testutils.FloatingActionButtonActions.showThenHide;
+import static android.support.design.testutils.TestUtilsActions.setEnabled;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentAreaOnMargins;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentHeight;
@@ -137,4 +139,14 @@ public class FloatingActionButtonTest
                 .check(matches(not(isDisplayed())));
     }
 
+    @Test
+    public void testSetCompatElevation() {
+        onView(withId(R.id.fab_standard))
+                .perform(setEnabled(false))
+                .perform(setCompatElevation(0));
+
+        onView(withId(R.id.fab_standard))
+                .perform(setEnabled(true))
+                .perform(setCompatElevation(8));
+    }
 }

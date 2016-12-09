@@ -46,7 +46,6 @@ import android.support.test.espresso.core.deps.guava.base.Preconditions;
 import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.MediumTest;
 import android.support.test.filters.SmallTest;
-import android.support.test.filters.Suppress;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.view.LayoutInflater;
@@ -632,8 +631,6 @@ public class BottomSheetBehaviorTest extends
                 });
     }
 
-    // Test disabled because it is consistently failing.
-    @Suppress
     @Test
     @MediumTest
     public void testFabVisibility() {

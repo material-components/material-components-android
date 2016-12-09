@@ -160,7 +160,7 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
             @Override
             public void onAnimationEnd(Animation animation) {
                 mAnimState = ANIM_STATE_NONE;
-                mView.internalSetVisibility(View.GONE, fromUser);
+                mView.internalSetVisibility(fromUser ? View.GONE : View.INVISIBLE, fromUser);
                 if (listener != null) {
                     listener.onHidden();
                 }

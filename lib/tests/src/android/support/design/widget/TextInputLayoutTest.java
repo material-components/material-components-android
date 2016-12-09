@@ -37,6 +37,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertSame;
 import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
@@ -50,6 +51,7 @@ import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
 import android.support.test.filters.SmallTest;
+import android.support.v4.widget.TextViewCompat;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.View;
@@ -325,6 +327,60 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
         layout.restoreHierarchyState(container);
         assertEquals("Expected no additional animations since we simply saved/restored state",
                 1, layout.animateToExpansionFractionCount);
+    }
+
+    @UiThreadTest
+    @Test
+    public void testMaintainsLeftRightCompoundDrawables() throws Throwable {
+        final Activity activity = mActivityTestRule.getActivity();
+
+        // Set a known set of test compound drawables on the EditText
+        final Drawable left = new ColorDrawable(Color.RED);
+        final Drawable top = new ColorDrawable(Color.GREEN);
+        final Drawable right = new ColorDrawable(Color.BLUE);
+        final Drawable bottom = new ColorDrawable(Color.BLACK);
+
+        final TextInputEditText editText = new TextInputEditText(activity);
+        editText.setCompoundDrawables(left, top, right, bottom);
+
+        // Now add the EditText to a TextInputLayout
+        TextInputLayout til = (TextInputLayout)
+                activity.findViewById(R.id.textinput_noedittext);
+        til.addView(editText);
+
+        // Finally assert that all of the drawables are untouched
+        final Drawable[] compoundDrawables = editText.getCompoundDrawables();
+        assertSame(left, compoundDrawables[0]);
+        assertSame(top, compoundDrawables[1]);
+        assertSame(right, compoundDrawables[2]);
+        assertSame(bottom, compoundDrawables[3]);
+    }
+
+    @UiThreadTest
+    @Test
+    public void testMaintainsStartEndCompoundDrawables() throws Throwable {
+        final Activity activity = mActivityTestRule.getActivity();
+
+        // Set a known set of test compound drawables on the EditText
+        final Drawable start = new ColorDrawable(Color.RED);
+        final Drawable top = new ColorDrawable(Color.GREEN);
+        final Drawable end = new ColorDrawable(Color.BLUE);
+        final Drawable bottom = new ColorDrawable(Color.BLACK);
+
+        final TextInputEditText editText = new TextInputEditText(activity);
+        TextViewCompat.setCompoundDrawablesRelative(editText, start, top, end, bottom);
+
+        // Now add the EditText to a TextInputLayout
+        TextInputLayout til = (TextInputLayout)
+                activity.findViewById(R.id.textinput_noedittext);
+        til.addView(editText);
+
+        // Finally assert that all of the drawables are untouched
+        final Drawable[] compoundDrawables = TextViewCompat.getCompoundDrawablesRelative(editText);
+        assertSame(start, compoundDrawables[0]);
+        assertSame(top, compoundDrawables[1]);
+        assertSame(end, compoundDrawables[2]);
+        assertSame(bottom, compoundDrawables[3]);
     }
 
     static ViewAssertion isHintExpanded(final boolean expanded) {

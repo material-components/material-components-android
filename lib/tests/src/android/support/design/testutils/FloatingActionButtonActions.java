@@ -103,6 +103,30 @@ public class FloatingActionButtonActions {
         };
     }
 
+    public static ViewAction setCompatElevation(final float size) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(FloatingActionButton.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets FloatingActionButton elevation";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                final FloatingActionButton fab = (FloatingActionButton) view;
+                fab.setCompatElevation(size);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
     public static ViewAction setLayoutGravity(final int gravity) {
         return new ViewAction() {
             @Override
