@@ -19,6 +19,7 @@ import static android.support.design.testutils.TestUtilsActions.waitUntilIdle;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
@@ -26,6 +27,10 @@ import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 
 public class SnackbarUtils {
+    public interface TransientBottomBarAction {
+        void perform() throws Throwable;
+    }
+
     private static class TransientBottomBarShownCallback
             extends BaseTransientBottomBar.BaseCallback<BaseTransientBottomBar>
             implements IdlingResource {
@@ -105,13 +110,12 @@ public class SnackbarUtils {
 
     /**
      * Helper method that shows that specified {@link Snackbar} and waits until
-     * it has been fully shown. Note that calling this method will reset the currently
-     * set {@link Snackbar.Callback}.
+     * it has been fully shown.
      */
     public static void showTransientBottomBarAndWaitUntilFullyShown(
-            BaseTransientBottomBar transientBottomBar) {
+            @NonNull BaseTransientBottomBar transientBottomBar) {
         TransientBottomBarShownCallback callback = new TransientBottomBarShownCallback();
-        transientBottomBar.setCallback(callback);
+        transientBottomBar.addCallback(callback);
         try {
             // Register our listener as idling resource so that Espresso waits until the
             // the bar has been fully shown
@@ -128,25 +132,40 @@ public class SnackbarUtils {
             // Unregister our idling resource
             Espresso.unregisterIdlingResources(callback);
             // And remove our tracker listener from Snackbar
-            transientBottomBar.setCallback(null);
+            transientBottomBar.removeCallback(callback);
         }
     }
 
     /**
      * Helper method that dismissed that specified {@link Snackbar} and waits until
-     * it has been fully dismissed. Note that calling this method will reset the currently
-     * set {@link Snackbar.Callback}.
+     * it has been fully dismissed.
      */
     public static void dismissTransientBottomBarAndWaitUntilFullyDismissed(
-            BaseTransientBottomBar transientBottomBar) {
+            @NonNull final BaseTransientBottomBar transientBottomBar) throws Throwable {
+        performActionAndWaitUntilFullyDismissed(transientBottomBar,
+                new TransientBottomBarAction() {
+                    @Override
+                    public void perform() throws Throwable {
+                        transientBottomBar.dismiss();
+                    }
+                });
+    }
+
+    /**
+     * Helper method that dismissed that specified {@link Snackbar} and waits until
+     * it has been fully dismissed.
+     */
+    public static void performActionAndWaitUntilFullyDismissed(
+            @NonNull BaseTransientBottomBar transientBottomBar,
+            @NonNull TransientBottomBarAction action) throws Throwable {
         TransientBottomBarDismissedCallback callback = new TransientBottomBarDismissedCallback();
-        transientBottomBar.setCallback(callback);
+        transientBottomBar.addCallback(callback);
         try {
             // Register our listener as idling resource so that Espresso waits until the
             // the bar has been fully dismissed
             Espresso.registerIdlingResources(callback);
-            // Dismiss the bar
-            transientBottomBar.dismiss();
+            // Run the action
+            action.perform();
             // Mark the callback to require waiting for idle state
             callback.mNeedsIdle = true;
             // Perform a dummy Espresso action that loops until the UI thread is idle. This
@@ -157,17 +176,16 @@ public class SnackbarUtils {
             // Unregister our idling resource
             Espresso.unregisterIdlingResources(callback);
             // And remove our tracker listener from Snackbar
-            transientBottomBar.setCallback(null);
+            transientBottomBar.removeCallback(null);
         }
     }
 
     /**
-     * Helper method that waits until the given bar has been fully dismissed. Note that
-     * calling this method will reset the currently set {@link Snackbar.Callback}.
+     * Helper method that waits until the given bar has been fully dismissed.
      */
-    public static void waitUntilFullyDismissed(BaseTransientBottomBar transientBottomBar) {
+    public static void waitUntilFullyDismissed(@NonNull BaseTransientBottomBar transientBottomBar) {
         TransientBottomBarDismissedCallback callback = new TransientBottomBarDismissedCallback();
-        transientBottomBar.setCallback(callback);
+        transientBottomBar.addCallback(callback);
         try {
             // Register our listener as idling resource so that Espresso waits until the
             // the bar has been fully dismissed
@@ -182,7 +200,7 @@ public class SnackbarUtils {
             // Unregister our idling resource
             Espresso.unregisterIdlingResources(callback);
             // And remove our tracker listener from Snackbar
-            transientBottomBar.setCallback(null);
+            transientBottomBar.removeCallback(null);
         }
     }
 }

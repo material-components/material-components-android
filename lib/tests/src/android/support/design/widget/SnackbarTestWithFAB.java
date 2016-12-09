@@ -63,14 +63,14 @@ public class SnackbarTestWithFAB extends BaseInstrumentationTestCase<SnackbarAct
         // Now wait until the Snackbar has been dismissed
         SnackbarUtils.waitUntilFullyDismissed(snackbar);
 
-        // And check that the FAB is back in it's original position
+        // And check that the FAB is back in its original position
         fab.getLocationOnScreen(fabPosition);
         assertEquals(originalFabPosition[0], fabPosition[0]);
         assertEquals(originalFabPosition[1], fabPosition[1]);
     }
 
     @Test
-    public void testIndefiniteSnackbarDodgesFab() {
+    public void testIndefiniteSnackbarDodgesFab() throws Throwable {
         final int[] originalFabPosition = new int[2];
         final View fab = mCoordinatorLayout.findViewById(R.id.fab);
         fab.getLocationOnScreen(originalFabPosition);
@@ -89,7 +89,7 @@ public class SnackbarTestWithFAB extends BaseInstrumentationTestCase<SnackbarAct
         // Now dismiss the Snackbar and wait for it to be dismissed
         SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
 
-        // And check that the FAB is back in it's original position
+        // And check that the FAB is back in its original position
         fab.getLocationOnScreen(fabPosition);
         assertEquals(originalFabPosition[0], fabPosition[0]);
         assertEquals(originalFabPosition[1], fabPosition[1]);

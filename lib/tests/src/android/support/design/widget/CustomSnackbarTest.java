@@ -20,6 +20,7 @@ import static android.support.design.testutils.TestUtilsActions.setLayoutDirecti
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.swipeLeft;
 import static android.support.test.espresso.action.ViewActions.swipeRight;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
@@ -27,21 +28,21 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.core.AllOf.allOf;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
-import android.content.res.Resources;
-import android.os.SystemClock;
 import android.support.annotation.Nullable;
 import android.support.design.test.R;
 import android.support.design.testutils.SnackbarUtils;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.filters.MediumTest;
+import android.support.test.filters.SmallTest;
 import android.support.v4.view.ViewCompat;
-import android.test.suitebuilder.annotation.SmallTest;
 import android.view.LayoutInflater;
 
 import org.junit.Before;
@@ -68,7 +69,7 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
     }
 
     private void verifySnackbarContent(final CustomSnackbar snackbar, final String expectedTitle,
-            final String expectedSubtitle) {
+            final String expectedSubtitle) throws Throwable {
         // Show the snackbar
         SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
@@ -114,11 +115,9 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
 
     @Test
     @SmallTest
-    public void testBasicContent() {
+    public void testBasicContent() throws Throwable {
         // Verify different combinations of snackbar content (title / subtitle and action)
         // and duration
-
-        final Resources res = mActivityTestRule.getActivity().getResources();
 
         // Short duration
         verifySnackbarContent(
@@ -147,38 +146,42 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
                 mock(BaseTransientBottomBar.BaseCallback.class);
         final CustomSnackbar snackbar = makeCustomSnackbar().setTitle(TITLE_TEXT)
                 .setSubtitle(SUBTITLE_TEXT).setDuration(length)
-                .setCallback(mockCallback);
+                .addCallback(mockCallback);
 
-        // Note that unlike other tests around Snackbar that use Espresso's IdlingResources
-        // to wait until the snackbar is shown
-        // (SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown),
-        // here we want to verify our callback has been called with onShown after snackbar is shown
-        // and with onDismissed after snackbar is dismissed.
-
-        // Now show the Snackbar
-        snackbar.show();
-        // sleep for the animation
-        SystemClock.sleep(Snackbar.ANIMATION_DURATION + 50);
+        // Show the snackbar
+        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+        // Verify that our onShown has been called
+        verify(mockCallback, times(1)).onShown(snackbar);
+        // and that the snackbar is either shown or queued to be shown
+        assertTrue(snackbar.isShownOrQueued());
+        // and also check that we have the intended title / subtitle displayed somewhere in
+        // our hierarchy
+        onView(withText(TITLE_TEXT)).check(matches(isCompletelyDisplayed()));
+        onView(withText(SUBTITLE_TEXT)).check(matches(isCompletelyDisplayed()));
 
         // Now perform the UI interaction
-        if (action != null) {
-            interaction.perform(action);
-        } else if (dismissAction != null) {
-            mActivityTestRule.runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    dismissAction.dismiss(snackbar);
-                }
-            });
-        }
-        // wait until the Snackbar has been removed from the view hierarchy
-        while (snackbar.isShownOrQueued()) {
-            SystemClock.sleep(20);
-        }
-        // and verify that our callback was invoked with onShown and onDismissed
-        verify(mockCallback, times(1)).onShown(snackbar);
+        SnackbarUtils.performActionAndWaitUntilFullyDismissed(snackbar,
+                new SnackbarUtils.TransientBottomBarAction() {
+                    @Override
+                    public void perform() throws Throwable {
+                        if (action != null) {
+                            interaction.perform(action);
+                        } else if (dismissAction != null) {
+                            mActivityTestRule.runOnUiThread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    dismissAction.dismiss(snackbar);
+                                }
+                            });
+                        }
+                    }
+                });
+
+        // Verify that our onDismissed has been called
         verify(mockCallback, times(1)).onDismissed(snackbar, expectedEvent);
         verifyNoMoreInteractions(mockCallback);
+        // and that the snackbar is neither shown nor queued to be shown
+        assertFalse(snackbar.isShownOrQueued());
     }
 
     @Test
@@ -258,5 +261,28 @@ public class CustomSnackbarTest extends BaseInstrumentationTestCase<SnackbarActi
 
         // And dismiss the second snackbar to get back to clean state
         SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(anotherSnackbar);
+    }
+
+    @Test
+    @MediumTest
+    public void testMultipleCallbacks() throws Throwable {
+        final CustomSnackbar snackbar = makeCustomSnackbar().setTitle(TITLE_TEXT)
+                .setSubtitle(SUBTITLE_TEXT).setDuration(Snackbar.LENGTH_INDEFINITE);
+        final BaseTransientBottomBar.BaseCallback mockCallback1 =
+                mock(BaseTransientBottomBar.BaseCallback.class);
+        final BaseTransientBottomBar.BaseCallback mockCallback2 =
+                mock(BaseTransientBottomBar.BaseCallback.class);
+        snackbar.addCallback(mockCallback1);
+        snackbar.addCallback(mockCallback2);
+
+        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+        verify(mockCallback1, times(1)).onShown(snackbar);
+        verify(mockCallback2, times(1)).onShown(snackbar);
+
+        SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
+        verify(mockCallback1, times(1)).onDismissed(snackbar,
+                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+        verify(mockCallback2, times(1)).onDismissed(snackbar,
+                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
     }
 }

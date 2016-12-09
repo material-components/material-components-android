@@ -28,6 +28,7 @@ import android.os.Message;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.v4.view.ViewCompat;
@@ -47,6 +48,8 @@ import android.widget.FrameLayout;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Base class for lightweight transient bars that are displayed along the bottom edge of the
@@ -188,7 +191,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     final SnackbarBaseLayout mView;
     private final ContentViewCallback mContentViewCallback;
     private int mDuration;
-    private BaseCallback mCallback;
+
+    @Nullable private BaseCallback mCallback;
+    private List<BaseCallback> mCallbacks;
 
     private final AccessibilityManager mAccessibilityManager;
 
@@ -325,11 +330,69 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     /**
      * Set a callback to be called when this the visibility of this {@link BaseTransientBottomBar}
-     * changes.
+     * changes. Note that this method is deprecated
+     * and you should use {@link #addCallback(BaseCallback)} to add a callback and
+     * {@link #removeCallback(BaseCallback)} to remove a registered callback.
+     *
+     * @param callback Callback to notify when transient bottom bar events occur.
+     * @deprecated Use {@link #addCallback(BaseCallback)}
+     * @see BaseCallback
+     * @see #addCallback(BaseCallback)
+     * @see #removeCallback(BaseCallback)
      */
+    @Deprecated
     @NonNull
     public B setCallback(BaseCallback callback) {
+        // The logic in this method emulates what we had before support for multiple
+        // registered callbacks.
+        if (mCallback != null) {
+            removeCallback(mCallback);
+        }
+        if (callback != null) {
+            addCallback(callback);
+        }
+        // Update the deprecated field so that we can remove the passed callback the next
+        // time we're called
         mCallback = callback;
+        return (B) this;
+    }
+
+    /**
+     * Adds the specified callback to the list of callbacks that will be notified of transient
+     * bottom bar events.
+     *
+     * @param callback Callback to notify when transient bottom bar events occur.
+     * @see #removeCallback(BaseCallback)
+     */
+    @NonNull
+    public B addCallback(@NonNull BaseCallback callback) {
+        if (callback == null) {
+            return (B) this;
+        }
+        if (mCallbacks == null) {
+            mCallbacks = new ArrayList<BaseCallback>();
+        }
+        mCallbacks.add(callback);
+        return (B) this;
+    }
+
+    /**
+     * Removes the specified callback from the list of callbacks that will be notified of transient
+     * bottom bar events.
+     *
+     * @param callback Callback to remove from being notified of transient bottom bar events
+     * @see #addCallback(BaseCallback)
+     */
+    @NonNull
+    public B removeCallback(@NonNull BaseCallback callback) {
+        if (callback == null) {
+            return (B) this;
+        }
+        if (mCallbacks == null) {
+            // This can happen if this method is called before the first call to addCallback
+            return (B) this;
+        }
+        mCallbacks.remove(callback);
         return (B) this;
     }
 
@@ -542,17 +605,26 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     void onViewShown() {
         SnackbarManager.getInstance().onShown(mManagerCallback);
-        if (mCallback != null) {
-            mCallback.onShown(this);
+        if (mCallbacks != null) {
+            // Notify the callbacks. Do that from the end of the list so that if a callback
+            // removes itself as the result of being called, it won't mess up with our iteration
+            int callbackCount = mCallbacks.size();
+            for (int i = callbackCount - 1; i >= 0; i--) {
+                mCallbacks.get(i).onShown(this);
+            }
         }
     }
 
     void onViewHidden(int event) {
         // First tell the SnackbarManager that it has been dismissed
         SnackbarManager.getInstance().onDismissed(mManagerCallback);
-        // Now call the dismiss listener (if available)
-        if (mCallback != null) {
-            mCallback.onDismissed(this, event);
+        if (mCallbacks != null) {
+            // Notify the callbacks. Do that from the end of the list so that if a callback
+            // removes itself as the result of being called, it won't mess up with our iteration
+            int callbackCount = mCallbacks.size();
+            for (int i = callbackCount - 1; i >= 0; i--) {
+                mCallbacks.get(i).onDismissed(this, event);
+            }
         }
         if (Build.VERSION.SDK_INT < 11) {
             // We need to hide the Snackbar on pre-v11 since it uses an old style Animation.

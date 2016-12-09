@@ -48,7 +48,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
     private Snackbar mSnackbar;
 
     @After
-    public void teardown() {
+    public void teardown() throws Throwable {
         // Dismiss the snackbar to get back to clean state for the next test
         if (mSnackbar != null) {
             SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(mSnackbar);
