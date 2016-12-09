@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -48,8 +50,6 @@ import android.widget.ImageView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
-
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 /**
  * Floating action buttons are used for a special type of promoted action. They are distinguished
@@ -123,7 +123,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     private static final int AUTO_MINI_LARGEST_SCREEN_WIDTH = 470;
 
     /** @hide */
-    @RestrictTo(GROUP_ID)
+    @RestrictTo(LIBRARY_GROUP)
     @Retention(RetentionPolicy.SOURCE)
     @IntDef({SIZE_MINI, SIZE_NORMAL, SIZE_AUTO})
     public @interface Size {}

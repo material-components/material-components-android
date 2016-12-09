@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
@@ -50,8 +52,6 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 /**
  * Represents a standard navigation menu for application. The menu contents can be populated
@@ -232,7 +232,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     /**
      * @hide
      */
-    @RestrictTo(GROUP_ID)
+    @RestrictTo(LIBRARY_GROUP)
     @Override
     protected void onInsetsChanged(WindowInsetsCompat insets) {
         mPresenter.dispatchApplyWindowInsets(insets);

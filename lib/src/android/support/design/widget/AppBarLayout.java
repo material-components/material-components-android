@@ -16,6 +16,9 @@
 
 package android.support.design.widget;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.design.widget.ViewUtils.objectEquals;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -46,9 +49,6 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
-import static android.support.design.widget.ViewUtils.objectEquals;
 
 /**
  * AppBarLayout is a vertical {@link LinearLayout} which implements many of the features of
@@ -590,7 +590,7 @@ public class AppBarLayout extends LinearLayout {
     public static class LayoutParams extends LinearLayout.LayoutParams {
 
         /** @hide */
-        @RestrictTo(GROUP_ID)
+        @RestrictTo(LIBRARY_GROUP)
         @IntDef(flag=true, value={
                 SCROLL_FLAG_SCROLL,
                 SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
