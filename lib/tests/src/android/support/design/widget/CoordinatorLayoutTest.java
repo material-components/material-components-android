@@ -571,11 +571,62 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
                 any(View.class)); // target
     }
 
+    @Test
+    public void testDodgeInsetViewWithEmptyBounds() throws Throwable {
+        final CoordinatorLayout col = mActivityTestRule.getActivity().mCoordinatorLayout;
+
+        // Add a view with zero height/width which is set to dodge its bounds
+        final View view = new View(col.getContext());
+        final Behavior spyBehavior = spy(new DodgeBoundsBehavior());
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final CoordinatorLayout.LayoutParams lp = col.generateDefaultLayoutParams();
+                lp.dodgeInsetEdges = Gravity.BOTTOM;
+                lp.gravity = Gravity.BOTTOM;
+                lp.height = 0;
+                lp.width = 0;
+                lp.setBehavior(spyBehavior);
+                col.addView(view, lp);
+            }
+        });
+
+        // Wait for a layout
+        mInstrumentation.waitForIdleSync();
+
+        // Now add an non-empty bounds inset view to the bottom of the CoordinatorLayout
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                final View dodge = new View(col.getContext());
+                final CoordinatorLayout.LayoutParams lp = col.generateDefaultLayoutParams();
+                lp.insetEdge = Gravity.BOTTOM;
+                lp.gravity = Gravity.BOTTOM;
+                lp.height = 60;
+                lp.width = CoordinatorLayout.LayoutParams.MATCH_PARENT;
+                col.addView(dodge, lp);
+            }
+        });
+
+        // Verify that the Behavior of the view with empty bounds does not have its
+        // getInsetDodgeRect() called
+        verify(spyBehavior, never())
+                .getInsetDodgeRect(same(col), same(view), any(Rect.class));
+    }
+
     public static class NestedScrollingBehavior extends CoordinatorLayout.Behavior<ImageView> {
         @Override
         public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, ImageView child,
                 View directTargetChild, View target, int nestedScrollAxes) {
             // Return true so that we always accept nested scroll events
+            return true;
+        }
+    }
+
+    public static class DodgeBoundsBehavior extends Behavior<View> {
+        @Override
+        public boolean getInsetDodgeRect(CoordinatorLayout parent, View child, Rect rect) {
+            rect.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
             return true;
         }
     }

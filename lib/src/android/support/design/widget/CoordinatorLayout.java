@@ -1325,46 +1325,51 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     private void offsetChildByInset(final View child, final Rect inset, final int layoutDirection) {
         if (!ViewCompat.isLaidOut(child)) {
-            // The view has not been laid out yet,
-            // so we can't obtain its bounds.
+            // The view has not been laid out yet, so we can't obtain its bounds.
+            return;
+        }
+
+        final Rect bounds = mTempRect5;
+        bounds.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+        if (bounds.isEmpty()) {
+            // Bounds are empty so there is nothing to dodge against, skip...
             return;
         }
 
         final LayoutParams lp = (LayoutParams) child.getLayoutParams();
-        final int absDodgeInsetEdges = GravityCompat.getAbsoluteGravity(lp.dodgeInsetEdges,
-                layoutDirection);
-
         final Behavior behavior = lp.getBehavior();
-        final Rect rect = mTempRect3;
-        rect.setEmpty();
-        final Rect bounds = mTempRect5;
-        bounds.set(child.getLeft(), child.getTop(), child.getRight(), child.getBottom());
+        final Rect dodgeRect = mTempRect3;
+        dodgeRect.setEmpty();
 
-        if (behavior != null && behavior.getInsetDodgeRect(this, child, rect)) {
+        if (behavior != null && behavior.getInsetDodgeRect(this, child, dodgeRect)) {
             // Make sure that the rect is within the view's bounds
-            if (!bounds.contains(rect)) {
+            if (!bounds.contains(dodgeRect)) {
                 throw new IllegalArgumentException("Rect should be within the child's bounds."
-                        + " Rect:" + rect.toShortString() + " | Bounds:" + bounds.toShortString());
+                        + " Rect:" + dodgeRect.toShortString()
+                        + " | Bounds:" + bounds.toShortString());
             }
         } else {
-            rect.set(bounds);
+            dodgeRect.set(bounds);
         }
 
-        if (rect.isEmpty()) {
+        if (dodgeRect.isEmpty()) {
             // Rect is empty so there is nothing to dodge against, skip...
             return;
         }
 
+        final int absDodgeInsetEdges = GravityCompat.getAbsoluteGravity(lp.dodgeInsetEdges,
+                layoutDirection);
+
         boolean offsetY = false;
         if ((absDodgeInsetEdges & Gravity.TOP) == Gravity.TOP) {
-            int distance = rect.top - lp.topMargin - lp.mInsetOffsetY;
+            int distance = dodgeRect.top - lp.topMargin - lp.mInsetOffsetY;
             if (distance < inset.top) {
                 setInsetOffsetY(child, inset.top - distance);
                 offsetY = true;
             }
         }
         if ((absDodgeInsetEdges & Gravity.BOTTOM) == Gravity.BOTTOM) {
-            int distance = getHeight() - rect.bottom - lp.bottomMargin + lp.mInsetOffsetY;
+            int distance = getHeight() - dodgeRect.bottom - lp.bottomMargin + lp.mInsetOffsetY;
             if (distance < inset.bottom) {
                 setInsetOffsetY(child, distance - inset.bottom);
                 offsetY = true;
@@ -1376,14 +1381,14 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
         boolean offsetX = false;
         if ((absDodgeInsetEdges & Gravity.LEFT) == Gravity.LEFT) {
-            int distance = rect.left - lp.leftMargin - lp.mInsetOffsetX;
+            int distance = dodgeRect.left - lp.leftMargin - lp.mInsetOffsetX;
             if (distance < inset.left) {
                 setInsetOffsetX(child, inset.left - distance);
                 offsetX = true;
             }
         }
         if ((absDodgeInsetEdges & Gravity.RIGHT) == Gravity.RIGHT) {
-            int distance = getWidth() - rect.right - lp.rightMargin + lp.mInsetOffsetX;
+            int distance = getWidth() - dodgeRect.right - lp.rightMargin + lp.mInsetOffsetX;
             if (distance < inset.right) {
                 setInsetOffsetX(child, distance - inset.right);
                 offsetX = true;
