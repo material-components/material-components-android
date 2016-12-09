@@ -53,6 +53,7 @@ import android.support.test.filters.SmallTest;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 
 import org.junit.Test;
@@ -263,6 +264,25 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
 
         // Now check that the EditText is no longer enabled
         onView(withId(R.id.textinput_edittext)).check(matches(not(isEnabled())));
+    }
+
+    @UiThreadTest
+    @Test
+    public void testExtractUiHintSet() {
+        final Activity activity = mActivityTestRule.getActivity();
+
+        // Set a hint on the TextInputLayout
+        final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
+        layout.setHint(INPUT_TEXT);
+
+        final EditText editText = (EditText) activity.findViewById(R.id.textinput_edittext);
+
+        // Now manually pass in a EditorInfo to the EditText and make sure it updates the
+        // hintText to our known value
+        final EditorInfo info = new EditorInfo();
+        editText.onCreateInputConnection(info);
+
+        assertEquals(INPUT_TEXT, info.hintText);
     }
 
     /**

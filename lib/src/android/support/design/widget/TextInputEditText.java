@@ -19,6 +19,7 @@ package android.support.design.widget;
 import android.content.Context;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
+import android.view.View;
 import android.view.ViewParent;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputConnection;
@@ -49,9 +50,13 @@ public class TextInputEditText extends AppCompatEditText {
         if (ic != null && outAttrs.hintText == null) {
             // If we don't have a hint and our parent is a TextInputLayout, use it's hint for the
             // EditorInfo. This allows us to display a hint in 'extract mode'.
-            final ViewParent parent = getParent();
-            if (parent instanceof TextInputLayout) {
-                outAttrs.hintText = ((TextInputLayout) parent).getHint();
+            ViewParent parent = getParent();
+            while (parent instanceof View) {
+                if (parent instanceof TextInputLayout) {
+                    outAttrs.hintText = ((TextInputLayout) parent).getHint();
+                    break;
+                }
+                parent = parent.getParent();
             }
         }
         return ic;
