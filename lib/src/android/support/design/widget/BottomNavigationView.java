@@ -152,7 +152,7 @@ public class BottomNavigationView extends FrameLayout {
         mMenu.setCallback(new MenuBuilder.Callback() {
             @Override
             public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-                return mListener != null && mListener.onNavigationItemSelected(item);
+                return mListener != null && !mListener.onNavigationItemSelected(item);
             }
 
             @Override
@@ -279,7 +279,9 @@ public class BottomNavigationView extends FrameLayout {
          *
          * @param item The selected item
          *
-         * @return true to display the item as the selected item
+         * @return true to display the item as the selected item and false if the item should not
+         *         be selected. Consider setting non-selectable items as disabled preemptively to
+         *         make them appear non-interactive.
          */
         boolean onNavigationItemSelected(@NonNull MenuItem item);
     }

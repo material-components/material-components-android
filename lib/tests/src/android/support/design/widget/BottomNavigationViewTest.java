@@ -27,11 +27,15 @@ import static android.support.test.espresso.matcher.ViewMatchers.withText;
 
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
+import static org.mockito.Mockito.when;
 
 import android.content.res.Resources;
 import android.support.annotation.ColorInt;
@@ -95,22 +99,38 @@ public class BottomNavigationViewTest
                 mock(BottomNavigationView.OnNavigationItemSelectedListener.class);
         mBottomNavigation.setOnNavigationItemSelectedListener(mockedListener);
 
-        // Click one of our items
+        // Make the listener return true to allow selecting the item.
+        when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(true);
         onView(allOf(withText(mMenuStringContent.get(R.id.destination_profile)),
                 isDescendantOfA(withId(R.id.bottom_navigation)), isDisplayed())).perform(click());
-        // And that our listener has been notified of the click
+        // Verify our listener has been notified of the click
         verify(mockedListener, times(1)).onNavigationItemSelected(
                 mBottomNavigation.getMenu().findItem(R.id.destination_profile));
+        // Verify the item is now selected
+        assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
+
+        // Make the listener return false to disallow selecting the item.
+        when(mockedListener.onNavigationItemSelected(any(MenuItem.class))).thenReturn(false);
+        onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
+                isDescendantOfA(withId(R.id.bottom_navigation)), isDisplayed())).perform(click());
+        // Verify our listener has been notified of the click
+        verify(mockedListener, times(1)).onNavigationItemSelected(
+                mBottomNavigation.getMenu().findItem(R.id.destination_people));
+        // Verify the previous item is still selected
+        assertFalse(mBottomNavigation.getMenu().findItem(R.id.destination_people).isChecked());
+        assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
 
         // Set null listener to test that the next click is not going to notify the
-        // previously set listener
+        // previously set listener and will allow selecting items.
         mBottomNavigation.setOnNavigationItemSelectedListener(null);
 
         // Click one of our items
-        onView(allOf(withText(mMenuStringContent.get(R.id.destination_people)),
+        onView(allOf(withText(mMenuStringContent.get(R.id.destination_home)),
                 isDescendantOfA(withId(R.id.bottom_navigation)), isDisplayed())).perform(click());
         // And that our previous listener has not been notified of the click
         verifyNoMoreInteractions(mockedListener);
+        // Verify the correct item is now selected.
+        assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_home).isChecked());
     }
 
     @Test

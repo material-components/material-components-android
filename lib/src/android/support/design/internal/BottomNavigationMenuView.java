@@ -86,8 +86,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             public void onClick(View v) {
                 final BottomNavigationItemView itemView = (BottomNavigationItemView) v;
                 final int itemPosition = itemView.getItemPosition();
-                activateNewButton(itemPosition);
-                mMenu.performItemAction(itemView.getItemData(), mPresenter, 0);
+                if (!mMenu.performItemAction(itemView.getItemData(), mPresenter, 0)) {
+                    activateNewButton(itemPosition);
+                }
             }
         };
         mTempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
