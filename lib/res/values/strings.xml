@@ -21,5 +21,7 @@
     <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
     <!-- The text pattern for the character counter -->
     <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
+    <!-- Content description for the password visibility toggle button. [CHAR LIMIT=NONE] -->
+    <string name="password_toggle_content_description">Toggle password visibility</string>
 </resources>
 

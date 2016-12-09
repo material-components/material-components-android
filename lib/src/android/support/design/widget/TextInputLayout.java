@@ -266,7 +266,11 @@ public class TextInputLayout extends LinearLayout {
     @Override
     public void addView(View child, int index, final ViewGroup.LayoutParams params) {
         if (child instanceof EditText) {
-            mInputFrame.addView(child, new FrameLayout.LayoutParams(params));
+            // Make sure that the EditText is vertically at the bottom, so that it sits on the
+            // EditText's underline
+            FrameLayout.LayoutParams flp = new FrameLayout.LayoutParams(params);
+            flp.gravity = Gravity.CENTER_VERTICAL | (flp.gravity & ~Gravity.VERTICAL_GRAVITY_MASK);
+            mInputFrame.addView(child, flp);
 
             // Now use the EditText's LayoutParams as our own and update them to make enough space
             // for the label
@@ -322,7 +326,7 @@ public class TextInputLayout extends LinearLayout {
 
         final int editTextGravity = mEditText.getGravity();
         mCollapsingTextHelper.setCollapsedTextGravity(
-                Gravity.TOP | (editTextGravity & GravityCompat.RELATIVE_HORIZONTAL_GRAVITY_MASK));
+                Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
         mCollapsingTextHelper.setExpandedTextGravity(editTextGravity);
 
         // Add a TextWatcher so that we know when the text input has changed

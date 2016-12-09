@@ -23,11 +23,15 @@ import static android.support.design.testutils.TextInputLayoutActions.setError;
 import static android.support.design.testutils.TextInputLayoutActions.setErrorEnabled;
 import static android.support.design.testutils.TextInputLayoutActions
         .setPasswordVisibilityToggleEnabled;
+import static android.support.design.testutils.TextInputLayoutMatchers
+        .hasPasswordToggleContentDescription;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.hasContentDescription;
+import static android.support.test.espresso.contrib.AccessibilityChecks.accessibilityAssertion;
 import static android.support.test.espresso.matcher.ViewMatchers.isChecked;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
@@ -50,6 +54,7 @@ import android.support.design.test.R;
 import android.support.test.annotation.UiThreadTest;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
+import android.support.test.espresso.contrib.AccessibilityChecks;
 import android.support.test.filters.SmallTest;
 import android.support.v4.widget.TextViewCompat;
 import android.util.AttributeSet;
@@ -381,6 +386,27 @@ public class TextInputLayoutTest extends BaseInstrumentationTestCase<TextInputLa
         assertSame(top, compoundDrawables[1]);
         assertSame(end, compoundDrawables[2]);
         assertSame(bottom, compoundDrawables[3]);
+    }
+
+    @Test
+    public void testPasswordToggleHasDefaultContentDescription() {
+        // Check that the TextInputLayout says that it has a content description
+        onView(withId(R.id.textinput_password))
+                .check(matches(hasPasswordToggleContentDescription()));
+
+        // Check that the underlying toggle view says that it also has a content description
+        onView(withId(R.id.text_input_password_toggle))
+                .check(matches(hasContentDescription()));
+    }
+
+    /**
+     * Simple test that uses AccessibilityChecks to check that the password toggle icon is
+     * 'accessible'.
+     */
+    @Test
+    public void testPasswordToggleIsAccessible() {
+        onView(withId(R.id.text_input_password_toggle))
+                .check(accessibilityAssertion());
     }
 
     static ViewAssertion isHintExpanded(final boolean expanded) {
