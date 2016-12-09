@@ -18,6 +18,5 @@
           package="android.support.design">
     <uses-sdk android:minSdkVersion="9"
               tools:overrideLibrary="android.support.transition"/>
-    <meta-data android:name="android.support.VERSION" android:value="${support-version}" />
     <application />
 </manifest>
