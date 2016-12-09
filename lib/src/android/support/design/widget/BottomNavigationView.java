@@ -234,9 +234,12 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     /**
-     * Returns the text color used on menu items.
+     * Returns colors used for the different states (normal, selected, focused, etc.) of the menu
+     * item text.
      *
      * @see #setItemTextColor(ColorStateList)
+     *
+     * @return the ColorStateList of colors used for the different states of the menu items text.
      *
      * @attr ref R.styleable#BottomNavigationView_itemTextColor
      */
@@ -246,7 +249,8 @@ public class BottomNavigationView extends FrameLayout {
     }
 
     /**
-     * Set the text color to be used on menu items.
+     * Set the colors to use for the different states (normal, selected, focused, etc.) of the menu
+     * item text.
      *
      * @see #getItemTextColor()
      *
