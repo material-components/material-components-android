@@ -16,25 +16,28 @@
 
 package android.support.design.testutils;
 
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
+
 import android.graphics.drawable.Drawable;
+import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
-import android.support.annotation.StringRes;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPager;
 import android.support.v4.widget.TextViewCompat;
-import android.support.v7.widget.Toolbar;
+import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import org.hamcrest.Matcher;
 
-import static android.support.test.espresso.matcher.ViewMatchers.*;
+import org.hamcrest.Matcher;
 
 public class TestUtilsActions {
     /**
@@ -68,7 +71,7 @@ public class TestUtilsActions {
                         // Create a new one
                         final LayoutInflater layoutInflater =
                                 LayoutInflater.from(view.getContext());
-                        final TabLayout newTabLayout =  (TabLayout) layoutInflater.inflate(
+                        final TabLayout newTabLayout = (TabLayout) layoutInflater.inflate(
                                 tabLayoutResId, viewGroup, false);
                         // Make sure we're adding the new TabLayout at the same index
                         viewGroup.addView(newTabLayout, i);
@@ -265,4 +268,31 @@ public class TestUtilsActions {
             }
         };
     }
+
+    /**
+     * Restores the saved hierarchy state.
+     *
+     * @param container The saved hierarchy state.
+     */
+    public static ViewAction restoreHierarchyState(final SparseArray<Parcelable> container) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(View.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "restore the saved state";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+                view.restoreHierarchyState(container);
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
 }

@@ -16,6 +16,8 @@
 
 package android.support.design.internal;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -47,8 +49,6 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
-
 /**
  * @hide
  */
@@ -57,6 +57,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
     private static final String STATE_HIERARCHY = "android:menu:list";
     private static final String STATE_ADAPTER = "android:menu:adapter";
+    private static final String STATE_HEADER = "android:menu:header";
 
     private NavigationMenuView mMenuView;
     LinearLayout mHeaderLayout;
@@ -173,6 +174,11 @@ public class NavigationMenuPresenter implements MenuPresenter {
             if (mAdapter != null) {
                 state.putBundle(STATE_ADAPTER, mAdapter.createInstanceState());
             }
+            if (mHeaderLayout != null) {
+                SparseArray<Parcelable> header = new SparseArray<>();
+                mHeaderLayout.saveHierarchyState(header);
+                state.putSparseParcelableArray(STATE_HEADER, header);
+            }
             return state;
         }
         return null;
@@ -189,6 +195,10 @@ public class NavigationMenuPresenter implements MenuPresenter {
             Bundle adapterState = state.getBundle(STATE_ADAPTER);
             if (adapterState != null) {
                 mAdapter.restoreInstanceState(adapterState);
+            }
+            SparseArray<Parcelable> header = state.getSparseParcelableArray(STATE_HEADER);
+            if (header != null) {
+                mHeaderLayout.restoreHierarchyState(header);
             }
         }
     }
