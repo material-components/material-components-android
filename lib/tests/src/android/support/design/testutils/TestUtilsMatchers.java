@@ -20,8 +20,10 @@ import static org.junit.Assert.assertEquals;
 
 import android.graphics.Color;
 import android.graphics.Rect;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v4.view.GravityCompat;
@@ -454,6 +456,23 @@ public class TestUtilsMatchers {
             @Override
             public boolean matchesSafely(View view) {
                 return view.isPressed();
+            }
+        };
+    }
+
+    /**
+     * Returns a matcher that matches TextViews with the specified typeface.
+     */
+    public static Matcher withTypeface(@NonNull final Typeface typeface) {
+        return new TypeSafeMatcher<TextView>(TextView.class) {
+            @Override
+            public void describeTo(final Description description) {
+                description.appendText("view with typeface: " + typeface);
+            }
+
+            @Override
+            public boolean matchesSafely(final TextView view) {
+                return typeface.equals(view.getTypeface());
             }
         };
     }

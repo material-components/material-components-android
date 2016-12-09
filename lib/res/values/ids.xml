@@ -18,5 +18,8 @@
 
     <item name="view_offset_helper" type="id" />
 
+    <item name="textinput_error" type="id" />
+    <item name="textinput_counter" type="id" />
+
 </resources>
 

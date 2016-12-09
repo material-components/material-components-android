@@ -51,6 +51,7 @@ import android.support.v4.widget.Space;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatDrawableManager;
+import android.support.v7.widget.AppCompatTextView;
 import android.support.v7.widget.TintTypedArray;
 import android.text.Editable;
 import android.text.TextUtils;
@@ -129,6 +130,8 @@ public class TextInputLayout extends LinearLayout {
 
     private LinearLayout mIndicatorArea;
     private int mIndicatorsAdded;
+
+    private Typeface mTypeface;
 
     private boolean mErrorEnabled;
     TextView mErrorView;
@@ -285,21 +288,30 @@ public class TextInputLayout extends LinearLayout {
     }
 
     /**
-     * Set the typeface to use for both the expanded and floating hint.
+     * Set the typeface to use for the hint and any label views (such as counter and error views).
      *
      * @param typeface typeface to use, or {@code null} to use the default.
      */
     public void setTypeface(@Nullable Typeface typeface) {
-        mCollapsingTextHelper.setTypefaces(typeface);
+        if (typeface != mTypeface) {
+            mTypeface = typeface;
+
+            mCollapsingTextHelper.setTypefaces(typeface);
+            if (mCounterView != null) {
+                mCounterView.setTypeface(typeface);
+            }
+            if (mErrorView != null) {
+                mErrorView.setTypeface(typeface);
+            }
+        }
     }
 
     /**
-     * Returns the typeface used for both the expanded and floating hint.
+     * Returns the typeface used for the hint and any label views (such as counter and error views).
      */
     @NonNull
     public Typeface getTypeface() {
-        // This could be either the collapsed or expanded
-        return mCollapsingTextHelper.getCollapsedTypeface();
+        return mTypeface;
     }
 
     private void setEditText(EditText editText) {
@@ -585,7 +597,11 @@ public class TextInputLayout extends LinearLayout {
             }
 
             if (enabled) {
-                mErrorView = new TextView(getContext());
+                mErrorView = new AppCompatTextView(getContext());
+                mErrorView.setId(R.id.textinput_error);
+                if (mTypeface != null) {
+                    mErrorView.setTypeface(mTypeface);
+                }
                 boolean useDefaultColor = false;
                 try {
                     TextViewCompat.setTextAppearance(mErrorView, mErrorTextAppearance);
@@ -621,6 +637,19 @@ public class TextInputLayout extends LinearLayout {
                 mErrorView = null;
             }
             mErrorEnabled = enabled;
+        }
+    }
+
+    /**
+     * Sets the text color and size for the error message from the specified
+     * TextAppearance resource.
+     *
+     * @attr ref android.support.design.R.styleable#TextInputLayout_errorTextAppearance
+     */
+    public void setErrorTextAppearance(@StyleRes int resId) {
+        mErrorTextAppearance = resId;
+        if (mErrorView != null) {
+            TextViewCompat.setTextAppearance(mErrorView, resId);
         }
     }
 
@@ -725,7 +754,11 @@ public class TextInputLayout extends LinearLayout {
     public void setCounterEnabled(boolean enabled) {
         if (mCounterEnabled != enabled) {
             if (enabled) {
-                mCounterView = new TextView(getContext());
+                mCounterView = new AppCompatTextView(getContext());
+                mCounterView.setId(R.id.textinput_counter);
+                if (mTypeface != null) {
+                    mCounterView.setTypeface(mTypeface);
+                }
                 mCounterView.setMaxLines(1);
                 try {
                     TextViewCompat.setTextAppearance(mCounterView, mCounterTextAppearance);

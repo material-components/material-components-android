@@ -26,7 +26,7 @@
 
     <application
             android:supportsRtl="true"
-            android:theme="@style/Theme.AppCompat">
+            android:theme="@style/Theme.Design">
         <uses-library android:name="android.test.runner"/>
 
         <activity

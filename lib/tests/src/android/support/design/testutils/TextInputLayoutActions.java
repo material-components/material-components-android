@@ -18,12 +18,11 @@ package android.support.design.testutils;
 
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
+import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
-import android.support.v4.widget.DrawerLayout;
 import android.view.View;
-import android.widget.TextView;
 
 import org.hamcrest.Matcher;
 
@@ -77,6 +76,54 @@ public class TextInputLayoutActions {
         };
     }
 
+    public static ViewAction setErrorTextAppearance(final int resId) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextInputLayout.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets the error text appearance";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TextInputLayout layout = (TextInputLayout) view;
+                layout.setErrorTextAppearance(resId);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    public static ViewAction setTypeface(final Typeface typeface) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextInputLayout.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets the typeface";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TextInputLayout layout = (TextInputLayout) view;
+                layout.setTypeface(typeface);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
     public static ViewAction setPasswordVisibilityToggleEnabled(final boolean enabled) {
         return new ViewAction() {
             @Override
@@ -101,5 +148,52 @@ public class TextInputLayoutActions {
         };
     }
 
+    public static ViewAction setCounterEnabled(final boolean enabled) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextInputLayout.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets the counter enabled";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TextInputLayout layout = (TextInputLayout) view;
+                layout.setCounterEnabled(enabled);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
+    public static ViewAction setCounterMaxLength(final int maxLength) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isAssignableFrom(TextInputLayout.class);
+            }
+
+            @Override
+            public String getDescription() {
+                return "Sets the counter max length";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                TextInputLayout layout = (TextInputLayout) view;
+                layout.setCounterMaxLength(maxLength);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
 
 }

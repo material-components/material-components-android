@@ -31,4 +31,9 @@
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
     </style>
 
+
+    <style name="TextAppearanceWithThemedCslTextColor" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@color/color_state_list_themed</item>
+    </style>
+
 </resources>
