@@ -1651,6 +1651,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View view = getChildAt(i);
+            if (view.getVisibility() == View.GONE) {
+                // If it's GONE, don't dispatch
+                continue;
+            }
             final LayoutParams lp = (LayoutParams) view.getLayoutParams();
             final Behavior viewBehavior = lp.getBehavior();
             if (viewBehavior != null) {
@@ -1719,6 +1723,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
         for (int i = 0; i < childCount; i++) {
             final View view = getChildAt(i);
+            if (view.getVisibility() == GONE) {
+                // If the child is GONE, skip...
+                continue;
+            }
+
             final LayoutParams lp = (LayoutParams) view.getLayoutParams();
             if (!lp.isNestedScrollAccepted()) {
                 continue;
@@ -1746,6 +1755,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View view = getChildAt(i);
+            if (view.getVisibility() == GONE) {
+                // If the child is GONE, skip...
+                continue;
+            }
+
             final LayoutParams lp = (LayoutParams) view.getLayoutParams();
             if (!lp.isNestedScrollAccepted()) {
                 continue;
@@ -1780,6 +1794,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View view = getChildAt(i);
+            if (view.getVisibility() == GONE) {
+                // If the child is GONE, skip...
+                continue;
+            }
+
             final LayoutParams lp = (LayoutParams) view.getLayoutParams();
             if (!lp.isNestedScrollAccepted()) {
                 continue;
@@ -1804,6 +1823,11 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         final int childCount = getChildCount();
         for (int i = 0; i < childCount; i++) {
             final View view = getChildAt(i);
+            if (view.getVisibility() == GONE) {
+                // If the child is GONE, skip...
+                continue;
+            }
+
             final LayoutParams lp = (LayoutParams) view.getLayoutParams();
             if (!lp.isNestedScrollAccepted()) {
                 continue;

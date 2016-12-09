@@ -16,11 +16,16 @@
 
 package android.support.design.widget;
 
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.swipeUp;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+
 import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Matchers.same;
 import static org.mockito.Mockito.atLeastOnce;
 import static org.mockito.Mockito.doCallRealMethod;
@@ -33,6 +38,7 @@ import static org.mockito.Mockito.verify;
 
 import android.app.Instrumentation;
 import android.graphics.Rect;
+import android.support.design.test.R;
 import android.support.design.testutils.CoordinatorLayoutUtils;
 import android.support.design.widget.CoordinatorLayout.Behavior;
 import android.support.test.InstrumentationRegistry;
@@ -43,6 +49,7 @@ import android.support.v4.view.WindowInsetsCompat;
 import android.view.Gravity;
 import android.view.View;
 import android.view.View.MeasureSpec;
+import android.widget.ImageView;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -395,7 +402,7 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
     }
 
     @Test
-    public void testGoneNotMeasuredLaidOut() throws Throwable {
+    public void testGoneViewsNotMeasuredLaidOut() throws Throwable {
         final CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
         final CoordinatorLayout col = activity.mCoordinatorLayout;
 
@@ -430,5 +437,139 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
         assertTrue(imageView.getMeasuredWidth() > 0);
         assertTrue(imageView.getMeasuredHeight() > 0);
         assertTrue(ViewCompat.isLaidOut(imageView));
+    }
+
+    @Test
+    public void testNestedScrollingDispatchesToBehavior() throws Throwable {
+        final CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
+        final CoordinatorLayout col = activity.mCoordinatorLayout;
+
+        // Now create a view and add it to the CoordinatorLayout with the spy behavior
+        final ImageView imageView = new ImageView(activity);
+        final CoordinatorLayout.Behavior behavior = spy(new NestedScrollingBehavior());
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CoordinatorLayout.LayoutParams clp = new CoordinatorLayout.LayoutParams(200, 200);
+                clp.setBehavior(behavior);
+                col.addView(imageView, clp);
+            }
+        });
+
+        // Now vertically swipe up on the NSV, causing nested scrolling to occur
+        onView(withId(R.id.nested_scrollview)).perform(swipeUp());
+
+        // Verify that the Behavior's onStartNestedScroll was called once
+        verify(behavior, times(1)).onStartNestedScroll(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class), // target
+                any(View.class), // direct child target
+                any(int.class)); // axes
+
+        // Verify that the Behavior's onNestedScrollAccepted was called once
+        verify(behavior, times(1)).onNestedScrollAccepted(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class), // target
+                any(View.class), // direct child target
+                any(int.class)); // axes
+
+        // Verify that the Behavior's onNestedPreScroll was called at least once
+        verify(behavior, atLeastOnce()).onNestedPreScroll(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class), // target
+                any(int.class), // dx
+                any(int.class), // dy
+                any(int[].class)); // consumed
+
+        // Verify that the Behavior's onNestedScroll was called at least once
+        verify(behavior, atLeastOnce()).onNestedScroll(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class), // target
+                any(int.class), // dx consumed
+                any(int.class), // dy consumed
+                any(int.class), // dx unconsumed
+                any(int.class)); // dy unconsumed
+
+        // Verify that the Behavior's onStopNestedScroll was called once
+        verify(behavior, times(1)).onStopNestedScroll(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class)); // target
+    }
+
+    @Test
+    public void testNestedScrollingDispatchingToBehaviorWithGoneView() throws Throwable {
+        final CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
+        final CoordinatorLayout col = activity.mCoordinatorLayout;
+
+        // Now create a GONE view and add it to the CoordinatorLayout with the spy behavior
+        final ImageView imageView = new ImageView(activity);
+        imageView.setVisibility(View.GONE);
+        final CoordinatorLayout.Behavior behavior = spy(new NestedScrollingBehavior());
+        mActivityTestRule.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                CoordinatorLayout.LayoutParams clp = new CoordinatorLayout.LayoutParams(200, 200);
+                clp.setBehavior(behavior);
+                col.addView(imageView, clp);
+            }
+        });
+
+        // Now vertically swipe up on the NSV, causing nested scrolling to occur
+        onView(withId(R.id.nested_scrollview)).perform(swipeUp());
+
+        // Verify that the Behavior's onStartNestedScroll was not called
+        verify(behavior, never()).onStartNestedScroll(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class), // target
+                any(View.class), // direct child target
+                any(int.class)); // axes
+
+        // Verify that the Behavior's onNestedScrollAccepted was not called
+        verify(behavior, never()).onNestedScrollAccepted(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class), // target
+                any(View.class), // direct child target
+                any(int.class)); // axes
+
+        // Verify that the Behavior's onNestedPreScroll was not called
+        verify(behavior, never()).onNestedPreScroll(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class), // target
+                any(int.class), // dx
+                any(int.class), // dy
+                any(int[].class)); // consumed
+
+        // Verify that the Behavior's onNestedScroll was not called
+        verify(behavior, never()).onNestedScroll(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class), // target
+                any(int.class), // dx consumed
+                any(int.class), // dy consumed
+                any(int.class), // dx unconsumed
+                any(int.class)); // dy unconsumed
+
+        // Verify that the Behavior's onStopNestedScroll was not called
+        verify(behavior, never()).onStopNestedScroll(
+                eq(col), // parent
+                eq(imageView), // child
+                any(View.class)); // target
+    }
+
+    public static class NestedScrollingBehavior extends CoordinatorLayout.Behavior<ImageView> {
+        @Override
+        public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, ImageView child,
+                View directTargetChild, View target, int nestedScrollAxes) {
+            // Return true so that we always accept nested scroll events
+            return true;
+        }
     }
 }

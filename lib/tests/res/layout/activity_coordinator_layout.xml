@@ -22,6 +22,19 @@
     <android.support.design.widget.CoordinatorLayout
         android:id="@+id/coordinator"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent">
+
+        <android.support.v4.widget.NestedScrollView
+            android:id="@+id/nested_scrollview"
+            android:layout_height="match_parent"
+            android:layout_width="match_parent">
+
+            <View android:layout_width="match_parent"
+                  android:layout_height="5000dp" />
+
+        </android.support.v4.widget.NestedScrollView>
+
+
+    </android.support.design.widget.CoordinatorLayout>
 
 </FrameLayout>
