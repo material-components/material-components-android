@@ -56,7 +56,9 @@ import android.widget.FrameLayout;
  *
  * <p>
  * The bar contents can be populated by specifying a menu resource file. Each menu item title, icon
- * and enabled state will be used for displaying bottom navigation bar items.
+ * and enabled state will be used for displaying bottom navigation bar items. Menu items can also be
+ * used for programmatically selecting which destination is currently active. It can be done using
+ * {@code MenuItem#setChecked(true)}
  * </p>
  *
  * <pre>
