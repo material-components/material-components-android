@@ -362,6 +362,7 @@ public class BottomSheetBehaviorTest extends
     }
 
     @Test
+    @MediumTest
     public void testSkipCollapsed() throws Throwable {
         getBehavior().setSkipCollapsed(true);
         checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
@@ -631,6 +632,7 @@ public class BottomSheetBehaviorTest extends
     }
 
     @Test
+    @MediumTest
     public void testFabVisibility() {
         withFabVisibilityChange(false, new Runnable() {
             @Override
@@ -655,6 +657,7 @@ public class BottomSheetBehaviorTest extends
     }
 
     @Test
+    @MediumTest
     public void testAutoPeekHeight() throws Throwable {
         mActivityTestRule.runOnUiThread(new Runnable() {
             @Override
@@ -688,6 +691,7 @@ public class BottomSheetBehaviorTest extends
     }
 
     @Test
+    @MediumTest
     public void testDynamicContent() throws Throwable {
         registerIdlingResourceCallback();
         try {
