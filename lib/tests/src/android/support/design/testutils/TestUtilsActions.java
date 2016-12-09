@@ -240,6 +240,29 @@ public class TestUtilsActions {
         };
     }
 
+    public static ViewAction setClickable(final boolean clickable) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String getDescription() {
+                return "set clickable";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+
+                view.setClickable(clickable);
+
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
     /**
      * Sets compound drawables on {@link TextView}
      */

@@ -530,10 +530,15 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
 
     @Override
     public boolean onTouchEvent(MotionEvent ev) {
-        if(getContentRect(mTouchArea) && !mTouchArea.contains((int) ev.getX(), (int) ev.getY())) {
-            return false;
+        switch (ev.getAction()) {
+            case MotionEvent.ACTION_DOWN:
+                // Skipping the gesture if it doesn't start in in the FAB 'content' area
+                if (getContentRect(mTouchArea)
+                        && !mTouchArea.contains((int) ev.getX(), (int) ev.getY())) {
+                    return false;
+                }
+                break;
         }
-
         return super.onTouchEvent(ev);
     }
 

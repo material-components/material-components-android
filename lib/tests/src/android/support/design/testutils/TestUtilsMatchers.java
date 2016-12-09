@@ -440,4 +440,21 @@ public class TestUtilsMatchers {
             }
         };
     }
+
+    /**
+     * Returns a matcher that matches {@link View}s that are pressed.
+     */
+    public static Matcher<View> isPressed() {
+        return new TypeSafeMatcher<View>() {
+            @Override
+            public void describeTo(Description description) {
+                description.appendText("is pressed");
+            }
+
+            @Override
+            public boolean matchesSafely(View view) {
+                return view.isPressed();
+            }
+        };
+    }
 }

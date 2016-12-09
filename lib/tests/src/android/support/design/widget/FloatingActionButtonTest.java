@@ -23,7 +23,9 @@ import static android.support.design.testutils.FloatingActionButtonActions.setIm
 import static android.support.design.testutils.FloatingActionButtonActions.setLayoutGravity;
 import static android.support.design.testutils.FloatingActionButtonActions.setSize;
 import static android.support.design.testutils.FloatingActionButtonActions.showThenHide;
+import static android.support.design.testutils.TestUtilsActions.setClickable;
 import static android.support.design.testutils.TestUtilsActions.setEnabled;
+import static android.support.design.testutils.TestUtilsMatchers.isPressed;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentAreaOnMargins;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentHeight;
@@ -36,8 +38,13 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
 
 import android.graphics.Color;
+import android.graphics.Rect;
 import android.support.design.test.R;
 import android.support.design.testutils.TestUtils;
+import android.support.test.espresso.action.CoordinatesProvider;
+import android.support.test.espresso.action.GeneralSwipeAction;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Swipe;
 import android.support.test.filters.SmallTest;
 import android.view.Gravity;
 import android.view.View;
@@ -137,6 +144,47 @@ public class FloatingActionButtonTest
                 .perform(setVisibility(View.GONE))
                 .perform(showThenHide(FloatingActionButtonImpl.SHOW_HIDE_ANIM_DURATION))
                 .check(matches(not(isDisplayed())));
+    }
+
+    @Test
+    public void testClickableTouchAndDragOffView() {
+        onView(withId(R.id.fab_standard))
+                .perform(setClickable(true))
+                .perform(new GeneralSwipeAction(
+                        Swipe.SLOW,
+                        new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                // Create coordinators that in the center of the FAB's content area
+                                final FloatingActionButton fab = (FloatingActionButton) view;
+
+                                final int[] xy = new int[2];
+                                fab.getLocationOnScreen(xy);
+                                final Rect rect = new Rect();
+                                fab.getContentRect(rect);
+
+                                return new float[] {
+                                        xy[0] + rect.centerX(),
+                                        xy[1] + rect.centerY()
+                                };
+                            }
+                        },
+                        new CoordinatesProvider() {
+                            @Override
+                            public float[] calculateCoordinates(View view) {
+                                // Create coordinators that in the center horizontally, but well
+                                // below the view vertically (by 50% of the height)
+                                final int[] xy = new int[2];
+                                view.getLocationOnScreen(xy);
+
+                                return new float[]{
+                                        xy[0] + (view.getWidth() / 2f),
+                                        xy[1] + (view.getHeight() * 1.5f)
+                                };
+                            }
+                        },
+                        Press.FINGER))
+                .check(matches(not(isPressed())));
     }
 
     @Test
