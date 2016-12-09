@@ -16,6 +16,7 @@
 
 package android.support.design.widget;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -30,6 +31,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
@@ -1183,7 +1185,10 @@ public class CollapsingToolbarLayout extends FrameLayout {
             super(source);
         }
 
+        @RequiresApi(19)
+        @TargetApi(19)
         public LayoutParams(FrameLayout.LayoutParams source) {
+            // The copy constructor called here only exists on API 19+.
             super(source);
         }
 

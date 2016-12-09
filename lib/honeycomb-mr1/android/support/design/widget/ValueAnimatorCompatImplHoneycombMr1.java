@@ -19,8 +19,12 @@ package android.support.design.widget;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.TargetApi;
+import android.support.annotation.RequiresApi;
 import android.view.animation.Interpolator;
 
+@RequiresApi(12)
+@TargetApi(12)
 class ValueAnimatorCompatImplHoneycombMr1 extends ValueAnimatorCompat.Impl {
 
     private final ValueAnimator mValueAnimator;

@@ -16,7 +16,6 @@
 
 package android.support.design.widget;
 
-import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
@@ -28,13 +27,12 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
-import android.view.animation.AnimationUtils;
-import android.view.animation.Interpolator;
 
-@TargetApi(Build.VERSION_CODES.LOLLIPOP)
+@RequiresApi(21)
+@TargetApi(21)
 class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
     private InsetDrawable mInsetDrawable;

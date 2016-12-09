@@ -16,6 +16,7 @@
 
 package android.support.design.widget;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -25,6 +26,7 @@ import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
@@ -319,7 +321,7 @@ public class AppBarLayout extends LinearLayout {
 
     @Override
     protected LayoutParams generateLayoutParams(ViewGroup.LayoutParams p) {
-        if (p instanceof LinearLayout.LayoutParams) {
+        if (Build.VERSION.SDK_INT >= 19 && p instanceof LinearLayout.LayoutParams) {
             return new LayoutParams((LinearLayout.LayoutParams) p);
         } else if (p instanceof MarginLayoutParams) {
             return new LayoutParams((MarginLayoutParams) p);
@@ -681,11 +683,17 @@ public class AppBarLayout extends LinearLayout {
             super(source);
         }
 
+        @RequiresApi(19)
+        @TargetApi(19)
         public LayoutParams(LinearLayout.LayoutParams source) {
+            // The copy constructor called here only exists on API 19+.
             super(source);
         }
 
+        @RequiresApi(19)
+        @TargetApi(19)
         public LayoutParams(LayoutParams source) {
+            // The copy constructor called here only exists on API 19+.
             super(source);
             mScrollFlags = source.mScrollFlags;
             mScrollInterpolator = source.mScrollInterpolator;

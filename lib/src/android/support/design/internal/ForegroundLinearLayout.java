@@ -16,12 +16,14 @@
 
 package android.support.design.internal;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.v7.widget.LinearLayoutCompat;
@@ -118,6 +120,8 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
         return super.verifyDrawable(who) || (who == mForeground);
     }
 
+    @RequiresApi(11)
+    @TargetApi(11)
     @Override
     public void jumpDrawablesToCurrentState() {
         super.jumpDrawablesToCurrentState();
@@ -222,6 +226,8 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
         }
     }
 
+    @RequiresApi(21)
+    @TargetApi(21)
     @Override
     public void drawableHotspotChanged(float x, float y) {
         super.drawableHotspotChanged(x, y);
