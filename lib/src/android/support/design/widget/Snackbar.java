@@ -51,6 +51,29 @@ import android.widget.TextView;
  * via {@link BaseTransientBottomBar#setCallback(BaseCallback)}.</p>
  */
 public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
+
+    /**
+     * Show the Snackbar indefinitely. This means that the Snackbar will be displayed from the time
+     * that is {@link #show() shown} until either it is dismissed, or another Snackbar is shown.
+     *
+     * @see #setDuration
+     */
+    public static final int LENGTH_INDEFINITE = BaseTransientBottomBar.LENGTH_INDEFINITE;
+
+    /**
+     * Show the Snackbar for a short period of time.
+     *
+     * @see #setDuration
+     */
+    public static final int LENGTH_SHORT = BaseTransientBottomBar.LENGTH_SHORT;
+
+    /**
+     * Show the Snackbar for a long period of time.
+     *
+     * @see #setDuration
+     */
+    public static final int LENGTH_LONG = BaseTransientBottomBar.LENGTH_LONG;
+
     /**
      * Callback class for {@link Snackbar} instances.
      *
@@ -60,10 +83,47 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
      * @see BaseTransientBottomBar#setCallback(BaseCallback)
      */
     public static class Callback extends BaseCallback<Snackbar> {
+        /** Indicates that the Snackbar was dismissed via a swipe.*/
+        public static final int DISMISS_EVENT_SWIPE = BaseCallback.DISMISS_EVENT_SWIPE;
+        /** Indicates that the Snackbar was dismissed via an action click.*/
+        public static final int DISMISS_EVENT_ACTION = BaseCallback.DISMISS_EVENT_ACTION;
+        /** Indicates that the Snackbar was dismissed via a timeout.*/
+        public static final int DISMISS_EVENT_TIMEOUT = BaseCallback.DISMISS_EVENT_TIMEOUT;
+        /** Indicates that the Snackbar was dismissed via a call to {@link #dismiss()}.*/
+        public static final int DISMISS_EVENT_MANUAL = BaseCallback.DISMISS_EVENT_MANUAL;
+        /** Indicates that the Snackbar was dismissed from a new Snackbar being shown.*/
+        public static final int DISMISS_EVENT_CONSECUTIVE = BaseCallback.DISMISS_EVENT_CONSECUTIVE;
+
+        @Override
+        public void onShown(Snackbar sb) {
+            // Stub implementation to make API check happy.
+        }
+
+        @Override
+        public void onDismissed(Snackbar transientBottomBar, @DismissEvent int event) {
+            // Stub implementation to make API check happy.
+        }
     }
 
     private Snackbar(ViewGroup parent, View content, ContentViewCallback contentViewCallback) {
         super(parent, content, contentViewCallback);
+    }
+
+    /**
+     * Set a callback to be called when this the visibility of this {@link BaseTransientBottomBar}
+     * changes. Note that this method is deprecated
+     * and you should use {@link #addCallback(BaseCallback)} to add a callback and
+     * {@link #removeCallback(BaseCallback)} to remove a registered callback.
+     *
+     * @param callback Callback to notify when transient bottom bar events occur.
+     * @deprecated Use {@link #addCallback(BaseCallback)}
+     * @see BaseCallback
+     * @see #addCallback(BaseCallback)
+     * @see #removeCallback(BaseCallback)
+     */
+    @Deprecated
+    public Snackbar setCallback(Callback callback) {
+        return super.setCallback(callback);
     }
 
     /**

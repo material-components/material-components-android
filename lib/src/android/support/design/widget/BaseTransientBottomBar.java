@@ -192,8 +192,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     private final ContentViewCallback mContentViewCallback;
     private int mDuration;
 
-    @Nullable private BaseCallback mCallback;
-    private List<BaseCallback> mCallbacks;
+    @Nullable private BaseCallback<B> mCallback;
+    private List<BaseCallback<B>> mCallbacks;
 
     private final AccessibilityManager mAccessibilityManager;
 
@@ -342,7 +342,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
      */
     @Deprecated
     @NonNull
-    public B setCallback(BaseCallback callback) {
+    public B setCallback(BaseCallback<B> callback) {
         // The logic in this method emulates what we had before support for multiple
         // registered callbacks.
         if (mCallback != null) {
@@ -365,12 +365,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
      * @see #removeCallback(BaseCallback)
      */
     @NonNull
-    public B addCallback(@NonNull BaseCallback callback) {
+    public B addCallback(@NonNull BaseCallback<B> callback) {
         if (callback == null) {
             return (B) this;
         }
         if (mCallbacks == null) {
-            mCallbacks = new ArrayList<BaseCallback>();
+            mCallbacks = new ArrayList<BaseCallback<B>>();
         }
         mCallbacks.add(callback);
         return (B) this;
@@ -384,7 +384,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
      * @see #addCallback(BaseCallback)
      */
     @NonNull
-    public B removeCallback(@NonNull BaseCallback callback) {
+    public B removeCallback(@NonNull BaseCallback<B> callback) {
         if (callback == null) {
             return (B) this;
         }
@@ -610,7 +610,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             // removes itself as the result of being called, it won't mess up with our iteration
             int callbackCount = mCallbacks.size();
             for (int i = callbackCount - 1; i >= 0; i--) {
-                mCallbacks.get(i).onShown(this);
+                mCallbacks.get(i).onShown((B) this);
             }
         }
     }
@@ -623,7 +623,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             // removes itself as the result of being called, it won't mess up with our iteration
             int callbackCount = mCallbacks.size();
             for (int i = callbackCount - 1; i >= 0; i--) {
-                mCallbacks.get(i).onDismissed(this, event);
+                mCallbacks.get(i).onDismissed((B) this, event);
             }
         }
         if (Build.VERSION.SDK_INT < 11) {
