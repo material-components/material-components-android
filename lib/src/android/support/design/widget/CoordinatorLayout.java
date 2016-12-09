@@ -16,6 +16,9 @@
 
 package android.support.design.widget;
 
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.design.widget.ViewUtils.objectEquals;
+
 import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
@@ -71,9 +74,6 @@ import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
-import static android.support.design.widget.ViewUtils.objectEquals;
 
 /**
  * CoordinatorLayout is a super-powered {@link android.widget.FrameLayout FrameLayout}.
@@ -1219,6 +1219,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         for (int i = 0; i < childCount; i++) {
             final View child = mDependencySortedChildren.get(i);
             final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+            if (type == EVENT_PRE_DRAW && child.getVisibility() == View.GONE) {
+                // Do not try to update GONE child views in pre draw updates.
+                continue;
+            }
 
             // Check child views before for anchor
             for (int j = 0; j < i; j++) {
