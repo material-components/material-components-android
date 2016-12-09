@@ -32,6 +32,10 @@ import org.hamcrest.Matcher;
 public class FloatingActionButtonActions {
 
     public static ViewAction setBackgroundTintColor(@ColorInt final int color) {
+        return setBackgroundTintList(ColorStateList.valueOf(color));
+    }
+
+    public static ViewAction setBackgroundTintList(@ColorInt final ColorStateList tint) {
         return new ViewAction() {
             @Override
             public Matcher<View> getConstraints() {
@@ -48,7 +52,7 @@ public class FloatingActionButtonActions {
                 uiController.loopMainThreadUntilIdle();
 
                 final FloatingActionButton fab = (FloatingActionButton) view;
-                fab.setBackgroundTintList(ColorStateList.valueOf(color));
+                fab.setBackgroundTintList(tint);
 
                 uiController.loopMainThreadUntilIdle();
             }

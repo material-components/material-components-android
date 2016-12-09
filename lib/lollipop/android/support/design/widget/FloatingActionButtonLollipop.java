@@ -24,6 +24,7 @@ import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -170,6 +171,11 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
     }
 
     @Override
+    GradientDrawable newGradientDrawableForShape() {
+        return new AlwaysStatefulGradientDrawable();
+    }
+
+    @Override
     void getPadding(Rect rect) {
         if (mShadowViewDelegate.isCompatPaddingEnabled()) {
             final float radius = mShadowViewDelegate.getRadius();
@@ -181,6 +187,19 @@ class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
             rect.set(hPadding, vPadding, hPadding, vPadding);
         } else {
             rect.set(0, 0, 0, 0);
+        }
+    }
+
+    /**
+     * LayerDrawable on L+ caches its isStateful() state and doesn't refresh it,
+     * meaning that if we apply a tint to one of its children, the parent doesn't become
+     * stateful and the tint doesn't work for state changes. We workaround it by saying that we
+     * are always stateful. If we don't have a stateful tint, the change is ignored anyway.
+     */
+    static class AlwaysStatefulGradientDrawable extends GradientDrawable {
+        @Override
+        public boolean isStateful() {
+            return true;
         }
     }
 }

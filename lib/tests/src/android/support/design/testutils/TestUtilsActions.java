@@ -263,6 +263,27 @@ public class TestUtilsActions {
         };
     }
 
+    public static ViewAction setSelected(final boolean selected) {
+        return new ViewAction() {
+            @Override
+            public Matcher<View> getConstraints() {
+                return isDisplayed();
+            }
+
+            @Override
+            public String getDescription() {
+                return "set selected";
+            }
+
+            @Override
+            public void perform(UiController uiController, View view) {
+                uiController.loopMainThreadUntilIdle();
+                view.setSelected(selected);
+                uiController.loopMainThreadUntilIdle();
+            }
+        };
+    }
+
     /**
      * Sets compound drawables on {@link TextView}
      */

@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -182,10 +181,14 @@ abstract class FloatingActionButtonImpl {
     }
 
     GradientDrawable createShapeDrawable() {
-        GradientDrawable d = new GradientDrawable();
+        GradientDrawable d = newGradientDrawableForShape();
         d.setShape(GradientDrawable.OVAL);
         d.setColor(Color.WHITE);
         return d;
+    }
+
+    GradientDrawable newGradientDrawableForShape() {
+        return new GradientDrawable();
     }
 
     boolean isOrWillBeShown() {

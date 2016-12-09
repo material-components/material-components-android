@@ -44,4 +44,12 @@
         android:src="@drawable/ic_add"
         app:backgroundTint="#FF00FF"/>
 
+    <android.support.design.widget.FloatingActionButton
+        android:id="@+id/fab_state_tint"
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_margin="16dp"
+        android:src="@drawable/ic_add"
+        app:backgroundTint="@color/fab_tint"/>
+
 </android.support.design.widget.CoordinatorLayout>

@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import static android.support.design.testutils.FloatingActionButtonActions.hideThenShow;
 import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintColor;
+import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintList;
 import static android.support.design.testutils.FloatingActionButtonActions.setCompatElevation;
 import static android.support.design.testutils.FloatingActionButtonActions.setImageResource;
 import static android.support.design.testutils.FloatingActionButtonActions.setLayoutGravity;
@@ -25,6 +26,7 @@ import static android.support.design.testutils.FloatingActionButtonActions.setSi
 import static android.support.design.testutils.FloatingActionButtonActions.showThenHide;
 import static android.support.design.testutils.TestUtilsActions.setClickable;
 import static android.support.design.testutils.TestUtilsActions.setEnabled;
+import static android.support.design.testutils.TestUtilsActions.setSelected;
 import static android.support.design.testutils.TestUtilsMatchers.isPressed;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentAreaOnMargins;
@@ -37,6 +39,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
 import static org.hamcrest.Matchers.not;
 
+import android.app.Activity;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.design.test.R;
@@ -46,6 +50,7 @@ import android.support.test.espresso.action.GeneralSwipeAction;
 import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Swipe;
 import android.support.test.filters.SmallTest;
+import android.support.v4.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
 
@@ -85,6 +90,42 @@ public class FloatingActionButtonTest
         onView(withId(R.id.fab_tint))
                 .perform(setBackgroundTintColor(Color.GREEN))
                 .check(matches(withFabBackgroundFill(Color.GREEN)));
+    }
+
+    @Test
+    public void testSetStatefulTintAcrossStateChanges() {
+        final Activity activity = mActivityTestRule.getActivity();
+
+        final ColorStateList tint = ContextCompat.getColorStateList(activity, R.color.fab_tint);
+        final int normal = ContextCompat.getColor(activity, R.color.sand_default);
+        final int notSelected = ContextCompat.getColor(activity, R.color.sand_disabled);
+
+        // First set the background tint list to the ColorStateList
+        onView(withId(R.id.fab_standard))
+                .perform(setBackgroundTintList(tint));
+
+        // Assert that the background is tinted correctly across state changes
+        onView(withId(R.id.fab_standard))
+                .perform(setSelected(true))
+                .check(matches(withFabBackgroundFill(normal)))
+                .perform(setSelected(false))
+                .check(matches(withFabBackgroundFill(notSelected)))
+                .perform(setSelected(true))
+                .check(matches(withFabBackgroundFill(normal)));
+    }
+
+    @Test
+    public void testDeclaredStatefulTintAcrossStateChanges() {
+        final Activity activity = mActivityTestRule.getActivity();
+        final int normal = ContextCompat.getColor(activity, R.color.sand_default);
+        final int disabled = ContextCompat.getColor(activity, R.color.sand_disabled);
+
+        // Assert that the background is tinted correctly across state changes
+        onView(withId(R.id.fab_state_tint))
+                .perform(setSelected(true))
+                .check(matches(withFabBackgroundFill(normal)))
+                .perform(setSelected(false))
+                .check(matches(withFabBackgroundFill(disabled)));
     }
 
     @Test
