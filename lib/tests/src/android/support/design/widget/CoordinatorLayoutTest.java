@@ -47,6 +47,7 @@ import android.support.test.filters.SdkSuppress;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.MeasureSpec;
 import android.widget.ImageView;
@@ -444,12 +445,15 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
         final CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
         final CoordinatorLayout col = activity.mCoordinatorLayout;
 
-        // Now create a view and add it to the CoordinatorLayout with the spy behavior
+        // Now create a view and add it to the CoordinatorLayout with the spy behavior,
+        // along with a NestedScrollView
         final ImageView imageView = new ImageView(activity);
         final CoordinatorLayout.Behavior behavior = spy(new NestedScrollingBehavior());
         mActivityTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LayoutInflater.from(activity).inflate(R.layout.include_nestedscrollview, col, true);
+
                 CoordinatorLayout.LayoutParams clp = new CoordinatorLayout.LayoutParams(200, 200);
                 clp.setBehavior(behavior);
                 col.addView(imageView, clp);
@@ -506,13 +510,16 @@ public class CoordinatorLayoutTest extends BaseInstrumentationTestCase<Coordinat
         final CoordinatorLayoutActivity activity = mActivityTestRule.getActivity();
         final CoordinatorLayout col = activity.mCoordinatorLayout;
 
-        // Now create a GONE view and add it to the CoordinatorLayout with the spy behavior
+        // Now create a GONE view and add it to the CoordinatorLayout with the spy behavior,
+        // along with a NestedScrollView
         final ImageView imageView = new ImageView(activity);
         imageView.setVisibility(View.GONE);
         final CoordinatorLayout.Behavior behavior = spy(new NestedScrollingBehavior());
         mActivityTestRule.runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                LayoutInflater.from(activity).inflate(R.layout.include_nestedscrollview, col, true);
+
                 CoordinatorLayout.LayoutParams clp = new CoordinatorLayout.LayoutParams(200, 200);
                 clp.setBehavior(behavior);
                 col.addView(imageView, clp);
