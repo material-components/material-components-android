@@ -97,10 +97,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     @Override
     public void initialize(MenuBuilder menu) {
         mMenu = menu;
-        if (mMenu == null) return;
-        if (mMenu.size() > mActiveButton) {
-            mMenu.getItem(mActiveButton).setChecked(true);
-        }
     }
 
     @Override
@@ -125,7 +121,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
                 }
             }
         } else {
-            final int maxAvailable = width / count;
+            final int maxAvailable = width / (count == 0 ? 1 : count);
             final int childWidth = Math.min(maxAvailable, mActiveItemMaxWidth);
             int extra = width - childWidth * count;
             for (int i = 0; i < count; i++) {
@@ -257,6 +253,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             }
         }
         removeAllViews();
+        if (mMenu.size() == 0) {
+            return;
+        }
         mButtons = new BottomNavigationItemView[mMenu.size()];
         mShiftingMode = mMenu.size() > 3;
         for (int i = 0; i < mMenu.size(); i++) {
@@ -274,6 +273,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             child.setOnClickListener(mOnClickListener);
             addView(child);
         }
+        mActiveButton = Math.min(mMenu.size() - 1, mActiveButton);
+        mMenu.getItem(mActiveButton).setChecked(true);
     }
 
     public void updateMenuView() {

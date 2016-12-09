@@ -42,10 +42,12 @@ import android.support.annotation.ColorInt;
 import android.support.design.test.R;
 import android.support.design.testutils.TestDrawable;
 import android.support.design.testutils.TestUtilsMatchers;
+import android.support.test.annotation.UiThreadTest;
 import android.support.test.filters.SmallTest;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -75,6 +77,20 @@ public class BottomNavigationViewTest
         mMenuStringContent.put(R.id.destination_home, res.getString(R.string.navigate_home));
         mMenuStringContent.put(R.id.destination_profile, res.getString(R.string.navigate_profile));
         mMenuStringContent.put(R.id.destination_people, res.getString(R.string.navigate_people));
+    }
+
+    @UiThreadTest
+    @Test
+    @SmallTest
+    public void testAddItemsWithoutMenuInflation() {
+        BottomNavigationView navigation = new BottomNavigationView(mActivityTestRule.getActivity());
+        mActivityTestRule.getActivity().setContentView(navigation);
+        navigation.getMenu().add("Item1");
+        navigation.getMenu().add("Item2");
+        assertEquals(2, navigation.getMenu().size());
+        navigation.getMenu().removeItem(0);
+        navigation.getMenu().removeItem(0);
+        assertEquals(0, navigation.getMenu().size());
     }
 
     @Test

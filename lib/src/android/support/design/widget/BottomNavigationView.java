@@ -117,7 +117,7 @@ public class BottomNavigationView extends FrameLayout {
         mPresenter.setBottomNavigationMenuView(mMenuView);
         mMenuView.setPresenter(mPresenter);
         mMenu.addMenuPresenter(mPresenter);
-
+        mPresenter.initForMenu(getContext(), mMenu);
 
         // Custom attributes
         TintTypedArray a = TintTypedArray.obtainStyledAttributes(context, attrs,
@@ -188,7 +188,6 @@ public class BottomNavigationView extends FrameLayout {
     public void inflateMenu(int resId) {
         mPresenter.setUpdateSuspended(true);
         getMenuInflater().inflate(resId, mMenu);
-        mPresenter.initForMenu(getContext(), mMenu);
         mPresenter.setUpdateSuspended(false);
         mPresenter.updateMenuView(true);
     }
