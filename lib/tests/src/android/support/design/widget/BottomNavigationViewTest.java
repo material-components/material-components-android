@@ -47,7 +47,6 @@ import android.support.test.filters.SmallTest;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -211,5 +210,28 @@ public class BottomNavigationViewTest
                 matches(TestUtilsMatchers.drawable(greenFill, allowedComponentVariance)));
         onView(allOf(withId(R.id.icon), isDescendantOfA(withId(R.id.destination_people)))).check(
                 matches(TestUtilsMatchers.drawable(blueFill, allowedComponentVariance)));
+    }
+
+    @UiThreadTest
+    @Test
+    @SmallTest
+    public void testItemChecking() throws Throwable {
+        final Menu menu = mBottomNavigation.getMenu();
+        assertTrue(menu.getItem(0).isChecked());
+        checkAndVerifyExclusiveItem(menu, R.id.destination_home);
+        checkAndVerifyExclusiveItem(menu, R.id.destination_profile);
+        checkAndVerifyExclusiveItem(menu, R.id.destination_people);
+    }
+
+    private void checkAndVerifyExclusiveItem(final Menu menu, final int id) throws Throwable {
+        menu.findItem(id).setChecked(true);
+        for (int i = 0; i < menu.size(); i++) {
+            final MenuItem item = menu.getItem(i);
+            if (item.getItemId() == id) {
+                assertTrue(item.isChecked());
+            } else {
+                assertFalse(item.isChecked());
+            }
+        }
     }
 }

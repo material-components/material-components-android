@@ -287,6 +287,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         }
         for (int i = 0; i < menuSize; i++) {
             mPresenter.setUpdateSuspended(true);
+            if (mMenu.getItem(i).isChecked()) {
+                mActiveButton = i;
+            }
             mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
             mPresenter.setUpdateSuspended(false);
         }
@@ -297,10 +300,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
         mAnimationHelper.beginDelayedTransition(this);
 
-        mPresenter.setUpdateSuspended(true);
-        mButtons[mActiveButton].setChecked(false);
-        mButtons[newButton].setChecked(true);
-        mPresenter.setUpdateSuspended(false);
+        mMenu.getItem(newButton).setChecked(true);
 
         mActiveButton = newButton;
     }
