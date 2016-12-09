@@ -24,6 +24,9 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
+import android.support.v4.view.AccessibilityDelegateCompat;
+import android.support.v4.view.ViewCompat;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.util.TypedValue;
 import android.view.View;
@@ -125,6 +128,29 @@ public class BottomSheetDialog extends AppCompatDialog {
                 if (mCancelable && isShowing() && shouldWindowCloseOnTouchOutside()) {
                     cancel();
                 }
+            }
+        });
+        // Handle accessibility events
+        ViewCompat.setAccessibilityDelegate(bottomSheet, new AccessibilityDelegateCompat() {
+            @Override
+            public void onInitializeAccessibilityNodeInfo(View host,
+                    AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+                if (mCancelable) {
+                    info.addAction(AccessibilityNodeInfoCompat.ACTION_DISMISS);
+                    info.setDismissable(true);
+                } else {
+                    info.setDismissable(false);
+                }
+            }
+
+            @Override
+            public boolean performAccessibilityAction(View host, int action, Bundle args) {
+                if (action == AccessibilityNodeInfoCompat.ACTION_DISMISS && mCancelable) {
+                    cancel();
+                    return true;
+                }
+                return super.performAccessibilityAction(host, action, args);
             }
         });
         return coordinator;
