@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.design.R;
@@ -48,7 +49,7 @@ import android.widget.TextView;
  * {@link #setAction(CharSequence, android.view.View.OnClickListener)}.
  * <p>
  * To be notified when a snackbar has been shown or dismissed, you can provide a {@link Callback}
- * via {@link BaseTransientBottomBar#setCallback(BaseCallback)}.</p>
+ * via {@link BaseTransientBottomBar#addCallback(BaseCallback)}.</p>
  */
 public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
@@ -80,7 +81,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
      * Note: this class is here to provide backwards-compatible way for apps written before
      * the existence of the base {@link BaseTransientBottomBar} class.
      *
-     * @see BaseTransientBottomBar#setCallback(BaseCallback)
+     * @see BaseTransientBottomBar#addCallback(BaseCallback)
      */
     public static class Callback extends BaseCallback<Snackbar> {
         /** Indicates that the Snackbar was dismissed via a swipe.*/
@@ -105,25 +106,10 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
         }
     }
 
+    @Nullable private BaseCallback<Snackbar> mCallback;
+
     private Snackbar(ViewGroup parent, View content, ContentViewCallback contentViewCallback) {
         super(parent, content, contentViewCallback);
-    }
-
-    /**
-     * Set a callback to be called when this the visibility of this {@link BaseTransientBottomBar}
-     * changes. Note that this method is deprecated
-     * and you should use {@link #addCallback(BaseCallback)} to add a callback and
-     * {@link #removeCallback(BaseCallback)} to remove a registered callback.
-     *
-     * @param callback Callback to notify when transient bottom bar events occur.
-     * @deprecated Use {@link #addCallback(BaseCallback)}
-     * @see BaseCallback
-     * @see #addCallback(BaseCallback)
-     * @see #removeCallback(BaseCallback)
-     */
-    @Deprecated
-    public Snackbar setCallback(Callback callback) {
-        return super.setCallback(callback);
     }
 
     /**
@@ -291,6 +277,35 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
         final SnackbarContentLayout contentLayout = (SnackbarContentLayout) mView.getChildAt(0);
         final TextView tv = contentLayout.getActionView();
         tv.setTextColor(color);
+        return this;
+    }
+
+    /**
+     * Set a callback to be called when this the visibility of this {@link Snackbar}
+     * changes. Note that this method is deprecated
+     * and you should use {@link #addCallback(BaseCallback)} to add a callback and
+     * {@link #removeCallback(BaseCallback)} to remove a registered callback.
+     *
+     * @param callback Callback to notify when transient bottom bar events occur.
+     * @deprecated Use {@link #addCallback(BaseCallback)}
+     * @see Callback
+     * @see #addCallback(BaseCallback)
+     * @see #removeCallback(BaseCallback)
+     */
+    @Deprecated
+    @NonNull
+    public Snackbar setCallback(Callback callback) {
+        // The logic in this method emulates what we had before support for multiple
+        // registered callbacks.
+        if (mCallback != null) {
+            removeCallback(mCallback);
+        }
+        if (callback != null) {
+            addCallback(callback);
+        }
+        // Update the deprecated field so that we can remove the passed callback the next
+        // time we're called
+        mCallback = callback;
         return this;
     }
 

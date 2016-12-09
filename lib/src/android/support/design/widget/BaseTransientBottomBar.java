@@ -62,7 +62,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
      * Base class for {@link BaseTransientBottomBar} callbacks.
      *
      * @param <B> The transient bottom bar subclass.
-     * @see BaseTransientBottomBar#setCallback(BaseCallback)
+     * @see BaseTransientBottomBar#addCallback(BaseCallback)
      */
     public abstract static class BaseCallback<B> {
         /** Indicates that the Snackbar was dismissed via a swipe.*/
@@ -192,7 +192,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     private final ContentViewCallback mContentViewCallback;
     private int mDuration;
 
-    @Nullable private BaseCallback<B> mCallback;
     private List<BaseCallback<B>> mCallbacks;
 
     private final AccessibilityManager mAccessibilityManager;
@@ -326,35 +325,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     void dispatchDismiss(@BaseCallback.DismissEvent int event) {
         SnackbarManager.getInstance().dismiss(mManagerCallback, event);
-    }
-
-    /**
-     * Set a callback to be called when this the visibility of this {@link BaseTransientBottomBar}
-     * changes. Note that this method is deprecated
-     * and you should use {@link #addCallback(BaseCallback)} to add a callback and
-     * {@link #removeCallback(BaseCallback)} to remove a registered callback.
-     *
-     * @param callback Callback to notify when transient bottom bar events occur.
-     * @deprecated Use {@link #addCallback(BaseCallback)}
-     * @see BaseCallback
-     * @see #addCallback(BaseCallback)
-     * @see #removeCallback(BaseCallback)
-     */
-    @Deprecated
-    @NonNull
-    public B setCallback(BaseCallback<B> callback) {
-        // The logic in this method emulates what we had before support for multiple
-        // registered callbacks.
-        if (mCallback != null) {
-            removeCallback(mCallback);
-        }
-        if (callback != null) {
-            addCallback(callback);
-        }
-        // Update the deprecated field so that we can remove the passed callback the next
-        // time we're called
-        mCallback = callback;
-        return (B) this;
     }
 
     /**

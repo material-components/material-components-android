@@ -34,6 +34,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Matchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
@@ -138,7 +139,8 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
             final @Nullable ViewAction action, final @Nullable DismissAction dismissAction,
             final int length, @Snackbar.Callback.DismissEvent final int expectedEvent)
             throws Throwable {
-        final Snackbar.Callback mockCallback = mock(Snackbar.Callback.class);
+        final BaseTransientBottomBar.BaseCallback mockCallback =
+                mock(BaseTransientBottomBar.BaseCallback.class);
         final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, length)
                 .setAction(ACTION_TEXT, mock(View.OnClickListener.class))
                 .addCallback(mockCallback);
@@ -282,8 +284,7 @@ public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> 
         final Snackbar snackbar =
                 Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
                         .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        final BaseTransientBottomBar.BaseCallback mockCallback =
-                mock(BaseTransientBottomBar.BaseCallback.class);
+        final Snackbar.Callback mockCallback = spy(new Snackbar.Callback());
         snackbar.setCallback(mockCallback);
 
         SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
