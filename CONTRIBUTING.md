@@ -64,7 +64,7 @@ changes to be accepted, the CLA must be signed. It's a quick process, we promise
 
 ### Conventions
 
-MDC follows certain [coding styles and conventions](code-conventions.md) for its code to help
+MDC follows certain [coding styles and conventions](CONVENTIONS.md) for its code to help
 everyone easily read, review, and understand our code. Please follow these conventions when
 submitting pull requests.
 
