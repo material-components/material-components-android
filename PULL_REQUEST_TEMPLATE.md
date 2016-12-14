@@ -1,0 +1,11 @@
+### Thanks for starting a pull request on Material Components!
+
+#### Don't forget:
+
+- [ ] Identify the component the PR relates to in brackets in the title.
+  `[Buttons] Updated documentation`
+- [ ] Link to GitHub issues it solves. `closes #1234`
+- [ ] Sign the CLA bot. You can do this once the pull request is submitted.
+
+[Contributing](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md#pull-requests)
+has more information and tips for a great pull request.

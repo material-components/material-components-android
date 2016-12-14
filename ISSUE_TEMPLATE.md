@@ -1,5 +1,6 @@
 ### Overview
-For usage questions: ask on [Stack  Overflow](http://stackoverflow.com/questions/tagged/material-components).
+For usage questions: ask on
+[Stack  Overflow](http://stackoverflow.com/questions/tagged/material-components).
 
  - Context, problem or idea, solution or next step
  - Screenshots/Video (if possible)

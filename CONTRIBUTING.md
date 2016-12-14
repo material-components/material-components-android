@@ -1,110 +1,54 @@
-Want to contribute? Great! First, read this page (including the [small print](#the-small-print)).
+# General Contributing Guidelines
 
-# Contributing
+The Material Components contributing policies and procedures can be found in the
+main Material Components documentation repository’s
+[contributing page](https://github.com/material-components/material-components/blob/develop/CONTRIBUTING.md).
 
-Material Components is an open source project that accepts contributions
-from community members.
+## Android Additions
 
-- [GitHub Issues](https://github.com/material-components/material-components-android/issues)
-  <!--{: .icon-github }-->
+The Android team also abides by the following policy items.
 
-- [Stack Overflow "material-components"](http://stackoverflow.com/questions/tagged/material-components)
-  <!--{: .icon-stackoverflow }-->
-<!--{: .icon-list }-->
+### Code conventions
 
-- - -
+Since we all want to spend more time coding and less time fiddling with
+whitespace, Material Components for Android uses code conventions and styles to
+encourage consistency. Code with a consistent style is easier (and less
+error-prone!) to review, maintain, and understand.
 
-## Community Structure
+##### Be consistent
 
-Members of the core team are engineers from Google Inc. responsible for the strategic direction of
-Material Components and appointment of technical leaders from the community. The Core Team will
-work with the community to accept contributions in line with the [material design
-spec](https://material.google.com).
+If the style guide is not explicit about a particular situation, the cardinal
+rule is to **be consistent**. For example, take a look at the surrounding code
+and follow its lead, or look for similar cases elsewhere in the codebase.
 
-- - -
+#### General conventions
 
-## Questions?
+TODO: Add general conventions
 
-If you have questions about how to use Material Components:
+#### Style
 
-- Search previous questions that have been answered by visiting [Stack
-  Overflow](http://stackoverflow.com/questions/tagged/material-components).
-- Please post questions to Stack Overflow with the tags `material-components`
-  and `android`.
+We provide configurations for Android Studio that allow for auto-formatting to
+the below guidelines. Java style is also enforced via checkstyle as part of our
+Gradle build.
 
-- - -
+TODO: Link to IDE presets
 
-## Found an Issue?
+##### Java
 
-If you find a bug in the source code or a mistake in the documentation, you can help us by
-[submitting an issue](https://github.com/material-components/material-components-android/issues)
-to our GitHub repository. Even better: send a fix as a [pull request](https://github.com/material-components/material-components-android/compare)!
+We follow the
+[Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
 
-- - -
+##### XML
 
-## Feature Requests
-
-You can request a new feature by [submitting an
-issue](https://github.com/material-components/material-components-android/issues)
-to our GitHub repository.
-
-- - -
-
-## Signing the CLA
-
-Please sign our Contributor License Agreement (CLA) before sending pull requests. For any code
-changes to be accepted, the CLA must be signed. It's a quick process, we promise!
-
-- For individuals we have a [simple click-through form]
-(http://code.google.com/legal/individual-cla-v1.0.html).
-- For corporations we'll need you to sign a different [agreement]
-(http://code.google.com/legal/corporate-cla-v1.0.html).
-
-- - -
-
-### Conventions
-
-MDC follows certain [coding styles and conventions](CONVENTIONS.md) for its code to help
-everyone easily read, review, and understand our code. Please follow these conventions when
-submitting pull requests.
-
-### Tips for a good pull request
-
-Pull requests can be hard to review if they try to tackle too many things
-at once. Phabricator's
-"[Writing Reviewable Code](https://secure.phabricator.com/book/phabflavor/article/writing_reviewable_code/)"
-provides a set of guidelines that help increase the likelihood of your
-pull request getting merged.
-
-In short (slightly modified from the original article):
-
-- A pull request should be as small as possible, but no smaller.
-- The smallest a pull request can be is a single cohesive idea: don't
-  make pull requests so small that they are meaningless on their own.
-- Turn large pull requests into small pull requests by dividing large
-  problems into smaller problems and solving the small problems one at
-  a time.
-- Write sensible pull request descriptions.
-
-Our additions:
-
-- A pull request should affect as few components as possible.
-
-
-### Submitting a [Pull Request](https://github.com/material-components/material-components-android/compare)
-
-Once you have code that is ready to share, please create a
-[pull request](https://github.com/material-components/material-components-android/compare)
-against our [GitHub repo](https://github.com/material-components/material-components-android/).
-See
-[GitHub's documentation about pull requests](https://help.github.com/articles/using-pull-requests)
-for more information.
-
-- - -
-
-### The small print
-
-Contributions made by corporations are covered by a different agreement than
-the one above, the
-[Software Grant and Corporate Contributor License Agreement](https://cla.developers.google.com/about/google-corporate).
-
+- 2 space indentation
+- Resource naming (including IDs) is `lowercase_with_underscores`
+- Attribute ordering:
+  1. `xmlns:android`
+  2. other `xmlns:`
+  3. `android:id`
+  4. `style`
+  5. `android:layout_` attributes
+  6. `android:padding` attributes
+  7. other `android:` attributes
+  8. `app:` attributes
+  9. `tool:` attributes
