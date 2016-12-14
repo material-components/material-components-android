@@ -19,7 +19,7 @@ from community members.
 Members of the core team are engineers from Google Inc. responsible for the strategic direction of
 Material Components and appointment of technical leaders from the community. The Core Team will
 work with the community to accept contributions in line with the [material design
-spec](http://www.google.com/design/spec).
+spec](https://material.google.com).
 
 - - -
 
