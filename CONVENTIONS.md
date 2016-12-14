@@ -2,7 +2,7 @@
 
 Since we all want to spend more time coding and less time fiddling with
 whitespace, Material Components for Android uses code conventions and styles to
-encourage consistency. Code with a consistent coding style is easier (and less
+encourage consistency. Code with a consistent style is easier (and less
 error-prone!) to review, maintain, and understand.
 
 ### Be consistent
@@ -33,6 +33,7 @@ We follow the
 - 2 space indentation
 - Resource naming (including IDs) is `lowercase_with_underscores`
 - Attribute ordering:
+
   1) `xmlns:android`
   2) other `xmlns:`
   3) `android:id`
