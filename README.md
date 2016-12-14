@@ -12,7 +12,7 @@ Android’s SDK based on the SDK’s release schedules.
 
 ## Useful Links
 - [All Components](lib/)
-- Contributing (TODO)
+- [Contributing](CONTRIBUTING.md)
 - [Android Developer’s Guide](https://developer.android.com/training/material/index.html) (external site)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.google.com) (external site)
