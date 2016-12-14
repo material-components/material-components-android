@@ -33,13 +33,12 @@ We follow the
 - 2 space indentation
 - Resource naming (including IDs) is `lowercase_with_underscores`
 - Attribute ordering:
-
-  1) `xmlns:android`
-  2) other `xmlns:`
-  3) `android:id`
-  4) `style`
-  5) `android:layout_` attributes
-  6) `android:padding` attributes
-  7) other `android:` attributes
-  8) `app:` attributes
-  9) `tool:` attributes
+  1. `xmlns:android`
+  2. other `xmlns:`
+  3. `android:id`
+  4. `style`
+  5. `android:layout_` attributes
+  6. `android:padding` attributes
+  7. other `android:` attributes
+  8. `app:` attributes
+  9. `tool:` attributes
