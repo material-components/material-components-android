@@ -13,6 +13,7 @@ Android’s SDK based on the SDK’s release schedules.
 ## Useful Links
 - [All Components](lib/)
 - [Contributing](CONTRIBUTING.md)
+- [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android) (external site)
 - [Android Developer’s Guide](https://developer.android.com/training/material/index.html) (external site)
 - [Material.io](https://www.material.io) (external site)
 - [Material Design Guidelines](https://material.google.com) (external site)
