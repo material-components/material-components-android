@@ -19,20 +19,18 @@ package android.support.design.widget;
 import android.support.design.test.R;
 import android.view.View;
 
-
 public class BottomSheetBehaviorWithInsetsActivity extends BottomSheetBehaviorActivity {
 
-    View mBottomSheetContent;
+  View mBottomSheetContent;
 
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.test_design_bottom_sheet_behavior_with_insets;
-    }
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.test_design_bottom_sheet_behavior_with_insets;
+  }
 
-    @Override
-    protected void onContentViewSet() {
-        super.onContentViewSet();
-        mBottomSheetContent = findViewById(R.id.bottom_sheet_content);
-    }
-
+  @Override
+  protected void onContentViewSet() {
+    super.onContentViewSet();
+    mBottomSheetContent = findViewById(R.id.bottom_sheet_content);
+  }
 }

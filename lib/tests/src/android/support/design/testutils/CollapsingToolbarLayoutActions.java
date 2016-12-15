@@ -23,30 +23,29 @@ import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;
-
 import org.hamcrest.Matcher;
 
 public class CollapsingToolbarLayoutActions {
 
-    public static ViewAction setContentScrimColor(@ColorInt final int color) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  public static ViewAction setContentScrimColor(@ColorInt final int color) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set the content scrim to a color";
-            }
+      @Override
+      public String getDescription() {
+        return "Set the content scrim to a color";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
-                CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) view;
-                ctl.setContentScrimColor(color);
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+        CollapsingToolbarLayout ctl = (CollapsingToolbarLayout) view;
+        ctl.setContentScrimColor(color);
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 }

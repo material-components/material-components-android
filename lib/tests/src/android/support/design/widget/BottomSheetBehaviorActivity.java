@@ -20,38 +20,36 @@ import android.content.Intent;
 import android.support.design.test.R;
 import android.widget.LinearLayout;
 
-
 public class BottomSheetBehaviorActivity extends BaseTestActivity {
 
-    public static String EXTRA_INITIAL_STATE = "initial_state";
+  public static String EXTRA_INITIAL_STATE = "initial_state";
 
-    CoordinatorLayout mCoordinatorLayout;
+  CoordinatorLayout mCoordinatorLayout;
 
-    LinearLayout mBottomSheet;
+  LinearLayout mBottomSheet;
 
-    BottomSheetBehavior mBehavior;
+  BottomSheetBehavior mBehavior;
 
-    FloatingActionButton mFab;
+  FloatingActionButton mFab;
 
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.test_design_bottom_sheet_behavior;
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.test_design_bottom_sheet_behavior;
+  }
+
+  @Override
+  protected void onContentViewSet() {
+    mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
+    mBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
+    mBehavior = BottomSheetBehavior.from(mBottomSheet);
+    mFab = (FloatingActionButton) findViewById(R.id.fab);
+    Intent intent = getIntent();
+    if (intent != null) {
+      int initialState = intent.getIntExtra(EXTRA_INITIAL_STATE, -1);
+      if (initialState != -1) {
+        //noinspection ResourceType
+        mBehavior.setState(initialState);
+      }
     }
-
-    @Override
-    protected void onContentViewSet() {
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-        mBottomSheet = (LinearLayout) findViewById(R.id.bottom_sheet);
-        mBehavior = BottomSheetBehavior.from(mBottomSheet);
-        mFab = (FloatingActionButton) findViewById(R.id.fab);
-        Intent intent = getIntent();
-        if (intent != null) {
-            int initialState = intent.getIntExtra(EXTRA_INITIAL_STATE, -1);
-            if (initialState != -1) {
-                //noinspection ResourceType
-                mBehavior.setState(initialState);
-            }
-        }
-    }
-
+  }
 }

@@ -21,17 +21,16 @@ import android.view.View;
 
 public class CoordinatorLayoutUtils {
 
-    public static class DependentBehavior extends CoordinatorLayout.Behavior<View> {
-        private final View mDependency;
+  public static class DependentBehavior extends CoordinatorLayout.Behavior<View> {
+    private final View mDependency;
 
-        public DependentBehavior(View dependency) {
-            mDependency = dependency;
-        }
-
-        @Override
-        public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
-            return mDependency != null && dependency == mDependency;
-        }
+    public DependentBehavior(View dependency) {
+      mDependency = dependency;
     }
 
+    @Override
+    public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
+      return mDependency != null && dependency == mDependency;
+    }
+  }
 }

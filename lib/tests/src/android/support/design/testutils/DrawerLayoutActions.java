@@ -16,68 +16,64 @@
 
 package android.support.design.testutils;
 
+import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.v4.widget.DrawerLayout;
 import android.view.View;
 import org.hamcrest.Matcher;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-
 public class DrawerLayoutActions {
-    /**
-     * Opens the drawer at the specified edge gravity.
-     */
-    public static ViewAction openDrawer(final int drawerEdgeGravity) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(DrawerLayout.class);
-            }
+  /** Opens the drawer at the specified edge gravity. */
+  public static ViewAction openDrawer(final int drawerEdgeGravity) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(DrawerLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Opens the drawer";
-            }
+      @Override
+      public String getDescription() {
+        return "Opens the drawer";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                DrawerLayout drawerLayout = (DrawerLayout) view;
-                drawerLayout.openDrawer(drawerEdgeGravity);
+        DrawerLayout drawerLayout = (DrawerLayout) view;
+        drawerLayout.openDrawer(drawerEdgeGravity);
 
-                // Wait for a full second to let the inner ViewDragHelper complete the operation
-                uiController.loopMainThreadForAtLeast(1000);
-            }
-        };
-    }
+        // Wait for a full second to let the inner ViewDragHelper complete the operation
+        uiController.loopMainThreadForAtLeast(1000);
+      }
+    };
+  }
 
-    /**
-     * Closes the drawer at the specified edge gravity.
-     */
-    public static ViewAction closeDrawer(final int drawerEdgeGravity) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(DrawerLayout.class);
-            }
+  /** Closes the drawer at the specified edge gravity. */
+  public static ViewAction closeDrawer(final int drawerEdgeGravity) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(DrawerLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Closes the drawer";
-            }
+      @Override
+      public String getDescription() {
+        return "Closes the drawer";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                DrawerLayout drawerLayout = (DrawerLayout) view;
-                drawerLayout.closeDrawer(drawerEdgeGravity);
+        DrawerLayout drawerLayout = (DrawerLayout) view;
+        drawerLayout.closeDrawer(drawerEdgeGravity);
 
-                // Wait for a full second to let the inner ViewDragHelper complete the operation
-                uiController.loopMainThreadForAtLeast(1000);
-            }
-        };
-    }
+        // Wait for a full second to let the inner ViewDragHelper complete the operation
+        uiController.loopMainThreadForAtLeast(1000);
+      }
+    };
+  }
 }

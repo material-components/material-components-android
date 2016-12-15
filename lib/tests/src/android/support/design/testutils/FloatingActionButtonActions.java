@@ -26,185 +26,182 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;
-
 import org.hamcrest.Matcher;
 
 public class FloatingActionButtonActions {
 
-    public static ViewAction setBackgroundTintColor(@ColorInt final int color) {
-        return setBackgroundTintList(ColorStateList.valueOf(color));
-    }
+  public static ViewAction setBackgroundTintColor(@ColorInt final int color) {
+    return setBackgroundTintList(ColorStateList.valueOf(color));
+  }
 
-    public static ViewAction setBackgroundTintList(@ColorInt final ColorStateList tint) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(FloatingActionButton.class);
-            }
+  public static ViewAction setBackgroundTintList(@ColorInt final ColorStateList tint) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets FloatingActionButton background tint";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets FloatingActionButton background tint";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                final FloatingActionButton fab = (FloatingActionButton) view;
-                fab.setBackgroundTintList(tint);
+        final FloatingActionButton fab = (FloatingActionButton) view;
+        fab.setBackgroundTintList(tint);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setImageResource(@DrawableRes final int resId) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(FloatingActionButton.class);
-            }
+  public static ViewAction setImageResource(@DrawableRes final int resId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets FloatingActionButton image resource";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets FloatingActionButton image resource";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                final FloatingActionButton fab = (FloatingActionButton) view;
-                fab.setImageResource(resId);
+        final FloatingActionButton fab = (FloatingActionButton) view;
+        fab.setImageResource(resId);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setSize(@FloatingActionButton.Size final int size) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(FloatingActionButton.class);
-            }
+  public static ViewAction setSize(@FloatingActionButton.Size final int size) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets FloatingActionButton size";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets FloatingActionButton size";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                final FloatingActionButton fab = (FloatingActionButton) view;
-                fab.setSize(size);
+        final FloatingActionButton fab = (FloatingActionButton) view;
+        fab.setSize(size);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setCompatElevation(final float size) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(FloatingActionButton.class);
-            }
+  public static ViewAction setCompatElevation(final float size) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets FloatingActionButton elevation";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets FloatingActionButton elevation";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                final FloatingActionButton fab = (FloatingActionButton) view;
-                fab.setCompatElevation(size);
+        final FloatingActionButton fab = (FloatingActionButton) view;
+        fab.setCompatElevation(size);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setLayoutGravity(final int gravity) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(View.class);
-            }
+  public static ViewAction setLayoutGravity(final int gravity) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(View.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets Views layout_gravity";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets Views layout_gravity";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                CoordinatorLayout.LayoutParams lp =
-                        (CoordinatorLayout.LayoutParams) view.getLayoutParams();
-                lp.gravity = gravity;
-                view.requestLayout();
+        CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
+        lp.gravity = gravity;
+        view.requestLayout();
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction hideThenShow(final int animDuration) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(FloatingActionButton.class);
-            }
+  public static ViewAction hideThenShow(final int animDuration) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Calls hide() then show()";
-            }
+      @Override
+      public String getDescription() {
+        return "Calls hide() then show()";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                FloatingActionButton fab = (FloatingActionButton) view;
-                fab.hide();
-                fab.show();
+        FloatingActionButton fab = (FloatingActionButton) view;
+        fab.hide();
+        fab.show();
 
-                uiController.loopMainThreadForAtLeast(animDuration + 100);
-            }
-        };
-    }
+        uiController.loopMainThreadForAtLeast(animDuration + 100);
+      }
+    };
+  }
 
-    public static ViewAction showThenHide(final int animDuration) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(FloatingActionButton.class);
-            }
+  public static ViewAction showThenHide(final int animDuration) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Calls show() then hide()";
-            }
+      @Override
+      public String getDescription() {
+        return "Calls show() then hide()";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                FloatingActionButton fab = (FloatingActionButton) view;
-                fab.show();
-                fab.hide();
+        FloatingActionButton fab = (FloatingActionButton) view;
+        fab.show();
+        fab.hide();
 
-                uiController.loopMainThreadForAtLeast(animDuration + 50);
-            }
-        };
-    }
-
+        uiController.loopMainThreadForAtLeast(animDuration + 50);
+      }
+    };
+  }
 }

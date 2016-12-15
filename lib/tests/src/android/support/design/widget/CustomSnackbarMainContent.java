@@ -21,34 +21,33 @@ import android.util.AttributeSet;
 import android.widget.RelativeLayout;
 
 /**
- * Layout for the custom snackbar that shows two separate text views and two images
- * in the main content area.
+ * Layout for the custom snackbar that shows two separate text views and two images in the main
+ * content area.
  */
 public class CustomSnackbarMainContent extends RelativeLayout {
-    private final int mMaxWidth;
+  private final int mMaxWidth;
 
-    public CustomSnackbarMainContent(Context context) {
-        this(context, null);
+  public CustomSnackbarMainContent(Context context) {
+    this(context, null);
+  }
+
+  public CustomSnackbarMainContent(Context context, AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
+
+  public CustomSnackbarMainContent(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+
+    mMaxWidth = context.getResources().getDimensionPixelSize(R.dimen.custom_snackbar_max_width);
+  }
+
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    if ((mMaxWidth > 0) && (getMeasuredWidth() > mMaxWidth)) {
+      super.onMeasure(
+          MeasureSpec.makeMeasureSpec(mMaxWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
     }
-
-    public CustomSnackbarMainContent(Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
-    }
-
-    public CustomSnackbarMainContent(Context context, AttributeSet attrs,
-            int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-
-        mMaxWidth = context.getResources().getDimensionPixelSize(R.dimen.custom_snackbar_max_width);
-    }
-
-    @Override
-    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-
-        if ((mMaxWidth > 0) && (getMeasuredWidth() > mMaxWidth)) {
-            super.onMeasure(MeasureSpec.makeMeasureSpec(mMaxWidth, MeasureSpec.EXACTLY),
-                    heightMeasureSpec);
-        }
-    }
+  }
 }

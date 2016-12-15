@@ -23,177 +23,175 @@ import android.support.design.widget.TextInputLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;
-
 import org.hamcrest.Matcher;
 
 public class TextInputLayoutActions {
 
-    public static ViewAction setErrorEnabled(final boolean enabled) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextInputLayout.class);
-            }
+  public static ViewAction setErrorEnabled(final boolean enabled) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Enables/disables the error";
-            }
+      @Override
+      public String getDescription() {
+        return "Enables/disables the error";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextInputLayout layout = (TextInputLayout) view;
-                layout.setErrorEnabled(enabled);
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setErrorEnabled(enabled);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setError(final CharSequence error) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextInputLayout.class);
-            }
+  public static ViewAction setError(final CharSequence error) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets the error";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets the error";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextInputLayout layout = (TextInputLayout) view;
-                layout.setError(error);
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setError(error);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setErrorTextAppearance(final int resId) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextInputLayout.class);
-            }
+  public static ViewAction setErrorTextAppearance(final int resId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets the error text appearance";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets the error text appearance";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextInputLayout layout = (TextInputLayout) view;
-                layout.setErrorTextAppearance(resId);
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setErrorTextAppearance(resId);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setTypeface(final Typeface typeface) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextInputLayout.class);
-            }
+  public static ViewAction setTypeface(final Typeface typeface) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets the typeface";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets the typeface";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextInputLayout layout = (TextInputLayout) view;
-                layout.setTypeface(typeface);
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setTypeface(typeface);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setPasswordVisibilityToggleEnabled(final boolean enabled) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextInputLayout.class);
-            }
+  public static ViewAction setPasswordVisibilityToggleEnabled(final boolean enabled) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets the error";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets the error";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextInputLayout layout = (TextInputLayout) view;
-                layout.setPasswordVisibilityToggleEnabled(enabled);
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setPasswordVisibilityToggleEnabled(enabled);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setCounterEnabled(final boolean enabled) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextInputLayout.class);
-            }
+  public static ViewAction setCounterEnabled(final boolean enabled) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets the counter enabled";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets the counter enabled";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextInputLayout layout = (TextInputLayout) view;
-                layout.setCounterEnabled(enabled);
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setCounterEnabled(enabled);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setCounterMaxLength(final int maxLength) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextInputLayout.class);
-            }
+  public static ViewAction setCounterMaxLength(final int maxLength) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets the counter max length";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets the counter max length";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextInputLayout layout = (TextInputLayout) view;
-                layout.setCounterMaxLength(maxLength);
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setCounterMaxLength(maxLength);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
-
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 }

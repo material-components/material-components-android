@@ -25,7 +25,6 @@ import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -34,33 +33,31 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class BottomSheetBehaviorInitialStateTest {
 
-    @Rule
-    public final ActivityTestRule<BottomSheetBehaviorActivity> mActivityTestRule
-            = new ActivityTestRule<>(BottomSheetBehaviorActivity.class, true, false);
+  @Rule
+  public final ActivityTestRule<BottomSheetBehaviorActivity> mActivityTestRule =
+      new ActivityTestRule<>(BottomSheetBehaviorActivity.class, true, false);
 
-    @Test
-    public void testSetStateExpanded() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Intent intent = new Intent(context, BottomSheetBehaviorActivity.class);
-        intent.putExtra(BottomSheetBehaviorActivity.EXTRA_INITIAL_STATE,
-                BottomSheetBehavior.STATE_EXPANDED);
-        mActivityTestRule.launchActivity(intent);
-        BottomSheetBehaviorActivity activity = mActivityTestRule.getActivity();
-        assertThat(activity.mBehavior.getState(), is(BottomSheetBehavior.STATE_EXPANDED));
-        assertThat(activity.mBottomSheet.getTop(), is(0));
-    }
+  @Test
+  public void testSetStateExpanded() {
+    Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    Intent intent = new Intent(context, BottomSheetBehaviorActivity.class);
+    intent.putExtra(
+        BottomSheetBehaviorActivity.EXTRA_INITIAL_STATE, BottomSheetBehavior.STATE_EXPANDED);
+    mActivityTestRule.launchActivity(intent);
+    BottomSheetBehaviorActivity activity = mActivityTestRule.getActivity();
+    assertThat(activity.mBehavior.getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+    assertThat(activity.mBottomSheet.getTop(), is(0));
+  }
 
-
-    @Test
-    public void testSetStateHidden() {
-        Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
-        Intent intent = new Intent(context, BottomSheetBehaviorActivity.class);
-        intent.putExtra(BottomSheetBehaviorActivity.EXTRA_INITIAL_STATE,
-                BottomSheetBehavior.STATE_HIDDEN);
-        mActivityTestRule.launchActivity(intent);
-        BottomSheetBehaviorActivity activity = mActivityTestRule.getActivity();
-        assertThat(activity.mBehavior.getState(), is(BottomSheetBehavior.STATE_HIDDEN));
-        assertThat(activity.mBottomSheet.getTop(), is(activity.mCoordinatorLayout.getHeight()));
-    }
-
+  @Test
+  public void testSetStateHidden() {
+    Context context = InstrumentationRegistry.getInstrumentation().getTargetContext();
+    Intent intent = new Intent(context, BottomSheetBehaviorActivity.class);
+    intent.putExtra(
+        BottomSheetBehaviorActivity.EXTRA_INITIAL_STATE, BottomSheetBehavior.STATE_HIDDEN);
+    mActivityTestRule.launchActivity(intent);
+    BottomSheetBehaviorActivity activity = mActivityTestRule.getActivity();
+    assertThat(activity.mBehavior.getState(), is(BottomSheetBehavior.STATE_HIDDEN));
+    assertThat(activity.mBottomSheet.getTop(), is(activity.mCoordinatorLayout.getHeight()));
+  }
 }

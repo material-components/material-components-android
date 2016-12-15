@@ -20,26 +20,28 @@ import android.view.View;
 import android.widget.TextView;
 
 /**
- * Sample code for a custom snackbar that shows two separate text views and two images
- * in the main content area.
+ * Sample code for a custom snackbar that shows two separate text views and two images in the main
+ * content area.
  */
 public class CustomSnackbar extends BaseTransientBottomBar<CustomSnackbar> {
-    public CustomSnackbar(CoordinatorLayout parent, View content,
-            BaseTransientBottomBar.ContentViewCallback contentViewCallback) {
-        super(parent, content, contentViewCallback);
-    }
+  public CustomSnackbar(
+      CoordinatorLayout parent,
+      View content,
+      BaseTransientBottomBar.ContentViewCallback contentViewCallback) {
+    super(parent, content, contentViewCallback);
+  }
 
-    /** Sets the title of this custom snackbar. */
-    public CustomSnackbar setTitle(String title) {
-        TextView titleView = (TextView) getView().findViewById(R.id.custom_snackbar_title);
-        titleView.setText(title);
-        return this;
-    }
+  /** Sets the title of this custom snackbar. */
+  public CustomSnackbar setTitle(String title) {
+    TextView titleView = (TextView) getView().findViewById(R.id.custom_snackbar_title);
+    titleView.setText(title);
+    return this;
+  }
 
-    /** Sets the subtitle of this custom snackbar. */
-    public CustomSnackbar setSubtitle(String subtitle) {
-        TextView subtitleView = (TextView) getView().findViewById(R.id.custom_snackbar_subtitle);
-        subtitleView.setText(subtitle);
-        return this;
-    }
+  /** Sets the subtitle of this custom snackbar. */
+  public CustomSnackbar setSubtitle(String subtitle) {
+    TextView subtitleView = (TextView) getView().findViewById(R.id.custom_snackbar_subtitle);
+    subtitleView.setText(subtitle);
+    return this;
+  }
 }

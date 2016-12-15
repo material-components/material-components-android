@@ -25,103 +25,140 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
-
 import junit.framework.Assert;
 
 public class TestUtils {
-    /**
-     * Checks whether all the pixels in the specified drawable are of the same specified color.
-     *
-     * In case there is a color mismatch, the behavior of this method depends on the
-     * <code>throwExceptionIfFails</code> parameter. If it is <code>true</code>, this method will
-     * throw an <code>Exception</code> describing the mismatch. Otherwise this method will call
-     * <code>Assert.fail</code> with detailed description of the mismatch.
-     */
-    public static void assertAllPixelsOfColor(String failMessagePrefix, @NonNull Drawable drawable,
-            int drawableWidth, int drawableHeight, boolean callSetBounds, @ColorInt int color,
-            int allowedComponentVariance, boolean throwExceptionIfFails) {
-        assertAllPixelsOfColor(failMessagePrefix, drawable, drawableWidth, drawableHeight,
-                callSetBounds, color, null, allowedComponentVariance, throwExceptionIfFails);
+  /**
+   * Checks whether all the pixels in the specified drawable are of the same specified color.
+   *
+   * <p>In case there is a color mismatch, the behavior of this method depends on the <code>
+   * throwExceptionIfFails</code> parameter. If it is <code>true</code>, this method will throw an
+   * <code>Exception</code> describing the mismatch. Otherwise this method will call <code>
+   * Assert.fail</code> with detailed description of the mismatch.
+   */
+  public static void assertAllPixelsOfColor(
+      String failMessagePrefix,
+      @NonNull Drawable drawable,
+      int drawableWidth,
+      int drawableHeight,
+      boolean callSetBounds,
+      @ColorInt int color,
+      int allowedComponentVariance,
+      boolean throwExceptionIfFails) {
+    assertAllPixelsOfColor(
+        failMessagePrefix,
+        drawable,
+        drawableWidth,
+        drawableHeight,
+        callSetBounds,
+        color,
+        null,
+        allowedComponentVariance,
+        throwExceptionIfFails);
+  }
+
+  public static void assertAllPixelsOfColor(
+      String failMessagePrefix,
+      @NonNull Drawable drawable,
+      int drawableWidth,
+      int drawableHeight,
+      boolean callSetBounds,
+      @ColorInt int color,
+      Rect checkArea,
+      int allowedComponentVariance,
+      boolean throwExceptionIfFails) {
+
+    // Create a bitmap
+    Bitmap bitmap = Bitmap.createBitmap(drawableWidth, drawableHeight, Bitmap.Config.ARGB_8888);
+    // Create a canvas that wraps the bitmap
+    Canvas canvas = new Canvas(bitmap);
+    if (callSetBounds) {
+      // Configure the drawable to have bounds that match the passed size
+      drawable.setBounds(0, 0, drawableWidth, drawableHeight);
     }
 
-    public static void assertAllPixelsOfColor(String failMessagePrefix, @NonNull Drawable drawable,
-            int drawableWidth, int drawableHeight, boolean callSetBounds, @ColorInt int color,
-            Rect checkArea, int allowedComponentVariance, boolean throwExceptionIfFails) {
+    // And ask the drawable to draw itself to the canvas / bitmap
+    drawable.draw(canvas);
 
-        // Create a bitmap
-        Bitmap bitmap = Bitmap.createBitmap(drawableWidth, drawableHeight, Bitmap.Config.ARGB_8888);
-        // Create a canvas that wraps the bitmap
-        Canvas canvas = new Canvas(bitmap);
-        if (callSetBounds) {
-            // Configure the drawable to have bounds that match the passed size
-            drawable.setBounds(0, 0, drawableWidth, drawableHeight);
-        }
+    try {
+      int[] rowPixels = new int[drawableWidth];
 
-        // And ask the drawable to draw itself to the canvas / bitmap
-        drawable.draw(canvas);
+      final int firstRow = checkArea != null ? checkArea.top : 0;
+      final int lastRow = checkArea != null ? checkArea.bottom : drawableHeight - 1;
+      final int firstCol = checkArea != null ? checkArea.left : 0;
+      final int lastCol = checkArea != null ? checkArea.right : drawableWidth - 1;
 
-        try {
-            int[] rowPixels = new int[drawableWidth];
+      final int expectedAlpha = Color.alpha(color);
+      final int expectedRed = Color.red(color);
+      final int expectedGreen = Color.green(color);
+      final int expectedBlue = Color.blue(color);
 
-            final int firstRow = checkArea != null ? checkArea.top : 0;
-            final int lastRow = checkArea != null ? checkArea.bottom : drawableHeight - 1;
-            final int firstCol = checkArea != null ? checkArea.left : 0;
-            final int lastCol = checkArea != null ? checkArea.right : drawableWidth - 1;
+      for (int row = firstRow; row <= lastRow; row++) {
+        bitmap.getPixels(rowPixels, 0, drawableWidth, 0, row, drawableWidth, 1);
 
-            final int expectedAlpha = Color.alpha(color);
-            final int expectedRed = Color.red(color);
-            final int expectedGreen = Color.green(color);
-            final int expectedBlue = Color.blue(color);
+        for (int column = firstCol; column <= lastCol; column++) {
+          int sourceAlpha = Color.alpha(rowPixels[column]);
+          int sourceRed = Color.red(rowPixels[column]);
+          int sourceGreen = Color.green(rowPixels[column]);
+          int sourceBlue = Color.blue(rowPixels[column]);
 
-            for (int row = firstRow; row <= lastRow; row++) {
-                bitmap.getPixels(rowPixels, 0, drawableWidth, 0, row, drawableWidth, 1);
+          int varianceAlpha = Math.abs(sourceAlpha - expectedAlpha);
+          int varianceRed = Math.abs(sourceRed - expectedRed);
+          int varianceGreen = Math.abs(sourceGreen - expectedGreen);
+          int varianceBlue = Math.abs(sourceBlue - expectedBlue);
 
-                for (int column = firstCol; column <= lastCol; column++) {
-                    int sourceAlpha = Color.alpha(rowPixels[column]);
-                    int sourceRed = Color.red(rowPixels[column]);
-                    int sourceGreen = Color.green(rowPixels[column]);
-                    int sourceBlue = Color.blue(rowPixels[column]);
+          boolean isColorMatch =
+              (varianceAlpha <= allowedComponentVariance)
+                  && (varianceRed <= allowedComponentVariance)
+                  && (varianceGreen <= allowedComponentVariance)
+                  && (varianceBlue <= allowedComponentVariance);
 
-                    int varianceAlpha = Math.abs(sourceAlpha - expectedAlpha);
-                    int varianceRed = Math.abs(sourceRed - expectedRed);
-                    int varianceGreen = Math.abs(sourceGreen - expectedGreen);
-                    int varianceBlue = Math.abs(sourceBlue - expectedBlue);
-
-                    boolean isColorMatch = (varianceAlpha <= allowedComponentVariance)
-                            && (varianceRed <= allowedComponentVariance)
-                            && (varianceGreen <= allowedComponentVariance)
-                            && (varianceBlue <= allowedComponentVariance);
-
-                    if (!isColorMatch) {
-                        String mismatchDescription = failMessagePrefix
-                                + ": expected all drawable colors to be ["
-                                + expectedAlpha + "," + expectedRed + ","
-                                + expectedGreen + "," + expectedBlue
-                                + "] but at position (" + row + "," + column + ") found ["
-                                + sourceAlpha + "," + sourceRed + ","
-                                + sourceGreen + "," + sourceBlue + "]";
-                        if (throwExceptionIfFails) {
-                            throw new RuntimeException(mismatchDescription);
-                        } else {
-                            Assert.fail(mismatchDescription);
-                        }
-                    }
-                }
+          if (!isColorMatch) {
+            String mismatchDescription =
+                failMessagePrefix
+                    + ": expected all drawable colors to be ["
+                    + expectedAlpha
+                    + ","
+                    + expectedRed
+                    + ","
+                    + expectedGreen
+                    + ","
+                    + expectedBlue
+                    + "] but at position ("
+                    + row
+                    + ","
+                    + column
+                    + ") found ["
+                    + sourceAlpha
+                    + ","
+                    + sourceRed
+                    + ","
+                    + sourceGreen
+                    + ","
+                    + sourceBlue
+                    + "]";
+            if (throwExceptionIfFails) {
+              throw new RuntimeException(mismatchDescription);
+            } else {
+              Assert.fail(mismatchDescription);
             }
-        } finally {
-            bitmap.recycle();
+          }
         }
+      }
+    } finally {
+      bitmap.recycle();
     }
+  }
 
-    public static int getThemeAttrColor(Context context, final int attr) {
-        TypedArray a = null;
-        try {
-            a = context.obtainStyledAttributes(new int[]{attr});
-            return a.getColor(0, 0);
-        } finally {
-            if (a != null) {
-                a.recycle();
-            }
-        }
+  public static int getThemeAttrColor(Context context, final int attr) {
+    TypedArray a = null;
+    try {
+      a = context.obtainStyledAttributes(new int[] {attr});
+      return a.getColor(0, 0);
+    } finally {
+      if (a != null) {
+        a.recycle();
+      }
     }
+  }
 }

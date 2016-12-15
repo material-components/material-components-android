@@ -33,14 +33,13 @@ import android.support.v7.view.menu.SubMenuBuilder;
 @RestrictTo(LIBRARY_GROUP)
 public class NavigationSubMenu extends SubMenuBuilder {
 
-    public NavigationSubMenu(Context context, NavigationMenu menu, MenuItemImpl item) {
-        super(context, menu, item);
-    }
+  public NavigationSubMenu(Context context, NavigationMenu menu, MenuItemImpl item) {
+    super(context, menu, item);
+  }
 
-    @Override
-    public void onItemsChanged(boolean structureChanged) {
-        super.onItemsChanged(structureChanged);
-        ((MenuBuilder) getParentMenu()).onItemsChanged(structureChanged);
-    }
-
+  @Override
+  public void onItemsChanged(boolean structureChanged) {
+    super.onItemsChanged(structureChanged);
+    ((MenuBuilder) getParentMenu()).onItemsChanged(structureChanged);
+  }
 }

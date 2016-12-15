@@ -16,11 +16,10 @@
 package android.support.design.widget;
 
 import android.support.design.test.R;
-import android.support.v7.widget.Toolbar;
 
 public class TextInputLayoutActivity extends BaseTestActivity {
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.design_text_input;
-    }
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.design_text_input;
+  }
 }

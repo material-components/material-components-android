@@ -25,42 +25,40 @@ import android.support.test.filters.MediumTest;
 import android.support.test.filters.SdkSuppress;
 import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
-
 import org.junit.Before;
 import org.junit.Test;
 
 @SdkSuppress(minSdkVersion = 21)
 public class SnackbarTestWithTranslucentNavBar
-        extends BaseInstrumentationTestCase<SnackbarActivityWithTranslucentNavBar> {
+    extends BaseInstrumentationTestCase<SnackbarActivityWithTranslucentNavBar> {
 
-    private static final String MESSAGE_TEXT = "Test Message";
+  private static final String MESSAGE_TEXT = "Test Message";
 
-    private CoordinatorLayout mCoordinatorLayout;
+  private CoordinatorLayout mCoordinatorLayout;
 
-    public SnackbarTestWithTranslucentNavBar() {
-        super(SnackbarActivityWithTranslucentNavBar.class);
-    }
+  public SnackbarTestWithTranslucentNavBar() {
+    super(SnackbarActivityWithTranslucentNavBar.class);
+  }
 
-    @Before
-    public void setup() {
-        mCoordinatorLayout =
-                (CoordinatorLayout) mActivityTestRule.getActivity().findViewById(R.id.col);
-    }
+  @Before
+  public void setup() {
+    mCoordinatorLayout = (CoordinatorLayout) mActivityTestRule.getActivity().findViewById(R.id.col);
+  }
 
-    @Test
-    @MediumTest
-    public void testDrawsAboveNavigationBar() {
-        // Show a simple Snackbar and wait for it to be shown
-        final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT,
-                Snackbar.LENGTH_SHORT);
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+  @Test
+  @MediumTest
+  public void testDrawsAboveNavigationBar() {
+    // Show a simple Snackbar and wait for it to be shown
+    final Snackbar snackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
-        final WindowInsetsCompat colLastInsets = mCoordinatorLayout.getLastWindowInsets();
-        assertNotNull(colLastInsets);
+    final WindowInsetsCompat colLastInsets = mCoordinatorLayout.getLastWindowInsets();
+    assertNotNull(colLastInsets);
 
-        // Check that the Snackbar view has padding set to display above the nav bar
-        final View view = snackbar.getView();
-        assertNotNull(view);
-        assertEquals(colLastInsets.getSystemWindowInsetBottom(), view.getPaddingBottom());
-    }
+    // Check that the Snackbar view has padding set to display above the nav bar
+    final View view = snackbar.getView();
+    assertNotNull(view);
+    assertEquals(colLastInsets.getSystemWindowInsetBottom(), view.getPaddingBottom());
+  }
 }

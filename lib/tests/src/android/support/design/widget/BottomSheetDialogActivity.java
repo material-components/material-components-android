@@ -20,10 +20,8 @@ import android.support.design.test.R;
 
 public class BottomSheetDialogActivity extends BaseTestActivity {
 
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.frame_layout;
-    }
-
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.frame_layout;
+  }
 }
-

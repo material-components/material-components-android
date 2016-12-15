@@ -19,8 +19,11 @@ package android.support.design.widget;
 import android.graphics.drawable.Drawable;
 
 interface ShadowViewDelegate {
-    float getRadius();
-    void setShadowPadding(int left, int top, int right, int bottom);
-    void setBackgroundDrawable(Drawable background);
-    boolean isCompatPaddingEnabled();
+  float getRadius();
+
+  void setShadowPadding(int left, int top, int right, int bottom);
+
+  void setBackgroundDrawable(Drawable background);
+
+  boolean isCompatPaddingEnabled();
 }

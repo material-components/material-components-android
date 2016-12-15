@@ -22,26 +22,25 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import android.support.test.filters.SmallTest;
 import android.support.v4.view.ViewCompat;
 import android.view.ViewGroup;
-
 import org.junit.Test;
 
-public class BottomSheetBehaviorWithInsetsTest extends
-        BaseInstrumentationTestCase<BottomSheetBehaviorWithInsetsActivity> {
+public class BottomSheetBehaviorWithInsetsTest
+    extends BaseInstrumentationTestCase<BottomSheetBehaviorWithInsetsActivity> {
 
-    public BottomSheetBehaviorWithInsetsTest() {
-        super(BottomSheetBehaviorWithInsetsActivity.class);
-    }
+  public BottomSheetBehaviorWithInsetsTest() {
+    super(BottomSheetBehaviorWithInsetsActivity.class);
+  }
 
-    @Test
-    @SmallTest
-    public void testFitsSystemWindows() {
-        BottomSheetBehaviorWithInsetsActivity activity = mActivityTestRule.getActivity();
-        ViewCompat.setFitsSystemWindows(activity.mCoordinatorLayout, true);
-        assertThat(activity.mBehavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
-        ViewGroup bottomSheet = activity.mBottomSheet;
-        assertThat(bottomSheet.getTop(),
-                is(activity.mCoordinatorLayout.getHeight() - activity.mBehavior.getPeekHeight()));
-        assertThat(activity.mBottomSheetContent.getTop(), is(0));
-    }
-
+  @Test
+  @SmallTest
+  public void testFitsSystemWindows() {
+    BottomSheetBehaviorWithInsetsActivity activity = mActivityTestRule.getActivity();
+    ViewCompat.setFitsSystemWindows(activity.mCoordinatorLayout, true);
+    assertThat(activity.mBehavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+    ViewGroup bottomSheet = activity.mBottomSheet;
+    assertThat(
+        bottomSheet.getTop(),
+        is(activity.mCoordinatorLayout.getHeight() - activity.mBehavior.getPeekHeight()));
+    assertThat(activity.mBottomSheetContent.getTop(), is(0));
+  }
 }

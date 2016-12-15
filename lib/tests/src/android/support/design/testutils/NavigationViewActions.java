@@ -16,6 +16,8 @@
 
 package android.support.design.testutils;
 
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.DrawableRes;
@@ -31,278 +33,258 @@ import android.view.LayoutInflater;
 import android.view.View;
 import org.hamcrest.Matcher;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-
 public class NavigationViewActions {
-    /**
-     * Sets item text appearance on the content of the navigation view.
-     */
-    public static ViewAction setItemTextAppearance(final @StyleRes int resId) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets item text appearance on the content of the navigation view. */
+  public static ViewAction setItemTextAppearance(final @StyleRes int resId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set item text appearance";
-            }
+      @Override
+      public String getDescription() {
+        return "Set item text appearance";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.setItemTextAppearance(resId);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.setItemTextAppearance(resId);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets item text color on the content of the navigation view.
-     */
-    public static ViewAction setItemTextColor(final ColorStateList textColor) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets item text color on the content of the navigation view. */
+  public static ViewAction setItemTextColor(final ColorStateList textColor) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set item text color";
-            }
+      @Override
+      public String getDescription() {
+        return "Set item text color";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.setItemTextColor(textColor);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.setItemTextColor(textColor);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets item background on the content of the navigation view.
-     */
-    public static ViewAction setItemBackground(final @Nullable Drawable itemBackground) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets item background on the content of the navigation view. */
+  public static ViewAction setItemBackground(final @Nullable Drawable itemBackground) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set item background";
-            }
+      @Override
+      public String getDescription() {
+        return "Set item background";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.setItemBackground(itemBackground);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.setItemBackground(itemBackground);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets item background on the content of the navigation view.
-     */
-    public static ViewAction setItemBackgroundResource(final @DrawableRes int resId) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets item background on the content of the navigation view. */
+  public static ViewAction setItemBackgroundResource(final @DrawableRes int resId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set item background";
-            }
+      @Override
+      public String getDescription() {
+        return "Set item background";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.setItemBackgroundResource(resId);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.setItemBackgroundResource(resId);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets item icon tint list on the content of the navigation view.
-     */
-    public static ViewAction setItemIconTintList(final @Nullable ColorStateList tint) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets item icon tint list on the content of the navigation view. */
+  public static ViewAction setItemIconTintList(final @Nullable ColorStateList tint) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set item icon tint list";
-            }
+      @Override
+      public String getDescription() {
+        return "Set item icon tint list";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.setItemIconTintList(tint);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.setItemIconTintList(tint);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Add the specified view as a header to the navigation view.
-     */
-    public static ViewAction addHeaderView(final @NonNull LayoutInflater inflater,
-            final @LayoutRes int res) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Add the specified view as a header to the navigation view. */
+  public static ViewAction addHeaderView(
+      final @NonNull LayoutInflater inflater, final @LayoutRes int res) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Add header view";
-            }
+      @Override
+      public String getDescription() {
+        return "Add header view";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.addHeaderView(inflater.inflate(res, null, false));
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.addHeaderView(inflater.inflate(res, null, false));
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Inflates a view from the specified layout ID and adds it as a header to the navigation view.
-     */
-    public static ViewAction inflateHeaderView(final @LayoutRes int res) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /**
+   * Inflates a view from the specified layout ID and adds it as a header to the navigation view.
+   */
+  public static ViewAction inflateHeaderView(final @LayoutRes int res) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Inflate and add header view";
-            }
+      @Override
+      public String getDescription() {
+        return "Inflate and add header view";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.inflateHeaderView(res);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.inflateHeaderView(res);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Removes a previously added header view from the navigation view.
-     */
-    public static ViewAction removeHeaderView(final @Nullable View headerView) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Removes a previously added header view from the navigation view. */
+  public static ViewAction removeHeaderView(final @Nullable View headerView) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Remove header view";
-            }
+      @Override
+      public String getDescription() {
+        return "Remove header view";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.removeHeaderView(headerView);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.removeHeaderView(headerView);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets checked item on the navigation view.
-     */
-    public static ViewAction setCheckedItem(final @IdRes int id) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets checked item on the navigation view. */
+  public static ViewAction setCheckedItem(final @IdRes int id) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set checked item";
-            }
+      @Override
+      public String getDescription() {
+        return "Set checked item";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.setCheckedItem(id);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.setCheckedItem(id);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets icon for the menu item of the navigation view.
-     */
-    public static ViewAction setIconForMenuItem(final @IdRes int menuItemId,
-            final Drawable iconDrawable) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets icon for the menu item of the navigation view. */
+  public static ViewAction setIconForMenuItem(
+      final @IdRes int menuItemId, final Drawable iconDrawable) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set menu item icon";
-            }
+      @Override
+      public String getDescription() {
+        return "Set menu item icon";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                NavigationView navigationView = (NavigationView) view;
-                navigationView.getMenu().findItem(menuItemId).setIcon(iconDrawable);
+        NavigationView navigationView = (NavigationView) view;
+        navigationView.getMenu().findItem(menuItemId).setIcon(iconDrawable);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 }

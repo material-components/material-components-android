@@ -21,7 +21,6 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isEnabled;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
-
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
@@ -35,160 +34,167 @@ import android.support.test.filters.MediumTest;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.view.ViewGroup;
-
 import org.hamcrest.Matcher;
 import org.junit.After;
 import org.junit.Test;
 
 @MediumTest
 public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayoutTest {
-    private static final String MESSAGE_TEXT = "Test Message";
-    private static final String ACTION_TEXT = "Action";
+  private static final String MESSAGE_TEXT = "Test Message";
+  private static final String ACTION_TEXT = "Action";
 
-    private Snackbar mSnackbar;
+  private Snackbar mSnackbar;
 
-    @After
-    public void teardown() throws Throwable {
-        // Dismiss the snackbar to get back to clean state for the next test
-        if (mSnackbar != null) {
-            SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(mSnackbar);
-        }
+  @After
+  public void teardown() throws Throwable {
+    // Dismiss the snackbar to get back to clean state for the next test
+    if (mSnackbar != null) {
+      SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(mSnackbar);
     }
+  }
 
-    /**
-     * Returns the location of our snackbar on the screen.
-     */
-    private static int[] getSnackbarLocationOnScreen() {
-        final int[] location = new int[2];
-        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)).perform(new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
+  /** Returns the location of our snackbar on the screen. */
+  private static int[] getSnackbarLocationOnScreen() {
+    final int[] location = new int[2];
+    onView(isAssignableFrom(Snackbar.SnackbarLayout.class))
+        .perform(
+            new ViewAction() {
+              @Override
+              public Matcher<View> getConstraints() {
                 return isEnabled();
-            }
+              }
 
-            @Override
-            public String getDescription() {
+              @Override
+              public String getDescription() {
                 return "Snackbar matcher";
-            }
+              }
 
-            @Override
-            public void perform(UiController uiController, View view) {
+              @Override
+              public void perform(UiController uiController, View view) {
                 view.getLocationOnScreen(location);
-            }
-        });
-        return location;
+              }
+            });
+    return location;
+  }
+
+  /**
+   * Helper method that verifies that the passed view is above the snackbar in the activity window.
+   */
+  private static void verifySnackbarViewStacking(View view, int extraBottomMargin) {
+    if (Build.VERSION.SDK_INT >= 11) {
+      // Get location of snackbar in window
+      final int[] snackbarOnScreenXY = getSnackbarLocationOnScreen();
+      // Get location of passed view in window
+      final int[] viewOnScreenXY = new int[2];
+      view.getLocationOnScreen(viewOnScreenXY);
+
+      // Compute the bottom visible edge of the view
+      int viewBottom = viewOnScreenXY[1] + view.getHeight() - extraBottomMargin;
+      int snackbarTop = snackbarOnScreenXY[1];
+      // and verify that our view is above the snackbar
+      assertTrue(viewBottom <= snackbarTop);
     }
+  }
 
-    /**
-     * Helper method that verifies that the passed view is above the snackbar in the activity
-     * window.
-     */
-    private static void verifySnackbarViewStacking(View view, int extraBottomMargin) {
-        if (Build.VERSION.SDK_INT >= 11) {
-            // Get location of snackbar in window
-            final int[] snackbarOnScreenXY = getSnackbarLocationOnScreen();
-            // Get location of passed view in window
-            final int[] viewOnScreenXY = new int[2];
-            view.getLocationOnScreen(viewOnScreenXY);
+  @Test
+  public void testBuiltInSliding() {
+    onView(withId(R.id.coordinator_stub))
+        .perform(inflateViewStub(R.layout.design_snackbar_with_fab));
 
-            // Compute the bottom visible edge of the view
-            int viewBottom = viewOnScreenXY[1] + view.getHeight() - extraBottomMargin;
-            int snackbarTop = snackbarOnScreenXY[1];
-            // and verify that our view is above the snackbar
-            assertTrue(viewBottom <= snackbarTop);
-        }
-    }
+    // Create and show a snackbar
+    mSnackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
-    @Test
-    public void testBuiltInSliding() {
-        onView(withId(R.id.coordinator_stub)).perform(
-                inflateViewStub(R.layout.design_snackbar_with_fab));
+    // Take into account bottom padding and bottom margin to account for how drop shadow is
+    // emulated on pre-Lollipop devices
+    final FloatingActionButton fab =
+        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    verifySnackbarViewStacking(
+        fab,
+        fab.getPaddingBottom()
+            - ((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin);
+  }
 
-        // Create and show a snackbar
-        mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
+  @Test
+  public void testBuiltInSlidingFromHiddenFab() {
+    onView(withId(R.id.coordinator_stub))
+        .perform(inflateViewStub(R.layout.design_snackbar_with_fab));
+    onView(withId(R.id.fab)).perform(setVisibility(View.GONE));
 
-        // Take into account bottom padding and bottom margin to account for how drop shadow is
-        // emulated on pre-Lollipop devices
-        final FloatingActionButton fab =
-                (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
-        verifySnackbarViewStacking(fab, fab.getPaddingBottom()
-                - ((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin);
-    }
+    // Create and show a snackbar
+    mSnackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
-    @Test
-    public void testBuiltInSlidingFromHiddenFab() {
-        onView(withId(R.id.coordinator_stub)).perform(
-                inflateViewStub(R.layout.design_snackbar_with_fab));
-        onView(withId(R.id.fab)).perform(setVisibility(View.GONE));
+    // Take into account bottom padding and bottom margin to account for how drop shadow is
+    // emulated on pre-Lollipop devices
+    onView(withId(R.id.fab)).perform(setVisibility(View.VISIBLE));
+    final FloatingActionButton fab =
+        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    verifySnackbarViewStacking(
+        fab,
+        fab.getPaddingBottom()
+            - ((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin);
+  }
 
-        // Create and show a snackbar
-        mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
+  @Test
+  public void testBehaviorBasedSlidingFromLayoutAttribute() {
+    // Use a layout in which an AppCompatTextView child has Behavior object configured via
+    // layout_behavior XML attribute
+    onView(withId(R.id.coordinator_stub))
+        .perform(inflateViewStub(R.layout.design_snackbar_behavior_layout_attr));
 
-        // Take into account bottom padding and bottom margin to account for how drop shadow is
-        // emulated on pre-Lollipop devices
-        onView(withId(R.id.fab)).perform(setVisibility(View.VISIBLE));
-        final FloatingActionButton fab =
-                (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
-        verifySnackbarViewStacking(fab, fab.getPaddingBottom()
-                - ((ViewGroup.MarginLayoutParams) fab.getLayoutParams()).bottomMargin);
-    }
+    // Create and show a snackbar
+    mSnackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
-    @Test
-    public void testBehaviorBasedSlidingFromLayoutAttribute() {
-        // Use a layout in which an AppCompatTextView child has Behavior object configured via
-        // layout_behavior XML attribute
-        onView(withId(R.id.coordinator_stub)).perform(
-                inflateViewStub(R.layout.design_snackbar_behavior_layout_attr));
+    final AppCompatTextView textView =
+        (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+    verifySnackbarViewStacking(textView, 0);
+  }
 
-        // Create and show a snackbar
-        mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
+  @Test
+  public void testBehaviorBasedSlidingFromClassAnnotation() {
+    // Use a layout in which a custom child view has Behavior object configured via
+    // annotation on the class that extends AppCompatTextView
+    onView(withId(R.id.coordinator_stub))
+        .perform(inflateViewStub(R.layout.design_snackbar_behavior_annotation));
 
-        final AppCompatTextView textView =
-                (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
-        verifySnackbarViewStacking(textView, 0);
-    }
+    // Create and show a snackbar
+    mSnackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
-    @Test
-    public void testBehaviorBasedSlidingFromClassAnnotation() {
-        // Use a layout in which a custom child view has Behavior object configured via
-        // annotation on the class that extends AppCompatTextView
-        onView(withId(R.id.coordinator_stub)).perform(
-                inflateViewStub(R.layout.design_snackbar_behavior_annotation));
+    final AppCompatTextView textView =
+        (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+    verifySnackbarViewStacking(textView, 0);
+  }
 
-        // Create and show a snackbar
-        mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
+  @Test
+  public void testBehaviorBasedSlidingFromRuntimeApiCall() {
+    // Use a layout in which an AppCompatTextView child doesn't have any configured Behavior
+    onView(withId(R.id.coordinator_stub))
+        .perform(inflateViewStub(R.layout.design_snackbar_behavior_runtime));
 
-        final AppCompatTextView textView =
-                (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
-        verifySnackbarViewStacking(textView, 0);
-    }
+    // and configure that Behavior at runtime by setting it on its LayoutParams
+    final AppCompatTextView textView =
+        (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+    final CoordinatorLayout.LayoutParams textViewLp =
+        (CoordinatorLayout.LayoutParams) textView.getLayoutParams();
+    textViewLp.setBehavior(new TestFloatingBehavior());
 
-    @Test
-    public void testBehaviorBasedSlidingFromRuntimeApiCall() {
-        // Use a layout in which an AppCompatTextView child doesn't have any configured Behavior
-        onView(withId(R.id.coordinator_stub)).perform(
-                inflateViewStub(R.layout.design_snackbar_behavior_runtime));
+    // Create and show a snackbar
+    mSnackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
-        // and configure that Behavior at runtime by setting it on its LayoutParams
-        final AppCompatTextView textView =
-                (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
-        final CoordinatorLayout.LayoutParams textViewLp =
-                (CoordinatorLayout.LayoutParams) textView.getLayoutParams();
-        textViewLp.setBehavior(new TestFloatingBehavior());
-
-        // Create and show a snackbar
-        mSnackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
-
-        verifySnackbarViewStacking(textView, 0);
-    }
+    verifySnackbarViewStacking(textView, 0);
+  }
 }

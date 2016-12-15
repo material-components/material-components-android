@@ -24,10 +24,9 @@ import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
 public abstract class BaseInstrumentationTestCase<A extends Activity> {
-    @Rule
-    public final ActivityTestRule<A> mActivityTestRule;
+  @Rule public final ActivityTestRule<A> mActivityTestRule;
 
-    protected BaseInstrumentationTestCase(Class<A> activityClass) {
-        mActivityTestRule = new ActivityTestRule<A>(activityClass);
-    }
+  protected BaseInstrumentationTestCase(Class<A> activityClass) {
+    mActivityTestRule = new ActivityTestRule<A>(activityClass);
+  }
 }

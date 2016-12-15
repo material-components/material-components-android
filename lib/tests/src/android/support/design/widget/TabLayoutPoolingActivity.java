@@ -19,8 +19,8 @@ package android.support.design.widget;
 import android.support.design.test.R;
 
 public class TabLayoutPoolingActivity extends BaseTestActivity {
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.design_tabs_twice;
-    }
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.design_tabs_twice;
+  }
 }

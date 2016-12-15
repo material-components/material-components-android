@@ -18,30 +18,28 @@ package android.support.design.testutils;
 
 import android.support.design.widget.TextInputLayout;
 import android.text.TextUtils;
-
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 
 public class TextInputLayoutMatchers {
 
-    /**
-     * Returns a matcher that matches TextInputLayouts with non-empty content descriptions for
-     * the password toggle.
-     */
-    public static Matcher hasPasswordToggleContentDescription() {
-        return new TypeSafeMatcher<TextInputLayout>() {
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("TextInputLayout has non-empty content description"
-                        + "for password toggle.");
-            }
+  /**
+   * Returns a matcher that matches TextInputLayouts with non-empty content descriptions for the
+   * password toggle.
+   */
+  public static Matcher hasPasswordToggleContentDescription() {
+    return new TypeSafeMatcher<TextInputLayout>() {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText(
+            "TextInputLayout has non-empty content description" + "for password toggle.");
+      }
 
-            @Override
-            protected boolean matchesSafely(TextInputLayout item) {
-                return !TextUtils.isEmpty(item.getPasswordVisibilityToggleContentDescription());
-            }
-        };
-    }
-
+      @Override
+      protected boolean matchesSafely(TextInputLayout item) {
+        return !TextUtils.isEmpty(item.getPasswordVisibilityToggleContentDescription());
+      }
+    };
+  }
 }

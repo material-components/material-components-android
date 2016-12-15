@@ -20,9 +20,8 @@ import android.support.design.test.R;
 
 public class FloatingActionButtonActivity extends BaseTestActivity {
 
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.design_fab;
-    }
-
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.design_fab;
+  }
 }

@@ -16,218 +16,198 @@
 
 package android.support.design.testutils;
 
-import android.support.annotation.Nullable;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.CoordinatesProvider;
-import android.support.test.espresso.action.GeneralClickAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Tap;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.PagerTitleStrip;
-import android.support.v4.view.ViewPager;
-import android.view.View;
-import android.widget.TextView;
-import org.hamcrest.Matcher;
-
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
+import android.support.annotation.Nullable;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
+import android.view.View;
+import org.hamcrest.Matcher;
+
 public class ViewPagerActions {
-    /**
-     * Moves <code>ViewPager</code> to the right by one page.
-     */
-    public static ViewAction scrollRight() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Moves <code>ViewPager</code> to the right by one page. */
+  public static ViewAction scrollRight() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "ViewPager scroll one page to the right";
-            }
+      @Override
+      public String getDescription() {
+        return "ViewPager scroll one page to the right";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                ViewPager viewPager = (ViewPager) view;
-                int current = viewPager.getCurrentItem();
-                viewPager.setCurrentItem(current + 1, false);
+        ViewPager viewPager = (ViewPager) view;
+        int current = viewPager.getCurrentItem();
+        viewPager.setCurrentItem(current + 1, false);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Moves <code>ViewPager</code> to the left by one page.
-     */
-    public static ViewAction scrollLeft() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Moves <code>ViewPager</code> to the left by one page. */
+  public static ViewAction scrollLeft() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "ViewPager scroll one page to the left";
-            }
+      @Override
+      public String getDescription() {
+        return "ViewPager scroll one page to the left";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                ViewPager viewPager = (ViewPager) view;
-                int current = viewPager.getCurrentItem();
-                viewPager.setCurrentItem(current - 1, false);
+        ViewPager viewPager = (ViewPager) view;
+        int current = viewPager.getCurrentItem();
+        viewPager.setCurrentItem(current - 1, false);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Moves <code>ViewPager</code> to the last page.
-     */
-    public static ViewAction scrollToLast() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Moves <code>ViewPager</code> to the last page. */
+  public static ViewAction scrollToLast() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "ViewPager scroll to last page";
-            }
+      @Override
+      public String getDescription() {
+        return "ViewPager scroll to last page";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                ViewPager viewPager = (ViewPager) view;
-                int size = viewPager.getAdapter().getCount();
-                if (size > 0) {
-                    viewPager.setCurrentItem(size - 1, false);
-                }
+        ViewPager viewPager = (ViewPager) view;
+        int size = viewPager.getAdapter().getCount();
+        if (size > 0) {
+          viewPager.setCurrentItem(size - 1, false);
+        }
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Moves <code>ViewPager</code> to the first page.
-     */
-    public static ViewAction scrollToFirst() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Moves <code>ViewPager</code> to the first page. */
+  public static ViewAction scrollToFirst() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "ViewPager scroll to first page";
-            }
+      @Override
+      public String getDescription() {
+        return "ViewPager scroll to first page";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                ViewPager viewPager = (ViewPager) view;
-                int size = viewPager.getAdapter().getCount();
-                if (size > 0) {
-                    viewPager.setCurrentItem(0, false);
-                }
+        ViewPager viewPager = (ViewPager) view;
+        int size = viewPager.getAdapter().getCount();
+        if (size > 0) {
+          viewPager.setCurrentItem(0, false);
+        }
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Moves <code>ViewPager</code> to specific page.
-     */
-    public static ViewAction scrollToPage(final int page) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Moves <code>ViewPager</code> to specific page. */
+  public static ViewAction scrollToPage(final int page) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "ViewPager move to a specific page";
-            }
+      @Override
+      public String getDescription() {
+        return "ViewPager move to a specific page";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                ViewPager viewPager = (ViewPager) view;
-                viewPager.setCurrentItem(page, false);
+        ViewPager viewPager = (ViewPager) view;
+        viewPager.setCurrentItem(page, false);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets the specified adapter on <code>ViewPager</code>.
-     */
-    public static ViewAction setAdapter(final @Nullable PagerAdapter adapter) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(ViewPager.class);
-            }
+  /** Sets the specified adapter on <code>ViewPager</code>. */
+  public static ViewAction setAdapter(final @Nullable PagerAdapter adapter) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(ViewPager.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "ViewPager set adapter";
-            }
+      @Override
+      public String getDescription() {
+        return "ViewPager set adapter";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                ViewPager viewPager = (ViewPager) view;
-                viewPager.setAdapter(adapter);
+        ViewPager viewPager = (ViewPager) view;
+        viewPager.setAdapter(adapter);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Moves <code>ViewPager</code> to specific page.
-     */
-    public static ViewAction notifyAdapterContentChange() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(ViewPager.class);
-            }
+  /** Moves <code>ViewPager</code> to specific page. */
+  public static ViewAction notifyAdapterContentChange() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(ViewPager.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "ViewPager notify on adapter content change";
-            }
+      @Override
+      public String getDescription() {
+        return "ViewPager notify on adapter content change";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                ViewPager viewPager = (ViewPager) view;
-                viewPager.getAdapter().notifyDataSetChanged();
+        ViewPager viewPager = (ViewPager) view;
+        viewPager.getAdapter().notifyDataSetChanged();
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 }

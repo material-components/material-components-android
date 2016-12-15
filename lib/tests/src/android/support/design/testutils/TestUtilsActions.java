@@ -36,307 +36,295 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-
 import org.hamcrest.Matcher;
 
 public class TestUtilsActions {
-    /**
-     * Replaces an existing {@link TabLayout} with a new one inflated from the specified
-     * layout resource.
-     */
-    public static ViewAction replaceTabLayout(final @LayoutRes int tabLayoutResId) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /**
+   * Replaces an existing {@link TabLayout} with a new one inflated from the specified layout
+   * resource.
+   */
+  public static ViewAction replaceTabLayout(final @LayoutRes int tabLayoutResId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Replace TabLayout";
-            }
+      @Override
+      public String getDescription() {
+        return "Replace TabLayout";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                final ViewGroup viewGroup = (ViewGroup) view;
-                final int childCount = viewGroup.getChildCount();
-                // Iterate over children and find TabLayout
-                for (int i = 0; i < childCount; i++) {
-                    View child = viewGroup.getChildAt(i);
-                    if (child instanceof TabLayout) {
-                        // Remove the existing TabLayout
-                        viewGroup.removeView(child);
-                        // Create a new one
-                        final LayoutInflater layoutInflater =
-                                LayoutInflater.from(view.getContext());
-                        final TabLayout newTabLayout = (TabLayout) layoutInflater.inflate(
-                                tabLayoutResId, viewGroup, false);
-                        // Make sure we're adding the new TabLayout at the same index
-                        viewGroup.addView(newTabLayout, i);
-                        break;
-                    }
-                }
+        final ViewGroup viewGroup = (ViewGroup) view;
+        final int childCount = viewGroup.getChildCount();
+        // Iterate over children and find TabLayout
+        for (int i = 0; i < childCount; i++) {
+          View child = viewGroup.getChildAt(i);
+          if (child instanceof TabLayout) {
+            // Remove the existing TabLayout
+            viewGroup.removeView(child);
+            // Create a new one
+            final LayoutInflater layoutInflater = LayoutInflater.from(view.getContext());
+            final TabLayout newTabLayout =
+                (TabLayout) layoutInflater.inflate(tabLayoutResId, viewGroup, false);
+            // Make sure we're adding the new TabLayout at the same index
+            viewGroup.addView(newTabLayout, i);
+            break;
+          }
+        }
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets layout direction on the view.
-     */
-    public static ViewAction setLayoutDirection(final int layoutDirection) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets layout direction on the view. */
+  public static ViewAction setLayoutDirection(final int layoutDirection) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "set layout direction";
-            }
+      @Override
+      public String getDescription() {
+        return "set layout direction";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                ViewCompat.setLayoutDirection(view, layoutDirection);
+        ViewCompat.setLayoutDirection(view, layoutDirection);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets title on the {@link CollapsingToolbarLayout}.
-     */
-    public static ViewAction setTitle(final CharSequence title) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(CollapsingToolbarLayout.class);
-            }
+  /** Sets title on the {@link CollapsingToolbarLayout}. */
+  public static ViewAction setTitle(final CharSequence title) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(CollapsingToolbarLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "set toolbar title";
-            }
+      @Override
+      public String getDescription() {
+        return "set toolbar title";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                CollapsingToolbarLayout collapsingToolbarLayout =
-                        (CollapsingToolbarLayout) view;
-                collapsingToolbarLayout.setTitle(title);
+        CollapsingToolbarLayout collapsingToolbarLayout = (CollapsingToolbarLayout) view;
+        collapsingToolbarLayout.setTitle(title);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets text content on {@link TextView}
-     */
-    public static ViewAction setText(final @Nullable CharSequence text) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextView.class);
-            }
+  /** Sets text content on {@link TextView} */
+  public static ViewAction setText(final @Nullable CharSequence text) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextView.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "TextView set text";
-            }
+      @Override
+      public String getDescription() {
+        return "TextView set text";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextView textView = (TextView) view;
-                textView.setText(text);
+        TextView textView = (TextView) view;
+        textView.setText(text);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Adds tabs to {@link TabLayout}
-     */
-    public static ViewAction addTabs(final String... tabs) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TabLayout.class);
-            }
+  /** Adds tabs to {@link TabLayout} */
+  public static ViewAction addTabs(final String... tabs) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TabLayout.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "TabLayout add tabs";
-            }
+      @Override
+      public String getDescription() {
+        return "TabLayout add tabs";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TabLayout tabLayout = (TabLayout) view;
-                for (int i = 0; i < tabs.length; i++) {
-                    tabLayout.addTab(tabLayout.newTab().setText(tabs[i]));
-                }
+        TabLayout tabLayout = (TabLayout) view;
+        for (int i = 0; i < tabs.length; i++) {
+          tabLayout.addTab(tabLayout.newTab().setText(tabs[i]));
+        }
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Dummy Espresso action that waits until the UI thread is idle. This action can be performed
-     * on the root view to wait for an ongoing animation to be completed.
-     */
-    public static ViewAction waitUntilIdle() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isRoot();
-            }
+  /**
+   * Dummy Espresso action that waits until the UI thread is idle. This action can be performed on
+   * the root view to wait for an ongoing animation to be completed.
+   */
+  public static ViewAction waitUntilIdle() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isRoot();
+      }
 
-            @Override
-            public String getDescription() {
-                return "wait for idle";
-            }
+      @Override
+      public String getDescription() {
+        return "wait for idle";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setEnabled(final boolean enabled) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  public static ViewAction setEnabled(final boolean enabled) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "set enabled";
-            }
+      @Override
+      public String getDescription() {
+        return "set enabled";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                view.setEnabled(enabled);
+        view.setEnabled(enabled);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setClickable(final boolean clickable) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  public static ViewAction setClickable(final boolean clickable) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "set clickable";
-            }
+      @Override
+      public String getDescription() {
+        return "set clickable";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                view.setClickable(clickable);
+        view.setClickable(clickable);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    public static ViewAction setSelected(final boolean selected) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  public static ViewAction setSelected(final boolean selected) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "set selected";
-            }
+      @Override
+      public String getDescription() {
+        return "set selected";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
-                view.setSelected(selected);
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+        view.setSelected(selected);
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets compound drawables on {@link TextView}
-     */
-    public static ViewAction setCompoundDrawablesRelative(final @Nullable Drawable start,
-            final @Nullable Drawable top, final @Nullable Drawable end,
-            final @Nullable Drawable bottom) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(TextView.class);
-            }
+  /** Sets compound drawables on {@link TextView} */
+  public static ViewAction setCompoundDrawablesRelative(
+      final @Nullable Drawable start,
+      final @Nullable Drawable top,
+      final @Nullable Drawable end,
+      final @Nullable Drawable bottom) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextView.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "TextView set compound drawables relative";
-            }
+      @Override
+      public String getDescription() {
+        return "TextView set compound drawables relative";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TextView textView = (TextView) view;
-                TextViewCompat.setCompoundDrawablesRelative(textView, start, top, end, bottom);
+        TextView textView = (TextView) view;
+        TextViewCompat.setCompoundDrawablesRelative(textView, start, top, end, bottom);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Restores the saved hierarchy state.
-     *
-     * @param container The saved hierarchy state.
-     */
-    public static ViewAction restoreHierarchyState(final SparseArray<Parcelable> container) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isAssignableFrom(View.class);
-            }
+  /**
+   * Restores the saved hierarchy state.
+   *
+   * @param container The saved hierarchy state.
+   */
+  public static ViewAction restoreHierarchyState(final SparseArray<Parcelable> container) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(View.class);
+      }
 
-            @Override
-            public String getDescription() {
-                return "restore the saved state";
-            }
+      @Override
+      public String getDescription() {
+        return "restore the saved state";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
-                view.restoreHierarchyState(container);
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
-
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+        view.restoreHierarchyState(container);
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 }

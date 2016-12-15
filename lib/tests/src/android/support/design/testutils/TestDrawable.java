@@ -20,30 +20,30 @@ import android.graphics.drawable.GradientDrawable;
 import android.support.annotation.ColorInt;
 
 /**
- * Custom drawable class that provides a reliable way for testing various tinting scenarios
- * across a range of platform versions. ColorDrawable doesn't support tinting on Kitkat and
- * below, and BitmapDrawable (PNG sources) appears to slightly alter green and blue channels
- * by a few units on some of the older platform versions (Gingerbread). Using GradientDrawable
- * allows doing reliable tests at the level of individual channels (alpha / red / green / blue)
- * for tinted and untinted icons in the testIconTinting method.
+ * Custom drawable class that provides a reliable way for testing various tinting scenarios across a
+ * range of platform versions. ColorDrawable doesn't support tinting on Kitkat and below, and
+ * BitmapDrawable (PNG sources) appears to slightly alter green and blue channels by a few units on
+ * some of the older platform versions (Gingerbread). Using GradientDrawable allows doing reliable
+ * tests at the level of individual channels (alpha / red / green / blue) for tinted and untinted
+ * icons in the testIconTinting method.
  */
 public class TestDrawable extends GradientDrawable {
-    private int mWidth;
-    private int mHeight;
+  private int mWidth;
+  private int mHeight;
 
-    public TestDrawable(@ColorInt int color, int width, int height) {
-        super(Orientation.TOP_BOTTOM, new int[] { color, color });
-        mWidth = width;
-        mHeight = height;
-    }
+  public TestDrawable(@ColorInt int color, int width, int height) {
+    super(Orientation.TOP_BOTTOM, new int[] {color, color});
+    mWidth = width;
+    mHeight = height;
+  }
 
-    @Override
-    public int getIntrinsicWidth() {
-        return mWidth;
-    }
+  @Override
+  public int getIntrinsicWidth() {
+    return mWidth;
+  }
 
-    @Override
-    public int getIntrinsicHeight() {
-        return mHeight;
-    }
+  @Override
+  public int getIntrinsicHeight() {
+    return mHeight;
+  }
 }

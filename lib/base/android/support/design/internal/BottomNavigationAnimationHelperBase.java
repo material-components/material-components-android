@@ -19,7 +19,7 @@ package android.support.design.internal;
 import android.view.ViewGroup;
 
 class BottomNavigationAnimationHelperBase {
-    void beginDelayedTransition(ViewGroup view) {
-        // Do nothing.
-    }
+  void beginDelayedTransition(ViewGroup view) {
+    // Do nothing.
+  }
 }

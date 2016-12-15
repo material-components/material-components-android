@@ -21,18 +21,17 @@ import android.widget.FrameLayout;
 
 public class CoordinatorLayoutActivity extends BaseTestActivity {
 
-    FrameLayout mContainer;
-    CoordinatorLayout mCoordinatorLayout;
+  FrameLayout mContainer;
+  CoordinatorLayout mCoordinatorLayout;
 
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.activity_coordinator_layout;
-    }
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.activity_coordinator_layout;
+  }
 
-    @Override
-    protected void onContentViewSet() {
-        mContainer = (FrameLayout) findViewById(R.id.container);
-        mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
-    }
-
+  @Override
+  protected void onContentViewSet() {
+    mContainer = (FrameLayout) findViewById(R.id.container);
+    mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
+  }
 }

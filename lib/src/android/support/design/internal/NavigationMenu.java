@@ -34,16 +34,15 @@ import android.view.SubMenu;
 @RestrictTo(LIBRARY_GROUP)
 public class NavigationMenu extends MenuBuilder {
 
-    public NavigationMenu(Context context) {
-        super(context);
-    }
+  public NavigationMenu(Context context) {
+    super(context);
+  }
 
-    @Override
-    public SubMenu addSubMenu(int group, int id, int categoryOrder, CharSequence title) {
-        final MenuItemImpl item = (MenuItemImpl) addInternal(group, id, categoryOrder, title);
-        final SubMenuBuilder subMenu = new NavigationSubMenu(getContext(), this, item);
-        item.setSubMenu(subMenu);
-        return subMenu;
-    }
-
+  @Override
+  public SubMenu addSubMenu(int group, int id, int categoryOrder, CharSequence title) {
+    final MenuItemImpl item = (MenuItemImpl) addInternal(group, id, categoryOrder, title);
+    final SubMenuBuilder subMenu = new NavigationSubMenu(getContext(), this, item);
+    item.setSubMenu(subMenu);
+    return subMenu;
+  }
 }

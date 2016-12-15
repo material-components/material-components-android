@@ -24,26 +24,23 @@ import android.view.View;
 import android.widget.TextView;
 
 public class TestFloatingBehavior extends CoordinatorLayout.Behavior<TextView> {
-    // Default constructor is needed to instantiate a Behavior object when it is attached
-    // to custom view class as class-level annotation
-    public TestFloatingBehavior() {
-    }
+  // Default constructor is needed to instantiate a Behavior object when it is attached
+  // to custom view class as class-level annotation
+  public TestFloatingBehavior() {}
 
-    // This constructor is needed to instantiate a Behavior object when it is attached to a
-    // view via layout_behavior XML attribute
-    public TestFloatingBehavior(Context context, AttributeSet attrs) {
-    }
+  // This constructor is needed to instantiate a Behavior object when it is attached to a
+  // view via layout_behavior XML attribute
+  public TestFloatingBehavior(Context context, AttributeSet attrs) {}
 
-    @Override
-    public boolean layoutDependsOn(CoordinatorLayout parent, TextView child, View dependency) {
-        return dependency instanceof Snackbar.SnackbarLayout;
-    }
+  @Override
+  public boolean layoutDependsOn(CoordinatorLayout parent, TextView child, View dependency) {
+    return dependency instanceof Snackbar.SnackbarLayout;
+  }
 
-    @Override
-    public boolean onDependentViewChanged(CoordinatorLayout parent, TextView child,
-            View dependency) {
-        ViewCompat.setTranslationY(child, Math.min(0,
-                ViewCompat.getTranslationY(dependency) - dependency.getHeight()));
-        return true;
-    }
+  @Override
+  public boolean onDependentViewChanged(CoordinatorLayout parent, TextView child, View dependency) {
+    ViewCompat.setTranslationY(
+        child, Math.min(0, ViewCompat.getTranslationY(dependency) - dependency.getHeight()));
+    return true;
+  }
 }

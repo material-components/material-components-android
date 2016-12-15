@@ -27,7 +27,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.isCompletelyDis
 import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
-
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -50,318 +49,328 @@ import android.support.test.filters.MediumTest;
 import android.support.v4.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
-
 import org.junit.Before;
 import org.junit.Test;
 
 @MediumTest
 public class SnackbarTest extends BaseInstrumentationTestCase<SnackbarActivity> {
-    private static final String MESSAGE_TEXT = "Test Message";
-    private static final @StringRes int MESSAGE_ID = R.string.snackbar_text;
-    private static final String ACTION_TEXT = "Action";
-    private static final @StringRes int ACTION_ID = R.string.snackbar_action;
+  private static final String MESSAGE_TEXT = "Test Message";
+  private static final @StringRes int MESSAGE_ID = R.string.snackbar_text;
+  private static final String ACTION_TEXT = "Action";
+  private static final @StringRes int ACTION_ID = R.string.snackbar_action;
 
-    private CoordinatorLayout mCoordinatorLayout;
+  private CoordinatorLayout mCoordinatorLayout;
 
-    private interface DismissAction {
-        void dismiss(Snackbar snackbar);
-    }
+  private interface DismissAction {
+    void dismiss(Snackbar snackbar);
+  }
 
-    public SnackbarTest() {
-        super(SnackbarActivity.class);
-    }
+  public SnackbarTest() {
+    super(SnackbarActivity.class);
+  }
 
-    @Before
-    public void setup() {
-        mCoordinatorLayout =
-                (CoordinatorLayout) mActivityTestRule.getActivity().findViewById(R.id.col);
-    }
+  @Before
+  public void setup() {
+    mCoordinatorLayout = (CoordinatorLayout) mActivityTestRule.getActivity().findViewById(R.id.col);
+  }
 
-    private void verifySnackbarContent(final Snackbar snackbar, final String expectedMessage,
-            final String expectedAction) throws Throwable {
-        // Show the snackbar
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+  private void verifySnackbarContent(
+      final Snackbar snackbar, final String expectedMessage, final String expectedAction)
+      throws Throwable {
+    // Show the snackbar
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
-        // Verify that we're showing the message
-        withText(expectedMessage).matches(allOf(
+    // Verify that we're showing the message
+    withText(expectedMessage)
+        .matches(
+            allOf(
                 isDescendantOfA(isAssignableFrom(Snackbar.SnackbarLayout.class)),
                 isCompletelyDisplayed()));
 
-        // If the action is not empty, verify that we're showing it
-        if (!TextUtils.isEmpty(expectedAction)) {
-            withText(expectedAction).matches(allOf(
-                    isDescendantOfA(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-                    isCompletelyDisplayed()));
-        }
-
-        // Dismiss the snackbar
-        SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
+    // If the action is not empty, verify that we're showing it
+    if (!TextUtils.isEmpty(expectedAction)) {
+      withText(expectedAction)
+          .matches(
+              allOf(
+                  isDescendantOfA(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+                  isCompletelyDisplayed()));
     }
 
-    @Test
-    public void testBasicContent() throws Throwable {
-        // Verify different combinations of snackbar content (message and action) and duration
+    // Dismiss the snackbar
+    SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
+  }
 
-        final Resources res = mActivityTestRule.getActivity().getResources();
-        final String resolvedMessage = res.getString(MESSAGE_ID);
-        final String resolvedAction = res.getString(ACTION_ID);
+  @Test
+  public void testBasicContent() throws Throwable {
+    // Verify different combinations of snackbar content (message and action) and duration
 
-        // String message and no action
-        verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT),
-                MESSAGE_TEXT, null);
+    final Resources res = mActivityTestRule.getActivity().getResources();
+    final String resolvedMessage = res.getString(MESSAGE_ID);
+    final String resolvedAction = res.getString(ACTION_ID);
 
-        // Resource message and no action
-        verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG),
-                resolvedMessage, null);
+    // String message and no action
+    verifySnackbarContent(
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT), MESSAGE_TEXT, null);
 
-        // String message and string action
-        verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(ACTION_TEXT, mock(View.OnClickListener.class)),
-                MESSAGE_TEXT, ACTION_TEXT);
+    // Resource message and no action
+    verifySnackbarContent(
+        Snackbar.make(mCoordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG), resolvedMessage, null);
 
-        // String message and resource action
-        verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
-                        .setAction(ACTION_ID, mock(View.OnClickListener.class)),
-                MESSAGE_TEXT, resolvedAction);
+    // String message and string action
+    verifySnackbarContent(
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class)),
+        MESSAGE_TEXT,
+        ACTION_TEXT);
 
-        // Resource message and resource action
-        verifySnackbarContent(
-                Snackbar.make(mCoordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG)
-                        .setAction(ACTION_ID, mock(View.OnClickListener.class)),
-                resolvedMessage, resolvedAction);
-    }
+    // String message and resource action
+    verifySnackbarContent(
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
+            .setAction(ACTION_ID, mock(View.OnClickListener.class)),
+        MESSAGE_TEXT,
+        resolvedAction);
 
-    private void verifyDismissCallback(final ViewInteraction interaction,
-            final @Nullable ViewAction action, final @Nullable DismissAction dismissAction,
-            final int length, @Snackbar.Callback.DismissEvent final int expectedEvent)
-            throws Throwable {
-        final BaseTransientBottomBar.BaseCallback mockCallback =
-                mock(BaseTransientBottomBar.BaseCallback.class);
-        final Snackbar snackbar = Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, length)
-                .setAction(ACTION_TEXT, mock(View.OnClickListener.class))
-                .addCallback(mockCallback);
+    // Resource message and resource action
+    verifySnackbarContent(
+        Snackbar.make(mCoordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG)
+            .setAction(ACTION_ID, mock(View.OnClickListener.class)),
+        resolvedMessage,
+        resolvedAction);
+  }
 
-        // Show the snackbar
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
-        // Verify that our onShown has been called
-        verify(mockCallback, times(1)).onShown(snackbar);
-        // and that the snackbar is either shown or queued to be shown
-        assertTrue(snackbar.isShownOrQueued());
-        // and also check that we have the intended message / action displayed somewhere in
-        // our hierarchy
-        onView(withText(MESSAGE_TEXT)).check(matches(isCompletelyDisplayed()));
-        onView(withText(ACTION_TEXT)).check(matches(isCompletelyDisplayed()));
+  private void verifyDismissCallback(
+      final ViewInteraction interaction,
+      final @Nullable ViewAction action,
+      final @Nullable DismissAction dismissAction,
+      final int length,
+      @Snackbar.Callback.DismissEvent final int expectedEvent)
+      throws Throwable {
+    final BaseTransientBottomBar.BaseCallback mockCallback =
+        mock(BaseTransientBottomBar.BaseCallback.class);
+    final Snackbar snackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, length)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class))
+            .addCallback(mockCallback);
 
-        // Now perform the UI interaction
-        SnackbarUtils.performActionAndWaitUntilFullyDismissed(snackbar,
-                new SnackbarUtils.TransientBottomBarAction() {
+    // Show the snackbar
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    // Verify that our onShown has been called
+    verify(mockCallback, times(1)).onShown(snackbar);
+    // and that the snackbar is either shown or queued to be shown
+    assertTrue(snackbar.isShownOrQueued());
+    // and also check that we have the intended message / action displayed somewhere in
+    // our hierarchy
+    onView(withText(MESSAGE_TEXT)).check(matches(isCompletelyDisplayed()));
+    onView(withText(ACTION_TEXT)).check(matches(isCompletelyDisplayed()));
+
+    // Now perform the UI interaction
+    SnackbarUtils.performActionAndWaitUntilFullyDismissed(
+        snackbar,
+        new SnackbarUtils.TransientBottomBarAction() {
+          @Override
+          public void perform() throws Throwable {
+            if (action != null) {
+              interaction.perform(action);
+            } else if (dismissAction != null) {
+              mActivityTestRule.runOnUiThread(
+                  new Runnable() {
                     @Override
-                    public void perform() throws Throwable {
-                        if (action != null) {
-                            interaction.perform(action);
-                        } else if (dismissAction != null) {
-                            mActivityTestRule.runOnUiThread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    dismissAction.dismiss(snackbar);
-                                }
-                            });
-                        }
+                    public void run() {
+                      dismissAction.dismiss(snackbar);
                     }
-                });
+                  });
+            }
+          }
+        });
 
-        // Verify that our onDismissed has been called
-        verify(mockCallback, times(1)).onDismissed(snackbar, expectedEvent);
-        verifyNoMoreInteractions(mockCallback);
-        // and that the snackbar is neither shown nor queued to be shown
-        assertFalse(snackbar.isShownOrQueued());
+    // Verify that our onDismissed has been called
+    verify(mockCallback, times(1)).onDismissed(snackbar, expectedEvent);
+    verifyNoMoreInteractions(mockCallback);
+    // and that the snackbar is neither shown nor queued to be shown
+    assertFalse(snackbar.isShownOrQueued());
+  }
+
+  @Test
+  public void testDismissViaActionClick() throws Throwable {
+    verifyDismissCallback(
+        onView(withId(R.id.snackbar_action)),
+        click(),
+        null,
+        Snackbar.LENGTH_LONG,
+        Snackbar.Callback.DISMISS_EVENT_ACTION);
+  }
+
+  @Test
+  public void testDismissViaSwipe() throws Throwable {
+    verifyDismissCallback(
+        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        swipeRight(),
+        null,
+        Snackbar.LENGTH_LONG,
+        Snackbar.Callback.DISMISS_EVENT_SWIPE);
+  }
+
+  @Test
+  public void testDismissViaSwipeRtl() throws Throwable {
+    onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
+    if (ViewCompat.getLayoutDirection(mCoordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      // On devices that support RTL layout, the start-to-end dismiss swipe is done
+      // with swipeLeft() action
+      verifyDismissCallback(
+          onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+          swipeLeft(),
+          null,
+          Snackbar.LENGTH_LONG,
+          Snackbar.Callback.DISMISS_EVENT_SWIPE);
     }
+  }
 
-    @Test
-    public void testDismissViaActionClick() throws Throwable {
-        verifyDismissCallback(
-                onView(withId(R.id.snackbar_action)),
-                click(),
-                null,
-                Snackbar.LENGTH_LONG,
-                Snackbar.Callback.DISMISS_EVENT_ACTION);
-    }
+  @Test
+  public void testDismissViaApi() throws Throwable {
+    verifyDismissCallback(
+        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        null,
+        new DismissAction() {
+          @Override
+          public void dismiss(Snackbar snackbar) {
+            snackbar.dismiss();
+          }
+        },
+        Snackbar.LENGTH_LONG,
+        Snackbar.Callback.DISMISS_EVENT_MANUAL);
+  }
 
-    @Test
-    public void testDismissViaSwipe() throws Throwable {
-        verifyDismissCallback(
-                onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-                swipeRight(),
-                null,
-                Snackbar.LENGTH_LONG,
-                Snackbar.Callback.DISMISS_EVENT_SWIPE);
-    }
+  @Test
+  public void testDismissViaTimeout() throws Throwable {
+    verifyDismissCallback(
+        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        null,
+        null,
+        Snackbar.LENGTH_LONG,
+        Snackbar.Callback.DISMISS_EVENT_TIMEOUT);
+  }
 
-    @Test
-    public void testDismissViaSwipeRtl() throws Throwable {
-        onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
-        if (ViewCompat.getLayoutDirection(mCoordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-            // On devices that support RTL layout, the start-to-end dismiss swipe is done
-            // with swipeLeft() action
-            verifyDismissCallback(
-                    onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-                    swipeLeft(),
-                    null,
-                    Snackbar.LENGTH_LONG,
-                    Snackbar.Callback.DISMISS_EVENT_SWIPE);
-        }
-    }
+  @Test
+  public void testDismissViaAnotherSnackbar() throws Throwable {
+    final Snackbar anotherSnackbar =
+        Snackbar.make(mCoordinatorLayout, "A different message", Snackbar.LENGTH_SHORT);
 
-    @Test
-    public void testDismissViaApi() throws Throwable {
-        verifyDismissCallback(
-                onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-                null,
-                new DismissAction() {
-                    @Override
-                    public void dismiss(Snackbar snackbar) {
-                        snackbar.dismiss();
-                    }
-                },
-                Snackbar.LENGTH_LONG,
-                Snackbar.Callback.DISMISS_EVENT_MANUAL);
-    }
+    // Our dismiss action is to show another snackbar (and verify that the original snackbar
+    // is now dismissed with CONSECUTIVE event)
+    verifyDismissCallback(
+        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        null,
+        new DismissAction() {
+          @Override
+          public void dismiss(Snackbar snackbar) {
+            anotherSnackbar.show();
+          }
+        },
+        Snackbar.LENGTH_LONG,
+        Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
 
-    @Test
-    public void testDismissViaTimeout() throws Throwable {
-        verifyDismissCallback(
-                onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-                null,
-                null,
-                Snackbar.LENGTH_LONG,
-                Snackbar.Callback.DISMISS_EVENT_TIMEOUT);
-    }
+    // And dismiss the second snackbar to get back to clean state
+    SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(anotherSnackbar);
+  }
 
-    @Test
-    public void testDismissViaAnotherSnackbar() throws Throwable {
-        final Snackbar anotherSnackbar =
-                Snackbar.make(mCoordinatorLayout, "A different message", Snackbar.LENGTH_SHORT);
+  @Test
+  public void testActionClickListener() {
+    final View.OnClickListener mockClickListener = mock(View.OnClickListener.class);
+    final Snackbar snackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
+            .setAction(ACTION_TEXT, mockClickListener);
 
-        // Our dismiss action is to show another snackbar (and verify that the original snackbar
-        // is now dismissed with CONSECUTIVE event)
-        verifyDismissCallback(
-                onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
-                null,
-                new DismissAction() {
-                    @Override
-                    public void dismiss(Snackbar snackbar) {
-                        anotherSnackbar.show();
-                    }
-                },
-                Snackbar.LENGTH_LONG,
-                Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
+    // Show the snackbar
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    // perform the action click
+    onView(withId(R.id.snackbar_action)).perform(click());
+    // and verify that our click listener has been called
+    verify(mockClickListener, times(1)).onClick(any(View.class));
+  }
 
-        // And dismiss the second snackbar to get back to clean state
-        SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(anotherSnackbar);
-    }
+  @Test
+  public void testSetCallback() throws Throwable {
+    final Snackbar snackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    final Snackbar.Callback mockCallback = spy(new Snackbar.Callback());
+    snackbar.setCallback(mockCallback);
 
-    @Test
-    public void testActionClickListener() {
-        final View.OnClickListener mockClickListener = mock(View.OnClickListener.class);
-        final Snackbar snackbar =
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
-                    .setAction(ACTION_TEXT, mockClickListener);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    verify(mockCallback, times(1)).onShown(snackbar);
 
-        // Show the snackbar
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
-        // perform the action click
-        onView(withId(R.id.snackbar_action)).perform(click());
-        // and verify that our click listener has been called
-        verify(mockClickListener, times(1)).onClick(any(View.class));
-    }
+    SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
+    verify(mockCallback, times(1))
+        .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+  }
 
-    @Test
-    public void testSetCallback() throws Throwable {
-        final Snackbar snackbar =
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        final Snackbar.Callback mockCallback = spy(new Snackbar.Callback());
-        snackbar.setCallback(mockCallback);
+  @Test
+  public void testSingleCallback() throws Throwable {
+    final Snackbar snackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    final BaseTransientBottomBar.BaseCallback mockCallback1 =
+        mock(BaseTransientBottomBar.BaseCallback.class);
+    final BaseTransientBottomBar.BaseCallback mockCallback2 =
+        mock(BaseTransientBottomBar.BaseCallback.class);
+    snackbar.addCallback(mockCallback1);
 
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
-        verify(mockCallback, times(1)).onShown(snackbar);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    verify(mockCallback1, times(1)).onShown(snackbar);
+    verify(mockCallback2, never()).onShown(snackbar);
 
-        SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
-        verify(mockCallback, times(1)).onDismissed(snackbar,
-                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
-    }
+    SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
+    verify(mockCallback1, times(1))
+        .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+    verify(mockCallback2, never())
+        .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+  }
 
-    @Test
-    public void testSingleCallback() throws Throwable {
-        final Snackbar snackbar =
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        final BaseTransientBottomBar.BaseCallback mockCallback1 =
-                mock(BaseTransientBottomBar.BaseCallback.class);
-        final BaseTransientBottomBar.BaseCallback mockCallback2 =
-                mock(BaseTransientBottomBar.BaseCallback.class);
-        snackbar.addCallback(mockCallback1);
+  @Test
+  public void testMultipleCallbacks() throws Throwable {
+    final Snackbar snackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    final BaseTransientBottomBar.BaseCallback mockCallback1 =
+        mock(BaseTransientBottomBar.BaseCallback.class);
+    final BaseTransientBottomBar.BaseCallback mockCallback2 =
+        mock(BaseTransientBottomBar.BaseCallback.class);
+    snackbar.addCallback(mockCallback1);
+    snackbar.addCallback(mockCallback2);
 
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
-        verify(mockCallback1, times(1)).onShown(snackbar);
-        verify(mockCallback2, never()).onShown(snackbar);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    verify(mockCallback1, times(1)).onShown(snackbar);
+    verify(mockCallback2, times(1)).onShown(snackbar);
 
-        SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
-        verify(mockCallback1, times(1)).onDismissed(snackbar,
-                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
-        verify(mockCallback2, never()).onDismissed(snackbar,
-                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
-    }
+    SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
+    verify(mockCallback1, times(1))
+        .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+    verify(mockCallback2, times(1))
+        .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+  }
 
-    @Test
-    public void testMultipleCallbacks() throws Throwable {
-        final Snackbar snackbar =
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        final BaseTransientBottomBar.BaseCallback mockCallback1 =
-                mock(BaseTransientBottomBar.BaseCallback.class);
-        final BaseTransientBottomBar.BaseCallback mockCallback2 =
-                mock(BaseTransientBottomBar.BaseCallback.class);
-        snackbar.addCallback(mockCallback1);
-        snackbar.addCallback(mockCallback2);
+  @Test
+  public void testMultipleCallbacksWithRemoval() throws Throwable {
+    final Snackbar snackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+            .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
+    final BaseTransientBottomBar.BaseCallback mockCallback1 =
+        mock(BaseTransientBottomBar.BaseCallback.class);
+    final BaseTransientBottomBar.BaseCallback mockCallback2 =
+        mock(BaseTransientBottomBar.BaseCallback.class);
+    snackbar.addCallback(mockCallback1);
+    snackbar.addCallback(mockCallback2);
 
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
-        verify(mockCallback1, times(1)).onShown(snackbar);
-        verify(mockCallback2, times(1)).onShown(snackbar);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    verify(mockCallback1, times(1)).onShown(snackbar);
+    verify(mockCallback2, times(1)).onShown(snackbar);
 
-        SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
-        verify(mockCallback1, times(1)).onDismissed(snackbar,
-                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
-        verify(mockCallback2, times(1)).onDismissed(snackbar,
-                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
-    }
+    snackbar.removeCallback(mockCallback2);
 
-    @Test
-    public void testMultipleCallbacksWithRemoval() throws Throwable {
-        final Snackbar snackbar =
-                Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
-                        .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-        final BaseTransientBottomBar.BaseCallback mockCallback1 =
-                mock(BaseTransientBottomBar.BaseCallback.class);
-        final BaseTransientBottomBar.BaseCallback mockCallback2 =
-                mock(BaseTransientBottomBar.BaseCallback.class);
-        snackbar.addCallback(mockCallback1);
-        snackbar.addCallback(mockCallback2);
-
-        SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
-        verify(mockCallback1, times(1)).onShown(snackbar);
-        verify(mockCallback2, times(1)).onShown(snackbar);
-
-        snackbar.removeCallback(mockCallback2);
-
-        SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
-        verify(mockCallback1, times(1)).onDismissed(snackbar,
-                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
-        verify(mockCallback2, never()).onDismissed(snackbar,
-                BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
-    }
+    SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
+    verify(mockCallback1, times(1))
+        .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+    verify(mockCallback2, never())
+        .onDismissed(snackbar, BaseTransientBottomBar.BaseCallback.DISMISS_EVENT_MANUAL);
+  }
 }

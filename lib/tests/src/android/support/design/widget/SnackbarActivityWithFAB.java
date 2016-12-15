@@ -19,8 +19,8 @@ package android.support.design.widget;
 import android.support.design.test.R;
 
 public class SnackbarActivityWithFAB extends BaseTestActivity {
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.test_design_snackbar_fab;
-    }
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.test_design_snackbar_fab;
+  }
 }

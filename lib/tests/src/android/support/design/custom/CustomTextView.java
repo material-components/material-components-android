@@ -22,15 +22,15 @@ import android.util.AttributeSet;
 
 @CoordinatorLayout.DefaultBehavior(TestFloatingBehavior.class)
 public class CustomTextView extends AppCompatTextView {
-    public CustomTextView(Context context) {
-        super(context);
-    }
+  public CustomTextView(Context context) {
+    super(context);
+  }
 
-    public CustomTextView(Context context, AttributeSet attrs) {
-        super(context, attrs);
-    }
+  public CustomTextView(Context context, AttributeSet attrs) {
+    super(context, attrs);
+  }
 
-    public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-    }
+  public CustomTextView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+  }
 }

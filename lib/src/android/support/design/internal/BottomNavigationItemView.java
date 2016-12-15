@@ -38,218 +38,213 @@ import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-/**
- * @hide
- */
+/** @hide */
 @RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationItemView extends FrameLayout implements MenuView.ItemView {
-    public static final int INVALID_ITEM_POSITION = -1;
+  public static final int INVALID_ITEM_POSITION = -1;
 
-    private static final int[] CHECKED_STATE_SET = { android.R.attr.state_checked };
+  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
-    private final int mDefaultMargin;
-    private final int mShiftAmount;
-    private final float mScaleUpFactor;
-    private final float mScaleDownFactor;
+  private final int mDefaultMargin;
+  private final int mShiftAmount;
+  private final float mScaleUpFactor;
+  private final float mScaleDownFactor;
 
-    private boolean mShiftingMode;
+  private boolean mShiftingMode;
 
-    private ImageView mIcon;
-    private final TextView mSmallLabel;
-    private final TextView mLargeLabel;
-    private int mItemPosition = INVALID_ITEM_POSITION;
+  private ImageView mIcon;
+  private final TextView mSmallLabel;
+  private final TextView mLargeLabel;
+  private int mItemPosition = INVALID_ITEM_POSITION;
 
-    private MenuItemImpl mItemData;
+  private MenuItemImpl mItemData;
 
-    private ColorStateList mIconTint;
+  private ColorStateList mIconTint;
 
-    public BottomNavigationItemView(@NonNull Context context) {
-        this(context, null);
+  public BottomNavigationItemView(@NonNull Context context) {
+    this(context, null);
+  }
+
+  public BottomNavigationItemView(@NonNull Context context, AttributeSet attrs) {
+    this(context, attrs, 0);
+  }
+
+  public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
+    final Resources res = getResources();
+    int inactiveLabelSize = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size);
+    int activeLabelSize =
+        res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_text_size);
+    mDefaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
+    mShiftAmount = inactiveLabelSize - activeLabelSize;
+    mScaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
+    mScaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
+
+    LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
+    setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
+    mIcon = (ImageView) findViewById(R.id.icon);
+    mSmallLabel = (TextView) findViewById(R.id.smallLabel);
+    mLargeLabel = (TextView) findViewById(R.id.largeLabel);
+  }
+
+  @Override
+  public void initialize(MenuItemImpl itemData, int menuType) {
+    mItemData = itemData;
+    setCheckable(itemData.isCheckable());
+    setChecked(itemData.isChecked());
+    setEnabled(itemData.isEnabled());
+    setIcon(itemData.getIcon());
+    setTitle(itemData.getTitle());
+    setId(itemData.getItemId());
+  }
+
+  public void setItemPosition(int position) {
+    mItemPosition = position;
+  }
+
+  public int getItemPosition() {
+    return mItemPosition;
+  }
+
+  public void setShiftingMode(boolean enabled) {
+    mShiftingMode = enabled;
+  }
+
+  @Override
+  public MenuItemImpl getItemData() {
+    return mItemData;
+  }
+
+  @Override
+  public void setTitle(CharSequence title) {
+    mSmallLabel.setText(title);
+    mLargeLabel.setText(title);
+  }
+
+  @Override
+  public void setCheckable(boolean checkable) {
+    refreshDrawableState();
+  }
+
+  @Override
+  public void setChecked(boolean checked) {
+    ViewCompat.setPivotX(mLargeLabel, mLargeLabel.getWidth() / 2);
+    ViewCompat.setPivotY(mLargeLabel, mLargeLabel.getBaseline());
+    ViewCompat.setPivotX(mSmallLabel, mSmallLabel.getWidth() / 2);
+    ViewCompat.setPivotY(mSmallLabel, mSmallLabel.getBaseline());
+    if (mShiftingMode) {
+      if (checked) {
+        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+        iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+        iconParams.topMargin = mDefaultMargin;
+        mIcon.setLayoutParams(iconParams);
+        mLargeLabel.setVisibility(VISIBLE);
+        ViewCompat.setScaleX(mLargeLabel, 1f);
+        ViewCompat.setScaleY(mLargeLabel, 1f);
+      } else {
+        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+        iconParams.gravity = Gravity.CENTER;
+        iconParams.topMargin = mDefaultMargin;
+        mIcon.setLayoutParams(iconParams);
+        mLargeLabel.setVisibility(INVISIBLE);
+        ViewCompat.setScaleX(mLargeLabel, 0.5f);
+        ViewCompat.setScaleY(mLargeLabel, 0.5f);
+      }
+      mSmallLabel.setVisibility(INVISIBLE);
+    } else {
+      if (checked) {
+        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+        iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+        iconParams.topMargin = mDefaultMargin + mShiftAmount;
+        mIcon.setLayoutParams(iconParams);
+        mLargeLabel.setVisibility(VISIBLE);
+        mSmallLabel.setVisibility(INVISIBLE);
+
+        ViewCompat.setScaleX(mLargeLabel, 1f);
+        ViewCompat.setScaleY(mLargeLabel, 1f);
+        ViewCompat.setScaleX(mSmallLabel, mScaleUpFactor);
+        ViewCompat.setScaleY(mSmallLabel, mScaleUpFactor);
+      } else {
+        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
+        iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+        iconParams.topMargin = mDefaultMargin;
+        mIcon.setLayoutParams(iconParams);
+        mLargeLabel.setVisibility(INVISIBLE);
+        mSmallLabel.setVisibility(VISIBLE);
+
+        ViewCompat.setScaleX(mLargeLabel, mScaleDownFactor);
+        ViewCompat.setScaleY(mLargeLabel, mScaleDownFactor);
+        ViewCompat.setScaleX(mSmallLabel, 1f);
+        ViewCompat.setScaleY(mSmallLabel, 1f);
+      }
     }
 
-    public BottomNavigationItemView(@NonNull Context context, AttributeSet attrs) {
-        this(context, attrs, 0);
+    refreshDrawableState();
+  }
+
+  @Override
+  public void setEnabled(boolean enabled) {
+    super.setEnabled(enabled);
+    mSmallLabel.setEnabled(enabled);
+    mLargeLabel.setEnabled(enabled);
+    mIcon.setEnabled(enabled);
+
+    if (enabled) {
+      ViewCompat.setPointerIcon(
+          this, PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
+    } else {
+      ViewCompat.setPointerIcon(this, null);
     }
+  }
 
-    public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs, defStyleAttr);
-        final Resources res = getResources();
-        int inactiveLabelSize =
-                res.getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size);
-        int activeLabelSize = res.getDimensionPixelSize(
-                R.dimen.design_bottom_navigation_active_text_size);
-        mDefaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
-        mShiftAmount = inactiveLabelSize - activeLabelSize;
-        mScaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
-        mScaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
-
-        LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
-        setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
-        mIcon = (ImageView) findViewById(R.id.icon);
-        mSmallLabel = (TextView) findViewById(R.id.smallLabel);
-        mLargeLabel = (TextView) findViewById(R.id.largeLabel);
+  @Override
+  public int[] onCreateDrawableState(final int extraSpace) {
+    final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+    if (mItemData != null && mItemData.isCheckable() && mItemData.isChecked()) {
+      mergeDrawableStates(drawableState, CHECKED_STATE_SET);
     }
+    return drawableState;
+  }
 
-    @Override
-    public void initialize(MenuItemImpl itemData, int menuType) {
-        mItemData = itemData;
-        setCheckable(itemData.isCheckable());
-        setChecked(itemData.isChecked());
-        setEnabled(itemData.isEnabled());
-        setIcon(itemData.getIcon());
-        setTitle(itemData.getTitle());
-        setId(itemData.getItemId());
+  @Override
+  public void setShortcut(boolean showShortcut, char shortcutKey) {}
+
+  @Override
+  public void setIcon(Drawable icon) {
+    if (icon != null) {
+      Drawable.ConstantState state = icon.getConstantState();
+      icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
+      DrawableCompat.setTintList(icon, mIconTint);
     }
+    mIcon.setImageDrawable(icon);
+  }
 
-    public void setItemPosition(int position) {
-        mItemPosition = position;
+  @Override
+  public boolean prefersCondensedTitle() {
+    return false;
+  }
+
+  @Override
+  public boolean showsIcon() {
+    return true;
+  }
+
+  public void setIconTintList(ColorStateList tint) {
+    mIconTint = tint;
+    if (mItemData != null) {
+      // Update the icon so that the tint takes effect
+      setIcon(mItemData.getIcon());
     }
+  }
 
-    public int getItemPosition() {
-        return mItemPosition;
-    }
+  public void setTextColor(ColorStateList color) {
+    mSmallLabel.setTextColor(color);
+    mLargeLabel.setTextColor(color);
+  }
 
-    public void setShiftingMode(boolean enabled) {
-        mShiftingMode = enabled;
-    }
-
-    @Override
-    public MenuItemImpl getItemData() {
-        return mItemData;
-    }
-
-    @Override
-    public void setTitle(CharSequence title) {
-        mSmallLabel.setText(title);
-        mLargeLabel.setText(title);
-    }
-
-    @Override
-    public void setCheckable(boolean checkable) {
-        refreshDrawableState();
-    }
-
-    @Override
-    public void setChecked(boolean checked) {
-        ViewCompat.setPivotX(mLargeLabel, mLargeLabel.getWidth() / 2);
-        ViewCompat.setPivotY(mLargeLabel, mLargeLabel.getBaseline());
-        ViewCompat.setPivotX(mSmallLabel, mSmallLabel.getWidth() / 2);
-        ViewCompat.setPivotY(mSmallLabel, mSmallLabel.getBaseline());
-        if (mShiftingMode) {
-            if (checked) {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-                iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-                iconParams.topMargin = mDefaultMargin;
-                mIcon.setLayoutParams(iconParams);
-                mLargeLabel.setVisibility(VISIBLE);
-                ViewCompat.setScaleX(mLargeLabel, 1f);
-                ViewCompat.setScaleY(mLargeLabel, 1f);
-            } else {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-                iconParams.gravity = Gravity.CENTER;
-                iconParams.topMargin = mDefaultMargin;
-                mIcon.setLayoutParams(iconParams);
-                mLargeLabel.setVisibility(INVISIBLE);
-                ViewCompat.setScaleX(mLargeLabel, 0.5f);
-                ViewCompat.setScaleY(mLargeLabel, 0.5f);
-            }
-            mSmallLabel.setVisibility(INVISIBLE);
-        } else {
-            if (checked) {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-                iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-                iconParams.topMargin = mDefaultMargin + mShiftAmount;
-                mIcon.setLayoutParams(iconParams);
-                mLargeLabel.setVisibility(VISIBLE);
-                mSmallLabel.setVisibility(INVISIBLE);
-
-                ViewCompat.setScaleX(mLargeLabel, 1f);
-                ViewCompat.setScaleY(mLargeLabel, 1f);
-                ViewCompat.setScaleX(mSmallLabel, mScaleUpFactor);
-                ViewCompat.setScaleY(mSmallLabel, mScaleUpFactor);
-            } else {
-                LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-                iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-                iconParams.topMargin = mDefaultMargin;
-                mIcon.setLayoutParams(iconParams);
-                mLargeLabel.setVisibility(INVISIBLE);
-                mSmallLabel.setVisibility(VISIBLE);
-
-                ViewCompat.setScaleX(mLargeLabel, mScaleDownFactor);
-                ViewCompat.setScaleY(mLargeLabel, mScaleDownFactor);
-                ViewCompat.setScaleX(mSmallLabel, 1f);
-                ViewCompat.setScaleY(mSmallLabel, 1f);
-            }
-        }
-
-        refreshDrawableState();
-    }
-
-    @Override
-    public void setEnabled(boolean enabled) {
-        super.setEnabled(enabled);
-        mSmallLabel.setEnabled(enabled);
-        mLargeLabel.setEnabled(enabled);
-        mIcon.setEnabled(enabled);
-
-        if (enabled) {
-            ViewCompat.setPointerIcon(this,
-                    PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
-        } else {
-            ViewCompat.setPointerIcon(this, null);
-        }
-
-    }
-
-    @Override
-    public int[] onCreateDrawableState(final int extraSpace) {
-        final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-        if (mItemData != null && mItemData.isCheckable() && mItemData.isChecked()) {
-            mergeDrawableStates(drawableState, CHECKED_STATE_SET);
-        }
-        return drawableState;
-    }
-
-    @Override
-    public void setShortcut(boolean showShortcut, char shortcutKey) {
-    }
-
-    @Override
-    public void setIcon(Drawable icon) {
-        if (icon != null) {
-            Drawable.ConstantState state = icon.getConstantState();
-            icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
-            DrawableCompat.setTintList(icon, mIconTint);
-        }
-        mIcon.setImageDrawable(icon);
-    }
-
-    @Override
-    public boolean prefersCondensedTitle() {
-        return false;
-    }
-
-    @Override
-    public boolean showsIcon() {
-        return true;
-    }
-
-    public void setIconTintList(ColorStateList tint) {
-        mIconTint = tint;
-        if (mItemData != null) {
-            // Update the icon so that the tint takes effect
-            setIcon(mItemData.getIcon());
-        }
-    }
-
-    public void setTextColor(ColorStateList color) {
-        mSmallLabel.setTextColor(color);
-        mLargeLabel.setTextColor(color);
-    }
-
-    public void setItemBackground(int background) {
-        Drawable backgroundDrawable = background == 0
-                ? null : ContextCompat.getDrawable(getContext(), background);
-        ViewCompat.setBackground(this, backgroundDrawable);
-    }
+  public void setItemBackground(int background) {
+    Drawable backgroundDrawable =
+        background == 0 ? null : ContextCompat.getDrawable(getContext(), background);
+    ViewCompat.setBackground(this, backgroundDrawable);
+  }
 }

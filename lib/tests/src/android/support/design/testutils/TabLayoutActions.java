@@ -16,131 +16,115 @@
 
 package android.support.design.testutils;
 
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
+
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.action.CoordinatesProvider;
-import android.support.test.espresso.action.GeneralClickAction;
-import android.support.test.espresso.action.Press;
-import android.support.test.espresso.action.Tap;
-import android.support.v4.view.PagerAdapter;
-import android.support.v4.view.PagerTitleStrip;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.widget.TextView;
 import org.hamcrest.Matcher;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
-
 public class TabLayoutActions {
-    /**
-     * Wires <code>TabLayout</code> to <code>ViewPager</code> content.
-     */
-    public static ViewAction setupWithViewPager(final @Nullable ViewPager viewPager) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Wires <code>TabLayout</code> to <code>ViewPager</code> content. */
+  public static ViewAction setupWithViewPager(final @Nullable ViewPager viewPager) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Setup with ViewPager content";
-            }
+      @Override
+      public String getDescription() {
+        return "Setup with ViewPager content";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TabLayout tabLayout = (TabLayout) view;
-                tabLayout.setupWithViewPager(viewPager);
+        TabLayout tabLayout = (TabLayout) view;
+        tabLayout.setupWithViewPager(viewPager);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Wires <code>TabLayout</code> to <code>ViewPager</code> content.
-     */
-    public static ViewAction setupWithViewPager(final @Nullable ViewPager viewPager,
-            final boolean autoRefresh) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Wires <code>TabLayout</code> to <code>ViewPager</code> content. */
+  public static ViewAction setupWithViewPager(
+      final @Nullable ViewPager viewPager, final boolean autoRefresh) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Setup with ViewPager content";
-            }
+      @Override
+      public String getDescription() {
+        return "Setup with ViewPager content";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TabLayout tabLayout = (TabLayout) view;
-                tabLayout.setupWithViewPager(viewPager, autoRefresh);
+        TabLayout tabLayout = (TabLayout) view;
+        tabLayout.setupWithViewPager(viewPager, autoRefresh);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Selects the specified tab in the <code>TabLayout</code>.
-     */
-    public static ViewAction selectTab(final int tabIndex) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Selects the specified tab in the <code>TabLayout</code>. */
+  public static ViewAction selectTab(final int tabIndex) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Selects tab";
-            }
+      @Override
+      public String getDescription() {
+        return "Selects tab";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TabLayout tabLayout = (TabLayout) view;
-                tabLayout.getTabAt(tabIndex).select();
+        TabLayout tabLayout = (TabLayout) view;
+        tabLayout.getTabAt(tabIndex).select();
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets the specified tab mode in the <code>TabLayout</code>.
-     */
-    public static ViewAction setTabMode(final int tabMode) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayingAtLeast(90);
-            }
+  /** Sets the specified tab mode in the <code>TabLayout</code>. */
+  public static ViewAction setTabMode(final int tabMode) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayingAtLeast(90);
+      }
 
-            @Override
-            public String getDescription() {
-                return "Sets tab mode";
-            }
+      @Override
+      public String getDescription() {
+        return "Sets tab mode";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                TabLayout tabLayout = (TabLayout) view;
-                tabLayout.setTabMode(tabMode);
+        TabLayout tabLayout = (TabLayout) view;
+        tabLayout.setTabMode(tabMode);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 }

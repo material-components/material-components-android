@@ -26,63 +26,57 @@ import android.support.design.widget.BottomNavigationView;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;
-
 import org.hamcrest.Matcher;
 
-
 public class BottomNavigationViewActions {
-    /**
-     * Sets item icon tint list on the content of the bottom navigation view.
-     */
-    public static ViewAction setItemIconTintList(@Nullable final ColorStateList tint) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets item icon tint list on the content of the bottom navigation view. */
+  public static ViewAction setItemIconTintList(@Nullable final ColorStateList tint) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set item icon tint list";
-            }
+      @Override
+      public String getDescription() {
+        return "Set item icon tint list";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                BottomNavigationView navigationView = (BottomNavigationView) view;
-                navigationView.setItemIconTintList(tint);
+        BottomNavigationView navigationView = (BottomNavigationView) view;
+        navigationView.setItemIconTintList(tint);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 
-    /**
-     * Sets icon for the menu item of the navigation view.
-     */
-    public static ViewAction setIconForMenuItem(@IdRes final int menuItemId,
-            final Drawable iconDrawable) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isDisplayed();
-            }
+  /** Sets icon for the menu item of the navigation view. */
+  public static ViewAction setIconForMenuItem(
+      @IdRes final int menuItemId, final Drawable iconDrawable) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "Set menu item icon";
-            }
+      @Override
+      public String getDescription() {
+        return "Set menu item icon";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                uiController.loopMainThreadUntilIdle();
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
 
-                BottomNavigationView navigationView = (BottomNavigationView) view;
-                navigationView.getMenu().findItem(menuItemId).setIcon(iconDrawable);
+        BottomNavigationView navigationView = (BottomNavigationView) view;
+        navigationView.getMenu().findItem(menuItemId).setIcon(iconDrawable);
 
-                uiController.loopMainThreadUntilIdle();
-            }
-        };
-    }
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
 }

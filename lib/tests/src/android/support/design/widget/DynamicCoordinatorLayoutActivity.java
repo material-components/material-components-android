@@ -18,12 +18,10 @@ package android.support.design.widget;
 
 import android.support.design.test.R;
 
-/**
- * Test activity for testing various aspects of {@link CoordinatorLayout}.
- */
+/** Test activity for testing various aspects of {@link CoordinatorLayout}. */
 public class DynamicCoordinatorLayoutActivity extends BaseTestActivity {
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.dynamic_coordinator_layout;
-    }
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.dynamic_coordinator_layout;
+  }
 }

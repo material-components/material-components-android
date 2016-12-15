@@ -18,8 +18,8 @@ package android.support.design.widget;
 import android.support.design.test.R;
 
 public class BottomNavigationViewActivity extends BaseTestActivity {
-    @Override
-    protected int getContentViewLayoutResId() {
-        return R.layout.design_bottom_navigation_view;
-    }
+  @Override
+  protected int getContentViewLayoutResId() {
+    return R.layout.design_bottom_navigation_view;
+  }
 }

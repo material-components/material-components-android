@@ -36,204 +36,201 @@ import android.support.test.filters.MediumTest;
 import android.support.v7.widget.AppCompatTextView;
 import android.view.View;
 import android.widget.FrameLayout;
-
+import java.util.concurrent.atomic.AtomicBoolean;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
 import org.junit.Test;
 
-import java.util.concurrent.atomic.AtomicBoolean;
+public class BottomSheetDialogTest extends BaseInstrumentationTestCase<BottomSheetDialogActivity> {
 
-public class BottomSheetDialogTest extends
-        BaseInstrumentationTestCase<BottomSheetDialogActivity> {
+  private BottomSheetDialog mDialog;
 
-    private BottomSheetDialog mDialog;
+  public BottomSheetDialogTest() {
+    super(BottomSheetDialogActivity.class);
+  }
 
-    public BottomSheetDialogTest() {
-        super(BottomSheetDialogActivity.class);
-    }
-
-    @Test
-    @MediumTest
-    public void testBasicDialogSetup() throws Throwable {
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showDialog();
-                // Confirms that the dialog is shown
-                assertThat(mDialog.isShowing(), is(true));
-                FrameLayout bottomSheet = (FrameLayout) mDialog
-                        .findViewById(R.id.design_bottom_sheet);
-                assertThat(bottomSheet, is(notNullValue()));
-                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
-                assertThat(behavior.isHideable(), is(true));
-                assertThat(behavior, is(notNullValue()));
-                // Modal bottom sheets have auto peek height by default.
-                assertThat(behavior.getPeekHeight(), is(BottomSheetBehavior.PEEK_HEIGHT_AUTO));
-            }
+  @Test
+  @MediumTest
+  public void testBasicDialogSetup() throws Throwable {
+    mActivityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            showDialog();
+            // Confirms that the dialog is shown
+            assertThat(mDialog.isShowing(), is(true));
+            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            assertThat(bottomSheet, is(notNullValue()));
+            BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+            assertThat(behavior.isHideable(), is(true));
+            assertThat(behavior, is(notNullValue()));
+            // Modal bottom sheets have auto peek height by default.
+            assertThat(behavior.getPeekHeight(), is(BottomSheetBehavior.PEEK_HEIGHT_AUTO));
+          }
         });
-        // Click outside the bottom sheet
-        Espresso.onView(ViewMatchers.withId(R.id.touch_outside))
-                .perform(ViewActions.click());
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                // Confirm that the dialog is no longer shown
-                assertThat(mDialog.isShowing(), is(false));
-            }
+    // Click outside the bottom sheet
+    Espresso.onView(ViewMatchers.withId(R.id.touch_outside)).perform(ViewActions.click());
+    mActivityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            // Confirm that the dialog is no longer shown
+            assertThat(mDialog.isShowing(), is(false));
+          }
         });
-    }
+  }
 
-    @Test
-    @MediumTest
-    public void testShortDialog() throws Throwable {
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showDialog();
-            }
+  @Test
+  @MediumTest
+  public void testShortDialog() throws Throwable {
+    mActivityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            showDialog();
+          }
         });
-        // This ensures that the views are laid out before assertions below
-        Espresso.onView(ViewMatchers.withId(R.id.design_bottom_sheet))
-                .perform(setTallPeekHeight())
-                .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                FrameLayout bottomSheet = (FrameLayout) mDialog
-                        .findViewById(R.id.design_bottom_sheet);
-                CoordinatorLayout coordinator = (CoordinatorLayout) bottomSheet.getParent();
-                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
-                assertThat(bottomSheet, is(notNullValue()));
-                assertThat(coordinator, is(notNullValue()));
-                assertThat(behavior, is(notNullValue()));
-                // This bottom sheet is shorter than the peek height
-                assertThat(bottomSheet.getHeight(), is(lessThan(behavior.getPeekHeight())));
-                // Confirm that the bottom sheet is bottom-aligned
-                assertThat(bottomSheet.getTop(),
-                        is(coordinator.getHeight() - bottomSheet.getHeight()));
-            }
+    // This ensures that the views are laid out before assertions below
+    Espresso.onView(ViewMatchers.withId(R.id.design_bottom_sheet))
+        .perform(setTallPeekHeight())
+        .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+    mActivityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            CoordinatorLayout coordinator = (CoordinatorLayout) bottomSheet.getParent();
+            BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+            assertThat(bottomSheet, is(notNullValue()));
+            assertThat(coordinator, is(notNullValue()));
+            assertThat(behavior, is(notNullValue()));
+            // This bottom sheet is shorter than the peek height
+            assertThat(bottomSheet.getHeight(), is(lessThan(behavior.getPeekHeight())));
+            // Confirm that the bottom sheet is bottom-aligned
+            assertThat(bottomSheet.getTop(), is(coordinator.getHeight() - bottomSheet.getHeight()));
+          }
         });
-    }
+  }
 
-    @Test
-    @MediumTest
-    public void testNonCancelableDialog() throws Throwable {
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showDialog();
-                mDialog.setCancelable(false);
-            }
+  @Test
+  @MediumTest
+  public void testNonCancelableDialog() throws Throwable {
+    mActivityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            showDialog();
+            mDialog.setCancelable(false);
+          }
         });
-        // Click outside the bottom sheet
-        Espresso.onView(ViewMatchers.withId(R.id.touch_outside))
-                .perform(ViewActions.click());
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                FrameLayout bottomSheet = (FrameLayout) mDialog
-                        .findViewById(R.id.design_bottom_sheet);
-                BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
-                assertThat(behavior.isHideable(), is(false));
-                assertThat(mDialog.isShowing(), is(true));
-                mDialog.cancel();
-                assertThat(mDialog.isShowing(), is(false));
-            }
+    // Click outside the bottom sheet
+    Espresso.onView(ViewMatchers.withId(R.id.touch_outside)).perform(ViewActions.click());
+    mActivityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
+            assertThat(behavior.isHideable(), is(false));
+            assertThat(mDialog.isShowing(), is(true));
+            mDialog.cancel();
+            assertThat(mDialog.isShowing(), is(false));
+          }
         });
-    }
+  }
 
-    @Test
-    @MediumTest
-    public void testHideBottomSheet() throws Throwable {
-        final AtomicBoolean canceled = new AtomicBoolean(false);
-        mActivityTestRule.runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                showDialog();
-                mDialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
-                    @Override
-                    public void onCancel(DialogInterface dialogInterface) {
-                        canceled.set(true);
-                    }
+  @Test
+  @MediumTest
+  public void testHideBottomSheet() throws Throwable {
+    final AtomicBoolean canceled = new AtomicBoolean(false);
+    mActivityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            showDialog();
+            mDialog.setOnCancelListener(
+                new DialogInterface.OnCancelListener() {
+                  @Override
+                  public void onCancel(DialogInterface dialogInterface) {
+                    canceled.set(true);
+                  }
                 });
-            }
+          }
         });
-        Espresso.onView(ViewMatchers.withId(R.id.design_bottom_sheet))
-                .perform(setState(BottomSheetBehavior.STATE_HIDDEN));
-        // The dialog should be canceled
-        long start = System.currentTimeMillis();
-        while (!canceled.get()) {
-            SystemClock.sleep(31);
-            if (System.currentTimeMillis() - start > 3000) {
-                fail("Timed out while waiting for the dialog to be canceled.");
-            }
-        }
+    Espresso.onView(ViewMatchers.withId(R.id.design_bottom_sheet))
+        .perform(setState(BottomSheetBehavior.STATE_HIDDEN));
+    // The dialog should be canceled
+    long start = System.currentTimeMillis();
+    while (!canceled.get()) {
+      SystemClock.sleep(31);
+      if (System.currentTimeMillis() - start > 3000) {
+        fail("Timed out while waiting for the dialog to be canceled.");
+      }
     }
+  }
 
-    private void showDialog() {
-        Context context = mActivityTestRule.getActivity();
-        mDialog = new BottomSheetDialog(context);
-        AppCompatTextView text = new AppCompatTextView(context);
-        StringBuilder builder = new StringBuilder();
-        builder.append("It is fine today. ");
-        text.setText(builder);
-        mDialog.setContentView(text);
-        mDialog.show();
-    }
+  private void showDialog() {
+    Context context = mActivityTestRule.getActivity();
+    mDialog = new BottomSheetDialog(context);
+    AppCompatTextView text = new AppCompatTextView(context);
+    StringBuilder builder = new StringBuilder();
+    builder.append("It is fine today. ");
+    text.setText(builder);
+    mDialog.setContentView(text);
+    mDialog.show();
+  }
 
-    private static ViewAction setTallPeekHeight() {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return ViewMatchers.isDisplayed();
-            }
+  private static ViewAction setTallPeekHeight() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isDisplayed();
+      }
 
-            @Override
-            public String getDescription() {
-                return "set tall peek height";
-            }
+      @Override
+      public String getDescription() {
+        return "set tall peek height";
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
-                behavior.setPeekHeight(view.getHeight() + 100);
-            }
-        };
-    }
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
+        behavior.setPeekHeight(view.getHeight() + 100);
+      }
+    };
+  }
 
-    private static ViewAction setState(@BottomSheetBehavior.State final int state) {
-        return new ViewAction() {
-            @Override
-            public Matcher<View> getConstraints() {
-                return isBottomSheet();
-            }
+  private static ViewAction setState(@BottomSheetBehavior.State final int state) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isBottomSheet();
+      }
 
-            @Override
-            public String getDescription() {
-                return "set state to " + state;
-            }
+      @Override
+      public String getDescription() {
+        return "set state to " + state;
+      }
 
-            @Override
-            public void perform(UiController uiController, View view) {
-                BottomSheetBehavior.from(view).setState(state);
-            }
-        };
-    }
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomSheetBehavior.from(view).setState(state);
+      }
+    };
+  }
 
-    private static Matcher<View> isBottomSheet() {
-        return new TypeSafeMatcher<View>() {
-            @Override
-            protected boolean matchesSafely(View view) {
-                return BottomSheetBehavior.from(view) != null;
-            }
+  private static Matcher<View> isBottomSheet() {
+    return new TypeSafeMatcher<View>() {
+      @Override
+      protected boolean matchesSafely(View view) {
+        return BottomSheetBehavior.from(view) != null;
+      }
 
-            @Override
-            public void describeTo(Description description) {
-                description.appendText("is a bottom sheet");
-            }
-        };
-    }
-
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("is a bottom sheet");
+      }
+    };
+  }
 }
-

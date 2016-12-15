@@ -23,20 +23,20 @@ import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.view.ViewGroup;
 
 class BottomNavigationAnimationHelperIcs extends BottomNavigationAnimationHelperBase {
-    private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
+  private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
 
-    private final TransitionSet mSet;
+  private final TransitionSet mSet;
 
-    BottomNavigationAnimationHelperIcs() {
-        mSet = new AutoTransition();
-        mSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
-        mSet.setDuration(ACTIVE_ANIMATION_DURATION_MS);
-        mSet.setInterpolator(new FastOutSlowInInterpolator());
-        TextScale textScale = new TextScale();
-        mSet.addTransition(textScale);
-    }
+  BottomNavigationAnimationHelperIcs() {
+    mSet = new AutoTransition();
+    mSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
+    mSet.setDuration(ACTIVE_ANIMATION_DURATION_MS);
+    mSet.setInterpolator(new FastOutSlowInInterpolator());
+    TextScale textScale = new TextScale();
+    mSet.addTransition(textScale);
+  }
 
-    void beginDelayedTransition(ViewGroup view) {
-        TransitionManager.beginDelayedTransition(view, mSet);
-    }
+  void beginDelayedTransition(ViewGroup view) {
+    TransitionManager.beginDelayedTransition(view, mSet);
+  }
 }

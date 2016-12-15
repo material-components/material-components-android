@@ -32,182 +32,190 @@ import android.view.animation.Interpolator;
 
 abstract class FloatingActionButtonImpl {
 
-    static final Interpolator ANIM_INTERPOLATOR = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
-    static final long PRESSED_ANIM_DURATION = 100;
-    static final long PRESSED_ANIM_DELAY = 100;
+  static final Interpolator ANIM_INTERPOLATOR = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
+  static final long PRESSED_ANIM_DURATION = 100;
+  static final long PRESSED_ANIM_DELAY = 100;
 
-    static final int ANIM_STATE_NONE = 0;
-    static final int ANIM_STATE_HIDING = 1;
-    static final int ANIM_STATE_SHOWING = 2;
+  static final int ANIM_STATE_NONE = 0;
+  static final int ANIM_STATE_HIDING = 1;
+  static final int ANIM_STATE_SHOWING = 2;
 
-    int mAnimState = ANIM_STATE_NONE;
+  int mAnimState = ANIM_STATE_NONE;
 
-    Drawable mShapeDrawable;
-    Drawable mRippleDrawable;
-    CircularBorderDrawable mBorderDrawable;
-    Drawable mContentBackground;
+  Drawable mShapeDrawable;
+  Drawable mRippleDrawable;
+  CircularBorderDrawable mBorderDrawable;
+  Drawable mContentBackground;
 
-    float mElevation;
-    float mPressedTranslationZ;
+  float mElevation;
+  float mPressedTranslationZ;
 
-    interface InternalVisibilityChangedListener {
-        public void onShown();
-        public void onHidden();
+  interface InternalVisibilityChangedListener {
+    public void onShown();
+
+    public void onHidden();
+  }
+
+  static final int SHOW_HIDE_ANIM_DURATION = 200;
+
+  static final int[] PRESSED_ENABLED_STATE_SET = {
+    android.R.attr.state_pressed, android.R.attr.state_enabled
+  };
+  static final int[] FOCUSED_ENABLED_STATE_SET = {
+    android.R.attr.state_focused, android.R.attr.state_enabled
+  };
+  static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
+  static final int[] EMPTY_STATE_SET = new int[0];
+
+  final VisibilityAwareImageButton mView;
+  final ShadowViewDelegate mShadowViewDelegate;
+  final ValueAnimatorCompat.Creator mAnimatorCreator;
+
+  private final Rect mTmpRect = new Rect();
+  private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
+
+  FloatingActionButtonImpl(
+      VisibilityAwareImageButton view,
+      ShadowViewDelegate shadowViewDelegate,
+      ValueAnimatorCompat.Creator animatorCreator) {
+    mView = view;
+    mShadowViewDelegate = shadowViewDelegate;
+    mAnimatorCreator = animatorCreator;
+  }
+
+  abstract void setBackgroundDrawable(
+      ColorStateList backgroundTint,
+      PorterDuff.Mode backgroundTintMode,
+      int rippleColor,
+      int borderWidth);
+
+  abstract void setBackgroundTintList(ColorStateList tint);
+
+  abstract void setBackgroundTintMode(PorterDuff.Mode tintMode);
+
+  abstract void setRippleColor(int rippleColor);
+
+  final void setElevation(float elevation) {
+    if (mElevation != elevation) {
+      mElevation = elevation;
+      onElevationsChanged(elevation, mPressedTranslationZ);
     }
+  }
 
-    static final int SHOW_HIDE_ANIM_DURATION = 200;
+  abstract float getElevation();
 
-    static final int[] PRESSED_ENABLED_STATE_SET = {android.R.attr.state_pressed,
-            android.R.attr.state_enabled};
-    static final int[] FOCUSED_ENABLED_STATE_SET = {android.R.attr.state_focused,
-            android.R.attr.state_enabled};
-    static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
-    static final int[] EMPTY_STATE_SET = new int[0];
-
-    final VisibilityAwareImageButton mView;
-    final ShadowViewDelegate mShadowViewDelegate;
-    final ValueAnimatorCompat.Creator mAnimatorCreator;
-
-    private final Rect mTmpRect = new Rect();
-    private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
-
-    FloatingActionButtonImpl(VisibilityAwareImageButton view,
-            ShadowViewDelegate shadowViewDelegate, ValueAnimatorCompat.Creator animatorCreator) {
-        mView = view;
-        mShadowViewDelegate = shadowViewDelegate;
-        mAnimatorCreator = animatorCreator;
+  final void setPressedTranslationZ(float translationZ) {
+    if (mPressedTranslationZ != translationZ) {
+      mPressedTranslationZ = translationZ;
+      onElevationsChanged(mElevation, translationZ);
     }
+  }
 
-    abstract void setBackgroundDrawable(ColorStateList backgroundTint,
-            PorterDuff.Mode backgroundTintMode, int rippleColor, int borderWidth);
+  abstract void onElevationsChanged(float elevation, float pressedTranslationZ);
 
-    abstract void setBackgroundTintList(ColorStateList tint);
+  abstract void onDrawableStateChanged(int[] state);
 
-    abstract void setBackgroundTintMode(PorterDuff.Mode tintMode);
+  abstract void jumpDrawableToCurrentState();
 
-    abstract void setRippleColor(int rippleColor);
+  abstract void hide(@Nullable InternalVisibilityChangedListener listener, boolean fromUser);
 
-    final void setElevation(float elevation) {
-        if (mElevation != elevation) {
-            mElevation = elevation;
-            onElevationsChanged(elevation, mPressedTranslationZ);
-        }
+  abstract void show(@Nullable InternalVisibilityChangedListener listener, boolean fromUser);
+
+  final Drawable getContentBackground() {
+    return mContentBackground;
+  }
+
+  abstract void onCompatShadowChanged();
+
+  final void updatePadding() {
+    Rect rect = mTmpRect;
+    getPadding(rect);
+    onPaddingUpdated(rect);
+    mShadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
+  }
+
+  abstract void getPadding(Rect rect);
+
+  void onPaddingUpdated(Rect padding) {}
+
+  void onAttachedToWindow() {
+    if (requirePreDrawListener()) {
+      ensurePreDrawListener();
+      mView.getViewTreeObserver().addOnPreDrawListener(mPreDrawListener);
     }
+  }
 
-    abstract float getElevation();
-
-    final void setPressedTranslationZ(float translationZ) {
-        if (mPressedTranslationZ != translationZ) {
-            mPressedTranslationZ = translationZ;
-            onElevationsChanged(mElevation, translationZ);
-        }
+  void onDetachedFromWindow() {
+    if (mPreDrawListener != null) {
+      mView.getViewTreeObserver().removeOnPreDrawListener(mPreDrawListener);
+      mPreDrawListener = null;
     }
+  }
 
-    abstract void onElevationsChanged(float elevation, float pressedTranslationZ);
+  boolean requirePreDrawListener() {
+    return false;
+  }
 
-    abstract void onDrawableStateChanged(int[] state);
+  CircularBorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
+    final Context context = mView.getContext();
+    CircularBorderDrawable borderDrawable = newCircularDrawable();
+    borderDrawable.setGradientColors(
+        ContextCompat.getColor(context, R.color.design_fab_stroke_top_outer_color),
+        ContextCompat.getColor(context, R.color.design_fab_stroke_top_inner_color),
+        ContextCompat.getColor(context, R.color.design_fab_stroke_end_inner_color),
+        ContextCompat.getColor(context, R.color.design_fab_stroke_end_outer_color));
+    borderDrawable.setBorderWidth(borderWidth);
+    borderDrawable.setBorderTint(backgroundTint);
+    return borderDrawable;
+  }
 
-    abstract void jumpDrawableToCurrentState();
+  CircularBorderDrawable newCircularDrawable() {
+    return new CircularBorderDrawable();
+  }
 
-    abstract void hide(@Nullable InternalVisibilityChangedListener listener, boolean fromUser);
+  void onPreDraw() {}
 
-    abstract void show(@Nullable InternalVisibilityChangedListener listener, boolean fromUser);
-
-    final Drawable getContentBackground() {
-        return mContentBackground;
+  private void ensurePreDrawListener() {
+    if (mPreDrawListener == null) {
+      mPreDrawListener =
+          new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+              FloatingActionButtonImpl.this.onPreDraw();
+              return true;
+            }
+          };
     }
+  }
 
-    abstract void onCompatShadowChanged();
+  GradientDrawable createShapeDrawable() {
+    GradientDrawable d = newGradientDrawableForShape();
+    d.setShape(GradientDrawable.OVAL);
+    d.setColor(Color.WHITE);
+    return d;
+  }
 
-    final void updatePadding() {
-        Rect rect = mTmpRect;
-        getPadding(rect);
-        onPaddingUpdated(rect);
-        mShadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
+  GradientDrawable newGradientDrawableForShape() {
+    return new GradientDrawable();
+  }
+
+  boolean isOrWillBeShown() {
+    if (mView.getVisibility() != View.VISIBLE) {
+      // If we not currently visible, return true if we're animating to be shown
+      return mAnimState == ANIM_STATE_SHOWING;
+    } else {
+      // Otherwise if we're visible, return true if we're not animating to be hidden
+      return mAnimState != ANIM_STATE_HIDING;
     }
+  }
 
-    abstract void getPadding(Rect rect);
-
-    void onPaddingUpdated(Rect padding) {}
-
-    void onAttachedToWindow() {
-        if (requirePreDrawListener()) {
-            ensurePreDrawListener();
-            mView.getViewTreeObserver().addOnPreDrawListener(mPreDrawListener);
-        }
+  boolean isOrWillBeHidden() {
+    if (mView.getVisibility() == View.VISIBLE) {
+      // If we currently visible, return true if we're animating to be hidden
+      return mAnimState == ANIM_STATE_HIDING;
+    } else {
+      // Otherwise if we're not visible, return true if we're not animating to be shown
+      return mAnimState != ANIM_STATE_SHOWING;
     }
-
-    void onDetachedFromWindow() {
-        if (mPreDrawListener != null) {
-            mView.getViewTreeObserver().removeOnPreDrawListener(mPreDrawListener);
-            mPreDrawListener = null;
-        }
-    }
-
-    boolean requirePreDrawListener() {
-        return false;
-    }
-
-    CircularBorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
-        final Context context = mView.getContext();
-        CircularBorderDrawable borderDrawable = newCircularDrawable();
-        borderDrawable.setGradientColors(
-                ContextCompat.getColor(context, R.color.design_fab_stroke_top_outer_color),
-                ContextCompat.getColor(context, R.color.design_fab_stroke_top_inner_color),
-                ContextCompat.getColor(context, R.color.design_fab_stroke_end_inner_color),
-                ContextCompat.getColor(context, R.color.design_fab_stroke_end_outer_color));
-        borderDrawable.setBorderWidth(borderWidth);
-        borderDrawable.setBorderTint(backgroundTint);
-        return borderDrawable;
-    }
-
-    CircularBorderDrawable newCircularDrawable() {
-        return new CircularBorderDrawable();
-    }
-
-    void onPreDraw() {
-    }
-
-    private void ensurePreDrawListener() {
-        if (mPreDrawListener == null) {
-            mPreDrawListener = new ViewTreeObserver.OnPreDrawListener() {
-                @Override
-                public boolean onPreDraw() {
-                    FloatingActionButtonImpl.this.onPreDraw();
-                    return true;
-                }
-            };
-        }
-    }
-
-    GradientDrawable createShapeDrawable() {
-        GradientDrawable d = newGradientDrawableForShape();
-        d.setShape(GradientDrawable.OVAL);
-        d.setColor(Color.WHITE);
-        return d;
-    }
-
-    GradientDrawable newGradientDrawableForShape() {
-        return new GradientDrawable();
-    }
-
-    boolean isOrWillBeShown() {
-        if (mView.getVisibility() != View.VISIBLE) {
-            // If we not currently visible, return true if we're animating to be shown
-            return mAnimState == ANIM_STATE_SHOWING;
-        } else {
-            // Otherwise if we're visible, return true if we're not animating to be hidden
-            return mAnimState != ANIM_STATE_HIDING;
-        }
-    }
-
-    boolean isOrWillBeHidden() {
-        if (mView.getVisibility() == View.VISIBLE) {
-            // If we currently visible, return true if we're animating to be hidden
-            return mAnimState == ANIM_STATE_HIDING;
-        } else {
-            // Otherwise if we're not visible, return true if we're not animating to be shown
-            return mAnimState != ANIM_STATE_SHOWING;
-        }
-    }
+  }
 }

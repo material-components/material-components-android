@@ -1,6 +1,4 @@
-/**
- * @hide
- */
+/** @hide */
 @RestrictTo(LIBRARY_GROUP)
 package android.support.design.internal;
 
