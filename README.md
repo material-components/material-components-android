@@ -15,6 +15,7 @@ Android’s SDK based on the SDK’s release schedules.
 - [Contributing](CONTRIBUTING.md)
 - [Class
   documentation](https://developer.android.com/reference/android/support/design/widget/package-summary.html)
+  (external site)
 - [MDC-Android on Stack
   Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
   (external site)
@@ -34,7 +35,7 @@ library. To use it:
 
 1. Make sure you've downloaded the Android Support Repository using the SDK
    Manager.
-2. Open the build.gradle file for your application.
+2. Open the `build.gradle` file for your application.
 3. Add the Design support library to the `dependencies` section:
 
   ```groovy
