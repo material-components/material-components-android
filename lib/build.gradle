@@ -3,98 +3,112 @@ apply plugin: 'com.android.library'
 archivesBaseName = 'design'
 
 dependencies {
-    compile 'com.android.support:support-v4:25.0.1'
-    compile 'com.android.support:appcompat-v7:25.0.1'
-    compile 'com.android.support:recyclerview-v7:25.0.1'
-    compile 'com.android.support:transition:25.0.1'
+  compile 'com.android.support:support-annotations:25.1.0'
+  compile 'com.android.support:support-v4:25.1.0'
+  compile 'com.android.support:appcompat-v7:25.1.0'
+  compile 'com.android.support:recyclerview-v7:25.1.0'
+  compile 'com.android.support:transition:25.1.0'
 
-    androidTestCompile ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
-        exclude module: 'support-annotations'
-    }
-    androidTestCompile ("com.android.support.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}") {
-        exclude module: 'support-annotations'
-    }
-    androidTestCompile 'org.mockito:mockito-core:1.9.5'
-    androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
-    androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
-    testCompile 'junit:junit:4.12'
+  androidTestCompile ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
+    exclude module: 'support-annotations'
+  }
+  androidTestCompile ("com.android.support.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}") {
+    exclude module: 'support-annotations'
+  }
+  androidTestCompile ("com.android.support.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}") {
+    exclude group: 'com.android.support'
+  }
+  androidTestCompile 'org.mockito:mockito-core:1.9.5'
+  androidTestCompile 'com.google.dexmaker:dexmaker:1.2'
+  androidTestCompile 'com.google.dexmaker:dexmaker-mockito:1.2'
+
+  testCompile ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
+    exclude module: 'support-annotations'
+  }
+  testCompile 'junit:junit:4.12'
 }
 
 android {
-    compileSdkVersion rootProject.ext.compileSdkVersion
-    buildToolsVersion rootProject.ext.buildToolsVersion
+  compileSdkVersion rootProject.ext.compileSdkVersion
+  buildToolsVersion rootProject.ext.buildToolsVersion
 
-    defaultConfig {
-        minSdkVersion rootProject.ext.minSdkVersion
-        targetSdkVersion rootProject.ext.targetSdkVersion
-        testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
-        // This disables the builds tools automatic vector -> PNG generation
-        generatedDensities = []
-    }
+  defaultConfig {
+    minSdkVersion rootProject.ext.minSdkVersion
+    targetSdkVersion rootProject.ext.targetSdkVersion
+    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    // This disables the builds tools automatic vector -> PNG generation
+    generatedDensities = []
+  }
 
-    sourceSets {
-        main.manifest.srcFile 'AndroidManifest.xml'
-        main.java.srcDirs = ['base', 'gingerbread', 'honeycomb', 'honeycomb-mr1', 'ics', 'lollipop', 'src']
-        main.res.srcDirs 'res', 'res-public'
-        main.assets.srcDir 'assets'
-        main.resources.srcDir 'src'
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDirs = [
+      'base',
+      'gingerbread',
+      'honeycomb',
+      'honeycomb-mr1',
+      'ics',
+      'lollipop',
+      'src'
+    ]
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+    main.resources.srcDir 'src'
 
-        androidTest.setRoot('tests')
-        androidTest.java.srcDir 'tests/src'
-        androidTest.res.srcDir 'tests/res'
-        androidTest.manifest.srcFile 'tests/AndroidManifest.xml'
+    androidTest.setRoot('tests')
+    androidTest.java.srcDir 'tests/src'
+    androidTest.res.srcDir 'tests/res'
+    androidTest.manifest.srcFile 'tests/AndroidManifest.xml'
 
-        test.java.srcDir 'jvm-tests/src'
-    }
+    test.java.srcDir 'jvm-tests/src'
+  }
 
-    compileOptions {
-        sourceCompatibility JavaVersion.VERSION_1_7
-        targetCompatibility JavaVersion.VERSION_1_7
-    }
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_7
+    targetCompatibility JavaVersion.VERSION_1_7
+  }
 
-    lintOptions {
-        // TODO: fix errors and reenable.
-        abortOnError false
-    }
+  buildTypes.all {
+    consumerProguardFiles 'proguard-rules.pro'
+  }
 
-    buildTypes.all {
-        consumerProguardFiles 'proguard-rules.pro'
-    }
-
-    aaptOptions {
-        additionalParameters "--no-version-vectors"
-    }
+  aaptOptions {
+    additionalParameters "--no-version-vectors"
+  }
 }
 
 android.libraryVariants.all { variant ->
-    def name = variant.buildType.name
+  def name = variant.buildType.name
 
-    if (name.equals(com.android.builder.core.BuilderConstants.DEBUG)) {
-        return; // Skip debug builds.
-    }
-    def suffix = name.capitalize()
+  if (name.equals(com.android.builder.core.BuilderConstants.DEBUG)) {
+    return; // Skip debug builds.
+  }
+  def suffix = name.capitalize()
 
-    def jarTask = project.tasks.create(name: "jar${suffix}", type: Jar){
-        dependsOn variant.javaCompile
-        from variant.javaCompile.destinationDir
-        from 'LICENSE.txt'
-    }
-    def javadocTask = project.tasks.create(name: "javadoc${suffix}", type: Javadoc) {
-        source android.sourceSets.main.java
-        classpath = files(variant.javaCompile.classpath.files) + files(
-                "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    }
+  def jarTask = project.tasks.create(name: "jar${suffix}", type: Jar){
+    dependsOn variant.javaCompile
+    from variant.javaCompile.destinationDir
+    from 'LICENSE.txt'
+  }
+  def javadocTask = project.tasks.create(name: "javadoc${suffix}", type: Javadoc) {
+    source android.sourceSets.main.java
+    classpath = files(variant.javaCompile.classpath.files) + files(
+        "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+  }
 
-    def javadocJarTask = project.tasks.create(name: "javadocJar${suffix}", type: Jar) {
-        classifier = 'javadoc'
-        from 'build/docs/javadoc'
-    }
+  def javadocJarTask = project.tasks.create(name: "javadocJar${suffix}", type: Jar) {
+    classifier = 'javadoc'
+    from 'build/docs/javadoc'
+  }
 
-    def sourcesJarTask = project.tasks.create(name: "sourceJar${suffix}", type: Jar) {
-        classifier = 'sources'
-        from android.sourceSets.main.java.srcDirs
-    }
+  def sourcesJarTask = project.tasks.create(name: "sourceJar${suffix}", type: Jar) {
+    classifier = 'sources'
+    from android.sourceSets.main.java.srcDirs
+  }
 
-    artifacts.add('archives', javadocJarTask);
-    artifacts.add('archives', sourcesJarTask);
+  artifacts.add('archives', javadocJarTask);
+  artifacts.add('archives', sourcesJarTask);
 }
