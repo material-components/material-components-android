@@ -472,4 +472,18 @@
         <attr name="elevation"/>
     </declare-styleable>
 
+    <declare-styleable name="InsetDividerLinearLayout">
+        <!-- Setting for which dividers to inset. -->
+        <attr name="insetDividers">
+            <flag name="none" value="0" />
+            <flag name="beginning" value="1" />
+            <flag name="middle" value="2" />
+            <flag name="end" value="4" />
+        </attr>
+        <!-- Start inset for dividers. -->
+        <attr name="insetDividerStart" format="dimension" />
+        <!-- End inset for dividers. -->
+        <attr name="insetDividerEnd" format="dimension" />
+    </declare-styleable>
+
 </resources>

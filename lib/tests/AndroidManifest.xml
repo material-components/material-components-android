@@ -75,6 +75,14 @@
 
         <activity
             android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="android.support.design.widget.InsetDividerLinearLayoutActivity" />
+
+      <activity
+          android:theme="@style/Theme.AppCompat.NoActionBar"
+          android:name="android.support.design.widget.InsetDividerLinearLayoutWithItemsActivity" />
+
+        <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
             android:name="android.support.design.widget.NavigationViewActivity"/>
 
         <activity

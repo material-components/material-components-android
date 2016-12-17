@@ -33,4 +33,8 @@
     <dimen name="fab_normal_height">56dip</dimen>
 
     <dimen name="custom_snackbar_max_width">-1px</dimen>
+
+    <dimen name="divider_inset_start">72dip</dimen>
+    <dimen name="divider_inset_end">16dip</dimen>
+    <dimen name="divider_item_size">144dp</dimen>
 </resources>

@@ -47,6 +47,9 @@
     <public type="attr" name="hintAnimationEnabled"/>
     <public type="attr" name="hintEnabled"/>
     <public type="attr" name="hintTextAppearance"/>
+    <public type="attr" name="insetDividers"/>
+    <public type="attr" name="insetDividerStart"/>
+    <public type="attr" name="insetDividerEnd"/>
     <public type="attr" name="itemBackground"/>
     <public type="attr" name="itemIconTint"/>
     <public type="attr" name="itemTextAppearance"/>
