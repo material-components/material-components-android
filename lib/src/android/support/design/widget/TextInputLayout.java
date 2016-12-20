@@ -190,9 +190,10 @@ public class TextInputLayout extends LinearLayout {
     setWillNotDraw(false);
     setAddStatesFromChildren(true);
 
-    mInputFrame = new FrameLayout(context);
+    mInputFrame = new BaselineAlignableFrameLayout(context);
     mInputFrame.setAddStatesFromChildren(true);
     addView(mInputFrame);
+    setBaselineAlignedChildIndex(0);
 
     mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
     mCollapsingTextHelper.setPositionInterpolator(new AccelerateInterpolator());
@@ -1469,5 +1470,28 @@ public class TextInputLayout extends LinearLayout {
       }
     }
     return false;
+  }
+
+  private static class BaselineAlignableFrameLayout extends FrameLayout {
+
+    public BaselineAlignableFrameLayout(Context context) {
+      super(context);
+    }
+
+    public BaselineAlignableFrameLayout(Context context, AttributeSet attrs) {
+      super(context, attrs);
+    }
+
+    public BaselineAlignableFrameLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+      super(context, attrs, defStyleAttr);
+    }
+
+    @Override
+    public int getBaseline() {
+      if (this.getChildCount() > 0) {
+        return this.getChildAt(0).getBaseline();
+      }
+      return super.getBaseline();
+    }
   }
 }
