@@ -4,6 +4,7 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:2.2.2'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
   }
 }
 
@@ -42,7 +43,7 @@ task clean(type: Delete) {
 
 subprojects {
   version = rootProject.ext.supportVersion
-  group = 'com.android.support'
+  group = 'com.github.nico-gonzalez'
 
   project.plugins.whenPluginAdded { plugin ->
     def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)
