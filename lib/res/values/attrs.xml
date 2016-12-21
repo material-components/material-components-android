@@ -470,6 +470,8 @@
         <attr name="itemTextColor"/>
         <attr name="itemBackground"/>
         <attr name="elevation"/>
+        <!-- Flag that indicates if the BottomNavigationView should use tablet mode -->
+        <attr name="tabletMode" format="boolean"/>
     </declare-styleable>
 
 </resources>

@@ -34,6 +34,7 @@ import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
+import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -51,6 +52,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private final float mScaleDownFactor;
 
   private boolean mShiftingMode;
+  private boolean mTabletMode = false;
 
   private ImageView mIcon;
   private final TextView mSmallLabel;
@@ -110,6 +112,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     mShiftingMode = enabled;
   }
 
+  public void setTabletMode(boolean enabled) {
+    mTabletMode = enabled;
+  }
+
   @Override
   public MenuItemImpl getItemData() {
     return mItemData;
@@ -119,6 +125,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setTitle(CharSequence title) {
     mSmallLabel.setText(title);
     mLargeLabel.setText(title);
+    if (mTabletMode) {
+      mSmallLabel.setVisibility(GONE);
+      mLargeLabel.setVisibility(GONE);
+    }
   }
 
   @Override
@@ -135,7 +145,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     if (mShiftingMode) {
       if (checked) {
         LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-        iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
+        iconParams.gravity = mTabletMode ? Gravity.CENTER :
+                (Gravity.CENTER_HORIZONTAL | Gravity.TOP);
         iconParams.topMargin = mDefaultMargin;
         mIcon.setLayoutParams(iconParams);
         mLargeLabel.setVisibility(VISIBLE);

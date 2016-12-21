@@ -89,6 +89,7 @@ public class BottomNavigationView extends FrameLayout {
   private final BottomNavigationMenuView mMenuView;
   private final BottomNavigationPresenter mPresenter = new BottomNavigationPresenter();
   private MenuInflater mMenuInflater;
+  private boolean mTabletMode;
 
   private OnNavigationItemSelectedListener mListener;
 
@@ -147,6 +148,11 @@ public class BottomNavigationView extends FrameLayout {
 
     int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
     mMenuView.setItemBackgroundRes(itemBackground);
+
+    if (a.hasValue(R.styleable.BottomNavigationView_tabletMode)) {
+      mTabletMode = a.getBoolean(R.styleable.BottomNavigationView_tabletMode, false);
+      mMenuView.setTabletMode(mTabletMode);
+    }
 
     if (a.hasValue(R.styleable.BottomNavigationView_menu)) {
       inflateMenu(a.getResourceId(R.styleable.BottomNavigationView_menu, 0));
@@ -288,11 +294,23 @@ public class BottomNavigationView extends FrameLayout {
   private void addCompatibilityTopDivider(Context context) {
     View divider = new View(context);
     divider.setBackgroundColor(
-        ContextCompat.getColor(context, R.color.design_bottom_navigation_shadow_color));
-    FrameLayout.LayoutParams dividerParams =
-        new FrameLayout.LayoutParams(
-            ViewGroup.LayoutParams.MATCH_PARENT,
-            getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_shadow_height));
+            ContextCompat.getColor(context, R.color.design_bottom_navigation_shadow_color));
+    FrameLayout.LayoutParams dividerParams;
+    if (mTabletMode) {
+      dividerParams =
+              new FrameLayout.LayoutParams(
+                      getResources()
+                              .getDimensionPixelSize(R.dimen.design_bottom_navigation_shadow_width),
+                      ViewGroup.LayoutParams.MATCH_PARENT);
+      dividerParams.gravity = Gravity.END;
+    } else {
+      dividerParams =
+              new FrameLayout.LayoutParams(
+                      ViewGroup.LayoutParams.MATCH_PARENT,
+                      getResources().getDimensionPixelSize(
+                              R.dimen.design_bottom_navigation_shadow_height
+                      ));
+    }
     divider.setLayoutParams(dividerParams);
     addView(divider);
   }
