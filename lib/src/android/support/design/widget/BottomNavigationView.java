@@ -148,6 +148,12 @@ public class BottomNavigationView extends FrameLayout {
     int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
     mMenuView.setItemBackgroundRes(itemBackground);
 
+    if (a.hasValue(R.styleable.BottomNavigationView_tabletMode)) {
+      boolean tabletMode = a.getBoolean(R.styleable.BottomNavigationView_tabletMode, false);
+      params.gravity = Gravity.TOP;
+      mMenuView.setTabletMode(tabletMode);
+    }
+
     if (a.hasValue(R.styleable.BottomNavigationView_menu)) {
       inflateMenu(a.getResourceId(R.styleable.BottomNavigationView_menu, 0));
     }

@@ -15,10 +15,10 @@
  */
 package android.support.design.widget;
 
-public class BottomNavigationViewTest
-    extends BaseBottomNavigationViewTest<BottomNavigationViewActivity> {
+public class BottomNavigationViewTabletTest
+        extends BaseBottomNavigationViewTest<BottomNavigationViewTabletActivity> {
 
-  public BottomNavigationViewTest() {
-    super(BottomNavigationViewActivity.class);
-  }
+    public BottomNavigationViewTabletTest() {
+        super(BottomNavigationViewTabletActivity.class);
+    }
 }

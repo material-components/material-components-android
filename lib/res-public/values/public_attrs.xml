@@ -51,6 +51,7 @@
     <public type="attr" name="itemIconTint"/>
     <public type="attr" name="itemTextAppearance"/>
     <public type="attr" name="itemTextColor"/>
+    <public type="attr" name="tabletMode"/>
     <public type="attr" name="keylines"/>
     <public type="attr" name="layout_anchor"/>
     <public type="attr" name="layout_anchorGravity"/>
