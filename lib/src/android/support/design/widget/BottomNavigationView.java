@@ -19,6 +19,9 @@ package android.support.design.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +30,9 @@ import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.SupportMenuInflater;
@@ -85,6 +91,9 @@ public class BottomNavigationView extends FrameLayout {
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
+  private static final int PRESENTER_BOTTOM_NAVIGATION_VIEW_ID = 1;
+  private static final String STATE_TAB = "tab";
+
   private final MenuBuilder mMenu;
   private final BottomNavigationMenuView mMenuView;
   private final BottomNavigationPresenter mPresenter = new BottomNavigationPresenter();
@@ -116,6 +125,7 @@ public class BottomNavigationView extends FrameLayout {
     mMenuView.setLayoutParams(params);
 
     mPresenter.setBottomNavigationMenuView(mMenuView);
+    mPresenter.setId(PRESENTER_BOTTOM_NAVIGATION_VIEW_ID);
     mMenuView.setPresenter(mPresenter);
     mMenu.addMenuPresenter(mPresenter);
     mPresenter.initForMenu(getContext(), mMenu);
@@ -328,5 +338,70 @@ public class BottomNavigationView extends FrameLayout {
         new int[] {
           baseColor.getColorForState(DISABLED_STATE_SET, defaultColor), colorPrimary, defaultColor
         });
+  }
+
+  @Override
+  protected Parcelable onSaveInstanceState() {
+    Parcelable superState = super.onSaveInstanceState();
+    SavedState state = new SavedState(superState);
+    Bundle bundle = new Bundle();
+    for (int i = 0; i < mMenu.size(); i++) {
+      MenuItem item = mMenu.getItem(i);
+      if (item.isChecked()) {
+        bundle.putInt(STATE_TAB, item.getItemId());
+      }
+    }
+    state.bottomNavigationState = bundle;
+    mMenu.savePresenterStates(state.bottomNavigationState);
+
+    return state;
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Parcelable savedState) {
+    if (!(savedState instanceof SavedState)) {
+      super.onRestoreInstanceState(savedState);
+      return;
+    }
+    SavedState state = (SavedState) savedState;
+    super.onRestoreInstanceState(state.getSuperState());
+    mMenu.restorePresenterStates(state.bottomNavigationState);
+    mMenu.findItem(state.bottomNavigationState.getInt(STATE_TAB)).setChecked(true);
+  }
+
+  /**
+   * User interface state that is stored by BottomNavigationView for implementing onSaveInstanceState().
+   */
+  public static class SavedState extends AbsSavedState {
+    public Bundle bottomNavigationState;
+
+    public SavedState(Parcel in, ClassLoader loader) {
+      super(in, loader);
+      bottomNavigationState = in.readBundle(loader);
+    }
+
+    public SavedState(Parcelable superState) {
+      super(superState);
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel dest, int flags) {
+      super.writeToParcel(dest, flags);
+      dest.writeBundle(bottomNavigationState);
+    }
+
+    public static final Parcelable.Creator<SavedState> CREATOR =
+            ParcelableCompat.newCreator(
+                    new ParcelableCompatCreatorCallbacks<SavedState>() {
+                      @Override
+                      public SavedState createFromParcel(Parcel parcel, ClassLoader loader) {
+                        return new SavedState(parcel, loader);
+                      }
+
+                      @Override
+                      public SavedState[] newArray(int size) {
+                        return new SavedState[size];
+                      }
+                    });
   }
 }
