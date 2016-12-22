@@ -20,6 +20,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
@@ -269,6 +270,15 @@ public class BottomNavigationView extends FrameLayout {
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
     mMenuView.setItemBackgroundRes(resId);
+  }
+
+  /**
+   * Select the menu item to be displayed.
+   *
+   * @param menuId the id of the menu ite to be selected.
+   */
+  public void selectItem(@IdRes int menuId) {
+    mMenuView.selectMenuItem(menuId);
   }
 
   /** Listener for handling events on bottom navigation items. */

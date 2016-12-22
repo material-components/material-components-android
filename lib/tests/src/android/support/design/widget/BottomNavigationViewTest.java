@@ -238,6 +238,25 @@ public class BottomNavigationViewTest
     checkAndVerifyExclusiveItem(menu, R.id.destination_people);
   }
 
+  @UiThreadTest
+  @Test
+  @SmallTest
+  public void testItemChangedOnSelectedMenuItem() {
+    mBottomNavigation.selectItem(R.id.destination_home);
+    assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_home).isChecked());
+
+    mBottomNavigation.selectItem(R.id.destination_profile);
+    assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
+    assertFalse(mBottomNavigation.getMenu().findItem(R.id.destination_home).isChecked());
+  }
+
+  @UiThreadTest
+  @Test(expected=IllegalArgumentException.class)
+  @SmallTest
+  public void testExceptionOnSelectedItemNotFound() {
+    mBottomNavigation.selectItem(R.id.drawer_layout);
+  }
+
   private void checkAndVerifyExclusiveItem(final Menu menu, final int id) throws Throwable {
     menu.findItem(id).setChecked(true);
     for (int i = 0; i < menu.size(); i++) {

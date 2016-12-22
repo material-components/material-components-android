@@ -294,6 +294,22 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     }
   }
 
+  /**
+   * Simulates click on the menu item.
+   *
+   * @param menuId the id of the menu item to be selected.
+   */
+  public void selectMenuItem(int menuId) {
+    int menuPosition = mMenu.findItemIndex(menuId);
+
+    if (menuPosition > -1) {
+      BottomNavigationItemView bottomNavigationItemView = mButtons[menuPosition];
+      mOnClickListener.onClick(bottomNavigationItemView);
+    } else {
+      throw new IllegalArgumentException("Menu item id not found.");
+    }
+  }
+
   private void activateNewButton(int newButton) {
     if (mActiveButton == newButton) return;
 
