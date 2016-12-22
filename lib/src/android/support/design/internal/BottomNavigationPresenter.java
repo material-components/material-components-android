@@ -19,6 +19,8 @@ package android.support.design.internal;
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import android.os.Build;
+import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.RestrictTo;
 import android.support.v7.view.menu.MenuBuilder;
@@ -26,14 +28,19 @@ import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuPresenter;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.view.menu.SubMenuBuilder;
+import android.util.SparseArray;
 import android.view.ViewGroup;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationPresenter implements MenuPresenter {
+
+  private static final String STATE_HIERARCHY = "android:menu:list";
+
   private MenuBuilder mMenu;
   private BottomNavigationMenuView mMenuView;
   private boolean mUpdateSuspended = false;
+  private int mId;
 
   public void setBottomNavigationMenuView(BottomNavigationMenuView menuView) {
     mMenuView = menuView;
@@ -88,16 +95,40 @@ public class BottomNavigationPresenter implements MenuPresenter {
 
   @Override
   public int getId() {
-    return -1;
+    return mId;
+  }
+
+  public void setId(int id) {
+    mId = id;
   }
 
   @Override
   public Parcelable onSaveInstanceState() {
+    if (Build.VERSION.SDK_INT >= 11) {
+      // API 9-10 does not support ClassLoaderCreator, therefore things can crash if they're
+      // loaded via different loaders. Rather than crash we just won't save state on those
+      // platforms
+      final Bundle state = new Bundle();
+      if (mMenuView != null) {
+        SparseArray<Parcelable> hierarchy = new SparseArray<>();
+        mMenuView.saveHierarchyState(hierarchy);
+        state.putSparseParcelableArray(STATE_HIERARCHY, hierarchy);
+      }
+      return state;
+    }
     return null;
   }
 
   @Override
-  public void onRestoreInstanceState(Parcelable state) {}
+  public void onRestoreInstanceState(Parcelable parcelable) {
+    if (parcelable instanceof Bundle) {
+      Bundle state = (Bundle) parcelable;
+      SparseArray<Parcelable> hierarchy = state.getSparseParcelableArray(STATE_HIERARCHY);
+      if (hierarchy != null) {
+        mMenuView.restoreHierarchyState(hierarchy);
+      }
+    }
+  }
 
   public void setUpdateSuspended(boolean updateSuspended) {
     mUpdateSuspended = updateSuspended;
