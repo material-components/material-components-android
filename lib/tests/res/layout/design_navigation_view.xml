@@ -37,7 +37,7 @@
          android:fitsSystemWindows="true" tells the system to have
          DrawerLayout span the full height of the screen, including the
          system status bar on Lollipop+ versions of the plaform. -->
-    <android.support.design.widget.NavigationView
+    <android.support.design.widget.NavigationTestView
         android:id="@+id/start_drawer"
         android:layout_width="wrap_content"
         android:layout_height="match_parent"
