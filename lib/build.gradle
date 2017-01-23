@@ -63,7 +63,7 @@ android {
     androidTest.res.srcDir 'tests/res'
     androidTest.manifest.srcFile 'tests/AndroidManifest.xml'
 
-    test.java.srcDir 'jvm-tests/src'
+    test.java.srcDir 'jvmtests/javatests'
   }
 
   compileOptions {
