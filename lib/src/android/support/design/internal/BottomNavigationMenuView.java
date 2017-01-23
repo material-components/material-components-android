@@ -40,6 +40,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final int mInactiveItemMaxWidth;
   private final int mInactiveItemMinWidth;
   private final int mActiveItemMaxWidth;
+  private final int mActiveItemMaxHeight;
+  private final int mItemWidth;
   private final int mItemHeight;
   private final OnClickListener mOnClickListener;
   private final BottomNavigationAnimationHelperBase mAnimationHelper;
@@ -47,13 +49,14 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       new Pools.SynchronizedPool<>(5);
 
   private boolean mShiftingMode = true;
+  private boolean mTabletMode = false;
 
   private BottomNavigationItemView[] mButtons;
   private int mActiveButton = 0;
   private ColorStateList mItemIconTint;
   private ColorStateList mItemTextColor;
   private int mItemBackgroundRes;
-  private int[] mTempChildWidths;
+  private int[] mTempChildSizes;
 
   private BottomNavigationPresenter mPresenter;
   private MenuBuilder mMenu;
@@ -71,7 +74,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_item_min_width);
     mActiveItemMaxWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_max_width);
+    mActiveItemMaxHeight =
+            res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_max_height);
     mItemHeight = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_height);
+    mItemWidth = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_width);
 
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
       mAnimationHelper = new BottomNavigationAnimationHelperIcs();
@@ -90,7 +96,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
             }
           }
         };
-    mTempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
+
+    mTempChildSizes = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
   }
 
   @Override
@@ -113,20 +120,23 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
       for (int i = 0; i < count; i++) {
-        mTempChildWidths[i] = (i == mActiveButton) ? activeWidth : inactiveWidth;
+        mTempChildSizes[i] = (i == mActiveButton) ? activeWidth : inactiveWidth;
         if (extra > 0) {
-          mTempChildWidths[i]++;
+          mTempChildSizes[i]++;
           extra--;
         }
       }
+    } else if (mTabletMode) {
+      measureTabletMode(heightMeasureSpec);
+      return;
     } else {
       final int maxAvailable = width / (count == 0 ? 1 : count);
       final int childWidth = Math.min(maxAvailable, mActiveItemMaxWidth);
       int extra = width - childWidth * count;
       for (int i = 0; i < count; i++) {
-        mTempChildWidths[i] = childWidth;
+        mTempChildSizes[i] = childWidth;
         if (extra > 0) {
-          mTempChildWidths[i]++;
+          mTempChildSizes[i]++;
           extra--;
         }
       }
@@ -139,7 +149,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         continue;
       }
       child.measure(
-          MeasureSpec.makeMeasureSpec(mTempChildWidths[i], MeasureSpec.EXACTLY), heightSpec);
+          MeasureSpec.makeMeasureSpec(mTempChildSizes[i], MeasureSpec.EXACTLY), heightSpec);
       ViewGroup.LayoutParams params = child.getLayoutParams();
       params.width = child.getMeasuredWidth();
       totalWidth += child.getMeasuredWidth();
@@ -150,23 +160,80 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         ViewCompat.resolveSizeAndState(mItemHeight, heightSpec, 0));
   }
 
+  private void measureTabletMode(int heightMeasureSpec) {
+    final int height = MeasureSpec.getSize(heightMeasureSpec);
+    final int count = getChildCount();
+
+    final int widthSpec = MeasureSpec.makeMeasureSpec(mItemWidth, MeasureSpec.EXACTLY);
+
+    final int maxAvailable = height / (count == 0 ? 1 : count);
+    final int childHeight = Math.min(maxAvailable, mActiveItemMaxHeight);
+    int extra = height - childHeight * count;
+    for (int i = 0; i < count; i++) {
+      mTempChildSizes[i] = childHeight;
+      if (extra > 0) {
+        mTempChildSizes[i]++;
+        extra--;
+      }
+    }
+
+    int totalHeight = 0;
+    for (int i = 0; i < count; i++) {
+      final View child = getChildAt(i);
+      if (child.getVisibility() == GONE) {
+        continue;
+      }
+      child.measure(
+              widthSpec,
+              MeasureSpec.makeMeasureSpec(mTempChildSizes[i], MeasureSpec.EXACTLY));
+      ViewGroup.LayoutParams params = child.getLayoutParams();
+      params.height = child.getMeasuredHeight();
+      totalHeight += child.getMeasuredHeight();
+    }
+
+    setMeasuredDimension(
+            ViewCompat.resolveSizeAndState(mItemWidth, widthSpec, 0),
+            ViewCompat.resolveSizeAndState(
+                    totalHeight, MeasureSpec.makeMeasureSpec(totalHeight, MeasureSpec.EXACTLY), 0)
+            );
+  }
+
   @Override
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    if (mTabletMode) {
+      layoutTabletMode(left, right);
+    } else {
+      final int count = getChildCount();
+      final int width = right - left;
+      final int height = bottom - top;
+      int used = 0;
+      for (int i = 0; i < count; i++) {
+        final View child = getChildAt(i);
+        if (child.getVisibility() == GONE) {
+          continue;
+        }
+        if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+          child.layout(width - used - child.getMeasuredWidth(), 0, width - used, height);
+        } else {
+          child.layout(used, 0, child.getMeasuredWidth() + used, height);
+        }
+        used += child.getMeasuredWidth();
+      }
+    }
+  }
+
+  private void layoutTabletMode(int left, int right) {
     final int count = getChildCount();
     final int width = right - left;
-    final int height = bottom - top;
+
     int used = 0;
     for (int i = 0; i < count; i++) {
       final View child = getChildAt(i);
       if (child.getVisibility() == GONE) {
         continue;
       }
-      if (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL) {
-        child.layout(width - used - child.getMeasuredWidth(), 0, width - used, height);
-      } else {
-        child.layout(used, 0, child.getMeasuredWidth() + used, height);
-      }
-      used += child.getMeasuredWidth();
+      child.layout(0, used, width, child.getMeasuredHeight() + used);
+      used += child.getMeasuredHeight();
     }
   }
 
@@ -246,6 +313,14 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     mPresenter = presenter;
   }
 
+  /**
+   * Sets the tablet mode flag to layout children differently
+   * @param enabled table mode flag value
+   */
+  public void setTabletMode(boolean enabled) {
+    this.mTabletMode = enabled;
+  }
+
   public void buildMenuView() {
     if (mButtons != null) {
       for (BottomNavigationItemView item : mButtons) {
@@ -269,6 +344,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       child.setTextColor(mItemTextColor);
       child.setItemBackground(mItemBackgroundRes);
       child.setShiftingMode(mShiftingMode);
+      child.setTabletMode(mTabletMode);
       child.initialize((MenuItemImpl) mMenu.getItem(i), 0);
       child.setItemPosition(i);
       child.setOnClickListener(mOnClickListener);

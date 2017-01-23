@@ -51,6 +51,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private final float mScaleDownFactor;
 
   private boolean mShiftingMode;
+  private boolean mTabletMode = false;
 
   private ImageView mIcon;
   private final TextView mSmallLabel;
@@ -110,6 +111,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     mShiftingMode = enabled;
   }
 
+  public void setTabletMode(boolean enabled) {
+    mTabletMode = enabled;
+  }
+
   @Override
   public MenuItemImpl getItemData() {
     return mItemData;
@@ -119,6 +124,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setTitle(CharSequence title) {
     mSmallLabel.setText(title);
     mLargeLabel.setText(title);
+    if (mTabletMode) {
+      mSmallLabel.setVisibility(GONE);
+      mLargeLabel.setVisibility(GONE);
+    }
   }
 
   @Override

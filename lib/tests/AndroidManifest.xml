@@ -82,6 +82,10 @@
             android:name="android.support.design.widget.BottomNavigationViewActivity"/>
 
         <activity
+            android:theme="@style/Theme.AppCompat.NoActionBar"
+            android:name="android.support.design.widget.BottomNavigationViewTabletActivity"/>
+
+        <activity
               android:theme="@style/Theme.AppCompat.NoActionBar"
               android:name="android.support.design.widget.TextInputLayoutActivity"/>
 
