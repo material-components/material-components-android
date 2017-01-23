@@ -329,6 +329,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     }
     removeAllViews();
     if (mMenu.size() == 0) {
+      mButtons = null;
       return;
     }
     mButtons = new BottomNavigationItemView[mMenu.size()];

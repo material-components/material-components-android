@@ -80,7 +80,7 @@ To run the emulator tests, ensure you have [a virtual device set
 up](https://developer.android.com/studio/run/managing-avds.html) and do:
 
 ```
-./gradlew androidConnectedTest
+./gradlew connectedAndroidTest
 ```
 
 

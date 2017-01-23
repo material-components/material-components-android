@@ -26,8 +26,9 @@
     <android.support.design.internal.BaselineLayout
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
         android:layout_gravity="bottom|center_horizontal"
+        android:paddingBottom="10dp"
+        android:clipToPadding="false"
         android:duplicateParentState="true">
         <TextView
             android:id="@+id/smallLabel"
