@@ -17,6 +17,7 @@ package android.support.design.widget;
 
 import static android.support.design.testutils.BottomNavigationViewActions.setIconForMenuItem;
 import static android.support.design.testutils.BottomNavigationViewActions.setItemIconTintList;
+import static android.support.design.testutils.TestUtils.rotateScreen;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -225,6 +226,24 @@ public class BottomNavigationViewTest
         .check(matches(TestUtilsMatchers.drawable(greenFill, allowedComponentVariance)));
     onView(allOf(withId(R.id.icon), isDescendantOfA(withId(R.id.destination_people))))
         .check(matches(TestUtilsMatchers.drawable(blueFill, allowedComponentVariance)));
+  }
+
+  @Test
+  public void testSelectedTabState() {
+
+    // check profile item
+    onView(
+            allOf(
+                    withId(R.id.destination_profile),
+                    isDescendantOfA(withId(R.id.bottom_navigation)),
+                    isDisplayed()))
+            .perform(click());
+
+    // rotate screen to trigger configuration change
+    rotateScreen(mActivityTestRule.getActivity());
+
+    // Confirm that the state was restored
+    assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
   }
 
   @UiThreadTest
