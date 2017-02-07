@@ -1,0 +1,39 @@
+language: android
+jdk: oraclejdk8
+
+env:
+  - ANDROID_EMULATOR_API_LEVEL=19
+
+android:
+  components:
+    - tools # to get the new `repository-11.xml`
+    - tools # to install Android SDK tools 25+, latest, cannot get more granular control than this
+    # See https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943 for more
+    # details.
+    - platform-tools #latest
+    - build-tools-24.0.1
+    - android-25
+    - extra-android-m2repository
+    - extra-android-support
+    - sys-img-armeabi-v7a-android-19
+  licenses:
+    - 'android-sdk-license-.+'
+
+before_script:
+  - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
+  - echo y | android update sdk --no-ui --all --filter extra-android-support
+  - echo y | android update sdk --no-ui --all --filter "android-$ANDROID_EMULATOR_API_LEVEL"
+  - echo y | android update sdk --no-ui --all --filter build-tools-24.0.1
+  - echo y | android update sdk --no-ui --all --filter "sys-img-armeabi-v7a-android-$ANDROID_EMULATOR_API_LEVEL"
+  - echo no | android create avd --force -n test -t "android-$ANDROID_EMULATOR_API_LEVEL" --abi armeabi-v7a
+  - emulator -avd test -no-audio -no-window &
+
+script:
+  - ./gradlew build lint test assembleAndroidTest -PdisablePreDex;
+  - android-wait-for-emulator
+  # Unlock the device
+  - adb shell input keyevent 82
+  # Avoid having it lock itself again.
+  - adb shell svc power stayon true
+  # Make gradle output info-level logging, so the tests do not timeout
+  - ./gradlew connectedCheck --info -PdisablePreDex;

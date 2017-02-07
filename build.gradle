@@ -28,6 +28,9 @@ ext {
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
   usePrebuilts = "true"
+
+  // Disable pre-dexing when gradle called with -PdisablePreDex;
+  preDexLibs = !project.hasProperty('disablePreDex')
 }
 
 // lint every library
@@ -61,6 +64,9 @@ subprojects {
       project.android.lintOptions.check 'NewApi'
       project.android.lintOptions.fatal 'NewApi'
       project.parent.lint.dependsOn project.lint
+
+      // Disable pre-dexing when gradle called with -PdisablePreDex;
+      project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
     }
 
     if (isAndroidLibrary || isJavaLibrary) {
