@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright (C) 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+-->
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:tools="http://schemas.android.com/tools"
+  package="android.support.design.testapp">
+
+  <uses-sdk
+    android:minSdkVersion="9"
+    android:targetSdkVersion="25"
+    tools:overrideLibrary="android.support.test, android.app, android.support.test.rule, android.support.test.espresso, android.support.test.espresso.idling"/>
+
+  <application
+    android:supportsRtl="true"
+    android:theme="@style/Theme.Design">
+
+    <activity android:name="android.support.v7.app.AppCompatActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".BottomNavigationViewActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".BottomSheetBehaviorActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".BottomSheetBehaviorWithInsetsActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".BottomSheetDialogActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".CoordinatorLayoutActivity"/>
+
+    <activity
+      android:theme="@style/Theme.TranslucentStatus"
+      android:name=".DynamicCoordinatorLayoutActivity"/>
+
+    <activity
+      android:name=".FloatingActionButtonActivity"
+      android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".NavigationViewActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".SnackbarActivity"/>
+
+    <activity
+      android:theme="@style/Theme.TranslucentNavBar"
+      android:name=".SnackbarWithTranslucentNavBarActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".SnackbarWithFabActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".TabLayoutPoolingActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".TabLayoutWithViewPagerActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".TextInputLayoutActivity"/>
+
+  </application>
+</manifest>

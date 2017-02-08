@@ -1,0 +1,22 @@
+apply plugin: 'com.android.application'
+
+dependencies {
+  compile 'com.android.support:support-annotations:25.1.0'
+  compile 'com.android.support:appcompat-v7:25.1.0'
+  compile project(':lib')
+  compile project(':testing:java:android:support:design:testapp:custom')
+}
+
+android {
+  // Ensures all variants are available for tests to depend on
+  publishNonDefault true
+
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDirs = [ '.' ]
+    // Only include things in this directory, not subdirectories
+    main.java.includes = [ '*.java' ]
+    main.res.srcDirs = [ 'res' ]
+    debug.res.srcDirs = [ 'res' ]
+  }
+}

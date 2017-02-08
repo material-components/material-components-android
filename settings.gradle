@@ -1,1 +1,4 @@
 include ':lib'
+include ':tests'
+include ':testing:java:android:support:design:testapp'
+include ':testing:java:android:support:design:testapp:custom'

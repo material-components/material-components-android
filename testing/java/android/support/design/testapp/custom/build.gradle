@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+  compile 'com.android.support:support-v4:25.1.0'
+  compile 'com.android.support:appcompat-v7:25.1.0'
+  compile project(':lib')
+}
+
+android {
+  // Ensures all variants are available for tests to depend on
+  publishNonDefault true
+
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDirs = [ '.' ]
+    // Only include things in this directory, not subdirectories
+    main.java.includes = [ '*.java' ]
+    main.res.srcDirs = [ 'res' ]
+    debug.res.srcDirs = [ 'res' ]
+  }
+}
