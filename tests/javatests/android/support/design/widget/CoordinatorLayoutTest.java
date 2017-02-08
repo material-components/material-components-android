@@ -35,6 +35,7 @@ import static org.mockito.Mockito.spy;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
+import android.annotation.TargetApi;
 import android.app.Instrumentation;
 import android.graphics.Rect;
 import android.support.design.testapp.CoordinatorLayoutActivity;
@@ -76,6 +77,7 @@ public class CoordinatorLayoutTest {
   }
 
   @Test
+  @TargetApi(21)
   @SdkSuppress(minSdkVersion = 21)
   public void testSetFitSystemWindows() throws Throwable {
     final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
