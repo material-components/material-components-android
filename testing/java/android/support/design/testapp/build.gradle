@@ -17,6 +17,5 @@ android {
     // Only include things in this directory, not subdirectories
     main.java.includes = [ '*.java' ]
     main.res.srcDirs = [ 'res' ]
-    debug.res.srcDirs = [ 'res' ]
   }
 }

@@ -52,14 +52,15 @@ subprojects {
     def isAndroidApp = "com.android.build.gradle.AppPlugin".equals(plugin.class.name)
     def isAndroidTest = "com.android.build.gradle.TestPlugin".equals(plugin.class.name)
 
-    if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
+    if (isAndroidLibrary || isAndroidApp) {
       // Enable code coverage for debug builds only if we are not running inside the IDE,
       // since enabling coverage reports breaks the method parameter resolution in the IDE
-      // debugger.
+      // debugger. Note that we avoid doing this for Android Test projects as it causes
+      // crashes on Dalvik ('Class ref in pre-verified class resolved to unexpected implementation')
       project.android.buildTypes.debug.testCoverageEnabled = !hasProperty('android.injected.invoked.from.ide')
+    }
 
-      // TODO: setup code coverage collection for tests
-
+    if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
       // Enforce NewApi lint check as fatal.
       project.android.lintOptions.check 'NewApi'
       project.android.lintOptions.fatal 'NewApi'
