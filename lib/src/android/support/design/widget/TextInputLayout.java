@@ -198,8 +198,6 @@ public class TextInputLayout extends LinearLayout {
     mCollapsingTextHelper.setPositionInterpolator(new AccelerateInterpolator());
     mCollapsingTextHelper.setCollapsedTextGravity(Gravity.TOP | GravityCompat.START);
 
-    mHintExpanded = mCollapsingTextHelper.getExpansionFraction() == 1f;
-
     final TintTypedArray a =
         TintTypedArray.obtainStyledAttributes(
             context,
@@ -287,6 +285,7 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param typeface typeface to use, or {@code null} to use the default.
    */
+  @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
   public void setTypeface(@Nullable Typeface typeface) {
     if (typeface != mTypeface) {
       mTypeface = typeface;
@@ -378,8 +377,8 @@ public class TextInputLayout extends LinearLayout {
 
     updatePasswordToggleView();
 
-    // Update the label visibility with no animation
-    updateLabelState(false);
+    // Update the label visibility with no animation, but force a state change
+    updateLabelState(false, true);
   }
 
   private void updateInputLayoutMargins() {
@@ -406,6 +405,10 @@ public class TextInputLayout extends LinearLayout {
   }
 
   void updateLabelState(boolean animate) {
+    updateLabelState(animate, false);
+  }
+
+  void updateLabelState(boolean animate, boolean force) {
     final boolean isEnabled = isEnabled();
     final boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
     final boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
@@ -425,12 +428,12 @@ public class TextInputLayout extends LinearLayout {
 
     if (hasText || (isEnabled() && (isFocused || isErrorShowing))) {
       // We should be showing the label so do so if it isn't already
-      if (mHintExpanded) {
+      if (force || mHintExpanded) {
         collapseHint(animate);
       }
     } else {
       // We should not be showing the label so hide it
-      if (!mHintExpanded) {
+      if (force || !mHintExpanded) {
         expandHint(animate);
       }
     }

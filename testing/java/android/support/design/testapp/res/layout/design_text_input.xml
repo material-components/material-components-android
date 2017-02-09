@@ -16,46 +16,60 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              xmlns:app="http://schemas.android.com/apk/res-auto"
-              android:layout_width="match_parent"
-              android:layout_height="match_parent"
-              android:orientation="vertical"
-              android:padding="16dp">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:padding="16dp"
+  android:orientation="vertical">
 
-    <android.support.design.widget.TextInputLayout
-            android:id="@+id/textinput"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            app:errorEnabled="true">
+  <android.support.design.widget.TextInputLayout
+    android:id="@+id/textinput"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:errorEnabled="true">
 
-        <android.support.design.widget.TextInputEditText
-                android:id="@+id/textinput_edittext"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:imeOptions="flagNoExtractUi"
-                android:hint="@string/textinput_hint"/>
+    <android.support.design.widget.TextInputEditText
+      android:id="@+id/textinput_edittext"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/textinput_hint"
+      android:imeOptions="flagNoExtractUi"/>
 
-    </android.support.design.widget.TextInputLayout>
+  </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textinput_password"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:passwordToggleEnabled="true">
+  <android.support.design.widget.TextInputLayout
+    android:id="@+id/textinput_password"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    app:passwordToggleEnabled="true">
 
-        <android.support.design.widget.TextInputEditText
-            android:id="@+id/textinput_edittext_pwd"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:imeOptions="flagNoExtractUi"
-            android:hint="@string/textinput_hint"
-            android:inputType="textPassword"/>
+    <android.support.design.widget.TextInputEditText
+      android:id="@+id/textinput_edittext_pwd"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/textinput_hint"
+      android:imeOptions="flagNoExtractUi"
+      android:inputType="textPassword"/>
 
-    </android.support.design.widget.TextInputLayout>
+  </android.support.design.widget.TextInputLayout>
 
-    <android.support.design.widget.TextInputLayout
-        android:id="@+id/textinput_noedittext"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+  <android.support.design.widget.TextInputLayout
+    android:id="@+id/textinput_noedittext"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+
+  <android.support.design.widget.TextInputLayout
+    android:id="@+id/textinput_with_text"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <android.support.design.widget.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:hint="@string/textinput_hint"
+      android:imeOptions="flagNoExtractUi"
+      android:text="@string/snackbar_text"/>
+
+  </android.support.design.widget.TextInputLayout>
 
 </LinearLayout>

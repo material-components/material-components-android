@@ -458,7 +458,13 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_edittext_pwd)).check(matches(hasFocus()));
   }
 
-  static ViewAssertion isHintExpanded(final boolean expanded) {
+  @Test
+  public void testTextSetViaAttributeCollapsedHint() {
+    onView(withId(R.id.textinput_with_text))
+        .check(isHintExpanded(false));
+  }
+
+  private static ViewAssertion isHintExpanded(final boolean expanded) {
     return new ViewAssertion() {
       @Override
       public void check(View view, NoMatchingViewException noViewFoundException) {
