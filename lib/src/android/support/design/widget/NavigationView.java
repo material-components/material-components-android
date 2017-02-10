@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -236,7 +236,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /** @hide */
-  @RestrictTo(LIBRARY_GROUP)
+  @RestrictTo(GROUP_ID)
   @Override
   protected void onInsetsChanged(WindowInsetsCompat insets) {
     mPresenter.dispatchApplyWindowInsets(insets);

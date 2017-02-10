@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -117,7 +117,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
   private static final int AUTO_MINI_LARGEST_SCREEN_WIDTH = 470;
 
   /** @hide */
-  @RestrictTo(LIBRARY_GROUP)
+  @RestrictTo(GROUP_ID)
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({SIZE_MINI, SIZE_NORMAL, SIZE_AUTO})
   public @interface Size {}

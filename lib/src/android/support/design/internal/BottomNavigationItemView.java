@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -39,7 +39,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 /** @hide */
-@RestrictTo(LIBRARY_GROUP)
+@RestrictTo(GROUP_ID)
 public class BottomNavigationItemView extends FrameLayout implements MenuView.ItemView {
   public static final int INVALID_ITEM_POSITION = -1;
 

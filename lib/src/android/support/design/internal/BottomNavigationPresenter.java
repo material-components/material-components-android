@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 import android.content.Context;
 import android.os.Parcelable;
@@ -29,7 +29,7 @@ import android.support.v7.view.menu.SubMenuBuilder;
 import android.view.ViewGroup;
 
 /** @hide */
-@RestrictTo(LIBRARY_GROUP)
+@RestrictTo(GROUP_ID)
 public class BottomNavigationPresenter implements MenuPresenter {
   private MenuBuilder mMenu;
   private BottomNavigationMenuView mMenuView;

@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
 import android.annotation.TargetApi;
@@ -578,7 +578,7 @@ public class AppBarLayout extends LinearLayout {
   public static class LayoutParams extends LinearLayout.LayoutParams {
 
     /** @hide */
-    @RestrictTo(LIBRARY_GROUP)
+    @RestrictTo(GROUP_ID)
     @IntDef(
       flag = true,
       value = {

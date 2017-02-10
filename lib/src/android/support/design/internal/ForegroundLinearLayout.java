@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -33,7 +33,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 
 /** @hide */
-@RestrictTo(LIBRARY_GROUP)
+@RestrictTo(GROUP_ID)
 public class ForegroundLinearLayout extends LinearLayoutCompat {
 
   private Drawable mForeground;

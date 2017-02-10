@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -35,7 +35,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 /** @hide For internal use only. */
-@RestrictTo(LIBRARY_GROUP)
+@RestrictTo(GROUP_ID)
 public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final int mInactiveItemMaxWidth;
   private final int mInactiveItemMinWidth;

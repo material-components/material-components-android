@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -49,7 +49,7 @@ import android.widget.TextView;
 import java.util.ArrayList;
 
 /** @hide */
-@RestrictTo(LIBRARY_GROUP)
+@RestrictTo(GROUP_ID)
 public class NavigationMenuPresenter implements MenuPresenter {
 
   private static final String STATE_HIERARCHY = "android:menu:list";
