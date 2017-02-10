@@ -18,4 +18,10 @@ android {
     main.java.includes = [ '*.java' ]
     main.res.srcDirs = [ 'res' ]
   }
+
+  buildTypes {
+    debug {
+      pseudoLocalesEnabled true
+    }
+  }
 }
