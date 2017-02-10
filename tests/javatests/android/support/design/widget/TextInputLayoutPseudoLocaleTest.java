@@ -26,8 +26,8 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import android.support.design.testapp.R;
 import android.support.design.testapp.TextInputLayoutActivity;
+import android.support.test.filters.MediumTest;
 import android.support.test.filters.SdkSuppress;
-import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import java.util.Locale;
@@ -37,7 +37,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@SmallTest
+@MediumTest
 @SdkSuppress(minSdkVersion = 17) // Needed for Configuration#setLocale
 @RunWith(AndroidJUnit4.class)
 public class TextInputLayoutPseudoLocaleTest {

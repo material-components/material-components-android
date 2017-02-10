@@ -60,7 +60,7 @@ import android.support.design.testapp.R;
 import android.support.design.testapp.TextInputLayoutActivity;
 import android.support.design.testutils.TestUtils;
 import android.support.test.annotation.UiThreadTest;
-import android.support.test.filters.SmallTest;
+import android.support.test.filters.MediumTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.widget.TextViewCompat;
@@ -76,7 +76,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@SmallTest
+@MediumTest
 @RunWith(AndroidJUnit4.class)
 public class TextInputLayoutTest {
   @Rule
