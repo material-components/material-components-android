@@ -119,6 +119,13 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
     super.show();
   }
 
+  // TODO: Delete this once custom Robolectric shadows no longer depend on this method being present
+  // (and instead properly utilize BaseTransientBottomBar hierarchy).
+  @Override
+  public void dismiss() {
+    super.dismiss();
+  }
+
   /**
    * Make a Snackbar to display a message
    *
