@@ -3045,6 +3045,9 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     public SavedState(Parcel source, ClassLoader loader) {
       super(source, loader);
+      if (loader == null) {
+        loader = getClass().getClassLoader();
+      }
 
       final int size = source.readInt();
 
