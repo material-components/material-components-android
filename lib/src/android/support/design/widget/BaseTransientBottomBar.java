@@ -22,6 +22,7 @@ import static android.support.design.widget.AnimationUtils.FAST_OUT_SLOW_IN_INTE
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -164,6 +165,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   static final Handler sHandler;
   static final int MSG_SHOW = 0;
   static final int MSG_DISMISS = 1;
+
+  private static final boolean IS_ON_JELLYBEAN =
+      (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
+          && (Build.VERSION.SDK_INT <= VERSION_CODES.JELLY_BEAN_MR2);
 
   static {
     sHandler =
@@ -484,7 +489,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   void animateViewIn() {
     if (Build.VERSION.SDK_INT >= 12) {
       final int viewHeight = mView.getHeight();
-      ViewCompat.setTranslationY(mView, viewHeight);
+      if (IS_ON_JELLYBEAN) {
+        ViewCompat.offsetTopAndBottom(mView, viewHeight);
+      } else {
+        ViewCompat.setTranslationY(mView, viewHeight);
+      }
 
       final ValueAnimatorCompat animator = ViewUtils.createAnimator();
       animator.setIntValues(viewHeight, 0);
@@ -505,9 +514,20 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           });
       animator.addUpdateListener(
           new ValueAnimatorCompat.AnimatorUpdateListener() {
+            private int previousAnimatedIntValue = viewHeight;
+
             @Override
             public void onAnimationUpdate(ValueAnimatorCompat animator) {
-              ViewCompat.setTranslationY(mView, animator.getAnimatedIntValue());
+              int currentAnimatedIntValue = animator.getAnimatedIntValue();
+              if (IS_ON_JELLYBEAN) {
+                // On JB versions of the platform sometimes View.setTranslationY does not
+                // result in layout / draw pass
+                ViewCompat.offsetTopAndBottom(
+                    mView, currentAnimatedIntValue - previousAnimatedIntValue);
+              } else {
+                ViewCompat.setTranslationY(mView, animator.getAnimatedIntValue());
+              }
+              previousAnimatedIntValue = currentAnimatedIntValue;
             }
           });
       animator.start();
@@ -553,9 +573,20 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           });
       animator.addUpdateListener(
           new ValueAnimatorCompat.AnimatorUpdateListener() {
+            private int previousAnimatedIntValue = 0;
+
             @Override
             public void onAnimationUpdate(ValueAnimatorCompat animator) {
-              ViewCompat.setTranslationY(mView, animator.getAnimatedIntValue());
+              int currentAnimatedIntValue = animator.getAnimatedIntValue();
+              if (IS_ON_JELLYBEAN) {
+                // On JB versions of the platform sometimes View.setTranslationY does not
+                // result in layout / draw pass
+                ViewCompat.offsetTopAndBottom(
+                    mView, currentAnimatedIntValue - previousAnimatedIntValue);
+              } else {
+                ViewCompat.setTranslationY(mView, animator.getAnimatedIntValue());
+              }
+              previousAnimatedIntValue = currentAnimatedIntValue;
             }
           });
       animator.start();
