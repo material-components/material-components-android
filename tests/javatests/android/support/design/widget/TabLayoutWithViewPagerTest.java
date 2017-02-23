@@ -16,7 +16,6 @@
 package android.support.design.widget;
 
 import static android.support.design.testutils.TabLayoutActions.setupWithViewPager;
-import static android.support.design.testutils.ViewPagerActions.notifyAdapterContentChange;
 import static android.support.design.testutils.ViewPagerActions.setAdapter;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -54,6 +53,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
 import java.util.ArrayList;
 import org.hamcrest.Matcher;
 import org.junit.Before;
@@ -116,6 +117,8 @@ public class TabLayoutWithViewPagerTest {
         case 9:
           view.setId(R.id.page_9);
           break;
+        default:
+          throw new IllegalArgumentException("Invalid position: " + position);
       }
     }
 
@@ -179,6 +182,63 @@ public class TabLayoutWithViewPagerTest {
 
       return new ViewHolder(view, position);
     }
+  }
+
+  private static <Q> ViewAction addItemToPager(final String title, final Q content) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(ViewPager.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Add item and notify on content change";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+
+        final ViewPager viewPager = (ViewPager) view;
+        @SuppressWarnings("unchecked") // no way to avoid this cast
+        final BasePagerAdapter<Q> viewPagerAdapter = (BasePagerAdapter<Q>) viewPager.getAdapter();
+        viewPagerAdapter.add(title, content);
+        viewPagerAdapter.notifyDataSetChanged();
+
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
+
+  private static <Q> ViewAction addItemsToPager(final String[] title, final Q[] content) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(ViewPager.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Add items and notify on content change";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+
+        final ViewPager viewPager = (ViewPager) view;
+        @SuppressWarnings("unchecked") // no way to avoid this cast
+        final BasePagerAdapter<Q> viewPagerAdapter = (BasePagerAdapter<Q>) viewPager.getAdapter();
+        int itemCount = title.length;
+        for (int i = 0; i < itemCount; i++) {
+          viewPagerAdapter.add(title[i], content[i]);
+        }
+        viewPagerAdapter.notifyDataSetChanged();
+
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
   }
 
   @Before
@@ -308,15 +368,16 @@ public class TabLayoutWithViewPagerTest {
     assertEquals("Initial adapter page count", 3, initialAdapter.getCount());
 
     // Add two more entries to our adapter
-    mDefaultPagerAdapter.add("Yellow", Color.YELLOW);
-    mDefaultPagerAdapter.add("Magenta", Color.MAGENTA);
-    final int newItemCount = mDefaultPagerAdapter.getCount();
-    onView(withId(R.id.tabs_viewpager)).perform(notifyAdapterContentChange());
+    onView(withId(R.id.tabs_viewpager))
+        .perform(
+            addItemsToPager(
+                new String[] {"Yellow", "Magenta"}, new Integer[] {Color.YELLOW, Color.MAGENTA}));
 
     // We have more comprehensive test coverage for changing the ViewPager adapter in v4/tests.
     // Here we are focused on testing the continuous integration of TabLayout with the new
     // content of ViewPager
 
+    final int newItemCount = mDefaultPagerAdapter.getCount();
     assertEquals("Matching item count", newItemCount, mTabLayout.getTabCount());
 
     for (int i = 0; i < newItemCount; i++) {
@@ -339,14 +400,13 @@ public class TabLayoutWithViewPagerTest {
     assertEquals("Initial adapter page count", 3, initialAdapter.getCount());
 
     // Add two more entries to our adapter
-    mDefaultPagerAdapter.add("Yellow", Color.YELLOW);
-    mDefaultPagerAdapter.add("Magenta", Color.MAGENTA);
-    final int newItemCount = mDefaultPagerAdapter.getCount();
-
-    // Notify the adapter that it has changed
-    onView(withId(R.id.tabs_viewpager)).perform(notifyAdapterContentChange());
+    onView(withId(R.id.tabs_viewpager))
+        .perform(
+            addItemsToPager(
+                new String[] {"Yellow", "Magenta"}, new Integer[] {Color.YELLOW, Color.MAGENTA}));
 
     // Assert that the TabLayout did not update and add the new items
+    final int newItemCount = mDefaultPagerAdapter.getCount();
     assertNotEquals("Matching item count", newItemCount, mTabLayout.getTabCount());
   }
 
@@ -428,8 +488,7 @@ public class TabLayoutWithViewPagerTest {
 
     // Add a bunch of tabs and verify that all of them are visible on the screen
     for (int i = 0; i < 8; i++) {
-      newAdapter.add("Title " + i, "Body " + i);
-      onView(withId(R.id.tabs_viewpager)).perform(notifyAdapterContentChange());
+      onView(withId(R.id.tabs_viewpager)).perform(addItemToPager("Title " + i, "Body " + i));
 
       int expectedTabCount = i + 1;
       assertEquals("Tab count after adding #" + i, expectedTabCount, mTabLayout.getTabCount());
@@ -499,8 +558,7 @@ public class TabLayoutWithViewPagerTest {
         tabTitleBuilder.append(titleComponent);
       }
       final String tabTitle = tabTitleBuilder.toString();
-      newAdapter.add(tabTitle, "Body " + i);
-      onView(withId(R.id.tabs_viewpager)).perform(notifyAdapterContentChange());
+      onView(withId(R.id.tabs_viewpager)).perform(addItemToPager(tabTitle, "Body " + i));
 
       int expectedTabCount = i + 1;
       // Check that all tabs are at least as wide as min width *and* at most as wide as max

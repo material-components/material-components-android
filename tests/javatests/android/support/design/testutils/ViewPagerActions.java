@@ -185,29 +185,4 @@ public class ViewPagerActions {
       }
     };
   }
-
-  /** Moves <code>ViewPager</code> to specific page. */
-  public static ViewAction notifyAdapterContentChange() {
-    return new ViewAction() {
-      @Override
-      public Matcher<View> getConstraints() {
-        return isAssignableFrom(ViewPager.class);
-      }
-
-      @Override
-      public String getDescription() {
-        return "ViewPager notify on adapter content change";
-      }
-
-      @Override
-      public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
-        ViewPager viewPager = (ViewPager) view;
-        viewPager.getAdapter().notifyDataSetChanged();
-
-        uiController.loopMainThreadUntilIdle();
-      }
-    };
-  }
 }
