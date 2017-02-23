@@ -31,7 +31,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -180,8 +179,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
                   case MSG_DISMISS:
                     ((BaseTransientBottomBar) message.obj).hideView(message.arg1);
                     return true;
+                  default:
+                    return false;
                 }
-                return false;
               }
             });
   }
@@ -417,6 +417,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
                     // If the view has been released and is idle, restore the timeout
                     SnackbarManager.getInstance().restoreTimeout(mManagerCallback);
                     break;
+                  default:
+                    // Any other state is ignored
                 }
               }
             });
@@ -480,28 +482,38 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   void animateViewIn() {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-      ViewCompat.setTranslationY(mView, mView.getHeight());
-      ViewCompat.animate(mView)
-          .translationY(0f)
-          .setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR)
-          .setDuration(ANIMATION_DURATION)
-          .setListener(
-              new ViewPropertyAnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(View view) {
-                  mContentViewCallback.animateContentIn(
-                      ANIMATION_DURATION - ANIMATION_FADE_DURATION, ANIMATION_FADE_DURATION);
-                }
+    if (Build.VERSION.SDK_INT >= 12) {
+      final int viewHeight = mView.getHeight();
+      ViewCompat.setTranslationY(mView, viewHeight);
 
-                @Override
-                public void onAnimationEnd(View view) {
-                  onViewShown();
-                }
-              })
-          .start();
+      final ValueAnimatorCompat animator = ViewUtils.createAnimator();
+      animator.setIntValues(viewHeight, 0);
+      animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
+      animator.setDuration(ANIMATION_DURATION);
+      animator.addListener(
+          new ValueAnimatorCompat.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(ValueAnimatorCompat animator) {
+              mContentViewCallback.animateContentIn(
+                  ANIMATION_DURATION - ANIMATION_FADE_DURATION, ANIMATION_FADE_DURATION);
+            }
+
+            @Override
+            public void onAnimationEnd(ValueAnimatorCompat animator) {
+              onViewShown();
+            }
+          });
+      animator.addUpdateListener(
+          new ValueAnimatorCompat.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimatorCompat animator) {
+              ViewCompat.setTranslationY(mView, animator.getAnimatedIntValue());
+            }
+          });
+      animator.start();
     } else {
-      Animation anim = AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_in);
+      final Animation anim =
+          AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_in);
       anim.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
       anim.setDuration(ANIMATION_DURATION);
       anim.setAnimationListener(
@@ -522,26 +534,34 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void animateViewOut(final int event) {
-    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-      ViewCompat.animate(mView)
-          .translationY(mView.getHeight())
-          .setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR)
-          .setDuration(ANIMATION_DURATION)
-          .setListener(
-              new ViewPropertyAnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(View view) {
-                  mContentViewCallback.animateContentOut(0, ANIMATION_FADE_DURATION);
-                }
+    if (Build.VERSION.SDK_INT >= 12) {
+      final ValueAnimatorCompat animator = ViewUtils.createAnimator();
+      animator.setIntValues(0, mView.getHeight());
+      animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
+      animator.setDuration(ANIMATION_DURATION);
+      animator.addListener(
+          new ValueAnimatorCompat.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(ValueAnimatorCompat animator) {
+              mContentViewCallback.animateContentOut(0, ANIMATION_FADE_DURATION);
+            }
 
-                @Override
-                public void onAnimationEnd(View view) {
-                  onViewHidden(event);
-                }
-              })
-          .start();
+            @Override
+            public void onAnimationEnd(ValueAnimatorCompat animator) {
+              onViewHidden(event);
+            }
+          });
+      animator.addUpdateListener(
+          new ValueAnimatorCompat.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimatorCompat animator) {
+              ViewCompat.setTranslationY(mView, animator.getAnimatedIntValue());
+            }
+          });
+      animator.start();
     } else {
-      Animation anim = AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_out);
+      final Animation anim =
+          AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_out);
       anim.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
       anim.setDuration(ANIMATION_DURATION);
       anim.setAnimationListener(
@@ -692,6 +712,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           case MotionEvent.ACTION_CANCEL:
             SnackbarManager.getInstance().restoreTimeout(mManagerCallback);
             break;
+          default:
+            // Any other action is ignored
         }
       }
 
