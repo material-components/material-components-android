@@ -20,7 +20,12 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.CoreMatchers.notNullValue;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.lessThan;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
+import static org.mockito.Matchers.any;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.times;
+import static org.mockito.Mockito.verify;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,6 +52,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
+@MediumTest
 @RunWith(AndroidJUnit4.class)
 public class BottomSheetDialogTest {
 
@@ -57,7 +63,6 @@ public class BottomSheetDialogTest {
   private BottomSheetDialog mDialog;
 
   @Test
-  @MediumTest
   public void testBasicDialogSetup() throws Throwable {
     activityTestRule.runOnUiThread(
         new Runnable() {
@@ -88,7 +93,57 @@ public class BottomSheetDialogTest {
   }
 
   @Test
-  @MediumTest
+  public void testTouchInside() throws Throwable {
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            showDialog();
+            // Confirms that the dialog is shown
+            assertThat(mDialog.isShowing(), is(true));
+            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            // The bottom sheet is not clickable
+            assertNotNull(bottomSheet);
+            assertThat(bottomSheet.isClickable(), is(false));
+          }
+        });
+    // Click on the bottom sheet
+    Espresso.onView(ViewMatchers.withId(R.id.design_bottom_sheet)).perform(ViewActions.click());
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            // Confirm that touch didn't fall through as outside touch
+            assertThat(mDialog.isShowing(), is(true));
+          }
+        });
+  }
+
+  @Test
+  public void testClickContent() throws Throwable {
+    final View.OnClickListener mockListener = mock(View.OnClickListener.class);
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            showDialog();
+            // Confirms that the dialog is shown
+            assertThat(mDialog.isShowing(), is(true));
+            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            // Set up an OnClickListener to the content of the bottom sheet
+            assertNotNull(bottomSheet);
+            View child = bottomSheet.getChildAt(0);
+            child.setOnClickListener(mockListener);
+          }
+        });
+    // Click on the bottom sheet; since the whole sheet is occupied with its only child, this
+    // clicks the child
+    Espresso.onView(ViewMatchers.withParent(ViewMatchers.withId(R.id.design_bottom_sheet)))
+        .perform(ViewActions.click());
+    verify(mockListener, times(1)).onClick(any(View.class));
+  }
+
+  @Test
   public void testShortDialog() throws Throwable {
     activityTestRule.runOnUiThread(
         new Runnable() {
@@ -120,7 +175,6 @@ public class BottomSheetDialogTest {
   }
 
   @Test
-  @MediumTest
   public void testNonCancelableDialog() throws Throwable {
     activityTestRule.runOnUiThread(
         new Runnable() {
@@ -147,7 +201,6 @@ public class BottomSheetDialogTest {
   }
 
   @Test
-  @MediumTest
   public void testHideBottomSheet() throws Throwable {
     final AtomicBoolean canceled = new AtomicBoolean(false);
     activityTestRule.runOnUiThread(

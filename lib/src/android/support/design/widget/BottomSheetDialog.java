@@ -29,6 +29,7 @@ import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v7.app.AppCompatDialog;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -153,6 +154,14 @@ public class BottomSheetDialog extends AppCompatDialog {
               return true;
             }
             return super.performAccessibilityAction(host, action, args);
+          }
+        });
+    bottomSheet.setOnTouchListener(
+        new View.OnTouchListener() {
+          @Override
+          public boolean onTouch(View view, MotionEvent event) {
+            // Consume the event and prevent it from falling through
+            return true;
           }
         });
     return coordinator;
