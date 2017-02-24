@@ -16,13 +16,11 @@
 
 package android.support.design.widget;
 
-import android.annotation.TargetApi;
 import android.graphics.Outline;
 import android.support.annotation.RequiresApi;
 
 /** Lollipop version of {@link CircularBorderDrawable}. */
 @RequiresApi(21)
-@TargetApi(21)
 class CircularBorderDrawableLollipop extends CircularBorderDrawable {
 
   @Override

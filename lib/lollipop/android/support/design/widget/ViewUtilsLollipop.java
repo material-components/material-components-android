@@ -19,7 +19,6 @@ package android.support.design.widget;
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.RequiresApi;
@@ -29,7 +28,6 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 
 @RequiresApi(21)
-@TargetApi(21)
 class ViewUtilsLollipop {
 
   private static final int[] STATE_LIST_ANIM_ATTRS = new int[] {android.R.attr.stateListAnimator};

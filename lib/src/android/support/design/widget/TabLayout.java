@@ -21,7 +21,6 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -1532,7 +1531,6 @@ public class TabLayout extends HorizontalScrollView {
       }
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onInitializeAccessibilityEvent(AccessibilityEvent event) {
       super.onInitializeAccessibilityEvent(event);
@@ -1540,7 +1538,6 @@ public class TabLayout extends HorizontalScrollView {
       event.setClassName(ActionBar.Tab.class.getName());
     }
 
-    @TargetApi(Build.VERSION_CODES.ICE_CREAM_SANDWICH)
     @Override
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
       super.onInitializeAccessibilityNodeInfo(info);

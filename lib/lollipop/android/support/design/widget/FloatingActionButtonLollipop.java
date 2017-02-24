@@ -19,7 +19,6 @@ package android.support.design.widget;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
-import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
@@ -34,7 +33,6 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 
 @RequiresApi(21)
-@TargetApi(21)
 class FloatingActionButtonLollipop extends FloatingActionButtonIcs {
 
   private InsetDrawable mInsetDrawable;

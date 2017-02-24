@@ -16,7 +16,6 @@
 
 package android.support.design.widget;
 
-import android.annotation.TargetApi;
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -26,7 +25,6 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 @RequiresApi(11)
-@TargetApi(11)
 class ViewGroupUtilsHoneycomb {
   private static final ThreadLocal<Matrix> sMatrix = new ThreadLocal<>();
   private static final ThreadLocal<RectF> sRectF = new ThreadLocal<>();

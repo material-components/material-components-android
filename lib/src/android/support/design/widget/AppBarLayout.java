@@ -19,7 +19,6 @@ package android.support.design.widget;
 import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -672,14 +671,12 @@ public class AppBarLayout extends LinearLayout {
     }
 
     @RequiresApi(19)
-    @TargetApi(19)
     public LayoutParams(LinearLayout.LayoutParams source) {
       // The copy constructor called here only exists on API 19+.
       super(source);
     }
 
     @RequiresApi(19)
-    @TargetApi(19)
     public LayoutParams(LayoutParams source) {
       // The copy constructor called here only exists on API 19+.
       super(source);

@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
@@ -26,7 +25,6 @@ import android.support.v4.view.ViewCompat;
 import android.view.View;
 
 @RequiresApi(14)
-@TargetApi(14)
 class FloatingActionButtonIcs extends FloatingActionButtonGingerbread {
 
   private float mRotation;
