@@ -2165,15 +2165,6 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     public void onDependentViewRemoved(CoordinatorLayout parent, V child, View dependency) {}
 
     /**
-     * @deprecated this method is not called anymore. You can safely remove all usages and
-     *     implementations. This method will be removed in a future release.
-     */
-    @Deprecated
-    public boolean isDirty(CoordinatorLayout parent, V child) {
-      return false;
-    }
-
-    /**
      * Called when the parent CoordinatorLayout is about to measure the given child view.
      *
      * <p>This method can be used to perform custom or modified measurement of a child view in place
