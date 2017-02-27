@@ -166,9 +166,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   static final int MSG_SHOW = 0;
   static final int MSG_DISMISS = 1;
 
-  private static final boolean IS_ON_JELLYBEAN =
+  // On JB/KK versions of the platform sometimes View.setTranslationY does not result in
+  // layout / draw pass, and CoordinatorLayout relies on a draw pass to happen to sync vertical
+  // positioning of all its child views
+  private static final boolean USE_OFFSET_API =
       (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN)
-          && (Build.VERSION.SDK_INT <= VERSION_CODES.JELLY_BEAN_MR2);
+          && (Build.VERSION.SDK_INT <= VERSION_CODES.KITKAT);
 
   static {
     sHandler =
@@ -489,7 +492,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   void animateViewIn() {
     if (Build.VERSION.SDK_INT >= 12) {
       final int viewHeight = mView.getHeight();
-      if (IS_ON_JELLYBEAN) {
+      if (USE_OFFSET_API) {
         ViewCompat.offsetTopAndBottom(mView, viewHeight);
       } else {
         ViewCompat.setTranslationY(mView, viewHeight);
@@ -519,13 +522,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             @Override
             public void onAnimationUpdate(ValueAnimatorCompat animator) {
               int currentAnimatedIntValue = animator.getAnimatedIntValue();
-              if (IS_ON_JELLYBEAN) {
+              if (USE_OFFSET_API) {
                 // On JB versions of the platform sometimes View.setTranslationY does not
                 // result in layout / draw pass
                 ViewCompat.offsetTopAndBottom(
                     mView, currentAnimatedIntValue - previousAnimatedIntValue);
               } else {
-                ViewCompat.setTranslationY(mView, animator.getAnimatedIntValue());
+                ViewCompat.setTranslationY(mView, currentAnimatedIntValue);
               }
               previousAnimatedIntValue = currentAnimatedIntValue;
             }
@@ -578,13 +581,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             @Override
             public void onAnimationUpdate(ValueAnimatorCompat animator) {
               int currentAnimatedIntValue = animator.getAnimatedIntValue();
-              if (IS_ON_JELLYBEAN) {
+              if (USE_OFFSET_API) {
                 // On JB versions of the platform sometimes View.setTranslationY does not
                 // result in layout / draw pass
                 ViewCompat.offsetTopAndBottom(
                     mView, currentAnimatedIntValue - previousAnimatedIntValue);
               } else {
-                ViewCompat.setTranslationY(mView, animator.getAnimatedIntValue());
+                ViewCompat.setTranslationY(mView, currentAnimatedIntValue);
               }
               previousAnimatedIntValue = currentAnimatedIntValue;
             }
