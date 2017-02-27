@@ -27,6 +27,10 @@
     android:supportsRtl="true"
     android:theme="@style/Theme.Design">
 
+    <activity
+      android:name=".AppBarLayoutCollapsePinActivity"
+      android:theme="@style/Theme.TranslucentStatus"/>
+
     <activity android:name="android.support.v7.app.AppCompatActivity"/>
 
     <activity
