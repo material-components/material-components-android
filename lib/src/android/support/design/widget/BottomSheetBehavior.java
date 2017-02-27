@@ -619,9 +619,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else {
       throw new IllegalArgumentException("Illegal state argument: " + state);
     }
-    setStateInternal(STATE_SETTLING);
     if (mViewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
+      setStateInternal(STATE_SETTLING);
       ViewCompat.postOnAnimation(child, new SettleRunnable(child, state));
+    } else {
+      setStateInternal(state);
     }
   }
 
