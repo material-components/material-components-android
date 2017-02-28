@@ -16,10 +16,7 @@
 
 package android.support.design.testutils;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.pm.ActivityInfo;
-import android.content.res.Configuration;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -162,22 +159,6 @@ public class TestUtils {
       if (a != null) {
         a.recycle();
       }
-    }
-  }
-
-  /**
-   * Rotates the given Activity to either portrait or landscape, depending on the current
-   * orientation.
-   */
-  public static void rotateOrientation(@NonNull Activity activity) {
-    switch (activity.getResources().getConfiguration().orientation) {
-      case Configuration.ORIENTATION_PORTRAIT:
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
-        break;
-      case Configuration.ORIENTATION_LANDSCAPE:
-      default:
-        activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
-        break;
     }
   }
 }

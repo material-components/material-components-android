@@ -22,7 +22,6 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
@@ -463,24 +462,6 @@ public class TestUtilsMatchers {
       @Override
       public boolean matchesSafely(View view) {
         return view.isPressed();
-      }
-    };
-  }
-
-  /**
-   * Returns a matcher that matches views which have a z-value greater than 0. Also matches if the
-   * platform we're running on does not support z-values.
-   */
-  public static Matcher<View> hasZ() {
-    return new TypeSafeMatcher<View>() {
-      @Override
-      public void describeTo(Description description) {
-        description.appendText("has a z value greater than 0");
-      }
-
-      @Override
-      public boolean matchesSafely(View view) {
-        return Build.VERSION.SDK_INT < 21 || ViewCompat.getZ(view) > 0f;
       }
     };
   }

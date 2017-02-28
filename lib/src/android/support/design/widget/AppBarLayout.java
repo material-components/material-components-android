@@ -108,7 +108,6 @@ public class AppBarLayout extends LinearLayout {
   static final int PENDING_ACTION_EXPANDED = 0x1;
   static final int PENDING_ACTION_COLLAPSED = 0x2;
   static final int PENDING_ACTION_ANIMATE_ENABLED = 0x4;
-  static final int PENDING_ACTION_FORCE = 0x8;
 
   /**
    * Interface definition for a callback to be invoked when an {@link AppBarLayout}'s vertical
@@ -171,10 +170,7 @@ public class AppBarLayout extends LinearLayout {
             attrs, R.styleable.AppBarLayout, 0, R.style.Widget_Design_AppBarLayout);
     ViewCompat.setBackground(this, a.getDrawable(R.styleable.AppBarLayout_android_background));
     if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
-      setExpanded(
-          a.getBoolean(R.styleable.AppBarLayout_expanded, false),
-          false /* animate */,
-          false /* force */);
+      setExpanded(a.getBoolean(R.styleable.AppBarLayout_expanded, false));
     }
     if (Build.VERSION.SDK_INT >= 21 && a.hasValue(R.styleable.AppBarLayout_elevation)) {
       ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(
@@ -298,14 +294,9 @@ public class AppBarLayout extends LinearLayout {
    * @attr ref android.support.design.R.styleable#AppBarLayout_expanded
    */
   public void setExpanded(boolean expanded, boolean animate) {
-    setExpanded(expanded, animate, true);
-  }
-
-  private void setExpanded(boolean expanded, boolean animate, boolean force) {
     mPendingAction =
         (expanded ? PENDING_ACTION_EXPANDED : PENDING_ACTION_COLLAPSED)
-            | (animate ? PENDING_ACTION_ANIMATE_ENABLED : 0)
-            | (force ? PENDING_ACTION_FORCE : 0);
+            | (animate ? PENDING_ACTION_ANIMATE_ENABLED : 0);
     requestLayout();
   }
 
@@ -1063,21 +1054,8 @@ public class AppBarLayout extends LinearLayout {
     public boolean onLayoutChild(CoordinatorLayout parent, AppBarLayout abl, int layoutDirection) {
       boolean handled = super.onLayoutChild(parent, abl, layoutDirection);
 
-      // The priority for actions here is (first which is true wins):
-      // 1. forced pending actions
-      // 2. offsets for restorations
-      // 3. non-forced pending actions
       final int pendingAction = abl.getPendingAction();
-      if (mOffsetToChildIndexOnLayout >= 0 && (pendingAction & PENDING_ACTION_FORCE) == 0) {
-        View child = abl.getChildAt(mOffsetToChildIndexOnLayout);
-        int offset = -child.getBottom();
-        if (mOffsetToChildIndexOnLayoutIsMinHeight) {
-          offset += ViewCompat.getMinimumHeight(child) + abl.getTopInset();
-        } else {
-          offset += Math.round(child.getHeight() * mOffsetToChildIndexOnLayoutPerc);
-        }
-        setHeaderTopBottomOffset(parent, abl, offset);
-      } else if (pendingAction != PENDING_ACTION_NONE) {
+      if (pendingAction != PENDING_ACTION_NONE) {
         final boolean animate = (pendingAction & PENDING_ACTION_ANIMATE_ENABLED) != 0;
         if ((pendingAction & PENDING_ACTION_COLLAPSED) != 0) {
           final int offset = -abl.getUpNestedPreScrollRange();
@@ -1093,6 +1071,15 @@ public class AppBarLayout extends LinearLayout {
             setHeaderTopBottomOffset(parent, abl, 0);
           }
         }
+      } else if (mOffsetToChildIndexOnLayout >= 0) {
+        View child = abl.getChildAt(mOffsetToChildIndexOnLayout);
+        int offset = -child.getBottom();
+        if (mOffsetToChildIndexOnLayoutIsMinHeight) {
+          offset += ViewCompat.getMinimumHeight(child);
+        } else {
+          offset += Math.round(child.getHeight() * mOffsetToChildIndexOnLayoutPerc);
+        }
+        setTopAndBottomOffset(offset);
       }
 
       // Finally reset any pending states
