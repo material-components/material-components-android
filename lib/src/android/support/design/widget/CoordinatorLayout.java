@@ -1317,7 +1317,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
         offsetChildByInset(child, inset, layoutDirection);
       }
 
-      if (type == EVENT_PRE_DRAW) {
+      if (type != EVENT_VIEW_REMOVED) {
         // Did it change? if not continue
         getLastChildRect(child, lastDrawRect);
         if (lastDrawRect.equals(drawRect)) {

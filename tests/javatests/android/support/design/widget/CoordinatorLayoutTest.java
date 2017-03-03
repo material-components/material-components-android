@@ -16,6 +16,7 @@
 
 package android.support.design.widget;
 
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.swipeUp;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -36,13 +37,11 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
 import android.annotation.TargetApi;
-import android.app.Instrumentation;
 import android.graphics.Rect;
 import android.support.design.testapp.CoordinatorLayoutActivity;
 import android.support.design.testapp.R;
-import android.support.design.testutils.CoordinatorLayoutUtils;
+import android.support.design.testutils.CoordinatorLayoutUtils.DependentBehavior;
 import android.support.design.widget.CoordinatorLayout.Behavior;
-import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.MediumTest;
 import android.support.test.filters.SdkSuppress;
 import android.support.test.rule.ActivityTestRule;
@@ -56,7 +55,6 @@ import android.view.View.MeasureSpec;
 import android.widget.ImageView;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicInteger;
-import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,18 +67,10 @@ public class CoordinatorLayoutTest {
   public final ActivityTestRule<CoordinatorLayoutActivity> activityTestRule =
       new ActivityTestRule<>(CoordinatorLayoutActivity.class);
 
-  private Instrumentation mInstrumentation;
-
-  @Before
-  public void setup() {
-    mInstrumentation = InstrumentationRegistry.getInstrumentation();
-  }
-
   @Test
   @TargetApi(21)
   @SdkSuppress(minSdkVersion = 21)
   public void testSetFitSystemWindows() throws Throwable {
-    final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     final CoordinatorLayout col = activityTestRule.getActivity().mCoordinatorLayout;
     final View view = new View(col.getContext());
 
@@ -104,7 +94,7 @@ public class CoordinatorLayoutTest {
             col.addView(view, lp);
           }
         });
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // Now request some insets and wait for the pass to happen
     activityTestRule.runOnUiThread(
@@ -114,7 +104,7 @@ public class CoordinatorLayoutTest {
             col.requestApplyInsets();
           }
         });
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // Verify that onApplyWindowInsets() has not been called
     verify(mockBehavior, never())
@@ -128,7 +118,7 @@ public class CoordinatorLayoutTest {
             col.setFitsSystemWindows(true);
           }
         });
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // Verify that onApplyWindowInsets() has been called with some insets
     verify(mockBehavior, atLeastOnce())
@@ -194,7 +184,6 @@ public class CoordinatorLayoutTest {
 
   @Test
   public void testInsetEdge() throws Throwable {
-    final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     final CoordinatorLayout col = activityTestRule.getActivity().mCoordinatorLayout;
 
     final View insetView = new View(col.getContext());
@@ -222,7 +211,7 @@ public class CoordinatorLayoutTest {
             dodgeInsetView.setBackgroundColor(0xFFFF0000);
           }
         });
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
     activityTestRule.runOnUiThread(
         new Runnable() {
           @Override
@@ -237,7 +226,7 @@ public class CoordinatorLayoutTest {
             ViewCompat.offsetTopAndBottom(insetView, 123);
           }
         });
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
     activityTestRule.runOnUiThread(
         new Runnable() {
           @Override
@@ -250,7 +239,6 @@ public class CoordinatorLayoutTest {
 
   @Test
   public void testDependentViewChanged() throws Throwable {
-    final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     final CoordinatorLayout col = activityTestRule.getActivity().mCoordinatorLayout;
 
     // Add two views, A & B, where B depends on A
@@ -263,8 +251,7 @@ public class CoordinatorLayoutTest {
     final CoordinatorLayout.LayoutParams lpB = col.generateDefaultLayoutParams();
     lpB.width = 100;
     lpB.height = 100;
-    final CoordinatorLayout.Behavior behavior =
-        spy(new CoordinatorLayoutUtils.DependentBehavior(viewA));
+    final CoordinatorLayout.Behavior behavior = spy(new DependentBehavior(viewA));
     lpB.setBehavior(behavior);
 
     activityTestRule.runOnUiThread(
@@ -275,7 +262,7 @@ public class CoordinatorLayoutTest {
             col.addView(viewB, lpB);
           }
         });
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // Reset the Behavior since onDependentViewChanged may have already been called as part of
     // any layout/draw passes already
@@ -290,7 +277,7 @@ public class CoordinatorLayoutTest {
             ViewCompat.offsetTopAndBottom(viewA, 20);
           }
         });
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // And assert that view B's Behavior was called appropriately
     verify(behavior, times(1)).onDependentViewChanged(col, viewB, viewA);
@@ -298,15 +285,13 @@ public class CoordinatorLayoutTest {
 
   @Test
   public void testDependentViewRemoved() throws Throwable {
-    final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     final CoordinatorLayout col = activityTestRule.getActivity().mCoordinatorLayout;
 
     // Add two views, A & B, where B depends on A
     final View viewA = new View(col.getContext());
     final View viewB = new View(col.getContext());
     final CoordinatorLayout.LayoutParams lpB = col.generateDefaultLayoutParams();
-    final CoordinatorLayout.Behavior behavior =
-        spy(new CoordinatorLayoutUtils.DependentBehavior(viewA));
+    final CoordinatorLayout.Behavior behavior = spy(new DependentBehavior(viewA));
     lpB.setBehavior(behavior);
 
     activityTestRule.runOnUiThread(
@@ -317,7 +302,7 @@ public class CoordinatorLayoutTest {
             col.addView(viewB, lpB);
           }
         });
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // Now remove view A
     activityTestRule.runOnUiThread(
@@ -334,7 +319,6 @@ public class CoordinatorLayoutTest {
 
   @Test
   public void testGetDependenciesAfterDependentViewRemoved() throws Throwable {
-    final Instrumentation instrumentation = InstrumentationRegistry.getInstrumentation();
     final CoordinatorLayout col = activityTestRule.getActivity().mCoordinatorLayout;
 
     // Add two views, A & B, where B depends on A
@@ -342,7 +326,7 @@ public class CoordinatorLayoutTest {
     final View viewB = new View(col.getContext());
     final CoordinatorLayout.LayoutParams lpB = col.generateDefaultLayoutParams();
     final CoordinatorLayout.Behavior behavior =
-        new CoordinatorLayoutUtils.DependentBehavior(viewA) {
+        new DependentBehavior(viewA) {
           @Override
           public void onDependentViewRemoved(
               CoordinatorLayout parent, View child, View dependency) {
@@ -362,7 +346,7 @@ public class CoordinatorLayoutTest {
         });
 
     // Wait for a layout
-    instrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // Now remove view A, which will trigger onDependentViewRemoved() on view B's behavior
     activityTestRule.runOnUiThread(
@@ -390,7 +374,7 @@ public class CoordinatorLayoutTest {
         });
 
     // Wait for a layout.
-    mInstrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     final View dodge = new View(col.getContext());
     final CoordinatorLayout.LayoutParams lpDodge = col.generateDefaultLayoutParams();
@@ -422,7 +406,7 @@ public class CoordinatorLayoutTest {
         });
 
     // Wait for a layout.
-    mInstrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
   }
 
   @Test
@@ -441,7 +425,7 @@ public class CoordinatorLayoutTest {
           }
         });
     // Wait for a layout and measure pass
-    mInstrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // And assert that it has not been laid out
     assertFalse(imageView.getMeasuredWidth() > 0);
@@ -457,7 +441,7 @@ public class CoordinatorLayoutTest {
           }
         });
     // Wait for a layout and measure pass
-    mInstrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // And assert that it has been laid out
     assertTrue(imageView.getMeasuredWidth() > 0);
@@ -609,6 +593,57 @@ public class CoordinatorLayoutTest {
   }
 
   @Test
+  public void testNestedScrollingTriggeringDependentViewChanged() throws Throwable {
+    final CoordinatorLayoutActivity activity = activityTestRule.getActivity();
+    final CoordinatorLayout col = activity.mCoordinatorLayout;
+
+    // First a NestedScrollView to trigger nested scrolling
+    final View scrollView =
+        LayoutInflater.from(activity).inflate(R.layout.include_nestedscrollview, col, false);
+
+    // Now create a View and Behavior which depend on the scrollview
+    final ImageView dependentView = new ImageView(activity);
+    final CoordinatorLayout.Behavior dependentBehavior = spy(new DependentBehavior(scrollView));
+
+    // Finally a view which accepts nested scrolling in the CoordinatorLayout
+    final ImageView nestedScrollAwareView = new ImageView(activity);
+
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            // First add the ScrollView
+            col.addView(scrollView);
+
+            // Now add the view which depends on the scrollview
+            CoordinatorLayout.LayoutParams clp = new CoordinatorLayout.LayoutParams(200, 200);
+            clp.setBehavior(dependentBehavior);
+            col.addView(dependentView, clp);
+
+            // Now add the nested scrolling aware view
+            clp = new CoordinatorLayout.LayoutParams(200, 200);
+            clp.setBehavior(new NestedScrollingBehavior());
+            col.addView(nestedScrollAwareView, clp);
+          }
+        });
+
+    // Wait for any layouts, and reset the Behavior so that the call counts are 0
+    getInstrumentation().waitForIdleSync();
+    reset(dependentBehavior);
+
+    // Now vertically swipe up on the NSV, causing nested scrolling to occur
+    onView(withId(R.id.nested_scrollview)).perform(swipeUp());
+
+    // Verify that the Behavior's onDependentViewChanged is not called due to the
+    // nested scroll
+    verify(dependentBehavior, never())
+        .onDependentViewChanged(
+            eq(col), // parent
+            eq(dependentView), // child
+            eq(scrollView)); // axes
+  }
+
+  @Test
   public void testDodgeInsetViewWithEmptyBounds() throws Throwable {
     final CoordinatorLayout col = activityTestRule.getActivity().mCoordinatorLayout;
 
@@ -630,7 +665,7 @@ public class CoordinatorLayoutTest {
         });
 
     // Wait for a layout
-    mInstrumentation.waitForIdleSync();
+    getInstrumentation().waitForIdleSync();
 
     // Now add an non-empty bounds inset view to the bottom of the CoordinatorLayout
     activityTestRule.runOnUiThread(
