@@ -154,6 +154,11 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public static Snackbar make(
       @NonNull View view, @NonNull CharSequence text, @Duration int duration) {
     final ViewGroup parent = findSuitableParent(view);
+    if (parent == null) {
+      throw new IllegalArgumentException(
+          "No suitable parent found from the given view. Please provide a valid view.");
+    }
+
     final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
     final SnackbarContentLayout content =
         (SnackbarContentLayout)
