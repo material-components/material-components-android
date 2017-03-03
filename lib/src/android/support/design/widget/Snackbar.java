@@ -343,5 +343,24 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
     public SnackbarLayout(Context context, AttributeSet attrs) {
       super(context, attrs);
     }
+
+    @Override
+    protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+      // Work around our backwards-compatible refactoring of Snackbar and inner content
+      // being inflated against snackbar's parent (instead of against the snackbar itself).
+      // Every child that is width=MATCH_PARENT is remeasured again and given the full width
+      // minus the paddings.
+      int childCount = getChildCount();
+      int availableWidth = getMeasuredWidth() - getPaddingLeft() - getPaddingRight();
+      for (int i = 0; i < childCount; i++) {
+        View child = getChildAt(i);
+        if (child.getLayoutParams().width == ViewGroup.LayoutParams.MATCH_PARENT) {
+          child.measure(
+              MeasureSpec.makeMeasureSpec(availableWidth, MeasureSpec.EXACTLY),
+              MeasureSpec.makeMeasureSpec(child.getMeasuredHeight(), MeasureSpec.EXACTLY));
+        }
+      }
+    }
   }
 }
