@@ -21,6 +21,7 @@ import static android.support.design.testutils.SwipeUtils.swipeDown;
 import static android.support.design.testutils.SwipeUtils.swipeUp;
 import static android.support.design.testutils.TestUtilsActions.setText;
 import static android.support.design.testutils.TestUtilsActions.setTitle;
+import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
@@ -86,7 +87,15 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
         });
 
     final CharSequence activityTitle = activity.getString(titleResId);
-    activity.setTitle(activityTitle);
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            activity.setTitle(activityTitle);
+          }
+        });
+    getInstrumentation().waitForIdleSync();
+
     if (mCollapsingToolbar != null) {
       onView(withId(R.id.collapsing_app_bar))
           .perform(setTitle(activityTitle))
