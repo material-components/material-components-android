@@ -1189,11 +1189,18 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
   }
 
   /**
-   * Return the given gravity value or the default if the passed value is NO_GRAVITY. This should be
-   * used for children that are not anchored to another view or a keyline.
+   * Return the given gravity value, but if either or both of the axes doesn't have any gravity
+   * specified, the default value (start or top) is specified. This should be used for children that
+   * are not anchored to another view or a keyline.
    */
   private static int resolveGravity(int gravity) {
-    return gravity == Gravity.NO_GRAVITY ? GravityCompat.START | Gravity.TOP : gravity;
+    if ((gravity & Gravity.HORIZONTAL_GRAVITY_MASK) == Gravity.NO_GRAVITY) {
+      gravity |= GravityCompat.START;
+    }
+    if ((gravity & Gravity.VERTICAL_GRAVITY_MASK) == Gravity.NO_GRAVITY) {
+      gravity |= Gravity.TOP;
+    }
+    return gravity;
   }
 
   /**
@@ -2544,9 +2551,10 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     boolean mBehaviorResolved = false;
 
     /**
-     * A {@link Gravity} value describing how this child view should lay out. If an {@link
-     * #setAnchorId(int) anchor} is also specified, the gravity describes how this child view should
-     * be positioned relative to its anchored position.
+     * A {@link Gravity} value describing how this child view should lay out. If either or both of
+     * the axes are not specified, they are treated by CoordinatorLayout as {@link Gravity#TOP} or
+     * {@link GravityCompat#START}. If an {@link #setAnchorId(int) anchor} is also specified, the
+     * gravity describes how this child view should be positioned relative to its anchored position.
      */
     public int gravity = Gravity.NO_GRAVITY;
 
