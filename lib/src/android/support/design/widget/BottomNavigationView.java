@@ -271,6 +271,13 @@ public class BottomNavigationView extends FrameLayout {
     mMenuView.setItemBackgroundRes(resId);
   }
 
+  /**
+   * Set shifting behaviour. If no shifting behav
+   */
+  public void setShiftingModeEnabled(boolean enabled) {
+    mMenuView.setShiftingMode(enabled);
+  }
+
   /** Listener for handling events on bottom navigation items. */
   public interface OnNavigationItemSelectedListener {
 

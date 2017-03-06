@@ -242,6 +242,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     return mItemBackgroundRes;
   }
 
+  public void setShiftingMode(boolean shiftingMode) {
+    mShiftingMode = shiftingMode;
+  }
+
   public void setPresenter(BottomNavigationPresenter presenter) {
     mPresenter = presenter;
   }
@@ -257,7 +261,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       return;
     }
     mButtons = new BottomNavigationItemView[mMenu.size()];
-    mShiftingMode = mMenu.size() > 3;
+
+    mShiftingMode = mMenu.size() > 3 && mShiftingMode;
+
     for (int i = 0; i < mMenu.size(); i++) {
       mPresenter.setUpdateSuspended(true);
       mMenu.getItem(i).setCheckable(true);
