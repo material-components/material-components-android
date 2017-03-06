@@ -409,8 +409,8 @@ public class AppBarLayout extends LinearLayout {
           // Only enter by the amount of the collapsed height
           range += childHeight - ViewCompat.getMinimumHeight(child);
         } else {
-          // Else use the full height
-          range += childHeight;
+          // Else use the full height (minus the top inset)
+          range += childHeight - getTopInset();
         }
       } else if (range > 0) {
         // If we've hit an non-quick return scrollable view, and we've already hit a
