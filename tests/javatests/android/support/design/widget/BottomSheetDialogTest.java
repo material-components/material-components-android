@@ -23,7 +23,9 @@ import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.fail;
 import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 
@@ -227,6 +229,41 @@ public class BottomSheetDialogTest {
         fail("Timed out while waiting for the dialog to be canceled.");
       }
     }
+  }
+
+  @Test
+  @MediumTest
+  public void testHideThenShow() throws Throwable {
+    // Hide the bottom sheet and wait for the dialog to be canceled.
+    final DialogInterface.OnCancelListener onCancelListener =
+        mock(DialogInterface.OnCancelListener.class);
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            showDialog();
+            mDialog.setOnCancelListener(onCancelListener);
+          }
+        });
+    Espresso.onView(ViewMatchers.withId(R.id.design_bottom_sheet))
+        .perform(setState(BottomSheetBehavior.STATE_HIDDEN));
+    verify(onCancelListener, timeout(3000)).onCancel(any(DialogInterface.class));
+    // Reshow the same dialog instance and wait for the bottom sheet to be collapsed.
+    final BottomSheetBehavior.BottomSheetCallback callback =
+        mock(BottomSheetBehavior.BottomSheetCallback.class);
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            BottomSheetBehavior.from(mDialog.findViewById(R.id.design_bottom_sheet))
+                .setBottomSheetCallback(callback);
+            mDialog.show(); // Show the same dialog again.
+          }
+        });
+    verify(callback, timeout(3000))
+        .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_SETTLING));
+    verify(callback, timeout(3000))
+        .onStateChanged(any(View.class), eq(BottomSheetBehavior.STATE_COLLAPSED));
   }
 
   private void showDialog() {

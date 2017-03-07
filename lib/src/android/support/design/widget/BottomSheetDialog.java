@@ -95,6 +95,14 @@ public class BottomSheetDialog extends AppCompatDialog {
   }
 
   @Override
+  protected void onStart() {
+    super.onStart();
+    if (mBehavior != null) {
+      mBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+  }
+
+  @Override
   public void setCanceledOnTouchOutside(boolean cancel) {
     super.setCanceledOnTouchOutside(cancel);
     if (cancel && !mCancelable) {
