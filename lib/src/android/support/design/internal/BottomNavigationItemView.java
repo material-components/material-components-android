@@ -119,6 +119,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setTitle(CharSequence title) {
     mSmallLabel.setText(title);
     mLargeLabel.setText(title);
+    setContentDescription(title);
   }
 
   @Override
