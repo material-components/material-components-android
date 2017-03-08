@@ -1076,18 +1076,7 @@ public class TabLayout extends HorizontalScrollView {
     final int targetScrollX = calculateScrollXForTab(newPosition, 0);
 
     if (startScrollX != targetScrollX) {
-      if (mScrollAnimator == null) {
-        mScrollAnimator = ViewUtils.createAnimator();
-        mScrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-        mScrollAnimator.setDuration(ANIMATION_DURATION);
-        mScrollAnimator.addUpdateListener(
-            new ValueAnimatorCompat.AnimatorUpdateListener() {
-              @Override
-              public void onAnimationUpdate(ValueAnimatorCompat animator) {
-                scrollTo(animator.getAnimatedIntValue(), 0);
-              }
-            });
-      }
+      ensureScrollAnimator();
 
       mScrollAnimator.setIntValues(startScrollX, targetScrollX);
       mScrollAnimator.start();
@@ -1095,6 +1084,26 @@ public class TabLayout extends HorizontalScrollView {
 
     // Now animate the indicator
     mTabStrip.animateIndicatorToPosition(newPosition, ANIMATION_DURATION);
+  }
+
+  private void ensureScrollAnimator() {
+    if (mScrollAnimator == null) {
+      mScrollAnimator = ViewUtils.createAnimator();
+      mScrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      mScrollAnimator.setDuration(ANIMATION_DURATION);
+      mScrollAnimator.addUpdateListener(
+          new ValueAnimatorCompat.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimatorCompat animator) {
+              scrollTo(animator.getAnimatedIntValue(), 0);
+            }
+          });
+    }
+  }
+
+  void setScrollAnimatorListener(ValueAnimatorCompat.AnimatorListener listener) {
+    ensureScrollAnimator();
+    mScrollAnimator.addListener(listener);
   }
 
   private void setSelectedTabView(int position) {
@@ -1169,10 +1178,14 @@ public class TabLayout extends HorizontalScrollView {
       final int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
       final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
 
-      return selectedChild.getLeft()
-          + ((int) ((selectedWidth + nextWidth) * positionOffset * 0.5f))
-          + (selectedChild.getWidth() / 2)
-          - (getWidth() / 2);
+      // base scroll amount: places center of tab in center of parent
+      int scrollBase = selectedChild.getLeft() + (selectedWidth / 2) - (getWidth() / 2);
+      // offset amount: fraction of the distance between centers of tabs
+      int scrollOffset = (int) ((selectedWidth + nextWidth) * 0.5f * positionOffset);
+
+      return (ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_LTR)
+          ? scrollBase + scrollOffset
+          : scrollBase - scrollOffset;
     }
     return 0;
   }
@@ -1792,6 +1805,8 @@ public class TabLayout extends HorizontalScrollView {
     int mSelectedPosition = -1;
     float mSelectionOffset;
 
+    private int mLayoutDirection = -1;
+
     private int mIndicatorLeft = -1;
     private int mIndicatorRight = -1;
 
@@ -1839,6 +1854,20 @@ public class TabLayout extends HorizontalScrollView {
 
     float getIndicatorPosition() {
       return mSelectedPosition + mSelectionOffset;
+    }
+
+    @Override
+    public void onRtlPropertiesChanged(int layoutDirection) {
+      super.onRtlPropertiesChanged(layoutDirection);
+
+      // Workaround for a bug before Android M where LinearLayout did not re-layout itself when
+      // layout direction changed
+      if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+        if (mLayoutDirection != layoutDirection) {
+          requestLayout();
+          mLayoutDirection = layoutDirection;
+        }
+      }
     }
 
     @Override

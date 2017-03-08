@@ -24,6 +24,7 @@ import android.support.v4.view.ViewPager;
 import android.view.View;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import org.hamcrest.Matcher;
 
 public class TabLayoutActions {
@@ -123,6 +124,32 @@ public class TabLayoutActions {
         TabLayout tabLayout = (TabLayout) view;
         tabLayout.setTabMode(tabMode);
 
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
+
+  /**
+   * Calls <code>setScrollPosition(position, positionOffset, true)</code> on the <code>TabLayout
+   * </code>
+   */
+  public static ViewAction setScrollPosition(final int position, final float positionOffset) {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TabLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "setScrollPosition(" + position + ", " + positionOffset + ", true)";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TabLayout tabs = (TabLayout) view;
+        tabs.setScrollPosition(position, positionOffset, true);
         uiController.loopMainThreadUntilIdle();
       }
     };
