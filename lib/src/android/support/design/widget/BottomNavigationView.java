@@ -19,6 +19,9 @@ package android.support.design.widget;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
+import android.os.Bundle;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -27,6 +30,9 @@ import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.os.ParcelableCompat;
+import android.support.v4.os.ParcelableCompatCreatorCallbacks;
+import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.SupportMenuInflater;
@@ -85,6 +91,8 @@ public class BottomNavigationView extends FrameLayout {
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
+  private static final int MENU_PRESENTER_ID = 1;
+
   private final MenuBuilder mMenu;
   private final BottomNavigationMenuView mMenuView;
   private final BottomNavigationPresenter mPresenter = new BottomNavigationPresenter();
@@ -116,6 +124,7 @@ public class BottomNavigationView extends FrameLayout {
     mMenuView.setLayoutParams(params);
 
     mPresenter.setBottomNavigationMenuView(mMenuView);
+    mPresenter.setId(MENU_PRESENTER_ID);
     mMenuView.setPresenter(mPresenter);
     mMenu.addMenuPresenter(mPresenter);
     mPresenter.initForMenu(getContext(), mMenu);
@@ -322,5 +331,62 @@ public class BottomNavigationView extends FrameLayout {
         new int[] {
           baseColor.getColorForState(DISABLED_STATE_SET, defaultColor), colorPrimary, defaultColor
         });
+  }
+
+  @Override
+  protected Parcelable onSaveInstanceState() {
+    Parcelable superState = super.onSaveInstanceState();
+    SavedState savedState = new SavedState(superState);
+    savedState.menuPresenterState = new Bundle();
+    mMenu.savePresenterStates(savedState.menuPresenterState);
+    return savedState;
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Parcelable state) {
+    if (!(state instanceof SavedState)) {
+      super.onRestoreInstanceState(state);
+      return;
+    }
+    SavedState savedState = (SavedState) state;
+    super.onRestoreInstanceState(savedState.getSuperState());
+    mMenu.restorePresenterStates(savedState.menuPresenterState);
+  }
+
+  static class SavedState extends AbsSavedState {
+    Bundle menuPresenterState;
+
+    public SavedState(Parcelable superState) {
+      super(superState);
+    }
+
+    public SavedState(Parcel source, ClassLoader loader) {
+      super(source, loader);
+      readFromParcel(source, loader);
+    }
+
+    @Override
+    public void writeToParcel(@NonNull Parcel out, int flags) {
+      super.writeToParcel(out, flags);
+      out.writeBundle(menuPresenterState);
+    }
+
+    private void readFromParcel(Parcel in, ClassLoader loader) {
+      menuPresenterState = in.readBundle(loader);
+    }
+
+    public static final Creator<SavedState> CREATOR =
+        ParcelableCompat.newCreator(
+            new ParcelableCompatCreatorCallbacks<SavedState>() {
+              @Override
+              public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+                return new SavedState(in, loader);
+              }
+
+              @Override
+              public SavedState[] newArray(int size) {
+                return new SavedState[size];
+              }
+            });
   }
 }

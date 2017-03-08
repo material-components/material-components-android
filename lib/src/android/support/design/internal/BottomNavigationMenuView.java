@@ -31,6 +31,7 @@ import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -49,7 +50,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private boolean mShiftingMode = true;
 
   private BottomNavigationItemView[] mButtons;
-  private int mActiveButton = 0;
+  private int mSelectedItemId = 0;
+  private int mSelectedItemPosition = 0;
   private ColorStateList mItemIconTint;
   private ColorStateList mItemTextColor;
   private int mItemBackgroundRes;
@@ -113,7 +115,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
       for (int i = 0; i < count; i++) {
-        mTempChildWidths[i] = (i == mActiveButton) ? activeWidth : inactiveWidth;
+        mTempChildWidths[i] = (i == mSelectedItemPosition) ? activeWidth : inactiveWidth;
         if (extra > 0) {
           mTempChildWidths[i]++;
           extra--;
@@ -274,8 +276,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       child.setOnClickListener(mOnClickListener);
       addView(child);
     }
-    mActiveButton = Math.min(mMenu.size() - 1, mActiveButton);
-    mMenu.getItem(mActiveButton).setChecked(true);
+    mSelectedItemPosition = Math.min(mMenu.size() - 1, mSelectedItemPosition);
+    mMenu.getItem(mSelectedItemPosition).setChecked(true);
   }
 
   public void updateMenuView() {
@@ -287,22 +289,24 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     }
     for (int i = 0; i < menuSize; i++) {
       mPresenter.setUpdateSuspended(true);
-      if (mMenu.getItem(i).isChecked()) {
-        mActiveButton = i;
+      MenuItem item = mMenu.getItem(i);
+      if (item.isChecked()) {
+        mSelectedItemId = item.getItemId();
+        mSelectedItemPosition = i;
       }
-      mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
+      mButtons[i].initialize((MenuItemImpl) item, 0);
       mPresenter.setUpdateSuspended(false);
     }
   }
 
   private void activateNewButton(int newButton) {
-    if (mActiveButton == newButton) return;
+    if (mSelectedItemPosition == newButton) {
+      return;
+    }
 
     mAnimationHelper.beginDelayedTransition(this);
-
     mMenu.getItem(newButton).setChecked(true);
-
-    mActiveButton = newButton;
+    mSelectedItemPosition = newButton;
   }
 
   private BottomNavigationItemView getNewItem() {
@@ -311,5 +315,22 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       item = new BottomNavigationItemView(getContext());
     }
     return item;
+  }
+
+  int getSelectedItemId() {
+    return mSelectedItemId;
+  }
+
+  void tryRestoreSelectedItemId(int itemId) {
+    final int size = mMenu.size();
+    for (int i = 0; i < size; i++) {
+      MenuItem item = mMenu.getItem(i);
+      if (itemId == item.getItemId()) {
+        mSelectedItemId = itemId;
+        mSelectedItemPosition = i;
+        item.setChecked(true);
+        break;
+      }
+    }
   }
 }

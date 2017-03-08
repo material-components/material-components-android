@@ -37,6 +37,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
 import android.content.res.Resources;
+import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.design.testapp.BottomNavigationViewActivity;
 import android.support.design.testapp.R;
@@ -251,6 +252,34 @@ public class BottomNavigationViewTest {
     assertEquals(0, mBottomNavigation.getMenu().size());
     mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_content);
     assertEquals(3, mBottomNavigation.getMenu().size());
+  }
+
+  @Test
+  @SmallTest
+  public void testSavedState() throws Throwable {
+    // Select an item other than the first
+    onView(
+            allOf(
+                withText(mMenuStringContent.get(R.id.destination_profile)),
+                isDescendantOfA(withId(R.id.bottom_navigation)),
+                isDisplayed()))
+        .perform(click());
+    assertTrue(mBottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
+    // Save the state
+    final Parcelable state = mBottomNavigation.onSaveInstanceState();
+
+    // Restore the state into a fresh BottomNavigationView
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            BottomNavigationView testView =
+                new BottomNavigationView(activityTestRule.getActivity());
+            testView.inflateMenu(R.menu.bottom_navigation_view_content);
+            testView.onRestoreInstanceState(state);
+            assertTrue(testView.getMenu().findItem(R.id.destination_profile).isChecked());
+          }
+        });
   }
 
   private void checkAndVerifyExclusiveItem(final Menu menu, final int id) throws Throwable {
