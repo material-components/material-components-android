@@ -52,6 +52,10 @@ import android.text.TextUtils;
 import android.view.View;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
+import android.support.test.espresso.action.CoordinatesProvider;
+import android.support.test.espresso.action.GeneralSwipeAction;
+import android.support.test.espresso.action.Press;
+import android.support.test.espresso.action.Swipe;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -253,6 +257,36 @@ public class SnackbarTest {
         null,
         null,
         Snackbar.LENGTH_LONG,
+        Snackbar.Callback.DISMISS_EVENT_TIMEOUT);
+  }
+
+  @Test
+  public void testSwipeUpDismissesViaTimeout() throws Throwable {
+    verifyDismissCallback(
+        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        // This is a swipe up, from the middle center of the view, to above the view
+        // (outside the bounds)
+        new GeneralSwipeAction(
+            Swipe.SLOW,
+            new CoordinatesProvider() {
+              @Override
+              public float[] calculateCoordinates(View view) {
+                final int[] loc = new int[2];
+                view.getLocationOnScreen(loc);
+                return new float[] {loc[0] + view.getWidth() / 2, loc[1] + view.getHeight() / 2};
+              }
+            },
+            new CoordinatesProvider() {
+              @Override
+              public float[] calculateCoordinates(View view) {
+                final int[] loc = new int[2];
+                view.getLocationOnScreen(loc);
+                return new float[] {loc[0] + view.getWidth() / 2, loc[1] - view.getHeight()};
+              }
+            },
+            Press.FINGER),
+        null,
+        Snackbar.LENGTH_SHORT,
         Snackbar.Callback.DISMISS_EVENT_TIMEOUT);
   }
 
