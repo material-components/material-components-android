@@ -23,6 +23,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
@@ -278,6 +279,31 @@ public class BottomNavigationView extends FrameLayout {
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
     mMenuView.setItemBackgroundRes(resId);
+  }
+
+  /**
+   * Returns the currently selected menu item ID, or zero if there is no menu.
+   *
+   * @see #setSelectedItemId(int)
+   */
+  @IdRes
+  public int getSelectedItemId() {
+    return mMenuView.getSelectedItemId();
+  }
+
+  /**
+   * Set the selected menu item ID. This behaves the same as tapping on an item.
+   *
+   * @param itemId The menu item ID. If no item has this ID, the current selection is unchanged.
+   * @see #getSelectedItemId()
+   */
+  public void setSelectedItemId(@IdRes int itemId) {
+    MenuItem item = mMenu.findItem(itemId);
+    if (item != null) {
+      if (!mMenu.performItemAction(item, mPresenter, 0)) {
+        item.setChecked(true);
+      }
+    }
   }
 
   /** Listener for handling events on bottom navigation items. */
