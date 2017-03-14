@@ -20,7 +20,7 @@ ext {
   compileSdkVersion = 25
   minSdkVersion = 9
   targetSdkVersion = 25
-  supportVersion = '25.1.0-SNAPSHOT'
+  supportVersion = '25.2.0-SNAPSHOT'
 
   testRunnerVersion = '0.6-alpha'
   espressoVersion = '2.3-alpha'

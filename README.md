@@ -41,7 +41,7 @@ library. To use it:
   ```groovy
   dependencies {
     // ...
-    compile 'com.android.support:design:25.1.0'
+    compile 'com.android.support:design:25.2.0'
     // ...
   }
   ```

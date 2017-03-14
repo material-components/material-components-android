@@ -1,8 +1,8 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  compile 'com.android.support:support-v4:25.1.0'
-  compile 'com.android.support:appcompat-v7:25.1.0'
+  compile 'com.android.support:support-v4:25.2.0'
+  compile 'com.android.support:appcompat-v7:25.2.0'
   compile project(':lib')
 }
 
