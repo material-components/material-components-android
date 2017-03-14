@@ -24,8 +24,10 @@ import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.MenuRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.widget.NavigationView;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
@@ -323,6 +325,34 @@ public class TestUtilsActions {
       public void perform(UiController uiController, View view) {
         uiController.loopMainThreadUntilIdle();
         view.restoreHierarchyState(container);
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
+
+  /**
+   * Clears and inflates the menu.
+   *
+   * @param menuResId The menu resource XML to be used.
+   */
+  public static ViewAction reinflateMenu(final @MenuRes int menuResId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(NavigationView.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "clear and inflate menu " + menuResId;
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+        final NavigationView nv = (NavigationView) view;
+        nv.getMenu().clear();
+        nv.inflateMenu(menuResId);
         uiController.loopMainThreadUntilIdle();
       }
     };

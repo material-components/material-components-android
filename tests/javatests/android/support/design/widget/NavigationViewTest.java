@@ -20,6 +20,7 @@ import static android.support.design.testutils.DrawerLayoutActions.openDrawer;
 import static android.support.design.testutils.NavigationViewActions.addHeaderView;
 import static android.support.design.testutils.NavigationViewActions.inflateHeaderView;
 import static android.support.design.testutils.NavigationViewActions.removeHeaderView;
+import static android.support.design.testutils.NavigationViewActions.removeMenuItem;
 import static android.support.design.testutils.NavigationViewActions.setCheckedItem;
 import static android.support.design.testutils.NavigationViewActions.setIconForMenuItem;
 import static android.support.design.testutils.NavigationViewActions.setItemBackground;
@@ -27,7 +28,9 @@ import static android.support.design.testutils.NavigationViewActions.setItemBack
 import static android.support.design.testutils.NavigationViewActions.setItemIconTintList;
 import static android.support.design.testutils.NavigationViewActions.setItemTextAppearance;
 import static android.support.design.testutils.NavigationViewActions.setItemTextColor;
+import static android.support.design.testutils.TestUtilsActions.reinflateMenu;
 import static android.support.design.testutils.TestUtilsActions.restoreHierarchyState;
+import static android.support.design.testutils.TestUtilsMatchers.isActionViewOf;
 import static android.support.design.testutils.TestUtilsMatchers.isChildOfA;
 import static android.support.design.testutils.TestUtilsMatchers.withBackgroundFill;
 import static android.support.design.testutils.TestUtilsMatchers.withStartDrawableFilledWith;
@@ -480,6 +483,34 @@ public class NavigationViewTest {
 
     // Confirm that the state was restored
     onView(withId(R.id.header_toggle)).check(matches(isChecked()));
+  }
+
+  @Test
+  public void testActionViewState() {
+    // Open our drawer
+    onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
+
+    final Menu menu = mNavigationView.getMenu();
+    onView(isActionViewOf(menu, R.id.destination_people))
+        .check(matches(isNotChecked())) // Not checked by default
+        .perform(click()) // Check it
+        .check(matches(isChecked()));
+
+    // Remove the other action view to simulate the case where it is not yet inflated
+    onView(isActionViewOf(menu, R.id.destination_custom)).check(matches(isDisplayed()));
+    onView(withId(R.id.start_drawer)).perform(removeMenuItem(R.id.destination_custom));
+
+    // Save the current state
+    SparseArray<Parcelable> container = new SparseArray<>();
+    mNavigationView.saveHierarchyState(container);
+
+    // Restore the saved state
+    onView(withId(R.id.start_drawer))
+        .perform(reinflateMenu(R.menu.navigation_view_content))
+        .perform(restoreHierarchyState(container));
+
+    // Checked state should be restored
+    onView(isActionViewOf(menu, R.id.destination_people)).check(matches(isChecked()));
   }
 
   @Test

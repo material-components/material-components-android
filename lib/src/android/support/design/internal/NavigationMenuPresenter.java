@@ -552,7 +552,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
       }
       // Store the states of the action views.
       SparseArray<ParcelableSparseArray> actionViewStates = new SparseArray<>();
-      for (NavigationMenuItem navigationMenuItem : mItems) {
+      for (int i = 0, size = mItems.size(); i < size; i++) {
+        NavigationMenuItem navigationMenuItem = mItems.get(i);
         if (navigationMenuItem instanceof NavigationMenuTextItem) {
           MenuItemImpl item = ((NavigationMenuTextItem) navigationMenuItem).getMenuItem();
           View actionView = item != null ? item.getActionView() : null;
@@ -571,7 +572,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
       int checkedItem = state.getInt(STATE_CHECKED_ITEM, 0);
       if (checkedItem != 0) {
         mUpdateSuspended = true;
-        for (NavigationMenuItem item : mItems) {
+        for (int i = 0, size = mItems.size(); i < size; i++) {
+          NavigationMenuItem item = mItems.get(i);
           if (item instanceof NavigationMenuTextItem) {
             MenuItemImpl menuItem = ((NavigationMenuTextItem) item).getMenuItem();
             if (menuItem != null && menuItem.getItemId() == checkedItem) {
@@ -586,13 +588,25 @@ public class NavigationMenuPresenter implements MenuPresenter {
       // Restore the states of the action views.
       SparseArray<ParcelableSparseArray> actionViewStates =
           state.getSparseParcelableArray(STATE_ACTION_VIEWS);
-      for (NavigationMenuItem navigationMenuItem : mItems) {
-        if (navigationMenuItem instanceof NavigationMenuTextItem) {
-          MenuItemImpl item = ((NavigationMenuTextItem) navigationMenuItem).getMenuItem();
-          View actionView = item != null ? item.getActionView() : null;
-          if (actionView != null) {
-            actionView.restoreHierarchyState(actionViewStates.get(item.getItemId()));
+      if (actionViewStates != null) {
+        for (int i = 0, size = mItems.size(); i < size; i++) {
+          NavigationMenuItem navigationMenuItem = mItems.get(i);
+          if (!(navigationMenuItem instanceof NavigationMenuTextItem)) {
+            continue;
           }
+          MenuItemImpl item = ((NavigationMenuTextItem) navigationMenuItem).getMenuItem();
+          if (item == null) {
+            continue;
+          }
+          View actionView = item.getActionView();
+          if (actionView == null) {
+            continue;
+          }
+          ParcelableSparseArray container = actionViewStates.get(item.getItemId());
+          if (container == null) {
+            continue;
+          }
+          actionView.restoreHierarchyState(container);
         }
       }
     }
