@@ -44,8 +44,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final int mItemHeight;
   private final OnClickListener mOnClickListener;
   private final BottomNavigationAnimationHelperBase mAnimationHelper;
-  private static final Pools.Pool<BottomNavigationItemView> sItemPool =
-      new Pools.SynchronizedPool<>(5);
+  private final Pools.Pool<BottomNavigationItemView> mItemPool = new Pools.SynchronizedPool<>(5);
 
   private boolean mShiftingMode = true;
 
@@ -249,12 +248,12 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   public void buildMenuView() {
+    removeAllViews();
     if (mButtons != null) {
       for (BottomNavigationItemView item : mButtons) {
-        sItemPool.release(item);
+        mItemPool.release(item);
       }
     }
-    removeAllViews();
     if (mMenu.size() == 0) {
       mSelectedItemId = 0;
       mSelectedItemPosition = 0;
@@ -306,7 +305,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   private BottomNavigationItemView getNewItem() {
-    BottomNavigationItemView item = sItemPool.acquire();
+    BottomNavigationItemView item = mItemPool.acquire();
     if (item == null) {
       item = new BottomNavigationItemView(getContext());
     }
