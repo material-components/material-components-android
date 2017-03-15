@@ -21,6 +21,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.Configuration;
 import android.content.res.Resources;
@@ -48,6 +49,7 @@ public class TextInputLayoutPseudoLocaleTest {
   private static final String ORIGINAL_LANGUAGE = Locale.getDefault().getLanguage();
   private static final String ORIGINAL_COUNTRY = Locale.getDefault().getLanguage();
 
+  @TargetApi(17)
   private static void setLocale(String language, String country, Context context) {
     context = context.getApplicationContext();
     Resources resources = context.getResources();
