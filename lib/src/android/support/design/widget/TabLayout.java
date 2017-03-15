@@ -21,6 +21,7 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -1551,6 +1552,7 @@ public class TabLayout extends HorizontalScrollView {
       event.setClassName(ActionBar.Tab.class.getName());
     }
 
+    @TargetApi(14)
     @Override
     public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
       super.onInitializeAccessibilityNodeInfo(info);
