@@ -16,6 +16,8 @@
 -->
 <resources>
 
+  <attr name="behavior_autoHide" format="boolean" />
+
     <declare-styleable name="FloatingActionButton">
         <!-- Background for the FloatingActionButton -->
         <attr name="backgroundTint"/>
@@ -44,7 +46,12 @@
 
     <declare-styleable name="FloatingActionButton_Behavior_Layout">
         <!-- Whether the FAB should automatically hide when there is no space for it. -->
-        <attr name="behavior_autoHide" format="boolean"/>
+        <attr name="behavior_autoHide"/>
+    </declare-styleable>
+
+    <declare-styleable name="NavigationView_Behavior_Layout">
+        <!-- Whether the navigation view should automatically hide when there is no space for it. -->
+        <attr name="behavior_autoHide" />
     </declare-styleable>
 
     <declare-styleable name="ScrimInsetsFrameLayout">

@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -35,6 +36,7 @@ import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
@@ -47,7 +49,15 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.Animation;
 import android.widget.FrameLayout;
+
+import java.util.ArrayList;
+
+import static android.support.design.widget.AnimationUtils.DECELERATE_INTERPOLATOR;
+import static android.support.design.widget.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
+import static android.support.design.widget.AnimationUtils.LINEAR_INTERPOLATOR;
+import static android.support.design.widget.ViewUtils.objectEquals;
 
 /**
  * Represents a standard bottom navigation bar for application. It is an implementation of <a
@@ -87,20 +97,44 @@ import android.widget.FrameLayout;
  * &lt;/menu&gt;
  * </pre>
  */
+@CoordinatorLayout.DefaultBehavior(BottomNavigationView.Behavior.class)
 public class BottomNavigationView extends FrameLayout {
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
+  // On JB/KK versions of the platform sometimes View.setTranslationY does not result in
+  // layout / draw pass, and CoordinatorLayout relies on a draw pass to happen to sync vertical
+  // positioning of all its child views
+  private static final boolean USE_OFFSET_API =
+      (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN)
+          && (Build.VERSION.SDK_INT <= Build.VERSION_CODES.KITKAT);
+
+  private static final int SHOW_HIDE_ANIMATION_DURATION = 350;
+  private static final int FADE_IN_ANIMATION_DURATION = SHOW_HIDE_ANIMATION_DURATION;
+  private static final int FADE_OUT_ANIMATION_DURATION = SHOW_HIDE_ANIMATION_DURATION / 3;
   private static final int MENU_PRESENTER_ID = 1;
 
+  private static final int SHOW_STATUS_HIDDEN = 0;
+  private static final int SHOW_STATUS_SHOWING = 1;
+  private static final int SHOW_STATUS_SHOWN = 2;
+  private static final int SHOW_STATUS_HIDING = 3;
+
+  private static final int REQUEST_NONE = -1;
+  private static final int REQUEST_SHOW = 0;
+  private static final int REQUEST_HIDE = 1;
+
+  private int mShowStatus = SHOW_STATUS_SHOWN;
+  private int mLastRequest = REQUEST_NONE;
   private final MenuBuilder mMenu;
   private final BottomNavigationMenuView mMenuView;
   private final BottomNavigationPresenter mPresenter = new BottomNavigationPresenter();
+  private WindowInsetsCompat mLastInsets;
   private MenuInflater mMenuInflater;
 
   private OnNavigationItemSelectedListener mSelectedListener;
   private OnNavigationItemReselectedListener mReselectedListener;
+  private ArrayList<OnVisibilityChangedListener> mOnVisibilityChangedListeners = new ArrayList<>();
 
   public BottomNavigationView(Context context) {
     this(context, null);
@@ -169,6 +203,15 @@ public class BottomNavigationView extends FrameLayout {
       addCompatibilityTopDivider(context);
     }
 
+    ViewCompat.setOnApplyWindowInsetsListener(
+        this,
+        new android.support.v4.view.OnApplyWindowInsetsListener() {
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+            return onWindowInsetChanged(insets);
+          }
+        });
+
     mMenu.setCallback(
         new MenuBuilder.Callback() {
           @Override
@@ -183,6 +226,25 @@ public class BottomNavigationView extends FrameLayout {
           @Override
           public void onMenuModeChange(MenuBuilder menu) {}
         });
+  }
+
+  WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
+    WindowInsetsCompat newInsets = null;
+
+    if (ViewCompat.getFitsSystemWindows(this)) {
+      // If we're set to fit system windows, keep the insets
+      newInsets = insets;
+
+      setPadding(getPaddingLeft(), getPaddingTop(), getPaddingRight(),
+          insets.getSystemWindowInsetBottom());
+    }
+
+    // If our insets have changed, keep them
+    if (!objectEquals(mLastInsets, newInsets)) {
+      mLastInsets = newInsets;
+    }
+
+    return insets;
   }
 
   /**
@@ -351,6 +413,236 @@ public class BottomNavigationView extends FrameLayout {
     void onNavigationItemReselected(@NonNull MenuItem item);
   }
 
+  public void addOnVisibilityChangedListener(OnVisibilityChangedListener listener) {
+    mOnVisibilityChangedListeners.add(listener);
+  }
+
+  public void removeOnVisibilityChangedListener(OnVisibilityChangedListener listener) {
+    mOnVisibilityChangedListeners.remove(listener);
+  }
+
+  /**
+   * Shows the bar.
+   * <p>
+   * <p>This method will animate the view show.
+   */
+  public void show() {
+    show(true);
+  }
+
+  void show(boolean fromUser) {
+    //is showing or is already shown
+    if (mShowStatus == SHOW_STATUS_SHOWING || mShowStatus == SHOW_STATUS_SHOWN) return;
+    //is hiding, so we will execute the request once finished
+    if (mShowStatus == SHOW_STATUS_HIDING) {
+      if (fromUser) {
+        mLastRequest = REQUEST_SHOW;
+      }
+      return;
+    }
+    mShowStatus = SHOW_STATUS_SHOWING;
+
+    if (Build.VERSION.SDK_INT >= 12) {
+      final ValueAnimatorCompat alphaAnimator = sdk12AlphaAnimator(0, 1);
+      final ValueAnimatorCompat slideInAnimator = sdk12SlideInAnimator();
+
+      alphaAnimator.setDuration(FADE_IN_ANIMATION_DURATION);
+      slideInAnimator.addListener(
+          new ValueAnimatorCompat.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(ValueAnimatorCompat animator) {
+              onShowFinished();
+            }
+          });
+      alphaAnimator.start();
+      slideInAnimator.start();
+    } else {
+      final Animation animation = compatSlideInAnimation();
+      animation.setAnimationListener(
+          new AnimationUtils.AnimationListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+              onShowFinished();
+            }
+          });
+      startAnimation(animation);
+    }
+  }
+
+  /**
+   * Hides the bar.
+   * <p>
+   * <p>This method will animate the navigation view hide.
+   */
+  public void hide() {
+    hide(true);
+  }
+
+  void hide(boolean fromUser) {
+    //is hiding or is already hidden
+    if (mShowStatus == SHOW_STATUS_HIDING || mShowStatus == SHOW_STATUS_HIDDEN) return;
+    //is showing, so we will execute the request once finished
+    if (mShowStatus == SHOW_STATUS_SHOWING) {
+      if (fromUser) {
+        mLastRequest = REQUEST_HIDE;
+      }
+      return;
+    }
+    mShowStatus = SHOW_STATUS_HIDING;
+
+    if (Build.VERSION.SDK_INT >= 12) {
+      final ValueAnimatorCompat alphaAnimator = sdk12AlphaAnimator(1, 0);
+      final ValueAnimatorCompat slideOutAnimator = sdk12SlideOutAnimator();
+
+      alphaAnimator.setDuration(FADE_OUT_ANIMATION_DURATION);
+      slideOutAnimator.addListener(
+          new ValueAnimatorCompat.AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationEnd(ValueAnimatorCompat animator) {
+              onHideFinished();
+            }
+          });
+      alphaAnimator.start();
+      slideOutAnimator.start();
+
+    } else {
+      final Animation animation = compatSlideOutAnimation();
+      animation.setAnimationListener(
+          new AnimationUtils.AnimationListenerAdapter() {
+            @Override
+            public void onAnimationEnd(Animation animation) {
+              onHideFinished();
+            }
+          });
+      startAnimation(animation);
+    }
+  }
+
+  private void executePendingRequestIfNeeded() {
+    final int lastRequest = mLastRequest;
+    if (lastRequest == REQUEST_NONE) return;
+
+    mLastRequest = REQUEST_NONE;
+
+    if (lastRequest == REQUEST_SHOW) show(true);
+    if (lastRequest == REQUEST_HIDE) hide(true);
+  }
+
+  private void notifyAllShown() {
+    for (OnVisibilityChangedListener listener : mOnVisibilityChangedListeners) {
+      listener.onShown(BottomNavigationView.this);
+    }
+  }
+
+  private void notifyAllHidden() {
+    for (OnVisibilityChangedListener listener : mOnVisibilityChangedListeners) {
+      listener.onHidden(BottomNavigationView.this);
+    }
+  }
+
+  @NonNull
+  private ValueAnimatorCompat sdk12AlphaAnimator(float from, float to) {
+    final ValueAnimatorCompat alphaAnimator = ViewUtils.createAnimator();
+    alphaAnimator.setFloatValues(from, to);
+    alphaAnimator.setInterpolator(LINEAR_INTERPOLATOR);
+    alphaAnimator.addUpdateListener(
+        new ValueAnimatorCompat.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimatorCompat animator) {
+            float animatedAlphaValue = animator.getAnimatedFloatValue();
+            ViewCompat.setAlpha(mMenuView, animatedAlphaValue);
+          }
+        });
+    return alphaAnimator;
+  }
+
+  private ValueAnimatorCompat sdk12SlideInAnimator() {
+    final int viewHeight = getHeight();
+    if (USE_OFFSET_API) {
+      ViewCompat.offsetTopAndBottom(this, viewHeight);
+    } else {
+      ViewCompat.setTranslationY(this, viewHeight);
+    }
+
+    final ValueAnimatorCompat animator = ViewUtils.createAnimator();
+    animator.setIntValues(viewHeight, 0);
+    animator.setInterpolator(DECELERATE_INTERPOLATOR);
+    animator.setDuration(SHOW_HIDE_ANIMATION_DURATION);
+    animator.addUpdateListener(
+        new ValueAnimatorCompat.AnimatorUpdateListener() {
+          private int previousAnimatedIntValue = viewHeight;
+
+          @Override
+          public void onAnimationUpdate(ValueAnimatorCompat animator) {
+            int currentAnimatedIntValue = animator.getAnimatedIntValue();
+            if (USE_OFFSET_API) {
+              // On JB versions of the platform sometimes View.setTranslationY does not
+              // result in layout / draw pass
+              ViewCompat.offsetTopAndBottom(
+                  BottomNavigationView.this, currentAnimatedIntValue - previousAnimatedIntValue);
+            } else {
+              ViewCompat.setTranslationY(BottomNavigationView.this, currentAnimatedIntValue);
+            }
+            previousAnimatedIntValue = currentAnimatedIntValue;
+          }
+        });
+    return animator;
+  }
+
+  private Animation compatSlideInAnimation() {
+    final Animation animation = android.view.animation.AnimationUtils.loadAnimation(getContext(),
+        R.anim.design_bottomnav_in);
+    animation.setInterpolator(DECELERATE_INTERPOLATOR);
+    animation.setDuration(SHOW_HIDE_ANIMATION_DURATION);
+    return animation;
+  }
+
+  private ValueAnimatorCompat sdk12SlideOutAnimator() {
+    final ValueAnimatorCompat animator = ViewUtils.createAnimator();
+    animator.setIntValues(0, getHeight());
+    animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
+    animator.setDuration(SHOW_HIDE_ANIMATION_DURATION);
+    animator.addUpdateListener(
+        new ValueAnimatorCompat.AnimatorUpdateListener() {
+          private int previousAnimatedIntValue = 0;
+
+          @Override
+          public void onAnimationUpdate(ValueAnimatorCompat animator) {
+            int currentAnimatedIntValue = animator.getAnimatedIntValue();
+            if (USE_OFFSET_API) {
+              // On JB versions of the platform sometimes View.setTranslationY does not
+              // result in layout / draw pass
+              ViewCompat.offsetTopAndBottom(
+                  BottomNavigationView.this, currentAnimatedIntValue - previousAnimatedIntValue);
+            } else {
+              ViewCompat.setTranslationY(BottomNavigationView.this, currentAnimatedIntValue);
+            }
+            previousAnimatedIntValue = currentAnimatedIntValue;
+          }
+        });
+    return animator;
+  }
+
+  private Animation compatSlideOutAnimation() {
+    final Animation animation = android.view.animation.AnimationUtils.loadAnimation(getContext(),
+        R.anim.design_bottomnav_out);
+    animation.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
+    animation.setDuration(SHOW_HIDE_ANIMATION_DURATION);
+    return animation;
+  }
+
+  private void onShowFinished() {
+    mShowStatus = SHOW_STATUS_SHOWN;
+    notifyAllShown();
+    executePendingRequestIfNeeded();
+  }
+
+  private void onHideFinished() {
+    mShowStatus = SHOW_STATUS_HIDDEN;
+    notifyAllHidden();
+    executePendingRequestIfNeeded();
+  }
+
   private void addCompatibilityTopDivider(Context context) {
     View divider = new View(context);
     divider.setBackgroundColor(
@@ -445,5 +737,112 @@ public class BottomNavigationView extends FrameLayout {
                 return new SavedState[size];
               }
             });
+  }
+
+  /**
+   * Callback to be invoked when the visibility of a {@link BottomNavigationView} changes.
+   */
+  public abstract static class OnVisibilityChangedListener {
+    /**
+     * Called when a BottomNavigationView has been {@link #show() shown}.
+     *
+     * @param bottomNavigationView the BottomNavigationView that was shown.
+     */
+    public void onShown(BottomNavigationView bottomNavigationView) {
+    }
+
+    /**
+     * Called when a BottomNavigationView has been {@link #hide()
+     * hidden}.
+     *
+     * @param bottomNavigationView the BottomNavigationView that was hidden.
+     */
+    public void onHidden(BottomNavigationView bottomNavigationView) {
+    }
+  }
+
+  /**
+   * Behavior designed for use with {@link BottomNavigationView} instances. Its main function is to
+   * hide {@link BottomNavigationView} when the scrolling view is scrolled in the forward direction.
+   */
+  public static class Behavior extends CoordinatorLayout.Behavior<BottomNavigationView> {
+    private static final boolean AUTO_HIDE_DEFAULT = true;
+
+    private boolean mAutoHideEnabled;
+
+    public Behavior() {
+      super();
+      mAutoHideEnabled = AUTO_HIDE_DEFAULT;
+    }
+
+    public Behavior(Context context, AttributeSet attrs) {
+      super(context, attrs);
+      TypedArray a =
+          context.obtainStyledAttributes(attrs, R.styleable.NavigationView_Behavior_Layout);
+      mAutoHideEnabled =
+          a.getBoolean(
+              R.styleable.NavigationView_Behavior_Layout_behavior_autoHide,
+              AUTO_HIDE_DEFAULT);
+      a.recycle();
+    }
+
+    @Override
+    public void onAttachedToLayoutParams(@NonNull CoordinatorLayout.LayoutParams params) {
+      if (params.insetEdge == Gravity.NO_GRAVITY) {
+        params.insetEdge = Gravity.BOTTOM;
+      }
+      super.onAttachedToLayoutParams(params);
+    }
+
+    /**
+     * Sets whether the associated BottomNavigationView automatically hides when there is not enough
+     * space to be displayed. This works with {@link AppBarLayout} and {@link BottomSheetBehavior}.
+     *
+     * @param autoHide true to enable automatic hiding
+     * @attr ref
+     * android.support.design.R.styleable#BottomNavigationView_Behavior_Layout_behavior_autoHide
+     */
+    public void setAutoHideEnabled(boolean autoHide) {
+      mAutoHideEnabled = autoHide;
+    }
+
+    /**
+     * Returns whether the associated BottomNavigationView automatically hides when there is not
+     * enough space to be displayed.
+     *
+     * @return true if enabled
+     * @attr ref
+     * android.support.design.R.styleable#BottomNavigationView_Behavior_Layout_behavior_autoHide
+     */
+    public boolean isAutoHideEnabled() {
+      return mAutoHideEnabled;
+    }
+
+    @Override
+    public boolean onLayoutChild(
+        CoordinatorLayout parent, BottomNavigationView child, int layoutDirection) {
+      // Now let the CoordinatorLayout lay out the bar
+      parent.onLayoutChild(child, layoutDirection);
+      return true;
+    }
+
+    @Override
+    public void onNestedScroll(CoordinatorLayout coordinatorLayout, BottomNavigationView child,
+                               View target, int dxConsumed, int dyConsumed, int dxUnconsumed,
+                               int dyUnconsumed) {
+      super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed);
+      if (dyConsumed > 0) {
+        // User scrolled down -> hide the navigation view
+        child.hide(false);
+      } else if (dyConsumed < 0) {
+        // User scrolled up -> show the navigation view
+        child.show(false);
+      }
+    }
+
+    @Override
+    public boolean onStartNestedScroll(CoordinatorLayout coordinatorLayout, BottomNavigationView child, View directTargetChild, View target, int nestedScrollAxes) {
+      return nestedScrollAxes == ViewCompat.SCROLL_AXIS_VERTICAL;
+    }
   }
 }
