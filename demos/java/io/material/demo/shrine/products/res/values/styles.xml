@@ -17,7 +17,7 @@
 <resources>
   <style name="Theme.Shrine.ItemActivity">
     <item name="colorAccent">@color/colorAccentSecondary</item>
-    <item name="android:textColor">@color/textColorProduct</item>
+    <item name="android:textColorPrimary">@color/textColorProduct</item>
   </style>
 
   <style name="Widget.Shrine.Toolbar.Logo.Product">
