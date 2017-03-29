@@ -37,7 +37,9 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import android.app.Activity;
 import android.content.res.Resources;
+import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.design.testapp.BottomNavigationViewActivity;
@@ -45,12 +47,16 @@ import android.support.design.testapp.R;
 import android.support.design.testutils.TestDrawable;
 import android.support.design.testutils.TestUtilsMatchers;
 import android.support.test.annotation.UiThreadTest;
+import android.support.test.filters.SdkSuppress;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.content.res.ResourcesCompat;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.MotionEvent;
+import android.view.PointerIcon;
+import android.view.View;
 import java.util.HashMap;
 import java.util.Map;
 import org.junit.Before;
@@ -453,6 +459,27 @@ public class BottomNavigationViewTest {
             assertTrue(testView.getMenu().findItem(R.id.destination_profile).isChecked());
           }
         });
+  }
+
+  @UiThreadTest
+  @Test
+  @SmallTest
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.N)
+  public void testPointerIcon() throws Throwable {
+    final Activity activity = activityTestRule.getActivity();
+    final PointerIcon expectedIcon = PointerIcon.getSystemIcon(activity, PointerIcon.TYPE_HAND);
+    final MotionEvent event = MotionEvent.obtain(0, 0, MotionEvent.ACTION_HOVER_MOVE, 0, 0, 0);
+    final Menu menu = mBottomNavigation.getMenu();
+    for (int i = 0; i < menu.size(); i++) {
+      final MenuItem item = menu.getItem(i);
+      assertTrue(item.isEnabled());
+      final View itemView = activity.findViewById(item.getItemId());
+      assertEquals(expectedIcon, itemView.onResolvePointerIcon(event, 0));
+      item.setEnabled(false);
+      assertEquals(null, itemView.onResolvePointerIcon(event, 0));
+      item.setEnabled(true);
+      assertEquals(expectedIcon, itemView.onResolvePointerIcon(event, 0));
+    }
   }
 
   private void checkAndVerifyExclusiveItem(final Menu menu, final int id) throws Throwable {
