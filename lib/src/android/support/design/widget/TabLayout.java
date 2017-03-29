@@ -21,6 +21,9 @@ import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -266,7 +269,7 @@ public class TabLayout extends HorizontalScrollView {
   private final ArrayList<OnTabSelectedListener> mSelectedListeners = new ArrayList<>();
   private OnTabSelectedListener mCurrentVpSelectedListener;
 
-  private ValueAnimatorCompat mScrollAnimator;
+  private ValueAnimator mScrollAnimator;
 
   ViewPager mViewPager;
   private PagerAdapter mPagerAdapter;
@@ -1089,20 +1092,20 @@ public class TabLayout extends HorizontalScrollView {
 
   private void ensureScrollAnimator() {
     if (mScrollAnimator == null) {
-      mScrollAnimator = ViewUtils.createAnimator();
+      mScrollAnimator = new ValueAnimator();
       mScrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
       mScrollAnimator.setDuration(ANIMATION_DURATION);
       mScrollAnimator.addUpdateListener(
-          new ValueAnimatorCompat.AnimatorUpdateListener() {
+          new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimatorCompat animator) {
-              scrollTo(animator.getAnimatedIntValue(), 0);
+            public void onAnimationUpdate(ValueAnimator animator) {
+              scrollTo((int) animator.getAnimatedValue(), 0);
             }
           });
     }
   }
 
-  void setScrollAnimatorListener(ValueAnimatorCompat.AnimatorListener listener) {
+  void setScrollAnimatorListener(ValueAnimator.AnimatorListener listener) {
     ensureScrollAnimator();
     mScrollAnimator.addListener(listener);
   }
@@ -1812,7 +1815,7 @@ public class TabLayout extends HorizontalScrollView {
     private int mIndicatorLeft = -1;
     private int mIndicatorRight = -1;
 
-    private ValueAnimatorCompat mIndicatorAnimator;
+    private ValueAnimator mIndicatorAnimator;
 
     SlidingTabStrip(Context context) {
       super(context);
@@ -1948,7 +1951,8 @@ public class TabLayout extends HorizontalScrollView {
 
     private void updateIndicatorPosition() {
       final View selectedTitle = getChildAt(mSelectedPosition);
-      int left, right;
+      int left;
+      int right;
 
       if (selectedTitle != null && selectedTitle.getWidth() > 0) {
         left = selectedTitle.getLeft();
@@ -2021,14 +2025,14 @@ public class TabLayout extends HorizontalScrollView {
       }
 
       if (startLeft != targetLeft || startRight != targetRight) {
-        ValueAnimatorCompat animator = mIndicatorAnimator = ViewUtils.createAnimator();
+        ValueAnimator animator = mIndicatorAnimator = new ValueAnimator();
         animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         animator.setDuration(duration);
         animator.setFloatValues(0, 1);
         animator.addUpdateListener(
-            new ValueAnimatorCompat.AnimatorUpdateListener() {
+            new ValueAnimator.AnimatorUpdateListener() {
               @Override
-              public void onAnimationUpdate(ValueAnimatorCompat animator) {
+              public void onAnimationUpdate(ValueAnimator animator) {
                 final float fraction = animator.getAnimatedFraction();
                 setIndicatorPosition(
                     AnimationUtils.lerp(startLeft, targetLeft, fraction),
@@ -2036,9 +2040,9 @@ public class TabLayout extends HorizontalScrollView {
               }
             });
         animator.addListener(
-            new ValueAnimatorCompat.AnimatorListenerAdapter() {
+            new AnimatorListenerAdapter() {
               @Override
-              public void onAnimationEnd(ValueAnimatorCompat animator) {
+              public void onAnimationEnd(Animator animator) {
                 mSelectedPosition = position;
                 mSelectionOffset = 0f;
               }

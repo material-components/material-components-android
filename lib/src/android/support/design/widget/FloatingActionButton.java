@@ -247,6 +247,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
    *
    * @param tint the tint to apply, may be {@code null} to clear tint
    */
+  @Override
   public void setBackgroundTintList(@Nullable ColorStateList tint) {
     if (mBackgroundTint != tint) {
       mBackgroundTint = tint;
@@ -273,6 +274,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
    *
    * @param tintMode the blending mode used to apply the tint, may be {@code null} to clear tint
    */
+  @Override
   public void setBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
     if (mBackgroundTintMode != tintMode) {
       mBackgroundTintMode = tintMode;
@@ -732,7 +734,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
         final CoordinatorLayout.LayoutParams lp =
             (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
 
-        int offsetTB = 0, offsetLR = 0;
+        int offsetTB = 0;
+        int offsetLR = 0;
 
         if (fab.getRight() >= parent.getWidth() - lp.rightMargin) {
           // If we're on the right edge, shift it the right
@@ -792,14 +795,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
   private FloatingActionButtonImpl createImpl() {
     final int sdk = Build.VERSION.SDK_INT;
     if (sdk >= 21) {
-      return new FloatingActionButtonLollipop(
-          this, new ShadowDelegateImpl(), ViewUtils.DEFAULT_ANIMATOR_CREATOR);
+      return new FloatingActionButtonLollipop(this, new ShadowDelegateImpl());
     } else if (sdk >= 14) {
-      return new FloatingActionButtonIcs(
-          this, new ShadowDelegateImpl(), ViewUtils.DEFAULT_ANIMATOR_CREATOR);
+      return new FloatingActionButtonIcs(this, new ShadowDelegateImpl());
     } else {
-      return new FloatingActionButtonGingerbread(
-          this, new ShadowDelegateImpl(), ViewUtils.DEFAULT_ANIMATOR_CREATOR);
+      return new FloatingActionButtonGingerbread(this, new ShadowDelegateImpl());
     }
   }
 

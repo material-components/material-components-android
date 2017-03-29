@@ -32,6 +32,8 @@ import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.os.Build;
 import android.support.design.testapp.R;
 import android.support.test.annotation.UiThreadTest;
@@ -295,14 +297,14 @@ public class TabLayoutTest {
 
     TabLayoutScrollIdlingResource(final TabLayout tabLayout) {
       tabLayout.setScrollAnimatorListener(
-          new ValueAnimatorCompat.AnimatorListenerAdapter() {
+          new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(ValueAnimatorCompat animator) {
+            public void onAnimationStart(Animator animator) {
               setIdle(false);
             }
 
             @Override
-            public void onAnimationEnd(ValueAnimatorCompat animator) {
+            public void onAnimationEnd(Animator animator) {
               setIdle(true);
             }
           });

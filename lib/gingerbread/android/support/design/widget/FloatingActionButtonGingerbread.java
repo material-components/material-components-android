@@ -16,6 +16,9 @@
 
 package android.support.design.widget;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
@@ -38,10 +41,8 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
   ShadowDrawableWrapper mShadowDrawable;
 
   FloatingActionButtonGingerbread(
-      VisibilityAwareImageButton view,
-      ShadowViewDelegate shadowViewDelegate,
-      ValueAnimatorCompat.Creator animatorCreator) {
-    super(view, shadowViewDelegate, animatorCreator);
+      VisibilityAwareImageButton view, ShadowViewDelegate shadowViewDelegate) {
+    super(view, shadowViewDelegate);
 
     mStateListAnimator = new StateListAnimator();
 
@@ -213,8 +214,8 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
     mShadowDrawable.getPadding(rect);
   }
 
-  private ValueAnimatorCompat createAnimator(@NonNull ShadowAnimatorImpl impl) {
-    final ValueAnimatorCompat animator = mAnimatorCreator.createAnimator();
+  private ValueAnimator createAnimator(@NonNull ShadowAnimatorImpl impl) {
+    final ValueAnimator animator = new ValueAnimator();
     animator.setInterpolator(ANIM_INTERPOLATOR);
     animator.setDuration(PRESSED_ANIM_DURATION);
     animator.addListener(impl);
@@ -223,14 +224,14 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
     return animator;
   }
 
-  private abstract class ShadowAnimatorImpl extends ValueAnimatorCompat.AnimatorListenerAdapter
-      implements ValueAnimatorCompat.AnimatorUpdateListener {
+  private abstract class ShadowAnimatorImpl extends AnimatorListenerAdapter
+      implements ValueAnimator.AnimatorUpdateListener {
     private boolean mValidValues;
     private float mShadowSizeStart;
     private float mShadowSizeEnd;
 
     @Override
-    public void onAnimationUpdate(ValueAnimatorCompat animator) {
+    public void onAnimationUpdate(ValueAnimator animator) {
       if (!mValidValues) {
         mShadowSizeStart = mShadowDrawable.getShadowSize();
         mShadowSizeEnd = getTargetShadowSize();
@@ -243,7 +244,7 @@ class FloatingActionButtonGingerbread extends FloatingActionButtonImpl {
     }
 
     @Override
-    public void onAnimationEnd(ValueAnimatorCompat animator) {
+    public void onAnimationEnd(Animator animator) {
       mShadowDrawable.setShadowSize(mShadowSizeEnd);
       mValidValues = false;
     }

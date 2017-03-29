@@ -19,6 +19,9 @@ package android.support.design.widget;
 import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -498,30 +501,30 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         ViewCompat.setTranslationY(mView, viewHeight);
       }
 
-      final ValueAnimatorCompat animator = ViewUtils.createAnimator();
+      final ValueAnimator animator = new ValueAnimator();
       animator.setIntValues(viewHeight, 0);
       animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
       animator.setDuration(ANIMATION_DURATION);
       animator.addListener(
-          new ValueAnimatorCompat.AnimatorListenerAdapter() {
+          new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(ValueAnimatorCompat animator) {
+            public void onAnimationStart(Animator animator) {
               mContentViewCallback.animateContentIn(
                   ANIMATION_DURATION - ANIMATION_FADE_DURATION, ANIMATION_FADE_DURATION);
             }
 
             @Override
-            public void onAnimationEnd(ValueAnimatorCompat animator) {
+            public void onAnimationEnd(Animator animator) {
               onViewShown();
             }
           });
       animator.addUpdateListener(
-          new ValueAnimatorCompat.AnimatorUpdateListener() {
+          new ValueAnimator.AnimatorUpdateListener() {
             private int previousAnimatedIntValue = viewHeight;
 
             @Override
-            public void onAnimationUpdate(ValueAnimatorCompat animator) {
-              int currentAnimatedIntValue = animator.getAnimatedIntValue();
+            public void onAnimationUpdate(ValueAnimator animator) {
+              int currentAnimatedIntValue = (int) animator.getAnimatedValue();
               if (USE_OFFSET_API) {
                 // On JB versions of the platform sometimes View.setTranslationY does not
                 // result in layout / draw pass
@@ -558,29 +561,29 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private void animateViewOut(final int event) {
     if (Build.VERSION.SDK_INT >= 12) {
-      final ValueAnimatorCompat animator = ViewUtils.createAnimator();
+      final ValueAnimator animator = new ValueAnimator();
       animator.setIntValues(0, mView.getHeight());
       animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
       animator.setDuration(ANIMATION_DURATION);
       animator.addListener(
-          new ValueAnimatorCompat.AnimatorListenerAdapter() {
+          new AnimatorListenerAdapter() {
             @Override
-            public void onAnimationStart(ValueAnimatorCompat animator) {
+            public void onAnimationStart(Animator animator) {
               mContentViewCallback.animateContentOut(0, ANIMATION_FADE_DURATION);
             }
 
             @Override
-            public void onAnimationEnd(ValueAnimatorCompat animator) {
+            public void onAnimationEnd(Animator animator) {
               onViewHidden(event);
             }
           });
       animator.addUpdateListener(
-          new ValueAnimatorCompat.AnimatorUpdateListener() {
+          new ValueAnimator.AnimatorUpdateListener() {
             private int previousAnimatedIntValue = 0;
 
             @Override
-            public void onAnimationUpdate(ValueAnimatorCompat animator) {
-              int currentAnimatedIntValue = animator.getAnimatedIntValue();
+            public void onAnimationUpdate(ValueAnimator animator) {
+              int currentAnimatedIntValue = (int) animator.getAnimatedValue();
               if (USE_OFFSET_API) {
                 // On JB versions of the platform sometimes View.setTranslationY does not
                 // result in layout / draw pass

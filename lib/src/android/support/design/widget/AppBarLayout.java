@@ -19,6 +19,7 @@ package android.support.design.widget;
 import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
@@ -772,7 +773,7 @@ public class AppBarLayout extends LinearLayout {
     private boolean mSkipNestedPreScroll;
     private boolean mWasNestedFlung;
 
-    private ValueAnimatorCompat mOffsetAnimator;
+    private ValueAnimator mOffsetAnimator;
 
     private int mOffsetToChildIndexOnLayout = INVALID_POSITION;
     private boolean mOffsetToChildIndexOnLayoutIsMinHeight;
@@ -821,7 +822,8 @@ public class AppBarLayout extends LinearLayout {
         int dy,
         int[] consumed) {
       if (dy != 0 && !mSkipNestedPreScroll) {
-        int min, max;
+        int min;
+        int max;
         if (dy < 0) {
           // We're scrolling down
           min = -child.getTotalScrollRange();
@@ -955,13 +957,14 @@ public class AppBarLayout extends LinearLayout {
       }
 
       if (mOffsetAnimator == null) {
-        mOffsetAnimator = ViewUtils.createAnimator();
+        mOffsetAnimator = new ValueAnimator();
         mOffsetAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
         mOffsetAnimator.addUpdateListener(
-            new ValueAnimatorCompat.AnimatorUpdateListener() {
+            new ValueAnimator.AnimatorUpdateListener() {
               @Override
-              public void onAnimationUpdate(ValueAnimatorCompat animator) {
-                setHeaderTopBottomOffset(coordinatorLayout, child, animator.getAnimatedIntValue());
+              public void onAnimationUpdate(ValueAnimator animator) {
+                setHeaderTopBottomOffset(
+                    coordinatorLayout, child, (int) animator.getAnimatedValue());
               }
             });
       } else {

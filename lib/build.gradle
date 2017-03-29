@@ -22,7 +22,6 @@ android {
       'base',
       'gingerbread',
       'honeycomb',
-      'honeycomb-mr1',
       'ics',
       'lollipop',
       'src'

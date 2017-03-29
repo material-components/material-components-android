@@ -17,24 +17,8 @@
 package android.support.design.widget;
 
 import android.graphics.PorterDuff;
-import android.os.Build;
 
 class ViewUtils {
-
-  static final ValueAnimatorCompat.Creator DEFAULT_ANIMATOR_CREATOR =
-      new ValueAnimatorCompat.Creator() {
-        @Override
-        public ValueAnimatorCompat createAnimator() {
-          return new ValueAnimatorCompat(
-              Build.VERSION.SDK_INT >= 12
-                  ? new ValueAnimatorCompatImplHoneycombMr1()
-                  : new ValueAnimatorCompatImplGingerbread());
-        }
-      };
-
-  static ValueAnimatorCompat createAnimator() {
-    return DEFAULT_ANIMATOR_CREATOR.createAnimator();
-  }
 
   static boolean objectEquals(Object a, Object b) {
     return (a == b) || (a != null && a.equals(b));

@@ -20,6 +20,7 @@ import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import static android.support.design.widget.MathUtils.constrain;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -127,7 +128,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   Drawable mStatusBarScrim;
   private int mScrimAlpha;
   private boolean mScrimsAreShown;
-  private ValueAnimatorCompat mScrimAnimator;
+  private ValueAnimator mScrimAnimator;
   private long mScrimAnimationDuration;
   private int mScrimVisibleHeightTrigger = -1;
 
@@ -592,17 +593,17 @@ public class CollapsingToolbarLayout extends FrameLayout {
   private void animateScrim(int targetAlpha) {
     ensureToolbar();
     if (mScrimAnimator == null) {
-      mScrimAnimator = ViewUtils.createAnimator();
+      mScrimAnimator = new ValueAnimator();
       mScrimAnimator.setDuration(mScrimAnimationDuration);
       mScrimAnimator.setInterpolator(
           targetAlpha > mScrimAlpha
               ? AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR
               : AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
       mScrimAnimator.addUpdateListener(
-          new ValueAnimatorCompat.AnimatorUpdateListener() {
+          new ValueAnimator.AnimatorUpdateListener() {
             @Override
-            public void onAnimationUpdate(ValueAnimatorCompat animator) {
-              setScrimAlpha(animator.getAnimatedIntValue());
+            public void onAnimationUpdate(ValueAnimator animator) {
+              setScrimAlpha((int) animator.getAnimatedValue());
             }
           });
     } else if (mScrimAnimator.isRunning()) {
