@@ -18,7 +18,7 @@
   package="android.support.design.testapp.custom">
 
   <uses-sdk
-    android:minSdkVersion="9"
+    android:minSdkVersion="14"
     android:targetSdkVersion="25"/>
 
   <application />

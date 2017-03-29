@@ -19,7 +19,7 @@
   package="android.support.design.testapp">
 
   <uses-sdk
-    android:minSdkVersion="9"
+    android:minSdkVersion="14"
     android:targetSdkVersion="25"
     tools:overrideLibrary="android.support.test, android.app, android.support.test.rule, android.support.test.espresso, android.support.test.espresso.idling"/>
 

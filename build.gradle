@@ -18,7 +18,7 @@ ext {
   buildNumber = Integer.toString(extraVersion)
   buildToolsVersion = '24.0.1'
   compileSdkVersion = 25
-  minSdkVersion = 9
+  minSdkVersion = 14
   targetSdkVersion = 25
   supportVersion = '25.3.0-SNAPSHOT'
 

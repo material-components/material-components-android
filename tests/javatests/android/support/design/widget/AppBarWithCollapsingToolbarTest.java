@@ -21,11 +21,9 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-import android.os.Build;
 import android.os.SystemClock;
 import android.support.design.testapp.R;
 import android.support.test.filters.LargeTest;
-import android.support.test.filters.SdkSuppress;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.ImageView;
 import org.junit.Test;
@@ -364,13 +362,9 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     // the swipe gesture, sleep for a bit to catch the "final" state of the FAB.
     SystemClock.sleep(200);
 
-    // At this point the FAB should be scaled to 0/0 and set at alpha 0. Since the relevant
-    // getter methods are only available on v11+, wrap the asserts with build version check.
-    if (Build.VERSION.SDK_INT >= 11) {
-      assertEquals(0.0f, fab.getScaleX(), 0.0f);
-      assertEquals(0.0f, fab.getScaleY(), 0.0f);
-      assertEquals(0.0f, fab.getAlpha(), 0.0f);
-    }
+    assertEquals(0.0f, fab.getScaleX(), 0.0f);
+    assertEquals(0.0f, fab.getScaleY(), 0.0f);
+    assertEquals(0.0f, fab.getAlpha(), 0.0f);
 
     // Perform a swipe-down gesture across the horizontal center of the screen.
     performVerticalSwipeDownGesture(
@@ -381,11 +375,9 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     SystemClock.sleep(200);
 
     // At this point the FAB should be scaled back to its original size and be at full opacity.
-    if (Build.VERSION.SDK_INT >= 11) {
-      assertEquals(1.0f, fab.getScaleX(), 0.0f);
-      assertEquals(1.0f, fab.getScaleY(), 0.0f);
-      assertEquals(1.0f, fab.getAlpha(), 0.0f);
-    }
+    assertEquals(1.0f, fab.getScaleX(), 0.0f);
+    assertEquals(1.0f, fab.getScaleY(), 0.0f);
+    assertEquals(1.0f, fab.getAlpha(), 0.0f);
   }
 
   @Test
@@ -483,12 +475,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         });
   }
 
-  /**
-   * This test only runs on API 11+ since FrameLayout (which CollapsingToolbarLayout inherits from)
-   * has an issue with measuring children with margins when run on earlier versions of the platform.
-   */
   @Test
-  @SdkSuppress(minSdkVersion = 11)
   public void testPinnedToolbarWithMargins() throws Throwable {
     configureContent(
         R.layout.design_appbar_toolbar_collapse_pin_margins,
