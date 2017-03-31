@@ -20,7 +20,6 @@ android {
     main.manifest.srcFile 'AndroidManifest.xml'
     main.java.srcDirs = [
       'base',
-      'gingerbread',
       'ics',
       'lollipop',
       'src'

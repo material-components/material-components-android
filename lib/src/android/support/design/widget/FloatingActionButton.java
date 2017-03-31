@@ -793,13 +793,10 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
   }
 
   private FloatingActionButtonImpl createImpl() {
-    final int sdk = Build.VERSION.SDK_INT;
-    if (sdk >= 21) {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
       return new FloatingActionButtonLollipop(this, new ShadowDelegateImpl());
-    } else if (sdk >= 14) {
-      return new FloatingActionButtonIcs(this, new ShadowDelegateImpl());
     } else {
-      return new FloatingActionButtonGingerbread(this, new ShadowDelegateImpl());
+      return new FloatingActionButtonImpl(this, new ShadowDelegateImpl());
     }
   }
 
