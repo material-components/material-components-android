@@ -16,49 +16,16 @@
 
 package android.support.design.widget;
 
+import android.graphics.Matrix;
 import android.graphics.Rect;
-import android.os.Build;
+import android.graphics.RectF;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewParent;
 
 class ViewGroupUtils {
-
-  private interface ViewGroupUtilsImpl {
-    void offsetDescendantRect(ViewGroup parent, View child, Rect rect);
-  }
-
-  private static class ViewGroupUtilsImplBase implements ViewGroupUtilsImpl {
-    ViewGroupUtilsImplBase() {}
-
-    @Override
-    public void offsetDescendantRect(ViewGroup parent, View child, Rect rect) {
-      parent.offsetDescendantRectToMyCoords(child, rect);
-      // View#offsetDescendantRectToMyCoords includes scroll offsets of the last child.
-      // We need to reverse it here so that we get the rect of the view itself rather
-      // than its content.
-      rect.offset(child.getScrollX(), child.getScrollY());
-    }
-  }
-
-  private static class ViewGroupUtilsImplHoneycomb implements ViewGroupUtilsImpl {
-    ViewGroupUtilsImplHoneycomb() {}
-
-    @Override
-    public void offsetDescendantRect(ViewGroup parent, View child, Rect rect) {
-      ViewGroupUtilsHoneycomb.offsetDescendantRect(parent, child, rect);
-    }
-  }
-
-  private static final ViewGroupUtilsImpl IMPL;
-
-  static {
-    final int version = Build.VERSION.SDK_INT;
-    if (version >= 11) {
-      IMPL = new ViewGroupUtilsImplHoneycomb();
-    } else {
-      IMPL = new ViewGroupUtilsImplBase();
-    }
-  }
+  private static final ThreadLocal<Matrix> sMatrix = new ThreadLocal<>();
+  private static final ThreadLocal<RectF> sRectF = new ThreadLocal<>();
 
   /**
    * This is a port of the common {@link ViewGroup#offsetDescendantRectToMyCoords(android.view.View,
@@ -69,7 +36,28 @@ class ViewGroupUtils {
    * @param rect (in/out) the rect to offset from descendant to this view's coordinate system
    */
   static void offsetDescendantRect(ViewGroup parent, View descendant, Rect rect) {
-    IMPL.offsetDescendantRect(parent, descendant, rect);
+    Matrix m = sMatrix.get();
+    if (m == null) {
+      m = new Matrix();
+      sMatrix.set(m);
+    } else {
+      m.reset();
+    }
+
+    offsetDescendantMatrix(parent, descendant, m);
+
+    RectF rectF = sRectF.get();
+    if (rectF == null) {
+      rectF = new RectF();
+      sRectF.set(rectF);
+    }
+    rectF.set(rect);
+    m.mapRect(rectF);
+    rect.set(
+        (int) (rectF.left + 0.5f),
+        (int) (rectF.top + 0.5f),
+        (int) (rectF.right + 0.5f),
+        (int) (rectF.bottom + 0.5f));
   }
 
   /**
@@ -82,5 +70,20 @@ class ViewGroupUtils {
   static void getDescendantRect(ViewGroup parent, View descendant, Rect out) {
     out.set(0, 0, descendant.getWidth(), descendant.getHeight());
     offsetDescendantRect(parent, descendant, out);
+  }
+
+  private static void offsetDescendantMatrix(ViewParent target, View view, Matrix m) {
+    final ViewParent parent = view.getParent();
+    if (parent instanceof View && parent != target) {
+      final View vp = (View) parent;
+      offsetDescendantMatrix(target, vp, m);
+      m.preTranslate(-vp.getScrollX(), -vp.getScrollY());
+    }
+
+    m.preTranslate(view.getLeft(), view.getTop());
+
+    if (!view.getMatrix().isIdentity()) {
+      m.preConcat(view.getMatrix());
+    }
   }
 }

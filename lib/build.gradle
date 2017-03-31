@@ -21,7 +21,6 @@ android {
     main.java.srcDirs = [
       'base',
       'gingerbread',
-      'honeycomb',
       'ics',
       'lollipop',
       'src'
