@@ -31,7 +31,6 @@ import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -587,8 +586,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return Math.abs(newTop - mMaxOffset) / (float) mPeekHeight > HIDE_THRESHOLD;
   }
 
-  private View findScrollingChild(View view) {
-    if (view instanceof NestedScrollingChild) {
+  @VisibleForTesting
+  View findScrollingChild(View view) {
+    if (ViewCompat.isNestedScrollingEnabled(view)) {
       return view;
     }
     if (view instanceof ViewGroup) {

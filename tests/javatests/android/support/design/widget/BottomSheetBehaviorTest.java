@@ -23,6 +23,7 @@ import static org.hamcrest.Matchers.greaterThanOrEqualTo;
 import static org.hamcrest.Matchers.lessThanOrEqualTo;
 import static org.junit.Assert.fail;
 
+import android.content.Context;
 import android.os.SystemClock;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
@@ -779,6 +780,20 @@ public class BottomSheetBehaviorTest {
     // Both of these will not animate the sheet , but the state should be changed.
     checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
     checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
+  }
+
+  @Test
+  @SmallTest
+  public void testFindScrollingChildEnabled() {
+    Context context = activityTestRule.getActivity();
+    NestedScrollView disabledParent = new NestedScrollView(context);
+    disabledParent.setNestedScrollingEnabled(false);
+    NestedScrollView enabledChild = new NestedScrollView(context);
+    enabledChild.setNestedScrollingEnabled(true);
+    disabledParent.addView(enabledChild);
+
+    View scrollingChild = getBehavior().findScrollingChild(disabledParent);
+    assertThat(scrollingChild, is((View) enabledChild));
   }
 
   private void checkSetState(final int state, Matcher<View> matcher) throws Throwable {
