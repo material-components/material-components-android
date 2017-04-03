@@ -132,23 +132,23 @@ public class SnackbarContentLayout extends LinearLayout
 
   @Override
   public void animateContentIn(int delay, int duration) {
-    ViewCompat.setAlpha(mMessageView, 0f);
-    ViewCompat.animate(mMessageView).alpha(1f).setDuration(duration).setStartDelay(delay).start();
+    mMessageView.setAlpha(0f);
+    mMessageView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
 
     if (mActionView.getVisibility() == VISIBLE) {
-      ViewCompat.setAlpha(mActionView, 0f);
-      ViewCompat.animate(mActionView).alpha(1f).setDuration(duration).setStartDelay(delay).start();
+      mActionView.setAlpha(0f);
+      mActionView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
     }
   }
 
   @Override
   public void animateContentOut(int delay, int duration) {
-    ViewCompat.setAlpha(mMessageView, 1f);
-    ViewCompat.animate(mMessageView).alpha(0f).setDuration(duration).setStartDelay(delay).start();
+    mMessageView.setAlpha(1f);
+    mMessageView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
 
     if (mActionView.getVisibility() == VISIBLE) {
-      ViewCompat.setAlpha(mActionView, 1f);
-      ViewCompat.animate(mActionView).alpha(0f).setDuration(duration).setStartDelay(delay).start();
+      mActionView.setAlpha(1f);
+      mActionView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
     }
   }
 }

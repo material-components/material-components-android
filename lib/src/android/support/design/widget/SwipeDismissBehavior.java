@@ -299,7 +299,8 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         public int clampViewPositionHorizontal(View child, int left, int dx) {
           final boolean isRtl =
               ViewCompat.getLayoutDirection(child) == ViewCompat.LAYOUT_DIRECTION_RTL;
-          int min, max;
+          int min;
+          int max;
 
           if (mSwipeDirection == SWIPE_DIRECTION_START_TO_END) {
             if (isRtl) {
@@ -338,13 +339,13 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
               mOriginalCapturedViewLeft + child.getWidth() * mAlphaEndSwipeDistance;
 
           if (left <= startAlphaDistance) {
-            ViewCompat.setAlpha(child, 1f);
+            child.setAlpha(1f);
           } else if (left >= endAlphaDistance) {
-            ViewCompat.setAlpha(child, 0f);
+            child.setAlpha(0f);
           } else {
             // We're between the start and end distances
             final float distance = fraction(startAlphaDistance, endAlphaDistance, left);
-            ViewCompat.setAlpha(child, clamp(0f, 1f - distance, 1f));
+            child.setAlpha(clamp(0f, 1f - distance, 1f));
           }
         }
       };

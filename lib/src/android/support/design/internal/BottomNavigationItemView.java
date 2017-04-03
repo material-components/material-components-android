@@ -129,10 +129,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
   @Override
   public void setChecked(boolean checked) {
-    ViewCompat.setPivotX(mLargeLabel, mLargeLabel.getWidth() / 2);
-    ViewCompat.setPivotY(mLargeLabel, mLargeLabel.getBaseline());
-    ViewCompat.setPivotX(mSmallLabel, mSmallLabel.getWidth() / 2);
-    ViewCompat.setPivotY(mSmallLabel, mSmallLabel.getBaseline());
+    mLargeLabel.setPivotX(mLargeLabel.getWidth() / 2);
+    mLargeLabel.setPivotY(mLargeLabel.getBaseline());
+    mSmallLabel.setPivotX(mSmallLabel.getWidth() / 2);
+    mSmallLabel.setPivotY(mSmallLabel.getBaseline());
     if (mShiftingMode) {
       if (checked) {
         LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
@@ -140,16 +140,16 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         iconParams.topMargin = mDefaultMargin;
         mIcon.setLayoutParams(iconParams);
         mLargeLabel.setVisibility(VISIBLE);
-        ViewCompat.setScaleX(mLargeLabel, 1f);
-        ViewCompat.setScaleY(mLargeLabel, 1f);
+        mLargeLabel.setScaleX(1f);
+        mLargeLabel.setScaleY(1f);
       } else {
         LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
         iconParams.gravity = Gravity.CENTER;
         iconParams.topMargin = mDefaultMargin;
         mIcon.setLayoutParams(iconParams);
         mLargeLabel.setVisibility(INVISIBLE);
-        ViewCompat.setScaleX(mLargeLabel, 0.5f);
-        ViewCompat.setScaleY(mLargeLabel, 0.5f);
+        mLargeLabel.setScaleX(0.5f);
+        mLargeLabel.setScaleY(0.5f);
       }
       mSmallLabel.setVisibility(INVISIBLE);
     } else {
@@ -161,10 +161,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         mLargeLabel.setVisibility(VISIBLE);
         mSmallLabel.setVisibility(INVISIBLE);
 
-        ViewCompat.setScaleX(mLargeLabel, 1f);
-        ViewCompat.setScaleY(mLargeLabel, 1f);
-        ViewCompat.setScaleX(mSmallLabel, mScaleUpFactor);
-        ViewCompat.setScaleY(mSmallLabel, mScaleUpFactor);
+        mLargeLabel.setScaleX(1f);
+        mLargeLabel.setScaleY(1f);
+        mSmallLabel.setScaleX(mScaleUpFactor);
+        mSmallLabel.setScaleY(mScaleUpFactor);
       } else {
         LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
         iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
@@ -173,10 +173,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         mLargeLabel.setVisibility(INVISIBLE);
         mSmallLabel.setVisibility(VISIBLE);
 
-        ViewCompat.setScaleX(mLargeLabel, mScaleDownFactor);
-        ViewCompat.setScaleY(mLargeLabel, mScaleDownFactor);
-        ViewCompat.setScaleX(mSmallLabel, 1f);
-        ViewCompat.setScaleY(mSmallLabel, 1f);
+        mLargeLabel.setScaleX(mScaleDownFactor);
+        mLargeLabel.setScaleY(mScaleDownFactor);
+        mSmallLabel.setScaleX(1f);
+        mSmallLabel.setScaleY(1f);
       }
     }
 

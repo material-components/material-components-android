@@ -108,22 +108,14 @@ public class CustomSnackbarTest {
         new BaseTransientBottomBar.ContentViewCallback() {
           @Override
           public void animateContentIn(int delay, int duration) {
-            ViewCompat.setAlpha(content, 0f);
-            ViewCompat.animate(content)
-                .alpha(1f)
-                .setDuration(duration)
-                .setStartDelay(delay)
-                .start();
+            content.setAlpha(0f);
+            content.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
           }
 
           @Override
           public void animateContentOut(int delay, int duration) {
-            ViewCompat.setAlpha(content, 1f);
-            ViewCompat.animate(content)
-                .alpha(0f)
-                .setDuration(duration)
-                .setStartDelay(delay)
-                .start();
+            content.setAlpha(1f);
+            content.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
           }
         };
     return new CustomSnackbar(mCoordinatorLayout, content, contentViewCallback);

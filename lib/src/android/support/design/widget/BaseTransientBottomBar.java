@@ -44,8 +44,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityManager;
-import android.view.animation.Animation;
-import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -493,74 +491,52 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   void animateViewIn() {
-    if (Build.VERSION.SDK_INT >= 12) {
-      final int viewHeight = mView.getHeight();
-      if (USE_OFFSET_API) {
-        ViewCompat.offsetTopAndBottom(mView, viewHeight);
-      } else {
-        ViewCompat.setTranslationY(mView, viewHeight);
-      }
-
-      final ValueAnimator animator = new ValueAnimator();
-      animator.setIntValues(viewHeight, 0);
-      animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
-      animator.setDuration(ANIMATION_DURATION);
-      animator.addListener(
-          new AnimatorListenerAdapter() {
-            @Override
-            public void onAnimationStart(Animator animator) {
-              mContentViewCallback.animateContentIn(
-                  ANIMATION_DURATION - ANIMATION_FADE_DURATION, ANIMATION_FADE_DURATION);
-            }
-
-            @Override
-            public void onAnimationEnd(Animator animator) {
-              onViewShown();
-            }
-          });
-      animator.addUpdateListener(
-          new ValueAnimator.AnimatorUpdateListener() {
-            private int previousAnimatedIntValue = viewHeight;
-
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-              int currentAnimatedIntValue = (int) animator.getAnimatedValue();
-              if (USE_OFFSET_API) {
-                // On JB versions of the platform sometimes View.setTranslationY does not
-                // result in layout / draw pass
-                ViewCompat.offsetTopAndBottom(
-                    mView, currentAnimatedIntValue - previousAnimatedIntValue);
-              } else {
-                ViewCompat.setTranslationY(mView, currentAnimatedIntValue);
-              }
-              previousAnimatedIntValue = currentAnimatedIntValue;
-            }
-          });
-      animator.start();
+    final int viewHeight = mView.getHeight();
+    if (USE_OFFSET_API) {
+      ViewCompat.offsetTopAndBottom(mView, viewHeight);
     } else {
-      final Animation anim =
-          AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_in);
-      anim.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
-      anim.setDuration(ANIMATION_DURATION);
-      anim.setAnimationListener(
-          new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation animation) {
-              onViewShown();
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-          });
-      mView.startAnimation(anim);
+      mView.setTranslationY(viewHeight);
     }
+
+    final ValueAnimator animator = new ValueAnimator();
+    animator.setIntValues(viewHeight, 0);
+    animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
+    animator.setDuration(ANIMATION_DURATION);
+    animator.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationStart(Animator animator) {
+            mContentViewCallback.animateContentIn(
+                ANIMATION_DURATION - ANIMATION_FADE_DURATION, ANIMATION_FADE_DURATION);
+          }
+
+          @Override
+          public void onAnimationEnd(Animator animator) {
+            onViewShown();
+          }
+        });
+    animator.addUpdateListener(
+        new ValueAnimator.AnimatorUpdateListener() {
+          private int previousAnimatedIntValue = viewHeight;
+
+          @Override
+          public void onAnimationUpdate(ValueAnimator animator) {
+            int currentAnimatedIntValue = (int) animator.getAnimatedValue();
+            if (USE_OFFSET_API) {
+              // On JB/KK versions of the platform sometimes View.setTranslationY does not
+              // result in layout / draw pass
+              ViewCompat.offsetTopAndBottom(
+                  mView, currentAnimatedIntValue - previousAnimatedIntValue);
+            } else {
+              mView.setTranslationY(currentAnimatedIntValue);
+            }
+            previousAnimatedIntValue = currentAnimatedIntValue;
+          }
+        });
+    animator.start();
   }
 
   private void animateViewOut(final int event) {
-    if (Build.VERSION.SDK_INT >= 12) {
       final ValueAnimator animator = new ValueAnimator();
       animator.setIntValues(0, mView.getHeight());
       animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
@@ -577,45 +553,25 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
               onViewHidden(event);
             }
           });
-      animator.addUpdateListener(
-          new ValueAnimator.AnimatorUpdateListener() {
-            private int previousAnimatedIntValue = 0;
+    animator.addUpdateListener(
+        new ValueAnimator.AnimatorUpdateListener() {
+          private int previousAnimatedIntValue = 0;
 
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-              int currentAnimatedIntValue = (int) animator.getAnimatedValue();
-              if (USE_OFFSET_API) {
-                // On JB versions of the platform sometimes View.setTranslationY does not
-                // result in layout / draw pass
-                ViewCompat.offsetTopAndBottom(
-                    mView, currentAnimatedIntValue - previousAnimatedIntValue);
-              } else {
-                ViewCompat.setTranslationY(mView, currentAnimatedIntValue);
-              }
-              previousAnimatedIntValue = currentAnimatedIntValue;
+          @Override
+          public void onAnimationUpdate(ValueAnimator animator) {
+            int currentAnimatedIntValue = (int) animator.getAnimatedValue();
+            if (USE_OFFSET_API) {
+              // On JB/KK versions of the platform sometimes View.setTranslationY does not
+              // result in layout / draw pass
+              ViewCompat.offsetTopAndBottom(
+                  mView, currentAnimatedIntValue - previousAnimatedIntValue);
+            } else {
+              mView.setTranslationY(currentAnimatedIntValue);
             }
-          });
+            previousAnimatedIntValue = currentAnimatedIntValue;
+          }
+        });
       animator.start();
-    } else {
-      final Animation anim =
-          AnimationUtils.loadAnimation(mView.getContext(), R.anim.design_snackbar_out);
-      anim.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
-      anim.setDuration(ANIMATION_DURATION);
-      anim.setAnimationListener(
-          new Animation.AnimationListener() {
-            @Override
-            public void onAnimationEnd(Animation animation) {
-              onViewHidden(event);
-            }
-
-            @Override
-            public void onAnimationStart(Animation animation) {}
-
-            @Override
-            public void onAnimationRepeat(Animation animation) {}
-          });
-      mView.startAnimation(anim);
-    }
   }
 
   final void hideView(@BaseCallback.DismissEvent final int event) {

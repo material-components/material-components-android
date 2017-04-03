@@ -795,15 +795,15 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
           Math.max(
               heightUsed,
               heightPadding + child.getMeasuredHeight() + lp.topMargin + lp.bottomMargin);
-      childState = ViewCompat.combineMeasuredStates(childState, ViewCompat.getMeasuredState(child));
+      childState = View.combineMeasuredStates(childState, child.getMeasuredState());
     }
 
     final int width =
-        ViewCompat.resolveSizeAndState(
-            widthUsed, widthMeasureSpec, childState & ViewCompat.MEASURED_STATE_MASK);
+        View.resolveSizeAndState(
+            widthUsed, widthMeasureSpec, childState & View.MEASURED_STATE_MASK);
     final int height =
-        ViewCompat.resolveSizeAndState(
-            heightUsed, heightMeasureSpec, childState << ViewCompat.MEASURED_HEIGHT_STATE_SHIFT);
+        View.resolveSizeAndState(
+            heightUsed, heightMeasureSpec, childState << View.MEASURED_HEIGHT_STATE_SHIFT);
     setMeasuredDimension(width, height);
   }
 

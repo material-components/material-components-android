@@ -18,7 +18,6 @@ package android.support.design.testapp.custom;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;
@@ -39,8 +38,7 @@ public class TestFloatingBehavior extends CoordinatorLayout.Behavior<TextView> {
 
   @Override
   public boolean onDependentViewChanged(CoordinatorLayout parent, TextView child, View dependency) {
-    ViewCompat.setTranslationY(
-        child, Math.min(0, ViewCompat.getTranslationY(dependency) - dependency.getHeight()));
+    child.setTranslationY(Math.min(0, dependency.getTranslationY() - dependency.getHeight()));
     return true;
   }
 }

@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -46,7 +48,6 @@ import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewPropertyAnimatorListenerAdapter;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.widget.Space;
 import android.support.v4.widget.TextViewCompat;
@@ -595,7 +596,7 @@ public class TextInputLayout extends LinearLayout {
   public void setErrorEnabled(boolean enabled) {
     if (mErrorEnabled != enabled) {
       if (mErrorView != null) {
-        ViewCompat.animate(mErrorView).cancel();
+        mErrorView.animate().cancel();
       }
 
       if (enabled) {
@@ -698,46 +699,48 @@ public class TextInputLayout extends LinearLayout {
     mErrorShown = !TextUtils.isEmpty(error);
 
     // Cancel any on-going animation
-    ViewCompat.animate(mErrorView).cancel();
+    mErrorView.animate().cancel();
 
     if (mErrorShown) {
       mErrorView.setText(error);
       mErrorView.setVisibility(VISIBLE);
 
       if (animate) {
-        if (ViewCompat.getAlpha(mErrorView) == 1f) {
+        if (mErrorView.getAlpha() == 1f) {
           // If it's currently 100% show, we'll animate it from 0
-          ViewCompat.setAlpha(mErrorView, 0f);
+          mErrorView.setAlpha(0f);
         }
-        ViewCompat.animate(mErrorView)
+        mErrorView
+            .animate()
             .alpha(1f)
             .setDuration(ANIMATION_DURATION)
             .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
             .setListener(
-                new ViewPropertyAnimatorListenerAdapter() {
+                new AnimatorListenerAdapter() {
                   @Override
-                  public void onAnimationStart(View view) {
-                    view.setVisibility(VISIBLE);
+                  public void onAnimationStart(Animator animator) {
+                    mErrorView.setVisibility(VISIBLE);
                   }
                 })
             .start();
       } else {
         // Set alpha to 1f, just in case
-        ViewCompat.setAlpha(mErrorView, 1f);
+        mErrorView.setAlpha(1f);
       }
     } else {
       if (mErrorView.getVisibility() == VISIBLE) {
         if (animate) {
-          ViewCompat.animate(mErrorView)
+          mErrorView
+              .animate()
               .alpha(0f)
               .setDuration(ANIMATION_DURATION)
               .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
               .setListener(
-                  new ViewPropertyAnimatorListenerAdapter() {
+                  new AnimatorListenerAdapter() {
                     @Override
-                    public void onAnimationEnd(View view) {
+                    public void onAnimationEnd(Animator animator) {
                       mErrorView.setText(error);
-                      view.setVisibility(INVISIBLE);
+                      mErrorView.setVisibility(INVISIBLE);
                     }
                   })
               .start();

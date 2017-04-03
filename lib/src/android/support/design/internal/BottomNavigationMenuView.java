@@ -151,9 +151,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       totalWidth += child.getMeasuredWidth();
     }
     setMeasuredDimension(
-        ViewCompat.resolveSizeAndState(
+        View.resolveSizeAndState(
             totalWidth, MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY), 0),
-        ViewCompat.resolveSizeAndState(mItemHeight, heightSpec, 0));
+        View.resolveSizeAndState(mItemHeight, heightSpec, 0));
   }
 
   @Override
