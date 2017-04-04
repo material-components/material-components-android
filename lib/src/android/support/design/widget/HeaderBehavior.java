@@ -19,7 +19,6 @@ package android.support.design.widget;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout.Behavior;
 import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.util.AttributeSet;
@@ -172,7 +171,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
         if (mVelocityTracker != null) {
           mVelocityTracker.addMovement(ev);
           mVelocityTracker.computeCurrentVelocity(1000);
-          float yvel = VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId);
+          float yvel = mVelocityTracker.getYVelocity(mActivePointerId);
           fling(parent, child, -getScrollRangeForDragFling(child), 0, yvel);
         }
         // $FALLTHROUGH

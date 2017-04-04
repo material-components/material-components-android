@@ -31,7 +31,6 @@ import android.support.v4.os.ParcelableCompat;
 import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.VelocityTrackerCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.util.AttributeSet;
@@ -605,7 +604,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private float getYVelocity() {
     mVelocityTracker.computeCurrentVelocity(1000, mMaximumVelocity);
-    return VelocityTrackerCompat.getYVelocity(mVelocityTracker, mActivePointerId);
+    return mVelocityTracker.getYVelocity(mActivePointerId);
   }
 
   void startSettlingAnimation(View child, int state) {
