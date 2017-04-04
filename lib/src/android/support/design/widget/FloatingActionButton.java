@@ -35,7 +35,6 @@ import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
-import android.support.v4.content.res.ConfigurationHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
@@ -436,8 +435,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
     switch (size) {
       case SIZE_AUTO:
         // If we're set to auto, grab the size from resources and refresh
-        final int width = ConfigurationHelper.getScreenWidthDp(res);
-        final int height = ConfigurationHelper.getScreenHeightDp(res);
+        final int width = res.getConfiguration().screenWidthDp;
+        final int height = res.getConfiguration().screenHeightDp;
         return Math.max(width, height) < AUTO_MINI_LARGEST_SCREEN_WIDTH
             ? getSizeDimension(SIZE_MINI)
             : getSizeDimension(SIZE_NORMAL);
