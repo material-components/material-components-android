@@ -16,22 +16,10 @@
 -->
 <resources>
   <style name="Theme.Shrine.ItemActivity">
-    <item name="colorAccent">@color/colorAccentSecondary</item>
     <item name="android:textColorPrimary">@color/textColorProduct</item>
   </style>
 
   <style name="Widget.Shrine.Toolbar.Logo.Product">
     <item name="android:background">?attr/colorPrimary</item>
   </style>
-
-  <style name="Shrine.SpinnerItem" parent="">
-    <item name="android:layout_width">@dimen/shrine_spinner_width</item>
-    <item name="android:layout_height">@dimen/shrine_spinner_height</item>
-    <item name="android:fontFamily">sans-serif-light</item>
-    <item name="android:gravity">center_vertical</item>
-    <item name="android:paddingStart">@dimen/shrine_standard_spacing</item>
-    <item name="android:paddingEnd">@dimen/shrine_small_spacing</item>
-    <item name="android:textAppearance">@style/TextAppearance.AppCompat.Subhead</item>
-  </style>
-
 </resources>

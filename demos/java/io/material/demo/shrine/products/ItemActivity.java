@@ -107,7 +107,6 @@ public class ItemActivity extends AppCompatActivity {
     ArrayAdapter<CharSequence> adapter =
         ArrayAdapter.createFromResource(
             this, R.array.product_quantities, R.layout.shrine_spinner_item);
-    adapter.setDropDownViewResource(R.layout.shrine_spinner_dropdown);
     spinner.setAdapter(adapter);
   }
 }

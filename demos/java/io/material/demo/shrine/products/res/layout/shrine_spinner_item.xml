@@ -14,7 +14,11 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<TextView
-  xmlns:android="http://schemas.android.com/apk/res/android"
-  style="@style/Shrine.SpinnerItem"
-  android:drawableEnd="@drawable/ic_arrow_drop_down_vd_theme_24"/>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/shrine_spinner_width"
+    android:layout_height="@dimen/shrine_spinner_height"
+    android:fontFamily="sans-serif-light"
+    android:gravity="center_vertical"
+    android:paddingLeft="@dimen/shrine_standard_spacing"
+    android:paddingRight="@dimen/shrine_standard_spacing"
+    android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>

@@ -73,14 +73,20 @@
                 android:layout_marginBottom="@dimen/shrine_standard_spacing"
                 android:textAppearance="@style/TextAppearance.AppCompat.Display2"
                 android:textSize="@dimen/shrine_item_product_title_size"/>
-            <Spinner
-                android:id="@+id/QuantitySpinner"
-                android:layout_width="wrap_content"
+            <FrameLayout
+                android:layout_width="@dimen/shrine_spinner_width"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/shrine_standard_spacing"
                 android:layout_marginBottom="@dimen/shrine_standard_spacing"
                 android:background="@drawable/shrine_spinner_border"
-                android:minWidth="@dimen/shrine_spinner_width"/>
+                android:paddingRight="@dimen/shrine_small_spacing">
+              <Spinner
+                  android:id="@+id/QuantitySpinner"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:maxWidth="@dimen/shrine_spinner_width"
+                  android:dropDownWidth="@dimen/shrine_spinner_width"/>
+            </FrameLayout>
             <TextView
                 android:id="@+id/ProductDescription"
                 android:layout_width="wrap_content"
@@ -99,8 +105,9 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/shrine_standard_spacing"
         android:layout_gravity="bottom|end"
-        android:src="@drawable/ic_add_shopping_cart_vd_theme_24"
-        app:fabSize="normal"/>
+        app:backgroundTint="@color/colorAccentSecondary"
+        app:fabSize="normal"
+        app:srcCompat="@drawable/ic_add_shopping_cart_vd_theme_24"/>
   </android.support.design.widget.CoordinatorLayout>
   <android.support.design.widget.BottomNavigationView
       android:id="@+id/BottomNavView"
