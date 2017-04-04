@@ -265,7 +265,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       case MotionEvent.ACTION_DOWN:
         int initialX = (int) event.getX();
         mInitialY = (int) event.getY();
-        View scroll = mNestedScrollingChildRef.get();
+        View scroll = mNestedScrollingChildRef != null ? mNestedScrollingChildRef.get() : null;
         if (scroll != null && parent.isPointInChildBounds(scroll, initialX, mInitialY)) {
           mActivePointerId = event.getPointerId(event.getActionIndex());
           mTouchingScrollingChild = true;
