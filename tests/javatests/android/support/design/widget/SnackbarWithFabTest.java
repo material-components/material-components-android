@@ -21,7 +21,7 @@ import static org.junit.Assert.assertEquals;
 import android.support.design.testapp.R;
 import android.support.design.testapp.SnackbarWithFabActivity;
 import android.support.design.testutils.SnackbarUtils;
-import android.support.test.filters.MediumTest;
+import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.view.View;
@@ -30,7 +30,7 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@MediumTest
+@LargeTest
 @RunWith(AndroidJUnit4.class)
 public class SnackbarWithFabTest {
   @Rule

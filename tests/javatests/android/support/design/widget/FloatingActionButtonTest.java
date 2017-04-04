@@ -49,6 +49,8 @@ import android.graphics.Rect;
 import android.support.design.testapp.FloatingActionButtonActivity;
 import android.support.design.testapp.R;
 import android.support.design.testutils.TestUtils;
+import android.support.test.filters.LargeTest;
+import android.support.test.filters.MediumTest;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
@@ -63,7 +65,6 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-@SmallTest
 @RunWith(AndroidJUnit4.class)
 public class FloatingActionButtonTest {
 
@@ -72,6 +73,7 @@ public class FloatingActionButtonTest {
       new ActivityTestRule<>(FloatingActionButtonActivity.class);
 
   @Test
+  @SmallTest
   public void testDefaultBackgroundTint() {
     final int colorAccent =
         TestUtils.getThemeAttrColor(activityTestRule.getActivity(), R.attr.colorAccent);
@@ -79,6 +81,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void testSetTintOnDefaultBackgroundTint() {
     onView(withId(R.id.fab_standard))
         .perform(setBackgroundTintColor(Color.GREEN))
@@ -86,11 +89,13 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void testDeclaredBackgroundTint() {
     onView(withId(R.id.fab_tint)).check(matches(withFabBackgroundFill(Color.MAGENTA)));
   }
 
   @Test
+  @SmallTest
   public void testSetTintOnDeclaredBackgroundTint() {
     onView(withId(R.id.fab_tint))
         .perform(setBackgroundTintColor(Color.GREEN))
@@ -98,6 +103,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void testSetStatefulTintAcrossStateChanges() {
     final Activity activity = activityTestRule.getActivity();
 
@@ -119,6 +125,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void testDeclaredStatefulTintAcrossStateChanges() {
     final Activity activity = activityTestRule.getActivity();
     final int normal = ContextCompat.getColor(activity, R.color.sand_default);
@@ -133,11 +140,13 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void setVectorDrawableSrc() {
     onView(withId(R.id.fab_standard)).perform(setImageResource(R.drawable.vector_icon));
   }
 
   @Test
+  @SmallTest
   public void testSetMiniSize() {
     final int miniSize =
         activityTestRule
@@ -151,6 +160,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void testSetSizeToggle() {
     final int miniSize =
         activityTestRule
@@ -173,6 +183,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void testOffset() {
     onView(withId(R.id.fab_standard))
         .perform(setLayoutGravity(Gravity.LEFT | Gravity.TOP))
@@ -184,6 +195,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void testHideShow() {
     onView(withId(R.id.fab_standard))
         .perform(setVisibility(View.VISIBLE))
@@ -192,6 +204,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @MediumTest
   public void testShowHide() {
     onView(withId(R.id.fab_standard))
         .perform(setVisibility(View.GONE))
@@ -200,6 +213,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @LargeTest
   public void testClickableTouchAndDragOffView() {
     onView(withId(R.id.fab_standard))
         .perform(setClickable(true))
@@ -238,6 +252,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @MediumTest
   public void testOnClickListener() {
       final View.OnClickListener listener = mock(View.OnClickListener.class);
       final View view = activityTestRule.getActivity().findViewById(R.id.fab_standard);
@@ -251,6 +266,7 @@ public class FloatingActionButtonTest {
   }
 
   @Test
+  @SmallTest
   public void testSetCompatElevation() {
     onView(withId(R.id.fab_standard)).perform(setEnabled(false)).perform(setCompatElevation(0));
 

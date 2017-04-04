@@ -40,8 +40,8 @@ import android.support.design.testapp.SnackbarActivity;
 import android.support.design.testapp.custom.CustomSnackbar;
 import android.support.design.testapp.custom.CustomSnackbarMainContent;
 import android.support.design.testutils.SnackbarUtils;
+import android.support.test.filters.LargeTest;
 import android.support.test.filters.MediumTest;
-import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.view.ViewCompat;
@@ -122,7 +122,7 @@ public class CustomSnackbarTest {
   }
 
   @Test
-  @SmallTest
+  @LargeTest
   public void testBasicContent() throws Throwable {
     // Verify different combinations of snackbar content (title / subtitle and action)
     // and duration
