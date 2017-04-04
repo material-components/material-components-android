@@ -51,8 +51,8 @@
           android:layout_height="wrap_content"
           android:layout_marginTop="@dimen/shrine_large_spacing"
           android:layout_marginBottom="@dimen/shrine_large_spacing"
-          android:paddingEnd="@dimen/shrine_seekbar_padding"
-          android:paddingStart="@dimen/shrine_seekbar_padding"/>
+          android:paddingLeft="@dimen/shrine_seekbar_padding"
+          android:paddingRight="@dimen/shrine_seekbar_padding"/>
       </LinearLayout>
       <LinearLayout
         style="@style/Widget.Shrine.SectionItem.Container">
@@ -62,7 +62,7 @@
           <TextView
             style="@style/Widget.Shrine.TextView"
             android:text="@string/shrine_international_shipping"/>
-          <Switch
+          <android.support.v7.widget.SwitchCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"/>
@@ -73,7 +73,7 @@
           <TextView
             style="@style/Widget.Shrine.TextView"
             android:text="@string/shrine_personalized_feeds"/>
-          <Switch
+          <android.support.v7.widget.SwitchCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"/>
