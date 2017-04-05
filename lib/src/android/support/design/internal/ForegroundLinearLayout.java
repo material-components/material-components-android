@@ -81,6 +81,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
    * @return foreground gravity.
    * @see #setForegroundGravity(int)
    */
+  @Override
   public int getForegroundGravity() {
     return mForegroundGravity;
   }
@@ -91,6 +92,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
    * @param foregroundGravity See {@link android.view.Gravity}
    * @see #getForegroundGravity()
    */
+  @Override
   public void setForegroundGravity(int foregroundGravity) {
     if (mForegroundGravity != foregroundGravity) {
       if ((foregroundGravity & Gravity.RELATIVE_HORIZONTAL_GRAVITY_MASK) == 0) {
@@ -141,6 +143,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
    *
    * @param drawable The Drawable to be drawn on top of the children.
    */
+  @Override
   public void setForeground(Drawable drawable) {
     if (mForeground != drawable) {
       if (mForeground != null) {
@@ -174,6 +177,7 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
    *
    * @return A Drawable or null if no foreground was set.
    */
+  @Override
   public Drawable getForeground() {
     return mForeground;
   }
