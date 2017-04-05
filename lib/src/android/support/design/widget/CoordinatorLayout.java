@@ -50,7 +50,6 @@ import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.util.Pools;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.GravityCompat;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.NestedScrollingParent;
 import android.support.v4.view.NestedScrollingParentHelper;
 import android.support.v4.view.ViewCompat;
@@ -421,7 +420,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
 
     MotionEvent cancelEvent = null;
 
-    final int action = MotionEventCompat.getActionMasked(ev);
+    final int action = ev.getActionMasked();
 
     final List<View> topmostChildList = mTempList1;
     getTopSortedChildren(topmostChildList);
@@ -488,7 +487,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
   public boolean onInterceptTouchEvent(MotionEvent ev) {
     MotionEvent cancelEvent = null;
 
-    final int action = MotionEventCompat.getActionMasked(ev);
+    final int action = ev.getActionMasked();
 
     // Make sure we reset in case we had missed a previous important event.
     if (action == MotionEvent.ACTION_DOWN) {
@@ -514,7 +513,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
     boolean cancelSuper = false;
     MotionEvent cancelEvent = null;
 
-    final int action = MotionEventCompat.getActionMasked(ev);
+    final int action = ev.getActionMasked();
 
     if (mBehaviorTouchView != null || (cancelSuper = performIntercept(ev, TYPE_ON_TOUCH))) {
       // Safe since performIntercept guarantees that

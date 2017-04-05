@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout.Behavior;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ScrollerCompat;
 import android.util.AttributeSet;
@@ -63,7 +62,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
       return true;
     }
 
-    switch (MotionEventCompat.getActionMasked(ev)) {
+    switch (ev.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
         {
           mIsBeingDragged = false;
@@ -124,7 +123,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
       mTouchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
     }
 
-    switch (MotionEventCompat.getActionMasked(ev)) {
+    switch (ev.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
         {
           final int x = (int) ev.getX();

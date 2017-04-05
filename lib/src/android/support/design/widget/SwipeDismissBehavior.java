@@ -21,7 +21,6 @@ import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
-import android.support.v4.view.MotionEventCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
 import android.view.MotionEvent;
@@ -165,7 +164,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
     boolean dispatchEventToHelper = mInterceptingEvents;
 
-    switch (MotionEventCompat.getActionMasked(event)) {
+    switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
         mInterceptingEvents =
             parent.isPointInChildBounds(child, (int) event.getX(), (int) event.getY());

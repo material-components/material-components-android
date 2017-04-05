@@ -27,7 +27,6 @@ import android.support.design.testapp.CoordinatorLayoutActivity;
 import android.support.test.filters.MediumTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.view.MotionEventCompat;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -61,7 +60,7 @@ public class BottomSheetBehaviorTouchTest {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
-          switch (MotionEventCompat.getActionMasked(event)) {
+          switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
               mDown = true;
               break;
