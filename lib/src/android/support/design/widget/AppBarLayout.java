@@ -33,8 +33,6 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
-import android.support.v4.os.ParcelableCompat;
-import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -1399,19 +1397,23 @@ public class AppBarLayout extends LinearLayout {
         dest.writeByte((byte) (firstVisibleChildAtMinimumHeight ? 1 : 0));
       }
 
-      public static final Parcelable.Creator<SavedState> CREATOR =
-          ParcelableCompat.newCreator(
-              new ParcelableCompatCreatorCallbacks<SavedState>() {
-                @Override
-                public SavedState createFromParcel(Parcel source, ClassLoader loader) {
-                  return new SavedState(source, loader);
-                }
+      public static final Creator<SavedState> CREATOR =
+          new ClassLoaderCreator<SavedState>() {
+            @Override
+            public SavedState createFromParcel(Parcel source, ClassLoader loader) {
+              return new SavedState(source, loader);
+            }
 
-                @Override
-                public SavedState[] newArray(int size) {
-                  return new SavedState[size];
-                }
-              });
+            @Override
+            public SavedState createFromParcel(Parcel source) {
+              return new SavedState(source, null);
+            }
+
+            @Override
+            public SavedState[] newArray(int size) {
+              return new SavedState[size];
+            }
+          };
     }
   }
 

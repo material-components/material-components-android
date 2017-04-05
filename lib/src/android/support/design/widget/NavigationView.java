@@ -36,8 +36,6 @@ import android.support.design.internal.NavigationMenu;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.internal.ScrimInsetsFrameLayout;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.os.ParcelableCompat;
-import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -463,18 +461,22 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       dest.writeBundle(menuState);
     }
 
-    public static final Parcelable.Creator<SavedState> CREATOR =
-        ParcelableCompat.newCreator(
-            new ParcelableCompatCreatorCallbacks<SavedState>() {
-              @Override
-              public SavedState createFromParcel(Parcel parcel, ClassLoader loader) {
-                return new SavedState(parcel, loader);
-              }
+    public static final Creator<SavedState> CREATOR =
+        new ClassLoaderCreator<SavedState>() {
+          @Override
+          public SavedState createFromParcel(Parcel in, ClassLoader loader) {
+            return new SavedState(in, loader);
+          }
 
-              @Override
-              public SavedState[] newArray(int size) {
-                return new SavedState[size];
-              }
-            });
+          @Override
+          public SavedState createFromParcel(Parcel in) {
+            return new SavedState(in, null);
+          }
+
+          @Override
+          public SavedState[] newArray(int size) {
+            return new SavedState[size];
+          }
+        };
   }
 }

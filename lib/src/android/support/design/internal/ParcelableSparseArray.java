@@ -21,8 +21,6 @@ import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.RestrictTo;
-import android.support.v4.os.ParcelableCompat;
-import android.support.v4.os.ParcelableCompatCreatorCallbacks;
 import android.util.SparseArray;
 
 /** @hide */
@@ -63,17 +61,21 @@ public class ParcelableSparseArray extends SparseArray<Parcelable> implements Pa
     parcel.writeParcelableArray(values, flags);
   }
 
-  public static final Parcelable.Creator<ParcelableSparseArray> CREATOR =
-      ParcelableCompat.newCreator(
-          new ParcelableCompatCreatorCallbacks<ParcelableSparseArray>() {
-            @Override
-            public ParcelableSparseArray createFromParcel(Parcel source, ClassLoader loader) {
-              return new ParcelableSparseArray(source, loader);
-            }
+  public static final Creator<ParcelableSparseArray> CREATOR =
+      new ClassLoaderCreator<ParcelableSparseArray>() {
+        @Override
+        public ParcelableSparseArray createFromParcel(Parcel source, ClassLoader loader) {
+          return new ParcelableSparseArray(source, loader);
+        }
 
-            @Override
-            public ParcelableSparseArray[] newArray(int size) {
-              return new ParcelableSparseArray[size];
-            }
-          });
+        @Override
+        public ParcelableSparseArray createFromParcel(Parcel source) {
+          return new ParcelableSparseArray(source, null);
+        }
+
+        @Override
+        public ParcelableSparseArray[] newArray(int size) {
+          return new ParcelableSparseArray[size];
+        }
+      };
 }
