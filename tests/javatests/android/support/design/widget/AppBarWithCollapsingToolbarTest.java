@@ -21,8 +21,8 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
-import android.os.SystemClock;
 import android.support.design.testapp.R;
+import android.support.design.testutils.PollingCheck;
 import android.support.test.filters.LargeTest;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.ImageView;
@@ -359,8 +359,14 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     // this test needs to be tied to the internal implementation details of running animation
     // that scales the FAB to 0/0 scales and interpolates its alpha to 0. Since that animation
     // starts running partway through our swipe gesture and may complete a bit later then
-    // the swipe gesture, sleep for a bit to catch the "final" state of the FAB.
-    SystemClock.sleep(200);
+    // the swipe gesture, poll to catch the "final" state of the FAB.
+    PollingCheck.waitFor(
+        new PollingCheck.PollingCheckCondition() {
+          @Override
+          public boolean canProceed() {
+            return fab.getScaleX() == 0.0f;
+          }
+        });
 
     assertEquals(0.0f, fab.getScaleX(), 0.0f);
     assertEquals(0.0f, fab.getScaleY(), 0.0f);
@@ -370,9 +376,14 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     performVerticalSwipeDownGesture(
         R.id.coordinator_layout, centerX, originalAppbarBottom, longSwipeAmount);
 
-    // Same as for swipe-up gesture - sleep for a bit to catch the "final" visible state of
-    // the FAB.
-    SystemClock.sleep(200);
+    // Same as for swipe-up gesture.
+    PollingCheck.waitFor(
+        new PollingCheck.PollingCheckCondition() {
+          @Override
+          public boolean canProceed() {
+            return fab.getScaleX() == 1.0f;
+          }
+        });
 
     // At this point the FAB should be scaled back to its original size and be at full opacity.
     assertEquals(1.0f, fab.getScaleX(), 0.0f);
