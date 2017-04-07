@@ -1,0 +1,14 @@
+apply plugin: 'com.android.library'
+
+dependencies {
+  compile 'com.android.support:appcompat-v7:25.3.0'
+}
+
+android {
+  sourceSets {
+    main {
+      res.srcDirs = ['res']
+      manifest.srcFile 'AndroidManifest.xml'
+    }
+  }
+}

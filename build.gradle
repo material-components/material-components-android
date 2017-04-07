@@ -45,7 +45,12 @@ task clean(type: Delete) {
 
 subprojects {
   version = rootProject.ext.supportVersion
-  group = 'com.android.support'
+  // Set a different group for demos to resolve module name conflicts with other subprojects.
+  if (project.path.startsWith(':demos')) {
+    group = 'io.material.demo'
+  } else {
+    group = 'com.android.support'
+  }
 
   project.plugins.whenPluginAdded { plugin ->
     def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)

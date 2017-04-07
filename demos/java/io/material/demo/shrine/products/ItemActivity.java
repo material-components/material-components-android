@@ -47,7 +47,7 @@ public class ItemActivity extends AppCompatActivity {
     setContentView(R.layout.shrine_item_activity);
     initToolbar();
     populateProductViews();
-    initFab(fabMessage);
+    initFab();
   }
 
   public static void createItemActivityIntent(Context context, ProductEntry productEntry) {
@@ -91,16 +91,16 @@ public class ItemActivity extends AppCompatActivity {
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
   }
 
-  private void initFab(String fabMessage) {
-    findViewById(R.id.FloatingActionButton)
-        .setOnClickListener(
-            new OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                Snackbar.make(v, fabMessage, Snackbar.LENGTH_SHORT).show();
-              }
-            });
+  private void initFab() {
+    findViewById(R.id.FloatingActionButton).setOnClickListener(clickListener);
   }
+
+  private final OnClickListener clickListener = new OnClickListener() {
+    @Override
+    public void onClick(View v) {
+      Snackbar.make(v, fabMessage, Snackbar.LENGTH_SHORT).show();
+    }
+  };
 
   private void initSpinner() {
     Spinner spinner = (Spinner) findViewById(R.id.QuantitySpinner);

@@ -1,0 +1,14 @@
+apply plugin: 'com.android.application'
+
+dependencies {
+  compile project(':demos:java:io:material:demo:shrine:products')
+}
+
+android {
+  sourceSets {
+    main {
+      res.srcDirs = ['res']
+      manifest.srcFile 'AndroidManifest.xml'
+    }
+  }
+}
