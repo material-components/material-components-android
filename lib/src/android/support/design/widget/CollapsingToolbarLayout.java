@@ -414,6 +414,16 @@ public class CollapsingToolbarLayout extends FrameLayout {
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     ensureToolbar();
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    final int mode = MeasureSpec.getMode(heightMeasureSpec);
+    final int topInset = mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
+    if (mode == MeasureSpec.UNSPECIFIED && topInset > 0) {
+      // If we have a top inset and we're set to wrap_content height we need to make sure
+      // we add the top inset to our height, therefore we re-measure
+      heightMeasureSpec =
+          MeasureSpec.makeMeasureSpec(getMeasuredHeight() + topInset, MeasureSpec.EXACTLY);
+      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    }
   }
 
   @Override

@@ -543,4 +543,18 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         toolbarOnScreenXY[1] + toolbarHeight + toolbarLp.bottomMargin,
         1);
   }
+
+  @Test
+  public void testSingleToolbarWithInset() throws Throwable {
+    configureContent(
+        R.layout.design_appbar_toolbar_collapse_sole_toolbar,
+        R.string.design_appbar_collapsing_toolbar_pin_margins);
+
+    final int[] appbarOnScreenXY = new int[2];
+    final int[] toolbarOnScreenXY = new int[2];
+    mAppBar.getLocationOnScreen(appbarOnScreenXY);
+    mToolbar.getLocationOnScreen(toolbarOnScreenXY);
+
+    assertEquals(appbarOnScreenXY[1] + mAppBar.getTopInset(), toolbarOnScreenXY[1], 1);
+  }
 }
