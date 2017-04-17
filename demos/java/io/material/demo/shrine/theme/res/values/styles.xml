@@ -37,29 +37,32 @@
     <item name="android:minHeight">@dimen/shrine_toolbar_collapsed_height</item>
   </style>
 
-  <style name="Widget.Shrine.Toolbar.Logo">
-    <item name="android:elevation">@dimen/shrine_toolbar_elevation</item>
+  <style name="Base.Widget.Shrine.Toolbar.Logo" parent="Widget.Shrine.Toolbar">
     <item name="titleTextAppearance">@style/TextAppearance.Shrine.Logo</item>
   </style>
 
-  <style name="TextAppearance.Shrine.Logo" parent="TextAppearance.AppCompat.Display3">
-    <item name="android:letterSpacing">0.20</item>
+  <style name="Widget.Shrine.Toolbar.Logo" parent="Base.Widget.Shrine.Toolbar.Logo" />
+
+  <style name="Base.TextAppearance.Shrine.Logo" parent="TextAppearance.AppCompat.Display3">
     <item name="android:textAllCaps">true</item>
     <item name="android:textSize">22sp</item>
     <item name="android:textStyle">bold</item>
   </style>
 
+  <style name="TextAppearance.Shrine.Logo" parent="Base.TextAppearance.Shrine.Logo"/>
+
   <style name="ThemeOverlay.Shrine.BottomNavView" parent="">
     <item name="colorPrimary">@color/colorAccent</item>
   </style>
 
-  <style name="Shrine.BottomNavView" parent="">
+  <style name="Base.Shrine.BottomNavView" parent="">
     <item name="android:layout_width">match_parent</item>
     <item name="android:layout_height">@dimen/shrine_bottom_nav_view_height</item>
     <item name="android:layout_gravity">bottom</item>
     <item name="android:background">@color/colorPrimary</item>
     <item name="android:theme">@style/ThemeOverlay.Shrine.BottomNavView</item>
-    <item name="elevation">@dimen/shrine_bottom_nav_view_elevation</item>
   </style>
+
+  <style name="Shrine.BottomNavView" parent="Base.Shrine.BottomNavView"/>
 
 </resources>

@@ -68,7 +68,7 @@ public class AppBarWithCollapsingToolbarStateRestoreTest {
 
   @Test
   public void testRotateAndRestore() {
-    Activity activity = activityTestRule.getActivity();
+    final Activity activity = activityTestRule.getActivity();
     final AppBarLayout appBar = (AppBarLayout) activity.findViewById(R.id.app_bar);
 
     // Swipe up and collapse the AppBarLayout

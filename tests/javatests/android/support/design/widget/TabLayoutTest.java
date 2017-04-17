@@ -34,6 +34,7 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.annotation.TargetApi;
 import android.os.Build;
 import android.support.design.testapp.R;
 import android.support.test.annotation.UiThreadTest;
@@ -202,6 +203,7 @@ public class TabLayoutTest {
   @Test
   @UiThreadTest
   @SdkSuppress(minSdkVersion = Build.VERSION_CODES.N)
+  @TargetApi(Build.VERSION_CODES.N)
   public void testPointerIcon() {
     final LayoutInflater inflater = LayoutInflater.from(activityTestRule.getActivity());
     final TabLayout tabLayout = (TabLayout) inflater.inflate(R.layout.design_tabs_items, null);

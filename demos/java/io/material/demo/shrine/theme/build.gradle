@@ -7,6 +7,8 @@ dependencies {
 android {
   sourceSets {
     main {
+      java.includes = [ '*.java' ]
+      java.srcDirs = ['.']
       res.srcDirs = ['res']
       manifest.srcFile 'AndroidManifest.xml'
     }

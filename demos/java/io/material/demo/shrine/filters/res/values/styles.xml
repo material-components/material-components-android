@@ -34,10 +34,9 @@
 
   <style name="Widget.Shrine.SectionItem.Container">
     <item name="android:layout_marginBottom">@dimen/shrine_small_spacing</item>
+    <item name="android:paddingLeft">@dimen/shrine_standard_spacing</item>
+    <item name="android:paddingRight">@dimen/shrine_standard_spacing</item>
     <item name="android:background">?attr/colorPrimary</item>
-    <item name="android:elevation">@dimen/shrine_section_elevation</item>
-    <item name="android:paddingEnd">@dimen/shrine_standard_spacing</item>
-    <item name="android:paddingStart">@dimen/shrine_standard_spacing</item>
     <item name="android:orientation">vertical</item>
   </style>
 

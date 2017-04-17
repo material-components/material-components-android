@@ -37,6 +37,7 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.verifyNoMoreInteractions;
 import static org.mockito.Mockito.when;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.res.Resources;
 import android.os.Build;
@@ -466,6 +467,7 @@ public class BottomNavigationViewTest {
   @Test
   @SmallTest
   @SdkSuppress(minSdkVersion = Build.VERSION_CODES.N)
+  @TargetApi(Build.VERSION_CODES.N)
   public void testPointerIcon() throws Throwable {
     final Activity activity = activityTestRule.getActivity();
     final PointerIcon expectedIcon = PointerIcon.getSystemIcon(activity, PointerIcon.TYPE_HAND);

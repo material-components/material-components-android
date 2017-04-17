@@ -69,6 +69,9 @@ subprojects {
       // Enforce NewApi lint check as fatal.
       project.android.lintOptions.check 'NewApi'
       project.android.lintOptions.fatal 'NewApi'
+      // Output lint errors on stdout
+      project.android.lintOptions.textReport true
+      project.android.lintOptions.textOutput 'stdout'
       // Disable pre-dexing when gradle called with -PdisablePreDex;
       project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
 
