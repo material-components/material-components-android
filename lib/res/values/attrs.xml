@@ -460,7 +460,7 @@
         <attr name="bottomSheetStyle" format="reference" />
 
         <!-- Text color used to indicate an error has occurred. -->
-        <attr name="textColorError" format="color" />
+        <attr name="textColorError" format="color|reference" />
     </declare-styleable>
 
     <declare-styleable name="BottomNavigationView">
