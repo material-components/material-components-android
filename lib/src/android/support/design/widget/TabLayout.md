@@ -3,7 +3,7 @@ title: "Tabs"
 layout: detail
 section: components
 iconId: tabs
-path: /tabs/
+path: /catalog/tabs/
 -->
 
 # Tabs

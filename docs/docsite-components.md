@@ -3,7 +3,7 @@
 title: "Components"
 layout: landing-no-drawer
 section: components
-path: /listing.html
+path: /catalog/
 ---
 
 {% include components-list.html %}

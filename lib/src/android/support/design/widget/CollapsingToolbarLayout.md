@@ -2,7 +2,7 @@
 title: "Collapsing Toolbars"
 layout: detail
 section: components
-path: /collapsing-toolbars/
+path: /catalog/collapsing-toolbars/
 -->
 
 # Collapsing Toolbars

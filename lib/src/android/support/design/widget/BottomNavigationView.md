@@ -3,7 +3,7 @@ title: "Bottom Navigation"
 layout: detail
 section: components
 iconId: bottom_navigation
-path: /bottom-navigation/
+path: /catalog/bottom-navigation/
 -->
 
 # Bottom Navigation

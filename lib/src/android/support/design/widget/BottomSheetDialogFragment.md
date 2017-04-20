@@ -3,7 +3,7 @@ title: "Bottom Sheets"
 layout: detail
 section: components
 iconId: bottom_sheet
-path: /bottom-sheets/
+path: /catalog/bottom-sheets/
 -->
 
 # Bottom Sheets

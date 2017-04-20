@@ -3,7 +3,7 @@ title: "Text Fields"
 layout: detail
 section: components
 iconId: text_field
-path: /text-fields/
+path: /catalog/text-fields/
 -->
 
 # Text Fields

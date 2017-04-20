@@ -3,7 +3,7 @@ title: "Navigation Views"
 layout: detail
 section: components
 iconId: side_navigation
-path: /navigation-views/
+path: /catalog/navigation-views/
 -->
 
 # Navigation Views
