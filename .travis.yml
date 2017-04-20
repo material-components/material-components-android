@@ -11,7 +11,7 @@ android:
     # See https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943 for more
     # details.
     - platform-tools #latest
-    - build-tools-24.0.1
+    - build-tools-25.0.2
     - android-25
     - extra-android-m2repository
     - extra-android-support
@@ -23,7 +23,7 @@ before_script:
   - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
   - echo y | android update sdk --no-ui --all --filter extra-android-support
   - echo y | android update sdk --no-ui --all --filter "android-$ANDROID_EMULATOR_API_LEVEL"
-  - echo y | android update sdk --no-ui --all --filter build-tools-24.0.1
+  - echo y | android update sdk --no-ui --all --filter build-tools-25.0.2
   - echo y | android update sdk --no-ui --all --filter "sys-img-armeabi-v7a-android-$ANDROID_EMULATOR_API_LEVEL"
   - echo no | android create avd --force -n test -t "android-$ANDROID_EMULATOR_API_LEVEL" --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &
