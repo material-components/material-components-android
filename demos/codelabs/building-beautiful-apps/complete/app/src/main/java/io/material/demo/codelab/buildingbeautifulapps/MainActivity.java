@@ -52,11 +52,30 @@ public class MainActivity extends AppCompatActivity {
         Toolbar appBar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(appBar);
 
+        ArrayList<ProductEntry> products = readProductsList();
+        ImageRequester imageRequester = ImageRequester.getInstance(this);
+
+        ProductEntry headerProduct = getHeaderProduct(products);
+        NetworkImageView headerImage = (NetworkImageView) findViewById(R.id.app_bar_image);
+        imageRequester.setImageFromUrl(headerImage, headerProduct.url);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.product_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ProductAdapter(
-                readProductsList(), ImageRequester.getInstance(this)));
+        recyclerView.setAdapter(new ProductAdapter(products, imageRequester));
+    }
+
+    private ProductEntry getHeaderProduct(List<ProductEntry> products) {
+        if (products.size() == 0) {
+            throw new IllegalArgumentException("There must be at least one product");
+        }
+
+        for (int i = 0; i < products.size(); i++) {
+            if ("Perfect Goldfish Bowl".equals(products.get(i).title)) {
+                return products.get(i);
+            }
+        }
+        return products.get(0);
     }
 
     private ArrayList<ProductEntry> readProductsList() {

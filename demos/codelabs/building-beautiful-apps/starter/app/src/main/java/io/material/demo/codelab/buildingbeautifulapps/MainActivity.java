@@ -52,11 +52,13 @@ public class MainActivity extends AppCompatActivity {
         Toolbar appBar = (Toolbar) findViewById(R.id.app_bar);
         setSupportActionBar(appBar);
 
+        ArrayList<ProductEntry> products = readProductsList();
+        ImageRequester imageRequester = ImageRequester.getInstance(this);
+
         RecyclerView recyclerView = (RecyclerView) findViewById(R.id.product_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ProductAdapter(
-                readProductsList(), ImageRequester.getInstance(this)));
+        recyclerView.setAdapter(new ProductAdapter(products, imageRequester));
     }
 
     private ArrayList<ProductEntry> readProductsList() {

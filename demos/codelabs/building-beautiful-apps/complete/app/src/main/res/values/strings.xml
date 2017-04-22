@@ -16,4 +16,11 @@
 
 <resources>
     <string name="app_name">Shrine</string>
+    <string name="shr_product_category">Best Gifts for Teen Girls</string>
+    <string name="shr_product_description">
+        Leave the tunnel and the rain is fallin\' amazing things happen when you wait
+    </string>
+    <string name="shr_category_clothing">Clothing</string>
+    <string name="shr_category_home">Home</string>
+    <string name="shr_category_popsicles">Popsicles</string>
 </resources>

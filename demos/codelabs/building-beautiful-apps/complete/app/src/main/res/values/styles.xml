@@ -25,7 +25,6 @@
     </style>
 
     <style name="Widget.Shrine.Toolbar" parent="Widget.AppCompat.Toolbar">
-        <item name="android:background">?attr/colorPrimary</item>
         <item name="contentInsetStart">12dp</item>
         <item name="titleTextAppearance">@style/TextAppearance.Shrine.Logo</item>
     </style>
@@ -34,6 +33,10 @@
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">22sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="ThemeOverlay.Shrine.BottomNavigation" parent="">
+        <item name="colorPrimary">?attr/colorAccent</item>
     </style>
 
 </resources>
