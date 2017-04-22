@@ -12,8 +12,6 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-
-
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
@@ -23,9 +21,9 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@mipmap/ic_launcher"
+        android:icon="@mipmap/product_logo_shrine_launcher_color_48"
         android:label="@string/app_name"
-        android:roundIcon="@mipmap/ic_launcher_round"
+        android:roundIcon="@mipmap/product_logo_shrine_launcher_color_48"
         android:supportsRtl="true"
         android:theme="@style/Theme.Shrine">
 

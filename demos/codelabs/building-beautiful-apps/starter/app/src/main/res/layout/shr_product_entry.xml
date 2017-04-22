@@ -13,12 +13,10 @@
   WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   See the License for the specific language governing permissions and
   limitations under the License.
-
-
   -->
 
-<android.support.v7.widget.CardView
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/product_entry"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -42,5 +40,14 @@
             android:layout_height="292dp"
             android:layout_gravity="center"
             android:scaleType="fitCenter"/>
+        <ImageButton
+            android:id="@+id/favorite_button"
+            style="?android:attr/borderlessButtonStyle"
+            android:layout_width="48dp"
+            android:layout_height="48dp"
+            android:layout_gravity="end"
+            android:clipToPadding="false"
+            android:minWidth="48dp"
+            app:srcCompat="@drawable/ic_favorite_border_vd_theme_24"/>
     </LinearLayout>
 </android.support.v7.widget.CardView>
