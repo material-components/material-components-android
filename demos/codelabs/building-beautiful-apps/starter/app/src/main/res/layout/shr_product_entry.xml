@@ -42,11 +42,10 @@
             android:scaleType="fitCenter"/>
         <ImageButton
             android:id="@+id/favorite_button"
-            style="?android:attr/borderlessButtonStyle"
+            style="?android:attr/actionButtonStyle"
             android:layout_width="48dp"
             android:layout_height="48dp"
             android:layout_gravity="end"
-            android:clipToPadding="false"
             android:minWidth="48dp"
             app:srcCompat="@drawable/ic_favorite_border_vd_theme_24"/>
     </LinearLayout>
