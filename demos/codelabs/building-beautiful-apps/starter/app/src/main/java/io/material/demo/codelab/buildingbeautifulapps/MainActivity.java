@@ -44,6 +44,8 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
 
+    private ProductAdapter adapter;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,10 +57,11 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<ProductEntry> products = readProductsList();
         ImageRequester imageRequester = ImageRequester.getInstance(this);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.product_list);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.product_list);
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ProductAdapter(products, imageRequester));
+        adapter = new ProductAdapter(products, imageRequester);
+        recyclerView.setAdapter(adapter);
     }
 
     private ArrayList<ProductEntry> readProductsList() {
@@ -73,12 +76,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static final class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
-        private final List<ProductEntry> products;
+        private List<ProductEntry> products;
         private final ImageRequester imageRequester;
 
         ProductAdapter(List<ProductEntry> products, ImageRequester imageRequester) {
             this.products = products;
             this.imageRequester = imageRequester;
+        }
+
+        void setProducts(List<ProductEntry> products) {
+            this.products = products;
+            notifyDataSetChanged();
         }
 
         @Override

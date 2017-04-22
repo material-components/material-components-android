@@ -18,13 +18,17 @@ package io.material.demo.codelab.buildingbeautifulapps;
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -36,6 +40,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -43,6 +48,8 @@ import java.util.List;
  */
 public class MainActivity extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
+
+    private ProductAdapter adapter;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -59,10 +66,40 @@ public class MainActivity extends AppCompatActivity {
         NetworkImageView headerImage = (NetworkImageView) findViewById(R.id.app_bar_image);
         imageRequester.setImageFromUrl(headerImage, headerProduct.url);
 
-        RecyclerView recyclerView = (RecyclerView) findViewById(R.id.product_list);
+        final RecyclerView recyclerView = (RecyclerView) findViewById(R.id.product_list);
         recyclerView.setHasFixedSize(true);
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        recyclerView.setAdapter(new ProductAdapter(products, imageRequester));
+        recyclerView.setLayoutManager(
+                new GridLayoutManager(this, getResources().getInteger(R.integer.shr_column_count)));
+        adapter = new ProductAdapter(products, imageRequester);
+        recyclerView.setAdapter(adapter);
+
+        BottomNavigationView bottomNavigation =
+                (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        bottomNavigation.setOnNavigationItemSelectedListener(
+                new BottomNavigationView.OnNavigationItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                GridLayoutManager layoutManager =
+                        (GridLayoutManager) recyclerView.getLayoutManager();
+                layoutManager.scrollToPositionWithOffset(0, 0);
+                shuffleProducts();
+                return true;
+            }
+        });
+
+        bottomNavigation.setOnNavigationItemReselectedListener(
+                new BottomNavigationView.OnNavigationItemReselectedListener() {
+            @Override
+            public void onNavigationItemReselected(@NonNull MenuItem item) {
+                GridLayoutManager layoutManager =
+                        (GridLayoutManager) recyclerView.getLayoutManager();
+                layoutManager.scrollToPositionWithOffset(0, 0);
+            }
+        });
+
+        if (savedInstanceState == null) {
+            bottomNavigation.setSelectedItemId(R.id.category_home);
+        }
     }
 
     private ProductEntry getHeaderProduct(List<ProductEntry> products) {
@@ -78,6 +115,12 @@ public class MainActivity extends AppCompatActivity {
         return products.get(0);
     }
 
+    private void shuffleProducts() {
+        ArrayList<ProductEntry> products = readProductsList();
+        Collections.shuffle(products);
+        adapter.setProducts(products);
+    }
+
     private ArrayList<ProductEntry> readProductsList() {
         InputStream inputStream = getResources().openRawResource(R.raw.products);
         Type productListType = new TypeToken<ArrayList<ProductEntry>>() {}.getType();
@@ -90,12 +133,17 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private static final class ProductAdapter extends RecyclerView.Adapter<ProductViewHolder> {
-        private final List<ProductEntry> products;
+        private List<ProductEntry> products;
         private final ImageRequester imageRequester;
 
         ProductAdapter(List<ProductEntry> products, ImageRequester imageRequester) {
             this.products = products;
             this.imageRequester = imageRequester;
+        }
+
+        void setProducts(List<ProductEntry> products) {
+            this.products = products;
+            notifyDataSetChanged();
         }
 
         @Override
