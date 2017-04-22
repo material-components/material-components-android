@@ -1,6 +1,6 @@
 # Material Components
 
-*   [AppBarLayout](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/AppBarLayout.java)
+*   [AppBarLayout](components/AppBarLayout.md)
 *   [BottomSheetDialogFragment](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomSheetDialogFragment.java)
 *   [BottomNavigationView](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomNavigationView.java)
 *   [CollapsingToolbarLayout](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/CollapsingToolbarLayout.java)
