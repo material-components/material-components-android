@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
 import android.content.Context;
@@ -132,7 +132,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
   static final int EVENT_VIEW_REMOVED = 2;
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({EVENT_PRE_DRAW, EVENT_NESTED_SCROLL, EVENT_VIEW_REMOVED})
   public @interface DispatchChangeEvent {}

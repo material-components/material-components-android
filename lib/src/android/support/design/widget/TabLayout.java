@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_SETTLING;
@@ -181,7 +181,7 @@ public class TabLayout extends HorizontalScrollView {
   public static final int MODE_FIXED = 1;
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   @IntDef(value = {MODE_SCROLLABLE, MODE_FIXED})
   @Retention(RetentionPolicy.SOURCE)
   public @interface Mode {}
@@ -204,7 +204,7 @@ public class TabLayout extends HorizontalScrollView {
   public static final int GRAVITY_CENTER = 1;
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   @IntDef(
     flag = true,
     value = {GRAVITY_FILL, GRAVITY_CENTER}

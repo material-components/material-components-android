@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -339,7 +339,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @hide Note: this class is here to provide backwards-compatible way for apps written before the
    *     existence of the base {@link BaseTransientBottomBar} class.
    */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   public static final class SnackbarLayout extends BaseTransientBottomBar.SnackbarBaseLayout {
     public SnackbarLayout(Context context) {
       super(context);

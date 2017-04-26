@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -88,7 +88,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   public static final int STATE_HIDDEN = 5;
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   @IntDef({STATE_EXPANDED, STATE_COLLAPSED, STATE_DRAGGING, STATE_SETTLING, STATE_HIDDEN})
   @Retention(RetentionPolicy.SOURCE)
   public @interface State {}

@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.support.annotation.RestrictTo;
@@ -27,7 +27,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.AttributeSet;
 
 /** @hide */
-@RestrictTo(GROUP_ID)
+@RestrictTo(LIBRARY_GROUP)
 public class NavigationMenuView extends RecyclerView implements MenuView {
 
   public NavigationMenuView(Context context) {

@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.support.annotation.RestrictTo;
@@ -30,7 +30,7 @@ import android.support.v7.view.menu.SubMenuBuilder;
  *
  * @hide
  */
-@RestrictTo(GROUP_ID)
+@RestrictTo(LIBRARY_GROUP)
 public class NavigationSubMenu extends SubMenuBuilder {
 
   public NavigationSubMenu(Context context, NavigationMenu menu, MenuItemImpl item) {

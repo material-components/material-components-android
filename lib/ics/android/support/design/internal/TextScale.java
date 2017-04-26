@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
@@ -29,7 +29,7 @@ import android.widget.TextView;
 import java.util.Map;
 
 /** @hide */
-@RestrictTo(GROUP_ID)
+@RestrictTo(LIBRARY_GROUP)
 @RequiresApi(14)
 public class TextScale extends Transition {
   private static final String PROPNAME_SCALE = "android:textscale:scale";

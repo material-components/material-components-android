@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -24,7 +24,7 @@ import android.support.annotation.RestrictTo;
 import android.util.SparseArray;
 
 /** @hide */
-@RestrictTo(GROUP_ID)
+@RestrictTo(LIBRARY_GROUP)
 public class ParcelableSparseArray extends SparseArray<Parcelable> implements Parcelable {
 
   public ParcelableSparseArray() {

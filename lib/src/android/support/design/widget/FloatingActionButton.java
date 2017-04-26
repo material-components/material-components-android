@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -115,7 +115,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton {
   private static final int AUTO_MINI_LARGEST_SCREEN_WIDTH = 470;
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({SIZE_MINI, SIZE_NORMAL, SIZE_AUTO})
   public @interface Size {}

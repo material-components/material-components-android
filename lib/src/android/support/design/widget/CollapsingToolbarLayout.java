@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static android.support.design.widget.MathUtils.constrain;
 import static android.support.design.widget.ViewUtils.objectEquals;
 
@@ -1115,7 +1115,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     private static final float DEFAULT_PARALLAX_MULTIPLIER = 0.5f;
 
     /** @hide */
-    @RestrictTo(GROUP_ID)
+    @RestrictTo(LIBRARY_GROUP)
     @IntDef({COLLAPSE_MODE_OFF, COLLAPSE_MODE_PIN, COLLAPSE_MODE_PARALLAX})
     @Retention(RetentionPolicy.SOURCE)
     @interface CollapseMode {}

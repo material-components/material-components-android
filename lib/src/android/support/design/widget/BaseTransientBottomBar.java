@@ -16,7 +16,7 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static android.support.design.widget.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 
 import android.animation.Animator;
@@ -76,7 +76,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     public static final int DISMISS_EVENT_CONSECUTIVE = 4;
 
     /** @hide */
-    @RestrictTo(GROUP_ID)
+    @RestrictTo(LIBRARY_GROUP)
     @IntDef({
       DISMISS_EVENT_SWIPE,
       DISMISS_EVENT_ACTION,
@@ -132,7 +132,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
   @IntRange(from = 1)
   @Retention(RetentionPolicy.SOURCE)
@@ -206,13 +206,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   private final AccessibilityManager mAccessibilityManager;
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   interface OnLayoutChangeListener {
     void onLayoutChange(View view, int left, int top, int right, int bottom);
   }
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   interface OnAttachStateChangeListener {
     void onViewAttachedToWindow(View v);
 
@@ -627,7 +627,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   /** @hide */
-  @RestrictTo(GROUP_ID)
+  @RestrictTo(LIBRARY_GROUP)
   static class SnackbarBaseLayout extends FrameLayout {
     private BaseTransientBottomBar.OnLayoutChangeListener mOnLayoutChangeListener;
     private BaseTransientBottomBar.OnAttachStateChangeListener mOnAttachStateChangeListener;

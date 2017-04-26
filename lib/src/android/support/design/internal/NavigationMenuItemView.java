@@ -16,7 +16,7 @@
 
 package android.support.design.internal;
 
-import static android.support.annotation.RestrictTo.Scope.GROUP_ID;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -44,7 +44,7 @@ import android.widget.CheckedTextView;
 import android.widget.FrameLayout;
 
 /** @hide */
-@RestrictTo(GROUP_ID)
+@RestrictTo(LIBRARY_GROUP)
 public class NavigationMenuItemView extends ForegroundLinearLayout implements MenuView.ItemView {
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
