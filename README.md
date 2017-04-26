@@ -7,8 +7,7 @@ development workflow to build beautiful and functional Android apps.
 
 Material Components for Android are based on Android’s Design support library
 (DesignLib) which will continue to be released as part of Android’s SDK.
-Development will take place on GitHub, and stable versions will be synced to
-Android’s SDK based on the SDK’s release schedules.
+
 
 ## Useful Links
 - [All Components](https://github.com/material-components/material-components-android/tree/master/lib/)
