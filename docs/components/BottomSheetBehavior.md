@@ -1,0 +1,86 @@
+<!--docs:
+title: "BottomSheetBehavior"
+layout: detail
+section: components
+excerpt: "BottomSheetBehavior is applied to a child of CoordinatorLayout to make that child a persistent bottom sheet."
+iconId: bottom_sheet
+path: /catalog/bottom-sheets/
+-->
+
+# BottomSheetBehavior
+
+BottomSheetBehavior is applied to a child of
+[CoordinatorLayout](/material-components/material-components-android/blob/master/docs/components/CoordinatorLayout.md)
+to make that child a persistent bottom sheet.
+
+**Persistent Bottom Sheets** are views that come up from the bottom of the
+screen, elevated over the main content. They can be dragged vertically to
+expose more or less of their content.
+
+Note: If you want to use Bottom Sheets that are modal (dialogs), use
+[BottomSheetDialogFragment](/material-components/material-components-android/blob/master/docs/components/BottomSheetDialogFragment.md).
+
+## Design & API Documentation
+
+-   [Class
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomSheetBehavior.java)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+    <!-- Styles for list items requiring icons instead of standard bullets. -->
+-   [Class
+    overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+-   [Material design
+    guidelines](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+<!--{: .icon-list }-->  <!-- Style for a list that requires icons instead of standard bullets. -->
+
+## Usage
+
+BottomSheetBehavior works in tandem with CoordinatorLayout to let you display
+content on a Bottom sheet (a layer on top of the main content), perform 
+entrance/exit animations, respond to dragging/swiping gestures, etc.
+
+Bottom sheets have 5 states:
+
+-   `STATE_COLLAPSED`: The bottom sheet is visible but only showing its peek
+    height. This state is usually the 'resting position' of a Bottom Sheet. The
+    peek height is chosen by the developer and should be enough to indicate
+    there is extra content, allow the user to trigger an action or expand the
+    bottom sheet.
+-   `STATE_EXPANDED`: The bottom sheet is visible and its maximum height and it
+    is neither dragging or settling (see below).
+-   `STATE_DRAGGING`: The user is actively dragging the bottom sheet up or down.
+-   `STATE_SETTLING`: The bottom sheet is settling to specific height after a
+    drag/swipe gesture. This will be the peek height, expanded height, or
+    0, in case the user action caused the bottom sheet to hide.
+-   `STATE_HIDDEN`: The bottom sheet is no longer visible.
+
+If you're already using CoordinatorLayout for your activity, adding a bottom
+sheet is trivial:
+
+1.  Add any View as a direct child of CoordinatorLayout.
+2.  Apply the behavior by adding the following xml attribute
+    `app:layout_behavior="android.support.design.widget.BottomSheetBehavior"`
+3.  Set the desired behavior flags
+    -   `app:behavior_hideable` whether this bottom sheet can be hidden by
+        dragging it down.
+    -   `app:behavior_peekHeight` the peek height for the collapsed state.
+    -   `app:behavior_skipCollapsed` if the bottom sheet is hideable, and this
+        is set to true, it does not have a collapsed state.
+
+To programatically control the bottom sheet you can call the `setState` method
+on the BottomSheetBehavior. A common pattern is setting a peek height and
+setting the state to collapsed to make it visible to the user:
+
+```java
+bottomSheetBehavior.setPeekHeight(300);
+bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+```
+
+## Related concepts
+
+Using
+[BottomSheetDialogFragment](/material-components/material-components-android/blob/master/docs/components/BottomSheetDialogFragment.md)
+provides a similar UI and interactions as BottomSheetBehavior, however
+BottomSheetDialogFragment does not require CoordinatorLayout and creates a modal
+Bottom Sheet (essentially a dialog).
