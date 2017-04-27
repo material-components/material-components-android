@@ -112,6 +112,7 @@ There are other navigation patterns you should be aware of
     [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html)
 -   [BottomNavigationView](/material-components/material-components-android/blob/master/docs/components/BottomNavigationView.md)
     for when you have only 3 to 5 very well defined navigation categories
+
 You should familiarize yourself with the most common use for `NavigationView`,
 [Creating a Navigation Drawer -
 Guide](https://developer.android.com/training/implementing-navigation/nav-drawer.html)
