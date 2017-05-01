@@ -1,9 +1,9 @@
 # Material Components
 
 *   [AppBarLayout](components/AppBarLayout.md)
+*   [BottomNavigationView](components/BottomNavigationView.md)
 *   [BottomSheetBehavior](components/BottomSheetBehavior.md)
 *   [BottomSheetDialogFragment](components/BottomSheetDialogFragment.md)
-*   [BottomNavigationView](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomNavigationView.java)
 *   [CollapsingToolbarLayout](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/CollapsingToolbarLayout.java)
 *   [CoordinatorLayout](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/CoordinatorLayout.java)
 *   [FloatingActionButton](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/FloatingActionButton.java)
