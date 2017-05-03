@@ -49,11 +49,11 @@
                 app:layout_collapseParallaxMultiplier="0.75"/>
 
             <LinearLayout
+                style="@style/Widget.Shrine.CollapsingToolbarContent"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 app:layout_collapseMode="parallax"
-                app:layout_collapseParallaxMultiplier="0.65"
-                style="@style/Widget.Shrine.CollapsingToolbarContent">
+                app:layout_collapseParallaxMultiplier="0.65">
 
                 <TextView
                     android:layout_width="wrap_content"
