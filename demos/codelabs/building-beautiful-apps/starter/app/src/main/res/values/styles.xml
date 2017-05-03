@@ -30,6 +30,30 @@
         <item name="titleTextAppearance">@style/TextAppearance.Shrine.Logo</item>
     </style>
 
+    <style name="Widget.Shrine.CollapsingToolbar" parent="">
+        <item name="collapsedTitleTextAppearance">@style/TextAppearance.Shrine.Logo</item>
+        <item name="contentScrim">?attr/colorPrimary</item>
+        <item name="expandedTitleGravity">top</item>
+        <item name="expandedTitleMarginStart">124dp</item>
+        <item name="expandedTitleMarginTop">140dp</item>
+        <item name="expandedTitleTextAppearance">@style/TextAppearance.Shrine.Logo</item>
+        <item name="scrimVisibleHeightTrigger">140dp</item>
+    </style>
+
+    <style name="Widget.Shrine.CollapsingToolbarImage" parent="">
+        <item name="android:layout_marginTop">48dp</item>
+        <item name="android:layout_marginLeft">-124dp</item>
+        <item name="android:adjustViewBounds">true</item>
+    </style>
+
+    <style name="Widget.Shrine.CollapsingToolbarContent" parent="">
+        <item name="android:layout_marginTop">160dp</item>
+        <item name="android:layout_marginLeft">124dp</item>
+        <item name="android:layout_marginRight">16dp</item>
+        <item name="android:layout_gravity">top</item>
+        <item name="android:orientation">vertical</item>
+    </style>
+
     <style name="TextAppearance.Shrine.Logo" parent="TextAppearance.AppCompat.Display3">
         <item name="android:textAllCaps">true</item>
         <item name="android:textSize">22sp</item>
