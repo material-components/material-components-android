@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "BottomSheetDialogFragment is a thin layer on top of the regular support library Fragment that renders your fragment as a modal bottom sheet."
 iconId: bottom_sheet
-path: /catalog/bottom-sheets/
+path: /catalog/modal-bottom-sheets/
 -->
 
 # BottomSheetDialogFragment
