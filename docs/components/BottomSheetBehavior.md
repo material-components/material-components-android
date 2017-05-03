@@ -1,21 +1,21 @@
 <!--docs:
-title: "BottomSheetBehavior"
+title: "Bottom Sheets"
 layout: detail
 section: components
-excerpt: "BottomSheetBehavior is applied to a child of CoordinatorLayout to make that child a persistent bottom sheet."
+excerpt: "Persistent Bottom Sheets are views that come up from the bottom of the screen, elevated over the main content."
 iconId: bottom_sheet
 path: /catalog/bottom-sheets/
 -->
 
-# BottomSheetBehavior
-
-BottomSheetBehavior is applied to a child of
-[CoordinatorLayout](/material-components/material-components-android/blob/master/docs/components/CoordinatorLayout.md)
-to make that child a persistent bottom sheet.
+# Bottom Sheets (BottomSheetBehavior)
 
 **Persistent Bottom Sheets** are views that come up from the bottom of the
 screen, elevated over the main content. They can be dragged vertically to
 expose more or less of their content.
+
+BottomSheetBehavior is applied to a child of
+[CoordinatorLayout](/material-components/material-components-android/blob/master/docs/components/CoordinatorLayout.md)
+to make that child a persistent bottom sheet.
 
 Note: If you want to use Bottom Sheets that are modal (dialogs), use
 [BottomSheetDialogFragment](/material-components/material-components-android/blob/master/docs/components/BottomSheetDialogFragment.md).
