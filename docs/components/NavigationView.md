@@ -2,9 +2,9 @@
 title: "Navigation Views"
 layout: detail
 section: components
-exceprt: "NavigationView is an easy way to display a navigation menu from a menu resource."
+excerpt: "NavigationView is an easy way to display a navigation menu from a menu resource."
 iconId: side_navigation
-path: /catalog/navigation-views/
+path: /catalog/navigation-view/
 -->
 
 # NavigationView

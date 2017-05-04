@@ -1,10 +1,10 @@
 <!--docs:
-title: "AppBarLayout"
+title: "App Bars"
 layout: detail
 section: components
 excerpt: "AppBarLayout implements many of the interaction features for the Material Design app bar, namely scrolling gestures."
 iconId: toolbar
-path: /catalog/app-bars/
+path: /catalog/app-bar-layout/
 -->
 
 # AppBarLayout

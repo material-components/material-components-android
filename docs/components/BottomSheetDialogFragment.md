@@ -2,23 +2,23 @@
 title: "Modal Bottom Sheets"
 layout: detail
 section: components
-excerpt: "Modal Bottom Sheets render a shadow on the content below them to indicate that they are modal, essentially a dialog."
+excerpt: "BottomSheetDialogFragment make it easy to implement modal bottom sheets, dialogs that render a shadow on the content below them to indicate that they are modal.
 iconId: bottom_sheet
-path: /catalog/modal-bottom-sheets/
+path: /catalog/bottom-sheet-dialog-fragment/
 -->
 
-# Modal Bottom Sheets (BottomSheetDialogFragment)
+# BottomSheetDialogFragment
 
-Modal Bottom Sheets render a shadow on the content below them to indicate that
-they are modal, essentially a dialog. If the content outside of the dialog is
-tapped then the bottom sheet is dismissed. Modal bottom sheets can be dragged
+**Modal bottom sheets** render a shadow on the content below them to indicate
+that they are modal, essentially a dialog. If the content outside of the dialog
+is tapped then the bottom sheet is dismissed. Modal bottom sheets can be dragged
 vertically and dismissed by completely sliding them down.
 
 BottomSheetDialogFragment is a thin layer on top of the regular support library
-Fragment that renders your fragment as a **Modal Bottom Sheet**, fundamentally
+Fragment that renders your fragment as a modal bottom sheet, fundamentally
 acting as a dialog.
 
-Note: To implement non-modal **Persistent Bottom Sheets** use
+Note: To implement non-modal **Persistent bottom sheets** use
 [BottomSheetBehavior](/material-components/material-components-android/blob/master/docs/components/BottomSheetBehavior.md)
 in conjunction with a
 [CoordinatorLayout](/material-components/material-components-android/blob/master/docs/components/CoordinatorLayout.md).

@@ -2,14 +2,14 @@
 title: "Bottom Sheets"
 layout: detail
 section: components
-excerpt: "Persistent Bottom Sheets are views that come up from the bottom of the screen, elevated over the main content."
+excerpt: "BottomSheetBehavior make it easy to implement persistent bottom sheets, views that come up from the bottom of the screen that are elevated over the main content."
 iconId: bottom_sheet
-path: /catalog/bottom-sheets/
+path: /catalog/bottom-sheet-behavior/
 -->
 
-# Bottom Sheets (BottomSheetBehavior)
+# BottomSheetBehavior
 
-**Persistent Bottom Sheets** are views that come up from the bottom of the
+**Persistent bottom sheets** are views that come up from the bottom of the
 screen, elevated over the main content. They can be dragged vertically to
 expose more or less of their content.
 

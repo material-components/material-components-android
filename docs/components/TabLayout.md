@@ -3,10 +3,10 @@ title: "Tabs"
 layout: detail
 section: components
 iconId: tabs
-path: /catalog/tabs/
+path: /catalog/tab-layout/
 -->
 
-# Tabs
+# TabLayout
 
 Tabs are bars of buttons used to navigate between groups of content.
 

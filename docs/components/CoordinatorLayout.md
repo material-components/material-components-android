@@ -2,10 +2,10 @@
 title: "Coordinator Layouts"
 layout: detail
 section: components
-path: /catalog/coordinator-layouts/
+path: /catalog/coordinator-layout/
 -->
 
-# Coordinator Layouts
+# CoordinatorLayout
 
 Intro.
 

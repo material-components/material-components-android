@@ -3,10 +3,10 @@ title: "Snackbars"
 layout: detail
 section: components
 iconId: toast
-path: /catalog/snackbars/
+path: /catalog/snackbar/
 -->
 
-# Snackbars
+# Snackbar
 
 Intro.
 
