@@ -256,31 +256,35 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     removeAllViews();
     if (mButtons != null) {
       for (BottomNavigationItemView item : mButtons) {
-        mItemPool.release(item);
+        if (item != null) {
+          mItemPool.release(item);
+        }
       }
     }
-    if (mMenu.size() == 0) {
+    if (mMenu.getVisibleItems().isEmpty()) {
       mSelectedItemId = 0;
       mSelectedItemPosition = 0;
       mButtons = null;
       return;
     }
     mButtons = new BottomNavigationItemView[mMenu.size()];
-    mShiftingMode = mMenu.size() > 3;
+    mShiftingMode = mMenu.getVisibleItems().size() > 3;
     for (int i = 0; i < mMenu.size(); i++) {
-      mPresenter.setUpdateSuspended(true);
-      mMenu.getItem(i).setCheckable(true);
-      mPresenter.setUpdateSuspended(false);
-      BottomNavigationItemView child = getNewItem();
-      mButtons[i] = child;
-      child.setIconTintList(mItemIconTint);
-      child.setTextColor(mItemTextColor);
-      child.setItemBackground(mItemBackgroundRes);
-      child.setShiftingMode(mShiftingMode);
-      child.initialize((MenuItemImpl) mMenu.getItem(i), 0);
-      child.setItemPosition(i);
-      child.setOnClickListener(mOnClickListener);
-      addView(child);
+      if (mMenu.getItem(i).isVisible()) {
+        mPresenter.setUpdateSuspended(true);
+        mMenu.getItem(i).setCheckable(true);
+        mPresenter.setUpdateSuspended(false);
+        BottomNavigationItemView child = getNewItem();
+        mButtons[i] = child;
+        child.setIconTintList(mItemIconTint);
+        child.setTextColor(mItemTextColor);
+        child.setItemBackground(mItemBackgroundRes);
+        child.setShiftingMode(mShiftingMode);
+        child.initialize((MenuItemImpl) mMenu.getItem(i), 0);
+        child.setItemPosition(i);
+        child.setOnClickListener(mOnClickListener);
+        addView(child);
+      }
     }
     mSelectedItemPosition = Math.min(mMenu.size() - 1, mSelectedItemPosition);
     mMenu.getItem(mSelectedItemPosition).setChecked(true);
