@@ -55,6 +55,11 @@ import android.widget.FrameLayout;
  * <p>Bottom navigation bars make it easy for users to explore and switch between top-level views in
  * a single tap. It should be used when application has three to five top-level destinations.
  *
+ * <p>The bar can disappear on scroll, based on {@link HideBottomViewOnScrollBehavior}, when it is
+ * placed within a {@link CoordinatorLayout} and one of the children within the {@link
+ * CoordinatorLayout} is scrolled. This behavior is only set if the {@code layout_behavior} property
+ * is set to {@link HideBottomViewOnScrollBehavior}.
+ *
  * <p>The bar contents can be populated by specifying a menu resource file. Each menu item title,
  * icon and enabled state will be used for displaying bottom navigation bar items. Menu items can
  * also be used for programmatically selecting which destination is currently active. It can be done

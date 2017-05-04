@@ -65,7 +65,6 @@
       app:itemBackground="@color/sand_default"
       app:itemIconTint="@color/emerald_translucent"
       app:itemTextColor="@color/emerald_text"
-      app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
       app:menu="@menu/bottom_navigation_view_content"/>
 
 </android.support.design.widget.CoordinatorLayout>

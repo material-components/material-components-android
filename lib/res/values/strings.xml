@@ -23,5 +23,7 @@
     <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
     <!-- Content description for the password visibility toggle button. [CHAR LIMIT=NONE] -->
     <string name="password_toggle_content_description">Toggle password visibility</string>
+    <!-- The class name to the HideBottomViewOnScrollBehavior -->
+    <string name="hide_bottom_view_on_scroll_behavior" translatable="false">android.support.design.widget.HideBottomViewOnScrollBehavior</string>
 </resources>
 
