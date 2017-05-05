@@ -21,9 +21,11 @@ import static org.hamcrest.Matchers.greaterThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
+import android.os.Build;
 import android.support.design.testapp.R;
 import android.support.design.testutils.PollingCheck;
 import android.support.test.filters.LargeTest;
+import android.support.test.filters.SdkSuppress;
 import android.support.test.runner.AndroidJUnit4;
 import android.widget.ImageView;
 import org.junit.Test;
@@ -33,6 +35,8 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
   @Test
+  // Suppressed due to high % flakiness on API 15
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.JELLY_BEAN)
   public void testPinnedToolbar() throws Throwable {
     configureContent(
         R.layout.design_appbar_toolbar_collapse_pin, R.string.design_appbar_collapsing_toolbar_pin);
@@ -135,6 +139,8 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
   }
 
   @Test
+  // Suppressed due to high % flakiness on API 15
+  @SdkSuppress(minSdkVersion = Build.VERSION_CODES.JELLY_BEAN)
   public void testScrollingToolbar() throws Throwable {
     configureContent(
         R.layout.design_appbar_toolbar_collapse_scroll,
