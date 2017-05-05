@@ -67,5 +67,6 @@
     <dimen name="design_bottom_navigation_item_min_width">56dp</dimen>
     <dimen name="design_bottom_navigation_item_max_width">96dp</dimen>
     <dimen name="design_bottom_navigation_active_item_max_width">168dp</dimen>
+    <dimen name="design_bottom_navigation_active_item_min_width">96dp</dimen>
 
 </resources>

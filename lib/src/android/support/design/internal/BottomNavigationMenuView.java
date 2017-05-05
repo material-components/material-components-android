@@ -47,6 +47,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final int mInactiveItemMaxWidth;
   private final int mInactiveItemMinWidth;
   private final int mActiveItemMaxWidth;
+  private final int mActiveItemMinWidth;
   private final int mItemHeight;
   private final OnClickListener mOnClickListener;
   private final Pools.Pool<BottomNavigationItemView> mItemPool = new Pools.SynchronizedPool<>(5);
@@ -77,6 +78,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_item_min_width);
     mActiveItemMaxWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_max_width);
+    mActiveItemMinWidth =
+        res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_min_width);
     mItemHeight = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_height);
 
     mSet = new AutoTransition();
@@ -112,14 +115,27 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     final int heightSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
 
     if (mShiftingMode) {
+      final View child = getChildAt(mSelectedItemPosition);
+      int activeItemWidth = mActiveItemMinWidth;
+      if (child.getVisibility() != View.GONE) {
+        // Do an AT_MOST measure pass on the active child to get its desired width, and resize the
+        // active child view based on that width
+        child.measure(
+            MeasureSpec.makeMeasureSpec(mActiveItemMaxWidth, MeasureSpec.AT_MOST), heightSpec);
+        activeItemWidth = Math.max(activeItemWidth, child.getMeasuredWidth());
+      }
       final int inactiveCount = count - 1;
       final int activeMaxAvailable = width - inactiveCount * mInactiveItemMinWidth;
-      final int activeWidth = Math.min(activeMaxAvailable, mActiveItemMaxWidth);
+      final int activeWidth =
+          Math.min(activeMaxAvailable, Math.min(activeItemWidth, mActiveItemMaxWidth));
       final int inactiveMaxAvailable = (width - activeWidth) / inactiveCount;
       final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
       for (int i = 0; i < count; i++) {
         mTempChildWidths[i] = (i == mSelectedItemPosition) ? activeWidth : inactiveWidth;
+        // Account for integer division which sometimes leaves some extra pixel spaces.
+        // e.g. If the nav was 10px wide, and 3 children were measured to be 3px-3px-3px, there
+        // would be a 1px gap somewhere, which this fills in.
         if (extra > 0) {
           mTempChildWidths[i]++;
           extra--;

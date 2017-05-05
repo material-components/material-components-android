@@ -15,35 +15,37 @@
   ~ limitations under the License.
   -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
-    <ImageView
-        android:id="@+id/icon"
-        android:layout_width="24dp"
-        android:layout_height="24dp"
-        android:layout_gravity="center_horizontal"
-        android:layout_marginTop="@dimen/design_bottom_navigation_margin"
-        android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
-        android:duplicateParentState="true" />
-    <android.support.design.internal.BaselineLayout
+  <ImageView
+      android:id="@+id/icon"
+      android:layout_width="24dp"
+      android:layout_height="24dp"
+      android:layout_marginTop="@dimen/design_bottom_navigation_margin"
+      android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
+      android:layout_gravity="center_horizontal"
+      android:duplicateParentState="true"/>
+  <android.support.design.internal.BaselineLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom|center_horizontal"
+      android:paddingBottom="10dp"
+      android:clipToPadding="false"
+      android:duplicateParentState="true">
+    <TextView
+        android:id="@+id/smallLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_gravity="bottom|center_horizontal"
-        android:paddingBottom="10dp"
-        android:clipToPadding="false"
-        android:duplicateParentState="true">
-        <TextView
-            android:id="@+id/smallLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textSize="@dimen/design_bottom_navigation_text_size"
-            android:singleLine="true"
-            android:duplicateParentState="true" />
-        <TextView
-            android:id="@+id/largeLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:visibility="invisible"
-            android:textSize="@dimen/design_bottom_navigation_active_text_size"
-            android:singleLine="true"
-            android:duplicateParentState="true" />
-    </android.support.design.internal.BaselineLayout>
+        android:duplicateParentState="true"
+        android:singleLine="true"
+        android:textSize="@dimen/design_bottom_navigation_text_size"/>
+    <TextView
+        android:id="@+id/largeLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingLeft="8dp"
+        android:paddingRight="8dp"
+        android:duplicateParentState="true"
+        android:singleLine="true"
+        android:textSize="@dimen/design_bottom_navigation_active_text_size"
+        android:visibility="invisible"/>
+  </android.support.design.internal.BaselineLayout>
 </merge>
