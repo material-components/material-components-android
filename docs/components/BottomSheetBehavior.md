@@ -2,7 +2,7 @@
 title: "Bottom Sheets"
 layout: detail
 section: components
-excerpt: "BottomSheetBehavior make it easy to implement persistent bottom sheets, views that come up from the bottom of the screen that are elevated over the main content."
+excerpt: "BottomSheetBehavior makes it easy to implement persistent bottom sheets, views that come up from the bottom of the screen that are elevated over the main content."
 iconId: bottom_sheet
 path: /catalog/bottom-sheet-behavior/
 -->
@@ -22,15 +22,12 @@ Note: If you want to use Bottom Sheets that are modal (dialogs), use
 
 ## Design & API Documentation
 
--   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomSheetBehavior.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomSheetBehavior.java)
     <!--{: .icon-list-item.icon-list-item--spec }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
--   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html)
+-   [Class overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Material design
-    guidelines](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
+-   [Material design guidelines](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 <!--{: .icon-list }-->  <!-- Style for a list that requires icons instead of standard bullets. -->
 
@@ -77,7 +74,7 @@ bottomSheetBehavior.setPeekHeight(300);
 bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 ```
 
-## Related concepts
+## Related Concepts
 
 Using
 [BottomSheetDialogFragment](/material-components/material-components-android/blob/master/docs/components/BottomSheetDialogFragment.md)

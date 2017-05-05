@@ -2,7 +2,7 @@
 title: "Modal Bottom Sheets"
 layout: detail
 section: components
-excerpt: "BottomSheetDialogFragment make it easy to implement modal bottom sheets, dialogs that render a shadow on the content below them to indicate that they are modal.
+excerpt: "BottomSheetDialogFragment makes it easy to implement modal bottom sheets, dialogs that render a shadow on the content below them to indicate that they are modal.
 iconId: bottom_sheet
 path: /catalog/bottom-sheet-dialog-fragment/
 -->
@@ -25,15 +25,12 @@ in conjunction with a
 
 ## Design & API Documentation
 
--   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomSheetDialogFragment.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomSheetDialogFragment.java)
     <!--{: .icon-list-item.icon-list-item--spec }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
--   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetDialogFragment.html)
+-   [Class overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetDialogFragment.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Material design
-    guidelines](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-modal-bottom-sheets)
+-   [Material design guidelines](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-modal-bottom-sheets)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 <!--{: .icon-list }--> <!-- Style for a list that requires icons instead of standard bullets. -->
 
@@ -52,7 +49,7 @@ Note: Don't call `setOnCancelListener` or `setOnDismissListener` on a
 BottomSheetDialogFragment, instead you can override `onCancel(DialogInterface)`
 or `onDismiss(DialogInterface)` if necessary.
 
-## Related concepts
+## Related Concepts
 
 BottomSheetDialogFragments are a more modern version of
 [Dialogs](https://developer.android.com/guide/topics/ui/dialogs.html). They have

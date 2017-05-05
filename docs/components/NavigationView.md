@@ -21,12 +21,10 @@ side, used to display in-app navigation links.
 
 ## Design & API Documentation
 
--   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/NavigationView.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/NavigationView.java)
     <!--{: .icon-list-item.icon-list-item--spec }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
--   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/NavigationView.html)
+-   [Class overview](https://developer.android.com/reference/android/support/design/widget/NavigationView.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 <!--{: .icon-list }--> <!-- Style for a list that requires icons instead of standard bullets. -->
 
@@ -102,8 +100,7 @@ this:
 
 There are other navigation patterns you should be aware of
 
--   [Hierarchical
-    navigation](https://developer.android.com/training/implementing-navigation/index.html).
+-   [Hierarchical navigation](https://developer.android.com/training/implementing-navigation/index.html).
     *See also [Navigation with Back and
     Up](https://developer.android.com/design/patterns/navigation.html)*
 -   Swipeable tabs using

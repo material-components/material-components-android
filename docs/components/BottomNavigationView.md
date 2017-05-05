@@ -2,7 +2,7 @@
 title: "Bottom Navigation"
 layout: detail
 section: components
-excerpt: "BottomNavigationView make it easy to explore and switch between top-level views in a single tap."
+excerpt: "BottomNavigationView makes it easy to explore and switch between top-level views in a single tap."
 iconId: bottom_navigation
 path: /catalog/bottom-navigation-view/
 -->
@@ -18,15 +18,12 @@ navigate to.
 
 ## Design & API Documentation
 
--   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomNavigationView.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomNavigationView.java)
     <!--{: .icon-list-item.icon-list-item--spec }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
--   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView.html)
+-   [Class overview](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Material design
-    guidelines](https://material.io/guidelines/components/bottom-navigation.html)
+-   [Material design guidelines](https://material.io/guidelines/components/bottom-navigation.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 <!--{: .icon-list }-->
 <!-- Style for a list that requires icons instead of standard bullets. -->
@@ -45,7 +42,7 @@ resource.
 A typical layout file would look like this:
 
 ```xml
-<RelativeLayout
+<FrameLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -57,13 +54,13 @@ A typical layout file would look like this:
       android:id="@+id/bottom_navigation"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_alignParentBottom="true"
+      android:layout_gravity="bottom"
       app:itemBackground="@color/colorPrimary"
       app:itemIconTint="@color/white"
       app:itemTextColor="@color/white"
       app:menu="@menu/navigation_menu" />
 
-</RelativeLayout>
+</FrameLayout>
 ```
 
 ### Handling Enabled/States
@@ -104,8 +101,7 @@ And you would use it like this on your BottomNavigationView:
 
 There are other navigation patterns you should be aware of
 
--   [Hierarchical
-    navigation](https://developer.android.com/training/implementing-navigation/index.html).
+-   [Hierarchical navigation](https://developer.android.com/training/implementing-navigation/index.html).
     *See also [Navigation with Back and
     Up](https://developer.android.com/design/patterns/navigation.html).*
 -   Swipeable tabs using
