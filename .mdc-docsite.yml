@@ -5,3 +5,4 @@ site_title: Material Components for Android
 site_description: >
   Material Components for Android is a set of user interface components that help developers build Android apps with Material Design.
 repo_url: https://github.com/material-components/material-components-android/
+repo_stable_branch: master
