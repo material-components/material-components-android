@@ -36,10 +36,10 @@ a `TextInputEditText` as a direct child.
 
 ```xml
 <android.support.design.widget.TextInputLayout
-  android:layout_width="match_parent"
-  android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputEditText
+  <android.support.design.widget.TextInputEditText
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:hint="@string/hint_text"/>
