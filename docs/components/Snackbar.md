@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Snackbars provide brief feedback about an operation through a message at the bottom of the screen."
 iconId: toast
-path: /catalog/snackbars/
+path: /catalog/snackbar/
 -->
 
 # Snackbar
@@ -19,7 +19,7 @@ action that was just taken, or retrying an action that had failed.
 
 ## Design & API Documentation
 
-- [Snackbars](https://material.io/guidelines/components/snackbars-toasts.html)
+- [Material Design guidelines: Snackbars](https://material.io/guidelines/components/snackbars-toasts.html)
   <!--{: .icon-list-item.icon-list-item--spec }-->
 - [Class
   definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/Snackbar.java)

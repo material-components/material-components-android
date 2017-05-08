@@ -22,19 +22,18 @@ Note: If you want to use Bottom Sheets that are modal (dialogs), use
 
 ## Design & API Documentation
 
+-   [Material Design guidelines: Bottom Sheets](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomSheetBehavior.java)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
-    <!-- Styles for list items requiring icons instead of standard bullets. -->
+    <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Material design guidelines](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
-<!--{: .icon-list }-->  <!-- Style for a list that requires icons instead of standard bullets. -->
+    <!--{: .icon-list-item.icon-list-item--link }-->
+<!--{: .icon-list }-->
 
 ## Usage
 
 BottomSheetBehavior works in tandem with CoordinatorLayout to let you display
-content on a Bottom sheet (a layer on top of the main content), perform 
+content on a Bottom sheet (a layer on top of the main content), perform
 entrance/exit animations, respond to dragging/swiping gestures, etc.
 
 Bottom sheets have 5 states:

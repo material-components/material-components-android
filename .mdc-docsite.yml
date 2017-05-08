@@ -1,7 +1,9 @@
 # Configuration used to generate the external documentation website.
 # https://github.com/material-components/material-components-site-generator
 basepath: /android
+site_platform: android
 site_title: Material Components for Android
+site_short_title: Android
 site_description: >
   Material Components for Android is a set of user interface components that help developers build Android apps with Material Design.
 repo_url: https://github.com/material-components/material-components-android/

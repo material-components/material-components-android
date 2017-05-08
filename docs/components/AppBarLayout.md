@@ -15,15 +15,15 @@ to scrolling.
 
 ## Design & API Documentation
 
+*   [Material Design guidelines: App Bars](https://material.io/guidelines/layout/structure.html#structure-app-bar)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+*   [Material Design guidelines: Scrolling techniques](https://material.io/guidelines/patterns/scrolling-techniques.html)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/AppBarLayout.java)
-    <!--{: .icon-list-item.icon-list-item--spec }-->  <!-- Styles for list items requiring icons instead of standard bullets. -->
+    <!--{: .icon-list-item.icon-list-item--link }-->  <!-- Styles for list items requiring icons instead of standard bullets. -->
 *   [Class overview](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.html)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
-*   [Material design guidelines](https://material.io/guidelines/layout/structure.html#structure-app-bar)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
-*   [Scrolling techniques](https://material.io/guidelines/patterns/scrolling-techniques.html)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
-<!--{: .icon-list }-->  <!-- Style for a list that requires icons instead of standard bullets. -->
+    <!--{: .icon-list-item.icon-list-item--link }-->
+<!--{: .icon-list }-->
 
 As a container for Toolbars, and other views, it works with
 [CoordinatorLayout](/material-components/material-components-android/blob/master/docs/components/CoordinatorLayout.md)

@@ -2,12 +2,12 @@
 title: "Text Fields"
 layout: detail
 section: components
-excerpt: "TextInputLayout provides a material text field with an animated floating label and other Material features.
+excerpt: "TextInputLayout provides a material text field with an animated floating label and other Material features."
 iconId: text_field
-path: /catalog/text-fields/
+path: /catalog/text-input-layout/
 -->
 
-# Text Fields
+# TextInputLayout
 
 `TextInputLayout` provides an implementation for [Material text
 fields](https://material.io/guidelines/components/text-fields.html). Used in
@@ -17,6 +17,9 @@ conjunction with a
 
 ## Design & API Documentation
 
+-   [Material Design
+    guidelines: Text Fields](https://material.io/guidelines/components/text-fields.html)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/TextInputLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
@@ -24,9 +27,6 @@ conjunction with a
 -   [Class
     overview](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html)
     <!--{: .icon-list-item.icon-list-item--link }-->
--   [Material design
-    guidelines](https://material.io/guidelines/components/text-fields.html)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
 <!--{: .icon-list }-->
 
 ## Usage

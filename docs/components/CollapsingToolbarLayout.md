@@ -2,8 +2,9 @@
 title: "Collapsing Toolbars"
 layout: detail
 section: components
-excerpt: "CollapsingToolbarLayout provides an implementation for a collapsing toolbar.
-path: /catalog/collapsing-toolbars/
+excerpt: "CollapsingToolbarLayout provides an implementation for a collapsing toolbar."
+iconId: toolbar
+path: /catalog/collapsing-toolbar-layout/
 -->
 
 # CollapsingToolbarLayout
@@ -20,18 +21,19 @@ and a scrollable content view, such as
 
 ## Design & API Documentation
 
+*   [Material Design
+    guidelines: UI regions](https://material.io/guidelines/layout/structure.html#structure-ui-regions)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+*   [Material Design guidelines:
+    Scrolling app bar behavior](https://material.io/guidelines/patterns/scrolling-techniques.html#scrolling-techniques-behavior)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/CollapsingToolbarLayout.java)
-    <!--{: .icon-list-item.icon-list-item }-->
+    <!--{: .icon-list-item.icon-list-item--link }-->
 *   [Class
     overview](https://developer.android.com/reference/android/support/design/widget/CollapsingToolbarLayout.html)
-    <!--{: .icon-list-item.icon-list-item }-->
-*   [Material design
-    guidelines](https://material.io/guidelines/layout/structure.html#structure-ui-regions)
-    <!--{: .icon-list-item.icon-list-item }-->
-*   [Scrolling app bar
-    behavior](https://material.io/guidelines/patterns/scrolling-techniques.html#scrolling-techniques-behavior)
-    <!--{: .icon-list-item.icon-list-item }--> <!--{: .icon-list }-->
+    <!--{: .icon-list-item.icon-list-item--link }-->
+<!--{: .icon-list }-->
 
 ## Usage
 

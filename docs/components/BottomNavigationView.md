@@ -18,15 +18,14 @@ navigate to.
 
 ## Design & API Documentation
 
--   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomNavigationView.java)
+-   [Material Design guidelines: Bottom Navigation](https://material.io/guidelines/components/bottom-navigation.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomNavigationView.java)
+    <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 -   [Class overview](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView.html)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Material design guidelines](https://material.io/guidelines/components/bottom-navigation.html)
-    <!--{: .icon-list-item.icon-list-item--spec }-->
+    <!--{: .icon-list-item.icon-list-item--link }-->
 <!--{: .icon-list }-->
-<!-- Style for a list that requires icons instead of standard bullets. -->
 
 ## Usage
 
