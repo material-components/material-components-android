@@ -4,7 +4,7 @@
 *   [BottomNavigationView](components/BottomNavigationView.md)
 *   [BottomSheetBehavior](components/BottomSheetBehavior.md)
 *   [BottomSheetDialogFragment](components/BottomSheetDialogFragment.md)
-*   [CollapsingToolbarLayout](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/CollapsingToolbarLayout.java)
+*   [CollapsingToolbarLayout](components/CollapsingToolbarLayout.md)
 *   [CoordinatorLayout](components/CoordinatorLayout.md)
 *   [FloatingActionButton](components/FloatingActionButton.md)
 *   [NavigationView](components/NavigationView.md)
