@@ -2,7 +2,7 @@
 title: "App Bars"
 layout: detail
 section: components
-excerpt: "AppBarLayout implements many of the interaction features for the Material Design app bar, namely scrolling gestures."
+excerpt: "A flexible toolbar designed to provide a typical Material Design experience."
 iconId: toolbar
 path: /catalog/app-bar-layout/
 -->

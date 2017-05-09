@@ -2,7 +2,7 @@
 title: "Text Fields"
 layout: detail
 section: components
-excerpt: "TextInputLayout provides a material text field with an animated floating label and other Material features."
+excerpt: "A text field with an animated floating label and other Material Design features."
 iconId: text_field
 path: /catalog/text-input-layout/
 -->

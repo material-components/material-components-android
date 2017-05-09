@@ -2,7 +2,7 @@
 title: "Modal Bottom Sheets"
 layout: detail
 section: components
-excerpt: "BottomSheetDialogFragment makes it easy to implement modal bottom sheets, dialogs that render a shadow on the content below them to indicate that they are modal."
+excerpt: "Modal bottom sheets act like a dialog at the bottom of the screen."
 iconId: bottom_sheet
 path: /catalog/bottom-sheet-dialog-fragment/
 -->

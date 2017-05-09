@@ -2,7 +2,7 @@
 title: "Floating Action Buttons"
 layout: detail
 section: components
-excerpt: "FloatingActionButton is used for the primary action in an application."
+excerpt: "A floating button for the primary action in an application."
 iconId: button
 path: /catalog/floating-action-button/
 -->

@@ -2,7 +2,7 @@
 title: "Bottom Navigation"
 layout: detail
 section: components
-excerpt: "BottomNavigationView makes it easy to explore and switch between top-level views in a single tap."
+excerpt: "Bottom navigation bars make it easy to explore and switch between top-level views in a single tap."
 iconId: bottom_navigation
 path: /catalog/bottom-navigation-view/
 -->

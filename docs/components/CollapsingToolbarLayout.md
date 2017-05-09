@@ -2,7 +2,7 @@
 title: "Collapsing Toolbars"
 layout: detail
 section: components
-excerpt: "CollapsingToolbarLayout provides an implementation for a collapsing toolbar."
+excerpt: "Collapsing toolbars change height and other visual aspects in response to scrolling."
 iconId: toolbar
 path: /catalog/collapsing-toolbar-layout/
 -->

@@ -2,7 +2,7 @@
 title: "Tab Layout"
 layout: detail
 section: components
-excerpt: "TabLayout provides a horizontal layout to display tabs."
+excerpt: "A horizontal layout to display tabs."
 iconId: tabs
 path: /catalog/tab-layout/
 -->

@@ -2,7 +2,7 @@
 title: "Coordinated Behaviors"
 layout: detail
 section: components
-excerpt: "CoordinatorLayout allows for coordinating interactive behaviors between its children."
+excerpt: "A layout that coordinates interactive behaviors between its children."
 path: /catalog/coordinator-layout/
 -->
 

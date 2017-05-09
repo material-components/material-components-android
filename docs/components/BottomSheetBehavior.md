@@ -2,7 +2,7 @@
 title: "Bottom Sheets"
 layout: detail
 section: components
-excerpt: "BottomSheetBehavior makes it easy to implement persistent bottom sheets, views that come up from the bottom of the screen that are elevated over the main content."
+excerpt: "Bottom sheets slide up from the bottom of the screen to reveal more content."
 iconId: bottom_sheet
 path: /catalog/bottom-sheet-behavior/
 -->
