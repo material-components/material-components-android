@@ -29,42 +29,51 @@ path: /
 Material Components for Android provides modular and customizable UI components
 to help developers easily create beautiful apps.
 
-## Usage
+## Getting Started
 
-1. To use the Material Components library with the Gradle build system, include
-the library in the build.gradle dependencies for your app.
+1.  {: .step-list-item } ### Modify build.gradle
+    To use the Material Components library with the Gradle build system, include
+    the library in the build.gradle dependencies for your app.
 
-  ```groovy
-  dependencies {
-    compile 'com.android.support:design:[Library version code]'
-  }
-  ```
-2. Add a reference to the component (widget) that you want to use in your XML
-layout. (You can also dynamically instantiate a widget in Java.)
+    ```groovy
+    dependencies {
+      compile 'com.android.support:design:[Library version code]'
+    }
+    ```
 
-  ```xml
-  <android.support.design.widget.FloatingActionButton android:id="@id/fab" />
-  ```
+2.  {: .step-list-item } ### Update your Layout
+    Add a reference to the component (widget) that you want to use in your XML
+    layout. (You can also dynamically instantiate a widget in Java.)
 
-2. You can then reference that widget in your Java class.
+    ```xml
+    <android.support.design.widget.FloatingActionButton android:id="@id/fab" />
+    ```
 
-  ```java
-  FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-  ```
+3.  {: .step-list-item } ### Use the Component
+    You can then reference that widget in your Java class. First import it,
 
-3. Make sure you have an import statement for the component. Most IDEs add and
-organize import statements by default.
+    ```java
+    import android.support.design.widget.FloatingActionButton;
+    ```
 
-  ```java
-  import android.support.design.widget.FloatingActionButton;
-  ```
+    then use it.
 
-## What's next?
+    ```java
+    FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+    fab.setOnClickListener(new View.OnClickListener() {
+      public void onClick(View v) {
+        // Do something!
+      }
+    });
+    ```
 
-*   [View the components](./catalog)
-*   [Contributing](./contributing.md)
-*   [Class documentation](https://developer.android.com/reference/android/support/design/widget/package-summary.html)
-*   [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
-*   [Android Developer’s Guide](https://developer.android.com/training/material/index.html)
-*   [Material.io](https://www.material.io)
-*   [Material Design Guidelines](https://material.google.com)
+4.  {: .step-list-item } ### What's next?
+
+    * [View the components](./catalog)
+    * [Contributing](./contributing.md)
+    * [Class documentation](https://developer.android.com/reference/android/support/design/widget/package-summary.html)
+    * [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
+    * [Android Developer’s Guide](https://developer.android.com/training/material/index.html)
+    * [Material.io](https://www.material.io)
+    * [Material Design Guidelines](https://material.google.com)
+{: .step-list }
