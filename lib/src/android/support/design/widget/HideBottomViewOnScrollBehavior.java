@@ -19,8 +19,6 @@ package android.support.design.widget;
 import android.content.Context;
 import android.support.design.widget.CoordinatorLayout.Behavior;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.animation.FastOutLinearInInterpolator;
-import android.support.v4.view.animation.LinearOutSlowInInterpolator;
 import android.util.AttributeSet;
 import android.view.View;
 
@@ -30,7 +28,8 @@ import android.view.View;
  */
 public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
-  private static final int ANIMATION_DURATION = 200;
+  private static final int ENTER_ANIMATION_DURATION = 225;
+  private static final int EXIT_ANIMATION_DURATION = 175;
 
   private int height = 0;
 
@@ -84,8 +83,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
     child
         .animate()
         .translationY(0)
-        .setInterpolator(new LinearOutSlowInInterpolator())
-        .setDuration(ANIMATION_DURATION);
+        .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
+        .setDuration(ENTER_ANIMATION_DURATION);
   }
 
   private void slideDown(V child) {
@@ -93,7 +92,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
     child
         .animate()
         .translationY(height)
-        .setInterpolator(new FastOutLinearInInterpolator())
-        .setDuration(ANIMATION_DURATION);
+        .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
+        .setDuration(EXIT_ANIMATION_DURATION);
   }
 }
