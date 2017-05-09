@@ -1,3 +1,10 @@
+<!--docs:
+title: "Contributing"
+layout: landing
+section: docs
+path: /docs/contributing/
+-->
+
 # General Contributing Guidelines
 
 The Material Components contributing policies and procedures can be found in the
@@ -20,18 +27,6 @@ error-prone!) to review, maintain, and understand.
 If the style guide is not explicit about a particular situation, the cardinal
 rule is to **be consistent**. For example, take a look at the surrounding code
 and follow its lead, or look for similar cases elsewhere in the codebase.
-
-#### General conventions
-
-TODO: Add general conventions
-
-#### Style
-
-We provide configurations for Android Studio that allow for auto-formatting to
-the below guidelines. Java style is also enforced via checkstyle as part of our
-Gradle build.
-
-TODO: Link to IDE presets
 
 ##### Java
 
