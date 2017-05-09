@@ -61,8 +61,8 @@ organize import statements by default.
 
 ## What's next?
 
-*   [View the components](https://github.com/material-components/material-components-android/tree/master/lib/)
-*   [Contributing](g3doc/contributing.md)
+*   [View the components](./catalog)
+*   [Contributing](./contributing.md)
 *   [Class documentation](https://developer.android.com/reference/android/support/design/widget/package-summary.html)
 *   [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
 *   [Android Developer’s Guide](https://developer.android.com/training/material/index.html)
