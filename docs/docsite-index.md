@@ -9,7 +9,7 @@ path: /
 
 <ul class="benefits-list">
   <li class="benefits-list-item">
-    <h3>Pixel-perfect &amp; up to date</h3>
+    <h3>Accurate &amp; up to date</h3>
     <p>Implement <a href="https://material.io/guidelines">Material Design</a> with pixel-perfect components, maintained by Google engineers and designers</p>
   </li>
   <li class="benefits-list-item">
