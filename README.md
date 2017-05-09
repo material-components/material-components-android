@@ -1,3 +1,6 @@
+[![Build Status](https://img.shields.io/travis/material-components/material-components-android/master.svg)](https://travis-ci.org/material-components/material-components-android/)
+[![Chat](https://img.shields.io/discord/259087343246508035.svg)](https://discord.gg/material-components)
+
 # Material Components for Android
 
 Material Components for Android (MDC-Android) help developers execute
