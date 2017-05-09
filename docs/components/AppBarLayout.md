@@ -9,6 +9,9 @@ path: /catalog/app-bar-layout/
 
 # AppBarLayout
 
+![App Bars](assets/app-bars.svg)
+<!--{: .article__asset.article__asset--screenshot }-->
+
 AppBarLayout is a ViewGroup used to wrap the app bar that provides many of the
 Material Design features and interactions for the app bar, namely responsiveness
 to scrolling.

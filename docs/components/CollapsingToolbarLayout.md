@@ -9,6 +9,9 @@ path: /catalog/collapsing-toolbar-layout/
 
 # CollapsingToolbarLayout
 
+![Collapsing Toolbars](assets/collapsing-toolbars.svg)
+<!--{: .article__asset.article__asset--screenshot }-->
+
 `CollapsingToolbarLayout` is a `ViewGroup` that provides many of the visual
 characteristics and interactions for collapsing toolbars specified in the
 material guidelines. To create the collapsing toolbar, `CollapsingToolbarLayout`

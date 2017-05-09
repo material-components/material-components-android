@@ -9,6 +9,9 @@ path: /catalog/bottom-sheet-behavior/
 
 # BottomSheetBehavior
 
+![Bottom Sheets](assets/bottom-sheets.svg)
+<!--{: .article__asset.article__asset--screenshot }-->
+
 **Persistent bottom sheets** are views that come up from the bottom of the
 screen, elevated over the main content. They can be dragged vertically to
 expose more or less of their content.

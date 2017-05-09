@@ -9,6 +9,9 @@ path: /catalog/snackbar/
 
 # Snackbar
 
+![Snackbars](assets/snackbars.svg)
+<!--{: .article__asset.article__asset--screenshot }-->
+
 Snackbars provide brief feedback about an operation through a message at the
 bottom of the screen. Snackbars disappear automatically, either after a timeout
 or after a user interaction elsewhere on the screen, and can also be swiped off

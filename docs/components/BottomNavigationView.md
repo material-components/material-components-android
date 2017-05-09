@@ -9,12 +9,14 @@ path: /catalog/bottom-navigation-view/
 
 # BottomNavigationView
 
+![Bottom Navigation](assets/bottom-navigation.svg)
+<!--{: .article__asset.article__asset--screenshot }-->
+
 Bottom navigation bars make it easy to explore and switch between top-level
 views with a single tap.
 
 This pattern can be used when you have between 3 and 5 top-level destinations to
 navigate to.
-
 
 ## Design & API Documentation
 

@@ -9,6 +9,9 @@ path: /catalog/navigation-view/
 
 # NavigationView
 
+![Navigation Views](assets/navigation-views.svg)
+<!--{: .article__asset.article__asset--screenshot }-->
+
 `NavigationView` is an easy way to display a navigation menu from a menu
 resource.
 

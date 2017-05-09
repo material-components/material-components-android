@@ -9,6 +9,9 @@ path: /catalog/text-input-layout/
 
 # TextInputLayout
 
+![Text Fields](assets/text-fields.svg)
+<!--{: .article__asset.article__asset--screenshot }-->
+
 `TextInputLayout` provides an implementation for [Material text
 fields](https://material.io/guidelines/components/text-fields.html). Used in
 conjunction with a
