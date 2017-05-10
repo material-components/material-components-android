@@ -57,6 +57,5 @@ a nicer-looking entrance animation and since they are pinned to the bottom they
 may feel easier to use on larger devices.
 
 BottomSheetDialogFragments look very similar to the effects of
-[BottomSheetBehavior](BottomSheetBehavior.md)
-but the latter is not modal and requires a
-[CoordinatorLayout](CoordinatorLayout.md).
+[BottomSheetBehavior](BottomSheetBehavior.md) but the latter is not modal and
+requires a [CoordinatorLayout](CoordinatorLayout.md).

@@ -105,12 +105,10 @@ There are other navigation patterns you should be aware of
 -   [Hierarchical navigation](https://developer.android.com/training/implementing-navigation/index.html).
     *See also [Navigation with Back and
     Up](https://developer.android.com/design/patterns/navigation.html)*
--   Swipeable tabs using
-    [TabLayout](/material-components/material-components-android/blob/master/docs/components/TabLayout.md)
-    and
+-   Swipeable tabs using [TabLayout](TabLayout.md) and
     [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html)
--   [BottomNavigationView](/material-components/material-components-android/blob/master/docs/components/BottomNavigationView.md)
-    for when you have only 3 to 5 very well defined navigation categories
+-   [BottomNavigationView](BottomNavigationView.md) for when you have only 3 to
+    5 very well defined navigation categories
 
 You should familiarize yourself with the most common use for `NavigationView`,
 [Creating a Navigation Drawer -

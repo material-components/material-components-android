@@ -70,4 +70,4 @@ provide additional UI features in relation to scrolling.
 
 *   [App bar](https://material.io/guidelines/layout/structure.html#structure-app-bar)
 *   [Toolbars](https://material.io/guidelines/components/toolbars.html#toolbars-usage)
-*   [CollapsingToolbarLayout](/material-components/material-components-android/blob/master/docs/components/CollapsingToolbarLayout.md)
+*   [CollapsingToolbarLayout](CollapsingToolbarLayout.md)

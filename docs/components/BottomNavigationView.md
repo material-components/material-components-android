@@ -105,11 +105,7 @@ There are other navigation patterns you should be aware of
 -   [Hierarchical navigation](https://developer.android.com/training/implementing-navigation/index.html).
     *See also [Navigation with Back and
     Up](https://developer.android.com/design/patterns/navigation.html).*
--   Swipeable tabs using
-    [TabLayout](/material-components/material-components-android/blob/master/docs/components/TabLayout.md)
-    and
+-   Swipeable tabs using [TabLayout](TabLayout.md) and
     [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html).
--   Using
-    [NavigationView](/material-components/material-components-android/blob/master/docs/components/NavigationView.md)
-    to display a longer list of navigation targets, usually in a navigation
-    drawer.
+-   Using [NavigationView](NavigationView.md) to display a longer list of
+    navigation targets, usually in a navigation drawer.

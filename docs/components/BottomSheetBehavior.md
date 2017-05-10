@@ -78,8 +78,7 @@ bottomSheetBehavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
 
 ## Related Concepts
 
-Using
-[BottomSheetDialogFragment](/material-components/material-components-android/blob/master/docs/components/BottomSheetDialogFragment.md)
-provides a similar UI and interactions as BottomSheetBehavior, however
+Using [BottomSheetDialogFragment](BottomSheetDialogFragment.md) provides a
+similar UI and interactions as BottomSheetBehavior, however
 BottomSheetDialogFragment does not require CoordinatorLayout and creates a modal
 Bottom Sheet (essentially a dialog).
