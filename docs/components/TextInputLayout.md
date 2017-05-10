@@ -67,7 +67,7 @@ Text field element                     | Relevant attributes/methods
 Label (also called a “Floating Label”) | [`android:hint`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android:hint)
                                        | [`app:hintEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:hintEnabled)
 Error message                          | [`app:errorEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:errorEnabled)
-                                       | [`#setError(CharSequence)`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#setError\(java.lang.CharSequence\))
+                                       | [`#setError(CharSequence)`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#setError(java.lang.CharSequence))
 Password redaction                     | [`app:passwordToggleEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:passwordToggleEnabled)
                                        | [`app:passwordToggleDrawable`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:passwordToggleDrawable)
 Character counter                      | [`app:counterEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:counterEnabled)
