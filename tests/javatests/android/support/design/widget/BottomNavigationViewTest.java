@@ -435,6 +435,25 @@ public class BottomNavigationViewTest {
     assertEquals(3, mBottomNavigation.getMenu().size());
   }
 
+  @UiThreadTest
+  @Test
+  @SmallTest
+  public void testSettingMenuItemVisibility() throws Throwable {
+    final MenuItem homeMenuItem = mBottomNavigation.getMenu().findItem(R.id.destination_home);
+    assertTrue(homeMenuItem.isVisible());
+    homeMenuItem.setVisible(false);
+    assertFalse(homeMenuItem.isVisible());
+
+    mBottomNavigation.getMenu().clear();
+    mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_with_invisible_button_content);
+
+    final MenuItem destinationMenuItem =
+        mBottomNavigation.getMenu().findItem(R.id.destination_profile);
+    assertFalse(destinationMenuItem.isVisible());
+    destinationMenuItem.setVisible(true);
+    assertTrue(destinationMenuItem.isVisible());
+  }
+
   @Test
   @SmallTest
   public void testSavedState() throws Throwable {

@@ -330,7 +330,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
     for (int i = 0; i < menuSize; i++) {
       mPresenter.setUpdateSuspended(true);
-      mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
+      if (mButtons[i] != null) {
+        mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
+      }
       mPresenter.setUpdateSuspended(false);
     }
   }
