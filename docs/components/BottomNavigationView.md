@@ -7,13 +7,13 @@ iconId: bottom_navigation
 path: /catalog/bottom-navigation-view/
 -->
 
-# BottomNavigationView
+# Bottom Navigation
 
 ![Bottom Navigation](assets/bottom-navigation.svg)
 <!--{: .article__asset.article__asset--screenshot }-->
 
-Bottom navigation bars make it easy to explore and switch between top-level
-views with a single tap.
+`BottomNavigationView` creates **bottom navigation** bars, making it easy to
+explore and switch between top-level content views with a single tap.
 
 This pattern can be used when you have between 3 and 5 top-level destinations to
 navigate to.
@@ -33,7 +33,7 @@ navigate to.
 
 1. Create a [menu
 resource](https://developer.android.com/guide/topics/resources/menu-resource.html)
-with up to 5 navigation targets (BottomNavigationView does not support more than
+with up to 5 navigation targets (`BottomNavigationView` does not support more than
 5 items).
 2. Lay out your `BottomNavigationView` below your content.
 3. Set the `app:menu` attribute on your `BottomNavigationView` to your menu
@@ -84,7 +84,7 @@ For example, you could have a `navigation_colors.xml` that contains:
  </selector>
 ```
 
-And you would use it like this on your BottomNavigationView:
+And you would use it like this on your `BottomNavigationView`:
 
 ```xml
 <android.support.design.widget.BottomNavigationView

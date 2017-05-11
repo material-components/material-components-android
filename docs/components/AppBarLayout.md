@@ -7,13 +7,13 @@ iconId: toolbar
 path: /catalog/app-bar-layout/
 -->
 
-# AppBarLayout
+# App Bars
 
 ![App Bars](assets/app-bars.svg)
 <!--{: .article__asset.article__asset--screenshot }-->
 
-AppBarLayout is a ViewGroup used to wrap the app bar that provides many of the
-Material Design features and interactions for the app bar, namely responsiveness
+`AppBarLayout` is the ViewGroup used to wrap the app bar that provides many of the
+Material Design features and interactions for **app bars**, namely responsiveness
 to scrolling.
 
 ## Design & API Documentation
@@ -29,15 +29,15 @@ to scrolling.
 <!--{: .icon-list }-->
 
 As a container for Toolbars, and other views, it works with
-[CoordinatorLayout](/material-components/material-components-android/blob/master/docs/components/CoordinatorLayout.md)
-in order to respond to scrolling techniques. AppBarLayout depends heavily on
+[CoordinatorLayout](CoordinatorLayout.md)
+in order to respond to scrolling techniques. `AppBarLayout` depends heavily on
 being used as a direct child of the CoordinatorLayout and reacts to a sibling
 that supports scrolling
 (e.g. [NestedScrollView](https://developer.android.com/reference/android/support/v4/widget/NestedScrollView.html),
 [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html)).
 
-Flags are added to each child of the AppBarLayout to control how they will
-respond to scrolling. These are interpreted by the AppBarLayout.LayoutParams.
+Flags are added to each child of the `AppBarLayout` to control how they will
+respond to scrolling. These are interpreted by the `AppBarLayout.LayoutParams`.
 
 **Available flags are:**
 
@@ -48,7 +48,7 @@ respond to scrolling. These are interpreted by the AppBarLayout.LayoutParams.
 *   [snap](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP)
 
 Views using the scroll flag should be declared and visually positioned before
-other views in the AppBarLayout. This ensures that they are able to exit at the
+other views in the `AppBarLayout`. This ensures that they are able to exit at the
 top of the screen, leaving behind fixed, or pinned, elements.
 
 ## Related Concepts

@@ -7,7 +7,7 @@ iconId: side_navigation
 path: /catalog/navigation-view/
 -->
 
-# NavigationView
+# Navigation Views
 
 ![Navigation Views](assets/navigation-views.svg)
 <!--{: .article__asset.article__asset--screenshot }-->

@@ -7,13 +7,13 @@ iconId: toolbar
 path: /catalog/collapsing-toolbar-layout/
 -->
 
-# CollapsingToolbarLayout
+# Collapsing Toolbars
 
 ![Collapsing Toolbars](assets/collapsing-toolbars.svg)
 <!--{: .article__asset.article__asset--screenshot }-->
 
 `CollapsingToolbarLayout` is a `ViewGroup` that provides many of the visual
-characteristics and interactions for collapsing toolbars specified in the
+characteristics and interactions for **collapsing toolbars** specified in the
 material guidelines. To create the collapsing toolbar, `CollapsingToolbarLayout`
 integrates with
 [`AppBarLayout`](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.html),
@@ -76,10 +76,10 @@ A layout with a collapsing toolbar might look something like this:
 ```
 
 A common collapsing toolbar pattern is the parallax image scroll, in which
-images or other children of the CollapsingToolbarLayout scroll at different
+images or other children of the `CollapsingToolbarLayout` scroll at different
 rates than their siblings. To achieve this effect, add an
 [`ImageView`](https://developer.android.com/reference/android/widget/ImageView.html)
-and any other views as children of the CollapsingToolbarLayout. Specify parallax
+and any other views as children of the `CollapsingToolbarLayout`. Specify parallax
 multipliers in the XML for as many of the siblings as you like.
 
 A toolbar with a collapsing image might look something like this:

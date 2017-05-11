@@ -7,7 +7,7 @@ iconId: tabs
 path: /catalog/tab-layout/
 -->
 
-# TabLayout
+# Tab Layout
 
 `TabLayout` provides a horizontal layout to display tabs. The layout handles
 interactions for a group of tabs including:
@@ -19,7 +19,7 @@ interactions for a group of tabs including:
 - and alignment.
 
 The Android Developers site provides [detailed documentation](https://developer.android.com/reference/android/support/design/widget/TabLayout.html)
-on implementing TabLayout.
+on implementing `TabLayout`.
 
 ## Design & API Documentation
 
@@ -34,10 +34,10 @@ on implementing TabLayout.
 ## Usage
 
 The Material Design guidelines for individual tabs is done in the tabs
-themselves; the TabLayout displays groups of these tabs and controls how they
+themselves; the `TabLayout` displays groups of these tabs and controls how they
 interact with each other.
 
-A TabLayout is a single row of tabs and can be fixed or scrollable. For a fixed
+A `TabLayout` is a single row of tabs and can be fixed or scrollable. For a fixed
 layout, the maximum number of tabs is limited by the size and number of the tabs
 and the screen size. Fixed tabs have equal width, based on the widest tab text.
 
@@ -47,11 +47,11 @@ are often held in a
 [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html).
 
 Use [setupWithViewPager(ViewPager)](https://developer.android.com/reference/android/support/design/widget/TabLayout.html#setupWithViewPager(android.support.v4.view.ViewPager))
-to link a TabLayout with a ViewPager. The
-individual tabs in the TabLayout will be automatically populated with the page
+to link a `TabLayout` with a ViewPager. The
+individual tabs in the `TabLayout` will be automatically populated with the page
 titles from the PagerAdapter.
 
-Alternatively, you can add a TabLayout to a ViewPager in XML:
+Alternatively, you can add a `TabLayout` to a ViewPager in XML:
 
 ```xml
 <android.support.v4.view.ViewPager

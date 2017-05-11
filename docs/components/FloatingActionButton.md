@@ -7,11 +7,11 @@ iconId: button
 path: /catalog/floating-action-button/
 -->
 
-# FloatingActionButton
+# Floating Action Buttons
 
-Floating action buttons are used for the primary action in an application. It is
-a round icon button that's elevated above other page content. Floating action
-buttons come in a default and mini size.
+`FloatingActionButton` displays the primary action in an application. It is
+a round icon button that's elevated above other page content. **Floating action
+buttons** come in a default and mini size.
 
 Floating action buttons provide quick-access to important or common actions
 within an app. They have a variety of uses, including:

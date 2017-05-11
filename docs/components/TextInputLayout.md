@@ -7,7 +7,7 @@ iconId: text_field
 path: /catalog/text-input-layout/
 -->
 
-# TextInputLayout
+# Text Fields
 
 ![Text Fields](assets/text-fields.svg)
 <!--{: .article__asset.article__asset--screenshot }-->
@@ -16,7 +16,8 @@ path: /catalog/text-input-layout/
 fields](https://material.io/guidelines/components/text-fields.html). Used in
 conjunction with a
 [`TextInputEditText`](https://developer.android.com/reference/android/support/design/widget/TextInputEditText.html),
-`TextInputLayout` makes it easy to include Material text fields in your layouts.
+`TextInputLayout` makes it easy to include Material **text fields** in your
+layouts.
 
 ## Design & API Documentation
 

@@ -7,15 +7,15 @@ iconId: toast
 path: /catalog/snackbar/
 -->
 
-# Snackbar
+# Snackbars
 
 ![Snackbars](assets/snackbars.svg)
 <!--{: .article__asset.article__asset--screenshot }-->
 
-Snackbars provide brief feedback about an operation through a message at the
-bottom of the screen. Snackbars disappear automatically, either after a timeout
-or after a user interaction elsewhere on the screen, and can also be swiped off
-the screen.
+The `Snackbar` widget provides brief feedback about an operation through a
+message at the bottom of the screen. **Snackbars** disappear automatically,
+either after a timeout or after a user interaction elsewhere on the screen,
+and can also be swiped off the screen.
 
 Snackbars can also offer the ability to perform an action, such as undoing an
 action that was just taken, or retrying an action that had failed.
@@ -57,7 +57,7 @@ swipe-to-dismiss, as well as automatically moving widgets like
 
 Calling `make` only *creates* the snackbar, it doesn't actually cause it to
 be visible on the screen. For showing the snackbar, use the `show` method on the
-returned Snackbar instance. Note that only one snackbar will be shown at a time.
+returned `Snackbar` instance. Note that only one snackbar will be shown at a time.
 Showing a new snackbar will dismiss any previous ones first.
 
 Showing a snackbar with just a message and no action would look like this:

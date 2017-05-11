@@ -6,14 +6,14 @@ excerpt: "A layout that coordinates interactive behaviors between its children."
 path: /catalog/coordinator-layout/
 -->
 
-# CoordinatorLayout
+# Coordinated Behaviors
 
-CoordinatorLayout is a general-purpose container that allows for coordinating
-interactive behaviors between its children. It can be used for implementing
-single view behaviors, such as drawers that slide in from off-screen and
-swipe-dismissable elements, as well as interactions between multiple views, like
-moving views out of the way as another dependent view transitions onto the
-screen.
+`CoordinatorLayout` is a general-purpose container that allows for
+**coordinating interactive behaviors** between its children. It can be used for
+implementing single view behaviors, such as drawers that slide in from
+off-screen and swipe-dismissable elements, as well as interactions between
+multiple views, like moving views out of the way as another dependent view
+transitions onto the screen.
 
 ## Design & API Documentation
 
@@ -27,25 +27,25 @@ screen.
 
 ## Usage
 
-CoordinatorLayout manages interactions between its children, and as such needs
+`CoordinatorLayout` manages interactions between its children, and as such needs
 to contain all the `View`s that interact with each other. The two general cases
-supported by CoordinatorLayout are:
+supported by `CoordinatorLayout` are:
 
-- As a top-level content layout (meaning CoordinatorLayout is at the root of all
+- As a top-level content layout (meaning `CoordinatorLayout` is at the root of all
   views within an activity or fragment).
 - As a container for a specific interaction with one or more child views.
 
-CoordinatorLayout provides a built-in mechanism for anchoring one view to
-another. CoordinatorLayout also allows children to specify that they inset
+`CoordinatorLayout` provides a built-in mechanism for anchoring one view to
+another. `CoordinatorLayout` also allows children to specify that they inset
 certain edges of the screen, and can automatically offset the positions of
 children that are anchored to those particular screen edges. For behaviors that
-don't fit either of those cases, CoordinatorLayout also allows for creating
+don't fit either of those cases, `CoordinatorLayout` also allows for creating
 custom `Behavior` classes.
 
 ### Anchors
 
 The `app:layout_anchor` attribute can be set on children of the
-CoordinatorLayout to attach them to another view. `app:layout_anchorGravity` can
+`CoordinatorLayout` to attach them to another view. `app:layout_anchorGravity` can
 be used to specify where to anchor the child on the other view. A good example
 of this is a [floating action button](FloatingActionButton.md) that is anchored
 to the bottom-right edge of an [app bar](AppBarLayout.md):
@@ -85,7 +85,7 @@ to the bottom-right edge of an [app bar](AppBarLayout.md):
 
 ### Insets
 
-CoordinatorLayout allows children to specify that they inset certain edges of
+`CoordinatorLayout` allows children to specify that they inset certain edges of
 the screen, meaning that the child consumes the area of the screen it occupies
 and other children should not be placed in that area. Views that inset an edge
 of the screen must set the `app:layout_insetEdge` attribute to specify which
@@ -138,7 +138,7 @@ Custom interactions are defined by associating
 with individual views. This can be done in XML via the `app:layout_behavior`
 attribute, and in Java via
 [`CoordinatorLayout.LayoutParams`](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.LayoutParams.html).
-CoordinatorLayout also supports specifying a default `Behavior` class
+`CoordinatorLayout` also supports specifying a default `Behavior` class
 to be used for a particular view type through the
 [`@DefaultBehavior`](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.DefaultBehavior.html)
 annotation.
@@ -156,14 +156,14 @@ Material Design guidelines, such as:
 
 ## Related Concepts
 
-CoordinatorLayout and custom Behaviors can be used to build a number of Material
+`CoordinatorLayout` and custom Behaviors can be used to build a number of Material
 Design patterns, such as:
 
 - [Gestures](https://material.io/guidelines/patterns/gestures.html)
 - [Scrolling
   techniques](https://material.io/guidelines/patterns/scrolling-techniques.html)
 
-CoordinatorLayout Behaviors also power a number of Material Components,
+`CoordinatorLayout` Behaviors also power a number of Material Components,
 including:
 
 - [AppBarLayout](AppBarLayout.md)
