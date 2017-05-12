@@ -112,6 +112,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     final int width = MeasureSpec.getSize(widthMeasureSpec);
     // Use visible item count to calculate widths
     final int visibleCount = mMenu.getVisibleItems().size();
+    // Use total item counts to measure children
+    final int totalCount = getChildCount();
 
     final int heightSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
 
@@ -132,32 +134,38 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       final int inactiveMaxAvailable = (width - activeWidth) / inactiveCount;
       final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
-      for (int i = 0; i < visibleCount; i++) {
-        mTempChildWidths[i] = (i == mSelectedItemPosition) ? activeWidth : inactiveWidth;
-        // Account for integer division which sometimes leaves some extra pixel spaces.
-        // e.g. If the nav was 10px wide, and 3 children were measured to be 3px-3px-3px, there
-        // would be a 1px gap somewhere, which this fills in.
-        if (extra > 0) {
-          mTempChildWidths[i]++;
-          extra--;
+      for (int i = 0; i < totalCount; i++) {
+        if (getChildAt(i).getVisibility() != View.GONE) {
+          mTempChildWidths[i] = (i == mSelectedItemPosition) ? activeWidth : inactiveWidth;
+          // Account for integer division which sometimes leaves some extra pixel spaces.
+          // e.g. If the nav was 10px wide, and 3 children were measured to be 3px-3px-3px, there
+          // would be a 1px gap somewhere, which this fills in.
+          if (extra > 0) {
+            mTempChildWidths[i]++;
+            extra--;
+          }
+        } else {
+          mTempChildWidths[i] = 0;
         }
       }
     } else {
       final int maxAvailable = width / (visibleCount == 0 ? 1 : visibleCount);
       final int childWidth = Math.min(maxAvailable, mActiveItemMaxWidth);
       int extra = width - childWidth * visibleCount;
-      for (int i = 0; i < visibleCount; i++) {
-        mTempChildWidths[i] = childWidth;
-        if (extra > 0) {
-          mTempChildWidths[i]++;
-          extra--;
+      for (int i = 0; i < totalCount; i++) {
+        if (getChildAt(i).getVisibility() != View.GONE) {
+          mTempChildWidths[i] = childWidth;
+          if (extra > 0) {
+            mTempChildWidths[i]++;
+            extra--;
+          }
+        } else {
+          mTempChildWidths[i] = 0;
         }
       }
     }
 
     int totalWidth = 0;
-    // Use total item counts to measure children
-    final int totalCount = getChildCount();
     for (int i = 0; i < totalCount; i++) {
       final View child = getChildAt(i);
       if (child.getVisibility() == GONE) {
