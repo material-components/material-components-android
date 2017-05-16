@@ -30,6 +30,7 @@
         <item name="titleTextAppearance">@style/TextAppearance.Shrine.Logo</item>
     </style>
 
+    <!--
     <style name="Widget.Shrine.CollapsingToolbar" parent="">
         <item name="collapsedTitleTextAppearance">@style/TextAppearance.Shrine.Logo</item>
         <item name="contentScrim">?attr/colorPrimary</item>
@@ -53,6 +54,7 @@
         <item name="android:layout_gravity">top</item>
         <item name="android:orientation">vertical</item>
     </style>
+    -->
 
     <style name="TextAppearance.Shrine.Logo" parent="TextAppearance.AppCompat.Display3">
         <item name="android:textAllCaps">true</item>
