@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
@@ -24,8 +26,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -46,6 +50,8 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Represents a standard bottom navigation bar for application. It is an implementation of <a
@@ -96,6 +102,39 @@ public class BottomNavigationView extends FrameLayout {
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
 
   private static final int MENU_PRESENTER_ID = 1;
+
+  /**
+   * Shifting mode disabled in all cases.
+   *
+   * @see #setShiftingMode(int)
+   * @see #getShiftingMode()
+   */
+  public static final int SHIFTING_MODE_OFF = 0;
+
+  /**
+   * Shifting mode enabled in all cases.
+   *
+   * @see #setShiftingMode(int)
+   * @see #getShiftingMode()
+   */
+  public static final int SHIFTING_MODE_ON = 1;
+
+  /**
+   * Shifting mode enabled only when BottomNavigationView has 3 or more children (default).
+   *
+   * @see #setShiftingMode(int)
+   * @see #getShiftingMode()
+   */
+  public static final int SHIFTING_MODE_AUTO = 2;
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef(
+    flag = true,
+    value = {SHIFTING_MODE_OFF, SHIFTING_MODE_ON, SHIFTING_MODE_AUTO}
+  )
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface ShiftingMode {}
 
   private final MenuBuilder mMenu;
   private final BottomNavigationMenuView mMenuView;
@@ -157,6 +196,12 @@ public class BottomNavigationView extends FrameLayout {
     if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
       ViewCompat.setElevation(
           this, a.getDimensionPixelSize(R.styleable.BottomNavigationView_elevation, 0));
+    }
+    if (a.hasValue(R.styleable.BottomNavigationView_shiftingMode)) {
+      @ShiftingMode
+      int shiftingMode =
+          a.getInt(R.styleable.BottomNavigationView_shiftingMode, SHIFTING_MODE_AUTO);
+      mMenuView.setShiftingMode(shiftingMode);
     }
 
     int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
@@ -326,6 +371,37 @@ public class BottomNavigationView extends FrameLayout {
       if (!mMenu.performItemAction(item, mPresenter, 0)) {
         item.setChecked(true);
       }
+    }
+  }
+
+  /**
+   * Returns the current shifting mode flag used by this {@link BottomNavigationView}.
+   *
+   * @attr ref android.support.design.R.styleable#BottomNavigationView_shiftingMode
+   * @see #setShiftingMode(int)
+   */
+  @ShiftingMode
+  public int getShiftingMode() {
+    return mMenuView.getShiftingMode();
+  }
+
+  /**
+   * Set shifting mode flag for this {@link BottomNavigationView}. If this flag is set to {@link
+   * ShiftingMode#SHIFTING_MODE_OFF}, this menu will not have shifting behavior even if it has more
+   * than 3 children. If this flag is set to {@link ShiftingMode#SHIFTING_MODE_ON}, this menu will
+   * have shifting behavior for any number of children. If this flag is set to {@link
+   * ShiftingMode#SHIFTING_MODE_AUTO} this menu will have shifting behavior only if it has 3 or more
+   * children.
+   *
+   * @param shiftingMode one of {@link ShiftingMode#SHIFTING_MODE_OFF}, {@link
+   *     ShiftingMode#SHIFTING_MODE_ON}, or {@link ShiftingMode#SHIFTING_MODE_AUTO}
+   * @attr ref android.support.design.R.styleable#BottomNavigationView_shiftingMode
+   * @see #getShiftingMode()
+   */
+  public void setShiftingMode(@ShiftingMode int shiftingMode) {
+    if (mMenuView.getShiftingMode() != shiftingMode) {
+      mMenuView.setShiftingMode(shiftingMode);
+      mPresenter.updateMenuView(false /* cleared */);
     }
   }
 

@@ -470,6 +470,12 @@
         <attr name="itemTextColor"/>
         <attr name="itemBackground"/>
         <attr name="elevation"/>
+        <!-- Whether shifting mode should be enabled for BottomNavigationView -->
+        <attr name="shiftingMode">
+            <enum name="off" value="0"/>
+            <enum name="on" value="1"/>
+            <enum name="auto" value="2"/>
+        </attr>
     </declare-styleable>
 
 </resources>

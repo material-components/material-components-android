@@ -24,6 +24,8 @@ import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.design.R;
+import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.ShiftingMode;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
@@ -52,7 +54,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final OnClickListener mOnClickListener;
   private final Pools.Pool<BottomNavigationItemView> mItemPool = new Pools.SynchronizedPool<>(5);
 
-  private boolean mShiftingMode = true;
+  private int mShiftingModeFlag = BottomNavigationView.SHIFTING_MODE_AUTO;
 
   private BottomNavigationItemView[] mButtons;
   private int mSelectedItemId = 0;
@@ -117,7 +119,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
     final int heightSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
 
-    if (mShiftingMode) {
+    if (isShifting(mShiftingModeFlag, visibleCount)) {
       final View child = getChildAt(mSelectedItemPosition);
       int activeItemWidth = mActiveItemMinWidth;
       if (child.getVisibility() != View.GONE) {
@@ -275,6 +277,32 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     return mItemBackgroundRes;
   }
 
+  /**
+   * Sets shifting mode override flag for menu view. If this flag is set to {@link
+   * ShiftingMode#SHIFTING_MODE_OFF}, this menu will not have shifting behavior even if it has more
+   * than 3 children. If this flag is set to {@link ShiftingMode#SHIFTING_MODE_ON}, this menu will
+   * have shifting behavior for any number of children. If this flag is set to {@link
+   * ShiftingMode#SHIFTING_MODE_AUTO} this menu will have shifting behavior only if it has 3 or more
+   * children.
+   *
+   * @param shiftingMode one of {@link ShiftingMode#SHIFTING_MODE_OFF}, {@link
+   *     ShiftingMode#SHIFTING_MODE_ON}, or {@link ShiftingMode#SHIFTING_MODE_AUTO}
+   */
+  public void setShiftingMode(@ShiftingMode int shiftingMode) {
+    mShiftingModeFlag = shiftingMode;
+  }
+
+  /**
+   * Gets the status of shifting mode override flag for this menu view.
+   *
+   * @return Shifting mode flag for this BottomNavigationView (default {@link
+   *     ShiftingMode#SHIFTING_MODE_AUTO})
+   */
+  @ShiftingMode
+  public int getShiftingMode() {
+    return mShiftingModeFlag;
+  }
+
   public void setPresenter(BottomNavigationPresenter presenter) {
     mPresenter = presenter;
   }
@@ -295,7 +323,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       return;
     }
     mButtons = new BottomNavigationItemView[mMenu.size()];
-    mShiftingMode = mMenu.getVisibleItems().size() > 3;
+    boolean shifting = isShifting(mShiftingModeFlag, mMenu.getVisibleItems().size());
     for (int i = 0; i < mMenu.size(); i++) {
         mPresenter.setUpdateSuspended(true);
         mMenu.getItem(i).setCheckable(true);
@@ -305,7 +333,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         child.setIconTintList(mItemIconTint);
         child.setTextColor(mItemTextColor);
         child.setItemBackground(mItemBackgroundRes);
-        child.setShiftingMode(mShiftingMode);
+        child.setShiftingMode(shifting);
         child.initialize((MenuItemImpl) mMenu.getItem(i), 0);
         child.setItemPosition(i);
         child.setOnClickListener(mOnClickListener);
@@ -337,9 +365,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       TransitionManager.beginDelayedTransition(this, mSet);
     }
 
+    boolean shifting = isShifting(mShiftingModeFlag, mMenu.getVisibleItems().size());
     for (int i = 0; i < menuSize; i++) {
       mPresenter.setUpdateSuspended(true);
       mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
+      mButtons[i].setShiftingMode(shifting);
       mPresenter.setUpdateSuspended(false);
     }
   }
@@ -354,6 +384,12 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
   public int getSelectedItemId() {
     return mSelectedItemId;
+  }
+
+  private boolean isShifting(@ShiftingMode int shiftingMode, int childCount) {
+    return shiftingMode == BottomNavigationView.SHIFTING_MODE_AUTO
+        ? childCount > 3
+        : shiftingMode == BottomNavigationView.SHIFTING_MODE_ON;
   }
 
   void tryRestoreSelectedItemId(int itemId) {
