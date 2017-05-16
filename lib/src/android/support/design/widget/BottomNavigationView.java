@@ -16,8 +16,6 @@
 
 package android.support.design.widget;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.os.Build;
@@ -29,7 +27,6 @@ import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -127,8 +124,17 @@ public class BottomNavigationView extends FrameLayout {
    */
   public static final int SHIFTING_MODE_AUTO = 2;
 
-  /** @hide */
-  @RestrictTo(LIBRARY_GROUP)
+  /**
+   * Shifting mode flag enum for this {@link BottomNavigationView}. Shifting mode hides text labels
+   * for child views when enabled, unless the child view is selected. Shifting mode is enabled for
+   * {@link BottomNavigationView}s with more than 3 children by default, or for {@link
+   * BottomNavigationView}s with any number of children if shifting mode flag is set to {@link
+   * ShiftingMode#SHIFTING_MODE_ON}.
+   *
+   * @see <a
+   *     href="https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs">Material
+   *     Design guidelines</a>
+   */
   @IntDef(
     flag = true,
     value = {SHIFTING_MODE_OFF, SHIFTING_MODE_ON, SHIFTING_MODE_AUTO}
@@ -386,16 +392,20 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Set shifting mode flag for this {@link BottomNavigationView}. If this flag is set to {@link
-   * ShiftingMode#SHIFTING_MODE_OFF}, this menu will not have shifting behavior even if it has more
-   * than 3 children. If this flag is set to {@link ShiftingMode#SHIFTING_MODE_ON}, this menu will
-   * have shifting behavior for any number of children. If this flag is set to {@link
-   * ShiftingMode#SHIFTING_MODE_AUTO} this menu will have shifting behavior only if it has 3 or more
-   * children.
+   * Set shifting mode flag for this {@link BottomNavigationView}. Enabling shifting mode hides the
+   * text labels of menu items in this {@link BottomNavigationView} unless the menu item is
+   * selected. If this flag is set to {@link ShiftingMode#SHIFTING_MODE_OFF}, this menu will not
+   * have shifting behavior even if it has more than 3 children. If this flag is set to {@link
+   * ShiftingMode#SHIFTING_MODE_ON}, this menu will have shifting behavior for any number of
+   * children. If this flag is set to {@link ShiftingMode#SHIFTING_MODE_AUTO} this menu will have
+   * shifting behavior only if it has 3 or more children.
    *
    * @param shiftingMode one of {@link ShiftingMode#SHIFTING_MODE_OFF}, {@link
    *     ShiftingMode#SHIFTING_MODE_ON}, or {@link ShiftingMode#SHIFTING_MODE_AUTO}
    * @attr ref android.support.design.R.styleable#BottomNavigationView_shiftingMode
+   * @see <a
+   *     href="https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs">Material
+   *     Design guidelines</a>
    * @see #getShiftingMode()
    */
   public void setShiftingMode(@ShiftingMode int shiftingMode) {

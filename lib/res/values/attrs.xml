@@ -470,7 +470,11 @@
         <attr name="itemTextColor"/>
         <attr name="itemBackground"/>
         <attr name="elevation"/>
-        <!-- Whether shifting mode should be enabled for BottomNavigationView -->
+        <!--
+          Whether shifting mode, which hides label on all but the active view, should be enabled
+          for BottomNavigationView.
+          (see https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs)
+        -->
         <attr name="shiftingMode">
             <enum name="off" value="0"/>
             <enum name="on" value="1"/>
