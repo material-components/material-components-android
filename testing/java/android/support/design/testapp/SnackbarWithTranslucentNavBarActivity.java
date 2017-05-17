@@ -16,6 +16,8 @@
 
 package android.support.design.testapp;
 
+import android.support.design.testapp.base.BaseTestActivity;
+
 /** Activity with a Snackbar that also has a translucent nav bar. */
 public class SnackbarWithTranslucentNavBarActivity extends BaseTestActivity {
   @Override

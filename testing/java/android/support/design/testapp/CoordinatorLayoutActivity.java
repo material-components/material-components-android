@@ -17,6 +17,7 @@
 package android.support.design.testapp;
 
 import android.support.annotation.VisibleForTesting;
+import android.support.design.testapp.base.BaseTestActivity;
 import android.support.design.widget.CoordinatorLayout;
 import android.widget.FrameLayout;
 

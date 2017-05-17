@@ -16,6 +16,8 @@
 
 package android.support.design.testapp;
 
+import android.support.design.testapp.base.BaseTestActivity;
+
 public class BottomSheetDialogActivity extends BaseTestActivity {
 
   @Override

@@ -15,6 +15,7 @@
  */
 package android.support.design.testapp;
 
+import android.support.design.testapp.base.BaseTestActivity;
 import android.support.v7.widget.Toolbar;
 
 public class TabLayoutWithViewPagerActivity extends BaseTestActivity {

@@ -15,6 +15,8 @@
  */
 package android.support.design.testapp;
 
+import android.support.design.testapp.base.BaseTestActivity;
+
 public class NavigationViewActivity extends BaseTestActivity {
   @Override
   protected int getContentViewLayoutResId() {

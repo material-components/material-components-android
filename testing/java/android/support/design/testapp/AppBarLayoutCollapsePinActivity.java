@@ -16,6 +16,7 @@
 
 package android.support.design.testapp;
 
+import android.support.design.testapp.base.BaseTestActivity;
 import android.support.v7.widget.Toolbar;
 
 /** Activity for testing collapse state restoration in AppBar. */

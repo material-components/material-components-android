@@ -16,6 +16,8 @@
 
 package android.support.design.testapp;
 
+import android.support.design.testapp.base.BaseTestActivity;
+
 /** Test activity that has a Snackbar and a FAB. */
 public class SnackbarWithFabActivity extends BaseTestActivity {
   @Override

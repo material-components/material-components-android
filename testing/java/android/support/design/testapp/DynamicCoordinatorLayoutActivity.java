@@ -16,6 +16,8 @@
 
 package android.support.design.testapp;
 
+import android.support.design.testapp.base.BaseTestActivity;
+
 /** Test activity for testing various aspects of {@link CoordinatorLayout}. */
 public class DynamicCoordinatorLayoutActivity extends BaseTestActivity {
   @Override
