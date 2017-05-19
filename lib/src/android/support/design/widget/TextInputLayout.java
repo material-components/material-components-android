@@ -65,7 +65,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.animation.AccelerateInterpolator;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -112,6 +111,9 @@ import android.widget.TextView;
 public class TextInputLayout extends LinearLayout {
 
   private static final int ANIMATION_DURATION = 200;
+  // Duration for the label's scale up and down animations.
+  private static final int LABEL_SCALE_ANIMATION_DURATION = 167;
+
   private static final int INVALID_MAX_LENGTH = -1;
 
   private static final String LOG_TAG = "TextInputLayout";
@@ -194,8 +196,8 @@ public class TextInputLayout extends LinearLayout {
     mInputFrame.setAddStatesFromChildren(true);
     addView(mInputFrame);
 
-    mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    mCollapsingTextHelper.setPositionInterpolator(new AccelerateInterpolator());
+    mCollapsingTextHelper.setTextSizeInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
+    mCollapsingTextHelper.setPositionInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
     mCollapsingTextHelper.setCollapsedTextGravity(Gravity.TOP | GravityCompat.START);
 
     final TintTypedArray a =
@@ -383,7 +385,7 @@ public class TextInputLayout extends LinearLayout {
 
   private void updateInputLayoutMargins() {
     // Create/update the LayoutParams so that we can add enough top margin
-    // to the EditText so make room for the label
+    // to the EditText to make room for the label.
     final LayoutParams lp = (LayoutParams) mInputFrame.getLayoutParams();
     final int newTopMargin;
 
@@ -886,7 +888,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     if (mErrorShown && mErrorView != null) {
-      // Set a color filter of the error color
+      // Set a color filter for the error color
       editTextBackground.setColorFilter(
           AppCompatDrawableManager.getPorterDuffColorFilter(
               mErrorView.getCurrentTextColor(), PorterDuff.Mode.SRC_IN));
@@ -1420,8 +1422,8 @@ public class TextInputLayout extends LinearLayout {
     }
     if (mAnimator == null) {
       mAnimator = new ValueAnimator();
-      mAnimator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
-      mAnimator.setDuration(ANIMATION_DURATION);
+      mAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
+      mAnimator.setDuration(LABEL_SCALE_ANIMATION_DURATION);
       mAnimator.addUpdateListener(
           new ValueAnimator.AnimatorUpdateListener() {
             @Override
