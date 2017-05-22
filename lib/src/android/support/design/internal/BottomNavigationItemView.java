@@ -109,7 +109,14 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   }
 
   public void setShiftingMode(boolean enabled) {
-    mShiftingMode = enabled;
+    if (mShiftingMode != enabled) {
+      mShiftingMode = enabled;
+
+      boolean initialized = mItemData != null;
+      if (initialized) {
+        setChecked(mItemData.isChecked());
+      }
+    }
   }
 
   @Override

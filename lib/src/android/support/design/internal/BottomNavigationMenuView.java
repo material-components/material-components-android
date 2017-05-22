@@ -372,8 +372,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     boolean shifting = isShifting(mShiftingModeFlag, mMenu.getVisibleItems().size());
     for (int i = 0; i < menuSize; i++) {
       mPresenter.setUpdateSuspended(true);
-      mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
       mButtons[i].setShiftingMode(shifting);
+      mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
       mPresenter.setUpdateSuspended(false);
     }
   }
