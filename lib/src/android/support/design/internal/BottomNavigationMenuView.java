@@ -120,20 +120,21 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     final int heightSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
 
     if (isShifting(mShiftingModeFlag, visibleCount)) {
-      final View child = getChildAt(mSelectedItemPosition);
+      final View activeChild = getChildAt(mSelectedItemPosition);
       int activeItemWidth = mActiveItemMinWidth;
-      if (child.getVisibility() != View.GONE) {
+      if (activeChild.getVisibility() != View.GONE) {
         // Do an AT_MOST measure pass on the active child to get its desired width, and resize the
         // active child view based on that width
-        child.measure(
+        activeChild.measure(
             MeasureSpec.makeMeasureSpec(mActiveItemMaxWidth, MeasureSpec.AT_MOST), heightSpec);
-        activeItemWidth = Math.max(activeItemWidth, child.getMeasuredWidth());
+        activeItemWidth = Math.max(activeItemWidth, activeChild.getMeasuredWidth());
       }
-      final int inactiveCount = visibleCount - 1;
+      final int inactiveCount = visibleCount - (activeChild.getVisibility() != View.GONE ? 1 : 0);
       final int activeMaxAvailable = width - inactiveCount * mInactiveItemMinWidth;
       final int activeWidth =
           Math.min(activeMaxAvailable, Math.min(activeItemWidth, mActiveItemMaxWidth));
-      final int inactiveMaxAvailable = (width - activeWidth) / inactiveCount;
+      final int inactiveMaxAvailable =
+          (width - activeWidth) / (inactiveCount == 0 ? 1 : inactiveCount);
       final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
       for (int i = 0; i < totalCount; i++) {
