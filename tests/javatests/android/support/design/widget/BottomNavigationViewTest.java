@@ -428,11 +428,59 @@ public class BottomNavigationViewTest {
   @UiThreadTest
   @Test
   @SmallTest
+  public void testForcedShiftingItemChecking() throws Throwable {
+    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_ON);
+    final Menu menu = mBottomNavigation.getMenu();
+    assertTrue(menu.getItem(0).isChecked());
+    checkAndVerifyExclusiveItem(menu, R.id.destination_home);
+    checkAndVerifyExclusiveItem(menu, R.id.destination_profile);
+    checkAndVerifyExclusiveItem(menu, R.id.destination_people);
+  }
+
+  @UiThreadTest
+  @Test
+  @SmallTest
+  public void testAutoShiftingItemChecking() throws Throwable {
+    mBottomNavigation.getMenu().clear();
+    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_AUTO);
+    mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_shifting_content);
+    final Menu menu = mBottomNavigation.getMenu();
+    assertTrue(menu.getItem(0).isChecked());
+    checkAndVerifyExclusiveItem(menu, R.id.destination_home);
+    checkAndVerifyExclusiveItem(menu, R.id.destination_profile);
+    checkAndVerifyExclusiveItem(menu, R.id.destination_people);
+  }
+
+  @UiThreadTest
+  @Test
+  @SmallTest
   public void testClearingMenu() throws Throwable {
     mBottomNavigation.getMenu().clear();
     assertEquals(0, mBottomNavigation.getMenu().size());
     mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_content);
     assertEquals(3, mBottomNavigation.getMenu().size());
+  }
+
+  @UiThreadTest
+  @Test
+  @SmallTest
+  public void testClearingForcedShiftingMenu() throws Throwable {
+    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_ON);
+    mBottomNavigation.getMenu().clear();
+    assertEquals(0, mBottomNavigation.getMenu().size());
+    mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_content);
+    assertEquals(3, mBottomNavigation.getMenu().size());
+  }
+
+  @UiThreadTest
+  @Test
+  @SmallTest
+  public void testClearingAutoShiftingMenu() throws Throwable {
+    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_AUTO);
+    mBottomNavigation.getMenu().clear();
+    assertEquals(0, mBottomNavigation.getMenu().size());
+    mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_shifting_content);
+    assertEquals(4, mBottomNavigation.getMenu().size());
   }
 
   @UiThreadTest
@@ -446,6 +494,35 @@ public class BottomNavigationViewTest {
 
     mBottomNavigation.getMenu().clear();
     mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_with_invisible_button_content);
+    assertEquals(3, mBottomNavigation.getMenu().size());
+
+    final MenuItem destinationMenuItem =
+        mBottomNavigation.getMenu().findItem(R.id.destination_profile);
+    assertFalse(destinationMenuItem.isVisible());
+    destinationMenuItem.setVisible(true);
+    assertTrue(destinationMenuItem.isVisible());
+  }
+
+  @UiThreadTest
+  @Test
+  @SmallTest
+  public void testSettingForcedShiftingMenuItemVisibility() throws Throwable {
+    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_ON);
+    final MenuItem homeMenuItem = mBottomNavigation.getMenu().findItem(R.id.destination_home);
+    assertTrue(homeMenuItem.isVisible());
+    homeMenuItem.setVisible(false);
+    assertFalse(homeMenuItem.isVisible());
+  }
+
+  @UiThreadTest
+  @Test
+  @SmallTest
+  public void testSettingAutoShiftingMenuItemVisibility() throws Throwable {
+    mBottomNavigation.getMenu().clear();
+    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_AUTO);
+    mBottomNavigation.inflateMenu(
+        R.menu.bottom_navigation_view_shifting_with_invisible_button_content);
+    assertEquals(4, mBottomNavigation.getMenu().size());
 
     final MenuItem destinationMenuItem =
         mBottomNavigation.getMenu().findItem(R.id.destination_profile);
