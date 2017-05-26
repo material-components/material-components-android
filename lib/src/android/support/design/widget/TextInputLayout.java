@@ -18,8 +18,6 @@ package android.support.design.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -112,25 +110,16 @@ import android.widget.TextView;
  */
 public class TextInputLayout extends LinearLayout {
 
+  private static final int ANIMATION_DURATION = 200;
   // Duration for the label's scale up and down animations.
   private static final int LABEL_SCALE_ANIMATION_DURATION = 167;
-
-  // Duration for the error text's vertical translation animation.
-  private static final int ERROR_TRANSLATE_Y_ANIMATION_DURATION = 250;
-
-  // Durations for the error text's opacity fade animations.
-  private static final int ERROR_OPACITY_FADE_IN_ANIMATION_DURATION = 167;
-  private static final int ERROR_OPACITY_FADE_OUT_ANIMATION_DURATION = 83;
 
   private static final int INVALID_MAX_LENGTH = -1;
 
   private static final String LOG_TAG = "TextInputLayout";
 
   private final FrameLayout mInputFrame;
-  private @Nullable Animator mErrorAnimator;
   EditText mEditText;
-
-  private final float mErrorTextTranslationYPx;
 
   private boolean mHintEnabled;
   private CharSequence mHint;
@@ -270,9 +259,6 @@ public class TextInputLayout extends LinearLayout {
     }
 
     ViewCompat.setAccessibilityDelegate(this, new TextInputAccessibilityDelegate());
-
-    mErrorTextTranslationYPx =
-        getResources().getDimensionPixelSize(R.dimen.design_textinput_error_translate_y);
   }
 
   @Override
@@ -611,9 +597,6 @@ public class TextInputLayout extends LinearLayout {
     if (mErrorEnabled != enabled) {
       if (mErrorView != null) {
         mErrorView.animate().cancel();
-        if (mErrorAnimator != null) {
-          mErrorAnimator.cancel();
-        }
       }
 
       if (enabled) {
@@ -717,9 +700,6 @@ public class TextInputLayout extends LinearLayout {
 
     // Cancel any on-going animation
     mErrorView.animate().cancel();
-    if (mErrorAnimator != null) {
-      mErrorAnimator.cancel();
-    }
 
     if (mErrorShown) {
       mErrorView.setText(error);
@@ -730,35 +710,19 @@ public class TextInputLayout extends LinearLayout {
           // If it's currently 100% show, we'll animate it from 0
           mErrorView.setAlpha(0f);
         }
-
-        ObjectAnimator errorOpacityAnimator = ObjectAnimator.ofFloat(mErrorView, ALPHA, 1f);
-        ObjectAnimator errorTranslationYAnimator =
-            ObjectAnimator.ofFloat(mErrorView, TRANSLATION_Y, -mErrorTextTranslationYPx, 0);
-
-        errorOpacityAnimator
-            .setDuration(ERROR_OPACITY_FADE_IN_ANIMATION_DURATION)
-            .setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
-        errorTranslationYAnimator
-            .setDuration(ERROR_TRANSLATE_Y_ANIMATION_DURATION)
-            .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-
-        final AnimatorSet errorAnimatorSet = new AnimatorSet();
-        mErrorAnimator = errorAnimatorSet;
-
-        errorAnimatorSet.playTogether(errorOpacityAnimator, errorTranslationYAnimator);
-        errorAnimatorSet.addListener(
-            new AnimatorListenerAdapter() {
-              @Override
-              public void onAnimationEnd(Animator animation) {
-                mErrorAnimator = null;
-              }
-
-              @Override
-              public void onAnimationStart(Animator animation) {
-                mErrorView.setVisibility(VISIBLE);
-              }
-            });
-        errorAnimatorSet.start();
+        mErrorView
+            .animate()
+            .alpha(1f)
+            .setDuration(ANIMATION_DURATION)
+            .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
+            .setListener(
+                new AnimatorListenerAdapter() {
+                  @Override
+                  public void onAnimationStart(Animator animator) {
+                    mErrorView.setVisibility(VISIBLE);
+                  }
+                })
+            .start();
       } else {
         // Set alpha to 1f, just in case
         mErrorView.setAlpha(1f);
@@ -769,8 +733,8 @@ public class TextInputLayout extends LinearLayout {
           mErrorView
               .animate()
               .alpha(0f)
-              .setDuration(ERROR_OPACITY_FADE_OUT_ANIMATION_DURATION)
-              .setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR)
+              .setDuration(ANIMATION_DURATION)
+              .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
               .setListener(
                   new AnimatorListenerAdapter() {
                     @Override
@@ -786,6 +750,7 @@ public class TextInputLayout extends LinearLayout {
         }
       }
     }
+
     updateEditTextBackground();
     updateLabelState(animate);
   }
