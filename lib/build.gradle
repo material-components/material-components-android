@@ -21,12 +21,7 @@ dependencies {
 android {
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDirs = [
-      'base',
-      'ics',
-      'lollipop',
-      'src'
-    ]
+    main.java.srcDir 'src'
     main.res.srcDirs = [
       'res',
       'res-public'

@@ -33,11 +33,11 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 
 @RequiresApi(21)
-class FloatingActionButtonLollipop extends FloatingActionButtonImpl {
+class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
   private InsetDrawable mInsetDrawable;
 
-  FloatingActionButtonLollipop(
+  FloatingActionButtonImplLollipop(
       VisibilityAwareImageButton view, ShadowViewDelegate shadowViewDelegate) {
     super(view, shadowViewDelegate);
   }
