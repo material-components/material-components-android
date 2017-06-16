@@ -295,7 +295,6 @@ public class TextInputLayoutTest {
     assertEquals(INPUT_TEXT, info.hintText);
   }
 
-  /** Regression test for b/31663756. */
   @UiThreadTest
   @Test
   public void testDrawableStateChanged() {

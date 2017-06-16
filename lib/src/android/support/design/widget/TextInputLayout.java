@@ -33,6 +33,8 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
@@ -127,7 +129,7 @@ public class TextInputLayout extends LinearLayout {
   private static final String LOG_TAG = "TextInputLayout";
 
   private final FrameLayout mInputFrame;
-  private @Nullable Animator mErrorAnimator;
+  @Nullable private Animator mErrorAnimator;
   EditText mEditText;
 
   private final float mErrorTextTranslationYPx;
@@ -622,30 +624,7 @@ public class TextInputLayout extends LinearLayout {
         if (mTypeface != null) {
           mErrorView.setTypeface(mTypeface);
         }
-        boolean useDefaultColor = false;
-        try {
-          TextViewCompat.setTextAppearance(mErrorView, mErrorTextAppearance);
-
-          if (Build.VERSION.SDK_INT >= 23
-              && mErrorView.getTextColors().getDefaultColor() == Color.MAGENTA) {
-            // Caused by our theme not extending from Theme.Design*. On API 23 and
-            // above, unresolved theme attrs result in MAGENTA rather than an exception.
-            // Flag so that we use a decent default
-            useDefaultColor = true;
-          }
-        } catch (Exception e) {
-          // Caused by our theme not extending from Theme.Design*. Flag so that we use
-          // a decent default
-          useDefaultColor = true;
-        }
-        if (useDefaultColor) {
-          // Probably caused by our theme not extending from Theme.Design*. Instead
-          // we manually set something appropriate
-          TextViewCompat.setTextAppearance(
-              mErrorView, android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Caption);
-          mErrorView.setTextColor(
-              ContextCompat.getColor(getContext(), R.color.design_textinput_error_color_light));
-        }
+        setTextAppearanceCompatWithErrorFallback(mErrorView, mErrorTextAppearance);
         mErrorView.setVisibility(INVISIBLE);
         ViewCompat.setAccessibilityLiveRegion(
             mErrorView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
@@ -804,16 +783,7 @@ public class TextInputLayout extends LinearLayout {
           mCounterView.setTypeface(mTypeface);
         }
         mCounterView.setMaxLines(1);
-        try {
-          TextViewCompat.setTextAppearance(mCounterView, mCounterTextAppearance);
-        } catch (Exception e) {
-          // Probably caused by our theme not extending from Theme.Design*. Instead
-          // we manually set something appropriate
-          TextViewCompat.setTextAppearance(
-              mCounterView, android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Caption);
-          mCounterView.setTextColor(
-              ContextCompat.getColor(getContext(), R.color.design_textinput_error_color_light));
-        }
+        setTextAppearanceCompatWithErrorFallback(mCounterView, mCounterTextAppearance);
         addIndicator(mCounterView, -1);
         if (mEditText == null) {
           updateCounter(0);
@@ -893,7 +863,7 @@ public class TextInputLayout extends LinearLayout {
     } else {
       mCounterOverflowed = length > mCounterMaxLength;
       if (wasCounterOverflowed != mCounterOverflowed) {
-        TextViewCompat.setTextAppearance(
+        setTextAppearanceCompatWithErrorFallback(
             mCounterView,
             mCounterOverflowed ? mCounterOverflowTextAppearance : mCounterTextAppearance);
       }
@@ -903,6 +873,34 @@ public class TextInputLayout extends LinearLayout {
     if (mEditText != null && wasCounterOverflowed != mCounterOverflowed) {
       updateLabelState(false);
       updateEditTextBackground();
+    }
+  }
+
+  private void setTextAppearanceCompatWithErrorFallback(
+      TextView textView, @StyleRes int textAppearance) {
+    boolean useDefaultColor = false;
+    try {
+      TextViewCompat.setTextAppearance(textView, textAppearance);
+
+      if (VERSION.SDK_INT >= VERSION_CODES.M
+          && textView.getTextColors().getDefaultColor() == Color.MAGENTA) {
+        // Caused by our theme not extending from Theme.Design*. On API 23 and
+        // above, unresolved theme attrs result in MAGENTA rather than an exception.
+        // Flag so that we use a decent default
+        useDefaultColor = true;
+      }
+    } catch (Exception e) {
+      // Caused by our theme not extending from Theme.Design*. Flag so that we use
+      // a decent default
+      useDefaultColor = true;
+    }
+    if (useDefaultColor) {
+      // Probably caused by our theme not extending from Theme.Design*. Instead
+      // we manually set something appropriate
+      TextViewCompat.setTextAppearance(
+          textView, android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Caption);
+      textView.setTextColor(
+          ContextCompat.getColor(getContext(), R.color.design_textinput_error_color_light));
     }
   }
 
@@ -1290,7 +1288,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Applies a tint to the the password visibility toggle drawable. Does not modify the current tint
+   * Applies a tint to the password visibility toggle drawable. Does not modify the current tint
    * mode, which is {@link PorterDuff.Mode#SRC_IN} by default.
    *
    * <p>Subsequent calls to {@link #setPasswordVisibilityToggleDrawable(Drawable)} will
@@ -1385,7 +1383,7 @@ public class TextInputLayout extends LinearLayout {
           r,
           rect.bottom - mEditText.getCompoundPaddingBottom());
 
-      // Set the collapsed bounds to be the the full height (minus padding) to match the
+      // Set the collapsed bounds to be the full height (minus padding) to match the
       // EditText's editable area
       mCollapsingTextHelper.setCollapsedBounds(
           l, getPaddingTop(), r, bottom - top - getPaddingBottom());
