@@ -16,34 +16,132 @@
 -->
 <resources>
 
-    <style name="Theme.Design.BottomSheetDialog" parent="Theme.AppCompat.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
-        <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+  <!--
+    Themes in the "Theme.MaterialComponents" family will contain a default full color scheme.
+
+    These theme declarations contain any version-independent specification. Items
+    that need to vary based on platform version should be defined in the corresponding
+    "Theme.Base" theme.
+  -->
+
+  <!-- Platform-independent theme providing a full color scheme in a dark-themed activity. -->
+  <style name="Theme.MaterialComponents" parent="Base.Theme.MaterialComponents"/>
+
+  <!-- Platform-independent theme providing a full color scheme in a light-themed activity. -->
+  <style name="Theme.MaterialComponents.Light" parent="Base.Theme.MaterialComponents.Light"/>
+
+  <!-- Platform-independent theme providing an action bar in a dark-themed activity. -->
+  <style name="Theme.MaterialComponents.Light.DarkActionBar" parent="Base.Theme.MaterialComponents.Light.DarkActionBar"/>
+
+  <style name="Theme.MaterialComponents.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Design.Light.BottomSheetDialog" parent="Theme.AppCompat.Light.Dialog">
-        <item name="android:windowBackground">@android:color/transparent</item>
-        <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
-        <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+  <style name="Theme.MaterialComponents.Light.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Theme.Design" parent="Theme.AppCompat">
-        <item name="textColorError">@color/design_textinput_error_color_dark</item>
-    </style>
+  <style name="Theme.MaterialComponents.DialogWhenLarge"
+      parent="Base.Theme.MaterialComponents.DialogWhenLarge">
+  </style>
 
-    <style name="Theme.Design.Light" parent="Theme.AppCompat.Light">
-        <item name="textColorError">@color/design_textinput_error_color_light</item>
-    </style>
+  <style name="Theme.MaterialComponents.Light.DialogWhenLarge"
+      parent="Base.Theme.MaterialComponents.Light.DialogWhenLarge">
+  </style>
 
-    <style name="Theme.Design.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+  <style name="Theme.MaterialComponents.Dialog" parent="Base.Theme.MaterialComponents.Dialog"/>
 
-    <style name="Theme.Design.Light.NoActionBar">
-        <item name="windowActionBar">false</item>
-        <item name="windowNoTitle">true</item>
-    </style>
+  <style name="Theme.MaterialComponents.Light.Dialog" parent="Base.Theme.MaterialComponents.Light.Dialog"/>
+
+
+  <!--
+    Material theme for alert dialog windows, which is used by the AlertDialog class.
+    This is basically a dialog but sets the background to empty so it can do
+    two-tone backgrounds. For applications targeting Honeycomb or newer, this is the default
+    AlertDialog theme.
+  -->
+  <style name="Theme.MaterialComponents.Dialog.Alert" parent="Base.Theme.MaterialComponents.Dialog.Alert"/>
+
+  <style name="Theme.MaterialComponents.Light.Dialog.Alert" parent="Base.Theme.MaterialComponents.Light.Dialog.Alert"/>
+
+  <!--
+    Variant of Theme.MaterialComponents.Dialog that has a nice minimum width for a regular dialog.
+  -->
+  <style name="Theme.MaterialComponents.Dialog.MinWidth" parent="Base.Theme.MaterialComponents.Dialog.MinWidth"/>
+
+  <style name="Theme.MaterialComponents.Light.Dialog.MinWidth" parent="Base.Theme.MaterialComponents.Light.Dialog.MinWidth"/>
+
+  <style name="Theme.MaterialComponents.BottomSheetDialog" parent="Theme.MaterialComponents.Dialog">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+    <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Light.BottomSheetDialog" parent="Theme.MaterialComponents.Light.Dialog">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+    <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
+  </style>
+
+  <!-- Menu/item attributes -->
+  <style name="Theme.MaterialComponents.CompactMenu" parent="Base.Theme.MaterialComponents.CompactMenu"/>
+
+
+  <style name="ThemeOverlay.MaterialComponents" parent="ThemeOverlay.AppCompat"/>
+
+  <!--
+    Theme overlay that replaces colors with their light versions but preserves
+    the value of colorAccent, colorPrimary and its variants.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.Light" parent="ThemeOverlay.AppCompat.Light"/>
+
+  <!--
+    Theme overlay that replaces colors with their dark versions but preserves
+    the value of colorAccent, colorPrimary and its variants.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.Dark" parent="ThemeOverlay.AppCompat.Dark"/>
+
+  <!--
+    Theme overlay that replaces the normal control color, which by default is the same as the
+    secondary text color, with the primary text color.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.ActionBar" parent="ThemeOverlay.AppCompat.ActionBar"/>
+
+  <!--
+    Theme overlay that replaces colors with their dark versions and replaces the normal
+    control color, which by default is the same as the secondary text color, with the primary
+    text color.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.Dark.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
+
+  <style name="ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog"/>
+
+  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert"/>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
+  <style name="Theme.Design.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
+  <style name="Theme.Design.Light.BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents instead. -->
+  <style name="Theme.Design" parent="Theme.MaterialComponents">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.Light instead. -->
+  <style name="Theme.Design.Light" parent="Theme.MaterialComponents.Light">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.NoActionBar instead. -->
+  <style name="Theme.Design.NoActionBar" parent="Theme.MaterialComponents.NoActionBar">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.Light.NoActionBar instead. -->
+  <style name="Theme.Design.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+  </style>
 
 </resources>

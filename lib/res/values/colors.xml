@@ -17,6 +17,12 @@
 
 <resources>
 
+    <color name="design_default_color_primary">#3F51B5</color>
+    <color name="design_default_color_primary_dark">#303F9F</color>
+    <color name="design_default_color_secondary">#FF4081</color>
+    <array name="design_default_color_palette_primary"/>
+    <array name="design_default_color_palette_secondary"/>
+
     <!-- Color for the top outer pixels in the stroke: 18% white (these are multiplied) -->
     <color name="design_fab_stroke_top_outer_color">#2EFFFFFF</color>
     <!-- Color for the top inner pixels in the stroke: 10% white (these are multiplied) -->
@@ -39,5 +45,10 @@
     <color name="design_snackbar_background_color">#323232</color>
 
     <color name="design_bottom_navigation_shadow_color">#14000000</color>
+
+    <color name="mtrl_btn_bg_color">#191919</color>
+    <color name="mtrl_btn_bg_color_highlight">@color/mtrl_btn_bg_color_pressed</color>
+    <color name="mtrl_btn_bg_color_pressed">#5e5e5e</color>
+    <color name="mtrl_btn_bg_color_disabled">#e3e3e3</color>
 
 </resources>
