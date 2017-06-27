@@ -25,30 +25,37 @@
   <android.support.design.backlayer.BackLayerLayout
       android:id="@+id/backLayer"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="match_parent"
       android:layout_gravity="top">
-    <LinearLayout
+    <android.support.design.backlayer.CollapsedBackLayerContents
+        android:id="@+id/collapsed_backlayer_contents"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
-      <TextView
-          android:id="@+id/backLayerHeaderText"
+      <Button
+          android:id="@+id/backLayerExpandButton"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Back Layer"/>
-    </LinearLayout>
+          android:text="Expose or hide Back Layer"/>
+    </android.support.design.backlayer.CollapsedBackLayerContents>
+    <ImageView
+        android:id="@+id/backLayerExtraContent"
+        android:layout_width="40dp"
+        android:layout_height="40dp"
+        android:layout_below="@+id/collapsed_backlayer_contents"
+        android:src="@android:color/white"/>
   </android.support.design.backlayer.BackLayerLayout>
 
   <android.support.v4.widget.NestedScrollView
       android:id="@+id/contentLayer"
-      android:background="@android:color/black"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
+      android:background="#99222222"
       app:layout_behavior="android.support.design.backlayer.BackLayerSiblingBehavior">
     <TextView
         android:id="@+id/contentLayerHeaderText"
+        style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        style="@style/TextAppearance.AppCompat.Large"
         android:text="Content Layer"/>
   </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

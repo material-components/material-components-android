@@ -16,7 +16,17 @@
 
 package android.support.design.backlayer;
 
-import static junit.framework.Assert.assertEquals;
+import static android.support.design.backlayer.BackLayerActions.collapse;
+import static android.support.design.backlayer.BackLayerActions.expand;
+import static android.support.design.backlayer.BackLayerActions.waitUntilIdle;
+import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.Matchers.greaterThan;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
 import android.content.res.Resources;
 import android.support.design.testapp.backlayer.BackLayerLayoutActivity;
@@ -26,7 +36,10 @@ import android.support.test.annotation.UiThreadTest;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
+import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
+import android.widget.Button;
+import android.widget.ImageView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -40,6 +53,8 @@ public class BackLayerLayoutTest {
   NestedScrollView contentLayer;
   BackLayerLayout backLayer;
   CoordinatorLayout coordinatorLayout;
+  ImageView extraContent;
+  Button expandButton;
 
   @Rule
   public final ActivityTestRule<BackLayerLayoutActivity> activityTestRule =
@@ -52,7 +67,14 @@ public class BackLayerLayoutTest {
 
     coordinatorLayout = (CoordinatorLayout) activity.findViewById(R.id.coordinator_layout);
     backLayer = (BackLayerLayout) activity.findViewById(R.id.backLayer);
+    expandButton = (Button) activity.findViewById(R.id.backLayerExpandButton);
+    extraContent = (ImageView) activity.findViewById(R.id.backLayerExtraContent);
+
     contentLayer = (NestedScrollView) activity.findViewById(R.id.contentLayer);
+
+    if (backLayer.isExpanded()) {
+      onView(withId(R.id.backLayerExpandButton)).perform(click());
+    }
   }
 
   // TODO: Add tests for Bottom, left, right (/start, end)
@@ -65,11 +87,77 @@ public class BackLayerLayoutTest {
     // BackLayer + ContentLayer should cover the entire screen, size wise.
     assertEquals(width, backLayer.getWidth());
     assertEquals(width, contentLayer.getWidth());
-    assertEquals(height, contentLayer.getHeight() + backLayer.getHeight());
+    assertEquals(ViewCompat.getMinimumHeight(backLayer), (int) contentLayer.getY());
+    assertEquals(height, contentLayer.getHeight() + (int) contentLayer.getY());
     // Check the positions
     assertEquals(0, (int) backLayer.getX());
     assertEquals(0, (int) backLayer.getY());
     assertEquals(0, (int) contentLayer.getX());
-    assertEquals(backLayer.getHeight(), (int) contentLayer.getY());
+  }
+
+  @Test
+  @SmallTest
+  public void testExpandingSlidesContentLayerOut() throws InterruptedException {
+    int width = coordinatorLayout.getWidth();
+    int height = coordinatorLayout.getHeight();
+    assertFalse(backLayer.isExpanded());
+    onView(withId(R.id.backLayer)).perform(expand());
+    assertTrue(backLayer.isExpanded());
+    // BackLayer + ContentLayer overflow the height of the coordinatorlayout.
+    assertEquals(width, backLayer.getWidth());
+    assertEquals(width, contentLayer.getWidth());
+    assertThat(contentLayer.getHeight() + (int) contentLayer.getY(), greaterThan(height));
+    // Check the positions
+    assertEquals(0, (int) backLayer.getX());
+    assertEquals(0, (int) backLayer.getY());
+    assertEquals(0, (int) contentLayer.getX());
+    assertThat(backLayer.getExpandedHeight(), greaterThan(ViewCompat.getMinimumHeight(backLayer)));
+    assertEquals(backLayer.getExpandedHeight(), (int) contentLayer.getY());
+    assertThat(
+        contentLayer.getHeight() + (int) contentLayer.getY(),
+        greaterThan(coordinatorLayout.getHeight()));
+  }
+
+  @Test
+  @SmallTest
+  public void testExpandAndCollapseBackLayer() throws InterruptedException {
+    int width = coordinatorLayout.getWidth();
+    int height = coordinatorLayout.getHeight();
+    assertFalse(backLayer.isExpanded());
+    onView(withId(R.id.backLayer)).perform(expand());
+    assertTrue(backLayer.isExpanded());
+    onView(withId(R.id.backLayer)).perform(collapse());
+    assertFalse(backLayer.isExpanded());
+    // BackLayer + ContentLayer should cover the entire screen, size wise.
+    assertEquals(width, backLayer.getWidth());
+    assertEquals(width, contentLayer.getWidth());
+    assertEquals(ViewCompat.getMinimumHeight(backLayer), (int) contentLayer.getY());
+    assertEquals(height, contentLayer.getHeight() + (int) contentLayer.getY());
+    // Check the positions
+    assertEquals(0, (int) backLayer.getX());
+    assertEquals(0, (int) backLayer.getY());
+    assertEquals(0, (int) contentLayer.getX());
+  }
+
+  @Test
+  @SmallTest
+  public void testBackLayerCollapsesOnContentLayerClick() throws InterruptedException {
+    int width = coordinatorLayout.getWidth();
+    int height = coordinatorLayout.getHeight();
+    assertFalse(backLayer.isExpanded());
+    onView(withId(R.id.backLayer)).perform(expand());
+    assertTrue(backLayer.isExpanded());
+    onView(withId(R.id.contentLayerHeaderText)).perform(click());
+    onView(withId(R.id.backLayer)).perform(waitUntilIdle());
+    assertFalse(backLayer.isExpanded());
+    // BackLayer + ContentLayer should cover the entire screen, size wise.
+    assertEquals(width, backLayer.getWidth());
+    assertEquals(width, contentLayer.getWidth());
+    assertEquals(ViewCompat.getMinimumHeight(backLayer), (int) contentLayer.getY());
+    assertEquals(height, contentLayer.getHeight() + (int) contentLayer.getY());
+    // Check the positions
+    assertEquals(0, (int) backLayer.getX());
+    assertEquals(0, (int) backLayer.getY());
+    assertEquals(0, (int) contentLayer.getX());
   }
 }

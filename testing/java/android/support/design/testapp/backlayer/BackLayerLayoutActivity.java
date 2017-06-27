@@ -16,15 +16,43 @@
 
 package android.support.design.testapp.backlayer;
 
+import android.os.Bundle;
+import android.support.design.backlayer.BackLayerLayout;
 import android.support.design.testapp.base.BaseTestActivity;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 /**
  * Activity to test BackLayerLayout.
  */
 public class BackLayerLayoutActivity extends BaseTestActivity {
 
+  Button exposeButton;
+  BackLayerLayout backLayer;
+  ImageView extraContent;
+
   @Override
   protected int getContentViewLayoutResId() {
     return R.layout.design_backlayer;
+  }
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    backLayer = (BackLayerLayout) findViewById(R.id.backLayer);
+    extraContent = (ImageView) findViewById(R.id.backLayerExtraContent);
+    exposeButton = (Button) findViewById(R.id.backLayerExpandButton);
+    exposeButton.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            if (backLayer.isExpanded()) {
+              backLayer.collapse();
+            } else {
+              backLayer.expand();
+            }
+          }
+        });
   }
 }
