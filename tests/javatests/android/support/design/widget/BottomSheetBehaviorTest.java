@@ -41,7 +41,6 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
-import android.widget.TextView;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 import android.support.test.espresso.NoMatchingViewException;
@@ -533,20 +532,11 @@ public class BottomSheetBehaviorTest {
                 scroll,
                 new ViewGroup.LayoutParams(
                     ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            TextView view = new TextView(activityTestRule.getActivity());
-            StringBuilder sb = new StringBuilder();
-            for (int i = 0; i < 500; ++i) {
-              sb.append("It is fine today. ");
-            }
-            view.setText(sb);
-            view.setOnClickListener(
-                new View.OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                    // Do nothing
-                  }
-                });
+            View view = new View(activityTestRule.getActivity());
+            // Make sure that the NestedScrollView is always scrollable
+            view.setMinimumHeight(bottomSheet.getHeight() + 1000);
             scroll.addView(view);
+
             assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
             // The scroll offset is 0 at first
             assertThat(scroll.getScrollY(), is(0));
