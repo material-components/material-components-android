@@ -26,7 +26,8 @@
       android:id="@+id/design_backlayer_backlayer_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_gravity="top">
+      android:layout_gravity="top"
+      android:orientation="vertical">
     <android.support.design.backlayer.CollapsedBackLayerContents
         android:id="@+id/design_backlayer_collapsed_backlayer_contents"
         android:layout_width="match_parent"
@@ -41,7 +42,6 @@
         android:id="@+id/design_backlayer_extra_content"
         android:layout_width="@dimen/design_backlayer_extra_content_size"
         android:layout_height="@dimen/design_backlayer_extra_content_size"
-        android:layout_below="@id/design_backlayer_collapsed_backlayer_contents"
         android:src="@color/design_backlayer_extra_content_color"/>
   </android.support.design.backlayer.BackLayerLayout>
 

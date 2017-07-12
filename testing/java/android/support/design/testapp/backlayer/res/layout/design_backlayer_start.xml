@@ -26,8 +26,9 @@
       android:id="@+id/design_backlayer_backlayer_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_gravity="start|left"
-      android:gravity="start|left">
+      android:layout_gravity="left|start"
+      android:gravity="left|start"
+      android:orientation="horizontal">
     <android.support.design.backlayer.CollapsedBackLayerContents
         android:id="@+id/design_backlayer_collapsed_backlayer_contents"
         android:layout_width="wrap_content"
@@ -42,8 +43,6 @@
         android:id="@+id/design_backlayer_extra_content"
         android:layout_width="@dimen/design_backlayer_extra_content_size"
         android:layout_height="@dimen/design_backlayer_extra_content_size"
-        android:layout_toEndOf="@id/design_backlayer_collapsed_backlayer_contents"
-        android:layout_toRightOf="@id/design_backlayer_collapsed_backlayer_contents"
         android:src="@color/design_backlayer_extra_content_color"/>
   </android.support.design.backlayer.BackLayerLayout>
 

@@ -27,7 +27,8 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_gravity="bottom"
-      android:gravity="bottom">
+      android:gravity="bottom"
+      android:orientation="vertical">
     <ImageView
         android:id="@+id/design_backlayer_extra_content"
         android:layout_width="@dimen/design_backlayer_extra_content_size"

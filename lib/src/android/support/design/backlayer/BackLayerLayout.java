@@ -24,7 +24,7 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
-import android.widget.RelativeLayout;
+import android.widget.LinearLayout;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -33,6 +33,11 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *
  * <p>Since its resting state is hidden (partially exposed), it keeps a copy of its original
  * dimensions.
+ *
+ * <p>Notice BackLayerLayout is a LinearLayout, so you need to make sure you're using the correct
+ * orientation that matches the position you've chosen for the back layer (i.e. use
+ * {@code android:orientation="vertical"} in conjunction with {@code android:gravity="top"} or
+ * {@code android:gravity="bottom"}).
  *
  * <p><b>Usage guide:</b>
  *
@@ -77,7 +82,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * </CoordinatorLayout>
  * }</pre>
  */
-public class BackLayerLayout extends RelativeLayout {
+public class BackLayerLayout extends LinearLayout {
 
   private final List<BackLayerCallback> callbacks = new CopyOnWriteArrayList<>();
   private boolean expanded = false;
@@ -117,8 +122,8 @@ public class BackLayerLayout extends RelativeLayout {
                   "More than one CollapsedBackLayerContents found inside BackLayerLayout");
             }
             foundCollapsed = true;
-            RelativeLayout.LayoutParams childLayoutParams =
-                (RelativeLayout.LayoutParams) child.getLayoutParams();
+            LinearLayout.LayoutParams childLayoutParams =
+                (LinearLayout.LayoutParams) child.getLayoutParams();
             child.measure(childLayoutParams.width, childLayoutParams.height);
             setMinimumHeight(
                 child.getMeasuredHeight()

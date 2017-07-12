@@ -48,8 +48,6 @@ import android.view.Gravity;
  *
  * <p>Note: currently there is no subclass for EndBackLayerLayoutTest, it has not been committed
  * since there it is failing for reasons that do not seem directly related to the BackLayerLayout.
- *
- * <p>TODO: Fix the EndBacklayerLayoutTest and commit it.
  */
 public abstract class BackLayerLayoutTestBase {
 
