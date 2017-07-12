@@ -18,44 +18,46 @@
 <android.support.design.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/coordinator_layout"
+    android:id="@+id/design_backlayer_coordinator_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@android:color/darker_gray">
+    android:background="@color/design_backlayer_background">
   <android.support.design.backlayer.BackLayerLayout
-      android:id="@+id/backLayer"
+      android:id="@+id/design_backlayer_backlayer_layout"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:layout_gravity="top">
+      android:layout_gravity="start|left"
+      android:gravity="start|left">
     <android.support.design.backlayer.CollapsedBackLayerContents
-        android:id="@+id/collapsed_backlayer_contents"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content">
-      <Button
-          android:id="@+id/backLayerExpandButton"
+        android:id="@+id/design_backlayer_collapsed_backlayer_contents"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent">
+      <ImageView
+          android:id="@+id/design_backlayer_expand_icon"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
-          android:text="Expose or hide Back Layer"/>
+          android:src="@android:drawable/ic_menu_more"/>
     </android.support.design.backlayer.CollapsedBackLayerContents>
     <ImageView
-        android:id="@+id/backLayerExtraContent"
-        android:layout_width="40dp"
-        android:layout_height="40dp"
-        android:layout_below="@+id/collapsed_backlayer_contents"
-        android:src="@android:color/white"/>
+        android:id="@+id/design_backlayer_extra_content"
+        android:layout_width="@dimen/design_backlayer_extra_content_size"
+        android:layout_height="@dimen/design_backlayer_extra_content_size"
+        android:layout_toEndOf="@id/design_backlayer_collapsed_backlayer_contents"
+        android:layout_toRightOf="@id/design_backlayer_collapsed_backlayer_contents"
+        android:src="@color/design_backlayer_extra_content_color"/>
   </android.support.design.backlayer.BackLayerLayout>
 
   <android.support.v4.widget.NestedScrollView
-      android:id="@+id/contentLayer"
+      android:id="@+id/design_backlayer_content_layer"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
-      android:background="#99222222"
-      app:layout_behavior="android.support.design.backlayer.BackLayerSiblingBehavior">
+      android:background="@color/design_backlayer_content_layer_background"
+      app:layout_behavior="@string/design_backlayer_sibling_behavior">
     <TextView
         android:id="@+id/contentLayerHeaderText"
         style="@style/TextAppearance.AppCompat.Large"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Content Layer"/>
+        android:text="@string/design_backlayer_content_layer_text"/>
   </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

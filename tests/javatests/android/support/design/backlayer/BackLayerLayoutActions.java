@@ -23,7 +23,7 @@ import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import org.hamcrest.Matcher;
 
-public class BackLayerActions {
+public class BackLayerLayoutActions {
 
   public static final int WAIT_MILLISECONDS = 400;
 
@@ -41,8 +41,6 @@ public class BackLayerActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         BackLayerLayout layout = (BackLayerLayout) view;
         layout.expand();
 
@@ -65,8 +63,6 @@ public class BackLayerActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         BackLayerLayout layout = (BackLayerLayout) view;
         layout.collapse();
 

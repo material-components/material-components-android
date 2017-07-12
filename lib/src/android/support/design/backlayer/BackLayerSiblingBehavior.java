@@ -175,10 +175,10 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         end = backLayerLayout.getExpandedWidth();
         break;
       case Gravity.BOTTOM:
-        end = backLayerLayout.getMinimumHeight() - backLayerLayout.getExpandedHeight();
+        end = ViewCompat.getMinimumHeight(backLayerLayout) - backLayerLayout.getExpandedHeight();
         break;
       case Gravity.RIGHT:
-        end = backLayerLayout.getMinimumWidth() - backLayerLayout.getExpandedWidth();
+        end = ViewCompat.getMinimumWidth(backLayerLayout) - backLayerLayout.getExpandedWidth();
         break;
     }
     animate(

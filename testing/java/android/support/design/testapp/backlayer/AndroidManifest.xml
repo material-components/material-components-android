@@ -23,7 +23,16 @@
 
   <application>
     <activity
-      android:name=".BackLayerLayoutActivity"
+      android:name=".TopBackLayerLayoutActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+    <activity
+      android:name=".BottomBackLayerLayoutActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+    <activity
+      android:name=".StartBackLayerLayoutActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+    <activity
+      android:name=".EndBackLayerLayoutActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
   </application>
 </manifest>
