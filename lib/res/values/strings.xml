@@ -25,9 +25,5 @@
     <string name="password_toggle_content_description">Toggle password visibility</string>
     <!-- The class name to the HideBottomViewOnScrollBehavior -->
     <string name="hide_bottom_view_on_scroll_behavior" translatable="false">android.support.design.widget.HideBottomViewOnScrollBehavior</string>
-    <!-- The class name to the FabTransformationSheetBehavior -->
-    <string name="fab_transformation_sheet_behavior" translatable="false">android.support.design.widget.transformation.FabTransformationSheetBehavior</string>
-    <!-- The class name to the FabTransformationScrimBehavior -->
-    <string name="fab_transformation_scrim_behavior" translatable="false">android.support.design.widget.transformation.FabTransformationScrimBehavior</string>
 </resources>
 
