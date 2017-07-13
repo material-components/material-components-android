@@ -19,4 +19,6 @@
     <public type="string" name="appbar_scrolling_view_behavior"/>
     <public type="string" name="bottom_sheet_behavior"/>
     <public type="string" name="hide_bottom_view_on_scroll_behavior"/>
+    <public type="string" name="fab_transformation_sheet_behavior"/>
+    <public type="string" name="fab_transformation_scrim_behavior"/>
 </resources>
