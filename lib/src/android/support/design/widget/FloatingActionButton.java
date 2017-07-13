@@ -26,20 +26,15 @@ import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
-import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
-import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
-import android.support.design.widget.expandable.ExpandableWidget;
-import android.support.design.widget.expandable.ExpandableWidgetHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
@@ -69,7 +64,7 @@ import java.util.List;
  * #setBackgroundTintList(ColorStateList)}.
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
-public class FloatingActionButton extends VisibilityAwareImageButton implements ExpandableWidget {
+public class FloatingActionButton extends VisibilityAwareImageButton {
 
   private static final String LOG_TAG = "FloatingActionButton";
 
@@ -138,8 +133,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton implements 
   final Rect mShadowPadding = new Rect();
   private final Rect mTouchArea = new Rect();
 
-  private final AppCompatImageHelper mImageHelper;
-  private final ExpandableWidgetHelper expandableWidgetHelper;
+  private AppCompatImageHelper mImageHelper;
 
   private FloatingActionButtonImpl mImpl;
 
@@ -177,8 +171,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton implements 
 
     mImageHelper = new AppCompatImageHelper(this);
     mImageHelper.loadFromAttributes(attrs, defStyleAttr);
-
-    expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
     mMaxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
 
@@ -358,26 +350,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton implements 
     getImpl().hide(wrapOnVisibilityChangedListener(listener), fromUser);
   }
 
-  @Override
-  public void setExpanded(boolean expanded) {
-    expandableWidgetHelper.setExpanded(expanded);
-  }
-
-  @Override
-  public boolean isExpanded() {
-    return expandableWidgetHelper.isExpanded();
-  }
-
-  @Override
-  public void setExpandedComponentIdHint(@IdRes int expandedComponentIdHint) {
-    expandableWidgetHelper.setExpandedComponentIdHint(expandedComponentIdHint);
-  }
-
-  @Override
-  public int getExpandedComponentIdHint() {
-    return expandableWidgetHelper.getExpandedComponentIdHint();
-  }
-
   /**
    * Set whether FloatingActionButton should add inner padding on platforms Lollipop and after, to
    * ensure consistent dimensions on all platforms.
@@ -498,31 +470,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton implements 
   public void jumpDrawablesToCurrentState() {
     super.jumpDrawablesToCurrentState();
     getImpl().jumpDrawableToCurrentState();
-  }
-
-  @Override
-  protected Parcelable onSaveInstanceState() {
-    Parcelable superState = super.onSaveInstanceState();
-    ExtendableSavedState state = new ExtendableSavedState(superState);
-
-    state.extendableStates.put(
-        "expandableWidgetHelper", expandableWidgetHelper.onSaveInstanceState());
-
-    return state;
-  }
-
-  @Override
-  protected void onRestoreInstanceState(Parcelable state) {
-    if (!(state instanceof ExtendableSavedState)) {
-      super.onRestoreInstanceState(state);
-      return;
-    }
-
-    ExtendableSavedState ess = (ExtendableSavedState) state;
-    super.onRestoreInstanceState(ess.getSuperState());
-
-    expandableWidgetHelper.onRestoreInstanceState(
-        ess.extendableStates.get("expandableWidgetHelper"));
   }
 
   /**
