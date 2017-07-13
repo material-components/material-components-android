@@ -16,7 +16,12 @@
 
 package android.support.design.testutils;
 
+import static android.content.res.Configuration.ORIENTATION_LANDSCAPE;
+import static android.content.res.Configuration.ORIENTATION_PORTRAIT;
+
+import android.app.Activity;
 import android.content.Context;
+import android.content.pm.ActivityInfo;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -160,5 +165,62 @@ public class TestUtils {
         a.recycle();
       }
     }
+  }
+
+  /** Returns the current screen orientation. */
+  public static int getScreenOrientation(Activity activity) {
+    return activity.getResources().getConfiguration().orientation;
+  }
+
+  /**
+   * Sets the screen orientation.
+   *
+   * <p>Tests that change the screen orientation should also use {@link
+   * #getScreenOrientation(Activity)} and {@link #resetScreenOrientation(Activity, int)} to ensure
+   * that it leaves the device in a known good state.
+   */
+  public static void setScreenOrientation(Activity activity, int orientation) {
+    activity.setRequestedOrientation(
+        orientation == ORIENTATION_PORTRAIT
+            ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
+            : ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+    PollingCheck.waitFor(
+        new PollingCheck.PollingCheckCondition() {
+          @Override
+          public boolean canProceed() {
+            return activity.getResources().getConfiguration().orientation == orientation;
+          }
+        });
+  }
+
+  /**
+   * Toggles the screen orientation between landscape and portrait.
+   *
+   * <p>Tests that change the screen orientation should also use {@link
+   * #getScreenOrientation(Activity)} and {@link #resetScreenOrientation(Activity, int)} to ensure
+   * that it leaves the device in a known good state.
+   */
+  public static void switchScreenOrientation(Activity activity) {
+    if (getScreenOrientation(activity) == ORIENTATION_LANDSCAPE) {
+      setScreenOrientation(activity, ORIENTATION_PORTRAIT);
+    } else {
+      setScreenOrientation(activity, ORIENTATION_LANDSCAPE);
+    }
+  }
+
+  /**
+   * Resets the device orientation and waits for it to settle to the old orientation. Tests should
+   * call {@link #getScreenOrientation(Activity)} at the beginning of the test to save the old
+   * orientation.
+   */
+  public static void resetScreenOrientation(Activity activity, int oldOrientation) {
+    activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
+    PollingCheck.waitFor(
+        new PollingCheck.PollingCheckCondition() {
+          @Override
+          public boolean canProceed() {
+            return activity.getResources().getConfiguration().orientation == oldOrientation;
+          }
+        });
   }
 }

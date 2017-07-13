@@ -28,6 +28,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.expandable.ExpandableWidget;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
@@ -531,6 +532,21 @@ public class TestUtilsMatchers {
           name = Integer.toString(id);
         }
         description.appendText("is action view of menu item " + name);
+      }
+    };
+  }
+
+  /** Returns a matcher that matches {@link View}s that are expanded. */
+  public static Matcher<View> isExpanded() {
+    return new TypeSafeMatcher<View>() {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("is expanded");
+      }
+
+      @Override
+      public boolean matchesSafely(View view) {
+        return ((ExpandableWidget) view).isExpanded();
       }
     };
   }
