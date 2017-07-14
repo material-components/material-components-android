@@ -27,7 +27,9 @@ import static android.support.design.testutils.FloatingActionButtonActions.setSi
 import static android.support.design.testutils.FloatingActionButtonActions.showThenHide;
 import static android.support.design.testutils.TestUtilsActions.setClickable;
 import static android.support.design.testutils.TestUtilsActions.setEnabled;
+import static android.support.design.testutils.TestUtilsActions.setExpanded;
 import static android.support.design.testutils.TestUtilsActions.setSelected;
+import static android.support.design.testutils.TestUtilsMatchers.isExpanded;
 import static android.support.design.testutils.TestUtilsMatchers.isPressed;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentAreaOnMargins;
@@ -269,7 +271,22 @@ public class FloatingActionButtonTest {
   @SmallTest
   public void testSetCompatElevation() {
     onView(withId(R.id.fab_standard)).perform(setEnabled(false)).perform(setCompatElevation(0));
+  }
 
-    onView(withId(R.id.fab_standard)).perform(setEnabled(true)).perform(setCompatElevation(8));
+  @Test
+  @MediumTest
+  public void testInstanceState() {
+    FloatingActionButtonActivity activity = activityTestRule.getActivity();
+    int oldOrientation = TestUtils.getScreenOrientation(activity);
+
+    onView(withId(R.id.fab_standard)).perform(setExpanded(false));
+    TestUtils.switchScreenOrientation(activity);
+    onView(withId(R.id.fab_standard)).check(matches(not(isExpanded())));
+
+    onView(withId(R.id.fab_standard)).perform(setExpanded(true));
+    TestUtils.switchScreenOrientation(activity);
+    onView(withId(R.id.fab_standard)).check(matches(isExpanded()));
+
+    TestUtils.resetScreenOrientation(activity, oldOrientation);
   }
 }
