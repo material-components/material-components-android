@@ -459,8 +459,7 @@ public class TextInputLayoutTest {
 
   @Test
   public void testTextSetViaAttributeCollapsedHint() {
-    onView(withId(R.id.textinput_with_text))
-        .check(isHintExpanded(false));
+    onView(withId(R.id.textinput_with_text)).check(isHintExpanded(false));
   }
 
   private static ViewAssertion isHintExpanded(final boolean expanded) {

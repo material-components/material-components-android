@@ -41,17 +41,13 @@ public class TextInputLayoutActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         TextInputLayout layout = (TextInputLayout) view;
         layout.setErrorEnabled(enabled);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
 
-  public static ViewAction setError(final CharSequence error) {
+  public static ViewAction setError(final CharSequence errorText) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -65,12 +61,8 @@ public class TextInputLayoutActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         TextInputLayout layout = (TextInputLayout) view;
-        layout.setError(error);
-
-        uiController.loopMainThreadUntilIdle();
+        layout.setError(errorText);
       }
     };
   }
@@ -89,12 +81,8 @@ public class TextInputLayoutActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         TextInputLayout layout = (TextInputLayout) view;
         layout.setErrorTextAppearance(resId);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -113,12 +101,8 @@ public class TextInputLayoutActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         TextInputLayout layout = (TextInputLayout) view;
         layout.setTypeface(typeface);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -137,12 +121,8 @@ public class TextInputLayoutActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         TextInputLayout layout = (TextInputLayout) view;
         layout.setPasswordVisibilityToggleEnabled(enabled);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -161,12 +141,8 @@ public class TextInputLayoutActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         TextInputLayout layout = (TextInputLayout) view;
         layout.setCounterEnabled(enabled);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -185,12 +161,8 @@ public class TextInputLayoutActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         TextInputLayout layout = (TextInputLayout) view;
         layout.setCounterMaxLength(maxLength);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
