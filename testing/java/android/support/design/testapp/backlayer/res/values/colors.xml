@@ -19,4 +19,5 @@
   <color name="design_backlayer_background">@android:color/darker_gray</color>
   <color name="design_backlayer_content_layer_background">#99222222</color>
   <color name="design_backlayer_extra_content_color">@android:color/white</color>
+  <color name="design_backlayer_secondary_extra_content_color">@color/material_deep_teal_200</color>
 </resources>

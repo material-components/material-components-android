@@ -40,7 +40,11 @@ public class BottomBackLayerLayoutTest extends BackLayerLayoutTestBase {
         activityTestRule,
         R.id.design_backlayer_coordinator_layout,
         R.id.design_backlayer_backlayer_layout,
-        R.id.design_backlayer_content_layer);
+        R.id.design_backlayer_content_layer,
+        R.id.design_backlayer_primary_expand_icon,
+        R.id.design_backlayer_secondary_expand_icon,
+        R.id.design_backlayer_extra_content,
+        R.id.design_backlayer_secondary_extra_content);
   }
 
   @Override
@@ -69,5 +73,12 @@ public class BottomBackLayerLayoutTest extends BackLayerLayoutTestBase {
   @SmallTest
   public void testBackLayerCollapsesOnContentLayerClick() throws InterruptedException {
     super.testBackLayerCollapsesOnContentLayerClick();
+  }
+
+  @Test
+  @SmallTest
+  @Override
+  public void testBackLayerChangesFromOneExperienceToTheOther() throws InterruptedException {
+    super.testBackLayerChangesFromOneExperienceToTheOther();
   }
 }

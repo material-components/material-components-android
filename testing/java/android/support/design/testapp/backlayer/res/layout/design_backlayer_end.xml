@@ -34,15 +34,31 @@
         android:layout_width="@dimen/design_backlayer_extra_content_size"
         android:layout_height="@dimen/design_backlayer_extra_content_size"
         android:src="@color/design_backlayer_extra_content_color"/>
+    <ImageView
+        android:id="@+id/design_backlayer_secondary_extra_content"
+        android:layout_width="@dimen/design_backlayer_secondary_extra_content_size"
+        android:layout_height="@dimen/design_backlayer_secondary_extra_content_size"
+        android:src="@color/design_backlayer_secondary_extra_content_color"
+        android:visibility="gone"/>
     <android.support.design.backlayer.CollapsedBackLayerContents
         android:id="@+id/design_backlayer_collapsed_backlayer_contents"
         android:layout_width="wrap_content"
         android:layout_height="match_parent">
-      <ImageView
-          android:id="@+id/design_backlayer_expand_icon"
+      <RelativeLayout
           android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:src="@android:drawable/ic_menu_more"/>
+          android:layout_height="match_parent">
+        <ImageView
+            android:id="@+id/design_backlayer_primary_expand_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@android:drawable/ic_menu_more"/>
+        <ImageView
+            android:id="@+id/design_backlayer_secondary_expand_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/design_backlayer_primary_expand_icon"
+            android:src="@android:drawable/ic_menu_search"/>
+      </RelativeLayout>
     </android.support.design.backlayer.CollapsedBackLayerContents>
   </android.support.design.backlayer.BackLayerLayout>
 

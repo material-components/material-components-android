@@ -35,9 +35,9 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * dimensions.
  *
  * <p>Notice BackLayerLayout is a LinearLayout, so you need to make sure you're using the correct
- * orientation that matches the position you've chosen for the back layer (i.e. use
- * {@code android:orientation="vertical"} in conjunction with {@code android:gravity="top"} or
- * {@code android:gravity="bottom"}).
+ * orientation that matches the position you've chosen for the back layer (i.e. use {@code
+ * android:orientation="vertical"} in conjunction with {@code android:gravity="top"} or {@code
+ * android:gravity="bottom"}).
  *
  * <p><b>Usage guide:</b>
  *
@@ -45,19 +45,19 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *   <li>It must be a direct child of {@link CoordinatorLayout}
  *   <li>There has to be <b>exactly ONE</b> other direct child of the same CoordinatorLayout that
  *       uses {@link BackLayerSiblingBehavior} as its behavior. This is the content layer. Clicks on
- *       the content layer while the BackLayer is exposed will cause the backlayer to collapse.
+ *       the content layer while the BackLayer is exposed will cause the back layer to collapse.
  *   <li>You must use match_parent for the BackLayerLayout's width and height
  *   <li>There must be a <b>exactly ONE</b> child view of the BackLayerLayout which is {@link
  *       CollapsedBackLayerContents}, anything inside this view will be considered the contents of
- *       the backlayer that will always be visible. You can play with extra content in the backlayer
- *       by changing visibilities of views outside CollapsedBackLayerContents.
- *   <li>Add UI to expose the backlayer. BackLayerLayout does not try to be smart about when to
+ *       the back layer that will always be visible. You can play with extra content in the back
+ *       layer by changing visibilities of views outside CollapsedBackLayerContents.
+ *   <li>Add UI to expose the back layer. BackLayerLayout does not try to be smart about when to
  *       expand, so you must add UI to expand it (a button? OnClickListener?). BackLayerLayout
  *       offers a {@link #expand()} and {@link #collapse()} method for you to write your own logic.
  *   <li>Add {@link BackLayerCallback}s using {@link #addBackLayerCallback(BackLayerCallback)} in
- *       order to listen to changes in the backlayer's status. This also may be useful if your
- *       backlayer needs extra animations, you could use {@link BackLayerCallback#onBeforeExpand()}
- *       and {@link BackLayerCallback#onBeforeCollapse()} for this purpose.
+ *       order to listen to changes in the back layer's status. This also may be useful if your back
+ *       layer needs extra animations, you could use {@link BackLayerCallback#onBeforeExpand()} and
+ *       {@link BackLayerCallback#onBeforeCollapse()} for this purpose.
  * </ul>
  *
  * <pre>{@code
@@ -150,14 +150,14 @@ public class BackLayerLayout extends LinearLayout {
     return measuredCollapsedSize;
   }
 
-  /** Add a new {@link BackLayerCallback} to listen to backlayer events. */
+  /** Add a new {@link BackLayerCallback} to listen to back layer events. */
   public void addBackLayerCallback(BackLayerCallback callback) {
     if (!callbacks.contains(callback)) {
       callbacks.add(callback);
     }
   }
 
-  /** Stop {@code callback} from listening to future backlayer events. */
+  /** Stop {@code callback} from listening to future back layer events. */
   public void removeBackLayerCallback(BackLayerCallback callback) {
     callbacks.remove(callback);
   }
@@ -169,44 +169,55 @@ public class BackLayerLayout extends LinearLayout {
   /**
    * Expand the back layer.
    *
-   * <p>Notice that this method does not automatically change visibilities on child views of the
-   * back layer, all of that has to be done by your code before calling this method or in a {@link
-   * BackLayerCallback}.
+   * <p>Notice that this method does not automatically change visibility on child views of the back
+   * layer, the developer has to prepare the contents of the back layer either before calling this
+   * method or in a {@link BackLayerCallback#onBeforeExpand()}.
+   *
+   * <p>If you call this method when the back layer is already expanded, it will:
+   *
+   * <ul>
+   *   <li>Call all of the {@link BackLayerCallback#onBeforeExpand()} callbacks.
+   *   <li>Re measure all the child views.
+   *   <li>If the measurement was different from the previous measurement (i.e. the exposed area
+   *       needs to be bigger or smaller) this change will be animated by sliding the content layer
+   *       appropriately into place. If the measurement was the same no animation will be triggered.
+   *   <li>Call all of the {@link BackLayerCallback#onAfterExpand()} callbacks.
+   * </ul>
    */
   public void expand() {
-    if (!expanded) {
-      for (BackLayerCallback callback : callbacks) {
-        callback.onBeforeExpand();
-      }
-      CoordinatorLayout.LayoutParams layoutParams =
-          (CoordinatorLayout.LayoutParams) getLayoutParams();
-      final int absoluteGravity =
-          Gravity.getAbsoluteGravity(layoutParams.gravity, getLayoutDirection());
-      int heightMeasureSpec = originalHeightMeasureSpec;
-      int widthMeasureSpec = originalWidthMeasureSpec;
-      // Original measure specs are meant to be both match_parent, so we need to remeasure with one
-      // of them being turned into at most parent size, so we can calculate what the expanded size
-      // should be. This is stored in expandedHeight and expandedWidth.
-      switch (absoluteGravity) {
-        case Gravity.LEFT:
-        case Gravity.RIGHT:
-          widthMeasureSpec =
-              MeasureSpec.makeMeasureSpec(
-                  MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
-          break;
-        case Gravity.TOP:
-        case Gravity.BOTTOM:
-          int size = MeasureSpec.getSize(heightMeasureSpec);
-          heightMeasureSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.AT_MOST);
-          break;
-      }
-      measure(widthMeasureSpec, heightMeasureSpec);
-      expandedHeight = getMeasuredHeight();
-      expandedWidth = getMeasuredWidth();
-      // Recalculate with the original measure specs, so it fits the entire coordinator layout.
-      measure(originalWidthMeasureSpec, originalHeightMeasureSpec);
-      sibling.onBeforeExpand();
+    for (BackLayerCallback callback : callbacks) {
+      callback.onBeforeExpand();
     }
+    CoordinatorLayout.LayoutParams layoutParams =
+        (CoordinatorLayout.LayoutParams) getLayoutParams();
+    final int absoluteGravity =
+        Gravity.getAbsoluteGravity(layoutParams.gravity, getLayoutDirection());
+    int heightMeasureSpec = originalHeightMeasureSpec;
+    int widthMeasureSpec = originalWidthMeasureSpec;
+    // In order to know the measurements for a expanded version of the back layer we need to measure
+    // the back layer with one dimension set to MeasureSpec.AT_MOST instead of the setting that came
+    // in the original MeasureSpec (MeasureSpec.EXACTLY, since the BackLayerLayout must use
+    // match_parent for both dimensions).
+    switch (absoluteGravity) {
+      case Gravity.LEFT:
+      case Gravity.RIGHT:
+        widthMeasureSpec =
+            MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
+        break;
+      case Gravity.TOP:
+      case Gravity.BOTTOM:
+        int size = MeasureSpec.getSize(heightMeasureSpec);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.AT_MOST);
+        break;
+    }
+    measure(widthMeasureSpec, heightMeasureSpec);
+    expandedHeight = getMeasuredHeight();
+    expandedWidth = getMeasuredWidth();
+    // Recalculate with the original measure specs, so it fits the entire coordinator layout.
+    measure(originalWidthMeasureSpec, originalHeightMeasureSpec);
+    // Call the sibling's behavior onBeforeExpand to animate the expansion (if necessary) and, after
+    // animation is done, call the onAfterExpand() callbacks.
+    sibling.onBeforeExpand();
     expanded = true;
   }
 
@@ -244,12 +255,12 @@ public class BackLayerLayout extends LinearLayout {
     return expanded;
   }
 
-  /** The measured height for the expanded version of the backlayer. */
+  /** The measured height for the expanded version of the back layer. */
   int getExpandedHeight() {
     return expandedHeight;
   }
 
-  /** The measured width for the expanded version of the backlayer. */
+  /** The measured width for the expanded version of the back layer. */
   int getExpandedWidth() {
     return expandedWidth;
   }

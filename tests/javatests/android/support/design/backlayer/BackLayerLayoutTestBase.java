@@ -18,10 +18,14 @@ package android.support.design.backlayer;
 
 import static android.support.design.backlayer.BackLayerLayoutActions.collapse;
 import static android.support.design.backlayer.BackLayerLayoutActions.expand;
+import static android.support.design.backlayer.BackLayerLayoutActions.simpleClick;
 import static android.support.design.backlayer.BackLayerLayoutActions.waitUntilIdle;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
+import static android.support.test.espresso.assertion.ViewAssertions.matches;
+import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -30,12 +34,14 @@ import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.content.res.Resources;
+import android.graphics.Rect;
 import android.support.annotation.IdRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.test.rule.ActivityTestRule;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.NestedScrollView;
 import android.view.Gravity;
+import android.view.View;
 
 /**
  * This is the base class for all BackLayerLayout tests. There is a subclass for each of the
@@ -56,10 +62,18 @@ public abstract class BackLayerLayoutTestBase {
   protected NestedScrollView contentLayer;
   protected BackLayerLayout backLayer;
   protected CoordinatorLayout coordinatorLayout;
+  private View primaryExtraContent;
+  private View secondaryExtraContent;
+
   protected boolean isHorizontal = false;
   protected boolean isBackLayerAtEndSide = false;
+
   @IdRes private int backLayerId;
   @IdRes private int contentLayerId;
+  @IdRes private int primaryButtonId;
+  @IdRes private int primaryExtraContentId;
+  @IdRes private int secondaryButtonId;
+  @IdRes private int secondaryExtraContentId;
 
   /**
    * Assert that all the lengths and positions for the dimension that doesn't move remais consntant.
@@ -173,7 +187,7 @@ public abstract class BackLayerLayoutTestBase {
               + " bottom, width for right/end) when the backlayer is expanded and located at the"
               + " bottom or right/end side of the screen. This guarantees that exactly"
               + " backLayerExpandedLength is exposed in this dimension.",
-          backLayerMinimumLength - backLayerExpandedLength,
+          backLayerMinimumLength - backLayerExpandedLength - 1,
           contentLayerPosition);
     } else {
       // The content layer  is at position backLayerExpandedLength
@@ -260,6 +274,27 @@ public abstract class BackLayerLayoutTestBase {
     }
   }
 
+  protected void assertContentLayerNotObscuring(View view) {
+    Rect contentLayerRect = getBoundingRectangleOnScreen(contentLayer);
+    Rect viewRect = getBoundingRectangleOnScreen(view);
+    assertFalse(
+        "The boundaries of the extra content must not intersect"
+            + " the boundaries of the content layer",
+        Rect.intersects(contentLayerRect, viewRect));
+  }
+
+  private Rect getBoundingRectangleOnScreen(View view) {
+    int[] location = new int[2];
+    view.getLocationOnScreen(location);
+    Rect viewRect =
+        new Rect(
+            location[0],
+            location[1],
+            location[0] + view.getWidth(),
+            location[1] + view.getHeight());
+    return viewRect;
+  }
+
   /**
    * Sets up the necessary members for this test class from a BackLayerLayoutActivity. Call this
    * method from a {@code @Before} method on the subclass.
@@ -268,7 +303,11 @@ public abstract class BackLayerLayoutTestBase {
       ActivityTestRule<? extends Activity> activityTestRule,
       @IdRes int coordinatorLayoutId,
       @IdRes int backLayerId,
-      @IdRes int contentLayerId)
+      @IdRes int contentLayerId,
+      @IdRes int primaryButtonId,
+      @IdRes int secondaryButtonId,
+      @IdRes int primaryExtraContentId,
+      @IdRes int secondaryExtraContentId)
       throws Exception {
     this.backLayerId = backLayerId;
     this.contentLayerId = contentLayerId;
@@ -278,6 +317,13 @@ public abstract class BackLayerLayoutTestBase {
     coordinatorLayout = (CoordinatorLayout) activity.findViewById(coordinatorLayoutId);
     backLayer = (BackLayerLayout) activity.findViewById(backLayerId);
     contentLayer = (NestedScrollView) activity.findViewById(contentLayerId);
+    primaryExtraContent = activity.findViewById(primaryExtraContentId);
+    secondaryExtraContent = activity.findViewById(secondaryExtraContentId);
+
+    this.primaryButtonId = primaryButtonId;
+    this.secondaryButtonId = secondaryButtonId;
+    this.primaryExtraContentId = primaryExtraContentId;
+    this.secondaryExtraContentId = secondaryExtraContentId;
 
     CoordinatorLayout.LayoutParams layoutParams =
         (CoordinatorLayout.LayoutParams) backLayer.getLayoutParams();
@@ -313,8 +359,30 @@ public abstract class BackLayerLayoutTestBase {
     assertBackLayerCollapsed();
     onView(withId(backLayerId)).perform(expand());
     assertBackLayerExpanded();
-    onView(withId(contentLayerId)).perform(click());
+    onView(withId(contentLayerId)).perform(simpleClick());
     onView(withId(backLayerId)).perform(waitUntilIdle());
     assertBackLayerCollapsed();
+  }
+
+  public void testBackLayerChangesFromOneExperienceToTheOther() throws InterruptedException {
+    assertBackLayerCollapsed();
+    onView(withId(primaryButtonId)).perform(click());
+    onView(withId(backLayerId)).perform(waitUntilIdle());
+    assertBackLayerExpanded();
+    onView(withId(primaryExtraContentId)).check(matches(isDisplayed()));
+    onView(withId(secondaryExtraContentId)).check(matches(not(isDisplayed())));
+    assertContentLayerNotObscuring(primaryExtraContent);
+    onView(withId(secondaryButtonId)).perform(click());
+    onView(withId(backLayerId)).perform(waitUntilIdle());
+    assertBackLayerExpanded();
+    onView(withId(primaryExtraContentId)).check(matches(not(isDisplayed())));
+    onView(withId(secondaryExtraContentId)).check(matches(isDisplayed()));
+    assertContentLayerNotObscuring(secondaryExtraContent);
+    onView(withId(primaryButtonId)).perform(click());
+    onView(withId(backLayerId)).perform(waitUntilIdle());
+    assertBackLayerExpanded();
+    onView(withId(primaryExtraContentId)).check(matches(isDisplayed()));
+    onView(withId(secondaryExtraContentId)).check(matches(not(isDisplayed())));
+    assertContentLayerNotObscuring(primaryExtraContent);
   }
 }

@@ -27,6 +27,11 @@ public class BackLayerLayoutActions {
 
   public static final int WAIT_MILLISECONDS = 400;
 
+  /** Simple click action that allows 50% visible views. */
+  public static ViewAction simpleClick() {
+    return new SimpleClickAction();
+  }
+
   public static ViewAction expand() {
     return new ViewAction() {
       @Override

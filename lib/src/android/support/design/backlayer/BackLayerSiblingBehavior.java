@@ -132,20 +132,47 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
     int absoluteGravity =
         Gravity.getAbsoluteGravity(backLayerLayoutParams.gravity, layoutDirection);
-    switch (absoluteGravity) {
-      case Gravity.RIGHT:
-      case Gravity.BOTTOM:
-        childView.setX(0);
-        childView.setY(0);
-        break;
-      case Gravity.TOP:
-        childView.setX(0);
-        childView.setY(ViewCompat.getMinimumHeight(backLayerLayout));
-        break;
-      case Gravity.LEFT:
-        childView.setX(ViewCompat.getMinimumWidth(backLayerLayout));
-        childView.setY(0);
-        break;
+    int minimumWidth = ViewCompat.getMinimumWidth(backLayerLayout);
+    int minimumHeight = ViewCompat.getMinimumHeight(backLayerLayout);
+    if (!backLayerLayout.isExpanded()) {
+      switch (absoluteGravity) {
+        case Gravity.RIGHT:
+        case Gravity.BOTTOM:
+          childView.setX(0);
+          childView.setY(0);
+          break;
+        case Gravity.TOP:
+          childView.setX(0);
+          childView.setY(minimumHeight);
+          break;
+        case Gravity.LEFT:
+          childView.setX(minimumWidth);
+          childView.setY(0);
+          break;
+      }
+    } else {
+      int expandedWidth = backLayerLayout.getExpandedWidth();
+      int expandedHeight = backLayerLayout.getExpandedHeight();
+      switch (absoluteGravity) {
+        case Gravity.RIGHT:
+          childView.setX(minimumWidth - expandedWidth - 1);
+          childView.setY(0);
+          break;
+        case Gravity.BOTTOM:
+          childView.setX(0);
+          childView.setY(minimumHeight - expandedHeight - 1);
+          break;
+        case Gravity.TOP:
+          childView.setX(0);
+          childView.setY(expandedHeight);
+          break;
+        case Gravity.LEFT:
+          childView.setX(expandedWidth);
+          childView.setY(0);
+          break;
+      }
+      // This call may have happened because of a change of content in the backlayer when it is
+      // displayed
     }
     return true;
   }
@@ -153,13 +180,17 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
   @Override
   public boolean onInterceptTouchEvent(CoordinatorLayout parent, View child, MotionEvent ev) {
     if (backLayerLayout.isExpanded()) {
-      backLayerLayout.collapse();
-      return true;
+      // onInterceptTouchEvent is called for every touch in the CoordinatorLayout. Because of this
+      // we need to check that the MotionEvent's coordinates are inside of the Child View.
+      if (parent.isPointInChildBounds(childView, (int) ev.getX(), (int) ev.getY())) {
+        backLayerLayout.collapse();
+        return true;
+      }
     }
     return false;
   }
 
-  public void onBeforeExpand() {
+  void onBeforeExpand() {
     previousChildViewFocusability = childView.isFocusable();
     childView.setFocusable(true);
     int end = 0;
@@ -167,6 +198,8 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
     int absoluteGravity =
         Gravity.getAbsoluteGravity(backLayerLayoutParams.gravity, layoutDirection);
+    // Calculate the end position for the content layer in the moving dimension (width for
+    // start/end/left/right anchored back layers and height for top/bottom anchored back layers).
     switch (absoluteGravity) {
       case Gravity.TOP:
         end = backLayerLayout.getExpandedHeight();
@@ -175,12 +208,15 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         end = backLayerLayout.getExpandedWidth();
         break;
       case Gravity.BOTTOM:
-        end = ViewCompat.getMinimumHeight(backLayerLayout) - backLayerLayout.getExpandedHeight();
+        end =
+            ViewCompat.getMinimumHeight(backLayerLayout) - backLayerLayout.getExpandedHeight() - 1;
         break;
       case Gravity.RIGHT:
-        end = ViewCompat.getMinimumWidth(backLayerLayout) - backLayerLayout.getExpandedWidth();
+        end = ViewCompat.getMinimumWidth(backLayerLayout) - backLayerLayout.getExpandedWidth() - 1;
         break;
     }
+    // Start the animation to slide the content layer to the desired position. We pass the absolute
+    // gravity so we can animate the correct dimension.
     animate(
         end,
         absoluteGravity,
@@ -192,7 +228,7 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         });
   }
 
-  public void onBeforeCollapse() {
+  void onBeforeCollapse() {
     previousChildViewFocusability = childView.isFocusable();
     childView.setFocusable(true);
     int end = 0;
@@ -233,10 +269,16 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
       case Gravity.TOP:
       case Gravity.BOTTOM:
         animator.y(end);
+        if (childView.getY() == end) {
+          animator.setDuration(0);
+        }
         break;
       case Gravity.LEFT:
       case Gravity.RIGHT:
         animator.x(end);
+        if (childView.getX() == end) {
+          animator.setDuration(0);
+        }
         break;
     }
     animator.start();

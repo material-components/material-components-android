@@ -17,34 +17,66 @@
 package android.support.design.testapp.backlayer;
 
 import android.os.Bundle;
+import android.support.annotation.IntDef;
 import android.support.design.backlayer.BackLayerLayout;
 import android.support.design.testapp.base.BaseTestActivity;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.ImageView;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /** Activity to test BackLayerLayout. */
 public abstract class BackLayerLayoutActivity extends BaseTestActivity {
 
-  ImageView expandIcon;
   BackLayerLayout backLayer;
-  ImageView extraContent;
+  ImageView primaryExpandIcon;
+  ImageView secondaryExpandIcon;
+  ImageView primaryExtraContent;
+  ImageView secondaryExtraContent;
+
+  private static final int PRIMARY = 0;
+  private static final int SECONDARY = 1;
+
+  @Retention(RetentionPolicy.SOURCE)
+  @IntDef(value = {PRIMARY, SECONDARY})
+  private @interface BackLayerExperience {}
+
+  @BackLayerExperience private int experience = PRIMARY;
+
+  private class SwitchExperienceOnClickListener implements OnClickListener {
+    @BackLayerExperience private final int buttonExperience;
+
+    public SwitchExperienceOnClickListener(@BackLayerExperience int buttonExperience) {
+      this.buttonExperience = buttonExperience;
+    }
+
+    @Override
+    public void onClick(View view) {
+      if (experience == buttonExperience) {
+        if (backLayer.isExpanded()) {
+          backLayer.collapse();
+        } else {
+          backLayer.expand();
+        }
+      } else {
+        experience = buttonExperience;
+        primaryExtraContent.setVisibility(experience == PRIMARY ? View.VISIBLE : View.GONE);
+        secondaryExtraContent.setVisibility(experience == SECONDARY ? View.VISIBLE : View.GONE);
+        backLayer.expand();
+      }
+    }
+  }
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     backLayer = (BackLayerLayout) findViewById(R.id.design_backlayer_backlayer_layout);
-    extraContent = (ImageView) findViewById(R.id.design_backlayer_extra_content);
-    expandIcon = (ImageView) findViewById(R.id.design_backlayer_expand_icon);
-    expandIcon.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            if (backLayer.isExpanded()) {
-              backLayer.collapse();
-            } else {
-              backLayer.expand();
-            }
-          }
-        });
+    primaryExtraContent = (ImageView) findViewById(R.id.design_backlayer_extra_content);
+    secondaryExtraContent = (ImageView) findViewById(R.id.design_backlayer_secondary_extra_content);
+    primaryExpandIcon = (ImageView) findViewById(R.id.design_backlayer_primary_expand_icon);
+    primaryExpandIcon.setOnClickListener(new SwitchExperienceOnClickListener(PRIMARY));
+    secondaryExpandIcon = (ImageView) findViewById(R.id.design_backlayer_secondary_expand_icon);
+    secondaryExpandIcon.setOnClickListener(new SwitchExperienceOnClickListener(SECONDARY));
   }
 }
