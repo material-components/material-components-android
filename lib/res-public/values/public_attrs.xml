@@ -44,6 +44,8 @@
     <public type="attr" name="expandedTitleTextAppearance"/>
     <public type="attr" name="fabSize"/>
     <public type="attr" name="headerLayout"/>
+    <public type="attr" name="helperTextEnabled"/>
+    <public type="attr" name="helperTextTextAppearance"/>
     <public type="attr" name="hintAnimationEnabled"/>
     <public type="attr" name="hintEnabled"/>
     <public type="attr" name="hintTextAppearance"/>

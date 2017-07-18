@@ -87,6 +87,66 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setHelperTextEnabled(final boolean enabled) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Enables/disables the helper";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setHelperTextEnabled(enabled);
+      }
+    };
+  }
+
+  public static ViewAction setHelperText(final CharSequence helperText) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the helper";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setHelperText(helperText);
+      }
+    };
+  }
+
+  public static ViewAction setHelperTextTextAppearance(final int resId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the helper text appearance";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setHelperTextTextAppearance(resId);
+      }
+    };
+  }
+
   public static ViewAction setTypeface(final Typeface typeface) {
     return new ViewAction() {
       @Override

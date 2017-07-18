@@ -66,6 +66,7 @@
 
     <style name="Widget.Design.TextInputLayout" parent="android:Widget">
         <item name="hintTextAppearance">@style/TextAppearance.Design.Hint</item>
+        <item name="helperTextTextAppearance">@style/TextAppearance.Design.HelperText</item>
         <item name="errorTextAppearance">@style/TextAppearance.Design.Error</item>
         <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
         <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
@@ -73,6 +74,8 @@
         <item name="passwordToggleTint">@color/design_tint_password_toggle</item>
         <item name="passwordToggleContentDescription">@string/password_toggle_content_description</item>
     </style>
+
+    <style name="TextAppearance.Design.HelperText" parent="TextAppearance.AppCompat.Caption"/>
 
     <style name="TextAppearance.Design.Hint" parent="TextAppearance.AppCompat.Caption">
         <item name="android:textColor">?attr/colorControlActivated</item>
@@ -137,4 +140,3 @@
     </style>
 
 </resources>
-

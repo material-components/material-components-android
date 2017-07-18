@@ -20,6 +20,7 @@
 
     <item name="textinput_error" type="id" />
     <item name="textinput_counter" type="id" />
+    <item name="textinput_helper_text" type="id" />
 
 </resources>
 

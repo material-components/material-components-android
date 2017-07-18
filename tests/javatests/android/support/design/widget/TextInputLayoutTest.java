@@ -26,6 +26,8 @@ import static android.support.design.testutils.TextInputLayoutActions.setCounter
 import static android.support.design.testutils.TextInputLayoutActions.setError;
 import static android.support.design.testutils.TextInputLayoutActions.setErrorEnabled;
 import static android.support.design.testutils.TextInputLayoutActions.setErrorTextAppearance;
+import static android.support.design.testutils.TextInputLayoutActions.setHelperText;
+import static android.support.design.testutils.TextInputLayoutActions.setHelperTextEnabled;
 import static android.support.design.testutils.TextInputLayoutActions.setPasswordVisibilityToggleEnabled;
 import static android.support.design.testutils.TextInputLayoutActions.setTypeface;
 import static android.support.design.testutils.TextInputLayoutMatchers.hasPasswordToggleContentDescription;
@@ -85,6 +87,8 @@ public class TextInputLayoutTest {
 
   private static final String ERROR_MESSAGE_1 = "An error has occured";
   private static final String ERROR_MESSAGE_2 = "Some other error has occured";
+  private static final String HELPER_MESSAGE_1 = "Helpful helper text";
+  private static final String HELPER_MESSAGE_2 = "Some other helper text";
   private static final String INPUT_TEXT = "Random input text";
   private static final Typeface CUSTOM_TYPEFACE = Typeface.SANS_SERIF;
 
@@ -127,6 +131,12 @@ public class TextInputLayoutTest {
   }
 
   @Test
+  public void testSetHelperEnablesHelperIsDisplayed() {
+    onView(withId(R.id.textinput)).perform(setHelperText(HELPER_MESSAGE_1));
+    onView(withText(HELPER_MESSAGE_1)).check(matches(isDisplayed()));
+  }
+
+  @Test
   public void testDisabledErrorIsNotDisplayed() {
     // First show an error, and then disable error functionality
     onView(withId(R.id.textinput))
@@ -135,6 +145,17 @@ public class TextInputLayoutTest {
 
     // Check that the error is no longer there
     onView(withText(ERROR_MESSAGE_1)).check(doesNotExist());
+  }
+
+  @Test
+  public void testDisabledHelperIsNotDisplayed() {
+    // First show a helper, and then disable helper functionality
+    onView(withId(R.id.textinput))
+        .perform(setHelperText(HELPER_MESSAGE_1))
+        .perform(setHelperTextEnabled(false));
+
+    // Check that the helper is no longer there
+    onView(withText(HELPER_MESSAGE_1)).check(doesNotExist());
   }
 
   @Test
@@ -148,6 +169,19 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput)).perform(setError(ERROR_MESSAGE_2));
     // And check that it is displayed
     onView(withText(ERROR_MESSAGE_2)).check(matches(isDisplayed()));
+  }
+
+  @Test
+  public void testSetHelperOnDisabledSetHelperIsDisplayed() {
+    // First show a helper, and then disable helper functionality
+    onView(withId(R.id.textinput))
+        .perform(setHelperText(HELPER_MESSAGE_1))
+        .perform(setHelperTextEnabled(false));
+
+    // Now show a different helper message
+    onView(withId(R.id.textinput)).perform(setHelperText(HELPER_MESSAGE_2));
+    // And check that it is displayed
+    onView(withText(HELPER_MESSAGE_2)).check(matches(isDisplayed()));
   }
 
   @Test

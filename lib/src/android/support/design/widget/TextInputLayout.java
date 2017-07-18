@@ -16,10 +16,6 @@
 
 package android.support.design.widget;
 
-import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
-import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -51,7 +47,6 @@ import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
-import android.support.v4.widget.Space;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatDrawableManager;
@@ -76,22 +71,29 @@ import android.widget.TextView;
 
 /**
  * Layout which wraps an {@link android.widget.EditText} (or descendant) to show a floating label
- * when the hint is hidden due to the user inputting text.
+ * when the hint is hidden while the user inputs text.
  *
- * <p>Also supports showing an error via {@link #setErrorEnabled(boolean)} and {@link
- * #setError(CharSequence)}, and a character counter via {@link #setCounterEnabled(boolean)}.
+ * <p>Also supports:
  *
- * <p>Password visibility toggling is also supported via the {@link
- * #setPasswordVisibilityToggleEnabled(boolean)} API and related attribute. If enabled, a button is
- * displayed to toggle between the password being displayed as plain-text or disguised, when your
- * EditText is set to display a password.
+ * <ul>
+ *   <li>Showing an error via {@link #setErrorEnabled(boolean)} and {@link #setError(CharSequence)}
+ *   <li>Showing helper text via {@link #setHelperTextEnabled(boolean)} and {@link
+ *       #setHelperText(CharSequence)}
+ *   <li>Showing a character counter via {@link #setCounterEnabled(boolean)} and {@link
+ *       #setCounterMaxLength(int)}
+ *   <li>Password visibility toggling via the {@link #setPasswordVisibilityToggleEnabled(boolean)}
+ *       API and related attribute. If enabled, a button is displayed to toggle between the password
+ *       being displayed as plain-text or disguised, when your EditText is set to display a
+ *       password.
+ *       <p><strong>Note:</strong> When using the password toggle functionality, the 'end' compound
+ *       drawable of the EditText will be overridden while the toggle is enabled. To ensure that any
+ *       existing drawables are restored correctly, you should set those compound drawables
+ *       relatively (start/end), opposed to absolutely (left/right).
+ * </ul>
  *
- * <p><strong>Note:</strong> When using the password toggle functionality, the 'end' compound
- * drawable of the EditText will be overridden while the toggle is enabled. To ensure that any
- * existing drawables are restored correctly, you should set those compound drawables relatively
- * (start/end), opposed to absolutely (left/right). The {@link TextInputEditText} class is provided
- * to be used as a child of this layout. Using TextInputEditText allows TextInputLayout greater
- * control over the visual aspects of any text input. An example usage is as so:
+ * <p>The {@link TextInputEditText} class is provided to be used as a child of this layout. Using
+ * TextInputEditText allows TextInputLayout greater control over the visual aspects of any text
+ * input. An example usage is as so:
  *
  * <pre>
  * &lt;android.support.design.widget.TextInputLayout
@@ -114,49 +116,31 @@ import android.widget.TextView;
  */
 public class TextInputLayout extends LinearLayout {
 
-  // Duration for the label's scale up and down animations.
+  /** Duration for the label's scale up and down animations. */
   private static final int LABEL_SCALE_ANIMATION_DURATION = 167;
-
-  // Duration for the error text's vertical translation animation.
-  private static final int ERROR_TRANSLATE_Y_ANIMATION_DURATION = 250;
-
-  // Durations for the error text's opacity fade animations.
-  private static final int ERROR_OPACITY_FADE_IN_ANIMATION_DURATION = 167;
-  private static final int ERROR_OPACITY_FADE_OUT_ANIMATION_DURATION = 83;
 
   private static final int INVALID_MAX_LENGTH = -1;
 
   private static final String LOG_TAG = "TextInputLayout";
 
   private final FrameLayout mInputFrame;
-  @Nullable private Animator mErrorAnimator;
   EditText mEditText;
 
-  private final float mErrorTextTranslationYPx;
+  private final IndicatorViewController indicatorViewController = new IndicatorViewController(this);
+
+  boolean mCounterEnabled;
+  private int mCounterMaxLength;
+  private boolean mCounterOverflowed;
+  private TextView mCounterView;
+  private final int mCounterOverflowTextAppearance;
+  private final int mCounterTextAppearance;
 
   private boolean mHintEnabled;
   private CharSequence mHint;
 
   private Paint mTmpPaint;
   private final Rect mTmpRect = new Rect();
-
-  private LinearLayout mIndicatorArea;
-  private int mIndicatorsAdded;
-
   private Typeface mTypeface;
-
-  private boolean mErrorEnabled;
-  TextView mErrorView;
-  private int mErrorTextAppearance;
-  private boolean mErrorShown;
-  private CharSequence mError;
-
-  boolean mCounterEnabled;
-  private TextView mCounterView;
-  private int mCounterMaxLength;
-  private int mCounterTextAppearance;
-  private int mCounterOverflowTextAppearance;
-  private boolean mCounterOverflowed;
 
   private boolean mPasswordToggleEnabled;
   private Drawable mPasswordToggleDrawable;
@@ -220,6 +204,7 @@ public class TextInputLayout extends LinearLayout {
             R.styleable.TextInputLayout,
             defStyleAttr,
             R.style.Widget_Design_TextInputLayout);
+
     mHintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     mHintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
@@ -235,8 +220,14 @@ public class TextInputLayout extends LinearLayout {
       setHintTextAppearance(a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, 0));
     }
 
-    mErrorTextAppearance = a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
+    final int mErrorTextAppearance =
+        a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
     final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
+
+    final int mHelperTextTextAppearance =
+        a.getResourceId(R.styleable.TextInputLayout_helperTextTextAppearance, 0);
+    final boolean helperTextEnabled =
+        a.getBoolean(R.styleable.TextInputLayout_helperTextEnabled, false);
 
     final boolean counterEnabled = a.getBoolean(R.styleable.TextInputLayout_counterEnabled, false);
     setCounterMaxLength(a.getInt(R.styleable.TextInputLayout_counterMaxLength, INVALID_MAX_LENGTH));
@@ -261,7 +252,10 @@ public class TextInputLayout extends LinearLayout {
 
     a.recycle();
 
+    setHelperTextEnabled(helperTextEnabled);
+    setHelperTextTextAppearance(mHelperTextTextAppearance);
     setErrorEnabled(errorEnabled);
+    setErrorTextAppearance(mErrorTextAppearance);
     setCounterEnabled(counterEnabled);
     applyPasswordToggleTint();
 
@@ -272,9 +266,6 @@ public class TextInputLayout extends LinearLayout {
     }
 
     ViewCompat.setAccessibilityDelegate(this, new TextInputAccessibilityDelegate());
-
-    mErrorTextTranslationYPx =
-        getResources().getDimensionPixelSize(R.dimen.design_textinput_error_translate_y);
   }
 
   @Override
@@ -309,11 +300,10 @@ public class TextInputLayout extends LinearLayout {
       mTypeface = typeface;
 
       mCollapsingTextHelper.setTypefaces(typeface);
+      indicatorViewController.setTypefaces(typeface);
+
       if (mCounterView != null) {
         mCounterView.setTypeface(typeface);
-      }
-      if (mErrorView != null) {
-        mErrorView.setTypeface(typeface);
       }
     }
   }
@@ -389,9 +379,7 @@ public class TextInputLayout extends LinearLayout {
       updateCounter(mEditText.getText().length());
     }
 
-    if (mIndicatorArea != null) {
-      adjustIndicatorPadding();
-    }
+    indicatorViewController.adjustIndicatorPadding();
 
     updatePasswordToggleView();
 
@@ -426,11 +414,11 @@ public class TextInputLayout extends LinearLayout {
     updateLabelState(animate, false);
   }
 
-  void updateLabelState(boolean animate, boolean force) {
+  private void updateLabelState(boolean animate, boolean force) {
     final boolean isEnabled = isEnabled();
     final boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
     final boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
-    final boolean isErrorShowing = !TextUtils.isEmpty(getError());
+    final boolean errorShouldBeShown = indicatorViewController.errorShouldBeShown();
 
     if (mDefaultTextColor != null) {
       mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
@@ -444,7 +432,7 @@ public class TextInputLayout extends LinearLayout {
       mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor);
     }
 
-    if (hasText || (isEnabled() && (isFocused || isErrorShowing))) {
+    if (hasText || (isEnabled() && (isFocused || errorShouldBeShown))) {
       // We should be showing the label so do so if it isn't already
       if (force || mHintExpanded) {
         collapseHint(animate);
@@ -560,48 +548,6 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void addIndicator(TextView indicator, int index) {
-    if (mIndicatorArea == null) {
-      mIndicatorArea = new LinearLayout(getContext());
-      mIndicatorArea.setOrientation(LinearLayout.HORIZONTAL);
-      addView(
-          mIndicatorArea,
-          LinearLayout.LayoutParams.MATCH_PARENT,
-          LinearLayout.LayoutParams.WRAP_CONTENT);
-
-      // Add a flexible spacer in the middle so that the left/right views stay pinned
-      final Space spacer = new Space(getContext());
-      final LinearLayout.LayoutParams spacerLp = new LinearLayout.LayoutParams(0, 0, 1f);
-      mIndicatorArea.addView(spacer, spacerLp);
-
-      if (mEditText != null) {
-        adjustIndicatorPadding();
-      }
-    }
-    mIndicatorArea.setVisibility(View.VISIBLE);
-    mIndicatorArea.addView(indicator, index);
-    mIndicatorsAdded++;
-  }
-
-  private void adjustIndicatorPadding() {
-    // Add padding to the error and character counter so that they match the EditText
-    ViewCompat.setPaddingRelative(
-        mIndicatorArea,
-        ViewCompat.getPaddingStart(mEditText),
-        0,
-        ViewCompat.getPaddingEnd(mEditText),
-        mEditText.getPaddingBottom());
-  }
-
-  private void removeIndicator(TextView indicator) {
-    if (mIndicatorArea != null) {
-      mIndicatorArea.removeView(indicator);
-      if (--mIndicatorsAdded == 0) {
-        mIndicatorArea.setVisibility(View.GONE);
-      }
-    }
-  }
-
   /**
    * Whether the error functionality is enabled or not in this layout. Enabling this functionality
    * before setting an error message via {@link #setError(CharSequence)}, will mean that this layout
@@ -610,33 +556,7 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref android.support.design.R.styleable#TextInputLayout_errorEnabled
    */
   public void setErrorEnabled(boolean enabled) {
-    if (mErrorEnabled != enabled) {
-      if (mErrorView != null) {
-        mErrorView.animate().cancel();
-        if (mErrorAnimator != null) {
-          mErrorAnimator.cancel();
-        }
-      }
-
-      if (enabled) {
-        mErrorView = new AppCompatTextView(getContext());
-        mErrorView.setId(R.id.textinput_error);
-        if (mTypeface != null) {
-          mErrorView.setTypeface(mTypeface);
-        }
-        setTextAppearanceCompatWithErrorFallback(mErrorView, mErrorTextAppearance);
-        mErrorView.setVisibility(INVISIBLE);
-        ViewCompat.setAccessibilityLiveRegion(
-            mErrorView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-        addIndicator(mErrorView, 0);
-      } else {
-        mErrorShown = false;
-        updateEditTextBackground();
-        removeIndicator(mErrorView);
-        mErrorView = null;
-      }
-      mErrorEnabled = enabled;
-    }
+    indicatorViewController.setErrorEnabled(enabled);
   }
 
   /**
@@ -645,10 +565,16 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref android.support.design.R.styleable#TextInputLayout_errorTextAppearance
    */
   public void setErrorTextAppearance(@StyleRes int resId) {
-    mErrorTextAppearance = resId;
-    if (mErrorView != null) {
-      TextViewCompat.setTextAppearance(mErrorView, resId);
-    }
+    indicatorViewController.setErrorTextAppearance(resId);
+  }
+
+  /**
+   * Sets the text color and size for the helper text from the specified TextAppearance resource.
+   *
+   * @attr ref android.support.design.R.styleable#TextInputLayout_helperTextTextAppearance
+   */
+  public void setHelperTextTextAppearance(@StyleRes int resId) {
+    indicatorViewController.setHelperTextAppearance(resId);
   }
 
   /**
@@ -658,7 +584,54 @@ public class TextInputLayout extends LinearLayout {
    * @see #setErrorEnabled(boolean)
    */
   public boolean isErrorEnabled() {
-    return mErrorEnabled;
+    return indicatorViewController.isErrorEnabled();
+  }
+
+  /**
+   * Whether the helper text functionality is enabled or not in this layout. Enabling this
+   * functionality before setting a helper message via {@link #setHelperText(CharSequence)} will
+   * mean that this layout will not change size when a helper message is displayed.
+   *
+   * @attr ref android.support.design.R.styleable#TextInputLayout_helperTextEnabled
+   */
+  public void setHelperTextEnabled(boolean enabled) {
+    indicatorViewController.setHelperTextEnabled(enabled);
+  }
+
+  /**
+   * Sets a helper message that will be displayed below the {@link EditText}. If the {@code helper}
+   * is {@code null}, the helper text functionality will be disabled and the helper message will be
+   * hidden.
+   *
+   * <p>If the helper text functionality has not been enabled via {@link
+   * #setHelperTextEnabled(boolean)}, then it will be automatically enabled if {@code helper} is not
+   * empty.
+   *
+   * @param helperText Helper text to display
+   * @see #getHelperText()
+   */
+  public void setHelperText(@Nullable final CharSequence helperText) {
+    // If helper text is null, disable helper if it's enabled.
+    if (TextUtils.isEmpty(helperText)) {
+      if (isHelperTextEnabled()) {
+        setHelperTextEnabled(false);
+      }
+    } else {
+      if (!isHelperTextEnabled()) {
+        setHelperTextEnabled(true);
+      }
+      indicatorViewController.showHelper(helperText);
+    }
+  }
+
+  /**
+   * Returns whether the helper text functionality is enabled or not in this layout.
+   *
+   * @attr ref android.support.design.R.styleable#TextInputLayout_helperTextEnabled
+   * @see #setHelperTextEnabled(boolean)
+   */
+  public boolean isHelperTextEnabled() {
+    return indicatorViewController.isHelperTextEnabled();
   }
 
   /**
@@ -668,23 +641,12 @@ public class TextInputLayout extends LinearLayout {
    * <p>If the error functionality has not been enabled via {@link #setErrorEnabled(boolean)}, then
    * it will be automatically enabled if {@code error} is not empty.
    *
-   * @param error Error message to display, or null to clear
+   * @param errorText Error message to display, or null to clear
    * @see #getError()
    */
-  public void setError(@Nullable final CharSequence error) {
-    // Only animate if we're enabled, laid out, and we have a different error message
-    setError(
-        error,
-        ViewCompat.isLaidOut(this)
-            && isEnabled()
-            && (mErrorView == null || !TextUtils.equals(mErrorView.getText(), error)));
-  }
-
-  private void setError(@Nullable final CharSequence error, final boolean animate) {
-    mError = error;
-
-    if (!mErrorEnabled) {
-      if (TextUtils.isEmpty(error)) {
+  public void setError(@Nullable final CharSequence errorText) {
+    if (!indicatorViewController.isErrorEnabled()) {
+      if (TextUtils.isEmpty(errorText)) {
         // If error isn't enabled, and the error is empty, just return
         return;
       }
@@ -692,81 +654,11 @@ public class TextInputLayout extends LinearLayout {
       setErrorEnabled(true);
     }
 
-    mErrorShown = !TextUtils.isEmpty(error);
-
-    // Cancel any on-going animation
-    mErrorView.animate().cancel();
-    if (mErrorAnimator != null) {
-      mErrorAnimator.cancel();
-    }
-
-    if (mErrorShown) {
-      mErrorView.setText(error);
-      mErrorView.setVisibility(VISIBLE);
-
-      if (animate) {
-        if (mErrorView.getAlpha() == 1f) {
-          // If it's currently 100% show, we'll animate it from 0
-          mErrorView.setAlpha(0f);
-        }
-
-        ObjectAnimator errorOpacityAnimator = ObjectAnimator.ofFloat(mErrorView, ALPHA, 1f);
-        ObjectAnimator errorTranslationYAnimator =
-            ObjectAnimator.ofFloat(mErrorView, TRANSLATION_Y, -mErrorTextTranslationYPx, 0);
-
-        errorOpacityAnimator
-            .setDuration(ERROR_OPACITY_FADE_IN_ANIMATION_DURATION)
-            .setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
-        errorTranslationYAnimator
-            .setDuration(ERROR_TRANSLATE_Y_ANIMATION_DURATION)
-            .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-
-        final AnimatorSet errorAnimatorSet = new AnimatorSet();
-        mErrorAnimator = errorAnimatorSet;
-
-        errorAnimatorSet.playTogether(errorOpacityAnimator, errorTranslationYAnimator);
-        errorAnimatorSet.addListener(
-            new AnimatorListenerAdapter() {
-              @Override
-              public void onAnimationEnd(Animator animation) {
-                mErrorAnimator = null;
-              }
-
-              @Override
-              public void onAnimationStart(Animator animation) {
-                mErrorView.setVisibility(VISIBLE);
-              }
-            });
-        errorAnimatorSet.start();
-      } else {
-        // Set alpha to 1f, just in case
-        mErrorView.setAlpha(1f);
-      }
+    if (!TextUtils.isEmpty(errorText)) {
+      indicatorViewController.showError(errorText);
     } else {
-      if (mErrorView.getVisibility() == VISIBLE) {
-        if (animate) {
-          mErrorView
-              .animate()
-              .alpha(0f)
-              .setDuration(ERROR_OPACITY_FADE_OUT_ANIMATION_DURATION)
-              .setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR)
-              .setListener(
-                  new AnimatorListenerAdapter() {
-                    @Override
-                    public void onAnimationEnd(Animator animator) {
-                      mErrorView.setText(error);
-                      mErrorView.setVisibility(INVISIBLE);
-                    }
-                  })
-              .start();
-        } else {
-          mErrorView.setText(error);
-          mErrorView.setVisibility(INVISIBLE);
-        }
-      }
+      indicatorViewController.hideError();
     }
-    updateEditTextBackground();
-    updateLabelState(animate);
   }
 
   /**
@@ -784,14 +676,15 @@ public class TextInputLayout extends LinearLayout {
         }
         mCounterView.setMaxLines(1);
         setTextAppearanceCompatWithErrorFallback(mCounterView, mCounterTextAppearance);
-        addIndicator(mCounterView, -1);
+        indicatorViewController.addIndicator(mCounterView, IndicatorViewController.COUNTER_INDEX);
         if (mEditText == null) {
           updateCounter(0);
         } else {
           updateCounter(mEditText.getText().length());
         }
       } else {
-        removeIndicator(mCounterView);
+        indicatorViewController.removeIndicator(
+            mCounterView, IndicatorViewController.COUNTER_INDEX);
         mCounterView = null;
       }
       mCounterEnabled = enabled;
@@ -876,8 +769,7 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void setTextAppearanceCompatWithErrorFallback(
-      TextView textView, @StyleRes int textAppearance) {
+  void setTextAppearanceCompatWithErrorFallback(TextView textView, @StyleRes int textAppearance) {
     boolean useDefaultColor = false;
     try {
       TextViewCompat.setTextAppearance(textView, textAppearance);
@@ -904,7 +796,7 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void updateEditTextBackground() {
+  void updateEditTextBackground() {
     if (mEditText == null) {
       return;
     }
@@ -920,11 +812,11 @@ public class TextInputLayout extends LinearLayout {
       editTextBackground = editTextBackground.mutate();
     }
 
-    if (mErrorShown && mErrorView != null) {
+    if (indicatorViewController.errorShouldBeShown()) {
       // Set a color filter for the error color
       editTextBackground.setColorFilter(
           AppCompatDrawableManager.getPorterDuffColorFilter(
-              mErrorView.getCurrentTextColor(), PorterDuff.Mode.SRC_IN));
+              indicatorViewController.getErrorViewCurrentTextColor(), PorterDuff.Mode.SRC_IN));
     } else if (mCounterOverflowed && mCounterView != null) {
       // Set a color filter of the counter color
       editTextBackground.setColorFilter(
@@ -957,7 +849,7 @@ public class TextInputLayout extends LinearLayout {
       final Drawable newBg = bg.getConstantState().newDrawable();
 
       if (bg instanceof DrawableContainer) {
-        // If we have a Drawable container, we can try and set it's constant state via
+        // If we have a Drawable container, we can try and set its constant state via
         // reflection from the new Drawable
         mHasReconstructedEditTextBackground =
             DrawableUtils.setContainerConstantState(
@@ -1025,7 +917,7 @@ public class TextInputLayout extends LinearLayout {
   public Parcelable onSaveInstanceState() {
     Parcelable superState = super.onSaveInstanceState();
     SavedState ss = new SavedState(superState);
-    if (mErrorShown) {
+    if (indicatorViewController.errorShouldBeShown()) {
       ss.error = getError();
     }
     return ss;
@@ -1058,7 +950,21 @@ public class TextInputLayout extends LinearLayout {
    */
   @Nullable
   public CharSequence getError() {
-    return mErrorEnabled ? mError : null;
+    return indicatorViewController.isErrorEnabled() ? indicatorViewController.getErrorText() : null;
+  }
+
+  /**
+   * Returns the helper message that was set to be displayed with {@link
+   * #setHelperText(CharSequence)}, or <code>null</code> if no helper text was set or if helper text
+   * functionality is not enabled.
+   *
+   * @see #setHelperText(CharSequence)
+   */
+  @Nullable
+  public CharSequence getHelperText() {
+    return indicatorViewController.isHelperTextEnabled()
+        ? indicatorViewController.getHelperText()
+        : null;
   }
 
   /**
@@ -1505,10 +1411,10 @@ public class TextInputLayout extends LinearLayout {
       if (mEditText != null) {
         info.setLabelFor(mEditText);
       }
-      final CharSequence error = mErrorView != null ? mErrorView.getText() : null;
-      if (!TextUtils.isEmpty(error)) {
+
+      if (indicatorViewController.errorIsDisplayed()) {
         info.setContentInvalid(true);
-        info.setError(error);
+        info.setError(indicatorViewController.getErrorText());
       }
     }
   }
