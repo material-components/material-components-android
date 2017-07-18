@@ -101,10 +101,14 @@ final class CollapsingTextHelper {
   private Interpolator mPositionInterpolator;
   private Interpolator mTextSizeInterpolator;
 
-  private float mCollapsedShadowRadius, mCollapsedShadowDx, mCollapsedShadowDy;
+  private float mCollapsedShadowRadius;
+  private float mCollapsedShadowDx;
+  private float mCollapsedShadowDy;
   private int mCollapsedShadowColor;
 
-  private float mExpandedShadowRadius, mExpandedShadowDx, mExpandedShadowDy;
+  private float mExpandedShadowRadius;
+  private float mExpandedShadowDx;
+  private float mExpandedShadowDy;
   private int mExpandedShadowColor;
 
   public CollapsingTextHelper(View view) {
@@ -279,6 +283,7 @@ final class CollapsingTextHelper {
     return null;
   }
 
+  @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
   void setCollapsedTypeface(Typeface typeface) {
     if (mCollapsedTypeface != typeface) {
       mCollapsedTypeface = typeface;
@@ -286,6 +291,7 @@ final class CollapsingTextHelper {
     }
   }
 
+  @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
   void setExpandedTypeface(Typeface typeface) {
     if (mExpandedTypeface != typeface) {
       mExpandedTypeface = typeface;
@@ -552,6 +558,7 @@ final class CollapsingTextHelper {
     ViewCompat.postInvalidateOnAnimation(mView);
   }
 
+  @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
   private void calculateUsingTextSize(final float textSize) {
     if (mText == null) return;
 
