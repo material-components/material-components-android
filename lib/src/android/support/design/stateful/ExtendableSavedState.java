@@ -23,7 +23,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.RestrictTo;
 import android.support.v4.util.SimpleArrayMap;
-import android.view.View.BaseSavedState;
+import android.support.v4.view.AbsSavedState;
 
 /**
  * Class for widgets that want to save and restore their own state in {@link
@@ -33,7 +33,7 @@ import android.view.View.BaseSavedState;
  * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
-public class ExtendableSavedState extends BaseSavedState {
+public class ExtendableSavedState extends AbsSavedState {
 
   public final SimpleArrayMap<String, Bundle> extendableStates;
 
