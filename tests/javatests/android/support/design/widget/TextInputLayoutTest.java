@@ -328,7 +328,6 @@ public class TextInputLayoutTest {
 
     assertEquals(INPUT_TEXT, info.hintText);
   }
-
   @UiThreadTest
   @Test
   public void testDrawableStateChanged() {
