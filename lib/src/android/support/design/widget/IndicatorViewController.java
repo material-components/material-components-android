@@ -24,6 +24,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
@@ -486,14 +487,6 @@ final class IndicatorViewController {
     return mHelperText;
   }
 
-  @ColorInt
-  int getErrorViewCurrentTextColor() {
-    if (mErrorView != null) {
-      return mErrorView.getCurrentTextColor();
-    }
-    return -1;
-  }
-
   @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
   void setTypefaces(Typeface typeface) {
     if (typeface != mTypeface) {
@@ -507,6 +500,16 @@ final class IndicatorViewController {
     if (captionView != null) {
       captionView.setTypeface(typeface);
     }
+  }
+
+  @ColorInt
+  int getErrorViewCurrentTextColor() {
+    return mErrorView != null ? mErrorView.getCurrentTextColor() : -1;
+  }
+
+  @Nullable
+  ColorStateList getErrorViewTextColors() {
+    return mErrorView != null ? mErrorView.getTextColors() : null;
   }
 
   void setErrorTextAppearance(@StyleRes int resId) {

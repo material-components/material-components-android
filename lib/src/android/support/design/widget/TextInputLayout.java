@@ -424,7 +424,9 @@ public class TextInputLayout extends LinearLayout {
       mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
     }
 
-    if (isEnabled && mCounterOverflowed && mCounterView != null) {
+    if (isEnabled && errorShouldBeShown) {
+      mCollapsingTextHelper.setCollapsedTextColor(indicatorViewController.getErrorViewTextColors());
+    } else if (isEnabled && mCounterOverflowed && mCounterView != null) {
       mCollapsingTextHelper.setCollapsedTextColor(mCounterView.getTextColors());
     } else if (isEnabled && isFocused && mFocusedTextColor != null) {
       mCollapsingTextHelper.setCollapsedTextColor(mFocusedTextColor);
@@ -1378,6 +1380,16 @@ public class TextInputLayout extends LinearLayout {
   @VisibleForTesting
   final boolean isHintExpanded() {
     return mHintExpanded;
+  }
+
+  @VisibleForTesting
+  final int getHintCurrentCollapsedTextColor() {
+    return mCollapsingTextHelper.getCurrentCollapsedTextColor();
+  }
+
+  @VisibleForTesting
+  final int getErrorTextCurrentColor() {
+    return indicatorViewController.getErrorViewCurrentTextColor();
   }
 
   private class TextInputAccessibilityDelegate extends AccessibilityDelegateCompat {

@@ -58,6 +58,7 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
+import android.support.annotation.ColorInt;
 import android.support.design.testapp.R;
 import android.support.design.testapp.TextInputLayoutActivity;
 import android.support.design.testutils.TestUtils;
@@ -476,6 +477,21 @@ public class TextInputLayoutTest {
         .perform(setErrorTextAppearance(R.style.TextAppearanceWithThemedCslTextColor));
 
     onView(withText(ERROR_MESSAGE_1)).check(matches(withTextColor(textColor)));
+  }
+
+  @Test
+  public void testHintIsErrorTextColorOnError() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
+
+    onView(withId(R.id.textinput))
+        .perform(setErrorEnabled(true))
+        .perform(setError(ERROR_MESSAGE_1));
+
+    @ColorInt int hintColor = layout.getHintCurrentCollapsedTextColor();
+    @ColorInt int errorColor = layout.getErrorTextCurrentColor();
+
+    assertEquals(hintColor, errorColor);
   }
 
   @Test
