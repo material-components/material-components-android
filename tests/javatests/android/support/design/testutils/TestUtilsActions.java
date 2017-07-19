@@ -20,6 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
+import static org.hamcrest.Matchers.any;
 
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
@@ -363,7 +364,7 @@ public class TestUtilsActions {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
-        return isDisplayed();
+        return any(View.class);
       }
 
       @Override
@@ -373,9 +374,7 @@ public class TestUtilsActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
         ((ExpandableWidget) view).setExpanded(expanded);
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }

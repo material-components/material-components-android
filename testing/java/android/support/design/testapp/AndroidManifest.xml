@@ -58,8 +58,12 @@
       android:name=".DynamicCoordinatorLayoutActivity"/>
 
     <activity
-      android:name=".FloatingActionButtonActivity"
-      android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
+      android:theme="@style/Theme.AppCompat.Light.NoActionBar"
+      android:name=".FloatingActionButtonActivity"/>
+
+    <activity
+      android:theme="@style/Theme.AppCompat.NoActionBar"
+      android:name=".ExpandableTransformationActivity"/>
 
     <activity
       android:theme="@style/Theme.AppCompat.NoActionBar"

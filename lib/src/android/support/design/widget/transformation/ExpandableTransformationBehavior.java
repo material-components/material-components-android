@@ -27,6 +27,7 @@ import android.support.design.widget.expandable.ExpandableWidget;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
@@ -38,17 +39,25 @@ import java.util.List;
 public abstract class ExpandableTransformationBehavior extends Behavior<View> {
 
   /** Unknown expanded state. */
-  private static final int UNKNOWN = 0;
+  private static final int STATE_UNKNOWN = 0;
   /** Expanded state. */
-  private static final int EXPANDED = 1;
+  private static final int STATE_EXPANDED = 1;
   /** Collapsed state. */
-  private static final int COLLAPSED = 2;
+  private static final int STATE_COLLAPSED = 2;
 
-  @IntDef({UNKNOWN, EXPANDED, COLLAPSED})
+  @IntDef({STATE_UNKNOWN, STATE_EXPANDED, STATE_COLLAPSED})
   @Retention(RetentionPolicy.SOURCE)
   private @interface State {}
 
-  @State private int lastKnownState = UNKNOWN;
+  /**
+   * The current expanded state of this behavior. This state follows the expanded state of the
+   * {@link ExpandableWidget} dependency, and is updated in {@link #onLayoutChild(CoordinatorLayout,
+   * View, int)} and {@link #onDependentViewChanged(CoordinatorLayout, View, View)}.
+   *
+   * <p>This state may be {@link #STATE_UNKNOWN} before either of those callbacks have been invoked.
+   */
+  @State private int currentState = STATE_UNKNOWN;
+
   @Nullable private Animator currentAnimation;
 
   public ExpandableTransformationBehavior() {}
@@ -77,16 +86,15 @@ public abstract class ExpandableTransformationBehavior extends Behavior<View> {
   public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
     ExpandableWidget dep = (ExpandableWidget) dependency;
     boolean expanded = dep.isExpanded();
-    if (!didChangeState(expanded)) {
+    if (!didStateChange(expanded)) {
       return false;
     }
-
-    lastKnownState = expanded ? EXPANDED : COLLAPSED;
 
     if (currentAnimation != null) {
       currentAnimation.cancel();
     }
 
+    currentState = expanded ? STATE_EXPANDED : STATE_COLLAPSED;
     currentAnimation = createAnimation(dep, child);
     currentAnimation.addListener(
         new AnimatorListenerAdapter() {
@@ -111,11 +119,11 @@ public abstract class ExpandableTransformationBehavior extends Behavior<View> {
 
   protected void jumpToState(ExpandableWidget dep, View child) {
     boolean expanded = dep.isExpanded();
-    if (!didChangeState(expanded)) {
+    if (!didStateChange(expanded)) {
       return;
     }
 
-    lastKnownState = expanded ? EXPANDED : COLLAPSED;
+    currentState = expanded ? STATE_EXPANDED : STATE_COLLAPSED;
 
     if (expanded) {
       child.setVisibility(View.VISIBLE);
@@ -136,8 +144,31 @@ public abstract class ExpandableTransformationBehavior extends Behavior<View> {
     return null;
   }
 
-  private boolean didChangeState(boolean expanded) {
-    return (expanded && ((lastKnownState == UNKNOWN) || (lastKnownState == COLLAPSED)))
-        || (!expanded && ((lastKnownState == UNKNOWN) || (lastKnownState == EXPANDED)));
+  private boolean didStateChange(boolean expanded) {
+    return (expanded && ((currentState == STATE_UNKNOWN) || (currentState == STATE_COLLAPSED)))
+        || (!expanded && ((currentState == STATE_UNKNOWN) || (currentState == STATE_EXPANDED)));
+  }
+
+  /**
+   * A utility function to get the {@link ExpandableTransformationBehavior} attached to the {@code
+   * view}.
+   *
+   * @param view The {@link View} that the {@link ExpandableTransformationBehavior} is attached to.
+   * @param klass The expected {@link Class} of the attached {@link
+   *     ExpandableTransformationBehavior}.
+   * @return The {@link ExpandableTransformationBehavior} attached to the {@code view}.
+   */
+  public static <T extends ExpandableTransformationBehavior> T from(View view, Class<T> klass) {
+    ViewGroup.LayoutParams params = view.getLayoutParams();
+    if (!(params instanceof CoordinatorLayout.LayoutParams)) {
+      throw new IllegalArgumentException("The view is not a child of CoordinatorLayout");
+    }
+    CoordinatorLayout.Behavior<?> behavior =
+        ((CoordinatorLayout.LayoutParams) params).getBehavior();
+    if (!(behavior instanceof ExpandableTransformationBehavior)) {
+      throw new IllegalArgumentException(
+          "The view is not associated with ExpandableTransformationBehavior");
+    }
+    return klass.cast(view);
   }
 }
