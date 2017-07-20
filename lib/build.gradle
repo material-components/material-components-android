@@ -12,7 +12,7 @@ dependencies {
   compile 'com.android.support:support-fragment:25.3.1'
   compile 'com.android.support:transition:25.3.1'
 
-  testCompile ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
+  testCompile("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
     exclude module: 'support-annotations'
   }
   testCompile 'junit:junit:4.12'
@@ -45,7 +45,7 @@ android.libraryVariants.all { variant ->
   }
   def suffix = name.capitalize()
 
-  def jarTask = project.tasks.create(name: "jar${suffix}", type: Jar){
+  def jarTask = project.tasks.create(name: "jar${suffix}", type: Jar) {
     dependsOn variant.javaCompile
     from variant.javaCompile.destinationDir
     from 'LICENSE.txt'
@@ -53,7 +53,7 @@ android.libraryVariants.all { variant ->
   def javadocTask = project.tasks.create(name: "javadoc${suffix}", type: Javadoc) {
     source android.sourceSets.main.java
     classpath = files(variant.javaCompile.classpath.files) + files(
-        "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+      "${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
   }
 
   def javadocJarTask = project.tasks.create(name: "javadocJar${suffix}", type: Jar) {

@@ -15,8 +15,8 @@
   ~ limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-      android:id="@+id/navigation_header_container"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:orientation="vertical"
-      android:paddingBottom="@dimen/design_navigation_separator_vertical_padding" />
+    android:id="@+id/navigation_header_container"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingBottom="@dimen/design_navigation_separator_vertical_padding"
+    android:orientation="vertical"/>

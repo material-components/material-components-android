@@ -16,6 +16,6 @@
   -->
 
 <ImageView xmlns:android="http://schemas.android.com/apk/res/android"
-           android:layout_width="24dp"
-           android:layout_height="24dp"
-           android:scaleType="centerInside"/>
+    android:layout_width="24dp"
+    android:layout_height="24dp"
+    android:scaleType="centerInside"/>

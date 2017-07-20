@@ -14,9 +14,11 @@
      limitations under the License.
 -->
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="android.support.design">
-    <uses-sdk android:minSdkVersion="14"
-              tools:overrideLibrary="android.support.transition"/>
-    <application />
+  xmlns:tools="http://schemas.android.com/tools"
+  package="android.support.design">
+
+  <uses-sdk
+    android:minSdkVersion="14"
+    tools:overrideLibrary="android.support.transition"/>
+  <application/>
 </manifest>

@@ -17,6 +17,6 @@
 
 <resources>
 
-    <integer name="design_snackbar_text_max_lines">2</integer>
+  <integer name="design_snackbar_text_max_lines">2</integer>
 
 </resources>

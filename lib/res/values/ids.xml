@@ -16,11 +16,10 @@
 -->
 <resources>
 
-    <item name="view_offset_helper" type="id" />
+  <item name="view_offset_helper" type="id"/>
 
-    <item name="textinput_error" type="id" />
-    <item name="textinput_counter" type="id" />
-    <item name="textinput_helper_text" type="id" />
+  <item name="textinput_error" type="id"/>
+  <item name="textinput_counter" type="id"/>
+  <item name="textinput_helper_text" type="id"/>
 
 </resources>
-

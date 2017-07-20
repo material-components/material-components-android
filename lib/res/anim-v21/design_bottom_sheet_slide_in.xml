@@ -15,15 +15,15 @@
   ~ limitations under the License.
 -->
 <set xmlns:android="http://schemas.android.com/apk/res/android"
-     android:duration="@integer/bottom_sheet_slide_duration"
-     android:interpolator="@android:interpolator/fast_out_linear_in">
+    android:duration="@integer/bottom_sheet_slide_duration"
+    android:interpolator="@android:interpolator/fast_out_linear_in">
 
-    <translate
-            android:fromYDelta="20%p"
-            android:toYDelta="0"/>
+  <translate
+      android:fromYDelta="20%p"
+      android:toYDelta="0"/>
 
-    <alpha
-            android:fromAlpha="0.0"
-            android:toAlpha="1.0"/>
+  <alpha
+      android:fromAlpha="0.0"
+      android:toAlpha="1.0"/>
 
 </set>

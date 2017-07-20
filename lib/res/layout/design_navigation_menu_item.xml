@@ -16,21 +16,21 @@
 -->
 <merge xmlns:android="http://schemas.android.com/apk/res/android">
 
-    <CheckedTextView
-            android:id="@+id/design_menu_item_text"
-            android:layout_width="0dp"
-            android:layout_height="match_parent"
-            android:layout_weight="1"
-            android:drawablePadding="@dimen/design_navigation_icon_padding"
-            android:gravity="center_vertical|start"
-            android:maxLines="1"
-            android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
+  <CheckedTextView
+      android:id="@+id/design_menu_item_text"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="1"
+      android:drawablePadding="@dimen/design_navigation_icon_padding"
+      android:gravity="center_vertical|start"
+      android:maxLines="1"
+      android:textAppearance="@style/TextAppearance.AppCompat.Body2"/>
 
-    <ViewStub
-            android:id="@+id/design_menu_item_action_area_stub"
-            android:inflatedId="@+id/design_menu_item_action_area"
-            android:layout="@layout/design_menu_item_action_area"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"/>
+  <ViewStub
+      android:id="@+id/design_menu_item_action_area_stub"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:inflatedId="@+id/design_menu_item_action_area"
+      android:layout="@layout/design_menu_item_action_area"/>
 
 </merge>

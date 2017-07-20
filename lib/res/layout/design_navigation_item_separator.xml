@@ -15,11 +15,12 @@
   ~ limitations under the License.
 -->
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-             android:layout_width="match_parent"
-             android:layout_height="wrap_content">
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
 
-    <View android:layout_width="match_parent"
-          android:layout_height="1dp"
-          android:background="?android:attr/listDivider"/>
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="1dp"
+      android:background="?android:attr/listDivider"/>
 
 </FrameLayout>

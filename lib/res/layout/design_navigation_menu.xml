@@ -15,10 +15,10 @@
   ~ limitations under the License.
 -->
 <android.support.design.internal.NavigationMenuView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/design_navigation_view"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:paddingBottom="@dimen/design_navigation_padding_bottom"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"/>
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/design_navigation_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/design_navigation_padding_bottom"
+    android:clipToPadding="false"
+    android:scrollbars="vertical"/>

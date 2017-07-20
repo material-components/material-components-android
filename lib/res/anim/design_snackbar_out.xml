@@ -16,5 +16,5 @@
 -->
 
 <translate xmlns:android="http://schemas.android.com/apk/res/android"
-           android:fromYDelta="0"
-           android:toYDelta="100%"/>
+    android:fromYDelta="0"
+    android:toYDelta="100%"/>

@@ -17,8 +17,8 @@
 <shape
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:shape="rectangle">
-    <solid android:color="@android:color/transparent"/>
-    <size
-        android:width="@dimen/design_navigation_icon_size"
-        android:height="@dimen/design_navigation_icon_size" />
+  <solid android:color="@android:color/transparent"/>
+  <size
+      android:height="@dimen/design_navigation_icon_size"
+      android:width="@dimen/design_navigation_icon_size"/>
 </shape>
