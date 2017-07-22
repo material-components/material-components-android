@@ -16,85 +16,29 @@
 
 package android.support.design.widget.expandable;
 
-import android.os.Bundle;
-import android.os.Parcelable;
+import android.support.annotation.IdRes;
 
 /**
- * A widget that has expanded/collapsed state. The state is saved across configuration changes. When
- * the expanded state changes, {@link
- * android.support.design.widget.CoordinatorLayout#dispatchDependentViewsChanged an event is
- * dispatched} so that other widgets may react via a {@link
- * android.support.design.widget.CoordinatorLayout.Behavior}.
+ * A widget that has expanded/collapsed state.
  *
- * <p>Implementations of this interface should create an instance of {@link ExpandableWidgetHelper}
- * and forward all calls to it.
+ * <p>When the expanded state changes, an event is dispatched so that other widgets may react via a
+ * {@link android.support.design.widget.CoordinatorLayout.Behavior}.
  */
 public interface ExpandableWidget {
 
-  /**
-   * Returns whether this widget is expanded.
-   *
-   * <p>Implementations should call {@link ExpandableWidgetHelper#isExpanded()}.
-   */
+  /** Returns whether this widget is expanded. */
   boolean isExpanded();
 
-  /**
-   * Sets the expanded state on this widget.
-   *
-   * <p>Implementations should call {@link ExpandableWidgetHelper#setExpanded(boolean)}.
-   *
-   * @return true if the expanded state changed as a result of this call.
-   */
-  boolean setExpanded(boolean expanded);
+  /** Sets the expanded state on this widget. */
+  void setExpanded(boolean expanded);
+
+  /** Returns the expanded component id hint. */
+  @IdRes
+  int getExpandedComponentIdHint();
 
   /**
-   * Saves the expanded state on configuration change.
-   *
-   * <p>Implementations should call {@link ExpandableWidgetHelper#onSaveInstanceState()} and save
-   * the returned state along with the widget state.
-   *
-   * <p>For a correct implementation of this, use an {@link
-   * android.support.design.stateful.ExtendableSavedState}. See its class javadoc for more details.
-   *
-   * <pre><code>
-   * {@literal @}Override
-   * public Parcelable onSaveInstanceState() {
-   *   Parcelable superState = super.onSaveInstanceState();
-   *   ExtendableSavedState state = new ExtendableSavedState(superState);
-   *
-   *   state.extendableStates.put(
-   *       "expandableWidgetHelper", expandableWidgetHelper.onSaveInstanceState());
-   *
-   *   return state;
-   * }
-   * </code></pre>
+   * Sets the expanded component id hint, which may be used by a Behavior to determine whether it
+   * should handle this widget's state change.
    */
-  Parcelable onSaveInstanceState();
-
-  /**
-   * Restores the expanded state on configuration change.
-   *
-   * <p>Implementations should call {@link ExpandableWidgetHelper#onRestoreInstanceState(Bundle)} to
-   * restore the saved state along with the widget state.
-   *
-   * <p>For a correct implementation of this, use an {@link
-   * android.support.design.stateful.ExtendableSavedState}. See its class javadoc for more details.
-   *
-   * <pre><code>
-   * {@literal @}Override
-   * public void onRestoreInstanceState(Parcelable state) {
-   *   if (!(state instanceof ExtendableSavedState)) {
-   *     super.onRestoreInstanceState(state);
-   *     return;
-   *   }
-   *
-   *   ExtendableSavedState ess = (ExtendableSavedState) state;
-   *   super.onRestoreInstanceState(ess.getSuperState());
-   *
-   *   expandableWidgetHelper.onRestoreInstanceState(
-   *       ess.extendableStates.get("expandableWidgetHelper"));
-   * }
-   * </code></pre>
-   */
-  void onRestoreInstanceState(Parcelable state);
+  void setExpandedComponentIdHint(@IdRes int expandedComponentIdHint);
 }

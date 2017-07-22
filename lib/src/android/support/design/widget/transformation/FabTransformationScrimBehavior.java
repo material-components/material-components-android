@@ -17,11 +17,9 @@
 package android.support.design.widget.transformation;
 
 import android.animation.Animator;
-import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.support.annotation.NonNull;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.expandable.ExpandableWidget;
@@ -32,8 +30,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Behavior that should be attached to a scrim that should appear when a {@link
- * FloatingActionButton} is {@link FloatingActionButton#setExpanded(boolean)} expanded}.
+ * Behavior that should be attached to a scrim that should appear when a {@link ExpandableWidget} is
+ * {@link ExpandableWidget#setExpanded(boolean)} expanded}.
  */
 public class FabTransformationScrimBehavior extends ExpandableTransformationBehavior {
 
@@ -46,7 +44,8 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
 
   @Override
   public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
-    return dependency instanceof FloatingActionButton;
+    return super.layoutDependsOn(parent, child, dependency)
+        && dependency instanceof FloatingActionButton;
   }
 
   @Override
@@ -55,35 +54,17 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
     return super.onTouchEvent(parent, child, ev);
   }
 
-  @NonNull
   @Override
-  protected Animator onCreateExpandedStateChangeAnimation(
-      ExpandableWidget dep, View child, boolean expanded) {
+  protected Animator createAnimation(ExpandableWidget dep, View child) {
     List<Animator> animations = new ArrayList<>();
 
-    if (expanded) {
+    if (dep.isExpanded()) {
       animations.add(ObjectAnimator.ofFloat(child, View.ALPHA, 0f, 1f));
     } else {
       animations.add(ObjectAnimator.ofFloat(child, View.ALPHA, 1f, 0f));
     }
 
     AnimatorSet set = new AnimatorSet();
-    set.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationStart(Animator animation) {
-            if (expanded) {
-              child.setVisibility(View.VISIBLE);
-            }
-          }
-
-          @Override
-          public void onAnimationEnd(Animator animation) {
-            if (!expanded) {
-              child.setVisibility(View.INVISIBLE);
-            }
-          }
-        });
     set.playTogether(animations);
     return set;
   }

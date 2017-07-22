@@ -38,7 +38,7 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
-import android.support.design.widget.expandable.ExpandableTransformationWidget;
+import android.support.design.widget.expandable.ExpandableWidget;
 import android.support.design.widget.expandable.ExpandableWidgetHelper;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageHelper;
@@ -69,11 +69,9 @@ import java.util.List;
  * #setBackgroundTintList(ColorStateList)}.
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
-public class FloatingActionButton extends VisibilityAwareImageButton
-    implements ExpandableTransformationWidget {
+public class FloatingActionButton extends VisibilityAwareImageButton implements ExpandableWidget {
 
   private static final String LOG_TAG = "FloatingActionButton";
-  private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
 
   /** Callback to be invoked when the visibility of a FloatingActionButton changes. */
   public abstract static class OnVisibilityChangedListener {
@@ -361,8 +359,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   @Override
-  public boolean setExpanded(boolean expanded) {
-    return expandableWidgetHelper.setExpanded(expanded);
+  public void setExpanded(boolean expanded) {
+    expandableWidgetHelper.setExpanded(expanded);
   }
 
   @Override
@@ -503,18 +501,18 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   @Override
-  public Parcelable onSaveInstanceState() {
+  protected Parcelable onSaveInstanceState() {
     Parcelable superState = super.onSaveInstanceState();
     ExtendableSavedState state = new ExtendableSavedState(superState);
 
     state.extendableStates.put(
-        EXPANDABLE_WIDGET_HELPER_KEY, expandableWidgetHelper.onSaveInstanceState());
+        "expandableWidgetHelper", expandableWidgetHelper.onSaveInstanceState());
 
     return state;
   }
 
   @Override
-  public void onRestoreInstanceState(Parcelable state) {
+  protected void onRestoreInstanceState(Parcelable state) {
     if (!(state instanceof ExtendableSavedState)) {
       super.onRestoreInstanceState(state);
       return;
@@ -524,7 +522,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     super.onRestoreInstanceState(ess.getSuperState());
 
     expandableWidgetHelper.onRestoreInstanceState(
-        ess.extendableStates.get(EXPANDABLE_WIDGET_HELPER_KEY));
+        ess.extendableStates.get("expandableWidgetHelper"));
   }
 
   /**
