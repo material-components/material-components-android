@@ -44,16 +44,31 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * <ul>
  *   <li>It must be a direct child of {@link CoordinatorLayout}
  *   <li>There has to be <b>exactly ONE</b> other direct child of the same CoordinatorLayout that
- *       uses {@link BackLayerSiblingBehavior} as its behavior. This is the content layer. Clicks on
- *       the content layer while the BackLayer is exposed will cause the back layer to collapse.
- *   <li>You must use match_parent for the BackLayerLayout's width and height
- *   <li>There must be a <b>exactly ONE</b> child view of the BackLayerLayout which is {@link
- *       CollapsedBackLayerContents}, anything inside this view will be considered the contents of
- *       the back layer that will always be visible. You can play with extra content in the back
- *       layer by changing visibilities of views outside CollapsedBackLayerContents.
- *   <li>Add UI to expose the back layer. BackLayerLayout does not try to be smart about when to
- *       expand, so you must add UI to expand it (a button? OnClickListener?). BackLayerLayout
- *       offers a {@link #expand()} and {@link #collapse()} method for you to write your own logic.
+ *       uses {@link BackLayerSiblingBehavior} as its behavior (set {@code
+ *       app:layout_behavior="@string/design_backlayer_sibling_behavior"}). This is the content
+ *       layer. Clicks on the content layer while the back layer is exposed will cause the back
+ *       layer to collapse.
+ *   <li>The {@code BackLayerLayout} can contain an arbitrary number of subviews, however <b>exactly
+ *       ONE</b> of them must be a {@link CollapsedBackLayerContents}, anything inside this view
+ *       will be considered the contents of the back layer that will always be visible. All other
+ *       views will be extra content under the content layer. You can support multiple experiences
+ *       under the back layer by changing the visibility or swapping out these other views.
+ *   <li>If you support multiple experiences below the back layer you must call {@link #expand()}
+ *       after changing the views outside the {@code CollapsedBackLayerContents} even when the back
+ *       layer is already expanded, in order to adjust to the new size.
+ *   <li>You must use match_parent for the {@code BackLayerLayout}'s width and height.
+ *   <li>Set both {@code android:gravity} and {@code android:layout_gravity} for the {@code
+ *       BackLayerLayout} to the same value. This value is the edge to which the back layer is
+ *       attached and can be any of {@code left}, {@code start}, {@code left|start}, {@code top},
+ *       {@code right}, {@code right|end}, {@code end}, {@code bottom}.
+ *   <li>Set {@code BackLayerLayout}'s {@code android:orientation} to {@code vertical} or {@code
+ *       horizontal} matching the gravity ({@code vertical} for gravities {@code top} or {@code
+ *       bottom}, otherwise use {@code horizontal}).
+ *   <li>Add UI elements and behavior to expose the back layer. {@code BackLayerLayout} does not try
+ *       to be smart about when to expand, so you must add UI to expand the back layer (using an
+ *       OnClickListener on a button, for example). {@code BackLayerLayout} offers a {@link
+ *       #expand()} and {@link #collapse()} method that you can call in response to clicks or other
+ *       events.
  *   <li>Add {@link BackLayerCallback}s using {@link #addBackLayerCallback(BackLayerCallback)} in
  *       order to listen to changes in the back layer's status. This also may be useful if your back
  *       layer needs extra animations, you could use {@link BackLayerCallback#onBeforeExpand()} and
@@ -64,7 +79,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * <CoordinatorLayout ...>
  *   <BackLayerLayout
  *       android:layout_width="match_parent"
- *       android:layout_height="match_parent">
+ *       android:layout_height="match_parent"
+ *       android:layout_gravity="top"
+ *       android:gravity="top"
+ *       android:orientation="vertical">
  *     <CollapsedBackLayerContents
  *         android:layout_width="match_parent"
  *         android:layout_height="wrap_content">
@@ -81,7 +99,50 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *       app:layout_behavior="@string/design_backlayer_sibling_behavior"/>
  * </CoordinatorLayout>
  * }</pre>
+ *
+ * The reason you need to specify both {@code android:gravity} and {@code android:layout_gravity}
+ * and they must match is that they are used for different purposes:
+ *
+ * <ul>
+ *   <li>{@code layout_gravity} is used to specify to the {@link BackLayerSiblingBehavior} what edge
+ *       the back layer is anchored to. {@code layout_gravity} is used by {@code BackLayerLayout} to
+ *       corectly measure its expanded state (setting the moving dimension's {@link MeasureSpec} to
+ *       {@link MeasureSpec#AT_MOST}). {@code layout_gravity} is also used by the {@link
+ *       BackLayerSiblingBehavior} to measure and lay out the content layer view to cover the area
+ *       of the back layer that does not contain the {@link CollapsedBackLayerContents} (when the
+ *       back layer is collapsed).
+ *   <li>{@code gravity} is used to have the contents of the back layer gravitate to the same edge,
+ *       see {@link LinearLayout#setGravity(int)} for more information on this.
+ * </ul>
  */
+// Implementation detail ahead, since it's not relevant to the user this has been pulled out of the
+// Javadoc:
+// Considering the usages for gravity and layout_gravity spelled out above, and that both values
+// must match in order for the BackLayerLayout to work correctly, we thought of ways to depend only
+// on one of those two values. We decided to attempt to remove the dependency on layout_gravity for
+// the following reasons:
+// 1. The way we use gravity to have the contents of the back layer gravitate to the correct edge is
+// actually implemented in LinearLayout and the dependence on gravity is deeply ingrained in this
+// code, it would be prohibitively hard to rework layout_gravity for this purpose.
+// 2. It is not recommended for widgets themselves to depend on LayoutParams, and we would only
+// worsen the situation adding another dependency on layout_gravity. While it is true that
+// BackLayerLayout is only supported while used inside a CoordinatorLayout and it is already tightly
+// coupled to it, it seems backwards to try to retrofit this into code that comes from the
+// superclass.
+//
+// When trying to depend only on gravity we found the following two issues:
+// 1. LinearLayout does not expose getGravity() prior to API  24, that is solvable through
+// reflection (and it would likely work in all devices though that is not guaranteed).
+// 2. LinearLayout does not just take an edge gravity (like top, left, right....), if it is an edge
+// gravity it forces it to become a corner gravity (top|start, for example). This is problematic
+// because BackLayerLayout and BackLayerSiblingBehavior constantly check the edge gravity to do the
+// following:
+//   - Measure the expanded content of the back layer.
+//   - Measure and layout the content layer.
+//   - Slide the content layer out of view when the back layer is expanded.
+// All of these operations depend on having an edge gravity instead of a corner gravity, so short of
+// rewriting the relevant parts of LinearLayout in BackLayerLayout, using the same gravity value
+// that LinearLayout depends on is not an option for BackLayerLayout and BackLayerSiblingBehavior.
 public class BackLayerLayout extends LinearLayout {
 
   private final List<BackLayerCallback> callbacks = new CopyOnWriteArrayList<>();
