@@ -16,23 +16,21 @@
 
 package android.support.design.stateful;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.RestrictTo;
 import android.support.v4.util.SimpleArrayMap;
 import android.support.v4.view.AbsSavedState;
 
 /**
- * Class for widgets that want to save and restore their own state in {@link
+ * SavedState for widgets that want to save and restore their own state in {@link
  * android.view.View#onSaveInstanceState()}. Supports widgets whose state is composed or delegated
  * out to multiple components.
  *
- * @hide
+ * <p>Widgets with only composed or delegated state can directly instantiate this class and write to
+ * {@link #extendableStates}. Widgets with additional state should subclass ExtendableSavedState
+ * rather than trying to force the additional state into {@link #extendableStates}.
  */
-@RestrictTo(LIBRARY_GROUP)
 public class ExtendableSavedState extends AbsSavedState {
 
   public final SimpleArrayMap<String, Bundle> extendableStates;

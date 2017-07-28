@@ -16,29 +16,60 @@
 
 package android.support.design.widget.expandable;
 
-import android.support.annotation.IdRes;
-
 /**
- * A widget that has expanded/collapsed state.
+ * A widget that has expanded/collapsed state. When the expanded state changes, {@link
+ * android.support.design.widget.CoordinatorLayout#dispatchDependentViewsChanged an event is
+ * dispatched} so that other widgets may react via a {@link
+ * android.support.design.widget.CoordinatorLayout.Behavior}.
  *
- * <p>When the expanded state changes, an event is dispatched so that other widgets may react via a
- * {@link android.support.design.widget.CoordinatorLayout.Behavior}.
+ * <p>Implementations of this interface should create an instance of {@link ExpandableWidgetHelper}
+ * and forward all calls to it.
+ *
+ * <p>The expanded state can saved across configuration changes by implementing {@link
+ * #onSaveInstanceState} and {@link #onRestoreInstanceState}:
+ *
+ * <pre><code>
+ * {@literal @}Override
+ * protected Parcelable onSaveInstanceState() {
+ *   Parcelable superState = super.onSaveInstanceState();
+ *   ExtendableSavedState state = new ExtendableSavedState(superState);
+ *
+ *   state.extendableStates.put(
+ *       "expandableWidgetHelper", expandableWidgetHelper.onSaveInstanceState());
+ *
+ *   return state;
+ * }
+ *
+ * {@literal @}Override
+ * protected void onRestoreInstanceState(Parcelable state) {
+ *   if (!(state instanceof ExtendableSavedState)) {
+ *     super.onRestoreInstanceState(state);
+ *     return;
+ *   }
+ *
+ *   ExtendableSavedState ess = (ExtendableSavedState) state;
+ *   super.onRestoreInstanceState(ess.getSuperState());
+ *
+ *   expandableWidgetHelper.onRestoreInstanceState(
+ *       ess.extendableStates.get("expandableWidgetHelper"));
+ * }
+ * </code></pre>
  */
 public interface ExpandableWidget {
 
-  /** Returns whether this widget is expanded. */
+  /**
+   * Returns whether this widget is expanded.
+   *
+   * <p>Implementations should call {@link ExpandableWidgetHelper#isExpanded()}.
+   */
   boolean isExpanded();
 
-  /** Sets the expanded state on this widget. */
-  void setExpanded(boolean expanded);
-
-  /** Returns the expanded component id hint. */
-  @IdRes
-  int getExpandedComponentIdHint();
-
   /**
-   * Sets the expanded component id hint, which may be used by a Behavior to determine whether it
-   * should handle this widget's state change.
+   * Sets the expanded state on this widget.
+   *
+   * <p>Implementations should call {@link ExpandableWidgetHelper#setExpanded(boolean)}.
+   *
+   * @return true if the expanded state changed as a result of this call.
    */
-  void setExpandedComponentIdHint(@IdRes int expandedComponentIdHint);
+  boolean setExpanded(boolean expanded);
 }

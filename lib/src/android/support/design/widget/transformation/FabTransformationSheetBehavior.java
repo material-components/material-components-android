@@ -32,8 +32,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Behavior that should be attached to any sheet that should appear when a {@link ExpandableWidget}
- * is {@link ExpandableWidget#setExpanded(boolean)} expanded}.
+ * Behavior that should be attached to any sheet that should appear when a {@link
+ * FloatingActionButton} is {@link FloatingActionButton#setExpanded(boolean)} expanded}.
  *
  * <p>A sheet usually has some width and height that's smaller than the screen, has an elevation,
  * and may have a scrim underneath.
@@ -49,8 +49,7 @@ public class FabTransformationSheetBehavior extends ExpandableTransformationBeha
 
   @Override
   public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
-    return super.layoutDependsOn(parent, child, dependency)
-        && dependency instanceof FloatingActionButton;
+    return dependency instanceof FloatingActionButton;
   }
 
   @Override
@@ -62,32 +61,18 @@ public class FabTransformationSheetBehavior extends ExpandableTransformationBeha
     }
   }
 
+  @NonNull
   @Override
-  protected void jumpToState(ExpandableWidget dep, View child) {
-    super.jumpToState(dep, child);
-
-    View dependency = (View) dep;
-    if (dep.isExpanded()) {
-      // A bug exists in 4.4.4 where setVisibility() did not invalidate the view.
-      dependency.setAlpha(0f);
-      dependency.setVisibility(View.INVISIBLE);
-    } else {
-      // A bug exists in 4.4.4 where setVisibility() did not invalidate the view.
-      dependency.setAlpha(1f);
-      dependency.setVisibility(View.VISIBLE);
-    }
-  }
-
-  @Override
-  protected Animator createAnimation(ExpandableWidget dep, View child) {
+  protected Animator onCreateExpandedStateChangeAnimation(
+      ExpandableWidget dependency, View child, boolean expanded) {
     List<Animator> animations = new ArrayList<>();
 
-    View dependency = (View) dep;
-    if (dep.isExpanded()) {
-      animations.add(ObjectAnimator.ofFloat(dependency, View.ALPHA, 1f, 0f));
+    View dep = (View) dependency;
+    if (expanded) {
+      animations.add(ObjectAnimator.ofFloat(dep, View.ALPHA, 1f, 0f));
       animations.add(ObjectAnimator.ofFloat(child, View.ALPHA, 0f, 1f));
     } else {
-      animations.add(ObjectAnimator.ofFloat(dependency, View.ALPHA, 0f, 1f));
+      animations.add(ObjectAnimator.ofFloat(dep, View.ALPHA, 0f, 1f));
       animations.add(ObjectAnimator.ofFloat(child, View.ALPHA, 1f, 0f));
     }
 
@@ -97,19 +82,23 @@ public class FabTransformationSheetBehavior extends ExpandableTransformationBeha
         new AnimatorListenerAdapter() {
           @Override
           public void onAnimationStart(Animator animation) {
-            if (!dep.isExpanded()) {
+            if (expanded) {
+              child.setVisibility(View.VISIBLE);
+            } else {
               // A bug exists in 4.4.4 where setVisibility() did not invalidate the view.
-              dependency.setAlpha(1f);
-              dependency.setVisibility(View.VISIBLE);
+              dep.setAlpha(1f);
+              dep.setVisibility(View.VISIBLE);
             }
           }
 
           @Override
           public void onAnimationEnd(Animator animation) {
-            if (dep.isExpanded()) {
+            if (expanded) {
               // A bug exists in 4.4.4 where setVisibility() did not invalidate the view.
-              dependency.setAlpha(0f);
-              dependency.setVisibility(View.INVISIBLE);
+              dep.setAlpha(0f);
+              dep.setVisibility(View.INVISIBLE);
+            } else {
+              child.setVisibility(View.INVISIBLE);
             }
           }
         });

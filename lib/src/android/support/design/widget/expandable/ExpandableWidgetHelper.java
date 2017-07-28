@@ -24,27 +24,30 @@ import android.view.View;
 import android.view.ViewParent;
 
 /**
- * ExpandableWidgetHelper is a helper class for writing custom {@link ExpandableWidget
- * ExpandableWidgets}. Please see each method's documentation when implementing your custom class.
+ * ExpandableWidgetHelper is a helper class for writing custom {@link ExpandableWidget}s and {@link
+ * ExpandableTransformationWidget}. Please see the interface documentation when implementing your
+ * custom class.
  */
 public final class ExpandableWidgetHelper {
 
   private final View widget;
 
-  private boolean expanded;
-  @IdRes private int expandedComponentIdHint;
+  private boolean expanded = false;
+  @IdRes private int expandedComponentIdHint = 0;
 
   /** Call this from the constructor. */
-  public <T extends View & ExpandableWidget> ExpandableWidgetHelper(T widget) {
-    this.widget = widget;
+  public ExpandableWidgetHelper(ExpandableWidget widget) {
+    this.widget = (View) widget;
   }
 
   /** Call this from {@link ExpandableWidget#setExpanded(boolean)}. */
-  public void setExpanded(boolean expanded) {
+  public boolean setExpanded(boolean expanded) {
     if (this.expanded != expanded) {
       this.expanded = expanded;
       dispatchExpandedStateChanged();
+      return true;
     }
+    return false;
   }
 
   /** Call this from {@link ExpandableWidget#isExpanded()}. */
@@ -52,20 +55,7 @@ public final class ExpandableWidgetHelper {
     return expanded;
   }
 
-  /** Call this from {@link ExpandableWidget#setExpandedComponentIdHint(int)}. */
-  public void setExpandedComponentIdHint(@IdRes int expandedComponentIdHint) {
-    this.expandedComponentIdHint = expandedComponentIdHint;
-  }
-
-  /** Call this from {@link ExpandableWidget#getExpandedComponentIdHint()}. */
-  @IdRes
-  public int getExpandedComponentIdHint() {
-    return expandedComponentIdHint;
-  }
-
-  /**
-   * Call this from {@link View#onSaveInstanceState()} after your widget's custom state is saved.
-   */
+  /** Call this from {@link View#onSaveInstanceState()}. */
   public Bundle onSaveInstanceState() {
     Bundle state = new Bundle();
     state.putBoolean("expanded", expanded);
@@ -74,10 +64,7 @@ public final class ExpandableWidgetHelper {
     return state;
   }
 
-  /**
-   * Call this from {@link View#onRestoreInstanceState(Parcelable)} after your widget's custom state
-   * is restored.
-   */
+  /** Call this from {@link View#onRestoreInstanceState(Parcelable)}. */
   public void onRestoreInstanceState(Bundle state) {
     expanded = state.getBoolean("expanded", false);
     expandedComponentIdHint = state.getInt("expandedComponentIdHint", 0);
@@ -85,6 +72,17 @@ public final class ExpandableWidgetHelper {
     if (expanded) {
       dispatchExpandedStateChanged();
     }
+  }
+
+  /** Call this from {@link ExpandableTransformationWidget#setExpandedComponentIdHint(int)}. */
+  public void setExpandedComponentIdHint(@IdRes int expandedComponentIdHint) {
+    this.expandedComponentIdHint = expandedComponentIdHint;
+  }
+
+  /** Call this from {@link ExpandableTransformationWidget#getExpandedComponentIdHint()}. */
+  @IdRes
+  public int getExpandedComponentIdHint() {
+    return expandedComponentIdHint;
   }
 
   private void dispatchExpandedStateChanged() {
