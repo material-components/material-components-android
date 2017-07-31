@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -31,15 +32,15 @@ import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.design.motion.AnimationUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewTreeObserver;
-import android.view.animation.Interpolator;
 
 class FloatingActionButtonImpl {
-  static final Interpolator ANIM_INTERPOLATOR = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
+  static final TimeInterpolator ANIM_INTERPOLATOR = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
   static final long PRESSED_ANIM_DURATION = 100;
   static final long PRESSED_ANIM_DELAY = 100;
 

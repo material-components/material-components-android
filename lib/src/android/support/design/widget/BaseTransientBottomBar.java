@@ -17,7 +17,7 @@
 package android.support.design.widget;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static android.support.design.widget.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
+import static android.support.design.motion.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;

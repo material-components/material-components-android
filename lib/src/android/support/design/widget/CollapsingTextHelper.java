@@ -16,6 +16,7 @@
 
 package android.support.design.widget;
 
+import android.animation.TimeInterpolator;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
@@ -28,6 +29,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.motion.AnimationUtils;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -36,7 +38,6 @@ import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
-import android.view.animation.Interpolator;
 
 final class CollapsingTextHelper {
 
@@ -99,8 +100,8 @@ final class CollapsingTextHelper {
 
   private final TextPaint mTextPaint;
 
-  private Interpolator mPositionInterpolator;
-  private Interpolator mTextSizeInterpolator;
+  private TimeInterpolator mPositionInterpolator;
+  private TimeInterpolator mTextSizeInterpolator;
 
   private float mCollapsedShadowRadius;
   private float mCollapsedShadowDx;
@@ -122,12 +123,12 @@ final class CollapsingTextHelper {
     mCurrentBounds = new RectF();
   }
 
-  void setTextSizeInterpolator(Interpolator interpolator) {
+  void setTextSizeInterpolator(TimeInterpolator interpolator) {
     mTextSizeInterpolator = interpolator;
     recalculate();
   }
 
-  void setPositionInterpolator(Interpolator interpolator) {
+  void setPositionInterpolator(TimeInterpolator interpolator) {
     mPositionInterpolator = interpolator;
     recalculate();
   }
@@ -726,7 +727,7 @@ final class CollapsingTextHelper {
   }
 
   private static float lerp(
-      float startValue, float endValue, float fraction, Interpolator interpolator) {
+      float startValue, float endValue, float fraction, TimeInterpolator interpolator) {
     if (interpolator != null) {
       fraction = interpolator.getInterpolation(fraction);
     }
