@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.content.Context;
+import android.content.res.TypedArray;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.CoordinatorLayout.Behavior;
 import android.support.v4.view.ViewCompat;
@@ -44,11 +45,37 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
   private BackLayerLayout backLayerLayout = null;
 
   private View childView = null;
-  private boolean previousChildViewFocusability = false;
   private int layoutDirection;
+  private CharSequence expandedContentDescription;
+  private ContentViewAccessibilityPropertiesHelper contentViewAccessibilityHelper;
 
   public BackLayerSiblingBehavior(Context context, AttributeSet attrs) {
     super(context, attrs);
+    if (attrs != null) {
+      TypedArray a =
+          context
+              .getTheme()
+              .obtainStyledAttributes(attrs, R.styleable.BackLayerSiblingBehavior, 0, 0);
+      try {
+        expandedContentDescription =
+            a.getString(R.styleable.BackLayerSiblingBehavior_behavior_expandedContentDescription);
+        if (expandedContentDescription == null) {
+          expandedContentDescription =
+              context
+                  .getResources()
+                  .getString(R.string.design_backlayer_expanded_content_layer_content_description);
+        }
+      } finally {
+        a.recycle();
+      }
+    }
+  }
+
+  /**
+   * Sets the content description for accesibility services to be used on the content layer view.
+   */
+  public void setExpandedContentDescription(CharSequence expandedContentDescription) {
+    this.expandedContentDescription = expandedContentDescription;
   }
 
   //  Implementation of Behavior Methods
@@ -76,7 +103,14 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
       int widthUsed,
       int parentHeightMeasureSpec,
       int heightUsed) {
-    childView = child;
+    // The first time onMeasureChild is called it should initialize the
+    // contentViewAccessibilitHelper. This method is called before any other method that could
+    // potentially need this field. Since the field is stateful we need to guarantee it is only set
+    // the first time this is called.
+    if (childView == null) {
+      childView = child;
+      contentViewAccessibilityHelper = new ContentViewAccessibilityPropertiesHelper(child);
+    }
     if (backLayerLayout == null) {
       throw new IllegalStateException(
           "There is no BackLayerLayout and a view is using BackLayerSiblingBehavior");
@@ -149,6 +183,8 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
           childView.setX(minimumWidth);
           childView.setY(0);
           break;
+        default:
+          break;
       }
     } else {
       int expandedWidth = backLayerLayout.getExpandedWidth();
@@ -169,6 +205,8 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         case Gravity.LEFT:
           childView.setX(expandedWidth);
           childView.setY(0);
+          break;
+        default:
           break;
       }
       // This call may have happened because of a change of content in the backlayer when it is
@@ -191,8 +229,7 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
   }
 
   void onBeforeExpand() {
-    previousChildViewFocusability = childView.isFocusable();
-    childView.setFocusable(true);
+    contentViewAccessibilityHelper.makeFocusableWithContentDescription(expandedContentDescription);
     int end = 0;
     CoordinatorLayout.LayoutParams backLayerLayoutParams =
         (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
@@ -214,6 +251,8 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
       case Gravity.RIGHT:
         end = ViewCompat.getMinimumWidth(backLayerLayout) - backLayerLayout.getExpandedWidth() - 1;
         break;
+      default:
+        break;
     }
     // Start the animation to slide the content layer to the desired position. We pass the absolute
     // gravity so we can animate the correct dimension.
@@ -229,8 +268,6 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
   }
 
   void onBeforeCollapse() {
-    previousChildViewFocusability = childView.isFocusable();
-    childView.setFocusable(true);
     int end = 0;
     CoordinatorLayout.LayoutParams backLayerLayoutParams =
         (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
@@ -247,6 +284,8 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
       case Gravity.RIGHT:
         end = 0;
         break;
+      default:
+        break;
     }
     animate(
         end,
@@ -254,7 +293,7 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         new AnimatorListenerAdapter() {
           @Override
           public void onAnimationEnd(Animator animation) {
-            childView.setFocusable(previousChildViewFocusability);
+            contentViewAccessibilityHelper.restoreAccessibilityProperties();
             backLayerLayout.onCollapseAnimationDone();
           }
         });
@@ -279,6 +318,8 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         if (childView.getX() == end) {
           animator.setDuration(0);
         }
+        break;
+      default:
         break;
     }
     animator.start();

@@ -15,6 +15,7 @@
   limitations under the License.
   -->
 <resources>
-  <string name="design_backlayer_sibling_behavior">android.support.design.backlayer.BackLayerSiblingBehavior</string>
-  <string name="design_backlayer_expanded_content_layer_content_description">Close the back layer</string>
+  <declare-styleable name="BackLayerSiblingBehavior">
+    <attr name="behavior_expandedContentDescription" format="string"/>
+  </declare-styleable>
 </resources>

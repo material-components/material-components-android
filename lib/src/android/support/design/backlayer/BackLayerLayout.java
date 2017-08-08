@@ -154,6 +154,7 @@ public class BackLayerLayout extends LinearLayout {
   private int originalHeightMeasureSpec;
   private int originalWidthMeasureSpec;
   private BackLayerSiblingBehavior sibling = null;
+  private ChildViewAccessibilityHelper childViewAccessibilityHelper;
 
   public BackLayerLayout(@NonNull Context context) {
     super(context);
@@ -161,6 +162,14 @@ public class BackLayerLayout extends LinearLayout {
 
   public BackLayerLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    childViewAccessibilityHelper = new ChildViewAccessibilityHelper(this);
+    setOnHierarchyChangeListener(childViewAccessibilityHelper);
+    childViewAccessibilityHelper.disableChildFocus();
   }
 
   @Override
@@ -270,6 +279,8 @@ public class BackLayerLayout extends LinearLayout {
         int size = MeasureSpec.getSize(heightMeasureSpec);
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.AT_MOST);
         break;
+      default:
+        break;
     }
     measure(widthMeasureSpec, heightMeasureSpec);
     expandedHeight = getMeasuredHeight();
@@ -284,6 +295,7 @@ public class BackLayerLayout extends LinearLayout {
 
   /** Called by the BackLayerSiblingBehavior when the expand animation is done. */
   void onExpandAnimationDone() {
+    childViewAccessibilityHelper.restoreChildFocus();
     for (BackLayerCallback callback : callbacks) {
       callback.onAfterExpand();
     }
@@ -307,6 +319,7 @@ public class BackLayerLayout extends LinearLayout {
   }
 
   void onCollapseAnimationDone() {
+    childViewAccessibilityHelper.disableChildFocus();
     for (BackLayerCallback callback : callbacks) {
       callback.onAfterCollapse();
     }
