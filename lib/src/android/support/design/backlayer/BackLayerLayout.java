@@ -17,9 +17,13 @@
 package android.support.design.backlayer;
 
 import android.content.Context;
+import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.expandable.ExpandableWidget;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -67,12 +71,18 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *   <li>Add UI elements and behavior to expose the back layer. {@code BackLayerLayout} does not try
  *       to be smart about when to expand, so you must add UI to expand the back layer (using an
  *       OnClickListener on a button, for example). {@code BackLayerLayout} offers a {@link
- *       #expand()} and {@link #collapse()} method that you can call in response to clicks or other
- *       events.
+ *       #setExpanded(boolean)} method that you can call in response to clicks or other events.
  *   <li>Add {@link BackLayerCallback}s using {@link #addBackLayerCallback(BackLayerCallback)} in
  *       order to listen to changes in the back layer's status. This also may be useful if your back
  *       layer needs extra animations, you could use {@link BackLayerCallback#onBeforeExpand()} and
  *       {@link BackLayerCallback#onBeforeCollapse()} for this purpose.
+ *   <li>If you {@link BackLayerCallback} at all you probably need to implement{@link
+ *       BackLayerCallback#onRestoringExpandedBackLayer()}. This method must not use any animations
+ *       while replicating the effects of calling {@link BackLayerCallback#onBeforeExpand()}
+ *       followed by {@link BackLayerCallback#onAfterExpand()}. When restoring the expanded status
+ *       on activity restarts, no animation will be used and thus {@link
+ *       BackLayerCallback#onBeforeExpand()} and {@link BackLayerCallback#onAfterExpand()} will not
+ *       be called.
  * </ul>
  *
  * <pre>{@code
@@ -143,8 +153,10 @@ import java.util.concurrent.CopyOnWriteArrayList;
 // All of these operations depend on having an edge gravity instead of a corner gravity, so short of
 // rewriting the relevant parts of LinearLayout in BackLayerLayout, using the same gravity value
 // that LinearLayout depends on is not an option for BackLayerLayout and BackLayerSiblingBehavior.
-public class BackLayerLayout extends LinearLayout {
+public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
 
+  public static final String EXPANDED_STATE_KEY = "expanded";
+  public static final String BACK_LAYER_LAYOUT_STATE_KEY = "BackLayerLayout";
   private final List<BackLayerCallback> callbacks = new CopyOnWriteArrayList<>();
   private boolean expanded = false;
   private int expandedHeight;
@@ -237,13 +249,15 @@ public class BackLayerLayout extends LinearLayout {
   }
 
   /**
-   * Expand the back layer.
+   * Expands or collapses the back layer.
    *
    * <p>Notice that this method does not automatically change visibility on child views of the back
    * layer, the developer has to prepare the contents of the back layer either before calling this
-   * method or in a {@link BackLayerCallback#onBeforeExpand()}.
+   * method or in a {@link BackLayerCallback#onBeforeExpand()}/{@link
+   * BackLayerCallback#onBeforeCollapse()}.
    *
-   * <p>If you call this method when the back layer is already expanded, it will:
+   * <p>If you call this method setting the expanded status to true when the back layer is already
+   * expanded, it will:
    *
    * <ul>
    *   <li>Call all of the {@link BackLayerCallback#onBeforeExpand()} callbacks.
@@ -254,30 +268,57 @@ public class BackLayerLayout extends LinearLayout {
    *   <li>Call all of the {@link BackLayerCallback#onAfterExpand()} callbacks.
    * </ul>
    */
-  public void expand() {
-    for (BackLayerCallback callback : callbacks) {
-      callback.onBeforeExpand();
+  @Override
+  public boolean setExpanded(boolean expanded) {
+    if (expanded) {
+      for (BackLayerCallback callback : callbacks) {
+        callback.onBeforeExpand();
+      }
+      measureExpanded();
+      // Call the sibling's behavior onBeforeExpand to animate the expansion (if necessary) and,
+      // after
+      // animation is done, call the onAfterExpand() callbacks.
+      if (sibling != null) {
+        sibling.onBeforeExpand();
+      }
+      this.expanded = true;
+    } else if (this.expanded) {
+      for (BackLayerCallback callback : callbacks) {
+        callback.onBeforeCollapse();
+      }
+      sibling.onBeforeCollapse();
+      this.expanded = false;
     }
+    return this.expanded;
+  }
+
+  private void measureExpanded() {
     CoordinatorLayout.LayoutParams layoutParams =
         (CoordinatorLayout.LayoutParams) getLayoutParams();
     final int absoluteGravity =
         Gravity.getAbsoluteGravity(layoutParams.gravity, getLayoutDirection());
     int heightMeasureSpec = originalHeightMeasureSpec;
     int widthMeasureSpec = originalWidthMeasureSpec;
-    // In order to know the measurements for a expanded version of the back layer we need to measure
-    // the back layer with one dimension set to MeasureSpec.AT_MOST instead of the setting that came
-    // in the original MeasureSpec (MeasureSpec.EXACTLY, since the BackLayerLayout must use
-    // match_parent for both dimensions).
+    // In order to know the measurements for a expanded version of the back layer we need to
+    // measure the back layer with one dimension set to MeasureSpec.UNSPECIFIED instead of the
+    // setting
+    // that came in the original MeasureSpec (MeasureSpec.EXACTLY, since the BackLayerLayout must
+    // use match_parent for both dimensions).
+    //
+    // While it would seem natural to use MeasureSpec.AT_MOST, this method can be called from
+    // onRestoreInstanceState(Parcelable) which would happen before the first measure pass, and thus
+    // the original measure specs would be 0, causing a wrong measurement.
     switch (absoluteGravity) {
       case Gravity.LEFT:
       case Gravity.RIGHT:
         widthMeasureSpec =
-            MeasureSpec.makeMeasureSpec(MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.AT_MOST);
+            MeasureSpec.makeMeasureSpec(
+                MeasureSpec.getSize(widthMeasureSpec), MeasureSpec.UNSPECIFIED);
         break;
       case Gravity.TOP:
       case Gravity.BOTTOM:
         int size = MeasureSpec.getSize(heightMeasureSpec);
-        heightMeasureSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.AT_MOST);
+        heightMeasureSpec = MeasureSpec.makeMeasureSpec(size, MeasureSpec.UNSPECIFIED);
         break;
       default:
         break;
@@ -287,37 +328,48 @@ public class BackLayerLayout extends LinearLayout {
     expandedWidth = getMeasuredWidth();
     // Recalculate with the original measure specs, so it fits the entire coordinator layout.
     measure(originalWidthMeasureSpec, originalHeightMeasureSpec);
-    // Call the sibling's behavior onBeforeExpand to animate the expansion (if necessary) and, after
-    // animation is done, call the onAfterExpand() callbacks.
-    sibling.onBeforeExpand();
-    expanded = true;
+  }
+
+  @Override
+  protected Parcelable onSaveInstanceState() {
+    Parcelable superState = super.onSaveInstanceState();
+    ExtendableSavedState state = new ExtendableSavedState(superState);
+    Bundle bundle = new Bundle();
+    bundle.putBoolean(EXPANDED_STATE_KEY, expanded);
+    state.extendableStates.put(BACK_LAYER_LAYOUT_STATE_KEY, bundle);
+    return state;
+  }
+
+  @Override
+  protected void onRestoreInstanceState(Parcelable state) {
+    if (!(state instanceof ExtendableSavedState)) {
+      super.onRestoreInstanceState(state);
+      return;
+    }
+
+    ExtendableSavedState ess = (ExtendableSavedState) state;
+    super.onRestoreInstanceState(ess.getSuperState());
+
+    Bundle bundle = ess.extendableStates.get(BACK_LAYER_LAYOUT_STATE_KEY);
+    if (bundle != null) {
+      this.expanded = bundle.getBoolean(EXPANDED_STATE_KEY);
+    }
+    if (expanded) {
+      for (BackLayerCallback callback : callbacks) {
+        callback.onRestoringExpandedBackLayer();
+      }
+      measureExpanded();
+    }
   }
 
   /** Called by the BackLayerSiblingBehavior when the expand animation is done. */
   void onExpandAnimationDone() {
-    childViewAccessibilityHelper.restoreChildFocus();
     for (BackLayerCallback callback : callbacks) {
       callback.onAfterExpand();
     }
   }
 
-  /**
-   * Collapse the back layer.
-   *
-   * <p>Notice that this method does not automatically change visibilities on child views of the
-   * back layer, all of that has to be done by your code before calling this method or in a {@link
-   * BackLayerCallback}.
-   */
-  public void collapse() {
-    if (expanded) {
-      for (BackLayerCallback callback : callbacks) {
-        callback.onBeforeCollapse();
-      }
-      sibling.onBeforeCollapse();
-    }
-    expanded = false;
-  }
-
+  /** Called by the BackLayerSiblingBehavior when the collapse animation is done. */
   void onCollapseAnimationDone() {
     childViewAccessibilityHelper.disableChildFocus();
     for (BackLayerCallback callback : callbacks) {
@@ -325,6 +377,7 @@ public class BackLayerLayout extends LinearLayout {
     }
   }
 
+  @Override
   public boolean isExpanded() {
     return expanded;
   }

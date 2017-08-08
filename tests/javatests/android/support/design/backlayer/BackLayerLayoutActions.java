@@ -47,7 +47,7 @@ public class BackLayerLayoutActions {
       @Override
       public void perform(UiController uiController, View view) {
         BackLayerLayout layout = (BackLayerLayout) view;
-        layout.expand();
+        layout.setExpanded(true);
 
         uiController.loopMainThreadForAtLeast(WAIT_MILLISECONDS);
       }
@@ -69,7 +69,7 @@ public class BackLayerLayoutActions {
       @Override
       public void perform(UiController uiController, View view) {
         BackLayerLayout layout = (BackLayerLayout) view;
-        layout.collapse();
+        layout.setExpanded(false);
 
         uiController.loopMainThreadForAtLeast(WAIT_MILLISECONDS);
       }

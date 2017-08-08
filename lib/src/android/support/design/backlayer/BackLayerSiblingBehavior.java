@@ -221,7 +221,7 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
       // onInterceptTouchEvent is called for every touch in the CoordinatorLayout. Because of this
       // we need to check that the MotionEvent's coordinates are inside of the Child View.
       if (parent.isPointInChildBounds(childView, (int) ev.getX(), (int) ev.getY())) {
-        backLayerLayout.collapse();
+        backLayerLayout.setExpanded(false);
         return true;
       }
     }

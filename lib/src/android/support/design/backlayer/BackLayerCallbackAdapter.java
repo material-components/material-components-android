@@ -34,4 +34,7 @@ public class BackLayerCallbackAdapter implements BackLayerCallback {
 
   @Override
   public void onAfterCollapse() {}
+
+  @Override
+  public void onRestoringExpandedBackLayer() {}
 }

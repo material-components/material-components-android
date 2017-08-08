@@ -54,16 +54,12 @@ public abstract class BackLayerLayoutActivity extends BaseTestActivity {
     @Override
     public void onClick(View view) {
       if (experience == buttonExperience) {
-        if (backLayer.isExpanded()) {
-          backLayer.collapse();
-        } else {
-          backLayer.expand();
-        }
+        backLayer.setExpanded(!backLayer.isExpanded());
       } else {
         experience = buttonExperience;
         primaryExtraContent.setVisibility(experience == PRIMARY ? View.VISIBLE : View.GONE);
         secondaryExtraContent.setVisibility(experience == SECONDARY ? View.VISIBLE : View.GONE);
-        backLayer.expand();
+        backLayer.setExpanded(true);
       }
     }
   }

@@ -38,4 +38,13 @@ public interface BackLayerCallback {
    * backlayer.isExpanded() would return false.
    */
   void onAfterCollapse();
+  /**
+   * This callback is called when {@link View#onRestoreInstanceState()} restores a expanded back
+   * layer.
+   *
+   * <p>In this case neither {@link #onBeforeExpand()} nor {@link #onAfterExpand()} will be called
+   * and the expansion of the back layer will not be animated. You should not animate any views in
+   * this method, just bring them to their final expanded state.
+   */
+  void onRestoringExpandedBackLayer();
 }
