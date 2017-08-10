@@ -19,7 +19,6 @@
 
   <color name="design_default_color_primary">#3F51B5</color>
   <color name="design_default_color_primary_dark">#303F9F</color>
-  <color name="design_default_color_secondary">#FF4081</color>
   <array name="design_default_color_palette_primary"/>
   <array name="design_default_color_palette_secondary"/>
 
