@@ -34,64 +34,68 @@
     <activity android:name="android.support.v7.app.AppCompatActivity"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".BottomNavigationViewActivity"/>
+      android:name=".BottomNavigationViewActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".BottomSheetBehaviorActivity"/>
+      android:name=".BottomSheetBehaviorActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".BottomSheetBehaviorWithInsetsActivity"/>
+      android:name=".BottomSheetBehaviorWithInsetsActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".BottomSheetDialogActivity"/>
+      android:name=".BottomSheetDialogActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".CoordinatorLayoutActivity"/>
+      android:name=".CoordinatorLayoutActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.TranslucentStatus"
-      android:name=".DynamicCoordinatorLayoutActivity"/>
+      android:name=".DynamicCoordinatorLayoutActivity"
+      android:theme="@style/Theme.TranslucentStatus"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.Light.NoActionBar"
-      android:name=".FloatingActionButtonActivity"/>
+      android:name=".FloatingActionButtonActivity"
+      android:theme="@style/Theme.AppCompat.Light.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".ExpandableTransformationActivity"/>
+      android:name=".ExpandableTransformationActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".NavigationViewActivity"/>
+      android:name=".NavigationViewActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".SnackbarActivity"/>
+      android:name=".SnackbarActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.TranslucentNavBar"
-      android:name=".SnackbarWithTranslucentNavBarActivity"/>
+      android:name=".SnackbarWithTranslucentNavBarActivity"
+      android:theme="@style/Theme.TranslucentNavBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".SnackbarWithFabActivity"/>
+      android:name=".SnackbarWithFabActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".TabLayoutPoolingActivity"/>
+      android:name=".TabLayoutPoolingActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".TabLayoutWithViewPagerActivity"/>
+      android:name=".TabLayoutWithViewPagerActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
-      android:theme="@style/Theme.AppCompat.NoActionBar"
-      android:name=".TextInputLayoutActivity"/>
+      android:name=".TextInputLayoutActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+    <activity
+      android:name=".AppBarWithScrollbarsActivity"
+      android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 
   </application>
 </manifest>

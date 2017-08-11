@@ -143,7 +143,7 @@ public class AppBarLayout extends LinearLayout {
   private boolean mCollapsible;
   private boolean mCollapsed;
 
-  private final int[] mTmpStatesArray = new int[2];
+  private int[] mTmpStatesArray;
 
   public AppBarLayout(Context context) {
     this(context, null);
@@ -493,6 +493,12 @@ public class AppBarLayout extends LinearLayout {
 
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
+    if (mTmpStatesArray == null) {
+      // Note that we can't allocate this at the class level (in declaration) since
+      // some paths in super View constructor are going to call this method before
+      // that
+      mTmpStatesArray = new int[2];
+    }
     final int[] extraStates = mTmpStatesArray;
     final int[] states = super.onCreateDrawableState(extraSpace + extraStates.length);
 

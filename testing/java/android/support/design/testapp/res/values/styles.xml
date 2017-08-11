@@ -40,4 +40,7 @@
     <item name="android:textColor">@color/color_state_list_themed</item>
   </style>
 
+  <style name="ThemeOverlay.AppBarWithScrollbars" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+    <item name="android:scrollbars">horizontal</item>
+  </style>
 </resources>
