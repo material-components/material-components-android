@@ -73,9 +73,9 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
       throws Throwable {
     onView(withId(R.id.coordinator_stub)).perform(inflateViewStub(layoutResId));
 
-    mAppBar = (AppBarLayout) mCoordinatorLayout.findViewById(R.id.app_bar);
-    mCollapsingToolbar = (CollapsingToolbarLayout) mAppBar.findViewById(R.id.collapsing_app_bar);
-    mToolbar = (Toolbar) mAppBar.findViewById(R.id.toolbar);
+    mAppBar = mCoordinatorLayout.findViewById(R.id.app_bar);
+    mCollapsingToolbar = mAppBar.findViewById(R.id.collapsing_app_bar);
+    mToolbar = mAppBar.findViewById(R.id.toolbar);
 
     final AppCompatActivity activity = activityTestRule.getActivity();
     activityTestRule.runOnUiThread(
@@ -102,7 +102,7 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
           .perform(setContentScrimColor(Color.MAGENTA));
     }
 
-    TextView dialog = (TextView) mCoordinatorLayout.findViewById(R.id.textview_dialogue);
+    TextView dialog = mCoordinatorLayout.findViewById(R.id.textview_dialogue);
     if (dialog != null) {
       onView(withId(R.id.textview_dialogue))
           .perform(setText(TextUtils.concat(Shakespeare.DIALOGUE)));

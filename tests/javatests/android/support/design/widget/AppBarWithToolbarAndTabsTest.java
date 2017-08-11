@@ -41,7 +41,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
       throws Throwable {
     super.configureContent(layoutResId, titleResId);
 
-    mTabLayout = (TabLayout) mAppBar.findViewById(R.id.tabs);
+    mTabLayout = mAppBar.findViewById(R.id.tabs);
     String[] tabTitles = new String[5];
     System.arraycopy(Cheeses.sCheeseStrings, 0, tabTitles, 0, 5);
     onView(withId(R.id.tabs)).perform(addTabs(tabTitles));

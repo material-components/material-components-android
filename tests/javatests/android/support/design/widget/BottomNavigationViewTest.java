@@ -82,7 +82,7 @@ public class BottomNavigationViewTest {
   @Before
   public void setUp() throws Exception {
     final BottomNavigationViewActivity activity = activityTestRule.getActivity();
-    mBottomNavigation = (BottomNavigationView) activity.findViewById(R.id.bottom_navigation);
+    mBottomNavigation = activity.findViewById(R.id.bottom_navigation);
 
     final Resources res = activity.getResources();
     mMenuStringContent = new HashMap<>(MENU_CONTENT_ITEM_IDS.length);

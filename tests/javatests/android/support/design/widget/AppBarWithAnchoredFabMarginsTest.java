@@ -42,8 +42,7 @@ public class AppBarWithAnchoredFabMarginsTest extends AppBarLayoutBaseTest {
         R.layout.design_appbar_anchored_fab_margin_bottom,
         R.string.design_appbar_anchored_fab_margin_bottom);
 
-    final FloatingActionButton fab =
-        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
     final CoordinatorLayout.LayoutParams fabLp =
         (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
     assertEquals(mAppBar.getId(), fabLp.getAnchorId());
@@ -70,8 +69,7 @@ public class AppBarWithAnchoredFabMarginsTest extends AppBarLayoutBaseTest {
         R.layout.design_appbar_anchored_fab_margin_top,
         R.string.design_appbar_anchored_fab_margin_top);
 
-    final FloatingActionButton fab =
-        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
     final CoordinatorLayout.LayoutParams fabLp =
         (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
     assertEquals(mAppBar.getId(), fabLp.getAnchorId());
@@ -98,8 +96,7 @@ public class AppBarWithAnchoredFabMarginsTest extends AppBarLayoutBaseTest {
         R.layout.design_appbar_anchored_fab_margin_left,
         R.string.design_appbar_anchored_fab_margin_left);
 
-    final FloatingActionButton fab =
-        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
     final CoordinatorLayout.LayoutParams fabLp =
         (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
     assertEquals(mAppBar.getId(), fabLp.getAnchorId());
@@ -124,8 +121,7 @@ public class AppBarWithAnchoredFabMarginsTest extends AppBarLayoutBaseTest {
         R.layout.design_appbar_anchored_fab_margin_right,
         R.string.design_appbar_anchored_fab_margin_right);
 
-    final FloatingActionButton fab =
-        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
     final CoordinatorLayout.LayoutParams fabLp =
         (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
     assertEquals(mAppBar.getId(), fabLp.getAnchorId());

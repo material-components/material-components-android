@@ -32,7 +32,7 @@ public class FiltersActivity extends AppCompatActivity {
   }
 
   private void initToolbar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.AppBar);
+    Toolbar toolbar = findViewById(R.id.AppBar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setTitle(getString(R.string.shrine_filter_page_title));
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);

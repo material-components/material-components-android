@@ -248,7 +248,7 @@ public class TabLayoutTest {
             activityTestRule.getActivity().setContentView(R.layout.design_tabs_fixed_width);
           }
         });
-    final TabLayout tabs = (TabLayout) activityTestRule.getActivity().findViewById(R.id.tabs);
+    final TabLayout tabs = activityTestRule.getActivity().findViewById(R.id.tabs);
     assertEquals(TabLayout.MODE_SCROLLABLE, tabs.getTabMode());
 
     final TabLayoutScrollIdlingResource idler = new TabLayoutScrollIdlingResource(tabs);

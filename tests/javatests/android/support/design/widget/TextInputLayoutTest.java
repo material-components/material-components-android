@@ -191,7 +191,7 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
 
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = (EditText) activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
 
     // Assert that the password is disguised
     assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
@@ -206,7 +206,7 @@ public class TextInputLayoutTest {
   @Test
   public void testPasswordToggleDisable() {
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = (EditText) activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
 
     // Set some text on the EditText
     onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
@@ -225,7 +225,7 @@ public class TextInputLayoutTest {
   @Test
   public void testPasswordToggleDisableWhenVisible() {
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = (EditText) activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
 
     // Type some text on the EditText
     onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
@@ -273,7 +273,7 @@ public class TextInputLayoutTest {
   @Test
   public void testPasswordToggleIsHiddenAfterReenable() {
     final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = (EditText) activity.findViewById(R.id.textinput_edittext_pwd);
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
 
     // Type some text on the EditText and then click the toggle button
     onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
@@ -317,10 +317,10 @@ public class TextInputLayoutTest {
     final Activity activity = activityTestRule.getActivity();
 
     // Set a hint on the TextInputLayout
-    final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
+    final TextInputLayout layout = activity.findViewById(R.id.textinput);
     layout.setHint(INPUT_TEXT);
 
-    final EditText editText = (EditText) activity.findViewById(R.id.textinput_edittext);
+    final EditText editText = activity.findViewById(R.id.textinput_edittext);
 
     // Now manually pass in a EditorInfo to the EditText and make sure it updates the
     // hintText to our known value
@@ -389,7 +389,7 @@ public class TextInputLayoutTest {
     editText.setCompoundDrawables(left, top, right, bottom);
 
     // Now add the EditText to a TextInputLayout
-    TextInputLayout til = (TextInputLayout) activity.findViewById(R.id.textinput_noedittext);
+    TextInputLayout til = activity.findViewById(R.id.textinput_noedittext);
     til.addView(editText);
 
     // Finally assert that all of the drawables are untouched
@@ -415,7 +415,7 @@ public class TextInputLayoutTest {
     TextViewCompat.setCompoundDrawablesRelative(editText, start, top, end, bottom);
 
     // Now add the EditText to a TextInputLayout
-    TextInputLayout til = (TextInputLayout) activity.findViewById(R.id.textinput_noedittext);
+    TextInputLayout til = activity.findViewById(R.id.textinput_noedittext);
     til.addView(editText);
 
     // Finally assert that all of the drawables are untouched
@@ -482,7 +482,7 @@ public class TextInputLayoutTest {
   @Test
   public void testHintIsErrorTextColorOnError() {
     final Activity activity = activityTestRule.getActivity();
-    final TextInputLayout layout = (TextInputLayout) activity.findViewById(R.id.textinput);
+    final TextInputLayout layout = activity.findViewById(R.id.textinput);
 
     onView(withId(R.id.textinput))
         .perform(setErrorEnabled(true))

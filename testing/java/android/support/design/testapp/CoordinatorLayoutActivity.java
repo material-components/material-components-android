@@ -33,7 +33,7 @@ public class CoordinatorLayoutActivity extends BaseTestActivity {
 
   @Override
   protected void onContentViewSet() {
-    mContainer = (FrameLayout) findViewById(R.id.container);
-    mCoordinatorLayout = (CoordinatorLayout) findViewById(R.id.coordinator);
+    mContainer = findViewById(R.id.container);
+    mCoordinatorLayout = findViewById(R.id.coordinator);
   }
 }

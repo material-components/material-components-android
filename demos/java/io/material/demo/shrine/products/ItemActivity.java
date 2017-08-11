@@ -66,12 +66,12 @@ public class ItemActivity extends AppCompatActivity {
       Snackbar.make(findViewById(R.id.ProductTitle), error, Snackbar.LENGTH_SHORT).show();
       fabMessage = error;
     } else {
-      TextView productTitle = (TextView) findViewById(R.id.ProductTitle);
+      TextView productTitle = findViewById(R.id.ProductTitle);
       productTitle.setText(bundle.getString(PRODUCT_TITLE));
-      TextView productDescription = (TextView) findViewById(R.id.ProductDescription);
+      TextView productDescription = findViewById(R.id.ProductDescription);
       productDescription.setText(bundle.getString(PRODUCT_DESCRIPTION));
       initSpinner();
-      NetworkImageView productImage = (NetworkImageView) findViewById(R.id.ProductImage);
+      NetworkImageView productImage = findViewById(R.id.ProductImage);
       ImageRequester.getInstance(this).setImageFromUrl(productImage, bundle.getString(PRODUCT_URL));
       fabMessage = getString(R.string.shrine_product_added_message);
     }
@@ -86,7 +86,7 @@ public class ItemActivity extends AppCompatActivity {
   }
 
   private void initToolbar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.AppBar);
+    Toolbar toolbar = findViewById(R.id.AppBar);
     setSupportActionBar(toolbar);
     getSupportActionBar().setDisplayHomeAsUpEnabled(true);
   }

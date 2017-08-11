@@ -314,9 +314,9 @@ public abstract class BackLayerLayoutTestBase {
     activity = activityTestRule.getActivity();
     resources = activity.getResources();
 
-    coordinatorLayout = (CoordinatorLayout) activity.findViewById(coordinatorLayoutId);
-    backLayer = (BackLayerLayout) activity.findViewById(backLayerId);
-    contentLayer = (NestedScrollView) activity.findViewById(contentLayerId);
+    coordinatorLayout = activity.findViewById(coordinatorLayoutId);
+    backLayer = activity.findViewById(backLayerId);
+    contentLayer = activity.findViewById(contentLayerId);
     primaryExtraContent = activity.findViewById(primaryExtraContentId);
     secondaryExtraContent = activity.findViewById(secondaryExtraContentId);
 

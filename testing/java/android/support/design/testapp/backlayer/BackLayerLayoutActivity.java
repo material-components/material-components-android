@@ -67,12 +67,12 @@ public abstract class BackLayerLayoutActivity extends BaseTestActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    backLayer = (BackLayerLayout) findViewById(R.id.design_backlayer_backlayer_layout);
-    primaryExtraContent = (ImageView) findViewById(R.id.design_backlayer_extra_content);
-    secondaryExtraContent = (ImageView) findViewById(R.id.design_backlayer_secondary_extra_content);
-    primaryExpandIcon = (ImageView) findViewById(R.id.design_backlayer_primary_expand_icon);
+    backLayer = findViewById(R.id.design_backlayer_backlayer_layout);
+    primaryExtraContent = findViewById(R.id.design_backlayer_extra_content);
+    secondaryExtraContent = findViewById(R.id.design_backlayer_secondary_extra_content);
+    primaryExpandIcon = findViewById(R.id.design_backlayer_primary_expand_icon);
     primaryExpandIcon.setOnClickListener(new SwitchExperienceOnClickListener(PRIMARY));
-    secondaryExpandIcon = (ImageView) findViewById(R.id.design_backlayer_secondary_expand_icon);
+    secondaryExpandIcon = findViewById(R.id.design_backlayer_secondary_expand_icon);
     secondaryExpandIcon.setOnClickListener(new SwitchExperienceOnClickListener(SECONDARY));
   }
 }

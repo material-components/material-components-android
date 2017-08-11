@@ -35,7 +35,7 @@ public class ExpandableTransformationActivity extends BaseTestActivity {
 
   @Override
   protected void onContentViewSet() {
-    fab = (FloatingActionButton) findViewById(R.id.fab);
+    fab = findViewById(R.id.fab);
     sheet = findViewById(R.id.sheet);
     scrim = findViewById(R.id.scrim);
   }

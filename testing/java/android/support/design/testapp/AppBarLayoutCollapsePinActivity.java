@@ -29,7 +29,7 @@ public class AppBarLayoutCollapsePinActivity extends BaseTestActivity {
 
   @Override
   protected void onContentViewSet() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+    Toolbar toolbar = findViewById(R.id.toolbar);
     setSupportActionBar(toolbar);
   }
 }

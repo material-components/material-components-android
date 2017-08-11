@@ -1662,11 +1662,11 @@ public class TabLayout extends HorizontalScrollView {
           mIconView.setImageDrawable(null);
         }
 
-        mCustomTextView = (TextView) custom.findViewById(android.R.id.text1);
+        mCustomTextView = custom.findViewById(android.R.id.text1);
         if (mCustomTextView != null) {
           mDefaultMaxLines = TextViewCompat.getMaxLines(mCustomTextView);
         }
-        mCustomIconView = (ImageView) custom.findViewById(android.R.id.icon);
+        mCustomIconView = custom.findViewById(android.R.id.icon);
       } else {
         // We do not have a custom view. Remove one if it already exists
         if (mCustomView != null) {

@@ -96,9 +96,7 @@ public abstract class BaseDynamicCoordinatorLayoutTest {
         viewStub.setLayoutResource(layoutResId);
         viewStub.inflate();
 
-        mCoordinatorLayout =
-            (CoordinatorLayout)
-                activityTestRule.getActivity().findViewById(viewStub.getInflatedId());
+        mCoordinatorLayout = activityTestRule.getActivity().findViewById(viewStub.getInflatedId());
 
         uiController.loopMainThreadUntilIdle();
       }

@@ -244,8 +244,8 @@ public class TabLayoutWithViewPagerTest {
   @Before
   public void setUp() throws Exception {
     final TabLayoutWithViewPagerActivity activity = activityTestRule.getActivity();
-    mTabLayout = (TabLayout) activity.findViewById(R.id.tabs);
-    mViewPager = (ViewPager) activity.findViewById(R.id.tabs_viewpager);
+    mTabLayout = activity.findViewById(R.id.tabs);
+    mViewPager = activity.findViewById(R.id.tabs_viewpager);
 
     mDefaultPagerAdapter = new ColorPagerAdapter();
     mDefaultPagerAdapter.add("Red", Color.RED);

@@ -34,14 +34,14 @@ public class CustomSnackbar extends BaseTransientBottomBar<CustomSnackbar> {
 
   /** Sets the title of this custom snackbar. */
   public CustomSnackbar setTitle(String title) {
-    TextView titleView = (TextView) getView().findViewById(R.id.custom_snackbar_title);
+    TextView titleView = getView().findViewById(R.id.custom_snackbar_title);
     titleView.setText(title);
     return this;
   }
 
   /** Sets the subtitle of this custom snackbar. */
   public CustomSnackbar setSubtitle(String subtitle) {
-    TextView subtitleView = (TextView) getView().findViewById(R.id.custom_snackbar_subtitle);
+    TextView subtitleView = getView().findViewById(R.id.custom_snackbar_subtitle);
     subtitleView.setText(subtitle);
     return this;
   }

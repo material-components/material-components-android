@@ -81,7 +81,7 @@ public class SnackbarTest {
 
   @Before
   public void setup() {
-    mCoordinatorLayout = (CoordinatorLayout) activityTestRule.getActivity().findViewById(R.id.col);
+    mCoordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
   }
 
   private void verifySnackbarContent(

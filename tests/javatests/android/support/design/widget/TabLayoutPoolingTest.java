@@ -44,14 +44,14 @@ public class TabLayoutPoolingTest {
 
     // TabLayout1 has items added via the layout, so we'll just check they're
     // there first
-    final TabLayout tabLayout1 = (TabLayout) activity.findViewById(R.id.tabs_1);
+    final TabLayout tabLayout1 = activity.findViewById(R.id.tabs_1);
     assertTrue(tabLayout1.getTabCount() > 0);
 
     // Now remove all tabs. TabLayout will pool the Tab instances...
     tabLayout1.removeAllTabs();
 
     // Now add some tabs to the second TabLayout and make sure that we don't crash
-    final TabLayout tabLayout2 = (TabLayout) activity.findViewById(R.id.tabs_2);
+    final TabLayout tabLayout2 = activity.findViewById(R.id.tabs_2);
     tabLayout2.addTab(tabLayout2.newTab());
     tabLayout2.addTab(tabLayout2.newTab());
     tabLayout2.addTab(tabLayout2.newTab());

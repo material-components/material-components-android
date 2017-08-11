@@ -73,7 +73,7 @@ public class BottomSheetDialogTest {
             showDialog();
             // Confirms that the dialog is shown
             assertThat(mDialog.isShowing(), is(true));
-            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
             assertThat(bottomSheet, is(notNullValue()));
             BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
             assertThat(behavior.isHideable(), is(true));
@@ -103,7 +103,7 @@ public class BottomSheetDialogTest {
             showDialog();
             // Confirms that the dialog is shown
             assertThat(mDialog.isShowing(), is(true));
-            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
             // The bottom sheet is not clickable
             assertNotNull(bottomSheet);
             assertThat(bottomSheet.isClickable(), is(false));
@@ -131,7 +131,7 @@ public class BottomSheetDialogTest {
             showDialog();
             // Confirms that the dialog is shown
             assertThat(mDialog.isShowing(), is(true));
-            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
             // Set up an OnClickListener to the content of the bottom sheet
             assertNotNull(bottomSheet);
             View child = bottomSheet.getChildAt(0);
@@ -162,7 +162,7 @@ public class BottomSheetDialogTest {
         new Runnable() {
           @Override
           public void run() {
-            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
             CoordinatorLayout coordinator = (CoordinatorLayout) bottomSheet.getParent();
             BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
             assertThat(bottomSheet, is(notNullValue()));
@@ -192,7 +192,7 @@ public class BottomSheetDialogTest {
         new Runnable() {
           @Override
           public void run() {
-            FrameLayout bottomSheet = (FrameLayout) mDialog.findViewById(R.id.design_bottom_sheet);
+            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
             BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
             assertThat(behavior.isHideable(), is(false));
             assertThat(mDialog.isShowing(), is(true));

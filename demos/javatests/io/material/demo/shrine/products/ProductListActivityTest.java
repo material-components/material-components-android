@@ -40,7 +40,7 @@ public class ProductListActivityTest {
   @Before
   public void setUp() {
     productListActivity = Robolectric.setupActivity(ProductListActivity.class);
-    productsRecyclerView = (RecyclerView) productListActivity.findViewById(R.id.ProductGrid);
+    productsRecyclerView = productListActivity.findViewById(R.id.ProductGrid);
   }
 
   @Test

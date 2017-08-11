@@ -339,8 +339,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     assertEquals(
         CollapsingToolbarLayout.LayoutParams.COLLAPSE_MODE_PIN, toolbarLp.getCollapseMode());
 
-    final FloatingActionButton fab =
-        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
 
     final int[] appbarOnScreenXY = new int[2];
     final int[] coordinatorLayoutOnScreenXY = new int[2];
@@ -403,8 +402,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         R.layout.design_appbar_toolbar_collapse_with_image,
         R.string.design_appbar_collapsing_toolbar_with_image);
 
-    final ImageView parallaxImageView =
-        (ImageView) mCoordinatorLayout.findViewById(R.id.app_bar_image);
+    final ImageView parallaxImageView = mCoordinatorLayout.findViewById(R.id.app_bar_image);
 
     // We have not set any padding on the ImageView, so ensure that none is set via
     // window insets handling

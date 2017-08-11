@@ -42,7 +42,7 @@ public class AppBarWithCollapsingToolbarStateRestoreTest {
   @Test
   public void testRotateAndRestore() {
     final Activity activity = activityTestRule.getActivity();
-    final AppBarLayout appBar = (AppBarLayout) activity.findViewById(R.id.app_bar);
+    final AppBarLayout appBar = activity.findViewById(R.id.app_bar);
 
     // Save the orientation state.
     int oldOrientation = TestUtils.getScreenOrientation(activity);

@@ -112,8 +112,8 @@ public class NavigationViewTest {
   @Before
   public void setUp() throws Exception {
     final NavigationViewActivity activity = activityTestRule.getActivity();
-    mDrawerLayout = (DrawerLayout) activity.findViewById(R.id.drawer_layout);
-    mNavigationView = (NavigationTestView) mDrawerLayout.findViewById(R.id.start_drawer);
+    mDrawerLayout = activity.findViewById(R.id.drawer_layout);
+    mNavigationView = mDrawerLayout.findViewById(R.id.start_drawer);
 
     // Close the drawer to reset the state for the next test
     onView(withId(R.id.drawer_layout)).perform(closeDrawer(GravityCompat.START));

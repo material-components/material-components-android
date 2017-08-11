@@ -112,8 +112,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
 
     // Take into account bottom padding and bottom margin to account for how drop shadow is
     // emulated on pre-Lollipop devices
-    final FloatingActionButton fab =
-        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
     verifySnackbarViewStacking(
         fab,
         fab.getPaddingBottom()
@@ -135,8 +134,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
     // Take into account bottom padding and bottom margin to account for how drop shadow is
     // emulated on pre-Lollipop devices
     onView(withId(R.id.fab)).perform(setVisibility(View.VISIBLE));
-    final FloatingActionButton fab =
-        (FloatingActionButton) mCoordinatorLayout.findViewById(R.id.fab);
+    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
     verifySnackbarViewStacking(
         fab,
         fab.getPaddingBottom()
@@ -156,8 +154,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
     SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
-    final AppCompatTextView textView =
-        (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+    final AppCompatTextView textView = mCoordinatorLayout.findViewById(R.id.text);
     verifySnackbarViewStacking(textView, 0);
   }
 
@@ -174,8 +171,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
     SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
-    final AppCompatTextView textView =
-        (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+    final AppCompatTextView textView = mCoordinatorLayout.findViewById(R.id.text);
     verifySnackbarViewStacking(textView, 0);
   }
 
@@ -186,8 +182,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
         .perform(inflateViewStub(R.layout.design_snackbar_behavior_runtime));
 
     // and configure that Behavior at runtime by setting it on its LayoutParams
-    final AppCompatTextView textView =
-        (AppCompatTextView) mCoordinatorLayout.findViewById(R.id.text);
+    final AppCompatTextView textView = mCoordinatorLayout.findViewById(R.id.text);
     final CoordinatorLayout.LayoutParams textViewLp =
         (CoordinatorLayout.LayoutParams) textView.getLayoutParams();
     textViewLp.setBehavior(new TestFloatingBehavior());

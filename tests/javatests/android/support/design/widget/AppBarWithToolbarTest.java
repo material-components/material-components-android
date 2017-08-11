@@ -146,7 +146,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
           @Override
           public void run() {
             final ViewGroup scrollingContentInner =
-                (ViewGroup) scrollingContent.findViewById(R.id.scrolling_content_inner);
+                scrollingContent.findViewById(R.id.scrolling_content_inner);
             View child = scrollingContentInner.getChildAt(0);
             Rect rect = new Rect(0, 0, child.getWidth(), child.getHeight());
             child.requestRectangleOnScreen(rect, true);
@@ -180,7 +180,7 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
           @Override
           public void run() {
             final ViewGroup scrollingContentInner =
-                (ViewGroup) scrollingContent.findViewById(R.id.scrolling_content_inner);
+                scrollingContent.findViewById(R.id.scrolling_content_inner);
             View child =
                 scrollingContentInner.getChildAt(scrollingContentInner.getChildCount() - 1);
             Rect rect = new Rect(0, 0, child.getWidth(), child.getHeight());

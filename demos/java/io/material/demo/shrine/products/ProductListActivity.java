@@ -111,18 +111,16 @@ public class ProductListActivity extends AppCompatActivity {
   }
 
   private void initCollapsingToolbar() {
-    Toolbar toolbar = (Toolbar) findViewById(R.id.AppBar);
+    Toolbar toolbar = findViewById(R.id.AppBar);
     int collapsingToolbarImageIndex = 6;
     int collapsingImageToolbarSize = 1200;
-    NetworkImageView collapsingToolbarImage =
-        (NetworkImageView) findViewById(R.id.CollapsingToolbarImage);
+    NetworkImageView collapsingToolbarImage = findViewById(R.id.CollapsingToolbarImage);
     StringBuilder collapsingToolbarImageUrl =
         new StringBuilder(productEntryList.get(collapsingToolbarImageIndex).url);
     collapsingToolbarImageUrl.append("=s");
     collapsingToolbarImageUrl.append(collapsingImageToolbarSize);
     setSupportActionBar(toolbar);
-    CollapsingToolbarLayout collapsingToolbarLayout =
-        (CollapsingToolbarLayout) findViewById(R.id.CollapsingToolbarLayout);
+    CollapsingToolbarLayout collapsingToolbarLayout = findViewById(R.id.CollapsingToolbarLayout);
     collapsingToolbarLayout.setTitle(toolbar.getTitle());
     collapsingToolbarLayout.setExpandedTitleTextAppearance(R.style.TextAppearance_Shrine_Logo);
     collapsingToolbarLayout.setCollapsedTitleTextAppearance(R.style.TextAppearance_Shrine_Logo);
@@ -136,7 +134,7 @@ public class ProductListActivity extends AppCompatActivity {
   }
 
   private void initItemGrid() {
-    RecyclerView recyclerView = (RecyclerView) findViewById(R.id.ProductGrid);
+    RecyclerView recyclerView = findViewById(R.id.ProductGrid);
     recyclerView.setHasFixedSize(true);
     recyclerView.setLayoutManager(new GridLayoutManager(this, 2));
     recyclerView.setAdapter(new ProductAdapter(this, productEntryList, imageRequester));
@@ -180,10 +178,10 @@ public class ProductListActivity extends AppCompatActivity {
       super(LayoutInflater.from(context).inflate(R.layout.shrine_product_entry, parent, false));
       ViewGroup.LayoutParams layoutParams = itemView.getLayoutParams();
       itemView.setLayoutParams(layoutParams);
-      productPriceView = (TextView) itemView.findViewById(R.id.ProductPrice);
-      productImageView = (NetworkImageView) itemView.findViewById(R.id.ProductImage);
-      productShopNameView = (TextView) itemView.findViewById(R.id.ProductShopName);
-      productEntryView = (CardView) itemView.findViewById(R.id.ProductEntry);
+      productPriceView = itemView.findViewById(R.id.ProductPrice);
+      productImageView = itemView.findViewById(R.id.ProductImage);
+      productShopNameView = itemView.findViewById(R.id.ProductShopName);
+      productEntryView = itemView.findViewById(R.id.ProductEntry);
       productEntryView.setOnClickListener(clickListener);
     }
 

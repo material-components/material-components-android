@@ -55,10 +55,9 @@ public class BottomNavigationViewScrollTest extends BaseDynamicCoordinatorLayout
   protected void configureContent(@LayoutRes final int layoutResId) throws Throwable {
     onView(withId(R.id.coordinator_stub)).perform(inflateViewStub(layoutResId));
 
-    bottomNavigationView =
-        (BottomNavigationView) mCoordinatorLayout.findViewById(R.id.bottom_navigation);
+    bottomNavigationView = mCoordinatorLayout.findViewById(R.id.bottom_navigation);
 
-    TextView dialogue = (TextView) mCoordinatorLayout.findViewById(R.id.textview_dialogue);
+    TextView dialogue = mCoordinatorLayout.findViewById(R.id.textview_dialogue);
     if (dialogue != null) {
       onView(withId(R.id.textview_dialogue))
           .perform(setText(TextUtils.concat(Shakespeare.DIALOGUE)));
