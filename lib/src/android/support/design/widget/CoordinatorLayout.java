@@ -211,7 +211,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
       final float density = res.getDisplayMetrics().density;
       final int count = mKeylines.length;
       for (int i = 0; i < count; i++) {
-        mKeylines[i] *= density;
+        mKeylines[i] = (int) (mKeylines[i] * density);
       }
     }
     mStatusBarBackground = a.getDrawable(R.styleable.CoordinatorLayout_statusBarBackground);
