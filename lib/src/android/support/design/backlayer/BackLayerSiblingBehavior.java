@@ -48,6 +48,7 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
   private int layoutDirection;
   private CharSequence expandedContentDescription;
   private ContentViewAccessibilityPropertiesHelper contentViewAccessibilityHelper;
+  private boolean isFirstLayoutPass = true;
 
   public BackLayerSiblingBehavior(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -186,7 +187,10 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         default:
           break;
       }
-    } else {
+    } else if (isFirstLayoutPass) {
+      // If back layer is expanded on the first layout pass this means the back layer state was
+      // restored from an activity restart or a configuration change (rotation, multitasking-related
+      // window size change, ...). In this case we must not animate.
       int expandedWidth = backLayerLayout.getExpandedWidth();
       int expandedHeight = backLayerLayout.getExpandedHeight();
       switch (absoluteGravity) {
@@ -209,9 +213,13 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
         default:
           break;
       }
-      // This call may have happened because of a change of content in the backlayer when it is
-      // displayed
+    } else {
+      // This happens when the contents of the back layer change. We need to recalculate the size of
+      // the expanded backlayer and animate the size change.
+      backLayerLayout.measureExpanded();
+      animateExpand(null);
     }
+    isFirstLayoutPass = false;
     return true;
   }
 
@@ -229,42 +237,15 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
   }
 
   void onBeforeExpand() {
-    contentViewAccessibilityHelper.makeFocusableWithContentDescription(expandedContentDescription);
-    int end = 0;
-    CoordinatorLayout.LayoutParams backLayerLayoutParams =
-        (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
-    int absoluteGravity =
-        Gravity.getAbsoluteGravity(backLayerLayoutParams.gravity, layoutDirection);
-    // Calculate the end position for the content layer in the moving dimension (width for
-    // start/end/left/right anchored back layers and height for top/bottom anchored back layers).
-    switch (absoluteGravity) {
-      case Gravity.TOP:
-        end = backLayerLayout.getExpandedHeight();
-        break;
-      case Gravity.LEFT:
-        end = backLayerLayout.getExpandedWidth();
-        break;
-      case Gravity.BOTTOM:
-        end =
-            ViewCompat.getMinimumHeight(backLayerLayout) - backLayerLayout.getExpandedHeight() - 1;
-        break;
-      case Gravity.RIGHT:
-        end = ViewCompat.getMinimumWidth(backLayerLayout) - backLayerLayout.getExpandedWidth() - 1;
-        break;
-      default:
-        break;
-    }
-    // Start the animation to slide the content layer to the desired position. We pass the absolute
-    // gravity so we can animate the correct dimension.
-    animate(
-        end,
-        absoluteGravity,
+    AnimatorListenerAdapter animatorListener =
         new AnimatorListenerAdapter() {
           @Override
           public void onAnimationEnd(Animator animation) {
             backLayerLayout.onExpandAnimationDone();
           }
-        });
+        };
+    contentViewAccessibilityHelper.makeFocusableWithContentDescription(expandedContentDescription);
+    animateExpand(animatorListener);
   }
 
   void onBeforeCollapse() {
@@ -300,6 +281,40 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
   }
 
   // Private methods
+
+  /**
+   * Animates the expansion to the last calculated back layer expanded size and calls {@code
+   * animationListener} when done.
+   */
+  private void animateExpand(AnimatorListenerAdapter animatorListener) {
+    int end = 0;
+    CoordinatorLayout.LayoutParams backLayerLayoutParams =
+        (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
+    int absoluteGravity =
+        Gravity.getAbsoluteGravity(backLayerLayoutParams.gravity, layoutDirection);
+    // Calculate the end position for the content layer in the moving dimension (width for
+    // start/end/left/right anchored back layers and height for top/bottom anchored back layers).
+    switch (absoluteGravity) {
+      case Gravity.TOP:
+        end = backLayerLayout.getExpandedHeight();
+        break;
+      case Gravity.LEFT:
+        end = backLayerLayout.getExpandedWidth();
+        break;
+      case Gravity.BOTTOM:
+        end =
+            ViewCompat.getMinimumHeight(backLayerLayout) - backLayerLayout.getExpandedHeight() - 1;
+        break;
+      case Gravity.RIGHT:
+        end = ViewCompat.getMinimumWidth(backLayerLayout) - backLayerLayout.getExpandedWidth() - 1;
+        break;
+      default:
+        break;
+    }
+    // Start the animation to slide the content layer to the desired position. We pass the absolute
+    // gravity so we can animate the correct dimension.
+    animate(end, absoluteGravity, animatorListener);
+  }
 
   private void animate(int end, int absoluteGravity, AnimatorListener listener) {
     ViewPropertyAnimator animator =

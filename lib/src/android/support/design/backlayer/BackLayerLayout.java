@@ -57,9 +57,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *       will be considered the contents of the back layer that will always be visible. All other
  *       views will be extra content under the content layer. You can support multiple experiences
  *       under the back layer by changing the visibility or swapping out these other views.
- *   <li>If you support multiple experiences below the back layer you must call {@link #expand()}
- *       after changing the views outside the {@code CollapsedBackLayerContents} even when the back
- *       layer is already expanded, in order to adjust to the new size.
  *   <li>You must use match_parent for the {@code BackLayerLayout}'s width and height.
  *   <li>Set both {@code android:gravity} and {@code android:layout_gravity} for the {@code
  *       BackLayerLayout} to the same value. This value is the edge to which the back layer is
@@ -255,34 +252,24 @@ public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
    * layer, the developer has to prepare the contents of the back layer either before calling this
    * method or in a {@link BackLayerCallback#onBeforeExpand()}/{@link
    * BackLayerCallback#onBeforeCollapse()}.
-   *
-   * <p>If you call this method setting the expanded status to true when the back layer is already
-   * expanded, it will:
-   *
-   * <ul>
-   *   <li>Call all of the {@link BackLayerCallback#onBeforeExpand()} callbacks.
-   *   <li>Re measure all the child views.
-   *   <li>If the measurement was different from the previous measurement (i.e. the exposed area
-   *       needs to be bigger or smaller) this change will be animated by sliding the content layer
-   *       appropriately into place. If the measurement was the same no animation will be triggered.
-   *   <li>Call all of the {@link BackLayerCallback#onAfterExpand()} callbacks.
-   * </ul>
    */
   @Override
   public boolean setExpanded(boolean expanded) {
+    if (this.expanded == expanded) {
+      return expanded;
+    }
     if (expanded) {
       for (BackLayerCallback callback : callbacks) {
         callback.onBeforeExpand();
       }
       measureExpanded();
       // Call the sibling's behavior onBeforeExpand to animate the expansion (if necessary) and,
-      // after
-      // animation is done, call the onAfterExpand() callbacks.
+      // after animation is done, call the onAfterExpand() callbacks.
       if (sibling != null) {
         sibling.onBeforeExpand();
       }
       this.expanded = true;
-    } else if (this.expanded) {
+    } else {
       for (BackLayerCallback callback : callbacks) {
         callback.onBeforeCollapse();
       }
@@ -292,7 +279,12 @@ public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
     return this.expanded;
   }
 
-  private void measureExpanded() {
+  /**
+   * Measures the expanded version of the back layer by measuring with one dimension set to
+   * MeasureSpec.UNSPECIFIED and then undoing the changes by remeasuring with the original
+   * configuration.
+   */
+  void measureExpanded() {
     CoordinatorLayout.LayoutParams layoutParams =
         (CoordinatorLayout.LayoutParams) getLayoutParams();
     final int absoluteGravity =
