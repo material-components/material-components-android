@@ -31,6 +31,7 @@
   <public name="counterMaxLength" type="attr"/>
   <public name="counterOverflowTextAppearance" type="attr"/>
   <public name="counterTextAppearance" type="attr"/>
+  <public name="boxBackground" type="attr"/>
   <public name="elevation" type="attr"/>
   <public name="errorEnabled" type="attr"/>
   <public name="errorTextAppearance" type="attr"/>

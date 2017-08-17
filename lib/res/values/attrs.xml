@@ -320,6 +320,9 @@
       <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
       <enum name="screen" value="15"/>
     </attr>
+
+    <!-- Drawable to use as the background box in order to use the text input's box mode. -->
+    <attr name="boxBackground" format="reference"/>
   </declare-styleable>
   <declare-styleable name="SnackbarLayout">
     <attr name="android:maxWidth"/>

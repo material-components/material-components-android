@@ -139,6 +139,9 @@ public class TextInputLayout extends LinearLayout {
   private boolean mHintEnabled;
   private CharSequence mHint;
 
+  private Drawable mTextInputBoxBackground;
+  private final int mTextInputBoxPaddingOffsetPx;
+
   private Paint mTmpPaint;
   private final Rect mTmpRect = new Rect();
   private Typeface mTypeface;
@@ -206,6 +209,10 @@ public class TextInputLayout extends LinearLayout {
             defStyleAttr,
             R.style.Widget_Design_TextInputLayout);
 
+    mTextInputBoxBackground = a.getDrawable(R.styleable.TextInputLayout_boxBackground);
+    mTextInputBoxPaddingOffsetPx =
+        context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_offset);
+
     mHintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     mHintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
@@ -258,6 +265,7 @@ public class TextInputLayout extends LinearLayout {
     setErrorEnabled(errorEnabled);
     setErrorTextAppearance(mErrorTextAppearance);
     setCounterEnabled(counterEnabled);
+
     applyPasswordToggleTint();
 
     if (ViewCompat.getImportantForAccessibility(this)
@@ -334,7 +342,7 @@ public class TextInputLayout extends LinearLayout {
 
     final boolean hasPasswordTransformation = hasPasswordTransformation();
 
-    // Use the EditText's typeface, and it's text size for our expanded text
+    // Use the EditText's typeface, and its text size for our expanded text.
     if (!hasPasswordTransformation) {
       // We don't want a monospace font just because we have a password field
       mCollapsingTextHelper.setTypefaces(mEditText.getTypeface());
@@ -799,6 +807,40 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  private void updateTextInputBoxBounds() {
+    if (mTextInputBoxBackground == null || mEditText == null || getRight() == 0) {
+      return;
+    }
+
+    Drawable editTextBackground = mEditText.getBackground();
+    if (editTextBackground == null) {
+      return;
+    }
+
+    if (android.support.v7.widget.DrawableUtils.canSafelyMutateDrawable(editTextBackground)) {
+      editTextBackground = editTextBackground.mutate();
+    }
+
+    final Rect editTextBounds = new Rect();
+    ViewGroupUtils.getDescendantRect(this, mEditText, editTextBounds);
+
+    Rect editTextBackgroundBounds = editTextBackground.getBounds();
+    final int left = editTextBackgroundBounds.left - mEditText.getPaddingLeft();
+    final int right = editTextBackgroundBounds.right + mEditText.getPaddingRight();
+    editTextBackground.setBounds(
+        left, editTextBackgroundBounds.top, right, editTextBackgroundBounds.bottom);
+
+    if (android.support.v7.widget.DrawableUtils.canSafelyMutateDrawable(mTextInputBoxBackground)) {
+      mTextInputBoxBackground = mTextInputBoxBackground.mutate();
+    }
+
+    mTextInputBoxBackground.setBounds(
+        getLeft(),
+        getPaddingTop(),
+        getRight(),
+        mEditText.getBottom() + mTextInputBoxPaddingOffsetPx);
+  }
+
   void updateEditTextBackground() {
     if (mEditText == null) {
       return;
@@ -847,7 +889,7 @@ public class TextInputLayout extends LinearLayout {
     if (!mHasReconstructedEditTextBackground) {
       // This is gross. There is an issue in the platform which affects container Drawables
       // where the first drawable retrieved from resources will propagate any changes
-      // (like color filter) to all instances from the cache. We'll try to workaround it...
+      // (like color filter) to all instances from the cache. We'll try to work around it...
 
       final Drawable newBg = bg.getConstantState().newDrawable();
 
@@ -992,10 +1034,14 @@ public class TextInputLayout extends LinearLayout {
 
   @Override
   public void draw(Canvas canvas) {
+    updateTextInputBoxBounds();
     super.draw(canvas);
 
     if (mHintEnabled) {
       mCollapsingTextHelper.draw(canvas);
+    }
+    if (mTextInputBoxBackground != null) {
+      mTextInputBoxBackground.draw(canvas);
     }
   }
 
@@ -1279,6 +1325,10 @@ public class TextInputLayout extends LinearLayout {
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
 
+    if (mTextInputBoxBackground != null) {
+      updateTextInputBoxBounds();
+    }
+
     if (mHintEnabled && mEditText != null) {
       final Rect rect = mTmpRect;
       ViewGroupUtils.getDescendantRect(this, mEditText, rect);
@@ -1333,6 +1383,7 @@ public class TextInputLayout extends LinearLayout {
     updateLabelState(ViewCompat.isLaidOut(this) && isEnabled());
 
     updateEditTextBackground();
+    updateTextInputBoxBounds();
 
     if (mCollapsingTextHelper != null) {
       changed |= mCollapsingTextHelper.setState(state);

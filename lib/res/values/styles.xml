@@ -75,6 +75,10 @@
     <item name="passwordToggleContentDescription">@string/password_toggle_content_description</item>
   </style>
 
+  <style name="Widget.Design.TextInputLayout.Box">
+    <item name="boxBackground">@drawable/design_textinput_filled_box_background</item>
+  </style>
+
   <style name="TextAppearance.Design.HelperText" parent="TextAppearance.AppCompat.Caption"/>
 
   <style name="TextAppearance.Design.Hint" parent="TextAppearance.AppCompat.Caption">
