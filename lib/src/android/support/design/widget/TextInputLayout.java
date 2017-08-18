@@ -1328,26 +1328,27 @@ public class TextInputLayout extends LinearLayout {
     if (mTextInputBoxBackground != null) {
       updateTextInputBoxBounds();
     }
-    if (!mHintEnabled || mEditText == null) {
-      return;
+
+    if (mHintEnabled && mEditText != null) {
+      final Rect rect = mTmpRect;
+      ViewGroupUtils.getDescendantRect(this, mEditText, rect);
+
+      final int l = rect.left + mEditText.getCompoundPaddingLeft();
+      final int r = rect.right - mEditText.getCompoundPaddingRight();
+
+      mCollapsingTextHelper.setExpandedBounds(
+          l,
+          rect.top + mEditText.getCompoundPaddingTop(),
+          r,
+          rect.bottom - mEditText.getCompoundPaddingBottom());
+
+      // Set the collapsed bounds to be the full height (minus padding) to match the
+      // EditText's editable area
+      mCollapsingTextHelper.setCollapsedBounds(
+          l, getPaddingTop(), r, bottom - top - getPaddingBottom());
+
+      mCollapsingTextHelper.recalculate();
     }
-
-    final Rect rect = mTmpRect;
-    ViewGroupUtils.getDescendantRect(this, mEditText, rect);
-
-    final int l = rect.left + mEditText.getCompoundPaddingLeft();
-    final int r = rect.right - mEditText.getCompoundPaddingRight();
-
-    final int collapsedTop = mEditText.getPaddingTop() / 2;
-    final int collapsedBottom = bottom - top - getPaddingBottom();
-
-    final int expandedTop = rect.top;
-    final int expandedBottom = rect.bottom - mEditText.getCompoundPaddingBottom();
-
-    mCollapsingTextHelper.setExpandedBounds(l, expandedTop, r, expandedBottom);
-    mCollapsingTextHelper.setCollapsedBounds(l, collapsedTop, r, collapsedBottom);
-
-    mCollapsingTextHelper.recalculate();
   }
 
   private void collapseHint(boolean animate) {
