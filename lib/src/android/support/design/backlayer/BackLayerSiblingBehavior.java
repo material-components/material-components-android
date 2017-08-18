@@ -36,6 +36,9 @@ import android.view.ViewPropertyAnimator;
  *
  * <p>Using this behavior requires **exactly** one sibling view of type {@link BackLayerLayout}
  * which will be used to calculate the measurements and positions for the content layer view.
+ *
+ * <p>You MUST NOT use a {@link ViewGroup.OnHierarchyChangedListener} on the view to which you apply
+ * this behavior, as this behavior uses OnHierarchyChangedListener for internal housekeeping.
  */
 public class BackLayerSiblingBehavior extends Behavior<View> {
 

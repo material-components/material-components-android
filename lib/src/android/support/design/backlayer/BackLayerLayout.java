@@ -28,12 +28,13 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * A ViewGroup that can be expanded to show more content.
+ * A {@link ViewGroup} that can be expanded to show more content.
  *
  * <p>Since its resting state is hidden (partially exposed), it keeps a copy of its original
  * dimensions.
@@ -80,6 +81,8 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *       on activity restarts, no animation will be used and thus {@link
  *       BackLayerCallback#onBeforeExpand()} and {@link BackLayerCallback#onAfterExpand()} will not
  *       be called.
+ *   <li>You MUST NOT use a {@link ViewGroup.OnHierarchyChangedListener} on the back layer as it is
+ *       used for internal housekeeping.
  * </ul>
  *
  * <pre>{@code
