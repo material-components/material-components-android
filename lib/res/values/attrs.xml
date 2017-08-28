@@ -321,8 +321,13 @@
       <enum name="screen" value="15"/>
     </attr>
 
-    <!-- Drawable to use as the background box in order to use the text input's box mode. -->
-    <attr name="boxBackground" format="reference"/>
+    <!-- Whether the text input box should be drawn in a filled or outline style. -->
+    <attr name="boxBackgroundMode">
+      <enum name="none" value="0"/>
+      <enum name="filled" value="1"/>
+      <enum name="outline" value="2"/>
+    </attr>
+
   </declare-styleable>
   <declare-styleable name="SnackbarLayout">
     <attr name="android:maxWidth"/>

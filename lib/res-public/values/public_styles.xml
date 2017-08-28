@@ -39,5 +39,6 @@
   <public name="Widget.Design.Snackbar" type="style"/>
   <public name="Widget.Design.TabLayout" type="style"/>
   <public name="Widget.Design.TextInputLayout" type="style"/>
-  <public name="Widget.Design.TextInputLayout.Box" type="style"/>
+  <public name="Widget.Design.TextInputLayout.Box.Filled" type="style"/>
+  <public name="Widget.Design.TextInputLayout.Box.Outline" type="style"/>
 </resources>

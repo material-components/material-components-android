@@ -76,7 +76,14 @@
   </style>
 
   <style name="Widget.Design.TextInputLayout.Box">
-    <item name="boxBackground">@drawable/design_textinput_filled_box_background</item>
+  </style>
+
+  <style name="Widget.Design.TextInputLayout.Box.Filled">
+    <item name="boxBackgroundMode">filled</item>
+  </style>
+
+  <style name="Widget.Design.TextInputLayout.Box.Outline">
+    <item name="boxBackgroundMode">outline</item>
   </style>
 
   <style name="TextAppearance.Design.HelperText" parent="TextAppearance.AppCompat.Caption"/>

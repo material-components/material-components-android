@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import static android.support.design.widget.IndicatorViewController.COUNTER_INDEX;
+
 import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -28,12 +30,14 @@ import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
@@ -139,8 +143,24 @@ public class TextInputLayout extends LinearLayout {
   private boolean mHintEnabled;
   private CharSequence mHint;
 
-  private Drawable mTextInputBoxBackground;
-  private final int mTextInputBoxPaddingOffsetPx;
+  private GradientDrawable mBoxBackground;
+  private final int mBoxPaddingOffsetPx;
+  @BoxBackgroundMode private int mBoxBackgroundMode;
+  private float mBoxCornerRadius;
+  private int mBoxStrokeWidth;
+  private ColorStateList mBoxStrokeColor;
+  private ColorStateList mBoxBackgroundColor;
+
+  /**
+   * Values for box background mode. There is either a filled background, an
+   * outline background, or no background.
+   */
+  @IntDef({BOX_BACKGROUND_NONE, BOX_BACKGROUND_FILLED, BOX_BACKGROUND_OUTLINE})
+  private @interface BoxBackgroundMode {}
+
+  private static final int BOX_BACKGROUND_NONE = 0;
+  private static final int BOX_BACKGROUND_FILLED = 1;
+  private static final int BOX_BACKGROUND_OUTLINE = 2;
 
   private Paint mTmpPaint;
   private final Rect mTmpRect = new Rect();
@@ -209,8 +229,13 @@ public class TextInputLayout extends LinearLayout {
             defStyleAttr,
             R.style.Widget_Design_TextInputLayout);
 
-    mTextInputBoxBackground = a.getDrawable(R.styleable.TextInputLayout_boxBackground);
-    mTextInputBoxPaddingOffsetPx =
+    if (a.hasValue(R.styleable.TextInputLayout_boxBackgroundMode)) {
+      mBoxBackground = new GradientDrawable();
+      mBoxBackgroundMode =
+          a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
+    }
+
+    mBoxPaddingOffsetPx =
         context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_offset);
 
     mHintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
@@ -687,15 +712,14 @@ public class TextInputLayout extends LinearLayout {
         }
         mCounterView.setMaxLines(1);
         setTextAppearanceCompatWithErrorFallback(mCounterView, mCounterTextAppearance);
-        indicatorViewController.addIndicator(mCounterView, IndicatorViewController.COUNTER_INDEX);
+        indicatorViewController.addIndicator(mCounterView, COUNTER_INDEX);
         if (mEditText == null) {
           updateCounter(0);
         } else {
           updateCounter(mEditText.getText().length());
         }
       } else {
-        indicatorViewController.removeIndicator(
-            mCounterView, IndicatorViewController.COUNTER_INDEX);
+        indicatorViewController.removeIndicator(mCounterView, COUNTER_INDEX);
         mCounterView = null;
       }
       mCounterEnabled = enabled;
@@ -808,10 +832,17 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updateTextInputBoxBounds() {
-    if (mTextInputBoxBackground == null || mEditText == null || getRight() == 0) {
+    if (mBoxBackground == null || mEditText == null || getRight() == 0) {
       return;
     }
 
+    mBoxBackground.setBounds(
+        getLeft(), getPaddingTop(), getRight(), mEditText.getBottom() + mBoxPaddingOffsetPx);
+    applyBoxAttributes();
+    updateEditTextBackgroundBounds();
+  }
+
+  private void updateEditTextBackgroundBounds() {
     Drawable editTextBackground = mEditText.getBackground();
     if (editTextBackground == null) {
       return;
@@ -827,18 +858,49 @@ public class TextInputLayout extends LinearLayout {
     Rect editTextBackgroundBounds = editTextBackground.getBounds();
     final int left = editTextBackgroundBounds.left - mEditText.getPaddingLeft();
     final int right = editTextBackgroundBounds.right + mEditText.getPaddingRight();
-    editTextBackground.setBounds(
-        left, editTextBackgroundBounds.top, right, editTextBackgroundBounds.bottom);
+    editTextBackground.setBounds(left, editTextBackgroundBounds.top, right, mEditText.getBottom());
+  }
 
-    if (android.support.v7.widget.DrawableUtils.canSafelyMutateDrawable(mTextInputBoxBackground)) {
-      mTextInputBoxBackground = mTextInputBoxBackground.mutate();
+  private void setBoxAttributes() {
+    switch (mBoxBackgroundMode) {
+      case BOX_BACKGROUND_FILLED:
+        mBoxCornerRadius = 0f;
+        mBoxBackgroundColor = mDefaultTextColor;
+        break;
+
+      case BOX_BACKGROUND_OUTLINE:
+        mBoxCornerRadius = 16f;
+        mBoxStrokeColor = mFocusedTextColor;
+        mBoxStrokeWidth = 7;
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  private void applyBoxAttributes() {
+    if (mBoxBackground == null) {
+      return;
     }
 
-    mTextInputBoxBackground.setBounds(
-        getLeft(),
-        getPaddingTop(),
-        getRight(),
-        mEditText.getBottom() + mTextInputBoxPaddingOffsetPx);
+    setBoxAttributes();
+
+    if (mEditText != null && mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      mEditText.setBackground(null);
+    }
+
+    if (mBoxStrokeWidth > -1 && mBoxStrokeColor != null) {
+      mBoxBackground.setStroke(mBoxStrokeWidth, mBoxStrokeColor);
+    }
+
+    if (mBoxCornerRadius > -1) {
+      mBoxBackground.setCornerRadius(mBoxCornerRadius);
+    }
+
+    if (mBoxBackgroundColor != null) {
+      mBoxBackground.setColor(mBoxBackgroundColor);
+    }
   }
 
   void updateEditTextBackground() {
@@ -1040,8 +1102,8 @@ public class TextInputLayout extends LinearLayout {
     if (mHintEnabled) {
       mCollapsingTextHelper.draw(canvas);
     }
-    if (mTextInputBoxBackground != null) {
-      mTextInputBoxBackground.draw(canvas);
+    if (mBoxBackground != null) {
+      mBoxBackground.draw(canvas);
     }
   }
 
@@ -1325,7 +1387,7 @@ public class TextInputLayout extends LinearLayout {
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
 
-    if (mTextInputBoxBackground != null) {
+    if (mBoxBackground != null) {
       updateTextInputBoxBounds();
     }
 
