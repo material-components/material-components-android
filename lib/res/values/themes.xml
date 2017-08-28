@@ -21,7 +21,7 @@
 
     These theme declarations contain any version-independent specification. Items
     that need to vary based on platform version should be defined in the corresponding
-    "Theme.Base" theme.
+    "Base.Theme" theme.
   -->
 
   <!-- Platform-independent theme providing a full color scheme in a dark-themed activity. -->
