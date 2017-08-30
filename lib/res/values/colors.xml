@@ -52,6 +52,8 @@
   <color name="mtrl_btn_bg_color_highlight">@color/mtrl_btn_bg_color_pressed</color>
   <color name="mtrl_btn_bg_color_pressed">#5e5e5e</color>
   <color name="mtrl_btn_bg_color_disabled">#e3e3e3</color>
+  <color name="mtrl_btn_stroke_color">@color/mtrl_text_btn_text_color</color>
+  <color name="mtrl_btn_stroke_color_disabled">@color/mtrl_text_btn_text_color_disabled</color>
   <color name="mtrl_text_btn_text_color">#191919</color>
   <!-- 38% opacity text color -->
   <color name="mtrl_text_btn_text_color_disabled">#61191919</color>
