@@ -23,6 +23,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -40,6 +41,7 @@ import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import android.support.design.widget.expandable.ExpandableTransformationWidget;
 import android.support.design.widget.expandable.ExpandableWidgetHelper;
+import android.support.v4.view.TintableBackgroundView;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
@@ -70,7 +72,7 @@ import java.util.List;
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends VisibilityAwareImageButton
-    implements ExpandableTransformationWidget {
+    implements TintableBackgroundView, ExpandableTransformationWidget {
 
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
@@ -289,6 +291,44 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       mBackgroundTintMode = tintMode;
       getImpl().setBackgroundTintMode(tintMode);
     }
+  }
+
+  /**
+   * Compat method to support {@link TintableBackgroundView}. Use {@link
+   * #setBackgroundTintList(ColorStateList)} directly instead.
+   */
+  @Override
+  public void setSupportBackgroundTintList(@Nullable ColorStateList tint) {
+    setBackgroundTintList(tint);
+  }
+
+  /**
+   * Compat method to support {@link TintableBackgroundView}. Use {@link #getBackgroundTintList()}
+   * directly instead.
+   */
+  @Nullable
+  @Override
+  public ColorStateList getSupportBackgroundTintList() {
+    return getBackgroundTintList();
+  }
+
+  /**
+   * Compat method to support {@link TintableBackgroundView}. Use {@link
+   * #setBackgroundTintMode(Mode)} directly instead.
+   */
+  @Override
+  public void setSupportBackgroundTintMode(@Nullable Mode tintMode) {
+    setBackgroundTintMode(tintMode);
+  }
+
+  /**
+   * Compat method to support {@link TintableBackgroundView}. Use {@link #getBackgroundTintMode()}
+   * directly instead.
+   */
+  @Nullable
+  @Override
+  public Mode getSupportBackgroundTintMode() {
+    return getBackgroundTintMode();
   }
 
   @Override
@@ -578,13 +618,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   @Override
   public boolean onTouchEvent(MotionEvent ev) {
-    switch (ev.getAction()) {
-      case MotionEvent.ACTION_DOWN:
-        // Skipping the gesture if it doesn't start in in the FAB 'content' area
-        if (getContentRect(mTouchArea) && !mTouchArea.contains((int) ev.getX(), (int) ev.getY())) {
-          return false;
-        }
-        break;
+    if (ev.getAction() == MotionEvent.ACTION_DOWN) {
+      // Skipping the gesture if it doesn't start in the FAB 'content' area
+      if (getContentRect(mTouchArea) && !mTouchArea.contains((int) ev.getX(), (int) ev.getY())) {
+        return false;
+      }
     }
     return super.onTouchEvent(ev);
   }
