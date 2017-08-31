@@ -29,7 +29,7 @@ import android.graphics.Typeface;
 import android.os.Build;
 import android.support.annotation.ColorInt;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.motion.AnimationUtils;
+import android.support.design.animation.AnimationUtils;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;

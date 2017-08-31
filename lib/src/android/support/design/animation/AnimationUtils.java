@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.design.motion;
+package android.support.design.animation;
 
 import android.animation.TimeInterpolator;
 import android.support.annotation.RestrictTo;

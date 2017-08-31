@@ -15,7 +15,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.support.design.motion">
+    package="android.support.design.animation">
   <uses-sdk android:minSdkVersion="14"/>
   <application/>
 </manifest>
