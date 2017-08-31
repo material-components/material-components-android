@@ -25,7 +25,9 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
+import android.graphics.Rect;
 import android.graphics.Shader.TileMode;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
@@ -109,8 +111,11 @@ public class CircularRevealHelper {
    * optimization that allows {@link #draw(Canvas)} to use the fastest code path.
    */
   @Nullable private RevealInfo revealInfo;
+  /** An icon to be drawn on top of the widget's contents and after the scrim color. */
+  @Nullable private Drawable overlayDrawable;
 
   private boolean buildingCircularRevealCache;
+  private boolean hasCircularRevealCache;
 
   static {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -136,21 +141,29 @@ public class CircularRevealHelper {
   public void buildCircularRevealCache() {
     if (STRATEGY == BITMAP_SHADER) {
       buildingCircularRevealCache = true;
+      hasCircularRevealCache = false;
+
       view.buildDrawingCache();
       Bitmap bitmap = view.getDrawingCache();
-      if (bitmap == null) {
+
+      if (bitmap == null && view.getWidth() != 0 && view.getHeight() != 0) {
         bitmap = Bitmap.createBitmap(view.getWidth(), view.getHeight(), Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
         view.draw(canvas);
       }
 
-      revealPaint.setShader(new BitmapShader(bitmap, TileMode.CLAMP, TileMode.CLAMP));
+      if (bitmap != null) {
+        revealPaint.setShader(new BitmapShader(bitmap, TileMode.CLAMP, TileMode.CLAMP));
+      }
+
       buildingCircularRevealCache = false;
+      hasCircularRevealCache = true;
     }
   }
 
   public void destroyCircularRevealCache() {
     if (STRATEGY == BITMAP_SHADER) {
+      hasCircularRevealCache = false;
       view.destroyDrawingCache();
       revealPaint.setShader(null);
       view.invalidate();
@@ -204,6 +217,16 @@ public class CircularRevealHelper {
     return scrimPaint.getColor();
   }
 
+  @Nullable
+  public Drawable getCircularRevealOverlayDrawable() {
+    return overlayDrawable;
+  }
+
+  public void setCircularRevealOverlayDrawable(@Nullable Drawable drawable) {
+    overlayDrawable = drawable;
+    view.invalidate();
+  }
+
   private void invalidateRevealInfo() {
     if (STRATEGY == CLIP_PATH) {
       revealPath.rewind();
@@ -223,7 +246,6 @@ public class CircularRevealHelper {
 
   public void draw(Canvas canvas) {
     boolean drawScrim = !buildingCircularRevealCache && Color.alpha(scrimPaint.getColor()) != 0;
-
     if (hasCircularReveal()) {
       switch (STRATEGY) {
         case REVEAL_ANIMATOR:
@@ -259,6 +281,18 @@ public class CircularRevealHelper {
         canvas.drawRect(0, 0, view.getWidth(), view.getHeight(), scrimPaint);
       }
     }
+
+    boolean drawOverlayDrawable =
+        !buildingCircularRevealCache && overlayDrawable != null && revealInfo != null;
+    if (drawOverlayDrawable) {
+      Rect bounds = overlayDrawable.getBounds();
+      float translationX = revealInfo.centerX - bounds.width() / 2f;
+      float translationY = revealInfo.centerY - bounds.height() / 2f;
+
+      canvas.translate(translationX, translationY);
+      overlayDrawable.draw(canvas);
+      canvas.translate(-translationX, -translationY);
+    }
   }
 
   public boolean isOpaque() {
@@ -266,6 +300,11 @@ public class CircularRevealHelper {
   }
 
   private boolean hasCircularReveal() {
-    return !buildingCircularRevealCache && revealInfo != null && !revealInfo.isInvalid();
+    boolean invalidRevealInfo = revealInfo == null || revealInfo.isInvalid();
+    if (STRATEGY == BITMAP_SHADER) {
+      return !invalidRevealInfo && hasCircularRevealCache;
+    } else {
+      return !invalidRevealInfo;
+    }
   }
 }

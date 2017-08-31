@@ -16,6 +16,8 @@
 package android.support.design.circularreveal;
 
 import android.animation.TypeEvaluator;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.circularreveal.CircularRevealHelper.Delegate;
@@ -46,6 +48,12 @@ import android.view.ViewAnimationUtils;
  * interface to be a {@link View}.
  */
 public interface CircularRevealWidget extends Delegate {
+
+  /** Implementations should call the corresponding method in {@link CircularRevealHelper}. */
+  void draw(Canvas canvas);
+
+  /** Implementations should call the corresponding method in {@link CircularRevealHelper}. */
+  boolean isOpaque();
 
   /**
    * Prepares the <info>reveal info</info> property to be modified. See the interface javadoc for
@@ -88,8 +96,8 @@ public interface CircularRevealWidget extends Delegate {
   int getCircularRevealScrimColor();
 
   /**
-   * Sets the <code>circular reveal scrim color</code>, which is a color that's drawn above all
-   * content.
+   * Sets the <info>circular reveal scrim color</info>, which is a color that's drawn above this
+   * widget's contents.
    *
    * <p>Because the scrim makes no assumptions about the shape of the view's background and content,
    * callers should ensure that the scrim is only visible when the circular reveal does not yet
@@ -98,6 +106,22 @@ public interface CircularRevealWidget extends Delegate {
    * <p>Implementations should call the corresponding method in {@link CircularRevealHelper}.
    */
   void setCircularRevealScrimColor(@ColorInt int color);
+
+  /**
+   * Returns the <info>circular reveal overlay drawable</info> if one exists, or null.
+   *
+   * <p>Implementations should call the corresponding method in {@link CircularRevealHelper}.
+   */
+  @Nullable
+  Drawable getCircularRevealOverlayDrawable();
+
+  /**
+   * Sets the <info>circular reveal overlay drawable</info>, which is an icon that's drawn above
+   * everything else, including the circular reveal scrim color.
+   *
+   * <p>Implementations should call the corresponding method in {@link CircularRevealHelper}.
+   */
+  void setCircularRevealOverlayDrawable(@Nullable Drawable drawable);
 
   /**
    * RevealInfo holds three values for a circular reveal. The circular reveal is represented by two

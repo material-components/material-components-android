@@ -17,6 +17,7 @@ package android.support.design.circularreveal.cardview;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.support.design.circularreveal.CircularRevealHelper;
@@ -29,7 +30,7 @@ import android.util.AttributeSet;
  */
 public class CircularRevealCardView extends CardView implements CircularRevealWidget {
 
-  private final CircularRevealHelper helper = new CircularRevealHelper(this);
+  private final CircularRevealHelper helper;
 
   public CircularRevealCardView(Context context) {
     this(context, null);
@@ -37,6 +38,7 @@ public class CircularRevealCardView extends CardView implements CircularRevealWi
 
   public CircularRevealCardView(Context context, AttributeSet attrs) {
     super(context, attrs);
+    helper = new CircularRevealHelper(this);
   }
 
   @Override
@@ -68,6 +70,17 @@ public class CircularRevealCardView extends CardView implements CircularRevealWi
   @Override
   public int getCircularRevealScrimColor() {
     return helper.getCircularRevealScrimColor();
+  }
+
+  @Nullable
+  @Override
+  public Drawable getCircularRevealOverlayDrawable() {
+    return helper.getCircularRevealOverlayDrawable();
+  }
+
+  @Override
+  public void setCircularRevealOverlayDrawable(@Nullable Drawable drawable) {
+    helper.setCircularRevealOverlayDrawable(drawable);
   }
 
   @Override

@@ -15,8 +15,10 @@
  */
 package android.support.design.circularreveal;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -25,14 +27,15 @@ import android.widget.FrameLayout;
 /** A CircularRevealWidget wrapper for {@link FrameLayout}. */
 public class CircularRevealFrameLayout extends FrameLayout implements CircularRevealWidget {
 
-  private final CircularRevealHelper helper = new CircularRevealHelper(this);
+  private final CircularRevealHelper helper;
 
   public CircularRevealFrameLayout(Context context) {
-    super(context);
+    this(context, null);
   }
 
   public CircularRevealFrameLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
+    helper = new CircularRevealHelper(this);
   }
 
   @Override
@@ -66,6 +69,18 @@ public class CircularRevealFrameLayout extends FrameLayout implements CircularRe
     helper.setCircularRevealScrimColor(color);
   }
 
+  @Nullable
+  @Override
+  public Drawable getCircularRevealOverlayDrawable() {
+    return helper.getCircularRevealOverlayDrawable();
+  }
+
+  @Override
+  public void setCircularRevealOverlayDrawable(@Nullable Drawable drawable) {
+    helper.setCircularRevealOverlayDrawable(drawable);
+  }
+
+  @SuppressLint("MissingSuperCall")
   @Override
   public void draw(Canvas canvas) {
     if (helper != null) {

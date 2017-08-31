@@ -17,6 +17,7 @@ package android.support.design.circularreveal;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
 import android.util.AttributeSet;
@@ -25,14 +26,15 @@ import android.widget.GridLayout;
 /** A CircularRevealWidget wrapper for {@link GridLayout}. */
 public class CircularRevealGridLayout extends GridLayout implements CircularRevealWidget {
 
-  private final CircularRevealHelper helper = new CircularRevealHelper(this);
+  private final CircularRevealHelper helper;
 
   public CircularRevealGridLayout(Context context) {
-    super(context);
+    this(context, null);
   }
 
   public CircularRevealGridLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
+    helper = new CircularRevealHelper(this);
   }
 
   @Override
@@ -64,6 +66,17 @@ public class CircularRevealGridLayout extends GridLayout implements CircularReve
   @Override
   public void setCircularRevealScrimColor(@ColorInt int color) {
     helper.setCircularRevealScrimColor(color);
+  }
+
+  @Nullable
+  @Override
+  public Drawable getCircularRevealOverlayDrawable() {
+    return helper.getCircularRevealOverlayDrawable();
+  }
+
+  @Override
+  public void setCircularRevealOverlayDrawable(@Nullable Drawable drawable) {
+    helper.setCircularRevealOverlayDrawable(drawable);
   }
 
   @Override
