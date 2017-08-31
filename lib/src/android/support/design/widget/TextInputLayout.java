@@ -152,8 +152,8 @@ public class TextInputLayout extends LinearLayout {
   private ColorStateList mBoxBackgroundColor;
 
   /**
-   * Values for box background mode. There is either a filled background, an
-   * outline background, or no background.
+   * Values for box background mode. There is either a filled background, an outline background, or
+   * no background.
    */
   @IntDef({BOX_BACKGROUND_NONE, BOX_BACKGROUND_FILLED, BOX_BACKGROUND_OUTLINE})
   private @interface BoxBackgroundMode {}
@@ -229,12 +229,10 @@ public class TextInputLayout extends LinearLayout {
             defStyleAttr,
             R.style.Widget_Design_TextInputLayout);
 
-    if (a.hasValue(R.styleable.TextInputLayout_boxBackgroundMode)) {
-      mBoxBackground = new GradientDrawable();
-      mBoxBackgroundMode =
-          a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
-    }
-
+    @BoxBackgroundMode
+    final int boxBackgroundMode =
+        a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
+    setBoxBackgroundMode(boxBackgroundMode);
     mBoxPaddingOffsetPx =
         context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_offset);
 
@@ -321,6 +319,19 @@ public class TextInputLayout extends LinearLayout {
       // Carry on adding the View...
       super.addView(child, index, params);
     }
+  }
+
+  /**
+   * Set the mode for the box's background (filled, outline, or none).
+   *
+   * @param boxBackgroundMode the box's background mode.
+   */
+  private void setBoxBackgroundMode(@BoxBackgroundMode int boxBackgroundMode) {
+    if (boxBackgroundMode == mBoxBackgroundMode) {
+      return;
+    }
+    mBoxBackgroundMode = boxBackgroundMode;
+    mBoxBackground = mBoxBackgroundMode != BOX_BACKGROUND_NONE ? new GradientDrawable() : null;
   }
 
   /**
@@ -866,11 +877,13 @@ public class TextInputLayout extends LinearLayout {
       case BOX_BACKGROUND_FILLED:
         mBoxCornerRadius = 0f;
         mBoxBackgroundColor = mDefaultTextColor;
+        mBoxStrokeWidth = 0;
         break;
 
       case BOX_BACKGROUND_OUTLINE:
         mBoxCornerRadius = 16f;
         mBoxStrokeColor = mFocusedTextColor;
+        mBoxBackgroundColor = null;
         mBoxStrokeWidth = 7;
         break;
 

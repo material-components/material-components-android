@@ -65,6 +65,7 @@
   </style>
 
   <style name="Widget.Design.TextInputLayout" parent="android:Widget">
+    <item name="boxBackgroundMode">none</item>
     <item name="hintTextAppearance">@style/TextAppearance.Design.Hint</item>
     <item name="helperTextTextAppearance">@style/TextAppearance.Design.HelperText</item>
     <item name="errorTextAppearance">@style/TextAppearance.Design.Error</item>

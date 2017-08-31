@@ -321,7 +321,8 @@
       <enum name="screen" value="15"/>
     </attr>
 
-    <!-- Whether the text input box should be drawn in a filled or outline style. -->
+    <!-- Whether the text input box should be drawn with a filled background, an outline background, or no background.
+         This attribute is used internally, and it may be deleted if the implementation changes. -->
     <attr name="boxBackgroundMode">
       <enum name="none" value="0"/>
       <enum name="filled" value="1"/>
