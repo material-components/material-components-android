@@ -43,8 +43,6 @@
          resource. -->
     <attr name="colorPaletteSecondary" format="reference"/>
 
-    <!-- Text color used to indicate an error has occurred. -->
-    <attr name="textColorError" format="color|reference"/>
     <!-- TODO: Need to audit these attributes to see if they are useful. -->
     <attr name="colorMaterialControl" format="color"/>
     <attr name="colorMaterialControlHighlight" format="color"/>

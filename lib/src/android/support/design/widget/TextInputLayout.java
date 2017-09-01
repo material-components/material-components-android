@@ -835,10 +835,8 @@ public class TextInputLayout extends LinearLayout {
     if (useDefaultColor) {
       // Probably caused by our theme not extending from Theme.Design*. Instead
       // we manually set something appropriate
-      TextViewCompat.setTextAppearance(
-          textView, android.support.v7.appcompat.R.style.TextAppearance_AppCompat_Caption);
-      textView.setTextColor(
-          ContextCompat.getColor(getContext(), R.color.design_textinput_error_color_light));
+      TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_AppCompat_Caption);
+      textView.setTextColor(ContextCompat.getColor(getContext(), R.color.error_color_material));
     }
   }
 

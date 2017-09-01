@@ -83,7 +83,6 @@
   <public name="tabSelectedTextColor" type="attr"/>
   <public name="tabTextAppearance" type="attr"/>
   <public name="tabTextColor" type="attr"/>
-  <public name="textColorError" type="attr"/>
   <public name="title" type="attr"/>
   <public name="titleEnabled" type="attr"/>
   <public name="toolbarId" type="attr"/>

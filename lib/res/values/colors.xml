@@ -38,9 +38,6 @@
   <!-- Shadow color for the furthest pixels of a shadow -->
   <color name="design_fab_shadow_end_color">@android:color/transparent</color>
 
-  <color name="design_textinput_error_color_light">#FFD50000</color>
-  <color name="design_textinput_error_color_dark">#FFFF6E6E</color>
-
   <color name="design_textinput_box_background_color_light">#14000000</color>
   <color name="design_textinput_box_background_color_dark">#FFD50000</color>
 

@@ -35,8 +35,6 @@
   <eat-comment/>
 
   <style name="Base.V14.Theme.MaterialComponents" parent="Platform.MaterialComponents">
-    <item name="textColorError">@color/design_textinput_error_color_dark</item>
-
     <item name="colorPrimary">@color/design_default_color_primary</item>
     <item name="colorPrimaryLight">?attr/colorPrimary</item>
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
@@ -55,8 +53,6 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light" parent="Platform.MaterialComponents.Light">
-    <item name="textColorError">@color/design_textinput_error_color_light</item>
-
     <item name="colorPrimary">@color/design_default_color_primary</item>
     <item name="colorPrimaryLight">?attr/colorPrimary</item>
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
@@ -75,8 +71,6 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="Platform.MaterialComponents.Dialog">
-    <item name="textColorError">@color/design_textinput_error_color_dark</item>
-
     <item name="colorPrimary">@color/design_default_color_primary</item>
     <item name="colorPrimaryLight">?attr/colorPrimary</item>
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
@@ -95,8 +89,6 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="Platform.MaterialComponents.Light.Dialog">
-    <item name="textColorError">@color/design_textinput_error_color_light</item>
-
     <item name="colorPrimary">@color/design_default_color_primary</item>
     <item name="colorPrimaryLight">?attr/colorPrimary</item>
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
