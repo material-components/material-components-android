@@ -17,7 +17,7 @@
 package android.support.design.widget;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static android.support.design.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
+import static android.support.design.motion.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -705,8 +705,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         case MotionEvent.ACTION_UP:
         case MotionEvent.ACTION_CANCEL:
           SnackbarManager.getInstance().restoreTimeoutIfPaused(mManagerCallback);
-          break;
-        default:
           break;
       }
       return super.onInterceptTouchEvent(parent, child, event);

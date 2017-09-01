@@ -17,7 +17,7 @@
 package android.support.design.widget;
 
 import android.content.Context;
-import android.support.design.animation.AnimationUtils;
+import android.support.design.motion.AnimationUtils;
 import android.support.design.widget.CoordinatorLayout.Behavior;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
