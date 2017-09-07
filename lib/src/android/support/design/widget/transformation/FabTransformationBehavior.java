@@ -24,26 +24,41 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
+import android.content.res.ColorStateList;
+import android.graphics.Color;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.CallSuper;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.design.R;
+import android.support.design.animation.ArgbEvaluatorCompat;
+import android.support.design.animation.ChildrenAlphaProperty;
+import android.support.design.animation.DrawableAlphaProperty;
 import android.support.design.animation.MotionTiming;
 import android.support.design.animation.Positioning;
 import android.support.design.animation.TranslationTiming;
 import android.support.design.circularreveal.CircularRevealCompat;
+import android.support.design.circularreveal.CircularRevealHelper;
 import android.support.design.circularreveal.CircularRevealWidget;
+import android.support.design.circularreveal.CircularRevealWidget.CircularRevealScrimColorProperty;
 import android.support.design.circularreveal.CircularRevealWidget.RevealInfo;
 import android.support.design.math.MathUtils;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
+import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -122,7 +137,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
         animations,
         listeners);
     createColorAnimation(dependency, child, expanded, isAnimating, spec, animations, listeners);
-    createContentFadeAnimation(
+    createChildrenFadeAnimation(
         dependency, child, expanded, isAnimating, spec, animations, listeners);
 
     createAnimatorSetWorkaroundAnimation(animations);
@@ -180,7 +195,22 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       boolean currentlyAnimating,
       FabTransformationSpec spec,
       List<Animator> animations,
-      List<AnimatorListener> listeners) {}
+      List<AnimatorListener> unusedListeners) {
+    float translationZ = ViewCompat.getElevation(child) - ViewCompat.getElevation(dependency);
+    Animator animator;
+
+    if (expanded) {
+      if (!currentlyAnimating) {
+        child.setTranslationZ(-translationZ);
+      }
+      animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_Z, 0f);
+    } else {
+      animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_Z, -translationZ);
+    }
+
+    spec.elevation.apply(animator);
+    animations.add(animator);
+  }
 
   private void createTranslationAnimation(
       View dependency,
@@ -189,7 +219,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       boolean currentlyAnimating,
       FabTransformationSpec spec,
       List<Animator> animations,
-      List<AnimatorListener> listeners,
+      List<AnimatorListener> unusedListeners,
       RectF childBounds) {
     float translationX = calculateTranslationX(dependency, child, spec.positioning);
     float translationY = calculateTranslationY(dependency, child, spec.positioning);
@@ -249,7 +279,52 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       boolean currentlyAnimating,
       FabTransformationSpec spec,
       List<Animator> animations,
-      List<AnimatorListener> listeners) {}
+      List<AnimatorListener> listeners) {
+    if (!(child instanceof CircularRevealWidget) || !(dependency instanceof ImageView)) {
+      return;
+    }
+
+    CircularRevealWidget circularRevealChild = (CircularRevealWidget) child;
+    ImageView dependencyImageView = (ImageView) dependency;
+    Drawable icon = dependencyImageView.getDrawable();
+
+    ObjectAnimator animator;
+
+    if (expanded) {
+      if (!currentlyAnimating) {
+        icon.setAlpha(0xFF);
+      }
+      animator = ObjectAnimator.ofInt(icon, DrawableAlphaProperty.DRAWABLE_ALPHA_COMPAT, 0x00);
+    } else {
+      animator = ObjectAnimator.ofInt(icon, DrawableAlphaProperty.DRAWABLE_ALPHA_COMPAT, 0xFF);
+    }
+
+    animator.addUpdateListener(
+        new AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animation) {
+            // icon.setCallback() is not expected to be called and
+            // child.verifyDrawable() is not expected to be implemented.
+            child.invalidate();
+          }
+        });
+
+    spec.iconFade.apply(animator);
+    animations.add(animator);
+    listeners.add(
+        new AnimatorListenerAdapter() {
+
+          @Override
+          public void onAnimationStart(Animator animation) {
+            circularRevealChild.setCircularRevealOverlayDrawable(icon);
+          }
+
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            circularRevealChild.setCircularRevealOverlayDrawable(null);
+          }
+        });
+  }
 
   private void createExpansionAnimation(
       View dependency,
@@ -344,16 +419,76 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       boolean currentlyAnimating,
       FabTransformationSpec spec,
       List<Animator> animations,
-      List<AnimatorListener> listeners) {}
+      List<AnimatorListener> unusedListeners) {
+    if (!(child instanceof CircularRevealWidget)) {
+      return;
+    }
+    CircularRevealWidget circularRevealChild = (CircularRevealWidget) child;
 
-  private void createContentFadeAnimation(
-      View dependency,
+    @ColorInt int tint = getBackgroundTint(dependency);
+    @ColorInt int transparent = tint & 0x00FFFFFF;
+    ObjectAnimator animator;
+
+    if (expanded) {
+      if (!currentlyAnimating) {
+        circularRevealChild.setCircularRevealScrimColor(tint);
+      }
+      animator =
+          ObjectAnimator.ofInt(
+              circularRevealChild,
+              CircularRevealScrimColorProperty.CIRCULAR_REVEAL_SCRIM_COLOR,
+              transparent);
+    } else {
+      animator =
+          ObjectAnimator.ofInt(
+              circularRevealChild,
+              CircularRevealScrimColorProperty.CIRCULAR_REVEAL_SCRIM_COLOR,
+              tint);
+    }
+
+    animator.setEvaluator(ArgbEvaluatorCompat.getInstance());
+    spec.color.apply(animator);
+    animations.add(animator);
+  }
+
+  private void createChildrenFadeAnimation(
+      View unusedDependency,
       View child,
       boolean expanded,
       boolean currentlyAnimating,
       FabTransformationSpec spec,
       List<Animator> animations,
-      List<AnimatorListener> listeners) {}
+      List<AnimatorListener> unusedListeners) {
+    if (!(child instanceof ViewGroup)) {
+      return;
+    }
+    if (child instanceof CircularRevealWidget
+        && CircularRevealHelper.STRATEGY == CircularRevealHelper.BITMAP_SHADER) {
+      // Bitmap shader strategy animates a static snapshot of the child.
+      return;
+    }
+
+    ViewGroup childContentContainer = calculateChildContentContainer(child);
+    if (childContentContainer == null) {
+      return;
+    }
+
+    Animator animator;
+
+    if (expanded) {
+      if (!currentlyAnimating) {
+        ChildrenAlphaProperty.CHILDREN_ALPHA.set(childContentContainer, 0f);
+      }
+      animator =
+          ObjectAnimator.ofFloat(childContentContainer, ChildrenAlphaProperty.CHILDREN_ALPHA, 1f);
+    } else {
+      animator =
+          ObjectAnimator.ofFloat(childContentContainer, ChildrenAlphaProperty.CHILDREN_ALPHA, 0f);
+    }
+
+    spec.contentFade.apply(animator);
+    animations.add(animator);
+  }
 
   private float calculateTranslationX(View dependency, View child, Positioning positioning) {
     RectF dependencyBounds = tmpRectF1;
@@ -490,6 +625,43 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     // Calculate the exact value of the animation at that time.
     fraction = timing.getInterpolator().getInterpolation(fraction);
     return lerp(from, to, fraction);
+  }
+
+  /** Given the a child, return the ViewGroup whose children we want to fade. */
+  @Nullable
+  private ViewGroup calculateChildContentContainer(View view) {
+    // 1. If an explicitly tagged view exists, use that as the child content container.
+    View childContentContainer = view.findViewById(R.id.mtrl_child_content_container);
+    if (childContentContainer != null) {
+      return toViewGroupOrNull(childContentContainer);
+    }
+
+    // 2. If the view is a wrapper container, use its child as the child content container.
+    if (view instanceof TransformationChildLayout || view instanceof TransformationChildCard) {
+      childContentContainer = ((ViewGroup) view).getChildAt(0);
+      return toViewGroupOrNull(childContentContainer);
+    }
+
+    // 3. Use the view itself as the child content container.
+    return toViewGroupOrNull(view);
+  }
+
+  @Nullable
+  private ViewGroup toViewGroupOrNull(View view) {
+    if (view instanceof ViewGroup) {
+      return (ViewGroup) view;
+    } else {
+      return null;
+    }
+  }
+
+  private int getBackgroundTint(View view) {
+    ColorStateList tintList = ViewCompat.getBackgroundTintList(view);
+    if (tintList != null) {
+      return tintList.getColorForState(view.getDrawableState(), tintList.getDefaultColor());
+    } else {
+      return Color.TRANSPARENT;
+    }
   }
 
   private void createPreFillRadialExpansion(

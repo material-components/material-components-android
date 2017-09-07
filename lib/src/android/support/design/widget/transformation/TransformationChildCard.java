@@ -25,6 +25,8 @@ import android.util.AttributeSet;
  * ExpandableWidget#setExpanded(boolean)} state changes by transforming the ExpandableWidget into
  * itself.
  *
+ * <p>This ViewGroup should contain exactly one child.
+ *
  * <p>This class should be used if you need to support shadows on pre-L devices.
  */
 public class TransformationChildCard extends CircularRevealCardView {
