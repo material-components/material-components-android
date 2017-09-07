@@ -17,9 +17,11 @@
 package android.support.design.widget.transformation;
 
 import static android.support.design.testutils.TestUtilsActions.setExpanded;
+import static android.support.design.testutils.TestUtilsActions.waitUntilIdle;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
 
@@ -53,6 +55,7 @@ public class FabTransformationBehaviorTest {
   @SmallTest
   public void testSetStateExpanded() {
     onView(withId(R.id.fab)).perform(setExpanded(true));
+    onView(isRoot()).perform(waitUntilIdle());
 
     onView(withId(R.id.fab)).check(matches(not(isDisplayed())));
     onView(withId(R.id.sheet)).check(matches(isDisplayed()));
@@ -64,6 +67,7 @@ public class FabTransformationBehaviorTest {
   public void testSetStateCollapsed() {
     onView(withId(R.id.fab)).perform(setExpanded(true));
     onView(withId(R.id.fab)).perform(setExpanded(false));
+    onView(isRoot()).perform(waitUntilIdle());
 
     onView(withId(R.id.fab)).check(matches(isDisplayed()));
     onView(withId(R.id.sheet)).check(matches(not(isDisplayed())));
@@ -78,6 +82,7 @@ public class FabTransformationBehaviorTest {
 
     onView(withId(R.id.fab)).perform(setExpanded(true));
     TestUtils.switchScreenOrientation(activity);
+    onView(isRoot()).perform(waitUntilIdle());
 
     onView(withId(R.id.fab)).check(matches(not(isDisplayed())));
     onView(withId(R.id.sheet)).check(matches(isDisplayed()));

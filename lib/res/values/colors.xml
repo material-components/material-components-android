@@ -56,4 +56,6 @@
   <color name="mtrl_text_btn_text_color_disabled">#61191919</color>
   <!-- 30% opacity container fill -->
   <color name="mtrl_text_btn_bg_color_pressed">#48191919</color>
+  <!-- 32% opacity black -->
+  <color name="mtrl_scrim_color">#82000000</color>
 </resources>

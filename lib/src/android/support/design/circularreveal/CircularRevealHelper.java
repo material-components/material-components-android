@@ -23,6 +23,7 @@ import android.graphics.BitmapShader;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.Path.Direction;
 import android.graphics.Rect;
@@ -47,6 +48,8 @@ import java.lang.annotation.RetentionPolicy;
  * the widget via the {@link #delegate}.
  */
 public class CircularRevealHelper {
+
+  private static final boolean DEBUG = false;
 
   /**
    * Delegate interface to be implemented by the {@link CircularRevealWidget} that owns this helper.
@@ -114,6 +117,8 @@ public class CircularRevealHelper {
   /** An icon to be drawn on top of the widget's contents and after the scrim color. */
   @Nullable private Drawable overlayDrawable;
 
+  private Paint debugPaint;
+
   private boolean buildingCircularRevealCache;
   private boolean hasCircularRevealCache;
 
@@ -136,6 +141,11 @@ public class CircularRevealHelper {
     revealPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.FILTER_BITMAP_FLAG | Paint.DITHER_FLAG);
     scrimPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     scrimPaint.setColor(Color.TRANSPARENT);
+
+    if (DEBUG) {
+      debugPaint = new Paint();
+      debugPaint.setStyle(Style.STROKE);
+    }
   }
 
   public void buildCircularRevealCache() {
@@ -245,12 +255,16 @@ public class CircularRevealHelper {
   }
 
   public void draw(Canvas canvas) {
-    boolean drawScrim = !buildingCircularRevealCache && Color.alpha(scrimPaint.getColor()) != 0;
-    if (hasCircularReveal()) {
+    if (DEBUG) {
+      drawDebugMode(canvas);
+      return;
+    }
+
+    if (shouldDrawCircularReveal()) {
       switch (STRATEGY) {
         case REVEAL_ANIMATOR:
           delegate.actualDraw(canvas);
-          if (drawScrim) {
+          if (shouldDrawScrim()) {
             canvas.drawRect(0, 0, view.getWidth(), view.getHeight(), scrimPaint);
           }
           break;
@@ -259,7 +273,7 @@ public class CircularRevealHelper {
           canvas.clipPath(revealPath);
 
           delegate.actualDraw(canvas);
-          if (drawScrim) {
+          if (shouldDrawScrim()) {
             canvas.drawRect(0, 0, view.getWidth(), view.getHeight(), scrimPaint);
           }
 
@@ -267,7 +281,7 @@ public class CircularRevealHelper {
           break;
         case BITMAP_SHADER:
           canvas.drawCircle(revealInfo.centerX, revealInfo.centerY, revealInfo.radius, revealPaint);
-          if (drawScrim) {
+          if (shouldDrawScrim()) {
             canvas.drawCircle(
                 revealInfo.centerX, revealInfo.centerY, revealInfo.radius, scrimPaint);
           }
@@ -277,14 +291,16 @@ public class CircularRevealHelper {
       }
     } else {
       delegate.actualDraw(canvas);
-      if (drawScrim) {
+      if (shouldDrawScrim()) {
         canvas.drawRect(0, 0, view.getWidth(), view.getHeight(), scrimPaint);
       }
     }
 
-    boolean drawOverlayDrawable =
-        !buildingCircularRevealCache && overlayDrawable != null && revealInfo != null;
-    if (drawOverlayDrawable) {
+    drawOverlayDrawable(canvas);
+  }
+
+  private void drawOverlayDrawable(Canvas canvas) {
+    if (shouldDrawOverlayDrawable()) {
       Rect bounds = overlayDrawable.getBounds();
       float translationX = revealInfo.centerX - bounds.width() / 2f;
       float translationY = revealInfo.centerY - bounds.height() / 2f;
@@ -296,15 +312,45 @@ public class CircularRevealHelper {
   }
 
   public boolean isOpaque() {
-    return delegate.actualIsOpaque() && !hasCircularReveal();
+    return delegate.actualIsOpaque() && !shouldDrawCircularReveal();
   }
 
-  private boolean hasCircularReveal() {
+  private boolean shouldDrawCircularReveal() {
     boolean invalidRevealInfo = revealInfo == null || revealInfo.isInvalid();
     if (STRATEGY == BITMAP_SHADER) {
       return !invalidRevealInfo && hasCircularRevealCache;
     } else {
       return !invalidRevealInfo;
     }
+  }
+
+  private boolean shouldDrawScrim() {
+    return !buildingCircularRevealCache && Color.alpha(scrimPaint.getColor()) != 0;
+  }
+
+  private boolean shouldDrawOverlayDrawable() {
+    return !buildingCircularRevealCache && overlayDrawable != null && revealInfo != null;
+  }
+
+  private void drawDebugMode(Canvas canvas) {
+    delegate.actualDraw(canvas);
+    if (shouldDrawScrim()) {
+      canvas.drawCircle(revealInfo.centerX, revealInfo.centerY, revealInfo.radius, scrimPaint);
+    }
+
+    // Instead of using a circular mask, draw a circle representing that mask instead.
+    if (shouldDrawCircularReveal()) {
+      drawDebugCircle(canvas, Color.BLACK, 10f);
+      drawDebugCircle(canvas, Color.RED, 5f);
+    }
+
+    drawOverlayDrawable(canvas);
+  }
+
+  private void drawDebugCircle(Canvas canvas, int color, float width) {
+    debugPaint.setColor(color);
+    debugPaint.setStrokeWidth(width);
+    canvas.drawCircle(
+        revealInfo.centerX, revealInfo.centerY, revealInfo.radius - width / 2, debugPaint);
   }
 }

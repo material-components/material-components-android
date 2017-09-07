@@ -26,6 +26,7 @@ import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewTreeObserver.OnPreDrawListener;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
@@ -36,14 +37,14 @@ import java.util.List;
  */
 public abstract class ExpandableBehavior extends Behavior<View> {
 
-  /** Unknown expanded state. */
-  private static final int STATE_UNKNOWN = 0;
+  /** Uninitialized expanded state. */
+  private static final int STATE_UNINITIALIZED = 0;
   /** Expanded state. */
   private static final int STATE_EXPANDED = 1;
   /** Collapsed state. */
   private static final int STATE_COLLAPSED = 2;
 
-  @IntDef({STATE_UNKNOWN, STATE_EXPANDED, STATE_COLLAPSED})
+  @IntDef({STATE_UNINITIALIZED, STATE_EXPANDED, STATE_COLLAPSED})
   @Retention(RetentionPolicy.SOURCE)
   private @interface State {}
 
@@ -52,9 +53,10 @@ public abstract class ExpandableBehavior extends Behavior<View> {
    * {@link ExpandableWidget} dependency, and is updated in {@link #onLayoutChild(CoordinatorLayout,
    * View, int)} and {@link #onDependentViewChanged(CoordinatorLayout, View, View)}.
    *
-   * <p>This state may be {@link #STATE_UNKNOWN} before either of those callbacks have been invoked.
+   * <p>This state may be {@link #STATE_UNINITIALIZED} before either of those callbacks have been
+   * invoked.
    */
-  @State private int currentState = STATE_UNKNOWN;
+  @State private int currentState = STATE_UNINITIALIZED;
 
   public ExpandableBehavior() {}
 
@@ -78,16 +80,30 @@ public abstract class ExpandableBehavior extends Behavior<View> {
    * @return true if the Behavior changed the child view's size or position, false otherwise.
    */
   protected abstract boolean onExpandedStateChange(
-      ExpandableWidget dependency, View child, boolean expanded, boolean animated);
+      View dependency, View child, boolean expanded, boolean animated);
 
   @CallSuper
   @Override
   public boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
     if (!ViewCompat.isLaidOut(child)) {
       ExpandableWidget dep = findExpandableWidget(parent, child);
-      if (dep != null) {
+      if (dep != null && didStateChange(dep.isExpanded())) {
         currentState = dep.isExpanded() ? STATE_EXPANDED : STATE_COLLAPSED;
-        onExpandedStateChange(dep, child, dep.isExpanded(), false);
+        @State int expectedState = currentState;
+        child
+            .getViewTreeObserver()
+            .addOnPreDrawListener(
+                new OnPreDrawListener() {
+                  @Override
+                  public boolean onPreDraw() {
+                    child.getViewTreeObserver().removeOnPreDrawListener(this);
+                    // Proceed only if the state did not change while we're waiting for pre-draw.
+                    if (currentState == expectedState) {
+                      onExpandedStateChange((View) dep, child, dep.isExpanded(), false);
+                    }
+                    return false;
+                  }
+                });
       }
     }
 
@@ -101,7 +117,7 @@ public abstract class ExpandableBehavior extends Behavior<View> {
     boolean expanded = dep.isExpanded();
     if (didStateChange(expanded)) {
       currentState = dep.isExpanded() ? STATE_EXPANDED : STATE_COLLAPSED;
-      return onExpandedStateChange(dep, child, dep.isExpanded(), true);
+      return onExpandedStateChange((View) dep, child, dep.isExpanded(), true);
     }
 
     return false;
@@ -120,8 +136,13 @@ public abstract class ExpandableBehavior extends Behavior<View> {
   }
 
   private boolean didStateChange(boolean expanded) {
-    return (expanded && ((currentState == STATE_UNKNOWN) || (currentState == STATE_COLLAPSED)))
-        || (!expanded && ((currentState == STATE_UNKNOWN) || (currentState == STATE_EXPANDED)));
+    if (expanded) {
+      // Can expand from uninitialized or collapsed state.
+      return currentState == STATE_UNINITIALIZED || currentState == STATE_COLLAPSED;
+    } else {
+      // Can only collapse from expanded state. Uninitialized is equivalent to collapsed state.
+      return currentState == STATE_EXPANDED;
+    }
   }
 
   /**

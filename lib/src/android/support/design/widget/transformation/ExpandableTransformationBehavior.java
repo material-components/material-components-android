@@ -18,6 +18,7 @@ package android.support.design.widget.transformation;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.support.annotation.CallSuper;
 import android.support.annotation.NonNull;
@@ -31,12 +32,12 @@ import android.view.View;
  * ExpandableWidget#setExpanded(boolean)} state changes by transforming the ExpandableWidget into
  * itself.
  *
- * <p>Behaviors should override {@link #onCreateExpandedStateChangeAnimation(ExpandableWidget, View,
+ * <p>Behaviors should override {@link #onCreateExpandedStateChangeAnimation(View, View, boolean,
  * boolean)} to return an animation
  */
 public abstract class ExpandableTransformationBehavior extends ExpandableBehavior {
 
-  @Nullable private Animator currentAnimation;
+  @Nullable private AnimatorSet currentAnimation;
 
   public ExpandableTransformationBehavior() {}
 
@@ -45,7 +46,7 @@ public abstract class ExpandableTransformationBehavior extends ExpandableBehavio
   }
 
   /**
-   * Creates an Animator to be played for this expanded state change.
+   * Creates an AnimatorSet to be played for this expanded state change.
    *
    * <p>If the new {@code expanded} state is true, the {@code dependency} should be hidden and the
    * {@code child} should be shown.
@@ -56,20 +57,23 @@ public abstract class ExpandableTransformationBehavior extends ExpandableBehavio
    * @param dependency the {@link ExpandableWidget} dependency containing the new expanded state.
    * @param child the view that should react to the change in expanded state.
    * @param expanded the new expanded state.
+   * @param isAnimating whether this state change occurred while a previous state change was still
    */
   @NonNull
-  protected abstract Animator onCreateExpandedStateChangeAnimation(
-      ExpandableWidget dependency, View child, boolean expanded);
+  protected abstract AnimatorSet onCreateExpandedStateChangeAnimation(
+      View dependency, View child, boolean expanded, boolean isAnimating);
 
   @CallSuper
   @Override
   protected boolean onExpandedStateChange(
-      ExpandableWidget dependency, View child, boolean expanded, boolean animated) {
-    if (currentAnimation != null) {
+      View dependency, View child, boolean expanded, boolean animated) {
+    boolean currentlyAnimating = currentAnimation != null;
+    if (currentlyAnimating) {
       currentAnimation.cancel();
     }
 
-    currentAnimation = onCreateExpandedStateChangeAnimation(dependency, child, expanded);
+    currentAnimation =
+        onCreateExpandedStateChangeAnimation(dependency, child, expanded, currentlyAnimating);
     currentAnimation.addListener(
         new AnimatorListenerAdapter() {
           @Override
@@ -81,6 +85,7 @@ public abstract class ExpandableTransformationBehavior extends ExpandableBehavio
     currentAnimation.start();
     if (!animated) {
       // Synchronously end the animation, jumping to the end state.
+      // AnimatorSet has synchronous listener behavior on all supported APIs.
       currentAnimation.end();
     }
 

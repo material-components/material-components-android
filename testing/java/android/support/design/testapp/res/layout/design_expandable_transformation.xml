@@ -27,6 +27,7 @@
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:background="@color/material_grey_800"
+      android:visibility="invisible"
       app:layout_behavior="@string/fab_transformation_scrim_behavior"/>
 
   <android.support.design.widget.FloatingActionButton
@@ -36,12 +37,13 @@
       android:layout_margin="16dp"
       android:src="@drawable/ic_add"/>
 
-  <FrameLayout
+  <android.support.design.widget.transformation.TransformationChildLayout
       android:id="@+id/sheet"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_margin="50dp"
       android:layout_gravity="center"
+      android:visibility="invisible"
       app:layout_behavior="@string/fab_transformation_sheet_behavior"/>
 
 </android.support.design.widget.CoordinatorLayout>
