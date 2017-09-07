@@ -898,10 +898,11 @@ public class TextInputLayout extends LinearLayout {
     setBoxAttributes();
 
     if (mEditText != null && mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
-      mEditText.setBackground(null);
+      ViewCompat.setBackground(mEditText, null);
     }
 
     if (mBoxStrokeWidth > -1 && mBoxStrokeColor != null) {
+      // TODO: Introduced in API 21. Use #setStroke(int width, int color) instead.
       mBoxBackground.setStroke(mBoxStrokeWidth, mBoxStrokeColor);
     }
 
@@ -910,6 +911,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     if (mBoxBackgroundColor != null) {
+      // TODO: Introduced in API 21. Use #setColor(int color) instead.
       mBoxBackground.setColor(mBoxBackgroundColor);
     }
   }
