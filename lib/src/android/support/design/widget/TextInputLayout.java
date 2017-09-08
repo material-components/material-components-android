@@ -902,8 +902,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     if (mBoxStrokeWidth > -1 && mBoxStrokeColor != null) {
-      // TODO: Introduced in API 21. Use #setStroke(int width, int color) instead.
-      mBoxBackground.setStroke(mBoxStrokeWidth, mBoxStrokeColor);
+      setBoxBackgroundStroke(mBoxStrokeWidth, mBoxStrokeColor);
     }
 
     if (mBoxCornerRadius > -1) {
@@ -911,8 +910,18 @@ public class TextInputLayout extends LinearLayout {
     }
 
     if (mBoxBackgroundColor != null) {
-      // TODO: Introduced in API 21. Use #setColor(int color) instead.
       mBoxBackground.setColor(mBoxBackgroundColor);
+    }
+  }
+
+  private void setBoxBackgroundStroke(int mBoxStrokeWidth, ColorStateList mBoxStrokeColor) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      mBoxBackground.setStroke(mBoxStrokeWidth, mBoxStrokeColor);
+    } else {
+      // Drop to compat, so we have to use a color int instead of a ColorStateList. The drawable
+      // won't change colors based on the view's state changes.
+      mBoxBackground.setStroke(
+          mBoxStrokeWidth, mBoxStrokeColor.getColorForState(getDrawableState(), 0));
     }
   }
 
