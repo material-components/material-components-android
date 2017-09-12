@@ -53,6 +53,8 @@
     <attr name="bottomSheetStyle" format="reference"/>
     <!-- Style to use for MaterialButtons in this theme. -->
     <attr name="materialButtonStyle" format="reference"/>
+    <!-- Style to use for FloatingActionButtons in this theme. -->
+    <attr name="floatingActionButtonStyle" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="FloatingActionButton">
