@@ -173,7 +173,7 @@
          this array. -->
     <attr name="keylines" format="reference"/>
     <!-- Drawable to display behind the status bar when the view is set to draw behind it. -->
-    <attr name="statusBarBackground" format="reference"/>
+    <attr name="statusBarBackground" format="color|reference"/>
   </declare-styleable>
 
   <declare-styleable name="CoordinatorLayout_Layout">
