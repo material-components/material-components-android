@@ -81,6 +81,8 @@
     <attr name="borderWidth" format="dimension"/>
     <!-- Enable compat padding. -->
     <attr name="useCompatPadding" format="boolean"/>
+    <!-- Maximum icon image size. -->
+    <attr name="maxImageSize" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="FloatingActionButton_Behavior_Layout">

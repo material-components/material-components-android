@@ -177,14 +177,13 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     final float pressedTranslationZ =
         a.getDimension(R.styleable.FloatingActionButton_pressedTranslationZ, 0f);
     mCompatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
+    mMaxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
     a.recycle();
 
     mImageHelper = new AppCompatImageHelper(this);
     mImageHelper.loadFromAttributes(attrs, defStyleAttr);
 
     expandableWidgetHelper = new ExpandableWidgetHelper(this);
-
-    mMaxImageSize = (int) getResources().getDimension(R.dimen.design_fab_image_size);
 
     getImpl()
         .setBackgroundDrawable(mBackgroundTint, mBackgroundTintMode, mRippleColor, mBorderWidth);
