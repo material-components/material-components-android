@@ -18,6 +18,8 @@
 
   <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
     <item name="android:background">@drawable/design_fab_background</item>
+    <item name="android:clickable">true</item>
+    <item name="android:focusable">true</item>
     <item name="backgroundTint">?attr/colorAccent</item>
     <item name="fabSize">auto</item>
     <item name="elevation">@dimen/design_fab_elevation</item>
