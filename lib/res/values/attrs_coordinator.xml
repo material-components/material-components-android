@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2017 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <declare-styleable name="CoordinatorLayout">
+    <!-- A reference to an array of integers representing the
+         locations of horizontal keylines in dp from the starting edge.
+         Child views can refer to these keylines for alignment using
+         layout_keyline="index" where index is a 0-based index into
+         this array. -->
+    <attr name="keylines" format="reference"/>
+    <!-- Drawable to display behind the status bar when the view is set to draw behind it. -->
+    <attr name="statusBarBackground" format="color|reference"/>
+  </declare-styleable>
+
+  <declare-styleable name="CoordinatorLayout_Layout">
+    <attr name="android:layout_gravity"/>
+    <!-- The class name of a Behavior class defining special runtime behavior
+         for this child view. -->
+    <attr name="layout_behavior" format="string"/>
+    <!-- The id of an anchor view that this view should position relative to. -->
+    <attr name="layout_anchor" format="reference"/>
+    <!-- The index of a keyline this view should position relative to.
+         android:layout_gravity will affect how the view aligns to the
+         specified keyline. -->
+    <attr name="layout_keyline" format="integer"/>
+
+    <!-- Specifies how an object should position relative to an anchor, on both the X and Y axes,
+         within its parent's bounds.  -->
+    <attr name="layout_anchorGravity">
+      <!-- Push object to the top of its container, not changing its size. -->
+      <flag name="top" value="0x30"/>
+      <!-- Push object to the bottom of its container, not changing its size. -->
+      <flag name="bottom" value="0x50"/>
+      <!-- Push object to the left of its container, not changing its size. -->
+      <flag name="left" value="0x03"/>
+      <!-- Push object to the right of its container, not changing its size. -->
+      <flag name="right" value="0x05"/>
+      <!-- Place object in the vertical center of its container, not changing its size. -->
+      <flag name="center_vertical" value="0x10"/>
+      <!-- Grow the vertical size of the object if needed so it completely fills its container. -->
+      <flag name="fill_vertical" value="0x70"/>
+      <!-- Place object in the horizontal center of its container, not changing its size. -->
+      <flag name="center_horizontal" value="0x01"/>
+      <!-- Grow the horizontal size of the object if needed so it completely fills its container. -->
+      <flag name="fill_horizontal" value="0x07"/>
+      <!-- Place the object in the center of its container in both the vertical and horizontal axis, not changing its size. -->
+      <flag name="center" value="0x11"/>
+      <!-- Grow the horizontal and vertical size of the object if needed so it completely fills its container. -->
+      <flag name="fill" value="0x77"/>
+      <!-- Additional option that can be set to have the top and/or bottom edges of
+           the child clipped to its container's bounds.
+           The clip will be based on the vertical gravity: a top gravity will clip the bottom
+           edge, a bottom gravity will clip the top edge, and neither will clip both edges. -->
+      <flag name="clip_vertical" value="0x80"/>
+      <!-- Additional option that can be set to have the left and/or right edges of
+           the child clipped to its container's bounds.
+           The clip will be based on the horizontal gravity: a left gravity will clip the right
+           edge, a right gravity will clip the left edge, and neither will clip both edges. -->
+      <flag name="clip_horizontal" value="0x08"/>
+      <!-- Push object to the beginning of its container, not changing its size. -->
+      <flag name="start" value="0x00800003"/>
+      <!-- Push object to the end of its container, not changing its size. -->
+      <flag name="end" value="0x00800005"/>
+    </attr>
+
+    <!-- Specifies how this view insets the CoordinatorLayout and make some other views
+         dodge it. -->
+    <attr name="layout_insetEdge" format="enum">
+      <!-- Don't inset. -->
+      <enum name="none" value="0x0"/>
+      <!-- Inset the top edge. -->
+      <enum name="top" value="0x30"/>
+      <!-- Inset the bottom edge. -->
+      <enum name="bottom" value="0x50"/>
+      <!-- Inset the left edge. -->
+      <enum name="left" value="0x03"/>
+      <!-- Inset the right edge. -->
+      <enum name="right" value="0x03"/>
+      <!-- Inset the start edge. -->
+      <enum name="start" value="0x00800003"/>
+      <!-- Inset the end edge. -->
+      <enum name="end" value="0x00800005"/>
+    </attr>
+    <!-- Specifies how this view dodges the inset edges of the CoordinatorLayout. -->
+    <attr name="layout_dodgeInsetEdges">
+      <!-- Don't dodge any edges -->
+      <flag name="none" value="0x0"/>
+      <!-- Dodge the top inset edge. -->
+      <flag name="top" value="0x30"/>
+      <!-- Dodge the bottom inset edge. -->
+      <flag name="bottom" value="0x50"/>
+      <!-- Dodge the left inset edge. -->
+      <flag name="left" value="0x03"/>
+      <!-- Dodge the right inset edge. -->
+      <flag name="right" value="0x03"/>
+      <!-- Dodge the start inset edge. -->
+      <flag name="start" value="0x00800003"/>
+      <!-- Dodge the end inset edge. -->
+      <flag name="end" value="0x00800005"/>
+      <!-- Dodge all the inset edges. -->
+      <flag name="all" value="0x77"/>
+    </attr>
+  </declare-styleable>
+</resources>
