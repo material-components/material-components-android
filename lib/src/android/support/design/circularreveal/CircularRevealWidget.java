@@ -86,6 +86,8 @@ public interface CircularRevealWidget extends Delegate {
    * interface javadoc for usage details.
    *
    * <p>Note that on L+, calling this method doesn't result in any visual changes. You must use this
+   * with {@link ViewAnimationUtils}.
+   *
    *
    * <p>Implementations should call the corresponding method in {@link CircularRevealHelper}.
    */
