@@ -150,17 +150,18 @@ public class TextInputLayout extends LinearLayout {
   private int mBoxStrokeWidth;
   private ColorStateList mBoxStrokeColor;
   private ColorStateList mBoxBackgroundColor;
+  private Drawable mEditTextOriginalDrawable;
 
   /**
    * Values for box background mode. There is either a filled background, an outline background, or
    * no background.
    */
   @IntDef({BOX_BACKGROUND_NONE, BOX_BACKGROUND_FILLED, BOX_BACKGROUND_OUTLINE})
-  private @interface BoxBackgroundMode {}
+  public @interface BoxBackgroundMode {}
 
-  private static final int BOX_BACKGROUND_NONE = 0;
-  private static final int BOX_BACKGROUND_FILLED = 1;
-  private static final int BOX_BACKGROUND_OUTLINE = 2;
+  public static final int BOX_BACKGROUND_NONE = 0;
+  public static final int BOX_BACKGROUND_FILLED = 1;
+  public static final int BOX_BACKGROUND_OUTLINE = 2;
 
   private Paint mTmpPaint;
   private final Rect mTmpRect = new Rect();
@@ -898,7 +899,18 @@ public class TextInputLayout extends LinearLayout {
     setBoxAttributes();
 
     if (mEditText != null && mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      // Store the EditText's background drawable, in case it needs to be restored later.
+      if (mEditText.getBackground() != null) {
+        mEditTextOriginalDrawable = mEditText.getBackground();
+      }
       ViewCompat.setBackground(mEditText, null);
+    }
+
+    if (mEditText != null
+        && mBoxBackgroundMode == BOX_BACKGROUND_FILLED
+        && mEditTextOriginalDrawable != null) {
+      // Restore the EditText drawable.
+      ViewCompat.setBackground(mEditText, mEditTextOriginalDrawable);
     }
 
     if (mBoxStrokeWidth > -1 && mBoxStrokeColor != null) {
