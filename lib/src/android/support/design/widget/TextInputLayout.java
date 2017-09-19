@@ -326,7 +326,7 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param boxBackgroundMode the box's background mode.
    */
-  private void setBoxBackgroundMode(@BoxBackgroundMode int boxBackgroundMode) {
+  public void setBoxBackgroundMode(@BoxBackgroundMode int boxBackgroundMode) {
     if (boxBackgroundMode == mBoxBackgroundMode) {
       return;
     }
@@ -909,19 +909,34 @@ public class TextInputLayout extends LinearLayout {
       mBoxBackground.setCornerRadius(mBoxCornerRadius);
     }
 
-    if (mBoxBackgroundColor != null) {
-      mBoxBackground.setColor(mBoxBackgroundColor);
+    setBoxBackgroundColor(mBoxBackgroundColor);
+  }
+
+  private void setBoxBackgroundStroke(int boxStrokeWidth, ColorStateList boxStrokeColor) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      mBoxBackground.setStroke(boxStrokeWidth, boxStrokeColor);
+    } else {
+      // Drop to compat, so we have to use a color int instead of a ColorStateList. The drawable's
+      // stroke won't change colors based on the view's state changes.
+      mBoxBackground.setStroke(
+          boxStrokeWidth, boxStrokeColor.getColorForState(getDrawableState(), Color.TRANSPARENT));
     }
   }
 
-  private void setBoxBackgroundStroke(int mBoxStrokeWidth, ColorStateList mBoxStrokeColor) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      mBoxBackground.setStroke(mBoxStrokeWidth, mBoxStrokeColor);
+  private void setBoxBackgroundColor(@Nullable ColorStateList boxBackgroundColor) {
+    if (boxBackgroundColor != null) {
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        mBoxBackground.setColor(boxBackgroundColor);
+      } else {
+        // Drop to compat, so we have to use a color int instead of a ColorStateList. The drawable's
+        // background won't change colors based on the view's state changes.
+        mBoxBackground.setColor(
+            boxBackgroundColor.getColorForState(getDrawableState(), Color.TRANSPARENT));
+      }
     } else {
-      // Drop to compat, so we have to use a color int instead of a ColorStateList. The drawable
-      // won't change colors based on the view's state changes.
-      mBoxBackground.setStroke(
-          mBoxStrokeWidth, mBoxStrokeColor.getColorForState(getDrawableState(), 0));
+      // Setting a color for transparent backgrounds to avoid a default black background in pre-17
+      // versions.
+      mBoxBackground.setColor(Color.TRANSPARENT);
     }
   }
 
