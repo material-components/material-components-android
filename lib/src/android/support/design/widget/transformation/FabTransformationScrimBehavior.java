@@ -68,7 +68,7 @@ public class FabTransformationScrimBehavior extends ExpandableTransformationBeha
   @NonNull
   @Override
   protected AnimatorSet onCreateExpandedStateChangeAnimation(
-      View dependency, View child, boolean expanded, boolean isAnimating) {
+      View dependency, final View child, final boolean expanded, boolean isAnimating) {
     List<Animator> animations = new ArrayList<>();
     List<AnimatorListener> listeners = new ArrayList<>();
 

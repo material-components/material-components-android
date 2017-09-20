@@ -108,7 +108,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   @NonNull
   @Override
   protected AnimatorSet onCreateExpandedStateChangeAnimation(
-      View dependency, View child, boolean expanded, boolean isAnimating) {
+      final View dependency, final View child, final boolean expanded, boolean isAnimating) {
     FabTransformationSpec spec = onCreateMotionSpec(dependency, child, expanded);
 
     List<Animator> animations = new ArrayList<>();
@@ -274,7 +274,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
   private void createIconFadeAnimation(
       View dependency,
-      View child,
+      final View child,
       boolean expanded,
       boolean currentlyAnimating,
       FabTransformationSpec spec,
@@ -284,9 +284,9 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       return;
     }
 
-    CircularRevealWidget circularRevealChild = (CircularRevealWidget) child;
+    final CircularRevealWidget circularRevealChild = (CircularRevealWidget) child;
     ImageView dependencyImageView = (ImageView) dependency;
-    Drawable icon = dependencyImageView.getDrawable();
+    final Drawable icon = dependencyImageView.getDrawable();
 
     ObjectAnimator animator;
 
@@ -339,7 +339,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     if (!(child instanceof CircularRevealWidget)) {
       return;
     }
-    CircularRevealWidget circularRevealChild = (CircularRevealWidget) child;
+    final CircularRevealWidget circularRevealChild = (CircularRevealWidget) child;
 
     float revealCenterX = calculateRevealCenterX(dependency, child, spec.positioning);
     float revealCenterY = calculateRevealCenterY(dependency, child, spec.positioning);

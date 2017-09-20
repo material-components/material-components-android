@@ -84,12 +84,12 @@ public abstract class ExpandableBehavior extends Behavior<View> {
 
   @CallSuper
   @Override
-  public boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
+  public boolean onLayoutChild(CoordinatorLayout parent, final View child, int layoutDirection) {
     if (!ViewCompat.isLaidOut(child)) {
-      ExpandableWidget dep = findExpandableWidget(parent, child);
+      final ExpandableWidget dep = findExpandableWidget(parent, child);
       if (dep != null && didStateChange(dep.isExpanded())) {
         currentState = dep.isExpanded() ? STATE_EXPANDED : STATE_COLLAPSED;
-        @State int expectedState = currentState;
+        @State final int expectedState = currentState;
         child
             .getViewTreeObserver()
             .addOnPreDrawListener(

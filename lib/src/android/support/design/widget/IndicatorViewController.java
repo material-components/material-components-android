@@ -188,8 +188,8 @@ final class IndicatorViewController {
   }
 
   private void updateCaptionViewsVisibility(
-      @CaptionDisplayState int captionToHide,
-      @CaptionDisplayState int captionToShow,
+      final @CaptionDisplayState int captionToHide,
+      final @CaptionDisplayState int captionToShow,
       boolean animate) {
 
     if (animate) {
@@ -214,8 +214,8 @@ final class IndicatorViewController {
           captionToShow);
 
       captionAnimator.playTogether(captionAnimatorList);
-      TextView captionViewToHide = getCaptionViewFromDisplayState(captionToHide);
-      TextView captionViewToShow = getCaptionViewFromDisplayState(captionToShow);
+      final TextView captionViewToHide = getCaptionViewFromDisplayState(captionToHide);
+      final TextView captionViewToShow = getCaptionViewFromDisplayState(captionToShow);
 
       captionAnimator.addListener(
           new AnimatorListenerAdapter() {
