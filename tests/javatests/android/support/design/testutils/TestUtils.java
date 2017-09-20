@@ -179,7 +179,7 @@ public class TestUtils {
    * #getScreenOrientation(Activity)} and {@link #resetScreenOrientation(Activity, int)} to ensure
    * that it leaves the device in a known good state.
    */
-  public static void setScreenOrientation(Activity activity, int orientation) {
+  public static void setScreenOrientation(final Activity activity, final int orientation) {
     activity.setRequestedOrientation(
         orientation == ORIENTATION_PORTRAIT
             ? ActivityInfo.SCREEN_ORIENTATION_PORTRAIT
@@ -213,7 +213,7 @@ public class TestUtils {
    * call {@link #getScreenOrientation(Activity)} at the beginning of the test to save the old
    * orientation.
    */
-  public static void resetScreenOrientation(Activity activity, int oldOrientation) {
+  public static void resetScreenOrientation(final Activity activity, final int oldOrientation) {
     activity.setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED);
     PollingCheck.waitFor(
         new PollingCheck.PollingCheckCondition() {
