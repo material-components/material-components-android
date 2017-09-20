@@ -16,15 +16,22 @@
 
 package android.support.design.widget;
 
-import android.graphics.PorterDuff;
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-class ViewUtils {
+import android.graphics.PorterDuff;
+import android.support.annotation.RestrictTo;
+
+/**
+ * Utils class for custom views.
+ */
+@RestrictTo(LIBRARY_GROUP)
+public class ViewUtils {
 
   static boolean objectEquals(Object a, Object b) {
     return (a == b) || (a != null && a.equals(b));
   }
 
-  static PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
+  public static PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
     switch (value) {
       case 3:
         return PorterDuff.Mode.SRC_OVER;
