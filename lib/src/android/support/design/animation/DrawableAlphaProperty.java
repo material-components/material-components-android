@@ -35,15 +35,13 @@ public class DrawableAlphaProperty extends Property<Drawable, Integer> {
 
   @Override
   public Integer get(Drawable object) {
-    if (VERSION.SDK_INT < VERSION_CODES.KITKAT) {
-      if (alphaCache.containsKey(object)) {
-        return alphaCache.get(object);
-      } else {
-        return 0xFF;
-      }
+    if (VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+      return object.getAlpha();
     }
-
-    return object.getAlpha();
+    if (alphaCache.containsKey(object)) {
+      return alphaCache.get(object);
+    }
+    return 0xFF;
   }
 
   @Override

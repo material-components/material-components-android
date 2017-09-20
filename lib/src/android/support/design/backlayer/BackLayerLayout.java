@@ -291,7 +291,7 @@ public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
     CoordinatorLayout.LayoutParams layoutParams =
         (CoordinatorLayout.LayoutParams) getLayoutParams();
     final int absoluteGravity =
-        Gravity.getAbsoluteGravity(layoutParams.gravity, getLayoutDirection());
+        Gravity.getAbsoluteGravity(layoutParams.gravity, ViewCompat.getLayoutDirection(this));
     int heightMeasureSpec = originalHeightMeasureSpec;
     int widthMeasureSpec = originalWidthMeasureSpec;
     // In order to know the measurements for a expanded version of the back layer we need to

@@ -16,7 +16,9 @@
 
 package android.support.design.backlayer;
 
+import android.annotation.TargetApi;
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.AttrRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -48,6 +50,7 @@ public class CollapsedBackLayerContents extends FrameLayout {
     super(context, attrs, defStyleAttr);
   }
 
+  @TargetApi(Build.VERSION_CODES.LOLLIPOP)
   public CollapsedBackLayerContents(
       @NonNull Context context,
       @Nullable AttributeSet attrs,

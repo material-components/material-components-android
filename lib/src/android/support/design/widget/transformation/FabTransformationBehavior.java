@@ -25,6 +25,7 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -188,6 +189,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   protected abstract FabTransformationSpec onCreateMotionSpec(
       View dependency, View child, boolean expanded);
 
+  @TargetApi(VERSION_CODES.LOLLIPOP)
   private void createElevationAnimation(
       View dependency,
       View child,
