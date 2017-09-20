@@ -1,10 +1,40 @@
 include ':lib'
-include ':tests'
+include ':lib:src:android:support:design:animation'
+include ':lib:src:android:support:design:backlayer'
+include ':lib:src:android:support:design:circularreveal'
+include ':lib:src:android:support:design:circularreveal:cardview'
+include ':lib:src:android:support:design:circularreveal:coordinatorlayout'
+include ':lib:src:android:support:design:math'
+include ':lib:src:android:support:design:stateful'
+include ':lib:src:android:support:design:toggle'
 include ':testing:java:android:support:design:testapp'
 include ':testing:java:android:support:design:testapp:backlayer'
 include ':testing:java:android:support:design:testapp:base'
 include ':testing:java:android:support:design:testapp:custom'
+include ':tests'
+include ':tests:javatests:android:support:design:backlayer'
 include ':demos:java:io:material:demo:shrine'
 include ':demos:java:io:material:demo:shrine:filters'
 include ':demos:java:io:material:demo:shrine:products'
 include ':demos:java:io:material:demo:shrine:theme'
+
+rootProject.children.each { p ->
+
+  def allChildren = []
+  def curChildren = p.children
+  while (!curChildren.isEmpty()) {
+    allChildren.addAll(curChildren)
+    curChildren =
+        (curChildren.findResults {
+                it.children.isEmpty() ? null : it.children
+            }).flatten()
+  }
+
+  allChildren.each { project ->
+    // Give each project a repository-wide unique name based on their path from
+    // the top-level dir (e.g. the project at demos/java/io/material/shrine will
+    // be named :demos/java/io/material/shrine). Doing so avoids the need to
+    // have unique directory names throughout our subprojects.
+    project.name = project.path.substring(1).replace(':', '/')
+  }
+}

@@ -2,20 +2,20 @@ language: android
 jdk: oraclejdk8
 
 env:
-  - ANDROID_EMULATOR_API_LEVEL=19
+  - ANDROID_EMULATOR_API_LEVEL=15
 
 android:
   components:
     - tools # to get the new `repository-11.xml`
+    - platform-tools #latest
     - tools # to install Android SDK tools 25+, latest, cannot get more granular control than this
     # See https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943 for more
     # details.
-    - platform-tools #latest
-    - build-tools-25.0.2
-    - android-25
+    - build-tools-26.0.0
+    - android-26
     - extra-android-m2repository
     - extra-android-support
-    - sys-img-armeabi-v7a-android-19
+    - sys-img-armeabi-v7a-android-15
   licenses:
     - 'android-sdk-license-.+'
 
@@ -23,7 +23,7 @@ before_script:
   - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
   - echo y | android update sdk --no-ui --all --filter extra-android-support
   - echo y | android update sdk --no-ui --all --filter "android-$ANDROID_EMULATOR_API_LEVEL"
-  - echo y | android update sdk --no-ui --all --filter build-tools-25.0.2
+  - echo y | android update sdk --no-ui --all --filter build-tools-26.0.0
   - echo y | android update sdk --no-ui --all --filter "sys-img-armeabi-v7a-android-$ANDROID_EMULATOR_API_LEVEL"
   - echo no | android create avd --force -n test -t "android-$ANDROID_EMULATOR_API_LEVEL" --abi armeabi-v7a
   - emulator -avd test -no-audio -no-window &

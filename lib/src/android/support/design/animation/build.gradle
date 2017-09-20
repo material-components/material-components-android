@@ -1,0 +1,21 @@
+apply plugin: 'com.android.library'
+
+archivesBaseName = 'design'
+
+dependencies {
+  compile "com.android.support:support-annotations:${project.rootProject.ext.supportVersion}"
+  compile "com.android.support:support-compat:${project.rootProject.ext.supportVersion}"
+  compile "com.android.support:support-core-ui:${project.rootProject.ext.supportVersion}"
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.res.srcDirs = [
+      'res',
+    ]
+    main.assets.srcDir 'assets'
+    main.resources.srcDir 'res'
+  }
+}

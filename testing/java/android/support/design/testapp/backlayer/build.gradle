@@ -17,10 +17,15 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile 'com.android.support:support-compat:25.3.1'
-  compile 'com.android.support:appcompat-v7:25.3.1'
+  compile "com.android.support:support-compat:${project.rootProject.ext.supportVersion}"
+  compile "com.android.support:appcompat-v7:${project.rootProject.ext.supportVersion}"
   compile project(':lib')
-  compile project(':testing:java:android:support:design:testapp:base')
+  compile project(
+      getTransformedProjectPath(
+          'lib/src/android/support/design/backlayer'))
+  compile project(
+      getTransformedProjectPath(
+          'testing/java/android/support/design/testapp/base'))
 }
 
 android {

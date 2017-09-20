@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  compile project(':demos:java:io:material:demo:shrine:theme')
+  compile project(getTransformedProjectPath('demos/java/io/material/demo/shrine/theme'))
 }
 
 android {

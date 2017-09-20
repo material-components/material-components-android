@@ -21,7 +21,7 @@ android {
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
 
-  targetProjectPath ':testing:java:android:support:design:testapp'
+  targetProjectPath getTransformedProjectPath('testing/java/android/support/design/testapp')
   targetVariant 'debug'
 
   sourceSets {

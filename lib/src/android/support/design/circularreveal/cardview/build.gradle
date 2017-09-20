@@ -1,0 +1,22 @@
+apply plugin: 'com.android.library'
+
+archivesBaseName = 'design'
+
+dependencies {
+  compile "com.android.support:cardview-v7:${project.rootProject.ext.supportVersion}"
+  compile project(getTransformedProjectPath(
+      'lib/src/android/support/design/circularreveal'))
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+    main.resources.srcDir 'res'
+  }
+}

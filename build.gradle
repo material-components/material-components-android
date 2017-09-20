@@ -10,15 +10,18 @@ buildscript {
 allprojects {
   repositories {
     jcenter()
+    maven {
+      url "https://maven.google.com"
+    }
   }
 }
 
 ext {
-  buildToolsVersion = '25.0.2'
-  compileSdkVersion = 25
+  buildToolsVersion = '26.0.0'
+  compileSdkVersion = 26
   minSdkVersion = 14
-  targetSdkVersion = 25
-  supportVersion = '25.3.1-SNAPSHOT'
+  targetSdkVersion = 26
+  supportVersion = '26.1.0'
 
   testRunnerVersion = '0.6-alpha'
   espressoVersion = '2.3-alpha'
@@ -41,14 +44,24 @@ task clean(type: Delete) {
   delete rootProject.buildDir
 }
 
+def getTransformedProjectPath (projectPath) {
+  def pathComponents = projectPath.tokenize('/')
+  def result = ''
+  def currentPath = ''
+  pathComponents.each { component ->
+    if (currentPath == '') {
+      currentPath += component
+    } else {
+      currentPath += '/' + component
+    }
+    result += ':' +  currentPath
+  }
+  return result
+}
+
 subprojects {
   version = rootProject.ext.supportVersion
-  // Set a different group for demos to resolve module name conflicts with other subprojects.
-  if (project.path.startsWith(':demos')) {
-    group = 'io.material.demo'
-  } else {
-    group = 'com.android.support'
-  }
+  group = 'com.android.support'
 
   project.plugins.whenPluginAdded { plugin ->
     def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)

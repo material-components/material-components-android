@@ -37,7 +37,7 @@ android {
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
 
-  targetProjectPath ':testing:java:android:support:design:testapp:backlayer'
+  targetProjectPath getTransformedProjectPath('testing/java/android/support/design/testapp/backlayer')
   targetVariant 'debug'
 
   sourceSets {
