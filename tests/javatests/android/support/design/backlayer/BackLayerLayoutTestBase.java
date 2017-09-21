@@ -328,7 +328,7 @@ public abstract class BackLayerLayoutTestBase {
     CoordinatorLayout.LayoutParams layoutParams =
         (CoordinatorLayout.LayoutParams) backLayer.getLayoutParams();
     int absoluteGravity =
-        Gravity.getAbsoluteGravity(layoutParams.gravity, backLayer.getLayoutDirection());
+        Gravity.getAbsoluteGravity(layoutParams.gravity, ViewCompat.getLayoutDirection(backLayer));
     isBackLayerAtEndSide = absoluteGravity == Gravity.RIGHT || absoluteGravity == Gravity.BOTTOM;
     isHorizontal = absoluteGravity == Gravity.RIGHT || absoluteGravity == Gravity.LEFT;
 
