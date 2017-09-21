@@ -2,7 +2,11 @@ language: android
 jdk: oraclejdk8
 
 env:
-  - API=android-15 ABI=armeabi-v7a
+  global:
+    - SDK_API=26
+    - BUILD_TOOLS_VERSION=26.0.0
+  matrix:
+    - EMULATOR_API=android-15 ABI=armeabi-v7a
 
 android:
   components:
@@ -11,24 +15,24 @@ android:
     - tools # to install Android SDK tools 25+, latest, cannot get more granular control than this
     # See https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943 for more
     # details.
-    - build-tools-26.0.0
-    - android-26
-    - android-15
-    - extra-android-m2repository
+    - build-tools-$BUILD_TOOLS_VERSION
+    - android-$SDK_API
+    - $EMULATOR-API
+    #- extra-android-m2repository
 
   licenses:
     - 'android-sdk-license-.+'
 
 before_script:
-  - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
-  - android-update-sdk --components="sys-img-$ABI-$API" --accept-licenses='android-sdk-license-[0-9a-f]{8}'
+  #- echo y | android update sdk --no-ui --all --filter extra-android-m2repository
+  - android-update-sdk --components="sys-img-$ABI-$EMULATOR-API" --accept-licenses='android-sdk-license-[0-9a-f]{8}'
   - android list targets
-  - echo no | android create avd --force -n test -t $API --abi $ABI
+  - echo no | android create avd --force -n test -t $EMULATOR-API --abi $ABI
   - emulator -avd test -no-audio -no-window &
 
 script:
   - ./gradlew assemble lint build test -PdisablePreDex;
-  - android-wait-for-emulator
+  #- android-wait-for-emulator
   - adb shell input keyevent 82 &
   # Avoid having it lock itself again.
   - adb shell svc power stayon true
