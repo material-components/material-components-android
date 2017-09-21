@@ -29,6 +29,4 @@
   <string name="fab_transformation_sheet_behavior" translatable="false">android.support.design.widget.transformation.FabTransformationSheetBehavior</string>
   <!-- The class name for the FabTransformationScrimBehavior -->
   <string name="fab_transformation_scrim_behavior" translatable="false">android.support.design.widget.transformation.FabTransformationScrimBehavior</string>
-  <!-- The class name for the PersistentSheetTransformationBehavior -->
-  <string name="persistent_sheet_transformation_behavior" translatable="false">android.support.design.widget.persistentsheet.PersistentSheetTransformationBehavior</string>
 </resources>
