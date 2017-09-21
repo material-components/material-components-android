@@ -25,7 +25,7 @@ android:
 before_script:
   #- echo y | android update sdk --no-ui --all --filter extra-android-m2repository
   - echo y | android update sdk --no-ui --all --filter $EMULATOR_API
-  - android-update-sdk --components="sys-img-$ABI-$EMULATOR-API" --accept-licenses='android-sdk-license-[0-9a-f]{8}'
+  - android-update-sdk --components="sys-img-$ABI-$EMULATOR_API" --accept-licenses='android-sdk-license-[0-9a-f]{8}'
   - android list targets
   - echo no | android create avd --force -n test -t $EMULATOR-API --abi $ABI
   - emulator -avd test -no-audio -no-window &
