@@ -12,6 +12,9 @@ android {
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
     main.java.srcDir '.'
+    main.java.excludes = [
+      '**/build/**',
+    ]
     main.res.srcDirs = [
       'res',
       'res-public'

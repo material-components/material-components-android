@@ -34,6 +34,9 @@ android {
       'android/support/design/internal/*.java',
       'android/support/design/widget/**/*.java',
     ]
+    main.java.excludes = [
+      '**/build/**',
+    ]
     main.res.srcDirs = [
       'res',
       'res-public'

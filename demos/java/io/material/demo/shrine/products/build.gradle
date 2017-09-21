@@ -13,6 +13,9 @@ android {
     main {
       java.includes = ['*.java']
       java.srcDirs = ['.']
+      java.excludes = [
+        '**/build/**',
+      ]
       res.srcDirs = ['res']
       manifest.srcFile 'AndroidManifest.xml'
     }

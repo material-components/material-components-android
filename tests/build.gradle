@@ -27,7 +27,10 @@ android {
   sourceSets {
     main.setRoot('./')
     main.java.srcDir 'javatests'
-    main.java.exclude '**/backlayer/**'
+    main.java.excludes = [
+      '**/backlayer/**',
+      '**/build/**',
+    ]
     main.manifest.srcFile 'javatests/android/support/design/widget/AndroidManifest.xml'
   }
 }
