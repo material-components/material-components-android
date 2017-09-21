@@ -16,11 +16,11 @@ env:
     # Notice matrix environment variables are not available during the install phase for android >
     # components.
     # These CANNOT BE USED in the android > components section, only in before_script and script.
-    - EMULATOR_API=android-16 ABI=armeabi-v7a
-    - EMULATOR_API=android-19 ABI=armeabi-v7a
-    - EMULATOR_API=android-21 ABI=armeabi-v7a
-    - EMULATOR_API=android-24 ABI=armeabi-v7a
-    - EMULATOR_API=android-25 ABI=armeabi-v7a
+    - EMULATOR_TAG=android EMULATOR_API=16 ABI=armeabi-v7a
+    - EMULATOR_TAG=android EMULATOR_API=19 ABI=armeabi-v7a
+    - EMULATOR_TAG=android EMULATOR_API=21 ABI=armeabi-v7a
+    - EMULATOR_TAG=google_apis EMULATOR_API=24 ABI=armeabi-v7a
+    - EMULATOR_TAG=google_apis EMULATOR_API=25 ABI=armeabi-v7a
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -46,8 +46,8 @@ android:
     - 'android-sdk-license-.+'
 
 before_script:
-  - echo y | android update sdk --no-ui --all --filter $EMULATOR_API
-  - android-update-sdk --components="sys-img-$ABI-$EMULATOR_API" --accept-licenses='android-sdk-license-[0-9a-f]{8}'
+  - echo y | android update sdk --no-ui --all --filter "android-$EMULATOR_API"
+  - android-update-sdk --components="sys-img-$ABI-$EMULATOR_TAG-$EMULATOR_API" --accept-licenses='android-sdk-license-[0-9a-f]{8}'
   - android list targets
   - echo no | android create avd --force -n test -t $EMULATOR_API --abi $ABI
   - emulator -avd test -no-audio -no-window &
