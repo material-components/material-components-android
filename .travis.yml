@@ -3,9 +3,14 @@ jdk: oraclejdk8
 
 env:
   global:
+    # Notice global environment variables are available during the install phase for android >
+    # components. These are the only variables that can be used in that section
     - SDK_API=26
     - BUILD_TOOLS_VERSION=26.0.0
   matrix:
+    # Notice matrix environment variables are not available during the install phase for android >
+    # components.
+    # These CANNOT BE USED in the android > components section, only in before_script and script.
     - EMULATOR_API=android-15 ABI=armeabi-v7a
 
 android:
@@ -36,5 +41,4 @@ script:
   - adb shell input keyevent 82 &
   # Avoid having it lock itself again.
   - adb shell svc power stayon true
-  # Make gradle output info-level logging, so the tests do not timeout
-  - ./gradlew connectedCheck --info -PdisablePreDex;
+  - ./gradlew connectedCheck -PdisablePreDex;
