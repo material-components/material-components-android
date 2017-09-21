@@ -2,7 +2,8 @@ language: android
 jdk: oraclejdk8
 
 env:
-  - API=android-15 ABI=armeabi-v7a
+  matrix:
+    - API=android-15 ABI=armeabi-v7a
 
 android:
   components:
