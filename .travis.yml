@@ -16,11 +16,10 @@ env:
     # Notice matrix environment variables are not available during the install phase for android >
     # components.
     # These CANNOT BE USED in the android > components section, only in before_script and script.
-    - EMULATOR_API=android-15 ABI=armeabi-v7a
     - EMULATOR_API=android-16 ABI=armeabi-v7a
     - EMULATOR_API=android-19 ABI=armeabi-v7a
     - EMULATOR_API=android-21 ABI=armeabi-v7a
-    - EMULATOR_API=android-23 ABI=armeabi-v7a
+    - EMULATOR_API=android-24 ABI=armeabi-v7a
     - EMULATOR_API=android-25 ABI=armeabi-v7a
 
 before_cache:
