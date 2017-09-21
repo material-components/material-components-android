@@ -1,6 +1,11 @@
 language: android
 jdk: oraclejdk8
 
+# Choosing faster environment since it's a full VM.
+# https://docs.travis-ci.com/user/reference/overview/
+sudo: required
+dist: trusty
+
 env:
   global:
     # Notice global environment variables are available during the install phase for android >
@@ -17,6 +22,16 @@ env:
     - EMULATOR_API=android-21 ABI=armeabi-v7a
     - EMULATOR_API=android-23 ABI=armeabi-v7a
     - EMULATOR_API=android-25 ABI=armeabi-v7a
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 android:
   components:
