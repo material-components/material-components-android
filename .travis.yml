@@ -23,7 +23,7 @@ before_script:
   - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
   - android-update-sdk --components=sys-img-$ABI-$API --accept-licenses='android-sdk-license-[0-9a-f]{8}'
   - echo no | android create avd --force -n test -t $API --abi $ABI
-  - emulator -avd test -no-audio -no-window
+  - emulator -avd test -no-audio -no-window &
 
 script:
   - ./gradlew assemble lint build test -PdisablePreDex;
