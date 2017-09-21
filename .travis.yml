@@ -13,6 +13,7 @@ android:
     # details.
     - build-tools-26.0.0
     - android-26
+    - android-15
     - extra-android-m2repository
 
   licenses:
