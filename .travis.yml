@@ -12,6 +12,11 @@ env:
     # components.
     # These CANNOT BE USED in the android > components section, only in before_script and script.
     - EMULATOR_API=android-15 ABI=armeabi-v7a
+    - EMULATOR_API=android-16 ABI=armeabi-v7a
+    - EMULATOR_API=android-19 ABI=armeabi-v7a
+    - EMULATOR_API=android-21 ABI=armeabi-v7a
+    - EMULATOR_API=android-23 ABI=armeabi-v7a
+    - EMULATOR_API=android-25 ABI=armeabi-v7a
 
 android:
   components:
@@ -22,13 +27,11 @@ android:
     # details.
     - build-tools-$BUILD_TOOLS_VERSION
     - android-$SDK_API
-    #- extra-android-m2repository
 
   licenses:
     - 'android-sdk-license-.+'
 
 before_script:
-  #- echo y | android update sdk --no-ui --all --filter extra-android-m2repository
   - echo y | android update sdk --no-ui --all --filter $EMULATOR_API
   - android-update-sdk --components="sys-img-$ABI-$EMULATOR_API" --accept-licenses='android-sdk-license-[0-9a-f]{8}'
   - android list targets
