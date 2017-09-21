@@ -23,12 +23,12 @@ before_script:
   - android-update-sdk --components=sys-img-$ABI-$API --accept-licenses='android-sdk-license-[0-9a-f]{8}'
   - echo no | android create avd --force -n test -t $API --abi $ABI
   - emulator -avd test -no-audio -no-window
+
+script:
+  - ./gradlew assemble lint build test -PdisablePreDex;
   - android-wait-for-emulator
   - adb shell input keyevent 82 &
   # Avoid having it lock itself again.
   - adb shell svc power stayon true
-
-script:
-  - ./gradlew assemble lint build test -PdisablePreDex;
   # Make gradle output info-level logging, so the tests do not timeout
   - ./gradlew connectedCheck --info -PdisablePreDex;
