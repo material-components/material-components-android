@@ -17,6 +17,10 @@
 
 <resources>
 
-  <style name="Widget.MaterialComponents.FloatingActionButton" parent="Widget.Design.FloatingActionButton"/>
+  <style name="Widget.MaterialComponents.FloatingActionButton" parent="Widget.Design.FloatingActionButton">
+    <item name="elevation">@dimen/mtrl_fab_elevation</item>
+    <item name="hoveredFocusedTranslationZ">@dimen/mtrl_fab_translation_z_hovered_focused</item>
+    <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
+  </style>
 
 </resources>

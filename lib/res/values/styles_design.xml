@@ -23,6 +23,7 @@
     <item name="backgroundTint">?attr/colorAccent</item>
     <item name="fabSize">auto</item>
     <item name="elevation">@dimen/design_fab_elevation</item>
+    <item name="hoveredFocusedTranslationZ">@dimen/design_fab_translation_z_hovered_focused</item>
     <item name="pressedTranslationZ">@dimen/design_fab_translation_z_pressed</item>
     <item name="rippleColor">?attr/colorControlHighlight</item>
     <item name="borderWidth">@dimen/design_fab_border_width</item>

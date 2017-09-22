@@ -79,6 +79,8 @@
     </attr>
     <!-- Elevation value for the FAB -->
     <attr name="elevation"/>
+    <!-- TranslationZ value for the FAB when hovered, focused, or hovered and focused. -->
+    <attr name="hoveredFocusedTranslationZ" format="dimension"/>
     <!-- TranslationZ value for the FAB when pressed-->
     <attr name="pressedTranslationZ" format="dimension"/>
     <!-- The width of the border around the FAB. -->

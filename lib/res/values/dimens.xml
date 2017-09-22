@@ -17,6 +17,7 @@
 <resources>
 
   <dimen name="design_fab_elevation">6dp</dimen>
+  <dimen name="design_fab_translation_z_hovered_focused">6dp</dimen>
   <dimen name="design_fab_translation_z_pressed">6dp</dimen>
   <dimen name="design_fab_image_size">24dp</dimen>
   <dimen name="design_fab_size_normal">56dp</dimen>
@@ -73,5 +74,9 @@
   <dimen name="design_bottom_navigation_item_max_width">96dp</dimen>
   <dimen name="design_bottom_navigation_active_item_max_width">168dp</dimen>
   <dimen name="design_bottom_navigation_active_item_min_width">96dp</dimen>
+
+  <dimen name="mtrl_fab_elevation">6dp</dimen>
+  <dimen name="mtrl_fab_translation_z_hovered_focused">2dp</dimen>
+  <dimen name="mtrl_fab_translation_z_pressed">6dp</dimen>
 
 </resources>
