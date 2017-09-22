@@ -41,8 +41,6 @@ android:
     # details.
     - build-tools-$BUILD_TOOLS_VERSION
     - android-$SDK_API
-    - extra-android-m2repository
-
 
   licenses:
     - 'android-sdk-license-.+'
