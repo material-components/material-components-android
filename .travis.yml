@@ -20,7 +20,9 @@ env:
     - EMULATOR_TAG=android EMULATOR_API=19 ABI=armeabi-v7a
     - EMULATOR_TAG=android EMULATOR_API=21 ABI=armeabi-v7a
     - EMULATOR_TAG=google_apis EMULATOR_API=24 ABI=armeabi-v7a
+    - EMULATOR_TAG=android EMULATOR_API=24 ABI=armeabi-v7a
     - EMULATOR_TAG=google_apis EMULATOR_API=25 ABI=armeabi-v7a
+    - EMULATOR_TAG=android EMULATOR_API=25 ABI=armeabi-v7a
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -41,6 +43,8 @@ android:
     # details.
     - build-tools-$BUILD_TOOLS_VERSION
     - android-$SDK_API
+    - extra-android-m2repository
+
 
   licenses:
     - 'android-sdk-license-.+'
