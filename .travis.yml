@@ -49,9 +49,4 @@ before_script:
   - ./travis_before_script.sh
 
 script:
-  - ./gradlew assemble lint build test -PdisablePreDex;
-  - travis_wait android-wait-for-emulator
-  - adb shell input keyevent 82 &
-  # Avoid having it lock itself again.
-  - adb shell svc power stayon true
-  - travis_wait ./gradlew connectedCheck -PdisablePreDex;
+  - ./travis_script.sh
