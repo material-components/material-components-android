@@ -5,6 +5,7 @@ set -e
 # Start emulator in the background if necessary.
 
 echo "TEST_TYPE=$TEST_TYPE"
+echo "EMULATOR_TAG=$EMULATOR_TAG"
 echo "EMULATOR_API=$EMULATOR_API"
 echo "ABI=$ABI"
 
