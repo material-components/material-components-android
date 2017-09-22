@@ -49,4 +49,4 @@ before_script:
   - ./travis_before_script.sh
 
 script:
-  - ./travis_script.sh
+  - travis_wait ./travis_script.sh
