@@ -2,6 +2,10 @@
 
 set -e
 
+echo "TEST_TYPE=$TEST_TYPE"
+echo "EMULATOR_API=$EMULATOR_API"
+echo "ABI=$ABI"
+
 if [ "$TEST_TYPE" == "unit" ]; then
   echo "Starting unit tests..."
   ./gradlew assemble lint build test -PdisablePreDex;
