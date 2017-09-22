@@ -1,8 +1,35 @@
 language: android
 jdk: oraclejdk8
 
+# Choosing faster environment since it's a full VM.
+# https://docs.travis-ci.com/user/reference/overview/
+sudo: required
+dist: trusty
+
 env:
-  - ANDROID_EMULATOR_API_LEVEL=15
+  global:
+    # Notice global environment variables are available during the install phase for android >
+    # components. These are the only variables that can be used in that section
+    - SDK_API=26
+    - BUILD_TOOLS_VERSION=26.0.0
+  matrix:
+    # Notice matrix environment variables are not available during the install phase for android >
+    # components.
+    # These CANNOT BE USED in the android > components section, only in before_script and script.
+    - TEST_TYPE=unit
+    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=16 ABI=armeabi-v7a
+    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=19 ABI=armeabi-v7a
+    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=21 ABI=armeabi-v7a
+
+before_cache:
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
 
 android:
   components:
@@ -11,29 +38,17 @@ android:
     - tools # to install Android SDK tools 25+, latest, cannot get more granular control than this
     # See https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943 for more
     # details.
-    - build-tools-26.0.0
-    - android-26
-    - extra-android-m2repository
-    - extra-android-support
-    - sys-img-armeabi-v7a-android-15
+    - build-tools-$BUILD_TOOLS_VERSION
+    - android-$SDK_API
+
   licenses:
     - 'android-sdk-license-.+'
 
 before_script:
-  - echo y | android update sdk --no-ui --all --filter extra-android-m2repository
-  - echo y | android update sdk --no-ui --all --filter extra-android-support
-  - echo y | android update sdk --no-ui --all --filter "android-$ANDROID_EMULATOR_API_LEVEL"
-  - echo y | android update sdk --no-ui --all --filter build-tools-26.0.0
-  - echo y | android update sdk --no-ui --all --filter "sys-img-armeabi-v7a-android-$ANDROID_EMULATOR_API_LEVEL"
-  - echo no | android create avd --force -n test -t "android-$ANDROID_EMULATOR_API_LEVEL" --abi armeabi-v7a
-  - emulator -avd test -no-audio -no-window &
+  - ./travis_before_script.sh
 
 script:
-  - ./gradlew build lint test assembleAndroidTest -PdisablePreDex;
-  - android-wait-for-emulator
-  # Unlock the device
-  - adb shell input keyevent 82
-  # Avoid having it lock itself again.
-  - adb shell svc power stayon true
-  # Make gradle output info-level logging, so the tests do not timeout
-  - ./gradlew connectedCheck --info -PdisablePreDex;
+  - ./gradlew assemble -PdisablePreDex;
+  - ./travis_run_unit_tests.sh
+  - travis_wait ./travis_set_up_emulator.sh
+  - travis_wait ./travis_run_instrumentation_tests.sh
