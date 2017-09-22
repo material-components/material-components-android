@@ -38,7 +38,6 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
@@ -357,7 +356,7 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Returns the typeface used for the hint and any label views (such as counter and error views).
    */
-  @NonNull
+  @Nullable
   public Typeface getTypeface() {
     return mTypeface;
   }
