@@ -20,7 +20,6 @@ env:
     - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=16 ABI=armeabi-v7a
     - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=19 ABI=armeabi-v7a
     - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=21 ABI=armeabi-v7a
-    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=24 ABI=armeabi-v7a
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
