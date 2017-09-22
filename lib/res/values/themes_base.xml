@@ -47,6 +47,8 @@
 
     <item name="colorPalettePrimary">@array/design_default_color_palette_primary</item>
     <item name="colorPaletteSecondary">@array/design_default_color_palette_secondary</item>
+
+    <item name="scrimBackground">@color/mtrl_scrim_color</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light" parent="Platform.MaterialComponents.Light">
@@ -62,6 +64,8 @@
 
     <item name="colorPalettePrimary">@array/design_default_color_palette_primary</item>
     <item name="colorPaletteSecondary">@array/design_default_color_palette_secondary</item>
+
+    <item name="scrimBackground">@color/mtrl_scrim_color</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="Platform.MaterialComponents.Dialog">
@@ -77,6 +81,8 @@
 
     <item name="colorPalettePrimary">@array/design_default_color_palette_primary</item>
     <item name="colorPaletteSecondary">@array/design_default_color_palette_secondary</item>
+
+    <item name="scrimBackground">@color/mtrl_scrim_color</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="Platform.MaterialComponents.Light.Dialog">
@@ -92,6 +98,8 @@
 
     <item name="colorPalettePrimary">@array/design_default_color_palette_primary</item>
     <item name="colorPaletteSecondary">@array/design_default_color_palette_secondary</item>
+
+    <item name="scrimBackground">@color/mtrl_scrim_color</item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform
