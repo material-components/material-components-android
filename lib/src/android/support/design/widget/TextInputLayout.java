@@ -357,7 +357,7 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Returns the typeface used for the hint and any label views (such as counter and error views).
    */
-  @NonNull
+  @Nullable
   public Typeface getTypeface() {
     return mTypeface;
   }
