@@ -47,10 +47,6 @@
          The background can either be a color or a bitmap drawable with tileMode set to repeat. -->
     <attr name="scrimBackground" format="color|reference"/>
 
-    <!-- TODO: Need to audit these attributes to see if they are useful. -->
-    <attr name="colorMaterialControl" format="color"/>
-    <attr name="colorMaterialControlHighlight" format="color"/>
-
     <!-- Theme to use for modal bottom sheet dialogs spawned from this theme. -->
     <attr name="bottomSheetDialogTheme" format="reference"/>
     <!-- Style to use for modal bottom sheets in this theme. -->
