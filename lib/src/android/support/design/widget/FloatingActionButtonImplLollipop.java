@@ -29,6 +29,7 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
@@ -84,14 +85,19 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void onElevationsChanged(final float elevation, final float pressedTranslationZ) {
+  void onElevationsChanged(
+      final float elevation,
+      final float hoveredFocusedTranslationZ,
+      final float pressedTranslationZ) {
     if (Build.VERSION.SDK_INT == 21) {
       // Animations produce NPE in version 21. Bluntly set the values instead (matching the
       // logic in the animations below).
       if (mView.isEnabled()) {
         mView.setElevation(elevation);
-        if (mView.isFocused() || mView.isPressed()) {
+        if (mView.isPressed()) {
           mView.setTranslationZ(pressedTranslationZ);
+        } else if (mView.isFocused() || mView.isHovered()) {
+          mView.setTranslationZ(hoveredFocusedTranslationZ);
         } else {
           mView.setTranslationZ(0);
         }
@@ -102,26 +108,21 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     } else {
       final StateListAnimator stateListAnimator = new StateListAnimator();
 
-      // Animate elevation and translationZ to our values when pressed
+      // Animate elevation and translationZ to our values when pressed, focused, and hovered
+      stateListAnimator.addState(
+          PRESSED_ENABLED_STATE_SET, createElevationAnimator(elevation, pressedTranslationZ));
+      stateListAnimator.addState(
+          HOVERED_FOCUSED_ENABLED_STATE_SET,
+          createElevationAnimator(elevation, hoveredFocusedTranslationZ));
+      stateListAnimator.addState(
+          FOCUSED_ENABLED_STATE_SET,
+          createElevationAnimator(elevation, hoveredFocusedTranslationZ));
+      stateListAnimator.addState(
+          HOVERED_ENABLED_STATE_SET,
+          createElevationAnimator(elevation, hoveredFocusedTranslationZ));
+
+      // Animate translationZ to 0 if not pressed, focused, or hovered
       AnimatorSet set = new AnimatorSet();
-      set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0))
-          .with(
-              ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, pressedTranslationZ)
-                  .setDuration(PRESSED_ANIM_DURATION));
-      set.setInterpolator(ANIM_INTERPOLATOR);
-      stateListAnimator.addState(PRESSED_ENABLED_STATE_SET, set);
-
-      // Same deal for when we're focused
-      set = new AnimatorSet();
-      set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0))
-          .with(
-              ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, pressedTranslationZ)
-                  .setDuration(PRESSED_ANIM_DURATION));
-      set.setInterpolator(ANIM_INTERPOLATOR);
-      stateListAnimator.addState(FOCUSED_ENABLED_STATE_SET, set);
-
-      // Animate translationZ to 0 if not pressed
-      set = new AnimatorSet();
       List<Animator> animators = new ArrayList<>();
       animators.add(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0));
       if (Build.VERSION.SDK_INT >= 22 && Build.VERSION.SDK_INT <= 24) {
@@ -131,20 +132,17 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
         // bug). The issue has been fixed in version 25.
         animators.add(
             ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, mView.getTranslationZ())
-                .setDuration(PRESSED_ANIM_DELAY));
+                .setDuration(ELEVATION_ANIM_DELAY));
       }
       animators.add(
-          ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f).setDuration(PRESSED_ANIM_DURATION));
+          ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f)
+              .setDuration(ELEVATION_ANIM_DURATION));
       set.playSequentially(animators.toArray(new Animator[0]));
-      set.setInterpolator(ANIM_INTERPOLATOR);
+      set.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
       stateListAnimator.addState(ENABLED_STATE_SET, set);
 
       // Animate everything to 0 when disabled
-      set = new AnimatorSet();
-      set.play(ObjectAnimator.ofFloat(mView, "elevation", 0f).setDuration(0))
-          .with(ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, 0f).setDuration(0));
-      set.setInterpolator(ANIM_INTERPOLATOR);
-      stateListAnimator.addState(EMPTY_STATE_SET, set);
+      stateListAnimator.addState(EMPTY_STATE_SET, createElevationAnimator(0f, 0f));
 
       mView.setStateListAnimator(stateListAnimator);
     }
@@ -152,6 +150,17 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     if (mShadowViewDelegate.isCompatPaddingEnabled()) {
       updatePadding();
     }
+  }
+
+  @NonNull
+  private Animator createElevationAnimator(float elevation, float translationZ) {
+    AnimatorSet set = new AnimatorSet();
+    set.play(ObjectAnimator.ofFloat(mView, "elevation", elevation).setDuration(0))
+        .with(
+            ObjectAnimator.ofFloat(mView, View.TRANSLATION_Z, translationZ)
+                .setDuration(ELEVATION_ANIM_DURATION));
+    set.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
+    return set;
   }
 
   @Override

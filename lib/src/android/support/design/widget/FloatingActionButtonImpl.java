@@ -40,9 +40,10 @@ import android.view.View;
 import android.view.ViewTreeObserver;
 
 class FloatingActionButtonImpl {
-  static final TimeInterpolator ANIM_INTERPOLATOR = AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
-  static final long PRESSED_ANIM_DURATION = 100;
-  static final long PRESSED_ANIM_DELAY = 100;
+  static final TimeInterpolator ELEVATION_ANIM_INTERPOLATOR =
+      AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
+  static final long ELEVATION_ANIM_DURATION = 100;
+  static final long ELEVATION_ANIM_DELAY = 100;
 
   static final int ANIM_STATE_NONE = 0;
   static final int ANIM_STATE_HIDING = 1;
@@ -62,6 +63,7 @@ class FloatingActionButtonImpl {
   Drawable mContentBackground;
 
   float mElevation;
+  float mHoveredFocusedTranslationZ;
   float mPressedTranslationZ;
 
   interface InternalVisibilityChangedListener {
@@ -75,8 +77,14 @@ class FloatingActionButtonImpl {
   static final int[] PRESSED_ENABLED_STATE_SET = {
     android.R.attr.state_pressed, android.R.attr.state_enabled
   };
+  static final int[] HOVERED_FOCUSED_ENABLED_STATE_SET = {
+    android.R.attr.state_hovered, android.R.attr.state_focused, android.R.attr.state_enabled
+  };
   static final int[] FOCUSED_ENABLED_STATE_SET = {
     android.R.attr.state_focused, android.R.attr.state_enabled
+  };
+  static final int[] HOVERED_ENABLED_STATE_SET = {
+    android.R.attr.state_hovered, android.R.attr.state_enabled
   };
   static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
   static final int[] EMPTY_STATE_SET = new int[0];
@@ -93,15 +101,25 @@ class FloatingActionButtonImpl {
 
     mStateListAnimator = new StateListAnimator();
 
-    // Elevate with translationZ when pressed or focused
+    // Elevate with translationZ when pressed, focused, or hovered
     mStateListAnimator.addState(
-        PRESSED_ENABLED_STATE_SET, createAnimator(new ElevateToTranslationZAnimation()));
+        PRESSED_ENABLED_STATE_SET,
+        createElevationAnimator(new ElevateToPressedTranslationZAnimation()));
     mStateListAnimator.addState(
-        FOCUSED_ENABLED_STATE_SET, createAnimator(new ElevateToTranslationZAnimation()));
+        HOVERED_FOCUSED_ENABLED_STATE_SET,
+        createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
+    mStateListAnimator.addState(
+        FOCUSED_ENABLED_STATE_SET,
+        createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
+    mStateListAnimator.addState(
+        HOVERED_ENABLED_STATE_SET,
+        createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
     // Reset back to elevation by default
-    mStateListAnimator.addState(ENABLED_STATE_SET, createAnimator(new ResetElevationAnimation()));
+    mStateListAnimator.addState(
+        ENABLED_STATE_SET, createElevationAnimator(new ResetElevationAnimation()));
     // Set to 0 when disabled
-    mStateListAnimator.addState(EMPTY_STATE_SET, createAnimator(new DisabledElevationAnimation()));
+    mStateListAnimator.addState(
+        EMPTY_STATE_SET, createElevationAnimator(new DisabledElevationAnimation()));
 
     mRotation = mView.getRotation();
   }
@@ -173,7 +191,7 @@ class FloatingActionButtonImpl {
   final void setElevation(float elevation) {
     if (mElevation != elevation) {
       mElevation = elevation;
-      onElevationsChanged(elevation, mPressedTranslationZ);
+      onElevationsChanged(elevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
     }
   }
 
@@ -181,14 +199,22 @@ class FloatingActionButtonImpl {
     return mElevation;
   }
 
-  final void setPressedTranslationZ(float translationZ) {
-    if (mPressedTranslationZ != translationZ) {
-      mPressedTranslationZ = translationZ;
-      onElevationsChanged(mElevation, translationZ);
+  final void setHoveredFocusedTranslationZ(float translationZ) {
+    if (mHoveredFocusedTranslationZ != translationZ) {
+      mHoveredFocusedTranslationZ = translationZ;
+      onElevationsChanged(mElevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
     }
   }
 
-  void onElevationsChanged(float elevation, float pressedTranslationZ) {
+  final void setPressedTranslationZ(float translationZ) {
+    if (mPressedTranslationZ != translationZ) {
+      mPressedTranslationZ = translationZ;
+      onElevationsChanged(mElevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
+    }
+  }
+
+  void onElevationsChanged(
+      float elevation, float hoveredFocusedTranslationZ, float pressedTranslationZ) {
     if (mShadowDrawable != null) {
       mShadowDrawable.setShadowSize(elevation, elevation + mPressedTranslationZ);
       updatePadding();
@@ -416,10 +442,10 @@ class FloatingActionButtonImpl {
     }
   }
 
-  private ValueAnimator createAnimator(@NonNull ShadowAnimatorImpl impl) {
+  private ValueAnimator createElevationAnimator(@NonNull ShadowAnimatorImpl impl) {
     final ValueAnimator animator = new ValueAnimator();
-    animator.setInterpolator(ANIM_INTERPOLATOR);
-    animator.setDuration(PRESSED_ANIM_DURATION);
+    animator.setInterpolator(ELEVATION_ANIM_INTERPOLATOR);
+    animator.setDuration(ELEVATION_ANIM_DURATION);
     animator.addListener(impl);
     animator.addUpdateListener(impl);
     animator.setFloatValues(0, 1);
@@ -464,8 +490,17 @@ class FloatingActionButtonImpl {
     }
   }
 
-  private class ElevateToTranslationZAnimation extends ShadowAnimatorImpl {
-    ElevateToTranslationZAnimation() {}
+  private class ElevateToHoveredFocusedTranslationZAnimation extends ShadowAnimatorImpl {
+    ElevateToHoveredFocusedTranslationZAnimation() {}
+
+    @Override
+    protected float getTargetShadowSize() {
+      return mElevation + mHoveredFocusedTranslationZ;
+    }
+  }
+
+  private class ElevateToPressedTranslationZAnimation extends ShadowAnimatorImpl {
+    ElevateToPressedTranslationZAnimation() {}
 
     @Override
     protected float getTargetShadowSize() {
@@ -483,15 +518,25 @@ class FloatingActionButtonImpl {
   }
 
   private static ColorStateList createColorStateList(int selectedColor) {
-    final int[][] states = new int[3][];
-    final int[] colors = new int[3];
+    int size = 5;
+
+    final int[][] states = new int[size][];
+    final int[] colors = new int[size];
     int i = 0;
+
+    states[i] = PRESSED_ENABLED_STATE_SET;
+    colors[i] = selectedColor;
+    i++;
+
+    states[i] = HOVERED_FOCUSED_ENABLED_STATE_SET;
+    colors[i] = selectedColor;
+    i++;
 
     states[i] = FOCUSED_ENABLED_STATE_SET;
     colors[i] = selectedColor;
     i++;
 
-    states[i] = PRESSED_ENABLED_STATE_SET;
+    states[i] = HOVERED_ENABLED_STATE_SET;
     colors[i] = selectedColor;
     i++;
 
