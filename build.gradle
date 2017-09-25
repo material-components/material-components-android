@@ -3,7 +3,8 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.1'
+    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
   }
 }
 
@@ -32,6 +33,10 @@ ext {
 
   // Disable pre-dexing when gradle called with -PdisablePreDex;
   preDexLibs = !project.hasProperty('disablePreDex')
+
+  mavenRepoUrl = (project.hasProperty('mavenRepoUrl')
+      ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
+  mdcLibraryVersion = '1.0'
 }
 
 // lint every library
