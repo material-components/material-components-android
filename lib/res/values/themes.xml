@@ -120,4 +120,28 @@
 
   <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert"/>
 
+  <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
+  <style name="Theme.Design.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
+  <style name="Theme.Design.Light.BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents instead. -->
+  <style name="Theme.Design" parent="Theme.MaterialComponents">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.Light instead. -->
+  <style name="Theme.Design.Light" parent="Theme.MaterialComponents.Light">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.NoActionBar instead. -->
+  <style name="Theme.Design.NoActionBar" parent="Theme.MaterialComponents.NoActionBar">
+  </style>
+
+  <!-- Deprecated. Use Theme.MaterialComponents.Light.NoActionBar instead. -->
+  <style name="Theme.Design.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+  </style>
+
 </resources>
