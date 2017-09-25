@@ -3,7 +3,8 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.1'
+    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
   }
 }
 
@@ -32,6 +33,10 @@ ext {
 
   // Disable pre-dexing when gradle called with -PdisablePreDex;
   preDexLibs = !project.hasProperty('disablePreDex')
+
+  mavenRepoUrl = (project.hasProperty('mavenRepoUrl')
+      ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
+  mdcLibraryVersion = '1.0'
 }
 
 // lint every library
@@ -57,6 +62,26 @@ def getTransformedProjectPath (projectPath) {
     result += ':' +  currentPath
   }
   return result
+}
+
+def getArchivesBaseName (name) {
+  if (name == 'lib') {
+    return 'design-core'
+  }
+  def pathComponents = name.tokenize('/')
+  def knownComponents = ['lib', 'src', 'android', 'support',  'design']
+  def firstUnknownComponent = knownComponents.size();
+  for (def i = 0; i < knownComponents.size() && i < pathComponents.size(); i++) {
+    if (pathComponents[i] != knownComponents[i]) {
+      firstUnknownComponent = i;
+      break;
+    }
+  }
+  def result = 'design'
+  for (def i = firstUnknownComponent; i < pathComponents.size(); i++) {
+    result = result + '-' + pathComponents[i];
+  }
+  return result;
 }
 
 subprojects {

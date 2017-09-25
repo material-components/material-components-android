@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
-archivesBaseName = 'design'
+archivesBaseName = getArchivesBaseName(project.name)
+version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   compile "com.android.support:support-annotations:${project.rootProject.ext.supportVersion}"
@@ -20,5 +22,13 @@ android {
     ]
     main.assets.srcDir 'assets'
     main.resources.srcDir 'res'
+  }
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: rootProject.ext.mavenRepoUrl)
+    }
   }
 }
