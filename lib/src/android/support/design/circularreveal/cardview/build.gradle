@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
-archivesBaseName = 'design'
+archivesBaseName = 'design-circularreveal-cardview'
+version = '1.0'
 
 dependencies {
   compile "com.android.support:cardview-v7:${project.rootProject.ext.supportVersion}"
@@ -21,5 +23,13 @@ android {
     ]
     main.assets.srcDir 'assets'
     main.resources.srcDir 'res'
+  }
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: "file://localhost/tmp/myRepo/")
+    }
   }
 }

@@ -1,6 +1,8 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
-archivesBaseName = 'design'
+archivesBaseName = 'design-math'
+version = '1.0'
 
 android {
   sourceSets {
@@ -18,3 +20,10 @@ android {
   }
 }
 
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: "file://localhost/tmp/myRepo/")
+    }
+  }
+}
