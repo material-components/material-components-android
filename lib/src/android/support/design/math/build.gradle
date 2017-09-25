@@ -2,8 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 archivesBaseName = 'design-math'
-version = '1.0'
-
+version = rootProject.ext.mdcLibraryVersion
 android {
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
@@ -23,7 +22,7 @@ android {
 uploadArchives {
   repositories {
     mavenDeployer {
-      repository(url: "file://localhost/tmp/myRepo/")
+      repository(url: rootProject.ext.mavenRepoUrl)
     }
   }
 }

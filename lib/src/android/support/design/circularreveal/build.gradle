@@ -2,8 +2,7 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
 archivesBaseName = 'design-circularreveal'
-version = '1.0'
-
+version = rootProject.ext.mdcLibraryVersion
 dependencies {
   compile "com.android.support:support-annotations:${project.rootProject.ext.supportVersion}"
   compile project(getTransformedProjectPath(
@@ -32,7 +31,7 @@ android {
 uploadArchives {
   repositories {
     mavenDeployer {
-      repository(url: "file://localhost/tmp/myRepo/")
+      repository(url: rootProject.ext.mavenRepoUrl)
     }
   }
 }
