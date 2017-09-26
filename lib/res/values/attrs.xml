@@ -234,6 +234,14 @@
       <!-- Outline box mode for the text input box. -->
       <enum name="outline" value="2"/>
     </attr>
+    <!-- Value to use for the EditText's left padding in box mode. -->
+    <attr name="boxPaddingLeft" format="dimension"/>
+    <!-- Value to use for the EditText's top padding in box mode. -->
+    <attr name="boxPaddingTop" format="dimension"/>
+    <!-- Value to use for the EditText's right padding in box mode. -->
+    <attr name="boxPaddingRight" format="dimension"/>
+    <!-- Value to use for the EditText's bottom padding in box mode. -->
+    <attr name="boxPaddingBottom" format="dimension"/>
 
   </declare-styleable>
   <declare-styleable name="SnackbarLayout">

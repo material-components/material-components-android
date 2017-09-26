@@ -25,6 +25,10 @@
   <public name="bottomSheetDialogTheme" type="attr"/>
   <public name="bottomSheetStyle" type="attr"/>
   <public name="boxBackgroundMode" type="attr"/>
+  <public name="boxPaddingLeft" type="attr"/>
+  <public name="boxPaddingTop" type="attr"/>
+  <public name="boxPaddingRight" type="attr"/>
+  <public name="boxPaddingBottom" type="attr"/>
   <public name="collapsedTitleGravity" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
   <public name="contentScrim" type="attr"/>

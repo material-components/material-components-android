@@ -81,6 +81,10 @@
   </style>
 
   <style name="Widget.Design.TextInputLayout.Box">
+    <item name="boxPaddingLeft">@dimen/design_textinput_box_padding_left</item>
+    <item name="boxPaddingTop">@dimen/design_textinput_box_padding_top</item>
+    <item name="boxPaddingRight">@dimen/design_textinput_box_padding_right</item>
+    <item name="boxPaddingBottom">@dimen/design_textinput_box_padding_bottom</item>
   </style>
 
   <style name="Widget.Design.TextInputLayout.Box.Filled">

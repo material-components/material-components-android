@@ -144,6 +144,10 @@ public class TextInputLayout extends LinearLayout {
 
   private GradientDrawable mBoxBackground;
   private final int mBoxPaddingOffsetPx;
+  private int mBoxPaddingTopPx;
+  private int mBoxPaddingLeftPx;
+  private int mBoxPaddingRightPx;
+  private int mBoxPaddingBottomPx;
   @BoxBackgroundMode private int mBoxBackgroundMode;
   private float mBoxCornerRadius;
   private int mBoxStrokeWidth;
@@ -229,16 +233,22 @@ public class TextInputLayout extends LinearLayout {
             defStyleAttr,
             R.style.Widget_Design_TextInputLayout);
 
+    mHintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
+    setHint(a.getText(R.styleable.TextInputLayout_android_hint));
+    mHintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
+
+    mBoxPaddingOffsetPx =
+        context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_offset);
+    mBoxPaddingLeftPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingLeft, 0);
+    mBoxPaddingTopPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingTop, 0);
+    mBoxPaddingRightPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingRight, 0);
+    mBoxPaddingBottomPx =
+        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingBottom, 0);
+
     @BoxBackgroundMode
     final int boxBackgroundMode =
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
     setBoxBackgroundMode(boxBackgroundMode);
-    mBoxPaddingOffsetPx =
-        context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_offset);
-
-    mHintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
-    setHint(a.getText(R.styleable.TextInputLayout_android_hint));
-    mHintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
     if (a.hasValue(R.styleable.TextInputLayout_android_textColorHint)) {
       mDefaultTextColor =
@@ -331,7 +341,81 @@ public class TextInputLayout extends LinearLayout {
       return;
     }
     mBoxBackgroundMode = boxBackgroundMode;
-    mBoxBackground = mBoxBackgroundMode != BOX_BACKGROUND_NONE ? new GradientDrawable() : null;
+    onApplyBoxBackgroundMode();
+  }
+
+  private void onApplyBoxBackgroundMode() {
+    if (mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
+      mBoxBackground = null;
+      return;
+    }
+
+    if (mBoxBackground == null) {
+      mBoxBackground = new GradientDrawable();
+    }
+    updateTextInputBoxBounds();
+    setEditTextBoxPadding();
+  }
+
+  private void setEditTextBoxPadding() {
+    // Set box padding on the edit text.
+    if (mEditText != null) {
+      mEditText.setPadding(
+          mBoxPaddingLeftPx, mBoxPaddingTopPx, mBoxPaddingRightPx, mBoxPaddingBottomPx);
+    }
+  }
+
+  /**
+   * Set the box's padding.
+   *
+   * @param boxPaddingLeft the value in pixels to use for the box's left padding
+   * @param boxPaddingTop the value in pixels to use for the box's top padding
+   * @param boxPaddingRight the value in pixels to use for the box's right padding
+   * @param boxPaddingBottom the value in pixels to use for the box's bottom padding
+   */
+  public void setBoxPadding(
+      int boxPaddingLeft, int boxPaddingTop, int boxPaddingRight, int boxPaddingBottom) {
+    mBoxPaddingLeftPx = boxPaddingLeft;
+    mBoxPaddingTopPx = boxPaddingTop;
+    mBoxPaddingRightPx = boxPaddingRight;
+    mBoxPaddingBottomPx = boxPaddingBottom;
+    invalidate();
+  }
+
+  /**
+   * Get the box's left padding.
+   *
+   * @return the box's left padding in pixels
+   */
+  public int getBoxPaddingLeft() {
+    return mBoxPaddingLeftPx;
+  }
+
+  /**
+   * Get the box's top padding.
+   *
+   * @return the box's top padding in pixels
+   */
+  public int getBoxPaddingTop() {
+    return mBoxPaddingTopPx;
+  }
+
+  /**
+   * Get the box's right padding.
+   *
+   * @return the box's right padding in pixels
+   */
+  public int getBoxPaddingRight() {
+    return mBoxPaddingRightPx;
+  }
+
+  /**
+   * Get the box's bottom padding.
+   *
+   * @return the box's bottom padding in pixels
+   */
+  public int getBoxPaddingBottom() {
+    return mBoxPaddingBottomPx;
   }
 
   /**
@@ -375,6 +459,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     mEditText = editText;
+    onApplyBoxBackgroundMode();
 
     final boolean hasPasswordTransformation = hasPasswordTransformation();
 
@@ -852,6 +937,9 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updateEditTextBackgroundBounds() {
+    if (mEditText == null) {
+      return;
+    }
     Drawable editTextBackground = mEditText.getBackground();
     if (editTextBackground == null) {
       return;
@@ -865,9 +953,16 @@ public class TextInputLayout extends LinearLayout {
     ViewGroupUtils.getDescendantRect(this, mEditText, editTextBounds);
 
     Rect editTextBackgroundBounds = editTextBackground.getBounds();
-    final int left = editTextBackgroundBounds.left - mEditText.getPaddingLeft();
-    final int right = editTextBackgroundBounds.right + mEditText.getPaddingRight();
-    editTextBackground.setBounds(left, editTextBackgroundBounds.top, right, mEditText.getBottom());
+    if (editTextBackgroundBounds.left != editTextBackgroundBounds.right) {
+
+      Rect editTextBackgroundPadding = new Rect();
+      editTextBackground.getPadding(editTextBackgroundPadding);
+
+      final int left = editTextBackgroundBounds.left - editTextBackgroundPadding.left;
+      final int right = editTextBackgroundBounds.right + editTextBackgroundPadding.right * 2;
+      editTextBackground.setBounds(
+          left, editTextBackgroundBounds.top, right, mEditText.getBottom());
+    }
   }
 
   private void setBoxAttributes() {
@@ -1018,6 +1113,8 @@ public class TextInputLayout extends LinearLayout {
         // is limited.
         ViewCompat.setBackground(mEditText, newBg);
         mHasReconstructedEditTextBackground = true;
+        // Re-apply box background mode to set the EditText's box padding if in box mode.
+        onApplyBoxBackgroundMode();
       }
     }
   }
