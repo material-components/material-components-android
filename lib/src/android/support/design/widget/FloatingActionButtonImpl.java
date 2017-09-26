@@ -29,11 +29,14 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
+import android.support.annotation.ColorInt;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
@@ -128,6 +131,7 @@ class FloatingActionButtonImpl {
       ColorStateList backgroundTint,
       PorterDuff.Mode backgroundTintMode,
       int rippleColor,
+      ColorStateList rippleAlpha,
       int borderWidth) {
     // Now we need to tint the original background with the tint, using
     // an InsetDrawable if we have a border width
@@ -143,7 +147,8 @@ class FloatingActionButtonImpl {
     // We'll now wrap that touch feedback mask drawable with a ColorStateList. We do not need
     // to inset for any border here as LayerDrawable will nest the padding for us
     mRippleDrawable = DrawableCompat.wrap(touchFeedbackShape);
-    DrawableCompat.setTintList(mRippleDrawable, createColorStateList(rippleColor));
+    DrawableCompat.setTintList(
+        mRippleDrawable, compositeRippleColorStateList(rippleColor, rippleAlpha));
 
     final Drawable[] layers;
     if (borderWidth > 0) {
@@ -182,9 +187,10 @@ class FloatingActionButtonImpl {
     }
   }
 
-  void setRippleColor(int rippleColor) {
+  void setRippleColor(@ColorInt int rippleColor, ColorStateList rippleAlpha) {
     if (mRippleDrawable != null) {
-      DrawableCompat.setTintList(mRippleDrawable, createColorStateList(rippleColor));
+      DrawableCompat.setTintList(
+          mRippleDrawable, compositeRippleColorStateList(rippleColor, rippleAlpha));
     }
   }
 
@@ -517,27 +523,27 @@ class FloatingActionButtonImpl {
     }
   }
 
-  private static ColorStateList createColorStateList(int selectedColor) {
+  ColorStateList compositeRippleColorStateList(@ColorInt int color, ColorStateList alphaStateList) {
     int size = 5;
 
     final int[][] states = new int[size][];
     final int[] colors = new int[size];
     int i = 0;
 
-    states[i] = PRESSED_ENABLED_STATE_SET;
-    colors[i] = selectedColor;
+    compositeRippleColorForState(
+        PRESSED_ENABLED_STATE_SET, color, alphaStateList, i, states, colors);
     i++;
 
-    states[i] = HOVERED_FOCUSED_ENABLED_STATE_SET;
-    colors[i] = selectedColor;
+    compositeRippleColorForState(
+        HOVERED_FOCUSED_ENABLED_STATE_SET, color, alphaStateList, i, states, colors);
     i++;
 
-    states[i] = FOCUSED_ENABLED_STATE_SET;
-    colors[i] = selectedColor;
+    compositeRippleColorForState(
+        FOCUSED_ENABLED_STATE_SET, color, alphaStateList, i, states, colors);
     i++;
 
-    states[i] = HOVERED_ENABLED_STATE_SET;
-    colors[i] = selectedColor;
+    compositeRippleColorForState(
+        HOVERED_ENABLED_STATE_SET, color, alphaStateList, i, states, colors);
     i++;
 
     // Default enabled state
@@ -546,6 +552,29 @@ class FloatingActionButtonImpl {
     i++;
 
     return new ColorStateList(states, colors);
+  }
+
+  /**
+   * For the given {@code stateSet}, sets the composite ripple color to the {@code i}th item in
+   * {@code states} and {@code colors}.
+   */
+  private void compositeRippleColorForState(
+      int[] stateSet,
+      @ColorInt int color,
+      ColorStateList alphaStateList,
+      int i,
+      int[][] states,
+      int[] colors) {
+    states[i] = stateSet;
+    int alpha =
+        Color.alpha(alphaStateList.getColorForState(stateSet, alphaStateList.getDefaultColor()));
+    colors[i] = compositeRippleColor(color, alpha);
+  }
+
+  /** Composite the ripple {@code color} with {@code alpha}. */
+  protected int compositeRippleColor(@ColorInt int color, @IntRange(from = 0, to = 255) int alpha) {
+    int compositeAlpha = (int) (alpha / 255f * Color.alpha(color));
+    return ColorUtils.setAlphaComponent(color, compositeAlpha);
   }
 
   private boolean shouldAnimateVisibilityChange() {

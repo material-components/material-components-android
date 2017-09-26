@@ -26,6 +26,7 @@
     <item name="hoveredFocusedTranslationZ">@dimen/design_fab_translation_z_hovered_focused</item>
     <item name="pressedTranslationZ">@dimen/design_fab_translation_z_pressed</item>
     <item name="rippleColor">?attr/colorControlHighlight</item>
+    <item name="rippleAlpha">#ff000000</item>
     <item name="borderWidth">@dimen/design_fab_border_width</item>
     <item name="maxImageSize">@dimen/design_fab_image_size</item>
   </style>
@@ -165,6 +166,8 @@
     <item name="elevation">@dimen/mtrl_fab_elevation</item>
     <item name="hoveredFocusedTranslationZ">@dimen/mtrl_fab_translation_z_hovered_focused</item>
     <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
+    <item name="rippleColor">@android:color/white</item>
+    <item name="rippleAlpha">@color/mtrl_fab_ripple_alpha</item>
   </style>
 
 </resources>

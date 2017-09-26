@@ -139,7 +139,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Nullable private PorterDuff.Mode imageMode;
 
   private int mBorderWidth;
-  private int mRippleColor;
+  @ColorInt private int mRippleColor;
+  private ColorStateList mRippleAlphaStateList;
   private int mSize;
   int mImagePadding;
   private int mMaxImageSize;
@@ -177,6 +178,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         ViewUtils.parseTintMode(
             a.getInt(R.styleable.FloatingActionButton_backgroundTintMode, -1), null);
     mRippleColor = a.getColor(R.styleable.FloatingActionButton_rippleColor, 0);
+    mRippleAlphaStateList = a.getColorStateList(R.styleable.FloatingActionButton_rippleAlpha);
     mSize = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_AUTO);
     mBorderWidth = a.getDimensionPixelSize(R.styleable.FloatingActionButton_borderWidth, 0);
     final float elevation = a.getDimension(R.styleable.FloatingActionButton_elevation, 0f);
@@ -194,7 +196,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
     getImpl()
-        .setBackgroundDrawable(mBackgroundTint, mBackgroundTintMode, mRippleColor, mBorderWidth);
+        .setBackgroundDrawable(
+            mBackgroundTint,
+            mBackgroundTintMode,
+            mRippleColor,
+            mRippleAlphaStateList,
+            mBorderWidth);
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
     getImpl().setPressedTranslationZ(pressedTranslationZ);
@@ -244,7 +251,31 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public void setRippleColor(@ColorInt int color) {
     if (mRippleColor != color) {
       mRippleColor = color;
-      getImpl().setRippleColor(color);
+      getImpl().setRippleColor(mRippleColor, mRippleAlphaStateList);
+    }
+  }
+
+  /**
+   * Returns the ripple alpha for this button.
+   *
+   * @return the alpha used for the ripple. Only the alpha bits in each color are valid.
+   * @see #setRippleAlpha(ColorStateList)
+   */
+  public ColorStateList getRippleAlpha() {
+    return mRippleAlphaStateList;
+  }
+
+  /**
+   * Sets the ripple alpha for this button.
+   *
+   * @param alpha alpha to use for the ripple. Only the alpha bits in each color are valid.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_rippleAlpha
+   * @see #getRippleAlpha()
+   */
+  public void setRippleAlpha(ColorStateList alpha) {
+    if (mRippleAlphaStateList != alpha) {
+      mRippleAlphaStateList = alpha;
+      getImpl().setRippleColor(mRippleColor, mRippleAlphaStateList);
     }
   }
 

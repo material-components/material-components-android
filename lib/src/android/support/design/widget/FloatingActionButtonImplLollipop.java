@@ -30,6 +30,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -52,6 +53,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
       ColorStateList backgroundTint,
       PorterDuff.Mode backgroundTintMode,
       int rippleColor,
+      ColorStateList rippleAlpha,
       int borderWidth) {
     // Now we need to tint the shape background with the tint
     mShapeDrawable = DrawableCompat.wrap(createShapeDrawable());
@@ -69,7 +71,9 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
       rippleContent = mShapeDrawable;
     }
 
-    mRippleDrawable = new RippleDrawable(ColorStateList.valueOf(rippleColor), rippleContent, null);
+    mRippleDrawable =
+        new RippleDrawable(
+            compositeRippleColorStateList(rippleColor, rippleAlpha), rippleContent, null);
 
     mContentBackground = mRippleDrawable;
 
@@ -77,12 +81,20 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void setRippleColor(int rippleColor) {
+  void setRippleColor(@ColorInt int rippleColor, ColorStateList rippleAlpha) {
     if (mRippleDrawable instanceof RippleDrawable) {
-      ((RippleDrawable) mRippleDrawable).setColor(ColorStateList.valueOf(rippleColor));
+      ((RippleDrawable) mRippleDrawable)
+          .setColor(compositeRippleColorStateList(rippleColor, rippleAlpha));
     } else {
-      super.setRippleColor(rippleColor);
+      super.setRippleColor(rippleColor, rippleAlpha);
     }
+  }
+
+  @Override
+  protected int compositeRippleColor(int color, int alpha) {
+    // On API 21+, the framework composites a ripple color onto the display at about 50% opacity.
+    // Since we are providing precise ripple colors, cancel that out by doubling the opacity here.
+    return super.compositeRippleColor(color, Math.min(2 * alpha, 255));
   }
 
   @Override

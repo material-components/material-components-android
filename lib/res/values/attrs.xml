@@ -64,6 +64,10 @@
 
     <!-- Ripple color for the FAB. -->
     <attr name="rippleColor" format="color"/>
+    <!-- Ripple alpha for the FAB. This may be a color state list, if the desired ripple alpha
+         should be stateful. -->
+    <attr name="rippleAlpha" format="color"/>
+
     <!-- Size for the FAB. -->
     <attr name="fabSize">
       <!-- A size which will change based on the window size. -->
