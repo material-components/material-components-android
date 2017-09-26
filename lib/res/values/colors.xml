@@ -45,15 +45,12 @@
 
   <color name="design_bottom_navigation_shadow_color">#14000000</color>
 
-  <color name="mtrl_btn_bg_color_pressed">#5e5e5e</color>
   <!-- 12% opacity black background color -->
   <color name="mtrl_btn_bg_color_disabled">#1F000000</color>
-  <color name="mtrl_btn_stroke_color">#191919</color>
-  <color name="mtrl_btn_stroke_color_disabled">@color/mtrl_btn_text_color_disabled</color>
   <!-- 38% opacity black text color -->
   <color name="mtrl_btn_text_color_disabled">#61000000</color>
-  <!-- 30% opacity black container fill -->
-  <color name="mtrl_text_btn_bg_color_pressed">#48191919</color>
+  <!-- 0% opacity white container fill -->
+  <color name="mtrl_btn_transparent_bg_color">#00ffffff</color>
 
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
