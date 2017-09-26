@@ -210,6 +210,29 @@ public class TestUtilsActions {
     };
   }
 
+  /**
+   * Dummy Espresso action that waits for at least the given amount of milliseconds. This action can
+   * be performed on the root view to wait for an ongoing animation to be completed.
+   */
+  public static ViewAction waitFor(final long ms) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isRoot();
+      }
+
+      @Override
+      public String getDescription() {
+        return "wait for " + ms + " ms";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadForAtLeast(ms);
+      }
+    };
+  }
+
   public static ViewAction setEnabled(final boolean enabled) {
     return new ViewAction() {
       @Override
@@ -227,6 +250,29 @@ public class TestUtilsActions {
         uiController.loopMainThreadUntilIdle();
 
         view.setEnabled(enabled);
+
+        uiController.loopMainThreadUntilIdle();
+      }
+    };
+  }
+
+  public static ViewAction setPressed(final boolean pressed) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "set pressed";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        uiController.loopMainThreadUntilIdle();
+
+        view.setPressed(pressed);
 
         uiController.loopMainThreadUntilIdle();
       }

@@ -28,7 +28,10 @@ import static android.support.design.testutils.FloatingActionButtonActions.showT
 import static android.support.design.testutils.TestUtilsActions.setClickable;
 import static android.support.design.testutils.TestUtilsActions.setEnabled;
 import static android.support.design.testutils.TestUtilsActions.setExpanded;
+import static android.support.design.testutils.TestUtilsActions.setPressed;
 import static android.support.design.testutils.TestUtilsActions.setSelected;
+import static android.support.design.testutils.TestUtilsActions.waitFor;
+import static android.support.design.testutils.TestUtilsMatchers.hasTranslationZ;
 import static android.support.design.testutils.TestUtilsMatchers.isExpanded;
 import static android.support.design.testutils.TestUtilsMatchers.isPressed;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
@@ -38,6 +41,7 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.not;
 import static org.mockito.Mockito.mock;
@@ -271,6 +275,15 @@ public class FloatingActionButtonTest {
   @SmallTest
   public void testSetCompatElevation() {
     onView(withId(R.id.fab_standard)).perform(setEnabled(false)).perform(setCompatElevation(0));
+  }
+
+  @Test
+  @MediumTest
+  public void testElevationOnPressed() {
+    onView(withId(R.id.fab_standard)).perform(setPressed(true));
+    // It's unclear why the 21+ state list animator is not affected by loopMainThreadUntilIdle().
+    onView(isRoot()).perform(waitFor(1000));
+    onView(withId(R.id.fab_standard)).check(matches(hasTranslationZ()));
   }
 
   @Test

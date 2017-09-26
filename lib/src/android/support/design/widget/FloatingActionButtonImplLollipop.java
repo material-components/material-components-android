@@ -29,6 +29,7 @@ import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -89,22 +90,10 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
       final float elevation,
       final float hoveredFocusedTranslationZ,
       final float pressedTranslationZ) {
-    if (Build.VERSION.SDK_INT == 21) {
-      // Animations produce NPE in version 21. Bluntly set the values instead (matching the
-      // logic in the animations below).
-      if (mView.isEnabled()) {
-        mView.setElevation(elevation);
-        if (mView.isPressed()) {
-          mView.setTranslationZ(pressedTranslationZ);
-        } else if (mView.isFocused() || mView.isHovered()) {
-          mView.setTranslationZ(hoveredFocusedTranslationZ);
-        } else {
-          mView.setTranslationZ(0);
-        }
-      } else {
-        mView.setElevation(0);
-        mView.setTranslationZ(0);
-      }
+    if (Build.VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
+      // Animations produce NPE in version 21. Bluntly set the values instead in
+      // #onDrawableStateChanged (matching the logic in the animations below).
+      mView.refreshDrawableState();
     } else {
       final StateListAnimator stateListAnimator = new StateListAnimator();
 
@@ -187,7 +176,22 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
   @Override
   void onDrawableStateChanged(int[] state) {
-    // no-op
+    if (Build.VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
+      if (mView.isEnabled()) {
+        mView.setElevation(mElevation);
+        if (mView.isPressed()) {
+          mView.setTranslationZ(mPressedTranslationZ);
+        } else if (mView.isFocused() || mView.isHovered()) {
+          mView.setTranslationZ(mHoveredFocusedTranslationZ);
+        } else {
+          mView.setTranslationZ(0);
+        }
+      } else {
+        mView.setElevation(0);
+        mView.setTranslationZ(0);
+      }
+    }
+    ;
   }
 
   @Override

@@ -489,6 +489,23 @@ public class TestUtilsMatchers {
       }
     };
   }
+  /**
+   * Returns a matcher that matches views which have a translationZ-value greater than 0. Also
+   * matches if the platform we're running on does not support translationZ-values.
+   */
+  public static Matcher<View> hasTranslationZ() {
+    return new TypeSafeMatcher<View>() {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("has a translationZ value greater than 0");
+      }
+
+      @Override
+      public boolean matchesSafely(View view) {
+        return Build.VERSION.SDK_INT < 21 || ViewCompat.getTranslationZ(view) > 0f;
+      }
+    };
+  }
 
   /** Returns a matcher that matches TextViews with the specified typeface. */
   public static Matcher withTypeface(@NonNull final Typeface typeface) {
