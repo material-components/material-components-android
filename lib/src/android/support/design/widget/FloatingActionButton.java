@@ -22,6 +22,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
@@ -41,8 +42,11 @@ import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import android.support.design.widget.expandable.ExpandableTransformationWidget;
 import android.support.design.widget.expandable.ExpandableWidgetHelper;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.TintableBackgroundView;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.TintableImageSourceView;
+import android.support.v7.widget.AppCompatDrawableManager;
 import android.support.v7.widget.AppCompatImageHelper;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -72,7 +76,7 @@ import java.util.List;
  */
 @CoordinatorLayout.DefaultBehavior(FloatingActionButton.Behavior.class)
 public class FloatingActionButton extends VisibilityAwareImageButton
-    implements TintableBackgroundView, ExpandableTransformationWidget {
+    implements TintableBackgroundView, TintableImageSourceView, ExpandableTransformationWidget {
 
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
@@ -131,6 +135,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   private ColorStateList mBackgroundTint;
   private PorterDuff.Mode mBackgroundTintMode;
+  @Nullable private ColorStateList imageTint;
+  @Nullable private PorterDuff.Mode imageMode;
 
   private int mBorderWidth;
   private int mRippleColor;
@@ -331,6 +337,56 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Override
   public Mode getSupportBackgroundTintMode() {
     return getBackgroundTintMode();
+  }
+
+  @Override
+  public void setSupportImageTintList(@Nullable ColorStateList tint) {
+    if (imageTint != tint) {
+      imageTint = tint;
+      onApplySupportImageTint();
+    }
+  }
+
+  @Nullable
+  @Override
+  public ColorStateList getSupportImageTintList() {
+    return imageTint;
+  }
+
+  @Override
+  public void setSupportImageTintMode(@Nullable Mode tintMode) {
+    if (imageMode != tintMode) {
+      imageMode = tintMode;
+      onApplySupportImageTint();
+    }
+  }
+
+  @Nullable
+  @Override
+  public Mode getSupportImageTintMode() {
+    return imageMode;
+  }
+
+  private void onApplySupportImageTint() {
+    Drawable drawable = getDrawable();
+    if (drawable == null) {
+      return;
+    }
+
+    if (imageTint == null) {
+      DrawableCompat.clearColorFilter(drawable);
+      return;
+    }
+
+    int color = imageTint.getColorForState(getDrawableState(), Color.TRANSPARENT);
+    Mode mode = imageMode;
+    if (mode == null) {
+      mode = Mode.SRC_IN;
+    }
+
+    drawable
+        .mutate()
+        .setColorFilter(AppCompatDrawableManager.getPorterDuffColorFilter(color, mode));
   }
 
   @Override
