@@ -245,6 +245,9 @@ public class TextInputLayout extends LinearLayout {
     mBoxPaddingBottomPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingBottom, 0);
 
+    mBoxStrokeColor =
+        getColorStateListResourceCompat(context, a, R.styleable.TextInputLayout_boxStrokeColor);
+
     @BoxBackgroundMode
     final int boxBackgroundMode =
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
@@ -416,6 +419,43 @@ public class TextInputLayout extends LinearLayout {
    */
   public int getBoxPaddingBottom() {
     return mBoxPaddingBottomPx;
+  }
+
+  private ColorStateList getColorStateListResourceCompat(
+      Context context, TintTypedArray a, int colorStateListIndex) {
+    if (a.hasValue(colorStateListIndex)) {
+      int resourceId = a.getResourceId(colorStateListIndex, 0);
+      if (resourceId != 0) {
+        return AppCompatResources.getColorStateList(context, resourceId);
+      }
+    }
+    return a.getColorStateList(colorStateListIndex);
+  }
+
+  /**
+   * Set the outline box's stroke color.
+   *
+   * <p>Calling this method when not in outline box mode will do nothing.
+   *
+   * @param boxStrokeColor the color to use for the box's stroke
+   * @see #getBoxStrokeColor()
+   */
+  public void setBoxStrokeColor(ColorStateList boxStrokeColor) {
+    if (mBoxStrokeColor != boxStrokeColor) {
+      mBoxStrokeColor = boxStrokeColor;
+      invalidate();
+    }
+  }
+
+  /**
+   * Returns the box's stroke color, or null if there is none set.
+   *
+   * @return the color used for the box's stroke
+   * @see #setBoxStrokeColor(ColorStateList)
+   */
+  @Nullable
+  public ColorStateList getBoxStrokeColor() {
+    return mBoxStrokeColor;
   }
 
   /**
@@ -975,7 +1015,9 @@ public class TextInputLayout extends LinearLayout {
 
       case BOX_BACKGROUND_OUTLINE:
         mBoxCornerRadius = 16f;
-        mBoxStrokeColor = mFocusedTextColor;
+        if (mBoxStrokeColor == null) {
+          mBoxStrokeColor = mFocusedTextColor;
+        }
         mBoxBackgroundColor = null;
         mBoxStrokeWidth = 7;
         break;
@@ -1241,7 +1283,7 @@ public class TextInputLayout extends LinearLayout {
 
   @Override
   public void draw(Canvas canvas) {
-    updateTextInputBoxBounds();
+    applyBoxAttributes();
     super.draw(canvas);
 
     if (mHintEnabled) {

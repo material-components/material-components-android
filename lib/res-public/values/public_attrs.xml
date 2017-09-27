@@ -29,6 +29,7 @@
   <public name="boxPaddingTop" type="attr"/>
   <public name="boxPaddingRight" type="attr"/>
   <public name="boxPaddingBottom" type="attr"/>
+  <public name="boxStrokeColor" type="attr"/>
   <public name="collapsedTitleGravity" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
   <public name="contentScrim" type="attr"/>

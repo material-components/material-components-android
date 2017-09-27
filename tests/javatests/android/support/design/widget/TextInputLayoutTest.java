@@ -21,6 +21,7 @@ import static android.support.design.testutils.TestUtilsActions.setEnabled;
 import static android.support.design.testutils.TestUtilsMatchers.withCompoundDrawable;
 import static android.support.design.testutils.TestUtilsMatchers.withTextColor;
 import static android.support.design.testutils.TestUtilsMatchers.withTypeface;
+import static android.support.design.testutils.TextInputLayoutActions.setBoxStrokeColor;
 import static android.support.design.testutils.TextInputLayoutActions.setCounterEnabled;
 import static android.support.design.testutils.TextInputLayoutActions.setCounterMaxLength;
 import static android.support.design.testutils.TextInputLayoutActions.setError;
@@ -53,6 +54,7 @@ import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -511,12 +513,37 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_with_text)).check(isHintExpanded(false));
   }
 
+  @Test
+  public void testOutlineBoxStrokeChangesColor() {
+    ColorStateList cyan = ColorStateList.valueOf(Color.CYAN);
+    ColorStateList green = ColorStateList.valueOf(Color.GREEN);
+
+    // Change the outline box's stroke color to cyan.
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeColor(cyan));
+    // Check that the outline box's stroke color is cyan.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxStrokeColor(cyan));
+    // Change the outline box's stroke color to green.
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeColor(green));
+    // Check that the outline box's stroke color is green.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxStrokeColor(green));
+  }
+
   private static ViewAssertion isHintExpanded(final boolean expanded) {
     return new ViewAssertion() {
       @Override
       public void check(View view, NoMatchingViewException noViewFoundException) {
         assertTrue(view instanceof TextInputLayout);
         assertEquals(expanded, ((TextInputLayout) view).isHintExpanded());
+      }
+    };
+  }
+
+  private static ViewAssertion isBoxStrokeColor(final ColorStateList colorStateList) {
+    return new ViewAssertion() {
+      @Override
+      public void check(View view, NoMatchingViewException noViewFoundException) {
+        assertTrue(view instanceof TextInputLayout);
+        assertEquals(colorStateList, ((TextInputLayout) view).getBoxStrokeColor());
       }
     };
   }

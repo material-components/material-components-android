@@ -246,8 +246,10 @@
     <attr name="boxPaddingRight" format="dimension"/>
     <!-- Value to use for the EditText's bottom padding in box mode. -->
     <attr name="boxPaddingBottom" format="dimension"/>
-
+    <!-- The color to use for the box's stroke when in outline box mode. -->
+    <attr name="boxStrokeColor" format="color"/>
   </declare-styleable>
+
   <declare-styleable name="SnackbarLayout">
     <attr name="android:maxWidth"/>
     <attr name="elevation"/>

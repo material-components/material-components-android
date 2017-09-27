@@ -94,6 +94,7 @@
 
   <style name="Widget.Design.TextInputLayout.Box.Outline">
     <item name="boxBackgroundMode">outline</item>
+    <item name="boxStrokeColor">?attr/colorControlActivated</item>
   </style>
 
   <style name="TextAppearance.Design.HelperText" parent="TextAppearance.AppCompat.Caption"/>
