@@ -30,6 +30,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
@@ -964,6 +965,88 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   public void setCompatElevation(float elevation) {
     getImpl().setElevation(elevation);
+  }
+
+  /**
+   * Updates the backward compatible elevation of the FloatingActionButton.
+   *
+   * @param id The resource id of the backward compatible elevation.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_elevation
+   * @see #getCompatElevation()
+   * @see #setUseCompatPadding(boolean)
+   */
+  public void setCompatElevationResource(@DimenRes int id) {
+    setCompatElevation(getResources().getDimension(id));
+  }
+
+  /**
+   * Returns the backward compatible hovered/focused translationZ of the FloatingActionButton.
+   *
+   * @return the backward compatible hovered/focused translationZ in pixels.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
+   * @see #setCompatHoveredFocusedTranslationZ(float)
+   */
+  public float getCompatHoveredFocusedTranslationZ() {
+    return getImpl().getHoveredFocusedTranslationZ();
+  }
+
+  /**
+   * Updates the backward compatible hovered/focused translationZ of the FloatingActionButton.
+   *
+   * @param translationZ The backward compatible hovered/focused translationZ in pixels.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
+   * @see #getCompatHoveredFocusedTranslationZ()
+   * @see #setUseCompatPadding(boolean)
+   */
+  public void setCompatHoveredFocusedTranslationZ(float translationZ) {
+    getImpl().setHoveredFocusedTranslationZ(translationZ);
+  }
+
+  /**
+   * Updates the backward compatible hovered/focused translationZ of the FloatingActionButton.
+   *
+   * @param id The resource id of the backward compatible hovered/focused translationZ.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_hoveredFocusedTranslationZ
+   * @see #getCompatHoveredFocusedTranslationZ()
+   * @see #setUseCompatPadding(boolean)
+   */
+  public void setCompatHoveredFocusedTranslationZResource(@DimenRes int id) {
+    setCompatHoveredFocusedTranslationZ(getResources().getDimension(id));
+  }
+
+  /**
+   * Returns the backward compatible pressed translationZ of the FloatingActionButton.
+   *
+   * @return the backward compatible pressed translationZ in pixels.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_pressedTranslationZ
+   * @see #setCompatPressedTranslationZ(float)
+   */
+  public float getCompatPressedTranslationZ() {
+    return getImpl().getPressedTranslationZ();
+  }
+
+  /**
+   * Updates the backward compatible pressed translationZ of the FloatingActionButton.
+   *
+   * @param translationZ The backward compatible pressed translationZ in pixels.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_pressedTranslationZ
+   * @see #getCompatPressedTranslationZ()
+   * @see #setUseCompatPadding(boolean)
+   */
+  public void setCompatPressedTranslationZ(float translationZ) {
+    getImpl().setPressedTranslationZ(translationZ);
+  }
+
+  /**
+   * Updates the backward compatible pressed translationZ of the FloatingActionButton.
+   *
+   * @param id The resource id of the backward compatible pressed translationZ.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_pressedTranslationZ
+   * @see #getCompatPressedTranslationZ()
+   * @see #setUseCompatPadding(boolean)
+   */
+  public void setCompatPressedTranslationZResource(@DimenRes int id) {
+    setCompatPressedTranslationZ(getResources().getDimension(id));
   }
 
   private FloatingActionButtonImpl getImpl() {

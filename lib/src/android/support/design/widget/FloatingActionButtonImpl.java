@@ -197,12 +197,20 @@ class FloatingActionButtonImpl {
   final void setElevation(float elevation) {
     if (mElevation != elevation) {
       mElevation = elevation;
-      onElevationsChanged(elevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
+      onElevationsChanged(mElevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
     }
   }
 
   float getElevation() {
     return mElevation;
+  }
+
+  float getHoveredFocusedTranslationZ() {
+    return mHoveredFocusedTranslationZ;
+  }
+
+  float getPressedTranslationZ() {
+    return mPressedTranslationZ;
   }
 
   final void setHoveredFocusedTranslationZ(float translationZ) {
