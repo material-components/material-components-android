@@ -110,7 +110,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   @Override
   protected AnimatorSet onCreateExpandedStateChangeAnimation(
       final View dependency, final View child, final boolean expanded, boolean isAnimating) {
-    FabTransformationSpec spec = onCreateMotionSpec(dependency, child, expanded);
+    FabTransformationSpec spec = onCreateMotionSpec(child.getContext(), expanded);
 
     List<Animator> animations = new ArrayList<>();
     List<AnimatorListener> listeners = new ArrayList<>();
@@ -186,8 +186,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     animations.add(0, fix);
   }
 
-  protected abstract FabTransformationSpec onCreateMotionSpec(
-      View dependency, View child, boolean expanded);
+  protected abstract FabTransformationSpec onCreateMotionSpec(Context context, boolean expanded);
 
   @TargetApi(VERSION_CODES.LOLLIPOP)
   private void createElevationAnimation(

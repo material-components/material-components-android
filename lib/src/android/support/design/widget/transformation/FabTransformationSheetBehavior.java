@@ -24,7 +24,6 @@ import android.support.design.animation.TranslationTiming;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
-import android.view.View;
 
 /**
  * Behavior that should be attached to any sheet that should appear when a {@link
@@ -42,8 +41,7 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
   }
 
   @Override
-  protected FabTransformationSpec onCreateMotionSpec(
-      View dependency, View child, boolean expanded) {
+  protected FabTransformationSpec onCreateMotionSpec(Context context, boolean expanded) {
     if (expanded) {
       FabTransformationSpec expandSpec = new FabTransformationSpec();
       expandSpec.totalDuration = 345;
