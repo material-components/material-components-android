@@ -23,6 +23,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.Typeface;
@@ -165,6 +166,7 @@ public class TextInputLayout extends LinearLayout {
   public static final int BOX_BACKGROUND_FILLED = 1;
   public static final int BOX_BACKGROUND_OUTLINE = 2;
 
+  private Paint mTmpPaint;
   private final Rect mTmpRect = new Rect();
   private Typeface mTypeface;
 
@@ -348,23 +350,17 @@ public class TextInputLayout extends LinearLayout {
   private void onApplyBoxBackgroundMode() {
     if (mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
       mBoxBackground = null;
+      return;
     }
 
     if (mBoxBackground == null) {
       mBoxBackground = new GradientDrawable();
-    }
-
-    if (mBoxBackgroundMode != BOX_BACKGROUND_NONE) {
-      updateInputLayoutMargins();
     }
     updateTextInputBoxBounds();
     setEditTextBoxPadding();
   }
 
   private void setEditTextBoxPadding() {
-    if (mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
-      return;
-    }
     // Set box padding on the edit text.
     if (mEditText != null) {
       mEditText.setPadding(
@@ -568,7 +564,12 @@ public class TextInputLayout extends LinearLayout {
     final int newTopMargin;
 
     if (mHintEnabled) {
-      newTopMargin = (int) mCollapsingTextHelper.getCollapsedTextHeight();
+      if (mTmpPaint == null) {
+        mTmpPaint = new Paint();
+      }
+      mTmpPaint.setTypeface(mCollapsingTextHelper.getCollapsedTypeface());
+      mTmpPaint.setTextSize(mCollapsingTextHelper.getCollapsedTextSize());
+      newTopMargin = (int) -mTmpPaint.ascent();
     } else {
       newTopMargin = 0;
     }
@@ -965,10 +966,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void updateTextInputBoxBounds() {
-    if (mBoxBackgroundMode == BOX_BACKGROUND_NONE
-        || mBoxBackground == null
-        || mEditText == null
-        || getRight() == 0) {
+    if (mBoxBackground == null || mEditText == null || getRight() == 0) {
       return;
     }
 
