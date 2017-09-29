@@ -99,6 +99,7 @@ final class CollapsingTextHelper {
   private boolean mBoundsChanged;
 
   private final TextPaint mTextPaint;
+  private final TextPaint mTmpPaint;
 
   private TimeInterpolator mPositionInterpolator;
   private TimeInterpolator mTextSizeInterpolator;
@@ -117,6 +118,7 @@ final class CollapsingTextHelper {
     mView = view;
 
     mTextPaint = new TextPaint(Paint.ANTI_ALIAS_FLAG | Paint.SUBPIXEL_TEXT_FLAG);
+    mTmpPaint = new TextPaint(mTextPaint);
 
     mCollapsedBounds = new Rect();
     mExpandedBounds = new Rect();
@@ -175,6 +177,31 @@ final class CollapsingTextHelper {
       mBoundsChanged = true;
       onBoundsChanged();
     }
+  }
+
+  float calculateCollapsedTextWidth() {
+    if (mTextToDraw == null) {
+      return 0;
+    }
+    getTextPaintCollapsed(mTmpPaint);
+    return mTmpPaint.measureText(mTextToDraw, 0, mTextToDraw.length());
+  }
+
+  float getCollapsedTextHeight() {
+    getTextPaintCollapsed(mTmpPaint);
+    return mTmpPaint.descent() - mTmpPaint.ascent();
+  }
+
+  void getCollapsedTextActualBounds(RectF bounds) {
+    bounds.left = mCollapsedBounds.left;
+    bounds.top = mCollapsedBounds.top;
+    bounds.right = bounds.left + calculateCollapsedTextWidth();
+    bounds.bottom = mCollapsedBounds.top + getCollapsedTextHeight();
+  }
+
+  private void getTextPaintCollapsed(TextPaint textPaint) {
+    textPaint.setTextSize(mCollapsedTextSize);
+    textPaint.setTypeface(mCollapsedTypeface);
   }
 
   void onBoundsChanged() {
