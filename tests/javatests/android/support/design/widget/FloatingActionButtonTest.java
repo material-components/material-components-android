@@ -205,7 +205,7 @@ public class FloatingActionButtonTest {
   public void testHideShow() {
     onView(withId(R.id.fab_standard))
         .perform(setVisibility(View.VISIBLE))
-        .perform(hideThenShow(FloatingActionButtonImpl.SHOW_HIDE_ANIM_DURATION))
+        .perform(hideThenShow())
         .check(matches(isDisplayed()));
   }
 
@@ -214,7 +214,7 @@ public class FloatingActionButtonTest {
   public void testShowHide() {
     onView(withId(R.id.fab_standard))
         .perform(setVisibility(View.GONE))
-        .perform(showThenHide(FloatingActionButtonImpl.SHOW_HIDE_ANIM_DURATION))
+        .perform(showThenHide())
         .check(matches(not(isDisplayed())));
   }
 
