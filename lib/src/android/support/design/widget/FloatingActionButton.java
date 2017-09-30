@@ -206,6 +206,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
     getImpl().setPressedTranslationZ(pressedTranslationZ);
+    getImpl().setMaxImageSize(mMaxImageSize);
+
+    setScaleType(ScaleType.MATRIX);
   }
 
   @Override
@@ -702,6 +705,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         // No choice. Do what we are told.
         result = specSize;
         break;
+      default:
+        throw new IllegalArgumentException();
     }
     return result;
   }

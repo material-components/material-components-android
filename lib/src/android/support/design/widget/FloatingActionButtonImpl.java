@@ -23,8 +23,11 @@ import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
+import android.graphics.Matrix;
+import android.graphics.Matrix.ScaleToFit;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -69,6 +72,8 @@ class FloatingActionButtonImpl {
   float mHoveredFocusedTranslationZ;
   float mPressedTranslationZ;
 
+  int maxImageSize;
+
   interface InternalVisibilityChangedListener {
     void onShown();
 
@@ -96,6 +101,10 @@ class FloatingActionButtonImpl {
   final ShadowViewDelegate mShadowViewDelegate;
 
   private final Rect mTmpRect = new Rect();
+  private final RectF mTmpRectF1 = new RectF();
+  private final RectF mTmpRectF2 = new RectF();
+  private final Matrix tmpMatrix = new Matrix();
+
   private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
 
   FloatingActionButtonImpl(VisibilityAwareImageButton view, ShadowViewDelegate shadowViewDelegate) {
@@ -224,6 +233,37 @@ class FloatingActionButtonImpl {
     if (mPressedTranslationZ != translationZ) {
       mPressedTranslationZ = translationZ;
       onElevationsChanged(mElevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
+    }
+  }
+
+  final void setMaxImageSize(int maxImageSize) {
+    if (this.maxImageSize != maxImageSize) {
+      this.maxImageSize = maxImageSize;
+
+      setImageMatrixScale(1f);
+    }
+  }
+
+  private void setImageMatrixScale(float scale) {
+    Matrix matrix = tmpMatrix;
+    getImageMatrixForScale(scale, matrix);
+    mView.setImageMatrix(matrix);
+  }
+
+  private void getImageMatrixForScale(float scale, Matrix matrix) {
+    matrix.reset();
+
+    Drawable drawable = mView.getDrawable();
+    if (drawable != null) {
+      // First make sure our image respects mMaxImageSize.
+      RectF drawableBounds = mTmpRectF1;
+      RectF viewBounds = mTmpRectF2;
+      drawableBounds.set(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
+      viewBounds.set(0, 0, maxImageSize, maxImageSize);
+      matrix.setRectToRect(drawableBounds, viewBounds, ScaleToFit.CENTER);
+
+      // Then scale it as requested.
+      matrix.postScale(scale, scale, maxImageSize / 2f, maxImageSize / 2f);
     }
   }
 
