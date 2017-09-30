@@ -32,6 +32,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
+import android.support.design.animation.AnimatorSetCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.Space;
 import android.support.v4.widget.TextViewCompat;
@@ -213,7 +214,7 @@ final class IndicatorViewController {
           captionToHide,
           captionToShow);
 
-      captionAnimator.playTogether(captionAnimatorList);
+      AnimatorSetCompat.playTogether(captionAnimator, captionAnimatorList);
       final TextView captionViewToHide = getCaptionViewFromDisplayState(captionToHide);
       final TextView captionViewToShow = getCaptionViewFromDisplayState(captionToShow);
 

@@ -39,6 +39,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.design.animation.AnimatorSetCompat;
 import android.support.design.animation.ArgbEvaluatorCompat;
 import android.support.design.animation.ChildrenAlphaProperty;
 import android.support.design.animation.DrawableAlphaProperty;
@@ -141,10 +142,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     createChildrenFadeAnimation(
         dependency, child, expanded, isAnimating, spec, animations, listeners);
 
-    createAnimatorSetWorkaroundAnimation(animations);
-
     AnimatorSet set = new AnimatorSet();
-    set.playTogether(animations);
+    AnimatorSetCompat.playTogether(set, animations);
     set.addListener(
         new AnimatorListenerAdapter() {
           @Override
@@ -171,19 +170,6 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       set.addListener(listeners.get(i));
     }
     return set;
-  }
-
-  private void createAnimatorSetWorkaroundAnimation(List<Animator> animations) {
-    // Fix for pre-M bug where animators with start delay are not played correctly in an
-    // AnimatorSet.
-    long totalDuration = 0;
-    for (int i = 0, count = animations.size(); i < count; i++) {
-      Animator animator = animations.get(i);
-      totalDuration = Math.max(totalDuration, animator.getStartDelay() + animator.getDuration());
-    }
-    Animator fix = ValueAnimator.ofInt(0, 0);
-    fix.setDuration(totalDuration);
-    animations.add(0, fix);
   }
 
   protected abstract FabTransformationSpec onCreateMotionSpec(Context context, boolean expanded);
