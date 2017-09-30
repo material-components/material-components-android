@@ -21,16 +21,9 @@ import android.os.Build.VERSION_CODES;
 import android.util.Property;
 import java.util.WeakHashMap;
 
-/**
- * Compat property for {@link Drawable#getAlpha()} and {@link Drawable#setAlpha(int)} for pre-K
- * devices.
- */
+/** Compat property for {@link Drawable#getAlpha()} for pre-K devices. */
 public class DrawableAlphaProperty extends Property<Drawable, Integer> {
 
-  /**
-   * A compat Property wrapper around {@link Drawable#getAlpha()} and {@link
-   * Drawable#setAlpha(int)}.
-   */
   public static final Property<Drawable, Integer> DRAWABLE_ALPHA_COMPAT =
       new DrawableAlphaProperty();
 

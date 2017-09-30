@@ -89,10 +89,6 @@
     <attr name="useCompatPadding" format="boolean"/>
     <!-- Maximum icon image size. -->
     <attr name="maxImageSize" format="dimension"/>
-    <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
-    <attr name="showMotionSpec" format="reference"/>
-    <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
-    <attr name="hideMotionSpec" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="FloatingActionButton_Behavior_Layout">
