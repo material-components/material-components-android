@@ -42,9 +42,9 @@ import android.support.design.R;
 import android.support.design.animation.ArgbEvaluatorCompat;
 import android.support.design.animation.ChildrenAlphaProperty;
 import android.support.design.animation.DrawableAlphaProperty;
+import android.support.design.animation.MotionSpec;
 import android.support.design.animation.MotionTiming;
 import android.support.design.animation.Positioning;
-import android.support.design.animation.TranslationTiming;
 import android.support.design.circularreveal.CircularRevealCompat;
 import android.support.design.circularreveal.CircularRevealHelper;
 import android.support.design.circularreveal.CircularRevealWidget;
@@ -209,7 +209,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_Z, -translationZ);
     }
 
-    spec.elevation.apply(animator);
+    MotionTiming timing = spec.timings.getTiming("elevation");
+    timing.apply(animator);
     animations.add(animator);
   }
 
@@ -232,16 +233,16 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     MotionTiming translationYTiming;
     if (translationX == 0 || translationY == 0) {
       // Horizontal or vertical motion.
-      translationXTiming = spec.translationX.linear;
-      translationYTiming = spec.translationY.linear;
+      translationXTiming = spec.timings.getTiming("translationXLinear");
+      translationYTiming = spec.timings.getTiming("translationYLinear");
     } else if ((expanded && translationY < 0) || (!expanded && translationY > 0)) {
       // Upwards motion.
-      translationXTiming = spec.translationX.curveUpwards;
-      translationYTiming = spec.translationY.curveUpwards;
+      translationXTiming = spec.timings.getTiming("translationXCurveUpwards");
+      translationYTiming = spec.timings.getTiming("translationYCurveUpwards");
     } else {
       // Downwards motion.
-      translationXTiming = spec.translationX.curveDownwards;
-      translationYTiming = spec.translationY.curveDownwards;
+      translationXTiming = spec.timings.getTiming("translationXCurveDownwards");
+      translationYTiming = spec.timings.getTiming("translationYCurveDownwards");
     }
 
     if (expanded) {
@@ -310,7 +311,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
           }
         });
 
-    spec.iconFade.apply(animator);
+    MotionTiming timing = spec.timings.getTiming("iconFade");
+    timing.apply(animator);
     animations.add(animator);
     listeners.add(
         new AnimatorListenerAdapter() {
@@ -348,6 +350,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     float dependencyRadius = tmpRect.width() / 2f;
 
     Animator animator;
+    MotionTiming timing = spec.timings.getTiming("expansion");
 
     if (expanded) {
       if (!currentlyAnimating) {
@@ -375,13 +378,13 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
             }
           });
 
-        createPreFillRadialExpansion(
-            child,
-            spec.expansion.getDelay(),
-            (int) revealCenterX,
-            (int) revealCenterY,
-            fromRadius,
-            animations);
+      createPreFillRadialExpansion(
+          child,
+          timing.getDelay(),
+          (int) revealCenterX,
+          (int) revealCenterY,
+          fromRadius,
+          animations);
         // No need to post fill. In all cases, circular reveal radius is removed.
     } else {
       float fromRadius = circularRevealChild.getRevealInfo().radius;
@@ -390,25 +393,25 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
           CircularRevealCompat.createCircularReveal(
               circularRevealChild, revealCenterX, revealCenterY, toRadius);
 
-        createPreFillRadialExpansion(
-            child,
-            spec.expansion.getDelay(),
-            (int) revealCenterX,
-            (int) revealCenterY,
-            fromRadius,
-            animations);
-        createPostFillRadialExpansion(
-            child,
-            spec.expansion.getDelay(),
-            spec.expansion.getDuration(),
-            spec.totalDuration,
-            (int) revealCenterX,
-            (int) revealCenterY,
-            toRadius,
-            animations);
+      createPreFillRadialExpansion(
+          child,
+          timing.getDelay(),
+          (int) revealCenterX,
+          (int) revealCenterY,
+          fromRadius,
+          animations);
+      createPostFillRadialExpansion(
+          child,
+          timing.getDelay(),
+          timing.getDuration(),
+          spec.timings.getTotalDuration(),
+          (int) revealCenterX,
+          (int) revealCenterY,
+          toRadius,
+          animations);
     }
 
-    spec.expansion.apply(animator);
+    timing.apply(animator);
     animations.add(animator);
     listeners.add(CircularRevealCompat.createCircularRevealListener(circularRevealChild));
   }
@@ -448,7 +451,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     }
 
     animator.setEvaluator(ArgbEvaluatorCompat.getInstance());
-    spec.color.apply(animator);
+    MotionTiming timing = spec.timings.getTiming("color");
+    timing.apply(animator);
     animations.add(animator);
   }
 
@@ -487,7 +491,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
           ObjectAnimator.ofFloat(childContentContainer, ChildrenAlphaProperty.CHILDREN_ALPHA, 0f);
     }
 
-    spec.contentFade.apply(animator);
+    MotionTiming timing = spec.timings.getTiming("contentFade");
+    timing.apply(animator);
     animations.add(animator);
   }
 
@@ -617,7 +622,8 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     long duration = timing.getDuration();
 
     // Calculate at what time in the translation animation does the expansion animation end.
-    long expansionEnd = spec.expansion.getDelay() + spec.expansion.getDuration();
+    MotionTiming expansionTiming = spec.timings.getTiming("expansion");
+    long expansionEnd = expansionTiming.getDelay() + expansionTiming.getDuration();
     // Adjust one frame (16.6ms) for Android's draw pipeline.
     // A value set at frame N will be drawn at frame N+1.
     expansionEnd += 17;
@@ -715,15 +721,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
   /** Motion spec for a FAB transformation. */
   protected static class FabTransformationSpec {
-    public long totalDuration;
-    public MotionTiming elevation;
-    public TranslationTiming translationX;
-    public TranslationTiming translationY;
-    public MotionTiming iconFade;
-    public MotionTiming expansion;
-    public MotionTiming color;
-    public MotionTiming contentFade;
-
+    public MotionSpec timings;
     public Positioning positioning;
   }
 }

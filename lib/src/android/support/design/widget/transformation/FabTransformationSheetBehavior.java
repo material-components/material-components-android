@@ -15,12 +15,11 @@
  */
 package android.support.design.widget.transformation;
 
-import static android.support.design.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
-
 import android.content.Context;
-import android.support.design.animation.MotionTiming;
+import android.support.annotation.AnimatorRes;
+import android.support.design.R;
+import android.support.design.animation.MotionSpec;
 import android.support.design.animation.Positioning;
-import android.support.design.animation.TranslationTiming;
 import android.support.design.widget.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -42,40 +41,16 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
 
   @Override
   protected FabTransformationSpec onCreateMotionSpec(Context context, boolean expanded) {
+    @AnimatorRes int specRes;
     if (expanded) {
-      FabTransformationSpec expandSpec = new FabTransformationSpec();
-      expandSpec.totalDuration = 345;
-      expandSpec.elevation = new MotionTiming(0, 150);
-      expandSpec.translationX =
-          new TranslationTiming(
-              new MotionTiming(0, 345), new MotionTiming(0, 150), new MotionTiming(0, 345));
-      expandSpec.translationY =
-          new TranslationTiming(
-              new MotionTiming(0, 345), new MotionTiming(0, 345), new MotionTiming(0, 150));
-      expandSpec.iconFade = new MotionTiming(0, 120);
-      expandSpec.expansion = new MotionTiming(45, 255, FAST_OUT_SLOW_IN_INTERPOLATOR);
-      expandSpec.color = new MotionTiming(75, 75);
-      expandSpec.contentFade = new MotionTiming(150, 150);
-
-      expandSpec.positioning = new Positioning(Gravity.CENTER, 0f, 0f);
-      return expandSpec;
+      specRes = R.animator.mtrl_fab_transformation_sheet_expand_spec;
     } else {
-      FabTransformationSpec collapseSpec = new FabTransformationSpec();
-      collapseSpec.totalDuration = 300;
-      collapseSpec.elevation = new MotionTiming(150, 150);
-      collapseSpec.translationX =
-          new TranslationTiming(
-              new MotionTiming(0, 300), new MotionTiming(0, 255), new MotionTiming(45, 255));
-      collapseSpec.translationY =
-          new TranslationTiming(
-              new MotionTiming(0, 300), new MotionTiming(45, 255), new MotionTiming(0, 255));
-      collapseSpec.iconFade = new MotionTiming(150, 150);
-      collapseSpec.expansion = new MotionTiming(0, 180, FAST_OUT_SLOW_IN_INTERPOLATOR);
-      collapseSpec.color = new MotionTiming(60, 150);
-      collapseSpec.contentFade = new MotionTiming(0, 75);
-
-      collapseSpec.positioning = new Positioning(Gravity.CENTER, 0f, 0f);
-      return collapseSpec;
+      specRes = R.animator.mtrl_fab_transformation_sheet_collapse_spec;
     }
+
+    FabTransformationSpec spec = new FabTransformationSpec();
+    spec.timings = MotionSpec.inflate(context, specRes);
+    spec.positioning = new Positioning(Gravity.CENTER, 0f, 0f);
+    return spec;
   }
 }
