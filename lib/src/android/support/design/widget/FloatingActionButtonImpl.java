@@ -18,6 +18,8 @@ package android.support.design.widget;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
+import android.animation.ObjectAnimator;
 import android.animation.TimeInterpolator;
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -38,12 +40,18 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
+import android.support.design.animation.AnimatorSetCompat;
+import android.support.design.animation.ImageMatrixProperty;
+import android.support.design.animation.MatrixEvaluator;
+import android.support.design.animation.MotionSpec;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import java.util.ArrayList;
+import java.util.List;
 
 class FloatingActionButtonImpl {
   static final TimeInterpolator ELEVATION_ANIM_INTERPOLATOR =
@@ -55,7 +63,17 @@ class FloatingActionButtonImpl {
   static final int ANIM_STATE_HIDING = 1;
   static final int ANIM_STATE_SHOWING = 2;
 
+  private static final float HIDE_OPACITY = 0f;
+  private static final float HIDE_SCALE = 0f;
+  private static final float HIDE_ICON_SCALE = 0f;
+  private static final float SHOW_OPACITY = 1f;
+  private static final float SHOW_SCALE = 1f;
+  private static final float SHOW_ICON_SCALE = 1f;
+
   int mAnimState = ANIM_STATE_NONE;
+  @Nullable Animator currentAnimator;
+  MotionSpec showMotionSpec;
+  MotionSpec hideMotionSpec;
 
   private final StateListAnimator mStateListAnimator;
 
@@ -79,8 +97,6 @@ class FloatingActionButtonImpl {
 
     void onHidden();
   }
-
-  static final int SHOW_HIDE_ANIM_DURATION = 200;
 
   static final int[] PRESSED_ENABLED_STATE_SET = {
     android.R.attr.state_pressed, android.R.attr.state_enabled
@@ -267,6 +283,22 @@ class FloatingActionButtonImpl {
     }
   }
 
+  final MotionSpec getShowMotionSpec() {
+    return showMotionSpec;
+  }
+
+  final void setShowMotionSpec(MotionSpec spec) {
+    showMotionSpec = spec;
+  }
+
+  final MotionSpec getHideMotionSpec() {
+    return hideMotionSpec;
+  }
+
+  final void setHideMotionSpec(MotionSpec spec) {
+    hideMotionSpec = spec;
+  }
+
   void onElevationsChanged(
       float elevation, float hoveredFocusedTranslationZ, float pressedTranslationZ) {
     if (mShadowDrawable != null) {
@@ -289,45 +321,44 @@ class FloatingActionButtonImpl {
       return;
     }
 
-    mView.animate().cancel();
+    if (currentAnimator != null) {
+      currentAnimator.cancel();
+    }
 
     if (shouldAnimateVisibilityChange()) {
-      mAnimState = ANIM_STATE_HIDING;
+      AnimatorSet set = createAnimator(hideMotionSpec, HIDE_OPACITY, HIDE_SCALE, HIDE_ICON_SCALE);
+      set.addListener(
+          new AnimatorListenerAdapter() {
+            private boolean mCancelled;
 
-      mView
-          .animate()
-          .scaleX(0f)
-          .scaleY(0f)
-          .alpha(0f)
-          .setDuration(SHOW_HIDE_ANIM_DURATION)
-          .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
-          .setListener(
-              new AnimatorListenerAdapter() {
-                private boolean mCancelled;
+            @Override
+            public void onAnimationStart(Animator animation) {
+              mView.internalSetVisibility(View.VISIBLE, fromUser);
 
-                @Override
-                public void onAnimationStart(Animator animation) {
-                  mView.internalSetVisibility(View.VISIBLE, fromUser);
-                  mCancelled = false;
+              mAnimState = ANIM_STATE_HIDING;
+              currentAnimator = animation;
+              mCancelled = false;
+            }
+
+            @Override
+            public void onAnimationCancel(Animator animation) {
+              mCancelled = true;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              mAnimState = ANIM_STATE_NONE;
+              currentAnimator = null;
+
+              if (!mCancelled) {
+                mView.internalSetVisibility(fromUser ? View.GONE : View.INVISIBLE, fromUser);
+                if (listener != null) {
+                  listener.onHidden();
                 }
-
-                @Override
-                public void onAnimationCancel(Animator animation) {
-                  mCancelled = true;
-                }
-
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                  mAnimState = ANIM_STATE_NONE;
-
-                  if (!mCancelled) {
-                    mView.internalSetVisibility(fromUser ? View.GONE : View.INVISIBLE, fromUser);
-                    if (listener != null) {
-                      listener.onHidden();
-                    }
-                  }
-                }
-              });
+              }
+            }
+          });
+      set.start();
     } else {
       // If the view isn't laid out, or we're in the editor, don't run the animation
       mView.internalSetVisibility(fromUser ? View.GONE : View.INVISIBLE, fromUser);
@@ -343,49 +374,80 @@ class FloatingActionButtonImpl {
       return;
     }
 
-    mView.animate().cancel();
+    if (currentAnimator != null) {
+      currentAnimator.cancel();
+    }
 
     if (shouldAnimateVisibilityChange()) {
-      mAnimState = ANIM_STATE_SHOWING;
-
       if (mView.getVisibility() != View.VISIBLE) {
         // If the view isn't visible currently, we'll animate it from a single pixel
         mView.setAlpha(0f);
         mView.setScaleY(0f);
         mView.setScaleX(0f);
+        setImageMatrixScale(0f);
       }
 
-      mView
-          .animate()
-          .scaleX(1f)
-          .scaleY(1f)
-          .alpha(1f)
-          .setDuration(SHOW_HIDE_ANIM_DURATION)
-          .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
-          .setListener(
-              new AnimatorListenerAdapter() {
-                @Override
-                public void onAnimationStart(Animator animation) {
-                  mView.internalSetVisibility(View.VISIBLE, fromUser);
-                }
+      AnimatorSet set = createAnimator(showMotionSpec, SHOW_OPACITY, SHOW_SCALE, SHOW_ICON_SCALE);
+      set.addListener(
+          new AnimatorListenerAdapter() {
+            @Override
+            public void onAnimationStart(Animator animation) {
+              mView.internalSetVisibility(View.VISIBLE, fromUser);
 
-                @Override
-                public void onAnimationEnd(Animator animation) {
-                  mAnimState = ANIM_STATE_NONE;
-                  if (listener != null) {
-                    listener.onShown();
-                  }
-                }
-              });
+              mAnimState = ANIM_STATE_SHOWING;
+              currentAnimator = animation;
+            }
+
+            @Override
+            public void onAnimationEnd(Animator animation) {
+              mAnimState = ANIM_STATE_NONE;
+              currentAnimator = null;
+
+              if (listener != null) {
+                listener.onShown();
+              }
+            }
+          });
+      set.start();
     } else {
       mView.internalSetVisibility(View.VISIBLE, fromUser);
       mView.setAlpha(1f);
       mView.setScaleY(1f);
       mView.setScaleX(1f);
+      setImageMatrixScale(1f);
       if (listener != null) {
         listener.onShown();
       }
     }
+  }
+
+  @NonNull
+  private AnimatorSet createAnimator(MotionSpec spec, float opacity, float scale, float iconScale) {
+    List<Animator> animators = new ArrayList<>();
+    Animator animator;
+
+    animator = ObjectAnimator.ofFloat(mView, View.ALPHA, opacity);
+    spec.getTiming("opacity").apply(animator);
+    animators.add(animator);
+
+    animator = ObjectAnimator.ofFloat(mView, View.SCALE_X, scale);
+    spec.getTiming("scale").apply(animator);
+    animators.add(animator);
+
+    animator = ObjectAnimator.ofFloat(mView, View.SCALE_Y, scale);
+    spec.getTiming("scale").apply(animator);
+    animators.add(animator);
+
+    getImageMatrixForScale(iconScale, tmpMatrix);
+    animator =
+        ObjectAnimator.ofObject(
+            mView, ImageMatrixProperty.IMAGE_MATRIX, new MatrixEvaluator(), tmpMatrix);
+    spec.getTiming("iconScale").apply(animator);
+    animators.add(animator);
+
+    AnimatorSet set = new AnimatorSet();
+    AnimatorSetCompat.playTogether(set, animators);
+    return set;
   }
 
   final Drawable getContentBackground() {

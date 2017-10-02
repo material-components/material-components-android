@@ -29,6 +29,9 @@ import android.view.ViewGroup;
  */
 public class ChildrenAlphaProperty extends Property<ViewGroup, Float> {
 
+  /**
+   * A Property wrapper around the <code>alpha</code> functionality of a ViewGroup's children.
+   */
   public static final Property<ViewGroup, Float> CHILDREN_ALPHA =
       new ChildrenAlphaProperty("childrenAlpha");
 

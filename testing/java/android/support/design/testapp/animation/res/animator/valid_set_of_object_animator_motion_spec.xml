@@ -27,7 +27,7 @@
       android:propertyName="translation"
       android:startOffset="11"
       android:duration="13"
-      android:interpolator="@interpolator/mtrl_linear"
+      android:interpolator="@interpolator/mtrl_fast_out_slow_in"
       android:repeatCount="17"
       android:repeatMode="reverse"/>
 </set>

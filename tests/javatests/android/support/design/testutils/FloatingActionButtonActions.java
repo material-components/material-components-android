@@ -155,7 +155,7 @@ public class FloatingActionButtonActions {
     };
   }
 
-  public static ViewAction hideThenShow(final int animDuration) {
+  public static ViewAction hideThenShow() {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -175,12 +175,13 @@ public class FloatingActionButtonActions {
         fab.hide();
         fab.show();
 
-        uiController.loopMainThreadForAtLeast(animDuration + 100);
+        long duration = fab.getShowMotionSpec().getTotalDuration();
+        uiController.loopMainThreadForAtLeast(duration + 50);
       }
     };
   }
 
-  public static ViewAction showThenHide(final int animDuration) {
+  public static ViewAction showThenHide() {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -200,7 +201,8 @@ public class FloatingActionButtonActions {
         fab.show();
         fab.hide();
 
-        uiController.loopMainThreadForAtLeast(animDuration + 50);
+        long duration = fab.getHideMotionSpec().getTotalDuration();
+        uiController.loopMainThreadForAtLeast(duration + 50);
       }
     };
   }

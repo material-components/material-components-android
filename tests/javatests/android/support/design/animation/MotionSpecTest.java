@@ -28,8 +28,8 @@ import android.support.design.testapp.animation.R;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.view.animation.FastOutLinearInInterpolator;
+import android.support.v4.view.animation.FastOutSlowInInterpolator;
 import android.support.v7.app.AppCompatActivity;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.PathInterpolator;
 import org.junit.Rule;
 import org.junit.Test;
@@ -49,6 +49,7 @@ public class MotionSpecTest {
     MotionSpec.inflate(
         activityTestRule.getActivity(), R.animator.valid_object_animator_motion_spec);
     MotionSpec.inflate(activityTestRule.getActivity(), R.animator.valid_empty_set_motion_spec);
+    MotionSpec.inflate(activityTestRule.getActivity(), R.animator.valid_interpolators_motion_spec);
   }
 
   @Test
@@ -87,7 +88,11 @@ public class MotionSpecTest {
 
     assertEquals(11, translation.getDelay());
     assertEquals(13, translation.getDuration());
-    assertThat(translation.getInterpolator(), instanceOf(LinearInterpolator.class));
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      assertThat(translation.getInterpolator(), instanceOf(PathInterpolator.class));
+    } else {
+      assertThat(translation.getInterpolator(), instanceOf(FastOutSlowInInterpolator.class));
+    }
     assertEquals(17, translation.getRepeatCount());
     assertEquals(ValueAnimator.REVERSE, translation.getRepeatMode());
   }

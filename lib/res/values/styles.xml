@@ -29,6 +29,8 @@
     <item name="rippleAlpha">#ff000000</item>
     <item name="borderWidth">@dimen/design_fab_border_width</item>
     <item name="maxImageSize">@dimen/design_fab_image_size</item>
+    <item name="showMotionSpec">@animator/design_fab_show_motion_spec</item>
+    <item name="hideMotionSpec">@animator/design_fab_hide_motion_spec</item>
   </style>
 
   <style name="Widget.Design.ScrimInsetsFrameLayout" parent="">
