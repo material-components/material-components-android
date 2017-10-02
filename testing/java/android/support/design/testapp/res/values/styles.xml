@@ -23,6 +23,10 @@
     <item name="android:textSize">@dimen/text_medium_size</item>
   </style>
 
+  <style name="TextMediumGreenStyle" parent="TextMediumStyle">
+    <item name="android:textColor">@color/test_green</item>
+  </style>
+
   <style name="Theme.TranslucentStatus"
     parent="Theme.AppCompat.Light.NoActionBar"
     tools:targetApi="21">

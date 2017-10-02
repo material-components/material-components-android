@@ -29,6 +29,8 @@ import static android.support.design.testutils.TextInputLayoutActions.setErrorEn
 import static android.support.design.testutils.TextInputLayoutActions.setErrorTextAppearance;
 import static android.support.design.testutils.TextInputLayoutActions.setHelperText;
 import static android.support.design.testutils.TextInputLayoutActions.setHelperTextEnabled;
+import static android.support.design.testutils.TextInputLayoutActions.setHint;
+import static android.support.design.testutils.TextInputLayoutActions.setHintTextAppearance;
 import static android.support.design.testutils.TextInputLayoutActions.setPasswordVisibilityToggleEnabled;
 import static android.support.design.testutils.TextInputLayoutActions.setTypeface;
 import static android.support.design.testutils.TextInputLayoutMatchers.hasPasswordToggleContentDescription;
@@ -69,12 +71,14 @@ import android.support.test.filters.MediumTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.widget.TextViewCompat;
+import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.SparseArray;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.support.test.espresso.NoMatchingViewException;
 import android.support.test.espresso.ViewAssertion;
 import org.junit.Rule;
@@ -88,10 +92,11 @@ public class TextInputLayoutTest {
   public final ActivityTestRule<TextInputLayoutActivity> activityTestRule =
       new ActivityTestRule<>(TextInputLayoutActivity.class);
 
-  private static final String ERROR_MESSAGE_1 = "An error has occured";
-  private static final String ERROR_MESSAGE_2 = "Some other error has occured";
+  private static final String ERROR_MESSAGE_1 = "An error has occurred";
+  private static final String ERROR_MESSAGE_2 = "Some other error has occurred";
   private static final String HELPER_MESSAGE_1 = "Helpful helper text";
   private static final String HELPER_MESSAGE_2 = "Some other helper text";
+  private static final String HINT_TEXT = "Hint text";
   private static final String INPUT_TEXT = "Random input text";
   private static final Typeface CUSTOM_TYPEFACE = Typeface.SANS_SERIF;
 
@@ -511,6 +516,34 @@ public class TextInputLayoutTest {
   @Test
   public void testTextSetViaAttributeCollapsedHint() {
     onView(withId(R.id.textinput_with_text)).check(isHintExpanded(false));
+  }
+
+  @Test
+  public void testHintCollapsedHeightMeasuredFromBaseline() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout layout = activity.findViewById(R.id.textinput_box_outline);
+
+    // Create a TextView and set it to a custom text and TextAppearance.
+    TextView textView = new TextView(layout.getContext());
+    textView.setText(HINT_TEXT);
+    TextViewCompat.setTextAppearance(textView, R.style.TextMediumGreenStyle);
+
+    // Create a TextPaint to measure the text's height from the baseline, and port over aspects of
+    // the TextAppearance from the textView.
+    TextPaint textPaint = new TextPaint();
+    textPaint.setSubpixelText(true);
+    textPaint.setColor(textView.getCurrentTextColor());
+    textPaint.setTypeface(textView.getTypeface());
+    textPaint.setTextSize(textView.getTextSize());
+
+    // Set the same custom text and text appearance on the outline box's hint.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(setHint(HINT_TEXT))
+        .perform(setHintTextAppearance(R.style.TextMediumGreenStyle));
+
+    // Check that the hint's collapsed height is the same as the TextPaint's height, measured from
+    // the baseline (-ascent).
+    assertEquals(layout.getHintCollapsedTextHeight(), -textPaint.ascent(), 0.01);
   }
 
   @Test
