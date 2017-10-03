@@ -25,6 +25,7 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
@@ -142,11 +143,12 @@ public class TextInputLayout extends LinearLayout {
   private CharSequence mHint;
 
   private GradientDrawable mBoxBackground;
-  private final int mBoxPaddingOffsetPx;
   private int mBoxPaddingTopPx;
   private int mBoxPaddingLeftPx;
   private int mBoxPaddingRightPx;
   private int mBoxPaddingBottomPx;
+  private final int mBoxPaddingOffsetPx;
+  private final int mBoxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int mBoxBackgroundMode;
   private float mBoxCornerRadius;
   private int mBoxStrokeWidth;
@@ -166,6 +168,7 @@ public class TextInputLayout extends LinearLayout {
   public static final int BOX_BACKGROUND_OUTLINE = 2;
 
   private final Rect mTmpRect = new Rect();
+  private final RectF mTmpRectF = new RectF();
   private Typeface mTypeface;
 
   private boolean mPasswordToggleEnabled;
@@ -246,11 +249,14 @@ public class TextInputLayout extends LinearLayout {
     mBoxStrokeColor =
         getColorStateListResourceCompat(context, a, R.styleable.TextInputLayout_boxStrokeColor);
 
+    mBoxLabelCutoutPaddingPx =
+        context
+            .getResources()
+            .getDimensionPixelOffset(R.dimen.design_textinput_box_label_cutout_padding);
     @BoxBackgroundMode
     final int boxBackgroundMode =
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
     setBoxBackgroundMode(boxBackgroundMode);
-
     if (a.hasValue(R.styleable.TextInputLayout_android_textColorHint)) {
       mDefaultTextColor =
           mFocusedTextColor =
@@ -346,14 +352,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void onApplyBoxBackgroundMode() {
-    if (mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
-      mBoxBackground = null;
-    }
-
-    if (mBoxBackground == null) {
-      mBoxBackground = new GradientDrawable();
-    }
-
+    assignBoxBackgroundByMode();
     if (mBoxBackgroundMode != BOX_BACKGROUND_NONE) {
       updateInputLayoutMargins();
     }
@@ -361,12 +360,27 @@ public class TextInputLayout extends LinearLayout {
     setEditTextBoxPadding();
   }
 
+  private void assignBoxBackgroundByMode() {
+    if (mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
+      mBoxBackground = null;
+    } else if (mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE
+        && mHintEnabled
+        && !(mBoxBackground instanceof CutoutDrawable)) {
+      // Make mBoxBackground a CutoutDrawable if in outline mode, there is a hint, and
+      // mBoxBackground isn't already a CutoutDrawable.
+      mBoxBackground = new CutoutDrawable();
+    } else if (!(mBoxBackground instanceof GradientDrawable)) {
+      // Otherwise, make mBoxBackground a GradientDrawable if it isn't already.
+      mBoxBackground = new GradientDrawable();
+    }
+  }
+
   private void setEditTextBoxPadding() {
     if (mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
       return;
     }
     // Set box padding on the edit text.
-    if (mEditText != null) {
+    if (mBoxBackgroundMode != BOX_BACKGROUND_NONE && mEditText != null) {
       mEditText.setPadding(
           mBoxPaddingLeftPx, mBoxPaddingTopPx, mBoxPaddingRightPx, mBoxPaddingBottomPx);
     }
@@ -630,8 +644,14 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void setHintInternal(CharSequence hint) {
-    mHint = hint;
-    mCollapsingTextHelper.setText(hint);
+    if (!TextUtils.equals(hint, mHint)) {
+      mHint = hint;
+      mCollapsingTextHelper.setText(hint);
+      // Reset the cutout to make room for a larger hint.
+      if (!mHintExpanded) {
+        openCutout();
+      }
+    }
   }
 
   /**
@@ -1617,7 +1637,6 @@ public class TextInputLayout extends LinearLayout {
       // Set the collapsed bounds to be the full height (minus padding) to match the
       // EditText's editable area
       mCollapsingTextHelper.setCollapsedBounds(l, t, r, bottom - top - getPaddingBottom());
-
       mCollapsingTextHelper.recalculate();
     }
   }
@@ -1632,6 +1651,41 @@ public class TextInputLayout extends LinearLayout {
       mCollapsingTextHelper.setExpansionFraction(1f);
     }
     mHintExpanded = false;
+    if (cutoutEnabled()) {
+      openCutout();
+    }
+  }
+
+  private boolean cutoutEnabled() {
+    return mHintEnabled && !TextUtils.isEmpty(mHint) && mBoxBackground instanceof CutoutDrawable;
+  }
+
+  private void openCutout() {
+    if (!cutoutEnabled()) {
+      return;
+    }
+    final RectF cutoutBounds = mTmpRectF;
+    mCollapsingTextHelper.getCollapsedTextActualBounds(cutoutBounds);
+    applyCutoutPadding(cutoutBounds);
+    ((CutoutDrawable) mBoxBackground).setCutout(cutoutBounds);
+  }
+
+  private void closeCutout() {
+    if (cutoutEnabled()) {
+      ((CutoutDrawable) mBoxBackground).removeCutout();
+    }
+  }
+
+  private void applyCutoutPadding(RectF cutoutBounds) {
+    cutoutBounds.left -= mBoxLabelCutoutPaddingPx;
+    cutoutBounds.top -= mBoxLabelCutoutPaddingPx;
+    cutoutBounds.right += mBoxLabelCutoutPaddingPx;
+    cutoutBounds.bottom += mBoxLabelCutoutPaddingPx;
+  }
+
+  @VisibleForTesting
+  boolean cutoutIsOpen() {
+    return cutoutEnabled() && ((CutoutDrawable) mBoxBackground).hasCutout();
   }
 
   @Override
@@ -1675,6 +1729,9 @@ public class TextInputLayout extends LinearLayout {
       animateToExpansionFraction(0f);
     } else {
       mCollapsingTextHelper.setExpansionFraction(0f);
+    }
+    if (cutoutEnabled() && ((CutoutDrawable) mBoxBackground).hasCutout()) {
+      closeCutout();
     }
     mHintExpanded = true;
   }

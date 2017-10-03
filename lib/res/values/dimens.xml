@@ -44,6 +44,7 @@
   <dimen name="design_textinput_box_padding_right">12dp</dimen>
   <dimen name="design_textinput_box_padding_bottom">20dp</dimen>
   <dimen name="design_textinput_box_offset">3dp</dimen>
+  <dimen name="design_textinput_box_label_cutout_padding">4dp</dimen>
   <dimen name="design_textinput_caption_translate_y">5dp</dimen>
 
   <dimen name="design_snackbar_min_width">-1px</dimen>

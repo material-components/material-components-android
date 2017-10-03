@@ -36,6 +36,7 @@ import static android.support.design.testutils.TextInputLayoutActions.setTypefac
 import static android.support.design.testutils.TextInputLayoutMatchers.hasPasswordToggleContentDescription;
 import static android.support.test.InstrumentationRegistry.getInstrumentation;
 import static android.support.test.espresso.Espresso.onView;
+import static android.support.test.espresso.action.ViewActions.clearText;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.action.ViewActions.typeText;
 import static android.support.test.espresso.assertion.ViewAssertions.doesNotExist;
@@ -130,6 +131,50 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_edittext)).perform(typeText(INPUT_TEXT));
     // ...and check that the hint has collapsed
     onView(withId(R.id.textinput)).check(isHintExpanded(false));
+  }
+
+  @Test
+  public void testNoBoxNoCutout() {
+    // Type some text on the non-box text field.
+    onView(withId(R.id.textinput_edittext)).perform(typeText(INPUT_TEXT));
+    // Check that there is no cutout.
+    onView(withId(R.id.textinput)).check(isCutoutOpen(false));
+  }
+
+  @Test
+  public void testFilledBoxHintCollapseNoCutout() {
+    // Type some text on the filled box text field.
+    onView(withId(R.id.textinput_edittext_filled)).perform(typeText(INPUT_TEXT));
+    // Check that there is no cutout.
+    onView(withId(R.id.textinput_box_filled)).check(isCutoutOpen(false));
+  }
+
+  @Test
+  public void testOutlineBoxNoHintNoCutout() {
+    // Type some text on the outline box without a hint.
+    onView(withId(R.id.textinput_edittext_outline_no_hint)).perform(typeText(INPUT_TEXT));
+    // Check that there is no cutout.
+    onView(withId(R.id.textinput_box_outline_no_hint)).check(isCutoutOpen(false));
+  }
+
+  @Test
+  public void testOutlineBoxHintCollapseCreatesCutout() {
+    // Type some text on the outline box that has a hint.
+    onView(withId(R.id.textinput_edittext_outline)).perform(typeText(INPUT_TEXT));
+    // Check that the cutout is open.
+    onView(withId(R.id.textinput_box_outline)).check(isCutoutOpen(true));
+  }
+
+  @Test
+  public void testOutlineBoxHintExpandHidesCutout() {
+    // Type some text on the outline box that has a hint.
+    onView(withId(R.id.textinput_edittext_outline)).perform(typeText(INPUT_TEXT));
+    // Remove the text so that the hint will go away when the text box loses focus.
+    onView(withId(R.id.textinput_edittext_outline)).perform(clearText());
+    // Type some text on another text field to remove focus from the outline box.
+    onView(withId(R.id.textinput_edittext_filled)).perform(typeText(INPUT_TEXT));
+    // Check that the cutout is closed.
+    onView(withId(R.id.textinput_box_outline)).check(isCutoutOpen(false));
   }
 
   @Test
@@ -577,6 +622,16 @@ public class TextInputLayoutTest {
       public void check(View view, NoMatchingViewException noViewFoundException) {
         assertTrue(view instanceof TextInputLayout);
         assertEquals(colorStateList, ((TextInputLayout) view).getBoxStrokeColor());
+      }
+    };
+  }
+
+  private static ViewAssertion isCutoutOpen(final boolean open) {
+    return new ViewAssertion() {
+      @Override
+      public void check(View view, NoMatchingViewException noViewFoundException) {
+        assertTrue(view instanceof TextInputLayout);
+        assertEquals(open, ((TextInputLayout) view).cutoutIsOpen());
       }
     };
   }
