@@ -565,13 +565,7 @@ public class TextInputLayout extends LinearLayout {
     // Create/update the LayoutParams so that we can add enough top margin
     // to the EditText to make room for the label.
     final LayoutParams lp = (LayoutParams) mInputFrame.getLayoutParams();
-    final int newTopMargin;
-
-    if (mHintEnabled) {
-      newTopMargin = (int) mCollapsingTextHelper.getCollapsedTextHeight();
-    } else {
-      newTopMargin = 0;
-    }
+    final int newTopMargin = calculateLabelMarginTop();
 
     if (newTopMargin != lp.topMargin) {
       lp.topMargin = newTopMargin;
@@ -973,9 +967,35 @@ public class TextInputLayout extends LinearLayout {
     }
 
     mBoxBackground.setBounds(
-        getLeft(), getPaddingTop(), getRight(), mEditText.getBottom() + mBoxPaddingOffsetPx);
+        getLeft(),
+        mEditText.getCompoundPaddingTop(),
+        getRight(),
+        mEditText.getBottom() + mBoxPaddingOffsetPx);
     applyBoxAttributes();
     updateEditTextBackgroundBounds();
+  }
+
+  private int calculateLabelMarginTop() {
+    if (mHintEnabled) {
+      if (mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+        // The label is split vertically across the outline, so the extra top margin should be equal
+        // to half of the collapsed label height.
+        return (int) (mCollapsingTextHelper.getCollapsedTextHeight() / 2);
+      } else {
+        return (int) mCollapsingTextHelper.getCollapsedTextHeight();
+      }
+    } else {
+      return 0;
+    }
+  }
+
+  private int calculateCollapsedTextTopBounds() {
+    int top = getPaddingTop();
+    if (mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
+      return top;
+    }
+    top += calculateLabelMarginTop();
+    return top;
   }
 
   private void updateEditTextBackgroundBounds() {
@@ -1586,6 +1606,7 @@ public class TextInputLayout extends LinearLayout {
 
       final int l = rect.left + mEditText.getCompoundPaddingLeft();
       final int r = rect.right - mEditText.getCompoundPaddingRight();
+      final int t = calculateCollapsedTextTopBounds();
 
       mCollapsingTextHelper.setExpandedBounds(
           l,
@@ -1595,8 +1616,7 @@ public class TextInputLayout extends LinearLayout {
 
       // Set the collapsed bounds to be the full height (minus padding) to match the
       // EditText's editable area
-      mCollapsingTextHelper.setCollapsedBounds(
-          l, getPaddingTop(), r, bottom - top - getPaddingBottom());
+      mCollapsingTextHelper.setCollapsedBounds(l, t, r, bottom - top - getPaddingBottom());
 
       mCollapsingTextHelper.recalculate();
     }
