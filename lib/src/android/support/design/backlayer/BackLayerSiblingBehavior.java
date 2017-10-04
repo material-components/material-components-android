@@ -19,17 +19,18 @@ package android.support.design.backlayer;
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.ObjectAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.Nullable;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.CoordinatorLayout.Behavior;
+import android.support.design.widget.transformation.ExpandableBehavior;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.ViewPropertyAnimator;
 
 /**
  * Behavior to apply to the content view when using a BackLayerLayout.
@@ -37,21 +38,19 @@ import android.view.ViewPropertyAnimator;
  * <p>Using this behavior requires **exactly** one sibling view of type {@link BackLayerLayout}
  * which will be used to calculate the measurements and positions for the content layer view.
  *
- * <p>You MUST NOT use a {@link ViewGroup.OnHierarchyChangedListener} on the view to which you apply
+ * <p>You MUST NOT use a {@link ViewGroup.OnHierarchyChangeListener} on the view to which you apply
  * this behavior, as this behavior uses OnHierarchyChangedListener for internal housekeeping.
  */
-public class BackLayerSiblingBehavior extends Behavior<View> {
+public class BackLayerSiblingBehavior extends ExpandableBehavior {
 
   private static final int ANIMATION_DURATION = 225;
 
-  /** The back layer for this content layer. */
-  private BackLayerLayout backLayerLayout = null;
-
-  private View childView = null;
   private int layoutDirection;
   private CharSequence expandedContentDescription;
   private ContentViewAccessibilityPropertiesHelper contentViewAccessibilityHelper;
-  private boolean isFirstLayoutPass = true;
+  @Nullable private Animator currentAnimator;
+
+  public BackLayerSiblingBehavior() {}
 
   public BackLayerSiblingBehavior(Context context, AttributeSet attrs) {
     super(context, attrs);
@@ -76,7 +75,7 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
   }
 
   /**
-   * Sets the content description for accesibility services to be used on the content layer view.
+   * Sets the content description for accessibility services to be used on the content layer view.
    */
   public void setExpandedContentDescription(CharSequence expandedContentDescription) {
     this.expandedContentDescription = expandedContentDescription;
@@ -86,17 +85,7 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
 
   @Override
   public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
-    if (dependency instanceof BackLayerLayout) {
-      if (backLayerLayout == null) {
-        backLayerLayout = (BackLayerLayout) dependency;
-        backLayerLayout.setSibling(this);
-      } else if (dependency != backLayerLayout) {
-        throw new IllegalStateException(
-            "There is more than one BackLayerLayout in a single CoordinatorLayout.");
-      }
-      return true;
-    }
-    return false;
+    return dependency instanceof BackLayerLayout;
   }
 
   @Override
@@ -111,17 +100,16 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
     // contentViewAccessibilitHelper. This method is called before any other method that could
     // potentially need this field. Since the field is stateful we need to guarantee it is only set
     // the first time this is called.
-    if (childView == null) {
-      childView = child;
+    if (contentViewAccessibilityHelper == null) {
       contentViewAccessibilityHelper = new ContentViewAccessibilityPropertiesHelper(child);
     }
+
+    BackLayerLayout backLayerLayout = (BackLayerLayout) findExpandableWidget(parent, child);
     if (backLayerLayout == null) {
       throw new IllegalStateException(
           "There is no BackLayerLayout and a view is using BackLayerSiblingBehavior");
     }
-    if (!backLayerLayout.hasMeasuredCollapsedSize()) {
-      throw new IllegalStateException("The BackLayerLayout has not been measured.");
-    }
+
     CoordinatorLayout.LayoutParams backLayerLayoutParams =
         (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
     CoordinatorLayout.LayoutParams childLayoutParams =
@@ -164,74 +152,66 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
 
   @Override
   public boolean onLayoutChild(CoordinatorLayout parent, View child, int layoutDirection) {
+    // Super contains support for detecting first layout after configuration change.
+    super.onLayoutChild(parent, child, layoutDirection);
+
+    BackLayerLayout backLayerLayout = (BackLayerLayout) findExpandableWidget(parent, child);
+    if (backLayerLayout == null) {
+      throw new IllegalStateException(
+          "There is no BackLayerLayout and a view is using BackLayerSiblingBehavior");
+    }
+
     this.layoutDirection = layoutDirection;
-    parent.onLayoutChild(child, layoutDirection);
     CoordinatorLayout.LayoutParams backLayerLayoutParams =
         (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
     int absoluteGravity =
         Gravity.getAbsoluteGravity(backLayerLayoutParams.gravity, layoutDirection);
-    int minimumWidth = ViewCompat.getMinimumWidth(backLayerLayout);
-    int minimumHeight = ViewCompat.getMinimumHeight(backLayerLayout);
-    if (!backLayerLayout.isExpanded()) {
-      switch (absoluteGravity) {
-        case Gravity.RIGHT:
-        case Gravity.BOTTOM:
-          childView.setX(0);
-          childView.setY(0);
-          break;
-        case Gravity.TOP:
-          childView.setX(0);
-          childView.setY(minimumHeight);
-          break;
-        case Gravity.LEFT:
-          childView.setX(minimumWidth);
-          childView.setY(0);
-          break;
-        default:
-          break;
-      }
-    } else if (isFirstLayoutPass) {
-      // If back layer is expanded on the first layout pass this means the back layer state was
-      // restored from an activity restart or a configuration change (rotation, multitasking-related
-      // window size change, ...). In this case we must not animate.
-      int expandedWidth = backLayerLayout.getExpandedWidth();
-      int expandedHeight = backLayerLayout.getExpandedHeight();
-      switch (absoluteGravity) {
-        case Gravity.RIGHT:
-          childView.setX(minimumWidth - expandedWidth - 1);
-          childView.setY(0);
-          break;
-        case Gravity.BOTTOM:
-          childView.setX(0);
-          childView.setY(minimumHeight - expandedHeight - 1);
-          break;
-        case Gravity.TOP:
-          childView.setX(0);
-          childView.setY(expandedHeight);
-          break;
-        case Gravity.LEFT:
-          childView.setX(expandedWidth);
-          childView.setY(0);
-          break;
-        default:
-          break;
-      }
-    } else {
-      // This happens when the contents of the back layer change. We need to recalculate the size of
-      // the expanded backlayer and animate the size change.
-      backLayerLayout.measureExpanded();
-      animateExpand(null);
+    int collapsedWidth = ViewCompat.getMinimumWidth(backLayerLayout);
+    int collapsedHeight = ViewCompat.getMinimumHeight(backLayerLayout);
+
+    // Do actual layout using measured dimensions from #onMeasureChild().
+    parent.onLayoutChild(child, layoutDirection);
+
+    // Adjust position - note that this places the child correctly in its collapsed state.
+    switch (absoluteGravity) {
+      case Gravity.TOP:
+        int top = collapsedHeight;
+        child.offsetTopAndBottom(top - child.getTop());
+        break;
+      case Gravity.LEFT:
+        int left = collapsedWidth;
+        child.offsetLeftAndRight(left - child.getLeft());
+        break;
+      case Gravity.BOTTOM:
+        int bottom = parent.getHeight() - collapsedHeight;
+        child.offsetTopAndBottom(bottom - child.getBottom());
+        break;
+      case Gravity.RIGHT:
+        int right = parent.getWidth() - collapsedWidth;
+        child.offsetLeftAndRight(right - child.getRight());
+        break;
     }
-    isFirstLayoutPass = false;
+
+    if (backLayerLayout.isExpanded()) {
+      // If we went through layout due to BackLayerLayout's children changing size, we need to
+      // translate to the new expanded position.
+      animateTranslation(backLayerLayout, child, true, null);
+    }
     return true;
   }
 
   @Override
   public boolean onInterceptTouchEvent(CoordinatorLayout parent, View child, MotionEvent ev) {
+    BackLayerLayout backLayerLayout = (BackLayerLayout) findExpandableWidget(parent, child);
+    if (backLayerLayout == null) {
+      throw new IllegalStateException(
+          "There is no BackLayerLayout and a view is using BackLayerSiblingBehavior");
+    }
+
     if (backLayerLayout.isExpanded()) {
       // onInterceptTouchEvent is called for every touch in the CoordinatorLayout. Because of this
       // we need to check that the MotionEvent's coordinates are inside of the Child View.
-      if (parent.isPointInChildBounds(childView, (int) ev.getX(), (int) ev.getY())) {
+      if (parent.isPointInChildBounds(child, (int) ev.getX(), (int) ev.getY())) {
         backLayerLayout.setExpanded(false);
         return true;
       }
@@ -239,108 +219,124 @@ public class BackLayerSiblingBehavior extends Behavior<View> {
     return false;
   }
 
-  void onBeforeExpand() {
-    AnimatorListenerAdapter animatorListener =
+  @Override
+  protected boolean onExpandedStateChange(
+      View dependency, View child, boolean expanded, boolean animated) {
+    // Translate the content layer to the desired position.
+    BackLayerLayout backLayerLayout = (BackLayerLayout) dependency;
+    animateTranslation(
+        backLayerLayout,
+        child,
+        animated,
         new AnimatorListenerAdapter() {
           @Override
-          public void onAnimationEnd(Animator animation) {
-            backLayerLayout.onExpandAnimationDone();
+          public void onAnimationStart(Animator animation) {
+            if (expanded) {
+              contentViewAccessibilityHelper.makeFocusableWithContentDescription(
+                  expandedContentDescription);
+              backLayerLayout.onExpandAnimationStart();
+            } else {
+              backLayerLayout.onCollapseAnimationStart();
+            }
           }
-        };
-    contentViewAccessibilityHelper.makeFocusableWithContentDescription(expandedContentDescription);
-    animateExpand(animatorListener);
-  }
 
-  void onBeforeCollapse() {
-    int end = 0;
-    CoordinatorLayout.LayoutParams backLayerLayoutParams =
-        (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
-    int absoluteGravity =
-        Gravity.getAbsoluteGravity(backLayerLayoutParams.gravity, layoutDirection);
-    switch (absoluteGravity) {
-      case Gravity.TOP:
-        end = ViewCompat.getMinimumHeight(backLayerLayout);
-        break;
-      case Gravity.LEFT:
-        end = ViewCompat.getMinimumWidth(backLayerLayout);
-        break;
-      case Gravity.BOTTOM:
-      case Gravity.RIGHT:
-        end = 0;
-        break;
-      default:
-        break;
-    }
-    animate(
-        end,
-        absoluteGravity,
-        new AnimatorListenerAdapter() {
           @Override
           public void onAnimationEnd(Animator animation) {
-            contentViewAccessibilityHelper.restoreAccessibilityProperties();
-            backLayerLayout.onCollapseAnimationDone();
+            if (expanded) {
+              backLayerLayout.onExpandAnimationEnd();
+            } else {
+              contentViewAccessibilityHelper.restoreAccessibilityProperties();
+              backLayerLayout.onCollapseAnimationEnd();
+            }
           }
         });
+    return true;
   }
 
   // Private methods
 
-  /**
-   * Animates the expansion to the last calculated back layer expanded size and calls {@code
-   * animationListener} when done.
-   */
-  private void animateExpand(AnimatorListenerAdapter animatorListener) {
-    int end = 0;
+  private void animateTranslation(
+      BackLayerLayout backLayerLayout,
+      View child,
+      boolean animated,
+      @Nullable AnimatorListener listener) {
+    if (currentAnimator != null) {
+      currentAnimator.cancel();
+    }
+
+    if (backLayerLayout.isExpanded()) {
+      currentAnimator = createExpandAnimation(backLayerLayout, child);
+    } else {
+      currentAnimator = createCollapseAnimation(backLayerLayout, child);
+    }
+
+    if (listener != null) {
+      currentAnimator.addListener(listener);
+    }
+
+    currentAnimator.start();
+    if (!animated) {
+      // Synchronously end the animation, jumping to the end state.
+      currentAnimator.end();
+    }
+  }
+
+  private Animator createExpandAnimation(BackLayerLayout backLayerLayout, View child) {
+    int expandedWidth = backLayerLayout.calculateExpandedWidth();
+    int expandedHeight = backLayerLayout.calculateExpandedHeight();
+    int collapsedWidth = ViewCompat.getMinimumWidth(backLayerLayout);
+    int collapsedHeight = ViewCompat.getMinimumHeight(backLayerLayout);
+
+    int deltaX = expandedWidth - collapsedWidth;
+    int deltaY = expandedHeight - collapsedHeight;
+
     CoordinatorLayout.LayoutParams backLayerLayoutParams =
         (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
     int absoluteGravity =
         Gravity.getAbsoluteGravity(backLayerLayoutParams.gravity, layoutDirection);
-    // Calculate the end position for the content layer in the moving dimension (width for
-    // start/end/left/right anchored back layers and height for top/bottom anchored back layers).
+    Animator animator;
     switch (absoluteGravity) {
       case Gravity.TOP:
-        end = backLayerLayout.getExpandedHeight();
+        animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_Y, deltaY);
         break;
       case Gravity.LEFT:
-        end = backLayerLayout.getExpandedWidth();
+        animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_X, deltaX);
         break;
       case Gravity.BOTTOM:
-        end =
-            ViewCompat.getMinimumHeight(backLayerLayout) - backLayerLayout.getExpandedHeight() - 1;
+        animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_Y, -deltaY);
         break;
       case Gravity.RIGHT:
-        end = ViewCompat.getMinimumWidth(backLayerLayout) - backLayerLayout.getExpandedWidth() - 1;
-        break;
       default:
+        animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_X, -deltaX);
         break;
     }
-    // Start the animation to slide the content layer to the desired position. We pass the absolute
-    // gravity so we can animate the correct dimension.
-    animate(end, absoluteGravity, animatorListener);
+    animator.setDuration(ANIMATION_DURATION);
+    return animator;
   }
 
-  private void animate(int end, int absoluteGravity, AnimatorListener listener) {
-    ViewPropertyAnimator animator =
-        childView.animate().setListener(listener).setDuration(ANIMATION_DURATION);
+  private Animator createCollapseAnimation(BackLayerLayout backLayerLayout, View child) {
+    CoordinatorLayout.LayoutParams backLayerLayoutParams =
+        (CoordinatorLayout.LayoutParams) backLayerLayout.getLayoutParams();
+    int absoluteGravity =
+        Gravity.getAbsoluteGravity(backLayerLayoutParams.gravity, layoutDirection);
+    Animator animator;
     switch (absoluteGravity) {
       case Gravity.TOP:
-      case Gravity.BOTTOM:
-        animator.y(end);
-        if (childView.getY() == end) {
-          animator.setDuration(0);
-        }
+        animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_Y, 0f);
         break;
       case Gravity.LEFT:
-      case Gravity.RIGHT:
-        animator.x(end);
-        if (childView.getX() == end) {
-          animator.setDuration(0);
-        }
+        animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_X, 0f);
         break;
+      case Gravity.BOTTOM:
+        animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_Y, 0f);
+        break;
+      case Gravity.RIGHT:
       default:
+        animator = ObjectAnimator.ofFloat(child, View.TRANSLATION_X, 0f);
         break;
     }
-    animator.start();
+    animator.setDuration(ANIMATION_DURATION);
+    return animator;
   }
 
   /** Checks that the gravity is set to one of the 4 directions. */

@@ -17,13 +17,13 @@
 package android.support.design.backlayer;
 
 import android.content.Context;
-import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.expandable.ExpandableWidget;
+import android.support.design.widget.expandable.ExpandableWidgetHelper;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -34,10 +34,14 @@ import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
 /**
- * A {@link ViewGroup} that can be expanded to show more content.
+ * BackLayerLayout implements the Material back layer concept, and can be used to implement
+ * navigation drawers and other surfaces.
  *
- * <p>Since its resting state is hidden (partially exposed), it keeps a copy of its original
- * dimensions.
+ * <p>The back layer concept represents a background layer overlapped by a foreground layer. When
+ * the background layer is expanded to show additional content (usually as a result of user
+ * interaction), it pushes the foreground layer partially off-screen.
+ *
+ * <p>This view depends heavily on being used as a direct child within a {@link CoordinatorLayout}.
  *
  * <p>Notice BackLayerLayout is a LinearLayout, so you need to make sure you're using the correct
  * orientation that matches the position you've chosen for the back layer (i.e. use {@code
@@ -47,7 +51,6 @@ import java.util.concurrent.CopyOnWriteArrayList;
  * <p><b>Usage guide:</b>
  *
  * <ul>
- *   <li>It must be a direct child of {@link CoordinatorLayout}
  *   <li>There has to be <b>exactly ONE</b> other direct child of the same CoordinatorLayout that
  *       uses {@link BackLayerSiblingBehavior} as its behavior (set {@code
  *       app:layout_behavior="@string/design_backlayer_sibling_behavior"}). This is the content
@@ -81,7 +84,7 @@ import java.util.concurrent.CopyOnWriteArrayList;
  *       on activity restarts, no animation will be used and thus {@link
  *       BackLayerCallback#onBeforeExpand()} and {@link BackLayerCallback#onAfterExpand()} will not
  *       be called.
- *   <li>You MUST NOT use a {@link ViewGroup.OnHierarchyChangedListener} on the back layer as it is
+ *   <li>You MUST NOT use a {@link ViewGroup.OnHierarchyChangeListener} on the back layer as it is
  *       used for internal housekeeping.
  * </ul>
  *
@@ -155,18 +158,16 @@ import java.util.concurrent.CopyOnWriteArrayList;
 // that LinearLayout depends on is not an option for BackLayerLayout and BackLayerSiblingBehavior.
 public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
 
-  public static final String EXPANDED_STATE_KEY = "expanded";
-  public static final String BACK_LAYER_LAYOUT_STATE_KEY = "BackLayerLayout";
-  private final List<BackLayerCallback> callbacks = new CopyOnWriteArrayList<>();
-  private boolean expanded = false;
   private int expandedHeight;
   private int expandedWidth;
-  private boolean measuredCollapsedSize = false;
+  private boolean expandedSizeMeasured = false;
   private boolean originalMeasureSpecsSaved = false;
   private int originalHeightMeasureSpec;
   private int originalWidthMeasureSpec;
-  private BackLayerSiblingBehavior sibling = null;
   private ChildViewAccessibilityHelper childViewAccessibilityHelper;
+
+  private final List<BackLayerCallback> callbacks = new CopyOnWriteArrayList<>();
+  private final ExpandableWidgetHelper expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
   public BackLayerLayout(@NonNull Context context) {
     super(context);
@@ -174,6 +175,31 @@ public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
 
   public BackLayerLayout(@NonNull Context context, @Nullable AttributeSet attrs) {
     super(context, attrs);
+  }
+
+  /** Add a new {@link BackLayerCallback} to listen to back layer events. */
+  public void addBackLayerCallback(BackLayerCallback callback) {
+    if (!callbacks.contains(callback)) {
+      callbacks.add(callback);
+    }
+  }
+
+  /**
+   * Expands or collapses the back layer.
+   *
+   * <p>Notice that this method does not automatically change visibility on child views of the back
+   * layer, the developer has to prepare the contents of the back layer either before calling this
+   * method or in {@link BackLayerCallback#onBeforeExpand()} or {@link
+   * BackLayerCallback#onBeforeCollapse()}.
+   */
+  @Override
+  public boolean setExpanded(boolean expanded) {
+    return expandableWidgetHelper.setExpanded(expanded);
+  }
+
+  @Override
+  public boolean isExpanded() {
+    return expandableWidgetHelper.isExpanded();
   }
 
   @Override
@@ -185,109 +211,60 @@ public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
   }
 
   @Override
+  public void requestLayout() {
+    super.requestLayout();
+    expandedSizeMeasured = false;
+  }
+
+  @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     if (!originalMeasureSpecsSaved) {
       originalWidthMeasureSpec = widthMeasureSpec;
       originalHeightMeasureSpec = heightMeasureSpec;
       originalMeasureSpecsSaved = true;
     }
-    if (!measuredCollapsedSize) {
-      // Measure the minimum size only if it's not previously set, for example in XML layout.
-      if (ViewCompat.getMinimumHeight(this) == 0 && ViewCompat.getMinimumWidth(this) == 0) {
-        // Find the CollapsedBackLayerContents
-        boolean foundCollapsed = false;
-        for (int i = 0; i < getChildCount(); i++) {
-          View child = getChildAt(i);
-          if (child instanceof CollapsedBackLayerContents) {
-            if (foundCollapsed) {
-              throw new IllegalStateException(
-                  "More than one CollapsedBackLayerContents found inside BackLayerLayout");
-            }
-            foundCollapsed = true;
-            LinearLayout.LayoutParams childLayoutParams =
-                (LinearLayout.LayoutParams) child.getLayoutParams();
-            child.measure(childLayoutParams.width, childLayoutParams.height);
-            setMinimumHeight(
-                child.getMeasuredHeight()
-                    + childLayoutParams.bottomMargin
-                    + childLayoutParams.topMargin);
-            setMinimumWidth(
-                child.getMeasuredWidth()
-                    + childLayoutParams.leftMargin
-                    + childLayoutParams.rightMargin);
+    // Measure the minimum size only if it's not previously set, for example in XML layout.
+    if (ViewCompat.getMinimumHeight(this) == 0 && ViewCompat.getMinimumWidth(this) == 0) {
+      // Find the CollapsedBackLayerContents
+      boolean foundCollapsed = false;
+      for (int i = 0; i < getChildCount(); i++) {
+        View child = getChildAt(i);
+        if (child instanceof CollapsedBackLayerContents) {
+          if (foundCollapsed) {
+            throw new IllegalStateException(
+                "More than one CollapsedBackLayerContents found inside BackLayerLayout");
           }
-        }
-        if (!foundCollapsed) {
-          throw new IllegalStateException(
-              "No CollapsedBackLayerContents found inside BackLayerLayout");
+          foundCollapsed = true;
+          LinearLayout.LayoutParams childLayoutParams =
+              (LinearLayout.LayoutParams) child.getLayoutParams();
+          child.measure(childLayoutParams.width, childLayoutParams.height);
+          setMinimumHeight(
+              child.getMeasuredHeight()
+                  + childLayoutParams.bottomMargin
+                  + childLayoutParams.topMargin);
+          setMinimumWidth(
+              child.getMeasuredWidth()
+                  + childLayoutParams.leftMargin
+                  + childLayoutParams.rightMargin);
         }
       }
-      measuredCollapsedSize = true;
+      if (!foundCollapsed) {
+        throw new IllegalStateException(
+            "No CollapsedBackLayerContents found inside BackLayerLayout");
+      }
     }
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
   }
 
-  /** Returns true if the initial measurement has already been done. */
-  boolean hasMeasuredCollapsedSize() {
-    return measuredCollapsedSize;
-  }
-
-  /** Add a new {@link BackLayerCallback} to listen to back layer events. */
-  public void addBackLayerCallback(BackLayerCallback callback) {
-    if (!callbacks.contains(callback)) {
-      callbacks.add(callback);
-    }
-  }
-
-  /** Stop {@code callback} from listening to future back layer events. */
-  public void removeBackLayerCallback(BackLayerCallback callback) {
-    callbacks.remove(callback);
-  }
-
-  void setSibling(BackLayerSiblingBehavior sibling) {
-    this.sibling = sibling;
-  }
-
   /**
-   * Expands or collapses the back layer.
-   *
-   * <p>Notice that this method does not automatically change visibility on child views of the back
-   * layer, the developer has to prepare the contents of the back layer either before calling this
-   * method or in a {@link BackLayerCallback#onBeforeExpand()}/{@link
-   * BackLayerCallback#onBeforeCollapse()}.
+   * Call this to measure the BackLayerLayout's expanded size on-demand. This must be called before
+   * {@link #calculateExpandedWidth()} and {@link #calculateExpandedHeight()} are queried.
    */
-  @Override
-  public boolean setExpanded(boolean expanded) {
-    if (this.expanded == expanded) {
-      return expanded;
+  private void remeasureExpandedSize() {
+    if (expandedSizeMeasured) {
+      return;
     }
-    if (expanded) {
-      for (BackLayerCallback callback : callbacks) {
-        callback.onBeforeExpand();
-      }
-      measureExpanded();
-      // Call the sibling's behavior onBeforeExpand to animate the expansion (if necessary) and,
-      // after animation is done, call the onAfterExpand() callbacks.
-      if (sibling != null) {
-        sibling.onBeforeExpand();
-      }
-      this.expanded = true;
-    } else {
-      for (BackLayerCallback callback : callbacks) {
-        callback.onBeforeCollapse();
-      }
-      sibling.onBeforeCollapse();
-      this.expanded = false;
-    }
-    return this.expanded;
-  }
 
-  /**
-   * Measures the expanded version of the back layer by measuring with one dimension set to
-   * MeasureSpec.UNSPECIFIED and then undoing the changes by remeasuring with the original
-   * configuration.
-   */
-  void measureExpanded() {
     CoordinatorLayout.LayoutParams layoutParams =
         (CoordinatorLayout.LayoutParams) getLayoutParams();
     final int absoluteGravity =
@@ -323,20 +300,23 @@ public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
     expandedWidth = getMeasuredWidth();
     // Recalculate with the original measure specs, so it fits the entire coordinator layout.
     measure(originalWidthMeasureSpec, originalHeightMeasureSpec);
+
+    expandedSizeMeasured = true;
   }
 
   @Override
-  protected Parcelable onSaveInstanceState() {
+  public Parcelable onSaveInstanceState() {
     Parcelable superState = super.onSaveInstanceState();
     ExtendableSavedState state = new ExtendableSavedState(superState);
-    Bundle bundle = new Bundle();
-    bundle.putBoolean(EXPANDED_STATE_KEY, expanded);
-    state.extendableStates.put(BACK_LAYER_LAYOUT_STATE_KEY, bundle);
+
+    state.extendableStates.put(
+        "expandableWidgetHelper", expandableWidgetHelper.onSaveInstanceState());
+
     return state;
   }
 
   @Override
-  protected void onRestoreInstanceState(Parcelable state) {
+  public void onRestoreInstanceState(Parcelable state) {
     if (!(state instanceof ExtendableSavedState)) {
       super.onRestoreInstanceState(state);
       return;
@@ -345,45 +325,48 @@ public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
     ExtendableSavedState ess = (ExtendableSavedState) state;
     super.onRestoreInstanceState(ess.getSuperState());
 
-    Bundle bundle = ess.extendableStates.get(BACK_LAYER_LAYOUT_STATE_KEY);
-    if (bundle != null) {
-      this.expanded = bundle.getBoolean(EXPANDED_STATE_KEY);
-    }
-    if (expanded) {
-      for (BackLayerCallback callback : callbacks) {
-        callback.onRestoringExpandedBackLayer();
-      }
-      measureExpanded();
+    expandableWidgetHelper.onRestoreInstanceState(
+        ess.extendableStates.get("expandableWidgetHelper"));
+  }
+
+  void onExpandAnimationStart() {
+    for (BackLayerCallback callback : callbacks) {
+      callback.onBeforeExpand();
     }
   }
 
-  /** Called by the BackLayerSiblingBehavior when the expand animation is done. */
-  void onExpandAnimationDone() {
+  void onExpandAnimationEnd() {
     for (BackLayerCallback callback : callbacks) {
       callback.onAfterExpand();
     }
   }
 
-  /** Called by the BackLayerSiblingBehavior when the collapse animation is done. */
-  void onCollapseAnimationDone() {
+  void onCollapseAnimationStart() {
+    for (BackLayerCallback callback : callbacks) {
+      callback.onBeforeCollapse();
+    }
+  }
+
+  void onCollapseAnimationEnd() {
     childViewAccessibilityHelper.disableChildFocus();
     for (BackLayerCallback callback : callbacks) {
       callback.onAfterCollapse();
     }
   }
 
-  @Override
-  public boolean isExpanded() {
-    return expanded;
-  }
-
   /** The measured height for the expanded version of the back layer. */
-  int getExpandedHeight() {
+  int calculateExpandedHeight() {
+    if (!expandedSizeMeasured) {
+      remeasureExpandedSize();
+    }
     return expandedHeight;
   }
 
   /** The measured width for the expanded version of the back layer. */
-  int getExpandedWidth() {
+  int calculateExpandedWidth() {
+    if (!expandedSizeMeasured) {
+      remeasureExpandedSize();
+    }
     return expandedWidth;
   }
 }

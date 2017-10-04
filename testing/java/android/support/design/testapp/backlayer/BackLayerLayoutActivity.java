@@ -29,7 +29,7 @@ import java.lang.annotation.RetentionPolicy;
 /** Activity to test BackLayerLayout. */
 public abstract class BackLayerLayoutActivity extends BaseTestActivity {
 
-  BackLayerLayout backLayer;
+  BackLayerLayout backlayer;
   ImageView primaryExpandIcon;
   ImageView secondaryExpandIcon;
   ImageView primaryExtraContent;
@@ -54,7 +54,7 @@ public abstract class BackLayerLayoutActivity extends BaseTestActivity {
     @Override
     public void onClick(View view) {
       if (experience == buttonExperience) {
-        backLayer.setExpanded(!backLayer.isExpanded());
+        backlayer.setExpanded(!backlayer.isExpanded());
       } else {
         experience = buttonExperience;
         if (experience == PRIMARY) {
@@ -64,7 +64,7 @@ public abstract class BackLayerLayoutActivity extends BaseTestActivity {
           primaryExtraContent.setVisibility(View.GONE);
           secondaryExtraContent.setVisibility(View.VISIBLE);
         }
-        backLayer.setExpanded(true);
+        backlayer.setExpanded(true);
       }
     }
   }
@@ -72,7 +72,7 @@ public abstract class BackLayerLayoutActivity extends BaseTestActivity {
   @Override
   protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
-    backLayer = findViewById(R.id.design_backlayer_backlayer_layout);
+    backlayer = findViewById(R.id.design_backlayer_backlayer_layout);
     primaryExtraContent = findViewById(R.id.design_backlayer_extra_content);
     secondaryExtraContent = findViewById(R.id.design_backlayer_secondary_extra_content);
     primaryExpandIcon = findViewById(R.id.design_backlayer_primary_expand_icon);
