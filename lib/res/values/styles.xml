@@ -171,6 +171,8 @@
     <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
     <item name="rippleColor">@android:color/white</item>
     <item name="rippleAlpha">@color/mtrl_fab_ripple_alpha</item>
+    <item name="showMotionSpec">@animator/mtrl_fab_show_motion_spec</item>
+    <item name="hideMotionSpec">@animator/mtrl_fab_hide_motion_spec</item>
   </style>
 
 </resources>
