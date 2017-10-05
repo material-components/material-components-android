@@ -22,6 +22,7 @@ import static org.junit.Assert.assertThat;
 
 import android.animation.ValueAnimator;
 import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.design.testapp.animation.R;
@@ -43,28 +44,44 @@ public class MotionSpecTest {
       new ActivityTestRule<>(AppCompatActivity.class);
 
   @Test
-  public void inflateMotionSpec() {
-    MotionSpec.inflate(
+  public void loadMotionSpec() {
+    MotionSpec.loadFromResource(
         activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
-    MotionSpec.inflate(
+    MotionSpec.loadFromResource(
         activityTestRule.getActivity(), R.animator.valid_object_animator_motion_spec);
-    MotionSpec.inflate(activityTestRule.getActivity(), R.animator.valid_empty_set_motion_spec);
-    MotionSpec.inflate(activityTestRule.getActivity(), R.animator.valid_interpolators_motion_spec);
+    MotionSpec.loadFromResource(
+        activityTestRule.getActivity(), R.animator.valid_empty_set_motion_spec);
+    MotionSpec.loadFromResource(
+        activityTestRule.getActivity(), R.animator.valid_interpolators_motion_spec);
   }
 
   @Test
   public void setOfObjectAnimatorMotionSpecHasAlphaAndTranslationTimings() {
     MotionSpec spec =
-        MotionSpec.inflate(
+        MotionSpec.loadFromResource(
             activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
     assertNotNull(spec.getTiming("alpha"));
     assertNotNull(spec.getTiming("translation"));
   }
 
   @Test
+  public void loadFromAttributes() {
+    AppCompatActivity context = activityTestRule.getActivity();
+
+    TypedArray attributes =
+        context.obtainStyledAttributes(null, R.styleable.Test, 0, R.style.Widget_Test);
+
+    MotionSpec spec1 =
+        MotionSpec.loadFromAttribute(context, attributes, R.styleable.Test_motionSpec);
+    MotionSpec spec2 =
+        MotionSpec.loadFromResource(context, R.animator.valid_set_of_object_animator_motion_spec);
+    assertEquals(spec1, spec2);
+  }
+
+  @Test
   public void validateSetOfObjectAnimatorAlphaMotionTiming() {
     MotionSpec spec =
-        MotionSpec.inflate(
+        MotionSpec.loadFromResource(
             activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
     MotionTiming alpha = spec.getTiming("alpha");
 
@@ -82,7 +99,7 @@ public class MotionSpecTest {
   @Test
   public void validateSetOfObjectAnimatorTranslationMotionTiming() {
     MotionSpec spec =
-        MotionSpec.inflate(
+        MotionSpec.loadFromResource(
             activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
     MotionTiming translation = spec.getTiming("translation");
 
@@ -99,12 +116,13 @@ public class MotionSpecTest {
 
   @Test(expected = Resources.NotFoundException.class)
   public void inflateInvalidSetOfSetMotionSpec() {
-    MotionSpec.inflate(activityTestRule.getActivity(), R.animator.invalid_set_of_set_motion_spec);
+    MotionSpec.loadFromResource(
+        activityTestRule.getActivity(), R.animator.invalid_set_of_set_motion_spec);
   }
 
   @Test(expected = Resources.NotFoundException.class)
   public void inflateInvalidSetOfValueAnimatorMotionSpec() {
-    MotionSpec.inflate(
+    MotionSpec.loadFromResource(
         activityTestRule.getActivity(), R.animator.invalid_set_of_value_animator_motion_spec);
   }
 }

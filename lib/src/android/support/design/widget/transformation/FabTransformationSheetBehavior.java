@@ -49,7 +49,7 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
     }
 
     FabTransformationSpec spec = new FabTransformationSpec();
-    spec.timings = MotionSpec.inflate(context, specRes);
+    spec.timings = MotionSpec.loadFromResource(context, specRes);
     spec.positioning = new Positioning(Gravity.CENTER, 0f, 0f);
     return spec;
   }

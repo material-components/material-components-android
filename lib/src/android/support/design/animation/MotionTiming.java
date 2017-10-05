@@ -108,4 +108,61 @@ public class MotionTiming {
       return interpolator;
     }
   }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (o == null || getClass() != o.getClass()) {
+      return false;
+    }
+
+    MotionTiming that = (MotionTiming) o;
+
+    if (getDelay() != that.getDelay()) {
+      return false;
+    }
+    if (getDuration() != that.getDuration()) {
+      return false;
+    }
+    if (getRepeatCount() != that.getRepeatCount()) {
+      return false;
+    }
+    if (getRepeatMode() != that.getRepeatMode()) {
+      return false;
+    }
+    return getInterpolator().getClass().equals(that.getInterpolator().getClass());
+  }
+
+  @Override
+  public int hashCode() {
+    int result = (int) (getDelay() ^ (getDelay() >>> 32));
+    result = 31 * result + (int) (getDuration() ^ (getDuration() >>> 32));
+    result = 31 * result + getInterpolator().getClass().hashCode();
+    result = 31 * result + getRepeatCount();
+    result = 31 * result + getRepeatMode();
+    return result;
+  }
+
+  @Override
+  public String toString() {
+    StringBuilder out = new StringBuilder();
+    out.append('\n');
+    out.append(getClass().getName());
+    out.append('{');
+    out.append(Integer.toHexString(System.identityHashCode(this)));
+    out.append(" delay: ");
+    out.append(getDelay());
+    out.append(" duration: ");
+    out.append(getDuration());
+    out.append(" interpolator: ");
+    out.append(getInterpolator().getClass());
+    out.append(" repeatCount: ");
+    out.append(getRepeatCount());
+    out.append(" repeatMode: ");
+    out.append(getRepeatMode());
+    out.append("}\n");
+    return out.toString();
+  }
 }

@@ -38,7 +38,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleableRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.design.animation.MotionSpec;
@@ -194,9 +193,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     mMaxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
 
     MotionSpec showMotionSpec =
-        getMotionSpec(context, a, R.styleable.FloatingActionButton_showMotionSpec);
+        MotionSpec.loadFromAttribute(
+            context, a, R.styleable.FloatingActionButton_showMotionSpec);
     MotionSpec hideMotionSpec =
-        getMotionSpec(context, a, R.styleable.FloatingActionButton_hideMotionSpec);
+        MotionSpec.loadFromAttribute(
+            context, a, R.styleable.FloatingActionButton_hideMotionSpec);
 
     a.recycle();
 
@@ -739,20 +740,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     return super.onTouchEvent(ev);
   }
 
-  private static MotionSpec getMotionSpec(
-      Context context, TypedArray attributes, @StyleableRes int index) {
-    if (attributes.hasValue(index)) {
-      int resourceId = attributes.getResourceId(index, 0);
-      if (resourceId != 0) {
-        MotionSpec value = MotionSpec.inflate(context, resourceId);
-        if (value != null) {
-          return value;
-        }
-      }
-    }
-    throw new UnsupportedOperationException("Failed to resolve attribute at index " + index);
-  }
-
   /**
    * Behavior designed for use with {@link FloatingActionButton} instances. Its main function is to
    * move {@link FloatingActionButton} views so that any displayed {@link Snackbar}s do not cover
@@ -1105,7 +1092,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @attr ref android.support.design.R.styleable#FloatingActionButton_showMotionSpec
    */
   public void setShowMotionSpecResource(@AnimatorRes int id) {
-    setShowMotionSpec(MotionSpec.inflate(getContext(), id));
+    setShowMotionSpec(MotionSpec.loadFromResource(getContext(), id));
   }
 
   /** Returns the motion spec for the hide animation. */
@@ -1128,7 +1115,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @attr ref android.support.design.R.styleable#FloatingActionButton_hideMotionSpec
    */
   public void setHideMotionSpecResource(@AnimatorRes int id) {
-    setHideMotionSpec(MotionSpec.inflate(getContext(), id));
+    setHideMotionSpec(MotionSpec.loadFromResource(getContext(), id));
   }
 
   private FloatingActionButtonImpl getImpl() {
