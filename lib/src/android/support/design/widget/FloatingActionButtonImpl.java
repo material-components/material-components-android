@@ -255,12 +255,15 @@ class FloatingActionButtonImpl {
   final void setMaxImageSize(int maxImageSize) {
     if (this.maxImageSize != maxImageSize) {
       this.maxImageSize = maxImageSize;
-
-      setImageMatrixScale(1f);
+      recomputeImageMatrix(1f);
     }
   }
 
-  private void setImageMatrixScale(float scale) {
+  final void recomputeImageMatrix() {
+    recomputeImageMatrix(1f);
+  }
+
+  private void recomputeImageMatrix(float scale) {
     Matrix matrix = tmpMatrix;
     getImageMatrixForScale(scale, matrix);
     mView.setImageMatrix(matrix);
@@ -384,7 +387,7 @@ class FloatingActionButtonImpl {
         mView.setAlpha(0f);
         mView.setScaleY(0f);
         mView.setScaleX(0f);
-        setImageMatrixScale(0f);
+        recomputeImageMatrix(0f);
       }
 
       AnimatorSet set = createAnimator(showMotionSpec, SHOW_OPACITY, SHOW_SCALE, SHOW_ICON_SCALE);
@@ -414,7 +417,7 @@ class FloatingActionButtonImpl {
       mView.setAlpha(1f);
       mView.setScaleY(1f);
       mView.setScaleX(1f);
-      setImageMatrixScale(1f);
+      recomputeImageMatrix(1f);
       if (listener != null) {
         listener.onShown();
       }
