@@ -24,14 +24,9 @@ import android.widget.ImageView;
  * ImageView#setImageMatrix(Matrix)}.
  */
 public class ImageMatrixProperty extends Property<ImageView, Matrix> {
+  private final Matrix matrix = new Matrix();
 
-  /**
-   * A Property wrapper around {@link ImageView#getImageMatrix()} and {@link
-   * ImageView#setImageMatrix(Matrix)}.
-   */
-  public static final ImageMatrixProperty IMAGE_MATRIX = new ImageMatrixProperty();
-
-  private ImageMatrixProperty() {
+  public ImageMatrixProperty() {
     super(Matrix.class, "imageMatrixProperty");
   }
 
@@ -42,6 +37,7 @@ public class ImageMatrixProperty extends Property<ImageView, Matrix> {
 
   @Override
   public Matrix get(ImageView object) {
-    return object.getImageMatrix();
+    matrix.set(object.getImageMatrix());
+    return matrix;
   }
 }

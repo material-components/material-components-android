@@ -441,7 +441,7 @@ class FloatingActionButtonImpl {
     getImageMatrixForScale(iconScale, tmpMatrix);
     animator =
         ObjectAnimator.ofObject(
-            mView, ImageMatrixProperty.IMAGE_MATRIX, new MatrixEvaluator(), tmpMatrix);
+            mView, new ImageMatrixProperty(), new MatrixEvaluator(), new Matrix(tmpMatrix));
     spec.getTiming("iconScale").apply(animator);
     animators.add(animator);
 

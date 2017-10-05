@@ -28,7 +28,7 @@
       android:interpolator="@interpolator/mtrl_fast_out_linear_in"/>
   <objectAnimator
       android:propertyName="iconScale"
-      android:startOffset="90"
-      android:duration="240"
+      android:startOffset="0"
+      android:duration="180"
       android:interpolator="@interpolator/mtrl_fast_out_linear_in"/>
 </set>
