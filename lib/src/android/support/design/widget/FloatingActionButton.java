@@ -454,7 +454,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public void setImageResource(@DrawableRes int resId) {
     // Intercept this call and instead retrieve the Drawable via the image helper
     mImageHelper.setImageResource(resId);
-    getImpl().recomputeImageMatrix();
+  }
+
+  @Override
+  public void setImageDrawable(@Nullable Drawable drawable) {
+    super.setImageDrawable(drawable);
+    getImpl().updateImageMatrixScale();
   }
 
   /**

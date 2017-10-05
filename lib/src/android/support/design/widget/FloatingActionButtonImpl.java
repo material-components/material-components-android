@@ -120,6 +120,7 @@ class FloatingActionButtonImpl {
   private final RectF mTmpRectF1 = new RectF();
   private final RectF mTmpRectF2 = new RectF();
   private final Matrix tmpMatrix = new Matrix();
+  private final float[] tmpMatrixArray = new float[9];
 
   private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
 
@@ -255,35 +256,48 @@ class FloatingActionButtonImpl {
   final void setMaxImageSize(int maxImageSize) {
     if (this.maxImageSize != maxImageSize) {
       this.maxImageSize = maxImageSize;
-      recomputeImageMatrix(1f);
+      updateImageMatrixScale();
     }
   }
 
-  final void recomputeImageMatrix() {
-    recomputeImageMatrix(1f);
+  /**
+   * Call this whenever the image drawable changes or the view size changes.
+   */
+  final void updateImageMatrixScale() {
+    // Recompute the image matrix needed to maintain the same scale.
+    setImageMatrixScale(getImageMatrixScale());
   }
 
-  private void recomputeImageMatrix(float scale) {
+  private void setImageMatrixScale(float scale) {
     Matrix matrix = tmpMatrix;
-    getImageMatrixForScale(scale, matrix);
+    calculateImageMatrixFromScale(scale, matrix);
     mView.setImageMatrix(matrix);
   }
 
-  private void getImageMatrixForScale(float scale, Matrix matrix) {
+  private float getImageMatrixScale(){
+    return calculateScaleFromImageMatrix(mView.getImageMatrix());
+  }
+
+  private void calculateImageMatrixFromScale(float scale, Matrix matrix) {
     matrix.reset();
 
     Drawable drawable = mView.getDrawable();
     if (drawable != null) {
       // First make sure our image respects mMaxImageSize.
       RectF drawableBounds = mTmpRectF1;
-      RectF viewBounds = mTmpRectF2;
+      RectF imageBounds = mTmpRectF2;
       drawableBounds.set(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
-      viewBounds.set(0, 0, maxImageSize, maxImageSize);
-      matrix.setRectToRect(drawableBounds, viewBounds, ScaleToFit.CENTER);
+      imageBounds.set(0, 0, maxImageSize, maxImageSize);
+      matrix.setRectToRect(drawableBounds, imageBounds, ScaleToFit.CENTER);
 
       // Then scale it as requested.
       matrix.postScale(scale, scale, maxImageSize / 2f, maxImageSize / 2f);
     }
+  }
+
+  private float calculateScaleFromImageMatrix(Matrix matrix) {
+    matrix.getValues(tmpMatrixArray);
+    return tmpMatrixArray[Matrix.MSCALE_X];
   }
 
   final MotionSpec getShowMotionSpec() {
@@ -387,7 +401,7 @@ class FloatingActionButtonImpl {
         mView.setAlpha(0f);
         mView.setScaleY(0f);
         mView.setScaleX(0f);
-        recomputeImageMatrix(0f);
+        setImageMatrixScale(0f);
       }
 
       AnimatorSet set = createAnimator(showMotionSpec, SHOW_OPACITY, SHOW_SCALE, SHOW_ICON_SCALE);
@@ -417,7 +431,7 @@ class FloatingActionButtonImpl {
       mView.setAlpha(1f);
       mView.setScaleY(1f);
       mView.setScaleX(1f);
-      recomputeImageMatrix(1f);
+      setImageMatrixScale(1f);
       if (listener != null) {
         listener.onShown();
       }
@@ -441,7 +455,7 @@ class FloatingActionButtonImpl {
     spec.getTiming("scale").apply(animator);
     animators.add(animator);
 
-    getImageMatrixForScale(iconScale, tmpMatrix);
+    calculateImageMatrixFromScale(iconScale, tmpMatrix);
     animator =
         ObjectAnimator.ofObject(
             mView, new ImageMatrixProperty(), new MatrixEvaluator(), new Matrix(tmpMatrix));
