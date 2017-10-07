@@ -28,10 +28,10 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.widget.NavigationView;
-import android.view.LayoutInflater;
-import android.view.View;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.view.LayoutInflater;
+import android.view.View;
 import org.hamcrest.Matcher;
 
 public class NavigationViewActions {

@@ -20,11 +20,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
 import android.support.annotation.Nullable;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.view.View;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
 import org.hamcrest.Matcher;
 
 public class ViewPagerActions {

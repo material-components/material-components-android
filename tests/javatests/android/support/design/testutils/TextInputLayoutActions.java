@@ -21,9 +21,9 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 import android.content.res.ColorStateList;
 import android.graphics.Typeface;
 import android.support.design.widget.TextInputLayout;
-import android.view.View;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.view.View;
 import org.hamcrest.Matcher;
 
 public class TextInputLayoutActions {

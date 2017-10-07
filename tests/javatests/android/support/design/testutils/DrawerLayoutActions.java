@@ -18,10 +18,10 @@ package android.support.design.testutils;
 
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
-import android.support.v4.widget.DrawerLayout;
-import android.view.View;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.v4.widget.DrawerLayout;
+import android.view.View;
 import org.hamcrest.Matcher;
 
 public class DrawerLayoutActions {

@@ -23,9 +23,9 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
-import android.view.View;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.view.View;
 import org.hamcrest.Matcher;
 
 public class FloatingActionButtonActions {

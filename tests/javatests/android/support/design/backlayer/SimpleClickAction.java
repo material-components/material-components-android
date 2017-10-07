@@ -18,8 +18,6 @@ package android.support.design.backlayer;
 
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
-import android.view.View;
-import android.view.ViewConfiguration;
 import android.support.test.espresso.PerformException;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -30,6 +28,8 @@ import android.support.test.espresso.action.Press;
 import android.support.test.espresso.action.Tap;
 import android.support.test.espresso.action.Tapper;
 import android.support.test.espresso.util.HumanReadables;
+import android.view.View;
+import android.view.ViewConfiguration;
 import org.hamcrest.Matcher;
 
 /**

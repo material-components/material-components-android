@@ -23,9 +23,9 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
-import android.view.View;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.view.View;
 import org.hamcrest.Matcher;
 
 public class BottomNavigationViewActions {
