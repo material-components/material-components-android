@@ -89,7 +89,7 @@
       <!-- Inset the left edge. -->
       <enum name="left" value="0x03"/>
       <!-- Inset the right edge. -->
-      <enum name="right" value="0x03"/>
+      <enum name="right" value="0x05"/>
       <!-- Inset the start edge. -->
       <enum name="start" value="0x00800003"/>
       <!-- Inset the end edge. -->
@@ -106,7 +106,7 @@
       <!-- Dodge the left inset edge. -->
       <flag name="left" value="0x03"/>
       <!-- Dodge the right inset edge. -->
-      <flag name="right" value="0x03"/>
+      <flag name="right" value="0x05"/>
       <!-- Dodge the start inset edge. -->
       <flag name="start" value="0x00800003"/>
       <!-- Dodge the end inset edge. -->

@@ -42,6 +42,9 @@
   <string name="design_appbar_anchored_fab_margin_left">AppBar + anchored FAB with left margin</string>
   <string name="design_appbar_anchored_fab_margin_right">AppBar + anchored FAB with right margin</string>
 
+  <string name="design_appbar_dodge_left">AppBar + FABs with dodge on left</string>
+  <string name="design_appbar_dodge_right">AppBar + FABs with dodge on right</string>
+
   <string name="textinput_hint">Hint to the user</string>
 
 </resources>
