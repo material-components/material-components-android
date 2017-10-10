@@ -7,6 +7,7 @@
 *   [CollapsingToolbarLayout](components/CollapsingToolbarLayout.md)
 *   [CoordinatorLayout](components/CoordinatorLayout.md)
 *   [FloatingActionButton](components/FloatingActionButton.md)
+*   [MaterialButton](components/MaterialButton.md)
 *   [NavigationView](components/NavigationView.md)
 *   [Snackbar](components/Snackbar.md)
 *   [TabLayout](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/TabLayout.java)
