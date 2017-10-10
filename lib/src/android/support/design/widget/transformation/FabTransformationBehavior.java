@@ -276,6 +276,11 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     ImageView dependencyImageView = (ImageView) dependency;
     final Drawable icon = dependencyImageView.getDrawable();
 
+    if (icon == null) {
+      return;
+    }
+    icon.mutate();
+
     ObjectAnimator animator;
 
     if (expanded) {

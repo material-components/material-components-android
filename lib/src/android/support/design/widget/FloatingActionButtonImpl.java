@@ -268,13 +268,13 @@ class FloatingActionButtonImpl {
     setImageMatrixScale(getImageMatrixScale());
   }
 
-  private void setImageMatrixScale(float scale) {
+  final void setImageMatrixScale(float scale) {
     Matrix matrix = tmpMatrix;
     calculateImageMatrixFromScale(scale, matrix);
     mView.setImageMatrix(matrix);
   }
 
-  private float getImageMatrixScale(){
+  final float getImageMatrixScale(){
     return calculateScaleFromImageMatrix(mView.getImageMatrix());
   }
 
@@ -282,7 +282,7 @@ class FloatingActionButtonImpl {
     matrix.reset();
 
     Drawable drawable = mView.getDrawable();
-    if (drawable != null) {
+    if (drawable != null && maxImageSize != 0) {
       // First make sure our image respects mMaxImageSize.
       RectF drawableBounds = mTmpRectF1;
       RectF imageBounds = mTmpRectF2;
