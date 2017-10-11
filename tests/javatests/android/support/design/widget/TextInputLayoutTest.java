@@ -57,7 +57,6 @@ import static org.junit.Assert.assertTrue;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
@@ -593,8 +592,8 @@ public class TextInputLayoutTest {
 
   @Test
   public void testOutlineBoxStrokeChangesColor() {
-    ColorStateList cyan = ColorStateList.valueOf(Color.CYAN);
-    ColorStateList green = ColorStateList.valueOf(Color.GREEN);
+    @ColorInt int cyan = Color.CYAN;
+    @ColorInt int green = Color.GREEN;
 
     // Change the outline box's stroke color to cyan.
     onView(withId(R.id.textinput_box_outline)).perform(setBoxStrokeColor(cyan));
@@ -616,12 +615,12 @@ public class TextInputLayoutTest {
     };
   }
 
-  private static ViewAssertion isBoxStrokeColor(final ColorStateList colorStateList) {
+  private static ViewAssertion isBoxStrokeColor(@ColorInt final int boxStrokeColor) {
     return new ViewAssertion() {
       @Override
       public void check(View view, NoMatchingViewException noViewFoundException) {
         assertTrue(view instanceof TextInputLayout);
-        assertEquals(colorStateList, ((TextInputLayout) view).getBoxStrokeColor());
+        assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeColor());
       }
     };
   }

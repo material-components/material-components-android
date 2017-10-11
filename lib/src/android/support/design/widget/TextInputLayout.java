@@ -36,6 +36,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
@@ -152,7 +153,7 @@ public class TextInputLayout extends LinearLayout {
   @BoxBackgroundMode private int mBoxBackgroundMode;
   private float mBoxCornerRadius;
   private int mBoxStrokeWidth;
-  private ColorStateList mBoxStrokeColor;
+  @ColorInt private int mBoxStrokeColor;
   private ColorStateList mBoxBackgroundColor;
   private Drawable mEditTextOriginalDrawable;
 
@@ -245,14 +246,13 @@ public class TextInputLayout extends LinearLayout {
     mBoxPaddingRightPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingRight, 0);
     mBoxPaddingBottomPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingBottom, 0);
-
-    mBoxStrokeColor =
-        getColorStateListResourceCompat(context, a, R.styleable.TextInputLayout_boxStrokeColor);
-
     mBoxLabelCutoutPaddingPx =
         context
             .getResources()
             .getDimensionPixelOffset(R.dimen.design_textinput_box_label_cutout_padding);
+
+    mBoxStrokeColor = a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
+
     @BoxBackgroundMode
     final int boxBackgroundMode =
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
@@ -439,17 +439,6 @@ public class TextInputLayout extends LinearLayout {
     return mBoxPaddingBottomPx;
   }
 
-  private ColorStateList getColorStateListResourceCompat(
-      Context context, TintTypedArray a, int colorStateListIndex) {
-    if (a.hasValue(colorStateListIndex)) {
-      int resourceId = a.getResourceId(colorStateListIndex, 0);
-      if (resourceId != 0) {
-        return AppCompatResources.getColorStateList(context, resourceId);
-      }
-    }
-    return a.getColorStateList(colorStateListIndex);
-  }
-
   /**
    * Set the outline box's stroke color.
    *
@@ -458,7 +447,7 @@ public class TextInputLayout extends LinearLayout {
    * @param boxStrokeColor the color to use for the box's stroke
    * @see #getBoxStrokeColor()
    */
-  public void setBoxStrokeColor(ColorStateList boxStrokeColor) {
+  public void setBoxStrokeColor(@ColorInt int boxStrokeColor) {
     if (mBoxStrokeColor != boxStrokeColor) {
       mBoxStrokeColor = boxStrokeColor;
       invalidate();
@@ -466,13 +455,12 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Returns the box's stroke color, or null if there is none set.
+   * Returns the box's stroke color.
    *
    * @return the color used for the box's stroke
-   * @see #setBoxStrokeColor(ColorStateList)
+   * @see #setBoxStrokeColor(int)
    */
-  @Nullable
-  public ColorStateList getBoxStrokeColor() {
+  public int getBoxStrokeColor() {
     return mBoxStrokeColor;
   }
 
@@ -1057,8 +1045,10 @@ public class TextInputLayout extends LinearLayout {
 
       case BOX_BACKGROUND_OUTLINE:
         mBoxCornerRadius = 16f;
-        if (mBoxStrokeColor == null) {
-          mBoxStrokeColor = mFocusedTextColor;
+        if (mBoxStrokeColor == Color.TRANSPARENT) {
+          mBoxStrokeColor =
+              mFocusedTextColor.getColorForState(
+                  getDrawableState(), mFocusedTextColor.getDefaultColor());
         }
         mBoxBackgroundColor = null;
         mBoxStrokeWidth = 7;
@@ -1091,8 +1081,8 @@ public class TextInputLayout extends LinearLayout {
       ViewCompat.setBackground(mEditText, mEditTextOriginalDrawable);
     }
 
-    if (mBoxStrokeWidth > -1 && mBoxStrokeColor != null) {
-      setBoxBackgroundStroke(mBoxStrokeWidth, mBoxStrokeColor);
+    if (mBoxStrokeWidth > -1 && mBoxStrokeColor != Color.TRANSPARENT) {
+      mBoxBackground.setStroke(mBoxStrokeWidth, mBoxStrokeColor);
     }
 
     if (mBoxCornerRadius > -1) {
@@ -1100,17 +1090,6 @@ public class TextInputLayout extends LinearLayout {
     }
 
     setBoxBackgroundColor(mBoxBackgroundColor);
-  }
-
-  private void setBoxBackgroundStroke(int boxStrokeWidth, ColorStateList boxStrokeColor) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      mBoxBackground.setStroke(boxStrokeWidth, boxStrokeColor);
-    } else {
-      // Drop to compat, so we have to use a color int instead of a ColorStateList. The drawable's
-      // stroke won't change colors based on the view's state changes.
-      mBoxBackground.setStroke(
-          boxStrokeWidth, boxStrokeColor.getColorForState(getDrawableState(), Color.TRANSPARENT));
-    }
   }
 
   private void setBoxBackgroundColor(@Nullable ColorStateList boxBackgroundColor) {

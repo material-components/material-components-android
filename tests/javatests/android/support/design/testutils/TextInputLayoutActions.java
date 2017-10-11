@@ -18,8 +18,8 @@ package android.support.design.testutils;
 
 import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
-import android.content.res.ColorStateList;
 import android.graphics.Typeface;
+import android.support.annotation.ColorInt;
 import android.support.design.widget.TextInputLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -228,7 +228,7 @@ public class TextInputLayoutActions {
     };
   }
 
-  public static ViewAction setBoxStrokeColor(final ColorStateList colorStateList) {
+  public static ViewAction setBoxStrokeColor(@ColorInt final int strokeColor) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -243,7 +243,7 @@ public class TextInputLayoutActions {
       @Override
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
-        layout.setBoxStrokeColor(colorStateList);
+        layout.setBoxStrokeColor(strokeColor);
       }
     };
   }
