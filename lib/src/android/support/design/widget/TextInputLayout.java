@@ -153,6 +153,7 @@ public class TextInputLayout extends LinearLayout {
   @BoxBackgroundMode private int mBoxBackgroundMode;
   private float mBoxCornerRadius;
   private int mBoxStrokeWidth;
+  @ColorInt private int mBoxStrokeColorFromUser;
   @ColorInt private int mBoxStrokeColor;
   private ColorStateList mBoxBackgroundColor;
   private Drawable mEditTextOriginalDrawable;
@@ -187,6 +188,8 @@ public class TextInputLayout extends LinearLayout {
 
   private ColorStateList mDefaultTextColor;
   private ColorStateList mFocusedTextColor;
+
+  @ColorInt private final int mDisabledColor;
 
   // Only used for testing
   private boolean mHintExpanded;
@@ -251,7 +254,8 @@ public class TextInputLayout extends LinearLayout {
             .getResources()
             .getDimensionPixelOffset(R.dimen.design_textinput_box_label_cutout_padding);
 
-    mBoxStrokeColor = a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
+    mBoxStrokeColorFromUser =
+        a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
 
     @BoxBackgroundMode
     final int boxBackgroundMode =
@@ -262,6 +266,7 @@ public class TextInputLayout extends LinearLayout {
           mFocusedTextColor =
               a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
     }
+    mDisabledColor = ContextCompat.getColor(context, R.color.design_textinput_disabled_color);
 
     final int hintAppearance = a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, -1);
     if (hintAppearance != -1) {
@@ -448,8 +453,8 @@ public class TextInputLayout extends LinearLayout {
    * @see #getBoxStrokeColor()
    */
   public void setBoxStrokeColor(@ColorInt int boxStrokeColor) {
-    if (mBoxStrokeColor != boxStrokeColor) {
-      mBoxStrokeColor = boxStrokeColor;
+    if (mBoxStrokeColorFromUser != boxStrokeColor) {
+      mBoxStrokeColorFromUser = boxStrokeColor;
       invalidate();
     }
   }
@@ -461,7 +466,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxStrokeColor(int)
    */
   public int getBoxStrokeColor() {
-    return mBoxStrokeColor;
+    return mBoxStrokeColorFromUser;
   }
 
   /**
@@ -1045,8 +1050,8 @@ public class TextInputLayout extends LinearLayout {
 
       case BOX_BACKGROUND_OUTLINE:
         mBoxCornerRadius = 16f;
-        if (mBoxStrokeColor == Color.TRANSPARENT) {
-          mBoxStrokeColor =
+        if (mBoxStrokeColorFromUser == Color.TRANSPARENT) {
+          mBoxStrokeColorFromUser =
               mFocusedTextColor.getColorForState(
                   getDrawableState(), mFocusedTextColor.getDefaultColor());
         }
@@ -1688,6 +1693,7 @@ public class TextInputLayout extends LinearLayout {
 
     updateEditTextBackground();
     updateTextInputBoxBounds();
+    updateTextInputBoxState();
 
     if (mCollapsingTextHelper != null) {
       changed |= mCollapsingTextHelper.setState(state);
@@ -1698,6 +1704,22 @@ public class TextInputLayout extends LinearLayout {
     }
 
     mInDrawableStateChanged = false;
+  }
+
+  private void updateTextInputBoxState() {
+    if (mBoxBackground == null || mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
+      return;
+    }
+    // Update the text box's stroke based on the current state.
+    if (mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      if (!isEnabled()) {
+        // Set the box's stroke color to the disabled color.
+        mBoxStrokeColor = mDisabledColor;
+      } else {
+        // Set the box's stroke color to the provided color.
+        mBoxStrokeColor = mBoxStrokeColorFromUser;
+      }
+    }
   }
 
   private void expandHint(boolean animate) {
