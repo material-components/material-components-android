@@ -245,6 +245,7 @@ final class IndicatorViewController {
     }
     textInputView.updateEditTextBackground();
     textInputView.updateLabelState(animate);
+    textInputView.updateTextInputBoxState();
   }
 
   private void setCaptionViewVisibilities(
@@ -428,6 +429,7 @@ final class IndicatorViewController {
       removeIndicator(mErrorView, ERROR_INDEX);
       mErrorView = null;
       textInputView.updateEditTextBackground();
+      textInputView.updateTextInputBoxState();
     }
     mErrorEnabled = enabled;
   }
@@ -465,6 +467,7 @@ final class IndicatorViewController {
       removeIndicator(mHelperTextView, HELPER_INDEX);
       mHelperTextView = null;
       textInputView.updateEditTextBackground();
+      textInputView.updateTextInputBoxState();
     }
     mHelperTextEnabled = enabled;
   }

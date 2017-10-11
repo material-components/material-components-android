@@ -1706,7 +1706,7 @@ public class TextInputLayout extends LinearLayout {
     mInDrawableStateChanged = false;
   }
 
-  private void updateTextInputBoxState() {
+  void updateTextInputBoxState() {
     if (mBoxBackground == null || mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
       return;
     }
@@ -1715,10 +1715,13 @@ public class TextInputLayout extends LinearLayout {
       if (!isEnabled()) {
         // Set the box's stroke color to the disabled color.
         mBoxStrokeColor = mDisabledColor;
+      } else if (indicatorViewController.errorShouldBeShown()) {
+        mBoxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
       } else {
         // Set the box's stroke color to the provided color.
         mBoxStrokeColor = mBoxStrokeColorFromUser;
       }
+      applyBoxAttributes();
     }
   }
 
