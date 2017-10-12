@@ -72,7 +72,7 @@ when covered by an [AppBarLayout](AppBarLayout.md) or
 
 Change the icon in the floating action button with:
 
--   `android:src` attritube
+-   `app:srcCompat` attribute
 -   `setImageDrawable` method
 
 Change the size of the widget with:
