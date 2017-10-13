@@ -16,6 +16,10 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <style name="Widget.Design.Chip" parent="android:Widget">
+    <!-- TODO -->
+  </style>
+
   <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
     <item name="android:background">@drawable/design_fab_background</item>
     <item name="android:clickable">true</item>
@@ -163,6 +167,9 @@
     <item name="behavior_peekHeight">auto</item>
     <item name="behavior_hideable">true</item>
     <item name="behavior_skipCollapsed">false</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Chip" parent="Widget.Design.Chip">
   </style>
 
   <style name="Widget.MaterialComponents.FloatingActionButton" parent="Widget.Design.FloatingActionButton">
