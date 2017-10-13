@@ -41,6 +41,7 @@ import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.design.animation.MotionSpec;
+import android.support.design.resources.MaterialResources;
 import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import android.support.design.widget.expandable.ExpandableTransformationWidget;
@@ -176,12 +177,16 @@ public class FloatingActionButton extends VisibilityAwareImageButton
             R.styleable.FloatingActionButton,
             defStyleAttr,
             R.style.Widget_Design_FloatingActionButton);
-    mBackgroundTint = a.getColorStateList(R.styleable.FloatingActionButton_backgroundTint);
+    mBackgroundTint =
+        MaterialResources.getColorStateList(
+            context, a, R.styleable.FloatingActionButton_backgroundTint);
     mBackgroundTintMode =
         ViewUtils.parseTintMode(
             a.getInt(R.styleable.FloatingActionButton_backgroundTintMode, -1), null);
     mRippleColor = a.getColor(R.styleable.FloatingActionButton_rippleColor, 0);
-    mRippleAlphaStateList = a.getColorStateList(R.styleable.FloatingActionButton_rippleAlpha);
+    mRippleAlphaStateList =
+        MaterialResources.getColorStateList(
+            context, a, R.styleable.FloatingActionButton_rippleAlpha);
     mSize = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_AUTO);
     mBorderWidth = a.getDimensionPixelSize(R.styleable.FloatingActionButton_borderWidth, 0);
     final float elevation = a.getDimension(R.styleable.FloatingActionButton_elevation, 0f);
