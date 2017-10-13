@@ -5,9 +5,9 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
-  compile "com.android.support:support-annotations:${project.rootProject.ext.supportVersion}"
-  compile "com.android.support:support-compat:${project.rootProject.ext.supportVersion}"
-  compile "com.android.support:support-core-ui:${project.rootProject.ext.supportVersion}"
+  compile compatibility("annotations")
+  compile compatibility("compat")
+  compile compatibility("core_ui")
 }
 
 android {

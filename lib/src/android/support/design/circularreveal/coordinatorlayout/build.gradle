@@ -5,9 +5,10 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
-  compile project(":lib")
-  compile project(getTransformedProjectPath(
-      'lib/src/android/support/design/circularreveal'))
+  compile compatibility("annotations")
+
+  compile project(fromPath("lib"))
+  compile project(fromPath("lib/src/android/support/design/circularreveal"))
 }
 
 android {

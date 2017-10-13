@@ -3,6 +3,8 @@ apply plugin: 'com.android.library'
 archivesBaseName = 'design'
 
 dependencies {
+  compile compatibility("annotations")
+  compile compatibility("v7/appcompat")
 }
 
 android {

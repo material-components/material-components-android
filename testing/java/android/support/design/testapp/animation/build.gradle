@@ -18,15 +18,12 @@ package android.support.design.testapp.animation
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile "com.android.support:support-compat:${project.rootProject.ext.supportVersion}"
-  compile "com.android.support:appcompat-v7:${project.rootProject.ext.supportVersion}"
-  compile project(':lib')
-  compile project(
-      getTransformedProjectPath(
-          'lib/src/android/support/design/animation'))
-  compile project(
-      getTransformedProjectPath(
-          'testing/java/android/support/design/testapp/base'))
+  compile compatibility("compat")
+  compile compatibility("v7/appcompat")
+
+  compile project(fromPath("lib"))
+  compile project(fromPath("lib/src/android/support/design/animation"))
+  compile project(fromPath("testing/java/android/support/design/testapp/base"))
 }
 
 android {

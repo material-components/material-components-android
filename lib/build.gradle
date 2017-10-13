@@ -5,18 +5,23 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
-  compile "com.android.support:appcompat-v7:${project.rootProject.ext.supportVersion}"
-  compile "com.android.support:recyclerview-v7:${project.rootProject.ext.supportVersion}"
-  compile "com.android.support:support-core-utils:${project.rootProject.ext.supportVersion}"
-  compile "com.android.support:support-fragment:${project.rootProject.ext.supportVersion}"
-  compile "com.android.support:transition:${project.rootProject.ext.supportVersion}"
 
-  compile project(getTransformedProjectPath(
-      'lib/src/android/support/design/animation'))
-  compile project(getTransformedProjectPath(
-      'lib/src/android/support/design/circularreveal/cardview'))
-  compile project(getTransformedProjectPath(
-      'lib/src/android/support/design/stateful'))
+  compile compatibility("annotations")
+  compile compatibility("compat")
+  compile compatibility("core_ui")
+  compile compatibility("core_utils")
+  compile compatibility("fragment")
+  compile compatibility("transition")
+  compile compatibility("v7/appcompat")
+  compile compatibility("v7/recyclerview")
+
+
+  compile project(fromPath("lib/src/android/support/design/animation"))
+  compile project(fromPath("lib/src/android/support/design/circularreveal"))
+  compile project(fromPath("lib/src/android/support/design/circularreveal/cardview"))
+  compile project(fromPath("lib/src/android/support/design/math"))
+  compile project(fromPath("lib/src/android/support/design/resources"))
+  compile project(fromPath("lib/src/android/support/design/stateful"))
 
   testCompile("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
     exclude module: 'support-annotations'

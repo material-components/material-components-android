@@ -30,6 +30,8 @@ dependencies {
   compile 'org.mockito:mockito-core:1.9.5'
   compile 'com.google.dexmaker:dexmaker:1.2'
   compile 'com.google.dexmaker:dexmaker-mockito:1.2'
+
+  compile project(fromPath("lib/src/android/support/design/animation"))
 }
 
 android {

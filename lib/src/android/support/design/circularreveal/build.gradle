@@ -5,9 +5,8 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
-  compile "com.android.support:support-annotations:${project.rootProject.ext.supportVersion}"
-  compile project(getTransformedProjectPath(
-      'lib/src/android/support/design/math'))
+  compile compatibility("annotations")
+  compile project(fromPath("lib/src/android/support/design/math"))
 }
 
 android {

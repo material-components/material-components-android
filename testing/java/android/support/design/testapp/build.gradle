@@ -1,15 +1,12 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile "com.android.support:support-annotations:${project.rootProject.ext.supportVersion}"
-  compile "com.android.support:appcompat-v7:${project.rootProject.ext.supportVersion}"
-  compile project(':lib')
-  compile project(
-      getTransformedProjectPath(
-          'testing/java/android/support/design/testapp/base'))
-  compile project(
-      getTransformedProjectPath(
-          'testing/java/android/support/design/testapp/custom'))
+  compile compatibility("annotations")
+  compile compatibility("v7/appcompat")
+
+  compile project(fromPath("lib"))
+  compile project(fromPath("testing/java/android/support/design/testapp/base"))
+  compile project(fromPath("testing/java/android/support/design/testapp/custom"))
 }
 
 android {

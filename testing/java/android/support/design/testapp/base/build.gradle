@@ -17,9 +17,11 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  compile 'com.android.support:support-compat:25.3.1'
-  compile 'com.android.support:appcompat-v7:25.3.1'
-  compile project(':lib')
+  compile compatibility("compat")
+  compile compatibility("core_ui")
+  compile compatibility("core_utils")
+  compile compatibility("fragment")
+  compile compatibility("v7/appcompat")
 }
 
 android {
