@@ -190,6 +190,7 @@ public class TextInputLayout extends LinearLayout {
   private ColorStateList mFocusedTextColor;
 
   @ColorInt private final int mDisabledColor;
+  @ColorInt private final int mDefaultStrokeColor;
 
   // Only used for testing
   private boolean mHintExpanded;
@@ -266,6 +267,8 @@ public class TextInputLayout extends LinearLayout {
           mFocusedTextColor =
               a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
     }
+    mDefaultStrokeColor =
+        ContextCompat.getColor(context, R.color.design_textinput_default_box_stroke_color);
     mDisabledColor = ContextCompat.getColor(context, R.color.design_textinput_disabled_color);
 
     final int hintAppearance = a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, -1);
@@ -587,7 +590,7 @@ public class TextInputLayout extends LinearLayout {
   private void updateLabelState(boolean animate, boolean force) {
     final boolean isEnabled = isEnabled();
     final boolean hasText = mEditText != null && !TextUtils.isEmpty(mEditText.getText());
-    final boolean isFocused = arrayContains(getDrawableState(), android.R.attr.state_focused);
+    final boolean hasFocus = mEditText != null && mEditText.hasFocus();
     final boolean errorShouldBeShown = indicatorViewController.errorShouldBeShown();
 
     if (mDefaultTextColor != null) {
@@ -598,13 +601,13 @@ public class TextInputLayout extends LinearLayout {
       mCollapsingTextHelper.setCollapsedTextColor(indicatorViewController.getErrorViewTextColors());
     } else if (isEnabled && mCounterOverflowed && mCounterView != null) {
       mCollapsingTextHelper.setCollapsedTextColor(mCounterView.getTextColors());
-    } else if (isEnabled && isFocused && mFocusedTextColor != null) {
+    } else if (isEnabled && hasFocus && mFocusedTextColor != null) {
       mCollapsingTextHelper.setCollapsedTextColor(mFocusedTextColor);
     } else if (mDefaultTextColor != null) {
       mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor);
     }
 
-    if (hasText || (isEnabled() && (isFocused || errorShouldBeShown))) {
+    if (hasText || (isEnabled() && (hasFocus || errorShouldBeShown))) {
       // We should be showing the label so do so if it isn't already
       if (force || mHintExpanded) {
         collapseHint(animate);
@@ -1710,6 +1713,7 @@ public class TextInputLayout extends LinearLayout {
     if (mBoxBackground == null || mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
       return;
     }
+
     // Update the text box's stroke based on the current state.
     if (mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
       if (!isEnabled()) {
@@ -1717,9 +1721,12 @@ public class TextInputLayout extends LinearLayout {
         mBoxStrokeColor = mDisabledColor;
       } else if (indicatorViewController.errorShouldBeShown()) {
         mBoxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
-      } else {
+      } else if (mEditText != null && mEditText.hasFocus()) {
         // Set the box's stroke color to the provided color.
         mBoxStrokeColor = mBoxStrokeColorFromUser;
+      } else {
+        // Set the box's stroke color to the default black.
+        mBoxStrokeColor = mDefaultStrokeColor;
       }
       applyBoxAttributes();
     }
@@ -1818,14 +1825,5 @@ public class TextInputLayout extends LinearLayout {
         info.setError(indicatorViewController.getErrorText());
       }
     }
-  }
-
-  private static boolean arrayContains(int[] array, int value) {
-    for (int v : array) {
-      if (v == value) {
-        return true;
-      }
-    }
-    return false;
   }
 }

@@ -43,6 +43,8 @@
 
   <!-- Color for the text field's disabled state: 12% black -->
   <color name="design_textinput_disabled_color">#1F000000</color>
+  <!-- Color for the text field's default box stroke: 42% black -->
+  <color name="design_textinput_default_box_stroke_color">#6B000000</color>
 
   <color name="design_snackbar_background_color">#323232</color>
 
