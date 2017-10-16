@@ -60,7 +60,80 @@
   </declare-styleable>
 
   <declare-styleable name="ChipDrawable">
-    <!-- TODO -->
+    <!-- Tint to apply to the chip drawable. -->
+    <attr name="buttonTint"/>
+    <!-- Blending mode used to apply the chip's button tint. -->
+    <attr name="buttonTintMode"/>
+    <!-- Height to apply to the chip drawable. -->
+    <attr name="buttonHeight" format="dimension"/>
+    <!-- Corner radius to apply to the chip drawable's shape. -->
+    <attr name="cornerRadius" format="dimension"/>
+    <!-- Stroke color to apply to the chip's outline. -->
+    <attr name="strokeColor" format="color"/>
+    <!-- Stroke width to apply to the chip's outline. -->
+    <attr name="buttonStrokeWidth" format="dimension"/>
+    <!-- Ripple color to apply to the chip. -->
+    <attr name="rippleColor"/>
+    <!-- Ripple alpha to apply to the chip. This may be a color state list, if the desired ripple
+         alpha should be stateful. -->
+    <attr name="rippleAlpha"/>
+
+    <!-- Text to display on the chip. -->
+    <attr name="buttonText" format="string" localization="suggested"/>
+    <!-- Default appearance of text: color, typeface, size, and style. -->
+    <attr name="android:textAppearance"/>
+
+    <!-- Icon drawable to display at the start of the chip. -->
+    <attr name="icon" format="reference"/>
+    <!-- Size of the chip's icon. -->
+    <attr name="iconSize" format="dimension"/>
+
+    <!-- Close icon drawable to display at the end of the chip. -->
+    <attr name="closeIcon" format="reference"/>
+    <!-- Size of the chip's close icon. -->
+    <attr name="closeIconSize" format="dimension"/>
+
+    <!-- Whether the chip can be checked. If false, the chip will act as a button. -->
+    <attr name="android:checkable"/>
+    <!-- Check icon drawable to overlay the chip's icon. -->
+    <attr name="checkedIcon" format="reference"/>
+
+    <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
+    <attr name="showMotionSpec"/>
+    <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
+    <attr name="hideMotionSpec"/>
+
+    <!-- The following attributes are adjustable padding on the chip, listed from start to end. -->
+
+    <!-- Chip starts here. -->
+
+    <!-- Padding at the start of the chip, before the icon. -->
+    <attr name="chipStartPadding" format="dimension"/>
+    <!-- Padding at the start of the icon, after the start of the chip. If icon exists. -->
+    <attr name="iconStartPadding" format="dimension"/>
+
+    <!-- Icon is here. -->
+
+    <!-- Padding at the end of the icon, before the text. If icon exists. -->
+    <attr name="iconEndPadding" format="dimension"/>
+    <!-- Padding at the start of the text, after the icon. -->
+    <attr name="textStartPadding" format="dimension"/>
+
+    <!-- Text is here. -->
+
+    <!-- Padding at the end of the text, before the close icon. -->
+    <attr name="textEndPadding" format="dimension"/>
+    <!-- Padding at the start of the close icon, after the text. If close icon exists. -->
+    <attr name="closeIconStartPadding" format="dimension"/>
+
+    <!-- Close icon is here. -->
+
+    <!-- Padding at the end of the close icon, before the end of the chip. If close icon exists. -->
+    <attr name="closeIconEndPadding" format="dimension"/>
+    <!-- Padding at the end of the chip, after the close icon. -->
+    <attr name="chipEndPadding" format="dimension"/>
+
+    <!-- Chip ends here. -->
   </declare-styleable>
 
   <declare-styleable name="FloatingActionButton">

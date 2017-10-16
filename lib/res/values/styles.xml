@@ -17,7 +17,32 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Design.Chip" parent="android:Widget">
-    <!-- TODO -->
+    <!-- TODO: All these values are fake. They only exist to test the plumbing. -->
+    <item name="buttonTint">#00ff00</item>
+    <item name="buttonHeight">32dp</item>
+    <item name="cornerRadius">16dp</item>
+    <item name="strokeColor">#0000ff</item>
+    <item name="buttonStrokeWidth">1dp</item>
+    <item name="rippleColor">#ffffff</item>
+    <item name="rippleAlpha">#aa000000</item>
+    <item name="buttonText">Hello, world!</item>
+    <item name="android:textAppearance">@style/TextAppearance.Design.Error</item>
+    <item name="icon">@drawable/abc_ic_ab_back_material</item>
+    <item name="iconSize">24dp</item>
+    <item name="closeIcon">@drawable/abc_ic_go_search_api_material</item>
+    <item name="closeIconSize">18dp</item>
+    <item name="android:checkable">true</item>
+    <item name="checkedIcon">@drawable/abc_ic_arrow_drop_right_black_24dp</item>
+    <item name="showMotionSpec">@animator/design_fab_show_motion_spec</item>
+    <item name="hideMotionSpec">@animator/design_fab_hide_motion_spec</item>
+    <item name="chipStartPadding">4dp</item>
+    <item name="iconStartPadding">0dp</item>
+    <item name="iconEndPadding">0dp</item>
+    <item name="textStartPadding">8dp</item>
+    <item name="textEndPadding">6dp</item>
+    <item name="closeIconStartPadding">2dp</item>
+    <item name="closeIconEndPadding">2dp</item>
+    <item name="chipEndPadding">6dp</item>
   </style>
 
   <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
