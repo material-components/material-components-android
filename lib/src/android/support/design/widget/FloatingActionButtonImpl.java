@@ -91,6 +91,7 @@ class FloatingActionButtonImpl {
   float mPressedTranslationZ;
 
   int maxImageSize;
+  float imageMatrixScale = 1f;
 
   interface InternalVisibilityChangedListener {
     void onShown();
@@ -120,7 +121,6 @@ class FloatingActionButtonImpl {
   private final RectF mTmpRectF1 = new RectF();
   private final RectF mTmpRectF2 = new RectF();
   private final Matrix tmpMatrix = new Matrix();
-  private final float[] tmpMatrixArray = new float[9];
 
   private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
 
@@ -265,17 +265,15 @@ class FloatingActionButtonImpl {
    */
   final void updateImageMatrixScale() {
     // Recompute the image matrix needed to maintain the same scale.
-    setImageMatrixScale(getImageMatrixScale());
+    setImageMatrixScale(imageMatrixScale);
   }
 
   final void setImageMatrixScale(float scale) {
+    this.imageMatrixScale = scale;
+
     Matrix matrix = tmpMatrix;
     calculateImageMatrixFromScale(scale, matrix);
     mView.setImageMatrix(matrix);
-  }
-
-  final float getImageMatrixScale(){
-    return calculateScaleFromImageMatrix(mView.getImageMatrix());
   }
 
   private void calculateImageMatrixFromScale(float scale, Matrix matrix) {
@@ -293,11 +291,6 @@ class FloatingActionButtonImpl {
       // Then scale it as requested.
       matrix.postScale(scale, scale, maxImageSize / 2f, maxImageSize / 2f);
     }
-  }
-
-  private float calculateScaleFromImageMatrix(Matrix matrix) {
-    matrix.getValues(tmpMatrixArray);
-    return tmpMatrixArray[Matrix.MSCALE_X];
   }
 
   final MotionSpec getShowMotionSpec() {
