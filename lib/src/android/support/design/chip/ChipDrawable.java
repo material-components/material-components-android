@@ -50,15 +50,15 @@ public class ChipDrawable extends Drawable {
   // Visuals
   private ColorStateList buttonTint;
   @Nullable private Mode buttonTintMode;
-  private float buttonHeight;
-  private float cornerRadius;
-  private ColorStateList strokeColor;
-  private float buttonStrokeWidth;
+  private float minHeight;
+  private float chipCornerRadius;
+  private ColorStateList chipStrokeColor;
+  private float chipStrokeWidth;
   private ColorStateList rippleColor;
   private ColorStateList rippleAlpha;
 
   // Text
-  private CharSequence buttonText;
+  private CharSequence chipText;
   private TextAppearanceSpan textAppearanceSpan;
 
   // Chip icon
@@ -129,17 +129,17 @@ public class ChipDrawable extends Drawable {
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_buttonTint);
     buttonTintMode =
         DrawableUtils.parseTintMode(a.getInt(R.styleable.ChipDrawable_buttonTintMode, -1), null);
-    buttonHeight = a.getDimension(R.styleable.ChipDrawable_buttonHeight, 0f);
-    cornerRadius = a.getDimension(R.styleable.ChipDrawable_cornerRadius, 0f);
-    strokeColor =
-        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_strokeColor);
-    buttonStrokeWidth = a.getDimension(R.styleable.ChipDrawable_buttonStrokeWidth, 0f);
+    minHeight = a.getDimension(R.styleable.ChipDrawable_android_minHeight, 0f);
+    chipCornerRadius = a.getDimension(R.styleable.ChipDrawable_chipCornerRadius, 0f);
+    chipStrokeColor =
+        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_chipStrokeColor);
+    chipStrokeWidth = a.getDimension(R.styleable.ChipDrawable_chipStrokeWidth, 0f);
     rippleColor =
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleColor);
     rippleAlpha =
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleAlpha);
 
-    buttonText = a.getText(R.styleable.ChipDrawable_buttonText);
+    chipText = a.getText(R.styleable.ChipDrawable_chipText);
     textAppearanceSpan =
         MaterialResources.getTextAppearanceSpan(
             context, a, R.styleable.ChipDrawable_android_textAppearance);
