@@ -19,13 +19,13 @@
   <style name="Widget.Design.Chip" parent="android:Widget">
     <!-- TODO: All these values are fake. They only exist to test the plumbing. -->
     <item name="buttonTint">#00ff00</item>
-    <item name="chipHeight">32dp</item>
-    <item name="chipCornerRadius">16dp</item>
-    <item name="chipStrokeColor">#0000ff</item>
-    <item name="chipStrokeWidth">1dp</item>
+    <item name="buttonHeight">32dp</item>
+    <item name="cornerRadius">16dp</item>
+    <item name="strokeColor">#0000ff</item>
+    <item name="buttonStrokeWidth">1dp</item>
     <item name="rippleColor">#ffffff</item>
     <item name="rippleAlpha">#aa000000</item>
-    <item name="chipText">Hello, world!</item>
+    <item name="buttonText">Hello, world!</item>
     <item name="android:textAppearance">@style/TextAppearance.Design.Error</item>
     <item name="chipIcon">@drawable/abc_ic_ab_back_material</item>
     <item name="chipIconSize">24dp</item>
