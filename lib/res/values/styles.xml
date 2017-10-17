@@ -27,8 +27,8 @@
     <item name="rippleAlpha">#aa000000</item>
     <item name="buttonText">Hello, world!</item>
     <item name="android:textAppearance">@style/TextAppearance.Design.Error</item>
-    <item name="icon">@drawable/abc_ic_ab_back_material</item>
-    <item name="iconSize">24dp</item>
+    <item name="chipIcon">@drawable/abc_ic_ab_back_material</item>
+    <item name="chipIconSize">24dp</item>
     <item name="closeIcon">@drawable/abc_ic_go_search_api_material</item>
     <item name="closeIconSize">18dp</item>
     <item name="android:checkable">true</item>

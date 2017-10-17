@@ -84,9 +84,9 @@
     <attr name="android:textAppearance"/>
 
     <!-- Icon drawable to display at the start of the chip. -->
-    <attr name="icon" format="reference"/>
+    <attr name="chipIcon" format="reference"/>
     <!-- Size of the chip's icon. -->
-    <attr name="iconSize" format="dimension"/>
+    <attr name="chipIconSize" format="dimension"/>
 
     <!-- Close icon drawable to display at the end of the chip. -->
     <attr name="closeIcon" format="reference"/>

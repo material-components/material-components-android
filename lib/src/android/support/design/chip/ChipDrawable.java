@@ -61,9 +61,9 @@ public class ChipDrawable extends Drawable {
   private CharSequence buttonText;
   private TextAppearanceSpan textAppearanceSpan;
 
-  // Icon
-  private Drawable icon;
-  private float iconSize;
+  // Chip icon
+  private Drawable chipIcon;
+  private float chipIconSize;
 
   // Close icon
   private Drawable closeIcon;
@@ -144,8 +144,8 @@ public class ChipDrawable extends Drawable {
         MaterialResources.getTextAppearanceSpan(
             context, a, R.styleable.ChipDrawable_android_textAppearance);
 
-    icon = MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_icon);
-    iconSize = a.getDimension(R.styleable.ChipDrawable_iconSize, 0f);
+    chipIcon = MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_chipIcon);
+    chipIconSize = a.getDimension(R.styleable.ChipDrawable_chipIconSize, 0f);
 
     closeIcon = MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_closeIcon);
     closeIconSize = a.getDimension(R.styleable.ChipDrawable_closeIconSize, 0f);
