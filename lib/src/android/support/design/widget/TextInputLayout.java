@@ -152,7 +152,9 @@ public class TextInputLayout extends LinearLayout {
   private final int mBoxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int mBoxBackgroundMode;
   private float mBoxCornerRadius;
-  private int mBoxStrokeWidth;
+  private int mBoxStrokeWidthPx;
+  private final int mBoxStrokeWidthDefaultPx;
+  private final int mBoxStrokeWidthFocusedPx;
   @ColorInt private int mBoxStrokeColorFromUser;
   @ColorInt private int mBoxStrokeColor;
   private ColorStateList mBoxBackgroundColor;
@@ -257,6 +259,15 @@ public class TextInputLayout extends LinearLayout {
 
     mBoxStrokeColorFromUser =
         a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
+    mBoxStrokeWidthDefaultPx =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.design_textinput_box_stroke_width_default);
+    mBoxStrokeWidthFocusedPx =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.design_textinput_box_stroke_width_focused);
+    mBoxStrokeWidthPx = mBoxStrokeWidthDefaultPx;
 
     @BoxBackgroundMode
     final int boxBackgroundMode =
@@ -609,8 +620,7 @@ public class TextInputLayout extends LinearLayout {
       mCollapsingTextHelper.setCollapsedTextColor(mCounterView.getTextColors());
     } else if (hasFocus && mFocusedTextColor != null) {
       mCollapsingTextHelper.setCollapsedTextColor(mFocusedTextColor);
-    } // If none of these states apply, leave the expanded and collapsed colors at the default text
-      // color.
+    } // If none of these states apply, leave the expanded and collapsed colors as they are.
 
     if (hasText || (isEnabled() && (hasFocus || errorShouldBeShown))) {
       // We should be showing the label so do so if it isn't already
@@ -987,11 +997,21 @@ public class TextInputLayout extends LinearLayout {
       return;
     }
 
-    mBoxBackground.setBounds(
-        getLeft(),
-        mEditText.getCompoundPaddingTop(),
-        getRight(),
-        mEditText.getBottom() + mBoxPaddingOffsetPx);
+    int left = mEditText.getLeft();
+    int right = mEditText.getRight();
+    int top = mEditText.getCompoundPaddingTop();
+    int bottom = mEditText.getBottom() + mBoxPaddingOffsetPx;
+
+    // Create space for the wider stroke width to ensure that the outline box's stroke is not cut
+    // off.
+    if (mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      left += mBoxStrokeWidthFocusedPx / 2;
+      top -= mBoxStrokeWidthFocusedPx / 2;
+      right -= mBoxStrokeWidthFocusedPx / 2;
+      bottom += mBoxStrokeWidthFocusedPx / 2;
+    }
+
+    mBoxBackground.setBounds(left, top, right, bottom);
     applyBoxAttributes();
     updateEditTextBackgroundBounds();
   }
@@ -1053,7 +1073,7 @@ public class TextInputLayout extends LinearLayout {
       case BOX_BACKGROUND_FILLED:
         mBoxCornerRadius = 0f;
         mBoxBackgroundColor = mDefaultTextColor;
-        mBoxStrokeWidth = 0;
+        mBoxStrokeWidthPx = 0;
         break;
 
       case BOX_BACKGROUND_OUTLINE:
@@ -1064,7 +1084,6 @@ public class TextInputLayout extends LinearLayout {
                   getDrawableState(), mFocusedTextColor.getDefaultColor());
         }
         mBoxBackgroundColor = null;
-        mBoxStrokeWidth = 7;
         break;
 
       default:
@@ -1094,8 +1113,8 @@ public class TextInputLayout extends LinearLayout {
       ViewCompat.setBackground(mEditText, mEditTextOriginalDrawable);
     }
 
-    if (mBoxStrokeWidth > -1 && mBoxStrokeColor != Color.TRANSPARENT) {
-      mBoxBackground.setStroke(mBoxStrokeWidth, mBoxStrokeColor);
+    if (mBoxStrokeWidthPx > -1 && mBoxStrokeColor != Color.TRANSPARENT) {
+      mBoxBackground.setStroke(mBoxStrokeWidthPx, mBoxStrokeColor);
     }
 
     if (mBoxCornerRadius > -1) {
@@ -1724,14 +1743,18 @@ public class TextInputLayout extends LinearLayout {
       if (!isEnabled()) {
         // Set the box's stroke color to the disabled color.
         mBoxStrokeColor = mDisabledColor;
+        mBoxStrokeWidthPx = mBoxStrokeWidthDefaultPx;
       } else if (indicatorViewController.errorShouldBeShown()) {
         mBoxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
+        mBoxStrokeWidthPx = mBoxStrokeWidthFocusedPx;
       } else if (mEditText != null && mEditText.hasFocus()) {
         // Set the box's stroke color to the provided color.
         mBoxStrokeColor = mBoxStrokeColorFromUser;
+        mBoxStrokeWidthPx = mBoxStrokeWidthFocusedPx;
       } else {
         // Set the box's stroke color to the default black.
         mBoxStrokeColor = mDefaultStrokeColor;
+        mBoxStrokeWidthPx = mBoxStrokeWidthDefaultPx;
       }
       applyBoxAttributes();
     }
