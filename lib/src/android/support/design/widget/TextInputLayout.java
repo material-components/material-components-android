@@ -593,19 +593,24 @@ public class TextInputLayout extends LinearLayout {
     final boolean hasFocus = mEditText != null && mEditText.hasFocus();
     final boolean errorShouldBeShown = indicatorViewController.errorShouldBeShown();
 
+    // Set the expanded and collapsed labels to the default text color.
     if (mDefaultTextColor != null) {
+      mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor);
       mCollapsingTextHelper.setExpandedTextColor(mDefaultTextColor);
     }
 
-    if (isEnabled && errorShouldBeShown) {
+    // Set the collapsed and expanded label text colors based on the current state.
+    if (!isEnabled) {
+      mCollapsingTextHelper.setCollapsedTextColor(ColorStateList.valueOf(mDisabledColor));
+      mCollapsingTextHelper.setExpandedTextColor(ColorStateList.valueOf(mDisabledColor));
+    } else if (errorShouldBeShown) {
       mCollapsingTextHelper.setCollapsedTextColor(indicatorViewController.getErrorViewTextColors());
-    } else if (isEnabled && mCounterOverflowed && mCounterView != null) {
+    } else if (mCounterOverflowed && mCounterView != null) {
       mCollapsingTextHelper.setCollapsedTextColor(mCounterView.getTextColors());
-    } else if (isEnabled && hasFocus && mFocusedTextColor != null) {
+    } else if (hasFocus && mFocusedTextColor != null) {
       mCollapsingTextHelper.setCollapsedTextColor(mFocusedTextColor);
-    } else if (mDefaultTextColor != null) {
-      mCollapsingTextHelper.setCollapsedTextColor(mDefaultTextColor);
-    }
+    } // If none of these states apply, leave the expanded and collapsed colors at the default text
+      // color.
 
     if (hasText || (isEnabled() && (hasFocus || errorShouldBeShown))) {
       // We should be showing the label so do so if it isn't already
