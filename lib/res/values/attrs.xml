@@ -65,13 +65,13 @@
     <!-- Blending mode used to apply the chip's button tint. -->
     <attr name="buttonTintMode"/>
     <!-- Height to apply to the chip drawable. -->
-    <attr name="buttonHeight" format="dimension"/>
+    <attr name="chipHeight" format="dimension"/>
     <!-- Corner radius to apply to the chip drawable's shape. -->
-    <attr name="cornerRadius" format="dimension"/>
+    <attr name="chipCornerRadius" format="dimension"/>
     <!-- Stroke color to apply to the chip's outline. -->
-    <attr name="strokeColor" format="color"/>
+    <attr name="chipStrokeColor" format="color"/>
     <!-- Stroke width to apply to the chip's outline. -->
-    <attr name="buttonStrokeWidth" format="dimension"/>
+    <attr name="chipStrokeWidth" format="dimension"/>
     <!-- Ripple color to apply to the chip. -->
     <attr name="rippleColor"/>
     <!-- Ripple alpha to apply to the chip. This may be a color state list, if the desired ripple
@@ -79,7 +79,7 @@
     <attr name="rippleAlpha"/>
 
     <!-- Text to display on the chip. -->
-    <attr name="buttonText" format="string" localization="suggested"/>
+    <attr name="chipText" format="string" localization="suggested"/>
     <!-- Default appearance of text: color, typeface, size, and style. -->
     <attr name="android:textAppearance"/>
 
