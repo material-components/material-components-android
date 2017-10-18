@@ -155,7 +155,6 @@ public class TextInputLayout extends LinearLayout {
   private int mBoxStrokeWidthPx;
   private final int mBoxStrokeWidthDefaultPx;
   private final int mBoxStrokeWidthFocusedPx;
-  @ColorInt private int mBoxStrokeColorFromUser;
   @ColorInt private int mBoxStrokeColor;
   private ColorStateList mBoxBackgroundColor;
   private Drawable mEditTextOriginalDrawable;
@@ -191,8 +190,11 @@ public class TextInputLayout extends LinearLayout {
   private ColorStateList mDefaultTextColor;
   private ColorStateList mFocusedTextColor;
 
-  @ColorInt private final int mDisabledColor;
   @ColorInt private final int mDefaultStrokeColor;
+  @ColorInt private final int mHoveredStrokeColor;
+  @ColorInt private int mFocusedStrokeColor;
+
+  @ColorInt private final int mDisabledColor;
 
   // Only used for testing
   private boolean mHintExpanded;
@@ -257,7 +259,7 @@ public class TextInputLayout extends LinearLayout {
             .getResources()
             .getDimensionPixelOffset(R.dimen.design_textinput_box_label_cutout_padding);
 
-    mBoxStrokeColorFromUser =
+    mFocusedStrokeColor =
         a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
     mBoxStrokeWidthDefaultPx =
         context
@@ -281,6 +283,8 @@ public class TextInputLayout extends LinearLayout {
     mDefaultStrokeColor =
         ContextCompat.getColor(context, R.color.design_textinput_default_box_stroke_color);
     mDisabledColor = ContextCompat.getColor(context, R.color.design_textinput_disabled_color);
+    mHoveredStrokeColor =
+        ContextCompat.getColor(context, R.color.design_textinput_hovered_box_stroke_color);
 
     final int hintAppearance = a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, -1);
     if (hintAppearance != -1) {
@@ -467,8 +471,8 @@ public class TextInputLayout extends LinearLayout {
    * @see #getBoxStrokeColor()
    */
   public void setBoxStrokeColor(@ColorInt int boxStrokeColor) {
-    if (mBoxStrokeColorFromUser != boxStrokeColor) {
-      mBoxStrokeColorFromUser = boxStrokeColor;
+    if (mFocusedStrokeColor != boxStrokeColor) {
+      mFocusedStrokeColor = boxStrokeColor;
       invalidate();
     }
   }
@@ -480,7 +484,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxStrokeColor(int)
    */
   public int getBoxStrokeColor() {
-    return mBoxStrokeColorFromUser;
+    return mFocusedStrokeColor;
   }
 
   /**
@@ -1078,8 +1082,8 @@ public class TextInputLayout extends LinearLayout {
 
       case BOX_BACKGROUND_OUTLINE:
         mBoxCornerRadius = 16f;
-        if (mBoxStrokeColorFromUser == Color.TRANSPARENT) {
-          mBoxStrokeColorFromUser =
+        if (mFocusedStrokeColor == Color.TRANSPARENT) {
+          mFocusedStrokeColor =
               mFocusedTextColor.getColorForState(
                   getDrawableState(), mFocusedTextColor.getDefaultColor());
         }
@@ -1739,23 +1743,25 @@ public class TextInputLayout extends LinearLayout {
     }
 
     final boolean hasFocus = mEditText != null && mEditText.hasFocus();
+    final boolean isHovered = mEditText != null && mEditText.isHovered();
 
     // Update the text box's stroke based on the current state.
     if (mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
       if (!isEnabled()) {
-        // Set the box's stroke color to the disabled color.
         mBoxStrokeColor = mDisabledColor;
-        mBoxStrokeWidthPx = mBoxStrokeWidthDefaultPx;
       } else if (indicatorViewController.errorShouldBeShown()) {
         mBoxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
-        mBoxStrokeWidthPx = hasFocus ? mBoxStrokeWidthFocusedPx : mBoxStrokeWidthDefaultPx;
       } else if (hasFocus) {
-        // Set the box's stroke color to the provided color.
-        mBoxStrokeColor = mBoxStrokeColorFromUser;
+        mBoxStrokeColor = mFocusedStrokeColor;
+      } else if (isHovered) {
+        mBoxStrokeColor = mHoveredStrokeColor;
+      } else {
+        mBoxStrokeColor = mDefaultStrokeColor;
+      }
+
+      if ((isHovered || hasFocus) && isEnabled()) {
         mBoxStrokeWidthPx = mBoxStrokeWidthFocusedPx;
       } else {
-        // Set the box's stroke color to the default black.
-        mBoxStrokeColor = mDefaultStrokeColor;
         mBoxStrokeWidthPx = mBoxStrokeWidthDefaultPx;
       }
       applyBoxAttributes();
