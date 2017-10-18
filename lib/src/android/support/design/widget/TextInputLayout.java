@@ -1738,6 +1738,8 @@ public class TextInputLayout extends LinearLayout {
       return;
     }
 
+    final boolean hasFocus = mEditText != null && mEditText.hasFocus();
+
     // Update the text box's stroke based on the current state.
     if (mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
       if (!isEnabled()) {
@@ -1746,8 +1748,8 @@ public class TextInputLayout extends LinearLayout {
         mBoxStrokeWidthPx = mBoxStrokeWidthDefaultPx;
       } else if (indicatorViewController.errorShouldBeShown()) {
         mBoxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
-        mBoxStrokeWidthPx = mBoxStrokeWidthFocusedPx;
-      } else if (mEditText != null && mEditText.hasFocus()) {
+        mBoxStrokeWidthPx = hasFocus ? mBoxStrokeWidthFocusedPx : mBoxStrokeWidthDefaultPx;
+      } else if (hasFocus) {
         // Set the box's stroke color to the provided color.
         mBoxStrokeColor = mBoxStrokeColorFromUser;
         mBoxStrokeWidthPx = mBoxStrokeWidthFocusedPx;
