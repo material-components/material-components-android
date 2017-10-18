@@ -60,13 +60,11 @@
   </declare-styleable>
 
   <declare-styleable name="ChipDrawable">
-    <!-- Tint to apply to the chip drawable. -->
-    <attr name="buttonTint"/>
-    <!-- Blending mode used to apply the chip's button tint. -->
-    <attr name="buttonTintMode"/>
-    <!-- Min height to apply to the chip drawable. Total height includes stroke width. -->
+    <!-- Background color to apply to the chip. -->
+    <attr name="chipBackgroundColor" format="color"/>
+    <!-- Min height to apply to the chip. Total height includes stroke width. -->
     <attr name="android:minHeight"/>
-    <!-- Corner radius to apply to the chip drawable's shape. -->
+    <!-- Corner radius to apply to the chip's shape. -->
     <attr name="chipCornerRadius" format="dimension"/>
     <!-- Stroke color to apply to the chip's outline. -->
     <attr name="chipStrokeColor" format="color"/>

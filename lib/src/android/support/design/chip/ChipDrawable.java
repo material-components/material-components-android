@@ -25,7 +25,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.graphics.PixelFormat;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.AttrRes;
@@ -35,7 +34,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.resources.MaterialResources;
-import android.support.v7.widget.DrawableUtils;
 import android.text.TextPaint;
 import android.text.style.TextAppearanceSpan;
 import android.util.AttributeSet;
@@ -54,8 +52,7 @@ public class ChipDrawable extends Drawable {
   private static final boolean DEBUG = false;
 
   // Visuals
-  private ColorStateList buttonTint;
-  @Nullable private Mode buttonTintMode;
+  private ColorStateList chipBackgroundColor;
   private float minHeight;
   private float chipCornerRadius;
   private ColorStateList chipStrokeColor;
@@ -121,7 +118,7 @@ public class ChipDrawable extends Drawable {
   private final Paint debugPaint;
   private final FontMetrics fontMetrics = new FontMetrics();
 
-  @ColorInt private int currentButtonTint;
+  @ColorInt private int currentChipBackgroundColor;
   @ColorInt private int currentChipStrokeColor;
   private boolean currentChecked;
 
@@ -145,10 +142,9 @@ public class ChipDrawable extends Drawable {
     TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.ChipDrawable, defStyleAttr, defStyleRes);
 
-    buttonTint =
-        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_buttonTint);
-    buttonTintMode =
-        DrawableUtils.parseTintMode(a.getInt(R.styleable.ChipDrawable_buttonTintMode, -1), null);
+    chipBackgroundColor =
+        MaterialResources.getColorStateList(
+            context, a, R.styleable.ChipDrawable_chipBackgroundColor);
     minHeight = a.getDimension(R.styleable.ChipDrawable_android_minHeight, 0f);
     chipCornerRadius = a.getDimension(R.styleable.ChipDrawable_chipCornerRadius, 0f);
     chipStrokeColor =
@@ -297,7 +293,7 @@ public class ChipDrawable extends Drawable {
    * pixels on each side.
    */
   private void drawChipBackground(@NonNull Canvas canvas, Rect bounds) {
-    chipPaint.setColor(currentButtonTint);
+    chipPaint.setColor(currentChipBackgroundColor);
     chipPaint.setStyle(Style.FILL);
     canvas.drawRoundRect(
         bounds.left + chipStrokeWidth / 2f,
@@ -414,9 +410,10 @@ public class ChipDrawable extends Drawable {
   protected boolean onStateChange(int[] state) {
     boolean invalidate = false;
 
-    int newButtonTint = buttonTint.getColorForState(state, currentButtonTint);
-    if (currentButtonTint != newButtonTint) {
-      currentButtonTint = newButtonTint;
+    int newChipBackgroundColor =
+        chipBackgroundColor.getColorForState(state, currentChipBackgroundColor);
+    if (currentChipBackgroundColor != newChipBackgroundColor) {
+      currentChipBackgroundColor = newChipBackgroundColor;
       invalidate = true;
     }
 
