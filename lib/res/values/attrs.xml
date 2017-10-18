@@ -85,7 +85,7 @@
 
     <!-- Icon drawable to display at the start of the chip. -->
     <attr name="chipIcon" format="reference"/>
-    <!-- Size of the chip's icon. -->
+    <!-- Size of the chip's icon and checked icon. -->
     <attr name="chipIconSize" format="dimension"/>
 
     <!-- Close icon drawable to display at the end of the chip. -->

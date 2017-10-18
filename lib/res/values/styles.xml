@@ -17,6 +17,9 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Design.Chip" parent="android:Widget">
+    <item name="android:focusable">true</item>
+    <item name="android:clickable">true</item>
+
     <!-- TODO: All these values are fake. They only exist to test the plumbing. -->
     <item name="buttonTint">#00ff00</item>
     <item name="android:minHeight">32dp</item>
