@@ -27,6 +27,7 @@ import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.graphics.PixelFormat;
 import android.graphics.PorterDuff.Mode;
+import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.Region;
 import android.graphics.drawable.Drawable;
@@ -44,6 +45,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.canvas.CanvasCompat;
+import android.support.design.drawable.DrawableUtils;
 import android.support.design.resources.MaterialResources;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.support.v7.content.res.AppCompatResources;
@@ -136,6 +138,10 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @ColorInt private int currentChipStrokeColor;
   private boolean currentChecked;
   private int alpha = 255;
+  @Nullable private ColorFilter colorFilter;
+  @Nullable private PorterDuffColorFilter tintFilter;
+  @Nullable private ColorStateList tint;
+  @Nullable private Mode tintMode = Mode.SRC_IN;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -320,6 +326,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private void drawChipBackground(@NonNull Canvas canvas, Rect bounds) {
     chipPaint.setColor(currentChipBackgroundColor);
     chipPaint.setStyle(Style.FILL);
+    chipPaint.setColorFilter(getTintColorFilter());
     canvas.drawRoundRect(
         bounds.left + chipStrokeWidth / 2f,
         bounds.top + chipStrokeWidth / 2f,
@@ -337,6 +344,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private void drawChipStroke(@NonNull Canvas canvas, Rect bounds) {
     chipPaint.setColor(currentChipStrokeColor);
     chipPaint.setStyle(Style.STROKE);
+    chipPaint.setColorFilter(getTintColorFilter());
     canvas.drawRoundRect(
         bounds.left + chipStrokeWidth / 2f,
         bounds.top + chipStrokeWidth / 2f,
@@ -558,24 +566,34 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   @Override
   public void setColorFilter(@Nullable ColorFilter colorFilter) {
-    // TODO.
+    if (this.colorFilter != colorFilter) {
+      this.colorFilter = colorFilter;
+      invalidateSelf();
+    }
   }
 
   @Nullable
   @Override
   public ColorFilter getColorFilter() {
-    // TODO.
-    return super.getColorFilter();
+    return colorFilter;
   }
 
   @Override
   public void setTintList(@Nullable ColorStateList tint) {
-    // TODO.
+    if (this.tint != tint) {
+      this.tint = tint;
+      tintFilter = DrawableUtils.updateTintFilter(this, tint, tintMode);
+      invalidateSelf();
+    }
   }
 
   @Override
   public void setTintMode(@NonNull Mode tintMode) {
-    // TODO.
+    if (this.tintMode != tintMode) {
+      this.tintMode = tintMode;
+      tintFilter = DrawableUtils.updateTintFilter(this, tint, tintMode);
+      invalidateSelf();
+    }
   }
 
   @Override
@@ -636,6 +654,15 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       drawable.setLevel(getLevel());
       drawable.setVisible(isVisible(), false);
     }
+  }
+
+  /**
+   * Returns the color filter used for tinting this ChipDrawable. {@link
+   * #setColorFilter(ColorFilter)} takes priority over {@link #setTintList(ColorStateList)}.
+   */
+  @Nullable
+  private ColorFilter getTintColorFilter() {
+    return colorFilter != null ? colorFilter : tintFilter;
   }
 
   /** Returns whether the drawable state set contains the given state. */
