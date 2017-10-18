@@ -43,12 +43,14 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.animation.MotionSpec;
+import android.support.design.canvas.CanvasCompat;
 import android.support.design.resources.MaterialResources;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextPaint;
 import android.text.style.TextAppearanceSpan;
 import android.util.AttributeSet;
+import android.view.View;
 
 /**
  * ChipDrawable contains all the layout and draw logic for {@link Chip}.
@@ -133,6 +135,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @ColorInt private int currentChipBackgroundColor;
   @ColorInt private int currentChipStrokeColor;
   private boolean currentChecked;
+  private int alpha = 255;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -277,6 +280,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       return;
     }
 
+    int saveCount = 0;
+    if (alpha < 255) {
+      saveCount =
+          CanvasCompat.saveLayerAlpha(
+              canvas, bounds.left, bounds.top, bounds.right, bounds.bottom, alpha);
+    }
+
     // 1. Draw chip background.
     drawChipBackground(canvas, bounds);
 
@@ -297,6 +307,10 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     // Debug.
     drawDebug(canvas, bounds);
+
+    if (alpha < 255) {
+      canvas.restoreToCount(saveCount);
+    }
   }
 
   /**
@@ -525,15 +539,21 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     return invalidate;
   }
 
+  /**
+   * Sets the alpha of this ChipDrawable. This will drastically decrease draw performance. You are
+   * highly encouraged to use {@link View#setAlpha(float)} instead.
+   */
   @Override
   public void setAlpha(int alpha) {
-    // TODO.
+    if (this.alpha != alpha) {
+      this.alpha = alpha;
+      invalidateSelf();
+    }
   }
 
   @Override
   public int getAlpha() {
-    // TODO.
-    return super.getAlpha();
+    return alpha;
   }
 
   @Override
