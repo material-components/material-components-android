@@ -47,6 +47,7 @@ import android.support.design.animation.MotionSpec;
 import android.support.design.canvas.CanvasCompat;
 import android.support.design.drawable.DrawableUtils;
 import android.support.design.resources.MaterialResources;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.support.v7.content.res.AppCompatResources;
@@ -103,7 +104,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private float chipCornerRadius;
   @Nullable private ColorStateList chipStrokeColor;
   private float chipStrokeWidth;
-  @Nullable private ColorStateList rippleColor;
+  @ColorInt private int rippleColor;
   @Nullable private ColorStateList rippleAlpha;
 
   // Text
@@ -167,7 +168,11 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   @ColorInt private int currentChipBackgroundColor;
   @ColorInt private int currentChipStrokeColor;
+  @ColorInt private int currentRippleAlpha;
+  @ColorInt private int currentChipTextColor;
   private boolean currentChecked;
+  @ColorInt private int currentTint;
+
   private int alpha = 255;
   @Nullable private ColorFilter colorFilter;
   @Nullable private PorterDuffColorFilter tintFilter;
@@ -202,8 +207,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setChipStrokeColor(
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_chipStrokeColor));
     setChipStrokeWidth(a.getDimension(R.styleable.ChipDrawable_chipStrokeWidth, 0f));
-    setRippleColor(
-        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleColor));
+    setRippleColor(a.getColor(R.styleable.ChipDrawable_rippleColor, 0));
     setRippleAlpha(
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleAlpha));
 
@@ -504,11 +508,29 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
+  /**
+   * Indicates whether this drawable will change its appearance based on state.
+   *
+   * <p>The logic here must match {@link #onStateChange(int[])}.
+   */
   @Override
   public boolean isStateful() {
-    return true;
+    return isStateful(chipBackgroundColor)
+        || isStateful(chipStrokeColor)
+        || isStateful(rippleAlpha)
+        || isStateful(textAppearanceSpan)
+        || checkedIcon != null
+        || isStateful(chipIcon)
+        || isStateful(checkedIcon)
+        || isStateful(closeIcon)
+        || isStateful(tint);
   }
 
+  /**
+   * Changes appearance in response to the specified state.
+   *
+   * <p>The logic here must match {@link #isStateful()}.
+   */
   @Override
   protected boolean onStateChange(int[] state) {
     boolean invalidate = super.onStateChange(state);
@@ -531,26 +553,62 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       invalidate = true;
     }
 
+    int newRippleAlpha =
+        rippleAlpha != null ? rippleAlpha.getColorForState(state, currentRippleAlpha) : 0;
+    if (currentRippleAlpha != newRippleAlpha) {
+      currentRippleAlpha = newRippleAlpha;
+      invalidate = true;
+    }
+
+    int newChipTextColor =
+        textAppearanceSpan != null && textAppearanceSpan.getTextColor() != null
+            ? textAppearanceSpan.getTextColor().getColorForState(state, currentChipTextColor)
+            : 0;
+    if (currentChipTextColor != newChipTextColor) {
+      currentChipTextColor = newChipTextColor;
+      invalidate = true;
+    }
+
     boolean newChecked = hasState(getState(), android.R.attr.state_checked) && checkable;
     if (currentChecked != newChecked && checkedIcon != null) {
       currentChecked = newChecked;
       invalidate = true;
     }
 
-    if (chipIcon != null && chipIcon.isStateful()) {
+    int newTint = tint != null ? tint.getColorForState(state, currentTint) : 0;
+    if (currentTint != newTint) {
+      currentTint = newTint;
+      tintFilter = DrawableUtils.updateTintFilter(this, tint, tintMode);
+      invalidate = true;
+    }
+
+    if (isStateful(chipIcon)) {
       invalidate |= chipIcon.setState(state);
     }
-    if (checkedIcon != null && checkedIcon.isStateful()) {
+    if (isStateful(checkedIcon)) {
       invalidate |= checkedIcon.setState(state);
     }
-    if (closeIcon != null && closeIcon.isStateful()) {
+    if (isStateful(closeIcon)) {
       invalidate |= closeIcon.setState(state);
     }
+
 
     if (invalidate) {
       invalidateSelf();
     }
     return invalidate;
+  }
+
+  private static boolean isStateful(@Nullable ColorStateList colorStateList) {
+    return colorStateList != null && colorStateList.isStateful();
+  }
+
+  private static boolean isStateful(@Nullable Drawable drawable) {
+    return drawable != null && drawable.isStateful();
+  }
+
+  private static boolean isStateful(@Nullable TextAppearanceSpan span) {
+    return span != null && span.getTextColor() != null && span.getTextColor().isStateful();
   }
 
   @Override
@@ -646,8 +704,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   public void setTintList(@Nullable ColorStateList tint) {
     if (this.tint != tint) {
       this.tint = tint;
-      tintFilter = DrawableUtils.updateTintFilter(this, tint, tintMode);
-      invalidateSelf();
+      onStateChange(getState());
     }
   }
 
@@ -822,19 +879,19 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
-  @Nullable
-  public ColorStateList getRippleColor() {
+  @ColorInt
+  public int getRippleColor() {
     return rippleColor;
   }
 
   public void setRippleColorResource(@ColorRes int id) {
-    setRippleColor(AppCompatResources.getColorStateList(context, id));
+    setRippleColor(ContextCompat.getColor(context, id));
   }
 
-  public void setRippleColor(@Nullable ColorStateList rippleColor) {
+  public void setRippleColor(@ColorInt int rippleColor) {
     if (this.rippleColor != rippleColor) {
       this.rippleColor = rippleColor;
-      invalidateSelf(); // TODO: Call onStateChange() instead once ripple is implemented.
+      invalidateSelf();
     }
   }
 
@@ -887,7 +944,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         textAppearanceSpan.updateMeasureState(textPaint);
       }
 
-      invalidateSelf();
+      onStateChange(getState());
     }
   }
 
