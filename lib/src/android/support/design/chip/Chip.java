@@ -17,10 +17,17 @@
 package android.support.design.chip;
 
 import android.content.Context;
+import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.design.theme.ThemeUtils;
+import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewOutlineProvider;
+import android.widget.CompoundButton;
 
 /**
  * Chips are compact elements that represent an attribute, text, entity, or action. They allow users
@@ -54,6 +61,26 @@ public class Chip extends AppCompatCheckBox {
     ChipDrawable drawable =
         ChipDrawable.createFromAttributes(context, attrs, defStyleAttr, R.style.Widget_Design_Chip);
     setButtonDrawable(drawable);
+
+    initOutlineProvider();
+  }
+
+  private void initOutlineProvider() {
+    if (VERSION.SDK_INT > VERSION_CODES.LOLLIPOP) {
+      setOutlineProvider(
+          new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+              Drawable button = CompoundButtonCompat.getButtonDrawable((CompoundButton) view);
+              if (button != null) {
+                button.getOutline(outline);
+              } else {
+                outline.setRect(0, 0, view.getWidth(), view.getHeight());
+                outline.setAlpha(0.0f);
+              }
+            }
+          });
+    }
   }
 
   @Override

@@ -29,7 +29,7 @@ import android.graphics.PixelFormat;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
-import android.graphics.Region;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Drawable.Callback;
 import android.support.annotation.AnimatorRes;
@@ -47,6 +47,7 @@ import android.support.design.animation.MotionSpec;
 import android.support.design.canvas.CanvasCompat;
 import android.support.design.drawable.DrawableUtils;
 import android.support.design.resources.MaterialResources;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextPaint;
@@ -133,6 +134,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private final Paint chipPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   @Nullable private final Paint debugPaint;
   private final FontMetrics fontMetrics = new FontMetrics();
+  private final RectF rectF = new RectF();
 
   @ColorInt private int currentChipBackgroundColor;
   @ColorInt private int currentChipStrokeColor;
@@ -327,14 +329,12 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     chipPaint.setColor(currentChipBackgroundColor);
     chipPaint.setStyle(Style.FILL);
     chipPaint.setColorFilter(getTintColorFilter());
-    canvas.drawRoundRect(
+    rectF.set(
         bounds.left + chipStrokeWidth / 2f,
         bounds.top + chipStrokeWidth / 2f,
         bounds.right - chipStrokeWidth / 2f,
-        bounds.bottom - chipStrokeWidth / 2f,
-        chipCornerRadius,
-        chipCornerRadius,
-        chipPaint);
+        bounds.bottom - chipStrokeWidth / 2f);
+    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
   }
 
   /**
@@ -345,14 +345,12 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     chipPaint.setColor(currentChipStrokeColor);
     chipPaint.setStyle(Style.STROKE);
     chipPaint.setColorFilter(getTintColorFilter());
-    canvas.drawRoundRect(
+    rectF.set(
         bounds.left + chipStrokeWidth / 2f,
         bounds.top + chipStrokeWidth / 2f,
         bounds.right - chipStrokeWidth / 2f,
-        bounds.bottom - chipStrokeWidth / 2f,
-        chipCornerRadius,
-        chipCornerRadius,
-        chipPaint);
+        bounds.bottom - chipStrokeWidth / 2f);
+    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
   }
 
   private void drawChipIcon(@NonNull Canvas canvas, Rect bounds) {
@@ -601,17 +599,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     return PixelFormat.TRANSLUCENT;
   }
 
-  @Nullable
-  @Override
-  public Region getTransparentRegion() {
-    // TODO.
-    return super.getTransparentRegion();
-  }
-
   @Override
   public void getOutline(@NonNull Outline outline) {
-    // TODO.
-    super.getOutline(outline);
+    Rect bounds = getBounds();
+    if (!bounds.isEmpty()) {
+      outline.setRoundRect(bounds, chipCornerRadius);
+    } else {
+      outline.setRoundRect(0, 0, getIntrinsicWidth(), getIntrinsicHeight(), chipCornerRadius);
+    }
   }
 
   @Override
@@ -647,7 +642,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private void applyChildDrawable(@Nullable Drawable drawable) {
     if (drawable != null) {
       drawable.setCallback(this);
-      drawable.setLayoutDirection(getLayoutDirection());
+      DrawableCompat.setLayoutDirection(drawable, DrawableCompat.getLayoutDirection(this));
       if (drawable.isStateful()) {
         drawable.setState(getState());
       }
@@ -666,7 +661,11 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   /** Returns whether the drawable state set contains the given state. */
-  private static boolean hasState(int[] stateSet, @AttrRes int state) {
+  private static boolean hasState(@Nullable int[] stateSet, @AttrRes int state) {
+    if (stateSet == null) {
+      return false;
+    }
+
     for (int s : stateSet) {
       if (s == state) {
         return true;
