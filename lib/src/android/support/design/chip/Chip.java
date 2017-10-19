@@ -21,6 +21,7 @@ import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.Nullable;
 import android.support.design.theme.ThemeUtils;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.widget.AppCompatCheckBox;
@@ -43,7 +44,8 @@ import android.widget.CompoundButton;
  */
 public class Chip extends AppCompatCheckBox {
 
-  private ChipDrawable chipDrawable;
+  @Nullable private ChipDrawable chipDrawable;
+  private boolean deferredCheckedValue;
 
   public Chip(Context context) {
     this(context, null);
@@ -63,6 +65,8 @@ public class Chip extends AppCompatCheckBox {
     setButtonDrawable(drawable);
 
     initOutlineProvider();
+
+    setChecked(deferredCheckedValue);
   }
 
   private void initOutlineProvider() {
@@ -91,6 +95,16 @@ public class Chip extends AppCompatCheckBox {
       chipDrawable = (ChipDrawable) buttonDrawable;
     } else {
       throw new IllegalArgumentException("Button drawable must be an instance of ChipDrawable.");
+    }
+  }
+
+  @Override
+  public void setChecked(boolean checked) {
+    if (chipDrawable == null) {
+      // Defer the setChecked() call until after initialization.
+      deferredCheckedValue = checked;
+    } else if (chipDrawable.isCheckable()) {
+      super.setChecked(checked);
     }
   }
 }
