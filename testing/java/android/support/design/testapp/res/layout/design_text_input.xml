@@ -74,7 +74,7 @@
 
   <android.support.design.widget.TextInputLayout
       android:id="@+id/textinput_box_filled"
-      style="@style/Widget.Design.TextInputLayout.Box.Filled"
+      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
@@ -90,7 +90,7 @@
 
   <android.support.design.widget.TextInputLayout
       android:id="@+id/textinput_box_outline"
-      style="@style/Widget.Design.TextInputLayout.Box.Outline"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
@@ -105,7 +105,7 @@
 
   <android.support.design.widget.TextInputLayout
       android:id="@+id/textinput_box_outline_no_hint"
-      style="@style/Widget.Design.TextInputLayout.Box.Outline"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 

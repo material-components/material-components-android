@@ -115,18 +115,18 @@
     <item name="passwordToggleContentDescription">@string/password_toggle_content_description</item>
   </style>
 
-  <style name="Widget.Design.TextInputLayout.Box">
+  <style name="Widget.MaterialComponents.TextInputLayout" parent="Widget.Design.TextInputLayout">
     <item name="boxPaddingLeft">@dimen/design_textinput_box_padding_left</item>
     <item name="boxPaddingTop">@dimen/design_textinput_box_padding_top</item>
     <item name="boxPaddingRight">@dimen/design_textinput_box_padding_right</item>
     <item name="boxPaddingBottom">@dimen/design_textinput_box_padding_bottom</item>
   </style>
 
-  <style name="Widget.Design.TextInputLayout.Box.Filled">
+  <style name="Widget.MaterialComponents.TextInputLayout.FilledBox">
     <item name="boxBackgroundMode">filled</item>
   </style>
 
-  <style name="Widget.Design.TextInputLayout.Box.Outline">
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox">
     <item name="boxBackgroundMode">outline</item>
     <item name="boxStrokeColor">?attr/colorControlActivated</item>
   </style>
