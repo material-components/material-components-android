@@ -39,6 +39,7 @@ import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
@@ -259,8 +260,7 @@ public class TextInputLayout extends LinearLayout {
             .getResources()
             .getDimensionPixelOffset(R.dimen.design_textinput_box_label_cutout_padding);
 
-    mFocusedStrokeColor =
-        a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
+    mFocusedStrokeColor = a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
     mBoxStrokeWidthDefaultPx =
         context
             .getResources()
@@ -359,6 +359,15 @@ public class TextInputLayout extends LinearLayout {
       // Carry on adding the View...
       super.addView(child, index, params);
     }
+  }
+
+  @NonNull
+  private Drawable getBoxBackground() {
+    if (mBoxBackgroundMode == BOX_BACKGROUND_FILLED
+        || mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+      return mBoxBackground;
+    }
+    throw new IllegalStateException();
   }
 
   /**
@@ -1002,8 +1011,8 @@ public class TextInputLayout extends LinearLayout {
     }
 
     int left = mEditText.getLeft();
+    int top = mEditText.getTop() + calculateLabelMarginTop();
     int right = mEditText.getRight();
-    int top = mEditText.getCompoundPaddingTop();
     int bottom = mEditText.getBottom() + mBoxPaddingOffsetPx;
 
     // Create space for the wider stroke width to ensure that the outline box's stroke is not cut
@@ -1035,12 +1044,14 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private int calculateCollapsedTextTopBounds() {
-    int top = getPaddingTop();
-    if (mBoxBackgroundMode == BOX_BACKGROUND_NONE) {
-      return top;
+    switch (mBoxBackgroundMode) {
+      case BOX_BACKGROUND_OUTLINE:
+        return getBoxBackground().getBounds().top - calculateLabelMarginTop();
+      case BOX_BACKGROUND_FILLED:
+        return getBoxBackground().getBounds().top + calculateLabelMarginTop();
+      default:
+        return getPaddingTop();
     }
-    top += calculateLabelMarginTop();
-    return top;
   }
 
   private void updateEditTextBackgroundBounds() {
