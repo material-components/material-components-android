@@ -149,7 +149,7 @@ public class TextInputLayout extends LinearLayout {
   private int mBoxPaddingLeftPx;
   private int mBoxPaddingRightPx;
   private int mBoxPaddingBottomPx;
-  private final int mBoxPaddingOffsetPx;
+  private final int mBoxBottomOffsetPx;
   private final int mBoxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int mBoxBackgroundMode;
   private float mBoxCornerRadius;
@@ -248,8 +248,8 @@ public class TextInputLayout extends LinearLayout {
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     mHintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
-    mBoxPaddingOffsetPx =
-        context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_offset);
+    mBoxBottomOffsetPx =
+        context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_bottom_offset);
     mBoxPaddingLeftPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingLeft, 0);
     mBoxPaddingTopPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingTop, 0);
     mBoxPaddingRightPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingRight, 0);
@@ -1013,7 +1013,7 @@ public class TextInputLayout extends LinearLayout {
     int left = mEditText.getLeft();
     int top = mEditText.getTop() + calculateLabelMarginTop();
     int right = mEditText.getRight();
-    int bottom = mEditText.getBottom() + mBoxPaddingOffsetPx;
+    int bottom = mEditText.getBottom() + mBoxBottomOffsetPx;
 
     // Create space for the wider stroke width to ensure that the outline box's stroke is not cut
     // off.

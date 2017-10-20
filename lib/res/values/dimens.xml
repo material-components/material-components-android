@@ -43,7 +43,7 @@
   <dimen name="design_textinput_box_padding_top">20dp</dimen>
   <dimen name="design_textinput_box_padding_right">12dp</dimen>
   <dimen name="design_textinput_box_padding_bottom">20dp</dimen>
-  <dimen name="design_textinput_box_offset">3dp</dimen>
+  <dimen name="design_textinput_box_bottom_offset">3dp</dimen>
   <dimen name="design_textinput_box_stroke_width_default">1dp</dimen>
   <dimen name="design_textinput_box_stroke_width_focused">2dp</dimen>
   <dimen name="design_textinput_box_label_cutout_padding">4dp</dimen>
