@@ -62,8 +62,8 @@ import java.util.List;
  * or {@link #setOnCheckedChangeListener(OnCheckedChangeListener)}. You can register a listener on
  * the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
  *
- * <p>Do not use the {@code android:button} attribute. It will be ignored because Chip manages its
- * own button Drawable.
+ * <p>All attributes from {@link R.styleable#ChipDrawable} are supported. Do not use the {@code
+ * android:button} attribute. It will be ignored because Chip manages its own button Drawable.
  *
  * @see ChipDrawable
  */

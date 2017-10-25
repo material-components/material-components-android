@@ -18,6 +18,8 @@ package android.support.design.chip;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
@@ -43,6 +45,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
+import android.support.annotation.XmlRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.canvas.CanvasCompat;
 import android.support.design.drawable.DrawableUtils;
@@ -52,11 +55,15 @@ import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextPaint;
+import android.text.TextUtils;
 import android.text.style.TextAppearanceSpan;
 import android.util.AttributeSet;
-import android.util.StateSet;
+import android.util.Xml;
 import android.view.View;
+import java.io.IOException;
 import java.util.Arrays;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * ChipDrawable contains all the layout and draw logic for {@link Chip}.
@@ -103,6 +110,7 @@ import java.util.Arrays;
 public class ChipDrawable extends Drawable implements TintAwareDrawable, Callback {
 
   private static final boolean DEBUG = false;
+  private static final int[] DEFAULT_STATE = new int[] {android.R.attr.state_enabled};
 
   // Visuals
   @Nullable private ColorStateList chipBackgroundColor;
@@ -184,7 +192,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private ColorStateList tint;
   @Nullable private Mode tintMode = Mode.SRC_IN;
-  private int[] closeIconStateSet = StateSet.WILD_CARD;
+  private int[] closeIconStateSet;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -194,11 +202,54 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     return chip;
   }
 
+  /**
+   * Returns a ChipDrawable from the given XML resource. All attributes from {@link
+   * R.styleable#ChipDrawable} and a custom <code>style</code> attribute are supported. A chip
+   * resource may look like:
+   *
+   * <pre>{@code
+   * <chip
+   *     xmlns:app="http://schemas.android.com/apk/res-auto"
+   *     style="@style/Widget.MaterialComponents.Chip.Entry"
+   *     app:chipIcon="@drawable/custom_icon"/>
+   * }</pre>
+   */
+  public static ChipDrawable createFromResource(Context context, @XmlRes int id) {
+    try {
+      XmlPullParser parser = context.getResources().getXml(id);
+
+      int type;
+      do {
+        type = parser.next();
+      } while (type != XmlPullParser.START_TAG && type != XmlPullParser.END_DOCUMENT);
+      if (type != XmlPullParser.START_TAG) {
+        throw new XmlPullParserException("No start tag found");
+      }
+
+      if (!TextUtils.equals(parser.getName(), "chip")) {
+        throw new XmlPullParserException("Must have a <chip> start tag");
+      }
+
+      AttributeSet attrs = Xml.asAttributeSet(parser);
+      int style = attrs.getStyleAttribute();
+
+      return createFromAttributes(context, attrs, R.attr.chipStyle, style);
+    } catch (XmlPullParserException | IOException e) {
+      Resources.NotFoundException exception =
+          new NotFoundException("Can't load chip resource ID #0x" + Integer.toHexString(id));
+      exception.initCause(e);
+      throw exception;
+    }
+  }
+
   private ChipDrawable(Context context) {
     this.context = context;
 
     textPaint.density = context.getResources().getDisplayMetrics().density;
     debugPaint = DEBUG ? new Paint(Paint.ANTI_ALIAS_FLAG) : null;
+
+    setState(DEFAULT_STATE);
+    setCloseIconState(DEFAULT_STATE);
   }
 
   private void loadFromAttributes(
