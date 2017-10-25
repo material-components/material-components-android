@@ -29,6 +29,8 @@ import android.support.annotation.RestrictTo.Scope;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DrawableUtils {
 
+  private DrawableUtils() {}
+
   /** Returns a tint filter for the given tint and mode. */
   @Nullable
   public static PorterDuffColorFilter updateTintFilter(

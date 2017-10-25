@@ -1,0 +1,24 @@
+apply plugin: 'com.android.library'
+
+archivesBaseName = 'design'
+
+dependencies {
+  compile compatibility("annotations")
+  compile compatibility("core_utils")
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.java.excludes = [
+      '**/build/**',
+    ]
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+    main.resources.srcDir 'res'
+  }
+}

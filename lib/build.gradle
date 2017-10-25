@@ -21,6 +21,7 @@ dependencies {
   compile project(fromPath("lib/src/android/support/design/circularreveal/cardview"))
   compile project(fromPath("lib/src/android/support/design/math"))
   compile project(fromPath("lib/src/android/support/design/resources"))
+  compile project(fromPath("lib/src/android/support/design/ripple"))
   compile project(fromPath("lib/src/android/support/design/stateful"))
 
   testCompile("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {

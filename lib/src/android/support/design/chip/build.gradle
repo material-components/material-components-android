@@ -14,6 +14,7 @@ dependencies {
   compile project(fromPath("lib/src/android/support/design/canvas"))
   compile project(fromPath("lib/src/android/support/design/drawable"))
   compile project(fromPath("lib/src/android/support/design/resources"))
+  compile project(fromPath("lib/src/android/support/design/ripple"))
   compile project(fromPath("lib/src/android/support/design/theme"))
 }
 

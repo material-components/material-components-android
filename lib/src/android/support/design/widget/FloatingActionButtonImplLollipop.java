@@ -33,6 +33,7 @@ import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
+import android.support.design.ripple.RippleUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.view.View;
 import java.util.ArrayList;
@@ -73,7 +74,9 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
     mRippleDrawable =
         new RippleDrawable(
-            compositeRippleColorStateList(rippleColor, rippleAlpha), rippleContent, null);
+            RippleUtils.compositeRippleColorStateList(rippleColor, rippleAlpha),
+            rippleContent,
+            null);
 
     mContentBackground = mRippleDrawable;
 
@@ -84,17 +87,10 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   void setRippleColor(@ColorInt int rippleColor, ColorStateList rippleAlpha) {
     if (mRippleDrawable instanceof RippleDrawable) {
       ((RippleDrawable) mRippleDrawable)
-          .setColor(compositeRippleColorStateList(rippleColor, rippleAlpha));
+          .setColor(RippleUtils.compositeRippleColorStateList(rippleColor, rippleAlpha));
     } else {
       super.setRippleColor(rippleColor, rippleAlpha);
     }
-  }
-
-  @Override
-  protected int compositeRippleColor(int color, int alpha) {
-    // On API 21+, the framework composites a ripple color onto the display at about 50% opacity.
-    // Since we are providing precise ripple colors, cancel that out by doubling the opacity here.
-    return super.compositeRippleColor(color, Math.min(2 * alpha, 255));
   }
 
   @Override

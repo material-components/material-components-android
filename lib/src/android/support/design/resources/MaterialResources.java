@@ -32,6 +32,8 @@ import android.text.style.TextAppearanceSpan;
 @RestrictTo(LIBRARY_GROUP)
 public class MaterialResources {
 
+  private MaterialResources() {}
+
   /**
    * Returns the {@link ColorStateList} from the given attributes. The resource can include
    * themeable attributes, regardless of API level.

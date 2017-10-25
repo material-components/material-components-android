@@ -22,6 +22,7 @@ import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -36,6 +37,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.animation.MotionSpec;
+import android.support.design.ripple.RippleUtils;
 import android.support.design.theme.ThemeUtils;
 import android.support.design.widget.ViewUtils;
 import android.support.v4.view.ViewCompat;
@@ -124,7 +126,7 @@ public class Chip extends AppCompatCheckBox {
   }
 
   private void initOutlineProvider() {
-    if (VERSION.SDK_INT > VERSION_CODES.LOLLIPOP) {
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       setOutlineProvider(
           new ViewOutlineProvider() {
             @Override
@@ -141,15 +143,35 @@ public class Chip extends AppCompatCheckBox {
     }
   }
 
+  @Nullable
+  @Override
+  public ChipDrawable getButtonDrawable() {
+    return chipDrawable;
+  }
+
   @Override
   public void setButtonDrawable(Drawable buttonDrawable) {
-    super.setButtonDrawable(buttonDrawable);
-
-    if ((buttonDrawable instanceof ChipDrawable)) {
-      chipDrawable = (ChipDrawable) buttonDrawable;
-    } else {
+    if (!(buttonDrawable instanceof ChipDrawable)) {
       throw new IllegalArgumentException("Button drawable must be an instance of ChipDrawable.");
     }
+
+    chipDrawable = (ChipDrawable) buttonDrawable;
+
+    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
+      RippleDrawable ripple =
+          new RippleDrawable(
+              getCompositeChipRippleColorStateList(chipDrawable), chipDrawable, null);
+      chipDrawable.setUseCompatRipple(false);
+      super.setButtonDrawable(ripple);
+    } else {
+      chipDrawable.setUseCompatRipple(true);
+      super.setButtonDrawable(chipDrawable);
+    }
+  }
+
+  private ColorStateList getCompositeChipRippleColorStateList(ChipDrawable chipDrawable) {
+    return RippleUtils.compositeRippleColorStateList(
+        chipDrawable.getRippleColor(), chipDrawable.getRippleAlpha());
   }
 
   @Override

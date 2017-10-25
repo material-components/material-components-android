@@ -29,6 +29,8 @@ import android.support.annotation.RestrictTo;
 @RestrictTo(LIBRARY_GROUP)
 public class CanvasCompat {
 
+  private CanvasCompat() {}
+
   /**
    * Convenience for {@link Canvas#saveLayer(RectF, Paint)} but instead of taking a entire Paint
    * object it takes only the {@code alpha} parameter.
