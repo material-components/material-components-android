@@ -20,6 +20,8 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.graphics.PorterDuff;
 import android.support.annotation.RestrictTo;
+import android.support.v4.view.ViewCompat;
+import android.view.View;
 
 /**
  * Utils class for custom views.
@@ -46,5 +48,9 @@ public class ViewUtils {
       default:
         return defaultMode;
     }
+  }
+
+  public static boolean isLayoutRtl(View view) {
+    return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
   }
 }

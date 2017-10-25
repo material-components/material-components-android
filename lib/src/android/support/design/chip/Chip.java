@@ -25,8 +25,10 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.support.annotation.CallSuper;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.design.theme.ThemeUtils;
+import android.support.design.widget.ViewUtils;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -34,13 +36,17 @@ import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.CompoundButton;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.List;
 
 /**
@@ -65,12 +71,18 @@ public class Chip extends AppCompatCheckBox {
 
   private static final int CLOSE_ICON_VIRTUAL_ID = 0;
 
+  @Retention(RetentionPolicy.SOURCE)
+  @IntDef({ExploreByTouchHelper.INVALID_ID, ExploreByTouchHelper.HOST_ID, CLOSE_ICON_VIRTUAL_ID})
+  private @interface VirtualId {}
+
   @Nullable private ChipDrawable chipDrawable;
 
   @Nullable private OnClickListener onCloseIconClickListener;
   private boolean deferredCheckedValue;
+  @VirtualId private int focusedVirtualView = ExploreByTouchHelper.INVALID_ID;
   private boolean closeIconPressed;
   private boolean closeIconHovered;
+  private boolean closeIconFocused;
 
   private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
@@ -226,6 +238,125 @@ public class Chip extends AppCompatCheckBox {
     return touchHelper.dispatchHoverEvent(event) || super.dispatchHoverEvent(event);
   }
 
+  @Override
+  protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
+    if (focused) {
+      // If we've gained focus from another view, always focus the chip first.
+      setFocusedVirtualView(ExploreByTouchHelper.HOST_ID);
+    } else {
+      setFocusedVirtualView(ExploreByTouchHelper.INVALID_ID);
+    }
+    invalidate();
+
+    super.onFocusChanged(focused, direction, previouslyFocusedRect);
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    // We need to handle focus change within the Chip because we are simulating multiple Views. The
+    // left/right arrow keys will move between the chip and the close icon. Focus
+    // up/down/forward/back jumps out of the Chip to the next focusable View in the hierarchy.
+    boolean focusChanged = false;
+    switch (event.getKeyCode()) {
+      case KeyEvent.KEYCODE_DPAD_LEFT:
+        if (event.hasNoModifiers()) {
+          focusChanged = moveFocus(ViewUtils.isLayoutRtl(this));
+        }
+        break;
+      case KeyEvent.KEYCODE_DPAD_RIGHT:
+        if (event.hasNoModifiers()) {
+          focusChanged = moveFocus(!ViewUtils.isLayoutRtl(this));
+        }
+        break;
+      case KeyEvent.KEYCODE_DPAD_CENTER:
+      case KeyEvent.KEYCODE_ENTER:
+        switch (focusedVirtualView) {
+          case ExploreByTouchHelper.HOST_ID:
+            performClick();
+            return true;
+          case CLOSE_ICON_VIRTUAL_ID:
+            performCloseIconClick();
+            return true;
+          case ExploreByTouchHelper.INVALID_ID:
+          default:
+            break;
+        }
+        break;
+      case KeyEvent.KEYCODE_TAB:
+        int focusChangeDirection = 0;
+        if (event.hasNoModifiers()) {
+          focusChangeDirection = View.FOCUS_FORWARD;
+        } else if (event.hasModifiers(KeyEvent.META_SHIFT_ON)) {
+          focusChangeDirection = View.FOCUS_BACKWARD;
+        }
+        if (focusChangeDirection != 0) {
+          final ViewParent parent = getParent();
+          // Move focus out of this view.
+          View nextFocus = this;
+          do {
+            nextFocus = nextFocus.focusSearch(focusChangeDirection);
+          } while (nextFocus != null && nextFocus != this && nextFocus.getParent() == parent);
+          if (nextFocus != null) {
+            nextFocus.requestFocus();
+            return true;
+          }
+        }
+        break;
+      default:
+        break;
+    }
+    if (focusChanged) {
+      invalidate();
+      return true;
+    } else {
+      return super.onKeyDown(keyCode, event);
+    }
+  }
+
+  private boolean moveFocus(boolean positive) {
+    ensureFocus();
+    boolean focusChanged = false;
+    if (positive) {
+      if (focusedVirtualView == ExploreByTouchHelper.HOST_ID) {
+        setFocusedVirtualView(CLOSE_ICON_VIRTUAL_ID);
+        focusChanged = true;
+      }
+    } else {
+      if (focusedVirtualView == CLOSE_ICON_VIRTUAL_ID) {
+        setFocusedVirtualView(ExploreByTouchHelper.HOST_ID);
+        focusChanged = true;
+      }
+    }
+    return focusChanged;
+  }
+
+  private void ensureFocus() {
+    if (focusedVirtualView == ExploreByTouchHelper.INVALID_ID) {
+      setFocusedVirtualView(ExploreByTouchHelper.HOST_ID);
+    }
+  }
+
+  @Override
+  public void getFocusedRect(Rect r) {
+    if (focusedVirtualView == CLOSE_ICON_VIRTUAL_ID) {
+      r.set(getCloseIconTouchBoundsInt());
+    } else {
+      super.getFocusedRect(r);
+    }
+  }
+
+  private void setFocusedVirtualView(@VirtualId int virtualView) {
+    if (focusedVirtualView != virtualView) {
+      if (focusedVirtualView == CLOSE_ICON_VIRTUAL_ID) {
+        setCloseIconFocused(false);
+      }
+      focusedVirtualView = virtualView;
+      if (virtualView == CLOSE_ICON_VIRTUAL_ID) {
+        setCloseIconFocused(true);
+      }
+    }
+  }
+
   private void setCloseIconPressed(boolean pressed) {
     if (closeIconPressed != pressed) {
       closeIconPressed = pressed;
@@ -236,6 +367,13 @@ public class Chip extends AppCompatCheckBox {
   private void setCloseIconHovered(boolean hovered) {
     if (closeIconHovered != hovered) {
       closeIconHovered = hovered;
+      refreshDrawableState();
+    }
+  }
+
+  private void setCloseIconFocused(boolean focused) {
+    if (closeIconFocused != focused) {
+      closeIconFocused = focused;
       refreshDrawableState();
     }
   }
@@ -260,6 +398,9 @@ public class Chip extends AppCompatCheckBox {
     if (isEnabled()) {
       count++;
     }
+    if (closeIconFocused) {
+      count++;
+    }
     if (closeIconHovered) {
       count++;
     }
@@ -272,6 +413,10 @@ public class Chip extends AppCompatCheckBox {
 
     if (isEnabled()) {
       stateSet[i] = android.R.attr.state_enabled;
+      i++;
+    }
+    if (closeIconFocused) {
+      stateSet[i] = android.R.attr.state_focused;
       i++;
     }
     if (closeIconHovered) {
