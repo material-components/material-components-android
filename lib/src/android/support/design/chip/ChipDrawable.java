@@ -28,6 +28,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.graphics.PixelFormat;
+import android.graphics.PointF;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
@@ -181,6 +182,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Nullable private final Paint debugPaint;
   private final FontMetrics fontMetrics = new FontMetrics();
   private final RectF rectF = new RectF();
+  private final PointF pointF = new PointF();
 
   @ColorInt private int currentChipBackgroundColor;
   @ColorInt private int currentChipStrokeColor;
@@ -346,11 +348,11 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     return (int)
         (chipStrokeWidth / 2f
             + chipStartPadding
-            + measureChipIconWidth()
+            + calculateChipIconWidth()
             + textStartPadding
-            + measureChipTextWidth(chipText)
+            + calculateChipTextWidth(chipText)
             + textEndPadding
-            + measureCloseIconWidth()
+            + calculateCloseIconWidth()
             + chipEndPadding
             + chipStrokeWidth / 2f);
   }
@@ -371,24 +373,24 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     return (int)
         (chipStrokeWidth / 2f
             + chipStartPadding
-            + measureChipIconWidth()
+            + calculateChipIconWidth()
             + textStartPadding
-            + measureChipTextWidth("M") // Show one character at minimum.
+            + calculateChipTextWidth("M") // Show one character at minimum.
             + textEndPadding
-            + measureCloseIconWidth()
+            + calculateCloseIconWidth()
             + chipEndPadding
             + chipStrokeWidth / 2f);
   }
 
   /** Returns the width of the chip icon plus padding, which only apply if the chip icon exists. */
-  private float measureChipIconWidth() {
+  private float calculateChipIconWidth() {
     if (chipIcon != null || (checkedIcon != null && currentChecked)) {
       return iconStartPadding + chipIconSize + iconEndPadding;
     }
     return 0f;
   }
 
-  private float measureChipTextWidth(@Nullable CharSequence charSequence) {
+  private float calculateChipTextWidth(@Nullable CharSequence charSequence) {
     if (charSequence == null) {
       return 0f;
     }
@@ -400,7 +402,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    * Returns the width of the chip close icon plus padding, which only apply if the chip close icon
    * exists.
    */
-  private float measureCloseIconWidth() {
+  private float calculateCloseIconWidth() {
     if (closeIcon != null) {
       return closeIconStartPadding + closeIconSize + closeIconEndPadding;
     }
@@ -499,15 +501,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   private void drawChipIcon(@NonNull Canvas canvas, Rect bounds) {
     if (chipIcon != null) {
-      // TODO: RTL.
       calculateChipIconBounds(bounds, rectF);
       float tx = rectF.left;
       float ty = rectF.top;
 
       canvas.translate(tx, ty);
 
-      rectF.offsetTo(0, 0);
-      chipIcon.setBounds((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
+      chipIcon.setBounds(0, 0, (int) rectF.width(), (int) rectF.height());
       chipIcon.draw(canvas);
 
       canvas.translate(-tx, -ty);
@@ -516,16 +516,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   private void drawCheckedIcon(@NonNull Canvas canvas, Rect bounds) {
     if (currentChecked && checkedIcon != null) {
-      // TODO: RTL.
       calculateChipIconBounds(bounds, rectF);
       float tx = rectF.left;
       float ty = rectF.top;
 
       canvas.translate(tx, ty);
 
-      rectF.offsetTo(0, 0);
-      checkedIcon.setBounds(
-          (int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
+      checkedIcon.setBounds(0, 0, (int) rectF.width(), (int) rectF.height());
       checkedIcon.draw(canvas);
 
       canvas.translate(-tx, -ty);
@@ -535,34 +532,26 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   /** Draws the chip text, which should appear centered vertically in the chip. */
   private void drawChipText(@NonNull Canvas canvas, Rect bounds) {
     if (chipText != null) {
-      // TODO: RTL.
       // TODO: Bounds may be smaller than intrinsic size. Ellipsize, clip, or multiline the text.
-      float x =
-          bounds.left
-              + chipStrokeWidth / 2f
-              + chipStartPadding
-              + measureChipIconWidth()
-              + textStartPadding;
-      float y = bounds.centerY() - measureChipTextCenterFromBaseline();
-      textPaint.drawableState = getState();
+      calculateChipTextOrigin(bounds, pointF);
+
       if (textAppearanceSpan != null) {
+        textPaint.drawableState = getState();
         textAppearanceSpan.updateDrawState(textPaint);
       }
-      canvas.drawText(chipText, 0, chipText.length(), x, y, textPaint);
+      canvas.drawText(chipText, 0, chipText.length(), pointF.x, pointF.y, textPaint);
     }
   }
 
   private void drawCloseIcon(@NonNull Canvas canvas, Rect bounds) {
     if (closeIcon != null) {
-      // TODO: RTL.
       calculateCloseIconBounds(bounds, rectF);
       float tx = rectF.left;
       float ty = rectF.top;
 
       canvas.translate(tx, ty);
 
-      rectF.offsetTo(0, 0);
-      closeIcon.setBounds((int) rectF.left, (int) rectF.top, (int) rectF.right, (int) rectF.bottom);
+      closeIcon.setBounds(0, 0, (int) rectF.width(), (int) rectF.height());
       closeIcon.draw(canvas);
 
       canvas.translate(-tx, -ty);
@@ -577,21 +566,11 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   /**
-   * Returns the offset from the visual center of the chip text to its baseline.
-   *
-   * <p>We calculate this offset because {@link Canvas#drawText(CharSequence, int, int, float,
-   * float, Paint)} always draws from the text's baseline.
-   */
-  private float measureChipTextCenterFromBaseline() {
-    textPaint.getFontMetrics(fontMetrics);
-    return (fontMetrics.descent + fontMetrics.ascent) / 2f;
-  }
-
-  /**
-   * Returns the chip icon's drawable-absolute bounds (top-left is <code>[bounds.left,
+   * Calculates the chip icon's drawable-absolute bounds (top-left is <code>[bounds.left,
    * bounds.top]</code>).
    */
   private void calculateChipIconBounds(Rect bounds, RectF outBounds) {
+    // TODO: RTL.
     outBounds.setEmpty();
 
     if (chipIcon != null || checkedIcon != null) {
@@ -603,11 +582,34 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
+  private void calculateChipTextOrigin(Rect bounds, PointF pointF) {
+    // TODO: RTL.
+    pointF.x =
+        bounds.left
+            + chipStrokeWidth / 2f
+            + chipStartPadding
+            + calculateChipIconWidth()
+            + textStartPadding;
+    pointF.y = bounds.centerY() - calculateChipTextCenterFromBaseline();
+  }
+
   /**
-   * Returns the close icon's drawable-absolute bounds (top-left is <code>[bounds.left,
+   * Calculates the offset from the visual center of the chip text to its baseline.
+   *
+   * <p>We calculate this offset because {@link Canvas#drawText(CharSequence, int, int, float,
+   * float, Paint)} always draws from the text's baseline.
+   */
+  private float calculateChipTextCenterFromBaseline() {
+    textPaint.getFontMetrics(fontMetrics);
+    return (fontMetrics.descent + fontMetrics.ascent) / 2f;
+  }
+
+  /**
+   * Calculates the close icon's drawable-absolute bounds (top-left is <code>[bounds.left,
    * bounds.top]</code>).
    */
   private void calculateCloseIconBounds(Rect bounds, RectF outBounds) {
+    // TODO: RTL.
     outBounds.setEmpty();
 
     if (closeIcon != null) {
