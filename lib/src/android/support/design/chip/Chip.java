@@ -35,6 +35,7 @@ import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
+import android.view.PointerIcon;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -68,6 +69,8 @@ public class Chip extends AppCompatCheckBox {
 
   @Nullable private OnClickListener onCloseIconClickListener;
   private boolean deferredCheckedValue;
+  private boolean closeIconPressed;
+  private boolean closeIconHovered;
 
   private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
@@ -167,8 +170,119 @@ public class Chip extends AppCompatCheckBox {
   }
 
   @Override
+  public boolean onTouchEvent(MotionEvent event) {
+    boolean handled = false;
+
+    int action = event.getActionMasked();
+    boolean eventInCloseIcon = getCloseIconTouchBounds().contains(event.getX(), event.getY());
+    switch (action) {
+      case MotionEvent.ACTION_DOWN:
+        if (eventInCloseIcon) {
+          setCloseIconPressed(true);
+          handled = true;
+        }
+        break;
+      case MotionEvent.ACTION_MOVE:
+        if (closeIconPressed) {
+          if (!eventInCloseIcon) {
+            setCloseIconPressed(false);
+          }
+          handled = true;
+        }
+        break;
+      case MotionEvent.ACTION_UP:
+        if (closeIconPressed) {
+          performCloseIconClick();
+          handled = true;
+        }
+        // Fall-through.
+      case MotionEvent.ACTION_CANCEL:
+        setCloseIconPressed(false);
+        break;
+      default:
+        break;
+    }
+    return handled || super.onTouchEvent(event);
+  }
+
+  @Override
+  public boolean onHoverEvent(MotionEvent event) {
+    int action = event.getActionMasked();
+    switch (action) {
+      case MotionEvent.ACTION_HOVER_MOVE:
+        setCloseIconHovered(getCloseIconTouchBounds().contains(event.getX(), event.getY()));
+        break;
+      case MotionEvent.ACTION_HOVER_EXIT:
+        setCloseIconHovered(false);
+        break;
+      default:
+        break;
+    }
+    return super.onHoverEvent(event);
+  }
+
+  @Override
   protected boolean dispatchHoverEvent(MotionEvent event) {
     return touchHelper.dispatchHoverEvent(event) || super.dispatchHoverEvent(event);
+  }
+
+  private void setCloseIconPressed(boolean pressed) {
+    if (closeIconPressed != pressed) {
+      closeIconPressed = pressed;
+      refreshDrawableState();
+    }
+  }
+
+  private void setCloseIconHovered(boolean hovered) {
+    if (closeIconHovered != hovered) {
+      closeIconHovered = hovered;
+      refreshDrawableState();
+    }
+  }
+
+  @Override
+  protected void drawableStateChanged() {
+    super.drawableStateChanged();
+
+    boolean changed = false;
+
+    if (chipDrawable != null && chipDrawable.isCloseIconStateful()) {
+      changed = chipDrawable.setCloseIconState(getCloseIconDrawableState());
+    }
+
+    if (changed) {
+      invalidate();
+    }
+  }
+
+  private int[] getCloseIconDrawableState() {
+    int count = 0;
+    if (isEnabled()) {
+      count++;
+    }
+    if (closeIconHovered) {
+      count++;
+    }
+    if (closeIconPressed) {
+      count++;
+    }
+
+    int[] stateSet = new int[count];
+    int i = 0;
+
+    if (isEnabled()) {
+      stateSet[i] = android.R.attr.state_enabled;
+      i++;
+    }
+    if (closeIconHovered) {
+      stateSet[i] = android.R.attr.state_hovered;
+      i++;
+    }
+    if (closeIconPressed) {
+      stateSet[i] = android.R.attr.state_pressed;
+      i++;
+    }
+    return stateSet;
   }
 
   private boolean hasCloseIcon() {
@@ -190,6 +304,14 @@ public class Chip extends AppCompatCheckBox {
     RectF bounds = getCloseIconTouchBounds();
     rect.set((int) bounds.left, (int) bounds.top, (int) bounds.right, (int) bounds.bottom);
     return rect;
+  }
+
+  @Override
+  public PointerIcon onResolvePointerIcon(MotionEvent event, int pointerIndex) {
+    if (getCloseIconTouchBounds().contains(event.getX(), event.getY()) && isEnabled()) {
+      return PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_HAND);
+    }
+    return null;
   }
 
   /** Provides a virtual view hierarchy for the close icon. */
