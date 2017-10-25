@@ -25,6 +25,7 @@ import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.Outline;
 import android.graphics.Paint;
+import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
 import android.graphics.PixelFormat;
@@ -55,6 +56,7 @@ import android.support.design.ripple.RippleUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
+import android.support.v4.text.BidiFormatter;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextPaint;
 import android.text.TextUtils;
@@ -70,9 +72,24 @@ import org.xmlpull.v1.XmlPullParserException;
 /**
  * ChipDrawable contains all the layout and draw logic for {@link Chip}.
  *
- * <p>Use ChipDrawable directly in contexts that require a Drawable. For example, an auto-complete
- * enabled EditText can replace snippets of text with a ChipDrawable to represent it as a semantic
- * entity.
+ * <p>You can use ChipDrawable directly in contexts that require a Drawable. For example, an
+ * auto-complete enabled EditText can replace snippets of text with a ChipDrawable to represent it
+ * as a semantic entity. When used in this stand-alone mode, the host view must explicitly manage
+ * the ChipDrawable's state:
+ *
+ * <ul>
+ *   <li>{@link ChipDrawable#setBounds(int, int, int, int)}, taking into account {@link
+ *       ChipDrawable#getIntrinsicWidth()} and {@link ChipDrawable#getIntrinsicWidth()}.
+ *   <li>{@link ChipDrawable#draw(Canvas)}
+ *   <li>{@link ChipDrawable#setCallback(Callback)}, to support invalidations on the chip drawable
+ *       or any of its child drawables. This includes animations.
+ *   <li>{@link ChipDrawable#setState(int[])}, to support touch, mouse, or keyboard interactions on
+ *       the chip.
+ *   <li>{@link ChipDrawable#setCloseIconState(int[])}, to support touch, mouse, or keyboard
+ *       interactions on the close icon.
+ *   <li>{@link ChipDrawable#setHotspot(float, float)}
+ *   <li>{@link ChipDrawable#setLayoutDirection(int)}, to support RTL mode.
+ * </ul>
  *
  * <p>ChipDrawable's horizontal layout is as follows:
  *
@@ -533,12 +550,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private void drawChipText(@NonNull Canvas canvas, Rect bounds) {
     if (chipText != null) {
       // TODO: Bounds may be smaller than intrinsic size. Ellipsize, clip, or multiline the text.
-      calculateChipTextOrigin(bounds, pointF);
+      Align align = calculateChipTextOrigin(bounds, pointF);
 
       if (textAppearanceSpan != null) {
         textPaint.drawableState = getState();
         textAppearanceSpan.updateDrawState(textPaint);
       }
+      textPaint.setTextAlign(align);
       canvas.drawText(chipText, 0, chipText.length(), pointF.x, pointF.y, textPaint);
     }
   }
@@ -570,27 +588,48 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    * bounds.top]</code>).
    */
   private void calculateChipIconBounds(Rect bounds, RectF outBounds) {
-    // TODO: RTL.
     outBounds.setEmpty();
 
     if (chipIcon != null || checkedIcon != null) {
-      outBounds.left = bounds.left + chipStrokeWidth / 2f + chipStartPadding + iconStartPadding;
-      outBounds.right = outBounds.left + chipIconSize;
+      float offsetFromStart = chipStrokeWidth / 2f + chipStartPadding + iconStartPadding;
+
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
+        outBounds.left = bounds.left + offsetFromStart;
+        outBounds.right = outBounds.left + chipIconSize;
+      } else {
+        outBounds.right = bounds.right - offsetFromStart;
+        outBounds.left = outBounds.right - chipIconSize;
+      }
 
       outBounds.top = bounds.exactCenterY() - chipIconSize / 2f;
       outBounds.bottom = outBounds.top + chipIconSize;
     }
   }
 
-  private void calculateChipTextOrigin(Rect bounds, PointF pointF) {
-    // TODO: RTL.
-    pointF.x =
-        bounds.left
-            + chipStrokeWidth / 2f
-            + chipStartPadding
-            + calculateChipIconWidth()
-            + textStartPadding;
-    pointF.y = bounds.centerY() - calculateChipTextCenterFromBaseline();
+  /**
+   * Calculates the chip text's drawable-absolute origin point (top-left is <code>[bounds.left,
+   * bounds.top]</code>). Returns the text alignment at the origin.
+   */
+  private Align calculateChipTextOrigin(Rect bounds, PointF pointF) {
+    pointF.set(0, 0);
+    Align align = null;
+
+    if (chipText != null) {
+      float offsetFromStart =
+          chipStrokeWidth / 2f + chipStartPadding + calculateChipIconWidth() + textStartPadding;
+
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
+        pointF.x = bounds.left + offsetFromStart;
+        align = Align.LEFT;
+      } else {
+        pointF.x = bounds.right - offsetFromStart;
+        align = Align.RIGHT;
+      }
+
+      pointF.y = bounds.centerY() - calculateChipTextCenterFromBaseline();
+    }
+
+    return align;
   }
 
   /**
@@ -609,12 +648,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    * bounds.top]</code>).
    */
   private void calculateCloseIconBounds(Rect bounds, RectF outBounds) {
-    // TODO: RTL.
     outBounds.setEmpty();
 
     if (closeIcon != null) {
-      outBounds.right = bounds.right - chipStrokeWidth / 2f - chipEndPadding - closeIconEndPadding;
-      outBounds.left = outBounds.right - closeIconSize;
+      float offsetFromEnd = chipStrokeWidth / 2f + chipEndPadding + closeIconEndPadding;
+
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
+        outBounds.right = bounds.right - offsetFromEnd;
+        outBounds.left = outBounds.right - closeIconSize;
+      } else {
+        outBounds.left = bounds.left + offsetFromEnd;
+        outBounds.right = outBounds.left + closeIconSize;
+      }
 
       outBounds.top = bounds.exactCenterY() - closeIconSize / 2f;
       outBounds.bottom = outBounds.top + closeIconSize;
@@ -625,14 +670,19 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     outBounds.set(bounds);
 
     if (closeIcon != null) {
-      outBounds.right =
-          bounds.right
-              - chipStrokeWidth / 2f
-              - chipEndPadding
-              - closeIconEndPadding
-              - closeIconSize
-              - closeIconStartPadding
-              - textEndPadding;
+      float offsetFromEnd =
+          chipStrokeWidth / 2f
+              + chipEndPadding
+              + closeIconEndPadding
+              + closeIconSize
+              + closeIconStartPadding
+              + textEndPadding;
+
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
+        outBounds.right = bounds.right - offsetFromEnd;
+      } else {
+        outBounds.left = bounds.left + offsetFromEnd;
+      }
     }
   }
 
@@ -640,15 +690,21 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     outBounds.setEmpty();
 
     if (closeIcon != null) {
-      outBounds.right = bounds.right;
-      outBounds.left =
-          outBounds.right
-              - chipStrokeWidth / 2f
-              - chipEndPadding
-              - closeIconEndPadding
-              - closeIconSize
-              - closeIconStartPadding
-              - textEndPadding;
+      float offsetFromEnd =
+          chipStrokeWidth / 2f
+              + chipEndPadding
+              + closeIconEndPadding
+              + closeIconSize
+              + closeIconStartPadding
+              + textEndPadding;
+
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
+        outBounds.right = bounds.right;
+        outBounds.left = outBounds.right - offsetFromEnd;
+      } else {
+        outBounds.left = bounds.left;
+        outBounds.right = bounds.left + offsetFromEnd;
+      }
 
       outBounds.top = bounds.top;
       outBounds.bottom = bounds.bottom;
@@ -1114,7 +1170,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   public void setChipText(@Nullable CharSequence chipText) {
     if (this.chipText != chipText) {
-      this.chipText = chipText;
+      this.chipText = BidiFormatter.getInstance().unicodeWrap(chipText);
       invalidateSelf();
     }
   }
