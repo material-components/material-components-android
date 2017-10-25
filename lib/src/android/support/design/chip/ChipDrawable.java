@@ -114,7 +114,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   // Visuals
   @Nullable private ColorStateList chipBackgroundColor;
-  private float minHeight;
+  private float chipMinHeight;
   private float chipCornerRadius;
   @Nullable private ColorStateList chipStrokeColor;
   private float chipStrokeWidth;
@@ -260,7 +260,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setChipBackgroundColor(
         MaterialResources.getColorStateList(
             context, a, R.styleable.ChipDrawable_chipBackgroundColor));
-    setMinHeight(a.getDimension(R.styleable.ChipDrawable_android_minHeight, 0f));
+    setChipMinHeight(a.getDimension(R.styleable.ChipDrawable_chipMinHeight, 0f));
     setChipCornerRadius(a.getDimension(R.styleable.ChipDrawable_chipCornerRadius, 0f));
     setChipStrokeColor(
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_chipStrokeColor));
@@ -344,7 +344,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    */
   @Override
   public int getIntrinsicHeight() {
-    return (int) (chipStrokeWidth / 2f + minHeight + chipStrokeWidth / 2f);
+    return (int) (chipStrokeWidth / 2f + chipMinHeight + chipStrokeWidth / 2f);
   }
 
   @Override
@@ -955,17 +955,17 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
-  public float getMinHeight() {
-    return minHeight;
+  public float getChipMinHeight() {
+    return chipMinHeight;
   }
 
-  public void setMinHeightResource(@DimenRes int id) {
-    setMinHeight(context.getResources().getDimension(id));
+  public void setChipMinHeightResource(@DimenRes int id) {
+    setChipMinHeight(context.getResources().getDimension(id));
   }
 
-  public void setMinHeight(float minHeight) {
-    if (this.minHeight != minHeight) {
-      this.minHeight = minHeight;
+  public void setChipMinHeight(float chipMinHeight) {
+    if (this.chipMinHeight != chipMinHeight) {
+      this.chipMinHeight = chipMinHeight;
       invalidateSelf();
     }
   }

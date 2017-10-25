@@ -17,6 +17,7 @@
 package android.support.design.chip;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Outline;
 import android.graphics.Rect;
 import android.graphics.RectF;
@@ -24,9 +25,17 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.support.annotation.AnimatorRes;
+import android.support.annotation.BoolRes;
 import android.support.annotation.CallSuper;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
+import android.support.annotation.StringRes;
+import android.support.annotation.StyleRes;
+import android.support.design.animation.MotionSpec;
 import android.support.design.theme.ThemeUtils;
 import android.support.design.widget.ViewUtils;
 import android.support.v4.view.ViewCompat;
@@ -35,6 +44,7 @@ import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.Accessi
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.style.TextAppearanceSpan;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -513,6 +523,418 @@ public class Chip extends AppCompatCheckBox {
         return performCloseIconClick();
       }
       return false;
+    }
+  }
+
+  // Getters and setters for attributes.
+
+  @Nullable
+  public ColorStateList getChipBackgroundColor() {
+    return chipDrawable != null ? chipDrawable.getChipBackgroundColor() : null;
+  }
+
+  public void setChipBackgroundColorResource(@ColorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipBackgroundColorResource(id);
+    }
+  }
+
+  public void setChipBackgroundColor(@Nullable ColorStateList chipBackgroundColor) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipBackgroundColor(chipBackgroundColor);
+    }
+  }
+
+  public float getChipMinHeight() {
+    return chipDrawable != null ? chipDrawable.getChipMinHeight() : 0;
+  }
+
+  public void setChipMinHeightResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipMinHeightResource(id);
+    }
+  }
+
+  public void setChipMinHeight(float minHeight) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipMinHeight(minHeight);
+    }
+  }
+
+  public float getChipCornerRadius() {
+    return chipDrawable != null ? chipDrawable.getChipCornerRadius() : 0;
+  }
+
+  public void setChipCornerRadiusResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipCornerRadiusResource(id);
+    }
+  }
+
+  public void setChipCornerRadius(float chipCornerRadius) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipCornerRadius(chipCornerRadius);
+    }
+  }
+
+  @Nullable
+  public ColorStateList getChipStrokeColor() {
+    return chipDrawable != null ? chipDrawable.getChipStrokeColor() : null;
+  }
+
+  public void setChipStrokeColorResource(@ColorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipStrokeColorResource(id);
+    }
+  }
+
+  public void setChipStrokeColor(@Nullable ColorStateList chipStrokeColor) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipStrokeColor(chipStrokeColor);
+    }
+  }
+
+  public float getChipStrokeWidth() {
+    return chipDrawable != null ? chipDrawable.getChipStrokeWidth() : 0;
+  }
+
+  public void setChipStrokeWidthResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipStrokeWidthResource(id);
+    }
+  }
+
+  public void setChipStrokeWidth(float chipStrokeWidth) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipStrokeWidth(chipStrokeWidth);
+    }
+  }
+
+  public int getRippleColor() {
+    return chipDrawable != null ? chipDrawable.getRippleColor() : 0;
+  }
+
+  public void setRippleColorResource(@ColorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setRippleColorResource(id);
+    }
+  }
+
+  public void setRippleColor(int rippleColor) {
+    if (chipDrawable != null) {
+      chipDrawable.setRippleColor(rippleColor);
+    }
+  }
+
+  @Nullable
+  public ColorStateList getRippleAlpha() {
+    return chipDrawable != null ? chipDrawable.getRippleAlpha() : null;
+  }
+
+  public void setRippleAlphaResource(@ColorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setRippleAlphaResource(id);
+    }
+  }
+
+  public void setRippleAlpha(@Nullable ColorStateList rippleAlpha) {
+    if (chipDrawable != null) {
+      chipDrawable.setRippleAlpha(rippleAlpha);
+    }
+  }
+
+  @Nullable
+  public CharSequence getChipText() {
+    return chipDrawable != null ? chipDrawable.getChipText() : null;
+  }
+
+  public void setChipTextResource(@StringRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipTextResource(id);
+    }
+  }
+
+  public void setChipText(@Nullable CharSequence chipText) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipText(chipText);
+    }
+  }
+
+  @Nullable
+  public TextAppearanceSpan getTextAppearanceSpan() {
+    return chipDrawable != null ? chipDrawable.getTextAppearanceSpan() : null;
+  }
+
+  public void setTextAppearanceSpanResource(@StyleRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setTextAppearanceSpanResource(id);
+    }
+  }
+
+  public void setTextAppearanceSpan(@Nullable TextAppearanceSpan textAppearanceSpan) {
+    if (chipDrawable != null) {
+      chipDrawable.setTextAppearanceSpan(textAppearanceSpan);
+    }
+  }
+
+  @Nullable
+  public Drawable getChipIcon() {
+    return chipDrawable != null ? chipDrawable.getChipIcon() : null;
+  }
+
+  public void setChipIconResource(@DrawableRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconResource(id);
+    }
+  }
+
+  public void setChipIcon(@Nullable Drawable chipIcon) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIcon(chipIcon);
+    }
+  }
+
+  public float getChipIconSize() {
+    return chipDrawable != null ? chipDrawable.getChipIconSize() : 0;
+  }
+
+  public void setChipIconSizeResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconSizeResource(id);
+    }
+  }
+
+  public void setChipIconSize(float chipIconSize) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconSize(chipIconSize);
+    }
+  }
+
+  @Nullable
+  public Drawable getCloseIcon() {
+    return chipDrawable != null ? chipDrawable.getCloseIcon() : null;
+  }
+
+  public void setCloseIconResource(@DrawableRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconResource(id);
+    }
+  }
+
+  public void setCloseIcon(@Nullable Drawable closeIcon) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIcon(closeIcon);
+    }
+  }
+
+  public float getCloseIconSize() {
+    return chipDrawable != null ? chipDrawable.getCloseIconSize() : 0;
+  }
+
+  public void setCloseIconSizeResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconSizeResource(id);
+    }
+  }
+
+  public void setCloseIconSize(float closeIconSize) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconSize(closeIconSize);
+    }
+  }
+
+  public boolean isCheckable() {
+    return chipDrawable != null && chipDrawable.isCheckable();
+  }
+
+  public void setCheckableResource(@BoolRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckableResource(id);
+    }
+  }
+
+  public void setCheckable(boolean checkable) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckable(checkable);
+    }
+  }
+
+  @Nullable
+  public Drawable getCheckedIcon() {
+    return chipDrawable != null ? chipDrawable.getCheckedIcon() : null;
+  }
+
+  public void setCheckedIconResource(@DrawableRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckedIconResource(id);
+    }
+  }
+
+  public void setCheckedIcon(@Nullable Drawable checkedIcon) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckedIcon(checkedIcon);
+    }
+  }
+
+  @Nullable
+  public MotionSpec getShowMotionSpec() {
+    return chipDrawable != null ? chipDrawable.getShowMotionSpec() : null;
+  }
+
+  public void setShowMotionSpecResource(@AnimatorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setShowMotionSpecResource(id);
+    }
+  }
+
+  public void setShowMotionSpec(@Nullable MotionSpec showMotionSpec) {
+    if (chipDrawable != null) {
+      chipDrawable.setShowMotionSpec(showMotionSpec);
+    }
+  }
+
+  @Nullable
+  public MotionSpec getHideMotionSpec() {
+    return chipDrawable != null ? chipDrawable.getHideMotionSpec() : null;
+  }
+
+  public void setHideMotionSpecResource(@AnimatorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setHideMotionSpecResource(id);
+    }
+  }
+
+  public void setHideMotionSpec(@Nullable MotionSpec hideMotionSpec) {
+    if (chipDrawable != null) {
+      chipDrawable.setHideMotionSpec(hideMotionSpec);
+    }
+  }
+
+  public float getChipStartPadding() {
+    return chipDrawable != null ? chipDrawable.getChipStartPadding() : 0;
+  }
+
+  public void setChipStartPaddingResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipStartPaddingResource(id);
+    }
+  }
+
+  public void setChipStartPadding(float chipStartPadding) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipStartPadding(chipStartPadding);
+    }
+  }
+
+  public float getIconStartPadding() {
+    return chipDrawable != null ? chipDrawable.getIconStartPadding() : 0;
+  }
+
+  public void setIconStartPaddingResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setIconStartPaddingResource(id);
+    }
+  }
+
+  public void setIconStartPadding(float iconStartPadding) {
+    if (chipDrawable != null) {
+      chipDrawable.setIconStartPadding(iconStartPadding);
+    }
+  }
+
+  public float getIconEndPadding() {
+    return chipDrawable != null ? chipDrawable.getIconEndPadding() : 0;
+  }
+
+  public void setIconEndPaddingResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setIconEndPaddingResource(id);
+    }
+  }
+
+  public void setIconEndPadding(float iconEndPadding) {
+    if (chipDrawable != null) {
+      chipDrawable.setIconEndPadding(iconEndPadding);
+    }
+  }
+
+  public float getTextStartPadding() {
+    return chipDrawable != null ? chipDrawable.getTextStartPadding() : 0;
+  }
+
+  public void setTextStartPaddingResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setTextStartPaddingResource(id);
+    }
+  }
+
+  public void setTextStartPadding(float textStartPadding) {
+    if (chipDrawable != null) {
+      chipDrawable.setTextStartPadding(textStartPadding);
+    }
+  }
+
+  public float getTextEndPadding() {
+    return chipDrawable != null ? chipDrawable.getTextEndPadding() : 0;
+  }
+
+  public void setTextEndPaddingResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setTextEndPaddingResource(id);
+    }
+  }
+
+  public void setTextEndPadding(float textEndPadding) {
+    if (chipDrawable != null) {
+      chipDrawable.setTextEndPadding(textEndPadding);
+    }
+  }
+
+  public float getCloseIconStartPadding() {
+    return chipDrawable != null ? chipDrawable.getCloseIconStartPadding() : 0;
+  }
+
+  public void setCloseIconStartPaddingResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconStartPaddingResource(id);
+    }
+  }
+
+  public void setCloseIconStartPadding(float closeIconStartPadding) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconStartPadding(closeIconStartPadding);
+    }
+  }
+
+  public float getCloseIconEndPadding() {
+    return chipDrawable != null ? chipDrawable.getCloseIconEndPadding() : 0;
+  }
+
+  public void setCloseIconEndPaddingResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconEndPaddingResource(id);
+    }
+  }
+
+  public void setCloseIconEndPadding(float closeIconEndPadding) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconEndPadding(closeIconEndPadding);
+    }
+  }
+
+  public float getChipEndPadding() {
+    return chipDrawable != null ? chipDrawable.getChipEndPadding() : 0;
+  }
+
+  public void setChipEndPaddingResource(@DimenRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipEndPaddingResource(id);
+    }
+  }
+
+  public void setChipEndPadding(float chipEndPadding) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipEndPadding(chipEndPadding);
     }
   }
 }

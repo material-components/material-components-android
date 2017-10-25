@@ -22,7 +22,7 @@
 
     <!-- TODO: All these values are fake. They only exist to test the plumbing. -->
     <item name="chipBackgroundColor">#00ff00</item>
-    <item name="android:minHeight">32dp</item>
+    <item name="chipMinHeight">32dp</item>
     <item name="chipCornerRadius">16dp</item>
     <item name="chipStrokeColor">#0000ff</item>
     <item name="chipStrokeWidth">1dp</item>
