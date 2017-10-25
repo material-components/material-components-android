@@ -88,6 +88,8 @@
 
     <!-- Close icon drawable to display at the end of the chip. -->
     <attr name="closeIcon" format="reference"/>
+    <!-- Tint to apply to the chip's close icon. -->
+    <attr name="closeIconTint" format="color"/>
     <!-- Size of the chip's close icon. -->
     <attr name="closeIconSize" format="dimension"/>
 

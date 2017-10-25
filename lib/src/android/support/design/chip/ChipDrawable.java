@@ -131,6 +131,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   // Close icon
   @Nullable private Drawable closeIcon;
+  @Nullable private ColorStateList closeIconTint;
   private float closeIconSize;
 
   // Checkable
@@ -278,6 +279,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setChipIconSize(a.getDimension(R.styleable.ChipDrawable_chipIconSize, 0f));
 
     setCloseIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_closeIcon));
+    setCloseIconTint(
+        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_closeIconTint));
     setCloseIconSize(a.getDimension(R.styleable.ChipDrawable_closeIconSize, 0f));
 
     setCheckable(a.getBoolean(R.styleable.ChipDrawable_android_checkable, false));
@@ -1101,7 +1104,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.chipIcon != chipIcon) {
       unapplyChildDrawable(this.chipIcon);
       this.chipIcon = chipIcon;
-      applyChildDrawable(chipIcon);
+      applyChildDrawable(this.chipIcon);
 
       invalidateSelf();
     }
@@ -1134,10 +1137,34 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   public void setCloseIcon(@Nullable Drawable closeIcon) {
     if (this.closeIcon != closeIcon) {
       unapplyChildDrawable(this.closeIcon);
-      this.closeIcon = closeIcon;
-      applyChildDrawable(closeIcon);
+      if (closeIcon != null) {
+        this.closeIcon = DrawableCompat.wrap(closeIcon.mutate());
+        DrawableCompat.setTintList(closeIcon, closeIconTint);
+      }
+      applyChildDrawable(this.closeIcon);
 
       invalidateSelf();
+    }
+  }
+
+  @Nullable
+  public ColorStateList getCloseIconTint() {
+    return closeIconTint;
+  }
+
+  public void setCloseIconTintResource(@ColorRes int id) {
+    setCloseIconTint(AppCompatResources.getColorStateList(context, id));
+  }
+
+  public void setCloseIconTint(@Nullable ColorStateList closeIconTint) {
+    if (this.closeIconTint != closeIconTint) {
+      this.closeIconTint = closeIconTint;
+
+      if (closeIcon != null) {
+        DrawableCompat.setTintList(closeIcon, closeIconTint);
+      }
+
+      onStateChange(getState());
     }
   }
 
@@ -1189,7 +1216,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.checkedIcon != checkedIcon) {
       unapplyChildDrawable(this.checkedIcon);
       this.checkedIcon = checkedIcon;
-      applyChildDrawable(checkedIcon);
+      applyChildDrawable(this.checkedIcon);
 
       invalidateSelf();
     }

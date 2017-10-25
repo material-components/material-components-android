@@ -33,6 +33,7 @@
     <item name="chipIcon">@drawable/abc_ic_ab_back_material</item>
     <item name="chipIconSize">24dp</item>
     <item name="closeIcon">@drawable/abc_ic_go_search_api_material</item>
+    <item name="closeIconTint">#ff000000</item>
     <item name="closeIconSize">18dp</item>
     <item name="android:checkable">true</item>
     <item name="checkedIcon">@drawable/abc_ic_arrow_drop_right_black_24dp</item>

@@ -727,6 +727,23 @@ public class Chip extends AppCompatCheckBox {
     }
   }
 
+  @Nullable
+  public ColorStateList getCloseIconTint() {
+    return chipDrawable != null ? chipDrawable.getCloseIconTint() : null;
+  }
+
+  public void setCloseIconTintResource(@ColorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconTintResource(id);
+    }
+  }
+
+  public void setCloseIconTint(@Nullable ColorStateList closeIconTint) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconTint(closeIconTint);
+    }
+  }
+
   public float getCloseIconSize() {
     return chipDrawable != null ? chipDrawable.getCloseIconSize() : 0;
   }
