@@ -54,7 +54,9 @@ import android.support.v7.content.res.AppCompatResources;
 import android.text.TextPaint;
 import android.text.style.TextAppearanceSpan;
 import android.util.AttributeSet;
+import android.util.StateSet;
 import android.view.View;
+import java.util.Arrays;
 
 /**
  * ChipDrawable contains all the layout and draw logic for {@link Chip}.
@@ -91,6 +93,10 @@ import android.view.View;
  *
  * <p>Note that the stroke is drawn centered on the edge of the chip, it contributes <code>
  * chipStrokeWidth/2f</code> pixels on either size.
+ *
+ * <p>ChipDrawable contains three child drawables: {@link #chipIcon}, {@link #checkedIcon}, and
+ * {@link #closeIcon}. chipIcon and checkedIcon inherit the state of this drawable, but closeIcon
+ * contains its own state that you can set with {@link #setCloseIconState(int[])}.
  *
  * @see Chip
  */
@@ -178,6 +184,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private ColorStateList tint;
   @Nullable private Mode tintMode = Mode.SRC_IN;
+  private int[] closeIconStateSet = StateSet.WILD_CARD;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -240,6 +247,22 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setChipEndPadding(a.getDimension(R.styleable.ChipDrawable_chipEndPadding, 0f));
 
     a.recycle();
+  }
+
+  /**
+   * Returns the chip's drawable-absolute bounds (top-left is <code>[bounds.left, bounds.top]
+   * </code>). This is the part of the chip that does not include the close icon.
+   */
+  public void getChipTouchBounds(RectF bounds) {
+    calculateChipTouchBounds(getBounds(), bounds);
+  }
+
+  /**
+   * Returns the close icon's drawable-absolute bounds (top-left is <code>[bounds.left, bounds.top]
+   * </code>).
+   */
+  public void getCloseIconTouchBounds(RectF bounds) {
+    calculateCloseIconTouchBounds(getBounds(), bounds);
   }
 
   /**
@@ -508,10 +531,45 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
+  private void calculateChipTouchBounds(Rect bounds, RectF outBounds) {
+    outBounds.set(bounds);
+
+    if (closeIcon != null) {
+      outBounds.right =
+          bounds.right
+              - chipStrokeWidth / 2f
+              - chipEndPadding
+              - closeIconEndPadding
+              - closeIconSize
+              - closeIconStartPadding
+              - textEndPadding;
+    }
+  }
+
+  private void calculateCloseIconTouchBounds(Rect bounds, RectF outBounds) {
+    outBounds.setEmpty();
+
+    if (closeIcon != null) {
+      outBounds.right = bounds.right;
+      outBounds.left =
+          outBounds.right
+              - chipStrokeWidth / 2f
+              - chipEndPadding
+              - closeIconEndPadding
+              - closeIconSize
+              - closeIconStartPadding
+              - textEndPadding;
+
+      outBounds.top = bounds.top;
+      outBounds.bottom = bounds.bottom;
+    }
+  }
+
   /**
-   * Indicates whether this drawable will change its appearance based on state.
+   * Indicates whether this chip drawable will change its appearance based on state.
    *
-   * <p>The logic here must match {@link #onStateChange(int[])}.
+   * <p>The logic here and {@link #isCloseIconStateful()} must match {@link #onStateChange(int[],
+   * int[])}.
    */
   @Override
   public boolean isStateful() {
@@ -522,22 +580,54 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         || checkedIcon != null
         || isStateful(chipIcon)
         || isStateful(checkedIcon)
-        || isStateful(closeIcon)
         || isStateful(tint);
+  }
+
+  /**
+   * Indicates whether the close icon drawable will change its appearance based on state.
+   *
+   * <p>The logic here and {@link #isStateful()} must match {@link #onStateChange(int[], int[])}.
+   */
+  public boolean isCloseIconStateful() {
+    return isStateful(closeIcon);
+  }
+
+  /**
+   * Specify a set of states for the close icon. This is a separate state set than the one used for
+   * the rest of the chip.
+   */
+  public boolean setCloseIconState(@NonNull int[] stateSet) {
+    if (!Arrays.equals(closeIconStateSet, stateSet)) {
+      closeIconStateSet = stateSet;
+      if (closeIcon != null) {
+        return onStateChange(getState(), stateSet);
+      }
+    }
+    return false;
+  }
+
+  /** Describes the current state of the close icon. */
+  @NonNull
+  public int[] getCloseIconState() {
+    return closeIconStateSet;
+  }
+
+  @Override
+  protected boolean onStateChange(int[] state) {
+    return onStateChange(state, getCloseIconState());
   }
 
   /**
    * Changes appearance in response to the specified state.
    *
-   * <p>The logic here must match {@link #isStateful()}.
+   * <p>The logic here must match {@link #isStateful()} and {@link #isCloseIconStateful()}.
    */
-  @Override
-  protected boolean onStateChange(int[] state) {
-    boolean invalidate = super.onStateChange(state);
+  private boolean onStateChange(int[] chipState, int[] closeIconState) {
+    boolean invalidate = super.onStateChange(chipState);
 
     int newChipBackgroundColor =
         chipBackgroundColor != null
-            ? chipBackgroundColor.getColorForState(state, currentChipBackgroundColor)
+            ? chipBackgroundColor.getColorForState(chipState, currentChipBackgroundColor)
             : 0;
     if (currentChipBackgroundColor != newChipBackgroundColor) {
       currentChipBackgroundColor = newChipBackgroundColor;
@@ -546,7 +636,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     int newChipStrokeColor =
         chipStrokeColor != null
-            ? chipStrokeColor.getColorForState(state, currentChipStrokeColor)
+            ? chipStrokeColor.getColorForState(chipState, currentChipStrokeColor)
             : 0;
     if (currentChipStrokeColor != newChipStrokeColor) {
       currentChipStrokeColor = newChipStrokeColor;
@@ -554,7 +644,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
 
     int newRippleAlpha =
-        rippleAlpha != null ? rippleAlpha.getColorForState(state, currentRippleAlpha) : 0;
+        rippleAlpha != null ? rippleAlpha.getColorForState(chipState, currentRippleAlpha) : 0;
     if (currentRippleAlpha != newRippleAlpha) {
       currentRippleAlpha = newRippleAlpha;
       invalidate = true;
@@ -562,7 +652,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     int newChipTextColor =
         textAppearanceSpan != null && textAppearanceSpan.getTextColor() != null
-            ? textAppearanceSpan.getTextColor().getColorForState(state, currentChipTextColor)
+            ? textAppearanceSpan.getTextColor().getColorForState(chipState, currentChipTextColor)
             : 0;
     if (currentChipTextColor != newChipTextColor) {
       currentChipTextColor = newChipTextColor;
@@ -575,7 +665,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       invalidate = true;
     }
 
-    int newTint = tint != null ? tint.getColorForState(state, currentTint) : 0;
+    int newTint = tint != null ? tint.getColorForState(chipState, currentTint) : 0;
     if (currentTint != newTint) {
       currentTint = newTint;
       tintFilter = DrawableUtils.updateTintFilter(this, tint, tintMode);
@@ -583,15 +673,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
 
     if (isStateful(chipIcon)) {
-      invalidate |= chipIcon.setState(state);
+      invalidate |= chipIcon.setState(chipState);
     }
     if (isStateful(checkedIcon)) {
-      invalidate |= checkedIcon.setState(state);
+      invalidate |= checkedIcon.setState(chipState);
     }
     if (isStateful(closeIcon)) {
-      invalidate |= closeIcon.setState(state);
+      invalidate |= closeIcon.setState(closeIconState);
     }
-
 
     if (invalidate) {
       invalidateSelf();
@@ -736,7 +825,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   public void invalidateDrawable(@NonNull Drawable who) {
     Callback callback = getCallback();
     if (callback != null) {
-      callback.invalidateDrawable(who);
+      callback.invalidateDrawable(this);
     }
   }
 
@@ -744,7 +833,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   public void scheduleDrawable(@NonNull Drawable who, @NonNull Runnable what, long when) {
     Callback callback = getCallback();
     if (callback != null) {
-      callback.scheduleDrawable(who, what, when);
+      callback.scheduleDrawable(this, what, when);
     }
   }
 
@@ -752,7 +841,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   public void unscheduleDrawable(@NonNull Drawable who, @NonNull Runnable what) {
     Callback callback = getCallback();
     if (callback != null) {
-      callback.unscheduleDrawable(who, what);
+      callback.unscheduleDrawable(this, what);
     }
   }
 
@@ -767,7 +856,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       drawable.setCallback(this);
       DrawableCompat.setLayoutDirection(drawable, DrawableCompat.getLayoutDirection(this));
       if (drawable.isStateful()) {
-        drawable.setState(getState());
+        drawable.setState(drawable == closeIcon ? getCloseIconState() : getState());
       }
       drawable.setLevel(getLevel());
       drawable.setVisible(isVisible(), false);
