@@ -145,12 +145,10 @@ public class TextInputLayout extends LinearLayout {
   private CharSequence mHint;
 
   private GradientDrawable mBoxBackground;
+  private int mBoxPaddingTopPx;
   private int mBoxPaddingLeftPx;
-  private int mBoxExpandedPaddingTopPx;
-  private int mBoxCollapsedPaddingTopPx;
   private int mBoxPaddingRightPx;
-  private int mBoxExpandedPaddingBottomPx;
-  private int mBoxCollapsedPaddingBottomPx;
+  private int mBoxPaddingBottomPx;
   private final int mBoxBottomOffsetPx;
   private final int mBoxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int mBoxBackgroundMode;
@@ -250,18 +248,13 @@ public class TextInputLayout extends LinearLayout {
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     mHintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
-    mBoxPaddingLeftPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingLeft, 0);
-    mBoxCollapsedPaddingTopPx =
-        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingTop, 0);
-    mBoxCollapsedPaddingBottomPx =
-        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingBottom, 0);
-    mBoxExpandedPaddingTopPx =
-        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxExpandedPaddingTop, 0);
-    mBoxPaddingRightPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingRight, 0);
-    mBoxExpandedPaddingBottomPx =
-        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxExpandedPaddingBottom, 0);
     mBoxBottomOffsetPx =
         context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_bottom_offset);
+    mBoxPaddingLeftPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingLeft, 0);
+    mBoxPaddingTopPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingTop, 0);
+    mBoxPaddingRightPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingRight, 0);
+    mBoxPaddingBottomPx =
+        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingBottom, 0);
     mBoxLabelCutoutPaddingPx =
         context
             .getResources()
@@ -421,10 +414,7 @@ public class TextInputLayout extends LinearLayout {
     // Set box padding on the edit text.
     if (mBoxBackgroundMode != BOX_BACKGROUND_NONE && mEditText != null) {
       mEditText.setPadding(
-          mBoxPaddingLeftPx,
-          mBoxExpandedPaddingTopPx,
-          mBoxPaddingRightPx,
-          mBoxExpandedPaddingBottomPx);
+          mBoxPaddingLeftPx, mBoxPaddingTopPx, mBoxPaddingRightPx, mBoxPaddingBottomPx);
     }
   }
 
@@ -432,27 +422,16 @@ public class TextInputLayout extends LinearLayout {
    * Set the box's padding.
    *
    * @param boxPaddingLeft the value in pixels to use for the box's left padding
-   * @param boxCollapsedPaddingTop the value in pixels to use for the box's collapsed top padding
-   * @param boxExpandedPaddingTop the value in pixels to use for the box's expanded top padding
+   * @param boxPaddingTop the value in pixels to use for the box's top padding
    * @param boxPaddingRight the value in pixels to use for the box's right padding
-   * @param boxCollapsedPaddingBottom the value in pixels to use for the box's collapsed bottom
-   *     padding
-   * @param boxExpandedPaddingBottom the value in pixels to use for the box's expanded bottom
-   *     padding
+   * @param boxPaddingBottom the value in pixels to use for the box's bottom padding
    */
   public void setBoxPadding(
-      int boxPaddingLeft,
-      int boxCollapsedPaddingTop,
-      int boxExpandedPaddingTop,
-      int boxPaddingRight,
-      int boxCollapsedPaddingBottom,
-      int boxExpandedPaddingBottom) {
+      int boxPaddingLeft, int boxPaddingTop, int boxPaddingRight, int boxPaddingBottom) {
     mBoxPaddingLeftPx = boxPaddingLeft;
-    mBoxCollapsedPaddingTopPx = boxCollapsedPaddingTop;
-    mBoxExpandedPaddingTopPx = boxExpandedPaddingTop;
+    mBoxPaddingTopPx = boxPaddingTop;
     mBoxPaddingRightPx = boxPaddingRight;
-    mBoxCollapsedPaddingBottomPx = boxCollapsedPaddingBottom;
-    mBoxExpandedPaddingBottomPx = boxExpandedPaddingBottom;
+    mBoxPaddingBottomPx = boxPaddingBottom;
     invalidate();
   }
 
@@ -466,21 +445,12 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Get the box's collapsed top padding.
+   * Get the box's top padding.
    *
-   * @return the box's collapsed top padding in pixels
+   * @return the box's top padding in pixels
    */
-  public int getBoxCollapsedPaddingTop() {
-    return mBoxCollapsedPaddingTopPx;
-  }
-
-  /**
-   * Get the box's expanded top padding.
-   *
-   * @return the box's expanded top padding in pixels
-   */
-  public int getBoxExpandedPaddingTop() {
-    return mBoxExpandedPaddingTopPx;
+  public int getBoxPaddingTop() {
+    return mBoxPaddingTopPx;
   }
 
   /**
@@ -493,21 +463,12 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Get the box's collapsed bottom padding.
+   * Get the box's bottom padding.
    *
-   * @return the box's collapsed bottom padding in pixels
+   * @return the box's bottom padding in pixels
    */
-  public int getBoxCollapsedPaddingBottom() {
-    return mBoxCollapsedPaddingBottomPx;
-  }
-
-  /**
-   * Get the box's expanded bottom padding.
-   *
-   * @return the box's expanded bottom padding in pixels
-   */
-  public int getBoxExpandedPaddingBottom() {
-    return mBoxExpandedPaddingBottomPx;
+  public int getBoxPaddingBottom() {
+    return mBoxPaddingBottomPx;
   }
 
   /**
@@ -1050,7 +1011,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     int left = mEditText.getLeft();
-    int top = calculateBoxBackgroundTop();
+    int top = mEditText.getTop() + calculateLabelMarginTop();
     int right = mEditText.getRight();
     int bottom = mEditText.getBottom() + mBoxBottomOffsetPx;
 
@@ -1068,34 +1029,17 @@ public class TextInputLayout extends LinearLayout {
     updateEditTextBackgroundBounds();
   }
 
-  private int calculateBoxBackgroundTop() {
-    if (mEditText == null) {
-      return 0;
-    }
-
-    switch (mBoxBackgroundMode) {
-      case BOX_BACKGROUND_FILLED:
-        return mEditText.getTop();
-      case BOX_BACKGROUND_OUTLINE:
-        return mEditText.getTop() + calculateLabelMarginTop();
-      default:
-        return 0;
-    }
-  }
-
   private int calculateLabelMarginTop() {
-    if (!mHintEnabled) {
-      return 0;
-    }
-
-    switch (mBoxBackgroundMode) {
-      case BOX_BACKGROUND_OUTLINE:
+    if (mHintEnabled) {
+      if (mBoxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
+        // The label is split vertically across the outline, so the extra top margin should be equal
+        // to half of the collapsed label height.
         return (int) (mCollapsingTextHelper.getCollapsedTextHeight() / 2);
-      case BOX_BACKGROUND_FILLED:
-      case BOX_BACKGROUND_NONE:
+      } else {
         return (int) mCollapsingTextHelper.getCollapsedTextHeight();
-      default:
-        return 0;
+      }
+    } else {
+      return 0;
     }
   }
 
@@ -1104,7 +1048,7 @@ public class TextInputLayout extends LinearLayout {
       case BOX_BACKGROUND_OUTLINE:
         return getBoxBackground().getBounds().top - calculateLabelMarginTop();
       case BOX_BACKGROUND_FILLED:
-        return getBoxBackground().getBounds().top + mBoxCollapsedPaddingTopPx;
+        return getBoxBackground().getBounds().top + calculateLabelMarginTop();
       default:
         return getPaddingTop();
     }
@@ -1711,7 +1655,10 @@ public class TextInputLayout extends LinearLayout {
       final int t = calculateCollapsedTextTopBounds();
 
       mCollapsingTextHelper.setExpandedBounds(
-          l, rect.top + mBoxExpandedPaddingTopPx, r, rect.bottom - mBoxExpandedPaddingBottomPx);
+          l,
+          rect.top + mEditText.getCompoundPaddingTop(),
+          r,
+          rect.bottom - mEditText.getCompoundPaddingBottom());
 
       // Set the collapsed bounds to be the full height (minus padding) to match the
       // EditText's editable area
