@@ -40,7 +40,15 @@
   <dimen name="design_textinput_box_corner_radius_small">0dp</dimen>
   <dimen name="design_textinput_box_corner_radius_large">4dp</dimen>
   <dimen name="design_textinput_box_padding_left">12dp</dimen>
-  <dimen name="design_textinput_box_padding_top">20dp</dimen>
+  <dimen name="design_textinput_filled_box_collapsed_padding">12dp</dimen>
+  <dimen name="design_textinput_filled_box_collapsed_padding_dense">8dp</dimen>
+  <dimen name="design_textinput_filled_box_expanded_padding">20dp</dimen>
+  <dimen name="design_textinput_filled_box_expanded_padding_dense">16dp</dimen>
+  <dimen name="design_textinput_outline_box_collapsed_padding_dense">16dp</dimen>
+  <dimen name="design_textinput_outline_box_collapsed_padding_top">0dp</dimen>
+  <dimen name="design_textinput_outline_box_collapsed_padding_bottom">20dp</dimen>
+  <dimen name="design_textinput_outline_box_expanded_padding">16dp</dimen>
+  <dimen name="design_textinput_outline_box_expanded_padding_dense">12dp</dimen>
   <dimen name="design_textinput_box_padding_right">12dp</dimen>
   <dimen name="design_textinput_box_padding_bottom">20dp</dimen>
   <dimen name="design_textinput_box_bottom_offset">3dp</dimen>

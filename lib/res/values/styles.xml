@@ -84,19 +84,60 @@
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout" parent="Widget.Design.TextInputLayout">
+    <item name="boxBackgroundMode">outline</item>
+    <item name="boxStrokeColor">?attr/colorControlActivated</item>
     <item name="boxPaddingLeft">@dimen/design_textinput_box_padding_left</item>
-    <item name="boxPaddingTop">@dimen/design_textinput_box_padding_top</item>
     <item name="boxPaddingRight">@dimen/design_textinput_box_padding_right</item>
-    <item name="boxPaddingBottom">@dimen/design_textinput_box_padding_bottom</item>
+    <item name="boxCollapsedPaddingTop">
+      @dimen/design_textinput_outline_box_collapsed_padding_top
+    </item>
+    <item name="boxCollapsedPaddingBottom">
+      @dimen/design_textinput_outline_box_collapsed_padding_bottom
+    </item>
+    <item name="boxExpandedPaddingTop">
+      @dimen/design_textinput_outline_box_expanded_padding
+    </item>
+    <item name="boxExpandedPaddingBottom">
+      @dimen/design_textinput_outline_box_expanded_padding
+    </item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox">
     <item name="boxBackgroundMode">filled</item>
+    <item name="boxCollapsedPaddingTop">@dimen/design_textinput_filled_box_collapsed_padding</item>
+    <item name="boxCollapsedPaddingBottom">@dimen/design_textinput_box_padding_bottom</item>
+    <item name="boxExpandedPaddingTop">@dimen/design_textinput_filled_box_expanded_padding</item>
+    <item name="boxExpandedPaddingBottom">@dimen/design_textinput_outline_box_expanded_padding
+    </item>
   </style>
 
-  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox">
-    <item name="boxBackgroundMode">outline</item>
-    <item name="boxStrokeColor">?attr/colorControlActivated</item>
+  <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
+    <item name="boxCollapsedPaddingTop">
+      @dimen/design_textinput_filled_box_collapsed_padding_dense
+    </item>
+    <item name="boxCollapsedPaddingBottom">
+      @dimen/design_textinput_filled_box_collapsed_padding_dense
+    </item>
+    <item name="boxExpandedPaddingTop">
+      @dimen/design_textinput_filled_box_expanded_padding_dense
+    </item>
+    <item name="boxExpandedPaddingBottom">
+      @dimen/design_textinput_filled_box_expanded_padding_dense
+    </item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox"/>
+
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense">
+    <item name="boxCollapsedPaddingBottom">
+      @dimen/design_textinput_outline_box_collapsed_padding_dense
+    </item>
+    <item name="boxExpandedPaddingTop">
+      @dimen/design_textinput_outline_box_expanded_padding_dense
+    </item>
+    <item name="boxExpandedPaddingBottom">
+      @dimen/design_textinput_outline_box_expanded_padding_dense
+    </item>
   </style>
 
   <style name="TextAppearance.Design.HelperText" parent="TextAppearance.AppCompat.Caption"/>
