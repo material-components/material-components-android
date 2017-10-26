@@ -114,7 +114,8 @@ public class Chip extends AppCompatCheckBox {
     ThemeUtils.checkAppCompatTheme(context);
 
     ChipDrawable drawable =
-        ChipDrawable.createFromAttributes(context, attrs, defStyleAttr, R.style.Widget_Design_Chip);
+        ChipDrawable.createFromAttributes(
+            context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip);
     setButtonDrawable(drawable);
 
     touchHelper = new ChipTouchHelper(this);

@@ -254,7 +254,10 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       }
 
       AttributeSet attrs = Xml.asAttributeSet(parser);
-      int style = attrs.getStyleAttribute();
+      @StyleRes int style = attrs.getStyleAttribute();
+      if (style == 0) {
+        style = R.style.Widget_MaterialComponents_Chip;
+      }
 
       return createFromAttributes(context, attrs, R.attr.chipStyle, style);
     } catch (XmlPullParserException | IOException e) {
