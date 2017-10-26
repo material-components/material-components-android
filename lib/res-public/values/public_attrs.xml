@@ -24,6 +24,7 @@
   <public name="borderWidth" type="attr"/>
   <public name="bottomSheetDialogTheme" type="attr"/>
   <public name="bottomSheetStyle" type="attr"/>
+  <public name="boxBackgroundColor" type="attr"/>
   <public name="boxBackgroundMode" type="attr"/>
   <public name="boxPaddingLeft" type="attr"/>
   <public name="boxPaddingTop" type="attr"/>

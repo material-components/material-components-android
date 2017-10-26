@@ -21,6 +21,7 @@ import static android.support.design.testutils.TestUtilsActions.setEnabled;
 import static android.support.design.testutils.TestUtilsMatchers.withCompoundDrawable;
 import static android.support.design.testutils.TestUtilsMatchers.withTextColor;
 import static android.support.design.testutils.TestUtilsMatchers.withTypeface;
+import static android.support.design.testutils.TextInputLayoutActions.setBoxBackgroundColor;
 import static android.support.design.testutils.TextInputLayoutActions.setBoxStrokeColor;
 import static android.support.design.testutils.TextInputLayoutActions.setCounterEnabled;
 import static android.support.design.testutils.TextInputLayoutActions.setCounterMaxLength;
@@ -605,6 +606,36 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_box_outline)).check(isBoxStrokeColor(green));
   }
 
+  @Test
+  public void testOutlineBoxBackgroundChangesColor() {
+    @ColorInt int blue = Color.BLUE;
+    @ColorInt int yellow = Color.YELLOW;
+
+    // Change the outline box's background color to blue.
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxBackgroundColor(blue));
+    // Check that the outline box's background color is blue.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxBackgroundColor(blue));
+    // Change the outline box's background color to yellow.
+    onView(withId(R.id.textinput_box_outline)).perform(setBoxBackgroundColor(yellow));
+    // Check that the outline box's background color is yellow.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxBackgroundColor(yellow));
+  }
+
+  @Test
+  public void testFilledBoxBackgroundChangesColor() {
+    @ColorInt int blue = Color.BLUE;
+    @ColorInt int yellow = Color.YELLOW;
+
+    // Change the outline box's background color to blue.
+    onView(withId(R.id.textinput_box_filled)).perform(setBoxBackgroundColor(blue));
+    // Check that the outline box's background color is blue.
+    onView(withId(R.id.textinput_box_filled)).check(isBoxBackgroundColor(blue));
+    // Change the outline box's background color to yellow.
+    onView(withId(R.id.textinput_box_filled)).perform(setBoxBackgroundColor(yellow));
+    // Check that the outline box's background color is yellow.
+    onView(withId(R.id.textinput_box_filled)).check(isBoxBackgroundColor(yellow));
+  }
+
   private static ViewAssertion isHintExpanded(final boolean expanded) {
     return new ViewAssertion() {
       @Override
@@ -621,6 +652,16 @@ public class TextInputLayoutTest {
       public void check(View view, NoMatchingViewException noViewFoundException) {
         assertTrue(view instanceof TextInputLayout);
         assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeColor());
+      }
+    };
+  }
+
+  private static ViewAssertion isBoxBackgroundColor(@ColorInt final int boxBackgroundColor) {
+    return new ViewAssertion() {
+      @Override
+      public void check(View view, NoMatchingViewException noViewFoundException) {
+        assertTrue(view instanceof TextInputLayout);
+        assertEquals(boxBackgroundColor, ((TextInputLayout) view).getBoxBackgroundColor());
       }
     };
   }

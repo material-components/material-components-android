@@ -85,6 +85,7 @@
 
   <style name="Widget.MaterialComponents.TextInputLayout" parent="Widget.Design.TextInputLayout">
     <item name="boxBackgroundMode">outline</item>
+    <item name="boxBackgroundColor">@null</item>
     <item name="boxStrokeColor">?attr/colorControlActivated</item>
     <item name="boxPaddingLeft">@dimen/design_textinput_box_padding_left</item>
     <item name="boxPaddingRight">@dimen/design_textinput_box_padding_right</item>
@@ -104,6 +105,9 @@
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox">
     <item name="boxBackgroundMode">filled</item>
+    <item name="boxBackgroundColor">
+      @color/design_textinput_filled_box_default_background_color
+    </item>
     <item name="boxCollapsedPaddingTop">@dimen/design_textinput_filled_box_collapsed_padding</item>
     <item name="boxCollapsedPaddingBottom">@dimen/design_textinput_box_padding_bottom</item>
     <item name="boxExpandedPaddingTop">@dimen/design_textinput_filled_box_expanded_padding</item>

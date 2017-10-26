@@ -47,6 +47,8 @@
   <color name="design_textinput_default_box_stroke_color">#6B000000</color>
   <!-- Color for the text field's hovered box stroke: 87% black -->
   <color name="design_textinput_hovered_box_stroke_color">#DE000000</color>
+  <!-- Color for the text field's default box background: 4% black -->
+  <color name="design_textinput_filled_box_default_background_color">#0A000000</color>
 
   <color name="design_snackbar_background_color">#323232</color>
 

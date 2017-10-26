@@ -248,6 +248,26 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setBoxBackgroundColor(@ColorInt final int backgroundColor) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's background color";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxBackgroundColor(backgroundColor);
+      }
+    };
+  }
+
   public static ViewAction setHint(final String hint) {
     return new ViewAction() {
       @Override

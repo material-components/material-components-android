@@ -37,6 +37,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -159,7 +160,7 @@ public class TextInputLayout extends LinearLayout {
   private final int mBoxStrokeWidthDefaultPx;
   private final int mBoxStrokeWidthFocusedPx;
   @ColorInt private int mBoxStrokeColor;
-  private ColorStateList mBoxBackgroundColor;
+  @ColorInt private int mBoxBackgroundColor;
   private Drawable mEditTextOriginalDrawable;
 
   /**
@@ -196,6 +197,8 @@ public class TextInputLayout extends LinearLayout {
   @ColorInt private final int mDefaultStrokeColor;
   @ColorInt private final int mHoveredStrokeColor;
   @ColorInt private int mFocusedStrokeColor;
+
+  @ColorInt private int mDefaultBoxBackgroundColor;
 
   @ColorInt private final int mDisabledColor;
 
@@ -266,6 +269,10 @@ public class TextInputLayout extends LinearLayout {
         context
             .getResources()
             .getDimensionPixelOffset(R.dimen.design_textinput_box_label_cutout_padding);
+
+    mDefaultBoxBackgroundColor =
+        a.getColor(R.styleable.TextInputLayout_boxBackgroundColor, Color.TRANSPARENT);
+    mBoxBackgroundColor = mDefaultBoxBackgroundColor;
 
     mFocusedStrokeColor = a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
     mBoxStrokeWidthDefaultPx =
@@ -533,6 +540,38 @@ public class TextInputLayout extends LinearLayout {
    */
   public int getBoxStrokeColor() {
     return mFocusedStrokeColor;
+  }
+
+  /**
+   * Set the resource used for the filled box's background color.
+   *
+   * @param boxBackgroundColorId the resource to use for the box's background color
+   */
+  public void setBoxBackgroundColorResource(@ColorRes int boxBackgroundColorId) {
+    setBoxBackgroundColor(ContextCompat.getColor(getContext(), boxBackgroundColorId));
+  }
+
+  /**
+   * Set the filled box's background color.
+   *
+   * @param boxBackgroundColor the color to use for the filled box's background
+   * @see #getBoxBackgroundColor()
+   */
+  public void setBoxBackgroundColor(@ColorInt int boxBackgroundColor) {
+    if (mDefaultBoxBackgroundColor != boxBackgroundColor) {
+      mDefaultBoxBackgroundColor = boxBackgroundColor;
+      invalidate();
+    }
+  }
+
+  /**
+   * Returns the box's background color.
+   *
+   * @return the color used for the box's background
+   * @see #setBoxBackgroundColor(int)
+   */
+  public int getBoxBackgroundColor() {
+    return mDefaultBoxBackgroundColor;
   }
 
   /**
@@ -1143,7 +1182,6 @@ public class TextInputLayout extends LinearLayout {
     switch (mBoxBackgroundMode) {
       case BOX_BACKGROUND_FILLED:
         mBoxCornerRadius = 0f;
-        mBoxBackgroundColor = mDefaultTextColor;
         mBoxStrokeWidthPx = 0;
         break;
 
@@ -1154,7 +1192,6 @@ public class TextInputLayout extends LinearLayout {
               mFocusedTextColor.getColorForState(
                   getDrawableState(), mFocusedTextColor.getDefaultColor());
         }
-        mBoxBackgroundColor = null;
         break;
 
       default:
@@ -1192,24 +1229,7 @@ public class TextInputLayout extends LinearLayout {
       mBoxBackground.setCornerRadius(mBoxCornerRadius);
     }
 
-    setBoxBackgroundColor(mBoxBackgroundColor);
-  }
-
-  private void setBoxBackgroundColor(@Nullable ColorStateList boxBackgroundColor) {
-    if (boxBackgroundColor != null) {
-      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-        mBoxBackground.setColor(boxBackgroundColor);
-      } else {
-        // Drop to compat, so we have to use a color int instead of a ColorStateList. The drawable's
-        // background won't change colors based on the view's state changes.
-        mBoxBackground.setColor(
-            boxBackgroundColor.getColorForState(getDrawableState(), Color.TRANSPARENT));
-      }
-    } else {
-      // Setting a color for transparent backgrounds to avoid a default black background in pre-17
-      // versions.
-      mBoxBackground.setColor(Color.TRANSPARENT);
-    }
+    mBoxBackground.setColor(mBoxBackgroundColor);
   }
 
   void updateEditTextBackground() {
