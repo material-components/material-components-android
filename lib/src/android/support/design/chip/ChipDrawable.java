@@ -339,16 +339,16 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   /**
-   * Returns the chip's drawable-absolute bounds (top-left is <code>[bounds.left, bounds.top]
-   * </code>). This is the part of the chip that does not include the close icon.
+   * Returns the chip's ChipDrawable-absolute bounds (top-left is <code>
+   * [ChipDrawable.getBounds().left, ChipDrawable.getBounds().top]</code>).
    */
   public void getChipTouchBounds(RectF bounds) {
     calculateChipTouchBounds(getBounds(), bounds);
   }
 
   /**
-   * Returns the close icon's drawable-absolute bounds (top-left is <code>[bounds.left, bounds.top]
-   * </code>).
+   * Returns the close icon's ChipDrawable-absolute bounds (top-left is <code>
+   * [ChipDrawable.getBounds().left, ChipDrawable.getBounds().top]</code>).
    */
   public void getCloseIconTouchBounds(RectF bounds) {
     calculateCloseIconTouchBounds(getBounds(), bounds);
@@ -584,8 +584,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   /**
-   * Calculates the chip icon's drawable-absolute bounds (top-left is <code>[bounds.left,
-   * bounds.top]</code>).
+   * Calculates the chip icon's ChipDrawable-absolute bounds (top-left is <code>
+   * [ChipDrawable.getBounds().left, ChipDrawable.getBounds().top]</code>).
    */
   private void calculateChipIconBounds(Rect bounds, RectF outBounds) {
     outBounds.setEmpty();
@@ -607,8 +607,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   /**
-   * Calculates the chip text's drawable-absolute origin point (top-left is <code>[bounds.left,
-   * bounds.top]</code>). Returns the text alignment at the origin.
+   * Calculates the chip text's ChipDrawable-absolute bounds (top-left is <code>
+   * [ChipDrawable.getBounds().left, ChipDrawable.getBounds().top]</code>).
    */
   private Align calculateChipTextOrigin(Rect bounds, PointF pointF) {
     pointF.set(0, 0);
@@ -635,8 +635,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   /**
    * Calculates the offset from the visual center of the chip text to its baseline.
    *
-   * <p>We calculate this offset because {@link Canvas#drawText(CharSequence, int, int, float,
-   * float, Paint)} always draws from the text's baseline.
+   * <p>To draw the chip text, we provide the origin to {@link Canvas#drawText(CharSequence, int,
+   * int, float, float, Paint)}. This origin always corresponds vertically to the text's baseline.
+   * Because we need to vertically center the text, we need to calculate this offset.
+   *
+   * <p>Note that chips that share the same font must have consistent text baselines despite having
+   * different text strings. This is why we calculate the vertical center using {@link
+   * Paint#getFontMetrics(FontMetrics)} rather than {@link Paint#getTextBounds(String, int, int,
+   * Rect)}.
    */
   private float calculateChipTextCenterFromBaseline() {
     textPaint.getFontMetrics(fontMetrics);
@@ -644,8 +650,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   /**
-   * Calculates the close icon's drawable-absolute bounds (top-left is <code>[bounds.left,
-   * bounds.top]</code>).
+   * Calculates the close icon's ChipDrawable-absolute bounds (top-left is <code>
+   * [ChipDrawable.getBounds().left, ChipDrawable.getBounds().top]</code>).
    */
   private void calculateCloseIconBounds(Rect bounds, RectF outBounds) {
     outBounds.setEmpty();
