@@ -59,10 +59,10 @@ layout:
     android:text="@string/unelevated_button_label_enabled"/>
 ```
 
-For raised buttons, your theme's `colorSecondary` provides the default
-background color of the component, and the text color is white by default. For
-unelevated buttons, your theme's `colorSecondary` provides the default text
-color of the component, and the background color is transparent by default.
+For raised buttons, your theme's `colorAccent` provides the default background
+color of the component, and the text color is white by default. For unelevated
+buttons, your theme's `colorAccent` provides the default text color of the
+component, and the background color is transparent by default.
 
 The following attributes can be changed for Material Button:
 
