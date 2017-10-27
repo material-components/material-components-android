@@ -74,6 +74,13 @@ Password redaction                     | [`app:passwordToggleEnabled`](https://d
 Character counter                      | [`app:counterEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:counterEnabled)
                                        | [`app:counterMaxLength`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:counterMaxLength)
 
+## Notes about setting the hint
+
+If a hint is specified on the child `EditText` in XML, then the
+`TextInputLayout` will use the `EditText`'s hint as its floating label. To
+specify or change the hint programmatically, make sure to call the `setHint()`
+method on `TextInputLayout`, instead of on the `EditText`.
+
 ## Related concepts
 
 *   [TextView](https://developer.android.com/reference/android/widget/TextView.html)
