@@ -65,6 +65,7 @@ import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
 import java.io.IOException;
+import java.lang.ref.WeakReference;
 import java.util.Arrays;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserException;
@@ -216,6 +217,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private int[] closeIconStateSet;
   private boolean useCompatRipple;
   @Nullable private ColorStateList compatRippleColor;
+  private WeakReference<Delegate> delegate = new WeakReference<>(null);
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -339,6 +341,19 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   /** Returns whether this ChipDrawable should draw its own compatibility ripples. */
   public boolean getUseCompatRipple() {
     return useCompatRipple;
+  }
+
+  /** Sets the View delegate that owns this ChipDrawable. */
+  public void setDelegate(@Nullable Delegate delegate) {
+    this.delegate = new WeakReference<>(delegate);
+  }
+
+  /** Attempts to call {@link Delegate#onChipDrawableSizeChange()} on the delegate. */
+  protected void onSizeChange() {
+    Delegate delegate = this.delegate.get();
+    if (delegate != null) {
+      delegate.onChipDrawableSizeChange();
+    }
   }
 
   /**
@@ -779,6 +794,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    */
   private boolean onStateChange(int[] chipState, int[] closeIconState) {
     boolean invalidate = super.onStateChange(chipState);
+    boolean sizeChanged = false;
 
     int newChipBackgroundColor =
         chipBackgroundColor != null
@@ -820,8 +836,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     boolean newChecked = hasState(getState(), android.R.attr.state_checked) && checkable;
     if (currentChecked != newChecked && checkedIcon != null) {
+      float oldChipIconWidth = calculateChipIconWidth();
       currentChecked = newChecked;
+      float newChipIconWidth = calculateChipIconWidth();
       invalidate = true;
+
+      if (oldChipIconWidth != newChipIconWidth) {
+        sizeChanged = true;
+      }
     }
 
     int newTint = tint != null ? tint.getColorForState(chipState, currentTint) : 0;
@@ -843,6 +865,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     if (invalidate) {
       invalidateSelf();
+    }
+    if (sizeChanged) {
+      onSizeChange();
     }
     return invalidate;
   }
@@ -978,6 +1003,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     } else {
       outline.setRoundRect(0, 0, getIntrinsicWidth(), getIntrinsicHeight(), chipCornerRadius);
     }
+
+    outline.setAlpha(getAlpha() / 255f);
   }
 
   @Override
@@ -1010,6 +1037,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
+  /** Note: This should not change the size of the drawable. */
   private void applyChildDrawable(@Nullable Drawable drawable) {
     if (drawable != null) {
       drawable.setCallback(this);
@@ -1052,6 +1080,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     return false;
   }
 
+  /** Delegate interface to be implemented by Views that own a ChipDrawable. */
+  public interface Delegate {
+
+    /** Handles a change in the ChipDrawable's size. */
+    void onChipDrawableSizeChange();
+  }
+
   // Getters and setters for attributes.
 
   @Nullable
@@ -1082,6 +1117,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.chipMinHeight != chipMinHeight) {
       this.chipMinHeight = chipMinHeight;
       invalidateSelf();
+      onSizeChange();
     }
   }
 
@@ -1131,6 +1167,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       chipPaint.setStrokeWidth(chipStrokeWidth);
 
       invalidateSelf();
+      onSizeChange();
     }
   }
 
@@ -1181,6 +1218,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.chipText != chipText) {
       this.chipText = BidiFormatter.getInstance().unicodeWrap(chipText);
       invalidateSelf();
+      onSizeChange();
     }
   }
 
@@ -1202,6 +1240,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       }
 
       onStateChange(getState());
+      onSizeChange();
     }
   }
 
@@ -1215,12 +1254,19 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setChipIcon(@Nullable Drawable chipIcon) {
-    if (this.chipIcon != chipIcon) {
-      unapplyChildDrawable(this.chipIcon);
+    Drawable oldChipIcon = this.chipIcon;
+    if (oldChipIcon != chipIcon) {
+      float oldChipIconWidth = calculateChipIconWidth();
       this.chipIcon = chipIcon;
+      float newChipIconWidth = calculateChipIconWidth();
+
+      unapplyChildDrawable(oldChipIcon);
       applyChildDrawable(this.chipIcon);
 
       invalidateSelf();
+      if (oldChipIconWidth != newChipIconWidth) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1234,8 +1280,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   public void setChipIconSize(float chipIconSize) {
     if (this.chipIconSize != chipIconSize) {
+      float oldChipIconWidth = calculateChipIconWidth();
       this.chipIconSize = chipIconSize;
+      float newChipIconWidth = calculateChipIconWidth();
+
       invalidateSelf();
+      if (oldChipIconWidth != newChipIconWidth) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1249,15 +1301,20 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setCloseIcon(@Nullable Drawable closeIcon) {
-    if (this.closeIcon != closeIcon) {
-      unapplyChildDrawable(this.closeIcon);
-      if (closeIcon != null) {
-        this.closeIcon = DrawableCompat.wrap(closeIcon.mutate());
-        DrawableCompat.setTintList(closeIcon, closeIconTint);
-      }
+    Drawable oldCloseIcon = this.closeIcon != null ? DrawableCompat.unwrap(this.closeIcon) : null;
+    if (oldCloseIcon != closeIcon) {
+      this.closeIcon = closeIcon != null ? DrawableCompat.wrap(closeIcon.mutate()) : null;
+
+      unapplyChildDrawable(oldCloseIcon);
       applyChildDrawable(this.closeIcon);
+      if (this.closeIcon != null) {
+        DrawableCompat.setTintList(this.closeIcon, closeIconTint);
+      }
 
       invalidateSelf();
+      if (oldCloseIcon == null || this.closeIcon == null) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1294,6 +1351,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.closeIconSize != closeIconSize) {
       this.closeIconSize = closeIconSize;
       invalidateSelf();
+      if (closeIcon != null) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1309,11 +1369,16 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.checkable != checkable) {
       this.checkable = checkable;
 
-      if (!checkable) {
+      float oldChipIconWidth = calculateChipIconWidth();
+      if (!checkable && currentChecked) {
         currentChecked = false;
       }
+      float newChipIconWidth = calculateChipIconWidth();
 
       invalidateSelf();
+      if (oldChipIconWidth != newChipIconWidth) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1327,12 +1392,19 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setCheckedIcon(@Nullable Drawable checkedIcon) {
-    if (this.checkedIcon != checkedIcon) {
-      unapplyChildDrawable(this.checkedIcon);
+    Drawable oldCheckedIcon = this.checkedIcon;
+    if (oldCheckedIcon != checkedIcon) {
+      float oldChipIconWidth = calculateChipIconWidth();
       this.checkedIcon = checkedIcon;
+      float newChipIconWidth = calculateChipIconWidth();
+
+      unapplyChildDrawable(this.checkedIcon);
       applyChildDrawable(this.checkedIcon);
 
       invalidateSelf();
+      if (oldChipIconWidth != newChipIconWidth) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1374,6 +1446,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.chipStartPadding != chipStartPadding) {
       this.chipStartPadding = chipStartPadding;
       invalidateSelf();
+      onSizeChange();
     }
   }
 
@@ -1387,8 +1460,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   public void setIconStartPadding(float iconStartPadding) {
     if (this.iconStartPadding != iconStartPadding) {
+      float oldChipIconWidth = calculateChipIconWidth();
       this.iconStartPadding = iconStartPadding;
+      float newChipIconWidth = calculateChipIconWidth();
+
       invalidateSelf();
+      if (oldChipIconWidth != newChipIconWidth) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1402,8 +1481,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   public void setIconEndPadding(float iconEndPadding) {
     if (this.iconEndPadding != iconEndPadding) {
+      float oldChipIconWidth = calculateChipIconWidth();
       this.iconEndPadding = iconEndPadding;
+      float newChipIconWidth = calculateChipIconWidth();
+
       invalidateSelf();
+      if (oldChipIconWidth != newChipIconWidth) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1419,6 +1504,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.textStartPadding != textStartPadding) {
       this.textStartPadding = textStartPadding;
       invalidateSelf();
+      onSizeChange();
     }
   }
 
@@ -1434,6 +1520,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.textEndPadding != textEndPadding) {
       this.textEndPadding = textEndPadding;
       invalidateSelf();
+      onSizeChange();
     }
   }
 
@@ -1449,6 +1536,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.closeIconStartPadding != closeIconStartPadding) {
       this.closeIconStartPadding = closeIconStartPadding;
       invalidateSelf();
+      if (closeIcon != null) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1464,6 +1554,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.closeIconEndPadding != closeIconEndPadding) {
       this.closeIconEndPadding = closeIconEndPadding;
       invalidateSelf();
+      if (closeIcon != null) {
+        onSizeChange();
+      }
     }
   }
 
@@ -1479,6 +1572,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (this.chipEndPadding != chipEndPadding) {
       this.chipEndPadding = chipEndPadding;
       invalidateSelf();
+      onSizeChange();
     }
   }
 }

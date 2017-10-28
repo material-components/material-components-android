@@ -37,13 +37,13 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.animation.MotionSpec;
+import android.support.design.chip.ChipDrawable.Delegate;
 import android.support.design.ripple.RippleUtils;
 import android.support.design.theme.ThemeUtils;
 import android.support.design.widget.ViewUtils;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
-import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.style.TextAppearanceSpan;
@@ -56,7 +56,6 @@ import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
-import android.widget.CompoundButton;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
@@ -79,7 +78,7 @@ import java.util.List;
  *
  * @see ChipDrawable
  */
-public class Chip extends AppCompatCheckBox {
+public class Chip extends AppCompatCheckBox implements Delegate {
 
   private static final int CLOSE_ICON_VIRTUAL_ID = 0;
 
@@ -132,11 +131,9 @@ public class Chip extends AppCompatCheckBox {
           new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-              Drawable button = CompoundButtonCompat.getButtonDrawable((CompoundButton) view);
-              if (button != null) {
-                button.getOutline(outline);
+              if (chipDrawable != null) {
+                chipDrawable.getOutline(outline);
               } else {
-                outline.setRect(0, 0, view.getWidth(), view.getHeight());
                 outline.setAlpha(0.0f);
               }
             }
@@ -156,17 +153,39 @@ public class Chip extends AppCompatCheckBox {
       throw new IllegalArgumentException("Button drawable must be an instance of ChipDrawable.");
     }
 
-    chipDrawable = (ChipDrawable) buttonDrawable;
+    if (chipDrawable != buttonDrawable) {
+      unapplyChipDrawable(chipDrawable);
+      chipDrawable = (ChipDrawable) buttonDrawable;
+      applyChipDrawable(chipDrawable);
 
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-      RippleDrawable ripple =
-          new RippleDrawable(
-              getCompositeChipRippleColorStateList(chipDrawable), chipDrawable, null);
-      chipDrawable.setUseCompatRipple(false);
-      super.setButtonDrawable(ripple);
-    } else {
-      chipDrawable.setUseCompatRipple(true);
-      super.setButtonDrawable(chipDrawable);
+      if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
+        RippleDrawable ripple =
+            new RippleDrawable(
+                getCompositeChipRippleColorStateList(chipDrawable), chipDrawable, null);
+        chipDrawable.setUseCompatRipple(false);
+        super.setButtonDrawable(ripple);
+      } else {
+        chipDrawable.setUseCompatRipple(true);
+        super.setButtonDrawable(chipDrawable);
+      }
+    }
+  }
+
+  private void unapplyChipDrawable(@Nullable ChipDrawable chipDrawable) {
+    if (chipDrawable != null) {
+      chipDrawable.setDelegate(null);
+    }
+  }
+
+  private void applyChipDrawable(ChipDrawable chipDrawable) {
+    chipDrawable.setDelegate(this);
+  }
+
+  @Override
+  public void onChipDrawableSizeChange() {
+    requestLayout();
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      invalidateOutline();
     }
   }
 
