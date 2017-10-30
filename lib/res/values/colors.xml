@@ -61,6 +61,9 @@
   <!-- 0% opacity white container fill -->
   <color name="mtrl_btn_transparent_bg_color">#00ffffff</color>
 
+  <color name="mtrl_chip_ripple_color">#191919</color>
+  <color name="mtrl_chip_text_color">#DE000000</color>
+
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
 </resources>

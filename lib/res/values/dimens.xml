@@ -94,4 +94,7 @@
   <dimen name="mtrl_fab_translation_z_hovered_focused">2dp</dimen>
   <dimen name="mtrl_fab_translation_z_pressed">6dp</dimen>
 
+  <dimen name="mtrl_chip_pressed_translation_z">3dp</dimen>
+  <dimen name="mtrl_chip_text_size">14sp</dimen>
+
 </resources>

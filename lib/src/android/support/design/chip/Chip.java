@@ -69,12 +69,25 @@ import java.util.List;
  * accessibility navigation. The main chip and close icon are considered to be separate logical
  * sub-views, and contain their own navigation behavior and state.
  *
+ * <p>All attributes from {@link R.styleable#ChipDrawable} are supported. Do not use the {@code
+ * android:button} and {@code android:text} attributes. They will be ignored because Chip manages
+ * its own button Drawable and text. The basic attributes you can set are:
+ *
+ * <ul>
+ *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
+ *       false, the chip acts like a button.
+ *   <li>{@link R.attr#chipText app:chipText} - Sets the text of the chip.
+ *   <li>{@link R.attr#chipIcon app:chipIcon} - Sets the icon of the chip, or use @null to display
+ *       no icon. Usually on the left.
+ *   <li>{@link R.attr#checkedIcon app:checkedIcon} - Sets a custom icon to use when checked, or
+ *       use @null to display no icon. Usually on the left.
+ *   <li>{@link R.attr#closeIcon app:closeIcon} - Sets a custom icon that the user can click to
+ *       close, or use @null to display no icon. Usually on the right.
+ * </ul>
+ *
  * <p>You can register a listener on the main chip with {@link #setOnClickListener(OnClickListener)}
  * or {@link #setOnCheckedChangeListener(OnCheckedChangeListener)}. You can register a listener on
  * the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
- *
- * <p>All attributes from {@link R.styleable#ChipDrawable} are supported. Do not use the {@code
- * android:button} attribute. It will be ignored because Chip manages its own button Drawable.
  *
  * @see ChipDrawable
  */

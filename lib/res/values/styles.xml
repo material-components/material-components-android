@@ -220,25 +220,27 @@
     <item name="android:focusable">true</item>
     <item name="android:clickable">true</item>
     <item name="android:checkable">false</item>
+    <item name="android:stateListAnimator">@animator/mtrl_chip_state_list_anim</item>
 
-    <!-- TODO: All these values are fake. They only exist to test the plumbing. -->
-    <item name="chipBackgroundColor">#00ff00</item>
+    <item name="chipIcon">@null</item>
+    <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_circle</item>
+    <item name="closeIcon">@drawable/ic_mtrl_chip_close_circle</item>
+
+    <item name="chipText">@null</item>
+    <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Chip</item>
+    <item name="closeIconTint">@null</item>
+
+    <item name="chipBackgroundColor">@color/mtrl_chip_background_color</item>
+    <item name="chipStrokeColor">#00000000</item>
+    <item name="chipStrokeWidth">0dp</item>
+    <item name="rippleColor">@color/mtrl_chip_ripple_color</item>
+    <item name="rippleAlpha">@color/mtrl_chip_ripple_alpha</item>
+
     <item name="chipMinHeight">32dp</item>
     <item name="chipCornerRadius">16dp</item>
-    <item name="chipStrokeColor">#0000ff</item>
-    <item name="chipStrokeWidth">1dp</item>
-    <item name="rippleColor">#ffffff</item>
-    <item name="rippleAlpha">#aa000000</item>
-    <item name="chipText">Hello, world!</item>
-    <item name="android:textAppearance">@style/TextAppearance.Design.Error</item>
-    <item name="chipIcon">@drawable/abc_ic_ab_back_material</item>
     <item name="chipIconSize">24dp</item>
-    <item name="closeIcon">@drawable/abc_ic_go_search_api_material</item>
-    <item name="closeIconTint">#ff000000</item>
     <item name="closeIconSize">18dp</item>
-    <item name="checkedIcon">@drawable/abc_ic_arrow_drop_right_black_24dp</item>
-    <item name="showMotionSpec">@animator/design_fab_show_motion_spec</item>
-    <item name="hideMotionSpec">@animator/design_fab_hide_motion_spec</item>
+
     <item name="chipStartPadding">4dp</item>
     <item name="iconStartPadding">0dp</item>
     <item name="iconEndPadding">0dp</item>
@@ -247,6 +249,11 @@
     <item name="closeIconStartPadding">2dp</item>
     <item name="closeIconEndPadding">2dp</item>
     <item name="chipEndPadding">6dp</item>
+
+    <!-- TODO: The following values are fake. They only exist to test the plumbing. -->
+    <item name="showMotionSpec">@animator/design_fab_show_motion_spec</item>
+    <item name="hideMotionSpec">@animator/design_fab_hide_motion_spec</item>
+
   </style>
 
   <style name="Widget.MaterialComponents.FloatingActionButton" parent="Widget.Design.FloatingActionButton">
@@ -257,6 +264,11 @@
     <item name="rippleAlpha">@color/mtrl_fab_ripple_alpha</item>
     <item name="showMotionSpec">@animator/mtrl_fab_show_motion_spec</item>
     <item name="hideMotionSpec">@animator/mtrl_fab_hide_motion_spec</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Chip" parent="android:TextAppearance">
+    <item name="android:textColor">@color/mtrl_chip_text_color</item>
+    <item name="android:textSize">@dimen/mtrl_chip_text_size</item>
   </style>
 
 </resources>

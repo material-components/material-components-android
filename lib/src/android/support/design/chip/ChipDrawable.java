@@ -22,6 +22,7 @@ import android.content.res.Resources;
 import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Outline;
 import android.graphics.Paint;
@@ -54,6 +55,7 @@ import android.support.design.drawable.DrawableUtils;
 import android.support.design.resources.MaterialResources;
 import android.support.design.ripple.RippleUtils;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.support.v4.text.BidiFormatter;
@@ -75,8 +77,30 @@ import org.xmlpull.v1.XmlPullParserException;
  *
  * <p>You can use ChipDrawable directly in contexts that require a Drawable. For example, an
  * auto-complete enabled EditText can replace snippets of text with a ChipDrawable to represent it
- * as a semantic entity. When used in this stand-alone mode, the host view must explicitly manage
- * the ChipDrawable's state:
+ * as a semantic entity. To create an instance of ChipDrawable, use {@link
+ * ChipDrawable#createFromResource(Context, int)} and pass in an XML resource in this form:
+ *
+ * <pre>{@code
+ * <chip xmlns:app="http://schemas.android.com/apk/res-auto"
+ *     app:chipText="Hello, World!"/>
+ * }</pre>
+ *
+ * <p>The basic attributes you can set are:
+ *
+ * <ul>
+ *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
+ *       false, the chip acts like a button.
+ *   <li>{@link R.attr#chipText app:chipText} - Sets the text of the chip.
+ *   <li>{@link R.attr#chipIcon app:chipIcon} - Sets the icon of the chip, or use @null to display
+ *       no icon. Usually on the left.
+ *   <li>{@link R.attr#checkedIcon app:checkedIcon} - Sets a custom icon to use when checked, or
+ *       use @null to display no icon. Usually on the left.
+ *   <li>{@link R.attr#closeIcon app:closeIcon} - Sets a custom icon that the user can click to
+ *       close, or use @null to display no icon. Usually on the right.
+ * </ul>
+ *
+ * <p>When used in this stand-alone mode, the host view must explicitly manage the ChipDrawable's
+ * state:
  *
  * <ul>
  *   <li>{@link ChipDrawable#setBounds(int, int, int, int)}, taking into account {@link
@@ -275,6 +299,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     textPaint.density = context.getResources().getDisplayMetrics().density;
     debugPaint = DEBUG ? new Paint(Paint.ANTI_ALIAS_FLAG) : null;
+    if (debugPaint != null) {
+      debugPaint.setStyle(Style.STROKE);
+    }
 
     setState(DEFAULT_STATE);
     setCloseIconState(DEFAULT_STATE);
@@ -595,9 +622,39 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   private void drawDebug(@NonNull Canvas canvas, Rect bounds) {
-    if (DEBUG) {
-      canvas.drawLine(
-          bounds.left, bounds.exactCenterY(), bounds.right, bounds.exactCenterY(), debugPaint);
+    if (debugPaint != null) {
+      debugPaint.setColor(ColorUtils.setAlphaComponent(Color.BLACK, 255 / 2));
+
+      // Background.
+      canvas.drawRect(bounds, debugPaint);
+
+      // Chip and checked icon.
+      if (chipIcon != null || (checkedIcon != null && currentChecked)) {
+        calculateChipIconBounds(bounds, rectF);
+        canvas.drawRect(rectF, debugPaint);
+      }
+
+      // Chip text.
+      if (chipText != null) {
+        canvas.drawLine(
+            bounds.left, bounds.exactCenterY(), bounds.right, bounds.exactCenterY(), debugPaint);
+      }
+
+      // Close icon.
+      if (closeIcon != null) {
+        calculateCloseIconBounds(bounds, rectF);
+        canvas.drawRect(rectF, debugPaint);
+      }
+
+      // Chip touch bounds.
+      debugPaint.setColor(ColorUtils.setAlphaComponent(Color.RED, 255 / 2));
+      calculateChipTouchBounds(bounds, rectF);
+      canvas.drawRect(rectF, debugPaint);
+
+      // Close icon touch bounds.
+      debugPaint.setColor(ColorUtils.setAlphaComponent(Color.GREEN, 255 / 2));
+      calculateCloseIconTouchBounds(bounds, rectF);
+      canvas.drawRect(rectF, debugPaint);
     }
   }
 
