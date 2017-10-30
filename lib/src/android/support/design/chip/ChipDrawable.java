@@ -1303,7 +1303,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   public void setCloseIcon(@Nullable Drawable closeIcon) {
     Drawable oldCloseIcon = this.closeIcon != null ? DrawableCompat.unwrap(this.closeIcon) : null;
     if (oldCloseIcon != closeIcon) {
-      this.closeIcon = closeIcon != null ? DrawableCompat.wrap(closeIcon.mutate()) : null;
+      this.closeIcon = closeIcon != null ? DrawableCompat.wrap(closeIcon).mutate() : null;
 
       unapplyChildDrawable(oldCloseIcon);
       applyChildDrawable(this.closeIcon);
