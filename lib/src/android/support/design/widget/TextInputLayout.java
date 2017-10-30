@@ -38,6 +38,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -155,7 +156,10 @@ public class TextInputLayout extends LinearLayout {
   private final int mBoxBottomOffsetPx;
   private final int mBoxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int mBoxBackgroundMode;
-  private float mBoxCornerRadius;
+  private float mBoxCornerRadiusTopLeft;
+  private float mBoxCornerRadiusTopRight;
+  private float mBoxCornerRadiusBottomRight;
+  private float mBoxCornerRadiusBottomLeft;
   private int mBoxStrokeWidthPx;
   private final int mBoxStrokeWidthDefaultPx;
   private final int mBoxStrokeWidthFocusedPx;
@@ -269,6 +273,15 @@ public class TextInputLayout extends LinearLayout {
         context
             .getResources()
             .getDimensionPixelOffset(R.dimen.design_textinput_box_label_cutout_padding);
+
+    mBoxCornerRadiusTopLeft =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopLeft, 0f);
+    mBoxCornerRadiusTopRight =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopRight, 0f);
+    mBoxCornerRadiusBottomRight =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomRight, 0f);
+    mBoxCornerRadiusBottomLeft =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomLeft, 0f);
 
     mDefaultBoxBackgroundColor =
         a.getColor(R.styleable.TextInputLayout_boxBackgroundColor, Color.TRANSPARENT);
@@ -572,6 +585,110 @@ public class TextInputLayout extends LinearLayout {
    */
   public int getBoxBackgroundColor() {
     return mDefaultBoxBackgroundColor;
+  }
+
+  /**
+   * Set the resources used for the box's corner radii.
+   *
+   * @param boxCornerRadiusTopLeftId the resource to use for the box's top left corner radius
+   * @param boxCornerRadiusTopRightId the resource to use for the box's top right corner radius
+   * @param boxCornerRadiusBottomRightId the resource to use for the box's bottom right corner
+   *     radius
+   * @param boxCornerRadiusBottomLeftId the resource to use for the box's bottom left corner radius
+   */
+  public void setBoxCornerRadiiResources(
+      @DimenRes int boxCornerRadiusTopLeftId,
+      @DimenRes int boxCornerRadiusTopRightId,
+      @DimenRes int boxCornerRadiusBottomRightId,
+      @DimenRes int boxCornerRadiusBottomLeftId) {
+    setBoxCornerRadii(
+        getContext().getResources().getDimension(boxCornerRadiusTopLeftId),
+        getContext().getResources().getDimension(boxCornerRadiusTopRightId),
+        getContext().getResources().getDimension(boxCornerRadiusBottomRightId),
+        getContext().getResources().getDimension(boxCornerRadiusBottomLeftId));
+  }
+
+  /**
+   * Set the box's corner radii.
+   *
+   * @param boxCornerRadiusTopLeft the value to use for the box's top left corner radius
+   * @param boxCornerRadiusTopRight the value to use for the box's top right corner radius
+   * @param boxCornerRadiusBottomRight the value to use for the box's bottom right corner radius
+   * @param boxCornerRadiusBottomLeft the value to use for the box's bottom left corner radius
+   * @see #getBoxCornerRadiusTopLeft()
+   * @see #getBoxCornerRadiusTopRight()
+   * @see #getBoxCornerRadiusBottomRight()
+   * @see #getBoxCornerRadiusBottomLeft()
+   */
+  public void setBoxCornerRadii(
+      float boxCornerRadiusTopLeft,
+      float boxCornerRadiusTopRight,
+      float boxCornerRadiusBottomLeft,
+      float boxCornerRadiusBottomRight) {
+    if (mBoxCornerRadiusTopLeft != boxCornerRadiusTopLeft
+        || mBoxCornerRadiusTopRight != boxCornerRadiusTopRight
+        || mBoxCornerRadiusBottomRight != boxCornerRadiusBottomRight
+        || mBoxCornerRadiusBottomLeft != boxCornerRadiusBottomLeft) {
+      mBoxCornerRadiusTopLeft = boxCornerRadiusTopLeft;
+      mBoxCornerRadiusTopRight = boxCornerRadiusTopRight;
+      mBoxCornerRadiusBottomRight = boxCornerRadiusBottomRight;
+      mBoxCornerRadiusBottomLeft = boxCornerRadiusBottomLeft;
+      invalidate();
+    }
+  }
+
+  /**
+   * Returns the box's top left corner radius.
+   *
+   * @return the value used for the box's top left corner radius
+   * @see #setBoxCornerRadii(float, float, float, float)
+   */
+  public float getBoxCornerRadiusTopLeft() {
+    return mBoxCornerRadiusTopLeft;
+  }
+
+  /**
+   * Returns the box's top right corner radius.
+   *
+   * @return the value used for the box's top right corner radius
+   * @see #setBoxCornerRadii(float, float, float, float)
+   */
+  public float getBoxCornerRadiusTopRight() {
+    return mBoxCornerRadiusTopRight;
+  }
+
+  /**
+   * Returns the box's bottom right corner radius.
+   *
+   * @return the value used for the box's bottom right corner radius
+   * @see #setBoxCornerRadii(float, float, float, float)
+   */
+  public float getBoxCornerRadiusBottomRight() {
+    return mBoxCornerRadiusBottomRight;
+  }
+
+  /**
+   * Returns the box's bottom left corner radius.
+   *
+   * @return the value used for the box's bottom left corner radius
+   * @see #setBoxCornerRadii(float, float, float, float)
+   */
+  public float getBoxCornerRadiusBottomLeft() {
+    return mBoxCornerRadiusBottomLeft;
+  }
+
+  private float[] getCornerRadiiAsArray() {
+    float[] cornerRadii = {
+      mBoxCornerRadiusTopLeft,
+      mBoxCornerRadiusTopLeft,
+      mBoxCornerRadiusTopRight,
+      mBoxCornerRadiusTopRight,
+      mBoxCornerRadiusBottomRight,
+      mBoxCornerRadiusBottomRight,
+      mBoxCornerRadiusBottomLeft,
+      mBoxCornerRadiusBottomLeft
+    };
+    return cornerRadii;
   }
 
   /**
@@ -1181,19 +1298,16 @@ public class TextInputLayout extends LinearLayout {
   private void setBoxAttributes() {
     switch (mBoxBackgroundMode) {
       case BOX_BACKGROUND_FILLED:
-        mBoxCornerRadius = 0f;
         mBoxStrokeWidthPx = 0;
         break;
 
       case BOX_BACKGROUND_OUTLINE:
-        mBoxCornerRadius = 16f;
         if (mFocusedStrokeColor == Color.TRANSPARENT) {
           mFocusedStrokeColor =
               mFocusedTextColor.getColorForState(
                   getDrawableState(), mFocusedTextColor.getDefaultColor());
         }
         break;
-
       default:
         break;
     }
@@ -1225,10 +1339,7 @@ public class TextInputLayout extends LinearLayout {
       mBoxBackground.setStroke(mBoxStrokeWidthPx, mBoxStrokeColor);
     }
 
-    if (mBoxCornerRadius > -1) {
-      mBoxBackground.setCornerRadius(mBoxCornerRadius);
-    }
-
+    mBoxBackground.setCornerRadii(getCornerRadiiAsArray());
     mBoxBackground.setColor(mBoxBackgroundColor);
   }
 

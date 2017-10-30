@@ -22,6 +22,7 @@ import static android.support.design.testutils.TestUtilsMatchers.withCompoundDra
 import static android.support.design.testutils.TestUtilsMatchers.withTextColor;
 import static android.support.design.testutils.TestUtilsMatchers.withTypeface;
 import static android.support.design.testutils.TextInputLayoutActions.setBoxBackgroundColor;
+import static android.support.design.testutils.TextInputLayoutActions.setBoxCornerRadii;
 import static android.support.design.testutils.TextInputLayoutActions.setBoxStrokeColor;
 import static android.support.design.testutils.TextInputLayoutActions.setCounterEnabled;
 import static android.support.design.testutils.TextInputLayoutActions.setCounterMaxLength;
@@ -636,6 +637,60 @@ public class TextInputLayoutTest {
     onView(withId(R.id.textinput_box_filled)).check(isBoxBackgroundColor(yellow));
   }
 
+  @Test
+  public void testBoxTopRightCornerRadiusChangesWithFloatValue() {
+    float cornerRadiusSmall =
+        activityTestRule.getActivity().getResources().getDimension(R.dimen.corner_radius_small);
+    float cornerRadiusMedium =
+        activityTestRule.getActivity().getResources().getDimension(R.dimen.corner_radius_medium);
+
+    // Set the filled box's corner radius to cornerRadiusSmall.
+    onView(withId(R.id.textinput_box_filled))
+        .perform(
+            setBoxCornerRadii(
+                cornerRadiusSmall, cornerRadiusSmall, cornerRadiusSmall, cornerRadiusSmall));
+    // Check that the outline box's top right corner radius is cornerRadiusSmall.
+    onView(withId(R.id.textinput_box_filled)).check(isBoxCornerRadiusTopRight(cornerRadiusSmall));
+
+    // Set the filled box's corner radius to cornerRadiusMedium.
+    onView(withId(R.id.textinput_box_filled))
+        .perform(
+            setBoxCornerRadii(
+                cornerRadiusMedium, cornerRadiusMedium, cornerRadiusMedium, cornerRadiusMedium));
+    // Check that the outline box's top right corner radius is cornerRadiusMedium.
+    onView(withId(R.id.textinput_box_filled)).check(isBoxCornerRadiusTopRight(cornerRadiusMedium));
+  }
+
+  @Test
+  public void testBoxTopRightCornerRadiusChangesWithResource() {
+    float cornerRadiusSmall =
+        activityTestRule.getActivity().getResources().getDimension(R.dimen.corner_radius_small);
+    float cornerRadiusMedium =
+        activityTestRule.getActivity().getResources().getDimension(R.dimen.corner_radius_medium);
+
+    // Set the outline box's corner radius to cornerRadiusSmall.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(
+            setBoxCornerRadii(
+                R.dimen.corner_radius_small,
+                R.dimen.corner_radius_small,
+                R.dimen.corner_radius_small,
+                R.dimen.corner_radius_small));
+
+    // Check that the outline box's top right corner radius is cornerRadiusSmall.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopRight(cornerRadiusSmall));
+    // Set the outline box's corner radii to corner_radius_medium.
+    onView(withId(R.id.textinput_box_outline))
+        .perform(
+            setBoxCornerRadii(
+                R.dimen.corner_radius_medium,
+                R.dimen.corner_radius_medium,
+                R.dimen.corner_radius_medium,
+                R.dimen.corner_radius_medium));
+    // Check that the outline box's top right corner radius is cornerRadiusMedium.
+    onView(withId(R.id.textinput_box_outline)).check(isBoxCornerRadiusTopRight(cornerRadiusMedium));
+  }
+
   private static ViewAssertion isHintExpanded(final boolean expanded) {
     return new ViewAssertion() {
       @Override
@@ -662,6 +717,17 @@ public class TextInputLayoutTest {
       public void check(View view, NoMatchingViewException noViewFoundException) {
         assertTrue(view instanceof TextInputLayout);
         assertEquals(boxBackgroundColor, ((TextInputLayout) view).getBoxBackgroundColor());
+      }
+    };
+  }
+
+  private static ViewAssertion isBoxCornerRadiusTopRight(final float boxCornerRadiusTopRight) {
+    return new ViewAssertion() {
+      @Override
+      public void check(View view, NoMatchingViewException noViewFoundException) {
+        assertTrue(view instanceof TextInputLayout);
+        assertEquals(
+            boxCornerRadiusTopRight, ((TextInputLayout) view).getBoxCornerRadiusTopRight(), 0.01);
       }
     };
   }

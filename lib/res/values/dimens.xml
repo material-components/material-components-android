@@ -38,7 +38,7 @@
   <dimen name="design_tab_text_size_2line">12sp</dimen>
 
   <dimen name="design_textinput_box_corner_radius_small">0dp</dimen>
-  <dimen name="design_textinput_box_corner_radius_large">4dp</dimen>
+  <dimen name="design_textinput_box_corner_radius_medium">4dp</dimen>
   <dimen name="design_textinput_box_padding_left">12dp</dimen>
   <dimen name="design_textinput_filled_box_collapsed_padding">12dp</dimen>
   <dimen name="design_textinput_filled_box_collapsed_padding_dense">8dp</dimen>

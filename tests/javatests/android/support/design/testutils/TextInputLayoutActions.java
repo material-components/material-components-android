@@ -20,6 +20,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
+import android.support.annotation.DimenRes;
 import android.support.design.widget.TextInputLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
@@ -264,6 +265,62 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setBoxBackgroundColor(backgroundColor);
+      }
+    };
+  }
+
+  public static ViewAction setBoxCornerRadii(
+      final float topLeftCornerRadius,
+      final float topRightCornerRadius,
+      final float bottomRightCornerRadius,
+      final float bottomLeftCornerRadius) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's corner radii";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxCornerRadii(
+            topLeftCornerRadius,
+            topRightCornerRadius,
+            bottomRightCornerRadius,
+            bottomLeftCornerRadius);
+      }
+    };
+  }
+
+  public static ViewAction setBoxCornerRadii(
+      @DimenRes final int topLeftCornerRadiusId,
+      @DimenRes final int topRightCornerRadiusId,
+      @DimenRes final int bottomRightCornerRadiusId,
+      @DimenRes final int bottomLeftCornerRadiusId) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Sets the box's corner radii";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setBoxCornerRadiiResources(
+            topLeftCornerRadiusId,
+            topRightCornerRadiusId,
+            bottomRightCornerRadiusId,
+            bottomLeftCornerRadiusId);
       }
     };
   }

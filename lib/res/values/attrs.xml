@@ -331,6 +331,14 @@
     <attr name="boxPaddingRight" format="dimension"/>
     <!-- Value to use for the EditText's collapsed bottom padding in box mode. -->
     <attr name="boxCollapsedPaddingBottom" format="dimension"/>
+    <!-- The value to use for the box's top left corner radius when in box mode. -->
+    <attr name="boxCornerRadiusTopLeft" format="dimension"/>
+    <!-- The value to use for the box's top right corner radius when in box mode. -->
+    <attr name="boxCornerRadiusTopRight" format="dimension"/>
+    <!-- The value to use for the box's bottom left corner radius when in box mode. -->
+    <attr name="boxCornerRadiusBottomLeft" format="dimension"/>
+    <!-- The value to use for the box's bottom right corner radius when in box mode. -->
+    <attr name="boxCornerRadiusBottomRight" format="dimension"/>
     <!-- Value to use for the EditText's expanded bottom padding in box mode. -->
     <attr name="boxExpandedPaddingBottom" format="dimension"/>
     <!-- The color to use for the box's stroke when in outline box mode. -->
