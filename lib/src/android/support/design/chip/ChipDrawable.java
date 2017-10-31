@@ -108,8 +108,8 @@ import org.xmlpull.v1.XmlPullParserException;
  *   <li>{@link ChipDrawable#draw(Canvas)}
  *   <li>{@link ChipDrawable#setCallback(Callback)}, to support invalidations on the chip drawable
  *       or any of its child drawables. This includes animations.
- *   <li>{@link ChipDrawable#setState(int[])}, to support touch, mouse, or keyboard interactions on
- *       the chip.
+ *   <li>{@link ChipDrawable#setState(int[])}, to support checking the chip, and
+ *       touch/mouse/keyboard interactions on the chip.
  *   <li>{@link ChipDrawable#setCloseIconState(int[])}, to support touch, mouse, or keyboard
  *       interactions on the close icon.
  *   <li>{@link ChipDrawable#setHotspot(float, float)}
@@ -282,10 +282,10 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       AttributeSet attrs = Xml.asAttributeSet(parser);
       @StyleRes int style = attrs.getStyleAttribute();
       if (style == 0) {
-        style = R.style.Widget_MaterialComponents_Chip;
+        style = R.style.Widget_MaterialComponents_Chip_Entry;
       }
 
-      return createFromAttributes(context, attrs, R.attr.chipStyle, style);
+      return createFromAttributes(context, attrs, R.attr.chipStandaloneStyle, style);
     } catch (XmlPullParserException | IOException e) {
       Resources.NotFoundException exception =
           new NotFoundException("Can't load chip resource ID #0x" + Integer.toHexString(id));

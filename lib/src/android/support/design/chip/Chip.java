@@ -127,7 +127,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
     ChipDrawable drawable =
         ChipDrawable.createFromAttributes(
-            context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip);
+            context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     setButtonDrawable(drawable);
 
     touchHelper = new ChipTouchHelper(this);

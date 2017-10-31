@@ -216,6 +216,7 @@
     <item name="behavior_skipCollapsed">false</item>
   </style>
 
+  <!-- Base style for Chips. You should use one of the sub-styles instead. -->
   <style name="Widget.MaterialComponents.Chip" parent="android:Widget">
     <item name="android:focusable">true</item>
     <item name="android:clickable">true</item>
@@ -253,7 +254,41 @@
     <!-- TODO: The following values are fake. They only exist to test the plumbing. -->
     <item name="showMotionSpec">@animator/design_fab_show_motion_spec</item>
     <item name="hideMotionSpec">@animator/design_fab_hide_motion_spec</item>
+  </style>
 
+  <!-- Style for Chips that appear in text fields as a span.
+       Use entry chips to represent a complex piece of information in a compact form.-->
+  <style name="Widget.MaterialComponents.Chip.Entry">
+    <item name="android:checkable">true</item>
+  </style>
+
+  <!-- Style for Chips that act as a check box.
+       Use filter chips containing tags or descriptive words to filter a collection. -->
+  <style name="Widget.MaterialComponents.Chip.Filter">
+    <item name="android:checkable">true</item>
+    <item name="chipIcon">@null</item>
+    <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_black</item>
+    <item name="closeIcon">@null</item>
+  </style>
+
+  <!-- Style for Chips that act as a radio button.
+       Use choice chips to help users make a single selection from a finite set of options. -->
+  <style name="Widget.MaterialComponents.Chip.Choice">
+    <item name="android:checkable">true</item>
+    <item name="chipIcon">@null</item>
+    <item name="checkedIcon">@null</item>
+    <item name="closeIcon">@null</item>
+  </style>
+
+  <!-- Style for Chips that act as a button.
+       Use action chips to trigger an action that is contextual to primary content. -->
+  <style name="Widget.MaterialComponents.Chip.Action">
+    <item name="closeIcon">@null</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Chip" parent="android:TextAppearance">
+    <item name="android:textColor">@color/mtrl_chip_text_color</item>
+    <item name="android:textSize">@dimen/mtrl_chip_text_size</item>
   </style>
 
   <style name="Widget.MaterialComponents.FloatingActionButton" parent="Widget.Design.FloatingActionButton">
@@ -264,11 +299,6 @@
     <item name="rippleAlpha">@color/mtrl_fab_ripple_alpha</item>
     <item name="showMotionSpec">@animator/mtrl_fab_show_motion_spec</item>
     <item name="hideMotionSpec">@animator/mtrl_fab_hide_motion_spec</item>
-  </style>
-
-  <style name="TextAppearance.MaterialComponents.Chip" parent="android:TextAppearance">
-    <item name="android:textColor">@color/mtrl_chip_text_color</item>
-    <item name="android:textSize">@dimen/mtrl_chip_text_size</item>
   </style>
 
 </resources>

@@ -55,8 +55,10 @@
     <attr name="materialButtonStyle" format="reference"/>
     <!-- Style to use for FloatingActionButtons in this theme. -->
     <attr name="floatingActionButtonStyle" format="reference"/>
-    <!-- Style to use for Chips in this theme. -->
+    <!-- Style to use for Chips in this theme, usually to be used as a view. -->
     <attr name="chipStyle" format="reference"/>
+    <!-- Style to use for standalone Chips in this theme, usually to be used in an EditText. -->
+    <attr name="chipStandaloneStyle" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="ChipDrawable">
