@@ -46,5 +46,7 @@
   <string name="design_appbar_dodge_right">AppBar + FABs with dodge on right</string>
 
   <string name="textinput_hint">Hint to the user</string>
+  <string name="textinput_helper">Helper text to the user</string>
+  <string name="textinput_helper_not_enabled">Helper text to the user, helper not enabled</string>
 
 </resources>

@@ -473,15 +473,31 @@ final class IndicatorViewController {
   }
 
   boolean errorIsDisplayed() {
-    return mCaptionDisplayed == CAPTION_STATE_ERROR
+    return isCaptionStateError(mCaptionDisplayed);
+  }
+
+  boolean errorShouldBeShown() {
+    return isCaptionStateError(mCaptionToShow);
+  }
+
+  private boolean isCaptionStateError(@CaptionDisplayState int captionState) {
+    return captionState == CAPTION_STATE_ERROR
         && mErrorView != null
         && !TextUtils.isEmpty(mErrorText);
   }
 
-  boolean errorShouldBeShown() {
-    return mCaptionToShow == CAPTION_STATE_ERROR
-        && mErrorView != null
-        && !TextUtils.isEmpty(mErrorText);
+  boolean helperTextIsDisplayed() {
+    return isCaptionStateHelperText(mCaptionDisplayed);
+  }
+
+  boolean helperTextShouldBeShown() {
+    return isCaptionStateHelperText(mCaptionToShow);
+  }
+
+  private boolean isCaptionStateHelperText(@CaptionDisplayState int captionState) {
+    return captionState == CAPTION_STATE_HELPER_TEXT
+        && mHelperTextView != null
+        && !TextUtils.isEmpty(mHelperText);
   }
 
   CharSequence getErrorText() {

@@ -76,12 +76,12 @@
       android:id="@+id/textinput_box_filled"
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      app:helperText="@string/textinput_helper_not_enabled">
 
     <android.support.design.widget.TextInputEditText
         android:id="@+id/textinput_edittext_filled"
         android:layout_width="match_parent"
-
         android:layout_height="wrap_content"
         android:hint="@string/textinput_hint"
         android:imeOptions="flagNoExtractUi"/>
@@ -92,7 +92,9 @@
       android:id="@+id/textinput_box_outline"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      app:helperText="@string/textinput_helper"
+      app:helperTextEnabled="true">
 
     <android.support.design.widget.TextInputEditText
         android:id="@+id/textinput_edittext_outline"
@@ -114,6 +116,5 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:imeOptions="flagNoExtractUi"/>
-
   </android.support.design.widget.TextInputLayout>
 </LinearLayout>

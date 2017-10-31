@@ -191,6 +191,31 @@ public class TextInputLayoutTest {
   }
 
   @Test
+  public void testSetHelperTextViaAttribute() {
+    // The text input with id textinput_box_outline has the string textinput_helper set on it via
+    // the helper text attribute. Check that the helper text is displayed via the attribute.
+    String helperText =
+        activityTestRule.getActivity().getResources().getString(R.string.textinput_helper);
+
+    onView(withText(helperText)).check(matches(isDisplayed()));
+  }
+
+  @Test
+  public void testSetHelperTextViaAttributeHelperDisabled() {
+    // The text input with id textinput_box_filled has the string
+    // textinput_helper_not_enabled set on it via the helper text attribute, but helperTextEnabled
+    // is not set to true. Check that the helper text is displayed via the attribute, even when
+    // helperTextEnabled is not explicitly set to true.
+    String helperTextNotEnabled =
+        activityTestRule
+            .getActivity()
+            .getResources()
+            .getString(R.string.textinput_helper_not_enabled);
+
+    onView(withText(helperTextNotEnabled)).check(matches(isDisplayed()));
+  }
+
+  @Test
   public void testDisabledErrorIsNotDisplayed() {
     // First show an error, and then disable error functionality
     onView(withId(R.id.textinput))

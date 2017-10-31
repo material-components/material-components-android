@@ -326,6 +326,7 @@ public class TextInputLayout extends LinearLayout {
         a.getResourceId(R.styleable.TextInputLayout_helperTextTextAppearance, 0);
     final boolean helperTextEnabled =
         a.getBoolean(R.styleable.TextInputLayout_helperTextEnabled, false);
+    final CharSequence helperText = a.getText(R.styleable.TextInputLayout_helperText);
 
     final boolean counterEnabled = a.getBoolean(R.styleable.TextInputLayout_counterEnabled, false);
     setCounterMaxLength(a.getInt(R.styleable.TextInputLayout_counterMaxLength, INVALID_MAX_LENGTH));
@@ -351,6 +352,7 @@ public class TextInputLayout extends LinearLayout {
     a.recycle();
 
     setHelperTextEnabled(helperTextEnabled);
+    setHelperText(helperText);
     setHelperTextTextAppearance(mHelperTextTextAppearance);
     setErrorEnabled(errorEnabled);
     setErrorTextAppearance(mErrorTextAppearance);
@@ -2005,6 +2007,11 @@ public class TextInputLayout extends LinearLayout {
   @VisibleForTesting
   final boolean isHintExpanded() {
     return mHintExpanded;
+  }
+
+  @VisibleForTesting
+  final boolean isHelperTextDisplayed() {
+    return indicatorViewController.helperTextIsDisplayed();
   }
 
   @VisibleForTesting

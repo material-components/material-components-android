@@ -269,6 +269,8 @@
     <!-- TextAppearance of the hint in the floating label. -->
     <attr name="hintTextAppearance" format="reference"/>
 
+    <!-- The text to display as helper text underneath the text input area. -->
+    <attr name="helperText" format="string"/>
     <!-- Whether the layout's helper text functionality is enabled. -->
     <attr name="helperTextEnabled" format="boolean"/>
     <!-- TextAppearance of the helper text displayed underneath the text input area. -->
