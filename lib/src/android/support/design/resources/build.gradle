@@ -4,6 +4,7 @@ archivesBaseName = 'design'
 
 dependencies {
   compile compatibility("annotations")
+  compile compatibility("compat")
   compile compatibility("v7/appcompat")
 }
 
