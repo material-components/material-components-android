@@ -56,7 +56,7 @@ import java.lang.annotation.RetentionPolicy;
  * navigation</a>.
  *
  * <p>Bottom navigation bars make it easy for users to explore and switch between top-level views in
- * a single tap. It should be used when application has three to five top-level destinations.
+ * a single tap. They should be used when an application has three to five top-level destinations.
  *
  * <p>The bar can disappear on scroll, based on {@link HideBottomViewOnScrollBehavior}, when it is
  * placed within a {@link CoordinatorLayout} and one of the children within the {@link
