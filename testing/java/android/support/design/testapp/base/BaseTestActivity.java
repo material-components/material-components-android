@@ -17,6 +17,7 @@
 package android.support.design.testapp.base;
 
 import android.os.Bundle;
+import android.support.annotation.LayoutRes;
 import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
@@ -44,6 +45,7 @@ public abstract class BaseTestActivity extends AppCompatActivity {
     overridePendingTransition(0, 0);
   }
 
+  @LayoutRes
   protected abstract int getContentViewLayoutResId();
 
   protected void onContentViewSet() {}

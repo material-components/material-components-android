@@ -296,7 +296,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (mState == STATE_DRAGGING && action == MotionEvent.ACTION_DOWN) {
       return true;
     }
-    mViewDragHelper.processTouchEvent(event);
+    if (mViewDragHelper != null) {
+      mViewDragHelper.processTouchEvent(event);
+    }
     // Record the velocity
     if (action == MotionEvent.ACTION_DOWN) {
       reset();

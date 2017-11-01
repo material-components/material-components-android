@@ -28,8 +28,16 @@
     android:theme="@style/Theme.Design">
 
     <activity
+      android:name=".AppBarHorizontalScrollingActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+    <activity
       android:name=".AppBarLayoutCollapsePinActivity"
       android:theme="@style/Theme.TranslucentStatus"/>
+
+    <activity
+      android:name=".AppBarWithScrollbarsActivity"
+      android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 
     <activity android:name="android.support.v7.app.AppCompatActivity"/>
 
@@ -93,9 +101,6 @@
       android:name=".TextInputLayoutActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
-    <activity
-      android:name=".AppBarWithScrollbarsActivity"
-      android:theme="@style/Theme.AppCompat.Light.DarkActionBar"/>
 
   </application>
 </manifest>
