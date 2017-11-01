@@ -53,7 +53,6 @@ import android.support.design.animation.MotionSpec;
 import android.support.design.canvas.CanvasCompat;
 import android.support.design.drawable.DrawableUtils;
 import android.support.design.resources.MaterialResources;
-import android.support.design.resources.TextAppearance;
 import android.support.design.ripple.RippleUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
@@ -63,6 +62,7 @@ import android.support.v4.text.BidiFormatter;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.style.TextAppearanceSpan;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
@@ -167,7 +167,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   // Text
   @Nullable private CharSequence chipText;
-  @Nullable private TextAppearance textAppearance;
+  @Nullable private TextAppearanceSpan textAppearanceSpan;
 
   // Chip icon
   @Nullable private Drawable chipIcon;
@@ -325,8 +325,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleAlpha));
 
     setChipText(a.getText(R.styleable.ChipDrawable_chipText));
-    setTextAppearance(
-        MaterialResources.getTextAppearance(
+    setTextAppearanceSpan(
+        MaterialResources.getTextAppearanceSpan(
             context, a, R.styleable.ChipDrawable_android_textAppearance));
 
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_chipIcon));
@@ -597,9 +597,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       // TODO: Bounds may be smaller than intrinsic size. Ellipsize, clip, or multiline the text.
       Align align = calculateChipTextOrigin(bounds, pointF);
 
-      if (textAppearance != null) {
+      if (textAppearanceSpan != null) {
         textPaint.drawableState = getState();
-        textAppearance.updateDrawState(context, textPaint);
+        textAppearanceSpan.updateDrawState(textPaint);
       }
       textPaint.setTextAlign(align);
       canvas.drawText(chipText, 0, chipText.length(), pointF.x, pointF.y, textPaint);
@@ -803,7 +803,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     return isStateful(chipBackgroundColor)
         || isStateful(chipStrokeColor)
         || (useCompatRipple && isStateful(compatRippleColor))
-        || isStateful(textAppearance)
+        || isStateful(textAppearanceSpan)
         || checkedIcon != null
         || isStateful(chipIcon)
         || isStateful(checkedIcon)
@@ -883,8 +883,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
 
     int newChipTextColor =
-        textAppearance != null && textAppearance.textColor != null
-            ? textAppearance.textColor.getColorForState(chipState, currentChipTextColor)
+        textAppearanceSpan != null && textAppearanceSpan.getTextColor() != null
+            ? textAppearanceSpan.getTextColor().getColorForState(chipState, currentChipTextColor)
             : 0;
     if (currentChipTextColor != newChipTextColor) {
       currentChipTextColor = newChipTextColor;
@@ -937,10 +937,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     return drawable != null && drawable.isStateful();
   }
 
-  private static boolean isStateful(@Nullable TextAppearance textAppearance) {
-    return textAppearance != null
-        && textAppearance.textColor != null
-        && textAppearance.textColor.isStateful();
+  private static boolean isStateful(@Nullable TextAppearanceSpan span) {
+    return span != null && span.getTextColor() != null && span.getTextColor().isStateful();
   }
 
   @Override
@@ -1282,20 +1280,20 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   @Nullable
-  public TextAppearance getTextAppearance() {
-    return textAppearance;
+  public TextAppearanceSpan getTextAppearanceSpan() {
+    return textAppearanceSpan;
   }
 
-  public void setTextAppearanceResource(@StyleRes int id) {
-    setTextAppearance(new TextAppearance(context, id));
+  public void setTextAppearanceSpanResource(@StyleRes int id) {
+    setTextAppearanceSpan(new TextAppearanceSpan(context, id));
   }
 
-  public void setTextAppearance(@Nullable TextAppearance textAppearance) {
-    if (this.textAppearance != textAppearance) {
-      this.textAppearance = textAppearance;
+  public void setTextAppearanceSpan(@Nullable TextAppearanceSpan textAppearanceSpan) {
+    if (this.textAppearanceSpan != textAppearanceSpan) {
+      this.textAppearanceSpan = textAppearanceSpan;
 
-      if (textAppearance != null) {
-        textAppearance.updateMeasureState(context, textPaint);
+      if (textAppearanceSpan != null) {
+        textAppearanceSpan.updateMeasureState(textPaint);
       }
 
       onStateChange(getState());

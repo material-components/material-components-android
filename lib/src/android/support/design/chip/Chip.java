@@ -38,7 +38,6 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.chip.ChipDrawable.Delegate;
-import android.support.design.resources.TextAppearance;
 import android.support.design.ripple.RippleUtils;
 import android.support.design.theme.ThemeUtils;
 import android.support.design.widget.ViewUtils;
@@ -47,6 +46,7 @@ import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.style.TextAppearanceSpan;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -716,19 +716,19 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   @Nullable
-  public TextAppearance getTextAppearance() {
-    return chipDrawable != null ? chipDrawable.getTextAppearance() : null;
+  public TextAppearanceSpan getTextAppearanceSpan() {
+    return chipDrawable != null ? chipDrawable.getTextAppearanceSpan() : null;
   }
 
-  public void setTextAppearanceResource(@StyleRes int id) {
+  public void setTextAppearanceSpanResource(@StyleRes int id) {
     if (chipDrawable != null) {
-      chipDrawable.setTextAppearanceResource(id);
+      chipDrawable.setTextAppearanceSpanResource(id);
     }
   }
 
-  public void setTextAppearance(@Nullable TextAppearance textAppearance) {
+  public void setTextAppearanceSpan(@Nullable TextAppearanceSpan textAppearanceSpan) {
     if (chipDrawable != null) {
-      chipDrawable.setTextAppearance(textAppearance);
+      chipDrawable.setTextAppearanceSpan(textAppearanceSpan);
     }
   }
 
