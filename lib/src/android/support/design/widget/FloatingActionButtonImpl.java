@@ -71,8 +71,11 @@ class FloatingActionButtonImpl {
 
   int mAnimState = ANIM_STATE_NONE;
   @Nullable Animator currentAnimator;
-  MotionSpec showMotionSpec;
-  MotionSpec hideMotionSpec;
+  @Nullable MotionSpec showMotionSpec;
+  @Nullable MotionSpec hideMotionSpec;
+
+  @Nullable private MotionSpec defaultShowMotionSpec;
+  @Nullable private MotionSpec defaultHideMotionSpec;
 
   private final StateListAnimator mStateListAnimator;
 
@@ -292,19 +295,21 @@ class FloatingActionButtonImpl {
     }
   }
 
+  @Nullable
   final MotionSpec getShowMotionSpec() {
     return showMotionSpec;
   }
 
-  final void setShowMotionSpec(MotionSpec spec) {
+  final void setShowMotionSpec(@Nullable MotionSpec spec) {
     showMotionSpec = spec;
   }
 
+  @Nullable
   final MotionSpec getHideMotionSpec() {
     return hideMotionSpec;
   }
 
-  final void setHideMotionSpec(MotionSpec spec) {
+  final void setHideMotionSpec(@Nullable MotionSpec spec) {
     hideMotionSpec = spec;
   }
 
@@ -335,7 +340,12 @@ class FloatingActionButtonImpl {
     }
 
     if (shouldAnimateVisibilityChange()) {
-      AnimatorSet set = createAnimator(hideMotionSpec, HIDE_OPACITY, HIDE_SCALE, HIDE_ICON_SCALE);
+      AnimatorSet set =
+          createAnimator(
+              hideMotionSpec != null ? hideMotionSpec : getDefaultHideMotionSpec(),
+              HIDE_OPACITY,
+              HIDE_SCALE,
+              HIDE_ICON_SCALE);
       set.addListener(
           new AnimatorListenerAdapter() {
             private boolean mCancelled;
@@ -396,7 +406,12 @@ class FloatingActionButtonImpl {
         setImageMatrixScale(0f);
       }
 
-      AnimatorSet set = createAnimator(showMotionSpec, SHOW_OPACITY, SHOW_SCALE, SHOW_ICON_SCALE);
+      AnimatorSet set =
+          createAnimator(
+              showMotionSpec != null ? showMotionSpec : getDefaultShowMotionSpec(),
+              SHOW_OPACITY,
+              SHOW_SCALE,
+              SHOW_ICON_SCALE);
       set.addListener(
           new AnimatorListenerAdapter() {
             @Override
@@ -430,8 +445,25 @@ class FloatingActionButtonImpl {
     }
   }
 
+  private MotionSpec getDefaultShowMotionSpec() {
+    if (defaultShowMotionSpec == null) {
+      defaultShowMotionSpec =
+          MotionSpec.createFromResource(mView.getContext(), R.animator.design_fab_show_motion_spec);
+    }
+    return defaultShowMotionSpec;
+  }
+
+  private MotionSpec getDefaultHideMotionSpec() {
+    if (defaultHideMotionSpec == null) {
+      defaultHideMotionSpec =
+          MotionSpec.createFromResource(mView.getContext(), R.animator.design_fab_hide_motion_spec);
+    }
+    return defaultHideMotionSpec;
+  }
+
   @NonNull
-  private AnimatorSet createAnimator(MotionSpec spec, float opacity, float scale, float iconScale) {
+  private AnimatorSet createAnimator(
+      @NonNull MotionSpec spec, float opacity, float scale, float iconScale) {
     List<Animator> animators = new ArrayList<>();
     Animator animator;
 

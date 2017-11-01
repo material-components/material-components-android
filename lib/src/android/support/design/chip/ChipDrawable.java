@@ -340,9 +340,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setCheckedIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_checkedIcon));
 
     setShowMotionSpec(
-        MotionSpec.loadFromAttribute(context, a, R.styleable.ChipDrawable_showMotionSpec));
+        MotionSpec.createFromAttribute(context, a, R.styleable.ChipDrawable_showMotionSpec));
     setHideMotionSpec(
-        MotionSpec.loadFromAttribute(context, a, R.styleable.ChipDrawable_hideMotionSpec));
+        MotionSpec.createFromAttribute(context, a, R.styleable.ChipDrawable_hideMotionSpec));
 
     setChipStartPadding(a.getDimension(R.styleable.ChipDrawable_chipStartPadding, 0f));
     setIconStartPadding(a.getDimension(R.styleable.ChipDrawable_iconStartPadding, 0f));
@@ -1473,7 +1473,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setShowMotionSpecResource(@AnimatorRes int id) {
-    setShowMotionSpec(MotionSpec.loadFromResource(context, id));
+    setShowMotionSpec(MotionSpec.createFromResource(context, id));
   }
 
   public void setShowMotionSpec(@Nullable MotionSpec showMotionSpec) {
@@ -1486,10 +1486,10 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setHideMotionSpecResource(@AnimatorRes int id) {
-    setHideMotionSpec(MotionSpec.loadFromResource(context, id));
+    setHideMotionSpec(MotionSpec.createFromResource(context, id));
   }
 
-  public void setHideMotionSpec(MotionSpec hideMotionSpec) {
+  public void setHideMotionSpec(@Nullable MotionSpec hideMotionSpec) {
     this.hideMotionSpec = hideMotionSpec;
   }
 

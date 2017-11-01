@@ -198,10 +198,10 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     mMaxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
 
     MotionSpec showMotionSpec =
-        MotionSpec.loadFromAttribute(
+        MotionSpec.createFromAttribute(
             context, a, R.styleable.FloatingActionButton_showMotionSpec);
     MotionSpec hideMotionSpec =
-        MotionSpec.loadFromAttribute(
+        MotionSpec.createFromAttribute(
             context, a, R.styleable.FloatingActionButton_hideMotionSpec);
 
     a.recycle();
@@ -1097,7 +1097,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @attr ref android.support.design.R.styleable#FloatingActionButton_showMotionSpec
    */
   public void setShowMotionSpecResource(@AnimatorRes int id) {
-    setShowMotionSpec(MotionSpec.loadFromResource(getContext(), id));
+    setShowMotionSpec(MotionSpec.createFromResource(getContext(), id));
   }
 
   /** Returns the motion spec for the hide animation. */
@@ -1120,7 +1120,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @attr ref android.support.design.R.styleable#FloatingActionButton_hideMotionSpec
    */
   public void setHideMotionSpecResource(@AnimatorRes int id) {
-    setHideMotionSpec(MotionSpec.loadFromResource(getContext(), id));
+    setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
   }
 
   private FloatingActionButtonImpl getImpl() {

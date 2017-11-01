@@ -20,12 +20,12 @@ import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.content.Context;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.support.annotation.AnimatorRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleableRes;
 import android.support.v4.util.SimpleArrayMap;
+import android.util.Log;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +61,8 @@ import java.util.List;
  * }</pre>
  */
 public class MotionSpec {
+
+  private static final String TAG = "MotionSpec";
 
   private final SimpleArrayMap<String, MotionTiming> timings = new SimpleArrayMap<>();
 
@@ -102,38 +104,36 @@ public class MotionSpec {
    * Inflates an instance of MotionSpec from the animator resource indexed in the given attributes
    * array.
    */
-  public static MotionSpec loadFromAttribute(
+  @Nullable
+  public static MotionSpec createFromAttribute(
       Context context, TypedArray attributes, @StyleableRes int index) {
     if (attributes.hasValue(index)) {
       int resourceId = attributes.getResourceId(index, 0);
       if (resourceId != 0) {
-        MotionSpec value = loadFromResource(context, resourceId);
-        if (value != null) {
-          return value;
-        }
+        return createFromResource(context, resourceId);
       }
     }
-    throw new Resources.NotFoundException("Failed to resolve attribute at index " + index);
+    return null;
   }
 
   /** Inflates an instance of MotionSpec from the given animator resource. */
-  public static MotionSpec loadFromResource(Context context, @AnimatorRes int id) {
+  @Nullable
+  public static MotionSpec createFromResource(Context context, @AnimatorRes int id) {
     try {
       Animator animator = AnimatorInflater.loadAnimator(context, id);
       if (animator instanceof AnimatorSet) {
         AnimatorSet set = (AnimatorSet) animator;
         return createSpecFromAnimators(set.getChildAnimations());
-      } else {
+      } else if (animator != null) {
         List<Animator> animators = new ArrayList<>();
         animators.add(animator);
         return createSpecFromAnimators(animators);
+      } else {
+        return null;
       }
     } catch (Exception e) {
-      Resources.NotFoundException exception =
-          new Resources.NotFoundException(
-              "Can't load animation resource ID #0x" + Integer.toHexString(id));
-      exception.initCause(e);
-      throw exception;
+      Log.d(TAG, "Can't load animation resource ID #0x" + Integer.toHexString(id), e);
+      return null;
     }
   }
 
