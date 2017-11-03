@@ -45,33 +45,92 @@ public class RippleUtils {
   private static final int[] HOVERED_ENABLED_STATE_SET = {
     android.R.attr.state_hovered, android.R.attr.state_enabled
   };
+  private static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
+
+  private static final int[] CHECKED_PRESSED_ENABLED_STATE_SET = {
+    android.R.attr.state_checked, android.R.attr.state_pressed, android.R.attr.state_enabled
+  };
+  private static final int[] CHECKED_HOVERED_FOCUSED_ENABLED_STATE_SET = {
+    android.R.attr.state_checked,
+    android.R.attr.state_hovered,
+    android.R.attr.state_focused,
+    android.R.attr.state_enabled
+  };
+  private static final int[] CHECKED_FOCUSED_ENABLED_STATE_SET = {
+    android.R.attr.state_checked, android.R.attr.state_focused, android.R.attr.state_enabled
+  };
+  private static final int[] CHECKED_HOVERED_ENABLED_STATE_SET = {
+    android.R.attr.state_checked, android.R.attr.state_hovered, android.R.attr.state_enabled
+  };
+  private static final int[] CHECKED_ENABLED_STATE_SET = {
+    android.R.attr.state_checked, android.R.attr.state_enabled
+  };
 
   private RippleUtils() {}
 
   /** Returns the combined ripple color for the given base color and stateful alpha. */
   public static ColorStateList compositeRippleColorStateList(
-      @ColorInt int rippleColor, @Nullable ColorStateList rippleAlpha) {
+      @Nullable ColorStateList rippleColor, @Nullable ColorStateList rippleAlpha) {
     if (USE_FRAMEWORK_RIPPLE) {
-      int alpha;
-      if (rippleAlpha != null) {
-        // Ideally we would define a different composite color for each state, but that causes the
-        // ripple animation to abort prematurely. So we optimize for the pressed state.
-        alpha =
-            Color.alpha(
-                rippleAlpha.getColorForState(
-                    PRESSED_ENABLED_STATE_SET, rippleAlpha.getDefaultColor()));
-      } else {
-        alpha = 255;
-      }
-      @ColorInt int composite = compositeRippleColor(rippleColor, alpha);
-
-      return ColorStateList.valueOf(composite);
-    } else {
-      int size = 5;
+      int size = 2;
 
       final int[][] states = new int[size][];
       final int[] colors = new int[size];
       int i = 0;
+
+      // Ideally we would define a different composite color for each state (like in the else block
+      // below), but that causes the ripple animation to abort prematurely.
+      // So we only allow two base states: checked, and non-checked. For each base state, we only
+      // base the ripple composite on its pressed state.
+
+      @ColorInt int color;
+      int alpha;
+      @ColorInt int composite;
+
+      // Checked base state.
+      color = getColorForState(rippleColor, CHECKED_ENABLED_STATE_SET);
+      alpha = getAlphaForState(rippleAlpha, CHECKED_PRESSED_ENABLED_STATE_SET);
+      composite = compositeRippleColor(color, alpha);
+      states[i] = CHECKED_ENABLED_STATE_SET;
+      colors[i] = composite;
+      i++;
+
+      // Non-checked base state.
+      color = getColorForState(rippleColor, ENABLED_STATE_SET);
+      alpha = getAlphaForState(rippleAlpha, PRESSED_ENABLED_STATE_SET);
+      composite = compositeRippleColor(color, alpha);
+      states[i] = ENABLED_STATE_SET;
+      colors[i] = composite;
+      i++;
+
+      return new ColorStateList(states, colors);
+    } else {
+      int size = 10;
+
+      final int[][] states = new int[size][];
+      final int[] colors = new int[size];
+      int i = 0;
+
+      compositeRippleColorForState(
+          CHECKED_PRESSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      i++;
+
+      compositeRippleColorForState(
+          CHECKED_HOVERED_FOCUSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      i++;
+
+      compositeRippleColorForState(
+          CHECKED_FOCUSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      i++;
+
+      compositeRippleColorForState(
+          CHECKED_HOVERED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      i++;
+
+      // Checked enabled state.
+      states[i] = CHECKED_ENABLED_STATE_SET;
+      colors[i] = Color.TRANSPARENT;
+      i++;
 
       compositeRippleColorForState(
           PRESSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
@@ -89,8 +148,8 @@ public class RippleUtils {
           HOVERED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
-      // Default enabled state
-      states[i] = new int[0];
+      // Default enabled state.
+      states[i] = ENABLED_STATE_SET;
       colors[i] = Color.TRANSPARENT;
       i++;
 
@@ -104,15 +163,36 @@ public class RippleUtils {
    */
   private static void compositeRippleColorForState(
       int[] stateSet,
-      @ColorInt int color,
-      ColorStateList alphaStateList,
+      @Nullable ColorStateList colorStateList,
+      @Nullable ColorStateList alphaStateList,
       int i,
       int[][] states,
       int[] colors) {
     states[i] = stateSet;
-    int alpha =
-        Color.alpha(alphaStateList.getColorForState(stateSet, alphaStateList.getDefaultColor()));
+    int color = getColorForState(colorStateList, stateSet);
+    int alpha = getAlphaForState(alphaStateList, stateSet);
     colors[i] = compositeRippleColor(color, alpha);
+  }
+
+  @ColorInt
+  private static int getColorForState(@Nullable ColorStateList rippleColor, int[] state) {
+    int color;
+    if (rippleColor != null) {
+      color = rippleColor.getColorForState(state, rippleColor.getDefaultColor());
+    } else {
+      color = Color.TRANSPARENT;
+    }
+    return color;
+  }
+
+  private static int getAlphaForState(@Nullable ColorStateList rippleAlpha, int[] state) {
+    int alpha;
+    if (rippleAlpha != null) {
+      alpha = Color.alpha(rippleAlpha.getColorForState(state, rippleAlpha.getDefaultColor()));
+    } else {
+      alpha = 255;
+    }
+    return alpha;
   }
 
   /** Composite the ripple {@code color} with {@code alpha}. */

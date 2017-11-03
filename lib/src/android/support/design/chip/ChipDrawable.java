@@ -55,7 +55,6 @@ import android.support.design.drawable.DrawableUtils;
 import android.support.design.resources.MaterialResources;
 import android.support.design.resources.TextAppearance;
 import android.support.design.ripple.RippleUtils;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
@@ -162,7 +161,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private float chipCornerRadius;
   @Nullable private ColorStateList chipStrokeColor;
   private float chipStrokeWidth;
-  @ColorInt private int rippleColor;
+  @Nullable private ColorStateList rippleColor;
   @Nullable private ColorStateList rippleAlpha;
 
   // Text
@@ -320,7 +319,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setChipStrokeColor(
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_chipStrokeColor));
     setChipStrokeWidth(a.getDimension(R.styleable.ChipDrawable_chipStrokeWidth, 0f));
-    setRippleColor(a.getColor(R.styleable.ChipDrawable_rippleColor, 0));
+    setRippleColor(
+        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleColor));
     setRippleAlpha(
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleAlpha));
 
@@ -1230,16 +1230,16 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
-  @ColorInt
-  public int getRippleColor() {
+  @Nullable
+  public ColorStateList getRippleColor() {
     return rippleColor;
   }
 
   public void setRippleColorResource(@ColorRes int id) {
-    setRippleColor(ContextCompat.getColor(context, id));
+    setRippleColor(AppCompatResources.getColorStateList(context, id));
   }
 
-  public void setRippleColor(@ColorInt int rippleColor) {
+  public void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (this.rippleColor != rippleColor) {
       this.rippleColor = rippleColor;
       updateCompatRippleColor();

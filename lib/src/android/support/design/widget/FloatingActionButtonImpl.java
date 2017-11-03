@@ -176,7 +176,9 @@ class FloatingActionButtonImpl {
     // to inset for any border here as LayerDrawable will nest the padding for us
     mRippleDrawable = DrawableCompat.wrap(touchFeedbackShape);
     DrawableCompat.setTintList(
-        mRippleDrawable, RippleUtils.compositeRippleColorStateList(rippleColor, rippleAlpha));
+        mRippleDrawable,
+        RippleUtils.compositeRippleColorStateList(
+            ColorStateList.valueOf(rippleColor), rippleAlpha));
 
     final Drawable[] layers;
     if (borderWidth > 0) {
@@ -218,7 +220,9 @@ class FloatingActionButtonImpl {
   void setRippleColor(@ColorInt int rippleColor, ColorStateList rippleAlpha) {
     if (mRippleDrawable != null) {
       DrawableCompat.setTintList(
-          mRippleDrawable, RippleUtils.compositeRippleColorStateList(rippleColor, rippleAlpha));
+          mRippleDrawable,
+          RippleUtils.compositeRippleColorStateList(
+              ColorStateList.valueOf(rippleColor), rippleAlpha));
     }
   }
 

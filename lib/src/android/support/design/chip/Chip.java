@@ -665,8 +665,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  public int getRippleColor() {
-    return chipDrawable != null ? chipDrawable.getRippleColor() : 0;
+  @Nullable
+  public ColorStateList getRippleColor() {
+    return chipDrawable != null ? chipDrawable.getRippleColor() : null;
   }
 
   public void setRippleColorResource(@ColorRes int id) {
@@ -675,7 +676,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  public void setRippleColor(int rippleColor) {
+  public void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (chipDrawable != null) {
       chipDrawable.setRippleColor(rippleColor);
     }
