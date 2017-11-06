@@ -279,6 +279,7 @@ public class BottomSheetBehaviorTest {
   public void testInitialSetup() {
     BottomSheetBehavior behavior = getBehavior();
     assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+    assertThat(behavior.isFitToContents(), is(true));
     CoordinatorLayout coordinatorLayout = getCoordinatorLayout();
     ViewGroup bottomSheet = getBottomSheet();
     assertThat(bottomSheet.getTop(), is(coordinatorLayout.getHeight() - behavior.getPeekHeight()));
@@ -351,6 +352,13 @@ public class BottomSheetBehaviorTest {
 
   @Test
   @MediumTest
+  public void testSwipeDownToCollapseFullyExpanded() throws Throwable {
+    getBehavior().setFitToContents(false);
+    testSwipeDownToCollapse();
+  }
+
+  @Test
+  @MediumTest
   public void testSwipeDownToHide() {
     Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
         .perform(
@@ -364,6 +372,13 @@ public class BottomSheetBehaviorTest {
     } finally {
       unregisterIdlingResourceCallback();
     }
+  }
+
+  @Test
+  @MediumTest
+  public void testSwipeDownToHideFullyExpanded() throws Throwable {
+    getBehavior().setFitToContents(false);
+    testSwipeDownToHide();
   }
 
   @Test
@@ -414,6 +429,13 @@ public class BottomSheetBehaviorTest {
 
   @Test
   @MediumTest
+  public void testSkipCollapsedFullyExpanded() throws Throwable {
+    getBehavior().setFitToContents(false);
+    testSkipCollapsed();
+  }
+
+  @Test
+  @MediumTest
   public void testSwipeUpToExpand() {
     Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
         .perform(
@@ -437,6 +459,85 @@ public class BottomSheetBehaviorTest {
     } finally {
       unregisterIdlingResourceCallback();
     }
+  }
+
+  @Test
+  @MediumTest
+  public void testHalfExpandedToExpanded() throws Throwable {
+    getBehavior().setFitToContents(false);
+    checkSetState(BottomSheetBehavior.STATE_HALF_EXPANDED, ViewMatchers.isDisplayed());
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .perform(
+            DesignViewActions.withCustomConstraints(
+                new GeneralSwipeAction(
+                    Swipe.FAST,
+                    GeneralLocation.VISIBLE_CENTER,
+                    new CoordinatesProvider() {
+                      @Override
+                      public float[] calculateCoordinates(View view) {
+                        return new float[] {view.getWidth() / 2, 0};
+                      }
+                    },
+                    Press.FINGER),
+                ViewMatchers.isDisplayingAtLeast(5)));
+    registerIdlingResourceCallback();
+    try {
+      Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+          .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+      assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+    } finally {
+      unregisterIdlingResourceCallback();
+    }
+  }
+
+  @Test
+  @MediumTest
+  public void testCollapsedToExpanded() throws Throwable {
+    getBehavior().setFitToContents(false);
+    checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
+    Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+        .perform(
+            DesignViewActions.withCustomConstraints(
+                new GeneralSwipeAction(
+                    Swipe.FAST,
+                    GeneralLocation.VISIBLE_CENTER,
+                    new CoordinatesProvider() {
+                      @Override
+                      public float[] calculateCoordinates(View view) {
+                        return new float[] {view.getWidth() / 2, 0};
+                      }
+                    },
+                    Press.FINGER),
+                ViewMatchers.isDisplayingAtLeast(5)));
+    registerIdlingResourceCallback();
+    try {
+      Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
+          .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
+      assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+    } finally {
+      unregisterIdlingResourceCallback();
+    }
+  }
+
+  @Test
+  @SmallTest
+  public void testSwitchFitSheetToContents() throws Throwable {
+    getBehavior().setFitToContents(false);
+    checkSetState(BottomSheetBehavior.STATE_HALF_EXPANDED, ViewMatchers.isDisplayed());
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            getBehavior().setFitToContents(true);
+          }
+        });
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+          }
+        });
   }
 
   @Test

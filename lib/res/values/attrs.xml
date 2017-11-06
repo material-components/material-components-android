@@ -533,6 +533,8 @@
     <attr name="behavior_hideable" format="boolean"/>
     <!-- Skip the collapsed state once expanded; no effect unless it is hideable -->
     <attr name="behavior_skipCollapsed" format="boolean"/>
+    <!-- Whether height of expanded sheet wraps content or not -->
+    <attr name="behavior_fitToContents" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="BottomNavigationView">
