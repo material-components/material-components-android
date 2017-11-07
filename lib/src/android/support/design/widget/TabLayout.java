@@ -45,6 +45,8 @@ import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
+import android.support.design.resources.MaterialResources;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.Pools;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.PagerAdapter;
@@ -153,8 +155,8 @@ public class TabLayout extends HorizontalScrollView {
   static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
   private static final int INVALID_WIDTH = -1;
   private static final int DEFAULT_HEIGHT = 48; // dps
-  private static final int TAB_MIN_WIDTH_MARGIN = 56; //dps
-  static final int FIXED_WRAP_GUTTER_MIN = 16; //dps
+  private static final int TAB_MIN_WIDTH_MARGIN = 56; // dps
+  static final int FIXED_WRAP_GUTTER_MIN = 16; // dps
   static final int MOTION_NON_ADJACENT_OFFSET = 24;
 
   private static final int ANIMATION_DURATION = 300;
@@ -251,6 +253,8 @@ public class TabLayout extends HorizontalScrollView {
 
   int mTabTextAppearance;
   ColorStateList mTabTextColors;
+  ColorStateList mTabIconColors;
+  android.graphics.PorterDuff.Mode mTabIconTintMode;
   float mTabTextSize;
   float mTabTextMultiLineSize;
 
@@ -356,13 +360,18 @@ public class TabLayout extends HorizontalScrollView {
       mTabTextColors = createColorStateList(mTabTextColors.getDefaultColor(), selected);
     }
 
+    mTabIconColors =
+        MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabIconTint);
+    mTabIconTintMode =
+        ViewUtils.parseTintMode(a.getInt(R.styleable.TabLayout_tabIconTintMode, -1), null);
+
     mRequestedTabMinWidth =
         a.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth, INVALID_WIDTH);
     mRequestedTabMaxWidth =
         a.getDimensionPixelSize(R.styleable.TabLayout_tabMaxWidth, INVALID_WIDTH);
     mTabBackgroundResId = a.getResourceId(R.styleable.TabLayout_tabBackground, 0);
     mContentInsetStart = a.getDimensionPixelSize(R.styleable.TabLayout_tabContentStart, 0);
-    //noinspection WrongConstant
+    // noinspection WrongConstant
     mMode = a.getInt(R.styleable.TabLayout_tabMode, MODE_FIXED);
     mTabGravity = a.getInt(R.styleable.TabLayout_tabGravity, GRAVITY_FILL);
     a.recycle();
@@ -1116,6 +1125,7 @@ public class TabLayout extends HorizontalScrollView {
       for (int i = 0; i < tabCount; i++) {
         final View child = mTabStrip.getChildAt(i);
         child.setSelected(i == position);
+        child.setActivated(i == position);
       }
     }
   }
@@ -1712,12 +1722,19 @@ public class TabLayout extends HorizontalScrollView {
 
     private void updateTextAndIcon(
         @Nullable final TextView textView, @Nullable final ImageView iconView) {
-      final Drawable icon = mTab != null ? mTab.getIcon() : null;
+      final Drawable icon =
+          (mTab != null && mTab.getIcon() != null)
+              ? DrawableCompat.wrap(mTab.getIcon()).mutate()
+              : null;
       final CharSequence text = mTab != null ? mTab.getText() : null;
       final CharSequence contentDesc = mTab != null ? mTab.getContentDescription() : null;
 
       if (iconView != null) {
         if (icon != null) {
+          DrawableCompat.setTintList(icon, mTabIconColors);
+          if (mTabIconTintMode != null) {
+            DrawableCompat.setTintMode(icon, mTabIconTintMode);
+          }
           iconView.setImageDrawable(icon);
           iconView.setVisibility(VISIBLE);
           setVisibility(VISIBLE);

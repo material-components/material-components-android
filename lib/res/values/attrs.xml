@@ -245,6 +245,17 @@
     <attr name="tabPaddingBottom" format="dimension"/>
     <!-- The preferred padding along all edges of tabs. -->
     <attr name="tabPadding" format="dimension"/>
+    <!-- Tint to apply to tab icons, if present. This can be a color state list or a color. -->
+    <attr name="tabIconTint" format="color"/>
+    <!-- Blending mode to apply to tab icons. -->
+    <attr name="tabIconTintMode">
+      <enum name="src_over" value="3"/>
+      <enum name="src_in" value="5"/>
+      <enum name="src_atop" value="9"/>
+      <enum name="multiply" value="14"/>
+      <enum name="screen" value="15"/>
+      <enum name="add" value="16"/>
+    </attr>
   </declare-styleable>
 
   <declare-styleable name="TabItem">
