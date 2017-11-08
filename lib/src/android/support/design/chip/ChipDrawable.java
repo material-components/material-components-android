@@ -163,16 +163,19 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Nullable private TextAppearance textAppearance;
 
   // Chip icon
+  private boolean chipIconEnabled;
   @Nullable private Drawable chipIcon;
   private float chipIconSize;
 
   // Close icon
+  private boolean closeIconEnabled;
   @Nullable private Drawable closeIcon;
   @Nullable private ColorStateList closeIconTint;
   private float closeIconSize;
 
   // Checkable
   private boolean checkable;
+  private boolean checkedIconEnabled;
   @Nullable private Drawable checkedIcon;
 
   // Animations
@@ -323,14 +326,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         MaterialResources.getTextAppearance(
             context, a, R.styleable.ChipDrawable_android_textAppearance));
 
+    setChipIconEnabled(a.getBoolean(R.styleable.ChipDrawable_chipIconEnabled, false));
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_chipIcon));
     setChipIconSize(a.getDimension(R.styleable.ChipDrawable_chipIconSize, 0f));
+
+    setCloseIconEnabled(a.getBoolean(R.styleable.ChipDrawable_closeIconEnabled, false));
     setCloseIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_closeIcon));
     setCloseIconTint(
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_closeIconTint));
     setCloseIconSize(a.getDimension(R.styleable.ChipDrawable_closeIconSize, 0f));
 
     setCheckable(a.getBoolean(R.styleable.ChipDrawable_android_checkable, false));
+    setCheckedIconEnabled(a.getBoolean(R.styleable.ChipDrawable_checkedIconEnabled, false));
     setCheckedIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_checkedIcon));
 
     setShowMotionSpec(
@@ -426,22 +433,22 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   /** Returns whether we will show the chip icon. */
   private boolean showsChipIcon() {
-    return chipIcon != null;
+    return chipIconEnabled && chipIcon != null;
   }
 
   /** Returns whether we will show the checked icon. */
   private boolean showsCheckedIcon() {
-    return checkedIcon != null && currentChecked;
+    return checkedIconEnabled && checkedIcon != null && currentChecked;
   }
 
   /** Returns whether we will show the close icon. */
   private boolean showsCloseIcon() {
-    return closeIcon != null;
+    return closeIconEnabled && closeIcon != null;
   }
 
   /** Returns whether we can show the checked icon if our drawable state changes. */
   private boolean canShowCheckedIcon() {
-    return checkedIcon != null && checkable;
+    return checkedIconEnabled && checkedIcon != null && checkable;
   }
 
   /** Returns the width of the chip icon plus padding, which only apply if the chip icon exists. */
@@ -1293,6 +1300,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
+  public boolean isChipIconEnabled() {
+    return chipIconEnabled;
+  }
+
+  public void setChipIconEnabledResource(@BoolRes int id) {
+    setChipIconEnabled(context.getResources().getBoolean(id));
+  }
+
+  public void setChipIconEnabled(boolean chipIconEnabled) {
+    this.chipIconEnabled = chipIconEnabled;
+  }
+
   @Nullable
   public Drawable getChipIcon() {
     return chipIcon;
@@ -1340,6 +1359,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         onSizeChange();
       }
     }
+  }
+
+  public boolean isCloseIconEnabled() {
+    return closeIconEnabled;
+  }
+
+  public void setCloseIconEnabledResource(@BoolRes int id) {
+    setCloseIconEnabled(context.getResources().getBoolean(id));
+  }
+
+  public void setCloseIconEnabled(boolean closeIconEnabled) {
+    this.closeIconEnabled = closeIconEnabled;
   }
 
   @Nullable
@@ -1432,6 +1463,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         onSizeChange();
       }
     }
+  }
+
+  public boolean isCheckedIconEnabled() {
+    return checkedIconEnabled;
+  }
+
+  public void setCheckedIconEnabledResource(@BoolRes int id) {
+    setCheckedIconEnabled(context.getResources().getBoolean(id));
+  }
+
+  public void setCheckedIconEnabled(boolean checkedIconEnabled) {
+    this.checkedIconEnabled = checkedIconEnabled;
   }
 
   @Nullable

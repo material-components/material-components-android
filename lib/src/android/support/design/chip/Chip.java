@@ -733,6 +733,22 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  public boolean isChipIconEnabled() {
+    return chipDrawable != null && chipDrawable.isChipIconEnabled();
+  }
+
+  public void setChipIconEnabledResource(@BoolRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconEnabledResource(id);
+    }
+  }
+
+  public void setChipIconEnabled(boolean chipIconEnabled) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconEnabled(chipIconEnabled);
+    }
+  }
+
   @Nullable
   public Drawable getChipIcon() {
     return chipDrawable != null ? chipDrawable.getChipIcon() : null;
@@ -763,6 +779,22 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   public void setChipIconSize(float chipIconSize) {
     if (chipDrawable != null) {
       chipDrawable.setChipIconSize(chipIconSize);
+    }
+  }
+
+  public boolean isCloseIconEnabled() {
+    return chipDrawable != null && chipDrawable.isCloseIconEnabled();
+  }
+
+  public void setCloseIconEnabledResource(@BoolRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconEnabledResource(id);
+    }
+  }
+
+  public void setCloseIconEnabled(boolean closeIconEnabled) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconEnabled(closeIconEnabled);
     }
   }
 
@@ -829,6 +861,22 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   public void setCheckable(boolean checkable) {
     if (chipDrawable != null) {
       chipDrawable.setCheckable(checkable);
+    }
+  }
+
+  public boolean isCheckedIconEnabled() {
+    return chipDrawable != null && chipDrawable.isCheckedIconEnabled();
+  }
+
+  public void setCheckedIconEnabledResource(@BoolRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckedIconEnabledResource(id);
+    }
+  }
+
+  public void setCheckedIconEnabled(boolean checkedIconEnabled) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckedIconEnabled(checkedIconEnabled);
     }
   }
 

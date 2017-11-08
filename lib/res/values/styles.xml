@@ -219,6 +219,10 @@
     <item name="android:checkable">false</item>
     <item name="android:stateListAnimator">@animator/mtrl_chip_state_list_anim</item>
 
+    <item name="chipIconEnabled">true</item>
+    <item name="checkedIconEnabled">true</item>
+    <item name="closeIconEnabled">true</item>
+
     <item name="chipIcon">@null</item>
     <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_circle</item>
     <item name="closeIcon">@drawable/ic_mtrl_chip_close_circle</item>
@@ -253,33 +257,62 @@
   </style>
 
   <!-- Style for Chips that appear in text fields as a span.
-       Use entry chips to represent a complex piece of information in a compact form.-->
+       Use entry chips to represent a complex piece of information in a compact form.
+
+       Entry Chips should adhere to the following attributes:
+       chipIconEnabled - optional
+       closeIconEnabled - optional
+       checkable - optional
+       checkedIconEnabled - optional -->
   <style name="Widget.MaterialComponents.Chip.Entry">
     <item name="android:checkable">true</item>
   </style>
 
   <!-- Style for Chips that act as a check box.
-       Use filter chips containing tags or descriptive words to filter a collection. -->
+       Use filter chips containing tags or descriptive words to filter a collection.
+
+       Filter Chips should adhere to the following attributes:
+       chipIconEnabled - optional
+       closeIconEnabled - optional
+       checkable - always
+       checkedIconEnabled - optional -->
   <style name="Widget.MaterialComponents.Chip.Filter">
     <item name="android:checkable">true</item>
-    <item name="chipIcon">@null</item>
+
+    <item name="chipIconEnabled">false</item>
+    <item name="closeIconEnabled">false</item>
+
     <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_black</item>
-    <item name="closeIcon">@null</item>
   </style>
 
   <!-- Style for Chips that act as a radio button.
-       Use choice chips to help users make a single selection from a finite set of options. -->
+       Use choice chips to help users make a single selection from a finite set of options.
+
+       Choice Chips should adhere to the following attributes:
+       chipIconEnabled - optional
+       closeIconEnabled - never
+       checkable - always
+       checkedIconEnabled - optional -->
   <style name="Widget.MaterialComponents.Chip.Choice">
     <item name="android:checkable">true</item>
-    <item name="chipIcon">@null</item>
-    <item name="checkedIcon">@null</item>
-    <item name="closeIcon">@null</item>
+
+    <item name="chipIconEnabled">false</item>
+    <item name="checkedIconEnabled">false</item>
+    <item name="closeIconEnabled">false</item>
+
+    <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_black</item>
   </style>
 
   <!-- Style for Chips that act as a button.
-       Use action chips to trigger an action that is contextual to primary content. -->
+       Use action chips to trigger an action that is contextual to primary content.
+
+       Action Chips should adhere to the following attributes:
+       chipIconEnabled - optional
+       closeIconEnabled - never
+       checkable - never
+       checkedIconEnabled - never -->
   <style name="Widget.MaterialComponents.Chip.Action">
-    <item name="closeIcon">@null</item>
+    <item name="closeIconEnabled">false</item>
   </style>
 
   <style name="TextAppearance.MaterialComponents.Chip" parent="TextAppearance.AppCompat">

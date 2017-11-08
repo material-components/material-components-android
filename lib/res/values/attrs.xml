@@ -83,11 +83,15 @@
     <!-- Default appearance of text: color, typeface, size, and style. -->
     <attr name="android:textAppearance"/>
 
+    <!-- Whether to show the chip icon. -->
+    <attr name="chipIconEnabled" format="boolean"/>
     <!-- Icon drawable to display at the start of the chip. -->
     <attr name="chipIcon" format="reference"/>
     <!-- Size of the chip's icon and checked icon. -->
     <attr name="chipIconSize" format="dimension"/>
 
+    <!-- Whether to show the close icon. -->
+    <attr name="closeIconEnabled" format="boolean"/>
     <!-- Close icon drawable to display at the end of the chip. -->
     <attr name="closeIcon" format="reference"/>
     <!-- Tint to apply to the chip's close icon. -->
@@ -97,6 +101,8 @@
 
     <!-- Whether the chip can be checked. If false, the chip will act as a button. -->
     <attr name="android:checkable"/>
+    <!-- Whether to show the checked icon. -->
+    <attr name="checkedIconEnabled" format="boolean"/>
     <!-- Check icon drawable to overlay the chip's icon. -->
     <attr name="checkedIcon" format="reference"/>
 
