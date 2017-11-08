@@ -118,31 +118,25 @@ import org.xmlpull.v1.XmlPullParserException;
  * <p>ChipDrawable's horizontal layout is as follows:
  *
  * <pre>
- * chipStrokeWidth/2f                                                      chipStrokeWidth/2f
- *  +                                                                                      +
- *  |                                                                                      |
- *  | chipStartPadding     iconEndPadding     closeIconStartPadding         chipEndPadding |
- *  |  +                    +                                    +                      +  |
- *  |  |                    |                                    |                      |  |
- *  |  |  iconStartPadding  |  textStartPadding   textEndPadding | closeIconEndPadding  |  |
- *  |  |   +                |    +                            +  |                  +   |  |
- *  |  |   |                |    |                            |  |                  |   |  |
- *  v  v   v                v    v                            v  v                  v   v  v
- * +-+----+----+-----------+----+----+---------------------+----+----+----------+----+----+-+
- * | |    |    |       XX  |    |    |  XX   X  X  X  XXX  |    |    | X      X |    |    | |
- * | |    |    |      XX   |    |    | X  X  X  X  X  X  X |    |    |  XX  XX  |    |    | |
- * | |    |    |  XX XX    |    |    | X     XXXX  X  XXX  |    |    |    XX    |    |    | |
- * | |    |    |   XXX     |    |    | X  X  X  X  X  X    |    |    |  XX  XX  |    |    | |
- * | |    |    |    X      |    |    |  XX   X  X  X  X    |    |    | X      X |    |    | |
- * +-+----+----+-----------+----+----+---------------------+----+----+----------+----+----+-+
+ *   chipStartPadding     iconEndPadding     closeIconStartPadding         chipEndPadding
+ *    +                    +                                    +                      +
+ *    |                    |                                    |                      |
+ *    |  iconStartPadding  |  textStartPadding   textEndPadding | closeIconEndPadding  |
+ *    |   +                |    +                            +  |                  +   |
+ *    |   |                |    |                            |  |                  |   |
+ *    v   v                v    v                            v  v                  v   v
+ * +-----+----+-----------+----+----+---------------------+----+----+----------+----+-----+
+ * |     |    |       XX  |    |    |  XX   X  X  X  XXX  |    |    | X      X |    |     |
+ * |     |    |      XX   |    |    | X  X  X  X  X  X  X |    |    |  XX  XX  |    |     |
+ * |     |    |  XX XX    |    |    | X     XXXX  X  XXX  |    |    |    XX    |    |     |
+ * |     |    |   XXX     |    |    | X  X  X  X  X  X    |    |    |  XX  XX  |    |     |
+ * |     |    |    X      |    |    |  XX   X  X  X  X    |    |    | X      X |    |     |
+ * +-----+----+-----------+----+----+---------------------+----+----+----------+----+-----+
  *                  ^                           ^                         ^
  *                  |                           |                         |
  *                  +                           +                         +
  *             chipIconSize                  *dynamic*              closeIconSize
  * </pre>
- *
- * <p>Note that the stroke is drawn centered on the edge of the chip, it contributes <code>
- * chipStrokeWidth/2f</code> pixels on either size.
  *
  * <p>ChipDrawable contains three child drawables: {@link #chipIcon}, {@link #checkedIcon}, and
  * {@link #closeIcon}. chipIcon and checkedIcon inherit the state of this drawable, but closeIcon
@@ -401,47 +395,37 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   /**
    * Returns the width at which the chip would like to be laid out.
-   *
-   * <p>The chip stroke is centered on the background shape's edge, so it contributes <code>
-   * chipStrokeWidth / 2f</code> pixels on each side.
    */
   @Override
   public int getIntrinsicWidth() {
     return (int)
-        (chipStrokeWidth / 2f
-            + chipStartPadding
+        (chipStartPadding
             + calculateChipIconWidth()
             + textStartPadding
             + calculateChipTextWidth(chipText)
             + textEndPadding
             + calculateCloseIconWidth()
-            + chipEndPadding
-            + chipStrokeWidth / 2f);
+            + chipEndPadding);
   }
 
   /**
    * Returns the height at which the chip would like to be laid out.
-   *
-   * <p>The chip stroke is centered on the background shape's edge, so it contributes <code>
-   * chipStrokeWidth / 2f</code> pixels on each side.
    */
   @Override
   public int getIntrinsicHeight() {
-    return (int) (chipStrokeWidth / 2f + chipMinHeight + chipStrokeWidth / 2f);
+    return (int) chipMinHeight;
   }
 
   @Override
   public int getMinimumWidth() {
     return (int)
-        (chipStrokeWidth / 2f
-            + chipStartPadding
+        (chipStartPadding
             + calculateChipIconWidth()
             + textStartPadding
             + calculateChipTextWidth("M") // Show one character at minimum.
             + textEndPadding
             + calculateCloseIconWidth()
-            + chipEndPadding
-            + chipStrokeWidth / 2f);
+            + chipEndPadding);
   }
 
   /** Returns the width of the chip icon plus padding, which only apply if the chip icon exists. */
@@ -514,25 +498,17 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
-  /**
-   * Draws the chip background, which fills the bounds except for <code>chipStrokeWidth / 2f</code>
-   * pixels on each side.
-   */
   private void drawChipBackground(@NonNull Canvas canvas, Rect bounds) {
     chipPaint.setColor(currentChipBackgroundColor);
     chipPaint.setStyle(Style.FILL);
     chipPaint.setColorFilter(getTintColorFilter());
-    rectF.set(
-        bounds.left + chipStrokeWidth / 2f,
-        bounds.top + chipStrokeWidth / 2f,
-        bounds.right - chipStrokeWidth / 2f,
-        bounds.bottom - chipStrokeWidth / 2f);
+    rectF.set(bounds);
     canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
   }
 
   /**
-   * Draws the chip stroke, which is centered on the background shape's edge and contributes <code>
-   * chipStrokeWidth / 2f</code> pixels on each side. So, the stroke perfectly fills the bounds.
+   * Draws the chip stroke. Draw the stroke <code>chipStrokeWidth / 2f</code> away from the edges so
+   * that the stroke perfectly fills the bounds of the chip.
    */
   private void drawChipStroke(@NonNull Canvas canvas, Rect bounds) {
     chipPaint.setColor(currentChipStrokeColor);
@@ -546,19 +522,11 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
   }
 
-  /**
-   * Draws the compat ripple, which fills the entire bounds including the <code>chipStrokeWidth / 2f
-   * </code> pixels on each side.
-   */
   private void drawCompatRipple(@NonNull Canvas canvas, Rect bounds) {
     chipPaint.setColor(currentCompatRippleColor);
     chipPaint.setStyle(Style.FILL);
     rectF.set(bounds);
-    canvas.drawRoundRect(
-        rectF,
-        chipCornerRadius + chipStrokeWidth / 2f,
-        chipCornerRadius + chipStrokeWidth / 2f,
-        chipPaint);
+    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
   }
 
   private void drawChipIcon(@NonNull Canvas canvas, Rect bounds) {
@@ -666,7 +634,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     outBounds.setEmpty();
 
     if (chipIcon != null || checkedIcon != null) {
-      float offsetFromStart = chipStrokeWidth / 2f + chipStartPadding + iconStartPadding;
+      float offsetFromStart = chipStartPadding + iconStartPadding;
 
       if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.left = bounds.left + offsetFromStart;
@@ -690,8 +658,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     Align align = null;
 
     if (chipText != null) {
-      float offsetFromStart =
-          chipStrokeWidth / 2f + chipStartPadding + calculateChipIconWidth() + textStartPadding;
+      float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
 
       if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         pointF.x = bounds.left + offsetFromStart;
@@ -732,7 +699,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     outBounds.setEmpty();
 
     if (closeIcon != null) {
-      float offsetFromEnd = chipStrokeWidth / 2f + chipEndPadding + closeIconEndPadding;
+      float offsetFromEnd = chipEndPadding + closeIconEndPadding;
 
       if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.right = bounds.right - offsetFromEnd;
@@ -752,8 +719,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     if (closeIcon != null) {
       float offsetFromEnd =
-          chipStrokeWidth / 2f
-              + chipEndPadding
+          chipEndPadding
               + closeIconEndPadding
               + closeIconSize
               + closeIconStartPadding
@@ -772,8 +738,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     if (closeIcon != null) {
       float offsetFromEnd =
-          chipStrokeWidth / 2f
-              + chipEndPadding
+          chipEndPadding
               + closeIconEndPadding
               + closeIconSize
               + closeIconStartPadding
@@ -1226,7 +1191,6 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       chipPaint.setStrokeWidth(chipStrokeWidth);
 
       invalidateSelf();
-      onSizeChange();
     }
   }
 
