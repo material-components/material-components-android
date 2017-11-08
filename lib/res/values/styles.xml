@@ -302,19 +302,19 @@
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout" parent="Widget.Design.TabLayout">
-    <item name="android:background">?attr/colorAccent</item>
+    <item name="android:background">@android:color/white</item>
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
     <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector</item>
-    <item name="tabSelectedTextColor">@android:color/white</item>
-    <item name="tabIndicatorColor">@android:color/white</item>
-  </style>
-
-  <style name="Widget.MaterialComponents.TabLayout.Secondary">
-    <item name="android:background">@android:color/white</item>
-    <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_secondary</item>
-    <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_secondary</item>
     <item name="tabSelectedTextColor">?attr/colorAccent</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TabLayout.Colored">
+    <item name="android:background">?attr/colorAccent</item>
+    <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_colored</item>
+    <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>
+    <item name="tabSelectedTextColor">@android:color/white</item>
+    <item name="tabIndicatorColor">@android:color/white</item>
   </style>
 
 </resources>
