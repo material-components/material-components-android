@@ -26,6 +26,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.RestrictTo.Scope;
 import android.support.v4.graphics.ColorUtils;
+import android.util.StateSet;
 
 /** Utils class for colors and ColorStateLists. */
 @RestrictTo(Scope.LIBRARY_GROUP)
@@ -33,37 +34,33 @@ public class RippleUtils {
 
   public static final boolean USE_FRAMEWORK_RIPPLE = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
 
-  private static final int[] PRESSED_ENABLED_STATE_SET = {
-    android.R.attr.state_pressed, android.R.attr.state_enabled
+  private static final int[] PRESSED_STATE_SET = {
+    android.R.attr.state_pressed,
   };
-  private static final int[] HOVERED_FOCUSED_ENABLED_STATE_SET = {
-    android.R.attr.state_hovered, android.R.attr.state_focused, android.R.attr.state_enabled
+  private static final int[] HOVERED_FOCUSED_STATE_SET = {
+    android.R.attr.state_hovered, android.R.attr.state_focused,
   };
-  private static final int[] FOCUSED_ENABLED_STATE_SET = {
-    android.R.attr.state_focused, android.R.attr.state_enabled
-  };
-  private static final int[] HOVERED_ENABLED_STATE_SET = {
-    android.R.attr.state_hovered, android.R.attr.state_enabled
-  };
-  private static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
-
-  private static final int[] CHECKED_PRESSED_ENABLED_STATE_SET = {
-    android.R.attr.state_checked, android.R.attr.state_pressed, android.R.attr.state_enabled
-  };
-  private static final int[] CHECKED_HOVERED_FOCUSED_ENABLED_STATE_SET = {
-    android.R.attr.state_checked,
-    android.R.attr.state_hovered,
+  private static final int[] FOCUSED_STATE_SET = {
     android.R.attr.state_focused,
-    android.R.attr.state_enabled
   };
-  private static final int[] CHECKED_FOCUSED_ENABLED_STATE_SET = {
-    android.R.attr.state_checked, android.R.attr.state_focused, android.R.attr.state_enabled
+  private static final int[] HOVERED_STATE_SET = {
+    android.R.attr.state_hovered,
   };
-  private static final int[] CHECKED_HOVERED_ENABLED_STATE_SET = {
-    android.R.attr.state_checked, android.R.attr.state_hovered, android.R.attr.state_enabled
+
+  private static final int[] CHECKED_PRESSED_STATE_SET = {
+    android.R.attr.state_checked, android.R.attr.state_pressed,
   };
-  private static final int[] CHECKED_ENABLED_STATE_SET = {
-    android.R.attr.state_checked, android.R.attr.state_enabled
+  private static final int[] CHECKED_HOVERED_FOCUSED_STATE_SET = {
+    android.R.attr.state_checked, android.R.attr.state_hovered, android.R.attr.state_focused,
+  };
+  private static final int[] CHECKED_FOCUSED_STATE_SET = {
+    android.R.attr.state_checked, android.R.attr.state_focused,
+  };
+  private static final int[] CHECKED_HOVERED_STATE_SET = {
+    android.R.attr.state_checked, android.R.attr.state_hovered,
+  };
+  private static final int[] CHECKED_STATE_SET = {
+    android.R.attr.state_checked,
   };
 
   private RippleUtils() {}
@@ -88,18 +85,18 @@ public class RippleUtils {
       @ColorInt int composite;
 
       // Checked base state.
-      color = getColorForState(rippleColor, CHECKED_ENABLED_STATE_SET);
-      alpha = getAlphaForState(rippleAlpha, CHECKED_PRESSED_ENABLED_STATE_SET);
+      color = getColorForState(rippleColor, CHECKED_STATE_SET);
+      alpha = getAlphaForState(rippleAlpha, CHECKED_PRESSED_STATE_SET);
       composite = compositeRippleColor(color, alpha);
-      states[i] = CHECKED_ENABLED_STATE_SET;
+      states[i] = CHECKED_STATE_SET;
       colors[i] = composite;
       i++;
 
       // Non-checked base state.
-      color = getColorForState(rippleColor, ENABLED_STATE_SET);
-      alpha = getAlphaForState(rippleAlpha, PRESSED_ENABLED_STATE_SET);
+      color = getColorForState(rippleColor, StateSet.NOTHING);
+      alpha = getAlphaForState(rippleAlpha, PRESSED_STATE_SET);
       composite = compositeRippleColor(color, alpha);
-      states[i] = ENABLED_STATE_SET;
+      states[i] = StateSet.NOTHING;
       colors[i] = composite;
       i++;
 
@@ -112,44 +109,41 @@ public class RippleUtils {
       int i = 0;
 
       compositeRippleColorForState(
-          CHECKED_PRESSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          CHECKED_PRESSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
       compositeRippleColorForState(
-          CHECKED_HOVERED_FOCUSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          CHECKED_HOVERED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
       compositeRippleColorForState(
-          CHECKED_FOCUSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          CHECKED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
       compositeRippleColorForState(
-          CHECKED_HOVERED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          CHECKED_HOVERED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
-      // Checked enabled state.
-      states[i] = CHECKED_ENABLED_STATE_SET;
+      // Checked state.
+      states[i] = CHECKED_STATE_SET;
       colors[i] = Color.TRANSPARENT;
       i++;
 
-      compositeRippleColorForState(
-          PRESSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      compositeRippleColorForState(PRESSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
       compositeRippleColorForState(
-          HOVERED_FOCUSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          HOVERED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
-      compositeRippleColorForState(
-          FOCUSED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      compositeRippleColorForState(FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
-      compositeRippleColorForState(
-          HOVERED_ENABLED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      compositeRippleColorForState(HOVERED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
-      // Default enabled state.
-      states[i] = ENABLED_STATE_SET;
+      // Default state.
+      states[i] = StateSet.NOTHING;
       colors[i] = Color.TRANSPARENT;
       i++;
 
