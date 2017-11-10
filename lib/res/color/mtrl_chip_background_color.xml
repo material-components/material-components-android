@@ -17,8 +17,8 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <item android:color="#D7D7D7" android:state_checked="true" android:state_enabled="true"/>
-  <item android:color="#E8E8E8" android:state_enabled="true"/>
-  <item android:color="#F2F2F2"/>
+  <item android:color="#CACACA" android:state_checked="true" android:state_enabled="true"/>
+  <item android:color="#EBEBEB" android:state_enabled="true"/>
+  <item android:color="#F7F7F7"/>
 
 </selector>
