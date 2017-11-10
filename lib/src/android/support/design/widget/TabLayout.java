@@ -35,6 +35,7 @@ import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.support.annotation.BoolRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
@@ -49,6 +50,7 @@ import android.support.design.resources.MaterialResources;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.Pools;
 import android.support.v4.view.GravityCompat;
+import android.support.v4.view.MarginLayoutParamsCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.PointerIconCompat;
 import android.support.v4.view.ViewCompat;
@@ -269,6 +271,7 @@ public class TabLayout extends HorizontalScrollView {
 
   int mTabGravity;
   @Mode int mMode;
+  boolean mInlineLabel;
 
   private OnTabSelectedListener mSelectedListener;
   private final ArrayList<OnTabSelectedListener> mSelectedListeners = new ArrayList<>();
@@ -374,6 +377,7 @@ public class TabLayout extends HorizontalScrollView {
     // noinspection WrongConstant
     mMode = a.getInt(R.styleable.TabLayout_tabMode, MODE_FIXED);
     mTabGravity = a.getInt(R.styleable.TabLayout_tabGravity, GRAVITY_FILL);
+    mInlineLabel = a.getBoolean(R.styleable.TabLayout_tabInlineLabel, false);
     a.recycle();
 
     // TODO add attr for these
@@ -713,6 +717,49 @@ public class TabLayout extends HorizontalScrollView {
   @TabGravity
   public int getTabGravity() {
     return mTabGravity;
+  }
+
+  /**
+   * Set whether tab labels will be displayed inline with tab icons, or if they will be displayed
+   * underneath tab icons.
+   *
+   * @see #isInlineLabel()
+   * @attr ref android.support.design.R.styleable#TabLayout_tabInlineLabel
+   */
+  public void setInlineLabel(boolean inline) {
+    if (mInlineLabel != inline) {
+      mInlineLabel = inline;
+      for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+        View child = mTabStrip.getChildAt(i);
+        if (child instanceof TabView) {
+          ((TabView) child).updateOrientation();
+        }
+      }
+      applyModeAndGravity();
+    }
+  }
+
+  /**
+   * Set whether tab labels will be displayed inline with tab icons, or if they will be displayed
+   * underneath tab icons.
+   *
+   * @param inlineResourceId Resource ID for boolean inline flag
+   * @see #isInlineLabel()
+   * @attr ref android.support.design.R.styleable#TabLayout_tabInlineLabel
+   */
+  public void setInlineLabelResource(@BoolRes int inlineResourceId) {
+    setInlineLabel(getResources().getBoolean(inlineResourceId));
+  }
+
+  /**
+   * Returns whether tab labels will be displayed inline with tab icons, or if they will be
+   * displayed underneath tab icons.
+   *
+   * @see #setInlineLabel(boolean)
+   * @attr ref android.support.design.R.styleable#TabLayout_tabInlineLabel
+   */
+  public boolean isInlineLabel() {
+    return mInlineLabel;
   }
 
   /**
@@ -1513,7 +1560,7 @@ public class TabLayout extends HorizontalScrollView {
       ViewCompat.setPaddingRelative(
           this, mTabPaddingStart, mTabPaddingTop, mTabPaddingEnd, mTabPaddingBottom);
       setGravity(Gravity.CENTER);
-      setOrientation(VERTICAL);
+      setOrientation(mInlineLabel ? HORIZONTAL : VERTICAL);
       setClickable(true);
       ViewCompat.setPointerIcon(
           this, PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
@@ -1720,6 +1767,15 @@ public class TabLayout extends HorizontalScrollView {
       setSelected(tab != null && tab.isSelected());
     }
 
+    final void updateOrientation() {
+      setOrientation(mInlineLabel ? HORIZONTAL : VERTICAL);
+      if (mCustomTextView != null || mCustomIconView != null) {
+        updateTextAndIcon(mCustomTextView, mCustomIconView);
+      } else {
+        updateTextAndIcon(mTextView, mIconView);
+      }
+    }
+
     private void updateTextAndIcon(
         @Nullable final TextView textView, @Nullable final ImageView iconView) {
       final Drawable icon =
@@ -1760,14 +1816,27 @@ public class TabLayout extends HorizontalScrollView {
 
       if (iconView != null) {
         MarginLayoutParams lp = ((MarginLayoutParams) iconView.getLayoutParams());
-        int bottomMargin = 0;
+        int iconMargin = 0;
         if (hasText && iconView.getVisibility() == VISIBLE) {
           // If we're showing both text and icon, add some margin bottom to the icon
-          bottomMargin = dpToPx(DEFAULT_GAP_TEXT_ICON);
+          iconMargin = dpToPx(DEFAULT_GAP_TEXT_ICON);
         }
-        if (bottomMargin != lp.bottomMargin) {
-          lp.bottomMargin = bottomMargin;
-          iconView.requestLayout();
+        if (mInlineLabel) {
+          if (iconMargin != MarginLayoutParamsCompat.getMarginEnd(lp)) {
+            MarginLayoutParamsCompat.setMarginEnd(lp, iconMargin);
+            lp.bottomMargin = 0;
+            // Calls resolveLayoutParams(), necessary for layout direction
+            iconView.setLayoutParams(lp);
+            iconView.requestLayout();
+          }
+        } else {
+          if (iconMargin != lp.bottomMargin) {
+            lp.bottomMargin = iconMargin;
+            MarginLayoutParamsCompat.setMarginEnd(lp, 0);
+            // Calls resolveLayoutParams(), necessary for layout direction
+            iconView.setLayoutParams(lp);
+            iconView.requestLayout();
+          }
         }
       }
 
@@ -2109,7 +2178,7 @@ public class TabLayout extends HorizontalScrollView {
         break;
       }
     }
-    return hasIconAndText ? DEFAULT_HEIGHT_WITH_TEXT_ICON : DEFAULT_HEIGHT;
+    return (hasIconAndText && !mInlineLabel) ? DEFAULT_HEIGHT_WITH_TEXT_ICON : DEFAULT_HEIGHT;
   }
 
   private int getTabMinWidth() {

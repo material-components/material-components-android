@@ -231,6 +231,8 @@
       <enum name="fill" value="0"/>
       <enum name="center" value="1"/>
     </attr>
+    <!-- Whether to display tab labels horizontally inline with icons, or underneath icons. -->
+    <attr name="tabInlineLabel" format="boolean"/>
     <!-- The minimum width for tabs. -->
     <attr name="tabMinWidth" format="dimension"/>
     <!-- The maximum width for tabs. -->
