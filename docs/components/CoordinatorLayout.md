@@ -154,6 +154,14 @@ Material Design guidelines, such as:
   a [collapsed app bar](CollapsingToolbarLayout.md), or overlapped by an
   incoming [bottom sheet](BottomSheetBehavior.md).
 
+Note: Just like any other view, specifying an id for the `CoordinatorLayout` allows the Android
+system to invoke its `onSaveInstanceState()` and `onRestoreInstanceState()` methods, meaning
+the `CoordinatorLayout` can save and restore its state and the state of all its direct children.
+This can be especially helpful in the case where there is a `CollapsingToolbarLayout` nested
+within a `CoordinatorLayout`. For example, setting an id on the `CoordinatorLayout` will allow
+it to save and restore the expanded/collapsed state of the `CollapsingToolbarLayout` across
+orientation changes and Fragment transactions.
+
 ## Related Concepts
 
 `CoordinatorLayout` and custom Behaviors can be used to build a number of Material
