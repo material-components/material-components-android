@@ -241,7 +241,8 @@
     <attr name="tabTextAppearance" format="reference"/>
     <!-- The default text color to be applied to tabs. -->
     <attr name="tabTextColor" format="color"/>
-    <!-- The text color to be applied to the currently selected tab. -->
+    <!-- {@deprecated Instead, provide a ColorStateList to the tabTextColor attribute with a
+         selected color set.}  -->
     <attr name="tabSelectedTextColor" format="color"/>
     <!-- The preferred padding along the start edge of tabs. -->
     <attr name="tabPaddingStart" format="dimension"/>

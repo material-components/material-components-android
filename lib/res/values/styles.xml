@@ -62,12 +62,11 @@
     <item name="tabPaddingEnd">12dp</item>
     <item name="tabBackground">?attr/selectableItemBackground</item>
     <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
-    <item name="tabSelectedTextColor">?android:textColorPrimary</item>
   </style>
 
   <style name="TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
     <item name="android:textSize">@dimen/design_tab_text_size</item>
-    <item name="android:textColor">?android:textColorSecondary</item>
+    <item name="android:textColor">@color/mtrl_tabs_legacy_text_color_selector</item>
     <item name="textAllCaps">true</item>
   </style>
 
@@ -333,17 +332,23 @@
   <style name="Widget.MaterialComponents.TabLayout" parent="Widget.Design.TabLayout">
     <item name="android:background">@android:color/white</item>
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
-    <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector</item>
-    <item name="tabSelectedTextColor">?attr/colorAccent</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
+    <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab</item>
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout.Colored">
     <item name="android:background">?attr/colorAccent</item>
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_colored</item>
-    <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>
-    <item name="tabSelectedTextColor">@android:color/white</item>
     <item name="tabIndicatorColor">@android:color/white</item>
+    <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab.Colored</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Tab" parent="TextAppearance.Design.Tab">
+    <item name="android:textColor">@color/mtrl_tabs_icon_color_selector</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Tab.Colored">
+    <item name="android:textColor">@color/mtrl_tabs_icon_color_selector_colored</item>
   </style>
 
 </resources>

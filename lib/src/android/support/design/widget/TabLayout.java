@@ -37,6 +37,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.BoolRes;
 import android.support.annotation.ColorInt;
+import android.support.annotation.ColorRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
@@ -255,7 +256,8 @@ public class TabLayout extends HorizontalScrollView {
 
   int mTabTextAppearance;
   ColorStateList mTabTextColors;
-  ColorStateList mTabIconColors;
+  ColorStateList mTabIconTint;
+
   android.graphics.PorterDuff.Mode mTabIconTintMode;
   float mTabTextSize;
   float mTabTextMultiLineSize;
@@ -344,7 +346,9 @@ public class TabLayout extends HorizontalScrollView {
           ta.getDimensionPixelSize(
               android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize, 0);
       mTabTextColors =
-          ta.getColorStateList(
+          MaterialResources.getColorStateList(
+              context,
+              ta,
               android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor);
     } finally {
       ta.recycle();
@@ -352,7 +356,8 @@ public class TabLayout extends HorizontalScrollView {
 
     if (a.hasValue(R.styleable.TabLayout_tabTextColor)) {
       // If we have an explicit text color set, use it instead
-      mTabTextColors = a.getColorStateList(R.styleable.TabLayout_tabTextColor);
+      mTabTextColors =
+          MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabTextColor);
     }
 
     if (a.hasValue(R.styleable.TabLayout_tabSelectedTextColor)) {
@@ -363,7 +368,7 @@ public class TabLayout extends HorizontalScrollView {
       mTabTextColors = createColorStateList(mTabTextColors.getDefaultColor(), selected);
     }
 
-    mTabIconColors =
+    mTabIconTint =
         MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabIconTint);
     mTabIconTintMode =
         ViewUtils.parseTintMode(a.getInt(R.styleable.TabLayout_tabIconTintMode, -1), null);
@@ -788,6 +793,34 @@ public class TabLayout extends HorizontalScrollView {
    */
   public void setTabTextColors(int normalColor, int selectedColor) {
     setTabTextColors(createColorStateList(normalColor, selectedColor));
+  }
+
+  /**
+   * Sets the icon tint for the different states (normal, selected) used for the tabs.
+   *
+   * @see #getTabIconTint()
+   */
+  public void setTabIconTint(@Nullable ColorStateList iconTint) {
+    if (mTabIconTint != iconTint) {
+      mTabIconTint = iconTint;
+      updateAllTabs();
+    }
+  }
+
+  /**
+   * Sets the icon tint resource for the different states (normal, selected) used for the tabs.
+   *
+   * @param iconTintResourceId A color resource to use as icon tint.
+   * @see #getTabIconTint()
+   */
+  public void setTabIconTintResource(@ColorRes int iconTintResourceId) {
+    setTabIconTint(AppCompatResources.getColorStateList(getContext(), iconTintResourceId));
+  }
+
+  /** Gets the icon tint for the different states (normal, selected) used for the tabs. */
+  @Nullable
+  public ColorStateList getTabIconTint() {
+    return mTabIconTint;
   }
 
   /**
@@ -1787,7 +1820,7 @@ public class TabLayout extends HorizontalScrollView {
 
       if (iconView != null) {
         if (icon != null) {
-          DrawableCompat.setTintList(icon, mTabIconColors);
+          DrawableCompat.setTintList(icon, mTabIconTint);
           if (mTabIconTintMode != null) {
             DrawableCompat.setTintMode(icon, mTabIconTintMode);
           }
