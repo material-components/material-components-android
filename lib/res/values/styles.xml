@@ -228,7 +228,7 @@
 
     <item name="chipText">@null</item>
     <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Chip</item>
-    <item name="closeIconTint">@null</item>
+    <item name="closeIconTint">@color/mtrl_chip_close_icon_tint</item>
 
     <item name="chipBackgroundColor">@color/mtrl_chip_background_color</item>
     <item name="chipStrokeColor">#00000000</item>

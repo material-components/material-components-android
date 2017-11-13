@@ -15,13 +15,14 @@
   limitations under the License.
   -->
 
-<vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:height="18dp"
-    android:viewportHeight="18"
-    android:viewportWidth="18"
-    android:width="18dp">
-  <path
-      android:fillColor="#000000"
-      android:pathData="M13,11.87 L11.87,13 L9,10.13 L6.13,13 L5,11.87 L7.87,9 L5,6.13 L6.13,5 L9,7.87 L11.87,5 L13,6.13 L10.13,9 L13,11.87 Z M9,1 C4.58,1,1,4.58,1,9 C1,13.42,4.58,17,9,17 C13.42,17,17,13.42,17,9 C17,4.58,13.42,1,9,1 L9,1 Z"
-      android:strokeWidth="1"/>
-</vector>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+
+  <item android:alpha="1.0" android:color="#000000" android:state_pressed="true"/>
+  <item android:alpha="1.0" android:color="#000000" android:state_focused="true" android:state_hovered="true"/>
+  <item android:alpha="0.87" android:color="#000000" android:state_focused="true"/>
+  <item android:alpha="0.72" android:color="#000000" android:state_hovered="true"/>
+  <item android:alpha="0.54" android:color="#000000" android:state_enabled="true"/>
+  <!-- 38% of 54% opacity. -->
+  <item android:alpha="0.21" android:color="#000000"/>
+
+</selector>
