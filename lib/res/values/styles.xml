@@ -186,11 +186,11 @@
     <item name="statusBarScrim">?attr/colorPrimaryDark</item>
   </style>
 
-  <style name="Base.Widget.Design.AppBarLayout" parent="android:Widget">
+  <style name="Widget.Design.AppBarLayout" parent="android:Widget">
     <item name="android:background">?attr/colorPrimary</item>
-  </style>
-
-  <style name="Widget.Design.AppBarLayout" parent="Base.Widget.Design.AppBarLayout">
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/design_appbar_state_list_animator
+    </item>
   </style>
 
   <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Display1">
@@ -217,7 +217,9 @@
     <item name="android:focusable">true</item>
     <item name="android:clickable">true</item>
     <item name="android:checkable">false</item>
-    <item name="android:stateListAnimator">@animator/mtrl_chip_state_list_anim</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/mtrl_chip_state_list_anim
+    </item>
 
     <item name="chipIconEnabled">true</item>
     <item name="checkedIconEnabled">true</item>
