@@ -369,8 +369,8 @@
     <attr name="boxStrokeColor" format="color"/>
     <!-- The color to use for the box's background color when in filled box mode. -->
     <attr name="boxBackgroundColor" format="color"/>
-    <!-- The color to use for the box's stroke when in outline box mode. -->
-    <attr name="boxStrokeWidth" format="color"/>
+    <!-- The value to use for the box's stroke when in outline box mode. -->
+    <attr name="boxStrokeWidth" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="SnackbarLayout">

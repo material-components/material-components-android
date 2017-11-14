@@ -56,6 +56,73 @@ using `TextInputEditText` allows `TextInputLayout` greater control over the
 visual aspects of the input text - it allows `TextInputLayout` to display hint
 in the text field when in "extract mode" (such as landscape mode).
 
+## Box Styles
+
+`TextInputLayout` provides two box styles, **filled** and **outline**. Here's how to use
+each of them:
+
+#### Filled Text Fields
+
+Filled text fields have a solid background color and draw more attention, especially
+in layouts where the field is surrounded by other elements. To use a filled text field,
+apply the following style to your `TextInputLayout`:
+
+```
+style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+```
+
+To change the background color of a filled text field, you can set the `boxBackgroundColor`
+attribute on your `TextInputLayout`.
+
+#### Outline Text Fields
+
+Outline text fields have a stroked border and are less emphasized. To use an outline text
+field, apply the following style to your `TextInputLayout`:
+
+```
+style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
+```
+
+To change the stroke color and width for an outline text field, you can set the
+`boxStrokeColor` and `boxStrokeWidth` attributes on your `TextInputLayout`, respectively.
+
+#### Height Variations
+
+`TextInputLayout` provides two height variations for filled and outline text fields,
+**standard** and **dense**. Both box styles default to the standard height.
+
+In order to reduce the height of a text box, you can use a dense style, which will reduce
+the vertical padding within the text box. You can achieve this by applying the appropriate
+styles to your `TextInputLayout`, depending on whether you are using a filled or outline
+text field:
+
+```
+style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
+```
+
+```
+style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
+```
+
+Additionally, to change a text field's internal padding as well as other values like corner
+radii, you can apply the following attributes to your `TextInputLayout`:
+
+##### Padding
+
+* `boxPaddingLeft`
+* `boxCollapsedPaddingTop`
+* `boxExpandedPaddingTop`
+* `boxPaddingRight`
+* `boxCollapsedPaddingBottom`
+* `boxExpandedPaddingBottom`
+
+##### Corner Radius
+
+* `boxCornerRadiusTopLeft`
+* `boxCornerRadiusTopRight`
+* `boxCornerRadiusBottomLeft`
+* `boxCornerRadiusBottomRight`
+
 ## Common features
 
 `TextInputLayout` provides functionality for a number of Material [text field
@@ -65,14 +132,16 @@ your text field:
 
 Text field element                     | Relevant attributes/methods
 :------------------------------------- | :--------------------------
-Label (also called a “Floating Label”) | [`android:hint`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android:hint)
-                                       | [`app:hintEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:hintEnabled)
-Error message                          | [`app:errorEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:errorEnabled)
+Label (also called a “Floating Label”) | [`android:hint`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_android_hint)
+                                       | [`app:hintEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_hintEnabled)
+Error message                          | [`app:errorEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_errorEnabled)
                                        | [`#setError(CharSequence)`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#setError(java.lang.CharSequence))
-Password redaction                     | [`app:passwordToggleEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:passwordToggleEnabled)
-                                       | [`app:passwordToggleDrawable`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:passwordToggleDrawable)
-Character counter                      | [`app:counterEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:counterEnabled)
-                                       | [`app:counterMaxLength`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_android.support.design:counterMaxLength)
+Helper text                            | [`app:helperTextEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_helperTextEnabled)
+                                       | [`app:helperText`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_helperText)
+Password redaction                     | [`app:passwordToggleEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_passwordToggleEnabled)
+                                       | [`app:passwordToggleDrawable`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_passwordToggleDrawable)
+Character counter                      | [`app:counterEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_counterEnabled)
+                                       | [`app:counterMaxLength`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_counterMaxLength)
 
 ## Notes about setting the hint
 
