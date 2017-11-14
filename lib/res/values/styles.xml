@@ -60,8 +60,9 @@
     <item name="tabIndicatorHeight">2dp</item>
     <item name="tabPaddingStart">12dp</item>
     <item name="tabPaddingEnd">12dp</item>
-    <item name="tabBackground">?attr/selectableItemBackground</item>
     <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
+    <item name="tabRippleColor">?attr/colorControlHighlight</item>
+    <item name="tabRippleAlpha">#FF000000</item>
   </style>
 
   <style name="TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
@@ -334,6 +335,8 @@
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
     <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab</item>
+    <item name="tabRippleColor">?attr/colorAccent</item>
+    <item name="tabRippleAlpha">@color/mtrl_tabs_ripple_alpha</item>
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout.Colored">
@@ -341,6 +344,8 @@
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_colored</item>
     <item name="tabIndicatorColor">@android:color/white</item>
     <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab.Colored</item>
+    <item name="tabRippleColor">@android:color/white</item>
+    <item name="tabRippleAlpha">@color/mtrl_tabs_ripple_alpha_colored</item>
   </style>
 
   <style name="TextAppearance.MaterialComponents.Tab" parent="TextAppearance.Design.Tab">

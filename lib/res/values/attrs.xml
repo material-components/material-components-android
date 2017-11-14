@@ -265,6 +265,12 @@
       <enum name="screen" value="15"/>
       <enum name="add" value="16"/>
     </attr>
+    <!-- Ripple color for the tabs. This may be a color state list, if the desired ripple color
+         should be stateful.-->
+    <attr name="tabRippleColor" format="color"/>
+    <!-- Ripple alpha for the tabs. This may be a color state list, if the desired ripple alpha
+         should be stateful. -->
+    <attr name="tabRippleAlpha" format="color"/>
   </declare-styleable>
 
   <declare-styleable name="TabItem">

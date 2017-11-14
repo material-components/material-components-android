@@ -31,10 +31,16 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.database.DataSetObserver;
 import android.graphics.Canvas;
+import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.LayerDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.BoolRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
@@ -48,6 +54,7 @@ import android.support.annotation.StringRes;
 import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.resources.MaterialResources;
+import android.support.design.ripple.RippleUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.Pools;
 import android.support.v4.view.GravityCompat;
@@ -257,6 +264,8 @@ public class TabLayout extends HorizontalScrollView {
   int mTabTextAppearance;
   ColorStateList mTabTextColors;
   ColorStateList mTabIconTint;
+  ColorStateList mTabRippleColorStateList;
+  ColorStateList mTabRippleAlphaStateList;
 
   android.graphics.PorterDuff.Mode mTabIconTintMode;
   float mTabTextSize;
@@ -372,6 +381,11 @@ public class TabLayout extends HorizontalScrollView {
         MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabIconTint);
     mTabIconTintMode =
         ViewUtils.parseTintMode(a.getInt(R.styleable.TabLayout_tabIconTintMode, -1), null);
+
+    mTabRippleColorStateList =
+        MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabRippleColor);
+    mTabRippleAlphaStateList =
+        MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabRippleAlpha);
 
     mRequestedTabMinWidth =
         a.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth, INVALID_WIDTH);
@@ -821,6 +835,93 @@ public class TabLayout extends HorizontalScrollView {
   @Nullable
   public ColorStateList getTabIconTint() {
     return mTabIconTint;
+  }
+
+  /**
+   * Returns the ripple color for this TabLayout.
+   *
+   * @return the color (or ColorStateList) used for the ripple
+   * @see #setTabRippleColor(ColorStateList)
+   */
+  @Nullable
+  public ColorStateList getTabRippleColor() {
+    return mTabRippleColorStateList;
+  }
+
+  /**
+   * Sets the ripple color for this TabLayout.
+   *
+   * <p>When running on devices with KitKat or below, we draw this color as a filled overlay rather
+   * than a ripple.
+   *
+   * @param color color (or ColorStateList) to use for the ripple
+   * @attr ref android.support.design.R.styleable#TabLayout_tabRippleColor
+   * @see #getTabRippleColor()
+   */
+  public void setTabRippleColor(@Nullable ColorStateList color) {
+    if (mTabRippleColorStateList != color) {
+      mTabRippleColorStateList = color;
+      for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+        View child = mTabStrip.getChildAt(i);
+        if (child instanceof TabView) {
+          ((TabView) child).updateBackgroundDrawable(getContext());
+        }
+      }
+    }
+  }
+
+  /**
+   * Sets the ripple color resource for this TabLayout.
+   *
+   * <p>When running on devices with KitKat or below, we draw this color as a filled overlay rather
+   * than a ripple.
+   *
+   * @param tabRippleColorResourceId A color resource to use as ripple color.
+   * @see #getTabRippleColor()
+   */
+  public void setTabRippleColorResource(@ColorRes int tabRippleColorResourceId) {
+    setTabRippleColor(AppCompatResources.getColorStateList(getContext(), tabRippleColorResourceId));
+  }
+
+  /**
+   * Returns the ripple alpha for this TabLayout.
+   *
+   * @return the alpha used for the ripple. Only the alpha bits in each color are valid.
+   * @see #setTabRippleAlpha(ColorStateList)
+   */
+  @Nullable
+  public ColorStateList getTabRippleAlpha() {
+    return mTabRippleAlphaStateList;
+  }
+
+  /**
+   * Sets the ripple alpha for this TabLayout.
+   *
+   * @param alpha alpha to use for the ripple. Only the alpha bits in each color are valid.
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_rippleAlpha
+   * @see #getTabRippleAlpha()
+   */
+  public void setTabRippleAlpha(@Nullable ColorStateList alpha) {
+    if (mTabRippleAlphaStateList != alpha) {
+      mTabRippleAlphaStateList = alpha;
+      for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+        View child = mTabStrip.getChildAt(i);
+        if (child instanceof TabView) {
+          ((TabView) child).updateBackgroundDrawable(getContext());
+        }
+      }
+    }
+  }
+
+  /**
+   * Sets the ripple alpha resource for this TabLayout.
+   *
+   * @param tabRippleAlphaResourceId A color resource to use as ripple alpha. Only the alpha bits in
+   *     each color are valid.
+   * @see #getTabRippleAlpha()
+   */
+  public void setTabRippleAlphaResource(@ColorRes int tabRippleAlphaResourceId) {
+    setTabRippleAlpha(AppCompatResources.getColorStateList(getContext(), tabRippleAlphaResourceId));
   }
 
   /**
@@ -1586,10 +1687,7 @@ public class TabLayout extends HorizontalScrollView {
 
     public TabView(Context context) {
       super(context);
-      if (mTabBackgroundResId != 0) {
-        ViewCompat.setBackground(
-            this, AppCompatResources.getDrawable(context, mTabBackgroundResId));
-      }
+      updateBackgroundDrawable(context);
       ViewCompat.setPaddingRelative(
           this, mTabPaddingStart, mTabPaddingTop, mTabPaddingEnd, mTabPaddingBottom);
       setGravity(Gravity.CENTER);
@@ -1597,6 +1695,40 @@ public class TabLayout extends HorizontalScrollView {
       setClickable(true);
       ViewCompat.setPointerIcon(
           this, PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
+    }
+
+    private void updateBackgroundDrawable(Context context) {
+      Drawable background;
+      Drawable contentDrawable;
+
+      if (mTabBackgroundResId != 0) {
+        contentDrawable = AppCompatResources.getDrawable(context, mTabBackgroundResId);
+      } else {
+        contentDrawable = new GradientDrawable();
+        ((GradientDrawable) contentDrawable).setColor(Color.TRANSPARENT);
+      }
+
+      if (mTabRippleColorStateList != null || mTabRippleAlphaStateList != null) {
+        GradientDrawable maskDrawable = new GradientDrawable();
+        maskDrawable.setColor(Color.WHITE);
+
+        ColorStateList compositeRippleColor =
+            RippleUtils.compositeRippleColorStateList(
+                mTabRippleColorStateList, mTabRippleAlphaStateList);
+
+        // TODO: Add support to RippleUtils.compositeRippleColorStateList for different ripple color
+        // for selected items vs non-selected items
+        if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+          background = new RippleDrawable(compositeRippleColor, contentDrawable, maskDrawable);
+        } else {
+          Drawable rippleDrawable = DrawableCompat.wrap(maskDrawable);
+          DrawableCompat.setTintList(rippleDrawable, compositeRippleColor);
+          background = new LayerDrawable(new Drawable[] {contentDrawable, rippleDrawable});
+        }
+      } else {
+        background = contentDrawable;
+      }
+      ViewCompat.setBackground(this, background);
     }
 
     @Override
