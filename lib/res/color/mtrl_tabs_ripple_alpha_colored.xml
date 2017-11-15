@@ -22,7 +22,7 @@
   <!-- 8% + 24% alpha. -->
   <item android:color="#52000000" android:state_enabled="true" android:state_focused="true" android:state_hovered="true"/>
   <!-- 24% alpha. -->
-  <item android:color="#3d000000" android:state_enabled="true" android:state_focused="true"/>
+  <item android:color="#3D000000" android:state_enabled="true" android:state_focused="true"/>
   <!-- 8% alpha. -->
   <item android:color="#14000000" android:state_enabled="true" android:state_hovered="true"/>
 
