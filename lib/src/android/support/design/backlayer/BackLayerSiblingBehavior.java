@@ -190,6 +190,7 @@ public class BackLayerSiblingBehavior extends ExpandableBehavior {
         int right = parent.getWidth() - collapsedWidth;
         child.offsetLeftAndRight(right - child.getRight());
         break;
+      default: // do nothing
     }
 
     if (backLayerLayout.isExpanded()) {
@@ -221,9 +222,9 @@ public class BackLayerSiblingBehavior extends ExpandableBehavior {
 
   @Override
   protected boolean onExpandedStateChange(
-      View dependency, View child, boolean expanded, boolean animated) {
+      View dependency, View child, final boolean expanded, boolean animated) {
     // Translate the content layer to the desired position.
-    BackLayerLayout backLayerLayout = (BackLayerLayout) dependency;
+    final BackLayerLayout backLayerLayout = (BackLayerLayout) dependency;
     animateTranslation(
         backLayerLayout,
         child,

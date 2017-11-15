@@ -1,5 +1,3 @@
-package android.support.design.chip
-
 apply plugin: 'com.android.library'
 
 archivesBaseName = 'design'

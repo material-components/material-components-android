@@ -28,6 +28,7 @@ android {
     main.setRoot('./')
     main.java.srcDir 'javatests'
     main.java.excludes = [
+      '**/animation/**',
       '**/backlayer/**',
       '**/build/**',
     ]
