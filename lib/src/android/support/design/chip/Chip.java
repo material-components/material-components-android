@@ -95,6 +95,8 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   private static final int CLOSE_ICON_VIRTUAL_ID = 0;
 
+  private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
+
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({ExploreByTouchHelper.INVALID_ID, ExploreByTouchHelper.HOST_ID, CLOSE_ICON_VIRTUAL_ID})
   private @interface VirtualId {}
@@ -192,6 +194,15 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   private void applyChipDrawable(ChipDrawable chipDrawable) {
     chipDrawable.setDelegate(this);
+  }
+
+  @Override
+  protected int[] onCreateDrawableState(int extraSpace) {
+    final int[] state = super.onCreateDrawableState(extraSpace + 1);
+    if (isChecked()) {
+      mergeDrawableStates(state, SELECTED_STATE);
+    }
+    return state;
   }
 
   @Override

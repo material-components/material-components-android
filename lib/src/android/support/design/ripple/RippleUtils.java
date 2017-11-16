@@ -47,20 +47,20 @@ public class RippleUtils {
     android.R.attr.state_hovered,
   };
 
-  private static final int[] CHECKED_PRESSED_STATE_SET = {
-    android.R.attr.state_checked, android.R.attr.state_pressed,
+  private static final int[] SELECTED_PRESSED_STATE_SET = {
+    android.R.attr.state_selected, android.R.attr.state_pressed,
   };
-  private static final int[] CHECKED_HOVERED_FOCUSED_STATE_SET = {
-    android.R.attr.state_checked, android.R.attr.state_hovered, android.R.attr.state_focused,
+  private static final int[] SELECTED_HOVERED_FOCUSED_STATE_SET = {
+    android.R.attr.state_selected, android.R.attr.state_hovered, android.R.attr.state_focused,
   };
-  private static final int[] CHECKED_FOCUSED_STATE_SET = {
-    android.R.attr.state_checked, android.R.attr.state_focused,
+  private static final int[] SELECTED_FOCUSED_STATE_SET = {
+    android.R.attr.state_selected, android.R.attr.state_focused,
   };
-  private static final int[] CHECKED_HOVERED_STATE_SET = {
-    android.R.attr.state_checked, android.R.attr.state_hovered,
+  private static final int[] SELECTED_HOVERED_STATE_SET = {
+    android.R.attr.state_selected, android.R.attr.state_hovered,
   };
-  private static final int[] CHECKED_STATE_SET = {
-    android.R.attr.state_checked,
+  private static final int[] SELECTED_STATE_SET = {
+    android.R.attr.state_selected,
   };
 
   private RippleUtils() {}
@@ -77,7 +77,7 @@ public class RippleUtils {
 
       // Ideally we would define a different composite color for each state (like in the else block
       // below), but that causes the ripple animation to abort prematurely.
-      // So we only allow two base states: checked, and non-checked. For each base state, we only
+      // So we only allow two base states: selected, and non-selected. For each base state, we only
       // base the ripple composite on its pressed state.
 
       @ColorInt int color;
@@ -85,14 +85,14 @@ public class RippleUtils {
       @ColorInt int composite;
 
       // Checked base state.
-      color = getColorForState(rippleColor, CHECKED_STATE_SET);
-      alpha = getAlphaForState(rippleAlpha, CHECKED_PRESSED_STATE_SET);
+      color = getColorForState(rippleColor, SELECTED_STATE_SET);
+      alpha = getAlphaForState(rippleAlpha, SELECTED_PRESSED_STATE_SET);
       composite = compositeRippleColor(color, alpha);
-      states[i] = CHECKED_STATE_SET;
+      states[i] = SELECTED_STATE_SET;
       colors[i] = composite;
       i++;
 
-      // Non-checked base state.
+      // Non-selected base state.
       color = getColorForState(rippleColor, StateSet.NOTHING);
       alpha = getAlphaForState(rippleAlpha, PRESSED_STATE_SET);
       composite = compositeRippleColor(color, alpha);
@@ -109,23 +109,23 @@ public class RippleUtils {
       int i = 0;
 
       compositeRippleColorForState(
-          CHECKED_PRESSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          SELECTED_PRESSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
       compositeRippleColorForState(
-          CHECKED_HOVERED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          SELECTED_HOVERED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
       compositeRippleColorForState(
-          CHECKED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          SELECTED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
       compositeRippleColorForState(
-          CHECKED_HOVERED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+          SELECTED_HOVERED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
       i++;
 
       // Checked state.
-      states[i] = CHECKED_STATE_SET;
+      states[i] = SELECTED_STATE_SET;
       colors[i] = Color.TRANSPARENT;
       i++;
 

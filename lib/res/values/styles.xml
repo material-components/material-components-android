@@ -337,7 +337,7 @@
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
     <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab</item>
-    <item name="tabRippleColor">?attr/colorAccent</item>
+    <item name="tabRippleColor">@color/mtrl_tabs_ripple_color_selector</item>
     <item name="tabRippleAlpha">@color/mtrl_tabs_ripple_alpha</item>
   </style>
 

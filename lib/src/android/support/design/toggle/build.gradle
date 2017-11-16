@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+
+archivesBaseName = 'design'
+
+dependencies {
+  compile compatibility("v7/appcompat")
+
+  compile project(fromPath("lib"))
+  compile project(fromPath("lib/src/android/support/design/theme"))
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.java.excludes = [
+      '**/build/**',
+    ]
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+    main.resources.srcDir 'res'
+  }
+}
