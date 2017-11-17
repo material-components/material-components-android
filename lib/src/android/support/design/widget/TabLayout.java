@@ -1182,6 +1182,19 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   @Override
+  protected void onDraw(Canvas canvas) {
+    // Draw tab background layer for each tab item
+    for (int i = 0; i < mTabStrip.getChildCount(); i++) {
+      View tabView = mTabStrip.getChildAt(i);
+      if (tabView instanceof TabView) {
+        ((TabView) tabView).drawBackground(canvas);
+      }
+    }
+
+    super.onDraw(canvas);
+  }
+
+  @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     // If we have a MeasureSpec which allows us to decide our height, try and use the default
     // height
@@ -1682,6 +1695,7 @@ public class TabLayout extends HorizontalScrollView {
     private View mCustomView;
     private TextView mCustomTextView;
     private ImageView mCustomIconView;
+    @Nullable private Drawable mBaseBackgroundDrawable;
 
     private int mDefaultMaxLines = 2;
 
@@ -1698,15 +1712,15 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     private void updateBackgroundDrawable(Context context) {
-      Drawable background;
-      Drawable contentDrawable;
-
       if (mTabBackgroundResId != 0) {
-        contentDrawable = AppCompatResources.getDrawable(context, mTabBackgroundResId);
+        this.mBaseBackgroundDrawable = AppCompatResources.getDrawable(context, mTabBackgroundResId);
       } else {
-        contentDrawable = new GradientDrawable();
-        ((GradientDrawable) contentDrawable).setColor(Color.TRANSPARENT);
+        this.mBaseBackgroundDrawable = null;
       }
+
+      Drawable background;
+      Drawable contentDrawable = new GradientDrawable();
+      ((GradientDrawable) contentDrawable).setColor(Color.TRANSPARENT);
 
       if (mTabRippleColorStateList != null || mTabRippleAlphaStateList != null) {
         GradientDrawable maskDrawable = new GradientDrawable();
@@ -1729,6 +1743,23 @@ public class TabLayout extends HorizontalScrollView {
         background = contentDrawable;
       }
       ViewCompat.setBackground(this, background);
+    }
+
+    /**
+     * Draw the background drawable specified by tabBackground attribute onto the canvas provided.
+     * This method will draw the background to the full bounds of this TabView. We provide a
+     * separate method for drawing this background rather than just setting this background on the
+     * TabView so that we can control when this background gets drawn. This allows us to draw the
+     * tab background underneath the TabLayout selection indicator, and then draw the TabLayout
+     * content (icons + labels) on top of the selection indicator.
+     *
+     * @param canvas canvas to draw the background on
+     */
+    private void drawBackground(Canvas canvas) {
+      if (mBaseBackgroundDrawable != null) {
+        mBaseBackgroundDrawable.setBounds(getLeft(), getTop(), getRight(), getBottom());
+        mBaseBackgroundDrawable.draw(canvas);
+      }
     }
 
     @Override
@@ -2303,9 +2334,7 @@ public class TabLayout extends HorizontalScrollView {
 
     @Override
     public void draw(Canvas canvas) {
-      super.draw(canvas);
-
-      // Thick colored underline below the current selection
+      // Draw the rectangular selection indicator on top of tab item backgrounds
       if (mIndicatorLeft >= 0 && mIndicatorRight > mIndicatorLeft) {
         canvas.drawRect(
             mIndicatorLeft,
@@ -2314,6 +2343,9 @@ public class TabLayout extends HorizontalScrollView {
             getHeight(),
             mSelectedIndicatorPaint);
       }
+
+      // Draw the tab item contents (icon and label) on top of the background + indicator layers
+      super.draw(canvas);
     }
   }
 
