@@ -191,6 +191,8 @@
     <item name="android:stateListAnimator" tools:ignore="NewApi">
       @animator/design_appbar_state_list_animator
     </item>
+    <item name="android:keyboardNavigationCluster" tools:ignore="NewApi">true</item>
+    <item name="android:touchscreenBlocksFocus" tools:ignore="NewApi">true</item>
   </style>
 
   <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Display1">
