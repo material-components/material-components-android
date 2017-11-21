@@ -35,7 +35,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:duplicateParentState="true"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textSize="@dimen/design_bottom_navigation_text_size"/>
     <TextView
         android:id="@+id/largeLabel"
@@ -44,7 +44,7 @@
         android:paddingLeft="8dp"
         android:paddingRight="8dp"
         android:duplicateParentState="true"
-        android:singleLine="true"
+        android:maxLines="1"
         android:textSize="@dimen/design_bottom_navigation_active_text_size"
         android:visibility="invisible"/>
   </android.support.design.internal.BaselineLayout>
