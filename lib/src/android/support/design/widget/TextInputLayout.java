@@ -71,6 +71,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewStructure;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.EditText;
 import android.widget.FrameLayout;
@@ -133,6 +134,7 @@ public class TextInputLayout extends LinearLayout {
 
   private final FrameLayout mInputFrame;
   EditText mEditText;
+  private CharSequence mOriginalHint;
 
   private final IndicatorViewController indicatorViewController = new IndicatorViewController(this);
 
@@ -720,6 +722,24 @@ public class TextInputLayout extends LinearLayout {
     return mTypeface;
   }
 
+  @Override
+  public void dispatchProvideAutofillStructure(ViewStructure structure, int flags) {
+    if (mOriginalHint == null || mEditText == null) {
+      super.dispatchProvideAutofillStructure(structure, flags);
+      return;
+    }
+
+    // Temporarily sets child's hint to its original value so it is properly set in the
+    // child's ViewStructure.
+    final CharSequence hint = mEditText.getHint();
+    mEditText.setHint(mOriginalHint);
+    try {
+      super.dispatchProvideAutofillStructure(structure, flags);
+    } finally {
+      mEditText.setHint(hint);
+    }
+  }
+
   private void setEditText(EditText editText) {
     // If we already have an EditText, throw an exception
     if (mEditText != null) {
@@ -775,6 +795,9 @@ public class TextInputLayout extends LinearLayout {
 
     // If we do not have a valid hint, try and retrieve it from the EditText, if enabled
     if (mHintEnabled && TextUtils.isEmpty(mHint)) {
+      // Save the hint so it can be restored on dispatchProvideAutofillStructure();
+      mOriginalHint = mEditText.getHint();
+      setHint(mOriginalHint);
       setHint(mEditText.getHint());
       // Clear the EditText's hint as we will display it ourselves
       mEditText.setHint(null);
