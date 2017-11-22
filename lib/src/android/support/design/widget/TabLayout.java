@@ -1713,9 +1713,12 @@ public class TabLayout extends HorizontalScrollView {
 
     private void updateBackgroundDrawable(Context context) {
       if (mTabBackgroundResId != 0) {
-        this.mBaseBackgroundDrawable = AppCompatResources.getDrawable(context, mTabBackgroundResId);
+        mBaseBackgroundDrawable = AppCompatResources.getDrawable(context, mTabBackgroundResId);
+        if (mBaseBackgroundDrawable != null && mBaseBackgroundDrawable.isStateful()) {
+          mBaseBackgroundDrawable.setState(getDrawableState());
+        }
       } else {
-        this.mBaseBackgroundDrawable = null;
+        mBaseBackgroundDrawable = null;
       }
 
       Drawable background;
@@ -1743,6 +1746,7 @@ public class TabLayout extends HorizontalScrollView {
         background = contentDrawable;
       }
       ViewCompat.setBackground(this, background);
+      TabLayout.this.invalidate();
     }
 
     /**
@@ -1759,6 +1763,21 @@ public class TabLayout extends HorizontalScrollView {
       if (mBaseBackgroundDrawable != null) {
         mBaseBackgroundDrawable.setBounds(getLeft(), getTop(), getRight(), getBottom());
         mBaseBackgroundDrawable.draw(canvas);
+      }
+    }
+
+    @Override
+    protected void drawableStateChanged() {
+      super.drawableStateChanged();
+      boolean changed = false;
+      int[] state = getDrawableState();
+      if (mBaseBackgroundDrawable != null && mBaseBackgroundDrawable.isStateful()) {
+        changed |= mBaseBackgroundDrawable.setState(state);
+      }
+
+      if (changed) {
+        invalidate();
+        TabLayout.this.invalidate(); // Invalidate TabLayout, which draws mBaseBackgroundDrawable
       }
     }
 
