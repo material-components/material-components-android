@@ -101,6 +101,14 @@ public class BottomNavigationView extends FrameLayout {
   private static final int MENU_PRESENTER_ID = 1;
 
   /**
+   * Shifting mode enabled only when BottomNavigationView has 3 or more children (default).
+   *
+   * @see #setShiftingMode(int)
+   * @see #getShiftingMode()
+   */
+  public static final int SHIFTING_MODE_AUTO = -1;
+
+  /**
    * Shifting mode disabled in all cases.
    *
    * @see #setShiftingMode(int)
@@ -117,14 +125,6 @@ public class BottomNavigationView extends FrameLayout {
   public static final int SHIFTING_MODE_ON = 1;
 
   /**
-   * Shifting mode enabled only when BottomNavigationView has 3 or more children (default).
-   *
-   * @see #setShiftingMode(int)
-   * @see #getShiftingMode()
-   */
-  public static final int SHIFTING_MODE_AUTO = 2;
-
-  /**
    * Shifting mode flag enum for this {@link BottomNavigationView}. Shifting mode hides text labels
    * for child views when enabled, unless the child view is selected. Shifting mode is enabled for
    * {@link BottomNavigationView}s with more than 3 children by default, or for {@link
@@ -135,10 +135,7 @@ public class BottomNavigationView extends FrameLayout {
    *     href="https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs">Material
    *     Design guidelines</a>
    */
-  @IntDef(
-    flag = true,
-    value = {SHIFTING_MODE_OFF, SHIFTING_MODE_ON, SHIFTING_MODE_AUTO}
-  )
+  @IntDef({SHIFTING_MODE_AUTO, SHIFTING_MODE_OFF, SHIFTING_MODE_ON})
   @Retention(RetentionPolicy.SOURCE)
   public @interface ShiftingMode {}
 
