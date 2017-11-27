@@ -31,6 +31,7 @@ import android.support.v4.view.PointerIconCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
+import android.support.v7.widget.TooltipCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -98,7 +99,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     setTitle(itemData.getTitle());
     setId(itemData.getItemId());
     setContentDescription(itemData.getContentDescription());
-    ViewCompat.setTooltipText(this, itemData.getTooltipText());
+    TooltipCompat.setTooltipText(this, itemData.getTooltipText());
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
   }
 

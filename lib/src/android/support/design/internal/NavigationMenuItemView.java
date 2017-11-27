@@ -35,6 +35,7 @@ import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
+import android.support.v7.widget.TooltipCompat;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -112,7 +113,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     setIcon(itemData.getIcon());
     setActionView(itemData.getActionView());
     setContentDescription(itemData.getContentDescription());
-    ViewCompat.setTooltipText(this, itemData.getTooltipText());
+    TooltipCompat.setTooltipText(this, itemData.getTooltipText());
     adjustAppearance();
   }
 

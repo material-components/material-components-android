@@ -65,6 +65,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.app.ActionBar;
 import android.support.v7.content.res.AppCompatResources;
+import android.support.v7.widget.TooltipCompat;
 import android.text.Layout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -2053,7 +2054,7 @@ public class TabLayout extends HorizontalScrollView {
         }
       }
 
-      ViewCompat.setTooltipText(this, hasText ? null : contentDesc);
+      TooltipCompat.setTooltipText(this, hasText ? null : contentDesc);
     }
 
     public Tab getTab() {
