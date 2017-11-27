@@ -142,54 +142,42 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     mLargeLabel.setPivotY(mLargeLabel.getBaseline());
     mSmallLabel.setPivotX(mSmallLabel.getWidth() / 2);
     mSmallLabel.setPivotY(mSmallLabel.getBaseline());
+
     if (mShiftingMode) {
       if (checked) {
-        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-        iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-        iconParams.topMargin = mDefaultMargin;
-        mIcon.setLayoutParams(iconParams);
-        mLargeLabel.setVisibility(VISIBLE);
-        mLargeLabel.setScaleX(1f);
-        mLargeLabel.setScaleY(1f);
+        setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
       } else {
-        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-        iconParams.gravity = Gravity.CENTER;
-        iconParams.topMargin = mDefaultMargin;
-        mIcon.setLayoutParams(iconParams);
-        mLargeLabel.setVisibility(INVISIBLE);
-        mLargeLabel.setScaleX(0.5f);
-        mLargeLabel.setScaleY(0.5f);
+        setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER);
+        setViewValues(mLargeLabel, 0.5f, 0.5f, INVISIBLE);
       }
       mSmallLabel.setVisibility(INVISIBLE);
     } else {
       if (checked) {
-        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-        iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-        iconParams.topMargin = mDefaultMargin + mShiftAmount;
-        mIcon.setLayoutParams(iconParams);
-        mLargeLabel.setVisibility(VISIBLE);
-        mSmallLabel.setVisibility(INVISIBLE);
-
-        mLargeLabel.setScaleX(1f);
-        mLargeLabel.setScaleY(1f);
-        mSmallLabel.setScaleX(mScaleUpFactor);
-        mSmallLabel.setScaleY(mScaleUpFactor);
+        setViewLayoutParams(
+            mIcon, mDefaultMargin + mShiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
+        setViewValues(mSmallLabel, mScaleUpFactor, mScaleUpFactor, INVISIBLE);
       } else {
-        LayoutParams iconParams = (LayoutParams) mIcon.getLayoutParams();
-        iconParams.gravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
-        iconParams.topMargin = mDefaultMargin;
-        mIcon.setLayoutParams(iconParams);
-        mLargeLabel.setVisibility(INVISIBLE);
-        mSmallLabel.setVisibility(VISIBLE);
-
-        mLargeLabel.setScaleX(mScaleDownFactor);
-        mLargeLabel.setScaleY(mScaleDownFactor);
-        mSmallLabel.setScaleX(1f);
-        mSmallLabel.setScaleY(1f);
+        setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(mLargeLabel, mScaleDownFactor, mScaleDownFactor, INVISIBLE);
+        setViewValues(mSmallLabel, 1f, 1f, VISIBLE);
       }
     }
-
     refreshDrawableState();
+  }
+
+  private void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {
+    LayoutParams viewParams = (LayoutParams) view.getLayoutParams();
+    viewParams.topMargin = topMargin;
+    viewParams.gravity = gravity;
+    view.setLayoutParams(viewParams);
+  }
+
+  private void setViewValues(@NonNull View view, float scaleX, float scaleY, int visibility) {
+    view.setScaleX(scaleX);
+    view.setScaleY(scaleY);
+    view.setVisibility(visibility);
   }
 
   @Override
