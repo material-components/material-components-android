@@ -23,10 +23,9 @@ import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 
-import android.app.Activity;
 import android.support.design.testapp.AppBarLayoutCollapsePinActivity;
 import android.support.design.testapp.R;
-import android.support.design.testutils.TestUtils;
+import android.support.design.testutils.ActivityUtils;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.Rule;
@@ -40,12 +39,9 @@ public class AppBarWithCollapsingToolbarStateRestoreTest {
       new ActivityTestRule<>(AppBarLayoutCollapsePinActivity.class);
 
   @Test
-  public void testRotateAndRestore() {
-    final Activity activity = activityTestRule.getActivity();
-    final AppBarLayout appBar = activity.findViewById(R.id.app_bar);
-
-    // Save the orientation state.
-    int oldOrientation = TestUtils.getScreenOrientation(activity);
+  public void testRecreateAndRestore() throws Throwable {
+    AppBarLayoutCollapsePinActivity activity = activityTestRule.getActivity();
+    AppBarLayout appBar = activity.findViewById(R.id.app_bar);
 
     // Swipe up and collapse the AppBarLayout
     onView(withId(R.id.coordinator_layout))
@@ -56,13 +52,9 @@ public class AppBarWithCollapsingToolbarStateRestoreTest {
                 appBar.getHeight()));
     onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
 
-    // Now rotate the Activity
-    TestUtils.switchScreenOrientation(activity);
+    ActivityUtils.recreateActivity(activityTestRule, activity);
+    ActivityUtils.waitForExecution(activityTestRule);
 
-    // And check that the app bar still is restored correctly
     onView(withId(R.id.app_bar)).check(matches(hasZ())).check(matches(isCollapsed()));
-
-    // Restore the orientation state.
-    TestUtils.resetScreenOrientation(activity, oldOrientation);
   }
 }

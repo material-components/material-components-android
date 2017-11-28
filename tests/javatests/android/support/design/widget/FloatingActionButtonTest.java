@@ -54,6 +54,7 @@ import android.graphics.Color;
 import android.graphics.Rect;
 import android.support.design.testapp.FloatingActionButtonActivity;
 import android.support.design.testapp.R;
+import android.support.design.testutils.ActivityUtils;
 import android.support.design.testutils.TestUtils;
 import android.support.test.espresso.action.CoordinatesProvider;
 import android.support.test.espresso.action.GeneralSwipeAction;
@@ -288,18 +289,17 @@ public class FloatingActionButtonTest {
 
   @Test
   @MediumTest
-  public void testInstanceState() {
+  public void testInstanceState() throws Throwable {
     FloatingActionButtonActivity activity = activityTestRule.getActivity();
-    int oldOrientation = TestUtils.getScreenOrientation(activity);
 
     onView(withId(R.id.fab_standard)).perform(setExpanded(false));
-    TestUtils.switchScreenOrientation(activity);
+    ActivityUtils.recreateActivity(activityTestRule, activity);
+    ActivityUtils.waitForExecution(activityTestRule);
     onView(withId(R.id.fab_standard)).check(matches(not(isExpanded())));
 
     onView(withId(R.id.fab_standard)).perform(setExpanded(true));
-    TestUtils.switchScreenOrientation(activity);
+    ActivityUtils.recreateActivity(activityTestRule, activity);
+    ActivityUtils.waitForExecution(activityTestRule);
     onView(withId(R.id.fab_standard)).check(matches(isExpanded()));
-
-    TestUtils.resetScreenOrientation(activity, oldOrientation);
   }
 }

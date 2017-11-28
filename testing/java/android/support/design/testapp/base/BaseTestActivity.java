@@ -18,10 +18,10 @@ package android.support.design.testapp.base;
 
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.v7.app.AppCompatActivity;
 import android.view.WindowManager;
 
-public abstract class BaseTestActivity extends AppCompatActivity {
+/** Base activity type for all Material Components test fixtures. */
+public abstract class BaseTestActivity extends RecreatableAppCompatActivity {
 
   private boolean mDestroyed;
 

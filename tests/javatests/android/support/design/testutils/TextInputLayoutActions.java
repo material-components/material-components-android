@@ -21,9 +21,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
+import android.support.design.R;
 import android.support.design.widget.TextInputLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
+import android.support.test.espresso.matcher.ViewMatchers;
 import android.view.View;
 import org.hamcrest.Matcher;
 
@@ -361,6 +363,31 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setHintTextAppearance(resId);
+      }
+    };
+  }
+
+  /** Toggles password. */
+  public static ViewAction clickPasswordToggle() {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Clicks the password toggle";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout textInputLayout = (TextInputLayout) view;
+        // Reach in and find the password toggle since we don't have a public API
+        // to get a reference to it
+        View passwordToggle = textInputLayout.findViewById(R.id.text_input_password_toggle);
+        passwordToggle.performClick();
       }
     };
   }
