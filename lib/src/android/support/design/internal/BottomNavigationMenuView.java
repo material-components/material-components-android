@@ -55,6 +55,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final Pools.Pool<BottomNavigationItemView> mItemPool = new Pools.SynchronizedPool<>(5);
 
   private int mShiftingModeFlag = BottomNavigationView.SHIFTING_MODE_AUTO;
+  private boolean mItemHorizontalTranslation;
 
   private BottomNavigationItemView[] mButtons;
   private int mSelectedItemId = 0;
@@ -119,7 +120,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
     final int heightSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
 
-    if (isShifting(mShiftingModeFlag, visibleCount)) {
+    if (isShifting(mShiftingModeFlag, visibleCount) && mItemHorizontalTranslation) {
       final View activeChild = getChildAt(mSelectedItemPosition);
       int activeItemWidth = mActiveItemMinWidth;
       if (activeChild.getVisibility() != View.GONE) {
@@ -137,6 +138,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
           (width - activeWidth) / (inactiveCount == 0 ? 1 : inactiveCount);
       final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
+
       for (int i = 0; i < totalCount; i++) {
         if (getChildAt(i).getVisibility() != View.GONE) {
           mTempChildWidths[i] = (i == mSelectedItemPosition) ? activeWidth : inactiveWidth;
@@ -304,6 +306,26 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     return mShiftingModeFlag;
   }
 
+  /**
+   * Sets whether the menu items horizontally translate in shifting mode.
+   *
+   * @param itemHorizontalTranslation whether the menu items horizontally translate in shifting mode
+   * @see #getItemHorizontalTranslation()
+   */
+  public void setItemHorizontalTranslation(boolean itemHorizontalTranslation) {
+    mItemHorizontalTranslation = itemHorizontalTranslation;
+  }
+
+  /**
+   * Returns whether the menu items horizontally translate in shifting mode.
+   *
+   * @return whether the menu items horizontally translate in shifting mode
+   * @see #setItemHorizontalTranslation(boolean)
+   */
+  public boolean getItemHorizontalTranslation() {
+    return mItemHorizontalTranslation;
+  }
+
   public void setPresenter(BottomNavigationPresenter presenter) {
     mPresenter = presenter;
   }
@@ -326,19 +348,19 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     mButtons = new BottomNavigationItemView[mMenu.size()];
     boolean shifting = isShifting(mShiftingModeFlag, mMenu.getVisibleItems().size());
     for (int i = 0; i < mMenu.size(); i++) {
-        mPresenter.setUpdateSuspended(true);
-        mMenu.getItem(i).setCheckable(true);
-        mPresenter.setUpdateSuspended(false);
-        BottomNavigationItemView child = getNewItem();
-        mButtons[i] = child;
-        child.setIconTintList(mItemIconTint);
-        child.setTextColor(mItemTextColor);
-        child.setItemBackground(mItemBackgroundRes);
-        child.setShiftingMode(shifting);
-        child.initialize((MenuItemImpl) mMenu.getItem(i), 0);
-        child.setItemPosition(i);
-        child.setOnClickListener(mOnClickListener);
-        addView(child);
+      mPresenter.setUpdateSuspended(true);
+      mMenu.getItem(i).setCheckable(true);
+      mPresenter.setUpdateSuspended(false);
+      BottomNavigationItemView child = getNewItem();
+      mButtons[i] = child;
+      child.setIconTintList(mItemIconTint);
+      child.setTextColor(mItemTextColor);
+      child.setItemBackground(mItemBackgroundRes);
+      child.setShiftingMode(shifting);
+      child.initialize((MenuItemImpl) mMenu.getItem(i), 0);
+      child.setItemPosition(i);
+      child.setOnClickListener(mOnClickListener);
+      addView(child);
     }
     mSelectedItemPosition = Math.min(mMenu.size() - 1, mSelectedItemPosition);
     mMenu.getItem(mSelectedItemPosition).setChecked(true);

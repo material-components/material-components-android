@@ -52,11 +52,13 @@
   <style name="Widget.Design.BottomNavigationView" parent="">
     <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
     <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
+    <item name="itemHorizontalTranslation">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
     <item name="android:background">?attr/colorPrimary</item>
     <item name="itemIconTint">?attr/colorAccent</item>
+    <item name="itemHorizontalTranslation">false</item>
     <item name="itemTextColor">?attr/colorAccent</item>
     <item name="shiftingMode">off</item>
   </style>

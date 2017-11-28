@@ -392,8 +392,8 @@
     <!-- The initial expanded state for the AppBarLayout. This only takes effect when this
          view is a direct child of a CoordinatorLayout. -->
     <attr name="expanded" format="boolean"/>
-    <attr name="android:keyboardNavigationCluster" />
-    <attr name="android:touchscreenBlocksFocus" />
+    <attr name="android:keyboardNavigationCluster"/>
+    <attr name="android:touchscreenBlocksFocus"/>
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">
@@ -568,9 +568,11 @@
   <declare-styleable name="BottomNavigationView">
     <!-- The menu resource to inflate and populate items from. -->
     <attr name="menu"/>
+    <attr name="itemBackground"/>
     <attr name="itemIconTint"/>
     <attr name="itemTextColor"/>
-    <attr name="itemBackground"/>
+    <!-- Whether the items should translate horizontally when in shifting mode. -->
+    <attr name="itemHorizontalTranslation" format="boolean"/>
     <attr name="elevation"/>
     <!--
       Whether shifting mode, which hides label on all but the active view, should be enabled
@@ -578,9 +580,9 @@
       (see https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs)
     -->
     <attr name="shiftingMode">
+      <enum name="auto" value="-1"/>
       <enum name="off" value="0"/>
       <enum name="on" value="1"/>
-      <enum name="auto" value="2"/>
     </attr>
   </declare-styleable>
 

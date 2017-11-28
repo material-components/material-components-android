@@ -22,6 +22,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.BoolRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
@@ -206,6 +207,9 @@ public class BottomNavigationView extends FrameLayout {
           a.getInt(R.styleable.BottomNavigationView_shiftingMode, SHIFTING_MODE_AUTO);
       mMenuView.setShiftingMode(shiftingMode);
     }
+
+    setItemHorizontalTranslation(
+        a.getBoolean(R.styleable.BottomNavigationView_itemHorizontalTranslation, true));
 
     int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
     mMenuView.setItemBackgroundRes(itemBackground);
@@ -410,6 +414,39 @@ public class BottomNavigationView extends FrameLayout {
       mMenuView.setShiftingMode(shiftingMode);
       mPresenter.updateMenuView(false /* cleared */);
     }
+  }
+
+  /**
+   * Sets whether the menu items horizontally translate when in shifting mode.
+   *
+   * @param itemHorizontalTranslation whether the items horizontally translate in shifting mode
+   * @see #getItemHorizontalTranslation()
+   */
+  public void setItemHorizontalTranslation(boolean itemHorizontalTranslation) {
+    if (mMenuView.getItemHorizontalTranslation() != itemHorizontalTranslation) {
+      mMenuView.setItemHorizontalTranslation(itemHorizontalTranslation);
+      mPresenter.updateMenuView(false);
+    }
+  }
+
+  /**
+   * Sets whether the menu items horizontally translate when in shifting mode using a resource ID.
+   *
+   * @param itemHorizontalTranslation whether the items horizontally translate in shifting mode
+   * @see #getItemHorizontalTranslation()
+   */
+  public void setItemHorizontalTranslation(@BoolRes int itemHorizontalTranslation) {
+    setItemHorizontalTranslation(getContext().getResources().getBoolean(itemHorizontalTranslation));
+  }
+
+  /**
+   * Returns whether the menu items horizontally translate in shifting mode.
+   *
+   * @return whether the menu items horizontally translate in shifting mode
+   * @see #setItemHorizontalTranslation(boolean)
+   */
+  public boolean getItemHorizontalTranslation() {
+    return mMenuView.getItemHorizontalTranslation();
   }
 
   /** Listener for handling selection events on bottom navigation items. */
