@@ -1309,7 +1309,23 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setChipIconEnabled(boolean chipIconEnabled) {
-    this.chipIconEnabled = chipIconEnabled;
+    if (this.chipIconEnabled != chipIconEnabled) {
+      boolean oldShowsChipIcon = showsChipIcon();
+      this.chipIconEnabled = chipIconEnabled;
+      boolean newShowsChipIcon = showsChipIcon();
+
+      boolean changed = oldShowsChipIcon != newShowsChipIcon;
+      if (changed) {
+        if (newShowsChipIcon) {
+          applyChildDrawable(chipIcon);
+        } else {
+          unapplyChildDrawable(chipIcon);
+        }
+
+        invalidateSelf();
+        onSizeChange();
+      }
+    }
   }
 
   @Nullable
@@ -1370,7 +1386,23 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setCloseIconEnabled(boolean closeIconEnabled) {
-    this.closeIconEnabled = closeIconEnabled;
+    if (this.closeIconEnabled != closeIconEnabled) {
+      boolean oldShowsCloseIcon = showsCloseIcon();
+      this.closeIconEnabled = closeIconEnabled;
+      boolean newShowsCloseIcon = showsCloseIcon();
+
+      boolean changed = oldShowsCloseIcon != newShowsCloseIcon;
+      if (changed) {
+        if (newShowsCloseIcon) {
+          applyChildDrawable(closeIcon);
+        } else {
+          unapplyChildDrawable(closeIcon);
+        }
+
+        invalidateSelf();
+        onSizeChange();
+      }
+    }
   }
 
   @Nullable
@@ -1474,7 +1506,23 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setCheckedIconEnabled(boolean checkedIconEnabled) {
-    this.checkedIconEnabled = checkedIconEnabled;
+    if (this.checkedIconEnabled != checkedIconEnabled) {
+      boolean oldShowsCheckedIcon = showsCheckedIcon();
+      this.checkedIconEnabled = checkedIconEnabled;
+      boolean newShowsCheckedIcon = showsCheckedIcon();
+
+      boolean changed = oldShowsCheckedIcon != newShowsCheckedIcon;
+      if (changed) {
+        if (newShowsCheckedIcon) {
+          applyChildDrawable(checkedIcon);
+        } else {
+          unapplyChildDrawable(checkedIcon);
+        }
+
+        invalidateSelf();
+        onSizeChange();
+      }
+    }
   }
 
   @Nullable

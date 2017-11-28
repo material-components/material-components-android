@@ -461,7 +461,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     boolean changed = false;
 
     if (chipDrawable != null && chipDrawable.isCloseIconStateful()) {
-      changed = chipDrawable.setCloseIconState(getCloseIconDrawableState());
+      changed = chipDrawable.setCloseIconState(createCloseIconDrawableState());
     }
 
     if (changed) {
@@ -469,7 +469,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  private int[] getCloseIconDrawableState() {
+  private int[] createCloseIconDrawableState() {
     int count = 0;
     if (isEnabled()) {
       count++;
@@ -481,6 +481,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       count++;
     }
     if (closeIconPressed) {
+      count++;
+    }
+    if (isChecked()) {
       count++;
     }
 
@@ -501,6 +504,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
     if (closeIconPressed) {
       stateSet[i] = android.R.attr.state_pressed;
+      i++;
+    }
+    if (isChecked()) {
+      stateSet[i] = android.R.attr.state_selected;
       i++;
     }
     return stateSet;
