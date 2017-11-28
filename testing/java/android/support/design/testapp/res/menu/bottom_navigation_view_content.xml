@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
-<!-- Copyright (C) 2016 Google Inc.
+<!--
+     Copyright (C) 2016 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -13,14 +14,24 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:id="@+id/destination_home"
-          android:title="@string/navigate_home"
-          android:icon="@drawable/test_drawable_red" />
-    <item android:id="@+id/destination_profile"
-          android:title="@string/navigate_profile"
-          android:icon="@drawable/test_drawable_green" />
-    <item android:id="@+id/destination_people"
-          android:title="@string/navigate_people"
-          android:icon="@drawable/test_drawable_blue" />
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+  <item
+      android:id="@+id/destination_home"
+      android:icon="@drawable/test_drawable_red"
+      android:title="@string/navigate_home"
+      app:contentDescription="@string/navigate_home"
+      app:tooltipText="@string/navigate_home"/>
+  <item
+      android:id="@+id/destination_profile"
+      android:icon="@drawable/test_drawable_green"
+      android:title="@string/navigate_profile"
+      app:contentDescription="@string/navigate_profile"
+      app:tooltipText="@string/navigate_profile"/>
+  <item
+      android:id="@+id/destination_people"
+      android:icon="@drawable/test_drawable_blue"
+      android:title="@string/navigate_people"
+      app:contentDescription="@string/navigate_people"
+      app:tooltipText="@string/navigate_people"/>
 </menu>
