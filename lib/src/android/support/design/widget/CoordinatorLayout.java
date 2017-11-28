@@ -659,14 +659,13 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
           continue;
         }
         final View other = getChildAt(j);
-        final LayoutParams otherLp = getResolvedLayoutParams(other);
-        if (otherLp.dependsOn(this, other, view)) {
+        if (lp.dependsOn(this, view, other)) {
           if (!mChildDag.contains(other)) {
             // Make sure that the other node is added
             mChildDag.addNode(other);
           }
           // Now add the dependency to the graph
-          mChildDag.addEdge(view, other);
+          mChildDag.addEdge(other, view);
         }
       }
     }

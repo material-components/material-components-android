@@ -14,16 +14,17 @@
      limitations under the License.
 -->
 <resources>
-    <item name="page_0" type="id"/>
-    <item name="page_1" type="id"/>
-    <item name="page_2" type="id"/>
-    <item name="page_3" type="id"/>
-    <item name="page_4" type="id"/>
-    <item name="page_5" type="id"/>
-    <item name="page_6" type="id"/>
-    <item name="page_7" type="id"/>
-    <item name="page_8" type="id"/>
-    <item name="page_9" type="id"/>
-    <item name="textinputlayout" type="id"/>
-    <item name="textinputedittext" type="id"/>
+  <item name="page_0" type="id"/>
+  <item name="page_1" type="id"/>
+  <item name="page_2" type="id"/>
+  <item name="page_3" type="id"/>
+  <item name="page_4" type="id"/>
+  <item name="page_5" type="id"/>
+  <item name="page_6" type="id"/>
+  <item name="page_7" type="id"/>
+  <item name="page_8" type="id"/>
+  <item name="page_9" type="id"/>
+  <item name="textinputlayout" type="id"/>
+  <item name="textinputedittext" type="id"/>
+  <item name="anchor" type="id"/>
 </resources>
