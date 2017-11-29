@@ -132,7 +132,7 @@ public class MotionSpec {
         return null;
       }
     } catch (Exception e) {
-      Log.d(TAG, "Can't load animation resource ID #0x" + Integer.toHexString(id), e);
+      Log.w(TAG, "Can't load animation resource ID #0x" + Integer.toHexString(id), e);
       return null;
     }
   }

@@ -16,6 +16,10 @@
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.support.design.chip">
-  <uses-sdk android:minSdkVersion="14"/>
+
+  <uses-sdk
+    android:minSdkVersion="14"
+    android:targetSdkVersion="25"/>
+
   <application/>
 </manifest>
