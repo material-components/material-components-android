@@ -96,7 +96,7 @@
 
   <dimen name="mtrl_bottomappbar_fab_cradle_diameter">64dp</dimen>
   <dimen name="mtrl_bottomappbar_fab_cradle_rounded_corner_radius">8dp</dimen>
-  <dimen name="mtrl_bottomappbar_fab_cradle_vertical_offset">16dp</dimen>
+  <dimen name="mtrl_bottomappbar_fab_cradle_vertical_offset">0dp</dimen>
 
   <dimen name="mtrl_chip_pressed_translation_z">3dp</dimen>
   <dimen name="mtrl_chip_text_size">14sp</dimen>
