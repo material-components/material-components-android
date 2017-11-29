@@ -59,6 +59,19 @@
     <attr name="chipStyle" format="reference"/>
     <!-- Style to use for standalone Chips in this theme, usually to be used in an EditText. -->
     <attr name="chipStandaloneStyle" format="reference"/>
+    <!-- Style to use for BottomAppBar in this theme. -->
+    <attr name="bottomAppBarStyle" format="reference"/>
+  </declare-styleable>
+
+  <declare-styleable name="BottomAppBar">
+    <!-- Background for the BottomAppBar. -->
+    <attr name="backgroundTint"/>
+    <!-- The diameter of the semi-circular cradle for the fab. -->
+    <attr name="fabCradleDiameter" format="dimension"/>
+    <!-- The radius of the rounded corners on each side of the cradle. -->
+    <attr name="fabCradleRoundedCornerRadius" format="dimension"/>
+    <!-- The vertical offset between the fab from the cradle. -->
+    <attr name="fabCradleVerticalOffset" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="ChipDrawable">

@@ -61,6 +61,9 @@
   <!-- 0% opacity white container fill -->
   <color name="mtrl_btn_transparent_bg_color">#00ffffff</color>
 
+  <!-- 96% opacity white -->
+  <color name="mtrl_bottomappbar_default_tint">#F5FFFFFF</color>
+
   <color name="mtrl_chip_ripple_color">#000000</color>
 
   <!-- 32% opacity black -->

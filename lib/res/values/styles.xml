@@ -223,6 +223,13 @@
     <item name="behavior_skipCollapsed">false</item>
   </style>
 
+  <style name="Widget.MaterialComponents.BottomAppBar" parent="Widget.AppCompat.Toolbar">
+    <item name="backgroundTint">@color/mtrl_bottomappbar_default_tint</item>
+    <item name="fabCradleDiameter">@dimen/mtrl_bottomappbar_fab_cradle_diameter</item>
+    <item name="fabCradleRoundedCornerRadius">@dimen/mtrl_bottomappbar_fab_cradle_rounded_corner_radius</item>
+    <item name="fabCradleVerticalOffset">@dimen/mtrl_bottomappbar_fab_cradle_vertical_offset</item>
+  </style>
+
   <!-- Base style for Chips. You should use one of the sub-styles instead. -->
   <style name="Widget.MaterialComponents.Chip" parent="android:Widget">
     <item name="android:focusable">true</item>

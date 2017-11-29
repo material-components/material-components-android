@@ -50,6 +50,7 @@
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
+    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
@@ -71,6 +72,7 @@
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
+    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
@@ -92,6 +94,7 @@
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
+    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
@@ -113,6 +116,7 @@
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
+    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
