@@ -16,6 +16,7 @@
 
 package android.support.design.chip;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -37,6 +38,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Drawable.Callback;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.AnimatorRes;
 import android.support.annotation.AttrRes;
 import android.support.annotation.BoolRes;
@@ -932,6 +934,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   @Override
+  @TargetApi(VERSION_CODES.M)
   public boolean onLayoutDirectionChanged(int layoutDirection) {
     boolean invalidate = super.onLayoutDirectionChanged(layoutDirection);
 
@@ -1045,6 +1048,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   @Override
+  @TargetApi(VERSION_CODES.LOLLIPOP)
   public void getOutline(@NonNull Outline outline) {
     Rect bounds = getBounds();
     if (!bounds.isEmpty()) {

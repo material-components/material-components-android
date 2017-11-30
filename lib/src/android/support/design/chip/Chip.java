@@ -16,6 +16,7 @@
 
 package android.support.design.chip;
 
+import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Outline;
@@ -23,6 +24,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
+import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -145,6 +147,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       setOutlineProvider(
           new ViewOutlineProvider() {
             @Override
+            @TargetApi(Build.VERSION_CODES.LOLLIPOP)
             public void getOutline(View view, Outline outline) {
               if (chipDrawable != null) {
                 chipDrawable.getOutline(outline);
@@ -174,6 +177,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       applyChipDrawable(chipDrawable);
 
       if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
+        //noinspection NewApi
         RippleDrawable ripple =
             new RippleDrawable(
                 getCompositeChipRippleColorStateList(chipDrawable), chipDrawable, null);
@@ -535,6 +539,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   @Override
+  @TargetApi(VERSION_CODES.N)
   public PointerIcon onResolvePointerIcon(MotionEvent event, int pointerIndex) {
     if (getCloseIconTouchBounds().contains(event.getX(), event.getY()) && isEnabled()) {
       return PointerIcon.getSystemIcon(getContext(), PointerIcon.TYPE_HAND);
