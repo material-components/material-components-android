@@ -1,28 +1,26 @@
 buildscript {
   repositories {
+    google()
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:2.3.3'
+    classpath 'com.android.tools.build:gradle:3.0.1'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
   }
 }
 
 allprojects {
   repositories {
+    google()
     jcenter()
-    maven {
-      url "https://maven.google.com"
-    }
   }
 }
 
 ext {
-  buildToolsVersion = '26.0.0'
-  compileSdkVersion = 26
+  compileSdkVersion = 27
   minSdkVersion = 14
-  targetSdkVersion = 26
-  supportVersion = '26.1.0'
+  targetSdkVersion = 27
+  supportVersion = '27.0.2'
 
   testRunnerVersion = '0.6-alpha'
   espressoVersion = '2.3-alpha'
@@ -152,20 +150,22 @@ subprojects {
     }
 
     if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
-      // Enforce NewApi lint check as fatal.
-      project.android.lintOptions.check 'NewApi'
-      project.android.lintOptions.fatal 'NewApi'
-      // Output lint errors on stdout
-      project.android.lintOptions.textReport true
-      project.android.lintOptions.textOutput 'stdout'
+      if (!isAndroidTest) {
+        // Enforce NewApi lint check as fatal.
+        project.android.lintOptions.check 'NewApi'
+        project.android.lintOptions.fatal 'NewApi'
+        // Output lint errors on stdout
+        project.android.lintOptions.textReport true
+        project.android.lintOptions.textOutput 'stdout'
+
+        rootProject.lint.dependsOn project.lint
+      }
+
       // Disable pre-dexing when gradle called with -PdisablePreDex;
       project.android.dexOptions.preDexLibraries = rootProject.ext.preDexLibs
 
-      rootProject.lint.dependsOn project.lint
-
       project.android {
         compileSdkVersion rootProject.ext.compileSdkVersion
-        buildToolsVersion rootProject.ext.buildToolsVersion
 
         defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
         defaultConfig.targetSdkVersion rootProject.ext.targetSdkVersion

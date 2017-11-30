@@ -1,13 +1,13 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  compile compatibility("compat")
-  compile compatibility("core_ui")
-  compile compatibility("core_utils")
-  compile compatibility("fragment")
-  compile compatibility("v7/appcompat")
+  api compatibility("compat")
+  api compatibility("core_ui")
+  api compatibility("core_utils")
+  api compatibility("fragment")
+  api compatibility("v7/appcompat")
 
-  compile project(fromPath("demos/java/io/material/demo/shrine/theme"))
+  api project(fromPath("demos/java/io/material/demo/shrine/theme"))
 }
 
 android {

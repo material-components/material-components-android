@@ -3,9 +3,9 @@ apply plugin: 'com.android.library'
 archivesBaseName = 'design'
 
 dependencies {
-  compile compatibility("annotations")
-  compile compatibility("compat")
-  compile compatibility("v7/appcompat")
+  api compatibility("annotations")
+  api compatibility("compat")
+  api compatibility("v7/appcompat")
 }
 
 android {

@@ -1,16 +1,16 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  compile compatibility("v7/appcompat")
-  compile compatibility("v7/cardview")
-  compile compatibility("v7/recyclerview")
+  api compatibility("v7/appcompat")
+  api compatibility("v7/cardview")
+  api compatibility("v7/recyclerview")
 
-  compile 'com.android.volley:volley:1.0.0'
-  compile 'com.google.code.gson:gson:2.2.4'
-  compile project(':lib')
+  api 'com.android.volley:volley:1.0.0'
+  api 'com.google.code.gson:gson:2.2.4'
+  api project(':lib')
 
-  compile project(fromPath("demos/java/io/material/demo/shrine/filters"))
-  compile project(fromPath("demos/java/io/material/demo/shrine/theme"))
+  api project(fromPath("demos/java/io/material/demo/shrine/filters"))
+  api project(fromPath("demos/java/io/material/demo/shrine/theme"))
 }
 
 android {

@@ -1,18 +1,18 @@
 apply plugin: 'com.android.test'
 
 dependencies {
-  compile ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
+  implementation ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
     exclude module: 'support-annotations'
   }
-  compile ("com.android.support.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}") {
+  implementation ("com.android.support.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}") {
     exclude module: 'support-annotations'
   }
-  compile ("com.android.support.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}") {
+  implementation ("com.android.support.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}") {
     exclude group: 'com.android.support'
   }
-  compile 'org.mockito:mockito-core:1.9.5'
-  compile 'com.google.dexmaker:dexmaker:1.2'
-  compile 'com.google.dexmaker:dexmaker-mockito:1.2'
+  implementation 'org.mockito:mockito-core:1.9.5'
+  implementation 'com.google.dexmaker:dexmaker:1.2'
+  implementation 'com.google.dexmaker:dexmaker-mockito:1.2'
 }
 
 android {
@@ -22,7 +22,6 @@ android {
   }
 
   targetProjectPath getTransformedProjectPath('testing/java/android/support/design/testapp')
-  targetVariant 'debug'
 
   sourceSets {
     main.setRoot('./')

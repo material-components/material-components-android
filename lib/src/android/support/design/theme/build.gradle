@@ -3,7 +3,7 @@ apply plugin: 'com.android.library'
 archivesBaseName = 'design'
 
 dependencies {
-  compile compatibility("v7/appcompat")
+  api compatibility("v7/appcompat")
 }
 
 android {

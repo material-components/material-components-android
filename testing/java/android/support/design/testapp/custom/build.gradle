@@ -1,16 +1,13 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  compile compatibility("compat")
-  compile compatibility("v7/appcompat")
+  api compatibility("compat")
+  api compatibility("v7/appcompat")
 
-  compile project(fromPath("lib"))
+  api project(fromPath("lib"))
 }
 
 android {
-  // Ensures all variants are available for tests to depend on
-  publishNonDefault true
-
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
     main.java.srcDirs = [ '.' ]

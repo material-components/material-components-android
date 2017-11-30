@@ -5,32 +5,30 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
+  api compatibility("annotations")
+  api compatibility("compat")
+  api compatibility("core_ui")
+  api compatibility("core_utils")
+  api compatibility("fragment")
+  api compatibility("transition")
+  api compatibility("v7/appcompat")
+  api compatibility("v7/recyclerview")
 
-  compile compatibility("annotations")
-  compile compatibility("compat")
-  compile compatibility("core_ui")
-  compile compatibility("core_utils")
-  compile compatibility("fragment")
-  compile compatibility("transition")
-  compile compatibility("v7/appcompat")
-  compile compatibility("v7/recyclerview")
+  api project(fromPath("lib/src/android/support/design/animation"))
+  api project(fromPath("lib/src/android/support/design/circularreveal"))
+  api project(fromPath("lib/src/android/support/design/circularreveal/cardview"))
+  api project(fromPath("lib/src/android/support/design/math"))
+  api project(fromPath("lib/src/android/support/design/resources"))
+  api project(fromPath("lib/src/android/support/design/ripple"))
+  api project(fromPath("lib/src/android/support/design/stateful"))
 
-
-  compile project(fromPath("lib/src/android/support/design/animation"))
-  compile project(fromPath("lib/src/android/support/design/circularreveal"))
-  compile project(fromPath("lib/src/android/support/design/circularreveal/cardview"))
-  compile project(fromPath("lib/src/android/support/design/math"))
-  compile project(fromPath("lib/src/android/support/design/resources"))
-  compile project(fromPath("lib/src/android/support/design/ripple"))
-  compile project(fromPath("lib/src/android/support/design/stateful"))
-
-  testCompile("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
+  testImplementation("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
     exclude module: 'support-annotations'
   }
-  testCompile "junit:junit:4.12"
-  testCompile "com.google.truth:truth:0.35"
-  testCompile "org.mockito:mockito-core:1.9.5"
-  testCompile "org.robolectric:robolectric:3.3.2"
+  testImplementation "junit:junit:4.12"
+  testImplementation "com.google.truth:truth:0.35"
+  testImplementation "org.mockito:mockito-core:1.9.5"
+  testImplementation "org.robolectric:robolectric:3.3.2"
 }
 
 android {

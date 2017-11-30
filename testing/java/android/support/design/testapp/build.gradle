@@ -1,18 +1,15 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile compatibility("annotations")
-  compile compatibility("v7/appcompat")
+  api compatibility("annotations")
+  api compatibility("v7/appcompat")
 
-  compile project(fromPath("lib"))
-  compile project(fromPath("testing/java/android/support/design/testapp/base"))
-  compile project(fromPath("testing/java/android/support/design/testapp/custom"))
+  api project(fromPath("lib"))
+  api project(fromPath("testing/java/android/support/design/testapp/base"))
+  api project(fromPath("testing/java/android/support/design/testapp/custom"))
 }
 
 android {
-  // Ensures all variants are available for tests to depend on
-  publishNonDefault true
-
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
     main.java.srcDirs = [ '.' ]

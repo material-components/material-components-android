@@ -1,9 +1,9 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  compile project(fromPath("demos/java/io/material/demo/shrine/filters"))
-  compile project(fromPath("demos/java/io/material/demo/shrine/products"))
-  compile project(fromPath("demos/java/io/material/demo/shrine/theme"))
+  implementation project(fromPath("demos/java/io/material/demo/shrine/filters"))
+  implementation project(fromPath("demos/java/io/material/demo/shrine/products"))
+  implementation project(fromPath("demos/java/io/material/demo/shrine/theme"))
 }
 
 android {
