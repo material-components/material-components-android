@@ -22,8 +22,8 @@ ext {
   targetSdkVersion = 27
   supportVersion = '27.0.2'
 
-  testRunnerVersion = '0.6-alpha'
-  espressoVersion = '2.3-alpha'
+  testRunnerVersion = '1.0.0'
+  espressoVersion = '3.0.0'
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
