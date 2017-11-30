@@ -28,11 +28,6 @@ import android.view.View;
  */
 @RestrictTo(LIBRARY_GROUP)
 public class ViewUtils {
-
-  static boolean objectEquals(Object a, Object b) {
-    return (a == b) || (a != null && a.equals(b));
-  }
-
   public static PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
     switch (value) {
       case 3:

@@ -17,7 +17,6 @@
 package android.support.design.widget;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static android.support.design.widget.ViewUtils.objectEquals;
 
 import android.content.Context;
 import android.content.res.Resources;
@@ -45,6 +44,7 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.util.ObjectsCompat;
 import android.support.v4.util.Pools;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.GravityCompat;
@@ -350,7 +350,7 @@ public class CoordinatorLayout extends ViewGroup implements NestedScrollingParen
   }
 
   final WindowInsetsCompat setWindowInsets(WindowInsetsCompat insets) {
-    if (!objectEquals(mLastInsets, insets)) {
+    if (!ObjectsCompat.equals(mLastInsets, insets)) {
       mLastInsets = insets;
       mDrawStatusBarBackground = insets != null && insets.getSystemWindowInsetTop() > 0;
       setWillNotDraw(!mDrawStatusBarBackground && getBackground() == null);
