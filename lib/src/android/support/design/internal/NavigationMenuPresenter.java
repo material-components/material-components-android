@@ -56,67 +56,66 @@ public class NavigationMenuPresenter implements MenuPresenter {
   private static final String STATE_ADAPTER = "android:menu:adapter";
   private static final String STATE_HEADER = "android:menu:header";
 
-  private NavigationMenuView mMenuView;
-  LinearLayout mHeaderLayout;
+  private NavigationMenuView menuView;
+  LinearLayout headerLayout;
 
-  private Callback mCallback;
-  MenuBuilder mMenu;
-  private int mId;
+  private Callback callback;
+  MenuBuilder menu;
+  private int id;
 
-  NavigationMenuAdapter mAdapter;
-  LayoutInflater mLayoutInflater;
+  NavigationMenuAdapter adapter;
+  LayoutInflater layoutInflater;
 
-  int mTextAppearance;
-  boolean mTextAppearanceSet;
-  ColorStateList mTextColor;
-  ColorStateList mIconTintList;
-  Drawable mItemBackground;
+  int textAppearance;
+  boolean textAppearanceSet;
+  ColorStateList textColor;
+  ColorStateList iconTintList;
+  Drawable itemBackground;
 
   /**
    * Padding to be inserted at the top of the list to avoid the first menu item from being placed
    * underneath the status bar.
    */
-  private int mPaddingTopDefault;
+  private int paddingTopDefault;
 
   /** Padding for separators between items */
-  int mPaddingSeparator;
+  int paddingSeparator;
 
   @Override
   public void initForMenu(Context context, MenuBuilder menu) {
-    mLayoutInflater = LayoutInflater.from(context);
-    mMenu = menu;
+    layoutInflater = LayoutInflater.from(context);
+    this.menu = menu;
     Resources res = context.getResources();
-    mPaddingSeparator =
+    paddingSeparator =
         res.getDimensionPixelOffset(R.dimen.design_navigation_separator_vertical_padding);
   }
 
   @Override
   public MenuView getMenuView(ViewGroup root) {
-    if (mMenuView == null) {
-      mMenuView =
-          (NavigationMenuView)
-              mLayoutInflater.inflate(R.layout.design_navigation_menu, root, false);
-      if (mAdapter == null) {
-        mAdapter = new NavigationMenuAdapter();
+    if (menuView == null) {
+      menuView =
+          (NavigationMenuView) layoutInflater.inflate(R.layout.design_navigation_menu, root, false);
+      if (adapter == null) {
+        adapter = new NavigationMenuAdapter();
       }
-      mHeaderLayout =
+      headerLayout =
           (LinearLayout)
-              mLayoutInflater.inflate(R.layout.design_navigation_item_header, mMenuView, false);
-      mMenuView.setAdapter(mAdapter);
+              layoutInflater.inflate(R.layout.design_navigation_item_header, menuView, false);
+      menuView.setAdapter(adapter);
     }
-    return mMenuView;
+    return menuView;
   }
 
   @Override
   public void updateMenuView(boolean cleared) {
-    if (mAdapter != null) {
-      mAdapter.update();
+    if (adapter != null) {
+      adapter.update();
     }
   }
 
   @Override
   public void setCallback(Callback cb) {
-    mCallback = cb;
+    callback = cb;
   }
 
   @Override
@@ -126,8 +125,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   @Override
   public void onCloseMenu(MenuBuilder menu, boolean allMenusAreClosing) {
-    if (mCallback != null) {
-      mCallback.onCloseMenu(menu, allMenusAreClosing);
+    if (callback != null) {
+      callback.onCloseMenu(menu, allMenusAreClosing);
     }
   }
 
@@ -148,11 +147,11 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   @Override
   public int getId() {
-    return mId;
+    return id;
   }
 
   public void setId(int id) {
-    mId = id;
+    this.id = id;
   }
 
   @Override
@@ -162,17 +161,17 @@ public class NavigationMenuPresenter implements MenuPresenter {
       // loaded via different loaders. Rather than crash we just won't save state on those
       // platforms
       final Bundle state = new Bundle();
-      if (mMenuView != null) {
+      if (menuView != null) {
         SparseArray<Parcelable> hierarchy = new SparseArray<>();
-        mMenuView.saveHierarchyState(hierarchy);
+        menuView.saveHierarchyState(hierarchy);
         state.putSparseParcelableArray(STATE_HIERARCHY, hierarchy);
       }
-      if (mAdapter != null) {
-        state.putBundle(STATE_ADAPTER, mAdapter.createInstanceState());
+      if (adapter != null) {
+        state.putBundle(STATE_ADAPTER, adapter.createInstanceState());
       }
-      if (mHeaderLayout != null) {
+      if (headerLayout != null) {
         SparseArray<Parcelable> header = new SparseArray<>();
-        mHeaderLayout.saveHierarchyState(header);
+        headerLayout.saveHierarchyState(header);
         state.putSparseParcelableArray(STATE_HEADER, header);
       }
       return state;
@@ -186,101 +185,101 @@ public class NavigationMenuPresenter implements MenuPresenter {
       Bundle state = (Bundle) parcelable;
       SparseArray<Parcelable> hierarchy = state.getSparseParcelableArray(STATE_HIERARCHY);
       if (hierarchy != null) {
-        mMenuView.restoreHierarchyState(hierarchy);
+        menuView.restoreHierarchyState(hierarchy);
       }
       Bundle adapterState = state.getBundle(STATE_ADAPTER);
       if (adapterState != null) {
-        mAdapter.restoreInstanceState(adapterState);
+        adapter.restoreInstanceState(adapterState);
       }
       SparseArray<Parcelable> header = state.getSparseParcelableArray(STATE_HEADER);
       if (header != null) {
-        mHeaderLayout.restoreHierarchyState(header);
+        headerLayout.restoreHierarchyState(header);
       }
     }
   }
 
   public void setCheckedItem(MenuItemImpl item) {
-    mAdapter.setCheckedItem(item);
+    adapter.setCheckedItem(item);
   }
 
   public View inflateHeaderView(@LayoutRes int res) {
-    View view = mLayoutInflater.inflate(res, mHeaderLayout, false);
+    View view = layoutInflater.inflate(res, headerLayout, false);
     addHeaderView(view);
     return view;
   }
 
   public void addHeaderView(@NonNull View view) {
-    mHeaderLayout.addView(view);
+    headerLayout.addView(view);
     // The padding on top should be cleared.
-    mMenuView.setPadding(0, 0, 0, mMenuView.getPaddingBottom());
+    menuView.setPadding(0, 0, 0, menuView.getPaddingBottom());
   }
 
   public void removeHeaderView(@NonNull View view) {
-    mHeaderLayout.removeView(view);
-    if (mHeaderLayout.getChildCount() == 0) {
-      mMenuView.setPadding(0, mPaddingTopDefault, 0, mMenuView.getPaddingBottom());
+    headerLayout.removeView(view);
+    if (headerLayout.getChildCount() == 0) {
+      menuView.setPadding(0, paddingTopDefault, 0, menuView.getPaddingBottom());
     }
   }
 
   public int getHeaderCount() {
-    return mHeaderLayout.getChildCount();
+    return headerLayout.getChildCount();
   }
 
   public View getHeaderView(int index) {
-    return mHeaderLayout.getChildAt(index);
+    return headerLayout.getChildAt(index);
   }
 
   @Nullable
   public ColorStateList getItemTintList() {
-    return mIconTintList;
+    return iconTintList;
   }
 
   public void setItemIconTintList(@Nullable ColorStateList tint) {
-    mIconTintList = tint;
+    iconTintList = tint;
     updateMenuView(false);
   }
 
   @Nullable
   public ColorStateList getItemTextColor() {
-    return mTextColor;
+    return textColor;
   }
 
   public void setItemTextColor(@Nullable ColorStateList textColor) {
-    mTextColor = textColor;
+    this.textColor = textColor;
     updateMenuView(false);
   }
 
   public void setItemTextAppearance(@StyleRes int resId) {
-    mTextAppearance = resId;
-    mTextAppearanceSet = true;
+    textAppearance = resId;
+    textAppearanceSet = true;
     updateMenuView(false);
   }
 
   @Nullable
   public Drawable getItemBackground() {
-    return mItemBackground;
+    return itemBackground;
   }
 
   public void setItemBackground(@Nullable Drawable itemBackground) {
-    mItemBackground = itemBackground;
+    this.itemBackground = itemBackground;
     updateMenuView(false);
   }
 
   public void setUpdateSuspended(boolean updateSuspended) {
-    if (mAdapter != null) {
-      mAdapter.setUpdateSuspended(updateSuspended);
+    if (adapter != null) {
+      adapter.setUpdateSuspended(updateSuspended);
     }
   }
 
   public void dispatchApplyWindowInsets(WindowInsetsCompat insets) {
     int top = insets.getSystemWindowInsetTop();
-    if (mPaddingTopDefault != top) {
-      mPaddingTopDefault = top;
-      if (mHeaderLayout.getChildCount() == 0) {
-        mMenuView.setPadding(0, mPaddingTopDefault, 0, mMenuView.getPaddingBottom());
+    if (paddingTopDefault != top) {
+      paddingTopDefault = top;
+      if (headerLayout.getChildCount() == 0) {
+        menuView.setPadding(0, paddingTopDefault, 0, menuView.getPaddingBottom());
       }
     }
-    ViewCompat.dispatchApplyWindowInsets(mHeaderLayout, insets);
+    ViewCompat.dispatchApplyWindowInsets(headerLayout, insets);
   }
 
   private abstract static class ViewHolder extends RecyclerView.ViewHolder {
@@ -323,7 +322,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   /**
    * Handles click events for the menu items. The items has to be {@link NavigationMenuItemView}.
    */
-  final View.OnClickListener mOnClickListener =
+  final View.OnClickListener onClickListener =
       new View.OnClickListener() {
 
         @Override
@@ -331,9 +330,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
           NavigationMenuItemView itemView = (NavigationMenuItemView) v;
           setUpdateSuspended(true);
           MenuItemImpl item = itemView.getItemData();
-          boolean result = mMenu.performItemAction(item, NavigationMenuPresenter.this, 0);
+          boolean result = menu.performItemAction(item, NavigationMenuPresenter.this, 0);
           if (item != null && item.isCheckable() && result) {
-            mAdapter.setCheckedItem(item);
+            adapter.setCheckedItem(item);
           }
           setUpdateSuspended(false);
           updateMenuView(false);
@@ -350,9 +349,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
     private static final int VIEW_TYPE_SEPARATOR = 2;
     private static final int VIEW_TYPE_HEADER = 3;
 
-    private final ArrayList<NavigationMenuItem> mItems = new ArrayList<>();
-    private MenuItemImpl mCheckedItem;
-    private boolean mUpdateSuspended;
+    private final ArrayList<NavigationMenuItem> items = new ArrayList<>();
+    private MenuItemImpl checkedItem;
+    private boolean updateSuspended;
 
     NavigationMenuAdapter() {
       prepareMenuItems();
@@ -365,12 +364,12 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
     @Override
     public int getItemCount() {
-      return mItems.size();
+      return items.size();
     }
 
     @Override
     public int getItemViewType(int position) {
-      NavigationMenuItem item = mItems.get(position);
+      NavigationMenuItem item = items.get(position);
       if (item instanceof NavigationMenuSeparatorItem) {
         return VIEW_TYPE_SEPARATOR;
       } else if (item instanceof NavigationMenuHeaderItem) {
@@ -390,13 +389,13 @@ public class NavigationMenuPresenter implements MenuPresenter {
     public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
       switch (viewType) {
         case VIEW_TYPE_NORMAL:
-          return new NormalViewHolder(mLayoutInflater, parent, mOnClickListener);
+          return new NormalViewHolder(layoutInflater, parent, onClickListener);
         case VIEW_TYPE_SUBHEADER:
-          return new SubheaderViewHolder(mLayoutInflater, parent);
+          return new SubheaderViewHolder(layoutInflater, parent);
         case VIEW_TYPE_SEPARATOR:
-          return new SeparatorViewHolder(mLayoutInflater, parent);
+          return new SeparatorViewHolder(layoutInflater, parent);
         case VIEW_TYPE_HEADER:
-          return new HeaderViewHolder(mHeaderLayout);
+          return new HeaderViewHolder(headerLayout);
       }
       return null;
     }
@@ -407,17 +406,17 @@ public class NavigationMenuPresenter implements MenuPresenter {
         case VIEW_TYPE_NORMAL:
           {
             NavigationMenuItemView itemView = (NavigationMenuItemView) holder.itemView;
-            itemView.setIconTintList(mIconTintList);
-            if (mTextAppearanceSet) {
-              itemView.setTextAppearance(mTextAppearance);
+            itemView.setIconTintList(iconTintList);
+            if (textAppearanceSet) {
+              itemView.setTextAppearance(textAppearance);
             }
-            if (mTextColor != null) {
-              itemView.setTextColor(mTextColor);
+            if (textColor != null) {
+              itemView.setTextColor(textColor);
             }
             ViewCompat.setBackground(
                 itemView,
-                mItemBackground != null ? mItemBackground.getConstantState().newDrawable() : null);
-            NavigationMenuTextItem item = (NavigationMenuTextItem) mItems.get(position);
+                itemBackground != null ? itemBackground.getConstantState().newDrawable() : null);
+            NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             itemView.setNeedsEmptyIcon(item.needsEmptyIcon);
             itemView.initialize(item.getMenuItem(), 0);
             break;
@@ -425,13 +424,13 @@ public class NavigationMenuPresenter implements MenuPresenter {
         case VIEW_TYPE_SUBHEADER:
           {
             TextView subHeader = (TextView) holder.itemView;
-            NavigationMenuTextItem item = (NavigationMenuTextItem) mItems.get(position);
+            NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             subHeader.setText(item.getMenuItem().getTitle());
             break;
           }
         case VIEW_TYPE_SEPARATOR:
           {
-            NavigationMenuSeparatorItem item = (NavigationMenuSeparatorItem) mItems.get(position);
+            NavigationMenuSeparatorItem item = (NavigationMenuSeparatorItem) items.get(position);
             holder.itemView.setPadding(0, item.getPaddingTop(), 0, item.getPaddingBottom());
             break;
           }
@@ -455,22 +454,22 @@ public class NavigationMenuPresenter implements MenuPresenter {
     }
 
     /**
-     * Flattens the visible menu items of {@link #mMenu} into {@link #mItems}, while inserting
+     * Flattens the visible menu items of {@link #menu} into {@link #items}, while inserting
      * separators between items when necessary.
      */
     private void prepareMenuItems() {
-      if (mUpdateSuspended) {
+      if (updateSuspended) {
         return;
       }
-      mUpdateSuspended = true;
-      mItems.clear();
-      mItems.add(new NavigationMenuHeaderItem());
+      updateSuspended = true;
+      items.clear();
+      items.add(new NavigationMenuHeaderItem());
 
       int currentGroupId = -1;
       int currentGroupStart = 0;
       boolean currentGroupHasIcon = false;
-      for (int i = 0, totalSize = mMenu.getVisibleItems().size(); i < totalSize; i++) {
-        MenuItemImpl item = mMenu.getVisibleItems().get(i);
+      for (int i = 0, totalSize = menu.getVisibleItems().size(); i < totalSize; i++) {
+        MenuItemImpl item = menu.getVisibleItems().get(i);
         if (item.isChecked()) {
           setCheckedItem(item);
         }
@@ -481,11 +480,11 @@ public class NavigationMenuPresenter implements MenuPresenter {
           SubMenu subMenu = item.getSubMenu();
           if (subMenu.hasVisibleItems()) {
             if (i != 0) {
-              mItems.add(new NavigationMenuSeparatorItem(mPaddingSeparator, 0));
+              items.add(new NavigationMenuSeparatorItem(paddingSeparator, 0));
             }
-            mItems.add(new NavigationMenuTextItem(item));
+            items.add(new NavigationMenuTextItem(item));
             boolean subMenuHasIcon = false;
-            int subMenuStart = mItems.size();
+            int subMenuStart = items.size();
             for (int j = 0, size = subMenu.size(); j < size; j++) {
               MenuItemImpl subMenuItem = (MenuItemImpl) subMenu.getItem(j);
               if (subMenuItem.isVisible()) {
@@ -498,62 +497,62 @@ public class NavigationMenuPresenter implements MenuPresenter {
                 if (item.isChecked()) {
                   setCheckedItem(item);
                 }
-                mItems.add(new NavigationMenuTextItem(subMenuItem));
+                items.add(new NavigationMenuTextItem(subMenuItem));
               }
             }
             if (subMenuHasIcon) {
-              appendTransparentIconIfMissing(subMenuStart, mItems.size());
+              appendTransparentIconIfMissing(subMenuStart, items.size());
             }
           }
         } else {
           int groupId = item.getGroupId();
           if (groupId != currentGroupId) { // first item in group
-            currentGroupStart = mItems.size();
+            currentGroupStart = items.size();
             currentGroupHasIcon = item.getIcon() != null;
             if (i != 0) {
               currentGroupStart++;
-              mItems.add(new NavigationMenuSeparatorItem(mPaddingSeparator, mPaddingSeparator));
+              items.add(new NavigationMenuSeparatorItem(paddingSeparator, paddingSeparator));
             }
           } else if (!currentGroupHasIcon && item.getIcon() != null) {
             currentGroupHasIcon = true;
-            appendTransparentIconIfMissing(currentGroupStart, mItems.size());
+            appendTransparentIconIfMissing(currentGroupStart, items.size());
           }
           NavigationMenuTextItem textItem = new NavigationMenuTextItem(item);
           textItem.needsEmptyIcon = currentGroupHasIcon;
-          mItems.add(textItem);
+          items.add(textItem);
           currentGroupId = groupId;
         }
       }
-      mUpdateSuspended = false;
+      updateSuspended = false;
     }
 
     private void appendTransparentIconIfMissing(int startIndex, int endIndex) {
       for (int i = startIndex; i < endIndex; i++) {
-        NavigationMenuTextItem textItem = (NavigationMenuTextItem) mItems.get(i);
+        NavigationMenuTextItem textItem = (NavigationMenuTextItem) items.get(i);
         textItem.needsEmptyIcon = true;
       }
     }
 
     public void setCheckedItem(MenuItemImpl checkedItem) {
-      if (mCheckedItem == checkedItem || !checkedItem.isCheckable()) {
+      if (this.checkedItem == checkedItem || !checkedItem.isCheckable()) {
         return;
       }
-      if (mCheckedItem != null) {
-        mCheckedItem.setChecked(false);
+      if (this.checkedItem != null) {
+        this.checkedItem.setChecked(false);
       }
-      mCheckedItem = checkedItem;
+      this.checkedItem = checkedItem;
       checkedItem.setChecked(true);
     }
 
     public Bundle createInstanceState() {
       Bundle state = new Bundle();
-      if (mCheckedItem != null) {
-        state.putInt(STATE_CHECKED_ITEM, mCheckedItem.getItemId());
+      if (checkedItem != null) {
+        state.putInt(STATE_CHECKED_ITEM, checkedItem.getItemId());
       }
       // Store the states of the action views.
       SparseArray<ParcelableSparseArray> actionViewStates = new SparseArray<>();
-      for (int i = 0, size = mItems.size(); i < size; i++) {
-        NavigationMenuItem navigationMenuItem = mItems.get(i);
+      for (int i = 0, size = items.size(); i < size; i++) {
+        NavigationMenuItem navigationMenuItem = items.get(i);
         if (navigationMenuItem instanceof NavigationMenuTextItem) {
           MenuItemImpl item = ((NavigationMenuTextItem) navigationMenuItem).getMenuItem();
           View actionView = item != null ? item.getActionView() : null;
@@ -571,9 +570,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
     public void restoreInstanceState(Bundle state) {
       int checkedItem = state.getInt(STATE_CHECKED_ITEM, 0);
       if (checkedItem != 0) {
-        mUpdateSuspended = true;
-        for (int i = 0, size = mItems.size(); i < size; i++) {
-          NavigationMenuItem item = mItems.get(i);
+        updateSuspended = true;
+        for (int i = 0, size = items.size(); i < size; i++) {
+          NavigationMenuItem item = items.get(i);
           if (item instanceof NavigationMenuTextItem) {
             MenuItemImpl menuItem = ((NavigationMenuTextItem) item).getMenuItem();
             if (menuItem != null && menuItem.getItemId() == checkedItem) {
@@ -582,15 +581,15 @@ public class NavigationMenuPresenter implements MenuPresenter {
             }
           }
         }
-        mUpdateSuspended = false;
+        updateSuspended = false;
         prepareMenuItems();
       }
       // Restore the states of the action views.
       SparseArray<ParcelableSparseArray> actionViewStates =
           state.getSparseParcelableArray(STATE_ACTION_VIEWS);
       if (actionViewStates != null) {
-        for (int i = 0, size = mItems.size(); i < size; i++) {
-          NavigationMenuItem navigationMenuItem = mItems.get(i);
+        for (int i = 0, size = items.size(); i < size; i++) {
+          NavigationMenuItem navigationMenuItem = items.get(i);
           if (!(navigationMenuItem instanceof NavigationMenuTextItem)) {
             continue;
           }
@@ -612,7 +611,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
     }
 
     public void setUpdateSuspended(boolean updateSuspended) {
-      mUpdateSuspended = updateSuspended;
+      this.updateSuspended = updateSuspended;
     }
   }
 
@@ -622,37 +621,37 @@ public class NavigationMenuPresenter implements MenuPresenter {
   /** Normal or subheader items. */
   private static class NavigationMenuTextItem implements NavigationMenuItem {
 
-    private final MenuItemImpl mMenuItem;
+    private final MenuItemImpl menuItem;
 
     boolean needsEmptyIcon;
 
     NavigationMenuTextItem(MenuItemImpl item) {
-      mMenuItem = item;
+      menuItem = item;
     }
 
     public MenuItemImpl getMenuItem() {
-      return mMenuItem;
+      return menuItem;
     }
   }
 
   /** Separator items. */
   private static class NavigationMenuSeparatorItem implements NavigationMenuItem {
 
-    private final int mPaddingTop;
+    private final int paddingTop;
 
-    private final int mPaddingBottom;
+    private final int paddingBottom;
 
     public NavigationMenuSeparatorItem(int paddingTop, int paddingBottom) {
-      mPaddingTop = paddingTop;
-      mPaddingBottom = paddingBottom;
+      this.paddingTop = paddingTop;
+      this.paddingBottom = paddingBottom;
     }
 
     public int getPaddingTop() {
-      return mPaddingTop;
+      return paddingTop;
     }
 
     public int getPaddingBottom() {
-      return mPaddingBottom;
+      return paddingBottom;
     }
   }
 

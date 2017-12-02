@@ -62,7 +62,7 @@ public class BottomSheetDialogTest {
   public final ActivityTestRule<BottomSheetDialogActivity> activityTestRule =
       new ActivityTestRule<>(BottomSheetDialogActivity.class);
 
-  private BottomSheetDialog mDialog;
+  private BottomSheetDialog dialog;
 
   @Test
   public void testBasicDialogSetup() throws Throwable {
@@ -72,8 +72,8 @@ public class BottomSheetDialogTest {
           public void run() {
             showDialog();
             // Confirms that the dialog is shown
-            assertThat(mDialog.isShowing(), is(true));
-            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
+            assertThat(dialog.isShowing(), is(true));
+            FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
             assertThat(bottomSheet, is(notNullValue()));
             BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
             assertThat(behavior.isHideable(), is(true));
@@ -89,7 +89,7 @@ public class BottomSheetDialogTest {
           @Override
           public void run() {
             // Confirm that the dialog is no longer shown
-            assertThat(mDialog.isShowing(), is(false));
+            assertThat(dialog.isShowing(), is(false));
           }
         });
   }
@@ -102,8 +102,8 @@ public class BottomSheetDialogTest {
           public void run() {
             showDialog();
             // Confirms that the dialog is shown
-            assertThat(mDialog.isShowing(), is(true));
-            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
+            assertThat(dialog.isShowing(), is(true));
+            FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
             // The bottom sheet is not clickable
             assertNotNull(bottomSheet);
             assertThat(bottomSheet.isClickable(), is(false));
@@ -116,7 +116,7 @@ public class BottomSheetDialogTest {
           @Override
           public void run() {
             // Confirm that touch didn't fall through as outside touch
-            assertThat(mDialog.isShowing(), is(true));
+            assertThat(dialog.isShowing(), is(true));
           }
         });
   }
@@ -130,8 +130,8 @@ public class BottomSheetDialogTest {
           public void run() {
             showDialog();
             // Confirms that the dialog is shown
-            assertThat(mDialog.isShowing(), is(true));
-            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
+            assertThat(dialog.isShowing(), is(true));
+            FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
             // Set up an OnClickListener to the content of the bottom sheet
             assertNotNull(bottomSheet);
             View child = bottomSheet.getChildAt(0);
@@ -162,7 +162,7 @@ public class BottomSheetDialogTest {
         new Runnable() {
           @Override
           public void run() {
-            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
+            FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
             CoordinatorLayout coordinator = (CoordinatorLayout) bottomSheet.getParent();
             BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
             assertThat(bottomSheet, is(notNullValue()));
@@ -183,7 +183,7 @@ public class BottomSheetDialogTest {
           @Override
           public void run() {
             showDialog();
-            mDialog.setCancelable(false);
+            dialog.setCancelable(false);
           }
         });
     // Click outside the bottom sheet
@@ -192,12 +192,12 @@ public class BottomSheetDialogTest {
         new Runnable() {
           @Override
           public void run() {
-            FrameLayout bottomSheet = mDialog.findViewById(R.id.design_bottom_sheet);
+            FrameLayout bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
             BottomSheetBehavior<FrameLayout> behavior = BottomSheetBehavior.from(bottomSheet);
             assertThat(behavior.isHideable(), is(false));
-            assertThat(mDialog.isShowing(), is(true));
-            mDialog.cancel();
-            assertThat(mDialog.isShowing(), is(false));
+            assertThat(dialog.isShowing(), is(true));
+            dialog.cancel();
+            assertThat(dialog.isShowing(), is(false));
           }
         });
   }
@@ -210,7 +210,7 @@ public class BottomSheetDialogTest {
           @Override
           public void run() {
             showDialog();
-            mDialog.setOnCancelListener(
+            dialog.setOnCancelListener(
                 new DialogInterface.OnCancelListener() {
                   @Override
                   public void onCancel(DialogInterface dialogInterface) {
@@ -242,7 +242,7 @@ public class BottomSheetDialogTest {
           @Override
           public void run() {
             showDialog();
-            mDialog.setOnCancelListener(onCancelListener);
+            dialog.setOnCancelListener(onCancelListener);
           }
         });
     Espresso.onView(ViewMatchers.withId(R.id.design_bottom_sheet))
@@ -255,9 +255,9 @@ public class BottomSheetDialogTest {
         new Runnable() {
           @Override
           public void run() {
-            BottomSheetBehavior.from(mDialog.findViewById(R.id.design_bottom_sheet))
+            BottomSheetBehavior.from(dialog.findViewById(R.id.design_bottom_sheet))
                 .setBottomSheetCallback(callback);
-            mDialog.show(); // Show the same dialog again.
+            dialog.show(); // Show the same dialog again.
           }
         });
     verify(callback, timeout(3000))
@@ -268,13 +268,13 @@ public class BottomSheetDialogTest {
 
   private void showDialog() {
     Context context = activityTestRule.getActivity();
-    mDialog = new BottomSheetDialog(context);
+    dialog = new BottomSheetDialog(context);
     AppCompatTextView text = new AppCompatTextView(context);
     StringBuilder builder = new StringBuilder();
     builder.append("It is fine today. ");
     text.setText(builder);
-    mDialog.setContentView(text);
-    mDialog.show();
+    dialog.setContentView(text);
+    dialog.show();
   }
 
   private static ViewAction setTallPeekHeight() {

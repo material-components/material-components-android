@@ -45,28 +45,28 @@ import android.view.ViewGroup;
 public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
 
-  private final TransitionSet mSet;
-  private final int mInactiveItemMaxWidth;
-  private final int mInactiveItemMinWidth;
-  private final int mActiveItemMaxWidth;
-  private final int mActiveItemMinWidth;
-  private final int mItemHeight;
-  private final OnClickListener mOnClickListener;
-  private final Pools.Pool<BottomNavigationItemView> mItemPool = new Pools.SynchronizedPool<>(5);
+  private final TransitionSet set;
+  private final int inactiveItemMaxWidth;
+  private final int inactiveItemMinWidth;
+  private final int activeItemMaxWidth;
+  private final int activeItemMinWidth;
+  private final int itemHeight;
+  private final OnClickListener onClickListener;
+  private final Pools.Pool<BottomNavigationItemView> itemPool = new Pools.SynchronizedPool<>(5);
 
-  private int mShiftingModeFlag = BottomNavigationView.SHIFTING_MODE_AUTO;
-  private boolean mItemHorizontalTranslation;
+  private int shiftingModeFlag = BottomNavigationView.SHIFTING_MODE_AUTO;
+  private boolean itemHorizontalTranslation;
 
-  private BottomNavigationItemView[] mButtons;
-  private int mSelectedItemId = 0;
-  private int mSelectedItemPosition = 0;
-  private ColorStateList mItemIconTint;
-  private ColorStateList mItemTextColor;
-  private int mItemBackgroundRes;
-  private int[] mTempChildWidths;
+  private BottomNavigationItemView[] buttons;
+  private int selectedItemId = 0;
+  private int selectedItemPosition = 0;
+  private ColorStateList itemIconTint;
+  private ColorStateList itemTextColor;
+  private int itemBackgroundRes;
+  private int[] tempChildWidths;
 
-  private BottomNavigationPresenter mPresenter;
-  private MenuBuilder mMenu;
+  private BottomNavigationPresenter presenter;
+  private MenuBuilder menu;
 
   public BottomNavigationMenuView(Context context) {
     this(context, null);
@@ -75,97 +75,97 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   public BottomNavigationMenuView(Context context, AttributeSet attrs) {
     super(context, attrs);
     final Resources res = getResources();
-    mInactiveItemMaxWidth =
+    inactiveItemMaxWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_item_max_width);
-    mInactiveItemMinWidth =
+    inactiveItemMinWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_item_min_width);
-    mActiveItemMaxWidth =
+    activeItemMaxWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_max_width);
-    mActiveItemMinWidth =
+    activeItemMinWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_min_width);
-    mItemHeight = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_height);
+    itemHeight = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_height);
 
-    mSet = new AutoTransition();
-    mSet.setOrdering(TransitionSet.ORDERING_TOGETHER);
-    mSet.setDuration(ACTIVE_ANIMATION_DURATION_MS);
-    mSet.setInterpolator(new FastOutSlowInInterpolator());
-    mSet.addTransition(new TextScale());
+    set = new AutoTransition();
+    set.setOrdering(TransitionSet.ORDERING_TOGETHER);
+    set.setDuration(ACTIVE_ANIMATION_DURATION_MS);
+    set.setInterpolator(new FastOutSlowInInterpolator());
+    set.addTransition(new TextScale());
 
-    mOnClickListener =
+    onClickListener =
         new OnClickListener() {
           @Override
           public void onClick(View v) {
             final BottomNavigationItemView itemView = (BottomNavigationItemView) v;
             MenuItem item = itemView.getItemData();
-            if (!mMenu.performItemAction(item, mPresenter, 0)) {
+            if (!menu.performItemAction(item, presenter, 0)) {
               item.setChecked(true);
             }
           }
         };
-    mTempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
+    tempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
   }
 
   @Override
   public void initialize(MenuBuilder menu) {
-    mMenu = menu;
+    this.menu = menu;
   }
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     final int width = MeasureSpec.getSize(widthMeasureSpec);
     // Use visible item count to calculate widths
-    final int visibleCount = mMenu.getVisibleItems().size();
+    final int visibleCount = menu.getVisibleItems().size();
     // Use total item counts to measure children
     final int totalCount = getChildCount();
 
-    final int heightSpec = MeasureSpec.makeMeasureSpec(mItemHeight, MeasureSpec.EXACTLY);
+    final int heightSpec = MeasureSpec.makeMeasureSpec(itemHeight, MeasureSpec.EXACTLY);
 
-    if (isShifting(mShiftingModeFlag, visibleCount) && mItemHorizontalTranslation) {
-      final View activeChild = getChildAt(mSelectedItemPosition);
-      int activeItemWidth = mActiveItemMinWidth;
+    if (isShifting(shiftingModeFlag, visibleCount) && itemHorizontalTranslation) {
+      final View activeChild = getChildAt(selectedItemPosition);
+      int activeItemWidth = activeItemMinWidth;
       if (activeChild.getVisibility() != View.GONE) {
         // Do an AT_MOST measure pass on the active child to get its desired width, and resize the
         // active child view based on that width
         activeChild.measure(
-            MeasureSpec.makeMeasureSpec(mActiveItemMaxWidth, MeasureSpec.AT_MOST), heightSpec);
+            MeasureSpec.makeMeasureSpec(activeItemMaxWidth, MeasureSpec.AT_MOST), heightSpec);
         activeItemWidth = Math.max(activeItemWidth, activeChild.getMeasuredWidth());
       }
       final int inactiveCount = visibleCount - (activeChild.getVisibility() != View.GONE ? 1 : 0);
-      final int activeMaxAvailable = width - inactiveCount * mInactiveItemMinWidth;
+      final int activeMaxAvailable = width - inactiveCount * inactiveItemMinWidth;
       final int activeWidth =
-          Math.min(activeMaxAvailable, Math.min(activeItemWidth, mActiveItemMaxWidth));
+          Math.min(activeMaxAvailable, Math.min(activeItemWidth, activeItemMaxWidth));
       final int inactiveMaxAvailable =
           (width - activeWidth) / (inactiveCount == 0 ? 1 : inactiveCount);
-      final int inactiveWidth = Math.min(inactiveMaxAvailable, mInactiveItemMaxWidth);
+      final int inactiveWidth = Math.min(inactiveMaxAvailable, inactiveItemMaxWidth);
       int extra = width - activeWidth - inactiveWidth * inactiveCount;
 
       for (int i = 0; i < totalCount; i++) {
         if (getChildAt(i).getVisibility() != View.GONE) {
-          mTempChildWidths[i] = (i == mSelectedItemPosition) ? activeWidth : inactiveWidth;
+          tempChildWidths[i] = (i == selectedItemPosition) ? activeWidth : inactiveWidth;
           // Account for integer division which sometimes leaves some extra pixel spaces.
           // e.g. If the nav was 10px wide, and 3 children were measured to be 3px-3px-3px, there
           // would be a 1px gap somewhere, which this fills in.
           if (extra > 0) {
-            mTempChildWidths[i]++;
+            tempChildWidths[i]++;
             extra--;
           }
         } else {
-          mTempChildWidths[i] = 0;
+          tempChildWidths[i] = 0;
         }
       }
     } else {
       final int maxAvailable = width / (visibleCount == 0 ? 1 : visibleCount);
-      final int childWidth = Math.min(maxAvailable, mActiveItemMaxWidth);
+      final int childWidth = Math.min(maxAvailable, activeItemMaxWidth);
       int extra = width - childWidth * visibleCount;
       for (int i = 0; i < totalCount; i++) {
         if (getChildAt(i).getVisibility() != View.GONE) {
-          mTempChildWidths[i] = childWidth;
+          tempChildWidths[i] = childWidth;
           if (extra > 0) {
-            mTempChildWidths[i]++;
+            tempChildWidths[i]++;
             extra--;
           }
         } else {
-          mTempChildWidths[i] = 0;
+          tempChildWidths[i] = 0;
         }
       }
     }
@@ -177,7 +177,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         continue;
       }
       child.measure(
-          MeasureSpec.makeMeasureSpec(mTempChildWidths[i], MeasureSpec.EXACTLY), heightSpec);
+          MeasureSpec.makeMeasureSpec(tempChildWidths[i], MeasureSpec.EXACTLY), heightSpec);
       ViewGroup.LayoutParams params = child.getLayoutParams();
       params.width = child.getMeasuredWidth();
       totalWidth += child.getMeasuredWidth();
@@ -185,7 +185,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     setMeasuredDimension(
         View.resolveSizeAndState(
             totalWidth, MeasureSpec.makeMeasureSpec(totalWidth, MeasureSpec.EXACTLY), 0),
-        View.resolveSizeAndState(mItemHeight, heightSpec, 0));
+        View.resolveSizeAndState(itemHeight, heightSpec, 0));
   }
 
   @Override
@@ -219,9 +219,12 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @param tint the tint to apply
    */
   public void setIconTintList(ColorStateList tint) {
-    mItemIconTint = tint;
-    if (mButtons == null) return;
-    for (BottomNavigationItemView item : mButtons) {
+    itemIconTint = tint;
+    if (buttons == null) {
+      return;
+    }
+
+    for (BottomNavigationItemView item : buttons) {
       item.setIconTintList(tint);
     }
   }
@@ -233,7 +236,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    */
   @Nullable
   public ColorStateList getIconTintList() {
-    return mItemIconTint;
+    return itemIconTint;
   }
 
   /**
@@ -242,9 +245,12 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @param color the ColorStateList used for menu items' text.
    */
   public void setItemTextColor(ColorStateList color) {
-    mItemTextColor = color;
-    if (mButtons == null) return;
-    for (BottomNavigationItemView item : mButtons) {
+    itemTextColor = color;
+    if (buttons == null) {
+      return;
+    }
+
+    for (BottomNavigationItemView item : buttons) {
       item.setTextColor(color);
     }
   }
@@ -255,7 +261,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @return the ColorStateList used for menu items' text
    */
   public ColorStateList getItemTextColor() {
-    return mItemTextColor;
+    return itemTextColor;
   }
 
   /**
@@ -264,9 +270,12 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @param background the resource ID of the background
    */
   public void setItemBackgroundRes(int background) {
-    mItemBackgroundRes = background;
-    if (mButtons == null) return;
-    for (BottomNavigationItemView item : mButtons) {
+    itemBackgroundRes = background;
+    if (buttons == null) {
+      return;
+    }
+
+    for (BottomNavigationItemView item : buttons) {
       item.setItemBackground(background);
     }
   }
@@ -277,7 +286,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @return the resource ID for the background
    */
   public int getItemBackgroundRes() {
-    return mItemBackgroundRes;
+    return itemBackgroundRes;
   }
 
   /**
@@ -292,7 +301,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    *     ShiftingMode#SHIFTING_MODE_ON}, or {@link ShiftingMode#SHIFTING_MODE_AUTO}
    */
   public void setShiftingMode(@ShiftingMode int shiftingMode) {
-    mShiftingModeFlag = shiftingMode;
+    shiftingModeFlag = shiftingMode;
   }
 
   /**
@@ -303,7 +312,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    */
   @ShiftingMode
   public int getShiftingMode() {
-    return mShiftingModeFlag;
+    return shiftingModeFlag;
   }
 
   /**
@@ -313,7 +322,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @see #getItemHorizontalTranslation()
    */
   public void setItemHorizontalTranslation(boolean itemHorizontalTranslation) {
-    mItemHorizontalTranslation = itemHorizontalTranslation;
+    this.itemHorizontalTranslation = itemHorizontalTranslation;
   }
 
   /**
@@ -323,86 +332,86 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @see #setItemHorizontalTranslation(boolean)
    */
   public boolean getItemHorizontalTranslation() {
-    return mItemHorizontalTranslation;
+    return itemHorizontalTranslation;
   }
 
   public void setPresenter(BottomNavigationPresenter presenter) {
-    mPresenter = presenter;
+    this.presenter = presenter;
   }
 
   public void buildMenuView() {
     removeAllViews();
-    if (mButtons != null) {
-      for (BottomNavigationItemView item : mButtons) {
+    if (buttons != null) {
+      for (BottomNavigationItemView item : buttons) {
         if (item != null) {
-          mItemPool.release(item);
+          itemPool.release(item);
         }
       }
     }
-    if (mMenu.size() == 0) {
-      mSelectedItemId = 0;
-      mSelectedItemPosition = 0;
-      mButtons = null;
+    if (menu.size() == 0) {
+      selectedItemId = 0;
+      selectedItemPosition = 0;
+      buttons = null;
       return;
     }
-    mButtons = new BottomNavigationItemView[mMenu.size()];
-    boolean shifting = isShifting(mShiftingModeFlag, mMenu.getVisibleItems().size());
-    for (int i = 0; i < mMenu.size(); i++) {
-      mPresenter.setUpdateSuspended(true);
-      mMenu.getItem(i).setCheckable(true);
-      mPresenter.setUpdateSuspended(false);
+    buttons = new BottomNavigationItemView[menu.size()];
+    boolean shifting = isShifting(shiftingModeFlag, menu.getVisibleItems().size());
+    for (int i = 0; i < menu.size(); i++) {
+      presenter.setUpdateSuspended(true);
+      menu.getItem(i).setCheckable(true);
+      presenter.setUpdateSuspended(false);
       BottomNavigationItemView child = getNewItem();
-      mButtons[i] = child;
-      child.setIconTintList(mItemIconTint);
-      child.setTextColor(mItemTextColor);
-      child.setItemBackground(mItemBackgroundRes);
+      buttons[i] = child;
+      child.setIconTintList(itemIconTint);
+      child.setTextColor(itemTextColor);
+      child.setItemBackground(itemBackgroundRes);
       child.setShiftingMode(shifting);
-      child.initialize((MenuItemImpl) mMenu.getItem(i), 0);
+      child.initialize((MenuItemImpl) menu.getItem(i), 0);
       child.setItemPosition(i);
-      child.setOnClickListener(mOnClickListener);
+      child.setOnClickListener(onClickListener);
       addView(child);
     }
-    mSelectedItemPosition = Math.min(mMenu.size() - 1, mSelectedItemPosition);
-    mMenu.getItem(mSelectedItemPosition).setChecked(true);
+    selectedItemPosition = Math.min(menu.size() - 1, selectedItemPosition);
+    menu.getItem(selectedItemPosition).setChecked(true);
   }
 
   public void updateMenuView() {
-    if (mMenu == null || mButtons == null) {
+    if (menu == null || buttons == null) {
       return;
     }
 
-    final int menuSize = mMenu.size();
-    if (menuSize != mButtons.length) {
+    final int menuSize = menu.size();
+    if (menuSize != buttons.length) {
       // The size has changed. Rebuild menu view from scratch.
       buildMenuView();
       return;
     }
 
-    int previousSelectedId = mSelectedItemId;
+    int previousSelectedId = selectedItemId;
 
     for (int i = 0; i < menuSize; i++) {
-      MenuItem item = mMenu.getItem(i);
+      MenuItem item = menu.getItem(i);
       if (item.isChecked()) {
-        mSelectedItemId = item.getItemId();
-        mSelectedItemPosition = i;
+        selectedItemId = item.getItemId();
+        selectedItemPosition = i;
       }
     }
-    if (previousSelectedId != mSelectedItemId) {
+    if (previousSelectedId != selectedItemId) {
       // Note: this has to be called before BottomNavigationItemView#initialize().
-      TransitionManager.beginDelayedTransition(this, mSet);
+      TransitionManager.beginDelayedTransition(this, set);
     }
 
-    boolean shifting = isShifting(mShiftingModeFlag, mMenu.getVisibleItems().size());
+    boolean shifting = isShifting(shiftingModeFlag, menu.getVisibleItems().size());
     for (int i = 0; i < menuSize; i++) {
-      mPresenter.setUpdateSuspended(true);
-      mButtons[i].setShiftingMode(shifting);
-      mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
-      mPresenter.setUpdateSuspended(false);
+      presenter.setUpdateSuspended(true);
+      buttons[i].setShiftingMode(shifting);
+      buttons[i].initialize((MenuItemImpl) menu.getItem(i), 0);
+      presenter.setUpdateSuspended(false);
     }
   }
 
   private BottomNavigationItemView getNewItem() {
-    BottomNavigationItemView item = mItemPool.acquire();
+    BottomNavigationItemView item = itemPool.acquire();
     if (item == null) {
       item = new BottomNavigationItemView(getContext());
     }
@@ -410,7 +419,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   public int getSelectedItemId() {
-    return mSelectedItemId;
+    return selectedItemId;
   }
 
   private boolean isShifting(@ShiftingMode int shiftingMode, int childCount) {
@@ -420,12 +429,12 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   void tryRestoreSelectedItemId(int itemId) {
-    final int size = mMenu.size();
+    final int size = menu.size();
     for (int i = 0; i < size; i++) {
-      MenuItem item = mMenu.getItem(i);
+      MenuItem item = menu.getItem(i);
       if (itemId == item.getItemId()) {
-        mSelectedItemId = itemId;
-        mSelectedItemPosition = i;
+        selectedItemId = itemId;
+        selectedItemPosition = i;
         item.setChecked(true);
         break;
       }

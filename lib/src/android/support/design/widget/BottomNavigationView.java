@@ -140,13 +140,13 @@ public class BottomNavigationView extends FrameLayout {
   @Retention(RetentionPolicy.SOURCE)
   public @interface ShiftingMode {}
 
-  private final MenuBuilder mMenu;
-  private final BottomNavigationMenuView mMenuView;
-  private final BottomNavigationPresenter mPresenter = new BottomNavigationPresenter();
-  private MenuInflater mMenuInflater;
+  private final MenuBuilder menu;
+  private final BottomNavigationMenuView menuView;
+  private final BottomNavigationPresenter presenter = new BottomNavigationPresenter();
+  private MenuInflater menuInflater;
 
-  private OnNavigationItemSelectedListener mSelectedListener;
-  private OnNavigationItemReselectedListener mReselectedListener;
+  private OnNavigationItemSelectedListener selectedListener;
+  private OnNavigationItemReselectedListener reselectedListener;
 
   public BottomNavigationView(Context context) {
     this(context, null);
@@ -162,20 +162,20 @@ public class BottomNavigationView extends FrameLayout {
     ThemeUtils.checkAppCompatTheme(context);
 
     // Create the menu
-    mMenu = new BottomNavigationMenu(context);
+    this.menu = new BottomNavigationMenu(context);
 
-    mMenuView = new BottomNavigationMenuView(context);
+    menuView = new BottomNavigationMenuView(context);
     FrameLayout.LayoutParams params =
         new FrameLayout.LayoutParams(
             ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
     params.gravity = Gravity.CENTER;
-    mMenuView.setLayoutParams(params);
+    menuView.setLayoutParams(params);
 
-    mPresenter.setBottomNavigationMenuView(mMenuView);
-    mPresenter.setId(MENU_PRESENTER_ID);
-    mMenuView.setPresenter(mPresenter);
-    mMenu.addMenuPresenter(mPresenter);
-    mPresenter.initForMenu(getContext(), mMenu);
+    presenter.setBottomNavigationMenuView(menuView);
+    presenter.setId(MENU_PRESENTER_ID);
+    menuView.setPresenter(presenter);
+    this.menu.addMenuPresenter(presenter);
+    presenter.initForMenu(getContext(), this.menu);
 
     // Custom attributes
     TintTypedArray a =
@@ -187,15 +187,15 @@ public class BottomNavigationView extends FrameLayout {
             R.style.Widget_Design_BottomNavigationView);
 
     if (a.hasValue(R.styleable.BottomNavigationView_itemIconTint)) {
-      mMenuView.setIconTintList(a.getColorStateList(R.styleable.BottomNavigationView_itemIconTint));
+      menuView.setIconTintList(a.getColorStateList(R.styleable.BottomNavigationView_itemIconTint));
     } else {
-      mMenuView.setIconTintList(createDefaultColorStateList(android.R.attr.textColorSecondary));
+      menuView.setIconTintList(createDefaultColorStateList(android.R.attr.textColorSecondary));
     }
     if (a.hasValue(R.styleable.BottomNavigationView_itemTextColor)) {
-      mMenuView.setItemTextColor(
+      menuView.setItemTextColor(
           a.getColorStateList(R.styleable.BottomNavigationView_itemTextColor));
     } else {
-      mMenuView.setItemTextColor(createDefaultColorStateList(android.R.attr.textColorSecondary));
+      menuView.setItemTextColor(createDefaultColorStateList(android.R.attr.textColorSecondary));
     }
     if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
       ViewCompat.setElevation(
@@ -205,34 +205,34 @@ public class BottomNavigationView extends FrameLayout {
       @ShiftingMode
       int shiftingMode =
           a.getInt(R.styleable.BottomNavigationView_shiftingMode, SHIFTING_MODE_AUTO);
-      mMenuView.setShiftingMode(shiftingMode);
+      menuView.setShiftingMode(shiftingMode);
     }
 
     setItemHorizontalTranslation(
         a.getBoolean(R.styleable.BottomNavigationView_itemHorizontalTranslation, true));
 
     int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
-    mMenuView.setItemBackgroundRes(itemBackground);
+    menuView.setItemBackgroundRes(itemBackground);
 
     if (a.hasValue(R.styleable.BottomNavigationView_menu)) {
       inflateMenu(a.getResourceId(R.styleable.BottomNavigationView_menu, 0));
     }
     a.recycle();
 
-    addView(mMenuView, params);
+    addView(menuView, params);
     if (Build.VERSION.SDK_INT < 21) {
       addCompatibilityTopDivider(context);
     }
 
-    mMenu.setCallback(
+    this.menu.setCallback(
         new MenuBuilder.Callback() {
           @Override
           public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-            if (mReselectedListener != null && item.getItemId() == getSelectedItemId()) {
-              mReselectedListener.onNavigationItemReselected(item);
+            if (reselectedListener != null && item.getItemId() == getSelectedItemId()) {
+              reselectedListener.onNavigationItemReselected(item);
               return true; // item is already selected
             }
-            return mSelectedListener != null && !mSelectedListener.onNavigationItemSelected(item);
+            return selectedListener != null && !selectedListener.onNavigationItemSelected(item);
           }
 
           @Override
@@ -250,7 +250,7 @@ public class BottomNavigationView extends FrameLayout {
    */
   public void setOnNavigationItemSelectedListener(
       @Nullable OnNavigationItemSelectedListener listener) {
-    mSelectedListener = listener;
+    selectedListener = listener;
   }
 
   /**
@@ -262,13 +262,13 @@ public class BottomNavigationView extends FrameLayout {
    */
   public void setOnNavigationItemReselectedListener(
       @Nullable OnNavigationItemReselectedListener listener) {
-    mReselectedListener = listener;
+    reselectedListener = listener;
   }
 
   /** Returns the {@link Menu} instance associated with this bottom navigation bar. */
   @NonNull
   public Menu getMenu() {
-    return mMenu;
+    return menu;
   }
 
   /**
@@ -279,10 +279,10 @@ public class BottomNavigationView extends FrameLayout {
    * @param resId ID of a menu resource to inflate
    */
   public void inflateMenu(int resId) {
-    mPresenter.setUpdateSuspended(true);
-    getMenuInflater().inflate(resId, mMenu);
-    mPresenter.setUpdateSuspended(false);
-    mPresenter.updateMenuView(true);
+    presenter.setUpdateSuspended(true);
+    getMenuInflater().inflate(resId, menu);
+    presenter.setUpdateSuspended(false);
+    presenter.updateMenuView(true);
   }
 
   /** @return The maximum number of items that can be shown in BottomNavigationView. */
@@ -298,7 +298,7 @@ public class BottomNavigationView extends FrameLayout {
    */
   @Nullable
   public ColorStateList getItemIconTintList() {
-    return mMenuView.getIconTintList();
+    return menuView.getIconTintList();
   }
 
   /**
@@ -308,7 +308,7 @@ public class BottomNavigationView extends FrameLayout {
    * @attr ref R.styleable#BottomNavigationView_itemIconTint
    */
   public void setItemIconTintList(@Nullable ColorStateList tint) {
-    mMenuView.setIconTintList(tint);
+    menuView.setIconTintList(tint);
   }
 
   /**
@@ -321,7 +321,7 @@ public class BottomNavigationView extends FrameLayout {
    */
   @Nullable
   public ColorStateList getItemTextColor() {
-    return mMenuView.getItemTextColor();
+    return menuView.getItemTextColor();
   }
 
   /**
@@ -332,7 +332,7 @@ public class BottomNavigationView extends FrameLayout {
    * @attr ref R.styleable#BottomNavigationView_itemTextColor
    */
   public void setItemTextColor(@Nullable ColorStateList textColor) {
-    mMenuView.setItemTextColor(textColor);
+    menuView.setItemTextColor(textColor);
   }
 
   /**
@@ -343,7 +343,7 @@ public class BottomNavigationView extends FrameLayout {
    */
   @DrawableRes
   public int getItemBackgroundResource() {
-    return mMenuView.getItemBackgroundRes();
+    return menuView.getItemBackgroundRes();
   }
 
   /**
@@ -353,7 +353,7 @@ public class BottomNavigationView extends FrameLayout {
    * @attr ref R.styleable#BottomNavigationView_itemBackground
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
-    mMenuView.setItemBackgroundRes(resId);
+    menuView.setItemBackgroundRes(resId);
   }
 
   /**
@@ -363,7 +363,7 @@ public class BottomNavigationView extends FrameLayout {
    */
   @IdRes
   public int getSelectedItemId() {
-    return mMenuView.getSelectedItemId();
+    return menuView.getSelectedItemId();
   }
 
   /**
@@ -373,9 +373,9 @@ public class BottomNavigationView extends FrameLayout {
    * @see #getSelectedItemId()
    */
   public void setSelectedItemId(@IdRes int itemId) {
-    MenuItem item = mMenu.findItem(itemId);
+    MenuItem item = menu.findItem(itemId);
     if (item != null) {
-      if (!mMenu.performItemAction(item, mPresenter, 0)) {
+      if (!menu.performItemAction(item, presenter, 0)) {
         item.setChecked(true);
       }
     }
@@ -389,7 +389,7 @@ public class BottomNavigationView extends FrameLayout {
    */
   @ShiftingMode
   public int getShiftingMode() {
-    return mMenuView.getShiftingMode();
+    return menuView.getShiftingMode();
   }
 
   /**
@@ -410,9 +410,9 @@ public class BottomNavigationView extends FrameLayout {
    * @see #getShiftingMode()
    */
   public void setShiftingMode(@ShiftingMode int shiftingMode) {
-    if (mMenuView.getShiftingMode() != shiftingMode) {
-      mMenuView.setShiftingMode(shiftingMode);
-      mPresenter.updateMenuView(false /* cleared */);
+    if (menuView.getShiftingMode() != shiftingMode) {
+      menuView.setShiftingMode(shiftingMode);
+      presenter.updateMenuView(false /* cleared */);
     }
   }
 
@@ -423,9 +423,9 @@ public class BottomNavigationView extends FrameLayout {
    * @see #getItemHorizontalTranslation()
    */
   public void setItemHorizontalTranslation(boolean itemHorizontalTranslation) {
-    if (mMenuView.getItemHorizontalTranslation() != itemHorizontalTranslation) {
-      mMenuView.setItemHorizontalTranslation(itemHorizontalTranslation);
-      mPresenter.updateMenuView(false);
+    if (menuView.getItemHorizontalTranslation() != itemHorizontalTranslation) {
+      menuView.setItemHorizontalTranslation(itemHorizontalTranslation);
+      presenter.updateMenuView(false);
     }
   }
 
@@ -446,7 +446,7 @@ public class BottomNavigationView extends FrameLayout {
    * @see #setItemHorizontalTranslation(boolean)
    */
   public boolean getItemHorizontalTranslation() {
-    return mMenuView.getItemHorizontalTranslation();
+    return menuView.getItemHorizontalTranslation();
   }
 
   /** Listener for handling selection events on bottom navigation items. */
@@ -487,10 +487,10 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   private MenuInflater getMenuInflater() {
-    if (mMenuInflater == null) {
-      mMenuInflater = new SupportMenuInflater(getContext());
+    if (menuInflater == null) {
+      menuInflater = new SupportMenuInflater(getContext());
     }
-    return mMenuInflater;
+    return menuInflater;
   }
 
   private ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
@@ -518,7 +518,7 @@ public class BottomNavigationView extends FrameLayout {
     Parcelable superState = super.onSaveInstanceState();
     SavedState savedState = new SavedState(superState);
     savedState.menuPresenterState = new Bundle();
-    mMenu.savePresenterStates(savedState.menuPresenterState);
+    menu.savePresenterStates(savedState.menuPresenterState);
     return savedState;
   }
 
@@ -530,7 +530,7 @@ public class BottomNavigationView extends FrameLayout {
     }
     SavedState savedState = (SavedState) state;
     super.onRestoreInstanceState(savedState.getSuperState());
-    mMenu.restorePresenterStates(savedState.menuPresenterState);
+    menu.restorePresenterStates(savedState.menuPresenterState);
   }
 
   static class SavedState extends AbsSavedState {

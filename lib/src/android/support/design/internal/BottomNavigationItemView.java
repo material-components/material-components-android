@@ -47,21 +47,21 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
-  private final int mDefaultMargin;
-  private final int mShiftAmount;
-  private final float mScaleUpFactor;
-  private final float mScaleDownFactor;
+  private final int defaultMargin;
+  private final int shiftAmount;
+  private final float scaleUpFactor;
+  private final float scaleDownFactor;
 
-  private boolean mShiftingMode;
+  private boolean shiftingMode;
 
-  private ImageView mIcon;
-  private final TextView mSmallLabel;
-  private final TextView mLargeLabel;
-  private int mItemPosition = INVALID_ITEM_POSITION;
+  private ImageView icon;
+  private final TextView smallLabel;
+  private final TextView largeLabel;
+  private int itemPosition = INVALID_ITEM_POSITION;
 
-  private MenuItemImpl mItemData;
+  private MenuItemImpl itemData;
 
-  private ColorStateList mIconTint;
+  private ColorStateList iconTint;
 
   public BottomNavigationItemView(@NonNull Context context) {
     this(context, null);
@@ -77,21 +77,21 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     int inactiveLabelSize = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size);
     int activeLabelSize =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_text_size);
-    mDefaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
-    mShiftAmount = inactiveLabelSize - activeLabelSize;
-    mScaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
-    mScaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
+    defaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
+    shiftAmount = inactiveLabelSize - activeLabelSize;
+    scaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
+    scaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
 
     LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
     setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
-    mIcon = findViewById(R.id.icon);
-    mSmallLabel = findViewById(R.id.smallLabel);
-    mLargeLabel = findViewById(R.id.largeLabel);
+    icon = findViewById(R.id.icon);
+    smallLabel = findViewById(R.id.smallLabel);
+    largeLabel = findViewById(R.id.largeLabel);
   }
 
   @Override
   public void initialize(MenuItemImpl itemData, int menuType) {
-    mItemData = itemData;
+    this.itemData = itemData;
     setCheckable(itemData.isCheckable());
     setChecked(itemData.isChecked());
     setEnabled(itemData.isEnabled());
@@ -104,33 +104,33 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   }
 
   public void setItemPosition(int position) {
-    mItemPosition = position;
+    itemPosition = position;
   }
 
   public int getItemPosition() {
-    return mItemPosition;
+    return itemPosition;
   }
 
   public void setShiftingMode(boolean enabled) {
-    if (mShiftingMode != enabled) {
-      mShiftingMode = enabled;
+    if (shiftingMode != enabled) {
+      shiftingMode = enabled;
 
-      boolean initialized = mItemData != null;
+      boolean initialized = itemData != null;
       if (initialized) {
-        setChecked(mItemData.isChecked());
+        setChecked(itemData.isChecked());
       }
     }
   }
 
   @Override
   public MenuItemImpl getItemData() {
-    return mItemData;
+    return itemData;
   }
 
   @Override
   public void setTitle(CharSequence title) {
-    mSmallLabel.setText(title);
-    mLargeLabel.setText(title);
+    smallLabel.setText(title);
+    largeLabel.setText(title);
   }
 
   @Override
@@ -140,30 +140,30 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
   @Override
   public void setChecked(boolean checked) {
-    mLargeLabel.setPivotX(mLargeLabel.getWidth() / 2);
-    mLargeLabel.setPivotY(mLargeLabel.getBaseline());
-    mSmallLabel.setPivotX(mSmallLabel.getWidth() / 2);
-    mSmallLabel.setPivotY(mSmallLabel.getBaseline());
+    largeLabel.setPivotX(largeLabel.getWidth() / 2);
+    largeLabel.setPivotY(largeLabel.getBaseline());
+    smallLabel.setPivotX(smallLabel.getWidth() / 2);
+    smallLabel.setPivotY(smallLabel.getBaseline());
 
-    if (mShiftingMode) {
+    if (shiftingMode) {
       if (checked) {
-        setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-        setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
+        setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(largeLabel, 1f, 1f, VISIBLE);
       } else {
-        setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER);
-        setViewValues(mLargeLabel, 0.5f, 0.5f, INVISIBLE);
+        setViewLayoutParams(icon, defaultMargin, Gravity.CENTER);
+        setViewValues(largeLabel, 0.5f, 0.5f, INVISIBLE);
       }
-      mSmallLabel.setVisibility(INVISIBLE);
+      smallLabel.setVisibility(INVISIBLE);
     } else {
       if (checked) {
         setViewLayoutParams(
-            mIcon, mDefaultMargin + mShiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-        setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
-        setViewValues(mSmallLabel, mScaleUpFactor, mScaleUpFactor, INVISIBLE);
+            icon, defaultMargin + shiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(largeLabel, 1f, 1f, VISIBLE);
+        setViewValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
       } else {
-        setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-        setViewValues(mLargeLabel, mScaleDownFactor, mScaleDownFactor, INVISIBLE);
-        setViewValues(mSmallLabel, 1f, 1f, VISIBLE);
+        setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(largeLabel, scaleDownFactor, scaleDownFactor, INVISIBLE);
+        setViewValues(smallLabel, 1f, 1f, VISIBLE);
       }
     }
     refreshDrawableState();
@@ -185,9 +185,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   @Override
   public void setEnabled(boolean enabled) {
     super.setEnabled(enabled);
-    mSmallLabel.setEnabled(enabled);
-    mLargeLabel.setEnabled(enabled);
-    mIcon.setEnabled(enabled);
+    smallLabel.setEnabled(enabled);
+    largeLabel.setEnabled(enabled);
+    icon.setEnabled(enabled);
 
     if (enabled) {
       ViewCompat.setPointerIcon(
@@ -200,7 +200,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   @Override
   public int[] onCreateDrawableState(final int extraSpace) {
     final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-    if (mItemData != null && mItemData.isCheckable() && mItemData.isChecked()) {
+    if (itemData != null && itemData.isCheckable() && itemData.isChecked()) {
       mergeDrawableStates(drawableState, CHECKED_STATE_SET);
     }
     return drawableState;
@@ -214,9 +214,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     if (icon != null) {
       Drawable.ConstantState state = icon.getConstantState();
       icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
-      DrawableCompat.setTintList(icon, mIconTint);
+      DrawableCompat.setTintList(icon, iconTint);
     }
-    mIcon.setImageDrawable(icon);
+    this.icon.setImageDrawable(icon);
   }
 
   @Override
@@ -230,16 +230,16 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   }
 
   public void setIconTintList(ColorStateList tint) {
-    mIconTint = tint;
-    if (mItemData != null) {
+    iconTint = tint;
+    if (itemData != null) {
       // Update the icon so that the tint takes effect
-      setIcon(mItemData.getIcon());
+      setIcon(itemData.getIcon());
     }
   }
 
   public void setTextColor(ColorStateList color) {
-    mSmallLabel.setTextColor(color);
-    mLargeLabel.setTextColor(color);
+    smallLabel.setTextColor(color);
+    largeLabel.setTextColor(color);
   }
 
   public void setItemBackground(int background) {

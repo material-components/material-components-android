@@ -36,11 +36,11 @@ import android.widget.FrameLayout;
 @RestrictTo(LIBRARY_GROUP)
 public class ScrimInsetsFrameLayout extends FrameLayout {
 
-  Drawable mInsetForeground;
+  Drawable insetForeground;
 
-  Rect mInsets;
+  Rect insets;
 
-  private Rect mTempRect = new Rect();
+  private Rect tempRect = new Rect();
 
   public ScrimInsetsFrameLayout(Context context) {
     this(context, null);
@@ -59,7 +59,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
             R.styleable.ScrimInsetsFrameLayout,
             defStyleAttr,
             R.style.Widget_Design_ScrimInsetsFrameLayout);
-    mInsetForeground = a.getDrawable(R.styleable.ScrimInsetsFrameLayout_insetForeground);
+    insetForeground = a.getDrawable(R.styleable.ScrimInsetsFrameLayout_insetForeground);
     a.recycle();
     setWillNotDraw(true); // No need to draw until the insets are adjusted
 
@@ -68,16 +68,16 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
         new android.support.v4.view.OnApplyWindowInsetsListener() {
           @Override
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-            if (null == mInsets) {
-              mInsets = new Rect();
+            if (null == ScrimInsetsFrameLayout.this.insets) {
+              ScrimInsetsFrameLayout.this.insets = new Rect();
             }
-            mInsets.set(
+            ScrimInsetsFrameLayout.this.insets.set(
                 insets.getSystemWindowInsetLeft(),
                 insets.getSystemWindowInsetTop(),
                 insets.getSystemWindowInsetRight(),
                 insets.getSystemWindowInsetBottom());
             onInsetsChanged(insets);
-            setWillNotDraw(!insets.hasSystemWindowInsets() || mInsetForeground == null);
+            setWillNotDraw(!insets.hasSystemWindowInsets() || insetForeground == null);
             ViewCompat.postInvalidateOnAnimation(ScrimInsetsFrameLayout.this);
             return insets.consumeSystemWindowInsets();
           }
@@ -90,29 +90,29 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
 
     int width = getWidth();
     int height = getHeight();
-    if (mInsets != null && mInsetForeground != null) {
+    if (insets != null && insetForeground != null) {
       int sc = canvas.save();
       canvas.translate(getScrollX(), getScrollY());
 
       // Top
-      mTempRect.set(0, 0, width, mInsets.top);
-      mInsetForeground.setBounds(mTempRect);
-      mInsetForeground.draw(canvas);
+      tempRect.set(0, 0, width, insets.top);
+      insetForeground.setBounds(tempRect);
+      insetForeground.draw(canvas);
 
       // Bottom
-      mTempRect.set(0, height - mInsets.bottom, width, height);
-      mInsetForeground.setBounds(mTempRect);
-      mInsetForeground.draw(canvas);
+      tempRect.set(0, height - insets.bottom, width, height);
+      insetForeground.setBounds(tempRect);
+      insetForeground.draw(canvas);
 
       // Left
-      mTempRect.set(0, mInsets.top, mInsets.left, height - mInsets.bottom);
-      mInsetForeground.setBounds(mTempRect);
-      mInsetForeground.draw(canvas);
+      tempRect.set(0, insets.top, insets.left, height - insets.bottom);
+      insetForeground.setBounds(tempRect);
+      insetForeground.draw(canvas);
 
       // Right
-      mTempRect.set(width - mInsets.right, mInsets.top, width, height - mInsets.bottom);
-      mInsetForeground.setBounds(mTempRect);
-      mInsetForeground.draw(canvas);
+      tempRect.set(width - insets.right, insets.top, width, height - insets.bottom);
+      insetForeground.setBounds(tempRect);
+      insetForeground.draw(canvas);
 
       canvas.restoreToCount(sc);
     }
@@ -121,16 +121,16 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
-    if (mInsetForeground != null) {
-      mInsetForeground.setCallback(this);
+    if (insetForeground != null) {
+      insetForeground.setCallback(this);
     }
   }
 
   @Override
   protected void onDetachedFromWindow() {
     super.onDetachedFromWindow();
-    if (mInsetForeground != null) {
-      mInsetForeground.setCallback(null);
+    if (insetForeground != null) {
+      insetForeground.setCallback(null);
     }
   }
 

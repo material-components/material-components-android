@@ -34,15 +34,15 @@ public class SnackbarUtils {
   private static class TransientBottomBarShownCallback
       extends BaseTransientBottomBar.BaseCallback<BaseTransientBottomBar>
       implements IdlingResource {
-    private boolean mIsShown = false;
+    private boolean isShown = false;
 
-    @Nullable private IdlingResource.ResourceCallback mCallback;
+    @Nullable private IdlingResource.ResourceCallback callback;
 
-    private boolean mNeedsIdle = false;
+    private boolean needsIdle = false;
 
     @Override
     public void registerIdleTransitionCallback(ResourceCallback resourceCallback) {
-      mCallback = resourceCallback;
+      callback = resourceCallback;
     }
 
     @Override
@@ -52,18 +52,18 @@ public class SnackbarUtils {
 
     @Override
     public boolean isIdleNow() {
-      if (!mNeedsIdle) {
+      if (!needsIdle) {
         return true;
       } else {
-        return mIsShown;
+        return isShown;
       }
     }
 
     @Override
     public void onShown(BaseTransientBottomBar transientBottomBar) {
-      mIsShown = true;
-      if (mCallback != null) {
-        mCallback.onTransitionToIdle();
+      isShown = true;
+      if (callback != null) {
+        callback.onTransitionToIdle();
       }
     }
   }
@@ -71,15 +71,15 @@ public class SnackbarUtils {
   private static class TransientBottomBarDismissedCallback
       extends BaseTransientBottomBar.BaseCallback<BaseTransientBottomBar>
       implements IdlingResource {
-    private boolean mIsDismissed = false;
+    private boolean isDismissed = false;
 
-    @Nullable private IdlingResource.ResourceCallback mCallback;
+    @Nullable private IdlingResource.ResourceCallback callback;
 
-    private boolean mNeedsIdle = false;
+    private boolean needsIdle = false;
 
     @Override
     public void registerIdleTransitionCallback(ResourceCallback resourceCallback) {
-      mCallback = resourceCallback;
+      callback = resourceCallback;
     }
 
     @Override
@@ -89,18 +89,18 @@ public class SnackbarUtils {
 
     @Override
     public boolean isIdleNow() {
-      if (!mNeedsIdle) {
+      if (!needsIdle) {
         return true;
       } else {
-        return mIsDismissed;
+        return isDismissed;
       }
     }
 
     @Override
     public void onDismissed(BaseTransientBottomBar transientBottomBar, @DismissEvent int event) {
-      mIsDismissed = true;
-      if (mCallback != null) {
-        mCallback.onTransitionToIdle();
+      isDismissed = true;
+      if (callback != null) {
+        callback.onTransitionToIdle();
       }
     }
   }
@@ -120,11 +120,11 @@ public class SnackbarUtils {
       // Show the bar
       transientBottomBar.show();
       // Mark the callback to require waiting for idle state
-      callback.mNeedsIdle = true;
+      callback.needsIdle = true;
       // Perform a dummy Espresso action that loops until the UI thread is idle. This
       // effectively blocks us until the Snackbar has completed its sliding animation.
       onView(isRoot()).perform(waitUntilIdle());
-      callback.mNeedsIdle = false;
+      callback.needsIdle = false;
     } finally {
       // Unregister our idling resource
       Espresso.unregisterIdlingResources(callback);
@@ -165,11 +165,11 @@ public class SnackbarUtils {
       // Run the action
       action.perform();
       // Mark the callback to require waiting for idle state
-      callback.mNeedsIdle = true;
+      callback.needsIdle = true;
       // Perform a dummy Espresso action that loops until the UI thread is idle. This
       // effectively blocks us until the Snackbar has completed its sliding animation.
       onView(isRoot()).perform(waitUntilIdle());
-      callback.mNeedsIdle = false;
+      callback.needsIdle = false;
     } finally {
       // Unregister our idling resource
       Espresso.unregisterIdlingResources(callback);
@@ -187,11 +187,11 @@ public class SnackbarUtils {
       // the bar has been fully dismissed
       Espresso.registerIdlingResources(callback);
       // Mark the callback to require waiting for idle state
-      callback.mNeedsIdle = true;
+      callback.needsIdle = true;
       // Perform a dummy Espresso action that loops until the UI thread is idle. This
       // effectively blocks us until the Snackbar has completed its sliding animation.
       onView(isRoot()).perform(waitUntilIdle());
-      callback.mNeedsIdle = false;
+      callback.needsIdle = false;
     } finally {
       // Unregister our idling resource
       Espresso.unregisterIdlingResources(callback);

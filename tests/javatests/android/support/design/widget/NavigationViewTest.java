@@ -105,25 +105,25 @@ public class NavigationViewTest {
     R.id.destination_settings
   };
 
-  private Map<Integer, String> mMenuStringContent;
-  private DrawerLayout mDrawerLayout;
-  private NavigationTestView mNavigationView;
+  private Map<Integer, String> menuStringContent;
+  private DrawerLayout drawerLayout;
+  private NavigationTestView navigationView;
 
   @Before
   public void setUp() throws Exception {
     final NavigationViewActivity activity = activityTestRule.getActivity();
-    mDrawerLayout = activity.findViewById(R.id.drawer_layout);
-    mNavigationView = mDrawerLayout.findViewById(R.id.start_drawer);
+    drawerLayout = activity.findViewById(R.id.drawer_layout);
+    navigationView = drawerLayout.findViewById(R.id.start_drawer);
 
     // Close the drawer to reset the state for the next test
     onView(withId(R.id.drawer_layout)).perform(closeDrawer(GravityCompat.START));
 
     final Resources res = activity.getResources();
-    mMenuStringContent = new HashMap<>(MENU_CONTENT_ITEM_IDS.length);
-    mMenuStringContent.put(R.id.destination_home, res.getString(R.string.navigate_home));
-    mMenuStringContent.put(R.id.destination_profile, res.getString(R.string.navigate_profile));
-    mMenuStringContent.put(R.id.destination_people, res.getString(R.string.navigate_people));
-    mMenuStringContent.put(R.id.destination_settings, res.getString(R.string.navigate_settings));
+    menuStringContent = new HashMap<>(MENU_CONTENT_ITEM_IDS.length);
+    menuStringContent.put(R.id.destination_home, res.getString(R.string.navigate_home));
+    menuStringContent.put(R.id.destination_profile, res.getString(R.string.navigate_profile));
+    menuStringContent.put(R.id.destination_people, res.getString(R.string.navigate_people));
+    menuStringContent.put(R.id.destination_settings, res.getString(R.string.navigate_settings));
   }
 
   @Test
@@ -132,7 +132,7 @@ public class NavigationViewTest {
     onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
 
     // Check the contents of the Menu object
-    final Menu menu = mNavigationView.getMenu();
+    final Menu menu = navigationView.getMenu();
     assertNotNull("Menu should not be null", menu);
     assertEquals(
         "Should have matching number of items", MENU_CONTENT_ITEM_IDS.length + 1, menu.size());
@@ -145,7 +145,7 @@ public class NavigationViewTest {
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
       onView(
               allOf(
-                  withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
+                  withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
                   isDescendantOfA(withId(R.id.start_drawer))))
           .check(matches(isDisplayed()));
     }
@@ -157,13 +157,13 @@ public class NavigationViewTest {
     onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
 
     if (Build.VERSION.SDK_INT >= 21) {
-      if (mNavigationView.hasSystemWindowInsets()) {
-        assertFalse(mNavigationView.willNotDraw());
+      if (navigationView.hasSystemWindowInsets()) {
+        assertFalse(navigationView.willNotDraw());
       } else {
-        assertTrue(mNavigationView.willNotDraw());
+        assertTrue(navigationView.willNotDraw());
       }
     } else {
-      assertTrue(mNavigationView.willNotDraw());
+      assertTrue(navigationView.willNotDraw());
     }
   }
 
@@ -179,7 +179,7 @@ public class NavigationViewTest {
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
       onView(
               allOf(
-                  withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
+                  withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
                   isDescendantOfA(withId(R.id.start_drawer))))
           .check(matches(withTextSize(defaultTextSize)));
     }
@@ -192,7 +192,7 @@ public class NavigationViewTest {
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
       onView(
               allOf(
-                  withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
+                  withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
                   isDescendantOfA(withId(R.id.start_drawer))))
           .check(matches(withTextSize(newTextSize)));
     }
@@ -211,7 +211,7 @@ public class NavigationViewTest {
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
       onView(
               allOf(
-                  withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
+                  withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
                   isDescendantOfA(withId(R.id.start_drawer))))
           .check(matches(withTextColor(defaultTextColor)));
     }
@@ -227,7 +227,7 @@ public class NavigationViewTest {
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
       onView(
               allOf(
-                  withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
+                  withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
                   isDescendantOfA(withId(R.id.start_drawer))))
           .check(matches(withTextColor(newTextColor)));
     }
@@ -251,7 +251,7 @@ public class NavigationViewTest {
       // Matcher below will need to be tweaked.
       Matcher menuItemMatcher =
           allOf(
-              hasDescendant(withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
+              hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
               isDescendantOfA(withId(R.id.start_drawer)));
 
@@ -267,7 +267,7 @@ public class NavigationViewTest {
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
       Matcher menuItemMatcher =
           allOf(
-              hasDescendant(withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
+              hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
               isDescendantOfA(withId(R.id.start_drawer)));
 
@@ -285,7 +285,7 @@ public class NavigationViewTest {
     for (int i = 0; i < MENU_CONTENT_ITEM_IDS.length; i++) {
       Matcher menuItemMatcher =
           allOf(
-              hasDescendant(withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
+              hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
               isDescendantOfA(withId(R.id.start_drawer)));
 
@@ -335,17 +335,17 @@ public class NavigationViewTest {
     // below will need to be tweaked.
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_home)),
+                withText(menuStringContent.get(R.id.destination_home)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(defaultTintColor, allowedComponentVariance)));
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_profile)),
+                withText(menuStringContent.get(R.id.destination_profile)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(defaultTintColor, allowedComponentVariance)));
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_people)),
+                withText(menuStringContent.get(R.id.destination_people)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(defaultTintColor, allowedComponentVariance)));
 
@@ -359,17 +359,17 @@ public class NavigationViewTest {
     // Check that all menu items with icons now have icons tinted with the newly set color
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_home)),
+                withText(menuStringContent.get(R.id.destination_home)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(newTintColor, allowedComponentVariance)));
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_profile)),
+                withText(menuStringContent.get(R.id.destination_profile)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(newTintColor, allowedComponentVariance)));
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_people)),
+                withText(menuStringContent.get(R.id.destination_people)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(newTintColor, allowedComponentVariance)));
 
@@ -380,17 +380,17 @@ public class NavigationViewTest {
     // in these checks.
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_home)),
+                withText(menuStringContent.get(R.id.destination_home)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(redFill, 0)));
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_profile)),
+                withText(menuStringContent.get(R.id.destination_profile)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(greenFill, 0)));
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_people)),
+                withText(menuStringContent.get(R.id.destination_people)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .check(matches(withStartDrawableFilledWith(blueFill, 0)));
   }
@@ -401,12 +401,12 @@ public class NavigationViewTest {
    */
   private void verifyHeaders(@IdRes int... expectedHeaderIds) {
     final int expectedHeaderCount = (expectedHeaderIds != null) ? expectedHeaderIds.length : 0;
-    final int actualHeaderCount = mNavigationView.getHeaderCount();
+    final int actualHeaderCount = navigationView.getHeaderCount();
     assertEquals("Header count", expectedHeaderCount, actualHeaderCount);
 
     if (expectedHeaderCount > 0) {
       for (int i = 0; i < expectedHeaderCount; i++) {
-        final View currentHeader = mNavigationView.getHeaderView(i);
+        final View currentHeader = navigationView.getHeaderView(i);
         assertEquals("Header at #" + i, expectedHeaderIds[i], currentHeader.getId());
       }
     }
@@ -432,7 +432,7 @@ public class NavigationViewTest {
         .perform(addHeaderView(inflater, R.layout.design_navigation_view_header2));
     verifyHeaders(R.id.header1, R.id.header2);
 
-    final View header1 = mNavigationView.findViewById(R.id.header1);
+    final View header1 = navigationView.findViewById(R.id.header1);
     // Remove the first header and check that we still have the second header
     onView(withId(R.id.start_drawer)).perform(removeHeaderView(header1));
     verifyHeaders(R.id.header2);
@@ -466,10 +466,10 @@ public class NavigationViewTest {
 
     // Save the current state
     SparseArray<Parcelable> container = new SparseArray<>();
-    mNavigationView.saveHierarchyState(container);
+    navigationView.saveHierarchyState(container);
 
     // Remove the header
-    final View header = mNavigationView.findViewById(R.id.header_frame);
+    final View header = navigationView.findViewById(R.id.header_frame);
     onView(withId(R.id.start_drawer)).perform(removeHeaderView(header));
     verifyHeaders();
 
@@ -490,7 +490,7 @@ public class NavigationViewTest {
     // Open our drawer
     onView(withId(R.id.drawer_layout)).perform(openDrawer(GravityCompat.START));
 
-    final Menu menu = mNavigationView.getMenu();
+    final Menu menu = navigationView.getMenu();
     onView(isActionViewOf(menu, R.id.destination_people))
         .check(matches(isNotChecked())) // Not checked by default
         .perform(click()) // Check it
@@ -502,7 +502,7 @@ public class NavigationViewTest {
 
     // Save the current state
     SparseArray<Parcelable> container = new SparseArray<>();
-    mNavigationView.saveHierarchyState(container);
+    navigationView.saveHierarchyState(container);
 
     // Restore the saved state
     onView(withId(R.id.start_drawer))
@@ -521,41 +521,41 @@ public class NavigationViewTest {
     // Click one of our items
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_people)),
+                withText(menuStringContent.get(R.id.destination_people)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .perform(click());
     // Check that the drawer is still open
-    assertTrue("Drawer is still open after click", mDrawerLayout.isDrawerOpen(GravityCompat.START));
+    assertTrue("Drawer is still open after click", drawerLayout.isDrawerOpen(GravityCompat.START));
 
     // Register a listener
     NavigationView.OnNavigationItemSelectedListener mockedListener =
         mock(NavigationView.OnNavigationItemSelectedListener.class);
-    mNavigationView.setNavigationItemSelectedListener(mockedListener);
+    navigationView.setNavigationItemSelectedListener(mockedListener);
 
     // Click one of our items
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_profile)),
+                withText(menuStringContent.get(R.id.destination_profile)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .perform(click());
     // Check that the drawer is still open
-    assertTrue("Drawer is still open after click", mDrawerLayout.isDrawerOpen(GravityCompat.START));
+    assertTrue("Drawer is still open after click", drawerLayout.isDrawerOpen(GravityCompat.START));
     // And that our listener has been notified of the click
     verify(mockedListener, times(1))
-        .onNavigationItemSelected(mNavigationView.getMenu().findItem(R.id.destination_profile));
+        .onNavigationItemSelected(navigationView.getMenu().findItem(R.id.destination_profile));
 
     // Set null listener to test that the next click is not going to notify the
     // previously set listener
-    mNavigationView.setNavigationItemSelectedListener(null);
+    navigationView.setNavigationItemSelectedListener(null);
 
     // Click one of our items
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_settings)),
+                withText(menuStringContent.get(R.id.destination_settings)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .perform(click());
     // Check that the drawer is still open
-    assertTrue("Drawer is still open after click", mDrawerLayout.isDrawerOpen(GravityCompat.START));
+    assertTrue("Drawer is still open after click", drawerLayout.isDrawerOpen(GravityCompat.START));
     // And that our previous listener has not been notified of the click
     verifyNoMoreInteractions(mockedListener);
   }
@@ -577,7 +577,7 @@ public class NavigationViewTest {
       // set by the current implementation (see disclaimer in testBackground)
       Matcher menuItemMatcher =
           allOf(
-              hasDescendant(withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
+              hasDescendant(withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i]))),
               isChildOfA(isAssignableFrom(RecyclerView.class)),
               isDescendantOfA(withId(R.id.start_drawer)));
       onView(menuItemMatcher).check(matches(withBackgroundFill(expectedItemBackground)));
@@ -585,7 +585,7 @@ public class NavigationViewTest {
       // And for the foreground color check we need to select a view with the text content
       Matcher menuItemTextMatcher =
           allOf(
-              withText(mMenuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
+              withText(menuStringContent.get(MENU_CONTENT_ITEM_IDS[i])),
               isDescendantOfA(withId(R.id.start_drawer)));
       onView(menuItemTextMatcher).check(matches(withTextColor(expectedItemForeground)));
     }
@@ -634,7 +634,7 @@ public class NavigationViewTest {
         checkedItemBackground);
 
     // Register a navigation listener that "marks" the selected item
-    mNavigationView.setNavigationItemSelectedListener(
+    navigationView.setNavigationItemSelectedListener(
         new NavigationView.OnNavigationItemSelectedListener() {
           @Override
           public boolean onNavigationItemSelected(MenuItem item) {
@@ -645,7 +645,7 @@ public class NavigationViewTest {
     // Click one of our items
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_people)),
+                withText(menuStringContent.get(R.id.destination_people)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .perform(click());
     // and verify that it's now checked
@@ -657,7 +657,7 @@ public class NavigationViewTest {
         checkedItemBackground);
 
     // Register a navigation listener that doesn't "mark" the selected item
-    mNavigationView.setNavigationItemSelectedListener(
+    navigationView.setNavigationItemSelectedListener(
         new NavigationView.OnNavigationItemSelectedListener() {
           @Override
           public boolean onNavigationItemSelected(MenuItem item) {
@@ -668,7 +668,7 @@ public class NavigationViewTest {
     // Click another items
     onView(
             allOf(
-                withText(mMenuStringContent.get(R.id.destination_settings)),
+                withText(menuStringContent.get(R.id.destination_settings)),
                 isDescendantOfA(withId(R.id.start_drawer))))
         .perform(click());
     // and verify that the checked state remains on the previously clicked item
@@ -700,7 +700,7 @@ public class NavigationViewTest {
         allOf(
             isDescendantOfA(withId(R.id.start_drawer)),
             isChildOfA(isAssignableFrom(RecyclerView.class)),
-            hasDescendant(withText(mMenuStringContent.get(R.id.destination_people))),
+            hasDescendant(withText(menuStringContent.get(R.id.destination_people))),
             hasDescendant(allOf(isAssignableFrom(SwitchCompat.class), isCompletelyDisplayed())));
 
     // While we don't need to perform any action on our row, the invocation of perform()

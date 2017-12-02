@@ -25,7 +25,7 @@ import android.animation.TypeEvaluator;
  * fixes for older versions of Android.
  */
 public class ArgbEvaluatorCompat implements TypeEvaluator<Integer> {
-  private static final ArgbEvaluatorCompat sInstance = new ArgbEvaluatorCompat();
+  private static final ArgbEvaluatorCompat instance = new ArgbEvaluatorCompat();
 
   /**
    * Returns an instance of <code>ArgbEvaluatorCompat</code> that may be used in {@link
@@ -35,7 +35,7 @@ public class ArgbEvaluatorCompat implements TypeEvaluator<Integer> {
    * @return An instance of <code>ArgbEvalutor</code>.
    */
   public static ArgbEvaluatorCompat getInstance() {
-    return sInstance;
+    return instance;
   }
 
   /**

@@ -22,15 +22,15 @@ import android.view.View;
 public class CoordinatorLayoutUtils {
 
   public static class DependentBehavior extends CoordinatorLayout.Behavior<View> {
-    private final View mDependency;
+    private final View dependency;
 
     public DependentBehavior(View dependency) {
-      mDependency = dependency;
+      this.dependency = dependency;
     }
 
     @Override
     public boolean layoutDependsOn(CoordinatorLayout parent, View child, View dependency) {
-      return mDependency != null && dependency == mDependency;
+      return this.dependency != null && dependency == this.dependency;
     }
   }
 }

@@ -31,64 +31,64 @@ import android.view.autofill.AutofillValue;
  */
 public class ViewStructureImpl extends ViewStructure {
 
-  private CharSequence mHint;
-  private String mClassName;
-  private ViewStructureImpl[] mChildren;
+  private CharSequence hint;
+  private String className;
+  private ViewStructureImpl[] children;
 
   @Override
   public void setHint(CharSequence hint) {
-    mHint = hint;
+    this.hint = hint;
   }
 
   // Supported methods
   @Override
   public CharSequence getHint() {
-    return mHint;
+    return hint;
   }
 
   @Override
   public void setChildCount(int num) {
-    mChildren = new ViewStructureImpl[num];
+    children = new ViewStructureImpl[num];
   }
 
   @Override
   public void setClassName(String className) {
-    mClassName = className;
+    this.className = className;
   }
 
   public String getClassName() {
-    return mClassName;
+    return className;
   }
 
   @Override
   public int addChildCount(int num) {
-    if (mChildren == null) {
+    if (children == null) {
       setChildCount(num);
       return 0;
     }
-    final int start = mChildren.length;
+    final int start = children.length;
     ViewStructureImpl[] newArray = new ViewStructureImpl[start + num];
-    System.arraycopy(mChildren, 0, newArray, 0, start);
-    mChildren = newArray;
+    System.arraycopy(children, 0, newArray, 0, start);
+    children = newArray;
     return start;
   }
 
   @Override
   public int getChildCount() {
-    if (mChildren == null) {
+    if (children == null) {
       return 0;
     }
-    return mChildren.length;
+    return children.length;
   }
 
   public ViewStructureImpl getChildAt(int index) {
-    return mChildren[index];
+    return children[index];
   }
 
   @Override
   public ViewStructure newChild(int index) {
     final ViewStructureImpl child = new ViewStructureImpl();
-    mChildren[index] = child;
+    children[index] = child;
     return child;
   }
 

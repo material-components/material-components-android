@@ -83,13 +83,13 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
   private static final int PRESENTER_NAVIGATION_VIEW_ID = 1;
 
-  private final NavigationMenu mMenu;
-  private final NavigationMenuPresenter mPresenter = new NavigationMenuPresenter();
+  private final NavigationMenu menu;
+  private final NavigationMenuPresenter presenter = new NavigationMenuPresenter();
 
-  OnNavigationItemSelectedListener mListener;
-  private int mMaxWidth;
+  OnNavigationItemSelectedListener listener;
+  private int maxWidth;
 
-  private MenuInflater mMenuInflater;
+  private MenuInflater menuInflater;
 
   public NavigationView(Context context) {
     this(context, null);
@@ -105,7 +105,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     ThemeUtils.checkAppCompatTheme(context);
 
     // Create the menu
-    mMenu = new NavigationMenu(context);
+    this.menu = new NavigationMenu(context);
 
     // Custom attributes
     TintTypedArray a =
@@ -124,7 +124,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     ViewCompat.setFitsSystemWindows(
         this, a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
 
-    mMaxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
+    maxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
 
     final ColorStateList itemIconTint;
     if (a.hasValue(R.styleable.NavigationView_itemIconTint)) {
@@ -152,26 +152,26 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
     final Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
 
-    mMenu.setCallback(
+    this.menu.setCallback(
         new MenuBuilder.Callback() {
           @Override
           public boolean onMenuItemSelected(MenuBuilder menu, MenuItem item) {
-            return mListener != null && mListener.onNavigationItemSelected(item);
+            return listener != null && listener.onNavigationItemSelected(item);
           }
 
           @Override
           public void onMenuModeChange(MenuBuilder menu) {}
         });
-    mPresenter.setId(PRESENTER_NAVIGATION_VIEW_ID);
-    mPresenter.initForMenu(context, mMenu);
-    mPresenter.setItemIconTintList(itemIconTint);
+    presenter.setId(PRESENTER_NAVIGATION_VIEW_ID);
+    presenter.initForMenu(context, this.menu);
+    presenter.setItemIconTintList(itemIconTint);
     if (textAppearanceSet) {
-      mPresenter.setItemTextAppearance(textAppearance);
+      presenter.setItemTextAppearance(textAppearance);
     }
-    mPresenter.setItemTextColor(itemTextColor);
-    mPresenter.setItemBackground(itemBackground);
-    mMenu.addMenuPresenter(mPresenter);
-    addView((View) mPresenter.getMenuView(this));
+    presenter.setItemTextColor(itemTextColor);
+    presenter.setItemBackground(itemBackground);
+    this.menu.addMenuPresenter(presenter);
+    addView((View) presenter.getMenuView(this));
 
     if (a.hasValue(R.styleable.NavigationView_menu)) {
       inflateMenu(a.getResourceId(R.styleable.NavigationView_menu, 0));
@@ -189,7 +189,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     Parcelable superState = super.onSaveInstanceState();
     SavedState state = new SavedState(superState);
     state.menuState = new Bundle();
-    mMenu.savePresenterStates(state.menuState);
+    menu.savePresenterStates(state.menuState);
     return state;
   }
 
@@ -201,7 +201,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
     SavedState state = (SavedState) savedState;
     super.onRestoreInstanceState(state.getSuperState());
-    mMenu.restorePresenterStates(state.menuState);
+    menu.restorePresenterStates(state.menuState);
   }
 
   /**
@@ -211,7 +211,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    */
   public void setNavigationItemSelectedListener(
       @Nullable OnNavigationItemSelectedListener listener) {
-    mListener = listener;
+    this.listener = listener;
   }
 
   @Override
@@ -223,10 +223,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       case MeasureSpec.AT_MOST:
         widthSpec =
             MeasureSpec.makeMeasureSpec(
-                Math.min(MeasureSpec.getSize(widthSpec), mMaxWidth), MeasureSpec.EXACTLY);
+                Math.min(MeasureSpec.getSize(widthSpec), maxWidth), MeasureSpec.EXACTLY);
         break;
       case MeasureSpec.UNSPECIFIED:
-        widthSpec = MeasureSpec.makeMeasureSpec(mMaxWidth, MeasureSpec.EXACTLY);
+        widthSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
         break;
     }
     // Let super sort out the height
@@ -237,7 +237,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   @RestrictTo(LIBRARY_GROUP)
   @Override
   protected void onInsetsChanged(WindowInsetsCompat insets) {
-    mPresenter.dispatchApplyWindowInsets(insets);
+    presenter.dispatchApplyWindowInsets(insets);
   }
 
   /**
@@ -248,15 +248,15 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @param resId ID of a menu resource to inflate
    */
   public void inflateMenu(int resId) {
-    mPresenter.setUpdateSuspended(true);
-    getMenuInflater().inflate(resId, mMenu);
-    mPresenter.setUpdateSuspended(false);
-    mPresenter.updateMenuView(false);
+    presenter.setUpdateSuspended(true);
+    getMenuInflater().inflate(resId, menu);
+    presenter.setUpdateSuspended(false);
+    presenter.updateMenuView(false);
   }
 
   /** Returns the {@link Menu} instance associated with this navigation view. */
   public Menu getMenu() {
-    return mMenu;
+    return menu;
   }
 
   /**
@@ -266,7 +266,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @return a newly inflated View.
    */
   public View inflateHeaderView(@LayoutRes int res) {
-    return mPresenter.inflateHeaderView(res);
+    return presenter.inflateHeaderView(res);
   }
 
   /**
@@ -275,7 +275,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @param view The view to be added as a header of the navigation menu.
    */
   public void addHeaderView(@NonNull View view) {
-    mPresenter.addHeaderView(view);
+    presenter.addHeaderView(view);
   }
 
   /**
@@ -284,7 +284,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @param view The view to remove
    */
   public void removeHeaderView(@NonNull View view) {
-    mPresenter.removeHeaderView(view);
+    presenter.removeHeaderView(view);
   }
 
   /**
@@ -293,7 +293,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @return A positive integer representing the number of headers.
    */
   public int getHeaderCount() {
-    return mPresenter.getHeaderCount();
+    return presenter.getHeaderCount();
   }
 
   /**
@@ -304,7 +304,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    *     NavigationView.
    */
   public View getHeaderView(int index) {
-    return mPresenter.getHeaderView(index);
+    return presenter.getHeaderView(index);
   }
 
   /**
@@ -315,7 +315,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    */
   @Nullable
   public ColorStateList getItemIconTintList() {
-    return mPresenter.getItemTintList();
+    return presenter.getItemTintList();
   }
 
   /**
@@ -325,7 +325,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @attr ref R.styleable#NavigationView_itemIconTint
    */
   public void setItemIconTintList(@Nullable ColorStateList tint) {
-    mPresenter.setItemIconTintList(tint);
+    presenter.setItemIconTintList(tint);
   }
 
   /**
@@ -336,7 +336,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    */
   @Nullable
   public ColorStateList getItemTextColor() {
-    return mPresenter.getItemTextColor();
+    return presenter.getItemTextColor();
   }
 
   /**
@@ -346,7 +346,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @attr ref R.styleable#NavigationView_itemTextColor
    */
   public void setItemTextColor(@Nullable ColorStateList textColor) {
-    mPresenter.setItemTextColor(textColor);
+    presenter.setItemTextColor(textColor);
   }
 
   /**
@@ -357,7 +357,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    */
   @Nullable
   public Drawable getItemBackground() {
-    return mPresenter.getItemBackground();
+    return presenter.getItemBackground();
   }
 
   /**
@@ -377,7 +377,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @attr ref R.styleable#NavigationView_itemBackground
    */
   public void setItemBackground(@Nullable Drawable itemBackground) {
-    mPresenter.setItemBackground(itemBackground);
+    presenter.setItemBackground(itemBackground);
   }
 
   /**
@@ -386,9 +386,9 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @param id The item ID of the currently checked item.
    */
   public void setCheckedItem(@IdRes int id) {
-    MenuItem item = mMenu.findItem(id);
+    MenuItem item = menu.findItem(id);
     if (item != null) {
-      mPresenter.setCheckedItem((MenuItemImpl) item);
+      presenter.setCheckedItem((MenuItemImpl) item);
     }
   }
 
@@ -398,14 +398,14 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @attr ref R.styleable#NavigationView_itemTextAppearance
    */
   public void setItemTextAppearance(@StyleRes int resId) {
-    mPresenter.setItemTextAppearance(resId);
+    presenter.setItemTextAppearance(resId);
   }
 
   private MenuInflater getMenuInflater() {
-    if (mMenuInflater == null) {
-      mMenuInflater = new SupportMenuInflater(getContext());
+    if (menuInflater == null) {
+      menuInflater = new SupportMenuInflater(getContext());
     }
-    return mMenuInflater;
+    return menuInflater;
   }
 
   private ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {

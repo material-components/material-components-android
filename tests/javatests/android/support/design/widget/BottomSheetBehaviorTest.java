@@ -73,22 +73,22 @@ public class BottomSheetBehaviorTest {
   public static class Callback extends BottomSheetBehavior.BottomSheetCallback
       implements IdlingResource {
 
-    private boolean mIsIdle;
+    private boolean isIdle;
 
-    private IdlingResource.ResourceCallback mResourceCallback;
+    private IdlingResource.ResourceCallback resourceCallback;
 
     public Callback(BottomSheetBehavior behavior) {
       behavior.setBottomSheetCallback(this);
       int state = behavior.getState();
-      mIsIdle = isIdleState(state);
+      isIdle = isIdleState(state);
     }
 
     @Override
     public void onStateChanged(@NonNull View bottomSheet, @BottomSheetBehavior.State int newState) {
-      boolean wasIdle = mIsIdle;
-      mIsIdle = isIdleState(newState);
-      if (!wasIdle && mIsIdle && mResourceCallback != null) {
-        mResourceCallback.onTransitionToIdle();
+      boolean wasIdle = isIdle;
+      isIdle = isIdleState(newState);
+      if (!wasIdle && isIdle && resourceCallback != null) {
+        resourceCallback.onTransitionToIdle();
       }
     }
 
@@ -105,12 +105,12 @@ public class BottomSheetBehaviorTest {
 
     @Override
     public boolean isIdleNow() {
-      return mIsIdle;
+      return isIdle;
     }
 
     @Override
     public void registerIdleTransitionCallback(IdlingResource.ResourceCallback callback) {
-      mResourceCallback = callback;
+      resourceCallback = callback;
     }
 
     private boolean isIdleState(int state) {
@@ -123,33 +123,33 @@ public class BottomSheetBehaviorTest {
   private static class OnVisibilityChangedListener
       extends FloatingActionButton.OnVisibilityChangedListener implements IdlingResource {
 
-    private final boolean mShown;
-    private boolean mIsIdle;
-    private ResourceCallback mResourceCallback;
+    private final boolean shown;
+    private boolean isIdle;
+    private ResourceCallback resourceCallback;
 
     OnVisibilityChangedListener(boolean shown) {
-      mShown = shown;
+      this.shown = shown;
     }
 
     private void transitionToIdle() {
-      if (!mIsIdle) {
-        mIsIdle = true;
-        if (mResourceCallback != null) {
-          mResourceCallback.onTransitionToIdle();
+      if (!isIdle) {
+        isIdle = true;
+        if (resourceCallback != null) {
+          resourceCallback.onTransitionToIdle();
         }
       }
     }
 
     @Override
     public void onShown(FloatingActionButton fab) {
-      if (mShown) {
+      if (shown) {
         transitionToIdle();
       }
     }
 
     @Override
     public void onHidden(FloatingActionButton fab) {
-      if (!mShown) {
+      if (!shown) {
         transitionToIdle();
       }
     }
@@ -161,12 +161,12 @@ public class BottomSheetBehaviorTest {
 
     @Override
     public boolean isIdleNow() {
-      return mIsIdle;
+      return isIdle;
     }
 
     @Override
     public void registerIdleTransitionCallback(ResourceCallback resourceCallback) {
-      mResourceCallback = resourceCallback;
+      this.resourceCallback = resourceCallback;
     }
   }
 
@@ -176,15 +176,15 @@ public class BottomSheetBehaviorTest {
     private static final int STEPS = 10;
     private static final int DURATION = 100;
 
-    private final CoordinatesProvider mStart;
-    private final CoordinatesProvider mEnd;
-    private final PrecisionDescriber mPrecisionDescriber;
+    private final CoordinatesProvider start;
+    private final CoordinatesProvider end;
+    private final PrecisionDescriber precisionDescriber;
 
     public DragAction(
         CoordinatesProvider start, CoordinatesProvider end, PrecisionDescriber precisionDescriber) {
-      mStart = start;
-      mEnd = end;
-      mPrecisionDescriber = precisionDescriber;
+      this.start = start;
+      this.end = end;
+      this.precisionDescriber = precisionDescriber;
     }
 
     @Override
@@ -199,9 +199,9 @@ public class BottomSheetBehaviorTest {
 
     @Override
     public void perform(UiController uiController, View view) {
-      float[] precision = mPrecisionDescriber.describePrecision();
-      float[] start = mStart.calculateCoordinates(view);
-      float[] end = mEnd.calculateCoordinates(view);
+      float[] precision = precisionDescriber.describePrecision();
+      float[] start = this.start.calculateCoordinates(view);
+      float[] end = this.end.calculateCoordinates(view);
       float[][] steps = interpolate(start, end, STEPS);
       int delayBetweenMovements = DURATION / steps.length;
       // Down
@@ -248,10 +248,10 @@ public class BottomSheetBehaviorTest {
 
   private static class AddViewAction implements ViewAction {
 
-    private final int mLayout;
+    private final int layout;
 
     public AddViewAction(@LayoutRes int layout) {
-      mLayout = layout;
+      this.layout = layout;
     }
 
     @Override
@@ -267,12 +267,12 @@ public class BottomSheetBehaviorTest {
     @Override
     public void perform(UiController uiController, View view) {
       ViewGroup parent = (ViewGroup) view;
-      View child = LayoutInflater.from(view.getContext()).inflate(mLayout, parent, false);
+      View child = LayoutInflater.from(view.getContext()).inflate(layout, parent, false);
       parent.addView(child);
     }
   }
 
-  private Callback mCallback;
+  private Callback callback;
 
   @Test
   @SmallTest
@@ -907,14 +907,14 @@ public class BottomSheetBehaviorTest {
 
   private void registerIdlingResourceCallback() {
     // This cannot be done in setUp(), or swiping action cannot be executed.
-    mCallback = new Callback(getBehavior());
-    Espresso.registerIdlingResources(mCallback);
+    callback = new Callback(getBehavior());
+    Espresso.registerIdlingResources(callback);
   }
 
   private void unregisterIdlingResourceCallback() {
-    if (mCallback != null) {
-      Espresso.unregisterIdlingResources(mCallback);
-      mCallback = null;
+    if (callback != null) {
+      Espresso.unregisterIdlingResources(callback);
+      callback = null;
     }
   }
 

@@ -28,22 +28,22 @@ import android.support.annotation.ColorInt;
  * icons in the testIconTinting method.
  */
 public class TestDrawable extends GradientDrawable {
-  private int mWidth;
-  private int mHeight;
+  private int width;
+  private int height;
 
   public TestDrawable(@ColorInt int color, int width, int height) {
     super(Orientation.TOP_BOTTOM, new int[] {color, color});
-    mWidth = width;
-    mHeight = height;
+    this.width = width;
+    this.height = height;
   }
 
   @Override
   public int getIntrinsicWidth() {
-    return mWidth;
+    return width;
   }
 
   @Override
   public int getIntrinsicHeight() {
-    return mHeight;
+    return height;
   }
 }

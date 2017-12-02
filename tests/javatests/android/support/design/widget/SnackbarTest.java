@@ -73,7 +73,7 @@ public class SnackbarTest {
   private static final String ACTION_TEXT = "Action";
   private static final @StringRes int ACTION_ID = R.string.snackbar_action;
 
-  private CoordinatorLayout mCoordinatorLayout;
+  private CoordinatorLayout coordinatorLayout;
 
   private interface DismissAction {
     void dismiss(Snackbar snackbar);
@@ -81,7 +81,7 @@ public class SnackbarTest {
 
   @Before
   public void setup() {
-    mCoordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
+    coordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
   }
 
   private void verifySnackbarContent(
@@ -120,29 +120,29 @@ public class SnackbarTest {
 
     // String message and no action
     verifySnackbarContent(
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT), MESSAGE_TEXT, null);
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT), MESSAGE_TEXT, null);
 
     // Resource message and no action
     verifySnackbarContent(
-        Snackbar.make(mCoordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG), resolvedMessage, null);
+        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG), resolvedMessage, null);
 
     // String message and string action
     verifySnackbarContent(
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class)),
         MESSAGE_TEXT,
         ACTION_TEXT);
 
     // String message and resource action
     verifySnackbarContent(
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
             .setAction(ACTION_ID, mock(View.OnClickListener.class)),
         MESSAGE_TEXT,
         resolvedAction);
 
     // Resource message and resource action
     verifySnackbarContent(
-        Snackbar.make(mCoordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG)
+        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG)
             .setAction(ACTION_ID, mock(View.OnClickListener.class)),
         resolvedMessage,
         resolvedAction);
@@ -158,7 +158,7 @@ public class SnackbarTest {
     final BaseTransientBottomBar.BaseCallback mockCallback =
         mock(BaseTransientBottomBar.BaseCallback.class);
     final Snackbar snackbar =
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, length)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, length)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class))
             .addCallback(mockCallback);
 
@@ -223,7 +223,7 @@ public class SnackbarTest {
   @Test
   public void testDismissViaSwipeRtl() throws Throwable {
     onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
-    if (ViewCompat.getLayoutDirection(mCoordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (ViewCompat.getLayoutDirection(coordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
       // On devices that support RTL layout, the start-to-end dismiss swipe is done
       // with swipeLeft() action
       verifyDismissCallback(
@@ -293,7 +293,7 @@ public class SnackbarTest {
   @Test
   public void testDismissViaAnotherSnackbar() throws Throwable {
     final Snackbar anotherSnackbar =
-        Snackbar.make(mCoordinatorLayout, "A different message", Snackbar.LENGTH_SHORT);
+        Snackbar.make(coordinatorLayout, "A different message", Snackbar.LENGTH_SHORT);
 
     // Our dismiss action is to show another snackbar (and verify that the original snackbar
     // is now dismissed with CONSECUTIVE event)
@@ -317,7 +317,7 @@ public class SnackbarTest {
   public void testActionClickListener() {
     final View.OnClickListener mockClickListener = mock(View.OnClickListener.class);
     final Snackbar snackbar =
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
             .setAction(ACTION_TEXT, mockClickListener);
 
     // Show the snackbar
@@ -331,7 +331,7 @@ public class SnackbarTest {
   @Test
   public void testSetCallback() throws Throwable {
     final Snackbar snackbar =
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
     final Snackbar.Callback mockCallback = spy(new Snackbar.Callback());
     snackbar.setCallback(mockCallback);
@@ -347,7 +347,7 @@ public class SnackbarTest {
   @Test
   public void testSingleCallback() throws Throwable {
     final Snackbar snackbar =
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
     final BaseTransientBottomBar.BaseCallback mockCallback1 =
         mock(BaseTransientBottomBar.BaseCallback.class);
@@ -369,7 +369,7 @@ public class SnackbarTest {
   @Test
   public void testMultipleCallbacks() throws Throwable {
     final Snackbar snackbar =
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
     final BaseTransientBottomBar.BaseCallback mockCallback1 =
         mock(BaseTransientBottomBar.BaseCallback.class);
@@ -392,7 +392,7 @@ public class SnackbarTest {
   @Test
   public void testMultipleCallbacksWithRemoval() throws Throwable {
     final Snackbar snackbar =
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
     final BaseTransientBottomBar.BaseCallback mockCallback1 =
         mock(BaseTransientBottomBar.BaseCallback.class);
