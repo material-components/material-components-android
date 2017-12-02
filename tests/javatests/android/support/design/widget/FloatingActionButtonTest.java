@@ -21,6 +21,7 @@ import static android.support.design.testutils.FloatingActionButtonActions.hideT
 import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintColor;
 import static android.support.design.testutils.FloatingActionButtonActions.setBackgroundTintList;
 import static android.support.design.testutils.FloatingActionButtonActions.setCompatElevation;
+import static android.support.design.testutils.FloatingActionButtonActions.setCustomSize;
 import static android.support.design.testutils.FloatingActionButtonActions.setImageResource;
 import static android.support.design.testutils.FloatingActionButtonActions.setLayoutGravity;
 import static android.support.design.testutils.FloatingActionButtonActions.setSize;
@@ -37,6 +38,7 @@ import static android.support.design.testutils.TestUtilsMatchers.isPressed;
 import static android.support.design.testutils.TestUtilsMatchers.withFabBackgroundFill;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentAreaOnMargins;
 import static android.support.design.testutils.TestUtilsMatchers.withFabContentHeight;
+import static android.support.design.testutils.TestUtilsMatchers.withFabCustomSize;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -301,5 +303,17 @@ public class FloatingActionButtonTest {
     ActivityUtils.recreateActivity(activityTestRule, activity);
     ActivityUtils.waitForExecution(activityTestRule);
     onView(withId(R.id.fab_standard)).check(matches(isExpanded()));
+  }
+
+  @Test
+  @SmallTest
+  public void testSetCustomSize() {
+    onView(withId(R.id.fab_standard))
+        .perform(setCustomSize(10))
+        .check(matches(withFabCustomSize(10)));
+
+    onView(withId(R.id.fab_standard))
+        .perform(setCustomSize(20))
+        .check(matches(withFabCustomSize(20)));
   }
 }

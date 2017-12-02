@@ -48,12 +48,8 @@ public class FloatingActionButtonActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         final FloatingActionButton fab = (FloatingActionButton) view;
         fab.setBackgroundTintList(tint);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -72,12 +68,8 @@ public class FloatingActionButtonActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         final FloatingActionButton fab = (FloatingActionButton) view;
         fab.setImageResource(resId);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -96,12 +88,28 @@ public class FloatingActionButtonActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         final FloatingActionButton fab = (FloatingActionButton) view;
         fab.setSize(size);
+      }
+    };
+  }
 
-        uiController.loopMainThreadUntilIdle();
+  public static ViewAction setCustomSize(final int size) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "sets FloatingActionButton custom size";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        FloatingActionButton fab = (FloatingActionButton) view;
+        fab.setCustomSize(size);
       }
     };
   }
@@ -120,12 +128,8 @@ public class FloatingActionButtonActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         final FloatingActionButton fab = (FloatingActionButton) view;
         fab.setCompatElevation(size);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -144,13 +148,9 @@ public class FloatingActionButtonActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) view.getLayoutParams();
         lp.gravity = gravity;
         view.requestLayout();
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -169,8 +169,6 @@ public class FloatingActionButtonActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         FloatingActionButton fab = (FloatingActionButton) view;
         fab.hide();
         fab.show();
@@ -195,8 +193,6 @@ public class FloatingActionButtonActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         FloatingActionButton fab = (FloatingActionButton) view;
         fab.show();
         fab.hide();

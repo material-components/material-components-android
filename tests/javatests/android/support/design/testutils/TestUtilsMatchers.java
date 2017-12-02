@@ -91,7 +91,7 @@ public class TestUtilsMatchers {
   }
 
   /** Returns a matcher that matches TextViews with the specified text size. */
-  public static Matcher withTextSize(final float textSize) {
+  public static Matcher<View> withTextSize(final float textSize) {
     return new BoundedMatcher<View, TextView>(TextView.class) {
       private String failedCheckDescription;
 
@@ -114,7 +114,7 @@ public class TestUtilsMatchers {
   }
 
   /** Returns a matcher that matches TextViews with the specified text color. */
-  public static Matcher withTextColor(final @ColorInt int textColor) {
+  public static Matcher<View> withTextColor(final @ColorInt int textColor) {
     return new BoundedMatcher<View, TextView>(TextView.class) {
       private String failedCheckDescription;
 
@@ -166,7 +166,7 @@ public class TestUtilsMatchers {
    * Returns a matcher that matches TextViews whose start drawable is filled with the specified fill
    * color.
    */
-  public static Matcher withStartDrawableFilledWith(
+  public static Matcher<View> withStartDrawableFilledWith(
       final @ColorInt int fillColor, final int allowedComponentVariance) {
     return new BoundedMatcher<View, TextView>(TextView.class) {
       private String failedCheckDescription;
@@ -210,7 +210,8 @@ public class TestUtilsMatchers {
    * Returns a matcher that matches <code>ImageView</code>s which have drawable flat-filled with the
    * specific color.
    */
-  public static Matcher drawable(@ColorInt final int color, final int allowedComponentVariance) {
+  public static Matcher<View> drawable(
+      @ColorInt final int color, final int allowedComponentVariance) {
     return new BoundedMatcher<View, ImageView>(ImageView.class) {
       private String mFailedComparisonDescription;
 
@@ -254,7 +255,7 @@ public class TestUtilsMatchers {
   }
 
   /** Returns a matcher that matches Views with the specified background fill color. */
-  public static Matcher withBackgroundFill(final @ColorInt int fillColor) {
+  public static Matcher<View> withBackgroundFill(final @ColorInt int fillColor) {
     return new BoundedMatcher<View, View>(View.class) {
       private String failedCheckDescription;
 
@@ -278,10 +279,38 @@ public class TestUtilsMatchers {
     };
   }
 
+  /** Returns a matcher that matches FloatingActionButtons with the specified custom size. */
+  public static Matcher<View> withFabCustomSize(final int customSize) {
+    return new BoundedMatcher<View, View>(View.class) {
+      private String failedCheckDescription;
+
+      @Override
+      public void describeTo(final Description description) {
+        description.appendText(failedCheckDescription);
+      }
+
+      @Override
+      public boolean matchesSafely(final View view) {
+        if (!(view instanceof FloatingActionButton)) {
+          return false;
+        }
+
+        final FloatingActionButton fab = (FloatingActionButton) view;
+        if (Math.abs(fab.getCustomSize() - customSize) > 1.0f) {
+          failedCheckDescription =
+              "Custom size " + fab.getCustomSize() + " is different than expected " + customSize;
+          return false;
+        }
+
+        return true;
+      }
+    };
+  }
+
   /**
    * Returns a matcher that matches FloatingActionButtons with the specified background fill color.
    */
-  public static Matcher withFabBackgroundFill(final @ColorInt int fillColor) {
+  public static Matcher<View> withFabBackgroundFill(final @ColorInt int fillColor) {
     return new BoundedMatcher<View, View>(View.class) {
       private String failedCheckDescription;
 
@@ -358,7 +387,7 @@ public class TestUtilsMatchers {
   }
 
   /** Returns a matcher that matches FloatingActionButtons with the specified content height */
-  public static Matcher withFabContentHeight(final int size) {
+  public static Matcher<View> withFabContentHeight(final int size) {
     return new BoundedMatcher<View, View>(View.class) {
       private String failedCheckDescription;
 
@@ -377,13 +406,19 @@ public class TestUtilsMatchers {
         final Rect area = new Rect();
         fab.getContentRect(area);
 
-        return area.height() == size;
+        if (area.height() != size) {
+          failedCheckDescription =
+              "Content height " + area.height() + " is different than expected " + size;
+          return false;
+        }
+
+        return true;
       }
     };
   }
 
   /** Returns a matcher that matches FloatingActionButtons with the specified gravity. */
-  public static Matcher withFabContentAreaOnMargins(final int gravity) {
+  public static Matcher<View> withFabContentAreaOnMargins(final int gravity) {
     return new BoundedMatcher<View, View>(View.class) {
       private String failedCheckDescription;
 
@@ -436,7 +471,7 @@ public class TestUtilsMatchers {
   }
 
   /** Returns a matcher that matches FloatingActionButtons with the specified content height */
-  public static Matcher withCompoundDrawable(final int index, final Drawable expected) {
+  public static Matcher<View> withCompoundDrawable(final int index, final Drawable expected) {
     return new BoundedMatcher<View, View>(View.class) {
       private String failedCheckDescription;
 
@@ -452,7 +487,14 @@ public class TestUtilsMatchers {
         }
 
         final TextView textView = (TextView) view;
-        return expected == TextViewCompat.getCompoundDrawablesRelative(textView)[index];
+        Drawable actual = TextViewCompat.getCompoundDrawablesRelative(textView)[index];
+        if (expected != TextViewCompat.getCompoundDrawablesRelative(textView)[index]) {
+          failedCheckDescription =
+              "Drawable " + actual + "at index " + index + " does not match expected " + expected;
+          return false;
+        }
+
+        return true;
       }
     };
   }
@@ -508,16 +550,16 @@ public class TestUtilsMatchers {
   }
 
   /** Returns a matcher that matches TextViews with the specified typeface. */
-  public static Matcher withTypeface(@NonNull final Typeface typeface) {
-    return new TypeSafeMatcher<TextView>(TextView.class) {
+  public static Matcher<View> withTypeface(@NonNull final Typeface typeface) {
+    return new TypeSafeMatcher<View>(TextView.class) {
       @Override
       public void describeTo(final Description description) {
         description.appendText("view with typeface: " + typeface);
       }
 
       @Override
-      public boolean matchesSafely(final TextView view) {
-        return typeface.equals(view.getTypeface());
+      public boolean matchesSafely(final View view) {
+        return typeface.equals(((TextView) view).getTypeface());
       }
     };
   }

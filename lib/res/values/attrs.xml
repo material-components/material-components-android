@@ -168,7 +168,7 @@
          should be stateful. -->
     <attr name="rippleAlpha" format="color"/>
 
-    <!-- Size for the FAB. -->
+    <!-- Size for the FAB. If fabCustomSize is set, this will be ignored. -->
     <attr name="fabSize">
       <!-- A size which will change based on the window size. -->
       <enum name="auto" value="-1"/>
@@ -177,6 +177,8 @@
       <!-- The mini sized button. -->
       <enum name="mini" value="1"/>
     </attr>
+    <!-- Custom size for the FAB. If this is set, fabSize will be ignored. -->
+    <attr name="fabCustomSize" format="dimension"/>
     <!-- Elevation value for the FAB -->
     <attr name="elevation"/>
     <!-- TranslationZ value for the FAB when hovered, focused, or hovered and focused. -->
