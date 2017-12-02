@@ -49,20 +49,20 @@ public class BottomSheetBehaviorTouchTest {
   public final ActivityTestRule<CoordinatorLayoutActivity> activityTestRule =
       new ActivityTestRule<>(CoordinatorLayoutActivity.class);
 
-  private FrameLayout bottomSheet;
+  private FrameLayout mBottomSheet;
 
-  private BottomSheetBehavior<FrameLayout> behavior;
+  private BottomSheetBehavior<FrameLayout> mBehavior;
 
-  private boolean down;
+  private boolean mDown;
 
-  private View.OnTouchListener onTouchListener =
+  private View.OnTouchListener mOnTouchListener =
       new View.OnTouchListener() {
 
         @Override
         public boolean onTouch(View v, MotionEvent event) {
           switch (event.getActionMasked()) {
             case MotionEvent.ACTION_DOWN:
-              down = true;
+              mDown = true;
               break;
           }
           return true;
@@ -77,30 +77,30 @@ public class BottomSheetBehaviorTouchTest {
               @Override
               public void run() {
                 CoordinatorLayoutActivity activity = activityTestRule.getActivity();
-                activity.mContainer.setOnTouchListener(onTouchListener);
-                bottomSheet = new FrameLayout(activity);
+                activity.mContainer.setOnTouchListener(mOnTouchListener);
+                mBottomSheet = new FrameLayout(activity);
                 CoordinatorLayout.LayoutParams params =
                     new CoordinatorLayout.LayoutParams(
                         CoordinatorLayout.LayoutParams.MATCH_PARENT,
                         CoordinatorLayout.LayoutParams.MATCH_PARENT);
-                behavior = new BottomSheetBehavior<>();
-                behavior.setPeekHeight(PEEK_HEIGHT);
-                params.setBehavior(behavior);
-                activity.mCoordinatorLayout.addView(bottomSheet, params);
+                mBehavior = new BottomSheetBehavior<>();
+                mBehavior.setPeekHeight(PEEK_HEIGHT);
+                params.setBehavior(mBehavior);
+                activity.mCoordinatorLayout.addView(mBottomSheet, params);
               }
             });
   }
 
   @Test
   public void testSetUp() {
-    assertThat(bottomSheet, is(notNullValue()));
-    assertThat(behavior, is(sameInstance(BottomSheetBehavior.from(bottomSheet))));
+    assertThat(mBottomSheet, is(notNullValue()));
+    assertThat(mBehavior, is(sameInstance(BottomSheetBehavior.from(mBottomSheet))));
   }
 
   @Test
   public void testTouchCoordinatorLayout() {
     final CoordinatorLayoutActivity activity = activityTestRule.getActivity();
-    down = false;
+    mDown = false;
     Espresso.onView(sameInstance((View) activity.mCoordinatorLayout))
         .perform(ViewActions.click()) // Click outside the bottom sheet
         .check(
@@ -110,7 +110,7 @@ public class BottomSheetBehaviorTouchTest {
                 assertThat(e, is(nullValue()));
                 assertThat(view, is(notNullValue()));
                 // Check that the touch event fell through to the container
-                assertThat(down, is(true));
+                assertThat(mDown, is(true));
               }
             });
   }

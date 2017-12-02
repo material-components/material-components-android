@@ -22,7 +22,7 @@ import android.widget.ImageButton;
 
 class VisibilityAwareImageButton extends ImageButton {
 
-  private int userSetVisibility;
+  private int mUserSetVisibility;
 
   public VisibilityAwareImageButton(Context context) {
     this(context, null);
@@ -34,7 +34,7 @@ class VisibilityAwareImageButton extends ImageButton {
 
   public VisibilityAwareImageButton(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    userSetVisibility = getVisibility();
+    mUserSetVisibility = getVisibility();
   }
 
   @Override
@@ -45,11 +45,11 @@ class VisibilityAwareImageButton extends ImageButton {
   final void internalSetVisibility(int visibility, boolean fromUser) {
     super.setVisibility(visibility);
     if (fromUser) {
-      userSetVisibility = visibility;
+      mUserSetVisibility = visibility;
     }
   }
 
   final int getUserSetVisibility() {
-    return userSetVisibility;
+    return mUserSetVisibility;
   }
 }

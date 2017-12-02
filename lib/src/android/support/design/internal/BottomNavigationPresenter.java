@@ -33,36 +33,33 @@ import android.view.ViewGroup;
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationPresenter implements MenuPresenter {
-  private MenuBuilder menu;
-  private BottomNavigationMenuView menuView;
-  private boolean updateSuspended = false;
-  private int id;
+  private MenuBuilder mMenu;
+  private BottomNavigationMenuView mMenuView;
+  private boolean mUpdateSuspended = false;
+  private int mId;
 
   public void setBottomNavigationMenuView(BottomNavigationMenuView menuView) {
-    this.menuView = menuView;
+    mMenuView = menuView;
   }
 
   @Override
   public void initForMenu(Context context, MenuBuilder menu) {
-    menuView.initialize(this.menu);
-    this.menu = menu;
+    mMenuView.initialize(mMenu);
+    mMenu = menu;
   }
 
   @Override
   public MenuView getMenuView(ViewGroup root) {
-    return menuView;
+    return mMenuView;
   }
 
   @Override
   public void updateMenuView(boolean cleared) {
-    if (updateSuspended) {
-      return;
-    }
-
+    if (mUpdateSuspended) return;
     if (cleared) {
-      menuView.buildMenuView();
+      mMenuView.buildMenuView();
     } else {
-      menuView.updateMenuView();
+      mMenuView.updateMenuView();
     }
   }
 
@@ -93,30 +90,30 @@ public class BottomNavigationPresenter implements MenuPresenter {
   }
 
   public void setId(int id) {
-    this.id = id;
+    mId = id;
   }
 
   @Override
   public int getId() {
-    return id;
+    return mId;
   }
 
   @Override
   public Parcelable onSaveInstanceState() {
     SavedState savedState = new SavedState();
-    savedState.selectedItemId = menuView.getSelectedItemId();
+    savedState.selectedItemId = mMenuView.getSelectedItemId();
     return savedState;
   }
 
   @Override
   public void onRestoreInstanceState(Parcelable state) {
     if (state instanceof SavedState) {
-      menuView.tryRestoreSelectedItemId(((SavedState) state).selectedItemId);
+      mMenuView.tryRestoreSelectedItemId(((SavedState) state).selectedItemId);
     }
   }
 
   public void setUpdateSuspended(boolean updateSuspended) {
-    this.updateSuspended = updateSuspended;
+    mUpdateSuspended = updateSuspended;
   }
 
   static class SavedState implements Parcelable {

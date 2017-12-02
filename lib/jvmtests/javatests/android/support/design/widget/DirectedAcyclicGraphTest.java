@@ -33,29 +33,29 @@ import org.junit.runners.JUnit4;
 @SmallTest
 public class DirectedAcyclicGraphTest {
 
-  private DirectedAcyclicGraph<TestNode> graph;
+  private DirectedAcyclicGraph<TestNode> mGraph;
 
   @Before
   public void setup() {
-    graph = new DirectedAcyclicGraph<>();
+    mGraph = new DirectedAcyclicGraph<>();
   }
 
   @Test
   public void test_addNode() {
     final TestNode node = new TestNode("node");
-    graph.addNode(node);
-    assertEquals(1, graph.size());
-    assertTrue(graph.contains(node));
+    mGraph.addNode(node);
+    assertEquals(1, mGraph.size());
+    assertTrue(mGraph.contains(node));
   }
 
   @Test
   public void test_addNodeAgain() {
     final TestNode node = new TestNode("node");
-    graph.addNode(node);
-    graph.addNode(node);
+    mGraph.addNode(node);
+    mGraph.addNode(node);
 
-    assertEquals(1, graph.size());
-    assertTrue(graph.contains(node));
+    assertEquals(1, mGraph.size());
+    assertTrue(mGraph.contains(node));
   }
 
   @Test
@@ -63,9 +63,9 @@ public class DirectedAcyclicGraphTest {
     final TestNode node = new TestNode("node");
     final TestNode edge = new TestNode("edge");
 
-    graph.addNode(node);
-    graph.addNode(edge);
-    graph.addEdge(node, edge);
+    mGraph.addNode(node);
+    mGraph.addNode(edge);
+    mGraph.addEdge(node, edge);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -74,21 +74,21 @@ public class DirectedAcyclicGraphTest {
     final TestNode edge = new TestNode("edge");
 
     // Add the node, but not the edge node
-    graph.addNode(node);
+    mGraph.addNode(node);
 
     // Now add the link
-    graph.addEdge(node, edge);
+    mGraph.addEdge(node, edge);
   }
 
   @Test
   public void test_getIncomingEdges() {
     final TestNode node = new TestNode("node");
     final TestNode edge = new TestNode("edge");
-    graph.addNode(node);
-    graph.addNode(edge);
-    graph.addEdge(node, edge);
+    mGraph.addNode(node);
+    mGraph.addNode(edge);
+    mGraph.addEdge(node, edge);
 
-    final List<TestNode> incomingEdges = graph.getIncomingEdges(node);
+    final List<TestNode> incomingEdges = mGraph.getIncomingEdges(node);
     assertNotNull(incomingEdges);
     assertEquals(1, incomingEdges.size());
     assertEquals(edge, incomingEdges.get(0));
@@ -98,12 +98,12 @@ public class DirectedAcyclicGraphTest {
   public void test_getOutgoingEdges() {
     final TestNode node = new TestNode("node");
     final TestNode edge = new TestNode("edge");
-    graph.addNode(node);
-    graph.addNode(edge);
-    graph.addEdge(node, edge);
+    mGraph.addNode(node);
+    mGraph.addNode(edge);
+    mGraph.addEdge(node, edge);
 
     // Now assert the getOutgoingEdges returns a list which has one element (node)
-    final List<TestNode> outgoingEdges = graph.getOutgoingEdges(edge);
+    final List<TestNode> outgoingEdges = mGraph.getOutgoingEdges(edge);
     assertNotNull(outgoingEdges);
     assertEquals(1, outgoingEdges.size());
     assertTrue(outgoingEdges.contains(node));
@@ -114,15 +114,15 @@ public class DirectedAcyclicGraphTest {
     final TestNode node1 = new TestNode("1");
     final TestNode node2 = new TestNode("2");
     final TestNode edge = new TestNode("edge");
-    graph.addNode(node1);
-    graph.addNode(node2);
-    graph.addNode(edge);
+    mGraph.addNode(node1);
+    mGraph.addNode(node2);
+    mGraph.addNode(edge);
 
-    graph.addEdge(node1, edge);
-    graph.addEdge(node2, edge);
+    mGraph.addEdge(node1, edge);
+    mGraph.addEdge(node2, edge);
 
     // Now assert the getOutgoingEdges returns a list which has 2 elements (node1 & node2)
-    final List<TestNode> outgoingEdges = graph.getOutgoingEdges(edge);
+    final List<TestNode> outgoingEdges = mGraph.getOutgoingEdges(edge);
     assertNotNull(outgoingEdges);
     assertEquals(2, outgoingEdges.size());
     assertTrue(outgoingEdges.contains(node1));
@@ -133,15 +133,15 @@ public class DirectedAcyclicGraphTest {
   public void test_hasOutgoingEdges() {
     final TestNode node = new TestNode("node");
     final TestNode edge = new TestNode("edge");
-    graph.addNode(node);
-    graph.addNode(edge);
+    mGraph.addNode(node);
+    mGraph.addNode(edge);
 
     // There is no edge currently and assert that fact
-    assertFalse(graph.hasOutgoingEdges(edge));
+    assertFalse(mGraph.hasOutgoingEdges(edge));
     // Now add the edge
-    graph.addEdge(node, edge);
+    mGraph.addEdge(node, edge);
     // and assert that the methods returns true;
-    assertTrue(graph.hasOutgoingEdges(edge));
+    assertTrue(mGraph.hasOutgoingEdges(edge));
   }
 
   @Test
@@ -149,18 +149,18 @@ public class DirectedAcyclicGraphTest {
     final TestNode node1 = new TestNode("1");
     final TestNode node2 = new TestNode("2");
     final TestNode edge = new TestNode("edge");
-    graph.addNode(node1);
-    graph.addNode(node2);
-    graph.addNode(edge);
+    mGraph.addNode(node1);
+    mGraph.addNode(node2);
+    mGraph.addNode(edge);
 
     // Now clear the graph
-    graph.clear();
+    mGraph.clear();
 
     // Now assert the graph is empty and that contains returns false
-    assertEquals(0, graph.size());
-    assertFalse(graph.contains(node1));
-    assertFalse(graph.contains(node2));
-    assertFalse(graph.contains(edge));
+    assertEquals(0, mGraph.size());
+    assertFalse(mGraph.contains(node1));
+    assertFalse(mGraph.contains(node2));
+    assertFalse(mGraph.contains(edge));
   }
 
   @Test
@@ -171,17 +171,17 @@ public class DirectedAcyclicGraphTest {
     final TestNode node4 = new TestNode("D");
 
     // Now we'll add the nodes
-    graph.addNode(node1);
-    graph.addNode(node2);
-    graph.addNode(node3);
-    graph.addNode(node4);
+    mGraph.addNode(node1);
+    mGraph.addNode(node2);
+    mGraph.addNode(node3);
+    mGraph.addNode(node4);
 
     // Now we'll add edges so that 4 <- 2, 2 <- 3, 3 <- 1  (where <- denotes a dependency)
-    graph.addEdge(node4, node2);
-    graph.addEdge(node2, node3);
-    graph.addEdge(node3, node1);
+    mGraph.addEdge(node4, node2);
+    mGraph.addEdge(node2, node3);
+    mGraph.addEdge(node3, node1);
 
-    final List<TestNode> sorted = graph.getSortedList();
+    final List<TestNode> sorted = mGraph.getSortedList();
     // Assert that it is the correct size
     assertEquals(4, sorted.size());
     // Assert that all of the nodes are present and in their sorted order
@@ -192,15 +192,15 @@ public class DirectedAcyclicGraphTest {
   }
 
   private static class TestNode {
-    private final String label;
+    private final String mLabel;
 
     TestNode(@NonNull String label) {
-      this.label = label;
+      mLabel = label;
     }
 
     @Override
     public String toString() {
-      return "TestNode: " + label;
+      return "TestNode: " + mLabel;
     }
   }
 }

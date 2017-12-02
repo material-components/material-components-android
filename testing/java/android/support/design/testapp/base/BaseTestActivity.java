@@ -23,7 +23,7 @@ import android.view.WindowManager;
 /** Base activity type for all Material Components test fixtures. */
 public abstract class BaseTestActivity extends RecreatableAppCompatActivity {
 
-  private boolean destroyed;
+  private boolean mDestroyed;
 
   @Override
   protected void onCreate(Bundle savedInstanceState) {
@@ -53,11 +53,11 @@ public abstract class BaseTestActivity extends RecreatableAppCompatActivity {
   @Override
   protected void onDestroy() {
     super.onDestroy();
-    destroyed = true;
+    mDestroyed = true;
   }
 
   @Override
   public boolean isDestroyed() {
-    return destroyed;
+    return mDestroyed;
   }
 }

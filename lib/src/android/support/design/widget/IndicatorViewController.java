@@ -88,87 +88,87 @@ final class IndicatorViewController {
   private final Context context;
   private final TextInputLayout textInputView;
 
-  private LinearLayout indicatorArea;
-  private int indicatorsAdded;
+  private LinearLayout mIndicatorArea;
+  private int mIndicatorsAdded;
 
-  private FrameLayout captionArea;
-  private int captionViewsAdded;
-  @Nullable private Animator captionAnimator;
-  private final float captionTranslationYPx;
-  private int captionDisplayed;
-  private int captionToShow;
+  private FrameLayout mCaptionArea;
+  private int mCaptionViewsAdded;
+  @Nullable private Animator mCaptionAnimator;
+  private final float mCaptionTranslationYPx;
+  private int mCaptionDisplayed;
+  private int mCaptionToShow;
 
-  private CharSequence errorText;
-  private boolean errorEnabled;
-  private TextView errorView;
-  private int errorTextAppearance;
+  private CharSequence mErrorText;
+  private boolean mErrorEnabled;
+  private TextView mErrorView;
+  private int mErrorTextAppearance;
 
-  private CharSequence helperText;
-  private boolean helperTextEnabled;
-  private TextView helperTextView;
-  private int helperTextTextAppearance;
+  private CharSequence mHelperText;
+  private boolean mHelperTextEnabled;
+  private TextView mHelperTextView;
+  private int mHelperTextTextAppearance;
 
-  private Typeface typeface;
+  private Typeface mTypeface;
 
   public IndicatorViewController(TextInputLayout textInputView) {
     this.context = textInputView.getContext();
     this.textInputView = textInputView;
-    this.captionTranslationYPx =
+    this.mCaptionTranslationYPx =
         context.getResources().getDimensionPixelSize(R.dimen.design_textinput_caption_translate_y);
   }
 
   void showHelper(final CharSequence helperText) {
     cancelCaptionAnimator();
-    this.helperText = helperText;
-    helperTextView.setText(helperText);
+    mHelperText = helperText;
+    mHelperTextView.setText(helperText);
 
     // If helper is not already shown, show helper.
-    if (captionDisplayed != CAPTION_STATE_HELPER_TEXT) {
-      captionToShow = CAPTION_STATE_HELPER_TEXT;
+    if (mCaptionDisplayed != CAPTION_STATE_HELPER_TEXT) {
+      mCaptionToShow = CAPTION_STATE_HELPER_TEXT;
     }
     updateCaptionViewsVisibility(
-        captionDisplayed, captionToShow, shouldAnimateCaptionView(helperTextView, helperText));
+        mCaptionDisplayed, mCaptionToShow, shouldAnimateCaptionView(mHelperTextView, helperText));
   }
 
   void hideHelperText() {
     cancelCaptionAnimator();
 
     // Hide helper if it's shown.
-    if (captionDisplayed == CAPTION_STATE_HELPER_TEXT) {
-      captionToShow = CAPTION_STATE_NONE;
+    if (mCaptionDisplayed == CAPTION_STATE_HELPER_TEXT) {
+      mCaptionToShow = CAPTION_STATE_NONE;
     }
     updateCaptionViewsVisibility(
-        captionDisplayed, captionToShow, shouldAnimateCaptionView(helperTextView, null));
+        mCaptionDisplayed, mCaptionToShow, shouldAnimateCaptionView(mHelperTextView, null));
   }
 
   void showError(final CharSequence errorText) {
     cancelCaptionAnimator();
-    this.errorText = errorText;
-    errorView.setText(errorText);
+    mErrorText = errorText;
+    mErrorView.setText(errorText);
 
     // If error is not already shown, show error.
-    if (captionDisplayed != CAPTION_STATE_ERROR) {
-      captionToShow = CAPTION_STATE_ERROR;
+    if (mCaptionDisplayed != CAPTION_STATE_ERROR) {
+      mCaptionToShow = CAPTION_STATE_ERROR;
     }
     updateCaptionViewsVisibility(
-        captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, errorText));
+        mCaptionDisplayed, mCaptionToShow, shouldAnimateCaptionView(mErrorView, errorText));
   }
 
   void hideError() {
-    errorText = null;
+    mErrorText = null;
     cancelCaptionAnimator();
     // Hide  error if it's shown.
-    if (captionDisplayed == CAPTION_STATE_ERROR) {
+    if (mCaptionDisplayed == CAPTION_STATE_ERROR) {
       // If helper text is enabled and not empty, show helper text in place of the error.
-      if (helperTextEnabled && !TextUtils.isEmpty(helperText)) {
-        captionToShow = CAPTION_STATE_HELPER_TEXT;
+      if (mHelperTextEnabled && !TextUtils.isEmpty(mHelperText)) {
+        mCaptionToShow = CAPTION_STATE_HELPER_TEXT;
       } else {
         // Otherwise, just hide the error.
-        captionToShow = CAPTION_STATE_NONE;
+        mCaptionToShow = CAPTION_STATE_NONE;
       }
     }
     updateCaptionViewsVisibility(
-        captionDisplayed, captionToShow, shouldAnimateCaptionView(errorView, null));
+        mCaptionDisplayed, mCaptionToShow, shouldAnimateCaptionView(mErrorView, null));
   }
 
   /**
@@ -183,7 +183,7 @@ final class IndicatorViewController {
       TextView captionView, @Nullable final CharSequence captionText) {
     return ViewCompat.isLaidOut(textInputView)
         && textInputView.isEnabled()
-        && (captionToShow != captionDisplayed
+        && (mCaptionToShow != mCaptionDisplayed
             || captionView == null
             || !TextUtils.equals(captionView.getText(), captionText));
   }
@@ -195,21 +195,21 @@ final class IndicatorViewController {
 
     if (animate) {
       final AnimatorSet captionAnimator = new AnimatorSet();
-      this.captionAnimator = captionAnimator;
+      mCaptionAnimator = captionAnimator;
       List<Animator> captionAnimatorList = new ArrayList<>();
 
       createCaptionAnimators(
           captionAnimatorList,
-          helperTextEnabled,
-          helperTextView,
+          mHelperTextEnabled,
+          mHelperTextView,
           CAPTION_STATE_HELPER_TEXT,
           captionToHide,
           captionToShow);
 
       createCaptionAnimators(
           captionAnimatorList,
-          errorEnabled,
-          errorView,
+          mErrorEnabled,
+          mErrorView,
           CAPTION_STATE_ERROR,
           captionToHide,
           captionToShow);
@@ -222,12 +222,12 @@ final class IndicatorViewController {
           new AnimatorListenerAdapter() {
             @Override
             public void onAnimationEnd(Animator animator) {
-              captionDisplayed = captionToShow;
-              IndicatorViewController.this.captionAnimator = null;
+              mCaptionDisplayed = captionToShow;
+              mCaptionAnimator = null;
               if (captionViewToHide != null) {
                 captionViewToHide.setVisibility(View.INVISIBLE);
-                if (captionToHide == CAPTION_STATE_ERROR && errorView != null) {
-                  errorView.setText(null);
+                if (captionToHide == CAPTION_STATE_ERROR && mErrorView != null) {
+                  mErrorView.setText(null);
                 }
               }
             }
@@ -272,7 +272,7 @@ final class IndicatorViewController {
         }
       }
     }
-    captionDisplayed = captionToShow;
+    mCaptionDisplayed = captionToShow;
   }
 
   private void createCaptionAnimators(
@@ -306,15 +306,15 @@ final class IndicatorViewController {
 
   private ObjectAnimator createCaptionTranslationYAnimator(TextView captionView) {
     ObjectAnimator translationYAnimator =
-        ObjectAnimator.ofFloat(captionView, TRANSLATION_Y, -captionTranslationYPx, 0f);
+        ObjectAnimator.ofFloat(captionView, TRANSLATION_Y, -mCaptionTranslationYPx, 0f);
     translationYAnimator.setDuration(CAPTION_TRANSLATE_Y_ANIMATION_DURATION);
     translationYAnimator.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
     return translationYAnimator;
   }
 
   void cancelCaptionAnimator() {
-    if (captionAnimator != null) {
-      captionAnimator.cancel();
+    if (mCaptionAnimator != null) {
+      mCaptionAnimator.cancel();
     }
   }
 
@@ -326,9 +326,9 @@ final class IndicatorViewController {
   private TextView getCaptionViewFromDisplayState(@CaptionDisplayState int captionDisplayState) {
     switch (captionDisplayState) {
       case CAPTION_STATE_ERROR:
-        return errorView;
+        return mErrorView;
       case CAPTION_STATE_HELPER_TEXT:
-        return helperTextView;
+        return mHelperTextView;
       default: // No caption displayed, fall out and return null.
     }
     return null;
@@ -338,7 +338,7 @@ final class IndicatorViewController {
     if (canAdjustIndicatorPadding()) {
       // Add padding to the indicators so that they match the EditText
       ViewCompat.setPaddingRelative(
-          indicatorArea,
+          mIndicatorArea,
           ViewCompat.getPaddingStart(textInputView.getEditText()),
           0,
           ViewCompat.getPaddingEnd(textInputView.getEditText()),
@@ -347,24 +347,24 @@ final class IndicatorViewController {
   }
 
   private boolean canAdjustIndicatorPadding() {
-    return indicatorArea != null && textInputView.getEditText() != null;
+    return mIndicatorArea != null && textInputView.getEditText() != null;
   }
 
   void addIndicator(TextView indicator, @IndicatorIndex int index) {
-    if (indicatorArea == null && captionArea == null) {
-      indicatorArea = new LinearLayout(context);
-      indicatorArea.setOrientation(LinearLayout.HORIZONTAL);
-      textInputView.addView(indicatorArea, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+    if (mIndicatorArea == null && mCaptionArea == null) {
+      mIndicatorArea = new LinearLayout(context);
+      mIndicatorArea.setOrientation(LinearLayout.HORIZONTAL);
+      textInputView.addView(mIndicatorArea, LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
 
-      captionArea = new FrameLayout(context);
-      indicatorArea.addView(
-          captionArea,
+      mCaptionArea = new FrameLayout(context);
+      mIndicatorArea.addView(
+          mCaptionArea,
           -1,
           new FrameLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
       final Space spacer = new Space(context);
       final LayoutParams spacerLp = new LinearLayout.LayoutParams(0, 0, 1f);
-      indicatorArea.addView(spacer, spacerLp);
+      mIndicatorArea.addView(spacer, spacerLp);
 
       if (textInputView.getEditText() != null) {
         adjustIndicatorPadding();
@@ -372,30 +372,30 @@ final class IndicatorViewController {
     }
 
     if (isCaptionView(index)) {
-      captionArea.setVisibility(VISIBLE);
-      captionArea.addView(indicator);
-      captionViewsAdded++;
+      mCaptionArea.setVisibility(VISIBLE);
+      mCaptionArea.addView(indicator);
+      mCaptionViewsAdded++;
     } else {
-      indicatorArea.addView(indicator, index);
+      mIndicatorArea.addView(indicator, index);
     }
-    indicatorArea.setVisibility(VISIBLE);
-    indicatorsAdded++;
+    mIndicatorArea.setVisibility(VISIBLE);
+    mIndicatorsAdded++;
   }
 
   void removeIndicator(TextView indicator, @IndicatorIndex int index) {
-    if (indicatorArea == null) {
+    if (mIndicatorArea == null) {
       return;
     }
 
-    if (isCaptionView(index) && captionArea != null) {
-      captionViewsAdded--;
-      setViewGroupGoneIfEmpty(captionArea, captionViewsAdded);
-      captionArea.removeView(indicator);
+    if (isCaptionView(index) && mCaptionArea != null) {
+      mCaptionViewsAdded--;
+      setViewGroupGoneIfEmpty(mCaptionArea, mCaptionViewsAdded);
+      mCaptionArea.removeView(indicator);
     } else {
-      indicatorArea.removeView(indicator);
+      mIndicatorArea.removeView(indicator);
     }
-    indicatorsAdded--;
-    setViewGroupGoneIfEmpty(indicatorArea, indicatorsAdded);
+    mIndicatorsAdded--;
+    setViewGroupGoneIfEmpty(mIndicatorArea, mIndicatorsAdded);
   }
 
   private void setViewGroupGoneIfEmpty(ViewGroup viewGroup, int indicatorsAdded) {
@@ -406,7 +406,7 @@ final class IndicatorViewController {
 
   void setErrorEnabled(boolean enabled) {
     // If the enabled state is the same as before, do nothing.
-    if (errorEnabled == enabled) {
+    if (mErrorEnabled == enabled) {
       return;
     }
 
@@ -414,36 +414,37 @@ final class IndicatorViewController {
     cancelCaptionAnimator();
 
     if (enabled) {
-      errorView = new AppCompatTextView(context);
-      errorView.setId(R.id.textinput_error);
-      if (typeface != null) {
-        errorView.setTypeface(typeface);
+      mErrorView = new AppCompatTextView(context);
+      mErrorView.setId(R.id.textinput_error);
+      if (mTypeface != null) {
+        mErrorView.setTypeface(mTypeface);
       }
-      setErrorTextAppearance(errorTextAppearance);
-      errorView.setVisibility(View.INVISIBLE);
-      ViewCompat.setAccessibilityLiveRegion(errorView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-      addIndicator(errorView, ERROR_INDEX);
+      setErrorTextAppearance(mErrorTextAppearance);
+      mErrorView.setVisibility(View.INVISIBLE);
+      ViewCompat.setAccessibilityLiveRegion(
+          mErrorView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+      addIndicator(mErrorView, ERROR_INDEX);
     } else {
       hideError();
-      removeIndicator(errorView, ERROR_INDEX);
-      errorView = null;
+      removeIndicator(mErrorView, ERROR_INDEX);
+      mErrorView = null;
       textInputView.updateEditTextBackground();
       textInputView.updateTextInputBoxState();
     }
-    errorEnabled = enabled;
+    mErrorEnabled = enabled;
   }
 
   boolean isErrorEnabled() {
-    return errorEnabled;
+    return mErrorEnabled;
   }
 
   boolean isHelperTextEnabled() {
-    return helperTextEnabled;
+    return mHelperTextEnabled;
   }
 
   void setHelperTextEnabled(boolean enabled) {
     // If the enabled state is the same as before, do nothing.
-    if (helperTextEnabled == enabled) {
+    if (mHelperTextEnabled == enabled) {
       return;
     }
 
@@ -451,68 +452,68 @@ final class IndicatorViewController {
     cancelCaptionAnimator();
 
     if (enabled) {
-      helperTextView = new AppCompatTextView(context);
-      helperTextView.setId(R.id.textinput_helper_text);
-      if (typeface != null) {
-        helperTextView.setTypeface(typeface);
+      mHelperTextView = new AppCompatTextView(context);
+      mHelperTextView.setId(R.id.textinput_helper_text);
+      if (mTypeface != null) {
+        mHelperTextView.setTypeface(mTypeface);
       }
-      helperTextView.setVisibility(View.INVISIBLE);
+      mHelperTextView.setVisibility(View.INVISIBLE);
       ViewCompat.setAccessibilityLiveRegion(
-          helperTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-      setHelperTextAppearance(helperTextTextAppearance);
-      addIndicator(helperTextView, HELPER_INDEX);
+          mHelperTextView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+      setHelperTextAppearance(mHelperTextTextAppearance);
+      addIndicator(mHelperTextView, HELPER_INDEX);
     } else {
       hideHelperText();
-      removeIndicator(helperTextView, HELPER_INDEX);
-      helperTextView = null;
+      removeIndicator(mHelperTextView, HELPER_INDEX);
+      mHelperTextView = null;
       textInputView.updateEditTextBackground();
       textInputView.updateTextInputBoxState();
     }
-    helperTextEnabled = enabled;
+    mHelperTextEnabled = enabled;
   }
 
   boolean errorIsDisplayed() {
-    return isCaptionStateError(captionDisplayed);
+    return isCaptionStateError(mCaptionDisplayed);
   }
 
   boolean errorShouldBeShown() {
-    return isCaptionStateError(captionToShow);
+    return isCaptionStateError(mCaptionToShow);
   }
 
   private boolean isCaptionStateError(@CaptionDisplayState int captionState) {
     return captionState == CAPTION_STATE_ERROR
-        && errorView != null
-        && !TextUtils.isEmpty(errorText);
+        && mErrorView != null
+        && !TextUtils.isEmpty(mErrorText);
   }
 
   boolean helperTextIsDisplayed() {
-    return isCaptionStateHelperText(captionDisplayed);
+    return isCaptionStateHelperText(mCaptionDisplayed);
   }
 
   boolean helperTextShouldBeShown() {
-    return isCaptionStateHelperText(captionToShow);
+    return isCaptionStateHelperText(mCaptionToShow);
   }
 
   private boolean isCaptionStateHelperText(@CaptionDisplayState int captionState) {
     return captionState == CAPTION_STATE_HELPER_TEXT
-        && helperTextView != null
-        && !TextUtils.isEmpty(helperText);
+        && mHelperTextView != null
+        && !TextUtils.isEmpty(mHelperText);
   }
 
   CharSequence getErrorText() {
-    return errorText;
+    return mErrorText;
   }
 
   CharSequence getHelperText() {
-    return helperText;
+    return mHelperText;
   }
 
   @SuppressWarnings("ReferenceEquality") // Matches the Typeface comparison in TextView
   void setTypefaces(Typeface typeface) {
-    if (typeface != this.typeface) {
-      this.typeface = typeface;
-      setTextViewTypeface(errorView, typeface);
-      setTextViewTypeface(helperTextView, typeface);
+    if (typeface != mTypeface) {
+      mTypeface = typeface;
+      setTextViewTypeface(mErrorView, typeface);
+      setTextViewTypeface(mHelperTextView, typeface);
     }
   }
 
@@ -524,25 +525,25 @@ final class IndicatorViewController {
 
   @ColorInt
   int getErrorViewCurrentTextColor() {
-    return errorView != null ? errorView.getCurrentTextColor() : -1;
+    return mErrorView != null ? mErrorView.getCurrentTextColor() : -1;
   }
 
   @Nullable
   ColorStateList getErrorViewTextColors() {
-    return errorView != null ? errorView.getTextColors() : null;
+    return mErrorView != null ? mErrorView.getTextColors() : null;
   }
 
   void setErrorTextAppearance(@StyleRes int resId) {
-    errorTextAppearance = resId;
-    if (errorView != null) {
-      textInputView.setTextAppearanceCompatWithErrorFallback(errorView, resId);
+    mErrorTextAppearance = resId;
+    if (mErrorView != null) {
+      textInputView.setTextAppearanceCompatWithErrorFallback(mErrorView, resId);
     }
   }
 
   void setHelperTextAppearance(@StyleRes int resId) {
-    helperTextTextAppearance = resId;
-    if (helperTextView != null) {
-      TextViewCompat.setTextAppearance(helperTextView, resId);
+    mHelperTextTextAppearance = resId;
+    if (mHelperTextView != null) {
+      TextViewCompat.setTextAppearance(mHelperTextView, resId);
     }
   }
 }

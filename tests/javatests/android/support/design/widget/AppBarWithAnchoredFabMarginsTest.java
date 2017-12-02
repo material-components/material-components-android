@@ -28,11 +28,11 @@ import org.junit.runner.RunWith;
 @SmallTest
 @RunWith(AndroidJUnit4.class)
 public class AppBarWithAnchoredFabMarginsTest extends AppBarLayoutBaseTest {
-  private int fabMargin;
+  private int mFabMargin;
 
   @Before
   public void setup() {
-    fabMargin =
+    mFabMargin =
         activityTestRule.getActivity().getResources().getDimensionPixelSize(R.dimen.fab_margin);
   }
 
@@ -109,7 +109,7 @@ public class AppBarWithAnchoredFabMarginsTest extends AppBarLayoutBaseTest {
     // FAB is left-aligned in the coordinate system of its anchor (app bar). In addition,
     // its left margin "pushes" it away in the coordinate system of the parent
     // (CoordinatorLayout)
-    assertEquals(appbarOnScreenXY[0] + fabMargin, fabOnScreenXY[0], 1);
+    assertEquals(appbarOnScreenXY[0] + mFabMargin, fabOnScreenXY[0], 1);
     // FAB's vertical center should be aligned with the bottom edge of its anchor (app bar).
     assertEquals(
         appbarOnScreenXY[1] + mAppBar.getHeight(), fabOnScreenXY[1] + fab.getHeight() / 2, 1);
@@ -135,7 +135,9 @@ public class AppBarWithAnchoredFabMarginsTest extends AppBarLayoutBaseTest {
     // its right margin "pushes" it away in the coordinate system of the parent
     // (CoordinatorLayout)
     assertEquals(
-        appbarOnScreenXY[0] + mAppBar.getWidth() - fabMargin, fabOnScreenXY[0] + fab.getWidth(), 1);
+        appbarOnScreenXY[0] + mAppBar.getWidth() - mFabMargin,
+        fabOnScreenXY[0] + fab.getWidth(),
+        1);
     // FAB's vertical center should be aligned with the bottom edge of its anchor (app bar).
     assertEquals(
         appbarOnScreenXY[1] + mAppBar.getHeight(), fabOnScreenXY[1] + fab.getHeight() / 2, 1);

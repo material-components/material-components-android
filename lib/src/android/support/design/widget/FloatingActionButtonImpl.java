@@ -69,7 +69,7 @@ class FloatingActionButtonImpl {
   private static final float SHOW_SCALE = 1f;
   private static final float SHOW_ICON_SCALE = 1f;
 
-  int animState = ANIM_STATE_NONE;
+  int mAnimState = ANIM_STATE_NONE;
   @Nullable Animator currentAnimator;
   @Nullable MotionSpec showMotionSpec;
   @Nullable MotionSpec hideMotionSpec;
@@ -77,20 +77,20 @@ class FloatingActionButtonImpl {
   @Nullable private MotionSpec defaultShowMotionSpec;
   @Nullable private MotionSpec defaultHideMotionSpec;
 
-  private final StateListAnimator stateListAnimator;
+  private final StateListAnimator mStateListAnimator;
 
-  ShadowDrawableWrapper shadowDrawable;
+  ShadowDrawableWrapper mShadowDrawable;
 
-  private float rotation;
+  private float mRotation;
 
-  Drawable shapeDrawable;
-  Drawable rippleDrawable;
-  CircularBorderDrawable borderDrawable;
-  Drawable contentBackground;
+  Drawable mShapeDrawable;
+  Drawable mRippleDrawable;
+  CircularBorderDrawable mBorderDrawable;
+  Drawable mContentBackground;
 
-  float elevation;
-  float hoveredFocusedTranslationZ;
-  float pressedTranslationZ;
+  float mElevation;
+  float mHoveredFocusedTranslationZ;
+  float mPressedTranslationZ;
 
   int maxImageSize;
   float imageMatrixScale = 1f;
@@ -116,43 +116,43 @@ class FloatingActionButtonImpl {
   static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
   static final int[] EMPTY_STATE_SET = new int[0];
 
-  final VisibilityAwareImageButton view;
-  final ShadowViewDelegate shadowViewDelegate;
+  final VisibilityAwareImageButton mView;
+  final ShadowViewDelegate mShadowViewDelegate;
 
-  private final Rect tmpRect = new Rect();
-  private final RectF tmpRectF1 = new RectF();
-  private final RectF tmpRectF2 = new RectF();
+  private final Rect mTmpRect = new Rect();
+  private final RectF mTmpRectF1 = new RectF();
+  private final RectF mTmpRectF2 = new RectF();
   private final Matrix tmpMatrix = new Matrix();
 
-  private ViewTreeObserver.OnPreDrawListener preDrawListener;
+  private ViewTreeObserver.OnPreDrawListener mPreDrawListener;
 
   FloatingActionButtonImpl(VisibilityAwareImageButton view, ShadowViewDelegate shadowViewDelegate) {
-    this.view = view;
-    this.shadowViewDelegate = shadowViewDelegate;
+    mView = view;
+    mShadowViewDelegate = shadowViewDelegate;
 
-    stateListAnimator = new StateListAnimator();
+    mStateListAnimator = new StateListAnimator();
 
     // Elevate with translationZ when pressed, focused, or hovered
-    stateListAnimator.addState(
+    mStateListAnimator.addState(
         PRESSED_ENABLED_STATE_SET,
         createElevationAnimator(new ElevateToPressedTranslationZAnimation()));
-    stateListAnimator.addState(
+    mStateListAnimator.addState(
         HOVERED_FOCUSED_ENABLED_STATE_SET,
         createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
-    stateListAnimator.addState(
+    mStateListAnimator.addState(
         FOCUSED_ENABLED_STATE_SET,
         createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
-    stateListAnimator.addState(
+    mStateListAnimator.addState(
         HOVERED_ENABLED_STATE_SET,
         createElevationAnimator(new ElevateToHoveredFocusedTranslationZAnimation()));
     // Reset back to elevation by default
-    stateListAnimator.addState(
+    mStateListAnimator.addState(
         ENABLED_STATE_SET, createElevationAnimator(new ResetElevationAnimation()));
     // Set to 0 when disabled
-    stateListAnimator.addState(
+    mStateListAnimator.addState(
         EMPTY_STATE_SET, createElevationAnimator(new DisabledElevationAnimation()));
 
-    rotation = this.view.getRotation();
+    mRotation = mView.getRotation();
   }
 
   void setBackgroundDrawable(
@@ -163,10 +163,10 @@ class FloatingActionButtonImpl {
       int borderWidth) {
     // Now we need to tint the original background with the tint, using
     // an InsetDrawable if we have a border width
-    shapeDrawable = DrawableCompat.wrap(createShapeDrawable());
-    DrawableCompat.setTintList(shapeDrawable, backgroundTint);
+    mShapeDrawable = DrawableCompat.wrap(createShapeDrawable());
+    DrawableCompat.setTintList(mShapeDrawable, backgroundTint);
     if (backgroundTintMode != null) {
-      DrawableCompat.setTintMode(shapeDrawable, backgroundTintMode);
+      DrawableCompat.setTintMode(mShapeDrawable, backgroundTintMode);
     }
 
     // Now we created a mask Drawable which will be used for touch feedback.
@@ -174,88 +174,88 @@ class FloatingActionButtonImpl {
 
     // We'll now wrap that touch feedback mask drawable with a ColorStateList. We do not need
     // to inset for any border here as LayerDrawable will nest the padding for us
-    rippleDrawable = DrawableCompat.wrap(touchFeedbackShape);
+    mRippleDrawable = DrawableCompat.wrap(touchFeedbackShape);
     DrawableCompat.setTintList(
-        rippleDrawable,
+        mRippleDrawable,
         RippleUtils.compositeRippleColorStateList(
             ColorStateList.valueOf(rippleColor), rippleAlpha));
 
     final Drawable[] layers;
     if (borderWidth > 0) {
-      borderDrawable = createBorderDrawable(borderWidth, backgroundTint);
-      layers = new Drawable[] {borderDrawable, shapeDrawable, rippleDrawable};
+      mBorderDrawable = createBorderDrawable(borderWidth, backgroundTint);
+      layers = new Drawable[] {mBorderDrawable, mShapeDrawable, mRippleDrawable};
     } else {
-      borderDrawable = null;
-      layers = new Drawable[] {shapeDrawable, rippleDrawable};
+      mBorderDrawable = null;
+      layers = new Drawable[] {mShapeDrawable, mRippleDrawable};
     }
 
-    contentBackground = new LayerDrawable(layers);
+    mContentBackground = new LayerDrawable(layers);
 
-    shadowDrawable =
+    mShadowDrawable =
         new ShadowDrawableWrapper(
-            view.getContext(),
-            contentBackground,
-            shadowViewDelegate.getRadius(),
-            elevation,
-            elevation + pressedTranslationZ);
-    shadowDrawable.setAddPaddingForCorners(false);
-    shadowViewDelegate.setBackgroundDrawable(shadowDrawable);
+            mView.getContext(),
+            mContentBackground,
+            mShadowViewDelegate.getRadius(),
+            mElevation,
+            mElevation + mPressedTranslationZ);
+    mShadowDrawable.setAddPaddingForCorners(false);
+    mShadowViewDelegate.setBackgroundDrawable(mShadowDrawable);
   }
 
   void setBackgroundTintList(ColorStateList tint) {
-    if (shapeDrawable != null) {
-      DrawableCompat.setTintList(shapeDrawable, tint);
+    if (mShapeDrawable != null) {
+      DrawableCompat.setTintList(mShapeDrawable, tint);
     }
-    if (borderDrawable != null) {
-      borderDrawable.setBorderTint(tint);
+    if (mBorderDrawable != null) {
+      mBorderDrawable.setBorderTint(tint);
     }
   }
 
   void setBackgroundTintMode(PorterDuff.Mode tintMode) {
-    if (shapeDrawable != null) {
-      DrawableCompat.setTintMode(shapeDrawable, tintMode);
+    if (mShapeDrawable != null) {
+      DrawableCompat.setTintMode(mShapeDrawable, tintMode);
     }
   }
 
   void setRippleColor(@ColorInt int rippleColor, ColorStateList rippleAlpha) {
-    if (rippleDrawable != null) {
+    if (mRippleDrawable != null) {
       DrawableCompat.setTintList(
-          rippleDrawable,
+          mRippleDrawable,
           RippleUtils.compositeRippleColorStateList(
               ColorStateList.valueOf(rippleColor), rippleAlpha));
     }
   }
 
   final void setElevation(float elevation) {
-    if (this.elevation != elevation) {
-      this.elevation = elevation;
-      onElevationsChanged(this.elevation, hoveredFocusedTranslationZ, pressedTranslationZ);
+    if (mElevation != elevation) {
+      mElevation = elevation;
+      onElevationsChanged(mElevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
     }
   }
 
   float getElevation() {
-    return elevation;
+    return mElevation;
   }
 
   float getHoveredFocusedTranslationZ() {
-    return hoveredFocusedTranslationZ;
+    return mHoveredFocusedTranslationZ;
   }
 
   float getPressedTranslationZ() {
-    return pressedTranslationZ;
+    return mPressedTranslationZ;
   }
 
   final void setHoveredFocusedTranslationZ(float translationZ) {
-    if (hoveredFocusedTranslationZ != translationZ) {
-      hoveredFocusedTranslationZ = translationZ;
-      onElevationsChanged(elevation, hoveredFocusedTranslationZ, pressedTranslationZ);
+    if (mHoveredFocusedTranslationZ != translationZ) {
+      mHoveredFocusedTranslationZ = translationZ;
+      onElevationsChanged(mElevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
     }
   }
 
   final void setPressedTranslationZ(float translationZ) {
-    if (pressedTranslationZ != translationZ) {
-      pressedTranslationZ = translationZ;
-      onElevationsChanged(elevation, hoveredFocusedTranslationZ, pressedTranslationZ);
+    if (mPressedTranslationZ != translationZ) {
+      mPressedTranslationZ = translationZ;
+      onElevationsChanged(mElevation, mHoveredFocusedTranslationZ, mPressedTranslationZ);
     }
   }
 
@@ -279,17 +279,17 @@ class FloatingActionButtonImpl {
 
     Matrix matrix = tmpMatrix;
     calculateImageMatrixFromScale(scale, matrix);
-    view.setImageMatrix(matrix);
+    mView.setImageMatrix(matrix);
   }
 
   private void calculateImageMatrixFromScale(float scale, Matrix matrix) {
     matrix.reset();
 
-    Drawable drawable = view.getDrawable();
+    Drawable drawable = mView.getDrawable();
     if (drawable != null && maxImageSize != 0) {
       // First make sure our image respects mMaxImageSize.
-      RectF drawableBounds = tmpRectF1;
-      RectF imageBounds = tmpRectF2;
+      RectF drawableBounds = mTmpRectF1;
+      RectF imageBounds = mTmpRectF2;
       drawableBounds.set(0, 0, drawable.getIntrinsicWidth(), drawable.getIntrinsicHeight());
       imageBounds.set(0, 0, maxImageSize, maxImageSize);
       matrix.setRectToRect(drawableBounds, imageBounds, ScaleToFit.CENTER);
@@ -319,18 +319,18 @@ class FloatingActionButtonImpl {
 
   void onElevationsChanged(
       float elevation, float hoveredFocusedTranslationZ, float pressedTranslationZ) {
-    if (shadowDrawable != null) {
-      shadowDrawable.setShadowSize(elevation, elevation + this.pressedTranslationZ);
+    if (mShadowDrawable != null) {
+      mShadowDrawable.setShadowSize(elevation, elevation + mPressedTranslationZ);
       updatePadding();
     }
   }
 
   void onDrawableStateChanged(int[] state) {
-    stateListAnimator.setState(state);
+    mStateListAnimator.setState(state);
   }
 
   void jumpDrawableToCurrentState() {
-    stateListAnimator.jumpToCurrentState();
+    mStateListAnimator.jumpToCurrentState();
   }
 
   void hide(@Nullable final InternalVisibilityChangedListener listener, final boolean fromUser) {
@@ -352,29 +352,29 @@ class FloatingActionButtonImpl {
               HIDE_ICON_SCALE);
       set.addListener(
           new AnimatorListenerAdapter() {
-            private boolean cancelled;
+            private boolean mCancelled;
 
             @Override
             public void onAnimationStart(Animator animation) {
-              view.internalSetVisibility(View.VISIBLE, fromUser);
+              mView.internalSetVisibility(View.VISIBLE, fromUser);
 
-              animState = ANIM_STATE_HIDING;
+              mAnimState = ANIM_STATE_HIDING;
               currentAnimator = animation;
-              cancelled = false;
+              mCancelled = false;
             }
 
             @Override
             public void onAnimationCancel(Animator animation) {
-              cancelled = true;
+              mCancelled = true;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-              animState = ANIM_STATE_NONE;
+              mAnimState = ANIM_STATE_NONE;
               currentAnimator = null;
 
-              if (!cancelled) {
-                view.internalSetVisibility(fromUser ? View.GONE : View.INVISIBLE, fromUser);
+              if (!mCancelled) {
+                mView.internalSetVisibility(fromUser ? View.GONE : View.INVISIBLE, fromUser);
                 if (listener != null) {
                   listener.onHidden();
                 }
@@ -384,7 +384,7 @@ class FloatingActionButtonImpl {
       set.start();
     } else {
       // If the view isn't laid out, or we're in the editor, don't run the animation
-      view.internalSetVisibility(fromUser ? View.GONE : View.INVISIBLE, fromUser);
+      mView.internalSetVisibility(fromUser ? View.GONE : View.INVISIBLE, fromUser);
       if (listener != null) {
         listener.onHidden();
       }
@@ -402,11 +402,11 @@ class FloatingActionButtonImpl {
     }
 
     if (shouldAnimateVisibilityChange()) {
-      if (view.getVisibility() != View.VISIBLE) {
+      if (mView.getVisibility() != View.VISIBLE) {
         // If the view isn't visible currently, we'll animate it from a single pixel
-        view.setAlpha(0f);
-        view.setScaleY(0f);
-        view.setScaleX(0f);
+        mView.setAlpha(0f);
+        mView.setScaleY(0f);
+        mView.setScaleX(0f);
         setImageMatrixScale(0f);
       }
 
@@ -420,15 +420,15 @@ class FloatingActionButtonImpl {
           new AnimatorListenerAdapter() {
             @Override
             public void onAnimationStart(Animator animation) {
-              view.internalSetVisibility(View.VISIBLE, fromUser);
+              mView.internalSetVisibility(View.VISIBLE, fromUser);
 
-              animState = ANIM_STATE_SHOWING;
+              mAnimState = ANIM_STATE_SHOWING;
               currentAnimator = animation;
             }
 
             @Override
             public void onAnimationEnd(Animator animation) {
-              animState = ANIM_STATE_NONE;
+              mAnimState = ANIM_STATE_NONE;
               currentAnimator = null;
 
               if (listener != null) {
@@ -438,10 +438,10 @@ class FloatingActionButtonImpl {
           });
       set.start();
     } else {
-      view.internalSetVisibility(View.VISIBLE, fromUser);
-      view.setAlpha(1f);
-      view.setScaleY(1f);
-      view.setScaleX(1f);
+      mView.internalSetVisibility(View.VISIBLE, fromUser);
+      mView.setAlpha(1f);
+      mView.setScaleY(1f);
+      mView.setScaleX(1f);
       setImageMatrixScale(1f);
       if (listener != null) {
         listener.onShown();
@@ -452,7 +452,7 @@ class FloatingActionButtonImpl {
   private MotionSpec getDefaultShowMotionSpec() {
     if (defaultShowMotionSpec == null) {
       defaultShowMotionSpec =
-          MotionSpec.createFromResource(view.getContext(), R.animator.design_fab_show_motion_spec);
+          MotionSpec.createFromResource(mView.getContext(), R.animator.design_fab_show_motion_spec);
     }
     return defaultShowMotionSpec;
   }
@@ -460,7 +460,7 @@ class FloatingActionButtonImpl {
   private MotionSpec getDefaultHideMotionSpec() {
     if (defaultHideMotionSpec == null) {
       defaultHideMotionSpec =
-          MotionSpec.createFromResource(view.getContext(), R.animator.design_fab_hide_motion_spec);
+          MotionSpec.createFromResource(mView.getContext(), R.animator.design_fab_hide_motion_spec);
     }
     return defaultHideMotionSpec;
   }
@@ -471,22 +471,22 @@ class FloatingActionButtonImpl {
     List<Animator> animators = new ArrayList<>();
     Animator animator;
 
-    animator = ObjectAnimator.ofFloat(view, View.ALPHA, opacity);
+    animator = ObjectAnimator.ofFloat(mView, View.ALPHA, opacity);
     spec.getTiming("opacity").apply(animator);
     animators.add(animator);
 
-    animator = ObjectAnimator.ofFloat(view, View.SCALE_X, scale);
+    animator = ObjectAnimator.ofFloat(mView, View.SCALE_X, scale);
     spec.getTiming("scale").apply(animator);
     animators.add(animator);
 
-    animator = ObjectAnimator.ofFloat(view, View.SCALE_Y, scale);
+    animator = ObjectAnimator.ofFloat(mView, View.SCALE_Y, scale);
     spec.getTiming("scale").apply(animator);
     animators.add(animator);
 
     calculateImageMatrixFromScale(iconScale, tmpMatrix);
     animator =
         ObjectAnimator.ofObject(
-            view, new ImageMatrixProperty(), new MatrixEvaluator(), new Matrix(tmpMatrix));
+            mView, new ImageMatrixProperty(), new MatrixEvaluator(), new Matrix(tmpMatrix));
     spec.getTiming("iconScale").apply(animator);
     animators.add(animator);
 
@@ -496,7 +496,7 @@ class FloatingActionButtonImpl {
   }
 
   final Drawable getContentBackground() {
-    return contentBackground;
+    return mContentBackground;
   }
 
   void onCompatShadowChanged() {
@@ -504,14 +504,14 @@ class FloatingActionButtonImpl {
   }
 
   final void updatePadding() {
-    Rect rect = tmpRect;
+    Rect rect = mTmpRect;
     getPadding(rect);
     onPaddingUpdated(rect);
-    shadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
+    mShadowViewDelegate.setShadowPadding(rect.left, rect.top, rect.right, rect.bottom);
   }
 
   void getPadding(Rect rect) {
-    shadowDrawable.getPadding(rect);
+    mShadowDrawable.getPadding(rect);
   }
 
   void onPaddingUpdated(Rect padding) {}
@@ -519,14 +519,14 @@ class FloatingActionButtonImpl {
   void onAttachedToWindow() {
     if (requirePreDrawListener()) {
       ensurePreDrawListener();
-      view.getViewTreeObserver().addOnPreDrawListener(preDrawListener);
+      mView.getViewTreeObserver().addOnPreDrawListener(mPreDrawListener);
     }
   }
 
   void onDetachedFromWindow() {
-    if (preDrawListener != null) {
-      view.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
-      preDrawListener = null;
+    if (mPreDrawListener != null) {
+      mView.getViewTreeObserver().removeOnPreDrawListener(mPreDrawListener);
+      mPreDrawListener = null;
     }
   }
 
@@ -535,7 +535,7 @@ class FloatingActionButtonImpl {
   }
 
   CircularBorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
-    final Context context = view.getContext();
+    final Context context = mView.getContext();
     CircularBorderDrawable borderDrawable = newCircularDrawable();
     borderDrawable.setGradientColors(
         ContextCompat.getColor(context, R.color.design_fab_stroke_top_outer_color),
@@ -552,16 +552,16 @@ class FloatingActionButtonImpl {
   }
 
   void onPreDraw() {
-    final float rotation = view.getRotation();
-    if (this.rotation != rotation) {
-      this.rotation = rotation;
+    final float rotation = mView.getRotation();
+    if (mRotation != rotation) {
+      mRotation = rotation;
       updateFromViewRotation();
     }
   }
 
   private void ensurePreDrawListener() {
-    if (preDrawListener == null) {
-      preDrawListener =
+    if (mPreDrawListener == null) {
+      mPreDrawListener =
           new ViewTreeObserver.OnPreDrawListener() {
             @Override
             public boolean onPreDraw() {
@@ -584,22 +584,22 @@ class FloatingActionButtonImpl {
   }
 
   boolean isOrWillBeShown() {
-    if (view.getVisibility() != View.VISIBLE) {
+    if (mView.getVisibility() != View.VISIBLE) {
       // If we not currently visible, return true if we're animating to be shown
-      return animState == ANIM_STATE_SHOWING;
+      return mAnimState == ANIM_STATE_SHOWING;
     } else {
       // Otherwise if we're visible, return true if we're not animating to be hidden
-      return animState != ANIM_STATE_HIDING;
+      return mAnimState != ANIM_STATE_HIDING;
     }
   }
 
   boolean isOrWillBeHidden() {
-    if (view.getVisibility() == View.VISIBLE) {
+    if (mView.getVisibility() == View.VISIBLE) {
       // If we currently visible, return true if we're animating to be hidden
-      return animState == ANIM_STATE_HIDING;
+      return mAnimState == ANIM_STATE_HIDING;
     } else {
       // Otherwise if we're not visible, return true if we're not animating to be shown
-      return animState != ANIM_STATE_SHOWING;
+      return mAnimState != ANIM_STATE_SHOWING;
     }
   }
 
@@ -615,26 +615,27 @@ class FloatingActionButtonImpl {
 
   private abstract class ShadowAnimatorImpl extends AnimatorListenerAdapter
       implements ValueAnimator.AnimatorUpdateListener {
-    private boolean validValues;
-    private float shadowSizeStart;
-    private float shadowSizeEnd;
+    private boolean mValidValues;
+    private float mShadowSizeStart;
+    private float mShadowSizeEnd;
 
     @Override
     public void onAnimationUpdate(ValueAnimator animator) {
-      if (!validValues) {
-        shadowSizeStart = shadowDrawable.getShadowSize();
-        shadowSizeEnd = getTargetShadowSize();
-        validValues = true;
+      if (!mValidValues) {
+        mShadowSizeStart = mShadowDrawable.getShadowSize();
+        mShadowSizeEnd = getTargetShadowSize();
+        mValidValues = true;
       }
 
-      shadowDrawable.setShadowSize(
-          shadowSizeStart + ((shadowSizeEnd - shadowSizeStart) * animator.getAnimatedFraction()));
+      mShadowDrawable.setShadowSize(
+          mShadowSizeStart
+              + ((mShadowSizeEnd - mShadowSizeStart) * animator.getAnimatedFraction()));
     }
 
     @Override
     public void onAnimationEnd(Animator animator) {
-      shadowDrawable.setShadowSize(shadowSizeEnd);
-      validValues = false;
+      mShadowDrawable.setShadowSize(mShadowSizeEnd);
+      mValidValues = false;
     }
 
     /** @return the shadow size we want to animate to. */
@@ -646,7 +647,7 @@ class FloatingActionButtonImpl {
 
     @Override
     protected float getTargetShadowSize() {
-      return elevation;
+      return mElevation;
     }
   }
 
@@ -655,7 +656,7 @@ class FloatingActionButtonImpl {
 
     @Override
     protected float getTargetShadowSize() {
-      return elevation + hoveredFocusedTranslationZ;
+      return mElevation + mHoveredFocusedTranslationZ;
     }
   }
 
@@ -664,7 +665,7 @@ class FloatingActionButtonImpl {
 
     @Override
     protected float getTargetShadowSize() {
-      return elevation + pressedTranslationZ;
+      return mElevation + mPressedTranslationZ;
     }
   }
 
@@ -678,30 +679,30 @@ class FloatingActionButtonImpl {
   }
 
   private boolean shouldAnimateVisibilityChange() {
-    return ViewCompat.isLaidOut(view) && !view.isInEditMode();
+    return ViewCompat.isLaidOut(mView) && !mView.isInEditMode();
   }
 
   private void updateFromViewRotation() {
     if (Build.VERSION.SDK_INT == 19) {
       // KitKat seems to have an issue with views which are rotated with angles which are
       // not divisible by 90. Worked around by moving to software rendering in these cases.
-      if ((rotation % 90) != 0) {
-        if (view.getLayerType() != View.LAYER_TYPE_SOFTWARE) {
-          view.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
+      if ((mRotation % 90) != 0) {
+        if (mView.getLayerType() != View.LAYER_TYPE_SOFTWARE) {
+          mView.setLayerType(View.LAYER_TYPE_SOFTWARE, null);
         }
       } else {
-        if (view.getLayerType() != View.LAYER_TYPE_NONE) {
-          view.setLayerType(View.LAYER_TYPE_NONE, null);
+        if (mView.getLayerType() != View.LAYER_TYPE_NONE) {
+          mView.setLayerType(View.LAYER_TYPE_NONE, null);
         }
       }
     }
 
     // Offset any View rotation
-    if (shadowDrawable != null) {
-      shadowDrawable.setRotation(-rotation);
+    if (mShadowDrawable != null) {
+      mShadowDrawable.setRotation(-mRotation);
     }
-    if (borderDrawable != null) {
-      borderDrawable.setRotation(-rotation);
+    if (mBorderDrawable != null) {
+      mBorderDrawable.setRotation(-mRotation);
     }
   }
 }

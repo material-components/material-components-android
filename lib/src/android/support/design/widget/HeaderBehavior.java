@@ -34,14 +34,14 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
   private static final int INVALID_POINTER = -1;
 
-  private Runnable flingRunnable;
-  OverScroller scroller;
+  private Runnable mFlingRunnable;
+  OverScroller mScroller;
 
-  private boolean isBeingDragged;
-  private int activePointerId = INVALID_POINTER;
-  private int lastMotionY;
-  private int touchSlop = -1;
-  private VelocityTracker velocityTracker;
+  private boolean mIsBeingDragged;
+  private int mActivePointerId = INVALID_POINTER;
+  private int mLastMotionY;
+  private int mTouchSlop = -1;
+  private VelocityTracker mVelocityTracker;
 
   public HeaderBehavior() {}
 
@@ -51,26 +51,26 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
   @Override
   public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent ev) {
-    if (touchSlop < 0) {
-      touchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
+    if (mTouchSlop < 0) {
+      mTouchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
     }
 
     final int action = ev.getAction();
 
     // Shortcut since we're being dragged
-    if (action == MotionEvent.ACTION_MOVE && isBeingDragged) {
+    if (action == MotionEvent.ACTION_MOVE && mIsBeingDragged) {
       return true;
     }
 
     switch (ev.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
         {
-          isBeingDragged = false;
+          mIsBeingDragged = false;
           final int x = (int) ev.getX();
           final int y = (int) ev.getY();
           if (canDragView(child) && parent.isPointInChildBounds(child, x, y)) {
-            lastMotionY = y;
-            this.activePointerId = ev.getPointerId(0);
+            mLastMotionY = y;
+            mActivePointerId = ev.getPointerId(0);
             ensureVelocityTracker();
           }
           break;
@@ -78,7 +78,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
       case MotionEvent.ACTION_MOVE:
         {
-          final int activePointerId = this.activePointerId;
+          final int activePointerId = mActivePointerId;
           if (activePointerId == INVALID_POINTER) {
             // If we don't have a valid id, the touch down wasn't on content.
             break;
@@ -89,10 +89,10 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
           }
 
           final int y = (int) ev.getY(pointerIndex);
-          final int yDiff = Math.abs(y - lastMotionY);
-          if (yDiff > touchSlop) {
-            isBeingDragged = true;
-            lastMotionY = y;
+          final int yDiff = Math.abs(y - mLastMotionY);
+          if (yDiff > mTouchSlop) {
+            mIsBeingDragged = true;
+            mLastMotionY = y;
           }
           break;
         }
@@ -100,27 +100,27 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
       case MotionEvent.ACTION_CANCEL:
       case MotionEvent.ACTION_UP:
         {
-          isBeingDragged = false;
-          this.activePointerId = INVALID_POINTER;
-          if (velocityTracker != null) {
-            velocityTracker.recycle();
-            velocityTracker = null;
+          mIsBeingDragged = false;
+          mActivePointerId = INVALID_POINTER;
+          if (mVelocityTracker != null) {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
           }
           break;
         }
     }
 
-    if (velocityTracker != null) {
-      velocityTracker.addMovement(ev);
+    if (mVelocityTracker != null) {
+      mVelocityTracker.addMovement(ev);
     }
 
-    return isBeingDragged;
+    return mIsBeingDragged;
   }
 
   @Override
   public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent ev) {
-    if (touchSlop < 0) {
-      touchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
+    if (mTouchSlop < 0) {
+      mTouchSlop = ViewConfiguration.get(parent.getContext()).getScaledTouchSlop();
     }
 
     switch (ev.getActionMasked()) {
@@ -130,8 +130,8 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
           final int y = (int) ev.getY();
 
           if (parent.isPointInChildBounds(child, x, y) && canDragView(child)) {
-            lastMotionY = y;
-            activePointerId = ev.getPointerId(0);
+            mLastMotionY = y;
+            mActivePointerId = ev.getPointerId(0);
             ensureVelocityTracker();
           } else {
             return false;
@@ -141,25 +141,25 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
 
       case MotionEvent.ACTION_MOVE:
         {
-          final int activePointerIndex = ev.findPointerIndex(activePointerId);
+          final int activePointerIndex = ev.findPointerIndex(mActivePointerId);
           if (activePointerIndex == -1) {
             return false;
           }
 
           final int y = (int) ev.getY(activePointerIndex);
-          int dy = lastMotionY - y;
+          int dy = mLastMotionY - y;
 
-          if (!isBeingDragged && Math.abs(dy) > touchSlop) {
-            isBeingDragged = true;
+          if (!mIsBeingDragged && Math.abs(dy) > mTouchSlop) {
+            mIsBeingDragged = true;
             if (dy > 0) {
-              dy -= touchSlop;
+              dy -= mTouchSlop;
             } else {
-              dy += touchSlop;
+              dy += mTouchSlop;
             }
           }
 
-          if (isBeingDragged) {
-            lastMotionY = y;
+          if (mIsBeingDragged) {
+            mLastMotionY = y;
             // We're being dragged so scroll the ABL
             scroll(parent, child, dy, getMaxDragOffset(child), 0);
           }
@@ -167,27 +167,27 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
         }
 
       case MotionEvent.ACTION_UP:
-        if (velocityTracker != null) {
-          velocityTracker.addMovement(ev);
-          velocityTracker.computeCurrentVelocity(1000);
-          float yvel = velocityTracker.getYVelocity(activePointerId);
+        if (mVelocityTracker != null) {
+          mVelocityTracker.addMovement(ev);
+          mVelocityTracker.computeCurrentVelocity(1000);
+          float yvel = mVelocityTracker.getYVelocity(mActivePointerId);
           fling(parent, child, -getScrollRangeForDragFling(child), 0, yvel);
         }
         // $FALLTHROUGH
       case MotionEvent.ACTION_CANCEL:
         {
-          isBeingDragged = false;
-          activePointerId = INVALID_POINTER;
-          if (velocityTracker != null) {
-            velocityTracker.recycle();
-            velocityTracker = null;
+          mIsBeingDragged = false;
+          mActivePointerId = INVALID_POINTER;
+          if (mVelocityTracker != null) {
+            mVelocityTracker.recycle();
+            mVelocityTracker = null;
           }
           break;
         }
     }
 
-    if (velocityTracker != null) {
-      velocityTracker.addMovement(ev);
+    if (mVelocityTracker != null) {
+      mVelocityTracker.addMovement(ev);
     }
 
     return true;
@@ -238,16 +238,16 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
       int minOffset,
       int maxOffset,
       float velocityY) {
-    if (flingRunnable != null) {
-      layout.removeCallbacks(flingRunnable);
-      flingRunnable = null;
+    if (mFlingRunnable != null) {
+      layout.removeCallbacks(mFlingRunnable);
+      mFlingRunnable = null;
     }
 
-    if (scroller == null) {
-      scroller = new OverScroller(layout.getContext());
+    if (mScroller == null) {
+      mScroller = new OverScroller(layout.getContext());
     }
 
-    scroller.fling(
+    mScroller.fling(
         0,
         getTopAndBottomOffset(), // curr
         0,
@@ -257,9 +257,9 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
         minOffset,
         maxOffset); // y
 
-    if (scroller.computeScrollOffset()) {
-      flingRunnable = new FlingRunnable(coordinatorLayout, layout);
-      ViewCompat.postOnAnimation(layout, flingRunnable);
+    if (mScroller.computeScrollOffset()) {
+      mFlingRunnable = new FlingRunnable(coordinatorLayout, layout);
+      ViewCompat.postOnAnimation(layout, mFlingRunnable);
       return true;
     } else {
       onFlingFinished(coordinatorLayout, layout);
@@ -290,29 +290,29 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
   }
 
   private void ensureVelocityTracker() {
-    if (velocityTracker == null) {
-      velocityTracker = VelocityTracker.obtain();
+    if (mVelocityTracker == null) {
+      mVelocityTracker = VelocityTracker.obtain();
     }
   }
 
   private class FlingRunnable implements Runnable {
-    private final CoordinatorLayout parent;
-    private final V layout;
+    private final CoordinatorLayout mParent;
+    private final V mLayout;
 
     FlingRunnable(CoordinatorLayout parent, V layout) {
-      this.parent = parent;
-      this.layout = layout;
+      mParent = parent;
+      mLayout = layout;
     }
 
     @Override
     public void run() {
-      if (layout != null && scroller != null) {
-        if (scroller.computeScrollOffset()) {
-          setHeaderTopBottomOffset(parent, layout, scroller.getCurrY());
+      if (mLayout != null && mScroller != null) {
+        if (mScroller.computeScrollOffset()) {
+          setHeaderTopBottomOffset(mParent, mLayout, mScroller.getCurrY());
           // Post ourselves so that we run on the next animation
-          ViewCompat.postOnAnimation(layout, this);
+          ViewCompat.postOnAnimation(mLayout, this);
         } else {
-          onFlingFinished(parent, layout);
+          onFlingFinished(mParent, mLayout);
         }
       }
     }

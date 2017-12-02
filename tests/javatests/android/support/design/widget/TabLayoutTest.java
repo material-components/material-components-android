@@ -215,7 +215,7 @@ public class TabLayoutTest {
 
     final MotionEvent event = MotionEvent.obtain(0, 0, MotionEvent.ACTION_HOVER_MOVE, 0, 0, 0);
     for (int i = 0; i < tabCount; i++) {
-      assertEquals(expectedIcon, tabLayout.getTabAt(i).view.onResolvePointerIcon(event, 0));
+      assertEquals(expectedIcon, tabLayout.getTabAt(i).mView.onResolvePointerIcon(event, 0));
     }
   }
 

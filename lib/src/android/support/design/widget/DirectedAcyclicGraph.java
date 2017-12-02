@@ -26,11 +26,11 @@ import java.util.List;
 
 /** A class which represents a simple directed acyclic graph. */
 final class DirectedAcyclicGraph<T> {
-  private final Pools.Pool<ArrayList<T>> listPool = new Pools.SimplePool<>(10);
-  private final SimpleArrayMap<T, ArrayList<T>> graph = new SimpleArrayMap<>();
+  private final Pools.Pool<ArrayList<T>> mListPool = new Pools.SimplePool<>(10);
+  private final SimpleArrayMap<T, ArrayList<T>> mGraph = new SimpleArrayMap<>();
 
-  private final ArrayList<T> sortResult = new ArrayList<>();
-  private final HashSet<T> sortTmpMarked = new HashSet<>();
+  private final ArrayList<T> mSortResult = new ArrayList<>();
+  private final HashSet<T> mSortTmpMarked = new HashSet<>();
 
   /**
    * Add a node to the graph.
@@ -40,14 +40,14 @@ final class DirectedAcyclicGraph<T> {
    * @param node the node to add
    */
   void addNode(@NonNull T node) {
-    if (!graph.containsKey(node)) {
-      graph.put(node, null);
+    if (!mGraph.containsKey(node)) {
+      mGraph.put(node, null);
     }
   }
 
   /** Returns true if the node is already present in the graph, false otherwise. */
   boolean contains(@NonNull T node) {
-    return graph.containsKey(node);
+    return mGraph.containsKey(node);
   }
 
   /**
@@ -60,16 +60,16 @@ final class DirectedAcyclicGraph<T> {
    * @param incomingEdge the node which has is an incoming edge to {@code node}
    */
   void addEdge(@NonNull T node, @NonNull T incomingEdge) {
-    if (!graph.containsKey(node) || !graph.containsKey(incomingEdge)) {
+    if (!mGraph.containsKey(node) || !mGraph.containsKey(incomingEdge)) {
       throw new IllegalArgumentException(
           "All nodes must be present in the graph before" + " being added as an edge");
     }
 
-    ArrayList<T> edges = graph.get(node);
+    ArrayList<T> edges = mGraph.get(node);
     if (edges == null) {
       // If edges is null, we should try and get one from the pool and add it to the graph
       edges = getEmptyList();
-      graph.put(node, edges);
+      mGraph.put(node, edges);
     }
     // Finally add the edge to the list
     edges.add(incomingEdge);
@@ -82,7 +82,7 @@ final class DirectedAcyclicGraph<T> {
    */
   @Nullable
   List<T> getIncomingEdges(@NonNull T node) {
-    return graph.get(node);
+    return mGraph.get(node);
   }
 
   /**
@@ -94,21 +94,21 @@ final class DirectedAcyclicGraph<T> {
   @Nullable
   List<T> getOutgoingEdges(@NonNull T node) {
     ArrayList<T> result = null;
-    for (int i = 0, size = graph.size(); i < size; i++) {
-      ArrayList<T> edges = graph.valueAt(i);
+    for (int i = 0, size = mGraph.size(); i < size; i++) {
+      ArrayList<T> edges = mGraph.valueAt(i);
       if (edges != null && edges.contains(node)) {
         if (result == null) {
           result = new ArrayList<>();
         }
-        result.add(graph.keyAt(i));
+        result.add(mGraph.keyAt(i));
       }
     }
     return result;
   }
 
   boolean hasOutgoingEdges(@NonNull T node) {
-    for (int i = 0, size = graph.size(); i < size; i++) {
-      ArrayList<T> edges = graph.valueAt(i);
+    for (int i = 0, size = mGraph.size(); i < size; i++) {
+      ArrayList<T> edges = mGraph.valueAt(i);
       if (edges != null && edges.contains(node)) {
         return true;
       }
@@ -118,13 +118,13 @@ final class DirectedAcyclicGraph<T> {
 
   /** Clears the internal graph, and releases resources to pools. */
   void clear() {
-    for (int i = 0, size = graph.size(); i < size; i++) {
-      ArrayList<T> edges = graph.valueAt(i);
+    for (int i = 0, size = mGraph.size(); i < size; i++) {
+      ArrayList<T> edges = mGraph.valueAt(i);
       if (edges != null) {
         poolList(edges);
       }
     }
-    graph.clear();
+    mGraph.clear();
   }
 
   /**
@@ -137,15 +137,15 @@ final class DirectedAcyclicGraph<T> {
    */
   @NonNull
   ArrayList<T> getSortedList() {
-    sortResult.clear();
-    sortTmpMarked.clear();
+    mSortResult.clear();
+    mSortTmpMarked.clear();
 
     // Start a DFS from each node in the graph
-    for (int i = 0, size = graph.size(); i < size; i++) {
-      dfs(graph.keyAt(i), sortResult, sortTmpMarked);
+    for (int i = 0, size = mGraph.size(); i < size; i++) {
+      dfs(mGraph.keyAt(i), mSortResult, mSortTmpMarked);
     }
 
-    return sortResult;
+    return mSortResult;
   }
 
   private void dfs(final T node, final ArrayList<T> result, final HashSet<T> tmpMarked) {
@@ -159,7 +159,7 @@ final class DirectedAcyclicGraph<T> {
     // Temporarily mark the node
     tmpMarked.add(node);
     // Recursively dfs all of the node's edges
-    final ArrayList<T> edges = graph.get(node);
+    final ArrayList<T> edges = mGraph.get(node);
     if (edges != null) {
       for (int i = 0, size = edges.size(); i < size; i++) {
         dfs(edges.get(i), result, tmpMarked);
@@ -173,12 +173,12 @@ final class DirectedAcyclicGraph<T> {
 
   /** Returns the size of the graph */
   int size() {
-    return graph.size();
+    return mGraph.size();
   }
 
   @NonNull
   private ArrayList<T> getEmptyList() {
-    ArrayList<T> list = listPool.acquire();
+    ArrayList<T> list = mListPool.acquire();
     if (list == null) {
       list = new ArrayList<>();
     }
@@ -187,6 +187,6 @@ final class DirectedAcyclicGraph<T> {
 
   private void poolList(@NonNull ArrayList<T> list) {
     list.clear();
-    listPool.release(list);
+    mListPool.release(list);
   }
 }

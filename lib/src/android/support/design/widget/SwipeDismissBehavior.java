@@ -76,17 +76,17 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
   private static final float DEFAULT_ALPHA_START_DISTANCE = 0f;
   private static final float DEFAULT_ALPHA_END_DISTANCE = DEFAULT_DRAG_DISMISS_THRESHOLD;
 
-  ViewDragHelper viewDragHelper;
-  OnDismissListener listener;
-  private boolean interceptingEvents;
+  ViewDragHelper mViewDragHelper;
+  OnDismissListener mListener;
+  private boolean mInterceptingEvents;
 
-  private float sensitivity = 0f;
-  private boolean sensitivitySet;
+  private float mSensitivity = 0f;
+  private boolean mSensitivitySet;
 
-  int swipeDirection = SWIPE_DIRECTION_ANY;
-  float dragDismissThreshold = DEFAULT_DRAG_DISMISS_THRESHOLD;
-  float alphaStartSwipeDistance = DEFAULT_ALPHA_START_DISTANCE;
-  float alphaEndSwipeDistance = DEFAULT_ALPHA_END_DISTANCE;
+  int mSwipeDirection = SWIPE_DIRECTION_ANY;
+  float mDragDismissThreshold = DEFAULT_DRAG_DISMISS_THRESHOLD;
+  float mAlphaStartSwipeDistance = DEFAULT_ALPHA_START_DISTANCE;
+  float mAlphaEndSwipeDistance = DEFAULT_ALPHA_END_DISTANCE;
 
   /** Callback interface used to notify the application that the view has been dismissed. */
   public interface OnDismissListener {
@@ -108,7 +108,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    * @param listener the listener to use.
    */
   public void setListener(OnDismissListener listener) {
-    this.listener = listener;
+    mListener = listener;
   }
 
   /**
@@ -118,7 +118,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    *     #SWIPE_DIRECTION_END_TO_START} or {@link #SWIPE_DIRECTION_ANY}
    */
   public void setSwipeDirection(@SwipeDirection int direction) {
-    swipeDirection = direction;
+    mSwipeDirection = direction;
   }
 
   /**
@@ -127,7 +127,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    * @param distance a ratio of a view's width, values are clamped to 0 >= x <= 1f;
    */
   public void setDragDismissDistance(float distance) {
-    dragDismissThreshold = clamp(0f, distance, 1f);
+    mDragDismissThreshold = clamp(0f, distance, 1f);
   }
 
   /**
@@ -136,7 +136,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    * @param fraction the distance as a fraction of the view's width.
    */
   public void setStartAlphaSwipeDistance(float fraction) {
-    alphaStartSwipeDistance = clamp(0f, fraction, 1f);
+    mAlphaStartSwipeDistance = clamp(0f, fraction, 1f);
   }
 
   /**
@@ -145,7 +145,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    * @param fraction the distance as a fraction of the view's width.
    */
   public void setEndAlphaSwipeDistance(float fraction) {
-    alphaEndSwipeDistance = clamp(0f, fraction, 1f);
+    mAlphaEndSwipeDistance = clamp(0f, fraction, 1f);
   }
 
   /**
@@ -156,38 +156,38 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    *     drag. Larger values are more sensitive. 1.0f is normal.
    */
   public void setSensitivity(float sensitivity) {
-    this.sensitivity = sensitivity;
-    sensitivitySet = true;
+    mSensitivity = sensitivity;
+    mSensitivitySet = true;
   }
 
   @Override
   public boolean onInterceptTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
-    boolean dispatchEventToHelper = interceptingEvents;
+    boolean dispatchEventToHelper = mInterceptingEvents;
 
     switch (event.getActionMasked()) {
       case MotionEvent.ACTION_DOWN:
-        interceptingEvents =
+        mInterceptingEvents =
             parent.isPointInChildBounds(child, (int) event.getX(), (int) event.getY());
-        dispatchEventToHelper = interceptingEvents;
+        dispatchEventToHelper = mInterceptingEvents;
         break;
       case MotionEvent.ACTION_UP:
       case MotionEvent.ACTION_CANCEL:
         // Reset the ignore flag for next time
-        interceptingEvents = false;
+        mInterceptingEvents = false;
         break;
     }
 
     if (dispatchEventToHelper) {
       ensureViewDragHelper(parent);
-      return viewDragHelper.shouldInterceptTouchEvent(event);
+      return mViewDragHelper.shouldInterceptTouchEvent(event);
     }
     return false;
   }
 
   @Override
   public boolean onTouchEvent(CoordinatorLayout parent, V child, MotionEvent event) {
-    if (viewDragHelper != null) {
-      viewDragHelper.processTouchEvent(event);
+    if (mViewDragHelper != null) {
+      mViewDragHelper.processTouchEvent(event);
       return true;
     }
     return false;
@@ -203,23 +203,23 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
     return true;
   }
 
-  private final ViewDragHelper.Callback dragCallback =
+  private final ViewDragHelper.Callback mDragCallback =
       new ViewDragHelper.Callback() {
         private static final int INVALID_POINTER_ID = -1;
 
-        private int originalCapturedViewLeft;
-        private int activePointerId = INVALID_POINTER_ID;
+        private int mOriginalCapturedViewLeft;
+        private int mActivePointerId = INVALID_POINTER_ID;
 
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
           // Only capture if we don't already have an active pointer id
-          return activePointerId == INVALID_POINTER_ID && canSwipeDismissView(child);
+          return mActivePointerId == INVALID_POINTER_ID && canSwipeDismissView(child);
         }
 
         @Override
         public void onViewCaptured(View capturedChild, int activePointerId) {
-          this.activePointerId = activePointerId;
-          originalCapturedViewLeft = capturedChild.getLeft();
+          mActivePointerId = activePointerId;
+          mOriginalCapturedViewLeft = capturedChild.getLeft();
 
           // The view has been captured, and thus a drag is about to start so stop any parents
           // intercepting
@@ -231,15 +231,15 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
         @Override
         public void onViewDragStateChanged(int state) {
-          if (listener != null) {
-            listener.onDragStateChanged(state);
+          if (mListener != null) {
+            mListener.onDragStateChanged(state);
           }
         }
 
         @Override
         public void onViewReleased(View child, float xvel, float yvel) {
           // Reset the active pointer ID
-          activePointerId = INVALID_POINTER_ID;
+          mActivePointerId = INVALID_POINTER_ID;
 
           final int childWidth = child.getWidth();
           int targetLeft;
@@ -247,19 +247,19 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
 
           if (shouldDismiss(child, xvel)) {
             targetLeft =
-                child.getLeft() < originalCapturedViewLeft
-                    ? originalCapturedViewLeft - childWidth
-                    : originalCapturedViewLeft + childWidth;
+                child.getLeft() < mOriginalCapturedViewLeft
+                    ? mOriginalCapturedViewLeft - childWidth
+                    : mOriginalCapturedViewLeft + childWidth;
             dismiss = true;
           } else {
             // Else, reset back to the original left
-            targetLeft = originalCapturedViewLeft;
+            targetLeft = mOriginalCapturedViewLeft;
           }
 
-          if (viewDragHelper.settleCapturedViewAt(targetLeft, child.getTop())) {
+          if (mViewDragHelper.settleCapturedViewAt(targetLeft, child.getTop())) {
             ViewCompat.postOnAnimation(child, new SettleRunnable(child, dismiss));
-          } else if (dismiss && listener != null) {
-            listener.onDismiss(child);
+          } else if (dismiss && mListener != null) {
+            mListener.onDismiss(child);
           }
         }
 
@@ -268,21 +268,21 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
             final boolean isRtl =
                 ViewCompat.getLayoutDirection(child) == ViewCompat.LAYOUT_DIRECTION_RTL;
 
-            if (swipeDirection == SWIPE_DIRECTION_ANY) {
+            if (mSwipeDirection == SWIPE_DIRECTION_ANY) {
               // We don't care about the direction so return true
               return true;
-            } else if (swipeDirection == SWIPE_DIRECTION_START_TO_END) {
+            } else if (mSwipeDirection == SWIPE_DIRECTION_START_TO_END) {
               // We only allow start-to-end swiping, so the fling needs to be in the
               // correct direction
               return isRtl ? xvel < 0f : xvel > 0f;
-            } else if (swipeDirection == SWIPE_DIRECTION_END_TO_START) {
+            } else if (mSwipeDirection == SWIPE_DIRECTION_END_TO_START) {
               // We only allow end-to-start swiping, so the fling needs to be in the
               // correct direction
               return isRtl ? xvel > 0f : xvel < 0f;
             }
           } else {
-            final int distance = child.getLeft() - originalCapturedViewLeft;
-            final int thresholdDistance = Math.round(child.getWidth() * dragDismissThreshold);
+            final int distance = child.getLeft() - mOriginalCapturedViewLeft;
+            final int thresholdDistance = Math.round(child.getWidth() * mDragDismissThreshold);
             return Math.abs(distance) >= thresholdDistance;
           }
 
@@ -301,25 +301,25 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
           int min;
           int max;
 
-          if (swipeDirection == SWIPE_DIRECTION_START_TO_END) {
+          if (mSwipeDirection == SWIPE_DIRECTION_START_TO_END) {
             if (isRtl) {
-              min = originalCapturedViewLeft - child.getWidth();
-              max = originalCapturedViewLeft;
+              min = mOriginalCapturedViewLeft - child.getWidth();
+              max = mOriginalCapturedViewLeft;
             } else {
-              min = originalCapturedViewLeft;
-              max = originalCapturedViewLeft + child.getWidth();
+              min = mOriginalCapturedViewLeft;
+              max = mOriginalCapturedViewLeft + child.getWidth();
             }
-          } else if (swipeDirection == SWIPE_DIRECTION_END_TO_START) {
+          } else if (mSwipeDirection == SWIPE_DIRECTION_END_TO_START) {
             if (isRtl) {
-              min = originalCapturedViewLeft;
-              max = originalCapturedViewLeft + child.getWidth();
+              min = mOriginalCapturedViewLeft;
+              max = mOriginalCapturedViewLeft + child.getWidth();
             } else {
-              min = originalCapturedViewLeft - child.getWidth();
-              max = originalCapturedViewLeft;
+              min = mOriginalCapturedViewLeft - child.getWidth();
+              max = mOriginalCapturedViewLeft;
             }
           } else {
-            min = originalCapturedViewLeft - child.getWidth();
-            max = originalCapturedViewLeft + child.getWidth();
+            min = mOriginalCapturedViewLeft - child.getWidth();
+            max = mOriginalCapturedViewLeft + child.getWidth();
           }
 
           return clamp(min, left, max);
@@ -333,9 +333,9 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         @Override
         public void onViewPositionChanged(View child, int left, int top, int dx, int dy) {
           final float startAlphaDistance =
-              originalCapturedViewLeft + child.getWidth() * alphaStartSwipeDistance;
+              mOriginalCapturedViewLeft + child.getWidth() * mAlphaStartSwipeDistance;
           final float endAlphaDistance =
-              originalCapturedViewLeft + child.getWidth() * alphaEndSwipeDistance;
+              mOriginalCapturedViewLeft + child.getWidth() * mAlphaEndSwipeDistance;
 
           if (left <= startAlphaDistance) {
             child.setAlpha(1f);
@@ -350,30 +350,30 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
       };
 
   private void ensureViewDragHelper(ViewGroup parent) {
-    if (viewDragHelper == null) {
-      viewDragHelper =
-          sensitivitySet
-              ? ViewDragHelper.create(parent, sensitivity, dragCallback)
-              : ViewDragHelper.create(parent, dragCallback);
+    if (mViewDragHelper == null) {
+      mViewDragHelper =
+          mSensitivitySet
+              ? ViewDragHelper.create(parent, mSensitivity, mDragCallback)
+              : ViewDragHelper.create(parent, mDragCallback);
     }
   }
 
   private class SettleRunnable implements Runnable {
-    private final View view;
-    private final boolean dismiss;
+    private final View mView;
+    private final boolean mDismiss;
 
     SettleRunnable(View view, boolean dismiss) {
-      this.view = view;
-      this.dismiss = dismiss;
+      mView = view;
+      mDismiss = dismiss;
     }
 
     @Override
     public void run() {
-      if (viewDragHelper != null && viewDragHelper.continueSettling(true)) {
-        ViewCompat.postOnAnimation(view, this);
+      if (mViewDragHelper != null && mViewDragHelper.continueSettling(true)) {
+        ViewCompat.postOnAnimation(mView, this);
       } else {
-        if (dismiss && listener != null) {
-          listener.onDismiss(view);
+        if (mDismiss && mListener != null) {
+          mListener.onDismiss(mView);
         }
       }
     }
@@ -394,7 +394,7 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
    * @return The current drag state
    */
   public int getDragState() {
-    return viewDragHelper != null ? viewDragHelper.getViewDragState() : STATE_IDLE;
+    return mViewDragHelper != null ? mViewDragHelper.getViewDragState() : STATE_IDLE;
   }
 
   /** The fraction that {@code value} is between {@code startValue} and {@code endValue}. */

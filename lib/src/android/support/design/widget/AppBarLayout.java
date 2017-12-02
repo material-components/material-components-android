@@ -128,22 +128,22 @@ public class AppBarLayout extends LinearLayout {
 
   private static final int INVALID_SCROLL_RANGE = -1;
 
-  private int totalScrollRange = INVALID_SCROLL_RANGE;
-  private int downPreScrollRange = INVALID_SCROLL_RANGE;
-  private int downScrollRange = INVALID_SCROLL_RANGE;
+  private int mTotalScrollRange = INVALID_SCROLL_RANGE;
+  private int mDownPreScrollRange = INVALID_SCROLL_RANGE;
+  private int mDownScrollRange = INVALID_SCROLL_RANGE;
 
-  private boolean haveChildWithInterpolator;
+  private boolean mHaveChildWithInterpolator;
 
-  private int pendingAction = PENDING_ACTION_NONE;
+  private int mPendingAction = PENDING_ACTION_NONE;
 
-  private WindowInsetsCompat lastInsets;
+  private WindowInsetsCompat mLastInsets;
 
-  private List<OnOffsetChangedListener> listeners;
+  private List<OnOffsetChangedListener> mListeners;
 
-  private boolean collapsible;
-  private boolean collapsed;
+  private boolean mCollapsible;
+  private boolean mCollapsed;
 
-  private int[] tmpStatesArray;
+  private int[] mTmpStatesArray;
 
   public AppBarLayout(Context context) {
     this(context, null);
@@ -211,11 +211,11 @@ public class AppBarLayout extends LinearLayout {
    * @see #removeOnOffsetChangedListener(OnOffsetChangedListener)
    */
   public void addOnOffsetChangedListener(OnOffsetChangedListener listener) {
-    if (listeners == null) {
-      listeners = new ArrayList<>();
+    if (mListeners == null) {
+      mListeners = new ArrayList<>();
     }
-    if (listener != null && !listeners.contains(listener)) {
-      listeners.add(listener);
+    if (listener != null && !mListeners.contains(listener)) {
+      mListeners.add(listener);
     }
   }
 
@@ -225,8 +225,8 @@ public class AppBarLayout extends LinearLayout {
    * @param listener the listener to remove.
    */
   public void removeOnOffsetChangedListener(OnOffsetChangedListener listener) {
-    if (listeners != null && listener != null) {
-      listeners.remove(listener);
+    if (mListeners != null && listener != null) {
+      mListeners.remove(listener);
     }
   }
 
@@ -241,14 +241,14 @@ public class AppBarLayout extends LinearLayout {
     super.onLayout(changed, l, t, r, b);
     invalidateScrollRanges();
 
-    haveChildWithInterpolator = false;
+    mHaveChildWithInterpolator = false;
     for (int i = 0, z = getChildCount(); i < z; i++) {
       final View child = getChildAt(i);
       final LayoutParams childLp = (LayoutParams) child.getLayoutParams();
       final Interpolator interpolator = childLp.getScrollInterpolator();
 
       if (interpolator != null) {
-        haveChildWithInterpolator = true;
+        mHaveChildWithInterpolator = true;
         break;
       }
     }
@@ -269,9 +269,9 @@ public class AppBarLayout extends LinearLayout {
 
   private void invalidateScrollRanges() {
     // Invalidate the scroll ranges
-    totalScrollRange = INVALID_SCROLL_RANGE;
-    downPreScrollRange = INVALID_SCROLL_RANGE;
-    downScrollRange = INVALID_SCROLL_RANGE;
+    mTotalScrollRange = INVALID_SCROLL_RANGE;
+    mDownPreScrollRange = INVALID_SCROLL_RANGE;
+    mDownScrollRange = INVALID_SCROLL_RANGE;
   }
 
   @Override
@@ -314,7 +314,7 @@ public class AppBarLayout extends LinearLayout {
   }
 
   private void setExpanded(boolean expanded, boolean animate, boolean force) {
-    pendingAction =
+    mPendingAction =
         (expanded ? PENDING_ACTION_EXPANDED : PENDING_ACTION_COLLAPSED)
             | (animate ? PENDING_ACTION_ANIMATE_ENABLED : 0)
             | (force ? PENDING_ACTION_FORCE : 0);
@@ -347,7 +347,7 @@ public class AppBarLayout extends LinearLayout {
   }
 
   boolean hasChildWithInterpolator() {
-    return haveChildWithInterpolator;
+    return mHaveChildWithInterpolator;
   }
 
   /**
@@ -356,8 +356,8 @@ public class AppBarLayout extends LinearLayout {
    * @return the scroll range in px
    */
   public final int getTotalScrollRange() {
-    if (totalScrollRange != INVALID_SCROLL_RANGE) {
-      return totalScrollRange;
+    if (mTotalScrollRange != INVALID_SCROLL_RANGE) {
+      return mTotalScrollRange;
     }
 
     int range = 0;
@@ -365,7 +365,7 @@ public class AppBarLayout extends LinearLayout {
       final View child = getChildAt(i);
       final LayoutParams lp = (LayoutParams) child.getLayoutParams();
       final int childHeight = child.getMeasuredHeight();
-      final int flags = lp.scrollFlags;
+      final int flags = lp.mScrollFlags;
 
       if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
         // We're set to scroll so add the child's height
@@ -384,7 +384,7 @@ public class AppBarLayout extends LinearLayout {
         break;
       }
     }
-    return totalScrollRange = Math.max(0, range - getTopInset());
+    return mTotalScrollRange = Math.max(0, range - getTopInset());
   }
 
   boolean hasScrollableChildren() {
@@ -398,9 +398,9 @@ public class AppBarLayout extends LinearLayout {
 
   /** Return the scroll range when scrolling down from a nested pre-scroll. */
   int getDownNestedPreScrollRange() {
-    if (downPreScrollRange != INVALID_SCROLL_RANGE) {
+    if (mDownPreScrollRange != INVALID_SCROLL_RANGE) {
       // If we already have a valid value, return it
-      return downPreScrollRange;
+      return mDownPreScrollRange;
     }
 
     int range = 0;
@@ -408,7 +408,7 @@ public class AppBarLayout extends LinearLayout {
       final View child = getChildAt(i);
       final LayoutParams lp = (LayoutParams) child.getLayoutParams();
       final int childHeight = child.getMeasuredHeight();
-      final int flags = lp.scrollFlags;
+      final int flags = lp.mScrollFlags;
 
       if ((flags & LayoutParams.FLAG_QUICK_RETURN) == LayoutParams.FLAG_QUICK_RETURN) {
         // First take the margin into account
@@ -430,14 +430,14 @@ public class AppBarLayout extends LinearLayout {
         break;
       }
     }
-    return downPreScrollRange = Math.max(0, range);
+    return mDownPreScrollRange = Math.max(0, range);
   }
 
   /** Return the scroll range when scrolling down from a nested scroll. */
   int getDownNestedScrollRange() {
-    if (downScrollRange != INVALID_SCROLL_RANGE) {
+    if (mDownScrollRange != INVALID_SCROLL_RANGE) {
       // If we already have a valid value, return it
-      return downScrollRange;
+      return mDownScrollRange;
     }
 
     int range = 0;
@@ -447,7 +447,7 @@ public class AppBarLayout extends LinearLayout {
       int childHeight = child.getMeasuredHeight();
       childHeight += lp.topMargin + lp.bottomMargin;
 
-      final int flags = lp.scrollFlags;
+      final int flags = lp.mScrollFlags;
 
       if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
         // We're set to scroll so add the child's height
@@ -466,15 +466,15 @@ public class AppBarLayout extends LinearLayout {
         break;
       }
     }
-    return downScrollRange = Math.max(0, range);
+    return mDownScrollRange = Math.max(0, range);
   }
 
   void dispatchOffsetUpdates(int offset) {
     // Iterate backwards through the list so that most recently added listeners
     // get the first chance to decide
-    if (listeners != null) {
-      for (int i = 0, z = listeners.size(); i < z; i++) {
-        final OnOffsetChangedListener listener = listeners.get(i);
+    if (mListeners != null) {
+      for (int i = 0, z = mListeners.size(); i < z; i++) {
+        final OnOffsetChangedListener listener = mListeners.get(i);
         if (listener != null) {
           listener.onOffsetChanged(this, offset);
         }
@@ -505,17 +505,17 @@ public class AppBarLayout extends LinearLayout {
 
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
-    if (tmpStatesArray == null) {
+    if (mTmpStatesArray == null) {
       // Note that we can't allocate this at the class level (in declaration) since
       // some paths in super View constructor are going to call this method before
       // that
-      tmpStatesArray = new int[2];
+      mTmpStatesArray = new int[2];
     }
-    final int[] extraStates = tmpStatesArray;
+    final int[] extraStates = mTmpStatesArray;
     final int[] states = super.onCreateDrawableState(extraSpace + extraStates.length);
 
-    extraStates[0] = collapsible ? R.attr.state_collapsible : -R.attr.state_collapsible;
-    extraStates[1] = collapsible && collapsed ? R.attr.state_collapsed : -R.attr.state_collapsed;
+    extraStates[0] = mCollapsible ? R.attr.state_collapsible : -R.attr.state_collapsible;
+    extraStates[1] = mCollapsible && mCollapsed ? R.attr.state_collapsed : -R.attr.state_collapsed;
 
     return mergeDrawableStates(states, extraStates);
   }
@@ -526,8 +526,8 @@ public class AppBarLayout extends LinearLayout {
    * @return true if the collapsible state changed
    */
   private boolean setCollapsibleState(boolean collapsible) {
-    if (this.collapsible != collapsible) {
-      this.collapsible = collapsible;
+    if (mCollapsible != collapsible) {
+      mCollapsible = collapsible;
       refreshDrawableState();
       return true;
     }
@@ -540,8 +540,8 @@ public class AppBarLayout extends LinearLayout {
    * @return true if the collapsed state changed
    */
   boolean setCollapsedState(boolean collapsed) {
-    if (this.collapsed != collapsed) {
-      this.collapsed = collapsed;
+    if (mCollapsed != collapsed) {
+      mCollapsed = collapsed;
       refreshDrawableState();
       return true;
     }
@@ -572,16 +572,16 @@ public class AppBarLayout extends LinearLayout {
   }
 
   int getPendingAction() {
-    return pendingAction;
+    return mPendingAction;
   }
 
   void resetPendingAction() {
-    pendingAction = PENDING_ACTION_NONE;
+    mPendingAction = PENDING_ACTION_NONE;
   }
 
   @VisibleForTesting
   final int getTopInset() {
-    return lastInsets != null ? lastInsets.getSystemWindowInsetTop() : 0;
+    return mLastInsets != null ? mLastInsets.getSystemWindowInsetTop() : 0;
   }
 
   WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
@@ -593,8 +593,8 @@ public class AppBarLayout extends LinearLayout {
     }
 
     // If our insets have changed, keep them and invalidate the scroll ranges...
-    if (!ObjectsCompat.equals(lastInsets, newInsets)) {
-      lastInsets = newInsets;
+    if (!ObjectsCompat.equals(mLastInsets, newInsets)) {
+      mLastInsets = newInsets;
       invalidateScrollRanges();
     }
 
@@ -667,16 +667,16 @@ public class AppBarLayout extends LinearLayout {
     static final int COLLAPSIBLE_FLAGS =
         SCROLL_FLAG_EXIT_UNTIL_COLLAPSED | SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED;
 
-    int scrollFlags = SCROLL_FLAG_SCROLL;
-    Interpolator scrollInterpolator;
+    int mScrollFlags = SCROLL_FLAG_SCROLL;
+    Interpolator mScrollInterpolator;
 
     public LayoutParams(Context c, AttributeSet attrs) {
       super(c, attrs);
       TypedArray a = c.obtainStyledAttributes(attrs, R.styleable.AppBarLayout_Layout);
-      scrollFlags = a.getInt(R.styleable.AppBarLayout_Layout_layout_scrollFlags, 0);
+      mScrollFlags = a.getInt(R.styleable.AppBarLayout_Layout_layout_scrollFlags, 0);
       if (a.hasValue(R.styleable.AppBarLayout_Layout_layout_scrollInterpolator)) {
         int resId = a.getResourceId(R.styleable.AppBarLayout_Layout_layout_scrollInterpolator, 0);
-        scrollInterpolator = android.view.animation.AnimationUtils.loadInterpolator(c, resId);
+        mScrollInterpolator = android.view.animation.AnimationUtils.loadInterpolator(c, resId);
       }
       a.recycle();
     }
@@ -707,8 +707,8 @@ public class AppBarLayout extends LinearLayout {
     public LayoutParams(LayoutParams source) {
       // The copy constructor called here only exists on API 19+.
       super(source);
-      scrollFlags = source.scrollFlags;
-      scrollInterpolator = source.scrollInterpolator;
+      mScrollFlags = source.mScrollFlags;
+      mScrollInterpolator = source.mScrollInterpolator;
     }
 
     /**
@@ -721,7 +721,7 @@ public class AppBarLayout extends LinearLayout {
      * @attr ref android.support.design.R.styleable#AppBarLayout_Layout_layout_scrollFlags
      */
     public void setScrollFlags(@ScrollFlags int flags) {
-      scrollFlags = flags;
+      mScrollFlags = flags;
     }
 
     /**
@@ -732,7 +732,7 @@ public class AppBarLayout extends LinearLayout {
      */
     @ScrollFlags
     public int getScrollFlags() {
-      return scrollFlags;
+      return mScrollFlags;
     }
 
     /**
@@ -743,7 +743,7 @@ public class AppBarLayout extends LinearLayout {
      * @see #getScrollInterpolator()
      */
     public void setScrollInterpolator(Interpolator interpolator) {
-      scrollInterpolator = interpolator;
+      mScrollInterpolator = interpolator;
     }
 
     /**
@@ -754,13 +754,13 @@ public class AppBarLayout extends LinearLayout {
      * @see #setScrollInterpolator(Interpolator)
      */
     public Interpolator getScrollInterpolator() {
-      return scrollInterpolator;
+      return mScrollInterpolator;
     }
 
     /** Returns true if the scroll flags are compatible for 'collapsing' */
     boolean isCollapsible() {
-      return (scrollFlags & SCROLL_FLAG_SCROLL) == SCROLL_FLAG_SCROLL
-          && (scrollFlags & COLLAPSIBLE_FLAGS) != 0;
+      return (mScrollFlags & SCROLL_FLAG_SCROLL) == SCROLL_FLAG_SCROLL
+          && (mScrollFlags & COLLAPSIBLE_FLAGS) != 0;
     }
   }
 
@@ -785,16 +785,16 @@ public class AppBarLayout extends LinearLayout {
       public abstract boolean canDrag(@NonNull AppBarLayout appBarLayout);
     }
 
-    private int offsetDelta;
+    private int mOffsetDelta;
 
-    private ValueAnimator offsetAnimator;
+    private ValueAnimator mOffsetAnimator;
 
-    private int offsetToChildIndexOnLayout = INVALID_POSITION;
-    private boolean offsetToChildIndexOnLayoutIsMinHeight;
-    private float offsetToChildIndexOnLayoutPerc;
+    private int mOffsetToChildIndexOnLayout = INVALID_POSITION;
+    private boolean mOffsetToChildIndexOnLayoutIsMinHeight;
+    private float mOffsetToChildIndexOnLayoutPerc;
 
-    private WeakReference<View> lastNestedScrollingChildRef;
-    private DragCallback onDragCallback;
+    private WeakReference<View> mLastNestedScrollingChildRef;
+    private DragCallback mOnDragCallback;
 
     public Behavior() {}
 
@@ -817,13 +817,13 @@ public class AppBarLayout extends LinearLayout {
               && child.hasScrollableChildren()
               && parent.getHeight() - directTargetChild.getHeight() <= child.getHeight();
 
-      if (started && offsetAnimator != null) {
+      if (started && mOffsetAnimator != null) {
         // Cancel any offset animation
-        offsetAnimator.cancel();
+        mOffsetAnimator.cancel();
       }
 
       // A new nested scroll has started so clear out the previous ref
-      lastNestedScrollingChildRef = null;
+      mLastNestedScrollingChildRef = null;
 
       return started;
     }
@@ -893,7 +893,7 @@ public class AppBarLayout extends LinearLayout {
       }
 
       // Keep a reference to the previous nested scrolling child
-      lastNestedScrollingChildRef = new WeakReference<>(target);
+      mLastNestedScrollingChildRef = new WeakReference<>(target);
     }
 
     /**
@@ -902,7 +902,7 @@ public class AppBarLayout extends LinearLayout {
      * @param callback the callback to use, or {@code null} to use the default behavior.
      */
     public void setDragCallback(@Nullable DragCallback callback) {
-      onDragCallback = callback;
+      mOnDragCallback = callback;
     }
 
     private void animateOffsetTo(
@@ -931,16 +931,16 @@ public class AppBarLayout extends LinearLayout {
         final int duration) {
       final int currentOffset = getTopBottomOffsetForScrollingSibling();
       if (currentOffset == offset) {
-        if (offsetAnimator != null && offsetAnimator.isRunning()) {
-          offsetAnimator.cancel();
+        if (mOffsetAnimator != null && mOffsetAnimator.isRunning()) {
+          mOffsetAnimator.cancel();
         }
         return;
       }
 
-      if (offsetAnimator == null) {
-        offsetAnimator = new ValueAnimator();
-        offsetAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
-        offsetAnimator.addUpdateListener(
+      if (mOffsetAnimator == null) {
+        mOffsetAnimator = new ValueAnimator();
+        mOffsetAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
+        mOffsetAnimator.addUpdateListener(
             new ValueAnimator.AnimatorUpdateListener() {
               @Override
               public void onAnimationUpdate(ValueAnimator animator) {
@@ -949,12 +949,12 @@ public class AppBarLayout extends LinearLayout {
               }
             });
       } else {
-        offsetAnimator.cancel();
+        mOffsetAnimator.cancel();
       }
 
-      offsetAnimator.setDuration(Math.min(duration, MAX_OFFSET_ANIMATION_DURATION));
-      offsetAnimator.setIntValues(currentOffset, offset);
-      offsetAnimator.start();
+      mOffsetAnimator.setDuration(Math.min(duration, MAX_OFFSET_ANIMATION_DURATION));
+      mOffsetAnimator.setIntValues(currentOffset, offset);
+      mOffsetAnimator.start();
     }
 
     private int getChildIndexOnOffset(AppBarLayout abl, final int offset) {
@@ -1052,13 +1052,13 @@ public class AppBarLayout extends LinearLayout {
       // 2. offsets for restorations
       // 3. non-forced pending actions
       final int pendingAction = abl.getPendingAction();
-      if (offsetToChildIndexOnLayout >= 0 && (pendingAction & PENDING_ACTION_FORCE) == 0) {
-        View child = abl.getChildAt(offsetToChildIndexOnLayout);
+      if (mOffsetToChildIndexOnLayout >= 0 && (pendingAction & PENDING_ACTION_FORCE) == 0) {
+        View child = abl.getChildAt(mOffsetToChildIndexOnLayout);
         int offset = -child.getBottom();
-        if (offsetToChildIndexOnLayoutIsMinHeight) {
+        if (mOffsetToChildIndexOnLayoutIsMinHeight) {
           offset += ViewCompat.getMinimumHeight(child) + abl.getTopInset();
         } else {
-          offset += Math.round(child.getHeight() * offsetToChildIndexOnLayoutPerc);
+          offset += Math.round(child.getHeight() * mOffsetToChildIndexOnLayoutPerc);
         }
         setHeaderTopBottomOffset(parent, abl, offset);
       } else if (pendingAction != PENDING_ACTION_NONE) {
@@ -1081,7 +1081,7 @@ public class AppBarLayout extends LinearLayout {
 
       // Finally reset any pending states
       abl.resetPendingAction();
-      offsetToChildIndexOnLayout = INVALID_POSITION;
+      mOffsetToChildIndexOnLayout = INVALID_POSITION;
 
       // We may have changed size, so let's constrain the top and bottom offset correctly,
       // just in case we're out of the bounds
@@ -1102,15 +1102,15 @@ public class AppBarLayout extends LinearLayout {
 
     @Override
     boolean canDragView(AppBarLayout view) {
-      if (onDragCallback != null) {
+      if (mOnDragCallback != null) {
         // If there is a drag callback set, it's in control
-        return onDragCallback.canDrag(view);
+        return mOnDragCallback.canDrag(view);
       }
 
       // Else we'll use the default behaviour of seeing if it can scroll down
-      if (lastNestedScrollingChildRef != null) {
+      if (mLastNestedScrollingChildRef != null) {
         // If we have a reference to a scrolling view, check it
-        final View scrollingView = lastNestedScrollingChildRef.get();
+        final View scrollingView = mLastNestedScrollingChildRef.get();
         return scrollingView != null
             && scrollingView.isShown()
             && !scrollingView.canScrollVertically(-1);
@@ -1161,7 +1161,7 @@ public class AppBarLayout extends LinearLayout {
           // Update how much dy we have consumed
           consumed = curOffset - newOffset;
           // Update the stored sibling offset
-          offsetDelta = newOffset - interpolatedOffset;
+          mOffsetDelta = newOffset - interpolatedOffset;
 
           if (!offsetChanged && appBarLayout.hasChildWithInterpolator()) {
             // If the offset hasn't changed and we're using an interpolated scroll
@@ -1184,7 +1184,7 @@ public class AppBarLayout extends LinearLayout {
         }
       } else {
         // Reset the offset delta
-        offsetDelta = 0;
+        mOffsetDelta = 0;
       }
 
       return consumed;
@@ -1192,7 +1192,7 @@ public class AppBarLayout extends LinearLayout {
 
     @VisibleForTesting
     boolean isOffsetAnimatorRunning() {
-      return offsetAnimator != null && offsetAnimator.isRunning();
+      return mOffsetAnimator != null && mOffsetAnimator.isRunning();
     }
 
     private int interpolateOffset(AppBarLayout layout, final int offset) {
@@ -1314,7 +1314,7 @@ public class AppBarLayout extends LinearLayout {
 
     @Override
     int getTopBottomOffsetForScrollingSibling() {
-      return getTopAndBottomOffset() + offsetDelta;
+      return getTopAndBottomOffset() + mOffsetDelta;
     }
 
     @Override
@@ -1347,12 +1347,12 @@ public class AppBarLayout extends LinearLayout {
       if (state instanceof SavedState) {
         final SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(parent, appBarLayout, ss.getSuperState());
-        offsetToChildIndexOnLayout = ss.firstVisibleChildIndex;
-        offsetToChildIndexOnLayoutPerc = ss.firstVisibleChildPercentageShown;
-        offsetToChildIndexOnLayoutIsMinHeight = ss.firstVisibleChildAtMinimumHeight;
+        mOffsetToChildIndexOnLayout = ss.firstVisibleChildIndex;
+        mOffsetToChildIndexOnLayoutPerc = ss.firstVisibleChildPercentageShown;
+        mOffsetToChildIndexOnLayoutIsMinHeight = ss.firstVisibleChildAtMinimumHeight;
       } else {
         super.onRestoreInstanceState(parent, appBarLayout, state);
-        offsetToChildIndexOnLayout = INVALID_POSITION;
+        mOffsetToChildIndexOnLayout = INVALID_POSITION;
       }
     }
 
@@ -1438,7 +1438,7 @@ public class AppBarLayout extends LinearLayout {
         // Offset the rect by the child's left/top
         rectangle.offset(child.getLeft(), child.getTop());
 
-        final Rect parentRect = tempRect1;
+        final Rect parentRect = mTempRect1;
         parentRect.set(0, 0, parent.getWidth(), parent.getHeight());
 
         if (!parentRect.contains(rectangle)) {
@@ -1461,7 +1461,7 @@ public class AppBarLayout extends LinearLayout {
         ViewCompat.offsetTopAndBottom(
             child,
             (dependency.getBottom() - child.getTop())
-                + ablBehavior.offsetDelta
+                + ablBehavior.mOffsetDelta
                 + getVerticalLayoutGap()
                 - getOverlapPixelsForOffset(dependency));
       }

@@ -28,29 +28,29 @@ import android.view.View;
  */
 class ViewOffsetHelper {
 
-  private final View view;
+  private final View mView;
 
-  private int layoutTop;
-  private int layoutLeft;
-  private int offsetTop;
-  private int offsetLeft;
+  private int mLayoutTop;
+  private int mLayoutLeft;
+  private int mOffsetTop;
+  private int mOffsetLeft;
 
   public ViewOffsetHelper(View view) {
-    this.view = view;
+    mView = view;
   }
 
   public void onViewLayout() {
     // Now grab the intended top
-    layoutTop = view.getTop();
-    layoutLeft = view.getLeft();
+    mLayoutTop = mView.getTop();
+    mLayoutLeft = mView.getLeft();
 
     // And offset it as needed
     updateOffsets();
   }
 
   private void updateOffsets() {
-    ViewCompat.offsetTopAndBottom(view, offsetTop - (view.getTop() - layoutTop));
-    ViewCompat.offsetLeftAndRight(view, offsetLeft - (view.getLeft() - layoutLeft));
+    ViewCompat.offsetTopAndBottom(mView, mOffsetTop - (mView.getTop() - mLayoutTop));
+    ViewCompat.offsetLeftAndRight(mView, mOffsetLeft - (mView.getLeft() - mLayoutLeft));
   }
 
   /**
@@ -60,8 +60,8 @@ class ViewOffsetHelper {
    * @return true if the offset has changed
    */
   public boolean setTopAndBottomOffset(int offset) {
-    if (offsetTop != offset) {
-      offsetTop = offset;
+    if (mOffsetTop != offset) {
+      mOffsetTop = offset;
       updateOffsets();
       return true;
     }
@@ -75,8 +75,8 @@ class ViewOffsetHelper {
    * @return true if the offset has changed
    */
   public boolean setLeftAndRightOffset(int offset) {
-    if (offsetLeft != offset) {
-      offsetLeft = offset;
+    if (mOffsetLeft != offset) {
+      mOffsetLeft = offset;
       updateOffsets();
       return true;
     }
@@ -84,18 +84,18 @@ class ViewOffsetHelper {
   }
 
   public int getTopAndBottomOffset() {
-    return offsetTop;
+    return mOffsetTop;
   }
 
   public int getLeftAndRightOffset() {
-    return offsetLeft;
+    return mOffsetLeft;
   }
 
   public int getLayoutTop() {
-    return layoutTop;
+    return mLayoutTop;
   }
 
   public int getLayoutLeft() {
-    return layoutLeft;
+    return mLayoutLeft;
   }
 }

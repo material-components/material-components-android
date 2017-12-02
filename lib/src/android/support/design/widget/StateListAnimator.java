@@ -24,17 +24,17 @@ import java.util.ArrayList;
 
 final class StateListAnimator {
 
-  private final ArrayList<Tuple> tuples = new ArrayList<>();
+  private final ArrayList<Tuple> mTuples = new ArrayList<>();
 
-  private Tuple lastMatch = null;
-  ValueAnimator runningAnimator = null;
+  private Tuple mLastMatch = null;
+  ValueAnimator mRunningAnimator = null;
 
-  private final ValueAnimator.AnimatorListener animationListener =
+  private final ValueAnimator.AnimatorListener mAnimationListener =
       new AnimatorListenerAdapter() {
         @Override
         public void onAnimationEnd(Animator animator) {
-          if (runningAnimator == animator) {
-            runningAnimator = null;
+          if (mRunningAnimator == animator) {
+            mRunningAnimator = null;
           }
         }
       };
@@ -48,29 +48,29 @@ final class StateListAnimator {
    */
   public void addState(int[] specs, ValueAnimator animator) {
     Tuple tuple = new Tuple(specs, animator);
-    animator.addListener(animationListener);
-    tuples.add(tuple);
+    animator.addListener(mAnimationListener);
+    mTuples.add(tuple);
   }
 
   /** Called by View */
   void setState(int[] state) {
     Tuple match = null;
-    final int count = tuples.size();
+    final int count = mTuples.size();
     for (int i = 0; i < count; i++) {
-      final Tuple tuple = tuples.get(i);
-      if (StateSet.stateSetMatches(tuple.specs, state)) {
+      final Tuple tuple = mTuples.get(i);
+      if (StateSet.stateSetMatches(tuple.mSpecs, state)) {
         match = tuple;
         break;
       }
     }
-    if (match == lastMatch) {
+    if (match == mLastMatch) {
       return;
     }
-    if (lastMatch != null) {
+    if (mLastMatch != null) {
       cancel();
     }
 
-    lastMatch = match;
+    mLastMatch = match;
 
     if (match != null) {
       start(match);
@@ -78,14 +78,14 @@ final class StateListAnimator {
   }
 
   private void start(Tuple match) {
-    runningAnimator = match.animator;
-    runningAnimator.start();
+    mRunningAnimator = match.mAnimator;
+    mRunningAnimator.start();
   }
 
   private void cancel() {
-    if (runningAnimator != null) {
-      runningAnimator.cancel();
-      runningAnimator = null;
+    if (mRunningAnimator != null) {
+      mRunningAnimator.cancel();
+      mRunningAnimator = null;
     }
   }
 
@@ -95,19 +95,19 @@ final class StateListAnimator {
    * <p>This causes the animation to assign the end value(s) to the View.
    */
   public void jumpToCurrentState() {
-    if (runningAnimator != null) {
-      runningAnimator.end();
-      runningAnimator = null;
+    if (mRunningAnimator != null) {
+      mRunningAnimator.end();
+      mRunningAnimator = null;
     }
   }
 
   static class Tuple {
-    final int[] specs;
-    final ValueAnimator animator;
+    final int[] mSpecs;
+    final ValueAnimator mAnimator;
 
     Tuple(int[] specs, ValueAnimator animator) {
-      this.specs = specs;
-      this.animator = animator;
+      mSpecs = specs;
+      mAnimator = animator;
     }
   }
 }

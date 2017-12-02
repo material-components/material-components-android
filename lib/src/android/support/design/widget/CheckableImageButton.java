@@ -36,7 +36,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
 
   private static final int[] DRAWABLE_STATE_CHECKED = new int[] {android.R.attr.state_checked};
 
-  private boolean checked;
+  private boolean mChecked;
 
   public CheckableImageButton(Context context) {
     this(context, null);
@@ -70,8 +70,8 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
 
   @Override
   public void setChecked(boolean checked) {
-    if (this.checked != checked) {
-      this.checked = checked;
+    if (mChecked != checked) {
+      mChecked = checked;
       refreshDrawableState();
       sendAccessibilityEvent(AccessibilityEventCompat.TYPE_WINDOW_CONTENT_CHANGED);
     }
@@ -79,17 +79,17 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
 
   @Override
   public boolean isChecked() {
-    return checked;
+    return mChecked;
   }
 
   @Override
   public void toggle() {
-    setChecked(!checked);
+    setChecked(!mChecked);
   }
 
   @Override
   public int[] onCreateDrawableState(int extraSpace) {
-    if (checked) {
+    if (mChecked) {
       return mergeDrawableStates(
           super.onCreateDrawableState(extraSpace + DRAWABLE_STATE_CHECKED.length),
           DRAWABLE_STATE_CHECKED);

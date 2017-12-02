@@ -34,11 +34,11 @@ import java.util.List;
  */
 abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
 
-  final Rect tempRect1 = new Rect();
-  final Rect tempRect2 = new Rect();
+  final Rect mTempRect1 = new Rect();
+  final Rect mTempRect2 = new Rect();
 
-  private int verticalLayoutGap = 0;
-  private int overlayTop;
+  private int mVerticalLayoutGap = 0;
+  private int mOverlayTop;
 
   public HeaderScrollingViewBehavior() {}
 
@@ -108,7 +108,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
     if (header != null) {
       final CoordinatorLayout.LayoutParams lp =
           (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-      final Rect available = tempRect1;
+      final Rect available = mTempRect1;
       available.set(
           parent.getPaddingLeft() + lp.leftMargin,
           header.getBottom() + lp.topMargin,
@@ -126,7 +126,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
         available.right -= parentInsets.getSystemWindowInsetRight();
       }
 
-      final Rect out = tempRect2;
+      final Rect out = mTempRect2;
       GravityCompat.apply(
           resolveGravity(lp.gravity),
           child.getMeasuredWidth(),
@@ -138,11 +138,11 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
       final int overlap = getOverlapPixelsForOffset(header);
 
       child.layout(out.left, out.top - overlap, out.right, out.bottom - overlap);
-      verticalLayoutGap = out.top - header.getBottom();
+      mVerticalLayoutGap = out.top - header.getBottom();
     } else {
       // If we don't have a dependency, let super handle it
       super.layoutChild(parent, child, layoutDirection);
-      verticalLayoutGap = 0;
+      mVerticalLayoutGap = 0;
     }
   }
 
@@ -151,9 +151,10 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
   }
 
   final int getOverlapPixelsForOffset(final View header) {
-    return overlayTop == 0
+    return mOverlayTop == 0
         ? 0
-        : MathUtils.constrain((int) (getOverlapRatioForOffset(header) * overlayTop), 0, overlayTop);
+        : MathUtils.constrain(
+            (int) (getOverlapRatioForOffset(header) * mOverlayTop), 0, mOverlayTop);
   }
 
   private static int resolveGravity(int gravity) {
@@ -170,7 +171,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
    * The gap between the top of the scrolling view and the bottom of the header layout in pixels.
    */
   final int getVerticalLayoutGap() {
-    return verticalLayoutGap;
+    return mVerticalLayoutGap;
   }
 
   /**
@@ -179,11 +180,11 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
    * @param overlayTop the distance in px
    */
   public final void setOverlayTop(int overlayTop) {
-    this.overlayTop = overlayTop;
+    mOverlayTop = overlayTop;
   }
 
   /** Returns the distance that this view should overlap any {@link AppBarLayout}. */
   public final int getOverlayTop() {
-    return overlayTop;
+    return mOverlayTop;
   }
 }

@@ -39,21 +39,22 @@ public class SnackbarWithFabTest {
 
   private static final String MESSAGE_TEXT = "Test Message";
 
-  private CoordinatorLayout coordinatorLayout;
+  private CoordinatorLayout mCoordinatorLayout;
 
   @Before
   public void setup() {
-    coordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
+    mCoordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
   }
 
   @Test
   public void testShortSnackbarDodgesFab() {
     final int[] originalFabPosition = new int[2];
-    final View fab = coordinatorLayout.findViewById(R.id.fab);
+    final View fab = mCoordinatorLayout.findViewById(R.id.fab);
     fab.getLocationOnScreen(originalFabPosition);
 
     // Show a simple Snackbar and wait for it to be shown
-    final Snackbar snackbar = Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT);
+    final Snackbar snackbar =
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT);
     SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
     // Now check that the FAB has shifted up to make space for the Snackbar
@@ -74,12 +75,12 @@ public class SnackbarWithFabTest {
   @Test
   public void testIndefiniteSnackbarDodgesFab() throws Throwable {
     final int[] originalFabPosition = new int[2];
-    final View fab = coordinatorLayout.findViewById(R.id.fab);
+    final View fab = mCoordinatorLayout.findViewById(R.id.fab);
     fab.getLocationOnScreen(originalFabPosition);
 
     // Show a simple Snackbar and wait for it to be shown
     final Snackbar snackbar =
-        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE);
+        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE);
     SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
     // Now check that the FAB has shifted up to make space for the Snackbar

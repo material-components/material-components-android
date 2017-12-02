@@ -23,19 +23,19 @@ import android.graphics.Matrix;
  * android.support.transition.TransitionUtils.MatrixEvaluator.
  */
 public class MatrixEvaluator implements TypeEvaluator<Matrix> {
-  private final float[] tempStartValues = new float[9];
-  private final float[] tempEndValues = new float[9];
-  private final Matrix tempMatrix = new Matrix();
+  private final float[] mTempStartValues = new float[9];
+  private final float[] mTempEndValues = new float[9];
+  private final Matrix mTempMatrix = new Matrix();
 
   @Override
   public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
-    startValue.getValues(tempStartValues);
-    endValue.getValues(tempEndValues);
+    startValue.getValues(mTempStartValues);
+    endValue.getValues(mTempEndValues);
     for (int i = 0; i < 9; i++) {
-      float diff = tempEndValues[i] - tempStartValues[i];
-      tempEndValues[i] = tempStartValues[i] + (fraction * diff);
+      float diff = mTempEndValues[i] - mTempStartValues[i];
+      mTempEndValues[i] = mTempStartValues[i] + (fraction * diff);
     }
-    tempMatrix.setValues(tempEndValues);
-    return tempMatrix;
+    mTempMatrix.setValues(mTempEndValues);
+    return mTempMatrix;
   }
 }

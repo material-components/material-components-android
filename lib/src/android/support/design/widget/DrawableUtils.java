@@ -26,8 +26,8 @@ class DrawableUtils {
 
   private static final String LOG_TAG = "DrawableUtils";
 
-  private static Method setConstantStateMethod;
-  private static boolean setConstantStateMethodFetched;
+  private static Method sSetConstantStateMethod;
+  private static boolean sSetConstantStateMethodFetched;
 
   private DrawableUtils() {}
 
@@ -39,20 +39,20 @@ class DrawableUtils {
 
   private static boolean setContainerConstantStateV9(
       DrawableContainer drawable, Drawable.ConstantState constantState) {
-    if (!setConstantStateMethodFetched) {
+    if (!sSetConstantStateMethodFetched) {
       try {
-        setConstantStateMethod =
+        sSetConstantStateMethod =
             DrawableContainer.class.getDeclaredMethod(
                 "setConstantState", DrawableContainer.DrawableContainerState.class);
-        setConstantStateMethod.setAccessible(true);
+        sSetConstantStateMethod.setAccessible(true);
       } catch (NoSuchMethodException e) {
         Log.e(LOG_TAG, "Could not fetch setConstantState(). Oh well.");
       }
-      setConstantStateMethodFetched = true;
+      sSetConstantStateMethodFetched = true;
     }
-    if (setConstantStateMethod != null) {
+    if (sSetConstantStateMethod != null) {
       try {
-        setConstantStateMethod.invoke(drawable, constantState);
+        sSetConstantStateMethod.invoke(drawable, constantState);
         return true;
       } catch (Exception e) {
         Log.e(LOG_TAG, "Could not invoke setConstantState(). Oh well.");

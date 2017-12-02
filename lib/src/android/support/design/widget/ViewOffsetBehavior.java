@@ -23,10 +23,10 @@ import android.view.View;
 /** Behavior will automatically sets up a {@link ViewOffsetHelper} on a {@link View}. */
 class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
-  private ViewOffsetHelper viewOffsetHelper;
+  private ViewOffsetHelper mViewOffsetHelper;
 
-  private int tempTopBottomOffset = 0;
-  private int tempLeftRightOffset = 0;
+  private int mTempTopBottomOffset = 0;
+  private int mTempLeftRightOffset = 0;
 
   public ViewOffsetBehavior() {}
 
@@ -39,18 +39,18 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
     // First let lay the child out
     layoutChild(parent, child, layoutDirection);
 
-    if (viewOffsetHelper == null) {
-      viewOffsetHelper = new ViewOffsetHelper(child);
+    if (mViewOffsetHelper == null) {
+      mViewOffsetHelper = new ViewOffsetHelper(child);
     }
-    viewOffsetHelper.onViewLayout();
+    mViewOffsetHelper.onViewLayout();
 
-    if (tempTopBottomOffset != 0) {
-      viewOffsetHelper.setTopAndBottomOffset(tempTopBottomOffset);
-      tempTopBottomOffset = 0;
+    if (mTempTopBottomOffset != 0) {
+      mViewOffsetHelper.setTopAndBottomOffset(mTempTopBottomOffset);
+      mTempTopBottomOffset = 0;
     }
-    if (tempLeftRightOffset != 0) {
-      viewOffsetHelper.setLeftAndRightOffset(tempLeftRightOffset);
-      tempLeftRightOffset = 0;
+    if (mTempLeftRightOffset != 0) {
+      mViewOffsetHelper.setLeftAndRightOffset(mTempLeftRightOffset);
+      mTempLeftRightOffset = 0;
     }
 
     return true;
@@ -62,28 +62,28 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
   }
 
   public boolean setTopAndBottomOffset(int offset) {
-    if (viewOffsetHelper != null) {
-      return viewOffsetHelper.setTopAndBottomOffset(offset);
+    if (mViewOffsetHelper != null) {
+      return mViewOffsetHelper.setTopAndBottomOffset(offset);
     } else {
-      tempTopBottomOffset = offset;
+      mTempTopBottomOffset = offset;
     }
     return false;
   }
 
   public boolean setLeftAndRightOffset(int offset) {
-    if (viewOffsetHelper != null) {
-      return viewOffsetHelper.setLeftAndRightOffset(offset);
+    if (mViewOffsetHelper != null) {
+      return mViewOffsetHelper.setLeftAndRightOffset(offset);
     } else {
-      tempLeftRightOffset = offset;
+      mTempLeftRightOffset = offset;
     }
     return false;
   }
 
   public int getTopAndBottomOffset() {
-    return viewOffsetHelper != null ? viewOffsetHelper.getTopAndBottomOffset() : 0;
+    return mViewOffsetHelper != null ? mViewOffsetHelper.getTopAndBottomOffset() : 0;
   }
 
   public int getLeftAndRightOffset() {
-    return viewOffsetHelper != null ? viewOffsetHelper.getLeftAndRightOffset() : 0;
+    return mViewOffsetHelper != null ? mViewOffsetHelper.getLeftAndRightOffset() : 0;
   }
 }

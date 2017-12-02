@@ -46,13 +46,13 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
   private static final String MESSAGE_TEXT = "Test Message";
   private static final String ACTION_TEXT = "Action";
 
-  private Snackbar snackbar;
+  private Snackbar mSnackbar;
 
   @After
   public void teardown() throws Throwable {
     // Dismiss the snackbar to get back to clean state for the next test
-    if (snackbar != null) {
-      SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(snackbar);
+    if (mSnackbar != null) {
+      SnackbarUtils.dismissTransientBottomBarAndWaitUntilFullyDismissed(mSnackbar);
     }
   }
 
@@ -105,10 +105,10 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
         .perform(inflateViewStub(R.layout.design_snackbar_with_fab));
 
     // Create and show a snackbar
-    snackbar =
+    mSnackbar =
         Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
     // Take into account bottom padding and bottom margin to account for how drop shadow is
     // emulated on pre-Lollipop devices
@@ -126,10 +126,10 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
     onView(withId(R.id.fab)).perform(setVisibility(View.GONE));
 
     // Create and show a snackbar
-    snackbar =
+    mSnackbar =
         Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
     // Take into account bottom padding and bottom margin to account for how drop shadow is
     // emulated on pre-Lollipop devices
@@ -149,10 +149,10 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
         .perform(inflateViewStub(R.layout.design_snackbar_behavior_layout_attr));
 
     // Create and show a snackbar
-    snackbar =
+    mSnackbar =
         Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
     final AppCompatTextView textView = mCoordinatorLayout.findViewById(R.id.text);
     verifySnackbarViewStacking(textView, 0);
@@ -166,10 +166,10 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
         .perform(inflateViewStub(R.layout.design_snackbar_behavior_annotation));
 
     // Create and show a snackbar
-    snackbar =
+    mSnackbar =
         Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
     final AppCompatTextView textView = mCoordinatorLayout.findViewById(R.id.text);
     verifySnackbarViewStacking(textView, 0);
@@ -188,10 +188,10 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
     textViewLp.setBehavior(new TestFloatingBehavior());
 
     // Create and show a snackbar
-    snackbar =
+    mSnackbar =
         Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mock(View.OnClickListener.class));
-    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
+    SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(mSnackbar);
 
     verifySnackbarViewStacking(textView, 0);
   }

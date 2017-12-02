@@ -35,9 +35,9 @@ import android.view.View;
  * @see TabLayout
  */
 public final class TabItem extends View {
-  final CharSequence text;
-  final Drawable icon;
-  final int customLayout;
+  final CharSequence mText;
+  final Drawable mIcon;
+  final int mCustomLayout;
 
   public TabItem(Context context) {
     this(context, null);
@@ -48,9 +48,9 @@ public final class TabItem extends View {
 
     final TintTypedArray a =
         TintTypedArray.obtainStyledAttributes(context, attrs, R.styleable.TabItem);
-    text = a.getText(R.styleable.TabItem_android_text);
-    icon = a.getDrawable(R.styleable.TabItem_android_icon);
-    customLayout = a.getResourceId(R.styleable.TabItem_android_layout, 0);
+    mText = a.getText(R.styleable.TabItem_android_text);
+    mIcon = a.getDrawable(R.styleable.TabItem_android_icon);
+    mCustomLayout = a.getResourceId(R.styleable.TabItem_android_layout, 0);
     a.recycle();
   }
 }

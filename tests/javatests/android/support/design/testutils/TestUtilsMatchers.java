@@ -213,13 +213,13 @@ public class TestUtilsMatchers {
   public static Matcher<View> drawable(
       @ColorInt final int color, final int allowedComponentVariance) {
     return new BoundedMatcher<View, ImageView>(ImageView.class) {
-      private String failedComparisonDescription;
+      private String mFailedComparisonDescription;
 
       @Override
       public void describeTo(final Description description) {
         description.appendText("with drawable of color: ");
 
-        description.appendText(failedComparisonDescription);
+        description.appendText(mFailedComparisonDescription);
       }
 
       @Override
@@ -243,11 +243,11 @@ public class TestUtilsMatchers {
               allowedComponentVariance,
               true);
           // If we are here, the color comparison has passed.
-          failedComparisonDescription = null;
+          mFailedComparisonDescription = null;
           return true;
         } catch (Throwable t) {
           // If we are here, the color comparison has failed.
-          failedComparisonDescription = t.getMessage();
+          mFailedComparisonDescription = t.getMessage();
           return false;
         }
       }

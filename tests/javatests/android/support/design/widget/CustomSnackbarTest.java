@@ -62,7 +62,7 @@ public class CustomSnackbarTest {
   private static final String TITLE_TEXT = "Test title";
   private static final String SUBTITLE_TEXT = "Test subtitle";
 
-  private CoordinatorLayout coordinatorLayout;
+  private CoordinatorLayout mCoordinatorLayout;
 
   private interface DismissAction {
     void dismiss(CustomSnackbar snackbar);
@@ -70,7 +70,7 @@ public class CustomSnackbarTest {
 
   @Before
   public void setup() {
-    coordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
+    mCoordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
   }
 
   private void verifySnackbarContent(
@@ -100,10 +100,10 @@ public class CustomSnackbarTest {
   }
 
   private CustomSnackbar makeCustomSnackbar() {
-    final LayoutInflater inflater = LayoutInflater.from(coordinatorLayout.getContext());
+    final LayoutInflater inflater = LayoutInflater.from(mCoordinatorLayout.getContext());
     final CustomSnackbarMainContent content =
         (CustomSnackbarMainContent)
-            inflater.inflate(R.layout.custom_snackbar_include, coordinatorLayout, false);
+            inflater.inflate(R.layout.custom_snackbar_include, mCoordinatorLayout, false);
     final BaseTransientBottomBar.ContentViewCallback contentViewCallback =
         new BaseTransientBottomBar.ContentViewCallback() {
           @Override
@@ -118,7 +118,7 @@ public class CustomSnackbarTest {
             content.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
           }
         };
-    return new CustomSnackbar(coordinatorLayout, content, contentViewCallback);
+    return new CustomSnackbar(mCoordinatorLayout, content, contentViewCallback);
   }
 
   @Test
@@ -224,7 +224,7 @@ public class CustomSnackbarTest {
   @MediumTest
   public void testDismissViaSwipeRtl() throws Throwable {
     onView(withId(R.id.col)).perform(setLayoutDirection(ViewCompat.LAYOUT_DIRECTION_RTL));
-    if (ViewCompat.getLayoutDirection(coordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
+    if (ViewCompat.getLayoutDirection(mCoordinatorLayout) == ViewCompat.LAYOUT_DIRECTION_RTL) {
       // On devices that support RTL layout, the start-to-end dismiss swipe is done
       // with swipeLeft() action
       verifyDismissCallback(

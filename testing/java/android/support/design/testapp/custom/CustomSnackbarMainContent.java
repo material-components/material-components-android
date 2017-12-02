@@ -24,7 +24,7 @@ import android.widget.RelativeLayout;
  * content area.
  */
 public class CustomSnackbarMainContent extends RelativeLayout {
-  private final int maxWidth;
+  private final int mMaxWidth;
 
   public CustomSnackbarMainContent(Context context) {
     this(context, null);
@@ -37,16 +37,16 @@ public class CustomSnackbarMainContent extends RelativeLayout {
   public CustomSnackbarMainContent(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    maxWidth = context.getResources().getDimensionPixelSize(R.dimen.custom_snackbar_max_width);
+    mMaxWidth = context.getResources().getDimensionPixelSize(R.dimen.custom_snackbar_max_width);
   }
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-    if ((maxWidth > 0) && (getMeasuredWidth() > maxWidth)) {
+    if ((mMaxWidth > 0) && (getMeasuredWidth() > mMaxWidth)) {
       super.onMeasure(
-          MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
+          MeasureSpec.makeMeasureSpec(mMaxWidth, MeasureSpec.EXACTLY), heightMeasureSpec);
     }
   }
 }

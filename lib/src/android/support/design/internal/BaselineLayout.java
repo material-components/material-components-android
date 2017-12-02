@@ -28,7 +28,7 @@ import android.view.ViewGroup;
  * @hide
  */
 public class BaselineLayout extends ViewGroup {
-  private int baseline = -1;
+  private int mBaseline = -1;
 
   public BaselineLayout(Context context) {
     super(context, null, 0);
@@ -70,7 +70,7 @@ public class BaselineLayout extends ViewGroup {
     if (maxChildBaseline != -1) {
       maxChildDescent = Math.max(maxChildDescent, getPaddingBottom());
       maxHeight = Math.max(maxHeight, maxChildBaseline + maxChildDescent);
-      this.baseline = maxChildBaseline;
+      mBaseline = maxChildBaseline;
     }
     maxHeight = Math.max(maxHeight, getSuggestedMinimumHeight());
     maxWidth = Math.max(maxWidth, getSuggestedMinimumWidth());
@@ -99,8 +99,8 @@ public class BaselineLayout extends ViewGroup {
 
       final int childLeft = parentLeft + (parentContentWidth - width) / 2;
       final int childTop;
-      if (baseline != -1 && child.getBaseline() != -1) {
-        childTop = parentTop + baseline - child.getBaseline();
+      if (mBaseline != -1 && child.getBaseline() != -1) {
+        childTop = parentTop + mBaseline - child.getBaseline();
       } else {
         childTop = parentTop;
       }
@@ -111,6 +111,6 @@ public class BaselineLayout extends ViewGroup {
 
   @Override
   public int getBaseline() {
-    return baseline;
+    return mBaseline;
   }
 }
