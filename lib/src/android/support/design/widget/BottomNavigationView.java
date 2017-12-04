@@ -26,7 +26,6 @@ import android.support.annotation.BoolRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
@@ -107,9 +106,7 @@ public class BottomNavigationView extends FrameLayout {
    *
    * @see #setShiftingMode(int)
    * @see #getShiftingMode()
-   * @deprecated use {@link LabelVisibilityMode instead}
    */
-  @Deprecated
   public static final int SHIFTING_MODE_AUTO = -1;
 
   /**
@@ -117,9 +114,7 @@ public class BottomNavigationView extends FrameLayout {
    *
    * @see #setShiftingMode(int)
    * @see #getShiftingMode()
-   * @deprecated use {@link LabelVisibilityMode instead}
    */
-  @Deprecated
   public static final int SHIFTING_MODE_OFF = 0;
 
   /**
@@ -127,9 +122,7 @@ public class BottomNavigationView extends FrameLayout {
    *
    * @see #setShiftingMode(int)
    * @see #getShiftingMode()
-   * @deprecated use {@link LabelVisibilityMode instead}
    */
-  @Deprecated
   public static final int SHIFTING_MODE_ON = 1;
 
   /**
@@ -142,9 +135,7 @@ public class BottomNavigationView extends FrameLayout {
    * @see <a
    *     href="https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs">Material
    *     Design guidelines</a>
-   * @deprecated use {@link LabelVisibilityMode instead}
    */
-  @Deprecated
   @IntDef({SHIFTING_MODE_AUTO, SHIFTING_MODE_OFF, SHIFTING_MODE_ON})
   @Retention(RetentionPolicy.SOURCE)
   public @interface ShiftingMode {}
@@ -156,61 +147,6 @@ public class BottomNavigationView extends FrameLayout {
 
   private OnNavigationItemSelectedListener mSelectedListener;
   private OnNavigationItemReselectedListener mReselectedListener;
-
-  /**
-   * Label is shown when {@link ShiftingMode} is enabled, or hidden when it is not.
-   *
-   * @see #setLabelVisibilityMode(int)
-   * @see #getLabelVisibilityMode()
-   * @deprecated use one of the other {@link LabelVisibilityMode}s instead
-   */
-  @Deprecated
-  public static final int LABEL_VISIBILITY_LEGACY = -1;
-
-  /**
-   * Label is shown on the selected navigation item.
-   *
-   * @see #setLabelVisibilityMode(int)
-   * @see #getLabelVisibilityMode()
-   */
-  public static final int LABEL_VISIBILITY_SELECTED = 0;
-
-  /**
-   * Label is shown on all navigation items.
-   *
-   * @see #setLabelVisibilityMode(int)
-   * @see #getLabelVisibilityMode()
-   */
-  public static final int LABEL_VISIBILITY_LABELED = 1;
-
-  /**
-   * Label is not shown on any navigation items.
-   *
-   * @see #setLabelVisibilityMode(int)
-   * @see #getLabelVisibilityMode()
-   */
-  public static final int LABEL_VISIBILITY_UNLABELED = 2;
-
-  /**
-   * Label visibility mode enum for this {@link BottomNavigationView}.
-   *
-   * <p>The label visibility mode determines whether to show or hide labels in the navigation items.
-   * Setting the label visibility mode to {@link LabelVisibilityMode#LABEL_VISIBILITY_SELECTED} sets
-   * the label to only show when selected, setting it to {@link
-   * LabelVisibilityMode#LABEL_VISIBILITY_LABELED} sets the label to always show, and {@link
-   * LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED} sets the label to never show.
-   *
-   * <p>Setting the label visibility mode to {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}
-   * sets the label to behave as it used to with {@link ShiftingMode}.
-   */
-  @IntDef({
-    LABEL_VISIBILITY_LEGACY,
-    LABEL_VISIBILITY_SELECTED,
-    LABEL_VISIBILITY_LABELED,
-    LABEL_VISIBILITY_UNLABELED
-  })
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface LabelVisibilityMode {}
 
   public BottomNavigationView(Context context) {
     this(context, null);
@@ -272,9 +208,6 @@ public class BottomNavigationView extends FrameLayout {
       mMenuView.setShiftingMode(shiftingMode);
     }
 
-    setLabelVisibilityMode(
-        a.getInteger(
-            R.styleable.BottomNavigationView_labelVisibilityMode, LABEL_VISIBILITY_LEGACY));
     setItemHorizontalTranslation(
         a.getBoolean(R.styleable.BottomNavigationView_itemHorizontalTranslation, true));
 
@@ -453,9 +386,7 @@ public class BottomNavigationView extends FrameLayout {
    *
    * @attr ref android.support.design.R.styleable#BottomNavigationView_shiftingMode
    * @see #setShiftingMode(int)
-   * @deprecated use {@link BottomNavigationView#setLabelVisibilityMode} instead
    */
-  @Deprecated
   @ShiftingMode
   public int getShiftingMode() {
     return mMenuView.getShiftingMode();
@@ -477,64 +408,12 @@ public class BottomNavigationView extends FrameLayout {
    *     href="https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs">Material
    *     Design guidelines</a>
    * @see #getShiftingMode()
-   * @deprecated use {@link BottomNavigationView#setLabelVisibilityMode} instead
    */
-  @Deprecated
   public void setShiftingMode(@ShiftingMode int shiftingMode) {
     if (mMenuView.getShiftingMode() != shiftingMode) {
       mMenuView.setShiftingMode(shiftingMode);
       mPresenter.updateMenuView(false /* cleared */);
     }
-  }
-
-  /**
-   * Sets the navigation items' label visibility mode.
-   *
-   * <p>The label is either always shown, never shown, or only shown when activated. Also supports
-   * legacy mode, which uses {@link ShiftingMode} to decide whether the label should be shown.
-   *
-   * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
-   * @param labelVisibilityMode mode which decides whether or not the label should be shown. Can be
-   *     one of {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}, {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_LABELED}, or {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED}
-   * @see #getLabelVisibilityMode()
-   */
-  public void setLabelVisibilityMode(@LabelVisibilityMode int labelVisibilityMode) {
-    if (mMenuView.getLabelVisibilityMode() != labelVisibilityMode) {
-      mMenuView.setLabelVisibilityMode(labelVisibilityMode);
-      mPresenter.updateMenuView(false);
-    }
-  }
-
-  /**
-   * Sets the navigation items' label visibility mode using a resource ID.
-   *
-   * <p>The label is either always shown, never shown, or only shown when activated. Also supports
-   * legacy mode, which uses {@link ShiftingMode} to decide whether the label should be shown.
-   *
-   * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
-   * @param labelVisibilityModeId resource ID for the mode which decides whether or not the label
-   *     should be shown. Can be one of {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}, {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_LABELED}, or {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED}
-   * @see #getLabelVisibilityMode()
-   */
-  public void setLabelVisibilityModeResource(@IntegerRes int labelVisibilityModeId) {
-    setLabelVisibilityMode(getContext().getResources().getInteger(labelVisibilityModeId));
-  }
-
-  /**
-   * Returns the current label visibility mode used by this {@link BottomNavigationView}.
-   *
-   * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
-   * @see #setLabelVisibilityMode(int)
-   */
-  @LabelVisibilityMode
-  public int getLabelVisibilityMode() {
-    return mMenuView.getLabelVisibilityMode();
   }
 
   /**

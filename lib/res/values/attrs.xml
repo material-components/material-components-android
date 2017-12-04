@@ -583,19 +583,6 @@
   <declare-styleable name="BottomNavigationView">
     <!-- The menu resource to inflate and populate items from. -->
     <attr name="menu"/>
-    <!-- Whether navigation items display with a label, without a label, or with a label during
-         selected state. Can also be legacy, which defers to shiftingMode to decide whether the
-         label should be shown.  -->
-    <attr name="labelVisibilityMode">
-      <!-- Label is shown when shiftingMode is enabled, or hidden when it is not.-->
-      <enum name="legacy" value="-1"/>
-      <!-- Label is shown on the selected navigation item. -->
-      <enum name="selected" value="0"/>
-      <!-- Label is shown on all navigation items. -->
-      <enum name="labeled" value="1"/>
-      <!-- Label is not shown on any navigation items. -->
-      <enum name="unlabeled" value="2"/>
-    </attr>
     <attr name="itemBackground"/>
     <attr name="itemIconTint"/>
     <attr name="itemTextColor"/>

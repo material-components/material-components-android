@@ -25,8 +25,6 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.design.R;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.BottomNavigationView.LabelVisibilityMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.PointerIconCompat;
@@ -55,7 +53,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private final float mScaleDownFactor;
 
   private boolean mShiftingMode;
-  private int labelVisibilityMode;
 
   private ImageView mIcon;
   private final TextView mSmallLabel;
@@ -125,17 +122,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     }
   }
 
-  public void setLabelVisibilityMode(@LabelVisibilityMode int mode) {
-    if (labelVisibilityMode != mode) {
-      labelVisibilityMode = mode;
-
-      boolean initialized = mItemData != null;
-      if (initialized) {
-        setChecked(mItemData.isChecked());
-      }
-    }
-  }
-
   @Override
   public MenuItemImpl getItemData() {
     return mItemData;
@@ -159,65 +145,27 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     mSmallLabel.setPivotX(mSmallLabel.getWidth() / 2);
     mSmallLabel.setPivotY(mSmallLabel.getBaseline());
 
-    switch (labelVisibilityMode) {
-      case BottomNavigationView.LABEL_VISIBILITY_LEGACY:
-        if (mShiftingMode) {
-          if (checked) {
-            setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
-          } else {
-            setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER);
-            setViewValues(mLargeLabel, 0.5f, 0.5f, INVISIBLE);
-          }
-          mSmallLabel.setVisibility(INVISIBLE);
-        } else {
-          if (checked) {
-            setViewLayoutParams(
-                mIcon, mDefaultMargin + mShiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
-            setViewValues(mSmallLabel, mScaleUpFactor, mScaleUpFactor, INVISIBLE);
-          } else {
-            setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-            setViewValues(mLargeLabel, mScaleDownFactor, mScaleDownFactor, INVISIBLE);
-            setViewValues(mSmallLabel, 1f, 1f, VISIBLE);
-          }
-        }
-        break;
-
-      case BottomNavigationView.LABEL_VISIBILITY_SELECTED:
-        if (checked) {
-          setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
-        } else {
-          setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER);
-          setViewValues(mLargeLabel, 0.5f, 0.5f, INVISIBLE);
-        }
-        mSmallLabel.setVisibility(INVISIBLE);
-        break;
-
-      case BottomNavigationView.LABEL_VISIBILITY_LABELED:
-        if (checked) {
-          setViewLayoutParams(
-              mIcon, mDefaultMargin + mShiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
-          setViewValues(mSmallLabel, mScaleUpFactor, mScaleUpFactor, INVISIBLE);
-        } else {
-          setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
-          setViewValues(mLargeLabel, mScaleDownFactor, mScaleDownFactor, INVISIBLE);
-          setViewValues(mSmallLabel, 1f, 1f, VISIBLE);
-        }
-        break;
-
-      case BottomNavigationView.LABEL_VISIBILITY_UNLABELED:
+    if (mShiftingMode) {
+      if (checked) {
+        setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
+      } else {
         setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER);
-        mLargeLabel.setVisibility(GONE);
-        mSmallLabel.setVisibility(GONE);
-        break;
-
-      default:
-        break;
+        setViewValues(mLargeLabel, 0.5f, 0.5f, INVISIBLE);
+      }
+      mSmallLabel.setVisibility(INVISIBLE);
+    } else {
+      if (checked) {
+        setViewLayoutParams(
+            mIcon, mDefaultMargin + mShiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
+        setViewValues(mSmallLabel, mScaleUpFactor, mScaleUpFactor, INVISIBLE);
+      } else {
+        setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+        setViewValues(mLargeLabel, mScaleDownFactor, mScaleDownFactor, INVISIBLE);
+        setViewValues(mSmallLabel, 1f, 1f, VISIBLE);
+      }
     }
-
     refreshDrawableState();
   }
 
