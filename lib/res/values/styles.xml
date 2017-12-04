@@ -50,8 +50,9 @@
   </style>
 
   <style name="Widget.Design.BottomNavigationView" parent="">
-    <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
     <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
+    <item name="labelVisibilityMode">legacy</item>
+    <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
     <item name="itemHorizontalTranslation">true</item>
   </style>
 
@@ -60,6 +61,7 @@
     <item name="itemIconTint">?attr/colorAccent</item>
     <item name="itemHorizontalTranslation">false</item>
     <item name="itemTextColor">?attr/colorAccent</item>
+    <item name="labelVisibilityMode">selected</item>
     <item name="shiftingMode">off</item>
   </style>
 
@@ -226,7 +228,9 @@
   <style name="Widget.MaterialComponents.BottomAppBar" parent="Widget.AppCompat.Toolbar">
     <item name="backgroundTint">@color/mtrl_bottomappbar_default_tint</item>
     <item name="fabCradleDiameter">@dimen/mtrl_bottomappbar_fab_cradle_diameter</item>
-    <item name="fabCradleRoundedCornerRadius">@dimen/mtrl_bottomappbar_fab_cradle_rounded_corner_radius</item>
+    <item name="fabCradleRoundedCornerRadius">
+      @dimen/mtrl_bottomappbar_fab_cradle_rounded_corner_radius
+    </item>
     <item name="fabCradleVerticalOffset">@dimen/mtrl_bottomappbar_fab_cradle_vertical_offset</item>
   </style>
 
