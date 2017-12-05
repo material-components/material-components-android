@@ -264,7 +264,6 @@ public class TabLayout extends HorizontalScrollView {
   ColorStateList tabTextColors;
   ColorStateList tabIconTint;
   ColorStateList tabRippleColorStateList;
-  ColorStateList tabRippleAlphaStateList;
 
   android.graphics.PorterDuff.Mode tabIconTintMode;
   float tabTextSize;
@@ -383,8 +382,6 @@ public class TabLayout extends HorizontalScrollView {
 
     tabRippleColorStateList =
         MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabRippleColor);
-    tabRippleAlphaStateList =
-        MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabRippleAlpha);
 
     requestedTabMinWidth =
         a.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth, INVALID_WIDTH);
@@ -880,47 +877,6 @@ public class TabLayout extends HorizontalScrollView {
    */
   public void setTabRippleColorResource(@ColorRes int tabRippleColorResourceId) {
     setTabRippleColor(AppCompatResources.getColorStateList(getContext(), tabRippleColorResourceId));
-  }
-
-  /**
-   * Returns the ripple alpha for this TabLayout.
-   *
-   * @return the alpha used for the ripple. Only the alpha bits in each color are valid.
-   * @see #setTabRippleAlpha(ColorStateList)
-   */
-  @Nullable
-  public ColorStateList getTabRippleAlpha() {
-    return tabRippleAlphaStateList;
-  }
-
-  /**
-   * Sets the ripple alpha for this TabLayout.
-   *
-   * @param alpha alpha to use for the ripple. Only the alpha bits in each color are valid.
-   * @attr ref android.support.design.R.styleable#FloatingActionButton_rippleAlpha
-   * @see #getTabRippleAlpha()
-   */
-  public void setTabRippleAlpha(@Nullable ColorStateList alpha) {
-    if (tabRippleAlphaStateList != alpha) {
-      tabRippleAlphaStateList = alpha;
-      for (int i = 0; i < tabStrip.getChildCount(); i++) {
-        View child = tabStrip.getChildAt(i);
-        if (child instanceof TabView) {
-          ((TabView) child).updateBackgroundDrawable(getContext());
-        }
-      }
-    }
-  }
-
-  /**
-   * Sets the ripple alpha resource for this TabLayout.
-   *
-   * @param tabRippleAlphaResourceId A color resource to use as ripple alpha. Only the alpha bits in
-   *     each color are valid.
-   * @see #getTabRippleAlpha()
-   */
-  public void setTabRippleAlphaResource(@ColorRes int tabRippleAlphaResourceId) {
-    setTabRippleAlpha(AppCompatResources.getColorStateList(getContext(), tabRippleAlphaResourceId));
   }
 
   /**
@@ -1724,7 +1680,7 @@ public class TabLayout extends HorizontalScrollView {
       Drawable contentDrawable = new GradientDrawable();
       ((GradientDrawable) contentDrawable).setColor(Color.TRANSPARENT);
 
-      if (tabRippleColorStateList != null || tabRippleAlphaStateList != null) {
+      if (tabRippleColorStateList != null) {
         GradientDrawable maskDrawable = new GradientDrawable();
         // TODO: Find a non-hacky workaround for this. Currently on certain devices/versions,
         // LayerDrawable will draw a black background underneath any layer with a non-opaque color,
@@ -1732,17 +1688,16 @@ public class TabLayout extends HorizontalScrollView {
         maskDrawable.setCornerRadius(0.00001F);
         maskDrawable.setColor(Color.WHITE);
 
-        ColorStateList compositeRippleColor =
-            RippleUtils.compositeRippleColorStateList(
-                tabRippleColorStateList, tabRippleAlphaStateList);
+        ColorStateList rippleColor =
+            RippleUtils.convertToRippleDrawableColor(tabRippleColorStateList);
 
         // TODO: Add support to RippleUtils.compositeRippleColorStateList for different ripple color
         // for selected items vs non-selected items
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-          background = new RippleDrawable(compositeRippleColor, contentDrawable, maskDrawable);
+          background = new RippleDrawable(rippleColor, contentDrawable, maskDrawable);
         } else {
           Drawable rippleDrawable = DrawableCompat.wrap(maskDrawable);
-          DrawableCompat.setTintList(rippleDrawable, compositeRippleColor);
+          DrawableCompat.setTintList(rippleDrawable, rippleColor);
           background = new LayerDrawable(new Drawable[] {contentDrawable, rippleDrawable});
         }
       } else {

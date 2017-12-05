@@ -62,9 +62,6 @@
     <!-- Ripple color for the button. This may be a color state list, if the desired ripple color
          should be stateful. -->
     <attr name="rippleColor" format="color"/>
-    <!-- Ripple alpha for the button. This may be a color state list, if the desired ripple alpha
-         should be stateful. -->
-    <attr name="rippleAlpha" format="color"/>
   </declare-styleable>
 
 </resources>

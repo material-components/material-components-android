@@ -18,6 +18,7 @@ package android.support.design.button;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -54,7 +55,6 @@ class MaterialButtonHelper {
   @Nullable private ColorStateList backgroundTint;
   @Nullable private ColorStateList strokeColor;
   @Nullable private ColorStateList rippleColor;
-  @Nullable private ColorStateList rippleAlpha;
   private int strokeWidth;
 
   public MaterialButtonHelper(MaterialButton button) {
@@ -80,9 +80,6 @@ class MaterialButtonHelper {
     rippleColor =
         MaterialResources.getColorStateList(
             materialButton.getContext(), attributes, R.styleable.MaterialButton_rippleColor);
-    rippleAlpha =
-        MaterialResources.getColorStateList(
-            materialButton.getContext(), attributes, R.styleable.MaterialButton_rippleAlpha);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialButton_strokeWidth, 0);
     ViewCompat.setBackground(
         materialButton,
@@ -98,13 +95,9 @@ class MaterialButtonHelper {
    */
   private Drawable createBackgroundCompat() {
     int pressedBackgroundColor =
-        calculateOverlayColor(
-            backgroundTint != null ? backgroundTint.getColorForState(STATE_ENABLED, 0) : 0,
-            rippleColor != null ? rippleColor.getColorForState(STATE_ENABLED, 0) : 0,
-            rippleAlpha != null
-                ? Color.alpha(
-                    rippleAlpha.getColorForState(STATE_PRESSED, rippleAlpha.getDefaultColor()))
-                : 255);
+        ColorUtils.compositeColors(
+            rippleColor != null ? rippleColor.getColorForState(STATE_PRESSED, 0) : 0,
+            backgroundTint != null ? backgroundTint.getColorForState(STATE_PRESSED, 0) : 0);
     int enabledBackgroundColor = backgroundTint.getColorForState(STATE_ENABLED, 0);
     int disabledBackgroundColor = backgroundTint.getColorForState(STATE_EMPTY, 0);
 
@@ -138,6 +131,7 @@ class MaterialButtonHelper {
    *
    * @return Drawable representing background for this button.
    */
+  @TargetApi(VERSION_CODES.LOLLIPOP)
   private Drawable createBackgroundLollipop() {
     GradientDrawable bgDrawable = new GradientDrawable();
     bgDrawable.setCornerRadius(cornerRadius);
@@ -154,16 +148,6 @@ class MaterialButtonHelper {
     InsetDrawable maskInsetDrawable = new InsetDrawable(maskDrawable, 0);
 
     return new RippleDrawable(
-        RippleUtils.compositeRippleColorStateList(rippleColor, rippleAlpha),
-        bgInsetDrawable,
-        maskInsetDrawable);
-  }
-
-  private int calculateOverlayColor(int backgroundColor, int overlayColor, int overlayAlpha) {
-    int overlay =
-        ColorUtils.setAlphaComponent(
-            overlayColor, (int) ((overlayAlpha / 255F) * Color.alpha(overlayColor)));
-
-    return ColorUtils.compositeColors(overlay, backgroundColor);
+        RippleUtils.convertToRippleDrawableColor(rippleColor), bgInsetDrawable, maskInsetDrawable);
   }
 }

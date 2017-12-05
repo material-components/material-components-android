@@ -146,8 +146,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Nullable private PorterDuff.Mode imageMode;
 
   private int borderWidth;
-  @ColorInt private int rippleColor;
-  private ColorStateList rippleAlphaStateList;
+  private ColorStateList rippleColor;
   private int size;
   private int customSize;
   private int imagePadding;
@@ -187,10 +186,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     backgroundTintMode =
         ViewUtils.parseTintMode(
             a.getInt(R.styleable.FloatingActionButton_backgroundTintMode, -1), null);
-    rippleColor = a.getColor(R.styleable.FloatingActionButton_rippleColor, 0);
-    rippleAlphaStateList =
+    rippleColor =
         MaterialResources.getColorStateList(
-            context, a, R.styleable.FloatingActionButton_rippleAlpha);
+            context, a, R.styleable.FloatingActionButton_rippleColor);
     size = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_AUTO);
     customSize =
         a.getDimensionPixelSize(R.styleable.FloatingActionButton_fabCustomSize, NO_CUSTOM_SIZE);
@@ -217,9 +215,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
-    getImpl()
-        .setBackgroundDrawable(
-            backgroundTint, backgroundTintMode, rippleColor, rippleAlphaStateList, borderWidth);
+    getImpl().setBackgroundDrawable(backgroundTint, backgroundTintMode, rippleColor, borderWidth);
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
     getImpl().setPressedTranslationZ(pressedTranslationZ);
@@ -254,9 +250,22 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    *
    * @return the ARGB color used for the ripple
    * @see #setRippleColor(int)
+   * @deprecated Use {@link #getRippleColorStateList()} instead.
    */
   @ColorInt
+  @Deprecated
   public int getRippleColor() {
+    return rippleColor != null ? rippleColor.getDefaultColor() : 0;
+  }
+
+  /**
+   * Returns the ripple color for this button.
+   *
+   * @return the color state list used for the ripple
+   * @see #setRippleColor(ColorStateList)
+   */
+  @Nullable
+  public ColorStateList getRippleColorStateList() {
     return rippleColor;
   }
 
@@ -271,33 +280,23 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @see #getRippleColor()
    */
   public void setRippleColor(@ColorInt int color) {
+    setRippleColor(ColorStateList.valueOf(color));
+  }
+
+  /**
+   * Sets the ripple color for this button.
+   *
+   * <p>When running on devices with KitKat or below, we draw this color as a filled circle rather
+   * than a ripple.
+   *
+   * @param color color state list to use for the ripple
+   * @attr ref android.support.design.R.styleable#FloatingActionButton_rippleColor
+   * @see #getRippleColor()
+   */
+  public void setRippleColor(@Nullable ColorStateList color) {
     if (rippleColor != color) {
       rippleColor = color;
-      getImpl().setRippleColor(rippleColor, rippleAlphaStateList);
-    }
-  }
-
-  /**
-   * Returns the ripple alpha for this button.
-   *
-   * @return the alpha used for the ripple. Only the alpha bits in each color are valid.
-   * @see #setRippleAlpha(ColorStateList)
-   */
-  public ColorStateList getRippleAlpha() {
-    return rippleAlphaStateList;
-  }
-
-  /**
-   * Sets the ripple alpha for this button.
-   *
-   * @param alpha alpha to use for the ripple. Only the alpha bits in each color are valid.
-   * @attr ref android.support.design.R.styleable#FloatingActionButton_rippleAlpha
-   * @see #getRippleAlpha()
-   */
-  public void setRippleAlpha(ColorStateList alpha) {
-    if (rippleAlphaStateList != alpha) {
-      rippleAlphaStateList = alpha;
-      getImpl().setRippleColor(rippleColor, rippleAlphaStateList);
+      getImpl().setRippleColor(rippleColor);
     }
   }
 

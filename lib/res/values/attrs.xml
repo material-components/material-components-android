@@ -87,9 +87,6 @@
     <attr name="chipStrokeWidth" format="dimension"/>
     <!-- Ripple color to apply to the chip. -->
     <attr name="rippleColor"/>
-    <!-- Ripple alpha to apply to the chip. This may be a color state list, if the desired ripple
-         alpha should be stateful. -->
-    <attr name="rippleAlpha"/>
 
     <!-- Text to display on the chip. -->
     <attr name="chipText" format="string" localization="suggested"/>
@@ -164,9 +161,6 @@
 
     <!-- Ripple color for the FAB. -->
     <attr name="rippleColor" format="color"/>
-    <!-- Ripple alpha for the FAB. This may be a color state list, if the desired ripple alpha
-         should be stateful. -->
-    <attr name="rippleAlpha" format="color"/>
 
     <!-- Size for the FAB. If fabCustomSize is set, this will be ignored. -->
     <attr name="fabSize">
@@ -283,9 +277,6 @@
     <!-- Ripple color for the tabs. This may be a color state list, if the desired ripple color
          should be stateful.-->
     <attr name="tabRippleColor" format="color"/>
-    <!-- Ripple alpha for the tabs. This may be a color state list, if the desired ripple alpha
-         should be stateful. -->
-    <attr name="tabRippleAlpha" format="color"/>
   </declare-styleable>
 
   <declare-styleable name="TabItem">

@@ -39,8 +39,7 @@
     <item name="iconTint">@color/mtrl_btn_text_color_selector</item>
     <item name="additionalPaddingLeftForIcon">@dimen/mtrl_btn_additional_padding_left_for_icon</item>
     <item name="additionalPaddingRightForIcon">@dimen/mtrl_btn_additional_padding_right_for_icon</item>
-    <item name="rippleColor">@android:color/white</item>
-    <item name="rippleAlpha">@color/mtrl_btn_ripple_alpha</item>
+    <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
     <item name="buttonBackgroundTint">@color/mtrl_btn_bg_color_selector</item>
   </style>
 
@@ -55,8 +54,7 @@
     <item name="iconTint">@color/mtrl_text_btn_text_color_selector</item>
     <item name="iconPadding">@dimen/mtrl_btn_text_btn_icon_padding</item>
     <item name="buttonBackgroundTint">@color/mtrl_btn_transparent_bg_color</item>
-    <item name="rippleColor">?attr/colorAccent</item>
-    <item name="rippleAlpha">@color/mtrl_btn_text_btn_ripple_alpha</item>
+    <item name="rippleColor">@color/mtrl_btn_text_btn_ripple_color</item>
   </style>
 
   <style name="TextAppearance.Design.MaterialButton" parent="android:TextAppearance">

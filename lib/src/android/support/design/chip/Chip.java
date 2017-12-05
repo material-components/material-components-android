@@ -181,7 +181,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         //noinspection NewApi
         RippleDrawable ripple =
             new RippleDrawable(
-                getCompositeChipRippleColorStateList(chipDrawable), chipDrawable, null);
+                RippleUtils.convertToRippleDrawableColor(chipDrawable.getRippleColor()),
+                chipDrawable,
+                null);
         chipDrawable.setUseCompatRipple(false);
         ViewCompat.setBackground(this, ripple);
       } else {
@@ -216,11 +218,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       invalidateOutline();
     }
-  }
-
-  private ColorStateList getCompositeChipRippleColorStateList(ChipDrawable chipDrawable) {
-    return RippleUtils.compositeRippleColorStateList(
-        chipDrawable.getRippleColor(), chipDrawable.getRippleAlpha());
   }
 
   @Override
@@ -703,23 +700,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   public void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (chipDrawable != null) {
       chipDrawable.setRippleColor(rippleColor);
-    }
-  }
-
-  @Nullable
-  public ColorStateList getRippleAlpha() {
-    return chipDrawable != null ? chipDrawable.getRippleAlpha() : null;
-  }
-
-  public void setRippleAlphaResource(@ColorRes int id) {
-    if (chipDrawable != null) {
-      chipDrawable.setRippleAlphaResource(id);
-    }
-  }
-
-  public void setRippleAlpha(@Nullable ColorStateList rippleAlpha) {
-    if (chipDrawable != null) {
-      chipDrawable.setRippleAlpha(rippleAlpha);
     }
   }
 

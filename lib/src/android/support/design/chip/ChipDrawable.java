@@ -158,7 +158,6 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Nullable private ColorStateList chipStrokeColor;
   private float chipStrokeWidth;
   @Nullable private ColorStateList rippleColor;
-  @Nullable private ColorStateList rippleAlpha;
 
   // Text
   @Nullable private CharSequence chipText;
@@ -322,8 +321,6 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setChipStrokeWidth(a.getDimension(R.styleable.ChipDrawable_chipStrokeWidth, 0f));
     setRippleColor(
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleColor));
-    setRippleAlpha(
-        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleAlpha));
 
     setChipText(a.getText(R.styleable.ChipDrawable_chipText));
     setTextAppearance(
@@ -1161,9 +1158,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   private void updateCompatRippleColor() {
     compatRippleColor =
-        useCompatRipple
-            ? RippleUtils.compositeRippleColorStateList(rippleColor, rippleAlpha)
-            : null;
+        useCompatRipple ? RippleUtils.convertToRippleDrawableColor(rippleColor) : null;
   }
 
   /** Returns whether the drawable state set contains the given state. */
@@ -1282,23 +1277,6 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   public void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (this.rippleColor != rippleColor) {
       this.rippleColor = rippleColor;
-      updateCompatRippleColor();
-      onStateChange(getState());
-    }
-  }
-
-  @Nullable
-  public ColorStateList getRippleAlpha() {
-    return rippleAlpha;
-  }
-
-  public void setRippleAlphaResource(@ColorRes int id) {
-    setRippleAlpha(AppCompatResources.getColorStateList(context, id));
-  }
-
-  public void setRippleAlpha(@Nullable ColorStateList rippleAlpha) {
-    if (this.rippleAlpha != rippleAlpha) {
-      this.rippleAlpha = rippleAlpha;
       updateCompatRippleColor();
       onStateChange(getState());
     }

@@ -16,19 +16,20 @@
 
 package android.support.design.ripple;
 
+import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
-import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.RestrictTo.Scope;
 import android.support.v4.graphics.ColorUtils;
 import android.util.StateSet;
 
-/** Utils class for colors and ColorStateLists. */
+/** Utils class for ripples. */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class RippleUtils {
 
@@ -65,9 +66,32 @@ public class RippleUtils {
 
   private RippleUtils() {}
 
-  /** Returns the combined ripple color for the given base color and stateful alpha. */
-  public static ColorStateList compositeRippleColorStateList(
-      @Nullable ColorStateList rippleColor, @Nullable ColorStateList rippleAlpha) {
+  /**
+   * Converts the given color state list to one that can be passed to a RippleDrawable.
+   *
+   * <p>The passed in stateful ripple color can contain colors for these states:
+   *
+   * <ul>
+   *   <li>android:state_pressed="true"
+   *   <li>android:state_focused="true" and android:state_hovered="true"
+   *   <li>android:state_focused="true"
+   *   <li>android:state_hovered="true"
+   *   <li>Default unselected state - transparent color. TODO: remove
+   * </ul>
+   *
+   * <p>For selectable components, the ripple color may contain additional colors for these states:
+   *
+   * <ul>
+   *   <li>android:state_pressed="true" and android:state_selected="true"
+   *   <li>android:state_focused="true" and android:state_hovered="true" and
+   *       android:state_selected="true"
+   *   <li>android:state_focused="true" and android:state_selected="true"
+   *   <li>android:state_hovered="true" and android:state_selected="true"
+   *   <li>Default selected state - transparent color.
+   * </ul>
+   */
+  @NonNull
+  public static ColorStateList convertToRippleDrawableColor(@Nullable ColorStateList rippleColor) {
     if (USE_FRAMEWORK_RIPPLE) {
       int size = 2;
 
@@ -75,29 +99,19 @@ public class RippleUtils {
       final int[] colors = new int[size];
       int i = 0;
 
-      // Ideally we would define a different composite color for each state (like in the else block
-      // below), but that causes the ripple animation to abort prematurely.
+      // Ideally we would define a different composite color for each state, but that causes the
+      // ripple animation to abort prematurely.
       // So we only allow two base states: selected, and non-selected. For each base state, we only
       // base the ripple composite on its pressed state.
 
-      @ColorInt int color;
-      int alpha;
-      @ColorInt int composite;
-
-      // Checked base state.
-      color = getColorForState(rippleColor, SELECTED_STATE_SET);
-      alpha = getAlphaForState(rippleAlpha, SELECTED_PRESSED_STATE_SET);
-      composite = compositeRippleColor(color, alpha);
+      // Selected base state.
       states[i] = SELECTED_STATE_SET;
-      colors[i] = composite;
+      colors[i] = getColorForState(rippleColor, SELECTED_PRESSED_STATE_SET);
       i++;
 
       // Non-selected base state.
-      color = getColorForState(rippleColor, StateSet.NOTHING);
-      alpha = getAlphaForState(rippleAlpha, PRESSED_STATE_SET);
-      composite = compositeRippleColor(color, alpha);
       states[i] = StateSet.NOTHING;
-      colors[i] = composite;
+      colors[i] = getColorForState(rippleColor, PRESSED_STATE_SET);
       i++;
 
       return new ColorStateList(states, colors);
@@ -108,20 +122,20 @@ public class RippleUtils {
       final int[] colors = new int[size];
       int i = 0;
 
-      compositeRippleColorForState(
-          SELECTED_PRESSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      states[i] = SELECTED_PRESSED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, SELECTED_PRESSED_STATE_SET);
       i++;
 
-      compositeRippleColorForState(
-          SELECTED_HOVERED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      states[i] = SELECTED_HOVERED_FOCUSED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, SELECTED_HOVERED_FOCUSED_STATE_SET);
       i++;
 
-      compositeRippleColorForState(
-          SELECTED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      states[i] = SELECTED_FOCUSED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, SELECTED_FOCUSED_STATE_SET);
       i++;
 
-      compositeRippleColorForState(
-          SELECTED_HOVERED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      states[i] = SELECTED_HOVERED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, SELECTED_HOVERED_STATE_SET);
       i++;
 
       // Checked state.
@@ -129,17 +143,20 @@ public class RippleUtils {
       colors[i] = Color.TRANSPARENT;
       i++;
 
-      compositeRippleColorForState(PRESSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      states[i] = PRESSED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, PRESSED_STATE_SET);
       i++;
 
-      compositeRippleColorForState(
-          HOVERED_FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      states[i] = HOVERED_FOCUSED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, HOVERED_FOCUSED_STATE_SET);
       i++;
 
-      compositeRippleColorForState(FOCUSED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      states[i] = FOCUSED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, FOCUSED_STATE_SET);
       i++;
 
-      compositeRippleColorForState(HOVERED_STATE_SET, rippleColor, rippleAlpha, i, states, colors);
+      states[i] = HOVERED_STATE_SET;
+      colors[i] = getColorForState(rippleColor, HOVERED_STATE_SET);
       i++;
 
       // Default state.
@@ -151,23 +168,6 @@ public class RippleUtils {
     }
   }
 
-  /**
-   * For the given {@code stateSet}, sets the composite ripple color to the {@code i}th item in
-   * {@code states} and {@code colors}.
-   */
-  private static void compositeRippleColorForState(
-      int[] stateSet,
-      @Nullable ColorStateList colorStateList,
-      @Nullable ColorStateList alphaStateList,
-      int i,
-      int[][] states,
-      int[] colors) {
-    states[i] = stateSet;
-    int color = getColorForState(colorStateList, stateSet);
-    int alpha = getAlphaForState(alphaStateList, stateSet);
-    colors[i] = compositeRippleColor(color, alpha);
-  }
-
   @ColorInt
   private static int getColorForState(@Nullable ColorStateList rippleColor, int[] state) {
     int color;
@@ -176,30 +176,17 @@ public class RippleUtils {
     } else {
       color = Color.TRANSPARENT;
     }
-    return color;
+    return USE_FRAMEWORK_RIPPLE ? doubleAlpha(color) : color;
   }
 
-  private static int getAlphaForState(@Nullable ColorStateList rippleAlpha, int[] state) {
-    int alpha;
-    if (rippleAlpha != null) {
-      alpha = Color.alpha(rippleAlpha.getColorForState(state, rippleAlpha.getDefaultColor()));
-    } else {
-      alpha = 255;
-    }
-    return alpha;
-  }
-
-  /** Composite the ripple {@code color} with {@code alpha}. */
+  /**
+   * On API 21+, the framework composites a ripple color onto the display at about 50% opacity.
+   * Since we are providing precise ripple colors, cancel that out by doubling the opacity here.
+   */
   @ColorInt
-  private static int compositeRippleColor(
-      @ColorInt int color, @IntRange(from = 0, to = 255) int alpha) {
-    if (USE_FRAMEWORK_RIPPLE) {
-      // On API 21+, the framework composites a ripple color onto the display at about 50% opacity.
-      // Since we are providing precise ripple colors, cancel that out by doubling the opacity here.
-      alpha = Math.min(2 * alpha, 255);
-    }
-
-    int compositeAlpha = (int) (alpha / 255f * Color.alpha(color));
-    return ColorUtils.setAlphaComponent(color, compositeAlpha);
+  @TargetApi(VERSION_CODES.LOLLIPOP)
+  private static int doubleAlpha(@ColorInt int color) {
+    int alpha = Math.min(2 * Color.alpha(color), 255);
+    return ColorUtils.setAlphaComponent(color, alpha);
   }
 }

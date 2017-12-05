@@ -30,7 +30,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.support.design.ripple.RippleUtils;
@@ -53,8 +52,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   void setBackgroundDrawable(
       ColorStateList backgroundTint,
       PorterDuff.Mode backgroundTintMode,
-      int rippleColor,
-      ColorStateList rippleAlpha,
+      ColorStateList rippleColor,
       int borderWidth) {
     // Now we need to tint the shape background with the tint
     shapeDrawable = DrawableCompat.wrap(createShapeDrawable());
@@ -74,10 +72,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
     rippleDrawable =
         new RippleDrawable(
-            RippleUtils.compositeRippleColorStateList(
-                ColorStateList.valueOf(rippleColor), rippleAlpha),
-            rippleContent,
-            null);
+            RippleUtils.convertToRippleDrawableColor(rippleColor), rippleContent, null);
 
     contentBackground = rippleDrawable;
 
@@ -85,14 +80,12 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void setRippleColor(@ColorInt int rippleColor, ColorStateList rippleAlpha) {
+  void setRippleColor(ColorStateList rippleColor) {
     if (rippleDrawable instanceof RippleDrawable) {
       ((RippleDrawable) rippleDrawable)
-          .setColor(
-              RippleUtils.compositeRippleColorStateList(
-                  ColorStateList.valueOf(rippleColor), rippleAlpha));
+          .setColor(RippleUtils.convertToRippleDrawableColor(rippleColor));
     } else {
-      super.setRippleColor(rippleColor, rippleAlpha);
+      super.setRippleColor(rippleColor);
     }
   }
 

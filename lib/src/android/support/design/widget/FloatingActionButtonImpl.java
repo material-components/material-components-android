@@ -34,7 +34,6 @@ import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
-import android.support.annotation.ColorInt;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
@@ -158,8 +157,7 @@ class FloatingActionButtonImpl {
   void setBackgroundDrawable(
       ColorStateList backgroundTint,
       PorterDuff.Mode backgroundTintMode,
-      int rippleColor,
-      ColorStateList rippleAlpha,
+      ColorStateList rippleColor,
       int borderWidth) {
     // Now we need to tint the original background with the tint, using
     // an InsetDrawable if we have a border width
@@ -176,9 +174,7 @@ class FloatingActionButtonImpl {
     // to inset for any border here as LayerDrawable will nest the padding for us
     rippleDrawable = DrawableCompat.wrap(touchFeedbackShape);
     DrawableCompat.setTintList(
-        rippleDrawable,
-        RippleUtils.compositeRippleColorStateList(
-            ColorStateList.valueOf(rippleColor), rippleAlpha));
+        rippleDrawable, RippleUtils.convertToRippleDrawableColor(rippleColor));
 
     final Drawable[] layers;
     if (borderWidth > 0) {
@@ -217,12 +213,10 @@ class FloatingActionButtonImpl {
     }
   }
 
-  void setRippleColor(@ColorInt int rippleColor, ColorStateList rippleAlpha) {
+  void setRippleColor(ColorStateList rippleColor) {
     if (rippleDrawable != null) {
       DrawableCompat.setTintList(
-          rippleDrawable,
-          RippleUtils.compositeRippleColorStateList(
-              ColorStateList.valueOf(rippleColor), rippleAlpha));
+          rippleDrawable, RippleUtils.convertToRippleDrawableColor(rippleColor));
     }
   }
 

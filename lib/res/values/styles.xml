@@ -26,7 +26,6 @@
     <item name="hoveredFocusedTranslationZ">@dimen/design_fab_translation_z_hovered_focused</item>
     <item name="pressedTranslationZ">@dimen/design_fab_translation_z_pressed</item>
     <item name="rippleColor">?attr/colorControlHighlight</item>
-    <item name="rippleAlpha">#ff000000</item>
     <item name="borderWidth">@dimen/design_fab_border_width</item>
     <item name="maxImageSize">@dimen/design_fab_image_size</item>
     <item name="showMotionSpec">@animator/design_fab_show_motion_spec</item>
@@ -72,7 +71,6 @@
     <item name="tabPaddingEnd">12dp</item>
     <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
     <item name="tabRippleColor">?attr/colorControlHighlight</item>
-    <item name="tabRippleAlpha">#FF000000</item>
   </style>
 
   <style name="TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
@@ -258,7 +256,6 @@
     <item name="chipStrokeColor">#00000000</item>
     <item name="chipStrokeWidth">0dp</item>
     <item name="rippleColor">@color/mtrl_chip_ripple_color</item>
-    <item name="rippleAlpha">@color/mtrl_chip_ripple_alpha</item>
 
     <item name="chipMinHeight">32dp</item>
     <item name="chipCornerRadius">16dp</item>
@@ -347,8 +344,7 @@
     <item name="elevation">@dimen/mtrl_fab_elevation</item>
     <item name="hoveredFocusedTranslationZ">@dimen/mtrl_fab_translation_z_hovered_focused</item>
     <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
-    <item name="rippleColor">@android:color/white</item>
-    <item name="rippleAlpha">@color/mtrl_fab_ripple_alpha</item>
+    <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
     <item name="showMotionSpec">@animator/mtrl_fab_show_motion_spec</item>
     <item name="hideMotionSpec">@animator/mtrl_fab_hide_motion_spec</item>
   </style>
@@ -358,8 +354,7 @@
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
     <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab</item>
-    <item name="tabRippleColor">@color/mtrl_tabs_ripple_color_selector</item>
-    <item name="tabRippleAlpha">@color/mtrl_tabs_ripple_alpha</item>
+    <item name="tabRippleColor">@color/mtrl_tabs_ripple_color</item>
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout.Colored">
@@ -367,8 +362,7 @@
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_colored</item>
     <item name="tabIndicatorColor">@android:color/white</item>
     <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab.Colored</item>
-    <item name="tabRippleColor">@android:color/white</item>
-    <item name="tabRippleAlpha">@color/mtrl_tabs_ripple_alpha_colored</item>
+    <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
   </style>
 
   <style name="TextAppearance.MaterialComponents.Tab" parent="TextAppearance.Design.Tab">

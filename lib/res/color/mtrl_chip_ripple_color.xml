@@ -17,13 +17,10 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <!-- 16% alpha. -->
-  <item android:color="#29000000" android:state_pressed="true"/>
-  <!-- 16% alpha. -->
-  <item android:color="#29000000" android:state_focused="true" android:state_hovered="true"/>
-  <!-- 12% alpha. -->
-  <item android:color="#1F000000" android:state_focused="true"/>
-  <!-- 4% alpha. -->
-  <item android:color="#0A000000" android:state_hovered="true"/>
+  <item android:alpha="0.16" android:color="#000000" android:state_pressed="true"/>
+  <item android:alpha="0.16" android:color="#000000" android:state_focused="true" android:state_hovered="true"/>
+  <item android:alpha="0.12" android:color="#000000" android:state_focused="true"/>
+  <item android:alpha="0.04" android:color="#000000" android:state_hovered="true"/>
+  <item android:alpha="0.00" android:color="#000000"/>
 
 </selector>
