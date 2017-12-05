@@ -38,27 +38,27 @@ class CircularBorderDrawable extends Drawable {
    */
   private static final float DRAW_STROKE_WIDTH_MULTIPLE = 1.3333f;
 
-  final Paint mPaint;
-  final Rect mRect = new Rect();
-  final RectF mRectF = new RectF();
+  final Paint paint;
+  final Rect rect = new Rect();
+  final RectF rectF = new RectF();
 
-  float mBorderWidth;
+  float borderWidth;
 
-  private int mTopOuterStrokeColor;
-  private int mTopInnerStrokeColor;
-  private int mBottomOuterStrokeColor;
-  private int mBottomInnerStrokeColor;
+  private int topOuterStrokeColor;
+  private int topInnerStrokeColor;
+  private int bottomOuterStrokeColor;
+  private int bottomInnerStrokeColor;
 
-  private ColorStateList mBorderTint;
-  private int mCurrentBorderTintColor;
+  private ColorStateList borderTint;
+  private int currentBorderTintColor;
 
-  private boolean mInvalidateShader = true;
+  private boolean invalidateShader = true;
 
-  private float mRotation;
+  private float rotation;
 
   public CircularBorderDrawable() {
-    mPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-    mPaint.setStyle(Paint.Style.STROKE);
+    paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+    paint.setStyle(Paint.Style.STROKE);
   }
 
   void setGradientColors(
@@ -66,111 +66,111 @@ class CircularBorderDrawable extends Drawable {
       int topInnerStrokeColor,
       int bottomOuterStrokeColor,
       int bottomInnerStrokeColor) {
-    mTopOuterStrokeColor = topOuterStrokeColor;
-    mTopInnerStrokeColor = topInnerStrokeColor;
-    mBottomOuterStrokeColor = bottomOuterStrokeColor;
-    mBottomInnerStrokeColor = bottomInnerStrokeColor;
+    this.topOuterStrokeColor = topOuterStrokeColor;
+    this.topInnerStrokeColor = topInnerStrokeColor;
+    this.bottomOuterStrokeColor = bottomOuterStrokeColor;
+    this.bottomInnerStrokeColor = bottomInnerStrokeColor;
   }
 
   /** Set the border width */
   void setBorderWidth(float width) {
-    if (mBorderWidth != width) {
-      mBorderWidth = width;
-      mPaint.setStrokeWidth(width * DRAW_STROKE_WIDTH_MULTIPLE);
-      mInvalidateShader = true;
+    if (borderWidth != width) {
+      borderWidth = width;
+      paint.setStrokeWidth(width * DRAW_STROKE_WIDTH_MULTIPLE);
+      invalidateShader = true;
       invalidateSelf();
     }
   }
 
   @Override
   public void draw(Canvas canvas) {
-    if (mInvalidateShader) {
-      mPaint.setShader(createGradientShader());
-      mInvalidateShader = false;
+    if (invalidateShader) {
+      paint.setShader(createGradientShader());
+      invalidateShader = false;
     }
 
-    final float halfBorderWidth = mPaint.getStrokeWidth() / 2f;
-    final RectF rectF = mRectF;
+    final float halfBorderWidth = paint.getStrokeWidth() / 2f;
+    final RectF rectF = this.rectF;
 
     // We need to inset the oval bounds by half the border width. This is because stroke draws
     // the center of the border on the dimension. Whereas we want the stroke on the inside.
-    copyBounds(mRect);
-    rectF.set(mRect);
+    copyBounds(rect);
+    rectF.set(rect);
     rectF.left += halfBorderWidth;
     rectF.top += halfBorderWidth;
     rectF.right -= halfBorderWidth;
     rectF.bottom -= halfBorderWidth;
 
     canvas.save();
-    canvas.rotate(mRotation, rectF.centerX(), rectF.centerY());
+    canvas.rotate(rotation, rectF.centerX(), rectF.centerY());
     // Draw the oval
-    canvas.drawOval(rectF, mPaint);
+    canvas.drawOval(rectF, paint);
     canvas.restore();
   }
 
   @Override
   public boolean getPadding(Rect padding) {
-    final int borderWidth = Math.round(mBorderWidth);
+    final int borderWidth = Math.round(this.borderWidth);
     padding.set(borderWidth, borderWidth, borderWidth, borderWidth);
     return true;
   }
 
   @Override
   public void setAlpha(int alpha) {
-    mPaint.setAlpha(alpha);
+    paint.setAlpha(alpha);
     invalidateSelf();
   }
 
   void setBorderTint(ColorStateList tint) {
     if (tint != null) {
-      mCurrentBorderTintColor = tint.getColorForState(getState(), mCurrentBorderTintColor);
+      currentBorderTintColor = tint.getColorForState(getState(), currentBorderTintColor);
     }
-    mBorderTint = tint;
-    mInvalidateShader = true;
+    borderTint = tint;
+    invalidateShader = true;
     invalidateSelf();
   }
 
   @Override
   public void setColorFilter(ColorFilter colorFilter) {
-    mPaint.setColorFilter(colorFilter);
+    paint.setColorFilter(colorFilter);
     invalidateSelf();
   }
 
   @Override
   public int getOpacity() {
-    return mBorderWidth > 0 ? PixelFormat.TRANSLUCENT : PixelFormat.TRANSPARENT;
+    return borderWidth > 0 ? PixelFormat.TRANSLUCENT : PixelFormat.TRANSPARENT;
   }
 
   final void setRotation(float rotation) {
-    if (rotation != mRotation) {
-      mRotation = rotation;
+    if (rotation != this.rotation) {
+      this.rotation = rotation;
       invalidateSelf();
     }
   }
 
   @Override
   protected void onBoundsChange(Rect bounds) {
-    mInvalidateShader = true;
+    invalidateShader = true;
   }
 
   @Override
   public boolean isStateful() {
-    return (mBorderTint != null && mBorderTint.isStateful()) || super.isStateful();
+    return (borderTint != null && borderTint.isStateful()) || super.isStateful();
   }
 
   @Override
   protected boolean onStateChange(int[] state) {
-    if (mBorderTint != null) {
-      final int newColor = mBorderTint.getColorForState(state, mCurrentBorderTintColor);
-      if (newColor != mCurrentBorderTintColor) {
-        mInvalidateShader = true;
-        mCurrentBorderTintColor = newColor;
+    if (borderTint != null) {
+      final int newColor = borderTint.getColorForState(state, currentBorderTintColor);
+      if (newColor != currentBorderTintColor) {
+        invalidateShader = true;
+        currentBorderTintColor = newColor;
       }
     }
-    if (mInvalidateShader) {
+    if (invalidateShader) {
       invalidateSelf();
     }
-    return mInvalidateShader;
+    return invalidateShader;
   }
 
   /**
@@ -179,22 +179,22 @@ class CircularBorderDrawable extends Drawable {
    * @return
    */
   private Shader createGradientShader() {
-    final Rect rect = mRect;
+    final Rect rect = this.rect;
     copyBounds(rect);
 
-    final float borderRatio = mBorderWidth / rect.height();
+    final float borderRatio = borderWidth / rect.height();
 
     final int[] colors = new int[6];
-    colors[0] = ColorUtils.compositeColors(mTopOuterStrokeColor, mCurrentBorderTintColor);
-    colors[1] = ColorUtils.compositeColors(mTopInnerStrokeColor, mCurrentBorderTintColor);
+    colors[0] = ColorUtils.compositeColors(topOuterStrokeColor, currentBorderTintColor);
+    colors[1] = ColorUtils.compositeColors(topInnerStrokeColor, currentBorderTintColor);
     colors[2] =
         ColorUtils.compositeColors(
-            ColorUtils.setAlphaComponent(mTopInnerStrokeColor, 0), mCurrentBorderTintColor);
+            ColorUtils.setAlphaComponent(topInnerStrokeColor, 0), currentBorderTintColor);
     colors[3] =
         ColorUtils.compositeColors(
-            ColorUtils.setAlphaComponent(mBottomInnerStrokeColor, 0), mCurrentBorderTintColor);
-    colors[4] = ColorUtils.compositeColors(mBottomInnerStrokeColor, mCurrentBorderTintColor);
-    colors[5] = ColorUtils.compositeColors(mBottomOuterStrokeColor, mCurrentBorderTintColor);
+            ColorUtils.setAlphaComponent(bottomInnerStrokeColor, 0), currentBorderTintColor);
+    colors[4] = ColorUtils.compositeColors(bottomInnerStrokeColor, currentBorderTintColor);
+    colors[5] = ColorUtils.compositeColors(bottomOuterStrokeColor, currentBorderTintColor);
 
     final float[] positions = new float[6];
     positions[0] = 0f;

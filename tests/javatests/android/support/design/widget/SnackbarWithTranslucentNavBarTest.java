@@ -43,22 +43,21 @@ public class SnackbarWithTranslucentNavBarTest {
 
   private static final String MESSAGE_TEXT = "Test Message";
 
-  private CoordinatorLayout mCoordinatorLayout;
+  private CoordinatorLayout coordinatorLayout;
 
   @Before
   public void setup() {
-    mCoordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
+    coordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
   }
 
   @Test
   @MediumTest
   public void testDrawsAboveNavigationBar() {
     // Show a simple Snackbar and wait for it to be shown
-    final Snackbar snackbar =
-        Snackbar.make(mCoordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT);
+    final Snackbar snackbar = Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT);
     SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
-    final WindowInsetsCompat colLastInsets = mCoordinatorLayout.getLastWindowInsets();
+    final WindowInsetsCompat colLastInsets = coordinatorLayout.getLastWindowInsets();
     assertNotNull(colLastInsets);
 
     // Check that the Snackbar view has padding set to display above the nav bar

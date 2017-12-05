@@ -25,7 +25,7 @@ class CircularBorderDrawableLollipop extends CircularBorderDrawable {
 
   @Override
   public void getOutline(Outline outline) {
-    copyBounds(mRect);
-    outline.setOval(mRect);
+    copyBounds(rect);
+    outline.setOval(rect);
   }
 }

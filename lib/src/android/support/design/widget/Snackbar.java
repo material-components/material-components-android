@@ -106,7 +106,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
     }
   }
 
-  @Nullable private BaseCallback<Snackbar> mCallback;
+  @Nullable private BaseCallback<Snackbar> callback;
 
   private Snackbar(ViewGroup parent, View content, ContentViewCallback contentViewCallback) {
     super(parent, content, contentViewCallback);
@@ -226,7 +226,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    */
   @NonNull
   public Snackbar setText(@NonNull CharSequence message) {
-    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) mView.getChildAt(0);
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
     final TextView tv = contentLayout.getMessageView();
     tv.setText(message);
     return this;
@@ -261,7 +261,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    */
   @NonNull
   public Snackbar setAction(CharSequence text, final View.OnClickListener listener) {
-    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) mView.getChildAt(0);
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) this.view.getChildAt(0);
     final TextView tv = contentLayout.getActionView();
 
     if (TextUtils.isEmpty(text) || listener == null) {
@@ -289,7 +289,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    */
   @NonNull
   public Snackbar setActionTextColor(ColorStateList colors) {
-    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) mView.getChildAt(0);
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
     final TextView tv = contentLayout.getActionView();
     tv.setTextColor(colors);
     return this;
@@ -301,7 +301,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    */
   @NonNull
   public Snackbar setActionTextColor(@ColorInt int color) {
-    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) mView.getChildAt(0);
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
     final TextView tv = contentLayout.getActionView();
     tv.setTextColor(color);
     return this;
@@ -323,15 +323,15 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public Snackbar setCallback(Callback callback) {
     // The logic in this method emulates what we had before support for multiple
     // registered callbacks.
-    if (mCallback != null) {
-      removeCallback(mCallback);
+    if (this.callback != null) {
+      removeCallback(this.callback);
     }
     if (callback != null) {
       addCallback(callback);
     }
     // Update the deprecated field so that we can remove the passed callback the next
     // time we're called
-    mCallback = callback;
+    this.callback = callback;
     return this;
   }
 

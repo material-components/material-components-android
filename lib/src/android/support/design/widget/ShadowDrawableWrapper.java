@@ -45,52 +45,52 @@ class ShadowDrawableWrapper extends DrawableWrapper {
   static final float SHADOW_HORIZ_SCALE = 0.5f;
   static final float SHADOW_BOTTOM_SCALE = 1f;
 
-  final Paint mCornerShadowPaint;
-  final Paint mEdgeShadowPaint;
+  final Paint cornerShadowPaint;
+  final Paint edgeShadowPaint;
 
-  final RectF mContentBounds;
+  final RectF contentBounds;
 
-  float mCornerRadius;
+  float cornerRadius;
 
-  Path mCornerShadowPath;
+  Path cornerShadowPath;
 
   // updated value with inset
-  float mMaxShadowSize;
+  float maxShadowSize;
   // actual value set by developer
-  float mRawMaxShadowSize;
+  float rawMaxShadowSize;
 
   // multiplied value to account for shadow offset
-  float mShadowSize;
+  float shadowSize;
   // actual value set by developer
-  float mRawShadowSize;
+  float rawShadowSize;
 
-  private boolean mDirty = true;
+  private boolean dirty = true;
 
-  private final int mShadowStartColor;
-  private final int mShadowMiddleColor;
-  private final int mShadowEndColor;
+  private final int shadowStartColor;
+  private final int shadowMiddleColor;
+  private final int shadowEndColor;
 
-  private boolean mAddPaddingForCorners = true;
+  private boolean addPaddingForCorners = true;
 
-  private float mRotation;
+  private float rotation;
 
   /** If shadow size is set to a value above max shadow, we print a warning */
-  private boolean mPrintedShadowClipWarning = false;
+  private boolean printedShadowClipWarning = false;
 
   public ShadowDrawableWrapper(
       Context context, Drawable content, float radius, float shadowSize, float maxShadowSize) {
     super(content);
 
-    mShadowStartColor = ContextCompat.getColor(context, R.color.design_fab_shadow_start_color);
-    mShadowMiddleColor = ContextCompat.getColor(context, R.color.design_fab_shadow_mid_color);
-    mShadowEndColor = ContextCompat.getColor(context, R.color.design_fab_shadow_end_color);
+    shadowStartColor = ContextCompat.getColor(context, R.color.design_fab_shadow_start_color);
+    shadowMiddleColor = ContextCompat.getColor(context, R.color.design_fab_shadow_mid_color);
+    shadowEndColor = ContextCompat.getColor(context, R.color.design_fab_shadow_end_color);
 
-    mCornerShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
-    mCornerShadowPaint.setStyle(Paint.Style.FILL);
-    mCornerRadius = Math.round(radius);
-    mContentBounds = new RectF();
-    mEdgeShadowPaint = new Paint(mCornerShadowPaint);
-    mEdgeShadowPaint.setAntiAlias(false);
+    cornerShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+    cornerShadowPaint.setStyle(Paint.Style.FILL);
+    cornerRadius = Math.round(radius);
+    contentBounds = new RectF();
+    edgeShadowPaint = new Paint(cornerShadowPaint);
+    edgeShadowPaint.setAntiAlias(false);
     setShadowSize(shadowSize, maxShadowSize);
   }
 
@@ -101,20 +101,20 @@ class ShadowDrawableWrapper extends DrawableWrapper {
   }
 
   public void setAddPaddingForCorners(boolean addPaddingForCorners) {
-    mAddPaddingForCorners = addPaddingForCorners;
+    this.addPaddingForCorners = addPaddingForCorners;
     invalidateSelf();
   }
 
   @Override
   public void setAlpha(int alpha) {
     super.setAlpha(alpha);
-    mCornerShadowPaint.setAlpha(alpha);
-    mEdgeShadowPaint.setAlpha(alpha);
+    cornerShadowPaint.setAlpha(alpha);
+    edgeShadowPaint.setAlpha(alpha);
   }
 
   @Override
   protected void onBoundsChange(Rect bounds) {
-    mDirty = true;
+    dirty = true;
   }
 
   void setShadowSize(float shadowSize, float maxShadowSize) {
@@ -125,18 +125,18 @@ class ShadowDrawableWrapper extends DrawableWrapper {
     maxShadowSize = toEven(maxShadowSize);
     if (shadowSize > maxShadowSize) {
       shadowSize = maxShadowSize;
-      if (!mPrintedShadowClipWarning) {
-        mPrintedShadowClipWarning = true;
+      if (!printedShadowClipWarning) {
+        printedShadowClipWarning = true;
       }
     }
-    if (mRawShadowSize == shadowSize && mRawMaxShadowSize == maxShadowSize) {
+    if (rawShadowSize == shadowSize && rawMaxShadowSize == maxShadowSize) {
       return;
     }
-    mRawShadowSize = shadowSize;
-    mRawMaxShadowSize = maxShadowSize;
-    mShadowSize = Math.round(shadowSize * SHADOW_MULTIPLIER);
-    mMaxShadowSize = maxShadowSize;
-    mDirty = true;
+    rawShadowSize = shadowSize;
+    rawMaxShadowSize = maxShadowSize;
+    this.shadowSize = Math.round(shadowSize * SHADOW_MULTIPLIER);
+    this.maxShadowSize = maxShadowSize;
+    dirty = true;
     invalidateSelf();
   }
 
@@ -145,12 +145,11 @@ class ShadowDrawableWrapper extends DrawableWrapper {
     int vOffset =
         (int)
             Math.ceil(
-                calculateVerticalPadding(mRawMaxShadowSize, mCornerRadius, mAddPaddingForCorners));
+                calculateVerticalPadding(rawMaxShadowSize, cornerRadius, addPaddingForCorners));
     int hOffset =
         (int)
             Math.ceil(
-                calculateHorizontalPadding(
-                    mRawMaxShadowSize, mCornerRadius, mAddPaddingForCorners));
+                calculateHorizontalPadding(rawMaxShadowSize, cornerRadius, addPaddingForCorners));
     padding.set(hOffset, vOffset, hOffset, vOffset);
     return true;
   }
@@ -180,19 +179,19 @@ class ShadowDrawableWrapper extends DrawableWrapper {
 
   public void setCornerRadius(float radius) {
     radius = Math.round(radius);
-    if (mCornerRadius == radius) {
+    if (cornerRadius == radius) {
       return;
     }
-    mCornerRadius = radius;
-    mDirty = true;
+    cornerRadius = radius;
+    dirty = true;
     invalidateSelf();
   }
 
   @Override
   public void draw(Canvas canvas) {
-    if (mDirty) {
+    if (dirty) {
       buildComponents(getBounds());
-      mDirty = false;
+      dirty = false;
     }
     drawShadow(canvas);
 
@@ -200,24 +199,24 @@ class ShadowDrawableWrapper extends DrawableWrapper {
   }
 
   final void setRotation(float rotation) {
-    if (mRotation != rotation) {
-      mRotation = rotation;
+    if (this.rotation != rotation) {
+      this.rotation = rotation;
       invalidateSelf();
     }
   }
 
   private void drawShadow(Canvas canvas) {
     final int rotateSaved = canvas.save();
-    canvas.rotate(mRotation, mContentBounds.centerX(), mContentBounds.centerY());
+    canvas.rotate(rotation, contentBounds.centerX(), contentBounds.centerY());
 
-    final float edgeShadowTop = -mCornerRadius - mShadowSize;
-    final float shadowOffset = mCornerRadius;
-    final boolean drawHorizontalEdges = mContentBounds.width() - 2 * shadowOffset > 0;
-    final boolean drawVerticalEdges = mContentBounds.height() - 2 * shadowOffset > 0;
+    final float edgeShadowTop = -cornerRadius - shadowSize;
+    final float shadowOffset = cornerRadius;
+    final boolean drawHorizontalEdges = contentBounds.width() - 2 * shadowOffset > 0;
+    final boolean drawVerticalEdges = contentBounds.height() - 2 * shadowOffset > 0;
 
-    final float shadowOffsetTop = mRawShadowSize - (mRawShadowSize * SHADOW_TOP_SCALE);
-    final float shadowOffsetHorizontal = mRawShadowSize - (mRawShadowSize * SHADOW_HORIZ_SCALE);
-    final float shadowOffsetBottom = mRawShadowSize - (mRawShadowSize * SHADOW_BOTTOM_SCALE);
+    final float shadowOffsetTop = rawShadowSize - (rawShadowSize * SHADOW_TOP_SCALE);
+    final float shadowOffsetHorizontal = rawShadowSize - (rawShadowSize * SHADOW_HORIZ_SCALE);
+    final float shadowOffsetBottom = rawShadowSize - (rawShadowSize * SHADOW_BOTTOM_SCALE);
 
     final float shadowScaleHorizontal = shadowOffset / (shadowOffset + shadowOffsetHorizontal);
     final float shadowScaleTop = shadowOffset / (shadowOffset + shadowOffsetTop);
@@ -225,69 +224,69 @@ class ShadowDrawableWrapper extends DrawableWrapper {
 
     // LT
     int saved = canvas.save();
-    canvas.translate(mContentBounds.left + shadowOffset, mContentBounds.top + shadowOffset);
+    canvas.translate(contentBounds.left + shadowOffset, contentBounds.top + shadowOffset);
     canvas.scale(shadowScaleHorizontal, shadowScaleTop);
-    canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+    canvas.drawPath(cornerShadowPath, cornerShadowPaint);
     if (drawHorizontalEdges) {
       // TE
       canvas.scale(1f / shadowScaleHorizontal, 1f);
       canvas.drawRect(
           0,
           edgeShadowTop,
-          mContentBounds.width() - 2 * shadowOffset,
-          -mCornerRadius,
-          mEdgeShadowPaint);
+          contentBounds.width() - 2 * shadowOffset,
+          -cornerRadius,
+          edgeShadowPaint);
     }
     canvas.restoreToCount(saved);
     // RB
     saved = canvas.save();
-    canvas.translate(mContentBounds.right - shadowOffset, mContentBounds.bottom - shadowOffset);
+    canvas.translate(contentBounds.right - shadowOffset, contentBounds.bottom - shadowOffset);
     canvas.scale(shadowScaleHorizontal, shadowScaleBottom);
     canvas.rotate(180f);
-    canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+    canvas.drawPath(cornerShadowPath, cornerShadowPaint);
     if (drawHorizontalEdges) {
       // BE
       canvas.scale(1f / shadowScaleHorizontal, 1f);
       canvas.drawRect(
           0,
           edgeShadowTop,
-          mContentBounds.width() - 2 * shadowOffset,
-          -mCornerRadius + mShadowSize,
-          mEdgeShadowPaint);
+          contentBounds.width() - 2 * shadowOffset,
+          -cornerRadius + shadowSize,
+          edgeShadowPaint);
     }
     canvas.restoreToCount(saved);
     // LB
     saved = canvas.save();
-    canvas.translate(mContentBounds.left + shadowOffset, mContentBounds.bottom - shadowOffset);
+    canvas.translate(contentBounds.left + shadowOffset, contentBounds.bottom - shadowOffset);
     canvas.scale(shadowScaleHorizontal, shadowScaleBottom);
     canvas.rotate(270f);
-    canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+    canvas.drawPath(cornerShadowPath, cornerShadowPaint);
     if (drawVerticalEdges) {
       // LE
       canvas.scale(1f / shadowScaleBottom, 1f);
       canvas.drawRect(
           0,
           edgeShadowTop,
-          mContentBounds.height() - 2 * shadowOffset,
-          -mCornerRadius,
-          mEdgeShadowPaint);
+          contentBounds.height() - 2 * shadowOffset,
+          -cornerRadius,
+          edgeShadowPaint);
     }
     canvas.restoreToCount(saved);
     // RT
     saved = canvas.save();
-    canvas.translate(mContentBounds.right - shadowOffset, mContentBounds.top + shadowOffset);
+    canvas.translate(contentBounds.right - shadowOffset, contentBounds.top + shadowOffset);
     canvas.scale(shadowScaleHorizontal, shadowScaleTop);
     canvas.rotate(90f);
-    canvas.drawPath(mCornerShadowPath, mCornerShadowPaint);
+    canvas.drawPath(cornerShadowPath, cornerShadowPaint);
     if (drawVerticalEdges) {
       // RE
       canvas.scale(1f / shadowScaleTop, 1f);
       canvas.drawRect(
           0,
           edgeShadowTop,
-          mContentBounds.height() - 2 * shadowOffset,
-          -mCornerRadius,
-          mEdgeShadowPaint);
+          contentBounds.height() - 2 * shadowOffset,
+          -cornerRadius,
+          edgeShadowPaint);
     }
     canvas.restoreToCount(saved);
 
@@ -295,34 +294,34 @@ class ShadowDrawableWrapper extends DrawableWrapper {
   }
 
   private void buildShadowCorners() {
-    RectF innerBounds = new RectF(-mCornerRadius, -mCornerRadius, mCornerRadius, mCornerRadius);
+    RectF innerBounds = new RectF(-cornerRadius, -cornerRadius, cornerRadius, cornerRadius);
     RectF outerBounds = new RectF(innerBounds);
-    outerBounds.inset(-mShadowSize, -mShadowSize);
+    outerBounds.inset(-shadowSize, -shadowSize);
 
-    if (mCornerShadowPath == null) {
-      mCornerShadowPath = new Path();
+    if (cornerShadowPath == null) {
+      cornerShadowPath = new Path();
     } else {
-      mCornerShadowPath.reset();
+      cornerShadowPath.reset();
     }
-    mCornerShadowPath.setFillType(Path.FillType.EVEN_ODD);
-    mCornerShadowPath.moveTo(-mCornerRadius, 0);
-    mCornerShadowPath.rLineTo(-mShadowSize, 0);
+    cornerShadowPath.setFillType(Path.FillType.EVEN_ODD);
+    cornerShadowPath.moveTo(-cornerRadius, 0);
+    cornerShadowPath.rLineTo(-shadowSize, 0);
     // outer arc
-    mCornerShadowPath.arcTo(outerBounds, 180f, 90f, false);
+    cornerShadowPath.arcTo(outerBounds, 180f, 90f, false);
     // inner arc
-    mCornerShadowPath.arcTo(innerBounds, 270f, -90f, false);
-    mCornerShadowPath.close();
+    cornerShadowPath.arcTo(innerBounds, 270f, -90f, false);
+    cornerShadowPath.close();
 
     float shadowRadius = -outerBounds.top;
     if (shadowRadius > 0f) {
-      float startRatio = mCornerRadius / shadowRadius;
+      float startRatio = cornerRadius / shadowRadius;
       float midRatio = startRatio + ((1f - startRatio) / 2f);
-      mCornerShadowPaint.setShader(
+      cornerShadowPaint.setShader(
           new RadialGradient(
               0,
               0,
               shadowRadius,
-              new int[] {0, mShadowStartColor, mShadowMiddleColor, mShadowEndColor},
+              new int[] {0, shadowStartColor, shadowMiddleColor, shadowEndColor},
               new float[] {0f, startRatio, midRatio, 1f},
               Shader.TileMode.CLAMP));
     }
@@ -330,67 +329,67 @@ class ShadowDrawableWrapper extends DrawableWrapper {
     // we offset the content shadowSize/2 pixels up to make it more realistic.
     // this is why edge shadow shader has some extra space
     // When drawing bottom edge shadow, we use that extra space.
-    mEdgeShadowPaint.setShader(
+    edgeShadowPaint.setShader(
         new LinearGradient(
             0,
             innerBounds.top,
             0,
             outerBounds.top,
-            new int[] {mShadowStartColor, mShadowMiddleColor, mShadowEndColor},
+            new int[] {shadowStartColor, shadowMiddleColor, shadowEndColor},
             new float[] {0f, .5f, 1f},
             Shader.TileMode.CLAMP));
-    mEdgeShadowPaint.setAntiAlias(false);
+    edgeShadowPaint.setAntiAlias(false);
   }
 
   private void buildComponents(Rect bounds) {
     // Card is offset SHADOW_MULTIPLIER * maxShadowSize to account for the shadow shift.
     // We could have different top-bottom offsets to avoid extra gap above but in that case
     // center aligning Views inside the CardView would be problematic.
-    final float verticalOffset = mRawMaxShadowSize * SHADOW_MULTIPLIER;
-    mContentBounds.set(
-        bounds.left + mRawMaxShadowSize,
+    final float verticalOffset = rawMaxShadowSize * SHADOW_MULTIPLIER;
+    contentBounds.set(
+        bounds.left + rawMaxShadowSize,
         bounds.top + verticalOffset,
-        bounds.right - mRawMaxShadowSize,
+        bounds.right - rawMaxShadowSize,
         bounds.bottom - verticalOffset);
 
     getWrappedDrawable()
         .setBounds(
-            (int) mContentBounds.left,
-            (int) mContentBounds.top,
-            (int) mContentBounds.right,
-            (int) mContentBounds.bottom);
+            (int) contentBounds.left,
+            (int) contentBounds.top,
+            (int) contentBounds.right,
+            (int) contentBounds.bottom);
 
     buildShadowCorners();
   }
 
   public float getCornerRadius() {
-    return mCornerRadius;
+    return cornerRadius;
   }
 
   public void setShadowSize(float size) {
-    setShadowSize(size, mRawMaxShadowSize);
+    setShadowSize(size, rawMaxShadowSize);
   }
 
   public void setMaxShadowSize(float size) {
-    setShadowSize(mRawShadowSize, size);
+    setShadowSize(rawShadowSize, size);
   }
 
   public float getShadowSize() {
-    return mRawShadowSize;
+    return rawShadowSize;
   }
 
   public float getMaxShadowSize() {
-    return mRawMaxShadowSize;
+    return rawMaxShadowSize;
   }
 
   public float getMinWidth() {
-    final float content = 2 * Math.max(mRawMaxShadowSize, mCornerRadius + mRawMaxShadowSize / 2);
-    return content + mRawMaxShadowSize * 2;
+    final float content = 2 * Math.max(rawMaxShadowSize, cornerRadius + rawMaxShadowSize / 2);
+    return content + rawMaxShadowSize * 2;
   }
 
   public float getMinHeight() {
     final float content =
-        2 * Math.max(mRawMaxShadowSize, mCornerRadius + mRawMaxShadowSize * SHADOW_MULTIPLIER / 2);
-    return content + (mRawMaxShadowSize * SHADOW_MULTIPLIER) * 2;
+        2 * Math.max(rawMaxShadowSize, cornerRadius + rawMaxShadowSize * SHADOW_MULTIPLIER / 2);
+    return content + (rawMaxShadowSize * SHADOW_MULTIPLIER) * 2;
   }
 }

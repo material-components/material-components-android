@@ -34,14 +34,14 @@ import org.junit.runner.RunWith;
 @LargeTest
 @RunWith(AndroidJUnit4.class)
 public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
-  private TabLayout mTabLayout;
+  private TabLayout tabLayout;
 
   @Override
   protected void configureContent(@LayoutRes int layoutResId, @StringRes int titleResId)
       throws Throwable {
     super.configureContent(layoutResId, titleResId);
 
-    mTabLayout = mAppBar.findViewById(R.id.tabs);
+    tabLayout = mAppBar.findViewById(R.id.tabs);
     String[] tabTitles = new String[5];
     System.arraycopy(Cheeses.sCheeseStrings, 0, tabTitles, 0, 5);
     onView(withId(R.id.tabs)).perform(addTabs(tabTitles));
@@ -141,7 +141,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
 
     final int toolbarHeight = mToolbar.getHeight();
-    final int tabsHeight = mTabLayout.getHeight();
+    final int tabsHeight = tabLayout.getHeight();
     final int appbarHeight = mAppBar.getHeight();
     final int longSwipeAmount = 3 * appbarHeight / 2;
     final int shortSwipeAmount = toolbarHeight;
@@ -224,7 +224,7 @@ public class AppBarWithToolbarAndTabsTest extends AppBarLayoutBaseTest {
     final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
 
     final int toolbarHeight = mToolbar.getHeight();
-    final int tabsHeight = mTabLayout.getHeight();
+    final int tabsHeight = tabLayout.getHeight();
     final int appbarHeight = mAppBar.getHeight();
 
     // Since AppBarLayout doesn't expose a way to track snap animations, the three possible

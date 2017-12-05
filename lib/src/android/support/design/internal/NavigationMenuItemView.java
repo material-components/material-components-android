@@ -50,31 +50,31 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
-  private final int mIconSize;
+  private final int iconSize;
 
-  private boolean mNeedsEmptyIcon;
+  private boolean needsEmptyIcon;
 
-  boolean mCheckable;
+  boolean checkable;
 
-  private final CheckedTextView mTextView;
+  private final CheckedTextView textView;
 
-  private FrameLayout mActionArea;
+  private FrameLayout actionArea;
 
-  private MenuItemImpl mItemData;
+  private MenuItemImpl itemData;
 
-  private ColorStateList mIconTintList;
+  private ColorStateList iconTintList;
 
-  private boolean mHasIconTintList;
+  private boolean hasIconTintList;
 
-  private Drawable mEmptyDrawable;
+  private Drawable emptyDrawable;
 
-  private final AccessibilityDelegateCompat mAccessibilityDelegate =
+  private final AccessibilityDelegateCompat accessibilityDelegate =
       new AccessibilityDelegateCompat() {
 
         @Override
         public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
           super.onInitializeAccessibilityNodeInfo(host, info);
-          info.setCheckable(mCheckable);
+          info.setCheckable(checkable);
         }
       };
 
@@ -90,15 +90,15 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     super(context, attrs, defStyleAttr);
     setOrientation(HORIZONTAL);
     LayoutInflater.from(context).inflate(R.layout.design_navigation_menu_item, this, true);
-    mIconSize = context.getResources().getDimensionPixelSize(R.dimen.design_navigation_icon_size);
-    mTextView = findViewById(R.id.design_menu_item_text);
-    mTextView.setDuplicateParentStateEnabled(true);
-    ViewCompat.setAccessibilityDelegate(mTextView, mAccessibilityDelegate);
+    iconSize = context.getResources().getDimensionPixelSize(R.dimen.design_navigation_icon_size);
+    textView = findViewById(R.id.design_menu_item_text);
+    textView.setDuplicateParentStateEnabled(true);
+    ViewCompat.setAccessibilityDelegate(textView, accessibilityDelegate);
   }
 
   @Override
   public void initialize(MenuItemImpl itemData, int menuType) {
-    mItemData = itemData;
+    this.itemData = itemData;
 
     setVisibility(itemData.isVisible() ? VISIBLE : GONE);
 
@@ -118,46 +118,46 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   }
 
   private boolean shouldExpandActionArea() {
-    return mItemData.getTitle() == null
-        && mItemData.getIcon() == null
-        && mItemData.getActionView() != null;
+    return itemData.getTitle() == null
+        && itemData.getIcon() == null
+        && itemData.getActionView() != null;
   }
 
   private void adjustAppearance() {
     if (shouldExpandActionArea()) {
       // Expand the actionView area
-      mTextView.setVisibility(View.GONE);
-      if (mActionArea != null) {
-        LayoutParams params = (LayoutParams) mActionArea.getLayoutParams();
+      textView.setVisibility(View.GONE);
+      if (actionArea != null) {
+        LayoutParams params = (LayoutParams) actionArea.getLayoutParams();
         params.width = LayoutParams.MATCH_PARENT;
-        mActionArea.setLayoutParams(params);
+        actionArea.setLayoutParams(params);
       }
     } else {
-      mTextView.setVisibility(View.VISIBLE);
-      if (mActionArea != null) {
-        LayoutParams params = (LayoutParams) mActionArea.getLayoutParams();
+      textView.setVisibility(View.VISIBLE);
+      if (actionArea != null) {
+        LayoutParams params = (LayoutParams) actionArea.getLayoutParams();
         params.width = LayoutParams.WRAP_CONTENT;
-        mActionArea.setLayoutParams(params);
+        actionArea.setLayoutParams(params);
       }
     }
   }
 
   public void recycle() {
-    if (mActionArea != null) {
-      mActionArea.removeAllViews();
+    if (actionArea != null) {
+      actionArea.removeAllViews();
     }
-    mTextView.setCompoundDrawables(null, null, null, null);
+    textView.setCompoundDrawables(null, null, null, null);
   }
 
   private void setActionView(View actionView) {
     if (actionView != null) {
-      if (mActionArea == null) {
-        mActionArea =
+      if (actionArea == null) {
+        actionArea =
             (FrameLayout)
                 ((ViewStub) findViewById(R.id.design_menu_item_action_area_stub)).inflate();
       }
-      mActionArea.removeAllViews();
-      mActionArea.addView(actionView);
+      actionArea.removeAllViews();
+      actionArea.addView(actionView);
     }
   }
 
@@ -176,28 +176,28 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
   @Override
   public MenuItemImpl getItemData() {
-    return mItemData;
+    return itemData;
   }
 
   @Override
   public void setTitle(CharSequence title) {
-    mTextView.setText(title);
+    textView.setText(title);
   }
 
   @Override
   public void setCheckable(boolean checkable) {
     refreshDrawableState();
-    if (mCheckable != checkable) {
-      mCheckable = checkable;
-      mAccessibilityDelegate.sendAccessibilityEvent(
-          mTextView, AccessibilityEventCompat.TYPE_WINDOW_CONTENT_CHANGED);
+    if (this.checkable != checkable) {
+      this.checkable = checkable;
+      accessibilityDelegate.sendAccessibilityEvent(
+          textView, AccessibilityEventCompat.TYPE_WINDOW_CONTENT_CHANGED);
     }
   }
 
   @Override
   public void setChecked(boolean checked) {
     refreshDrawableState();
-    mTextView.setChecked(checked);
+    textView.setChecked(checked);
   }
 
   @Override
@@ -206,24 +206,24 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   @Override
   public void setIcon(Drawable icon) {
     if (icon != null) {
-      if (mHasIconTintList) {
+      if (hasIconTintList) {
         Drawable.ConstantState state = icon.getConstantState();
         icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
-        DrawableCompat.setTintList(icon, mIconTintList);
+        DrawableCompat.setTintList(icon, iconTintList);
       }
-      icon.setBounds(0, 0, mIconSize, mIconSize);
-    } else if (mNeedsEmptyIcon) {
-      if (mEmptyDrawable == null) {
-        mEmptyDrawable =
+      icon.setBounds(0, 0, iconSize, iconSize);
+    } else if (needsEmptyIcon) {
+      if (emptyDrawable == null) {
+        emptyDrawable =
             ResourcesCompat.getDrawable(
                 getResources(), R.drawable.navigation_empty_icon, getContext().getTheme());
-        if (mEmptyDrawable != null) {
-          mEmptyDrawable.setBounds(0, 0, mIconSize, mIconSize);
+        if (emptyDrawable != null) {
+          emptyDrawable.setBounds(0, 0, iconSize, iconSize);
         }
       }
-      icon = mEmptyDrawable;
+      icon = emptyDrawable;
     }
-    TextViewCompat.setCompoundDrawablesRelative(mTextView, icon, null, null, null);
+    TextViewCompat.setCompoundDrawablesRelative(textView, icon, null, null, null);
   }
 
   @Override
@@ -239,30 +239,30 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
     final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-    if (mItemData != null && mItemData.isCheckable() && mItemData.isChecked()) {
+    if (itemData != null && itemData.isCheckable() && itemData.isChecked()) {
       mergeDrawableStates(drawableState, CHECKED_STATE_SET);
     }
     return drawableState;
   }
 
   void setIconTintList(ColorStateList tintList) {
-    mIconTintList = tintList;
-    mHasIconTintList = mIconTintList != null;
-    if (mItemData != null) {
+    iconTintList = tintList;
+    hasIconTintList = iconTintList != null;
+    if (itemData != null) {
       // Update the icon so that the tint takes effect
-      setIcon(mItemData.getIcon());
+      setIcon(itemData.getIcon());
     }
   }
 
   public void setTextAppearance(int textAppearance) {
-    TextViewCompat.setTextAppearance(mTextView, textAppearance);
+    TextViewCompat.setTextAppearance(textView, textAppearance);
   }
 
   public void setTextColor(ColorStateList colors) {
-    mTextView.setTextColor(colors);
+    textView.setTextColor(colors);
   }
 
   public void setNeedsEmptyIcon(boolean needsEmptyIcon) {
-    mNeedsEmptyIcon = needsEmptyIcon;
+    this.needsEmptyIcon = needsEmptyIcon;
   }
 }

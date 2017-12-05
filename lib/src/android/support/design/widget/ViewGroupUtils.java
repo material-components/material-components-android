@@ -24,8 +24,8 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 
 class ViewGroupUtils {
-  private static final ThreadLocal<Matrix> sMatrix = new ThreadLocal<>();
-  private static final ThreadLocal<RectF> sRectF = new ThreadLocal<>();
+  private static final ThreadLocal<Matrix> matrix = new ThreadLocal<>();
+  private static final ThreadLocal<RectF> rectF = new ThreadLocal<>();
 
   /**
    * This is a port of the common {@link ViewGroup#offsetDescendantRectToMyCoords(android.view.View,
@@ -36,20 +36,20 @@ class ViewGroupUtils {
    * @param rect (in/out) the rect to offset from descendant to this view's coordinate system
    */
   static void offsetDescendantRect(ViewGroup parent, View descendant, Rect rect) {
-    Matrix m = sMatrix.get();
+    Matrix m = matrix.get();
     if (m == null) {
       m = new Matrix();
-      sMatrix.set(m);
+      matrix.set(m);
     } else {
       m.reset();
     }
 
     offsetDescendantMatrix(parent, descendant, m);
 
-    RectF rectF = sRectF.get();
+    RectF rectF = ViewGroupUtils.rectF.get();
     if (rectF == null) {
       rectF = new RectF();
-      sRectF.set(rectF);
+      ViewGroupUtils.rectF.set(rectF);
     }
     rectF.set(rect);
     m.mapRect(rectF);

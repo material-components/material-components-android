@@ -140,27 +140,27 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @IntDef({SIZE_MINI, SIZE_NORMAL, SIZE_AUTO})
   public @interface Size {}
 
-  private ColorStateList mBackgroundTint;
-  private PorterDuff.Mode mBackgroundTintMode;
+  private ColorStateList backgroundTint;
+  private PorterDuff.Mode backgroundTintMode;
   @Nullable private ColorStateList imageTint;
   @Nullable private PorterDuff.Mode imageMode;
 
-  private int mBorderWidth;
-  @ColorInt private int mRippleColor;
-  private ColorStateList mRippleAlphaStateList;
-  private int mSize;
-  private int mCustomSize;
-  private int mImagePadding;
-  private int mMaxImageSize;
+  private int borderWidth;
+  @ColorInt private int rippleColor;
+  private ColorStateList rippleAlphaStateList;
+  private int size;
+  private int customSize;
+  private int imagePadding;
+  private int maxImageSize;
 
-  boolean mCompatPadding;
-  final Rect mShadowPadding = new Rect();
-  private final Rect mTouchArea = new Rect();
+  boolean compatPadding;
+  final Rect shadowPadding = new Rect();
+  private final Rect touchArea = new Rect();
 
-  private final AppCompatImageHelper mImageHelper;
+  private final AppCompatImageHelper imageHelper;
   private final ExpandableWidgetHelper expandableWidgetHelper;
 
-  private FloatingActionButtonImpl mImpl;
+  private FloatingActionButtonImpl impl;
 
   public FloatingActionButton(Context context) {
     this(context, null);
@@ -181,27 +181,27 @@ public class FloatingActionButton extends VisibilityAwareImageButton
             R.styleable.FloatingActionButton,
             defStyleAttr,
             R.style.Widget_Design_FloatingActionButton);
-    mBackgroundTint =
+    backgroundTint =
         MaterialResources.getColorStateList(
             context, a, R.styleable.FloatingActionButton_backgroundTint);
-    mBackgroundTintMode =
+    backgroundTintMode =
         ViewUtils.parseTintMode(
             a.getInt(R.styleable.FloatingActionButton_backgroundTintMode, -1), null);
-    mRippleColor = a.getColor(R.styleable.FloatingActionButton_rippleColor, 0);
-    mRippleAlphaStateList =
+    rippleColor = a.getColor(R.styleable.FloatingActionButton_rippleColor, 0);
+    rippleAlphaStateList =
         MaterialResources.getColorStateList(
             context, a, R.styleable.FloatingActionButton_rippleAlpha);
-    mSize = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_AUTO);
-    mCustomSize =
+    size = a.getInt(R.styleable.FloatingActionButton_fabSize, SIZE_AUTO);
+    customSize =
         a.getDimensionPixelSize(R.styleable.FloatingActionButton_fabCustomSize, NO_CUSTOM_SIZE);
-    mBorderWidth = a.getDimensionPixelSize(R.styleable.FloatingActionButton_borderWidth, 0);
+    borderWidth = a.getDimensionPixelSize(R.styleable.FloatingActionButton_borderWidth, 0);
     final float elevation = a.getDimension(R.styleable.FloatingActionButton_elevation, 0f);
     final float hoveredFocusedTranslationZ =
         a.getDimension(R.styleable.FloatingActionButton_hoveredFocusedTranslationZ, 0f);
     final float pressedTranslationZ =
         a.getDimension(R.styleable.FloatingActionButton_pressedTranslationZ, 0f);
-    mCompatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
-    mMaxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
+    compatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
+    maxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
 
     MotionSpec showMotionSpec =
         MotionSpec.createFromAttribute(
@@ -212,22 +212,18 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     a.recycle();
 
-    mImageHelper = new AppCompatImageHelper(this);
-    mImageHelper.loadFromAttributes(attrs, defStyleAttr);
+    imageHelper = new AppCompatImageHelper(this);
+    imageHelper.loadFromAttributes(attrs, defStyleAttr);
 
     expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
     getImpl()
         .setBackgroundDrawable(
-            mBackgroundTint,
-            mBackgroundTintMode,
-            mRippleColor,
-            mRippleAlphaStateList,
-            mBorderWidth);
+            backgroundTint, backgroundTintMode, rippleColor, rippleAlphaStateList, borderWidth);
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
     getImpl().setPressedTranslationZ(pressedTranslationZ);
-    getImpl().setMaxImageSize(mMaxImageSize);
+    getImpl().setMaxImageSize(maxImageSize);
     getImpl().setShowMotionSpec(showMotionSpec);
     getImpl().setHideMotionSpec(hideMotionSpec);
 
@@ -238,7 +234,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     final int preferredSize = getSizeDimension();
 
-    mImagePadding = (preferredSize - mMaxImageSize) / 2;
+    imagePadding = (preferredSize - maxImageSize) / 2;
     getImpl().updatePadding();
 
     final int w = resolveAdjustedSize(preferredSize, widthMeasureSpec);
@@ -250,8 +246,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     // We add the shadow's padding to the measured dimension
     setMeasuredDimension(
-        d + mShadowPadding.left + mShadowPadding.right,
-        d + mShadowPadding.top + mShadowPadding.bottom);
+        d + shadowPadding.left + shadowPadding.right, d + shadowPadding.top + shadowPadding.bottom);
   }
 
   /**
@@ -262,7 +257,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   @ColorInt
   public int getRippleColor() {
-    return mRippleColor;
+    return rippleColor;
   }
 
   /**
@@ -276,9 +271,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @see #getRippleColor()
    */
   public void setRippleColor(@ColorInt int color) {
-    if (mRippleColor != color) {
-      mRippleColor = color;
-      getImpl().setRippleColor(mRippleColor, mRippleAlphaStateList);
+    if (rippleColor != color) {
+      rippleColor = color;
+      getImpl().setRippleColor(rippleColor, rippleAlphaStateList);
     }
   }
 
@@ -289,7 +284,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @see #setRippleAlpha(ColorStateList)
    */
   public ColorStateList getRippleAlpha() {
-    return mRippleAlphaStateList;
+    return rippleAlphaStateList;
   }
 
   /**
@@ -300,9 +295,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @see #getRippleAlpha()
    */
   public void setRippleAlpha(ColorStateList alpha) {
-    if (mRippleAlphaStateList != alpha) {
-      mRippleAlphaStateList = alpha;
-      getImpl().setRippleColor(mRippleColor, mRippleAlphaStateList);
+    if (rippleAlphaStateList != alpha) {
+      rippleAlphaStateList = alpha;
+      getImpl().setRippleColor(rippleColor, rippleAlphaStateList);
     }
   }
 
@@ -315,7 +310,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Nullable
   @Override
   public ColorStateList getBackgroundTintList() {
-    return mBackgroundTint;
+    return backgroundTint;
   }
 
   /**
@@ -326,8 +321,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   @Override
   public void setBackgroundTintList(@Nullable ColorStateList tint) {
-    if (mBackgroundTint != tint) {
-      mBackgroundTint = tint;
+    if (backgroundTint != tint) {
+      backgroundTint = tint;
       getImpl().setBackgroundTintList(tint);
     }
   }
@@ -341,7 +336,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Nullable
   @Override
   public PorterDuff.Mode getBackgroundTintMode() {
-    return mBackgroundTintMode;
+    return backgroundTintMode;
   }
 
   /**
@@ -353,8 +348,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   @Override
   public void setBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
-    if (mBackgroundTintMode != tintMode) {
-      mBackgroundTintMode = tintMode;
+    if (backgroundTintMode != tintMode) {
+      backgroundTintMode = tintMode;
       getImpl().setBackgroundTintMode(tintMode);
     }
   }
@@ -465,7 +460,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Override
   public void setImageResource(@DrawableRes int resId) {
     // Intercept this call and instead retrieve the Drawable via the image helper
-    mImageHelper.setImageResource(resId);
+    imageHelper.setImageResource(resId);
   }
 
   @Override
@@ -552,8 +547,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @see #getUseCompatPadding()
    */
   public void setUseCompatPadding(boolean useCompatPadding) {
-    if (mCompatPadding != useCompatPadding) {
-      mCompatPadding = useCompatPadding;
+    if (compatPadding != useCompatPadding) {
+      compatPadding = useCompatPadding;
       getImpl().onCompatShadowChanged();
     }
   }
@@ -567,7 +562,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @see #setUseCompatPadding(boolean)
    */
   public boolean getUseCompatPadding() {
-    return mCompatPadding;
+    return compatPadding;
   }
 
   /**
@@ -584,9 +579,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @attr ref android.support.design.R.styleable#FloatingActionButton_fabSize
    */
   public void setSize(@Size int size) {
-    mCustomSize = NO_CUSTOM_SIZE;
-    if (size != mSize) {
-      mSize = size;
+    customSize = NO_CUSTOM_SIZE;
+    if (size != this.size) {
+      this.size = size;
       requestLayout();
     }
   }
@@ -599,7 +594,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   @Size
   public int getSize() {
-    return mSize;
+    return size;
   }
 
   @Nullable
@@ -635,7 +630,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       throw new IllegalArgumentException("Custom size must be non-negative");
     }
 
-    mCustomSize = size;
+    customSize = size;
   }
 
   /**
@@ -644,16 +639,16 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * @return size in pixels, or {@link #NO_CUSTOM_SIZE}
    */
   public int getCustomSize() {
-    return mCustomSize;
+    return customSize;
   }
 
   int getSizeDimension() {
-    return getSizeDimension(mSize);
+    return getSizeDimension(size);
   }
 
   private int getSizeDimension(@Size final int size) {
-    if (mCustomSize != NO_CUSTOM_SIZE) {
-      return mCustomSize;
+    if (customSize != NO_CUSTOM_SIZE) {
+      return customSize;
     }
 
     final Resources res = getResources();
@@ -731,10 +726,10 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public boolean getContentRect(@NonNull Rect rect) {
     if (ViewCompat.isLaidOut(this)) {
       rect.set(0, 0, getWidth(), getHeight());
-      rect.left += mShadowPadding.left;
-      rect.top += mShadowPadding.top;
-      rect.right -= mShadowPadding.right;
-      rect.bottom -= mShadowPadding.bottom;
+      rect.left += shadowPadding.left;
+      rect.top += shadowPadding.top;
+      rect.right -= shadowPadding.right;
+      rect.bottom -= shadowPadding.bottom;
       return true;
     } else {
       return false;
@@ -777,7 +772,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public boolean onTouchEvent(MotionEvent ev) {
     if (ev.getAction() == MotionEvent.ACTION_DOWN) {
       // Skipping the gesture if it doesn't start in the FAB 'content' area
-      if (getContentRect(mTouchArea) && !mTouchArea.contains((int) ev.getX(), (int) ev.getY())) {
+      if (getContentRect(touchArea) && !touchArea.contains((int) ev.getX(), (int) ev.getY())) {
         return false;
       }
     }
@@ -792,20 +787,20 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public static class Behavior extends CoordinatorLayout.Behavior<FloatingActionButton> {
     private static final boolean AUTO_HIDE_DEFAULT = true;
 
-    private Rect mTmpRect;
-    private OnVisibilityChangedListener mInternalAutoHideListener;
-    private boolean mAutoHideEnabled;
+    private Rect tmpRect;
+    private OnVisibilityChangedListener internalAutoHideListener;
+    private boolean autoHideEnabled;
 
     public Behavior() {
       super();
-      mAutoHideEnabled = AUTO_HIDE_DEFAULT;
+      autoHideEnabled = AUTO_HIDE_DEFAULT;
     }
 
     public Behavior(Context context, AttributeSet attrs) {
       super(context, attrs);
       TypedArray a =
           context.obtainStyledAttributes(attrs, R.styleable.FloatingActionButton_Behavior_Layout);
-      mAutoHideEnabled =
+      autoHideEnabled =
           a.getBoolean(
               R.styleable.FloatingActionButton_Behavior_Layout_behavior_autoHide,
               AUTO_HIDE_DEFAULT);
@@ -821,7 +816,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
      * @param autoHide true to enable automatic hiding
      */
     public void setAutoHideEnabled(boolean autoHide) {
-      mAutoHideEnabled = autoHide;
+      autoHideEnabled = autoHide;
     }
 
     /**
@@ -833,7 +828,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
      * @return true if enabled
      */
     public boolean isAutoHideEnabled() {
-      return mAutoHideEnabled;
+      return autoHideEnabled;
     }
 
     @Override
@@ -868,13 +863,13 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     @VisibleForTesting
     void setInternalAutoHideListener(OnVisibilityChangedListener listener) {
-      mInternalAutoHideListener = listener;
+      internalAutoHideListener = listener;
     }
 
     private boolean shouldUpdateVisibility(View dependency, FloatingActionButton child) {
       final CoordinatorLayout.LayoutParams lp =
           (CoordinatorLayout.LayoutParams) child.getLayoutParams();
-      if (!mAutoHideEnabled) {
+      if (!autoHideEnabled) {
         return false;
       }
 
@@ -899,20 +894,20 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         return false;
       }
 
-      if (mTmpRect == null) {
-        mTmpRect = new Rect();
+      if (tmpRect == null) {
+        tmpRect = new Rect();
       }
 
       // First, let's get the visible rect of the dependency
-      final Rect rect = mTmpRect;
+      final Rect rect = tmpRect;
       ViewGroupUtils.getDescendantRect(parent, appBarLayout, rect);
 
       if (rect.bottom <= appBarLayout.getMinimumHeightForVisibleOverlappingContent()) {
         // If the anchor's bottom is below the seam, we'll animate our FAB out
-        child.hide(mInternalAutoHideListener, false);
+        child.hide(internalAutoHideListener, false);
       } else {
         // Else, we'll animate our FAB back in
-        child.show(mInternalAutoHideListener, false);
+        child.show(internalAutoHideListener, false);
       }
       return true;
     }
@@ -924,9 +919,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       }
       CoordinatorLayout.LayoutParams lp = (CoordinatorLayout.LayoutParams) child.getLayoutParams();
       if (bottomSheet.getTop() < child.getHeight() / 2 + lp.topMargin) {
-        child.hide(mInternalAutoHideListener, false);
+        child.hide(internalAutoHideListener, false);
       } else {
-        child.show(mInternalAutoHideListener, false);
+        child.show(internalAutoHideListener, false);
       }
       return true;
     }
@@ -962,7 +957,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         @NonNull Rect rect) {
       // Since we offset so that any internal shadow padding isn't shown, we need to make
       // sure that the shadow isn't used for any dodge inset calculations
-      final Rect shadowPadding = child.mShadowPadding;
+      final Rect shadowPadding = child.shadowPadding;
       rect.set(
           child.getLeft() + shadowPadding.left,
           child.getTop() + shadowPadding.top,
@@ -977,7 +972,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
      * parent's edges.
      */
     private void offsetIfNeeded(CoordinatorLayout parent, FloatingActionButton fab) {
-      final Rect padding = fab.mShadowPadding;
+      final Rect padding = fab.shadowPadding;
 
       if (padding != null && padding.centerX() > 0 && padding.centerY() > 0) {
         final CoordinatorLayout.LayoutParams lp =
@@ -1163,10 +1158,10 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   private FloatingActionButtonImpl getImpl() {
-    if (mImpl == null) {
-      mImpl = createImpl();
+    if (impl == null) {
+      impl = createImpl();
     }
-    return mImpl;
+    return impl;
   }
 
   private FloatingActionButtonImpl createImpl() {
@@ -1187,9 +1182,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     @Override
     public void setShadowPadding(int left, int top, int right, int bottom) {
-      mShadowPadding.set(left, top, right, bottom);
+      shadowPadding.set(left, top, right, bottom);
       setPadding(
-          left + mImagePadding, top + mImagePadding, right + mImagePadding, bottom + mImagePadding);
+          left + imagePadding, top + imagePadding, right + imagePadding, bottom + imagePadding);
     }
 
     @Override
@@ -1199,7 +1194,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     @Override
     public boolean isCompatPaddingEnabled() {
-      return mCompatPadding;
+      return compatPadding;
     }
   }
 }

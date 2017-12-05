@@ -33,11 +33,11 @@ import android.widget.TextView;
 @RestrictTo(LIBRARY_GROUP)
 public class SnackbarContentLayout extends LinearLayout
     implements BaseTransientBottomBar.ContentViewCallback {
-  private TextView mMessageView;
-  private Button mActionView;
+  private TextView messageView;
+  private Button actionView;
 
-  private int mMaxWidth;
-  private int mMaxInlineActionWidth;
+  private int maxWidth;
+  private int maxInlineActionWidth;
 
   public SnackbarContentLayout(Context context) {
     this(context, null);
@@ -46,8 +46,8 @@ public class SnackbarContentLayout extends LinearLayout
   public SnackbarContentLayout(Context context, AttributeSet attrs) {
     super(context, attrs);
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
-    mMaxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
-    mMaxInlineActionWidth =
+    maxWidth = a.getDimensionPixelSize(R.styleable.SnackbarLayout_android_maxWidth, -1);
+    maxInlineActionWidth =
         a.getDimensionPixelSize(R.styleable.SnackbarLayout_maxActionInlineWidth, -1);
     a.recycle();
   }
@@ -55,24 +55,24 @@ public class SnackbarContentLayout extends LinearLayout
   @Override
   protected void onFinishInflate() {
     super.onFinishInflate();
-    mMessageView = findViewById(R.id.snackbar_text);
-    mActionView = findViewById(R.id.snackbar_action);
+    messageView = findViewById(R.id.snackbar_text);
+    actionView = findViewById(R.id.snackbar_action);
   }
 
   public TextView getMessageView() {
-    return mMessageView;
+    return messageView;
   }
 
   public Button getActionView() {
-    return mActionView;
+    return actionView;
   }
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
 
-    if (mMaxWidth > 0 && getMeasuredWidth() > mMaxWidth) {
-      widthMeasureSpec = MeasureSpec.makeMeasureSpec(mMaxWidth, MeasureSpec.EXACTLY);
+    if (maxWidth > 0 && getMeasuredWidth() > maxWidth) {
+      widthMeasureSpec = MeasureSpec.makeMeasureSpec(maxWidth, MeasureSpec.EXACTLY);
       super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }
 
@@ -80,12 +80,12 @@ public class SnackbarContentLayout extends LinearLayout
         getResources().getDimensionPixelSize(R.dimen.design_snackbar_padding_vertical_2lines);
     final int singleLineVPadding =
         getResources().getDimensionPixelSize(R.dimen.design_snackbar_padding_vertical);
-    final boolean isMultiLine = mMessageView.getLayout().getLineCount() > 1;
+    final boolean isMultiLine = messageView.getLayout().getLineCount() > 1;
 
     boolean remeasure = false;
     if (isMultiLine
-        && mMaxInlineActionWidth > 0
-        && mActionView.getMeasuredWidth() > mMaxInlineActionWidth) {
+        && maxInlineActionWidth > 0
+        && actionView.getMeasuredWidth() > maxInlineActionWidth) {
       if (updateViewsWithinLayout(
           VERTICAL, multiLineVPadding, multiLineVPadding - singleLineVPadding)) {
         remeasure = true;
@@ -109,9 +109,9 @@ public class SnackbarContentLayout extends LinearLayout
       setOrientation(orientation);
       changed = true;
     }
-    if (mMessageView.getPaddingTop() != messagePadTop
-        || mMessageView.getPaddingBottom() != messagePadBottom) {
-      updateTopBottomPadding(mMessageView, messagePadTop, messagePadBottom);
+    if (messageView.getPaddingTop() != messagePadTop
+        || messageView.getPaddingBottom() != messagePadBottom) {
+      updateTopBottomPadding(messageView, messagePadTop, messagePadBottom);
       changed = true;
     }
     return changed;
@@ -132,23 +132,23 @@ public class SnackbarContentLayout extends LinearLayout
 
   @Override
   public void animateContentIn(int delay, int duration) {
-    mMessageView.setAlpha(0f);
-    mMessageView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
+    messageView.setAlpha(0f);
+    messageView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
 
-    if (mActionView.getVisibility() == VISIBLE) {
-      mActionView.setAlpha(0f);
-      mActionView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
+    if (actionView.getVisibility() == VISIBLE) {
+      actionView.setAlpha(0f);
+      actionView.animate().alpha(1f).setDuration(duration).setStartDelay(delay).start();
     }
   }
 
   @Override
   public void animateContentOut(int delay, int duration) {
-    mMessageView.setAlpha(1f);
-    mMessageView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
+    messageView.setAlpha(1f);
+    messageView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
 
-    if (mActionView.getVisibility() == VISIBLE) {
-      mActionView.setAlpha(1f);
-      mActionView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
+    if (actionView.getVisibility() == VISIBLE) {
+      actionView.setAlpha(1f);
+      actionView.animate().alpha(0f).setDuration(duration).setStartDelay(delay).start();
     }
   }
 }
