@@ -23,6 +23,7 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.LabelVisibilityMode;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;
@@ -44,12 +45,8 @@ public class BottomNavigationViewActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         BottomNavigationView navigationView = (BottomNavigationView) view;
         navigationView.setItemIconTintList(tint);
-
-        uiController.loopMainThreadUntilIdle();
       }
     };
   }
@@ -70,12 +67,50 @@ public class BottomNavigationViewActions {
 
       @Override
       public void perform(UiController uiController, View view) {
-        uiController.loopMainThreadUntilIdle();
-
         BottomNavigationView navigationView = (BottomNavigationView) view;
         navigationView.getMenu().findItem(menuItemId).setIcon(iconDrawable);
+      }
+    };
+  }
 
-        uiController.loopMainThreadUntilIdle();
+  /** Add a navigation item to the bottom navigation view. */
+  public static ViewAction addMenuItem(final String title) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "Add item with title" + title;
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomNavigationView navigationView = (BottomNavigationView) view;
+        navigationView.getMenu().add(title);
+      }
+    };
+  }
+
+  /** Set the bottom navigation view's label visibility mode. */
+  public static ViewAction setLabelVisibilityMode(@LabelVisibilityMode final int mode) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set the bottom navigation's label visibility mode to " + mode;
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomNavigationView navigationView = (BottomNavigationView) view;
+        navigationView.setLabelVisibilityMode(mode);
       }
     };
   }

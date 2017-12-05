@@ -15,8 +15,10 @@
  */
 package android.support.design.widget;
 
+import static android.support.design.testutils.BottomNavigationViewActions.addMenuItem;
 import static android.support.design.testutils.BottomNavigationViewActions.setIconForMenuItem;
 import static android.support.design.testutils.BottomNavigationViewActions.setItemIconTintList;
+import static android.support.design.testutils.BottomNavigationViewActions.setLabelVisibilityMode;
 import static android.support.test.espresso.Espresso.onView;
 import static android.support.test.espresso.action.ViewActions.click;
 import static android.support.test.espresso.assertion.ViewAssertions.matches;
@@ -24,6 +26,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDescendantOfA
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import static android.support.test.espresso.matcher.ViewMatchers.withText;
+import static org.hamcrest.CoreMatchers.not;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
@@ -534,6 +537,66 @@ public class BottomNavigationViewTest {
 
   @Test
   @SmallTest
+  public void testLabelVisibilityDefaultShouldNotShift() {
+    // Check that there are 3 menu items, so that shifting mode should not be enabled.
+    assertEquals(3, mBottomNavigation.getMenu().size());
+
+    // Ensure that the items do not shift when there are 3 or less items.
+    onView(withId(R.id.destination_profile)).perform(click());
+    checkLabelVisibilityIsLabeled();
+
+    onView(withId(R.id.destination_people)).perform(click());
+    checkLabelVisibilityIsLabeled();
+  }
+
+  @Test
+  @SmallTest
+  public void testLabelVisibilityDefaultShouldShift() {
+    // Add a navigation item to trigger the default shifting behavior when there are more than 3
+    // navigation items.
+    onView(withId(R.id.bottom_navigation)).perform(addMenuItem("Settings"));
+    assertEquals(4, mBottomNavigation.getMenu().size());
+
+    // Ensure that the items shift when there are more than 3 items.
+    onView(withId(R.id.destination_profile)).perform(click());
+    checkLabelVisibilityIsSelected();
+
+    onView(withId(R.id.destination_people)).perform(click());
+    checkLabelVisibilityIsSelected();
+  }
+
+  @Test
+  @SmallTest
+  public void testLabelVisibilityModeUnlabeledLabelsAreNotDisplayed() {
+    onView(withId(R.id.bottom_navigation))
+        .perform(setLabelVisibilityMode(BottomNavigationView.LABEL_VISIBILITY_UNLABELED));
+    onView(withId(R.id.destination_profile)).perform(click());
+
+    checkLabelVisibilityIsUnlabeled();
+  }
+
+  @Test
+  @SmallTest
+  public void testLabelVisibilityModeLabeledLabelsAreDisplayed() {
+    onView(withId(R.id.bottom_navigation))
+        .perform(setLabelVisibilityMode(BottomNavigationView.LABEL_VISIBILITY_LABELED));
+    onView(withId(R.id.destination_profile)).perform(click());
+
+    checkLabelVisibilityIsLabeled();
+  }
+
+  @Test
+  @SmallTest
+  public void testLabelVisibilityModeSelectedLabelsAreDisplayedWhenSelected() {
+    onView(withId(R.id.bottom_navigation))
+        .perform(setLabelVisibilityMode(BottomNavigationView.LABEL_VISIBILITY_SELECTED));
+    onView(withId(R.id.destination_profile)).perform(click());
+
+    checkLabelVisibilityIsSelected();
+  }
+
+  @Test
+  @SmallTest
   public void testSavedState() throws Throwable {
     // Select an item other than the first
     onView(
@@ -607,5 +670,51 @@ public class BottomNavigationViewTest {
         assertFalse(item.isChecked());
       }
     }
+  }
+
+  private void checkLabelVisibilityIsLabeled() {
+    for (int id : MENU_CONTENT_ITEM_IDS) {
+      MenuItem item = mBottomNavigation.getMenu().findItem(id);
+      if (item.isChecked()) {
+        checkLargeLabelIsShown(String.valueOf(item.getTitle()));
+      } else {
+        checkSmallLabelIsShown(String.valueOf(item.getTitle()));
+      }
+    }
+  }
+
+  private void checkLabelVisibilityIsUnlabeled() {
+    for (int id : MENU_CONTENT_ITEM_IDS) {
+      checkNoLabelIsShown(String.valueOf(mBottomNavigation.getMenu().findItem(id).getTitle()));
+    }
+  }
+
+  private void checkLabelVisibilityIsSelected() {
+    for (int id : MENU_CONTENT_ITEM_IDS) {
+      MenuItem item = mBottomNavigation.getMenu().findItem(id);
+      if (item.isChecked()) {
+        checkLargeLabelIsShown(String.valueOf(item.getTitle()));
+      } else {
+        checkNoLabelIsShown(String.valueOf(item.getTitle()));
+      }
+    }
+  }
+
+  private void checkSmallLabelIsShown(String label) {
+    onView(allOf(withId(R.id.largeLabel), withText(label))).check(matches(not(isDisplayed())));
+    onView(allOf(withId(R.id.smallLabel), withText(label))).check(matches(isDisplayed()));
+  }
+
+  private void checkLargeLabelIsShown(String label) {
+    onView(allOf(withId(R.id.largeLabel), withText(label))).check(matches(isDisplayed()));
+    onView(allOf(withId(R.id.smallLabel), withText(label)))
+        .check(matches(not(isDisplayed())));
+  }
+
+  private void checkNoLabelIsShown(String label) {
+    onView(allOf(withId(R.id.largeLabel), withText(label)))
+        .check(matches(not(isDisplayed())));
+    onView(allOf(withId(R.id.smallLabel), withText(label)))
+        .check(matches(not(isDisplayed())));
   }
 }

@@ -25,6 +25,7 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.design.R;
 import android.support.design.widget.BottomNavigationView;
+import android.support.design.widget.BottomNavigationView.LabelVisibilityMode;
 import android.support.design.widget.BottomNavigationView.ShiftingMode;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
@@ -56,6 +57,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
   private int mShiftingModeFlag = BottomNavigationView.SHIFTING_MODE_AUTO;
   private boolean mItemHorizontalTranslation;
+  @LabelVisibilityMode private int labelVisibilityMode;
 
   private BottomNavigationItemView[] mButtons;
   private int mSelectedItemId = 0;
@@ -290,7 +292,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    *
    * @param shiftingMode one of {@link ShiftingMode#SHIFTING_MODE_OFF}, {@link
    *     ShiftingMode#SHIFTING_MODE_ON}, or {@link ShiftingMode#SHIFTING_MODE_AUTO}
+   * @deprecated use {@link #setLabelVisibilityMode(int)} instead
    */
+  @Deprecated
   public void setShiftingMode(@ShiftingMode int shiftingMode) {
     mShiftingModeFlag = shiftingMode;
   }
@@ -300,10 +304,40 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    *
    * @return Shifting mode flag for this BottomNavigationView (default {@link
    *     ShiftingMode#SHIFTING_MODE_AUTO})
+   * @deprecated use {@link #getLabelVisibilityMode()} instead
    */
+  @Deprecated
   @ShiftingMode
   public int getShiftingMode() {
     return mShiftingModeFlag;
+  }
+
+  /**
+   * Sets the navigation items' label visibility mode.
+   *
+   * <p>The label is either always shown, never shown, or only shown when activated. Also supports
+   * legacy mode, which uses {@link ShiftingMode} to decide whether the label should be shown.
+   *
+   * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
+   * @param labelVisibilityMode mode which decides whether or not the label should be shown. Can be
+   *     one of {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}, {@link
+   *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
+   *     LabelVisibilityMode#LABEL_VISIBILITY_LABELED}, or {@link
+   *     LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED}
+   * @see #getLabelVisibilityMode()
+   */
+  public void setLabelVisibilityMode(@LabelVisibilityMode int labelVisibilityMode) {
+    this.labelVisibilityMode = labelVisibilityMode;
+  }
+
+  /**
+   * Returns the current label visibility mode used by this {@link BottomNavigationView}.
+   *
+   * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
+   * @see #setLabelVisibilityMode(int)
+   */
+  public int getLabelVisibilityMode() {
+    return labelVisibilityMode;
   }
 
   /**
@@ -357,6 +391,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       child.setTextColor(mItemTextColor);
       child.setItemBackground(mItemBackgroundRes);
       child.setShiftingMode(shifting);
+      child.setLabelVisibilityMode(labelVisibilityMode);
       child.initialize((MenuItemImpl) mMenu.getItem(i), 0);
       child.setItemPosition(i);
       child.setOnClickListener(mOnClickListener);
@@ -396,6 +431,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     for (int i = 0; i < menuSize; i++) {
       mPresenter.setUpdateSuspended(true);
       mButtons[i].setShiftingMode(shifting);
+      mButtons[i].setLabelVisibilityMode(labelVisibilityMode);
       mButtons[i].initialize((MenuItemImpl) mMenu.getItem(i), 0);
       mPresenter.setUpdateSuspended(false);
     }
