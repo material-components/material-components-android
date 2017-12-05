@@ -240,6 +240,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private boolean useCompatRipple;
   @Nullable private ColorStateList compatRippleColor;
   private WeakReference<Delegate> delegate = new WeakReference<>(null);
+  private boolean chipTextWidthDirty = true;
+  private float chipTextWidth;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -409,7 +411,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         (chipStartPadding
             + calculateChipIconWidth()
             + textStartPadding
-            + calculateChipTextWidth(chipText)
+            + getChipTextWidth()
             + textEndPadding
             + calculateCloseIconWidth()
             + chipEndPadding);
@@ -419,18 +421,6 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Override
   public int getIntrinsicHeight() {
     return (int) chipMinHeight;
-  }
-
-  @Override
-  public int getMinimumWidth() {
-    return (int)
-        (chipStartPadding
-            + calculateChipIconWidth()
-            + textStartPadding
-            + calculateChipTextWidth("M") // Show one character at minimum.
-            + textEndPadding
-            + calculateCloseIconWidth()
-            + chipEndPadding);
   }
 
   /** Returns whether we will show the chip icon. */
@@ -459,6 +449,17 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       return iconStartPadding + chipIconSize + iconEndPadding;
     }
     return 0f;
+  }
+
+  private float getChipTextWidth() {
+    if (!chipTextWidthDirty) {
+      return chipTextWidth;
+    }
+
+    chipTextWidth = calculateChipTextWidth(chipText);
+
+    chipTextWidthDirty = false;
+    return chipTextWidth;
   }
 
   private float calculateChipTextWidth(@Nullable CharSequence charSequence) {
@@ -589,13 +590,24 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (chipText != null) {
       // TODO: Bounds may be smaller than intrinsic size. Ellipsize, clip, or multiline the text.
       Align align = calculateChipTextOrigin(bounds, pointF);
+      calculateChipTextBounds(bounds, rectF);
 
       if (textAppearance != null) {
         textPaint.drawableState = getState();
         textAppearance.updateDrawState(context, textPaint);
       }
       textPaint.setTextAlign(align);
+
+      boolean clip = getChipTextWidth() > rectF.width();
+      int saveCount = 0;
+      if (clip) {
+        saveCount = canvas.save();
+        canvas.clipRect(rectF);
+      }
       canvas.drawText(chipText, 0, chipText.length(), pointF.x, pointF.y, textPaint);
+      if (clip) {
+        canvas.restoreToCount(saveCount);
+      }
     }
   }
 
@@ -680,7 +692,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    */
   private Align calculateChipTextOrigin(Rect bounds, PointF pointF) {
     pointF.set(0, 0);
-    Align align = null;
+    Align align = Align.LEFT;
 
     if (chipText != null) {
       float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
@@ -714,6 +726,33 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private float calculateChipTextCenterFromBaseline() {
     textPaint.getFontMetrics(fontMetrics);
     return (fontMetrics.descent + fontMetrics.ascent) / 2f;
+  }
+
+  /**
+   * Calculates the chip text's ChipDrawable-absolute bounds (top-left is <code>
+   * [ChipDrawable.getBounds().left, ChipDrawable.getBounds().top]</code>).
+   */
+  private void calculateChipTextBounds(Rect bounds, RectF outBounds) {
+    outBounds.setEmpty();
+
+    if (chipText != null) {
+      float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
+      float offsetFromEnd = chipEndPadding + calculateCloseIconWidth() + textEndPadding;
+      ;
+
+      if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
+        outBounds.left = bounds.left + offsetFromStart;
+        outBounds.right = bounds.right - offsetFromEnd;
+      } else {
+        outBounds.right = bounds.right - offsetFromStart;
+        outBounds.left = bounds.left + offsetFromStart;
+      }
+
+      // Top and bottom included for completion. Don't position the chip text vertically based on
+      // these bounds. Instead, use #calculateChipTextOrigin().
+      outBounds.top = bounds.top;
+      outBounds.bottom = bounds.bottom;
+    }
   }
 
   /**
@@ -1277,6 +1316,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   public void setChipText(@Nullable CharSequence chipText) {
     if (this.chipText != chipText) {
       this.chipText = BidiFormatter.getInstance().unicodeWrap(chipText);
+      chipTextWidthDirty = true;
+
       invalidateSelf();
       onSizeChange();
     }
@@ -1297,6 +1338,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
       if (textAppearance != null) {
         textAppearance.updateMeasureState(context, textPaint);
+        chipTextWidthDirty = true;
       }
 
       onStateChange(getState());

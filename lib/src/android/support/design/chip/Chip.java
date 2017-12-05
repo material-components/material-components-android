@@ -35,6 +35,7 @@ import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
@@ -72,19 +73,20 @@ import java.util.List;
  * sub-views, and contain their own navigation behavior and state.
  *
  * <p>All attributes from {@link R.styleable#ChipDrawable} are supported. Do not use the {@code
- * android:button} and {@code android:text} attributes. They will be ignored because Chip manages
- * its own button Drawable and text. The basic attributes you can set are:
+ * android:background} and {@code android:text} attributes. They will be ignored because Chip
+ * manages its own background Drawable and text. The basic attributes you can set are:
  *
  * <ul>
  *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
  *       false, the chip acts like a button.
  *   <li>{@link R.attr#chipText app:chipText} - Sets the text of the chip.
- *   <li>{@link R.attr#chipIcon app:chipIcon} - Sets the icon of the chip, or use @null to display
- *       no icon. Usually on the left.
- *   <li>{@link R.attr#checkedIcon app:checkedIcon} - Sets a custom icon to use when checked, or
- *       use @null to display no icon. Usually on the left.
- *   <li>{@link R.attr#closeIcon app:closeIcon} - Sets a custom icon that the user can click to
- *       close, or use @null to display no icon. Usually on the right.
+ *   <li>{@link R.attr#chipIcon app:chipIcon} and {@link R.attr#chipIconEnabled app:chipIconEnabled}
+ *       - Sets the icon of the chip. Usually on the left.
+ *   <li>{@link R.attr#checkedIcon app:checkedIcon} and {@link R.attr#checkedIconEnabled
+ *       app:checkedIconEnabled} - Sets a custom icon to use when checked. Usually on the left.
+ *   <li>{@link R.attr#closeIcon app:closeIcon} and {@link R.attr#closeIconEnabled
+ *       app:closeIconEnabled} - Sets a custom icon that the user can click to close. Usually on the
+ *       right.
  * </ul>
  *
  * <p>You can register a listener on the main chip with {@link #setOnClickListener(OnClickListener)}
@@ -132,7 +134,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     ChipDrawable drawable =
         ChipDrawable.createFromAttributes(
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
-    setButtonDrawable(drawable);
+    setChipDrawable(drawable);
 
     touchHelper = new ChipTouchHelper(this);
     ViewCompat.setAccessibilityDelegate(this, touchHelper);
@@ -159,21 +161,20 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  @Nullable
-  @Override
-  public ChipDrawable getButtonDrawable() {
+  /**
+   * Returns the ChipDrawable backing this chip.
+   */
+  public Drawable getChipDrawable() {
     return chipDrawable;
   }
 
-  @Override
-  public void setButtonDrawable(Drawable buttonDrawable) {
-    if (!(buttonDrawable instanceof ChipDrawable)) {
-      throw new IllegalArgumentException("Button drawable must be an instance of ChipDrawable.");
-    }
-
-    if (chipDrawable != buttonDrawable) {
+  /**
+   * Sets the ChipDrawable backing this chip.
+   */
+  public void setChipDrawable(@NonNull ChipDrawable drawable) {
+    if (chipDrawable != drawable) {
       unapplyChipDrawable(chipDrawable);
-      chipDrawable = (ChipDrawable) buttonDrawable;
+      chipDrawable = drawable;
       applyChipDrawable(chipDrawable);
 
       if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
@@ -182,10 +183,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             new RippleDrawable(
                 getCompositeChipRippleColorStateList(chipDrawable), chipDrawable, null);
         chipDrawable.setUseCompatRipple(false);
-        super.setButtonDrawable(ripple);
+        ViewCompat.setBackground(this, ripple);
       } else {
         chipDrawable.setUseCompatRipple(true);
-        super.setButtonDrawable(chipDrawable);
+        ViewCompat.setBackground(this, chipDrawable);
       }
     }
   }
@@ -196,7 +197,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  private void applyChipDrawable(ChipDrawable chipDrawable) {
+  private void applyChipDrawable(@NonNull ChipDrawable chipDrawable) {
     chipDrawable.setDelegate(this);
   }
 
