@@ -24,19 +24,18 @@ and a scrollable content view, such as
 
 ## Design & API Documentation
 
-*   [Material Design
-    guidelines: UI regions](https://material.io/guidelines/layout/structure.html#structure-ui-regions)
+*   [Material Design guidelines: UI
+    regions](https://material.io/guidelines/layout/structure.html#structure-ui-regions)
     <!--{: .icon-list-item.icon-list-item--spec }-->
-*   [Material Design guidelines:
-    Scrolling app bar behavior](https://material.io/guidelines/patterns/scrolling-techniques.html#scrolling-techniques-behavior)
+*   [Material Design guidelines: Scrolling app bar
+    behavior](https://material.io/guidelines/patterns/scrolling-techniques.html#scrolling-techniques-behavior)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/CollapsingToolbarLayout.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/CollapsingToolbarLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 *   [Class
     overview](https://developer.android.com/reference/android/support/design/widget/CollapsingToolbarLayout.html)
-    <!--{: .icon-list-item.icon-list-item--link }-->
-<!--{: .icon-list }-->
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 

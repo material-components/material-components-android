@@ -14,26 +14,10 @@
  * limitations under the License.
  */
 
-apply plugin: 'com.android.application'
+/** @hide */
+@RestrictTo(LIBRARY_GROUP)
+package android.support.design.internal;
 
-dependencies {
-  api compatibility("compat")
-  api compatibility("v7/appcompat")
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-  api project(fromPath("lib"))
-  api project(fromPath("lib/java/android/support/design/animation"))
-  api project(fromPath("testing/java/android/support/design/testapp/base"))
-}
-
-android {
-  sourceSets {
-    main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDirs = [ '.' ]
-    main.java.excludes = [
-      '**/build/**',
-    ]
-    // Only include things in this directory, not subdirectories
-    main.java.includes = [ '*.java' ]
-    main.res.srcDirs = [ 'res' ]
-  }
-}
+import android.support.annotation.RestrictTo;

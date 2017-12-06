@@ -12,8 +12,8 @@ the **base/** directory, while all other widgets are located under **src/**.
 
 Classes in the library are separated into two directories:
 
-*   [internal/](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/internal/)
-*   [widget/](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/)
+*   [internal/](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/internal/)
+*   [widget/](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/)
 
 Classes in **widget/** comprise the public API; these can be used directly in your
 applications. Classes in **internal/** are part of the protected API and are used to

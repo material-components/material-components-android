@@ -24,11 +24,12 @@ side, used to display in-app navigation links.
 
 ## Design & API Documentation
 
--   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/NavigationView.java)
+-   [Class
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/NavigationView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
--   [Class overview](https://developer.android.com/reference/android/support/design/widget/NavigationView.html)
-    <!--{: .icon-list-item.icon-list-item--link }-->
-<!--{: .icon-list }-->
+-   [Class
+    overview](https://developer.android.com/reference/android/support/design/widget/NavigationView.html)
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 

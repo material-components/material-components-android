@@ -17,13 +17,12 @@ transitions onto the screen.
 
 ## Design & API Documentation
 
-- [Class
-  definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/CoordinatorLayout.java)
-  <!--{: .icon-list-item.icon-list-item--link }-->
-- [Class
-  overview](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
-  <!--{: .icon-list-item.icon-list-item--link }-->
-<!--{: .icon-list }-->
+-   [Class
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/CoordinatorLayout.java)
+    <!--{: .icon-list-item.icon-list-item--link }-->
+-   [Class
+    overview](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 

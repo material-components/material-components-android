@@ -23,13 +23,15 @@ on implementing `TabLayout`.
 
 ## Design & API Documentation
 
-- [Material Design guidelines: Tabs](https://material.io/guidelines/components/tabs.html)
-  <!--{: .icon-list-item.icon-list-item--spec }-->
-- [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/TabLayout.java)
-  <!--{: .icon-list-item.icon-list-item--link }-->
-- [Class overview](https://developer.android.com/reference/android/support/design/widget/TabLayout.html)
-  <!--{: .icon-list-item.icon-list-item--link }-->
-<!--{: .icon-list }-->
+-   [Material Design guidelines:
+    Tabs](https://material.io/guidelines/components/tabs.html)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+-   [Class
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/TabLayout.java)
+    <!--{: .icon-list-item.icon-list-item--link }-->
+-   [Class
+    overview](https://developer.android.com/reference/android/support/design/widget/TabLayout.html)
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 

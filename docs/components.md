@@ -10,5 +10,5 @@
 *   [MaterialButton](components/MaterialButton.md)
 *   [NavigationView](components/NavigationView.md)
 *   [Snackbar](components/Snackbar.md)
-*   [TabLayout](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/TabLayout.java)
+*   [TabLayout](components/TabLayout.md)
 *   [TextInputLayout](components/TextInputLayout.md)

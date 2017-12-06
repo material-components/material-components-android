@@ -6,7 +6,9 @@ version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   api compatibility("annotations")
-  api project(fromPath("lib/src/android/support/design/math"))
+  api compatibility("v7/cardview")
+
+  api project(fromPath("lib/java/android/support/design/circularreveal"))
 }
 
 android {
@@ -15,9 +17,6 @@ android {
     main.java.srcDir '.'
     main.java.excludes = [
       '**/build/**',
-    ]
-    main.java.includes = [
-      '*.java',
     ]
     main.res.srcDirs = [
       'res',

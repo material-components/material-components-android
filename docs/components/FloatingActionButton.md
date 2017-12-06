@@ -28,16 +28,15 @@ action button, it may hide itself.
 
 ## Design & API Documentation
 
--   [Material Design
-    guidelines: Floating Action Buttons](https://material.io/guidelines/components/buttons-floating-action-button.html)
+-   [Material Design guidelines: Floating Action
+    Buttons](https://material.io/guidelines/components/buttons-floating-action-button.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/FloatingActionButton.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/FloatingActionButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
     overview](https://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html)
-    <!--{: .icon-list-item.icon-list-item--link }-->
-<!--{: .icon-list }-->
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 

@@ -21,7 +21,7 @@ dependencies {
   api compatibility("v7/appcompat")
 
   api project(fromPath("lib"))
-  api project(fromPath("lib/src/android/support/design/backlayer"))
+  api project(fromPath("lib/java/android/support/design/backlayer"))
   api project(fromPath("testing/java/android/support/design/testapp/base"))
 }
 

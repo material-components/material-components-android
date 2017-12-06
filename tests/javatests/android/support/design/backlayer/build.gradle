@@ -36,7 +36,7 @@ dependencies {
   implementation compatibility("v7/appcompat")
 
   implementation project(fromPath("lib"))
-  implementation project(fromPath("lib/src/android/support/design/backlayer"))
+  implementation project(fromPath("lib/java/android/support/design/backlayer"))
 }
 
 android {

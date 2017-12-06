@@ -21,17 +21,16 @@ layouts.
 
 ## Design & API Documentation
 
--   [Material Design
-    guidelines: Text Fields](https://material.io/guidelines/components/text-fields.html)
+-   [Material Design guidelines: Text
+    Fields](https://material.io/guidelines/components/text-fields.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/TextInputLayout.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/TextInputLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 -   [Class
     overview](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html)
-    <!--{: .icon-list-item.icon-list-item--link }-->
-<!--{: .icon-list }-->
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 

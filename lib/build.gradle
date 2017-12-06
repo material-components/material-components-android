@@ -14,13 +14,13 @@ dependencies {
   api compatibility("v7/appcompat")
   api compatibility("v7/recyclerview")
 
-  api project(fromPath("lib/src/android/support/design/animation"))
-  api project(fromPath("lib/src/android/support/design/circularreveal"))
-  api project(fromPath("lib/src/android/support/design/circularreveal/cardview"))
-  api project(fromPath("lib/src/android/support/design/math"))
-  api project(fromPath("lib/src/android/support/design/resources"))
-  api project(fromPath("lib/src/android/support/design/ripple"))
-  api project(fromPath("lib/src/android/support/design/stateful"))
+  api project(fromPath("lib/java/android/support/design/animation"))
+  api project(fromPath("lib/java/android/support/design/circularreveal"))
+  api project(fromPath("lib/java/android/support/design/circularreveal/cardview"))
+  api project(fromPath("lib/java/android/support/design/math"))
+  api project(fromPath("lib/java/android/support/design/resources"))
+  api project(fromPath("lib/java/android/support/design/ripple"))
+  api project(fromPath("lib/java/android/support/design/stateful"))
 
   testImplementation("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
     exclude module: 'support-annotations'
@@ -34,7 +34,7 @@ dependencies {
 android {
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDir 'src'
+    main.java.srcDir 'java'
     main.java.includes = [
       'android/support/design/internal/*.java',
       'android/support/design/widget/**/*.java',
@@ -49,7 +49,7 @@ android {
     main.assets.srcDir 'assets'
     main.resources.srcDir 'src'
 
-    test.java.srcDir 'jvmtests/javatests'
+    test.java.srcDir 'javatests'
   }
 
   buildTypes.all {

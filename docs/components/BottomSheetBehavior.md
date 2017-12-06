@@ -25,13 +25,15 @@ Note: If you want to use Bottom Sheets that are modal (dialogs), use
 
 ## Design & API Documentation
 
--   [Material Design guidelines: Bottom Sheets](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
+-   [Material Design guidelines: Bottom
+    Sheets](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/BottomSheetBehavior.java)
+-   [Class
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/BottomSheetBehavior.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
--   [Class overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html)
-    <!--{: .icon-list-item.icon-list-item--link }-->
-<!--{: .icon-list }-->
+-   [Class
+    overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html)
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 

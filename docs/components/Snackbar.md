@@ -22,15 +22,15 @@ action that was just taken, or retrying an action that had failed.
 
 ## Design & API Documentation
 
-- [Material Design guidelines: Snackbars](https://material.io/guidelines/components/snackbars-toasts.html)
-  <!--{: .icon-list-item.icon-list-item--spec }-->
-- [Class
-  definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/widget/Snackbar.java)
-  <!--{: .icon-list-item.icon-list-item--link }-->
-- [Class
-  overview](https://developer.android.com/reference/android/support/design/widget/Snackbar.html)
-  <!--{: .icon-list-item.icon-list-item--link }-->
-<!--{: .icon-list }-->
+-   [Material Design guidelines:
+    Snackbars](https://material.io/guidelines/components/snackbars-toasts.html)
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+-   [Class
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/Snackbar.java)
+    <!--{: .icon-list-item.icon-list-item--link }-->
+-   [Class
+    overview](https://developer.android.com/reference/android/support/design/widget/Snackbar.html)
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 

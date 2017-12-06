@@ -34,10 +34,10 @@ content layer.
 ## Design & API Documentation
 
 -   [BackLayerLayout class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/backlayer/BackLayerLayout.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/backlayer/BackLayerLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [BackLayerSiblingBehavior class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/backlayer/BackLayerSiblingBehavior.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/backlayer/BackLayerSiblingBehavior.java)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage

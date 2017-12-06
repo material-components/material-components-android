@@ -25,7 +25,7 @@ different actions. These levels of emphasis include:
     Buttons](https://material.io/guidelines/components/buttons.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/src/android/support/design/button/MaterialButton.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/button/MaterialButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
     overview](https://developer.android.com/reference/android/support/design/button/MaterialButton.html)

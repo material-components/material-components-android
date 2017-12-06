@@ -30,7 +30,7 @@ dependencies {
   implementation 'com.google.dexmaker:dexmaker:1.2'
   implementation 'com.google.dexmaker:dexmaker-mockito:1.2'
 
-  implementation project(fromPath("lib/src/android/support/design/animation"))
+  implementation project(fromPath("lib/java/android/support/design/animation"))
 }
 
 android {
