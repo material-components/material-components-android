@@ -231,6 +231,11 @@
     <item name="fabCradleVerticalOffset">@dimen/mtrl_bottomappbar_fab_cradle_vertical_offset</item>
   </style>
 
+  <style name="Widget.MaterialComponents.ChipGroup" parent="android:Widget">
+    <item name="chipSpacing">4dp</item>
+    <item name="singleLine">false</item>
+  </style>
+
   <!-- Base style for Chips. You should use one of the sub-styles instead. -->
   <style name="Widget.MaterialComponents.Chip" parent="android:Widget">
     <item name="android:focusable">true</item>
