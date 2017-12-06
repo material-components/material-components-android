@@ -64,8 +64,6 @@
   <!-- 96% opacity white -->
   <color name="mtrl_bottomappbar_default_tint">#F5FFFFFF</color>
 
-  <color name="mtrl_chip_ripple_color">#000000</color>
-
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
 </resources>
