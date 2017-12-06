@@ -264,6 +264,7 @@ public class TabLayout extends HorizontalScrollView {
   ColorStateList tabTextColors;
   ColorStateList tabIconTint;
   ColorStateList tabRippleColorStateList;
+  @Nullable Drawable tabSelectedIndicator;
 
   android.graphics.PorterDuff.Mode tabIconTintMode;
   float tabTextSize;
@@ -329,6 +330,8 @@ public class TabLayout extends HorizontalScrollView {
     tabStrip.setSelectedIndicatorHeight(
         a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, 0));
     tabStrip.setSelectedIndicatorColor(a.getColor(R.styleable.TabLayout_tabIndicatorColor, 0));
+    setTabSelectedIndicator(
+        MaterialResources.getDrawable(context, a, R.styleable.TabLayout_tabIndicator));
 
     tabPaddingStart =
         tabPaddingTop =
@@ -877,6 +880,54 @@ public class TabLayout extends HorizontalScrollView {
    */
   public void setTabRippleColorResource(@ColorRes int tabRippleColorResourceId) {
     setTabRippleColor(AppCompatResources.getColorStateList(getContext(), tabRippleColorResourceId));
+  }
+
+  /**
+   * Returns the selection indicator drawable for this TabLayout.
+   *
+   * @return The drawable used as the tab selection indicator, if set.
+   * @see #setTabSelectedIndicator(Drawable)
+   * @see #setTabSelectedIndicator(int)
+   */
+  @Nullable
+  public Drawable getTabSelectedIndicator() {
+    return tabSelectedIndicator;
+  }
+
+  /**
+   * Sets the selection indicator for this TabLayout. By default, this is a line along the bottom of
+   * the tab. If {@code tabIndicatorColor} is specified via the TabLayout's style or via {@link
+   * #setSelectedTabIndicatorColor(int)} the selection indicator will be tinted that color.
+   * Otherwise, it will use the colors specified in the drawable.
+   *
+   * @param tabSelectedIndicator A drawable to use as the selected tab indicator.
+   * @see #setSelectedTabIndicatorColor(int)
+   * @see #setTabSelectedIndicator(int)
+   */
+  public void setTabSelectedIndicator(@Nullable Drawable tabSelectedIndicator) {
+    if (this.tabSelectedIndicator != tabSelectedIndicator) {
+      this.tabSelectedIndicator = tabSelectedIndicator;
+      ViewCompat.postInvalidateOnAnimation(tabStrip);
+    }
+  }
+
+  /**
+   * Sets the drawable resource to use as the selection indicator for this TabLayout. By default,
+   * this is a line along the bottom of the tab. If {@code tabIndicatorColor} is specified via the
+   * TabLayout's style or via {@link #setSelectedTabIndicatorColor(int)} the selection indicator
+   * will be tinted that color. Otherwise, it will use the colors specified in the drawable.
+   *
+   * @param tabSelectedIndicatorResourceId A drawable resource to use as the selected tab indicator.
+   * @see #setSelectedTabIndicatorColor(int)
+   * @see #setTabSelectedIndicator(Drawable)
+   */
+  public void setTabSelectedIndicator(@DrawableRes int tabSelectedIndicatorResourceId) {
+    if (tabSelectedIndicatorResourceId != 0) {
+      setTabSelectedIndicator(
+          AppCompatResources.getDrawable(getContext(), tabSelectedIndicatorResourceId));
+    } else {
+      setTabSelectedIndicator(null);
+    }
   }
 
   /**
@@ -2029,6 +2080,7 @@ public class TabLayout extends HorizontalScrollView {
   private class SlidingTabStrip extends LinearLayout {
     private int selectedIndicatorHeight;
     private final Paint selectedIndicatorPaint;
+    private final GradientDrawable defaultSelectionIndicator;
 
     int selectedPosition = -1;
     float selectionOffset;
@@ -2044,6 +2096,7 @@ public class TabLayout extends HorizontalScrollView {
       super(context);
       setWillNotDraw(false);
       selectedIndicatorPaint = new Paint();
+      defaultSelectionIndicator = new GradientDrawable();
     }
 
     void setSelectedIndicatorColor(int color) {
@@ -2275,14 +2328,21 @@ public class TabLayout extends HorizontalScrollView {
 
     @Override
     public void draw(Canvas canvas) {
-      // Draw the rectangular selection indicator on top of tab item backgrounds
+      // Draw the selection indicator on top of tab item backgrounds
       if (indicatorLeft >= 0 && indicatorRight > indicatorLeft) {
-        canvas.drawRect(
-            indicatorLeft,
-            getHeight() - selectedIndicatorHeight,
-            indicatorRight,
-            getHeight(),
-            selectedIndicatorPaint);
+        Drawable selectedIndicator;
+        if (tabSelectedIndicator != null) {
+          selectedIndicator = DrawableCompat.wrap(tabSelectedIndicator);
+          selectedIndicator.setBounds(indicatorLeft, 0, indicatorRight, getHeight());
+        } else {
+          selectedIndicator = DrawableCompat.wrap(defaultSelectionIndicator);
+          selectedIndicator.setBounds(
+              indicatorLeft, getHeight() - selectedIndicatorHeight, indicatorRight, getHeight());
+        }
+        if (selectedIndicatorPaint != null) {
+          DrawableCompat.setTint(selectedIndicator, selectedIndicatorPaint.getColor());
+        }
+        selectedIndicator.draw(canvas);
       }
 
       // Draw the tab item contents (icon and label) on top of the background + indicator layers
