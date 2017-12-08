@@ -36,6 +36,7 @@ import android.support.design.animation.AnimationUtils;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewCompat.NestedScrollType;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -787,6 +788,9 @@ public class AppBarLayout extends LinearLayout {
 
     private int offsetDelta;
 
+    @NestedScrollType
+    private int lastStartedType;
+
     private ValueAnimator offsetAnimator;
 
     private int offsetToChildIndexOnLayout = INVALID_POSITION;
@@ -824,6 +828,9 @@ public class AppBarLayout extends LinearLayout {
 
       // A new nested scroll has started so clear out the previous ref
       lastNestedScrollingChildRef = null;
+
+      // Track the last started type so we know if a fling is about to happen once scrolling ends
+      lastStartedType = type;
 
       return started;
     }
@@ -887,8 +894,12 @@ public class AppBarLayout extends LinearLayout {
     @Override
     public void onStopNestedScroll(
         CoordinatorLayout coordinatorLayout, AppBarLayout abl, View target, int type) {
-      if (type == ViewCompat.TYPE_TOUCH) {
-        // If we haven't been flung then let's see if the current view has been set to snap
+      // onStartNestedScroll for a fling will happen before onStopNestedScroll for the scroll. This
+      // isn't necessarily guaranteed yet, but it should be in the future. We use this to our
+      // advantage to check if a fling (ViewCompat.TYPE_NON_TOUCH) will start after the touch scroll
+      // (ViewCompat.TYPE_TOUCH) ends
+      if (lastStartedType == ViewCompat.TYPE_TOUCH || type == ViewCompat.TYPE_NON_TOUCH) {
+        // If we haven't been flung, or a fling is ending
         snapToChildIfNeeded(coordinatorLayout, abl);
       }
 
@@ -1426,7 +1437,7 @@ public class AppBarLayout extends LinearLayout {
 
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
-      offsetChildAsNeeded(parent, child, dependency);
+      offsetChildAsNeeded(child, dependency);
       return false;
     }
 
@@ -1451,7 +1462,7 @@ public class AppBarLayout extends LinearLayout {
       return false;
     }
 
-    private void offsetChildAsNeeded(CoordinatorLayout parent, View child, View dependency) {
+    private void offsetChildAsNeeded(View child, View dependency) {
       final CoordinatorLayout.Behavior behavior =
           ((CoordinatorLayout.LayoutParams) dependency.getLayoutParams()).getBehavior();
       if (behavior instanceof Behavior) {
