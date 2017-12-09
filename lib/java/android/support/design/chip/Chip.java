@@ -108,6 +108,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   @Nullable private ChipDrawable chipDrawable;
 
   @Nullable private OnClickListener onCloseIconClickListener;
+  @Nullable private OnCheckedChangeListener onCheckedChangeListenerInternal;
   private boolean deferredCheckedValue;
   @VirtualId private int focusedVirtualView = ExploreByTouchHelper.INVALID_ID;
   private boolean closeIconPressed;
@@ -226,8 +227,23 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       // Defer the setChecked() call until after initialization.
       deferredCheckedValue = checked;
     } else if (chipDrawable.isCheckable()) {
+      boolean wasChecked = isChecked();
       super.setChecked(checked);
+
+      if (wasChecked != checked) {
+        if (onCheckedChangeListenerInternal != null) {
+          onCheckedChangeListenerInternal.onCheckedChanged(this, checked);
+        }
+      }
     }
+  }
+
+  /**
+   * Register a callback to be invoked when the checked state of this chip changes. This callback is
+   * used for internal purpose only.
+   */
+  void setOnCheckedChangeListenerInternal(OnCheckedChangeListener listener) {
+    onCheckedChangeListenerInternal = listener;
   }
 
   /** Register a callback to be invoked when the close icon is clicked. */

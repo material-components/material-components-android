@@ -172,6 +172,12 @@
          HorizontalScrollView. -->
     <attr name="singleLine" format="boolean"/>
 
+    <!-- Whether only a single chip in this group is allowed to be checked at any time. By default,
+         this is false and multiple chips in this group are allowed to be checked at once. -->
+    <attr name="singleSelection" format="boolean"/>
+    <!-- The id of the child chip that should be checked by default within this chip group. -->
+    <attr name="checkedChip" format="reference"/>
+
   </declare-styleable>
 
   <declare-styleable name="FloatingActionButton">
