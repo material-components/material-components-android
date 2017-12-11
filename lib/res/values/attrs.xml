@@ -250,15 +250,28 @@
   <declare-styleable name="TabLayout">
     <!-- Color of the indicator used to show the currently selected tab. -->
     <attr name="tabIndicatorColor" format="color"/>
-    <!-- Height of the indicator used to show the currently selected tab. -->
+    <!-- {@deprecated Instead, set the intrinsic size of the custom drawable provided to the
+         tabIndicator attribute in order to change the indicator height. For example, this can be
+         done by setting the <size> property in a <shape> resource.} -->
     <attr name="tabIndicatorHeight" format="dimension"/>
     <!-- Position in the Y axis from the starting edge that tabs should be positioned from. -->
     <attr name="tabContentStart" format="dimension"/>
     <!-- Reference to a background to be applied to tabs. -->
     <attr name="tabBackground" format="reference"/>
     <!-- Reference to a drawable to use as selection indicator for tabs. If this attribute is not
-         specified, indicator defaults to a line along the bottom of the tab.-->
+         specified, indicator defaults to a line along the bottom of the tab. -->
     <attr name="tabIndicator" format="reference"/>
+    <!-- Gravity constant for tab selection indicator. -->
+    <attr name="tabIndicatorGravity">
+      <!-- Align indicator to the bottom of this tab layout. -->
+      <enum name="bottom" value="0"/>
+      <!-- Align indicator along the center of this tab layout. -->
+      <enum name="center" value="1"/>
+      <!-- Align indicator to the top of this tab layout. -->
+      <enum name="top" value="2"/>
+      <!-- Stretch indicator to match the height and width of a tab item in this layout. -->
+      <enum name="stretch" value="3"/>
+    </attr>
     <!-- The behavior mode for the Tabs in this layout -->
     <attr name="tabMode">
       <enum name="scrollable" value="0"/>

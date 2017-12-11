@@ -66,7 +66,8 @@
   <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
     <item name="tabMaxWidth">@dimen/design_tab_max_width</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
-    <item name="tabIndicatorHeight">2dp</item>
+    <item name="tabIndicatorGravity">bottom</item>
+    <item name="tabIndicator">@drawable/mtrl_tabs_default_indicator</item>
     <item name="tabPaddingStart">12dp</item>
     <item name="tabPaddingEnd">12dp</item>
     <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>

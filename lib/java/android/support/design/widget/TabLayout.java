@@ -224,6 +224,69 @@ public class TabLayout extends HorizontalScrollView {
   @Retention(RetentionPolicy.SOURCE)
   public @interface TabGravity {}
 
+  /**
+   * Indicator gravity used to align the tab selection indicator to the bottom of the {@link
+   * TabLayout}. This will only take effect if the indicator height is set via the custom indicator
+   * drawable's intrinsic height (preferred), via the {@code tabIndicatorHeight} attribute
+   * (deprecated), or via {@link #setSelectedTabIndicatorHeight(int)} (deprecated). Otherwise, the
+   * indicator will not be shown. This is the default value.
+   *
+   * @see #setSelectedTabIndicatorGravity(int)
+   * @see #getTabIndicatorGravity()
+   * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorGravity
+   */
+  public static final int INDICATOR_GRAVITY_BOTTOM = 0;
+
+  /**
+   * Indicator gravity used to align the tab selection indicator to the center of the {@link
+   * TabLayout}. This will only take effect if the indicator height is set via the custom indicator
+   * drawable's intrinsic height (preferred), via the {@code tabIndicatorHeight} attribute
+   * (deprecated), or via {@link #setSelectedTabIndicatorHeight(int)} (deprecated). Otherwise, the
+   * indicator will not be shown.
+   *
+   * @see #setSelectedTabIndicatorGravity(int)
+   * @see #getTabIndicatorGravity()
+   * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorGravity
+   */
+  public static final int INDICATOR_GRAVITY_CENTER = 1;
+
+  /**
+   * Indicator gravity used to align the tab selection indicator to the top of the {@link
+   * TabLayout}. This will only take effect if the indicator height is set via the custom indicator
+   * drawable's intrinsic height (preferred), via the {@code tabIndicatorHeight} attribute
+   * (deprecated), or via {@link #setSelectedTabIndicatorHeight(int)} (deprecated). Otherwise, the
+   * indicator will not be shown.
+   *
+   * @see #setSelectedTabIndicatorGravity(int)
+   * @see #getTabIndicatorGravity()
+   * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorGravity
+   */
+  public static final int INDICATOR_GRAVITY_TOP = 2;
+
+  /**
+   * Indicator gravity used to stretch the tab selection indicator across the entire height and
+   * width of the {@link TabLayout}. This will disregard {@code tabIndicatorHeight} and the
+   * indicator drawable's intrinsic height, if set.
+   *
+   * @see #setSelectedTabIndicatorGravity(int)
+   * @see #getTabIndicatorGravity()
+   * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorGravity
+   */
+  public static final int INDICATOR_GRAVITY_STRETCH = 3;
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef(
+      value = {
+      INDICATOR_GRAVITY_BOTTOM,
+      INDICATOR_GRAVITY_CENTER,
+      INDICATOR_GRAVITY_TOP,
+      INDICATOR_GRAVITY_STRETCH
+    }
+  )
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface TabIndicatorGravity {}
+
   /** Callback interface invoked when a tab's selection state changes. */
   public interface OnTabSelectedListener {
 
@@ -253,7 +316,7 @@ public class TabLayout extends HorizontalScrollView {
   private final ArrayList<Tab> tabs = new ArrayList<>();
   private Tab selectedTab;
 
-  private final SlidingTabStrip tabStrip;
+  private final SlidingTabIndicator slidingTabIndicator;
 
   int tabPaddingStart;
   int tabPaddingTop;
@@ -280,6 +343,7 @@ public class TabLayout extends HorizontalScrollView {
   private int contentInsetStart;
 
   int tabGravity;
+  @TabIndicatorGravity int tabIndicatorGravity;
   @Mode int mode;
   boolean inlineLabel;
 
@@ -316,9 +380,9 @@ public class TabLayout extends HorizontalScrollView {
     setHorizontalScrollBarEnabled(false);
 
     // Add the TabStrip
-    tabStrip = new SlidingTabStrip(context);
+    slidingTabIndicator = new SlidingTabIndicator(context);
     super.addView(
-        tabStrip,
+        slidingTabIndicator,
         0,
         new HorizontalScrollView.LayoutParams(
             LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
@@ -327,11 +391,14 @@ public class TabLayout extends HorizontalScrollView {
         context.obtainStyledAttributes(
             attrs, R.styleable.TabLayout, defStyleAttr, R.style.Widget_Design_TabLayout);
 
-    tabStrip.setSelectedIndicatorHeight(
+    slidingTabIndicator.setSelectedIndicatorHeight(
         a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, 0));
-    tabStrip.setSelectedIndicatorColor(a.getColor(R.styleable.TabLayout_tabIndicatorColor, 0));
-    setTabSelectedIndicator(
+    slidingTabIndicator.setSelectedIndicatorColor(
+        a.getColor(R.styleable.TabLayout_tabIndicatorColor, 0));
+    setSelectedTabIndicator(
         MaterialResources.getDrawable(context, a, R.styleable.TabLayout_tabIndicator));
+    setSelectedTabIndicatorGravity(
+        a.getInt(R.styleable.TabLayout_tabIndicatorGravity, INDICATOR_GRAVITY_BOTTOM));
 
     tabPaddingStart =
         tabPaddingTop =
@@ -414,17 +481,20 @@ public class TabLayout extends HorizontalScrollView {
    * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorColor
    */
   public void setSelectedTabIndicatorColor(@ColorInt int color) {
-    tabStrip.setSelectedIndicatorColor(color);
+    slidingTabIndicator.setSelectedIndicatorColor(color);
   }
 
   /**
-   * Sets the tab indicator's height for the currently selected tab.
+   * Sets the tab indicator's height for the currently selected tab. This method is deprecated. If
+   * possible, set the intrinsic height directly on a custom indicator drawable passed to {@link
+   * #setSelectedTabIndicator(Drawable)}.
    *
    * @param height height to use for the indicator in pixels
    * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorHeight
    */
+  @Deprecated
   public void setSelectedTabIndicatorHeight(int height) {
-    tabStrip.setSelectedIndicatorHeight(height);
+    slidingTabIndicator.setSelectedIndicatorHeight(height);
   }
 
   /**
@@ -447,13 +517,13 @@ public class TabLayout extends HorizontalScrollView {
       boolean updateSelectedText,
       boolean updateIndicatorPosition) {
     final int roundedPosition = Math.round(position + positionOffset);
-    if (roundedPosition < 0 || roundedPosition >= tabStrip.getChildCount()) {
+    if (roundedPosition < 0 || roundedPosition >= slidingTabIndicator.getChildCount()) {
       return;
     }
 
     // Set the indicator position, if enabled
     if (updateIndicatorPosition) {
-      tabStrip.setIndicatorPositionFromTabPosition(position, positionOffset);
+      slidingTabIndicator.setIndicatorPositionFromTabPosition(position, positionOffset);
     }
 
     // Now update the scroll position, canceling any running animation
@@ -668,7 +738,7 @@ public class TabLayout extends HorizontalScrollView {
   /** Remove all tabs from the action bar and deselect the current tab. */
   public void removeAllTabs() {
     // Remove all the views
-    for (int i = tabStrip.getChildCount() - 1; i >= 0; i--) {
+    for (int i = slidingTabIndicator.getChildCount() - 1; i >= 0; i--) {
       removeTabViewAt(i);
     }
 
@@ -738,6 +808,39 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   /**
+   * Set the indicator gravity used to align the tab selection indicator in the {@link TabLayout}.
+   * You must set the indicator height via the custom indicator drawable's intrinsic height
+   * (preferred), via the {@code tabIndicatorHeight} attribute (deprecated), or via {@link
+   * #setSelectedTabIndicatorHeight(int)} (deprecated). Otherwise, the indicator will not be shown
+   * unless gravity is set to {@link #INDICATOR_GRAVITY_STRETCH}, in which case it will ignore
+   * indicator height and stretch across the entire height and width of the {@link TabLayout}. This
+   * defaults to {@link #INDICATOR_GRAVITY_BOTTOM} if not set.
+   *
+   * @param indicatorGravity one of {@link #INDICATOR_GRAVITY_BOTTOM}, {@link
+   *     #INDICATOR_GRAVITY_CENTER}, {@link #INDICATOR_GRAVITY_TOP}, or {@link
+   *     #INDICATOR_GRAVITY_STRETCH}
+   * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorGravity
+   */
+  public void setSelectedTabIndicatorGravity(@TabIndicatorGravity int indicatorGravity) {
+    if (tabIndicatorGravity != indicatorGravity) {
+      tabIndicatorGravity = indicatorGravity;
+      ViewCompat.postInvalidateOnAnimation(slidingTabIndicator);
+    }
+  }
+
+  /**
+   * Get the current indicator gravity used to align the tab selection indicator in the {@link
+   * TabLayout}.
+   *
+   * @return one of {@link #INDICATOR_GRAVITY_BOTTOM}, {@link #INDICATOR_GRAVITY_CENTER}, {@link
+   *     #INDICATOR_GRAVITY_TOP}, or {@link #INDICATOR_GRAVITY_STRETCH}
+   */
+  @TabIndicatorGravity
+  public int getTabIndicatorGravity() {
+    return tabIndicatorGravity;
+  }
+
+  /**
    * Set whether tab labels will be displayed inline with tab icons, or if they will be displayed
    * underneath tab icons.
    *
@@ -747,8 +850,8 @@ public class TabLayout extends HorizontalScrollView {
   public void setInlineLabel(boolean inline) {
     if (inlineLabel != inline) {
       inlineLabel = inline;
-      for (int i = 0; i < tabStrip.getChildCount(); i++) {
-        View child = tabStrip.getChildAt(i);
+      for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
+        View child = slidingTabIndicator.getChildAt(i);
         if (child instanceof TabView) {
           ((TabView) child).updateOrientation();
         }
@@ -860,8 +963,8 @@ public class TabLayout extends HorizontalScrollView {
   public void setTabRippleColor(@Nullable ColorStateList color) {
     if (tabRippleColorStateList != color) {
       tabRippleColorStateList = color;
-      for (int i = 0; i < tabStrip.getChildCount(); i++) {
-        View child = tabStrip.getChildAt(i);
+      for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
+        View child = slidingTabIndicator.getChildAt(i);
         if (child instanceof TabView) {
           ((TabView) child).updateBackgroundDrawable(getContext());
         }
@@ -886,8 +989,8 @@ public class TabLayout extends HorizontalScrollView {
    * Returns the selection indicator drawable for this TabLayout.
    *
    * @return The drawable used as the tab selection indicator, if set.
-   * @see #setTabSelectedIndicator(Drawable)
-   * @see #setTabSelectedIndicator(int)
+   * @see #setSelectedTabIndicator(Drawable)
+   * @see #setSelectedTabIndicator(int)
    */
   @Nullable
   public Drawable getTabSelectedIndicator() {
@@ -902,12 +1005,12 @@ public class TabLayout extends HorizontalScrollView {
    *
    * @param tabSelectedIndicator A drawable to use as the selected tab indicator.
    * @see #setSelectedTabIndicatorColor(int)
-   * @see #setTabSelectedIndicator(int)
+   * @see #setSelectedTabIndicator(int)
    */
-  public void setTabSelectedIndicator(@Nullable Drawable tabSelectedIndicator) {
+  public void setSelectedTabIndicator(@Nullable Drawable tabSelectedIndicator) {
     if (this.tabSelectedIndicator != tabSelectedIndicator) {
       this.tabSelectedIndicator = tabSelectedIndicator;
-      ViewCompat.postInvalidateOnAnimation(tabStrip);
+      ViewCompat.postInvalidateOnAnimation(slidingTabIndicator);
     }
   }
 
@@ -919,14 +1022,14 @@ public class TabLayout extends HorizontalScrollView {
    *
    * @param tabSelectedIndicatorResourceId A drawable resource to use as the selected tab indicator.
    * @see #setSelectedTabIndicatorColor(int)
-   * @see #setTabSelectedIndicator(Drawable)
+   * @see #setSelectedTabIndicator(Drawable)
    */
-  public void setTabSelectedIndicator(@DrawableRes int tabSelectedIndicatorResourceId) {
+  public void setSelectedTabIndicator(@DrawableRes int tabSelectedIndicatorResourceId) {
     if (tabSelectedIndicatorResourceId != 0) {
-      setTabSelectedIndicator(
+      setSelectedTabIndicator(
           AppCompatResources.getDrawable(getContext(), tabSelectedIndicatorResourceId));
     } else {
-      setTabSelectedIndicator(null);
+      setSelectedTabIndicator(null);
     }
   }
 
@@ -1064,7 +1167,8 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   private int getTabScrollRange() {
-    return Math.max(0, tabStrip.getWidth() - getWidth() - getPaddingLeft() - getPaddingRight());
+    return Math.max(
+        0, slidingTabIndicator.getWidth() - getWidth() - getPaddingLeft() - getPaddingRight());
   }
 
   void setPagerAdapter(@Nullable final PagerAdapter adapter, final boolean addObserver) {
@@ -1135,7 +1239,7 @@ public class TabLayout extends HorizontalScrollView {
 
   private void addTabView(Tab tab) {
     final TabView tabView = tab.view;
-    tabStrip.addView(tabView, tab.getPosition(), createLayoutParamsForTabs());
+    slidingTabIndicator.addView(tabView, tab.getPosition(), createLayoutParamsForTabs());
   }
 
   @Override
@@ -1190,8 +1294,8 @@ public class TabLayout extends HorizontalScrollView {
   @Override
   protected void onDraw(Canvas canvas) {
     // Draw tab background layer for each tab item
-    for (int i = 0; i < tabStrip.getChildCount(); i++) {
-      View tabView = tabStrip.getChildAt(i);
+    for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
+      View tabView = slidingTabIndicator.getChildAt(i);
       if (tabView instanceof TabView) {
         ((TabView) tabView).drawBackground(canvas);
       }
@@ -1264,8 +1368,8 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   private void removeTabViewAt(int position) {
-    final TabView view = (TabView) tabStrip.getChildAt(position);
-    tabStrip.removeViewAt(position);
+    final TabView view = (TabView) slidingTabIndicator.getChildAt(position);
+    slidingTabIndicator.removeViewAt(position);
     if (view != null) {
       view.reset();
       tabViewPool.release(view);
@@ -1278,7 +1382,9 @@ public class TabLayout extends HorizontalScrollView {
       return;
     }
 
-    if (getWindowToken() == null || !ViewCompat.isLaidOut(this) || tabStrip.childrenNeedLayout()) {
+    if (getWindowToken() == null
+        || !ViewCompat.isLaidOut(this)
+        || slidingTabIndicator.childrenNeedLayout()) {
       // If we don't have a window token, or we haven't been laid out yet just draw the new
       // position now
       setScrollPosition(newPosition, 0f, true);
@@ -1296,7 +1402,7 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     // Now animate the indicator
-    tabStrip.animateIndicatorToPosition(newPosition, ANIMATION_DURATION);
+    slidingTabIndicator.animateIndicatorToPosition(newPosition, ANIMATION_DURATION);
   }
 
   private void ensureScrollAnimator() {
@@ -1320,10 +1426,10 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   private void setSelectedTabView(int position) {
-    final int tabCount = tabStrip.getChildCount();
+    final int tabCount = slidingTabIndicator.getChildCount();
     if (position < tabCount) {
       for (int i = 0; i < tabCount; i++) {
-        final View child = tabStrip.getChildAt(i);
+        final View child = slidingTabIndicator.getChildAt(i);
         child.setSelected(i == position);
         child.setActivated(i == position);
       }
@@ -1386,9 +1492,11 @@ public class TabLayout extends HorizontalScrollView {
 
   private int calculateScrollXForTab(int position, float positionOffset) {
     if (mode == MODE_SCROLLABLE) {
-      final View selectedChild = tabStrip.getChildAt(position);
+      final View selectedChild = slidingTabIndicator.getChildAt(position);
       final View nextChild =
-          position + 1 < tabStrip.getChildCount() ? tabStrip.getChildAt(position + 1) : null;
+          position + 1 < slidingTabIndicator.getChildCount()
+              ? slidingTabIndicator.getChildAt(position + 1)
+              : null;
       final int selectedWidth = selectedChild != null ? selectedChild.getWidth() : 0;
       final int nextWidth = nextChild != null ? nextChild.getWidth() : 0;
 
@@ -1410,14 +1518,14 @@ public class TabLayout extends HorizontalScrollView {
       // If we're scrollable, or fixed at start, inset using padding
       paddingStart = Math.max(0, contentInsetStart - tabPaddingStart);
     }
-    ViewCompat.setPaddingRelative(tabStrip, paddingStart, 0, 0, 0);
+    ViewCompat.setPaddingRelative(slidingTabIndicator, paddingStart, 0, 0, 0);
 
     switch (mode) {
       case MODE_FIXED:
-        tabStrip.setGravity(Gravity.CENTER_HORIZONTAL);
+        slidingTabIndicator.setGravity(Gravity.CENTER_HORIZONTAL);
         break;
       case MODE_SCROLLABLE:
-        tabStrip.setGravity(GravityCompat.START);
+        slidingTabIndicator.setGravity(GravityCompat.START);
         break;
     }
 
@@ -1425,8 +1533,8 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   void updateTabViews(final boolean requestLayout) {
-    for (int i = 0; i < tabStrip.getChildCount(); i++) {
-      View child = tabStrip.getChildAt(i);
+    for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
+      View child = slidingTabIndicator.getChildAt(i);
       child.setMinimumWidth(getTabMinWidth());
       updateTabViewLayoutParams((LinearLayout.LayoutParams) child.getLayoutParams());
       if (requestLayout) {
@@ -2077,7 +2185,7 @@ public class TabLayout extends HorizontalScrollView {
     }
   }
 
-  private class SlidingTabStrip extends LinearLayout {
+  private class SlidingTabIndicator extends LinearLayout {
     private int selectedIndicatorHeight;
     private final Paint selectedIndicatorPaint;
     private final GradientDrawable defaultSelectionIndicator;
@@ -2092,7 +2200,7 @@ public class TabLayout extends HorizontalScrollView {
 
     private ValueAnimator indicatorAnimator;
 
-    SlidingTabStrip(Context context) {
+    SlidingTabIndicator(Context context) {
       super(context);
       setWillNotDraw(false);
       selectedIndicatorPaint = new Paint();
@@ -2328,17 +2436,45 @@ public class TabLayout extends HorizontalScrollView {
 
     @Override
     public void draw(Canvas canvas) {
+      int indicatorHeight = 0;
+      if (tabSelectedIndicator != null) {
+        indicatorHeight = tabSelectedIndicator.getIntrinsicHeight();
+      }
+      if (selectedIndicatorHeight != 0) {
+        indicatorHeight = selectedIndicatorHeight;
+      }
+
+      int indicatorTop = 0;
+      int indicatorBottom = 0;
+
+      switch (tabIndicatorGravity) {
+        case INDICATOR_GRAVITY_BOTTOM:
+          indicatorTop = getHeight() - indicatorHeight;
+          indicatorBottom = getHeight();
+          break;
+        case INDICATOR_GRAVITY_CENTER:
+          indicatorTop = (getHeight() - indicatorHeight) / 2;
+          indicatorBottom = (getHeight() + indicatorHeight) / 2;
+          break;
+        case INDICATOR_GRAVITY_TOP:
+          indicatorTop = 0;
+          indicatorBottom = indicatorHeight;
+          break;
+        case INDICATOR_GRAVITY_STRETCH:
+          indicatorTop = 0;
+          indicatorBottom = getHeight();
+          break;
+        default:
+          break;
+      }
+
       // Draw the selection indicator on top of tab item backgrounds
       if (indicatorLeft >= 0 && indicatorRight > indicatorLeft) {
         Drawable selectedIndicator;
-        if (tabSelectedIndicator != null) {
-          selectedIndicator = DrawableCompat.wrap(tabSelectedIndicator);
-          selectedIndicator.setBounds(indicatorLeft, 0, indicatorRight, getHeight());
-        } else {
-          selectedIndicator = DrawableCompat.wrap(defaultSelectionIndicator);
-          selectedIndicator.setBounds(
-              indicatorLeft, getHeight() - selectedIndicatorHeight, indicatorRight, getHeight());
-        }
+        selectedIndicator =
+            DrawableCompat.wrap(
+                tabSelectedIndicator != null ? tabSelectedIndicator : defaultSelectionIndicator);
+        selectedIndicator.setBounds(indicatorLeft, indicatorTop, indicatorRight, indicatorBottom);
         if (selectedIndicatorPaint != null) {
           DrawableCompat.setTint(selectedIndicator, selectedIndicatorPaint.getColor());
         }
