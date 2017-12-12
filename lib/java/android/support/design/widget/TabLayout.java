@@ -392,7 +392,7 @@ public class TabLayout extends HorizontalScrollView {
             attrs, R.styleable.TabLayout, defStyleAttr, R.style.Widget_Design_TabLayout);
 
     slidingTabIndicator.setSelectedIndicatorHeight(
-        a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, 0));
+        a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, -1));
     slidingTabIndicator.setSelectedIndicatorColor(
         a.getColor(R.styleable.TabLayout_tabIndicatorColor, 0));
     setSelectedTabIndicator(
@@ -2440,7 +2440,7 @@ public class TabLayout extends HorizontalScrollView {
       if (tabSelectedIndicator != null) {
         indicatorHeight = tabSelectedIndicator.getIntrinsicHeight();
       }
-      if (selectedIndicatorHeight != 0) {
+      if (selectedIndicatorHeight >= 0) {
         indicatorHeight = selectedIndicatorHeight;
       }
 
