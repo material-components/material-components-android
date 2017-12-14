@@ -15,7 +15,8 @@
     limitations under the License.
 -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
   <!-- Pressed state -->
   <item
@@ -79,7 +80,8 @@
           android:propertyName="translationZ"
           android:startDelay="@integer/mtrl_btn_anim_delay_ms"
           android:valueTo="@dimen/mtrl_btn_z"
-          android:valueType="floatType"/>
+          android:valueType="floatType"
+          tools:ignore="UnusedAttribute"/>
       <objectAnimator
           android:duration="0"
           android:propertyName="elevation"

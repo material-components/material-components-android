@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- Defines the base Material button style. -->
   <style name="Widget.Design.Button.MaterialButton" parent="android:Widget">
@@ -32,7 +32,7 @@
     <item name="android:insetRight">@dimen/mtrl_btn_inset</item>
     <item name="android:insetTop">@dimen/mtrl_btn_inset</item>
     <item name="android:insetBottom">@dimen/mtrl_btn_inset</item>
-    <item name="android:stateListAnimator">@animator/mtrl_btn_state_list_anim</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_state_list_anim</item>
     <item name="cornerRadius">@dimen/mtrl_btn_corner_radius</item>
     <item name="iconPadding">@dimen/mtrl_btn_icon_padding</item>
     <item name="android:gravity">center</item>
@@ -44,7 +44,7 @@
   </style>
 
   <style name="Widget.Design.Button.MaterialButton.UnelevatedButton" parent="Widget.Design.Button.MaterialButton">
-    <item name="android:stateListAnimator">@animator/mtrl_btn_unelevated_state_list_anim</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_unelevated_state_list_anim</item>
   </style>
 
   <style name="Widget.Design.Button.MaterialButton.TextButton" parent="Widget.Design.Button.MaterialButton.UnelevatedButton">
@@ -62,8 +62,8 @@
     <item name="android:textAllCaps">@bool/mtrl_btn_textappearance_all_caps</item>
     <item name="android:textSize">@dimen/mtrl_btn_text_size</item>
     <!-- Roboto medium -->
-    <item name="android:fontFamily">sans-serif-medium</item>
-    <item name="android:letterSpacing">@dimen/mtrl_btn_letter_spacing</item>
+    <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
+    <item name="android:letterSpacing" tools:ignore="NewApi">@dimen/mtrl_btn_letter_spacing</item>
   </style>
 
   <style name="TextAppearance.Design.MaterialButton.Secondary" parent="TextAppearance.Design.MaterialButton">
