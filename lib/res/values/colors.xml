@@ -64,6 +64,19 @@
   <!-- 96% opacity white -->
   <color name="mtrl_bottomappbar_default_tint">#F5FFFFFF</color>
 
+  <!-- 12% opacity black -->
+  <color name="mtrl_toggle_ripple_unchecked">#1F000000</color>
+  <!-- 38% opacity black -->
+  <color name="mtrl_toggle_track">#61000000</color>
+  <!-- 4% opacity black -->
+  <color name="mtrl_toggle_track_disabled">#0A000000</color>
+  <!-- 38% opacity black -->
+  <color name="mtrl_toggle_thumb">#ffd6d7d7</color>
+  <!-- 12% opacity black -->
+  <color name="mtrl_toggle_thumb_disabled">#1F000000</color>
+  <!-- 87% opacity black -->
+  <color name="mtrl_toggle_text_color">#DE000000</color>
+
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
 </resources>

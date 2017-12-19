@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources>
+
+  <style name="Widget.Design.Toggle.MaterialToggle" parent="android:Widget">
+    <item name="switchPadding">@dimen/mtrl_toggle_padding</item>
+    <item name="android:focusable">true</item>
+    <item name="android:clickable">true</item>
+    <item name="android:textAppearance">@style/TextAppearance.Design.MaterialToggle</item>
+    <item name="android:gravity">center_vertical|start</item>
+
+    <!--Thumb-->
+    <item name="thumbTint">@color/mtrl_toggle_thumb_tint</item>
+    <item name="rippleColor">@color/mtrl_toggle_ripple_color</item>
+    <item name="rippleAlpha">#ff000000</item>
+    <item name="showText">false</item>
+    <item name="android:textOn">@string/mtrl_toggle_text_on</item>
+    <item name="android:textOff">@string/mtrl_toggle_text_off</item>
+    <item name="switchTextAppearance">@style/TextAppearance.Design.MaterialToggle</item>
+    <item name="thumbTextPadding">@dimen/mtrl_thumb_text_padding</item>
+
+    <!--Track-->
+    <item name="trackTint">@color/mtrl_toggle_track_tint</item>
+  </style>
+
+  <style name="TextAppearance.Design.MaterialToggle" parent="android:TextAppearance">
+    <item name="android:textSize">@dimen/mtrl_toggle_text_size</item>
+    <item name="android:textColor">@color/mtrl_toggle_text_color</item>
+  </style>
+
+</resources>
