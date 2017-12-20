@@ -1,5 +1,5 @@
 <!--docs:
-title: "App Bars"
+title: "Top App Bars"
 layout: detail
 section: components
 excerpt: "A flexible toolbar designed to provide a typical Material Design experience."
@@ -7,14 +7,14 @@ iconId: toolbar
 path: /catalog/app-bar-layout/
 -->
 
-# App Bars
+# Top App Bars
 
-![App Bars](assets/app-bars.svg)
+![Top App Bars](assets/app-bars.svg)
 <!--{: .article__asset.article__asset--screenshot }-->
 
-`AppBarLayout` is the ViewGroup used to wrap the app bar that provides many of the
-Material Design features and interactions for **app bars**, namely responsiveness
-to scrolling.
+`AppBarLayout` is a ViewGroup, most commonly used to wrap a `Toolbar`, that provides
+many of the Material Design features and interactions for **Top App Bars**, namely
+responsiveness to scrolling.
 
 ## Design & API Documentation
 
@@ -57,17 +57,17 @@ top of the screen, leaving behind fixed, or pinned, elements.
 
 ## Related Concepts
 
-The app bar is a way of referencing a specific type of *Toolbar*. It's not a
+The Top App Bar is a way of referencing a specific type of *Toolbar*. It's not a
 separate Android class. This UI element is often used to provide branding for
 the app as well as a place to handle common actions like navigation, search, and
 menus. These are accessible via text or buttons in the Toolbar. A Toolbar that
-provides some of these features is often referred to as the app bar. They are
-programatically identical and use the Toolbar class.
+provides some of these features is often referred to as the Top App Bar. They
+are programmatically identical and use the Toolbar class.
 
-The app bar was previously termed *action bar*, and there are methods that
+The Top App Bar was previously termed *action bar*, and there are methods that
 utilize this name (e.g. [getSupportActionBar](https://developer.android.com/reference/android/support/v7/app/AppCompatActivity.html#getSupportActionBar())).
 Other than use of the action bar APIs, references to this prominent Toolbar
-element should be *app bar*.
+element should be *Top App Bar*.
 
 A CollapsingToolbarLayout is often used as a wrapper around the Toolbar to
 provide additional UI features in relation to scrolling.
