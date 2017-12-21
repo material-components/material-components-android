@@ -23,10 +23,8 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
-import android.support.design.R;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.BottomNavigationView.LabelVisibilityMode;
-import android.support.design.widget.BottomNavigationView.ShiftingMode;
+import android.support.design.bottomnavigation.LabelVisibilityMode;
+import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
@@ -55,7 +53,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final OnClickListener mOnClickListener;
   private final Pools.Pool<BottomNavigationItemView> mItemPool = new Pools.SynchronizedPool<>(5);
 
-  private int mShiftingModeFlag = BottomNavigationView.SHIFTING_MODE_AUTO;
+  private int mShiftingModeFlag = ShiftingMode.SHIFTING_MODE_AUTO;
   private boolean mItemHorizontalTranslation;
   @LabelVisibilityMode private int labelVisibilityMode;
 
@@ -302,8 +300,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   /**
    * Gets the status of shifting mode override flag for this menu view.
    *
-   * @return Shifting mode flag for this BottomNavigationView (default {@link
-   *     ShiftingMode#SHIFTING_MODE_AUTO})
+   * @return Shifting mode flag for this menu view (default {@link ShiftingMode#SHIFTING_MODE_AUTO})
    * @deprecated use {@link #getLabelVisibilityMode()} instead
    */
   @Deprecated
@@ -318,7 +315,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * <p>The label is either always shown, never shown, or only shown when activated. Also supports
    * legacy mode, which uses {@link ShiftingMode} to decide whether the label should be shown.
    *
-   * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
    * @param labelVisibilityMode mode which decides whether or not the label should be shown. Can be
    *     one of {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}, {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
@@ -331,9 +327,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   /**
-   * Returns the current label visibility mode used by this {@link BottomNavigationView}.
+   * Returns the current label visibility mode.
    *
-   * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
    * @see #setLabelVisibilityMode(int)
    */
   public int getLabelVisibilityMode() {
@@ -450,9 +445,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   private boolean isShifting(@ShiftingMode int shiftingMode, int childCount) {
-    return shiftingMode == BottomNavigationView.SHIFTING_MODE_AUTO
+    return shiftingMode == ShiftingMode.SHIFTING_MODE_AUTO
         ? childCount > 3
-        : shiftingMode == BottomNavigationView.SHIFTING_MODE_ON;
+        : shiftingMode == ShiftingMode.SHIFTING_MODE_ON;
   }
 
   void tryRestoreSelectedItemId(int itemId) {

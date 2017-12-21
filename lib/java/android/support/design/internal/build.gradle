@@ -3,7 +3,13 @@ apply plugin: 'com.android.library'
 archivesBaseName = 'design'
 
 dependencies {
+  implementation compatibility("annotations")
+  implementation compatibility("transition")
   implementation compatibility("v7/appcompat")
+  implementation compatibility("v7/recyclerview")
+
+  implementation project(fromPath("lib/java/android/support/design/bottomnavigation"))
+  implementation project(fromPath("lib/java/android/support/design/snackbar"))
 }
 
 android {

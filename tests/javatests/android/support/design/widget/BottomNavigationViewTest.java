@@ -46,6 +46,8 @@ import android.content.res.Resources;
 import android.os.Build;
 import android.os.Parcelable;
 import android.support.annotation.ColorInt;
+import android.support.design.bottomnavigation.LabelVisibilityMode;
+import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.design.testapp.BottomNavigationViewActivity;
 import android.support.design.testapp.R;
 import android.support.design.testutils.TestDrawable;
@@ -433,7 +435,7 @@ public class BottomNavigationViewTest {
   @Test
   @SmallTest
   public void testForcedShiftingItemChecking() throws Throwable {
-    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_ON);
+    mBottomNavigation.setShiftingMode(ShiftingMode.SHIFTING_MODE_ON);
     final Menu menu = mBottomNavigation.getMenu();
     assertTrue(menu.getItem(0).isChecked());
     checkAndVerifyExclusiveItem(menu, R.id.destination_home);
@@ -446,7 +448,7 @@ public class BottomNavigationViewTest {
   @SmallTest
   public void testAutoShiftingItemChecking() throws Throwable {
     mBottomNavigation.getMenu().clear();
-    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_AUTO);
+    mBottomNavigation.setShiftingMode(ShiftingMode.SHIFTING_MODE_AUTO);
     mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_shifting_content);
     final Menu menu = mBottomNavigation.getMenu();
     assertTrue(menu.getItem(0).isChecked());
@@ -469,7 +471,7 @@ public class BottomNavigationViewTest {
   @Test
   @SmallTest
   public void testClearingForcedShiftingMenu() throws Throwable {
-    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_ON);
+    mBottomNavigation.setShiftingMode(ShiftingMode.SHIFTING_MODE_ON);
     mBottomNavigation.getMenu().clear();
     assertEquals(0, mBottomNavigation.getMenu().size());
     mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_content);
@@ -480,7 +482,7 @@ public class BottomNavigationViewTest {
   @Test
   @SmallTest
   public void testClearingAutoShiftingMenu() throws Throwable {
-    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_AUTO);
+    mBottomNavigation.setShiftingMode(ShiftingMode.SHIFTING_MODE_AUTO);
     mBottomNavigation.getMenu().clear();
     assertEquals(0, mBottomNavigation.getMenu().size());
     mBottomNavigation.inflateMenu(R.menu.bottom_navigation_view_shifting_content);
@@ -511,7 +513,7 @@ public class BottomNavigationViewTest {
   @Test
   @SmallTest
   public void testSettingForcedShiftingMenuItemVisibility() throws Throwable {
-    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_ON);
+    mBottomNavigation.setShiftingMode(ShiftingMode.SHIFTING_MODE_ON);
     final MenuItem homeMenuItem = mBottomNavigation.getMenu().findItem(R.id.destination_home);
     assertTrue(homeMenuItem.isVisible());
     homeMenuItem.setVisible(false);
@@ -523,7 +525,7 @@ public class BottomNavigationViewTest {
   @SmallTest
   public void testSettingAutoShiftingMenuItemVisibility() throws Throwable {
     mBottomNavigation.getMenu().clear();
-    mBottomNavigation.setShiftingMode(BottomNavigationView.SHIFTING_MODE_AUTO);
+    mBottomNavigation.setShiftingMode(ShiftingMode.SHIFTING_MODE_AUTO);
     mBottomNavigation.inflateMenu(
         R.menu.bottom_navigation_view_shifting_with_invisible_button_content);
     assertEquals(4, mBottomNavigation.getMenu().size());
@@ -569,7 +571,7 @@ public class BottomNavigationViewTest {
   @SmallTest
   public void testLabelVisibilityModeUnlabeledLabelsAreNotDisplayed() {
     onView(withId(R.id.bottom_navigation))
-        .perform(setLabelVisibilityMode(BottomNavigationView.LABEL_VISIBILITY_UNLABELED));
+        .perform(setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED));
     onView(withId(R.id.destination_profile)).perform(click());
 
     checkLabelVisibilityIsUnlabeled();
@@ -579,7 +581,7 @@ public class BottomNavigationViewTest {
   @SmallTest
   public void testLabelVisibilityModeLabeledLabelsAreDisplayed() {
     onView(withId(R.id.bottom_navigation))
-        .perform(setLabelVisibilityMode(BottomNavigationView.LABEL_VISIBILITY_LABELED));
+        .perform(setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_LABELED));
     onView(withId(R.id.destination_profile)).perform(click());
 
     checkLabelVisibilityIsLabeled();
@@ -589,7 +591,7 @@ public class BottomNavigationViewTest {
   @SmallTest
   public void testLabelVisibilityModeSelectedLabelsAreDisplayedWhenSelected() {
     onView(withId(R.id.bottom_navigation))
-        .perform(setLabelVisibilityMode(BottomNavigationView.LABEL_VISIBILITY_SELECTED));
+        .perform(setLabelVisibilityMode(LabelVisibilityMode.LABEL_VISIBILITY_SELECTED));
     onView(withId(R.id.destination_profile)).perform(click());
 
     checkLabelVisibilityIsSelected();

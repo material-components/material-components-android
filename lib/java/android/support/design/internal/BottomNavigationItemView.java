@@ -24,9 +24,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
-import android.support.design.R;
-import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.BottomNavigationView.LabelVisibilityMode;
+import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.PointerIconCompat;
@@ -160,7 +158,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     mSmallLabel.setPivotY(mSmallLabel.getBaseline());
 
     switch (labelVisibilityMode) {
-      case BottomNavigationView.LABEL_VISIBILITY_LEGACY:
+      case LabelVisibilityMode.LABEL_VISIBILITY_LEGACY:
         if (mShiftingMode) {
           if (checked) {
             setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
@@ -184,7 +182,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         }
         break;
 
-      case BottomNavigationView.LABEL_VISIBILITY_SELECTED:
+      case LabelVisibilityMode.LABEL_VISIBILITY_SELECTED:
         if (checked) {
           setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
           setViewValues(mLargeLabel, 1f, 1f, VISIBLE);
@@ -195,7 +193,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         mSmallLabel.setVisibility(INVISIBLE);
         break;
 
-      case BottomNavigationView.LABEL_VISIBILITY_LABELED:
+      case LabelVisibilityMode.LABEL_VISIBILITY_LABELED:
         if (checked) {
           setViewLayoutParams(
               mIcon, mDefaultMargin + mShiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
@@ -208,7 +206,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         }
         break;
 
-      case BottomNavigationView.LABEL_VISIBILITY_UNLABELED:
+      case LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED:
         setViewLayoutParams(mIcon, mDefaultMargin, Gravity.CENTER);
         mLargeLabel.setVisibility(GONE);
         mSmallLabel.setVisibility(GONE);

@@ -27,10 +27,6 @@
   <!-- 5 * standard increment (56dp) -->
   <dimen name="design_navigation_max_width">280dp</dimen>
   <dimen name="design_navigation_elevation">16dp</dimen>
-  <dimen name="design_navigation_icon_padding">32dp</dimen>
-  <dimen name="design_navigation_icon_size">24dp</dimen>
-  <dimen name="design_navigation_separator_vertical_padding">8dp</dimen>
-  <dimen name="design_navigation_padding_bottom">8dp</dimen>
 
   <dimen name="design_tab_scrollable_min_width">72dp</dimen>
   <dimen name="design_tab_max_width">264dp</dimen>
@@ -63,8 +59,6 @@
   <dimen name="design_snackbar_background_corner_radius">0dp</dimen>
 
   <dimen name="design_snackbar_padding_horizontal">12dp</dimen>
-  <dimen name="design_snackbar_padding_vertical">14dp</dimen>
-  <dimen name="design_snackbar_padding_vertical_2lines">24dp</dimen>
 
   <!-- Extra spacing between the action and message views -->
   <dimen name="design_snackbar_extra_spacing_horizontal">0dp</dimen>
@@ -79,16 +73,8 @@
   <dimen name="design_bottom_sheet_modal_elevation">16dp</dimen>
   <dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
 
-  <dimen name="design_bottom_navigation_height">56dp</dimen>
   <dimen name="design_bottom_navigation_elevation">8dp</dimen>
   <dimen name="design_bottom_navigation_shadow_height">1dp</dimen>
-  <dimen name="design_bottom_navigation_text_size">12sp</dimen>
-  <dimen name="design_bottom_navigation_active_text_size">14sp</dimen>
-  <dimen name="design_bottom_navigation_margin">8dp</dimen>
-  <dimen name="design_bottom_navigation_item_min_width">56dp</dimen>
-  <dimen name="design_bottom_navigation_item_max_width">96dp</dimen>
-  <dimen name="design_bottom_navigation_active_item_max_width">168dp</dimen>
-  <dimen name="design_bottom_navigation_active_item_min_width">96dp</dimen>
 
   <dimen name="mtrl_fab_elevation">6dp</dimen>
   <dimen name="mtrl_fab_translation_z_hovered_focused">2dp</dimen>

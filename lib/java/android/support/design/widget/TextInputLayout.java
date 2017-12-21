@@ -48,6 +48,7 @@ import android.support.annotation.StyleRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
+import android.support.design.theme.ThemeUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.AbsSavedState;
@@ -77,6 +78,8 @@ import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Layout which wraps an {@link android.widget.EditText} (or descendant) to show a floating label
@@ -174,6 +177,7 @@ public class TextInputLayout extends LinearLayout {
    * no background.
    */
   @IntDef({BOX_BACKGROUND_NONE, BOX_BACKGROUND_FILLED, BOX_BACKGROUND_OUTLINE})
+  @Retention(RetentionPolicy.SOURCE)
   public @interface BoxBackgroundMode {}
 
   public static final int BOX_BACKGROUND_NONE = 0;

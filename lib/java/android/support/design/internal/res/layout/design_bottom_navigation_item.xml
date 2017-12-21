@@ -22,6 +22,7 @@
       android:layout_marginTop="@dimen/design_bottom_navigation_margin"
       android:layout_marginBottom="@dimen/design_bottom_navigation_margin"
       android:layout_gravity="center_horizontal"
+      android:contentDescription="@null"
       android:duplicateParentState="true"/>
   <android.support.design.internal.BaselineLayout
       android:layout_width="wrap_content"

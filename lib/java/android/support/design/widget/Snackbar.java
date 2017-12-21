@@ -108,7 +108,10 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
   @Nullable private BaseCallback<Snackbar> callback;
 
-  private Snackbar(ViewGroup parent, View content, ContentViewCallback contentViewCallback) {
+  private Snackbar(
+      ViewGroup parent,
+      View content,
+      android.support.design.snackbar.ContentViewCallback contentViewCallback) {
     super(parent, content, contentViewCallback);
   }
 

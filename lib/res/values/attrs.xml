@@ -224,10 +224,6 @@
     <attr name="behavior_autoHide" format="boolean"/>
   </declare-styleable>
 
-  <declare-styleable name="ScrimInsetsFrameLayout">
-    <attr name="insetForeground" format="color|reference"/>
-  </declare-styleable>
-
   <declare-styleable name="NavigationView">
     <attr name="android:background"/>
     <attr name="android:fitsSystemWindows"/>
@@ -241,12 +237,6 @@
     <attr name="itemTextAppearance" format="reference"/>
     <!-- Layout resource to inflate as the header -->
     <attr name="headerLayout" format="reference"/>
-  </declare-styleable>
-
-  <declare-styleable name="ForegroundLinearLayout">
-    <attr name="android:foreground"/>
-    <attr name="android:foregroundGravity"/>
-    <attr name="foregroundInsidePadding" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="TabLayout">
@@ -427,12 +417,6 @@
     <attr name="boxBackgroundColor" format="color"/>
     <!-- The value to use for the box's stroke when in outline box mode. -->
     <attr name="boxStrokeWidth" format="dimension"/>
-  </declare-styleable>
-
-  <declare-styleable name="SnackbarLayout">
-    <attr name="android:maxWidth"/>
-    <attr name="elevation"/>
-    <attr name="maxActionInlineWidth" format="dimension"/>
   </declare-styleable>
 
   <declare-styleable name="AppBarLayout">

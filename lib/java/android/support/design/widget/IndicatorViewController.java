@@ -44,6 +44,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -68,6 +70,7 @@ final class IndicatorViewController {
    * (error text or helper text) or a character counter.
    */
   @IntDef({COUNTER_INDEX, ERROR_INDEX, HELPER_INDEX})
+  @Retention(RetentionPolicy.SOURCE)
   private @interface IndicatorIndex {}
 
   static final int ERROR_INDEX = 0;
@@ -79,6 +82,7 @@ final class IndicatorViewController {
    * displayed, or no caption.
    */
   @IntDef({CAPTION_STATE_NONE, CAPTION_STATE_ERROR, CAPTION_STATE_HELPER_TEXT})
+  @Retention(RetentionPolicy.SOURCE)
   private @interface CaptionDisplayState {}
 
   private static final int CAPTION_STATE_NONE = 0;

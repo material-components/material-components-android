@@ -34,6 +34,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.design.R;
+import android.support.design.theme.ThemeUtils;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
@@ -112,24 +113,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
   }
 
-  /** Interface that defines the behavior of the main content of a transient bottom bar. */
-  public interface ContentViewCallback {
-    /**
-     * Animates the content of the transient bottom bar in.
-     *
-     * @param delay Animation delay.
-     * @param duration Animation duration.
-     */
-    void animateContentIn(int delay, int duration);
-
-    /**
-     * Animates the content of the transient bottom bar out.
-     *
-     * @param delay Animation delay.
-     * @param duration Animation duration.
-     */
-    void animateContentOut(int delay, int duration);
-  }
+  /**
+   * Interface that defines the behavior of the main content of a transient bottom bar.
+   *
+   * @deprecated Use {@link android.support.design.snackbar.ContentViewCallback} instead.
+   */
+  @Deprecated
+  public interface ContentViewCallback
+      extends android.support.design.snackbar.ContentViewCallback {}
 
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
@@ -198,7 +189,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   private final ViewGroup targetParent;
   private final Context context;
   final SnackbarBaseLayout view;
-  private final ContentViewCallback contentViewCallback;
+  private final android.support.design.snackbar.ContentViewCallback contentViewCallback;
   private int duration;
 
   private List<BaseCallback<B>> callbacks;
@@ -229,7 +220,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   protected BaseTransientBottomBar(
       @NonNull ViewGroup parent,
       @NonNull View content,
-      @NonNull ContentViewCallback contentViewCallback) {
+      @NonNull android.support.design.snackbar.ContentViewCallback contentViewCallback) {
     if (parent == null) {
       throw new IllegalArgumentException("Transient bottom bar must have non-null parent");
     }
@@ -604,14 +595,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       for (int i = callbackCount - 1; i >= 0; i--) {
         callbacks.get(i).onDismissed((B) this, event);
       }
-    }
-    if (Build.VERSION.SDK_INT < 11) {
-      // We need to hide the Snackbar on pre-v11 since it uses an old style Animation.
-      // ViewGroup has special handling in removeView() when getAnimation() != null in
-      // that it waits. This then means that the calculated insets are wrong and the
-      // any dodging views do not return. We workaround it by setting the view to gone while
-      // ViewGroup actually gets around to removing it.
-      view.setVisibility(View.GONE);
     }
     // Lastly, hide and remove the view from the parent (if attached)
     final ViewParent parent = view.getParent();

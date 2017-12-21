@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.annotation.LayoutRes;
@@ -30,7 +29,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
-import android.support.design.R;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.support.v7.view.menu.MenuBuilder;
@@ -156,27 +154,21 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   @Override
   public Parcelable onSaveInstanceState() {
-    if (Build.VERSION.SDK_INT >= 11) {
-      // API 9-10 does not support ClassLoaderCreator, therefore things can crash if they're
-      // loaded via different loaders. Rather than crash we just won't save state on those
-      // platforms
-      final Bundle state = new Bundle();
-      if (menuView != null) {
-        SparseArray<Parcelable> hierarchy = new SparseArray<>();
-        menuView.saveHierarchyState(hierarchy);
-        state.putSparseParcelableArray(STATE_HIERARCHY, hierarchy);
-      }
-      if (adapter != null) {
-        state.putBundle(STATE_ADAPTER, adapter.createInstanceState());
-      }
-      if (headerLayout != null) {
-        SparseArray<Parcelable> header = new SparseArray<>();
-        headerLayout.saveHierarchyState(header);
-        state.putSparseParcelableArray(STATE_HEADER, header);
-      }
-      return state;
+    final Bundle state = new Bundle();
+    if (menuView != null) {
+      SparseArray<Parcelable> hierarchy = new SparseArray<>();
+      menuView.saveHierarchyState(hierarchy);
+      state.putSparseParcelableArray(STATE_HIERARCHY, hierarchy);
     }
-    return null;
+    if (adapter != null) {
+      state.putBundle(STATE_ADAPTER, adapter.createInstanceState());
+    }
+    if (headerLayout != null) {
+      SparseArray<Parcelable> header = new SparseArray<>();
+      headerLayout.saveHierarchyState(header);
+      state.putSparseParcelableArray(STATE_HEADER, header);
+    }
+    return state;
   }
 
   @Override

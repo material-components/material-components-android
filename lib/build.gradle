@@ -14,12 +14,17 @@ dependencies {
   api compatibility("v7/appcompat")
   api compatibility("v7/recyclerview")
 
+  implementation project(fromPath("lib/java/android/support/design/internal"))
+  implementation project(fromPath("lib/java/android/support/design/theme"))
+
   api project(fromPath("lib/java/android/support/design/animation"))
+  api project(fromPath("lib/java/android/support/design/bottomnavigation"))
   api project(fromPath("lib/java/android/support/design/circularreveal"))
   api project(fromPath("lib/java/android/support/design/circularreveal/cardview"))
   api project(fromPath("lib/java/android/support/design/math"))
   api project(fromPath("lib/java/android/support/design/resources"))
   api project(fromPath("lib/java/android/support/design/ripple"))
+  api project(fromPath("lib/java/android/support/design/snackbar"))
   api project(fromPath("lib/java/android/support/design/stateful"))
 
   testImplementation("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
@@ -36,7 +41,6 @@ android {
     main.manifest.srcFile 'AndroidManifest.xml'
     main.java.srcDir 'java'
     main.java.includes = [
-      'android/support/design/internal/*.java',
       'android/support/design/widget/**/*.java',
     ]
     main.java.excludes = [

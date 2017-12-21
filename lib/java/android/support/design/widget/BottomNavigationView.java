@@ -25,14 +25,16 @@ import android.os.Parcelable;
 import android.support.annotation.BoolRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
-import android.support.annotation.IntDef;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.R;
+import android.support.design.bottomnavigation.LabelVisibilityMode;
+import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
+import android.support.design.theme.ThemeUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
@@ -49,8 +51,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 /**
  * Represents a standard bottom navigation bar for application. It is an implementation of <a
@@ -102,50 +102,6 @@ public class BottomNavigationView extends FrameLayout {
 
   private static final int MENU_PRESENTER_ID = 1;
 
-  /**
-   * Shifting mode enabled only when BottomNavigationView has 3 or more children (default).
-   *
-   * @see #setShiftingMode(int)
-   * @see #getShiftingMode()
-   * @deprecated use {@link LabelVisibilityMode instead}
-   */
-  @Deprecated public static final int SHIFTING_MODE_AUTO = -1;
-
-  /**
-   * Shifting mode disabled in all cases.
-   *
-   * @see #setShiftingMode(int)
-   * @see #getShiftingMode()
-   * @deprecated use {@link LabelVisibilityMode instead}
-   */
-  @Deprecated public static final int SHIFTING_MODE_OFF = 0;
-
-  /**
-   * Shifting mode enabled in all cases.
-   *
-   * @see #setShiftingMode(int)
-   * @see #getShiftingMode()
-   * @deprecated use {@link LabelVisibilityMode instead}
-   */
-  @Deprecated public static final int SHIFTING_MODE_ON = 1;
-
-  /**
-   * Shifting mode flag enum for this {@link BottomNavigationView}. Shifting mode hides text labels
-   * for child views when enabled, unless the child view is selected. Shifting mode is enabled for
-   * {@link BottomNavigationView}s with more than 3 children by default, or for {@link
-   * BottomNavigationView}s with any number of children if shifting mode flag is set to {@link
-   * ShiftingMode#SHIFTING_MODE_ON}.
-   *
-   * @see <a
-   *     href="https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs">Material
-   *     Design guidelines</a>
-   * @deprecated use {@link LabelVisibilityMode instead}
-   */
-  @Deprecated
-  @IntDef({SHIFTING_MODE_AUTO, SHIFTING_MODE_OFF, SHIFTING_MODE_ON})
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface ShiftingMode {}
-
   private final MenuBuilder mMenu;
   private final BottomNavigationMenuView mMenuView;
   private final BottomNavigationPresenter mPresenter = new BottomNavigationPresenter();
@@ -154,59 +110,6 @@ public class BottomNavigationView extends FrameLayout {
   private OnNavigationItemSelectedListener mSelectedListener;
   private OnNavigationItemReselectedListener mReselectedListener;
 
-  /**
-   * Label is shown when {@link ShiftingMode} is enabled, or hidden when it is not.
-   *
-   * @see #setLabelVisibilityMode(int)
-   * @see #getLabelVisibilityMode()
-   * @deprecated use one of the other {@link LabelVisibilityMode}s instead
-   */
-  @Deprecated public static final int LABEL_VISIBILITY_LEGACY = -1;
-
-  /**
-   * Label is shown on the selected navigation item.
-   *
-   * @see #setLabelVisibilityMode(int)
-   * @see #getLabelVisibilityMode()
-   */
-  public static final int LABEL_VISIBILITY_SELECTED = 0;
-
-  /**
-   * Label is shown on all navigation items.
-   *
-   * @see #setLabelVisibilityMode(int)
-   * @see #getLabelVisibilityMode()
-   */
-  public static final int LABEL_VISIBILITY_LABELED = 1;
-
-  /**
-   * Label is not shown on any navigation items.
-   *
-   * @see #setLabelVisibilityMode(int)
-   * @see #getLabelVisibilityMode()
-   */
-  public static final int LABEL_VISIBILITY_UNLABELED = 2;
-
-  /**
-   * Label visibility mode enum for this {@link BottomNavigationView}.
-   *
-   * <p>The label visibility mode determines whether to show or hide labels in the navigation items.
-   * Setting the label visibility mode to {@link LabelVisibilityMode#LABEL_VISIBILITY_SELECTED} sets
-   * the label to only show when selected, setting it to {@link
-   * LabelVisibilityMode#LABEL_VISIBILITY_LABELED} sets the label to always show, and {@link
-   * LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED} sets the label to never show.
-   *
-   * <p>Setting the label visibility mode to {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}
-   * sets the label to behave as it used to with {@link ShiftingMode}.
-   */
-  @IntDef({
-    LABEL_VISIBILITY_LEGACY,
-    LABEL_VISIBILITY_SELECTED,
-    LABEL_VISIBILITY_LABELED,
-    LABEL_VISIBILITY_UNLABELED
-  })
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface LabelVisibilityMode {}
 
   public BottomNavigationView(Context context) {
     this(context, null);
@@ -264,13 +167,14 @@ public class BottomNavigationView extends FrameLayout {
     if (a.hasValue(R.styleable.BottomNavigationView_shiftingMode)) {
       @ShiftingMode
       int shiftingMode =
-          a.getInt(R.styleable.BottomNavigationView_shiftingMode, SHIFTING_MODE_AUTO);
+          a.getInt(R.styleable.BottomNavigationView_shiftingMode, ShiftingMode.SHIFTING_MODE_AUTO);
       mMenuView.setShiftingMode(shiftingMode);
     }
 
     setLabelVisibilityMode(
         a.getInteger(
-            R.styleable.BottomNavigationView_labelVisibilityMode, LABEL_VISIBILITY_LEGACY));
+            R.styleable.BottomNavigationView_labelVisibilityMode,
+            LabelVisibilityMode.LABEL_VISIBILITY_LEGACY));
     setItemHorizontalTranslation(
         a.getBoolean(R.styleable.BottomNavigationView_itemHorizontalTranslation, true));
 

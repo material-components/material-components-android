@@ -20,8 +20,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.RestrictTo;
-import android.support.design.R;
-import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.snackbar.ContentViewCallback;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -31,8 +30,7 @@ import android.widget.TextView;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
-public class SnackbarContentLayout extends LinearLayout
-    implements BaseTransientBottomBar.ContentViewCallback {
+public class SnackbarContentLayout extends LinearLayout implements ContentViewCallback {
   private TextView messageView;
   private Button actionView;
 

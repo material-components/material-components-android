@@ -22,9 +22,6 @@ import android.support.v7.appcompat.R;
 
 /**
  * Utility methods to check Theme compatibility with components.
- *
- * <p>TODO: mark {@link android.support.design.widget.ThemeUtils} as @deprecated when
- * making this class OpenSource.
  */
 public class ThemeUtils {
 
