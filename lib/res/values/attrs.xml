@@ -616,7 +616,9 @@
       <enum name="unlabeled" value="2"/>
     </attr>
     <attr name="itemBackground"/>
+    <!-- The tint to apply to the navigation items' icons. -->
     <attr name="itemIconTint"/>
+    <!-- The color to apply to the navigation items' text. -->
     <attr name="itemTextColor"/>
     <!-- Whether the items should translate horizontally when in shifting mode. -->
     <attr name="itemHorizontalTranslation" format="boolean"/>
