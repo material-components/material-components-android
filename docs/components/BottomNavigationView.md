@@ -58,7 +58,7 @@ A typical layout file would look like this:
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
-      app:itemBackground="@color/colorPrimary"
+      android:background="@color/colorPrimary"
       app:itemIconTint="@color/white"
       app:itemTextColor="@color/white"
       app:menu="@menu/bottom_navigation_menu" />
@@ -66,7 +66,7 @@ A typical layout file would look like this:
 </FrameLayout>
 ```
 
-### Handling Enabled/States
+### Handling States
 
 The `app:itemIconTint` and `app:itemTextColor` take a
 [ColorStateList](https://developer.android.com/reference/android/content/res/ColorStateList.html)
@@ -79,10 +79,10 @@ For example, you could have a `bottom_navigation_colors.xml` that contains:
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
   <item
       android:state_checked="true"
-      android:color="@color/white" />
+      android:color="@color/colorPrimary" />
   <item
       android:state_checked="false"
-      android:color="@color/colorPrimaryDark" />
+      android:color="@color/grey" />
  </selector>
 ```
 
@@ -93,8 +93,7 @@ And you would use it like this on your `BottomNavigationView`:
     android:id="@+id/bottom_navigation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_alignParentBottom="true"
-    app:itemBackground="@color/colorPrimary"
+    android:background="@color/white"
     app:itemIconTint="@drawable/bottom_navigation_colors"
     app:itemTextColor="@drawable/bottom_navigation_colors"
     app:menu="@menu/bottom_navigation_menu" />
