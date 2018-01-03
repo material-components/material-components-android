@@ -39,14 +39,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.R;
 import android.support.design.animation.MotionSpec;
+import android.support.design.expandable.ExpandableTransformationWidget;
+import android.support.design.expandable.ExpandableWidgetHelper;
 import android.support.design.resources.MaterialResources;
 import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.theme.ThemeUtils;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
-import android.support.design.widget.expandable.ExpandableTransformationWidget;
-import android.support.design.widget.expandable.ExpandableWidgetHelper;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.TintableBackgroundView;
 import android.support.v4.view.ViewCompat;
@@ -900,7 +899,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
       // First, let's get the visible rect of the dependency
       final Rect rect = tmpRect;
-      ViewGroupUtils.getDescendantRect(parent, appBarLayout, rect);
+      DescendantOffsetUtils.getDescendantRect(parent, appBarLayout, rect);
 
       if (rect.bottom <= appBarLayout.getMinimumHeightForVisibleOverlappingContent()) {
         // If the anchor's bottom is below the seam, we'll animate our FAB out

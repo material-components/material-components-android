@@ -37,7 +37,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
-import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.theme.ThemeUtils;
 import android.support.v4.content.ContextCompat;
@@ -461,7 +460,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         // Update the collapsed bounds
         final int maxOffset =
             getMaxOffsetForPinChild(toolbarDirectChild != null ? toolbarDirectChild : toolbar);
-        ViewGroupUtils.getDescendantRect(this, dummyView, tmpRect);
+        DescendantOffsetUtils.getDescendantRect(this, dummyView, tmpRect);
         collapsingTextHelper.setCollapsedBounds(
             tmpRect.left + (isRtl ? toolbar.getTitleMarginEnd() : toolbar.getTitleMarginStart()),
             tmpRect.top + maxOffset + toolbar.getTitleMarginTop(),

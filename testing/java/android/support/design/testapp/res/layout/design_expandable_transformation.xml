@@ -37,7 +37,7 @@
       android:layout_margin="16dp"
       android:src="@drawable/ic_add"/>
 
-  <android.support.design.widget.transformation.TransformationChildLayout
+  <android.support.design.transformation.TransformationChildLayout
       android:id="@+id/sheet"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

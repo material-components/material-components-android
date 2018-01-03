@@ -36,7 +36,6 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.animation.AnimatorSetCompat;
 import android.support.design.animation.ImageMatrixProperty;

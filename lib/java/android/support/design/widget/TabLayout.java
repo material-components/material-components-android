@@ -50,7 +50,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
-import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.resources.MaterialResources;
 import android.support.design.ripple.RippleUtils;

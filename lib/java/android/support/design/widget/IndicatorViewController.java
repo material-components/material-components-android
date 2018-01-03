@@ -30,7 +30,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.animation.AnimatorSetCompat;
 import android.support.v4.view.ViewCompat;

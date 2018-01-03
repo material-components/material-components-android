@@ -31,7 +31,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.theme.ThemeUtils;
 import android.support.v4.util.ObjectsCompat;

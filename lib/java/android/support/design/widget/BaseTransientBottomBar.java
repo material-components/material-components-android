@@ -33,7 +33,6 @@ import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
-import android.support.design.R;
 import android.support.design.theme.ThemeUtils;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;

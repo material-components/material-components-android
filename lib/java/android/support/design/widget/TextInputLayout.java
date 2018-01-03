@@ -46,7 +46,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.annotation.VisibleForTesting;
-import android.support.design.R;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.theme.ThemeUtils;
 import android.support.v4.content.ContextCompat;
@@ -1302,7 +1301,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     final Rect editTextBounds = new Rect();
-    ViewGroupUtils.getDescendantRect(this, editText, editTextBounds);
+    DescendantOffsetUtils.getDescendantRect(this, editText, editTextBounds);
 
     Rect editTextBackgroundBounds = editTextBackground.getBounds();
     if (editTextBackgroundBounds.left != editTextBackgroundBounds.right) {
@@ -1866,7 +1865,7 @@ public class TextInputLayout extends LinearLayout {
 
     if (hintEnabled && editText != null) {
       final Rect rect = tmpRect;
-      ViewGroupUtils.getDescendantRect(this, editText, rect);
+      DescendantOffsetUtils.getDescendantRect(this, editText, rect);
 
       final int l = rect.left + editText.getCompoundPaddingLeft();
       final int r = rect.right - editText.getCompoundPaddingRight();

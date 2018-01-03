@@ -1,0 +1,32 @@
+apply plugin: 'com.android.library'
+
+archivesBaseName = 'design'
+
+dependencies {
+  implementation compatibility("annotations")
+  implementation compatibility("compat")
+  implementation compatibility("core_ui")
+
+  implementation project(fromPath("lib/java/android/support/design/animation"))
+  implementation project(fromPath("lib/java/android/support/design/circularreveal"))
+  implementation project(fromPath("lib/java/android/support/design/circularreveal/cardview"))
+  implementation project(fromPath("lib/java/android/support/design/expandable"))
+  implementation project(fromPath("lib/java/android/support/design/math"))
+  implementation project(fromPath("lib/java/android/support/design/widget"))
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.java.excludes = [
+      '**/build/**',
+    ]
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+    main.resources.srcDir 'res'
+  }
+}

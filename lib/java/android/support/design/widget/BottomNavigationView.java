@@ -28,7 +28,6 @@ import android.support.annotation.IdRes;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.R;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.design.internal.BottomNavigationMenu;

@@ -17,15 +17,19 @@ dependencies {
   implementation project(fromPath("lib/java/android/support/design/internal"))
   implementation project(fromPath("lib/java/android/support/design/theme"))
 
+  api project(fromPath("lib/coordinatorlayout/java/android/support/design/widget"))
   api project(fromPath("lib/java/android/support/design/animation"))
   api project(fromPath("lib/java/android/support/design/bottomnavigation"))
   api project(fromPath("lib/java/android/support/design/circularreveal"))
   api project(fromPath("lib/java/android/support/design/circularreveal/cardview"))
+  api project(fromPath("lib/java/android/support/design/expandable"))
   api project(fromPath("lib/java/android/support/design/math"))
   api project(fromPath("lib/java/android/support/design/resources"))
   api project(fromPath("lib/java/android/support/design/ripple"))
   api project(fromPath("lib/java/android/support/design/snackbar"))
   api project(fromPath("lib/java/android/support/design/stateful"))
+  api project(fromPath("lib/java/android/support/design/transformation"))
+  api project(fromPath("lib/java/android/support/design/widget"))
 
   testImplementation("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
     exclude module: 'support-annotations'
@@ -39,19 +43,15 @@ dependencies {
 android {
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDir 'java'
-    main.java.includes = [
-      'android/support/design/widget/**/*.java',
-    ]
+    main.java.srcDir '.'
+    main.java.includes = ["*.java"]
     main.java.excludes = [
       '**/build/**',
     ]
     main.res.srcDirs = [
       'res',
-      'res-public'
+      'res-public',
     ]
-    main.assets.srcDir 'assets'
-    main.resources.srcDir 'src'
 
     test.java.srcDir 'javatests'
   }

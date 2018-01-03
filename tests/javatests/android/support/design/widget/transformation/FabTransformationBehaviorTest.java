@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.design.widget.transformation;
+package android.support.design.transformation;
 
 import static android.support.design.testutils.TestUtilsActions.setExpanded;
 import static android.support.design.testutils.TestUtilsActions.waitUntilIdle;

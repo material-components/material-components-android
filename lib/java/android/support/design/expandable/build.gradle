@@ -1,0 +1,26 @@
+apply plugin: 'com.android.library'
+
+archivesBaseName = 'design'
+
+dependencies {
+  implementation compatibility("annotations")
+  implementation compatibility("core_ui")
+
+  implementation project(fromPath("lib/coordinatorlayout/java/android/support/design/widget"))
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.java.excludes = [
+      '**/build/**',
+    ]
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+    main.resources.srcDir 'res'
+  }
+}
