@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_enabled="false" android:color="@color/mtrl_toggle_thumb_disabled" />
+  <item android:state_enabled="false" android:color="@color/mtrl_switch_thumb_disabled" />
   <item android:color="?attr/colorAccent" android:state_checked="true" />
-  <item android:color="@color/mtrl_toggle_thumb" />
+  <item android:color="@color/mtrl_switch_thumb" />
 </selector>

@@ -53,8 +53,8 @@
     <attr name="bottomSheetStyle" format="reference"/>
     <!-- Style to use for MaterialButtons in this theme. -->
     <attr name="materialButtonStyle" format="reference"/>
-    <!-- Style to use for MaterialToggle in this theme. -->
-    <attr name="materialToggleStyle" format="reference"/>
+    <!-- Style to use MaterialSwitch in this theme. -->
+    <attr name="materialSwitchStyle" format="reference"/>
     <!-- Style to use for FloatingActionButtons in this theme. -->
     <attr name="floatingActionButtonStyle" format="reference"/>
     <!-- Style to use for ChipGroups in this theme. -->

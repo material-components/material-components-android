@@ -17,30 +17,30 @@
 
 <resources>
 
-  <style name="Widget.Design.Toggle.MaterialToggle" parent="android:Widget">
-    <item name="switchPadding">@dimen/mtrl_toggle_padding</item>
+  <style name="Widget.Design.MaterialSwitch" parent="android:Widget">
+    <item name="switchPadding">@dimen/mtrl_switch_padding</item>
     <item name="android:focusable">true</item>
     <item name="android:clickable">true</item>
-    <item name="android:textAppearance">@style/TextAppearance.Design.MaterialToggle</item>
+    <item name="android:textAppearance">@style/TextAppearance.Design.MaterialSwitch</item>
     <item name="android:gravity">center_vertical|start</item>
 
     <!--Thumb-->
-    <item name="thumbTint">@color/mtrl_toggle_thumb_tint</item>
-    <item name="rippleColor">@color/mtrl_toggle_ripple_color</item>
+    <item name="thumbTint">@color/mtrl_switch_thumb_tint</item>
+    <item name="rippleColor">@color/mtrl_switch_ripple_color</item>
     <item name="rippleAlpha">#ff000000</item>
     <item name="showText">false</item>
-    <item name="android:textOn">@string/mtrl_toggle_text_on</item>
-    <item name="android:textOff">@string/mtrl_toggle_text_off</item>
-    <item name="switchTextAppearance">@style/TextAppearance.Design.MaterialToggle</item>
-    <item name="thumbTextPadding">@dimen/mtrl_thumb_text_padding</item>
+    <item name="android:textOn">@string/mtrl_switch_text_on</item>
+    <item name="android:textOff">@string/mtrl_switch_text_off</item>
+    <item name="switchTextAppearance">@style/TextAppearance.Design.MaterialSwitch</item>
+    <item name="thumbTextPadding">@dimen/mtrl_switch_thumb_text_padding</item>
 
     <!--Track-->
-    <item name="trackTint">@color/mtrl_toggle_track_tint</item>
+    <item name="trackTint">@color/mtrl_switch_track_tint</item>
   </style>
 
-  <style name="TextAppearance.Design.MaterialToggle" parent="android:TextAppearance">
-    <item name="android:textSize">@dimen/mtrl_toggle_text_size</item>
-    <item name="android:textColor">@color/mtrl_toggle_text_color</item>
+  <style name="TextAppearance.Design.MaterialSwitch" parent="android:TextAppearance">
+    <item name="android:textSize">@dimen/mtrl_switch_text_size</item>
+    <item name="android:textColor">@color/mtrl_switch_text_color</item>
   </style>
 
 </resources>

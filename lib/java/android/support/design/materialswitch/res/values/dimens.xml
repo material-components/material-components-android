@@ -17,10 +17,10 @@
 
 <resources>
 
-  <dimen name="mtrl_toggle_padding">3dp</dimen>
-  <dimen name="mtrl_toggle_text_size">14sp</dimen>
-  <dimen name="mtrl_thumb_text_padding">2dp</dimen>
-  <dimen name="mtrl_toggle_track_left_right_padding">3dp</dimen>
-  <dimen name="mtrl_toggle_track_top_bottom_padding">3dp</dimen>
+  <dimen name="mtrl_switch_padding">3dp</dimen>
+  <dimen name="mtrl_switch_text_size">14sp</dimen>
+  <dimen name="mtrl_switch_thumb_text_padding">2dp</dimen>
+  <dimen name="mtrl_switch_track_left_right_padding">3dp</dimen>
+  <dimen name="mtrl_switch_track_top_bottom_padding">3dp</dimen>
 
 </resources>

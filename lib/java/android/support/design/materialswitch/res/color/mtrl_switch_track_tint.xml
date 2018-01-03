@@ -14,9 +14,9 @@
      limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:state_enabled="false" android:color="@color/mtrl_toggle_track_disabled" />
+  <item android:state_enabled="false" android:color="@color/mtrl_switch_track_disabled" />
   <item android:state_checked="true" android:alpha="?android:attr/disabledAlpha" android:color="?attr/colorAccent" />
-  <item android:color="@color/mtrl_toggle_track" />
+  <item android:color="@color/mtrl_switch_track" />
 </selector>
 
 

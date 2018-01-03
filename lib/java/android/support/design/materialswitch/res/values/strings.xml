@@ -17,7 +17,7 @@
 
 <resources>
 
-  <string name="mtrl_toggle_text_on">On</string>
-  <string name="mtrl_toggle_text_off">Off</string>
+  <string name="mtrl_switch_text_on">On</string>
+  <string name="mtrl_switch_text_off">Off</string>
 
 </resources>

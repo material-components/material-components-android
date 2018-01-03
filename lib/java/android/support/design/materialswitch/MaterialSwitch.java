@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.design.toggle;
+package android.support.design.materialswitch;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -32,27 +32,26 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 
 /**
- * A convenience class for creating a Material toggle.
+ * A convenience class for creating a Material switch.
  *
- * <p>This class supplies updated Material styles for the toggle in the constructor. The widget will
+ * <p>This class supplies updated Material styles for the switch in the constructor. The widget will
  * display the correct default Material styles without the use of the style flag.
  *
  * <p>TODO: Extend documentation with a complete list of attributes the user can set.
  * The values being set in the styles need to be aligned with the base component.
  *
- * @see MaterialToggle
  */
-public class MaterialToggle extends SwitchCompat {
+public class MaterialSwitch extends SwitchCompat {
 
-  public MaterialToggle(Context context) {
+  public MaterialSwitch(Context context) {
     this(context, null /* attrs */);
   }
 
-  public MaterialToggle(Context context, AttributeSet attrs) {
-    this(context, attrs, R.attr.materialToggleStyle);
+  public MaterialSwitch(Context context, AttributeSet attrs) {
+    this(context, attrs, R.attr.materialSwitchStyle);
   }
 
-  public MaterialToggle(Context context, AttributeSet attrs, int defStyleAttr) {
+  public MaterialSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
     ThemeUtils.checkAppCompatTheme(context);
@@ -60,9 +59,9 @@ public class MaterialToggle extends SwitchCompat {
     TypedArray attributes =
         context.obtainStyledAttributes(
             attrs,
-            R.styleable.MaterialToggle,
+            R.styleable.MaterialSwitch,
             defStyleAttr,
-            R.style.Widget_Design_Toggle_MaterialToggle);
+            R.style.Widget_Design_MaterialSwitch);
 
     // Track
     // TODO: TrackTintMode needs to be added. I have also left the radius value
@@ -70,7 +69,7 @@ public class MaterialToggle extends SwitchCompat {
     GradientDrawable trackDrawable = new GradientDrawable();
     trackDrawable.setCornerRadius(20);
     setTrackDrawable(trackDrawable);
-    ColorStateList trackTint = attributes.getColorStateList(R.styleable.MaterialToggle_trackTint);
+    ColorStateList trackTint = attributes.getColorStateList(R.styleable.MaterialSwitch_trackTint);
     setTrackTintList(trackTint);
 
     // Thumb drawable
@@ -80,48 +79,48 @@ public class MaterialToggle extends SwitchCompat {
     thumbDrawable.setSize(53, 53);
     thumbDrawable.setCornerRadius(26);
     setThumbDrawable(thumbDrawable);
-    ColorStateList thumbTint = attributes.getColorStateList(R.styleable.MaterialToggle_thumbTint);
+    ColorStateList thumbTint = attributes.getColorStateList(R.styleable.MaterialSwitch_thumbTint);
     setThumbTintList(thumbTint);
 
     // Thumb text
     @StyleRes
     int switchTextAppearanceStyleRes =
-        attributes.getResourceId(R.styleable.MaterialToggle_switchTextAppearance, 0);
+        attributes.getResourceId(R.styleable.MaterialSwitch_switchTextAppearance, 0);
     setSwitchTextAppearance(this.getContext(), switchTextAppearanceStyleRes);
     int thumbTextPadding =
-        attributes.getDimensionPixelSize(R.styleable.MaterialToggle_thumbTextPadding, 0);
+        attributes.getDimensionPixelSize(R.styleable.MaterialSwitch_thumbTextPadding, 0);
     setThumbTextPadding(thumbTextPadding);
-    boolean showText = attributes.getBoolean(R.styleable.MaterialToggle_showText, false);
+    boolean showText = attributes.getBoolean(R.styleable.MaterialSwitch_showText, false);
     setShowText(showText);
-    CharSequence onText = attributes.getString(R.styleable.MaterialToggle_android_textOn);
+    CharSequence onText = attributes.getString(R.styleable.MaterialSwitch_android_textOn);
     setTextOn(onText);
-    CharSequence offText = attributes.getString(R.styleable.MaterialToggle_android_textOff);
+    CharSequence offText = attributes.getString(R.styleable.MaterialSwitch_android_textOff);
     setTextOff(offText);
 
     // Switch itself
     int switchMinWidth =
-        attributes.getDimensionPixelSize(R.styleable.MaterialToggle_switchMinWidth, 0);
+        attributes.getDimensionPixelSize(R.styleable.MaterialSwitch_switchMinWidth, 0);
     setSwitchMinWidth(switchMinWidth);
     int switchPadding =
-        attributes.getDimensionPixelSize(R.styleable.MaterialToggle_switchPadding, 0);
+        attributes.getDimensionPixelSize(R.styleable.MaterialSwitch_switchPadding, 0);
     setSwitchPadding(switchPadding);
-    boolean isFocusable = attributes.getBoolean(R.styleable.MaterialToggle_android_focusable, true);
+    boolean isFocusable = attributes.getBoolean(R.styleable.MaterialSwitch_android_focusable, true);
     setFocusable(isFocusable);
-    boolean isClickable = attributes.getBoolean(R.styleable.MaterialToggle_android_clickable, true);
+    boolean isClickable = attributes.getBoolean(R.styleable.MaterialSwitch_android_clickable, true);
     setClickable(isClickable);
     @StyleRes
     int textAppearanceStyleRes =
-        attributes.getResourceId(R.styleable.MaterialToggle_android_textAppearance, 0);
+        attributes.getResourceId(R.styleable.MaterialSwitch_android_textAppearance, 0);
     setTextAppearance(textAppearanceStyleRes);
     TextViewCompat.setTextAppearance(this, textAppearanceStyleRes);
-    int gravity = attributes.getInt(R.styleable.MaterialToggle_android_gravity, Gravity.CENTER);
+    int gravity = attributes.getInt(R.styleable.MaterialSwitch_android_gravity, Gravity.CENTER);
     setGravity(gravity);
 
     // TODO: Ripple needs to be support by earlier versions and the ripple diameter is
     // smaller due to shape width. Alpha of the ripple needs attention.
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       ColorStateList rippleColor =
-          attributes.getColorStateList(R.styleable.MaterialToggle_rippleColor);
+          attributes.getColorStateList(R.styleable.MaterialSwitch_rippleColor);
       RippleDrawable rp =
           new RippleDrawable(RippleUtils.convertToRippleDrawableColor(rippleColor), null, null);
       setBackground(rp);

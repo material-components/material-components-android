@@ -17,7 +17,7 @@
 
 <resources>
 
-  <declare-styleable name="MaterialToggle">
+  <declare-styleable name="MaterialSwitch">
     <!-- Minimum width for the switch component -->
     <attr name="switchMinWidth" format="dimension" />
     <!-- Minimum space between the switch and caption text -->
