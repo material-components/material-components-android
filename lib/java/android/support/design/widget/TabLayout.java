@@ -51,9 +51,9 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.design.animation.AnimationUtils;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.design.resources.MaterialResources;
 import android.support.design.ripple.RippleUtils;
-import android.support.design.theme.ThemeUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.util.Pools;
 import android.support.v4.view.GravityCompat;
@@ -374,7 +374,7 @@ public class TabLayout extends HorizontalScrollView {
   public TabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeUtils.checkAppCompatTheme(context);
+    ThemeEnforcement.checkAppCompatTheme(context);
 
     // Disable the Scroll Bar
     setHorizontalScrollBarEnabled(false);

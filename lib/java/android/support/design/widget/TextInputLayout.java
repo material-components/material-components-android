@@ -47,7 +47,7 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.animation.AnimationUtils;
-import android.support.design.theme.ThemeUtils;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.AbsSavedState;
@@ -236,7 +236,7 @@ public class TextInputLayout extends LinearLayout {
     // Can't call through to super(Context, AttributeSet, int) since it doesn't exist on API 10
     super(context, attrs);
 
-    ThemeUtils.checkAppCompatTheme(context);
+    ThemeEnforcement.checkAppCompatTheme(context);
 
     setOrientation(VERTICAL);
     setWillNotDraw(false);

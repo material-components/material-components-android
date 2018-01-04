@@ -14,18 +14,26 @@
  * limitations under the License.
  */
 
-package android.support.design.theme;
+package android.support.design.internal;
+
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.RestrictTo;
 import android.support.v7.appcompat.R;
 
 /**
  * Utility methods to check Theme compatibility with components.
+ *
+ * @hide
  */
-public class ThemeUtils {
+@RestrictTo(LIBRARY_GROUP)
+public final class ThemeEnforcement {
 
   private static final int[] APPCOMPAT_CHECK_ATTRS = {R.attr.colorPrimary};
+
+  private ThemeEnforcement() {}
 
   public static void checkAppCompatTheme(Context context) {
     TypedArray a = context.obtainStyledAttributes(APPCOMPAT_CHECK_ATTRS);

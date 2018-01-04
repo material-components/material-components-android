@@ -33,7 +33,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
-import android.support.design.theme.ThemeUtils;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
@@ -234,7 +234,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     this.contentViewCallback = contentViewCallback;
     context = parent.getContext();
 
-    ThemeUtils.checkAppCompatTheme(context);
+    ThemeEnforcement.checkAppCompatTheme(context);
 
     LayoutInflater inflater = LayoutInflater.from(context);
     // Note that for backwards compatibility reasons we inflate a layout that is defined

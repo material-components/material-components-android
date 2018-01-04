@@ -25,8 +25,8 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.StyleRes;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.design.resources.MaterialResources;
-import android.support.design.theme.ThemeUtils;
 import android.support.design.widget.ViewUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.widget.TextViewCompat;
@@ -72,7 +72,7 @@ public class MaterialButton extends AppCompatButton {
   public MaterialButton(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeUtils.checkAppCompatTheme(context);
+    ThemeEnforcement.checkAppCompatTheme(context);
 
     TypedArray attributes =
         context.obtainStyledAttributes(

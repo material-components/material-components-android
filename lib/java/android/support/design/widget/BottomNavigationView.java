@@ -33,7 +33,7 @@ import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
-import android.support.design.theme.ThemeUtils;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
@@ -121,7 +121,7 @@ public class BottomNavigationView extends FrameLayout {
   public BottomNavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeUtils.checkAppCompatTheme(context);
+    ThemeEnforcement.checkAppCompatTheme(context);
 
     // Create the menu
     mMenu = new BottomNavigationMenu(context);

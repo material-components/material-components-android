@@ -117,7 +117,7 @@ def getArchivesBaseName (name) {
     return 'design-core'
   }
   def pathComponents = name.tokenize('/')
-  def knownComponents = ['lib', 'src', 'android', 'support',  'design']
+  def knownComponents = ['lib', 'java', 'android', 'support',  'design']
   def firstUnknownComponent = knownComponents.size();
   for (def i = 0; i < knownComponents.size() && i < pathComponents.size(); i++) {
     if (pathComponents[i] != knownComponents[i]) {

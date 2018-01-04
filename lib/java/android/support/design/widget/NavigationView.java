@@ -34,7 +34,7 @@ import android.support.annotation.StyleRes;
 import android.support.design.internal.NavigationMenu;
 import android.support.design.internal.NavigationMenuPresenter;
 import android.support.design.internal.ScrimInsetsFrameLayout;
-import android.support.design.theme.ThemeUtils;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
@@ -102,7 +102,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeUtils.checkAppCompatTheme(context);
+    ThemeEnforcement.checkAppCompatTheme(context);
 
     // Create the menu
     this.menu = new NavigationMenu(context);

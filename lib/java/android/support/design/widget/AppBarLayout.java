@@ -32,7 +32,7 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.animation.AnimationUtils;
-import android.support.design.theme.ThemeUtils;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
@@ -154,7 +154,7 @@ public class AppBarLayout extends LinearLayout {
     super(context, attrs);
     setOrientation(VERTICAL);
 
-    ThemeUtils.checkAppCompatTheme(context);
+    ThemeEnforcement.checkAppCompatTheme(context);
 
     if (Build.VERSION.SDK_INT >= 21) {
       // Use the bounds view outline provider so that we cast a shadow, even without a

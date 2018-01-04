@@ -42,9 +42,9 @@ import android.support.annotation.VisibleForTesting;
 import android.support.design.animation.MotionSpec;
 import android.support.design.expandable.ExpandableTransformationWidget;
 import android.support.design.expandable.ExpandableWidgetHelper;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.design.resources.MaterialResources;
 import android.support.design.stateful.ExtendableSavedState;
-import android.support.design.theme.ThemeUtils;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.TintableBackgroundView;
@@ -172,7 +172,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeUtils.checkAppCompatTheme(context);
+    ThemeEnforcement.checkAppCompatTheme(context);
 
     TypedArray a =
         context.obtainStyledAttributes(

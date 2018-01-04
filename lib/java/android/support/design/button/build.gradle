@@ -3,13 +3,13 @@ apply plugin: 'com.android.library'
 archivesBaseName = 'design'
 
 dependencies {
-  api compatibility("annotations")
-  api compatibility("core_utils")
-  api compatibility("v7/appcompat")
+  implementation compatibility("annotations")
+  implementation compatibility("core_utils")
+  implementation compatibility("v7/appcompat")
 
-  api project(fromPath("lib"))
-  api project(fromPath("lib/java/android/support/design/resources"))
-  api project(fromPath("lib/java/android/support/design/theme"))
+  implementation project(fromPath("lib/java/android/support/design/internal"))
+  implementation project(fromPath("lib/java/android/support/design/resources"))
+  implementation project(fromPath("lib/java/android/support/design/widget"))
 }
 
 android {
