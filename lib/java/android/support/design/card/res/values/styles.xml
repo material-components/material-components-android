@@ -19,11 +19,7 @@
 
   <!-- Defines the base Material card style. -->
   <style name="Widget.MaterialComponents.CardView" parent="CardView">
-    <item name="cardElevation">1dp</item>
-  </style>
-
-  <style name="Widget.MaterialComponents.CardView.UnelevatedCardView">
-    <item name="cardElevation">0dp</item>
+    <item name="cardElevation">@dimen/mtrl_card_elevation</item>
   </style>
 
 </resources>

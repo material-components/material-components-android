@@ -16,12 +16,5 @@
 -->
 
 <resources>
-
-  <declare-styleable name="MaterialCardView">
-    <!-- Specifies the color used to draw the path outline of the card. -->
-    <attr name="strokeColor" format="color"/>
-    <!-- Width of the stroke path of the card. Default is 0. -->
-    <attr name="strokeWidth" format="dimension"/>
-  </declare-styleable>
-
+  <color name="mtrl_card_bg_color">#ffffff</color>
 </resources>

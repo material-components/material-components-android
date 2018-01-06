@@ -17,14 +17,20 @@
 package android.support.design.card;
 
 import android.content.Context;
+import android.content.res.TypedArray;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 
 /**
- * A convenience class for creating a new Material card.
+ * Provides a Material card.
  *
- * <p>This class supplies updated Material styles for the card in the constructor. The widget will
- * display the correct default Material styles without the use of the style flag.
+ * <p>This class supplies Material styles for the card in the constructor. The widget will
+ * display the correct default Material styles without the use of a style flag.
+ *
+ * <p>Stroke width can be set using the {@code strokeWidth} attribute. Set the stroke color using
+ * the {@code strokeColor} attribute. Without a {@code strokeColor}, the card will not render a
+ * stroked border, regardless of the {@code strokeWidth} value.
  */
 public class MaterialCardView extends CardView {
 
@@ -38,5 +44,20 @@ public class MaterialCardView extends CardView {
 
   public MaterialCardView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
+
+    ThemeEnforcement.checkAppCompatTheme(context);
+
+    TypedArray attributes =
+        context.obtainStyledAttributes(
+            attrs,
+            R.styleable.MaterialCardView,
+            defStyleAttr,
+            R.style.Widget_MaterialComponents_CardView);
+
+    // Loads and sets background drawable attributes
+    MaterialCardViewHelper cardViewHelper = new MaterialCardViewHelper(this);
+    cardViewHelper.loadFromAttributes(attributes);
+
+    attributes.recycle();
   }
 }
