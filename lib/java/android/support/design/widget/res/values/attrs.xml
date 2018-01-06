@@ -65,6 +65,8 @@
     <attr name="chipStandaloneStyle" format="reference"/>
     <!-- Style to use for BottomAppBar in this theme. -->
     <attr name="bottomAppBarStyle" format="reference"/>
+    <!-- Style to use for MaterialCardView in this theme. -->
+    <attr name="cardViewStyle" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="BottomAppBar">
