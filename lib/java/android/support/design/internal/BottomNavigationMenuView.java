@@ -220,9 +220,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    */
   public void setIconTintList(ColorStateList tint) {
     mItemIconTint = tint;
-    if (mButtons == null) return;
-    for (BottomNavigationItemView item : mButtons) {
-      item.setIconTintList(tint);
+    if (mButtons != null) {
+      for (BottomNavigationItemView item : mButtons) {
+        item.setIconTintList(tint);
+      }
     }
   }
 
@@ -243,9 +244,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    */
   public void setItemTextColor(ColorStateList color) {
     mItemTextColor = color;
-    if (mButtons == null) return;
-    for (BottomNavigationItemView item : mButtons) {
-      item.setTextColor(color);
+    if (mButtons != null) {
+      for (BottomNavigationItemView item : mButtons) {
+        item.setTextColor(color);
+      }
     }
   }
 
@@ -265,9 +267,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    */
   public void setItemBackgroundRes(int background) {
     mItemBackgroundRes = background;
-    if (mButtons == null) return;
-    for (BottomNavigationItemView item : mButtons) {
-      item.setItemBackground(background);
+    if (mButtons != null) {
+      for (BottomNavigationItemView item : mButtons) {
+        item.setItemBackground(background);
+      }
     }
   }
 

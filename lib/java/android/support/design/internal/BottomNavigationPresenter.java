@@ -55,7 +55,9 @@ public class BottomNavigationPresenter implements MenuPresenter {
 
   @Override
   public void updateMenuView(boolean cleared) {
-    if (mUpdateSuspended) return;
+    if (mUpdateSuspended) {
+      return;
+    }
     if (cleared) {
       mMenuView.buildMenuView();
     } else {
