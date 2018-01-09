@@ -303,7 +303,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // We have to handle cases that the ViewDragHelper does not capture the bottom sheet because
     // it is not the top most view of its parent. This is not necessary when the touch event is
     // happening over the scrolling content as nested scrolling logic handles that case.
-    View scroll = nestedScrollingChildRef.get();
+    View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
     return action == MotionEvent.ACTION_MOVE
         && scroll != null
         && !ignoreEvents
