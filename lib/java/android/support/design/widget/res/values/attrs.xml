@@ -268,6 +268,10 @@
       <!-- Stretch indicator to match the height and width of a tab item in this layout. -->
       <enum name="stretch" value="3"/>
     </attr>
+    <!-- Whether the selection indicator width should fill the full width of the tab item,
+         or if it should be fitted to the content of the tab text label. If no text label is
+         present, it will be set to the width of the icon or to a minimum width of 24dp. -->
+    <attr name="tabIndicatorFullWidth" format="boolean"/>
     <!-- The behavior mode for the Tabs in this layout -->
     <attr name="tabMode">
       <enum name="scrollable" value="0"/>

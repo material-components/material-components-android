@@ -42,6 +42,7 @@
   <style name="Widget.Design.TabLayout" parent="Base.Widget.Design.TabLayout">
     <item name="tabGravity">fill</item>
     <item name="tabMode">fixed</item>
+    <item name="tabIndicatorFullWidth">true</item>
   </style>
 
   <style name="Widget.Design.BottomNavigationView" parent="">

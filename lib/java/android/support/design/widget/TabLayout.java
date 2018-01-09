@@ -33,6 +33,7 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -43,6 +44,7 @@ import android.os.Build.VERSION_CODES;
 import android.support.annotation.BoolRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
+import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.LayoutRes;
@@ -160,13 +162,25 @@ import java.util.Iterator;
 @ViewPager.DecorView
 public class TabLayout extends HorizontalScrollView {
 
-  private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72; // dps
-  static final int DEFAULT_GAP_TEXT_ICON = 8; // dps
+  @Dimension(unit = Dimension.DP)
+  private static final int DEFAULT_HEIGHT_WITH_TEXT_ICON = 72;
+
+  @Dimension(unit = Dimension.DP)
+  static final int DEFAULT_GAP_TEXT_ICON = 8;
+
+  @Dimension(unit = Dimension.DP)
+  private static final int DEFAULT_HEIGHT = 48;
+
+  @Dimension(unit = Dimension.DP)
+  private static final int TAB_MIN_WIDTH_MARGIN = 56;
+
+  @Dimension(unit = Dimension.DP)
+  private static final int MIN_INDICATOR_WIDTH = 24;
+
+  @Dimension(unit = Dimension.DP)
+  static final int FIXED_WRAP_GUTTER_MIN = 16;
+
   private static final int INVALID_WIDTH = -1;
-  private static final int DEFAULT_HEIGHT = 48; // dps
-  private static final int TAB_MIN_WIDTH_MARGIN = 56; // dps
-  static final int FIXED_WRAP_GUTTER_MIN = 16; // dps
-  static final int MOTION_NON_ADJACENT_OFFSET = 24;
 
   private static final int ANIMATION_DURATION = 300;
 
@@ -316,6 +330,8 @@ public class TabLayout extends HorizontalScrollView {
   private final ArrayList<Tab> tabs = new ArrayList<>();
   private Tab selectedTab;
 
+  private final RectF tabViewContentBounds = new RectF();
+
   private final SlidingTabIndicator slidingTabIndicator;
 
   int tabPaddingStart;
@@ -346,6 +362,7 @@ public class TabLayout extends HorizontalScrollView {
   @TabIndicatorGravity int tabIndicatorGravity;
   @Mode int mode;
   boolean inlineLabel;
+  boolean tabIndicatorFullWidth;
 
   private OnTabSelectedListener selectedListener;
   private final ArrayList<OnTabSelectedListener> selectedListeners = new ArrayList<>();
@@ -399,6 +416,7 @@ public class TabLayout extends HorizontalScrollView {
         MaterialResources.getDrawable(context, a, R.styleable.TabLayout_tabIndicator));
     setSelectedTabIndicatorGravity(
         a.getInt(R.styleable.TabLayout_tabIndicatorGravity, INDICATOR_GRAVITY_BOTTOM));
+    setTabIndicatorFullWidth(a.getBoolean(R.styleable.TabLayout_tabIndicatorFullWidth, true));
 
     tabPaddingStart =
         tabPaddingTop =
@@ -838,6 +856,38 @@ public class TabLayout extends HorizontalScrollView {
   @TabIndicatorGravity
   public int getTabIndicatorGravity() {
     return tabIndicatorGravity;
+  }
+
+  /**
+   * Enable or disable option to fit the tab selection indicator to the full width of the tab item
+   * rather than to the tab item's content.
+   *
+   * <p>Defaults to true. If set to false and the tab item has a text label, the selection indicator
+   * width will be set to the width of the text label. If the tab item has no text label, but does
+   * have an icon, the selection indicator width will be set to the icon. If the tab item has
+   * neither of these, or if the calculated width is less than a minimum width value, the selection
+   * indicator width will be set to the minimum width value.
+   *
+   * @param tabIndicatorFullWidth Whether or not to fit selection indicator width to full width of
+   *     the tab item
+   * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorFullWidth
+   * @see #isTabIndicatorFullWidth()
+   */
+  public void setTabIndicatorFullWidth(boolean tabIndicatorFullWidth) {
+    this.tabIndicatorFullWidth = tabIndicatorFullWidth;
+    ViewCompat.postInvalidateOnAnimation(slidingTabIndicator);
+  }
+
+  /**
+   * Get whether or not selection indicator width is fit to full width of the tab item, or fit to
+   * the tab item's content.
+   *
+   * @return whether or not selection indicator width is fit to the full width of the tab item
+   * @attr ref android.support.design.R.styleable#TabLayout_tabIndicatorFullWidth
+   * @see #setTabIndicatorFullWidth(boolean)
+   */
+  public boolean isTabIndicatorFullWidth() {
+    return tabIndicatorFullWidth;
   }
 
   /**
@@ -1287,7 +1337,8 @@ public class TabLayout extends HorizontalScrollView {
     }
   }
 
-  int dpToPx(int dps) {
+  @Dimension(unit = Dimension.PX)
+  int dpToPx(@Dimension(unit = Dimension.DP) int dps) {
     return Math.round(getResources().getDisplayMetrics().density * dps);
   }
 
@@ -2175,6 +2226,28 @@ public class TabLayout extends HorizontalScrollView {
       TooltipCompat.setTooltipText(this, hasText ? null : contentDesc);
     }
 
+    /**
+     * Calculates the width of the TabView's content.
+     *
+     * @return Width of the tab label, if present, or the width of the tab icon, if present. If tabs
+     *     is in inline mode, returns the sum of both the icon and tab label widths.
+     */
+    private int getContentWidth() {
+      boolean initialized = false;
+      int left = 0;
+      int right = 0;
+
+      for (View view : new View[] {textView, iconView, customTextView, customIconView}) {
+        if (view != null && view.getVisibility() == View.VISIBLE) {
+          left = initialized ? Math.min(left, view.getLeft()) : view.getLeft();
+          right = initialized ? Math.max(right, view.getRight()) : view.getRight();
+          initialized = true;
+        }
+      }
+
+      return right - left;
+    }
+
     public Tab getTab() {
       return tab;
     }
@@ -2342,12 +2415,28 @@ public class TabLayout extends HorizontalScrollView {
         left = selectedTitle.getLeft();
         right = selectedTitle.getRight();
 
+        if (!tabIndicatorFullWidth && selectedTitle instanceof TabView) {
+          calculateTabViewContentBounds((TabView) selectedTitle, tabViewContentBounds);
+          left = (int) tabViewContentBounds.left;
+          right = (int) tabViewContentBounds.right;
+        }
+
         if (selectionOffset > 0f && selectedPosition < getChildCount() - 1) {
           // Draw the selection partway between the tabs
           View nextTitle = getChildAt(selectedPosition + 1);
-          left = (int) (selectionOffset * nextTitle.getLeft() + (1.0f - selectionOffset) * left);
-          right = (int) (selectionOffset * nextTitle.getRight() + (1.0f - selectionOffset) * right);
+          int nextTitleLeft = nextTitle.getLeft();
+          int nextTitleRight = nextTitle.getRight();
+
+          if (!tabIndicatorFullWidth && nextTitle instanceof TabView) {
+            calculateTabViewContentBounds((TabView) nextTitle, tabViewContentBounds);
+            nextTitleLeft = (int) tabViewContentBounds.left;
+            nextTitleRight = (int) tabViewContentBounds.right;
+          }
+
+          left = (int) (selectionOffset * nextTitleLeft + (1.0f - selectionOffset) * left);
+          right = (int) (selectionOffset * nextTitleRight + (1.0f - selectionOffset) * right);
         }
+
       } else {
         left = right = -1;
       }
@@ -2369,8 +2458,6 @@ public class TabLayout extends HorizontalScrollView {
         indicatorAnimator.cancel();
       }
 
-      final boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
-
       final View targetView = getChildAt(position);
       if (targetView == null) {
         // If we don't have a view, just update the position now and return
@@ -2378,36 +2465,22 @@ public class TabLayout extends HorizontalScrollView {
         return;
       }
 
-      final int targetLeft = targetView.getLeft();
-      final int targetRight = targetView.getRight();
-      final int startLeft;
-      final int startRight;
+      int targetLeft = targetView.getLeft();
+      int targetRight = targetView.getRight();
 
-      if (Math.abs(position - selectedPosition) <= 1) {
-        // If the views are adjacent, we'll animate from edge-to-edge
-        startLeft = indicatorLeft;
-        startRight = indicatorRight;
-      } else {
-        // Else, we'll just grow from the nearest edge
-        final int offset = dpToPx(MOTION_NON_ADJACENT_OFFSET);
-        if (position < selectedPosition) {
-          // We're going end-to-start
-          if (isRtl) {
-            startLeft = startRight = targetLeft - offset;
-          } else {
-            startLeft = startRight = targetRight + offset;
-          }
-        } else {
-          // We're going start-to-end
-          if (isRtl) {
-            startLeft = startRight = targetRight + offset;
-          } else {
-            startLeft = startRight = targetLeft - offset;
-          }
-        }
+      if (!tabIndicatorFullWidth && targetView instanceof TabView) {
+        calculateTabViewContentBounds((TabView) targetView, tabViewContentBounds);
+        targetLeft = (int) tabViewContentBounds.left;
+        targetRight = (int) tabViewContentBounds.right;
       }
 
-      if (startLeft != targetLeft || startRight != targetRight) {
+      final int finalTargetLeft = targetLeft;
+      final int finalTargetRight = targetRight;
+
+      final int startLeft = indicatorLeft;
+      final int startRight = indicatorRight;
+
+      if (startLeft != finalTargetLeft || startRight != finalTargetRight) {
         ValueAnimator animator = indicatorAnimator = new ValueAnimator();
         animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
         animator.setDuration(duration);
@@ -2418,8 +2491,8 @@ public class TabLayout extends HorizontalScrollView {
               public void onAnimationUpdate(ValueAnimator animator) {
                 final float fraction = animator.getAnimatedFraction();
                 setIndicatorPosition(
-                    AnimationUtils.lerp(startLeft, targetLeft, fraction),
-                    AnimationUtils.lerp(startRight, targetRight, fraction));
+                    AnimationUtils.lerp(startLeft, finalTargetLeft, fraction),
+                    AnimationUtils.lerp(startRight, finalTargetRight, fraction));
               }
             });
         animator.addListener(
@@ -2432,6 +2505,32 @@ public class TabLayout extends HorizontalScrollView {
             });
         animator.start();
       }
+    }
+
+    /**
+     * Given a {@link TabView}, calculate the left and right bounds of its content.
+     *
+     * <p>If only text label is present, calculates the width of the text label. If only icon is
+     * present, calculates the width of the icon. If both are present, the text label bounds take
+     * precedence. If both are present and inline mode is enabled, the sum of the bounds of the both
+     * the text label and icon are calculated. If neither are present or if the calculated
+     * difference between the left and right bounds is less than 24dp, then left and right bounds
+     * are adjusted such that the difference between them is equal to 24dp.
+     *
+     * @param tabView {@link TabView} for which to calculate left and right content bounds.
+     */
+    private void calculateTabViewContentBounds(TabView tabView, RectF contentBounds) {
+      int tabViewContentWidth = tabView.getContentWidth();
+
+      if (tabViewContentWidth < dpToPx(MIN_INDICATOR_WIDTH)) {
+        tabViewContentWidth = dpToPx(MIN_INDICATOR_WIDTH);
+      }
+
+      int tabViewCenter = (tabView.getLeft() + tabView.getRight()) / 2;
+      int contentLeftBounds = tabViewCenter - (tabViewContentWidth / 2);
+      int contentRightBounds = tabViewCenter + (tabViewContentWidth / 2);
+
+      contentBounds.set(contentLeftBounds, 0, contentRightBounds, 0);
     }
 
     @Override
@@ -2503,6 +2602,7 @@ public class TabLayout extends HorizontalScrollView {
     return new ColorStateList(states, colors);
   }
 
+  @Dimension(unit = Dimension.DP)
   private int getDefaultHeight() {
     boolean hasIconAndText = false;
     for (int i = 0, count = tabs.size(); i < count; i++) {
