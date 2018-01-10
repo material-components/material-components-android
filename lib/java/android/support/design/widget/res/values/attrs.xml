@@ -72,6 +72,13 @@
   <declare-styleable name="BottomAppBar">
     <!-- Background for the BottomAppBar. -->
     <attr name="backgroundTint"/>
+    <!-- The alignment of the fab relative to the BottomAppBar. -->
+    <attr name="fabAlignmentMode">
+      <!-- Mode that aligns the fab to the center. -->
+      <enum name="center" value="0"/>
+      <!-- Mode that aligns the fab to the right. -->
+      <enum name="right" value="1"/>
+    </attr>
     <!-- Whether the fab should start attached to the BottomAppBar. -->
     <attr name="fabAttached" format="boolean"/>
     <!-- The diameter of the semi-circular cradle for the fab. -->
