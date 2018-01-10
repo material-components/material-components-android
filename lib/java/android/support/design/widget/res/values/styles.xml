@@ -59,7 +59,9 @@
     <item name="android:background">@android:color/white</item>
     <item name="itemHorizontalTranslation">false</item>
     <item name="itemIconTint">@color/mtrl_bottom_nav_item_tint</item>
-    <item name="itemTextColor">@color/mtrl_bottom_nav_item_tint</item>
+    <item name="itemTextAppearance">
+      @style/TextAppearance.MaterialComponents.BottomNavigationView
+    </item>
     <item name="shiftingMode">off</item>
   </style>
 
@@ -69,7 +71,17 @@
   <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
     <item name="android:background">?attr/colorPrimary</item>
     <item name="itemIconTint">@color/mtrl_bottom_nav_colored_item_tint</item>
-    <item name="itemTextColor">@color/mtrl_bottom_nav_colored_item_tint</item>
+    <item name="itemTextAppearance">
+      @style/TextAppearance.MaterialComponents.BottomNavigationView.Colored
+    </item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.BottomNavigationView" parent="TextAppearance.AppCompat.Caption">
+    <item name="android:textColor">@color/mtrl_bottom_nav_item_tint</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.BottomNavigationView.Colored">
+    <item name="android:textColor">@color/mtrl_bottom_nav_colored_item_tint</item>
   </style>
 
   <style name="Base.Widget.Design.TabLayout" parent="android:Widget">

@@ -18,22 +18,26 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.BoolRes;
+import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
 import android.support.design.internal.ThemeEnforcement;
+import android.support.design.resources.MaterialResources;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
@@ -152,12 +156,34 @@ public class BottomNavigationView extends FrameLayout {
     } else {
       menuView.setIconTintList(createDefaultColorStateList(android.R.attr.textColorSecondary));
     }
-    if (a.hasValue(R.styleable.BottomNavigationView_itemTextColor)) {
-      menuView.setItemTextColor(
-          a.getColorStateList(R.styleable.BottomNavigationView_itemTextColor));
-    } else {
-      menuView.setItemTextColor(createDefaultColorStateList(android.R.attr.textColorSecondary));
+
+    if (a.hasValue(R.styleable.BottomNavigationView_itemTextAppearance)) {
+      setItemTextAppearance(
+          a.getResourceId(R.styleable.BottomNavigationView_itemTextAppearance, 0));
     }
+
+    // Overwrite text color if itemTextColor is specified.
+    if (a.hasValue(R.styleable.BottomNavigationView_itemTextColor)) {
+      setItemTextColor(a.getColorStateList(R.styleable.BottomNavigationView_itemTextColor));
+    } else if (menuView.getItemTextColor() == null) {
+      setItemTextColor(createDefaultColorStateList(android.R.attr.textColorSecondary));
+    }
+    // Overwrite the text sizes if they are specified.
+    if (a.hasValue(R.styleable.BottomNavigationView_itemActiveLabelSize)) {
+      setActiveItemLabelSize(
+          a.getDimensionPixelSize(R.styleable.BottomNavigationView_itemActiveLabelSize, 0));
+    } else if (menuView.getActiveItemLabelSize() == 0) {
+      setActiveItemLabelSize(
+          getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_active_text_size));
+    }
+    if (a.hasValue(R.styleable.BottomNavigationView_itemInactiveLabelSize)) {
+      setInactiveItemLabelSizeResource(
+          a.getResourceId(R.styleable.BottomNavigationView_itemInactiveLabelSize, 0));
+    } else if (menuView.getInactiveItemLabelSize() == 0) {
+      setInactiveItemLabelSize(
+          getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size));
+    }
+
     if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
       ViewCompat.setElevation(
           this, a.getDimensionPixelSize(R.styleable.BottomNavigationView_elevation, 0));
@@ -301,6 +327,51 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
+   * Sets the text size to be used for the active menu item label using a resource ID.
+   *
+   * @param sizeRes the dimen resource ID used for the active menu item label
+   */
+  public void setActiveItemLabelSizeResource(@DimenRes int sizeRes) {
+    setActiveItemLabelSize(getResources().getDimensionPixelSize(sizeRes));
+  }
+
+  /**
+   * Sets the text size to be used for the active menu item label.
+   *
+   * @param size the float value used for the active menu item label
+   */
+  public void setActiveItemLabelSize(float size) {
+    menuView.setActiveItemLabelSize(size);
+  }
+
+  /** Returns the text size used for the active menu item label. */
+  public float getActiveItemLabelSize() {
+    return menuView.getActiveItemLabelSize();
+  }
+  /**
+   * Sets the text size to be used for the inactive menu item label using a resource ID.
+   *
+   * @param sizeRes the dimen resource ID used for the inactive menu item label
+   */
+  public void setInactiveItemLabelSizeResource(@DimenRes int sizeRes) {
+    setInactiveItemLabelSize(getResources().getDimensionPixelSize(sizeRes));
+  }
+
+  /**
+   * Sets the text size to be used for inactive menu item labels.
+   *
+   * @param size the float value used for inactive menu item labels
+   */
+  public void setInactiveItemLabelSize(float size) {
+    menuView.setInactiveItemLabelSize(size);
+  }
+
+  /** Returns the text size used for inactive menu item labels. */
+  public float getInactiveItemLabelSize() {
+    return menuView.getInactiveItemLabelSize();
+  }
+
+  /**
    * Returns the background resource of the menu items.
    *
    * @see #setItemBackgroundResource(int)
@@ -421,7 +492,7 @@ public class BottomNavigationView extends FrameLayout {
    * @see #getLabelVisibilityMode()
    */
   public void setLabelVisibilityModeResource(@IntegerRes int labelVisibilityModeId) {
-    setLabelVisibilityMode(getContext().getResources().getInteger(labelVisibilityModeId));
+    setLabelVisibilityMode(getResources().getInteger(labelVisibilityModeId));
   }
 
   /**
@@ -433,6 +504,47 @@ public class BottomNavigationView extends FrameLayout {
   @LabelVisibilityMode
   public int getLabelVisibilityMode() {
     return menuView.getLabelVisibilityMode();
+  }
+
+  /**
+   * Sets the text appearance to be used for the menu item labels.
+   *
+   * @param itemTextAppearanceRes the text appearance ID used for menu item labels
+   */
+  public void setItemTextAppearance(@StyleRes int itemTextAppearanceRes) {
+    final TypedArray typedArray =
+        getContext()
+            .obtainStyledAttributes(
+                itemTextAppearanceRes, android.support.v7.appcompat.R.styleable.TextAppearance);
+    try {
+      menuView.setItemTextColor(
+          MaterialResources.getColorStateList(
+              getContext(),
+              typedArray,
+              android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor));
+      menuView.setActiveItemLabelSize(
+          typedArray.getDimensionPixelSize(
+              android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize,
+              getResources()
+                  .getDimensionPixelSize(R.dimen.design_bottom_navigation_active_text_size)));
+      menuView.setInactiveItemLabelSize(
+          typedArray.getDimensionPixelSize(
+              android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize,
+              getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size)));
+      menuView.setItemTextAppearance(itemTextAppearanceRes);
+    } finally {
+      typedArray.recycle();
+    }
+  }
+
+  /**
+   * Returns the text appearance used for menu item labels.
+   *
+   * @return the text appearance ID used for menu item labels
+   */
+  @StyleRes
+  public int getItemTextAppearance() {
+    return menuView.getItemTextAppearance();
   }
 
   /**
@@ -455,7 +567,7 @@ public class BottomNavigationView extends FrameLayout {
    * @see #getItemHorizontalTranslation()
    */
   public void setItemHorizontalTranslation(@BoolRes int itemHorizontalTranslation) {
-    setItemHorizontalTranslation(getContext().getResources().getBoolean(itemHorizontalTranslation));
+    setItemHorizontalTranslation(getResources().getBoolean(itemHorizontalTranslation));
   }
 
   /**

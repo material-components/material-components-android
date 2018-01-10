@@ -23,6 +23,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
+import android.support.annotation.StyleRes;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.transition.AutoTransition;
@@ -49,6 +50,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final int inactiveItemMinWidth;
   private final int activeItemMaxWidth;
   private final int activeItemMinWidth;
+  private float activeItemLabelSize;
+  private float inactiveItemLabelSize;
   private final int itemHeight;
   private final OnClickListener onClickListener;
   private final Pools.Pool<BottomNavigationItemView> itemPool = new Pools.SynchronizedPool<>(5);
@@ -62,6 +65,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private int selectedItemPosition = 0;
   private ColorStateList itemIconTint;
   private ColorStateList itemTextColor;
+  @StyleRes private int itemTextAppearance;
   private int itemBackgroundRes;
   private int[] tempChildWidths;
 
@@ -228,7 +232,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   /**
-   * Returns the tint which is applied to menu items' icons.
+   * Returns the tint which is applied for the menu item labels.
    *
    * @return the ColorStateList that is used to tint menu items' icons
    */
@@ -238,9 +242,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   /**
-   * Sets the text color to be used on menu items.
+   * Sets the text color to be used for the menu item labels.
    *
-   * @param color the ColorStateList used for menu items' text.
+   * @param color the ColorStateList used for menu item labels
    */
   public void setItemTextColor(ColorStateList color) {
     itemTextColor = color;
@@ -252,16 +256,78 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   /**
-   * Returns the text color used on menu items.
+   * Returns the text color used for menu item labels.
    *
-   * @return the ColorStateList used for menu items' text
+   * @return the ColorStateList used for menu items labels
    */
   public ColorStateList getItemTextColor() {
     return itemTextColor;
   }
 
   /**
-   * Sets the resource ID to be used for item background.
+   * Sets the text size to be used for the active menu item label.
+   *
+   * @param size the float value used for the active menu item label
+   */
+  public void setActiveItemLabelSize(float size) {
+    activeItemLabelSize = size;
+    if (buttons != null) {
+      for (BottomNavigationItemView item : buttons) {
+        item.setActiveLabelSize(size);
+      }
+    }
+  }
+
+  /** Returns the text size used for the active menu item label. */
+  public float getActiveItemLabelSize() {
+    return activeItemLabelSize;
+  }
+
+  /**
+   * Sets the text size to be used for inactive menu item labels.
+   *
+   * @param size the float value used for inactive menu item labels
+   */
+  public void setInactiveItemLabelSize(float size) {
+    inactiveItemLabelSize = size;
+    if (buttons != null) {
+      for (BottomNavigationItemView item : buttons) {
+        item.setInactiveLabelSize(size);
+      }
+    }
+  }
+
+  /** Returns the text size used for inactive menu item labels. */
+  public float getInactiveItemLabelSize() {
+    return inactiveItemLabelSize;
+  }
+
+  /**
+   * Sets the text appearance to be used for the menu item labels.
+   *
+   * @param itemTextAppearance the text appearance ID used for menu item labels
+   */
+  public void setItemTextAppearance(@StyleRes int itemTextAppearance) {
+    this.itemTextAppearance = itemTextAppearance;
+    if (buttons != null) {
+      for (BottomNavigationItemView item : buttons) {
+        item.setTextAppearance(itemTextAppearance);
+      }
+    }
+  }
+
+  /**
+   * Returns the text appearance used for menu item labels.
+   *
+   * @return the text appearance ID used for menu item labels
+   */
+  @StyleRes
+  public int getItemTextAppearance() {
+    return itemTextAppearance;
+  }
+
+  /**
+   * Sets the resource ID to be used for item backgrounds.
    *
    * @param background the resource ID of the background
    */
@@ -386,7 +452,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       BottomNavigationItemView child = getNewItem();
       buttons[i] = child;
       child.setIconTintList(itemIconTint);
+      child.setTextAppearance(itemTextAppearance);
       child.setTextColor(itemTextColor);
+      child.setActiveLabelSize(activeItemLabelSize);
+      child.setInactiveLabelSize(inactiveItemLabelSize);
       child.setItemBackground(itemBackgroundRes);
       child.setShiftingMode(shifting);
       child.setLabelVisibilityMode(labelVisibilityMode);

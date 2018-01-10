@@ -24,15 +24,18 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
+import android.support.annotation.StyleRes;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.PointerIconCompat;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.widget.TextViewCompat;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.TooltipCompat;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,9 +51,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
   private final int defaultMargin;
-  private final int shiftAmount;
-  private final float scaleUpFactor;
-  private final float scaleDownFactor;
+  private float shiftAmount;
+  private float scaleUpFactor;
+  private float scaleDownFactor;
 
   private boolean shiftingMode;
   private int labelVisibilityMode;
@@ -75,19 +78,15 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     final Resources res = getResources();
-    int inactiveLabelSize = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size);
-    int activeLabelSize =
-        res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_text_size);
-    defaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
-    shiftAmount = inactiveLabelSize - activeLabelSize;
-    scaleUpFactor = 1f * activeLabelSize / inactiveLabelSize;
-    scaleDownFactor = 1f * inactiveLabelSize / activeLabelSize;
 
     LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
     setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
+    defaultMargin = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_margin);
+
     icon = findViewById(R.id.icon);
     smallLabel = findViewById(R.id.smallLabel);
     largeLabel = findViewById(R.id.largeLabel);
+    calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
   }
 
   @Override
@@ -171,7 +170,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         } else {
           if (checked) {
             setViewLayoutParams(
-                icon, defaultMargin + shiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+                icon, (int) (defaultMargin + shiftAmount), Gravity.CENTER_HORIZONTAL | Gravity.TOP);
             setViewValues(largeLabel, 1f, 1f, VISIBLE);
             setViewValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
           } else {
@@ -196,7 +195,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       case LabelVisibilityMode.LABEL_VISIBILITY_LABELED:
         if (checked) {
           setViewLayoutParams(
-              icon, defaultMargin + shiftAmount, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
+              icon, (int) (defaultMargin + shiftAmount), Gravity.CENTER_HORIZONTAL | Gravity.TOP);
           setViewValues(largeLabel, 1f, 1f, VISIBLE);
           setViewValues(smallLabel, scaleUpFactor, scaleUpFactor, INVISIBLE);
         } else {
@@ -287,9 +286,30 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     }
   }
 
+  public void setTextAppearance(@StyleRes int textAppearance) {
+    TextViewCompat.setTextAppearance(smallLabel, textAppearance);
+    TextViewCompat.setTextAppearance(largeLabel, textAppearance);
+  }
+
   public void setTextColor(ColorStateList color) {
     smallLabel.setTextColor(color);
     largeLabel.setTextColor(color);
+  }
+
+  public void setActiveLabelSize(float textSize) {
+    largeLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+    calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+  }
+
+  public void setInactiveLabelSize(float textSize) {
+    smallLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+    calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+  }
+
+  private void calculateTextScaleFactors(float smallLabelSize, float largeLabelSize) {
+    shiftAmount = smallLabelSize - largeLabelSize;
+    scaleUpFactor = 1f * largeLabelSize / smallLabelSize;
+    scaleDownFactor = 1f * smallLabelSize / largeLabelSize;
   }
 
   public void setItemBackground(int background) {

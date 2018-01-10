@@ -626,6 +626,13 @@
     <attr name="itemBackground"/>
     <!-- The tint to apply to the navigation items' icons. -->
     <attr name="itemIconTint"/>
+    <!-- The text size used for the active label. Setting this directly will override a size set in the text appearance. -->
+    <attr name="itemActiveLabelSize" format="dimension"/>
+    <!-- The text size used for the inactive label. Setting this directly will override a size set in the text appearance. -->
+    <attr name="itemInactiveLabelSize" format="dimension"/>
+    <!-- The text appearance to apply to the navigation items' labels. A text size set in the text
+        appearance will be applied to both active and inactive labels. -->
+    <attr name="itemTextAppearance" format="reference"/>
     <!-- The color to apply to the navigation items' text. -->
     <attr name="itemTextColor"/>
     <!-- Whether the items should translate horizontally when in shifting mode. -->
