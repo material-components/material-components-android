@@ -67,6 +67,33 @@
     <attr name="bottomAppBarStyle" format="reference"/>
     <!-- Style to use for MaterialCardView in this theme. -->
     <attr name="cardViewStyle" format="reference"/>
+
+    <!-- Text appearance for the Headline 1 style in this theme. -->
+    <attr name="textAppearanceHeadline1" format="reference"/>
+    <!-- Text appearance for the Headline 2 style in this theme. -->
+    <attr name="textAppearanceHeadline2" format="reference"/>
+    <!-- Text appearance for the Headline 3 style in this theme. -->
+    <attr name="textAppearanceHeadline3" format="reference"/>
+    <!-- Text appearance for the Headline 4 style in this theme. -->
+    <attr name="textAppearanceHeadline4" format="reference"/>
+    <!-- Text appearance for the Headline 5 style in this theme. -->
+    <attr name="textAppearanceHeadline5" format="reference"/>
+    <!-- Text appearance for the Headline 6 style in this theme. -->
+    <attr name="textAppearanceHeadline6" format="reference"/>
+    <!-- Text appearance for the Subtitle 1 style in this theme. -->
+    <attr name="textAppearanceSubtitle1" format="reference"/>
+    <!-- Text appearance for the Subtitle 2 style in this theme. -->
+    <attr name="textAppearanceSubtitle2" format="reference"/>
+    <!-- Text appearance for the Body 1 style in this theme. -->
+    <attr name="textAppearanceBody1" format="reference"/>
+    <!-- Text appearance for the Body 2 style in this theme. -->
+    <attr name="textAppearanceBody2" format="reference"/>
+    <!-- Text appearance for the Caption style in this theme. -->
+    <attr name="textAppearanceCaption" format="reference"/>
+    <!-- Text appearance for the Button style in this theme. -->
+    <attr name="textAppearanceButton" format="reference"/>
+    <!-- Text appearance for the Overline style in this theme. -->
+    <attr name="textAppearanceOverline" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="BottomAppBar">
