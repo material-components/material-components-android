@@ -254,6 +254,12 @@
     <item name="fabCradleVerticalOffset">@dimen/mtrl_bottomappbar_fab_cradle_vertical_offset</item>
   </style>
 
+  <!-- Defines the base {@link MaterialCardView} style deltas from {@link CardView} -->
+  <style name="Widget.MaterialComponents.CardView" parent="CardView">
+    <item name="cardElevation">@dimen/mtrl_card_elevation</item>
+    <item name="cardBackgroundColor">@color/mtrl_card_bg_color</item>
+  </style>
+
   <style name="Widget.MaterialComponents.ChipGroup" parent="android:Widget">
     <item name="chipSpacing">4dp</item>
     <item name="singleLine">false</item>
