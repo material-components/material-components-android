@@ -65,6 +65,9 @@
     <attr name="chipStandaloneStyle" format="reference"/>
     <!-- Style to use for BottomAppBar in this theme. -->
     <attr name="bottomAppBarStyle" format="reference"/>
+    <!-- Style to use for MaterialCardView in this theme. -->
+    <attr name="cardViewStyle" format="reference"/>
+
     <!-- Text appearance for the Headline 1 style in this theme. -->
     <attr name="textAppearanceHeadline1" format="reference"/>
     <!-- Text appearance for the Headline 2 style in this theme. -->

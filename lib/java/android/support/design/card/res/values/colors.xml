@@ -16,12 +16,5 @@
 -->
 
 <resources>
-
-  <dimen name="mtrl_card_elevation">1dp</dimen>
-  <dimen name="mtrl_card_active_elevation">8dp</dimen>
-
-  <!-- Cards on mobile default to 8dp margins. {@code layout_margin} needs to be set directly on a
-      {@link View} in its layout and won't work when included as part of a style. -->
-  <dimen name="mtrl_card_spacing">8dp</dimen>
-
+  <color name="mtrl_card_bg_color">#ffffff</color>
 </resources>
