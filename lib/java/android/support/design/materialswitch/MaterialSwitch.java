@@ -111,7 +111,6 @@ public class MaterialSwitch extends SwitchCompat {
     @StyleRes
     int textAppearanceStyleRes =
         attributes.getResourceId(R.styleable.MaterialSwitch_android_textAppearance, 0);
-    setTextAppearance(textAppearanceStyleRes);
     TextViewCompat.setTextAppearance(this, textAppearanceStyleRes);
     int gravity = attributes.getInt(R.styleable.MaterialSwitch_android_gravity, Gravity.CENTER);
     setGravity(gravity);

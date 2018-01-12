@@ -186,6 +186,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
                 chipDrawable,
                 null);
         chipDrawable.setUseCompatRipple(false);
+        //noinspection NewApi
         ViewCompat.setBackground(this, ripple);
       } else {
         chipDrawable.setUseCompatRipple(true);
