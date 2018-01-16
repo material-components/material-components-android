@@ -32,10 +32,12 @@ import android.support.transition.TransitionSet;
 import android.support.v4.util.Pools;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.animation.FastOutSlowInInterpolator;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,13 +47,14 @@ import android.view.ViewGroup;
 public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
 
+  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
+  private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
+
   private final TransitionSet set;
   private final int inactiveItemMaxWidth;
   private final int inactiveItemMinWidth;
   private final int activeItemMaxWidth;
   private final int activeItemMinWidth;
-  private float activeItemLabelSize;
-  private float inactiveItemLabelSize;
   private final int itemHeight;
   private final OnClickListener onClickListener;
   private final Pools.Pool<BottomNavigationItemView> itemPool = new Pools.SynchronizedPool<>(5);
@@ -64,8 +67,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private int selectedItemId = 0;
   private int selectedItemPosition = 0;
   private ColorStateList itemIconTint;
-  private ColorStateList itemTextColor;
-  @StyleRes private int itemTextAppearance;
+  private ColorStateList itemTextColorFromUser;
+  private final ColorStateList itemTextColorDefault;
+  @StyleRes private int itemTextAppearanceInactive;
+  @StyleRes private int itemTextAppearanceActive;
   private int itemBackgroundRes;
   private int[] tempChildWidths;
 
@@ -88,6 +93,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     activeItemMinWidth =
         res.getDimensionPixelSize(R.dimen.design_bottom_navigation_active_item_min_width);
     itemHeight = res.getDimensionPixelSize(R.dimen.design_bottom_navigation_height);
+    itemTextColorDefault = createDefaultColorStateList(android.R.attr.textColorSecondary);
 
     set = new AutoTransition();
     set.setOrdering(TransitionSet.ORDERING_TOGETHER);
@@ -247,7 +253,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @param color the ColorStateList used for menu item labels
    */
   public void setItemTextColor(ColorStateList color) {
-    itemTextColor = color;
+    itemTextColorFromUser = color;
     if (buttons != null) {
       for (BottomNavigationItemView item : buttons) {
         item.setTextColor(color);
@@ -261,69 +267,65 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * @return the ColorStateList used for menu items labels
    */
   public ColorStateList getItemTextColor() {
-    return itemTextColor;
+    return itemTextColorFromUser;
   }
 
   /**
-   * Sets the text size to be used for the active menu item label.
+   * Sets the text appearance to be used for inactive menu item labels.
    *
-   * @param size the float value used for the active menu item label
+   * @param textAppearanceRes the text appearance ID used for inactive menu item labels
    */
-  public void setActiveItemLabelSize(float size) {
-    activeItemLabelSize = size;
+  public void setItemTextAppearanceInactive(@StyleRes int textAppearanceRes) {
+    this.itemTextAppearanceInactive = textAppearanceRes;
     if (buttons != null) {
       for (BottomNavigationItemView item : buttons) {
-        item.setActiveLabelSize(size);
-      }
-    }
-  }
-
-  /** Returns the text size used for the active menu item label. */
-  public float getActiveItemLabelSize() {
-    return activeItemLabelSize;
-  }
-
-  /**
-   * Sets the text size to be used for inactive menu item labels.
-   *
-   * @param size the float value used for inactive menu item labels
-   */
-  public void setInactiveItemLabelSize(float size) {
-    inactiveItemLabelSize = size;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setInactiveLabelSize(size);
-      }
-    }
-  }
-
-  /** Returns the text size used for inactive menu item labels. */
-  public float getInactiveItemLabelSize() {
-    return inactiveItemLabelSize;
-  }
-
-  /**
-   * Sets the text appearance to be used for the menu item labels.
-   *
-   * @param itemTextAppearance the text appearance ID used for menu item labels
-   */
-  public void setItemTextAppearance(@StyleRes int itemTextAppearance) {
-    this.itemTextAppearance = itemTextAppearance;
-    if (buttons != null) {
-      for (BottomNavigationItemView item : buttons) {
-        item.setTextAppearance(itemTextAppearance);
+        item.setTextAppearanceInactive(textAppearanceRes);
+        // Set the text color if the user has set it, since itemTextColorFromUser takes precedence
+        // over a color set in the text appearance.
+        if (itemTextColorFromUser != null) {
+          item.setTextColor(itemTextColorFromUser);
+        }
       }
     }
   }
 
   /**
-   * Returns the text appearance used for menu item labels.
+   * Returns the text appearance used for inactive menu item labels.
    *
-   * @return the text appearance ID used for menu item labels
+   * @return the text appearance ID used for inactive menu item labels
    */
   @StyleRes
-  public int getItemTextAppearance() {
-    return itemTextAppearance;
+  public int getItemTextAppearanceInactive() {
+    return itemTextAppearanceInactive;
+  }
+
+  /**
+   * Sets the text appearance to be used for the active menu item label.
+   *
+   * @param textAppearanceRes the text appearance ID used for the active menu item label
+   */
+  public void setItemTextAppearanceActive(@StyleRes int textAppearanceRes) {
+    this.itemTextAppearanceActive = textAppearanceRes;
+    if (buttons != null) {
+      for (BottomNavigationItemView item : buttons) {
+        item.setTextAppearanceActive(textAppearanceRes);
+        // Set the text color if the user has set it, since itemTextColorFromUser takes precedence
+        // over a color set in the text appearance.
+        if (itemTextColorFromUser != null) {
+          item.setTextColor(itemTextColorFromUser);
+        }
+      }
+    }
+  }
+
+  /**
+   * Returns the text appearance used for the active menu item label.
+   *
+   * @return the text appearance ID used for the active menu item label
+   */
+  @StyleRes
+  public int getItemTextAppearanceActive() {
+    return itemTextAppearanceActive;
   }
 
   /**
@@ -424,6 +426,26 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     return itemHorizontalTranslation;
   }
 
+  public ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
+    final TypedValue value = new TypedValue();
+    if (!getContext().getTheme().resolveAttribute(baseColorThemeAttr, value, true)) {
+      return null;
+    }
+    ColorStateList baseColor = AppCompatResources.getColorStateList(getContext(), value.resourceId);
+    if (!getContext()
+        .getTheme()
+        .resolveAttribute(android.support.v7.appcompat.R.attr.colorPrimary, value, true)) {
+      return null;
+    }
+    int colorPrimary = value.data;
+    int defaultColor = baseColor.getDefaultColor();
+    return new ColorStateList(
+        new int[][] {DISABLED_STATE_SET, CHECKED_STATE_SET, EMPTY_STATE_SET},
+        new int[] {
+          baseColor.getColorForState(DISABLED_STATE_SET, defaultColor), colorPrimary, defaultColor
+        });
+  }
+
   public void setPresenter(BottomNavigationPresenter presenter) {
     this.presenter = presenter;
   }
@@ -452,10 +474,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       BottomNavigationItemView child = getNewItem();
       buttons[i] = child;
       child.setIconTintList(itemIconTint);
-      child.setTextAppearance(itemTextAppearance);
-      child.setTextColor(itemTextColor);
-      child.setActiveLabelSize(activeItemLabelSize);
-      child.setInactiveLabelSize(inactiveItemLabelSize);
+      // Set the text color the default, then look for another text color in order of precedence.
+      child.setTextColor(itemTextColorDefault);
+      child.setTextAppearanceInactive(itemTextAppearanceInactive);
+      child.setTextAppearanceActive(itemTextAppearanceActive);
+      child.setTextColor(itemTextColorFromUser);
       child.setItemBackground(itemBackgroundRes);
       child.setShiftingMode(shifting);
       child.setLabelVisibilityMode(labelVisibilityMode);

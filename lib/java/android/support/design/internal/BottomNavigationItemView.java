@@ -23,6 +23,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
@@ -35,7 +36,6 @@ import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.TooltipCompat;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -286,24 +286,21 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     }
   }
 
-  public void setTextAppearance(@StyleRes int textAppearance) {
-    TextViewCompat.setTextAppearance(smallLabel, textAppearance);
-    TextViewCompat.setTextAppearance(largeLabel, textAppearance);
-  }
-
-  public void setTextColor(ColorStateList color) {
-    smallLabel.setTextColor(color);
-    largeLabel.setTextColor(color);
-  }
-
-  public void setActiveLabelSize(float textSize) {
-    largeLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+  public void setTextAppearanceInactive(@StyleRes int inactiveTextAppearance) {
+    TextViewCompat.setTextAppearance(smallLabel, inactiveTextAppearance);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
   }
 
-  public void setInactiveLabelSize(float textSize) {
-    smallLabel.setTextSize(TypedValue.COMPLEX_UNIT_PX, textSize);
+  public void setTextAppearanceActive(@StyleRes int activeTextAppearance) {
+    TextViewCompat.setTextAppearance(largeLabel, activeTextAppearance);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+  }
+
+  public void setTextColor(@Nullable ColorStateList color) {
+    if (color != null) {
+      smallLabel.setTextColor(color);
+      largeLabel.setTextColor(color);
+    }
   }
 
   private void calculateTextScaleFactors(float smallLabelSize, float largeLabelSize) {

@@ -660,14 +660,18 @@
     <attr name="itemBackground"/>
     <!-- The tint to apply to the navigation items' icons. -->
     <attr name="itemIconTint"/>
-    <!-- The text size used for the active label. Setting this directly will override a size set in the text appearance. -->
-    <attr name="itemActiveLabelSize" format="dimension"/>
-    <!-- The text size used for the inactive label. Setting this directly will override a size set in the text appearance. -->
-    <attr name="itemInactiveLabelSize" format="dimension"/>
-    <!-- The text appearance to apply to the navigation items' labels. A text size set in the text
-        appearance will be applied to both active and inactive labels. -->
-    <attr name="itemTextAppearance" format="reference"/>
-    <!-- The color to apply to the navigation items' text. -->
+    <!-- The text appearance to apply to the inactive navigation item labels. Setting
+         android:textColor in itemTextAppearanceInactive will take precedence over android:textColor
+         in itemTextAppearanceActive. Instead, set itemTextColor with a ColorStateList to make
+         the text color stateful. -->
+    <attr name="itemTextAppearanceInactive" format="reference"/>
+    <!-- The text appearance to apply to the active navigation item label. You should not set
+         android:textColor in itemTextAppearanceActive. Instead, set itemTextColor to a
+         ColorStateList to make the text color stateful. -->
+    <attr name="itemTextAppearanceActive" format="reference"/>
+    <!-- The color to apply to the navigation items' text. Setting itemTextColor will take
+         precedence over android:textColor in itemTextAppearanceInactive or
+         itemTextAppearanceActive. -->
     <attr name="itemTextColor"/>
     <!-- Whether the items should translate horizontally when in shifting mode. -->
     <attr name="itemHorizontalTranslation" format="boolean"/>

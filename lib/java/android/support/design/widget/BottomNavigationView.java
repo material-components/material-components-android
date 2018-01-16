@@ -18,13 +18,11 @@ package android.support.design.widget;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.BoolRes;
-import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntegerRes;
@@ -37,16 +35,13 @@ import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
 import android.support.design.internal.ThemeEnforcement;
-import android.support.design.resources.MaterialResources;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
-import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.view.SupportMenuInflater;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.widget.TintTypedArray;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -100,9 +95,6 @@ import android.widget.FrameLayout;
  */
 public class BottomNavigationView extends FrameLayout {
 
-  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
-  private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
-
   private static final int MENU_PRESENTER_ID = 1;
 
   private final MenuBuilder menu;
@@ -154,34 +146,21 @@ public class BottomNavigationView extends FrameLayout {
     if (a.hasValue(R.styleable.BottomNavigationView_itemIconTint)) {
       menuView.setIconTintList(a.getColorStateList(R.styleable.BottomNavigationView_itemIconTint));
     } else {
-      menuView.setIconTintList(createDefaultColorStateList(android.R.attr.textColorSecondary));
+      menuView.setIconTintList(
+          menuView.createDefaultColorStateList(android.R.attr.textColorSecondary));
     }
 
-    if (a.hasValue(R.styleable.BottomNavigationView_itemTextAppearance)) {
-      setItemTextAppearance(
-          a.getResourceId(R.styleable.BottomNavigationView_itemTextAppearance, 0));
+    if (a.hasValue(R.styleable.BottomNavigationView_itemTextAppearanceInactive)) {
+      setItemTextAppearanceInactive(
+          a.getResourceId(R.styleable.BottomNavigationView_itemTextAppearanceInactive, 0));
+    }
+    if (a.hasValue(R.styleable.BottomNavigationView_itemTextAppearanceActive)) {
+      setItemTextAppearanceActive(
+          a.getResourceId(R.styleable.BottomNavigationView_itemTextAppearanceActive, 0));
     }
 
-    // Overwrite text color if itemTextColor is specified.
     if (a.hasValue(R.styleable.BottomNavigationView_itemTextColor)) {
       setItemTextColor(a.getColorStateList(R.styleable.BottomNavigationView_itemTextColor));
-    } else if (menuView.getItemTextColor() == null) {
-      setItemTextColor(createDefaultColorStateList(android.R.attr.textColorSecondary));
-    }
-    // Overwrite the text sizes if they are specified.
-    if (a.hasValue(R.styleable.BottomNavigationView_itemActiveLabelSize)) {
-      setActiveItemLabelSize(
-          a.getDimensionPixelSize(R.styleable.BottomNavigationView_itemActiveLabelSize, 0));
-    } else if (menuView.getActiveItemLabelSize() == 0) {
-      setActiveItemLabelSize(
-          getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_active_text_size));
-    }
-    if (a.hasValue(R.styleable.BottomNavigationView_itemInactiveLabelSize)) {
-      setInactiveItemLabelSizeResource(
-          a.getResourceId(R.styleable.BottomNavigationView_itemInactiveLabelSize, 0));
-    } else if (menuView.getInactiveItemLabelSize() == 0) {
-      setInactiveItemLabelSize(
-          getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size));
     }
 
     if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
@@ -327,51 +306,6 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Sets the text size to be used for the active menu item label using a resource ID.
-   *
-   * @param sizeRes the dimen resource ID used for the active menu item label
-   */
-  public void setActiveItemLabelSizeResource(@DimenRes int sizeRes) {
-    setActiveItemLabelSize(getResources().getDimensionPixelSize(sizeRes));
-  }
-
-  /**
-   * Sets the text size to be used for the active menu item label.
-   *
-   * @param size the float value used for the active menu item label
-   */
-  public void setActiveItemLabelSize(float size) {
-    menuView.setActiveItemLabelSize(size);
-  }
-
-  /** Returns the text size used for the active menu item label. */
-  public float getActiveItemLabelSize() {
-    return menuView.getActiveItemLabelSize();
-  }
-  /**
-   * Sets the text size to be used for the inactive menu item label using a resource ID.
-   *
-   * @param sizeRes the dimen resource ID used for the inactive menu item label
-   */
-  public void setInactiveItemLabelSizeResource(@DimenRes int sizeRes) {
-    setInactiveItemLabelSize(getResources().getDimensionPixelSize(sizeRes));
-  }
-
-  /**
-   * Sets the text size to be used for inactive menu item labels.
-   *
-   * @param size the float value used for inactive menu item labels
-   */
-  public void setInactiveItemLabelSize(float size) {
-    menuView.setInactiveItemLabelSize(size);
-  }
-
-  /** Returns the text size used for inactive menu item labels. */
-  public float getInactiveItemLabelSize() {
-    return menuView.getInactiveItemLabelSize();
-  }
-
-  /**
    * Returns the background resource of the menu items.
    *
    * @see #setItemBackgroundResource(int)
@@ -507,44 +441,41 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Sets the text appearance to be used for the menu item labels.
+   * Sets the text appearance to be used for inactive menu item labels.
    *
-   * @param itemTextAppearanceRes the text appearance ID used for menu item labels
+   * @param textAppearanceRes the text appearance ID used for inactive menu item labels
    */
-  public void setItemTextAppearance(@StyleRes int itemTextAppearanceRes) {
-    final TypedArray typedArray =
-        getContext()
-            .obtainStyledAttributes(
-                itemTextAppearanceRes, android.support.v7.appcompat.R.styleable.TextAppearance);
-    try {
-      menuView.setItemTextColor(
-          MaterialResources.getColorStateList(
-              getContext(),
-              typedArray,
-              android.support.v7.appcompat.R.styleable.TextAppearance_android_textColor));
-      menuView.setActiveItemLabelSize(
-          typedArray.getDimensionPixelSize(
-              android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize,
-              getResources()
-                  .getDimensionPixelSize(R.dimen.design_bottom_navigation_active_text_size)));
-      menuView.setInactiveItemLabelSize(
-          typedArray.getDimensionPixelSize(
-              android.support.v7.appcompat.R.styleable.TextAppearance_android_textSize,
-              getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_text_size)));
-      menuView.setItemTextAppearance(itemTextAppearanceRes);
-    } finally {
-      typedArray.recycle();
-    }
+  public void setItemTextAppearanceInactive(@StyleRes int textAppearanceRes) {
+    menuView.setItemTextAppearanceInactive(textAppearanceRes);
   }
 
   /**
-   * Returns the text appearance used for menu item labels.
+   * Returns the text appearance used for inactive menu item labels.
    *
-   * @return the text appearance ID used for menu item labels
+   * @return the text appearance ID used for inactive menu item labels
    */
   @StyleRes
-  public int getItemTextAppearance() {
-    return menuView.getItemTextAppearance();
+  public int getItemTextAppearanceInactive() {
+    return menuView.getItemTextAppearanceInactive();
+  }
+
+  /**
+   * Sets the text appearance to be used for the menu item labels.
+   *
+   * @param textAppearanceRes the text appearance ID used for menu item labels
+   */
+  public void setItemTextAppearanceActive(@StyleRes int textAppearanceRes) {
+    menuView.setItemTextAppearanceActive(textAppearanceRes);
+  }
+
+  /**
+   * Returns the text appearance used for the active menu item label.
+   *
+   * @return the text appearance ID used for the active menu item label
+   */
+  @StyleRes
+  public int getItemTextAppearanceActive() {
+    return menuView.getItemTextAppearanceActive();
   }
 
   /**
@@ -622,26 +553,6 @@ public class BottomNavigationView extends FrameLayout {
       menuInflater = new SupportMenuInflater(getContext());
     }
     return menuInflater;
-  }
-
-  private ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {
-    final TypedValue value = new TypedValue();
-    if (!getContext().getTheme().resolveAttribute(baseColorThemeAttr, value, true)) {
-      return null;
-    }
-    ColorStateList baseColor = AppCompatResources.getColorStateList(getContext(), value.resourceId);
-    if (!getContext()
-        .getTheme()
-        .resolveAttribute(android.support.v7.appcompat.R.attr.colorPrimary, value, true)) {
-      return null;
-    }
-    int colorPrimary = value.data;
-    int defaultColor = baseColor.getDefaultColor();
-    return new ColorStateList(
-        new int[][] {DISABLED_STATE_SET, CHECKED_STATE_SET, EMPTY_STATE_SET},
-        new int[] {
-          baseColor.getColorForState(DISABLED_STATE_SET, defaultColor), colorPrimary, defaultColor
-        });
   }
 
   @Override

@@ -59,8 +59,11 @@
     <item name="android:background">@android:color/white</item>
     <item name="itemHorizontalTranslation">false</item>
     <item name="itemIconTint">@color/mtrl_bottom_nav_item_tint</item>
-    <item name="itemTextAppearance">
+    <item name="itemTextAppearanceInactive">
       @style/TextAppearance.MaterialComponents.BottomNavigationView
+    </item>
+    <item name="itemTextAppearanceActive">
+      @style/TextAppearance.MaterialComponents.BottomNavigationView.Active
     </item>
     <item name="shiftingMode">off</item>
   </style>
@@ -71,8 +74,11 @@
   <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
     <item name="android:background">?attr/colorPrimary</item>
     <item name="itemIconTint">@color/mtrl_bottom_nav_colored_item_tint</item>
-    <item name="itemTextAppearance">
+    <item name="itemTextAppearanceInactive">
       @style/TextAppearance.MaterialComponents.BottomNavigationView.Colored
+    </item>
+    <item name="itemTextAppearanceActive">
+      @style/TextAppearance.MaterialComponents.BottomNavigationView.Colored.Active
     </item>
   </style>
 
@@ -80,9 +86,13 @@
     <item name="android:textColor">@color/mtrl_bottom_nav_item_tint</item>
   </style>
 
+  <style name="TextAppearance.MaterialComponents.BottomNavigationView.Active"/>
+
   <style name="TextAppearance.MaterialComponents.BottomNavigationView.Colored">
     <item name="android:textColor">@color/mtrl_bottom_nav_colored_item_tint</item>
   </style>
+
+  <style name="TextAppearance.MaterialComponents.BottomNavigationView.Colored.Active"/>
 
   <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
     <item name="tabMaxWidth">@dimen/design_tab_max_width</item>
