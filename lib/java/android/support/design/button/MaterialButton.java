@@ -16,25 +16,19 @@
 
 package android.support.design.button;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.design.internal.ThemeEnforcement;
 import android.support.design.resources.MaterialResources;
 import android.support.design.widget.ViewUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
@@ -66,8 +60,6 @@ import android.view.Gravity;
  * <p>Specify the radius of all four corners of the button using the {@code cornerRadius} attribute.
  */
 public class MaterialButton extends AppCompatButton {
-
-  private final MaterialButtonHelper materialButtonHelper;
 
   public MaterialButton(Context context) {
     this(context, null /* attrs */);
@@ -103,6 +95,7 @@ public class MaterialButton extends AppCompatButton {
     int paddingBottom =
         attributes.getDimensionPixelOffset(
             R.styleable.MaterialButton_android_paddingBottom, padding);
+
     int insetLeft =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetLeft, 0);
     int insetRight =
@@ -141,8 +134,8 @@ public class MaterialButton extends AppCompatButton {
         MaterialResources.getDrawable(getContext(), attributes, R.styleable.MaterialButton_icon);
 
     // Loads and sets background drawable attributes
-    materialButtonHelper = new MaterialButtonHelper(this);
-    materialButtonHelper.loadFromAttributes(attributes);
+    MaterialButtonHelper buttonHelper = new MaterialButtonHelper(this);
+    buttonHelper.loadFromAttributes(attributes);
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && animatorResId != 0) {
       setStateListAnimator(AnimatorInflater.loadStateListAnimator(context, animatorResId));
@@ -156,12 +149,12 @@ public class MaterialButton extends AppCompatButton {
     setCompoundDrawablePadding(iconPadding);
     setGravity(gravity);
 
+    // TODO: Add attribute for pressed state color
     // TODO: Add attributes for elevation/translationZ
 
     // setPadding() sets padding on button including inset, so we have to add inset and padding
-    // attributes to get the button's visible padding to look correct.
-    ViewCompat.setPaddingRelative(
-        this,
+    // attributes to get the button's visible padding to look correct
+    setPaddingRelative(
         paddingLeft + (icon != null ? additionalPaddingLeftForIcon : 0) + insetLeft,
         paddingTop + insetTop,
         paddingRight + (icon != null ? additionalPaddingRightForIcon : 0) + insetRight,
@@ -178,60 +171,5 @@ public class MaterialButton extends AppCompatButton {
     TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, icon, null, null, null);
 
     attributes.recycle();
-  }
-
-  /**
-   * This should be accessed via {@link
-   * android.support.v4.view.ViewCompat#setBackgroundTintList(android.view.View, ColorStateList)}
-   *
-   * @hide
-   */
-  @RestrictTo(LIBRARY_GROUP)
-  @Override
-  public void setSupportBackgroundTintList(@Nullable ColorStateList tint) {
-    if (materialButtonHelper != null) {
-      materialButtonHelper.setSupportBackgroundTintList(tint);
-    }
-  }
-
-  /**
-   * This should be accessed via {@link
-   * android.support.v4.view.ViewCompat#getBackgroundTintList(android.view.View)}
-   *
-   * @hide
-   */
-  @RestrictTo(LIBRARY_GROUP)
-  @Override
-  @Nullable
-  public ColorStateList getSupportBackgroundTintList() {
-    return materialButtonHelper != null
-        ? materialButtonHelper.getSupportBackgroundTintList()
-        : null;
-  }
-
-  /**
-   * This should be accessed via {@link
-   * android.support.v4.view.ViewCompat#setBackgroundTintMode(android.view.View, PorterDuff.Mode)}
-   *
-   * @hide
-   */
-  @RestrictTo(LIBRARY_GROUP)
-  @Override
-  public void setSupportBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
-    // We currently do not support background tint mode for MaterialButton
-  }
-
-  /**
-   * This should be accessed via {@link
-   * android.support.v4.view.ViewCompat#getBackgroundTintMode(android.view.View)}
-   *
-   * @hide
-   */
-  @RestrictTo(LIBRARY_GROUP)
-  @Override
-  @Nullable
-  public PorterDuff.Mode getSupportBackgroundTintMode() {
-    // We currently do not support background tint mode for MaterialButton
-    return null;
   }
 }
