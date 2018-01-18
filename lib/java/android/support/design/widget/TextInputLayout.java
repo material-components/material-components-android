@@ -273,11 +273,11 @@ public class TextInputLayout extends LinearLayout {
     boxExpandedPaddingBottomPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxExpandedPaddingBottom, 0);
     boxBottomOffsetPx =
-        context.getResources().getDimensionPixelOffset(R.dimen.design_textinput_box_bottom_offset);
+        context.getResources().getDimensionPixelOffset(R.dimen.mtrl_textinput_box_bottom_offset);
     boxLabelCutoutPaddingPx =
         context
             .getResources()
-            .getDimensionPixelOffset(R.dimen.design_textinput_box_label_cutout_padding);
+            .getDimensionPixelOffset(R.dimen.mtrl_textinput_box_label_cutout_padding);
 
     boxCornerRadiusTopLeft = a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopLeft, 0f);
     boxCornerRadiusTopRight =
@@ -295,11 +295,11 @@ public class TextInputLayout extends LinearLayout {
     boxStrokeWidthDefaultPx =
         context
             .getResources()
-            .getDimensionPixelSize(R.dimen.design_textinput_box_stroke_width_default);
+            .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_default);
     boxStrokeWidthFocusedPx =
         context
             .getResources()
-            .getDimensionPixelSize(R.dimen.design_textinput_box_stroke_width_focused);
+            .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_focused);
     boxStrokeWidthPx = boxStrokeWidthDefaultPx;
 
     @BoxBackgroundMode
@@ -311,10 +311,10 @@ public class TextInputLayout extends LinearLayout {
           focusedTextColor = a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
     }
     defaultStrokeColor =
-        ContextCompat.getColor(context, R.color.design_textinput_default_box_stroke_color);
-    disabledColor = ContextCompat.getColor(context, R.color.design_textinput_disabled_color);
+        ContextCompat.getColor(context, R.color.mtrl_textinput_default_box_stroke_color);
+    disabledColor = ContextCompat.getColor(context, R.color.mtrl_textinput_disabled_color);
     hoveredStrokeColor =
-        ContextCompat.getColor(context, R.color.design_textinput_hovered_box_stroke_color);
+        ContextCompat.getColor(context, R.color.mtrl_textinput_hovered_box_stroke_color);
 
     final int hintAppearance = a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, -1);
     if (hintAppearance != -1) {
