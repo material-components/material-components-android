@@ -53,7 +53,7 @@ layout:
 
 <android.support.design.button.MaterialButton
     android:id="@+id/material_unelevated_button"
-    style="@style/Widget.Design.Button.MaterialButton.UnelevatedButton"
+    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/unelevated_button_label_enabled"/>

@@ -87,7 +87,7 @@ public class MaterialButton extends AppCompatButton {
             attrs,
             R.styleable.MaterialButton,
             defStyleAttr,
-            R.style.Widget_Design_Button_MaterialButton);
+            R.style.Widget_MaterialComponents_Button);
     int minWidth = attributes.getDimensionPixelSize(R.styleable.MaterialButton_android_minWidth, 0);
     int minHeight =
         attributes.getDimensionPixelSize(R.styleable.MaterialButton_android_minHeight, 0);

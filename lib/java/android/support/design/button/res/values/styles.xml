@@ -18,10 +18,10 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- Defines the base Material button style. -->
-  <style name="Widget.Design.Button.MaterialButton" parent="android:Widget">
+  <style name="Widget.MaterialComponents.Button" parent="android:Widget">
     <item name="android:minWidth">@dimen/mtrl_btn_min_width</item>
     <item name="android:minHeight">@dimen/mtrl_btn_min_height</item>
-    <item name="android:textAppearance">@style/TextAppearance.Design.MaterialButton</item>
+    <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.MaterialButton</item>
     <item name="android:focusable">true</item>
     <item name="android:clickable">true</item>
     <item name="android:paddingLeft">@dimen/mtrl_btn_padding_left</item>
@@ -43,12 +43,12 @@
     <item name="buttonBackgroundTint">@color/mtrl_btn_bg_color_selector</item>
   </style>
 
-  <style name="Widget.Design.Button.MaterialButton.UnelevatedButton" parent="Widget.Design.Button.MaterialButton">
+  <style name="Widget.MaterialComponents.Button.UnelevatedButton">
     <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_unelevated_state_list_anim</item>
   </style>
 
-  <style name="Widget.Design.Button.MaterialButton.TextButton" parent="Widget.Design.Button.MaterialButton.UnelevatedButton">
-    <item name="android:textAppearance">@style/TextAppearance.Design.MaterialButton.Secondary</item>
+  <style name="Widget.MaterialComponents.Button.TextButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.MaterialButton.Secondary</item>
     <item name="android:paddingLeft">@dimen/mtrl_btn_text_btn_padding_left</item>
     <item name="android:paddingRight">@dimen/mtrl_btn_text_btn_padding_right</item>
     <item name="iconTint">@color/mtrl_text_btn_text_color_selector</item>
@@ -57,7 +57,7 @@
     <item name="rippleColor">@color/mtrl_btn_text_btn_ripple_color</item>
   </style>
 
-  <style name="TextAppearance.Design.MaterialButton" parent="android:TextAppearance">
+  <style name="TextAppearance.MaterialComponents.MaterialButton" parent="android:TextAppearance">
     <item name="android:textColor">@color/mtrl_btn_text_color_selector</item>
     <item name="android:textAllCaps">@bool/mtrl_btn_textappearance_all_caps</item>
     <item name="android:textSize">@dimen/mtrl_btn_text_size</item>
@@ -66,7 +66,7 @@
     <item name="android:letterSpacing" tools:ignore="NewApi">@dimen/mtrl_btn_letter_spacing</item>
   </style>
 
-  <style name="TextAppearance.Design.MaterialButton.Secondary" parent="TextAppearance.Design.MaterialButton">
+  <style name="TextAppearance.MaterialComponents.MaterialButton.Secondary">
     <item name="android:textColor">@color/mtrl_text_btn_text_color_selector</item>
   </style>
 
