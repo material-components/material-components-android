@@ -47,7 +47,7 @@
 
   <style name="Widget.Design.BottomNavigationView" parent="">
     <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
-    <item name="labelVisibilityMode">legacy</item>
+    <item name="labelVisibilityMode">auto</item>
     <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
     <item name="itemHorizontalTranslation">true</item>
   </style>
@@ -65,7 +65,6 @@
     <item name="itemTextAppearanceActive">
       @style/TextAppearance.MaterialComponents.BottomNavigationView.Active
     </item>
-    <item name="shiftingMode">off</item>
   </style>
 
   <!-- Colored style for Bottom NavigationViews.

@@ -645,11 +645,12 @@
     <!-- The menu resource to inflate and populate items from. -->
     <attr name="menu"/>
     <!-- Whether navigation items display with a label, without a label, or with a label during
-         selected state. Can also be legacy, which defers to shiftingMode to decide whether the
-         label should be shown.  -->
+         selected state. Can also be "auto", which uses the item count to determine whether to show
+         or hide the label. -->
     <attr name="labelVisibilityMode">
-      <!-- Label is shown when shiftingMode is enabled, or hidden when it is not.-->
-      <enum name="legacy" value="-1"/>
+      <!-- Label behaves as "labeled" when there are 3 items or less, or "selected" when there are
+           4 items or more. -->
+      <enum name="auto" value="-1"/>
       <!-- Label is shown on the selected navigation item. -->
       <enum name="selected" value="0"/>
       <!-- Label is shown on all navigation items. -->
@@ -673,19 +674,10 @@
          precedence over android:textColor in itemTextAppearanceInactive or
          itemTextAppearanceActive. -->
     <attr name="itemTextColor"/>
-    <!-- Whether the items should translate horizontally when in shifting mode. -->
+    <!-- Whether the items should translate horizontally when in "selected" label visibility
+         mode. -->
     <attr name="itemHorizontalTranslation" format="boolean"/>
     <attr name="elevation"/>
-    <!--
-      Whether shifting mode, which hides label on all but the active view, should be enabled
-      for BottomNavigationView.
-      (see https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs)
-    -->
-    <attr name="shiftingMode">
-      <enum name="auto" value="-1"/>
-      <enum name="off" value="0"/>
-      <enum name="on" value="1"/>
-    </attr>
   </declare-styleable>
 
 </resources>

@@ -55,8 +55,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private float scaleUpFactor;
   private float scaleDownFactor;
 
-  private boolean shiftingMode;
   private int labelVisibilityMode;
+  private boolean isShifting;
 
   private ImageView icon;
   private final TextView smallLabel;
@@ -111,9 +111,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     return itemPosition;
   }
 
-  public void setShiftingMode(boolean enabled) {
-    if (shiftingMode != enabled) {
-      shiftingMode = enabled;
+  public void setShifting(boolean shifting) {
+    if (isShifting != shifting) {
+      isShifting = shifting;
 
       boolean initialized = itemData != null;
       if (initialized) {
@@ -125,14 +125,14 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setLabelVisibilityMode(@LabelVisibilityMode int mode) {
     if (labelVisibilityMode != mode) {
       labelVisibilityMode = mode;
-
+      
       boolean initialized = itemData != null;
       if (initialized) {
         setChecked(itemData.isChecked());
       }
     }
   }
-
+  
   @Override
   public MenuItemImpl getItemData() {
     return itemData;
@@ -157,8 +157,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     smallLabel.setPivotY(smallLabel.getBaseline());
 
     switch (labelVisibilityMode) {
-      case LabelVisibilityMode.LABEL_VISIBILITY_LEGACY:
-        if (shiftingMode) {
+      case LabelVisibilityMode.LABEL_VISIBILITY_AUTO:
+        if (isShifting) {
           if (checked) {
             setViewLayoutParams(icon, defaultMargin, Gravity.CENTER_HORIZONTAL | Gravity.TOP);
             setViewValues(largeLabel, 1f, 1f, VISIBLE);

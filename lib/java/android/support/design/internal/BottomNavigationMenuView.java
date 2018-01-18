@@ -25,7 +25,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
-import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.transition.AutoTransition;
 import android.support.transition.TransitionManager;
 import android.support.transition.TransitionSet;
@@ -59,7 +58,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final OnClickListener onClickListener;
   private final Pools.Pool<BottomNavigationItemView> itemPool = new Pools.SynchronizedPool<>(5);
 
-  private int shiftingModeFlag = ShiftingMode.SHIFTING_MODE_AUTO;
   private boolean itemHorizontalTranslation;
   @LabelVisibilityMode private int labelVisibilityMode;
 
@@ -130,7 +128,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
     final int heightSpec = MeasureSpec.makeMeasureSpec(itemHeight, MeasureSpec.EXACTLY);
 
-    if (isShifting(shiftingModeFlag, visibleCount) && itemHorizontalTranslation) {
+    if (isShifting(labelVisibilityMode, visibleCount) && itemHorizontalTranslation) {
       final View activeChild = getChildAt(selectedItemPosition);
       int activeItemWidth = activeItemMinWidth;
       if (activeChild.getVisibility() != View.GONE) {
@@ -352,42 +350,13 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   /**
-   * Sets shifting mode override flag for menu view. If this flag is set to {@link
-   * ShiftingMode#SHIFTING_MODE_OFF}, this menu will not have shifting behavior even if it has more
-   * than 3 children. If this flag is set to {@link ShiftingMode#SHIFTING_MODE_ON}, this menu will
-   * have shifting behavior for any number of children. If this flag is set to {@link
-   * ShiftingMode#SHIFTING_MODE_AUTO} this menu will have shifting behavior only if it has 3 or more
-   * children.
-   *
-   * @param shiftingMode one of {@link ShiftingMode#SHIFTING_MODE_OFF}, {@link
-   *     ShiftingMode#SHIFTING_MODE_ON}, or {@link ShiftingMode#SHIFTING_MODE_AUTO}
-   * @deprecated use {@link #setLabelVisibilityMode(int)} instead
-   */
-  @Deprecated
-  public void setShiftingMode(@ShiftingMode int shiftingMode) {
-    shiftingModeFlag = shiftingMode;
-  }
-
-  /**
-   * Gets the status of shifting mode override flag for this menu view.
-   *
-   * @return Shifting mode flag for this menu view (default {@link ShiftingMode#SHIFTING_MODE_AUTO})
-   * @deprecated use {@link #getLabelVisibilityMode()} instead
-   */
-  @Deprecated
-  @ShiftingMode
-  public int getShiftingMode() {
-    return shiftingModeFlag;
-  }
-
-  /**
    * Sets the navigation items' label visibility mode.
    *
    * <p>The label is either always shown, never shown, or only shown when activated. Also supports
-   * legacy mode, which uses {@link ShiftingMode} to decide whether the label should be shown.
+   * "auto" mode, which uses the item count to determine whether to show or hide the label.
    *
    * @param labelVisibilityMode mode which decides whether or not the label should be shown. Can be
-   *     one of {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}, {@link
+   *     one of {@link LabelVisibilityMode#LABEL_VISIBILITY_AUTO}, {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_LABELED}, or {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED}
@@ -407,9 +376,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   /**
-   * Sets whether the menu items horizontally translate in shifting mode.
+   * Sets whether the menu items horizontally translate on selection when the combined item widths
+   * fill the screen.
    *
-   * @param itemHorizontalTranslation whether the menu items horizontally translate in shifting mode
+   * @param itemHorizontalTranslation whether the menu items horizontally translate on selection
    * @see #getItemHorizontalTranslation()
    */
   public void setItemHorizontalTranslation(boolean itemHorizontalTranslation) {
@@ -417,9 +387,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   /**
-   * Returns whether the menu items horizontally translate in shifting mode.
+   * Returns whether the menu items horizontally translate on selection when the combined item
+   * widths fill the screen.
    *
-   * @return whether the menu items horizontally translate in shifting mode
+   * @return whether the menu items horizontally translate on selection
    * @see #setItemHorizontalTranslation(boolean)
    */
   public boolean getItemHorizontalTranslation() {
@@ -466,7 +437,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       return;
     }
     buttons = new BottomNavigationItemView[menu.size()];
-    boolean shifting = isShifting(shiftingModeFlag, menu.getVisibleItems().size());
+    boolean shifting = isShifting(labelVisibilityMode, menu.getVisibleItems().size());
     for (int i = 0; i < menu.size(); i++) {
       presenter.setUpdateSuspended(true);
       menu.getItem(i).setCheckable(true);
@@ -480,7 +451,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       child.setTextAppearanceActive(itemTextAppearanceActive);
       child.setTextColor(itemTextColorFromUser);
       child.setItemBackground(itemBackgroundRes);
-      child.setShiftingMode(shifting);
+      child.setShifting(shifting);
       child.setLabelVisibilityMode(labelVisibilityMode);
       child.initialize((MenuItemImpl) menu.getItem(i), 0);
       child.setItemPosition(i);
@@ -517,11 +488,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       TransitionManager.beginDelayedTransition(this, set);
     }
 
-    boolean shifting = isShifting(shiftingModeFlag, menu.getVisibleItems().size());
+    boolean shifting = isShifting(labelVisibilityMode, menu.getVisibleItems().size());
     for (int i = 0; i < menuSize; i++) {
       presenter.setUpdateSuspended(true);
-      buttons[i].setShiftingMode(shifting);
       buttons[i].setLabelVisibilityMode(labelVisibilityMode);
+      buttons[i].setShifting(shifting);
       buttons[i].initialize((MenuItemImpl) menu.getItem(i), 0);
       presenter.setUpdateSuspended(false);
     }
@@ -539,10 +510,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     return selectedItemId;
   }
 
-  private boolean isShifting(@ShiftingMode int shiftingMode, int childCount) {
-    return shiftingMode == ShiftingMode.SHIFTING_MODE_AUTO
+  private boolean isShifting(@LabelVisibilityMode int labelVisibilityMode, int childCount) {
+    return labelVisibilityMode == LabelVisibilityMode.LABEL_VISIBILITY_AUTO
         ? childCount > 3
-        : shiftingMode == ShiftingMode.SHIFTING_MODE_ON;
+        : labelVisibilityMode == LabelVisibilityMode.LABEL_VISIBILITY_SELECTED;
   }
 
   void tryRestoreSelectedItemId(int itemId) {

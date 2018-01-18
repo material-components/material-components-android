@@ -30,7 +30,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
-import android.support.design.bottomnavigation.ShiftingMode;
 import android.support.design.internal.BottomNavigationMenu;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.internal.BottomNavigationPresenter;
@@ -167,17 +166,11 @@ public class BottomNavigationView extends FrameLayout {
       ViewCompat.setElevation(
           this, a.getDimensionPixelSize(R.styleable.BottomNavigationView_elevation, 0));
     }
-    if (a.hasValue(R.styleable.BottomNavigationView_shiftingMode)) {
-      @ShiftingMode
-      int shiftingMode =
-          a.getInt(R.styleable.BottomNavigationView_shiftingMode, ShiftingMode.SHIFTING_MODE_AUTO);
-      menuView.setShiftingMode(shiftingMode);
-    }
 
     setLabelVisibilityMode(
         a.getInteger(
             R.styleable.BottomNavigationView_labelVisibilityMode,
-            LabelVisibilityMode.LABEL_VISIBILITY_LEGACY));
+            LabelVisibilityMode.LABEL_VISIBILITY_AUTO));
     setItemHorizontalTranslation(
         a.getBoolean(R.styleable.BottomNavigationView_itemHorizontalTranslation, true));
 
@@ -352,53 +345,14 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Returns the current shifting mode flag used by this {@link BottomNavigationView}.
-   *
-   * @attr ref android.support.design.R.styleable#BottomNavigationView_shiftingMode
-   * @see #setShiftingMode(int)
-   * @deprecated use {@link BottomNavigationView#setLabelVisibilityMode} instead
-   */
-  @Deprecated
-  @ShiftingMode
-  public int getShiftingMode() {
-    return menuView.getShiftingMode();
-  }
-
-  /**
-   * Set shifting mode flag for this {@link BottomNavigationView}. Enabling shifting mode hides the
-   * text labels of menu items in this {@link BottomNavigationView} unless the menu item is
-   * selected. If this flag is set to {@link ShiftingMode#SHIFTING_MODE_OFF}, this menu will not
-   * have shifting behavior even if it has more than 3 children. If this flag is set to {@link
-   * ShiftingMode#SHIFTING_MODE_ON}, this menu will have shifting behavior for any number of
-   * children. If this flag is set to {@link ShiftingMode#SHIFTING_MODE_AUTO} this menu will have
-   * shifting behavior only if it has 3 or more children.
-   *
-   * @param shiftingMode one of {@link ShiftingMode#SHIFTING_MODE_OFF}, {@link
-   *     ShiftingMode#SHIFTING_MODE_ON}, or {@link ShiftingMode#SHIFTING_MODE_AUTO}
-   * @attr ref android.support.design.R.styleable#BottomNavigationView_shiftingMode
-   * @see <a
-   *     href="https://material.io/guidelines/components/bottom-navigation.html#bottom-navigation-specs">Material
-   *     Design guidelines</a>
-   * @see #getShiftingMode()
-   * @deprecated use {@link BottomNavigationView#setLabelVisibilityMode} instead
-   */
-  @Deprecated
-  public void setShiftingMode(@ShiftingMode int shiftingMode) {
-    if (menuView.getShiftingMode() != shiftingMode) {
-      menuView.setShiftingMode(shiftingMode);
-      presenter.updateMenuView(false /* cleared */);
-    }
-  }
-
-  /**
    * Sets the navigation items' label visibility mode.
    *
    * <p>The label is either always shown, never shown, or only shown when activated. Also supports
-   * legacy mode, which uses {@link ShiftingMode} to decide whether the label should be shown.
+   * "auto" mode, which uses the item count to determine whether to show or hide the label.
    *
    * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
    * @param labelVisibilityMode mode which decides whether or not the label should be shown. Can be
-   *     one of {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}, {@link
+   *     one of {@link LabelVisibilityMode#LABEL_VISIBILITY_AUTO}, {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_LABELED}, or {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED}
@@ -415,11 +369,11 @@ public class BottomNavigationView extends FrameLayout {
    * Sets the navigation items' label visibility mode using a resource ID.
    *
    * <p>The label is either always shown, never shown, or only shown when activated. Also supports
-   * legacy mode, which uses {@link ShiftingMode} to decide whether the label should be shown.
+   * "auto" mode, which uses the item count to determine whether to show or hide the label.
    *
    * @attr ref android.support.design.R.styleable#BottomNavigationView_labelVisibilityMode
-   * @param labelVisibilityModeId resource ID for the mode which decides whether or not the label
-   *     should be shown. Can be one of {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY}, {@link
+   * @param labelVisibilityModeId mode which decides whether or not the label should be shown. Can
+   *     be one of {@link LabelVisibilityMode#LABEL_VISIBILITY_AUTO}, {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_LABELED}, or {@link
    *     LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED}
@@ -479,9 +433,10 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Sets whether the menu items horizontally translate when in shifting mode.
+   * Sets whether the menu items horizontally translate on selection when the combined item widths
+   * fill up the screen.
    *
-   * @param itemHorizontalTranslation whether the items horizontally translate in shifting mode
+   * @param itemHorizontalTranslation whether the items horizontally translate on selection
    * @see #getItemHorizontalTranslation()
    */
   public void setItemHorizontalTranslation(boolean itemHorizontalTranslation) {
@@ -492,9 +447,10 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Sets whether the menu items horizontally translate when in shifting mode using a resource ID.
+   * Sets whether the menu items horizontally translate on selection when the combined item widths
+   * fill up the screen.
    *
-   * @param itemHorizontalTranslation whether the items horizontally translate in shifting mode
+   * @param itemHorizontalTranslation whether the items horizontally translate on selection
    * @see #getItemHorizontalTranslation()
    */
   public void setItemHorizontalTranslation(@BoolRes int itemHorizontalTranslation) {
@@ -502,9 +458,10 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Returns whether the menu items horizontally translate in shifting mode.
+   * Returns whether the items horizontally translate on selection when the item widths fill up the
+   * screen.
    *
-   * @return whether the menu items horizontally translate in shifting mode
+   * @return whether the menu items horizontally translate on selection
    * @see #setItemHorizontalTranslation(boolean)
    */
   public boolean getItemHorizontalTranslation() {
