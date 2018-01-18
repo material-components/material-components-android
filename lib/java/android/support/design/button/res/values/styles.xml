@@ -28,8 +28,8 @@
     <item name="android:paddingRight">@dimen/mtrl_btn_padding_right</item>
     <item name="android:paddingTop">@dimen/mtrl_btn_padding_top</item>
     <item name="android:paddingBottom">@dimen/mtrl_btn_padding_bottom</item>
-    <item name="android:insetLeft">@dimen/mtrl_btn_inset</item>
-    <item name="android:insetRight">@dimen/mtrl_btn_inset</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
     <item name="android:insetTop">@dimen/mtrl_btn_inset</item>
     <item name="android:insetBottom">@dimen/mtrl_btn_inset</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_state_list_anim</item>
