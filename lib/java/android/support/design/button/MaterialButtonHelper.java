@@ -52,9 +52,16 @@ class MaterialButtonHelper {
   private int insetTop;
   private int insetBottom;
   private float cornerRadius;
+
   @Nullable private ColorStateList backgroundTint;
   @Nullable private ColorStateList strokeColor;
   @Nullable private ColorStateList rippleColor;
+
+  @Nullable private GradientDrawable pressedBackgroundCompat;
+  @Nullable private GradientDrawable enabledBackgroundCompat;
+  @Nullable private GradientDrawable disabledBackgroundCompat;
+  @Nullable private GradientDrawable backgroundDrawable;
+
   private int strokeWidth;
 
   public MaterialButtonHelper(MaterialButton button) {
@@ -81,6 +88,7 @@ class MaterialButtonHelper {
         MaterialResources.getColorStateList(
             materialButton.getContext(), attributes, R.styleable.MaterialButton_rippleColor);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialButton_strokeWidth, 0);
+
     ViewCompat.setBackground(
         materialButton,
         VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP
@@ -94,36 +102,79 @@ class MaterialButtonHelper {
    * @return Drawable representing background for this button.
    */
   private Drawable createBackgroundCompat() {
+    ColorStateList backgroundColorStateList = createBackgroundColorCompat();
+
+    pressedBackgroundCompat =
+        createGradientDrawableForState(STATE_PRESSED, backgroundColorStateList);
+    enabledBackgroundCompat =
+        createGradientDrawableForState(STATE_ENABLED, backgroundColorStateList);
+    disabledBackgroundCompat =
+        createGradientDrawableForState(STATE_EMPTY, backgroundColorStateList);
+
+    StateListDrawable stateListDrawable = new StateListDrawable();
+    stateListDrawable.addState(
+        STATE_PRESSED, wrapGradientDrawableWithInset(pressedBackgroundCompat));
+    stateListDrawable.addState(
+        STATE_ENABLED, wrapGradientDrawableWithInset(enabledBackgroundCompat));
+    stateListDrawable.addState(
+        STATE_EMPTY, wrapGradientDrawableWithInset(disabledBackgroundCompat));
+
+    return stateListDrawable;
+  }
+
+  private InsetDrawable wrapGradientDrawableWithInset(GradientDrawable gradientDrawable) {
+    return new InsetDrawable(gradientDrawable, insetLeft, insetTop, insetRight, insetBottom);
+  }
+
+  private GradientDrawable createGradientDrawableForState(
+      int[] state, ColorStateList backgroundColor) {
+    GradientDrawable bgDrawable = new GradientDrawable();
+    bgDrawable.setCornerRadius(cornerRadius);
+    bgDrawable.setColor(backgroundColor.getColorForState(state, 0));
+    if (strokeColor != null) {
+      bgDrawable.setStroke(strokeWidth, strokeColor.getColorForState(state, 0));
+    }
+    return bgDrawable;
+  }
+
+  private ColorStateList createBackgroundColorCompat() {
     int pressedBackgroundColor =
         ColorUtils.compositeColors(
             rippleColor != null ? rippleColor.getColorForState(STATE_PRESSED, 0) : 0,
             backgroundTint != null ? backgroundTint.getColorForState(STATE_PRESSED, 0) : 0);
     int enabledBackgroundColor = backgroundTint.getColorForState(STATE_ENABLED, 0);
     int disabledBackgroundColor = backgroundTint.getColorForState(STATE_EMPTY, 0);
-
-    Drawable pressedBackground =
-        createBackgroundCompatForState(STATE_PRESSED, pressedBackgroundColor);
-    Drawable enabledBackground =
-        createBackgroundCompatForState(STATE_ENABLED, enabledBackgroundColor);
-    Drawable disabledBackground =
-        createBackgroundCompatForState(STATE_EMPTY, disabledBackgroundColor);
-
-    StateListDrawable stateListDrawable = new StateListDrawable();
-    stateListDrawable.addState(STATE_PRESSED, pressedBackground);
-    stateListDrawable.addState(STATE_ENABLED, enabledBackground);
-    stateListDrawable.addState(STATE_EMPTY, disabledBackground);
-
-    return stateListDrawable;
+    return new ColorStateList(
+        new int[][] {STATE_PRESSED, STATE_ENABLED, STATE_EMPTY},
+        new int[] {pressedBackgroundColor, enabledBackgroundColor, disabledBackgroundColor});
   }
 
-  private InsetDrawable createBackgroundCompatForState(int[] state, int backgroundColor) {
-    GradientDrawable bgDrawable = new GradientDrawable();
-    bgDrawable.setCornerRadius(cornerRadius);
-    bgDrawable.setColor(backgroundColor);
-    if (strokeColor != null) {
-      bgDrawable.setStroke(strokeWidth, strokeColor.getColorForState(state, 0));
+  private void updateBackgroundColorCompat() {
+    ColorStateList backgroundColorStateList = createBackgroundColorCompat();
+    if (pressedBackgroundCompat != null) {
+      pressedBackgroundCompat.setColor(backgroundColorStateList.getColorForState(STATE_PRESSED, 0));
     }
-    return new InsetDrawable(bgDrawable, insetLeft, insetTop, insetRight, insetBottom);
+    if (enabledBackgroundCompat != null) {
+      enabledBackgroundCompat.setColor(backgroundColorStateList.getColorForState(STATE_ENABLED, 0));
+    }
+    if (disabledBackgroundCompat != null) {
+      disabledBackgroundCompat.setColor(backgroundColorStateList.getColorForState(STATE_EMPTY, 0));
+    }
+  }
+
+  void setSupportBackgroundTintList(@Nullable ColorStateList tintList) {
+    backgroundTint = tintList;
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      if (backgroundDrawable != null) {
+        backgroundDrawable.setColor(backgroundTint);
+      }
+    } else {
+      updateBackgroundColorCompat();
+    }
+  }
+
+  ColorStateList getSupportBackgroundTintList() {
+    return backgroundTint;
   }
 
   /**
@@ -133,14 +184,14 @@ class MaterialButtonHelper {
    */
   @TargetApi(VERSION_CODES.LOLLIPOP)
   private Drawable createBackgroundLollipop() {
-    GradientDrawable bgDrawable = new GradientDrawable();
-    bgDrawable.setCornerRadius(cornerRadius);
-    bgDrawable.setColor(backgroundTint);
+    backgroundDrawable = new GradientDrawable();
+    backgroundDrawable.setCornerRadius(cornerRadius);
+    backgroundDrawable.setColor(backgroundTint);
     if (strokeColor != null) {
-      bgDrawable.setStroke(strokeWidth, strokeColor);
+      backgroundDrawable.setStroke(strokeWidth, strokeColor);
     }
     InsetDrawable bgInsetDrawable =
-        new InsetDrawable(bgDrawable, insetLeft, insetTop, insetRight, insetBottom);
+        new InsetDrawable(backgroundDrawable, insetLeft, insetTop, insetRight, insetBottom);
 
     GradientDrawable maskDrawable = new GradientDrawable();
     maskDrawable.setCornerRadius(cornerRadius);
