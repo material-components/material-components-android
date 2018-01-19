@@ -363,6 +363,7 @@ public class TabLayout extends HorizontalScrollView {
   @Mode int mode;
   boolean inlineLabel;
   boolean tabIndicatorFullWidth;
+  boolean unboundedRipple;
 
   private OnTabSelectedListener selectedListener;
   private final ArrayList<OnTabSelectedListener> selectedListeners = new ArrayList<>();
@@ -481,6 +482,7 @@ public class TabLayout extends HorizontalScrollView {
     mode = a.getInt(R.styleable.TabLayout_tabMode, MODE_FIXED);
     tabGravity = a.getInt(R.styleable.TabLayout_tabGravity, GRAVITY_FILL);
     inlineLabel = a.getBoolean(R.styleable.TabLayout_tabInlineLabel, false);
+    unboundedRipple = a.getBoolean(R.styleable.TabLayout_tabUnboundedRipple, false);
     a.recycle();
 
     // TODO add attr for these
@@ -931,6 +933,50 @@ public class TabLayout extends HorizontalScrollView {
    */
   public boolean isInlineLabel() {
     return inlineLabel;
+  }
+
+  /**
+   * Set whether this {@link TabLayout} will have an unbounded ripple effect or if ripple will be
+   * bound to the tab item size.
+   *
+   * <p>Defaults to false.
+   *
+   * @see #hasUnboundedRipple()
+   * @attr ref android.support.design.R.styleable#TabLayout_tabUnboundedRipple
+   */
+  public void setUnboundedRipple(boolean unboundedRipple) {
+    if (this.unboundedRipple != unboundedRipple) {
+      this.unboundedRipple = unboundedRipple;
+      for (int i = 0; i < slidingTabIndicator.getChildCount(); i++) {
+        View child = slidingTabIndicator.getChildAt(i);
+        if (child instanceof TabView) {
+          ((TabView) child).updateBackgroundDrawable(getContext());
+        }
+      }
+    }
+  }
+
+  /**
+   * Set whether this {@link TabLayout} will have an unbounded ripple effect or if ripple will be
+   * bound to the tab item size. Defaults to false.
+   *
+   * @param unboundedRippleResourceId Resource ID for boolean unbounded ripple value
+   * @see #hasUnboundedRipple()
+   * @attr ref android.support.design.R.styleable#TabLayout_tabUnboundedRipple
+   */
+  public void setUnboundedRippleResource(@BoolRes int unboundedRippleResourceId) {
+    setUnboundedRipple(getResources().getBoolean(unboundedRippleResourceId));
+  }
+
+  /**
+   * Returns whether this {@link TabLayout} has an unbounded ripple effect, or if ripple is bound to
+   * the tab item size.
+   *
+   * @see #setUnboundedRipple(boolean)
+   * @attr ref android.support.design.R.styleable#TabLayout_tabUnboundedRipple
+   */
+  public boolean hasUnboundedRipple() {
+    return unboundedRipple;
   }
 
   /**
@@ -1904,7 +1950,11 @@ public class TabLayout extends HorizontalScrollView {
         // TODO: Add support to RippleUtils.compositeRippleColorStateList for different ripple color
         // for selected items vs non-selected items
         if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-          background = new RippleDrawable(rippleColor, contentDrawable, maskDrawable);
+          background =
+              new RippleDrawable(
+                  rippleColor,
+                  unboundedRipple ? null : contentDrawable,
+                  unboundedRipple ? null : maskDrawable);
         } else {
           Drawable rippleDrawable = DrawableCompat.wrap(maskDrawable);
           DrawableCompat.setTintList(rippleDrawable, rippleColor);

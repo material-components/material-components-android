@@ -353,6 +353,9 @@
     <!-- Ripple color for the tabs. This may be a color state list, if the desired ripple color
          should be stateful.-->
     <attr name="tabRippleColor" format="color"/>
+    <!-- Whether to use unbounded ripple effect for tabs, or if ripple should instead be bound to
+         tab item bounds. -->
+    <attr name="tabUnboundedRipple" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="TabItem">
