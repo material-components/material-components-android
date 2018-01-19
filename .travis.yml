@@ -7,11 +7,6 @@ sudo: required
 dist: trusty
 
 env:
-  global:
-    # Notice global environment variables are available during the install phase for android >
-    # components. These are the only variables that can be used in that section
-    - SDK_API=26
-    - BUILD_TOOLS_VERSION=26.0.0
   matrix:
     # Notice matrix environment variables are not available during the install phase for android >
     # components.
@@ -33,16 +28,14 @@ cache:
 
 android:
   components:
-    - tools # to get the new `repository-11.xml`
-    - platform-tools #latest
-    - tools # to install Android SDK tools 25+, latest, cannot get more granular control than this
-    # See https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943 for more
-    # details.
-    - build-tools-$BUILD_TOOLS_VERSION
-    - android-$SDK_API
+    # https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943
+    - tools
+    - tools
 
-  licenses:
-    - 'android-sdk-license-.+'
+before_install:
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
+  - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
 
 before_script:
   - ./travis_before_script.sh
