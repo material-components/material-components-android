@@ -54,6 +54,7 @@ import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.internal.ThemeEnforcement;
+import android.support.design.internal.ViewUtils;
 import android.support.design.resources.MaterialResources;
 import android.support.design.ripple.RippleUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;

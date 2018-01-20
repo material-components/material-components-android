@@ -1,0 +1,25 @@
+apply plugin: 'com.android.library'
+
+archivesBaseName = 'design'
+
+dependencies {
+  implementation compatibility("v7/appcompat")
+
+  implementation project(fromPath("lib/java/android/support/design/dialog"))
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.java.excludes = [
+      '**/build/**',
+    ]
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+    main.resources.srcDir 'res'
+  }
+}

@@ -5,14 +5,10 @@ archivesBaseName = 'design'
 dependencies {
   implementation compatibility("v7/appcompat")
 
-  implementation project(fromPath("lib/java/android/support/design/bottomsheet"))
-  implementation project(fromPath("lib/java/android/support/design/card"))
   implementation project(fromPath("lib/java/android/support/design/chip"))
   implementation project(fromPath("lib/java/android/support/design/color"))
-  implementation project(fromPath("lib/java/android/support/design/dialog"))
   implementation project(fromPath("lib/java/android/support/design/floatingactionbutton"))
   implementation project(fromPath("lib/java/android/support/design/typography"))
-  implementation project(fromPath("lib/java/android/support/design/widget"))
 }
 
 android {

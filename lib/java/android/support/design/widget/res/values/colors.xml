@@ -17,27 +17,6 @@
 
 <resources>
 
-  <color name="design_default_color_primary">#3F51B5</color>
-  <color name="design_default_color_primary_dark">#303F9F</color>
-  <array name="design_default_color_palette_primary"/>
-  <array name="design_default_color_palette_secondary"/>
-
-  <!-- Color for the top outer pixels in the stroke: 18% white (these are multiplied) -->
-  <color name="design_fab_stroke_top_outer_color">#2EFFFFFF</color>
-  <!-- Color for the top inner pixels in the stroke: 10% white (these are multiplied) -->
-  <color name="design_fab_stroke_top_inner_color">#1AFFFFFF</color>
-  <!-- Color for the bottom outer pixels in the stroke: 6% black (these are multiplied) -->
-  <color name="design_fab_stroke_end_outer_color">#0F000000</color>
-  <!-- Color for the bottom inner pixels in the stroke: 4% black (these are multiplied) -->
-  <color name="design_fab_stroke_end_inner_color">#0A000000</color>
-
-  <!-- Shadow color for the first pixels of a shadow -->
-  <color name="design_fab_shadow_start_color">#44000000</color>
-  <!-- Shadow color for the middle pixels of a shadow -->
-  <color name="design_fab_shadow_mid_color">#14000000</color>
-  <!-- Shadow color for the furthest pixels of a shadow -->
-  <color name="design_fab_shadow_end_color">@android:color/transparent</color>
-
   <!-- Color for the text field's disabled state: 12% black -->
   <color name="mtrl_textinput_disabled_color">#1F000000</color>
   <!-- Color for the text field's default box stroke: 42% black -->
@@ -58,9 +37,4 @@
   <!-- 0% opacity white container fill -->
   <color name="mtrl_btn_transparent_bg_color">#00ffffff</color>
 
-  <!-- 96% opacity white -->
-  <color name="mtrl_bottomappbar_default_tint">#F5FFFFFF</color>
-
-  <!-- 32% opacity black -->
-  <color name="mtrl_scrim_color">#52000000</color>
 </resources>

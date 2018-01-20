@@ -23,13 +23,10 @@
   <public name="TextAppearance.Design.Hint" type="style"/>
   <public name="TextAppearance.Design.Snackbar.Message" type="style"/>
   <public name="TextAppearance.Design.Tab" type="style"/>
-  <public name="Theme.Design" type="style"/>
   <public name="Theme.Design.BottomNavigationView" type="style"/>
   <public name="Theme.Design.BottomSheetDialog" type="style"/>
-  <public name="Theme.Design.Light" type="style"/>
   <public name="Theme.Design.Light.BottomSheetDialog" type="style"/>
   <public name="Theme.Design.Light.NoActionBar" type="style"/>
-  <public name="Theme.Design.NoActionBar" type="style"/>
   <public name="Widget.Design.AppBarLayout" type="style"/>
   <public name="Widget.Design.BottomSheet.Modal" type="style"/>
   <public name="Widget.Design.CollapsingToolbar" type="style"/>
@@ -39,6 +36,4 @@
   <public name="Widget.Design.Snackbar" type="style"/>
   <public name="Widget.Design.TabLayout" type="style"/>
   <public name="Widget.Design.TextInputLayout" type="style"/>
-  <public name="Widget.MaterialComponents.FilledBox" type="style"/>
-  <public name="Widget.MaterialComponents.OutlineBox" type="style"/>
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2015 The Android Open Source Project
+  ~ Copyright (C) 2017 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -15,5 +15,17 @@
   ~ limitations under the License.
 -->
 <resources>
-  <integer name="app_bar_elevation_anim_duration">150</integer>
+
+  <dimen name="design_fab_elevation">6dp</dimen>
+  <dimen name="design_fab_translation_z_hovered_focused">6dp</dimen>
+  <dimen name="design_fab_translation_z_pressed">6dp</dimen>
+  <dimen name="design_fab_image_size">24dp</dimen>
+  <dimen name="design_fab_size_normal">56dp</dimen>
+  <dimen name="design_fab_size_mini">40dp</dimen>
+  <dimen name="design_fab_border_width">0.5dp</dimen>
+
+  <dimen name="mtrl_fab_elevation">6dp</dimen>
+  <dimen name="mtrl_fab_translation_z_hovered_focused">2dp</dimen>
+  <dimen name="mtrl_fab_translation_z_pressed">6dp</dimen>
+
 </resources>

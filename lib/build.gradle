@@ -15,20 +15,25 @@ dependencies {
   api compatibility("v7/recyclerview")
 
   implementation project(fromPath("lib/java/android/support/design/internal"))
-  implementation project(fromPath("lib/java/android/support/design/theme"))
 
   api project(fromPath("lib/coordinatorlayout/java/android/support/design/widget"))
   api project(fromPath("lib/java/android/support/design/animation"))
   api project(fromPath("lib/java/android/support/design/bottomnavigation"))
+  api project(fromPath("lib/java/android/support/design/bottomsheet"))
   api project(fromPath("lib/java/android/support/design/circularreveal"))
   api project(fromPath("lib/java/android/support/design/circularreveal/cardview"))
+  api project(fromPath("lib/java/android/support/design/color"))
+  api project(fromPath("lib/java/android/support/design/dialog"))
   api project(fromPath("lib/java/android/support/design/expandable"))
+  api project(fromPath("lib/java/android/support/design/floatingactionbutton"))
   api project(fromPath("lib/java/android/support/design/math"))
   api project(fromPath("lib/java/android/support/design/resources"))
   api project(fromPath("lib/java/android/support/design/ripple"))
   api project(fromPath("lib/java/android/support/design/snackbar"))
   api project(fromPath("lib/java/android/support/design/stateful"))
+  api project(fromPath("lib/java/android/support/design/theme"))
   api project(fromPath("lib/java/android/support/design/transformation"))
+  api project(fromPath("lib/java/android/support/design/typography"))
   api project(fromPath("lib/java/android/support/design/widget"))
 
   testImplementation("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {

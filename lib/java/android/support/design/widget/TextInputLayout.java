@@ -48,6 +48,7 @@ import android.support.annotation.StyleRes;
 import android.support.annotation.VisibleForTesting;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.internal.ThemeEnforcement;
+import android.support.design.internal.ViewUtils;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.AbsSavedState;

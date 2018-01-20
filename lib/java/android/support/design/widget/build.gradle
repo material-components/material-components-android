@@ -23,7 +23,11 @@ dependencies {
   api project(fromPath("lib/java/android/support/design/snackbar"))
   api project(fromPath("lib/java/android/support/design/stateful"))
 
+  implementation project(fromPath("lib/java/android/support/design/bottomsheet"))
+  implementation project(fromPath("lib/java/android/support/design/color"))
+  implementation project(fromPath("lib/java/android/support/design/dialog"))
   implementation project(fromPath("lib/java/android/support/design/expandable"))
+  implementation project(fromPath("lib/java/android/support/design/floatingactionbutton"))
   implementation project(fromPath("lib/java/android/support/design/internal"))
 }
 

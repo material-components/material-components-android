@@ -15,7 +15,7 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.support.design.theme">
+    package="android.support.design.color">
 
   <uses-sdk
     android:minSdkVersion="14"

@@ -43,6 +43,7 @@ import android.support.design.animation.MotionSpec;
 import android.support.design.expandable.ExpandableTransformationWidget;
 import android.support.design.expandable.ExpandableWidgetHelper;
 import android.support.design.internal.ThemeEnforcement;
+import android.support.design.internal.ViewUtils;
 import android.support.design.resources.MaterialResources;
 import android.support.design.stateful.ExtendableSavedState;
 import android.support.design.widget.FloatingActionButtonImpl.InternalVisibilityChangedListener;

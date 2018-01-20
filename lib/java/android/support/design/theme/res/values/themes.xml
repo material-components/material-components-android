@@ -73,18 +73,6 @@
 
   <style name="Theme.MaterialComponents.Light.Dialog.MinWidth" parent="Base.Theme.MaterialComponents.Light.Dialog.MinWidth"/>
 
-  <style name="Theme.MaterialComponents.BottomSheetDialog" parent="Theme.MaterialComponents.Dialog">
-    <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
-    <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
-  </style>
-
-  <style name="Theme.MaterialComponents.Light.BottomSheetDialog" parent="Theme.MaterialComponents.Light.Dialog">
-    <item name="android:windowBackground">@android:color/transparent</item>
-    <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
-    <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
-  </style>
-
   <!-- Menu/item attributes -->
   <style name="Theme.MaterialComponents.CompactMenu" parent="Base.Theme.MaterialComponents.CompactMenu"/>
 
@@ -119,14 +107,6 @@
   <style name="ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog"/>
 
   <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert"/>
-
-  <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
-  <style name="Theme.Design.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
-  </style>
-
-  <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
-  <style name="Theme.Design.Light.BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
-  </style>
 
   <!-- Deprecated. Use Theme.MaterialComponents instead. -->
   <style name="Theme.Design" parent="Theme.MaterialComponents">

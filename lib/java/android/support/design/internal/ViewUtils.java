@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.design.widget;
+package android.support.design.internal;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
@@ -25,6 +25,8 @@ import android.view.View;
 
 /**
  * Utils class for custom views.
+ *
+ * @hide
  */
 @RestrictTo(LIBRARY_GROUP)
 public class ViewUtils {

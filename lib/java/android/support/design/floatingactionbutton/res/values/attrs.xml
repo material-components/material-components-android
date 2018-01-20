@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2017 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <declare-styleable name="FloatingActionButton">
+    <!-- Background for the FloatingActionButton -->
+    <attr name="backgroundTint"/>
+    <attr name="backgroundTintMode"/>
+
+    <!-- Ripple color for the FAB. -->
+    <attr name="rippleColor"/>
+
+    <!-- Size for the FAB. If fabCustomSize is set, this will be ignored. -->
+    <attr name="fabSize">
+      <!-- A size which will change based on the window size. -->
+      <enum name="auto" value="-1"/>
+      <!-- The normal sized button. -->
+      <enum name="normal" value="0"/>
+      <!-- The mini sized button. -->
+      <enum name="mini" value="1"/>
+    </attr>
+    <!-- Custom size for the FAB. If this is set, fabSize will be ignored. -->
+    <attr name="fabCustomSize" format="dimension"/>
+    <!-- Elevation value for the FAB -->
+    <attr name="elevation"/>
+    <!-- TranslationZ value for the FAB when hovered, focused, or hovered and focused. -->
+    <attr name="hoveredFocusedTranslationZ" format="dimension"/>
+    <!-- TranslationZ value for the FAB when pressed-->
+    <attr name="pressedTranslationZ" format="dimension"/>
+    <!-- The width of the border around the FAB. -->
+    <attr name="borderWidth" format="dimension"/>
+    <!-- Enable compat padding. -->
+    <attr name="useCompatPadding" format="boolean"/>
+    <!-- Maximum icon image size. -->
+    <attr name="maxImageSize" format="dimension"/>
+    <!-- Motion spec for show animation. This should be a MotionSpec resource. -->
+    <attr name="showMotionSpec"/>
+    <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
+    <attr name="hideMotionSpec"/>
+  </declare-styleable>
+
+  <declare-styleable name="FloatingActionButton_Behavior_Layout">
+    <!-- Whether the FAB should automatically hide when there is no space for it. -->
+    <attr name="behavior_autoHide" format="boolean"/>
+  </declare-styleable>
+
+</resources>

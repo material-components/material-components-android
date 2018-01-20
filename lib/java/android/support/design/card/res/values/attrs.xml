@@ -17,6 +17,9 @@
 
 <resources>
 
+  <!-- Style to use for MaterialCardView in this theme. -->
+  <attr name="cardViewStyle" format="reference"/>
+
   <declare-styleable name="MaterialCardView">
     <!-- Specifies the color used to draw the path outline of the card. -->
     <attr name="strokeColor" format="color"/>
