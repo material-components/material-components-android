@@ -871,6 +871,12 @@ public class TextInputLayout extends LinearLayout {
     return editText;
   }
 
+  @Override
+  public int getBaseline() {
+    EditText text = getEditText();
+    return text == null ? super.getBaseline() : text.getPaddingTop() + text.getBaseline();
+  }
+
   /**
    * Set the hint to be displayed in the floating label, if enabled.
    *
