@@ -735,14 +735,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (chipText != null) {
       float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
       float offsetFromEnd = chipEndPadding + calculateCloseIconWidth() + textEndPadding;
-      ;
 
       if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.left = bounds.left + offsetFromStart;
         outBounds.right = bounds.right - offsetFromEnd;
       } else {
+        outBounds.left = bounds.left + offsetFromEnd;
         outBounds.right = bounds.right - offsetFromStart;
-        outBounds.left = bounds.left + offsetFromStart;
       }
 
       // Top and bottom included for completion. Don't position the chip text vertically based on
