@@ -21,10 +21,7 @@ within an app. They have a variety of uses, including:
 -   Update or transforming into other UI elements on the screen.
 
 Floating action buttons adjust their position and visibility in response to
-other UI elements on the screen. For example, if a [Snackbar](Snackbar.md)
-appears, the floating action button shifts its position to stay fully visible.
-Or if a [bottom sheet](BottomSheetBehavior.md) partially covers the floating
-action button, it may hide itself.
+other UI elements on the screen.
 
 ## Design & API Documentation
 
@@ -63,32 +60,44 @@ widget in your layout:
 </android.support.design.widget.CoordinatorLayout>
 ```
 
-Note: If the `FloatingActionButton` is a descendant of a `CoordinatorLayout`,
-you get certain behaviors for free. It will automatically shift so that any
-displayed [Snackbars](Snackbar.md) do not cover it, and will automatially hide
-when covered by an [AppBarLayout](AppBarLayout.md) or
+Note: If the `FloatingActionButton` is a child of a `CoordinatorLayout`, you get
+certain behaviors for free. It will automatically shift so that any displayed
+[Snackbars](Snackbar.md) do not cover it, and will automatially hide when
+covered by an [AppBarLayout](AppBarLayout.md) or
 [BottomSheetBehavior](BottomSheetBehavior.md).
 
-Change the icon in the floating action button with:
+### Material Styles (Updated)
 
--   `app:srcCompat` attribute
--   `setImageDrawable` method
+The updated Material FloatingActionButton consists of updated elevation, ripple,
+and motion changes.
 
-Change the size of the widget with:
+```java
+style="@/style/Widget.MaterialComponents.FloatingActionButton"
+```
 
--   `app:fabSize` attribute
--   `setSize` method
+### Material Styles (Legacy)
 
-Your theme's `colorAccent` provides the default background color of the widget.
-Change the background color with:
+```java
+style="@/style/Widget.Design.FloatingActionButton"
+```
 
--   `app:backgroundTint` attribute
--   `setBackgroundTintList` method
+### Attributes
 
-Change the elevation of the widget with:
-
--   `app:elevation` attribute
--   `setCompatElevation` method
+Feature    | Relevant attributes
+:--------- | :-------------------------------
+Icon       | `app:srcCompat`
+           | `app:tint`
+           | `app:maxImageSize`
+Size       | `app:fabSize`
+           | `app:fabCustomSize`
+Background | `app:backgroundTint`
+Ripple     | `app:rippleColor`
+Border     | `app:borderWidth`
+Elevation  | `app:elevation`
+           | `app:hoveredFocusedTranslationZ`
+           | `app:pressedTranslationZ`
+Motion     | `app:showMotionSpec`
+           | `app:hideMotionSpec`
 
 ### Handling Clicks
 
