@@ -3,17 +3,21 @@ title: "Material Card"
 layout: detail
 section: components
 excerpt: "Cards display content and actions on a single subject."
-iconId: materialcard
+iconId: card
 path: /catalog/material-card-view/
 -->
 
 # Material Card
 
-`Material Card` is a customizable component based on [`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
-from the Android Support Library. `MaterialCardView` provides all of the features
-of `CardView` and also includes an unelevated card style and parameters for an
-outline stroke on the card. The stroke outline should be used for unelevated
-cards and requires width and color values.
+A card is a sheet of material that may contain a photo, text, and a link about a
+single subject. They may display content containing elements of varying size,
+such as photos with captions of variable length.
+
+`MaterialCardView` is a customizable component based on
+[`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
+from the Android Support Library. `MaterialCardView` provides all of the
+features of `CardView`, but adds attributes for customizing the stroke and uses
+an updated Material style by default.
 
 ## Design & API Documentation
 
