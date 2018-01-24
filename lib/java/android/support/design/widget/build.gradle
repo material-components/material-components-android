@@ -29,6 +29,7 @@ dependencies {
   implementation project(fromPath("lib/java/android/support/design/expandable"))
   implementation project(fromPath("lib/java/android/support/design/floatingactionbutton"))
   implementation project(fromPath("lib/java/android/support/design/internal"))
+  implementation project(fromPath("lib/java/android/support/design/textfield"))
 }
 
 android {

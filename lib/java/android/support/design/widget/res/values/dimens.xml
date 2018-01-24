@@ -25,26 +25,6 @@
   <dimen name="design_tab_text_size">14sp</dimen>
   <dimen name="design_tab_text_size_2line">12sp</dimen>
 
-  <dimen name="mtrl_textinput_box_corner_radius_small">0dp</dimen>
-  <dimen name="mtrl_textinput_box_corner_radius_medium">4dp</dimen>
-  <dimen name="mtrl_textinput_box_padding_left">12dp</dimen>
-  <dimen name="mtrl_textinput_filled_box_collapsed_padding">12dp</dimen>
-  <dimen name="mtrl_textinput_filled_box_collapsed_padding_dense">8dp</dimen>
-  <dimen name="mtrl_textinput_filled_box_expanded_padding">20dp</dimen>
-  <dimen name="mtrl_textinput_filled_box_expanded_padding_dense">16dp</dimen>
-  <dimen name="mtrl_textinput_outline_box_collapsed_padding_dense">16dp</dimen>
-  <dimen name="mtrl_textinput_outline_box_collapsed_padding_top">0dp</dimen>
-  <dimen name="mtrl_textinput_outline_box_collapsed_padding_bottom">20dp</dimen>
-  <dimen name="mtrl_textinput_outline_box_expanded_padding">16dp</dimen>
-  <dimen name="mtrl_textinput_outline_box_expanded_padding_dense">12dp</dimen>
-  <dimen name="mtrl_textinput_box_padding_right">12dp</dimen>
-  <dimen name="mtrl_textinput_box_padding_bottom">20dp</dimen>
-  <dimen name="mtrl_textinput_box_bottom_offset">3dp</dimen>
-  <dimen name="mtrl_textinput_box_stroke_width_default">1dp</dimen>
-  <dimen name="mtrl_textinput_box_stroke_width_focused">2dp</dimen>
-  <dimen name="mtrl_textinput_box_label_cutout_padding">4dp</dimen>
-  <dimen name="design_textinput_caption_translate_y">5dp</dimen>
-
   <dimen name="design_snackbar_min_width">-1px</dimen>
   <dimen name="design_snackbar_max_width">-1px</dimen>
   <dimen name="design_snackbar_elevation">6dp</dimen>
