@@ -534,15 +534,20 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    * that the stroke perfectly fills the bounds of the chip.
    */
   private void drawChipStroke(@NonNull Canvas canvas, Rect bounds) {
-    chipPaint.setColor(currentChipStrokeColor);
-    chipPaint.setStyle(Style.STROKE);
-    chipPaint.setColorFilter(getTintColorFilter());
-    rectF.set(
-        bounds.left + chipStrokeWidth / 2f,
-        bounds.top + chipStrokeWidth / 2f,
-        bounds.right - chipStrokeWidth / 2f,
-        bounds.bottom - chipStrokeWidth / 2f);
-    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
+    if (chipStrokeWidth > 0) {
+      chipPaint.setColor(currentChipStrokeColor);
+      chipPaint.setStyle(Style.STROKE);
+      chipPaint.setColorFilter(getTintColorFilter());
+      rectF.set(
+          bounds.left + chipStrokeWidth / 2f,
+          bounds.top + chipStrokeWidth / 2f,
+          bounds.right - chipStrokeWidth / 2f,
+          bounds.bottom - chipStrokeWidth / 2f);
+      // We need to adjust stroke's corner radius so that the corners of the background are not
+      // drawn outside stroke
+      float strokeCornerRadius = chipCornerRadius - chipStrokeWidth / 2f;
+      canvas.drawRoundRect(rectF, strokeCornerRadius, strokeCornerRadius, chipPaint);
+    }
   }
 
   private void drawCompatRipple(@NonNull Canvas canvas, Rect bounds) {
