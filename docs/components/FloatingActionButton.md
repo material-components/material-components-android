@@ -55,7 +55,8 @@ widget in your layout:
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|right"
-      android:layout_margin="16dp"/>
+      android:layout_margin="16dp"
+      app:srcCompat="@drawable/ic_plus_24"/>
 
 </android.support.design.widget.CoordinatorLayout>
 ```
@@ -71,14 +72,28 @@ covered by an [AppBarLayout](AppBarLayout.md) or
 The updated Material FloatingActionButton consists of updated elevation, ripple,
 and motion changes.
 
-```java
-style="@/style/Widget.MaterialComponents.FloatingActionButton"
+```xml
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/floating_action_button"
+    style="@/style/Widget.MaterialComponents.FloatingActionButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|right"
+    android:layout_margin="16dp"
+    app:srcCompat="@drawable/ic_plus_24"/>
 ```
 
 ### Material Styles (Legacy)
 
-```java
-style="@/style/Widget.Design.FloatingActionButton"
+```xml
+<android.support.design.widget.FloatingActionButton
+    android:id="@+id/floating_action_button"
+    style="@/style/Widget.Design.FloatingActionButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|right"
+    android:layout_margin="16dp"
+    app:srcCompat="@drawable/ic_plus_24"/>
 ```
 
 ### Attributes
@@ -109,7 +124,7 @@ FloatingActionButton floatingActionButton =
 
 floatingActionButton.setOnClickListener(new OnClickListener() {
     @Override
-    public void onClick(View v) {
+    public void onClick(View view) {
         // Handle the click.
     }
 });
