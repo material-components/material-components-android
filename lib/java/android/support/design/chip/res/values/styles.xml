@@ -22,8 +22,7 @@
     <item name="singleSelection">false</item>
   </style>
 
-  <!-- Base style for Chips. You should use one of the sub-styles instead. -->
-  <style name="Widget.MaterialComponents.Chip" parent="android:Widget">
+  <style name="Base.Widget.MaterialComponents.Chip" parent="android:Widget">
     <item name="android:focusable">true</item>
     <item name="android:clickable">true</item>
     <item name="android:checkable">false</item>
@@ -71,7 +70,7 @@
        closeIconEnabled - optional
        checkable - optional
        checkedIconEnabled - optional -->
-  <style name="Widget.MaterialComponents.Chip.Entry">
+  <style name="Widget.MaterialComponents.Chip.Entry" parent="Base.Widget.MaterialComponents.Chip">
     <item name="android:checkable">true</item>
   </style>
 
@@ -83,7 +82,7 @@
        closeIconEnabled - optional
        checkable - always
        checkedIconEnabled - optional -->
-  <style name="Widget.MaterialComponents.Chip.Filter">
+  <style name="Widget.MaterialComponents.Chip.Filter" parent="Base.Widget.MaterialComponents.Chip">
     <item name="android:checkable">true</item>
 
     <item name="chipIconEnabled">false</item>
@@ -100,7 +99,7 @@
        closeIconEnabled - never
        checkable - always
        checkedIconEnabled - optional -->
-  <style name="Widget.MaterialComponents.Chip.Choice">
+  <style name="Widget.MaterialComponents.Chip.Choice" parent="Base.Widget.MaterialComponents.Chip">
     <item name="android:checkable">true</item>
 
     <item name="chipIconEnabled">false</item>
@@ -118,7 +117,7 @@
        closeIconEnabled - never
        checkable - never
        checkedIconEnabled - never -->
-  <style name="Widget.MaterialComponents.Chip.Action">
+  <style name="Widget.MaterialComponents.Chip.Action" parent="Base.Widget.MaterialComponents.Chip">
     <item name="closeIconEnabled">false</item>
   </style>
 
