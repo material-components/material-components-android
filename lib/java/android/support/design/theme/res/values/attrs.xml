@@ -65,6 +65,8 @@
     <attr name="chipStandaloneStyle"/>
     <!-- Style to use for MaterialCardView in this theme. -->
     <attr name="materialCardViewStyle"/>
+    <!-- Style to use for TextInputLayouts in this theme. -->
+    <attr name="textInputStyle"/>
 
     <!-- Text appearance for the Headline 1 style in this theme. -->
     <attr name="textAppearanceHeadline1"/>

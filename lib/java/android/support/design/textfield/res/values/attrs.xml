@@ -16,6 +16,9 @@
   -->
 <resources>
 
+  <!-- Style to use for TextInputLayout in the theme. -->
+  <attr name="textInputStyle" format="reference"/>
+
   <declare-styleable name="TextInputLayout">
     <!-- The text color for input text. -->
     <attr name="android:textColorHint"/>
