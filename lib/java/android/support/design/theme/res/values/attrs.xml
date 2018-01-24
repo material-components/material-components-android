@@ -64,7 +64,7 @@
     <!-- Style to use for standalone Chips in this theme, usually to be used in an EditText. -->
     <attr name="chipStandaloneStyle"/>
     <!-- Style to use for MaterialCardView in this theme. -->
-    <attr name="cardViewStyle"/>
+    <attr name="materialCardViewStyle"/>
 
     <!-- Text appearance for the Headline 1 style in this theme. -->
     <attr name="textAppearanceHeadline1"/>

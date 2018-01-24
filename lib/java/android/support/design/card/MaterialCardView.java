@@ -39,7 +39,7 @@ public class MaterialCardView extends CardView {
   }
 
   public MaterialCardView(Context context, AttributeSet attrs) {
-    this(context, attrs, android.support.design.card.R.attr.cardViewStyle);
+    this(context, attrs, R.attr.materialCardViewStyle);
   }
 
   public MaterialCardView(Context context, AttributeSet attrs, int defStyleAttr) {

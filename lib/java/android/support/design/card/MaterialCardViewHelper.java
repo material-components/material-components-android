@@ -21,6 +21,8 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.RestrictTo;
 import android.support.v4.view.ViewCompat;
 
@@ -32,7 +34,6 @@ class MaterialCardViewHelper {
   private final MaterialCardView materialCardView;
 
   private float cornerRadius;
-  private int backgroundColor;
   private int strokeColor;
   private int strokeWidth;
 
@@ -42,15 +43,37 @@ class MaterialCardViewHelper {
 
   public void loadFromAttributes(TypedArray attributes) {
     cornerRadius = attributes.getDimensionPixelSize(R.styleable.CardView_cardCornerRadius, 0);
-    int defaultBackgroundColor =
-        materialCardView.getContext().getResources().getColor(R.color.mtrl_card_bg_color);
-    backgroundColor =
-        attributes.getColor(R.styleable.CardView_cardBackgroundColor, defaultBackgroundColor);
     strokeColor =
         attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
     ViewCompat.setBackground(materialCardView, createBackgroundDrawable());
     adjustContentPadding(strokeWidth);
+  }
+
+  /**
+   * Creates a drawable background for the card in order to handle a stroke outline.
+   *
+   * @return drawable representing background for a card.
+   */
+  private Drawable createBackgroundDrawable() {
+    GradientDrawable bgDrawable = new GradientDrawable();
+    bgDrawable.setCornerRadius(cornerRadius);
+    // In order to set a stroke, a size and color both need to be set. We default to a zero-width
+    // width size, but won't set a default color. This prevents drawing a stroke that blends in with
+    // the card but that could affect card spacing.
+    if (strokeColor != DEFAULT_STROKE_VALUE) {
+      bgDrawable.setStroke(strokeWidth, strokeColor);
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      bgDrawable.setColor(materialCardView.getCardBackgroundColor());
+    } else {
+      // For API < 21, use the default background color from the colorStateList that's provided by
+      // {@code getCardBackgroundColor}; this class is not currently attempting to handle states.
+      bgDrawable.setColor(materialCardView.getCardBackgroundColor().getDefaultColor());
+    }
+
+    return bgDrawable;
   }
 
   /**
@@ -65,23 +88,5 @@ class MaterialCardViewHelper {
     int contentPaddingBottom = materialCardView.getContentPaddingBottom() + strokeWidth;
     materialCardView.setContentPadding(
         contentPaddingLeft, contentPaddingTop, contentPaddingRight, contentPaddingBottom);
-  }
-
-  /**
-   * Creates a drawable background for the card in order to handle a stroke outline.
-   *
-   * @return drawable representing background for a card.
-   */
-  private Drawable createBackgroundDrawable() {
-    GradientDrawable bgDrawable = new GradientDrawable();
-    bgDrawable.setCornerRadius(cornerRadius);
-    bgDrawable.setColor(backgroundColor);
-    // In order to set a stroke, a size and color both need to be set. We default to a zero-width
-    // width size, but won't set a default color. This prevents drawing a stroke that blends in with
-    // the card but that could affect card spacing.
-    if (strokeColor != DEFAULT_STROKE_VALUE) {
-      bgDrawable.setStroke(strokeWidth, strokeColor);
-    }
-    return bgDrawable;
   }
 }

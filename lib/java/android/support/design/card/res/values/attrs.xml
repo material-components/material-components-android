@@ -17,8 +17,11 @@
 
 <resources>
 
-  <!-- Style to use for MaterialCardView in this theme. -->
-  <attr name="cardViewStyle" format="reference"/>
+  <!-- Style to use for MaterialCardView in this theme. This explicitly defines a new attribute
+      and does not use cardViewStyle from the attribute in the v7 Support Library. We do this
+      so that CardView and MaterialCardView can be used side-by-side in the same app. This
+      attribute name may change in the future if that usage restriction changes. -->
+  <attr name="materialCardViewStyle" format="reference"/>
 
   <declare-styleable name="MaterialCardView">
     <!-- Specifies the color used to draw the path outline of the card. -->
