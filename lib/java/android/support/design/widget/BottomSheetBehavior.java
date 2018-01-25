@@ -216,7 +216,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @Override
   public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
     if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
-      ViewCompat.setFitsSystemWindows(child, true);
+      child.setFitsSystemWindows(true);
     }
     int savedTop = child.getTop();
     // First let the parent lay it out
@@ -344,19 +344,30 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @Override
   public boolean onStartNestedScroll(
-      CoordinatorLayout coordinatorLayout,
-      V child,
-      View directTargetChild,
-      View target,
-      int nestedScrollAxes) {
+      @NonNull CoordinatorLayout coordinatorLayout,
+      @NonNull V child,
+      @NonNull View directTargetChild,
+      @NonNull View target,
+      int axes,
+      int type) {
     lastNestedScrollDy = 0;
     nestedScrolled = false;
-    return (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
+    return (axes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0;
   }
 
   @Override
   public void onNestedPreScroll(
-      CoordinatorLayout coordinatorLayout, V child, View target, int dx, int dy, int[] consumed) {
+      @NonNull CoordinatorLayout coordinatorLayout,
+      @NonNull V child,
+      @NonNull View target,
+      int dx,
+      int dy,
+      @NonNull int[] consumed,
+      int type) {
+    if (type == ViewCompat.TYPE_NON_TOUCH) {
+      // Ignore fling here. The ViewDragHelper handles it.
+      return;
+    }
     View scrollingChild = nestedScrollingChildRef.get();
     if (target != scrollingChild) {
       return;
@@ -392,7 +403,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
-  public void onStopNestedScroll(CoordinatorLayout coordinatorLayout, V child, View target) {
+  public void onStopNestedScroll(
+      @NonNull CoordinatorLayout coordinatorLayout,
+      @NonNull V child,
+      @NonNull View target,
+      int type) {
     if (child.getTop() == getExpandedOffset()) {
       setStateInternal(STATE_EXPANDED);
       return;
@@ -452,7 +467,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @Override
   public boolean onNestedPreFling(
-      CoordinatorLayout coordinatorLayout, V child, View target, float velocityX, float velocityY) {
+      @NonNull CoordinatorLayout coordinatorLayout,
+      @NonNull V child,
+      @NonNull View target,
+      float velocityX,
+      float velocityY) {
     return target == nestedScrollingChildRef.get()
         && (state != STATE_EXPANDED
             || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
@@ -721,7 +740,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       new ViewDragHelper.Callback() {
 
         @Override
-        public boolean tryCaptureView(View child, int pointerId) {
+        public boolean tryCaptureView(@NonNull View child, int pointerId) {
           if (state == STATE_DRAGGING) {
             return false;
           }
@@ -739,7 +758,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
 
         @Override
-        public void onViewPositionChanged(View changedView, int left, int top, int dx, int dy) {
+        public void onViewPositionChanged(
+            @NonNull View changedView, int left, int top, int dx, int dy) {
           dispatchOnSlide(top);
         }
 
@@ -751,7 +771,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
 
         @Override
-        public void onViewReleased(View releasedChild, float xvel, float yvel) {
+        public void onViewReleased(@NonNull View releasedChild, float xvel, float yvel) {
           int top;
           @State int targetState;
           if (yvel < 0) { // Moving up
@@ -816,18 +836,18 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
 
         @Override
-        public int clampViewPositionVertical(View child, int top, int dy) {
+        public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
           return MathUtils.constrain(
               top, getExpandedOffset(), hideable ? parentHeight : collapsedOffset);
         }
 
         @Override
-        public int clampViewPositionHorizontal(View child, int left, int dx) {
+        public int clampViewPositionHorizontal(@NonNull View child, int left, int dx) {
           return child.getLeft();
         }
 
         @Override
-        public int getViewVerticalDragRange(View child) {
+        public int getViewVerticalDragRange(@NonNull View child) {
           if (hideable) {
             return parentHeight;
           } else {
