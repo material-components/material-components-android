@@ -57,14 +57,11 @@ in the text field when in "extract mode" (such as landscape mode).
 
 ### Material Styles
 
-The updated Material themes (`Theme.MaterialComponents`) sets the default
-`TextInputLayout` style to the Filled Box style, so if your app theme inherits
-from an updated Material theme, you don't have to modify all of your layouts
-that contain `TextInputLayout`.
-
-If you wish to test out an updated Material component without modifying your app
-theme, then you may manually set its `style` to one of the updated Material
-styles described below.
+Using `TextInputLayout` with an updated Material theme
+(`Theme.MaterialComponents`) will provide the correct updated Material styles to
+your text fields by default. If you need to use an updated Material text field
+and your application theme does not inherit from an updated Material theme, you
+can apply one of the updated Material styles directly to your widget in XML.
 
 #### Filled Box (Default)
 
