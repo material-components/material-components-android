@@ -42,9 +42,6 @@
 
   <dimen name="design_appbar_elevation">4dp</dimen>
 
-  <dimen name="design_bottom_navigation_elevation">8dp</dimen>
-  <dimen name="design_bottom_navigation_shadow_height">1dp</dimen>
-
   <dimen name="mtrl_bottomappbar_fab_cradle_diameter">64dp</dimen>
   <dimen name="mtrl_bottomappbar_fab_cradle_rounded_corner_radius">8dp</dimen>
   <dimen name="mtrl_bottomappbar_fab_cradle_vertical_offset">0dp</dimen>
