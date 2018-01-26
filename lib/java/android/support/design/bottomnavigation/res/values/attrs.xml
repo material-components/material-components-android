@@ -16,6 +16,9 @@
   -->
 <resources>
 
+  <!-- Style to use for BottomNavigationViews in the theme. -->
+  <attr name="bottomNavigationStyle" format="reference"/>
+
   <declare-styleable name="BottomNavigationView">
     <!-- The menu resource to inflate and populate items from. -->
     <attr name="menu" format="reference"/>

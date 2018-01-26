@@ -5,6 +5,7 @@ archivesBaseName = 'design'
 dependencies {
   implementation compatibility("v7/appcompat")
 
+  implementation project(fromPath("lib/java/android/support/design/bottomnavigation"))
   implementation project(fromPath("lib/java/android/support/design/chip"))
   implementation project(fromPath("lib/java/android/support/design/color"))
   implementation project(fromPath("lib/java/android/support/design/floatingactionbutton"))

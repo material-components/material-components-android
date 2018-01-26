@@ -6,6 +6,7 @@ dependencies {
   implementation compatibility("annotations")
   implementation compatibility("v7/appcompat")
 
+  implementation project(fromPath("lib/java/android/support/design/bottomnavigation"))
   implementation project(fromPath("lib/java/android/support/design/bottomsheet"))
   implementation project(fromPath("lib/java/android/support/design/card"))
   implementation project(fromPath("lib/java/android/support/design/chip"))
