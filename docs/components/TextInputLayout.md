@@ -55,45 +55,53 @@ using `TextInputEditText` allows `TextInputLayout` greater control over the
 visual aspects of the input text - it allows `TextInputLayout` to display hint
 in the text field when in "extract mode" (such as landscape mode).
 
-## Box Styles
+### Material Styles
 
-`TextInputLayout` provides two box styles, **filled** and **outline**. Here's how to use
-each of them:
+The updated Material themes (`Theme.MaterialComponents`) sets the default
+`TextInputLayout` style to the Filled Box style, so if your app theme inherits
+from an updated Material theme, you don't have to modify all of your layouts
+that contain `TextInputLayout`.
 
-#### Filled Text Fields
+If you wish to test out an updated Material component without modifying your app
+theme, then you may manually set its `style` to one of the updated Material
+styles described below.
 
-Filled text fields have a solid background color and draw more attention, especially
-in layouts where the field is surrounded by other elements. To use a filled text field,
-apply the following style to your `TextInputLayout`:
+#### Filled Box (Default)
+
+Filled text fields have a solid background color and draw more attention,
+especially in layouts where the field is surrounded by other elements. To use a
+filled text field, apply the following style to your `TextInputLayout`:
 
 ```
 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
 ```
 
-To change the background color of a filled text field, you can set the `boxBackgroundColor`
-attribute on your `TextInputLayout`.
+To change the background color of a filled text field, you can set the
+`boxBackgroundColor` attribute on your `TextInputLayout`.
 
-#### Outline Text Fields
+#### Outline Box
 
-Outline text fields have a stroked border and are less emphasized. To use an outline text
-field, apply the following style to your `TextInputLayout`:
+Outline text fields have a stroked border and are less emphasized. To use an
+outline text field, apply the following style to your `TextInputLayout`:
 
 ```
 style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
 ```
 
 To change the stroke color and width for an outline text field, you can set the
-`boxStrokeColor` and `boxStrokeWidth` attributes on your `TextInputLayout`, respectively.
+`boxStrokeColor` and `boxStrokeWidth` attributes on your `TextInputLayout`,
+respectively.
 
 #### Height Variations
 
-`TextInputLayout` provides two height variations for filled and outline text fields,
-**standard** and **dense**. Both box styles default to the standard height.
+`TextInputLayout` provides two height variations for filled and outline text
+fields, **standard** and **dense**. Both box styles default to the standard
+height.
 
-In order to reduce the height of a text box, you can use a dense style, which will reduce
-the vertical padding within the text box. You can achieve this by applying the appropriate
-styles to your `TextInputLayout`, depending on whether you are using a filled or outline
-text field:
+In order to reduce the height of a text box, you can use a dense style, which
+will reduce the vertical padding within the text box. You can achieve this by
+applying the appropriate styles to your `TextInputLayout`, depending on whether
+you are using a filled or outline text field:
 
 ```
 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
@@ -103,8 +111,9 @@ style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
 style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
 ```
 
-Additionally, to change a text field's internal padding as well as other values like corner
-radii, you can apply the following attributes to your `TextInputLayout`:
+Additionally, to change a text field's internal padding as well as other values
+like corner radii, you can apply the following attributes to your
+`TextInputLayout`:
 
 ##### Padding
 
@@ -134,7 +143,7 @@ Text field element                     | Relevant attributes/methods
 Label (also called a “Floating Label”) | [`android:hint`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_android_hint)
                                        | [`app:hintEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_hintEnabled)
 Error message                          | [`app:errorEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_errorEnabled)
-                                       | [`#setError(CharSequence)`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#setError(java.lang.CharSequence))
+                                       | [`#setError(CharSequence)`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#setError\(java.lang.CharSequence\))
 Helper text                            | [`app:helperTextEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_helperTextEnabled)
                                        | [`app:helperText`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_helperText)
 Password redaction                     | [`app:passwordToggleEnabled`](https://developer.android.com/reference/android/support/design/widget/TextInputLayout.html#attr_TextInputLayout_passwordToggleEnabled)

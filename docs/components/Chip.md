@@ -46,8 +46,11 @@ component. Example code of how to include the widget in your layout:
 
 ### Material Styles
 
-Action Chip is the default Material style for chips but there exists several
-other styles, each mapping to a different use case in the spec.
+Using `Chip` with an updated Material theme (`Theme.MaterialComponents`) will
+provide the correct updated Material styles to your chips by default. If you
+need to use an updated Material chip and your application theme does not inherit
+from an updated Material theme, you can apply one of the updated Material styles
+directly to your widget in XML.
 
 #### Entry Chip
 

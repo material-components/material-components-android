@@ -67,10 +67,19 @@ certain behaviors for free. It will automatically shift so that any displayed
 covered by an [AppBarLayout](AppBarLayout.md) or
 [BottomSheetBehavior](BottomSheetBehavior.md).
 
-### Material Styles (Updated)
+### Material Styles
 
-The updated Material FloatingActionButton consists of updated elevation, ripple,
-and motion changes.
+Using `FloatingActionButton` with an updated Material theme
+(`Theme.MaterialComponents`) will provide the correct updated Material styles to
+your floating action buttons by default. If you need to use an updated Material
+floating action button and your application theme does not inherit from an
+updated Material theme, you can apply one of the updated Material styles
+directly to your widget in XML.
+
+#### Updated Material Style
+
+The updated Material `FloatingActionButton` style consists of updated elevation,
+ripple, and motion changes.
 
 ```xml
 <android.support.design.widget.FloatingActionButton
@@ -83,7 +92,7 @@ and motion changes.
     app:srcCompat="@drawable/ic_plus_24"/>
 ```
 
-### Material Styles (Legacy)
+#### Legacy Material Style
 
 ```xml
 <android.support.design.widget.FloatingActionButton
