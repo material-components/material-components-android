@@ -5,7 +5,7 @@ sub-divided into:
 
 *   [base/](components.md#base/)
 *   platform-specific overrides
-*   [src/](components.md#src/))
+*   [src/](components.md#src/)
 
 Any widgets that require a platform-specific implementation can be found in
 the **base/** directory, while all other widgets are located under **src/**.
