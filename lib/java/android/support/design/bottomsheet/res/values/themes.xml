@@ -28,10 +28,16 @@
   </style>
 
   <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
-  <style name="Theme.Design.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+  <style name="Theme.Design.BottomSheetDialog" parent="Theme.AppCompat.Dialog">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+    <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
   </style>
 
   <!-- Deprecated. Use Theme.MaterialComponents.BottomSheetDialog instead. -->
-  <style name="Theme.Design.Light.BottomSheetDialog" parent="Theme.MaterialComponents.Light.BottomSheetDialog">
+  <style name="Theme.Design.Light.BottomSheetDialog" parent="Theme.AppCompat.Light.Dialog">
+    <item name="android:windowBackground">@android:color/transparent</item>
+    <item name="android:windowAnimationStyle">@style/Animation.Design.BottomSheetDialog</item>
+    <item name="bottomSheetStyle">@style/Widget.Design.BottomSheet.Modal</item>
   </style>
 </resources>

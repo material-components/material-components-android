@@ -31,11 +31,12 @@
 
   <style name="Platform.MaterialComponents.Light.Dialog" parent="Theme.AppCompat.Light.Dialog"/>
 
-  <!-- All new attributes should be set in the follow four Base.V14 themes. -->
+  <!-- All new attributes should be set in the following four Base.V14 themes. -->
   <eat-comment/>
 
   <style name="Base.V14.Theme.MaterialComponents" parent="Platform.MaterialComponents">
-    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater</item>
+    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater
+    </item>
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
@@ -58,7 +59,9 @@
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
-    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
+    <item name="floatingActionButtonStyle">
+      @style/Widget.MaterialComponents.FloatingActionButton
+    </item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
 
@@ -79,7 +82,8 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light" parent="Platform.MaterialComponents.Light">
-    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater</item>
+    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater
+    </item>
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
@@ -102,7 +106,9 @@
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
-    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
+    <item name="floatingActionButtonStyle">
+      @style/Widget.MaterialComponents.FloatingActionButton
+    </item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
 

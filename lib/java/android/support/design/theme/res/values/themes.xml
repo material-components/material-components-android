@@ -109,19 +109,23 @@
   <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert"/>
 
   <!-- Deprecated. Use Theme.MaterialComponents instead. -->
-  <style name="Theme.Design" parent="Theme.MaterialComponents">
+  <style name="Theme.Design" parent="Theme.AppCompat">
   </style>
 
   <!-- Deprecated. Use Theme.MaterialComponents.Light instead. -->
-  <style name="Theme.Design.Light" parent="Theme.MaterialComponents.Light">
+  <style name="Theme.Design.Light" parent="Theme.AppCompat.Light">
   </style>
 
   <!-- Deprecated. Use Theme.MaterialComponents.NoActionBar instead. -->
-  <style name="Theme.Design.NoActionBar" parent="Theme.MaterialComponents.NoActionBar">
+  <style name="Theme.Design.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
   </style>
 
   <!-- Deprecated. Use Theme.MaterialComponents.Light.NoActionBar instead. -->
-  <style name="Theme.Design.Light.NoActionBar" parent="Theme.MaterialComponents.Light.NoActionBar">
+  <style name="Theme.Design.Light.NoActionBar">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
   </style>
 
 </resources>

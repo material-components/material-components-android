@@ -96,4 +96,11 @@
     <attr name="textAppearanceOverline"/>
   </declare-styleable>
 
+  <declare-styleable name="DesignTheme">
+    <!-- Theme to use for modal bottom sheet dialogs spawned from this theme. -->
+    <attr name="bottomSheetDialogTheme" format="reference"/>
+    <!-- Style to use for modal bottom sheets in this theme. -->
+    <attr name="bottomSheetStyle" format="reference"/>
+  </declare-styleable>
+
 </resources>
