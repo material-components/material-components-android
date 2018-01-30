@@ -1,6 +1,7 @@
 apply plugin: 'com.android.library'
 
-archivesBaseName = 'design'
+archivesBaseName = getArchivesBaseName(project.name)
+version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   api compatibility("v7/appcompat")
@@ -22,6 +23,5 @@ android {
       'res-public'
     ]
     main.assets.srcDir 'assets'
-    main.resources.srcDir 'res'
   }
 }

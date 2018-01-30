@@ -6,8 +6,8 @@ version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   api compatibility("annotations")
+  api compatibility("core_ui")
 
-  api project(fromPath("lib"))
   api project(fromPath("lib/java/android/support/design/circularreveal"))
 }
 
@@ -23,7 +23,6 @@ android {
       'res-public'
     ]
     main.assets.srcDir 'assets'
-    main.resources.srcDir 'res'
   }
 }
 

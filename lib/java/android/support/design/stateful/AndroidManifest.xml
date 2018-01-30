@@ -17,9 +17,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="android.support.design.stateful">
 
-  <uses-sdk
-    android:minSdkVersion="14"
-    android:targetSdkVersion="25"/>
+  <uses-sdk android:minSdkVersion="14"/>
 
   <application/>
 </manifest>
