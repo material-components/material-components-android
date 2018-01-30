@@ -36,6 +36,7 @@ dependencies {
   api project(fromPath("lib/java/android/support/design/ripple"))
   api project(fromPath("lib/java/android/support/design/snackbar"))
   api project(fromPath("lib/java/android/support/design/stateful"))
+  api project(fromPath("lib/java/android/support/design/tabs"))
   api project(fromPath("lib/java/android/support/design/textfield"))
   api project(fromPath("lib/java/android/support/design/theme"))
   api project(fromPath("lib/java/android/support/design/transformation"))

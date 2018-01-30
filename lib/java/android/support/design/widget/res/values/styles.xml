@@ -23,30 +23,6 @@
     <item name="android:maxWidth">@dimen/design_navigation_max_width</item>
   </style>
 
-  <style name="Widget.Design.TabLayout" parent="Base.Widget.Design.TabLayout">
-    <item name="tabGravity">fill</item>
-    <item name="tabMode">fixed</item>
-    <item name="tabIndicatorFullWidth">true</item>
-  </style>
-
-  <style name="Base.Widget.Design.TabLayout" parent="android:Widget">
-    <item name="tabMaxWidth">@dimen/design_tab_max_width</item>
-    <item name="tabIndicatorColor">?attr/colorAccent</item>
-    <item name="tabIndicatorGravity">bottom</item>
-    <item name="tabIndicator">@drawable/mtrl_tabs_default_indicator</item>
-    <item name="tabPaddingStart">12dp</item>
-    <item name="tabPaddingEnd">12dp</item>
-    <item name="tabTextAppearance">@style/TextAppearance.Design.Tab</item>
-    <item name="tabRippleColor">?attr/colorControlHighlight</item>
-    <item name="tabUnboundedRipple">false</item>
-  </style>
-
-  <style name="TextAppearance.Design.Tab" parent="TextAppearance.AppCompat.Button">
-    <item name="android:textSize">@dimen/design_tab_text_size</item>
-    <item name="android:textColor">@color/mtrl_tabs_legacy_text_color_selector</item>
-    <item name="textAllCaps">true</item>
-  </style>
-
   <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance">
     <item name="android:textSize">@dimen/design_snackbar_text_size</item>
     <item name="android:textColor">?android:textColorPrimary</item>
@@ -78,31 +54,6 @@
 
   <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Display1">
     <item name="android:textColor">?android:attr/textColorPrimary</item>
-  </style>
-
-  <style name="Widget.MaterialComponents.TabLayout" parent="Widget.Design.TabLayout">
-    <item name="android:background">@android:color/white</item>
-    <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
-    <item name="tabIndicatorColor">?attr/colorAccent</item>
-    <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab</item>
-    <item name="tabRippleColor">@color/mtrl_tabs_ripple_color</item>
-    <item name="tabUnboundedRipple">true</item>
-  </style>
-
-  <style name="Widget.MaterialComponents.TabLayout.Colored">
-    <item name="android:background">?attr/colorAccent</item>
-    <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_colored</item>
-    <item name="tabIndicatorColor">@android:color/white</item>
-    <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab.Colored</item>
-    <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
-  </style>
-
-  <style name="TextAppearance.MaterialComponents.Tab" parent="TextAppearance.Design.Tab">
-    <item name="android:textColor">@color/mtrl_tabs_icon_color_selector</item>
-  </style>
-
-  <style name="TextAppearance.MaterialComponents.Tab.Colored">
-    <item name="android:textColor">@color/mtrl_tabs_icon_color_selector_colored</item>
   </style>
 
 </resources>
