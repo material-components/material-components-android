@@ -39,5 +39,4 @@
   <public name="tabSelectedTextColor" type="attr"/>
   <public name="tabTextAppearance" type="attr"/>
   <public name="tabTextColor" type="attr"/>
-  <public name="tabUnboundedRipple" type="attr"/>
 </resources>
