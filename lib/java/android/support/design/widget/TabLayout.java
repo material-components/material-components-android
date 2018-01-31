@@ -33,6 +33,8 @@ import android.database.DataSetObserver;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -2626,7 +2628,13 @@ public class TabLayout extends HorizontalScrollView {
                 tabSelectedIndicator != null ? tabSelectedIndicator : defaultSelectionIndicator);
         selectedIndicator.setBounds(indicatorLeft, indicatorTop, indicatorRight, indicatorBottom);
         if (selectedIndicatorPaint != null) {
-          DrawableCompat.setTint(selectedIndicator, selectedIndicatorPaint.getColor());
+          if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
+            // Drawable doesn't implement setTint in API 21
+            selectedIndicator.setColorFilter(
+                selectedIndicatorPaint.getColor(), PorterDuff.Mode.SRC_IN);
+          } else {
+            DrawableCompat.setTint(selectedIndicator, selectedIndicatorPaint.getColor());
+          }
         }
         selectedIndicator.draw(canvas);
       }
