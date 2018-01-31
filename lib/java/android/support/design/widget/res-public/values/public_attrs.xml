@@ -76,22 +76,6 @@
   <public name="rippleColor" type="attr"/>
   <public name="statusBarBackground" type="attr"/>
   <public name="statusBarScrim" type="attr"/>
-  <public name="tabBackground" type="attr"/>
-  <public name="tabContentStart" type="attr"/>
-  <public name="tabGravity" type="attr"/>
-  <public name="tabIndicatorColor" type="attr"/>
-  <public name="tabIndicatorHeight" type="attr"/>
-  <public name="tabMaxWidth" type="attr"/>
-  <public name="tabMinWidth" type="attr"/>
-  <public name="tabMode" type="attr"/>
-  <public name="tabPadding" type="attr"/>
-  <public name="tabPaddingBottom" type="attr"/>
-  <public name="tabPaddingEnd" type="attr"/>
-  <public name="tabPaddingStart" type="attr"/>
-  <public name="tabPaddingTop" type="attr"/>
-  <public name="tabSelectedTextColor" type="attr"/>
-  <public name="tabTextAppearance" type="attr"/>
-  <public name="tabTextColor" type="attr"/>
   <public name="title" type="attr"/>
   <public name="titleEnabled" type="attr"/>
   <public name="toolbarId" type="attr"/>

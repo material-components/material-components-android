@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Copyright (C) 2018 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+
+<!-- Definitions of attributes to be exposed as public -->
+<resources>
+  <public name="tabBackground" type="attr"/>
+  <public name="tabContentStart" type="attr"/>
+  <public name="tabGravity" type="attr"/>
+  <public name="tabIconTint" type="attr"/>
+  <public name="tabIconTintMode" type="attr"/>
+  <public name="tabIndicator" type="attr"/>
+  <public name="tabIndicatorColor" type="attr"/>
+  <public name="tabIndicatorFullWidth" type="attr"/>
+  <public name="tabIndicatorGravity" type="attr"/>
+  <public name="tabIndicatorHeight" type="attr"/>
+  <public name="tabInlineLabel" type="attr"/>
+  <public name="tabMaxWidth" type="attr"/>
+  <public name="tabMinWidth" type="attr"/>
+  <public name="tabMode" type="attr"/>
+  <public name="tabPadding" type="attr"/>
+  <public name="tabPaddingBottom" type="attr"/>
+  <public name="tabPaddingEnd" type="attr"/>
+  <public name="tabPaddingStart" type="attr"/>
+  <public name="tabPaddingTop" type="attr"/>
+  <public name="tabRippleColor" type="attr"/>
+  <public name="tabSelectedTextColor" type="attr"/>
+  <public name="tabTextAppearance" type="attr"/>
+  <public name="tabTextColor" type="attr"/>
+  <public name="tabUnboundedRipple" type="attr"/>
+</resources>
