@@ -24,24 +24,10 @@
   <public name="borderWidth" type="attr"/>
   <public name="bottomSheetDialogTheme" type="attr"/>
   <public name="bottomSheetStyle" type="attr"/>
-  <public name="boxBackgroundColor" type="attr"/>
-  <public name="boxBackgroundMode" type="attr"/>
-  <public name="boxPaddingLeft" type="attr"/>
-  <public name="boxPaddingTop" type="attr"/>
-  <public name="boxPaddingRight" type="attr"/>
-  <public name="boxPaddingBottom" type="attr"/>
-  <public name="boxStrokeColor" type="attr"/>
-  <public name="boxStrokeWidth" type="attr"/>
   <public name="collapsedTitleGravity" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
   <public name="contentScrim" type="attr"/>
-  <public name="counterEnabled" type="attr"/>
-  <public name="counterMaxLength" type="attr"/>
-  <public name="counterOverflowTextAppearance" type="attr"/>
-  <public name="counterTextAppearance" type="attr"/>
   <public name="elevation" type="attr"/>
-  <public name="errorEnabled" type="attr"/>
-  <public name="errorTextAppearance" type="attr"/>
   <public name="expanded" type="attr"/>
   <public name="expandedTitleGravity" type="attr"/>
   <public name="expandedTitleMargin" type="attr"/>
@@ -52,12 +38,6 @@
   <public name="expandedTitleTextAppearance" type="attr"/>
   <public name="fabSize" type="attr"/>
   <public name="headerLayout" type="attr"/>
-  <public name="helperText" type="attr"/>
-  <public name="helperTextEnabled" type="attr"/>
-  <public name="helperTextTextAppearance" type="attr"/>
-  <public name="hintAnimationEnabled" type="attr"/>
-  <public name="hintEnabled" type="attr"/>
-  <public name="hintTextAppearance" type="attr"/>
   <public name="itemBackground" type="attr"/>
   <public name="itemIconTint" type="attr"/>
   <public name="itemTextAppearance" type="attr"/>
