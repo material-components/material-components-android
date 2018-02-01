@@ -11,6 +11,7 @@ dependencies {
   implementation compatibility("v7/recyclerview")
 
   implementation project(fromPath("lib/java/android/support/design/bottomnavigation"))
+  implementation project(fromPath("lib/java/android/support/design/color"))
   implementation project(fromPath("lib/java/android/support/design/snackbar"))
 }
 
