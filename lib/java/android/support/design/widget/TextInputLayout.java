@@ -419,7 +419,7 @@ public class TextInputLayout extends LinearLayout {
       updateInputLayoutMargins();
     }
     updateTextInputBoxBounds();
-    setEditTextBoxPadding();
+    applyEditTextBoxPadding();
   }
 
   private void assignBoxBackgroundByMode() {
@@ -437,7 +437,7 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void setEditTextBoxPadding() {
+  private void applyEditTextBoxPadding() {
     if (boxBackgroundMode == BOX_BACKGROUND_NONE) {
       return;
     }
@@ -473,7 +473,7 @@ public class TextInputLayout extends LinearLayout {
     boxPaddingRightPx = boxPaddingRight;
     boxCollapsedPaddingBottomPx = boxCollapsedPaddingBottom;
     boxExpandedPaddingBottomPx = boxExpandedPaddingBottom;
-    invalidate();
+    applyEditTextBoxPadding();
   }
 
   /**
@@ -541,7 +541,7 @@ public class TextInputLayout extends LinearLayout {
   public void setBoxStrokeColor(@ColorInt int boxStrokeColor) {
     if (focusedStrokeColor != boxStrokeColor) {
       focusedStrokeColor = boxStrokeColor;
-      invalidate();
+      updateTextInputBoxState();
     }
   }
 
@@ -573,7 +573,7 @@ public class TextInputLayout extends LinearLayout {
   public void setBoxBackgroundColor(@ColorInt int boxBackgroundColor) {
     if (defaultBoxBackgroundColor != boxBackgroundColor) {
       defaultBoxBackgroundColor = boxBackgroundColor;
-      invalidate();
+      applyBoxAttributes();
     }
   }
 
@@ -633,7 +633,7 @@ public class TextInputLayout extends LinearLayout {
       this.boxCornerRadiusTopRight = boxCornerRadiusTopRight;
       this.boxCornerRadiusBottomRight = boxCornerRadiusBottomRight;
       this.boxCornerRadiusBottomLeft = boxCornerRadiusBottomLeft;
-      invalidate();
+      applyBoxAttributes();
     }
   }
 
@@ -1360,6 +1360,7 @@ public class TextInputLayout extends LinearLayout {
 
     boxBackground.setCornerRadii(getCornerRadiiAsArray());
     boxBackground.setColor(boxBackgroundColor);
+    invalidate();
   }
 
   void updateEditTextBackground() {
@@ -1564,7 +1565,6 @@ public class TextInputLayout extends LinearLayout {
 
   @Override
   public void draw(Canvas canvas) {
-    applyBoxAttributes();
     super.draw(canvas);
 
     if (hintEnabled) {
