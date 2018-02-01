@@ -237,8 +237,6 @@ public class TextInputLayout extends LinearLayout {
     // Can't call through to super(Context, AttributeSet, int) since it doesn't exist on API 10
     super(context, attrs);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     setOrientation(VERTICAL);
     setWillNotDraw(false);
     setAddStatesFromChildren(true);
@@ -252,7 +250,7 @@ public class TextInputLayout extends LinearLayout {
     collapsingTextHelper.setCollapsedTextGravity(Gravity.TOP | GravityCompat.START);
 
     final TintTypedArray a =
-        TintTypedArray.obtainStyledAttributes(
+        ThemeEnforcement.obtainTintedStyledAttributes(
             context,
             attrs,
             R.styleable.TextInputLayout,

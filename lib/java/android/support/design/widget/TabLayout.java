@@ -395,8 +395,6 @@ public class TabLayout extends HorizontalScrollView {
   public TabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     // Disable the Scroll Bar
     setHorizontalScrollBarEnabled(false);
 
@@ -409,8 +407,8 @@ public class TabLayout extends HorizontalScrollView {
             LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT));
 
     TypedArray a =
-        context.obtainStyledAttributes(
-            attrs, R.styleable.TabLayout, defStyleAttr, R.style.Widget_Design_TabLayout);
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.TabLayout, defStyleAttr, R.style.Widget_Design_TabLayout);
 
     slidingTabIndicator.setSelectedIndicatorHeight(
         a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, -1));

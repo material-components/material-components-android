@@ -41,7 +41,6 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.chip.ChipDrawable.Delegate;
-import android.support.design.internal.ThemeEnforcement;
 import android.support.design.internal.ViewUtils;
 import android.support.design.resources.TextAppearance;
 import android.support.design.ripple.RippleUtils;
@@ -129,8 +128,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   public Chip(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-
-    ThemeEnforcement.checkAppCompatTheme(context);
 
     ChipDrawable drawable =
         ChipDrawable.createFromAttributes(

@@ -22,6 +22,7 @@ import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.RequiresApi;
+import android.support.design.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -39,7 +40,8 @@ class ViewUtilsLollipop {
       View view, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     final Context context = view.getContext();
     final TypedArray a =
-        context.obtainStyledAttributes(attrs, STATE_LIST_ANIM_ATTRS, defStyleAttr, defStyleRes);
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, STATE_LIST_ANIM_ATTRS, defStyleAttr, defStyleRes);
     try {
       if (a.hasValue(0)) {
         StateListAnimator sla =

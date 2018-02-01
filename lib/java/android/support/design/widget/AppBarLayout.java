@@ -154,8 +154,6 @@ public class AppBarLayout extends LinearLayout {
     super(context, attrs);
     setOrientation(VERTICAL);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     if (Build.VERSION.SDK_INT >= 21) {
       // Use the bounds view outline provider so that we cast a shadow, even without a
       // background
@@ -168,8 +166,8 @@ public class AppBarLayout extends LinearLayout {
     }
 
     final TypedArray a =
-        context.obtainStyledAttributes(
-            attrs, R.styleable.AppBarLayout, 0, R.style.Widget_Design_AppBarLayout);
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.AppBarLayout, 0, R.style.Widget_Design_AppBarLayout);
     ViewCompat.setBackground(this, a.getDrawable(R.styleable.AppBarLayout_android_background));
     if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
       setExpanded(

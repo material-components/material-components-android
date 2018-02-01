@@ -54,6 +54,7 @@ import android.support.annotation.XmlRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.canvas.CanvasCompat;
 import android.support.design.drawable.DrawableUtils;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.design.resources.MaterialResources;
 import android.support.design.resources.TextAppearance;
 import android.support.design.ripple.RippleUtils;
@@ -309,7 +310,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private void loadFromAttributes(
       AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
     TypedArray a =
-        context.obtainStyledAttributes(attrs, R.styleable.ChipDrawable, defStyleAttr, defStyleRes);
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.ChipDrawable, defStyleAttr, defStyleRes);
 
     setChipBackgroundColor(
         MaterialResources.getColorStateList(

@@ -173,10 +173,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     TypedArray a =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.FloatingActionButton,
             defStyleAttr,

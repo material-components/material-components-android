@@ -150,13 +150,12 @@ public class CollapsingToolbarLayout extends FrameLayout {
   public CollapsingToolbarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     collapsingTextHelper = new CollapsingTextHelper(this);
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
 
     TypedArray a =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.CollapsingToolbarLayout,
             defStyleAttr,

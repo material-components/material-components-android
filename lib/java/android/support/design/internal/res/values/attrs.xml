@@ -16,6 +16,18 @@
 -->
 <resources>
 
+  <declare-styleable name="ThemeEnforcement">
+    <!-- Internal flag used to denote that a style uses new attributes defined by
+         Theme.MaterialComponents, and that the component should check via ThemeEnforcement that the
+         client's app theme inherits from Theme.MaterialComponents.
+
+         Not all usages of new attributes are problematic in the context of a legacy app theme. You
+         should only use this flag if a particular usage is known to cause a visual glitch or crash.
+         For example, tinting a vector drawable with a non-existent theme attribute is known to
+         crash on pre-21 devices. -->
+    <attr name="enforceMaterialTheme" format="boolean"/>
+  </declare-styleable>
+
   <declare-styleable name="ForegroundLinearLayout">
     <attr name="android:foreground"/>
     <attr name="android:foregroundGravity"/>

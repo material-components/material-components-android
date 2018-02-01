@@ -30,6 +30,7 @@ import android.support.annotation.Dimension;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -91,7 +92,8 @@ public class ChipGroup extends FlexboxLayout {
     super(context, attrs, defStyleAttr);
 
     TypedArray a =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.ChipGroup,
             defStyleAttr,

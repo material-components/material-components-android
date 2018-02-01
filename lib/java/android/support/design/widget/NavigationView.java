@@ -102,14 +102,12 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     // Create the menu
     this.menu = new NavigationMenu(context);
 
     // Custom attributes
     TintTypedArray a =
-        TintTypedArray.obtainStyledAttributes(
+        ThemeEnforcement.obtainTintedStyledAttributes(
             context,
             attrs,
             R.styleable.NavigationView,

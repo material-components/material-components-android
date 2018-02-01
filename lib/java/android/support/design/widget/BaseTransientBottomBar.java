@@ -234,8 +234,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     this.contentViewCallback = contentViewCallback;
     context = parent.getContext();
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     LayoutInflater inflater = LayoutInflater.from(context);
     // Note that for backwards compatibility reasons we inflate a layout that is defined
     // in the extending Snackbar class. This is to prevent breakage of apps that have custom
@@ -619,7 +617,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     SnackbarBaseLayout(Context context, AttributeSet attrs) {
       super(context, attrs);
-      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
+      TypedArray a =
+          ThemeEnforcement.obtainStyledAttributes(context, attrs, R.styleable.SnackbarLayout, 0, 0);
       if (a.hasValue(R.styleable.SnackbarLayout_elevation)) {
         ViewCompat.setElevation(
             this, a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0));

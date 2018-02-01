@@ -59,7 +59,8 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
     super(context, attrs, defStyle);
 
     TypedArray a =
-        context.obtainStyledAttributes(attrs, R.styleable.ForegroundLinearLayout, defStyle, 0);
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.ForegroundLinearLayout, defStyle, 0);
 
     foregroundGravity =
         a.getInt(R.styleable.ForegroundLinearLayout_android_foregroundGravity, foregroundGravity);

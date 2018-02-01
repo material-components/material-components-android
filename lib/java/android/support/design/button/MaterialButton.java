@@ -80,10 +80,9 @@ public class MaterialButton extends AppCompatButton {
   public MaterialButton(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     TypedArray attributes =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.MaterialButton,
             defStyleAttr,

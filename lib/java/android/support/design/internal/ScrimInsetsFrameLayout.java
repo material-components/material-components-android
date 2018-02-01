@@ -53,7 +53,8 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
     super(context, attrs, defStyleAttr);
 
     final TypedArray a =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.ScrimInsetsFrameLayout,
             defStyleAttr,

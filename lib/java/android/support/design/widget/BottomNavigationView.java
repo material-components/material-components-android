@@ -115,8 +115,6 @@ public class BottomNavigationView extends FrameLayout {
   public BottomNavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     // Create the menu
     this.menu = new BottomNavigationMenu(context);
 
@@ -135,7 +133,7 @@ public class BottomNavigationView extends FrameLayout {
 
     // Custom attributes
     TintTypedArray a =
-        TintTypedArray.obtainStyledAttributes(
+        ThemeEnforcement.obtainTintedStyledAttributes(
             context,
             attrs,
             R.styleable.BottomNavigationView,
