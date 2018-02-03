@@ -56,6 +56,7 @@
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
+    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
 
     <!-- Type styles -->
@@ -100,6 +101,7 @@
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
+    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
 
     <!-- Type styles -->

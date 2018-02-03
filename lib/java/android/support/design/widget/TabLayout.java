@@ -34,7 +34,6 @@ import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
-import android.graphics.PorterDuff.Mode;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -389,7 +388,7 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   public TabLayout(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+    this(context, attrs, R.attr.tabStyle);
   }
 
   public TabLayout(Context context, AttributeSet attrs, int defStyleAttr) {
