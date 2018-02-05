@@ -34,7 +34,7 @@ ext {
   preDexLibs = !project.hasProperty('disablePreDex')
 
   mavenRepoUrl = (project.hasProperty('mavenRepoUrl')
-      ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
+    ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
   mdcLibraryVersion = '27.1.0-SNAPSHOT'
   mdcLibraryPackage = "android.support.design"
   mdcLibraryDir = "android/support/design"
@@ -60,7 +60,7 @@ private def getTransformedProjectPath(projectPath) {
     } else {
       currentPath += '/' + component
     }
-    result += ':' +  currentPath
+    result += ':' + currentPath
   }
   return result
 }
@@ -120,7 +120,7 @@ def getArchivesBaseName(name) {
     return 'design'
   }
   def pathComponents = name.tokenize('/')
-  def knownComponents = ['lib', 'java', 'android', 'support',  'design']
+  def knownComponents = ['lib', 'java', 'android', 'support', 'design']
   def firstUnknownComponent = knownComponents.size();
   for (def i = 0; i < knownComponents.size() && i < pathComponents.size(); i++) {
     if (pathComponents[i] != knownComponents[i]) {
@@ -202,8 +202,8 @@ subprojects {
         project.afterEvaluate {
           project.tasks.all({
             if (it instanceof com.android.build.gradle.tasks.GenerateBuildConfig) {
-                // Disable generating BuildConfig.java
-                it.enabled = false
+              // Disable generating BuildConfig.java
+              it.enabled = false
             }
           })
 
