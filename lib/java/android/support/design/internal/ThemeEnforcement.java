@@ -104,9 +104,17 @@ public final class ThemeEnforcement {
     a.recycle();
 
     if (enforceMaterialTheme) {
-      checkTheme(context, MATERIAL_CHECK_ATTRS, MATERIAL_THEME_NAME);
+      checkMaterialTheme(context);
     }
+    checkAppCompatTheme(context);
+  }
+
+  public static void checkAppCompatTheme(Context context) {
     checkTheme(context, APPCOMPAT_CHECK_ATTRS, APPCOMPAT_THEME_NAME);
+  }
+
+  public static void checkMaterialTheme(Context context) {
+    checkTheme(context, MATERIAL_CHECK_ATTRS, MATERIAL_THEME_NAME);
   }
 
   private static void checkTheme(Context context, int[] themeAttributes, String themeName) {
