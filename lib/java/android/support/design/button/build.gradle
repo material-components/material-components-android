@@ -11,7 +11,6 @@ dependencies {
 
   implementation project(fromPath("lib/java/android/support/design/internal"))
   implementation project(fromPath("lib/java/android/support/design/resources"))
-  implementation project(fromPath("lib/java/android/support/design/widget"))
 }
 
 android {

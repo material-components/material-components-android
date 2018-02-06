@@ -16,14 +16,6 @@
 -->
 
 <resources>
-  <dimen name="mtrl_btn_min_width">88dp</dimen>
-  <!--
-      Buttons have a 36dp min-height, but the button background also has an inset so we must
-      include the inset in the min-height calculation to make buttons visually be 36dp min-height.
-      36dp min-height + 6dp top inset + 6dp bottom inset
-  -->
-  <dimen name="mtrl_btn_min_height">48dp</dimen>
-
   <dimen name="mtrl_btn_inset">6dp</dimen>
 
   <dimen name="mtrl_btn_padding_left">16dp</dimen>
