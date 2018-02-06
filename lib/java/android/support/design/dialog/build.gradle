@@ -8,7 +8,6 @@ dependencies {
   implementation compatibility("v7/appcompat")
 
   implementation project(fromPath("lib/java/android/support/design/bottomnavigation"))
-  implementation project(fromPath("lib/java/android/support/design/button"))
   implementation project(fromPath("lib/java/android/support/design/card"))
   implementation project(fromPath("lib/java/android/support/design/chip"))
   implementation project(fromPath("lib/java/android/support/design/color"))
