@@ -42,6 +42,8 @@ public class ViewUtils {
         return PorterDuff.Mode.MULTIPLY;
       case 15:
         return PorterDuff.Mode.SCREEN;
+      case 16:
+        return PorterDuff.Mode.ADD;
       default:
         return defaultMode;
     }

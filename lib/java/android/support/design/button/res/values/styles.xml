@@ -18,12 +18,8 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- Defines the base Material button style. -->
-  <style name="Widget.MaterialComponents.Button" parent="android:Widget">
-    <item name="android:minWidth">@dimen/mtrl_btn_min_width</item>
-    <item name="android:minHeight">@dimen/mtrl_btn_min_height</item>
+  <style name="Widget.MaterialComponents.Button" parent="Widget.AppCompat.Button">
     <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.MaterialButton</item>
-    <item name="android:focusable">true</item>
-    <item name="android:clickable">true</item>
     <item name="android:paddingLeft">@dimen/mtrl_btn_padding_left</item>
     <item name="android:paddingRight">@dimen/mtrl_btn_padding_right</item>
     <item name="android:paddingTop">@dimen/mtrl_btn_padding_top</item>
@@ -35,12 +31,11 @@
     <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_state_list_anim</item>
     <item name="cornerRadius">@dimen/mtrl_btn_corner_radius</item>
     <item name="iconPadding">@dimen/mtrl_btn_icon_padding</item>
-    <item name="android:gravity">center</item>
     <item name="iconTint">@color/mtrl_btn_text_color_selector</item>
     <item name="additionalPaddingLeftForIcon">@dimen/mtrl_btn_additional_padding_left_for_icon</item>
     <item name="additionalPaddingRightForIcon">@dimen/mtrl_btn_additional_padding_right_for_icon</item>
     <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
-    <item name="buttonBackgroundTint">@color/mtrl_btn_bg_color_selector</item>
+    <item name="backgroundTint">@color/mtrl_btn_bg_color_selector</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.UnelevatedButton">
@@ -53,7 +48,7 @@
     <item name="android:paddingRight">@dimen/mtrl_btn_text_btn_padding_right</item>
     <item name="iconTint">@color/mtrl_text_btn_text_color_selector</item>
     <item name="iconPadding">@dimen/mtrl_btn_text_btn_icon_padding</item>
-    <item name="buttonBackgroundTint">@color/mtrl_btn_transparent_bg_color</item>
+    <item name="backgroundTint">@color/mtrl_btn_transparent_bg_color</item>
     <item name="rippleColor">@color/mtrl_btn_text_btn_ripple_color</item>
   </style>
 
