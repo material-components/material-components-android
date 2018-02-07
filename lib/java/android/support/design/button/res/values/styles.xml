@@ -57,7 +57,7 @@
     <item name="android:textAllCaps">@bool/mtrl_btn_textappearance_all_caps</item>
     <item name="android:textSize">@dimen/mtrl_btn_text_size</item>
     <!-- Roboto medium -->
-    <item name="android:fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
+    <item name="fontFamily" tools:ignore="NewApi">sans-serif-medium</item>
     <item name="android:letterSpacing" tools:ignore="NewApi">@dimen/mtrl_btn_letter_spacing</item>
   </style>
 

@@ -17,7 +17,7 @@
 <resources>
 
   <style name="TextAppearance.MaterialComponents.Headline6" parent="TextAppearance.AppCompat.Title">
-    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">20sp</item>
@@ -25,7 +25,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Subtitle2" parent="TextAppearance.AppCompat.Subhead">
-    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">14sp</item>
@@ -33,7 +33,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Button" parent="TextAppearance.AppCompat.Button">
-    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">true</item>
     <item name="android:textSize">14sp</item>
@@ -41,7 +41,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Overline" parent="TextAppearance.AppCompat">
-    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">true</item>
     <item name="android:textSize">12sp</item>

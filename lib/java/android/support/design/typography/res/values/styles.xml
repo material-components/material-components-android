@@ -17,7 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
   <style name="TextAppearance.MaterialComponents.Headline1" parent="TextAppearance.AppCompat.Display4">
-    <item name="android:fontFamily">sans-serif-light</item>
+    <item name="fontFamily">sans-serif-light</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">96sp</item>
@@ -25,7 +25,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Headline2" parent="TextAppearance.AppCompat.Display3">
-    <item name="android:fontFamily">sans-serif-light</item>
+    <item name="fontFamily">sans-serif-light</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">60sp</item>
@@ -33,7 +33,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Headline3" parent="TextAppearance.AppCompat.Display2">
-    <item name="android:fontFamily">sans-serif</item>
+    <item name="fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">48sp</item>
@@ -41,7 +41,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Headline4" parent="TextAppearance.AppCompat.Display1">
-    <item name="android:fontFamily">sans-serif</item>
+    <item name="fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">34sp</item>
@@ -49,7 +49,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Headline5" parent="TextAppearance.AppCompat.Headline">
-    <item name="android:fontFamily">sans-serif</item>
+    <item name="fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">24sp</item>
@@ -58,7 +58,7 @@
 
   <style name="TextAppearance.MaterialComponents.Headline6" parent="TextAppearance.AppCompat.Title">
     <!-- Fake Roboto Medium. -->
-    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">bold</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">20sp</item>
@@ -66,7 +66,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Subtitle1" parent="TextAppearance.AppCompat.Subhead">
-    <item name="android:fontFamily">sans-serif</item>
+    <item name="fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">16sp</item>
@@ -75,7 +75,7 @@
 
   <style name="TextAppearance.MaterialComponents.Subtitle2" parent="TextAppearance.AppCompat.Subhead">
     <!-- Fake Roboto Medium. -->
-    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">bold</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">14sp</item>
@@ -83,7 +83,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Body1" parent="TextAppearance.AppCompat.Body2">
-    <item name="android:fontFamily">sans-serif</item>
+    <item name="fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">16sp</item>
@@ -91,7 +91,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Body2" parent="TextAppearance.AppCompat.Body1">
-    <item name="android:fontFamily">sans-serif</item>
+    <item name="fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">14sp</item>
@@ -99,7 +99,7 @@
   </style>
 
   <style name="TextAppearance.MaterialComponents.Caption" parent="TextAppearance.AppCompat.Caption">
-    <item name="android:fontFamily">sans-serif</item>
+    <item name="fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
     <item name="textAllCaps">false</item>
     <item name="android:textSize">12sp</item>
@@ -108,7 +108,7 @@
 
   <style name="TextAppearance.MaterialComponents.Button" parent="TextAppearance.AppCompat.Button">
     <!-- Fake Roboto Medium. -->
-    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">bold</item>
     <item name="textAllCaps">true</item>
     <item name="android:textSize">14sp</item>
@@ -117,7 +117,7 @@
 
   <style name="TextAppearance.MaterialComponents.Overline" parent="TextAppearance.AppCompat">
     <!-- Fake Roboto Medium. -->
-    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="fontFamily">sans-serif-medium</item>
     <item name="android:textStyle">bold</item>
     <item name="textAllCaps">true</item>
     <item name="android:textSize">12sp</item>
