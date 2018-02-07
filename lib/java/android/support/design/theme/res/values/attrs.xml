@@ -17,6 +17,15 @@
 <resources>
 
   <declare-styleable name="MaterialComponentsTheme">
+
+    <!-- The accent color that's applied to many components and controls.
+         This is set to colorSecondary by default, but can also be set to colorPrimary.  -->
+    <attr name="colorAccent"/>
+
+    <!-- The follow attributes make up the theme's main color scheme. Components will expect all 6
+         colors to be defined. -->
+    <eat-comment/>
+
     <!-- The primary branding color for the app. -->
     <attr name="colorPrimary"/>
     <!-- The light variant of the primary color. -->
@@ -29,19 +38,57 @@
     <attr name="colorSecondaryLight"/>
     <!-- The dark variant of the secondary color. -->
     <attr name="colorSecondaryDark"/>
-    <!-- The accent color that's applied to many components and controls.
-         This is set to colorSecondary by default, but can also be set to colorPrimary.  -->
-    <attr name="colorAccent"/>
-    <!-- The primary color palette, used by components to choose similar primary colors for
-         accessibility. This is expected to either be empty or to contain 10 colors representing
-         the primary tonal variations, ordered from light to dark. Reference to a typed array
-         resource. -->
-    <attr name="colorPalettePrimary"/>
-    <!-- The secondary color palette, used by components to choose similar secondary colors for
-         accessibility. This is expected to either be empty or to contain 10 colors representing
-         the secondary tonal variations, ordered from light to dark. Reference to a typed array
-         resource. -->
-    <attr name="colorPaletteSecondary"/>
+
+
+    <!-- The follow attributes make up the theme's tonal palette. Components may use these colors
+         for accessibility when the main color scheme does not provide enough contrast. These colors
+         are expected to be opaque, and go from light to dark. The number itself is an arbitrary
+         designation. -->
+    <eat-comment/>
+
+    <!-- The primary 50 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary50"/>
+    <!-- The primary 100 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary100"/>
+    <!-- The primary 200 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary200"/>
+    <!-- The primary 300 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary300"/>
+    <!-- The primary 400 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary400"/>
+    <!-- The primary 500 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary500"/>
+    <!-- The primary 600 tonal variation. Part of the primary tonal palette. This is usually
+         considered to be the main tonal variation in the tonal palette. -->
+    <attr name="colorPrimary600"/>
+    <!-- The primary 700 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary700"/>
+    <!-- The primary 800 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary800"/>
+    <!-- The primary 900 tonal variation. Part of the primary tonal palette. -->
+    <attr name="colorPrimary900"/>
+
+    <!-- The secondary 50 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary50"/>
+    <!-- The secondary 100 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary100"/>
+    <!-- The secondary 200 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary200"/>
+    <!-- The secondary 300 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary300"/>
+    <!-- The secondary 400 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary400"/>
+    <!-- The secondary 500 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary500"/>
+    <!-- The secondary 600 tonal variation. Part of the secondary tonal palette. This is usually
+         considered to be the main tonal variation in the tonal palette. -->
+    <attr name="colorSecondary600"/>
+    <!-- The secondary 700 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary700"/>
+    <!-- The secondary 800 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary800"/>
+    <!-- The secondary 900 tonal variation. Part of the secondary tonal palette. -->
+    <attr name="colorSecondary900"/>
 
     <!-- The scrim background that appears below modals and expanded navigation menus.
          The background can either be a color or a bitmap drawable with tileMode set to repeat. -->

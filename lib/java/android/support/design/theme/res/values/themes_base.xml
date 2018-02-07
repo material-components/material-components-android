@@ -49,8 +49,27 @@
 
     <item name="colorAccent">?attr/colorSecondary</item>
 
-    <item name="colorPalettePrimary">@array/design_default_color_palette_primary</item>
-    <item name="colorPaletteSecondary">@array/design_default_color_palette_secondary</item>
+    <item name="colorPrimary50">?attr/colorPrimary100</item>
+    <item name="colorPrimary100">?attr/colorPrimary200</item>
+    <item name="colorPrimary200">?attr/colorPrimary300</item>
+    <item name="colorPrimary300">?attr/colorPrimary400</item>
+    <item name="colorPrimary400">?attr/colorPrimary500</item>
+    <item name="colorPrimary500">?attr/colorPrimaryLight</item>
+    <item name="colorPrimary600">?attr/colorPrimary</item>
+    <item name="colorPrimary700">?attr/colorPrimary600</item>
+    <item name="colorPrimary800">?attr/colorPrimary700</item>
+    <item name="colorPrimary900">?attr/colorPrimaryDark</item>
+
+    <item name="colorSecondary50">?attr/colorSecondary100</item>
+    <item name="colorSecondary100">?attr/colorSecondary200</item>
+    <item name="colorSecondary200">?attr/colorSecondary300</item>
+    <item name="colorSecondary300">?attr/colorSecondary400</item>
+    <item name="colorSecondary400">?attr/colorSecondary500</item>
+    <item name="colorSecondary500">?attr/colorSecondaryLight</item>
+    <item name="colorSecondary600">?attr/colorSecondary</item>
+    <item name="colorSecondary700">?attr/colorSecondary600</item>
+    <item name="colorSecondary800">?attr/colorSecondary700</item>
+    <item name="colorSecondary900">?attr/colorSecondaryDark</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
@@ -97,8 +116,27 @@
 
     <item name="colorAccent">?attr/colorSecondary</item>
 
-    <item name="colorPalettePrimary">@array/design_default_color_palette_primary</item>
-    <item name="colorPaletteSecondary">@array/design_default_color_palette_secondary</item>
+    <item name="colorPrimary50">?attr/colorPrimary100</item>
+    <item name="colorPrimary100">?attr/colorPrimary200</item>
+    <item name="colorPrimary200">?attr/colorPrimary300</item>
+    <item name="colorPrimary300">?attr/colorPrimary400</item>
+    <item name="colorPrimary400">?attr/colorPrimary500</item>
+    <item name="colorPrimary500">?attr/colorPrimaryLight</item>
+    <item name="colorPrimary600">?attr/colorPrimary</item>
+    <item name="colorPrimary700">?attr/colorPrimary600</item>
+    <item name="colorPrimary800">?attr/colorPrimary700</item>
+    <item name="colorPrimary900">?attr/colorPrimaryDark</item>
+
+    <item name="colorSecondary50">?attr/colorSecondary100</item>
+    <item name="colorSecondary100">?attr/colorSecondary200</item>
+    <item name="colorSecondary200">?attr/colorSecondary300</item>
+    <item name="colorSecondary300">?attr/colorSecondary400</item>
+    <item name="colorSecondary400">?attr/colorSecondary500</item>
+    <item name="colorSecondary500">?attr/colorSecondaryLight</item>
+    <item name="colorSecondary600">?attr/colorSecondary</item>
+    <item name="colorSecondary700">?attr/colorSecondary600</item>
+    <item name="colorSecondary800">?attr/colorSecondary700</item>
+    <item name="colorSecondary900">?attr/colorSecondaryDark</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
