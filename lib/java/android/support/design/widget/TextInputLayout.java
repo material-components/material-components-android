@@ -230,7 +230,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   public TextInputLayout(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+    this(context, attrs, R.attr.textInputStyle);
   }
 
   public TextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
