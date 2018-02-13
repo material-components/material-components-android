@@ -109,7 +109,7 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   public BottomNavigationView(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+    this(context, attrs, R.attr.bottomNavigationStyle);
   }
 
   public BottomNavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
