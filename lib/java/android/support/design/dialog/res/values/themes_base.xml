@@ -73,7 +73,9 @@
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
-    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
+    <item name="floatingActionButtonStyle">
+      @style/Widget.MaterialComponents.FloatingActionButton
+    </item>
     <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
     <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
@@ -139,7 +141,9 @@
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
-    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
+    <item name="floatingActionButtonStyle">
+      @style/Widget.MaterialComponents.FloatingActionButton
+    </item>
     <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
     <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
