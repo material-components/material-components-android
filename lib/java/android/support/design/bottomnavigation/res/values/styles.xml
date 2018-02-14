@@ -21,6 +21,7 @@
     <item name="labelVisibilityMode">auto</item>
     <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
     <item name="itemHorizontalTranslation">true</item>
+    <item name="itemIconSize">@dimen/design_bottom_navigation_icon_size</item>
   </style>
 
   <!-- Default style for BottomNavigationViews.

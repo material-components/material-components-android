@@ -37,7 +37,9 @@
       <enum name="unlabeled" value="2"/>
     </attr>
     <attr name="itemBackground" format="reference"/>
-    <!-- The tint to apply to the navigation items' icons. -->
+    <!-- The size to provide for the navigation item icons. -->
+    <attr name="itemIconSize" format="dimension"/>
+    <!-- The tint to apply to the navigation item icons. -->
     <attr name="itemIconTint" format="color"/>
     <!-- The text appearance to apply to the inactive navigation item labels. Setting
          android:textColor in itemTextAppearanceInactive will take precedence over android:textColor

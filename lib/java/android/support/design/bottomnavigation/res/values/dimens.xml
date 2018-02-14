@@ -18,5 +18,6 @@
 
   <dimen name="design_bottom_navigation_elevation">8dp</dimen>
   <dimen name="design_bottom_navigation_shadow_height">1dp</dimen>
+  <dimen name="design_bottom_navigation_icon_size">24dp</dimen>
 
 </resources>

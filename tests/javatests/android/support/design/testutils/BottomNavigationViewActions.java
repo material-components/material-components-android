@@ -114,4 +114,25 @@ public class BottomNavigationViewActions {
       }
     };
   }
+
+  /** Set the bottom navigation view's icon size. */
+  public static ViewAction setIconSize(final int size) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set the bottom navigation's icon size to " + size;
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomNavigationView navigationView = (BottomNavigationView) view;
+        navigationView.setItemIconSize(size);
+      }
+    };
+  }
 }

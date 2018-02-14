@@ -23,6 +23,8 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.BoolRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.IntegerRes;
@@ -147,6 +149,7 @@ public class BottomNavigationView extends FrameLayout {
           menuView.createDefaultColorStateList(android.R.attr.textColorSecondary));
     }
 
+    setItemIconSize(a.getDimensionPixelSize(R.styleable.BottomNavigationView_itemIconSize, 0));
     if (a.hasValue(R.styleable.BottomNavigationView_itemTextAppearanceInactive)) {
       setItemTextAppearanceInactive(
           a.getResourceId(R.styleable.BottomNavigationView_itemTextAppearanceInactive, 0));
@@ -270,6 +273,41 @@ public class BottomNavigationView extends FrameLayout {
    */
   public void setItemIconTintList(@Nullable ColorStateList tint) {
     menuView.setIconTintList(tint);
+  }
+
+  /**
+   * Set the size to provide for the menu item icons.
+   *
+   * <p>For best image resolution, use an icon with the same size set in this method.
+   *
+   * @param iconSize the size in dp to provide for the menu item icons
+   * @attr ref R.styleable#BottomNavigationView_itemIconSize
+   */
+  public void setItemIconSize(@Dimension(unit = Dimension.DP) int iconSize) {
+    menuView.setItemIconSize(iconSize);
+  }
+
+  /**
+   * Set the size to provide for the menu item icons using a resource ID.
+   *
+   * <p>For best image resolution, use an icon with the same size set in this method.
+   *
+   * @param iconSizeRes the resource ID for the size to provide for the menu item icons
+   * @attr ref R.styleable#BottomNavigationView_itemIconSize
+   */
+  public void setItemIconSizeRes(@DimenRes int iconSizeRes) {
+    setItemIconSize(getResources().getDimensionPixelSize(iconSizeRes));
+  }
+
+  /**
+   * Returns the size provided for the menu item icons in dp.
+   *
+   * @see #setItemIconSize(int)
+   * @attr ref R.styleable#BottomNavigationView_itemIconSize
+   */
+  @Dimension(unit = Dimension.DP)
+  public int getItemIconSize() {
+    return menuView.getItemIconSize();
   }
 
   /**

@@ -125,14 +125,14 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setLabelVisibilityMode(@LabelVisibilityMode int mode) {
     if (labelVisibilityMode != mode) {
       labelVisibilityMode = mode;
-      
+
       boolean initialized = itemData != null;
       if (initialized) {
         setChecked(itemData.isChecked());
       }
     }
   }
-  
+
   @Override
   public MenuItemImpl getItemData() {
     return itemData;
@@ -259,13 +259,14 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setShortcut(boolean showShortcut, char shortcutKey) {}
 
   @Override
-  public void setIcon(Drawable icon) {
-    if (icon != null) {
-      Drawable.ConstantState state = icon.getConstantState();
-      icon = DrawableCompat.wrap(state == null ? icon : state.newDrawable()).mutate();
-      DrawableCompat.setTintList(icon, iconTint);
+  public void setIcon(Drawable iconDrawable) {
+    if (iconDrawable != null) {
+      Drawable.ConstantState state = iconDrawable.getConstantState();
+      iconDrawable =
+          DrawableCompat.wrap(state == null ? iconDrawable : state.newDrawable()).mutate();
+      DrawableCompat.setTintList(iconDrawable, iconTint);
     }
-    this.icon.setImageDrawable(icon);
+    this.icon.setImageDrawable(iconDrawable);
   }
 
   @Override
@@ -284,6 +285,13 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       // Update the icon so that the tint takes effect
       setIcon(itemData.getIcon());
     }
+  }
+
+  public void setIconSize(int iconSize) {
+    LayoutParams iconParams = (LayoutParams) icon.getLayoutParams();
+    iconParams.width = iconSize;
+    iconParams.height = iconSize;
+    icon.setLayoutParams(iconParams);
   }
 
   public void setTextAppearanceInactive(@StyleRes int inactiveTextAppearance) {

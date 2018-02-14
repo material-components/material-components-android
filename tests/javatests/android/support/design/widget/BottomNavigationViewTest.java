@@ -17,6 +17,7 @@ package android.support.design.widget;
 
 import static android.support.design.testutils.BottomNavigationViewActions.addMenuItem;
 import static android.support.design.testutils.BottomNavigationViewActions.setIconForMenuItem;
+import static android.support.design.testutils.BottomNavigationViewActions.setIconSize;
 import static android.support.design.testutils.BottomNavigationViewActions.setItemIconTintList;
 import static android.support.design.testutils.BottomNavigationViewActions.setLabelVisibilityMode;
 import static android.support.test.espresso.Espresso.onView;
@@ -604,6 +605,19 @@ public class BottomNavigationViewTest {
     onView(withId(R.id.destination_profile)).perform(click());
 
     checkLabelVisibilityIsSelected();
+  }
+
+  @Test
+  @SmallTest
+  public void testIconSizeChanges() {
+    int size = 32;
+    onView(withId(R.id.bottom_navigation)).perform(setIconSize(size));
+    assertEquals(size, bottomNavigation.getItemIconSize());
+
+    // Change the size again to ensure that the size actually changes.
+    size = 18;
+    onView(withId(R.id.bottom_navigation)).perform(setIconSize(size));
+    assertEquals(size, bottomNavigation.getItemIconSize());
   }
 
   @Test

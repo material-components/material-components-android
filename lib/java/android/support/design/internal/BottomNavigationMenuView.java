@@ -21,6 +21,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
@@ -65,6 +66,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private int selectedItemId = 0;
   private int selectedItemPosition = 0;
   private ColorStateList itemIconTint;
+
+  @Dimension(unit = Dimension.DP)
+  private int itemIconSize;
+
   private ColorStateList itemTextColorFromUser;
   private final ColorStateList itemTextColorDefault;
   @StyleRes private int itemTextAppearanceInactive;
@@ -243,6 +248,28 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   @Nullable
   public ColorStateList getIconTintList() {
     return itemIconTint;
+  }
+
+  /**
+   * Sets the size to provide for the menu item icons.
+   *
+   * <p>For best image resolution, use an icon with the same size set in this method.
+   *
+   * @param iconSize the size to provide for the menu item icons
+   */
+  public void setItemIconSize(@Dimension(unit = Dimension.DP) int iconSize) {
+    this.itemIconSize = iconSize;
+    if (buttons != null) {
+      for (BottomNavigationItemView item : buttons) {
+        item.setIconSize(iconSize);
+      }
+    }
+  }
+
+  /** Returns the size provided for the menu item icons. */
+  @Dimension(unit = Dimension.DP)
+  public int getItemIconSize() {
+    return itemIconSize;
   }
 
   /**
@@ -445,6 +472,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       BottomNavigationItemView child = getNewItem();
       buttons[i] = child;
       child.setIconTintList(itemIconTint);
+      child.setIconSize(itemIconSize);
       // Set the text color the default, then look for another text color in order of precedence.
       child.setTextColor(itemTextColorDefault);
       child.setTextAppearanceInactive(itemTextAppearanceInactive);
