@@ -31,6 +31,7 @@ dependencies {
   api project(fromPath("lib/java/android/support/design/drawable"))
   api project(fromPath("lib/java/android/support/design/expandable"))
   api project(fromPath("lib/java/android/support/design/floatingactionbutton"))
+  api project(fromPath("lib/java/android/support/design/navigation"))
   api project(fromPath("lib/java/android/support/design/math"))
   api project(fromPath("lib/java/android/support/design/resources"))
   api project(fromPath("lib/java/android/support/design/ripple"))

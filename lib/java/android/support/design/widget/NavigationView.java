@@ -24,6 +24,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -96,7 +97,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   public NavigationView(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+    this(context, attrs, R.attr.navigationViewStyle);
   }
 
   public NavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -150,6 +151,14 @@ public class NavigationView extends ScrimInsetsFrameLayout {
 
     final Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
 
+    if (a.hasValue(R.styleable.NavigationView_itemHorizontalPadding)) {
+      final int itemHorizontalPadding =
+          a.getDimensionPixelSize(R.styleable.NavigationView_itemHorizontalPadding, 0);
+      presenter.setItemHorizontalPadding(itemHorizontalPadding);
+    }
+    final int itemIconPadding =
+        a.getDimensionPixelSize(R.styleable.NavigationView_itemIconPadding, 0);
+
     this.menu.setCallback(
         new MenuBuilder.Callback() {
           @Override
@@ -168,6 +177,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
     presenter.setItemTextColor(itemTextColor);
     presenter.setItemBackground(itemBackground);
+    presenter.setItemIconPadding(itemIconPadding);
     this.menu.addMenuPresenter(presenter);
     addView((View) presenter.getMenuView(this));
 
@@ -376,6 +386,66 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    */
   public void setItemBackground(@Nullable Drawable itemBackground) {
     presenter.setItemBackground(itemBackground);
+  }
+
+  /**
+   * Returns the horizontal (left and right) padding in pixels applied to menu items.
+   *
+   * @see #setItemHorizontalPadding(int)
+   * @attr ref R.styleable#NavigationView_itemHorizontalPadding
+   */
+  public int getItemHorizontalPadding() {
+    return presenter.getItemHorizontalPadding();
+  }
+
+  /**
+   * Set the horizontal (left and right) padding in pixels of menu items.
+   *
+   * @param padding The horizontal padding in pixels.
+   * @attr ref R.styleable#NavigationView_itemHorizontalPadding
+   */
+  public void setItemHorizontalPadding(int padding) {
+    presenter.setItemHorizontalPadding(padding);
+  }
+
+  /**
+   * Set the horizontal (left and right) padding of menu items.
+   *
+   * @param paddingResource Dimension resource to use for the horizontal padding.
+   * @attr ref R.styleable#NavigationView_itemHorizontalPadding
+   */
+  public void setItemHorizontalPaddingResource(@DimenRes int paddingResource) {
+    presenter.setItemHorizontalPadding(getResources().getDimensionPixelSize(paddingResource));
+  }
+
+  /**
+   * Returns the padding in pixels between the icon (if present) and the text of menu items.
+   *
+   * @see #setItemIconPadding(int)
+   * @attr ref R.styleable#NavigationView_itemIconPadding
+   */
+  public int getItemIconPadding() {
+    return presenter.getItemIconPadding();
+  }
+
+  /**
+   * Set the padding in pixels between the icon (if present) and the text of menu items.
+   *
+   * @param padding The padding in pixels.
+   * @attr ref R.styleable#NavigationView_itemIconPadding
+   */
+  public void setItemIconPadding(int padding) {
+    presenter.setItemIconPadding(padding);
+  }
+
+  /**
+   * Set the padding between the icon (if present) and the text of menu items.
+   *
+   * @param paddingResource Dimension resource to use for the icon padding.
+   * @attr ref R.styleable#NavigationView_itemIconPadding
+   */
+  public void setItemIconPaddingResource(int paddingResource) {
+    presenter.setItemIconPadding(getResources().getDimensionPixelSize(paddingResource));
   }
 
   /**

@@ -69,6 +69,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
   ColorStateList textColor;
   ColorStateList iconTintList;
   Drawable itemBackground;
+  int itemHorizontalPadding;
+  int itemIconPadding;
 
   /**
    * Padding to be inserted at the top of the list to avoid the first menu item from being placed
@@ -257,6 +259,24 @@ public class NavigationMenuPresenter implements MenuPresenter {
     updateMenuView(false);
   }
 
+  public int getItemHorizontalPadding() {
+    return itemHorizontalPadding;
+  }
+
+  public void setItemHorizontalPadding(int itemHorizontalPadding) {
+    this.itemHorizontalPadding = itemHorizontalPadding;
+    updateMenuView(false);
+  }
+
+  public int getItemIconPadding() {
+    return itemIconPadding;
+  }
+
+  public void setItemIconPadding(int itemIconPadding) {
+    this.itemIconPadding = itemIconPadding;
+    updateMenuView(false);
+  }
+
   public void setUpdateSuspended(boolean updateSuspended) {
     if (adapter != null) {
       adapter.setUpdateSuspended(updateSuspended);
@@ -410,6 +430,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
                 itemBackground != null ? itemBackground.getConstantState().newDrawable() : null);
             NavigationMenuTextItem item = (NavigationMenuTextItem) items.get(position);
             itemView.setNeedsEmptyIcon(item.needsEmptyIcon);
+            itemView.setHorizontalPadding(itemHorizontalPadding);
+            itemView.setIconPadding(itemIconPadding);
             itemView.initialize(item.getMenuItem(), 0);
             break;
           }

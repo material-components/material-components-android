@@ -16,21 +16,6 @@
 -->
 <resources>
 
-  <declare-styleable name="NavigationView">
-    <attr name="android:background"/>
-    <attr name="android:fitsSystemWindows"/>
-    <attr name="android:maxWidth"/>
-    <attr name="elevation"/>
-    <!-- The menu resource to inflate and populate items from. -->
-    <attr name="menu" format="reference"/>
-    <attr name="itemIconTint" format="color"/>
-    <attr name="itemTextColor" format="color"/>
-    <attr name="itemBackground" format="reference"/>
-    <attr name="itemTextAppearance" format="reference"/>
-    <!-- Layout resource to inflate as the header -->
-    <attr name="headerLayout" format="reference"/>
-  </declare-styleable>
-
   <declare-styleable name="AppBarLayout">
     <!-- Deprecated. Elevation is now controlled via a state list animator. -->
     <attr name="elevation"/>

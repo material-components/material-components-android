@@ -264,4 +264,12 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   public void setNeedsEmptyIcon(boolean needsEmptyIcon) {
     this.needsEmptyIcon = needsEmptyIcon;
   }
+
+  public void setHorizontalPadding(int padding) {
+    setPadding(padding, 0, padding, 0);
+  }
+
+  public void setIconPadding(int padding) {
+    textView.setCompoundDrawablePadding(padding);
+  }
 }

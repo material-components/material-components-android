@@ -13,6 +13,7 @@ dependencies {
   implementation project(fromPath("lib/java/android/support/design/chip"))
   implementation project(fromPath("lib/java/android/support/design/color"))
   implementation project(fromPath("lib/java/android/support/design/floatingactionbutton"))
+  implementation project(fromPath("lib/java/android/support/design/navigation"))
   implementation project(fromPath("lib/java/android/support/design/tabs"))
   implementation project(fromPath("lib/java/android/support/design/textfield"))
   implementation project(fromPath("lib/java/android/support/design/typography"))

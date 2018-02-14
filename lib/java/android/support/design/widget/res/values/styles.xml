@@ -16,13 +16,6 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="Widget.Design.NavigationView" parent="">
-    <item name="elevation">@dimen/design_navigation_elevation</item>
-    <item name="android:background">?android:attr/windowBackground</item>
-    <item name="android:fitsSystemWindows">true</item>
-    <item name="android:maxWidth">@dimen/design_navigation_max_width</item>
-  </style>
-
   <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance">
     <item name="android:textSize">@dimen/design_snackbar_text_size</item>
     <item name="android:textColor">?android:textColorPrimary</item>
