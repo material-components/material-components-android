@@ -39,8 +39,8 @@ component. Example code of how to include the widget in your layout:
 
 ```xml
 <android.support.design.chip.Chip
-    android:layout_width="wrap"
-    android:layout_height="wrap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     app:chipText="@string/hello_world"/>
 ```
 
@@ -62,8 +62,8 @@ optionally checkable.
 ```xml
 <android.support.design.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Entry"
-    android:layout_width="wrap"
-    android:layout_height="wrap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     app:chipIcon="@drawable/ic_avatar_circle_24"
     app:chipText="@string/hello_world"/>
 ```
@@ -80,8 +80,8 @@ is always checkable.
 ```xml
 <android.support.design.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Filter"
-    android:layout_width="wrap"
-    android:layout_height="wrap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     app:chipText="@string/hello_world"/>
 ```
 
@@ -97,8 +97,8 @@ This style usually contains an optional chip icon and is always checkable.
 ```xml
 <android.support.design.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Choice"
-    android:layout_width="wrap"
-    android:layout_height="wrap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     app:chipText="@string/hello_world"/>
 ```
 
@@ -113,8 +113,8 @@ This style usually contains an optional chip icon and is never checkable.
 ```xml
 <android.support.design.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Action"
-    android:layout_width="wrap"
-    android:layout_height="wrap"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
     app:chipIcon="@drawable/ic_action_24"
     app:chipText="@string/hello_world"/>
 ```
