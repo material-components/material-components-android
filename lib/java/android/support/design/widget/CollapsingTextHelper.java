@@ -194,9 +194,12 @@ final class CollapsingTextHelper {
   }
 
   void getCollapsedTextActualBounds(RectF bounds) {
-    bounds.left = collapsedBounds.left;
+    boolean isRtl = calculateIsRtl(text);
+
+    bounds.left =
+        !isRtl ? collapsedBounds.left : collapsedBounds.right - calculateCollapsedTextWidth();
     bounds.top = collapsedBounds.top;
-    bounds.right = bounds.left + calculateCollapsedTextWidth();
+    bounds.right = !isRtl ? bounds.left + calculateCollapsedTextWidth() : collapsedBounds.right;
     bounds.bottom = collapsedBounds.top + getCollapsedTextHeight();
   }
 

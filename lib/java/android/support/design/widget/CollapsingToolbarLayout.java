@@ -445,7 +445,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       }
     }
 
-    // Update the collapsed bounds by getting it's transformed bounds
+    // Update the collapsed bounds by getting its transformed bounds
     if (collapsingTitleEnabled && dummyView != null) {
       // We only draw the title if the dummy view is being displayed (Toolbar removes
       // views if there is no space)
