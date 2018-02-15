@@ -721,6 +721,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       top = collapsedOffset;
     } else if (state == STATE_HALF_EXPANDED) {
       top = halfExpandedOffset;
+      if (fitToContents && top <= fitToContentsOffset) {
+        // Skip to the expanded state if we would scroll past the height of the contents.
+        state = STATE_EXPANDED;
+        top = fitToContentsOffset;
+      }
     } else if (state == STATE_EXPANDED) {
       top = getExpandedOffset();
     } else if (hideable && state == STATE_HIDDEN) {
