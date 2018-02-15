@@ -766,7 +766,7 @@ public class TextInputLayout extends LinearLayout {
         Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
     collapsingTextHelper.setExpandedTextGravity(editTextGravity);
 
-    // Add a TextWatcher so that we know when the text input has changed
+    // Add a TextWatcher so that we know when the text input has changed.
     this.editText.addTextChangedListener(
         new TextWatcher() {
           @Override
@@ -1880,6 +1880,12 @@ public class TextInputLayout extends LinearLayout {
       // EditText's editable area
       collapsingTextHelper.setCollapsedBounds(l, t, r, bottom - top - getPaddingBottom());
       collapsingTextHelper.recalculate();
+
+      // If the label should be collapsed, set the cutout bounds on the CutoutDrawable to make sure
+      // it draws with a cutout in draw().
+      if (cutoutEnabled() && !hintExpanded) {
+        openCutout();
+      }
     }
   }
 

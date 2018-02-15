@@ -180,11 +180,11 @@ final class CollapsingTextHelper {
   }
 
   float calculateCollapsedTextWidth() {
-    if (textToDraw == null) {
+    if (text == null) {
       return 0;
     }
     getTextPaintCollapsed(tmpPaint);
-    return tmpPaint.measureText(textToDraw, 0, textToDraw.length());
+    return tmpPaint.measureText(text, 0, text.length());
   }
 
   float getCollapsedTextHeight() {
