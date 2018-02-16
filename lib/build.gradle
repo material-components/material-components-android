@@ -55,7 +55,7 @@ dependencies {
 
 android {
   sourceSets {
-    main.manifest.srcFile 'AndroidManifest.xml'
+    main.manifest.srcFile 'java/android/support/design/AndroidManifest.xml'
     main.java.srcDir '.'
     main.java.includes = ["*.java"]
     main.java.excludes = [
