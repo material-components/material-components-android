@@ -21,7 +21,7 @@ ext {
   compileSdkVersion = 27
   minSdkVersion = 14
   targetSdkVersion = 27
-  supportVersion = '27.1.0-SNAPSHOT'
+  supportVersion = '27.1.0'
 
   testRunnerVersion = '1.0.0'
   espressoVersion = '3.0.0'
@@ -35,7 +35,7 @@ ext {
 
   mavenRepoUrl = (project.hasProperty('mavenRepoUrl')
     ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
-  mdcLibraryVersion = '27.1.0-SNAPSHOT'
+  mdcLibraryVersion = '27.1.0'
   mdcLibraryPackage = "android.support.design"
   mdcLibraryDir = "android/support/design"
 }
