@@ -2075,9 +2075,14 @@ public class TextInputLayout extends LinearLayout {
     public void onPopulateAccessibilityEvent(View host, AccessibilityEvent event) {
       super.onPopulateAccessibilityEvent(host, event);
 
-      final CharSequence text = collapsingTextHelper.getText();
-      if (!TextUtils.isEmpty(text)) {
-        event.getText().add(text);
+      final CharSequence hint = collapsingTextHelper.getText();
+      if (!TextUtils.isEmpty(hint)) {
+        event.getText().add(hint);
+      }
+
+      final CharSequence helperText = indicatorViewController.getHelperText();
+      if (!TextUtils.isEmpty(helperText)) {
+        event.getText().add(helperText);
       }
     }
 
@@ -2086,10 +2091,12 @@ public class TextInputLayout extends LinearLayout {
       super.onInitializeAccessibilityNodeInfo(host, info);
       info.setClassName(TextInputLayout.class.getSimpleName());
 
-      final CharSequence text = collapsingTextHelper.getText();
-      if (!TextUtils.isEmpty(text)) {
-        info.setText(text);
+      final CharSequence hint = collapsingTextHelper.getText();
+
+      if (!TextUtils.isEmpty(hint)) {
+        info.setText(hint);
       }
+
       if (editText != null) {
         info.setLabelFor(editText);
       }
