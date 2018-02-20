@@ -230,12 +230,11 @@ public class TextInputLayout extends LinearLayout {
   }
 
   public TextInputLayout(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+    this(context, attrs, R.attr.textInputStyle);
   }
 
   public TextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-    // Can't call through to super(Context, AttributeSet, int) since it doesn't exist on API 10
-    super(context, attrs);
+    super(context, attrs, defStyleAttr);
 
     setOrientation(VERTICAL);
     setWillNotDraw(false);
