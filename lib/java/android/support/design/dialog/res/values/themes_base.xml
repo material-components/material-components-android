@@ -31,7 +31,8 @@
   <eat-comment/>
 
   <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="Platform.MaterialComponents.Dialog">
-    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater</item>
+    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater
+    </item>
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
@@ -69,7 +70,9 @@
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
     <!-- Widget styles -->
-    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
+    <item name="bottomNavigationStyle">
+      @style/Widget.MaterialComponents.BottomNavigationView.Colored
+    </item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
@@ -99,7 +102,8 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="Platform.MaterialComponents.Light.Dialog">
-    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater</item>
+    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater
+    </item>
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
