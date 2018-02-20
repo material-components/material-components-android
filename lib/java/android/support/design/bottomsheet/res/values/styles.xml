@@ -31,4 +31,6 @@
     <item name="behavior_skipCollapsed">false</item>
   </style>
 
+  <style name="Widget.MaterialComponents.BottomSheet.Modal" parent="Widget.Design.BottomSheet.Modal" />
+
 </resources>
