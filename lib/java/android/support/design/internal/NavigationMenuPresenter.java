@@ -333,6 +333,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
             updateMenuView(false);
           }
         }
+      };
 
   private class NavigationMenuAdapter extends RecyclerView.Adapter<ViewHolder> {
 
