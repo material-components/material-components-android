@@ -74,6 +74,7 @@
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
     <!-- Widget styles -->
+    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar.Colored</item>
     <item name="bottomNavigationStyle">
       @style/Widget.MaterialComponents.BottomNavigationView.Colored
     </item>
@@ -145,6 +146,7 @@
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
     <!-- Widget styles -->
+    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
