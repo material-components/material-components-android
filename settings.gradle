@@ -1,6 +1,7 @@
 include ':lib'
 include ':lib:java:android:support:design:animation'
 include ':lib:java:android:support:design:backlayer'
+include ':lib:java:android:support:design:bottomappbar'
 include ':lib:java:android:support:design:bottomnavigation'
 include ':lib:java:android:support:design:bottomsheet'
 include ':lib:java:android:support:design:button'
@@ -22,6 +23,7 @@ include ':lib:java:android:support:design:resources'
 include ':lib:java:android:support:design:ripple'
 include ':lib:java:android:support:design:snackbar'
 include ':lib:java:android:support:design:stateful'
+include ':lib:java:android:support:design:shape'
 include ':lib:java:android:support:design:tabs'
 include ':lib:java:android:support:design:textfield'
 include ':lib:java:android:support:design:theme'
@@ -51,9 +53,9 @@ rootProject.children.each { p ->
   while (!curChildren.isEmpty()) {
     allChildren.addAll(curChildren)
     curChildren =
-        (curChildren.findResults {
-                it.children.isEmpty() ? null : it.children
-            }).flatten()
+      (curChildren.findResults {
+        it.children.isEmpty() ? null : it.children
+      }).flatten()
   }
 
   allChildren.each { project ->

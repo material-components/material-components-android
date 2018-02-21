@@ -15,8 +15,10 @@ dependencies {
   api compatibility("v7/recyclerview")
 
   implementation project(fromPath("lib/java/android/support/design/internal"))
+  implementation project(fromPath("lib/java/android/support/design/shape"))
 
   api project(fromPath("lib/java/android/support/design/animation"))
+  api project(fromPath("lib/java/android/support/design/bottomappbar"))
   api project(fromPath("lib/java/android/support/design/bottomnavigation"))
   api project(fromPath("lib/java/android/support/design/bottomsheet"))
   api project(fromPath("lib/java/android/support/design/button"))
