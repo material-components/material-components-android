@@ -1212,7 +1212,7 @@ public class TextInputLayout extends LinearLayout {
       // Probably caused by our theme not extending from Theme.Design*. Instead
       // we manually set something appropriate
       TextViewCompat.setTextAppearance(textView, R.style.TextAppearance_AppCompat_Caption);
-      textView.setTextColor(ContextCompat.getColor(getContext(), R.color.error_color_material));
+      textView.setTextColor(ContextCompat.getColor(getContext(), R.color.design_error));
     }
   }
 
