@@ -233,26 +233,39 @@ subprojects {
           }
 
           if (project.uploadArchives.repositories.hasProperty("mavenDeployer")) {
-            project.uploadArchives.repositories.mavenDeployer.pom.project {
-              name 'Android Design Support Library'
-              description 'The Android Design Support Library is a static library that you can add to your Android application in order to use APIs that provide implementations of the Material Design specification. Compatible on devices running API 14 or later.'
-              url 'http://developer.android.com/tools/extras/support-library.html'
-              inceptionYear '2015'
-              licenses {
-                license {
-                  name 'The Apache Software License, Version 2.0'
-                  url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                  distribution 'repo'
+            project.uploadArchives.repositories.mavenDeployer.pom {
+              project {
+                name 'Android Design Support Library'
+                description 'The Android Design Support Library is a static library that you can add to your Android application in order to use APIs that provide implementations of the Material Design specification. Compatible on devices running API 14 or later.'
+                url 'http://developer.android.com/tools/extras/support-library.html'
+                inceptionYear '2015'
+                licenses {
+                  license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                  }
+                }
+                developers {
+                  developer {
+                    name 'The Android Open Source Project'
+                  }
+                }
+                scm {
+                  connection 'scm:git:https://github.com/material-components/material-components-android.git'
+                  url 'https://github.com/material-components/material-components-android'
                 }
               }
-              developers {
-                developer {
-                  name 'The Android Open Source Project'
+              // Adds a <type> tag for each dependency. This assumes that all dependencies except
+              // for support-annotations are aars, but it can break if in the future we depend on
+              // anything else that's not an aar.
+              // TODO: Remove this once Gradle automatically determines dependency types.
+              whenConfigured { pom ->
+                pom.dependencies.findAll { dependency ->
+                  if (dependency.artifactId != 'support-annotations') {
+                    dependency.type = 'aar'
+                  }
                 }
-              }
-              scm {
-                connection 'scm:git:https://github.com/material-components/material-components-android.git'
-                url 'https://github.com/material-components/material-components-android'
               }
             }
           }
