@@ -30,13 +30,13 @@ import android.support.annotation.Dimension;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.internal.FlexWrap;
+import android.support.design.internal.FlexboxLayout;
 import android.support.design.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
-import com.google.android.flexbox.FlexWrap;
-import com.google.android.flexbox.FlexboxLayout;
 
 /**
  * A ChipGroup is used to hold multiple {@link Chip}s. By default, the chips are reflowed across
@@ -65,6 +65,7 @@ public class ChipGroup extends FlexboxLayout {
     public void onCheckedChanged(ChipGroup group, @IdRes int checkedId);
   }
 
+  private final SpacingDrawable spacingDrawable = new SpacingDrawable();
   @Dimension private int chipSpacingHorizontal;
   @Dimension private int chipSpacingVertical;
   private boolean singleLine;
@@ -72,7 +73,6 @@ public class ChipGroup extends FlexboxLayout {
 
   @Nullable private OnCheckedChangeListener onCheckedChangeListener;
 
-  private final SpacingDrawable spacingDrawable = new SpacingDrawable();
   private final CheckedStateTracker checkedStateTracker = new CheckedStateTracker();
   private PassThroughHierarchyChangeListener passThroughListener =
       new PassThroughHierarchyChangeListener();

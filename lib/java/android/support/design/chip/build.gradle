@@ -9,8 +9,6 @@ dependencies {
   implementation compatibility("compat")
   implementation compatibility("v7/appcompat")
 
-  implementation "com.google.android:flexbox:0.3.0"
-
   implementation project(fromPath("lib/java/android/support/design/animation"))
   implementation project(fromPath("lib/java/android/support/design/canvas"))
   implementation project(fromPath("lib/java/android/support/design/color"))
