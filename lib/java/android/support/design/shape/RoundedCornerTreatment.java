@@ -16,10 +16,11 @@
 
 package android.support.design.shape;
 
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 
-/**
- * A corner treatment which rounds a corner of a shape.
- */
+/** A corner treatment which rounds a corner of a shape. */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class RoundedCornerTreatment extends CornerTreatment {
 
   private final float radius;
@@ -28,7 +29,7 @@ public class RoundedCornerTreatment extends CornerTreatment {
    * Instantiates a rounded corner treatment.
    *
    * @param radius the radius, in pixels, of the rounded corner, which is rendered as a quarter
-   * circle.
+   *     circle.
    */
   public RoundedCornerTreatment(float radius) {
     this.radius = radius;

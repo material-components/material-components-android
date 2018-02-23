@@ -16,10 +16,11 @@
 
 package android.support.design.shape;
 
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 
-/**
- * A basic edge treatment (a single straight line). Sub-classed for custom edge treatments.
- */
+/** A basic edge treatment (a single straight line). Sub-classed for custom edge treatments. */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class EdgeTreatment {
 
   /**

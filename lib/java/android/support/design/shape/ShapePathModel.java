@@ -16,11 +16,14 @@
 
 package android.support.design.shape;
 
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 
 /**
- * This class models the edges and corners of a shape, which are used by
- * {@link MaterialShapeDrawable} to generate and render the shape for a view's background.
+ * This class models the edges and corners of a shape, which are used by {@link
+ * MaterialShapeDrawable} to generate and render the shape for a view's background.
  */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class ShapePathModel {
   private static final CornerTreatment DEFAULT_CORNER_TREATMENT = new CornerTreatment();
   private static final EdgeTreatment DEFAULT_EDGE_TREATMENT = new EdgeTreatment();
@@ -34,9 +37,7 @@ public class ShapePathModel {
   private EdgeTreatment bottomEdge;
   private EdgeTreatment leftEdge;
 
-  /**
-   * Construct a default path generator with default edge and corner treatments.
-   */
+  /** Construct a default path generator with default edge and corner treatments. */
   public ShapePathModel() {
     topLeftCorner = DEFAULT_CORNER_TREATMENT;
     topRightCorner = DEFAULT_CORNER_TREATMENT;
@@ -80,8 +81,11 @@ public class ShapePathModel {
    * @param bottomRightCorner the corner treatment to use in the bottom-right corner.
    * @param bottomLeftCorner the corner treatment to use in the bottom-left corner.
    */
-  public void setCornerTreatments(CornerTreatment topLeftCorner, CornerTreatment topRightCorner,
-      CornerTreatment bottomRightCorner, CornerTreatment bottomLeftCorner) {
+  public void setCornerTreatments(
+      CornerTreatment topLeftCorner,
+      CornerTreatment topRightCorner,
+      CornerTreatment bottomRightCorner,
+      CornerTreatment bottomLeftCorner) {
     this.topLeftCorner = topLeftCorner;
     this.topRightCorner = topRightCorner;
     this.bottomRightCorner = bottomRightCorner;
@@ -96,8 +100,11 @@ public class ShapePathModel {
    * @param rightEdge the edge treatment to use on the right edge.
    * @param bottomEdge the edge treatment to use on the bottom edge.
    */
-  public void setEdgeTreatments(EdgeTreatment leftEdge, EdgeTreatment topEdge,
-      EdgeTreatment rightEdge, EdgeTreatment bottomEdge) {
+  public void setEdgeTreatments(
+      EdgeTreatment leftEdge,
+      EdgeTreatment topEdge,
+      EdgeTreatment rightEdge,
+      EdgeTreatment bottomEdge) {
     this.leftEdge = leftEdge;
     this.topEdge = topEdge;
     this.rightEdge = rightEdge;
@@ -112,7 +119,6 @@ public class ShapePathModel {
   public CornerTreatment getTopLeftCorner() {
     return topLeftCorner;
   }
-
 
   /**
    * Set the corner treatment for the top-left corner.

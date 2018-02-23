@@ -16,21 +16,22 @@
 
 package android.support.design.shape;
 
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 
-/**
- * A corner treatment which cuts or clips the original corner of a shape with a straight line.
- */
+/** A corner treatment which cuts or clips the original corner of a shape with a straight line. */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class CutCornerTreatment extends CornerTreatment {
 
   private final float size;
 
   /**
-   * Instantiates a cut corner treatment of a given size. A cut corner treatment introduces two
-   * new corners to a shape, produced by a straight line drawn between two points {@param size}
-   * pixels away, on the vertical and horizontal axes, from the rectilinear (original) corner of the
-   * shape. Stated another way, if the rectilinear (original) corner of the shape was at
-   * co-ordinates (0, 0), the new corners are at co-ordinates (size, 0) and (0, size), and a
-   * straight line is drawn between them.
+   * Instantiates a cut corner treatment of a given size. A cut corner treatment introduces two new
+   * corners to a shape, produced by a straight line drawn between two points {@param size} pixels
+   * away, on the vertical and horizontal axes, from the rectilinear (original) corner of the shape.
+   * Stated another way, if the rectilinear (original) corner of the shape was at co-ordinates (0,
+   * 0), the new corners are at co-ordinates (size, 0) and (0, size), and a straight line is drawn
+   * between them.
    *
    * @param size the length in pixels that the new corners will be drawn away from the origin.
    */

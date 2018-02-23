@@ -35,14 +35,31 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 
 /**
- * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for
- * a generated path.
+ * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
+ * generated path.
  */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable {
 
+  private final Paint paint = new Paint();
+  // Inter-method state.
+  private final Matrix[] cornerTransforms = new Matrix[4];
+  private final Matrix[] edgeTransforms = new Matrix[4];
+  private final ShapePath[] cornerPaths = new ShapePath[4];
+  // Pre-allocated objects that are re-used several times during path computation and rendering.
+  private final Matrix matrix = new Matrix();
+  private final Path path = new Path();
+  private final PointF pointF = new PointF();
+  private final ShapePath shapePath = new ShapePath();
+  private final Region transparentRegion = new Region();
+  private final Region scratchRegion = new Region();
+  private final float[] scratch = new float[2];
+  private final float[] scratch2 = new float[2];
   @Nullable private ShapePathModel shapedViewModel = null;
   private boolean shadowEnabled = false;
   private boolean useTintColorForShadow = false;
@@ -57,23 +74,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Nullable private PorterDuffColorFilter tintFilter;
   private PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
   private ColorStateList tintList = null;
-
-  private final Paint paint = new Paint();
-
-  // Inter-method state.
-  private final Matrix[] cornerTransforms = new Matrix[4];
-  private final Matrix[] edgeTransforms = new Matrix[4];
-  private final ShapePath[] cornerPaths = new ShapePath[4];
-
-  // Pre-allocated objects that are re-used several times during path computation and rendering.
-  private final Matrix matrix = new Matrix();
-  private final Path path = new Path();
-  private final PointF pointF = new PointF();
-  private final ShapePath shapePath = new ShapePath();
-  private final Region transparentRegion = new Region();
-  private final Region scratchRegion = new Region();
-  private final float[] scratch = new float[2];
-  private final float[] scratch2 = new float[2];
 
   /** Instantiate a basic Material Shape Drawable with no {@link ShapePathModel}. */
   public MaterialShapeDrawable() {
@@ -94,6 +94,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       edgeTransforms[i] = new Matrix();
       cornerPaths[i] = new ShapePath();
     }
+  }
+
+  private static int modulateAlpha(int paintAlpha, int alpha) {
+    int scale = alpha + (alpha >>> 7); // convert to 0..256
+    return (paintAlpha * scale) >>> 8;
   }
 
   /**
@@ -533,11 +538,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     float edgeVectorX = endCornerCoordX - startCornerCoordX;
     float edgeVectorY = endCornerCoordY - startCornerCoordY;
     return (float) Math.atan2(edgeVectorY, edgeVectorX);
-  }
-
-  private static int modulateAlpha(int paintAlpha, int alpha) {
-    int scale = alpha + (alpha >>> 7); // convert to 0..256
-    return (paintAlpha * scale) >>> 8;
   }
 
   private void getPath(int width, int height, Path path) {

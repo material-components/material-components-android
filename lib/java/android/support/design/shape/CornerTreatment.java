@@ -16,8 +16,11 @@
 
 package android.support.design.shape;
 
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 
 /** A basic corner treatment (a single point which does not affect the shape). */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class CornerTreatment {
 
   /**

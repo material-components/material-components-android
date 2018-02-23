@@ -16,19 +16,22 @@
 
 package android.support.design.shape;
 
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.ScrollView;
 
-/**
- * Helper class to handle shape interpolation when shaped views enter or exit the window.
- */
+/** Helper class to handle shape interpolation when shaped views enter or exit the window. */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class InterpolateOnScrollPositionChangeHelper {
 
   private View shapedView;
   private MaterialShapeDrawable materialShapeDrawable;
   private ScrollView containingScrollView;
+  private final int[] scrollLocation = new int[2];
+  private final int[] containerLocation = new int[2];
   private final ViewTreeObserver.OnScrollChangedListener scrollChangedListener =
       new OnScrollChangedListener() {
         @Override
@@ -36,19 +39,19 @@ public class InterpolateOnScrollPositionChangeHelper {
           updateInterpolationForScreenPosition();
         }
       };
-  private int[] scrollLocation = new int[2];
-  private int[] containerLocation = new int[2];
 
   /**
    * Instantiate a scroll position helper.
    *
    * @param shapedView the {@link View} whose background is a {@link MaterialShapeDrawable} and
-   * which is scrolled in and out of view.
+   *     which is scrolled in and out of view.
    * @param materialShapeDrawable the {@link MaterialShapeDrawable} which will be interpolated.
    * @param containingScrollView the {@link ScrollView} that contains shapedView.
    */
-  public InterpolateOnScrollPositionChangeHelper(View shapedView,
-      MaterialShapeDrawable materialShapeDrawable, ScrollView containingScrollView) {
+  public InterpolateOnScrollPositionChangeHelper(
+      View shapedView,
+      MaterialShapeDrawable materialShapeDrawable,
+      ScrollView containingScrollView) {
     this.shapedView = shapedView;
     this.materialShapeDrawable = materialShapeDrawable;
     this.containingScrollView = containingScrollView;
@@ -59,8 +62,7 @@ public class InterpolateOnScrollPositionChangeHelper {
    *
    * @param materialShapeDrawable the desired drawable.
    */
-  public void setMaterialShapeDrawable(
-      MaterialShapeDrawable materialShapeDrawable) {
+  public void setMaterialShapeDrawable(MaterialShapeDrawable materialShapeDrawable) {
     this.materialShapeDrawable = materialShapeDrawable;
   }
 
@@ -129,5 +131,4 @@ public class InterpolateOnScrollPositionChangeHelper {
       shapedView.invalidate();
     }
   }
-
 }

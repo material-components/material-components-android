@@ -16,7 +16,6 @@
 
 package android.support.design.shape;
 
-
 /**
  * An edge treatment which draws triangles at the midpoint of an edge, facing into or out of the
  * shape.

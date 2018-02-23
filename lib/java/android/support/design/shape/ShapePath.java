@@ -19,14 +19,17 @@ package android.support.design.shape;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Represents the descriptive path of a shape. Path segments are stored in sequence so that
- * transformations can be applied to them when the {@link android.graphics.Path} is produced by
- * the {@link MaterialShapeDrawable}.
+ * transformations can be applied to them when the {@link android.graphics.Path} is produced by the
+ * {@link MaterialShapeDrawable}.
  */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class ShapePath {
   public float startX;
   public float startY;
