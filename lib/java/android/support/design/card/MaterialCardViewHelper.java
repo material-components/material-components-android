@@ -33,7 +33,6 @@ class MaterialCardViewHelper {
   private static final int DEFAULT_STROKE_VALUE = -1;
   private final MaterialCardView materialCardView;
 
-  private float cornerRadius;
   private int strokeColor;
   private int strokeWidth;
 
@@ -42,7 +41,6 @@ class MaterialCardViewHelper {
   }
 
   public void loadFromAttributes(TypedArray attributes) {
-    cornerRadius = attributes.getDimensionPixelSize(R.styleable.CardView_cardCornerRadius, 0);
     strokeColor =
         attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
@@ -57,7 +55,7 @@ class MaterialCardViewHelper {
    */
   private Drawable createBackgroundDrawable() {
     GradientDrawable bgDrawable = new GradientDrawable();
-    bgDrawable.setCornerRadius(cornerRadius);
+    bgDrawable.setCornerRadius(materialCardView.getRadius());
     // In order to set a stroke, a size and color both need to be set. We default to a zero-width
     // width size, but won't set a default color. This prevents drawing a stroke that blends in with
     // the card but that could affect card spacing.
