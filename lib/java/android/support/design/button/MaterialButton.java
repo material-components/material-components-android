@@ -185,7 +185,6 @@ public class MaterialButton extends AppCompatButton {
     attributes.recycle();
 
     setCompoundDrawablePadding(iconPadding);
-    updatePadding();
     updateIcon();
   }
 
@@ -624,6 +623,7 @@ public class MaterialButton extends AppCompatButton {
     }
 
     TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, icon, null, null, null);
+    updatePadding();
   }
 
   /**
