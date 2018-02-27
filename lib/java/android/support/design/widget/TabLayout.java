@@ -2287,7 +2287,7 @@ public class TabLayout extends HorizontalScrollView {
       int left = 0;
       int right = 0;
 
-      for (View view : new View[] {textView, iconView, customTextView, customIconView}) {
+      for (View view : new View[] {textView, iconView, customView}) {
         if (view != null && view.getVisibility() == View.VISIBLE) {
           left = initialized ? Math.min(left, view.getLeft()) : view.getLeft();
           right = initialized ? Math.max(right, view.getRight()) : view.getRight();
