@@ -26,6 +26,7 @@
     <item name="android:background">@null</item>
     <item name="tabIconTint">@null</item>
     <item name="tabMaxWidth">@dimen/design_tab_max_width</item>
+    <item name="tabIndicatorAnimationDuration">@integer/design_tab_indicator_anim_duration_ms</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
     <item name="tabIndicatorGravity">bottom</item>
     <item name="tabIndicator">@drawable/mtrl_tabs_default_indicator</item>
@@ -45,6 +46,7 @@
   <style name="Widget.MaterialComponents.TabLayout" parent="Widget.Design.TabLayout">
     <item name="android:background">@android:color/white</item>
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
+    <item name="tabIndicatorAnimationDuration">@integer/mtrl_tab_indicator_anim_duration_ms</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
     <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab</item>
     <item name="tabRippleColor">@color/mtrl_tabs_ripple_color</item>

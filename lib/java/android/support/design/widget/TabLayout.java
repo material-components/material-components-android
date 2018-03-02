@@ -361,6 +361,7 @@ public class TabLayout extends HorizontalScrollView {
   private int contentInsetStart;
 
   int tabGravity;
+  int tabIndicatorAnimationDuration;
   @TabIndicatorGravity int tabIndicatorGravity;
   @Mode int mode;
   boolean inlineLabel;
@@ -471,6 +472,9 @@ public class TabLayout extends HorizontalScrollView {
 
     tabRippleColorStateList =
         MaterialResources.getColorStateList(context, a, R.styleable.TabLayout_tabRippleColor);
+
+    tabIndicatorAnimationDuration =
+        a.getInt(R.styleable.TabLayout_tabIndicatorAnimationDuration, ANIMATION_DURATION);
 
     requestedTabMinWidth =
         a.getDimensionPixelSize(R.styleable.TabLayout_tabMinWidth, INVALID_WIDTH);
@@ -1499,14 +1503,14 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     // Now animate the indicator
-    slidingTabIndicator.animateIndicatorToPosition(newPosition, ANIMATION_DURATION);
+    slidingTabIndicator.animateIndicatorToPosition(newPosition, tabIndicatorAnimationDuration);
   }
 
   private void ensureScrollAnimator() {
     if (scrollAnimator == null) {
       scrollAnimator = new ValueAnimator();
       scrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-      scrollAnimator.setDuration(ANIMATION_DURATION);
+      scrollAnimator.setDuration(tabIndicatorAnimationDuration);
       scrollAnimator.addUpdateListener(
           new ValueAnimator.AnimatorUpdateListener() {
             @Override
