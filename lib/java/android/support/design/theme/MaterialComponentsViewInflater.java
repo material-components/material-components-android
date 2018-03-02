@@ -16,12 +16,24 @@
 
 package android.support.design.theme;
 
+import android.content.Context;
 import android.support.annotation.Keep;
+import android.support.annotation.NonNull;
+import android.support.design.button.MaterialButton;
 import android.support.v7.app.AppCompatViewInflater;
+import android.support.v7.widget.AppCompatButton;
+import android.util.AttributeSet;
 
 /**
  * An extension of {@link AppCompatViewInflater} that replaces some framework widgets with Material
  * Components ones at inflation time, provided a Material Components theme is in use.
  */
 @Keep // Make proguard keep this class as it's accessed reflectively by AppCompat
-public class MaterialComponentsViewInflater extends AppCompatViewInflater {}
+public class MaterialComponentsViewInflater extends AppCompatViewInflater {
+
+  @NonNull
+  @Override
+  protected AppCompatButton createButton(Context context, AttributeSet attrs) {
+    return new MaterialButton(context, attrs);
+  }
+}

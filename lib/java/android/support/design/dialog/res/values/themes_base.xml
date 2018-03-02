@@ -70,6 +70,9 @@
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
     <item name="colorBackgroundFloating">@color/background_floating_material_dark</item>
 
+    <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+
     <!-- Widget styles -->
     <item name="bottomNavigationStyle">
       @style/Widget.MaterialComponents.BottomNavigationView.Colored
@@ -141,6 +144,9 @@
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
     <item name="colorBackgroundFloating">@color/background_floating_material_light</item>
+
+    <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
 
     <!-- Widget styles -->
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>

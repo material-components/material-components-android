@@ -52,6 +52,10 @@
     <item name="rippleColor">@color/mtrl_btn_text_btn_ripple_color</item>
   </style>
 
+  <style name="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:minWidth">@dimen/mtrl_btn_dialog_btn_min_width</item>
+  </style>
+
   <style name="TextAppearance.MaterialComponents.MaterialButton" parent="android:TextAppearance">
     <item name="android:textColor">@color/mtrl_btn_text_color_selector</item>
     <item name="android:textAllCaps">@bool/mtrl_btn_textappearance_all_caps</item>

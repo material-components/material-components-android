@@ -45,6 +45,8 @@
   <dimen name="mtrl_btn_icon_padding">8dp</dimen>
   <dimen name="mtrl_btn_text_btn_icon_padding">4dp</dimen>
 
+  <dimen name="mtrl_btn_dialog_btn_min_width">64dp</dimen>
+
   <dimen name="mtrl_btn_stroke_size">1dp</dimen>
 
   <item name="mtrl_btn_letter_spacing" format="float" type="dimen">0.07</item>
