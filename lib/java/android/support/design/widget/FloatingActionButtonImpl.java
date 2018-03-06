@@ -17,6 +17,7 @@
 package android.support.design.widget;
 
 import android.animation.Animator;
+import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -92,6 +93,9 @@ class FloatingActionButtonImpl {
 
   int maxImageSize;
   float imageMatrixScale = 1f;
+
+  private ArrayList<AnimatorListener> showListeners;
+  private ArrayList<AnimatorListener> hideListeners;
 
   interface InternalVisibilityChangedListener {
     void onShown();
@@ -326,6 +330,36 @@ class FloatingActionButtonImpl {
     stateListAnimator.jumpToCurrentState();
   }
 
+  void addOnShowAnimationListener(@NonNull AnimatorListener listener) {
+    if (showListeners == null) {
+      showListeners = new ArrayList<>();
+    }
+    showListeners.add(listener);
+  }
+
+  void removeOnShowAnimationListener(@NonNull AnimatorListener listener) {
+    if (showListeners == null) {
+      // This can happen if this method is called before the first call to addDrawerListener.
+      return;
+    }
+    showListeners.remove(listener);
+  }
+
+  public void addOnHideAnimationListener(@NonNull AnimatorListener listener) {
+    if (hideListeners == null) {
+      hideListeners = new ArrayList<>();
+    }
+    hideListeners.add(listener);
+  }
+
+  public void removeOnHideAnimationListener(@NonNull AnimatorListener listener) {
+    if (hideListeners == null) {
+      // This can happen if this method is called before the first call to addDrawerListener.
+      return;
+    }
+    hideListeners.remove(listener);
+  }
+
   void hide(@Nullable final InternalVisibilityChangedListener listener, final boolean fromUser) {
     if (isOrWillBeHidden()) {
       // We either are or will soon be hidden, skip the call
@@ -374,6 +408,11 @@ class FloatingActionButtonImpl {
               }
             }
           });
+      if (hideListeners != null) {
+        for (AnimatorListener l : hideListeners) {
+          set.addListener(l);
+        }
+      }
       set.start();
     } else {
       // If the view isn't laid out, or we're in the editor, don't run the animation
@@ -429,6 +468,11 @@ class FloatingActionButtonImpl {
               }
             }
           });
+      if (showListeners != null) {
+        for (AnimatorListener l : showListeners) {
+          set.addListener(l);
+        }
+      }
       set.start();
     } else {
       view.internalSetVisibility(View.VISIBLE, fromUser);

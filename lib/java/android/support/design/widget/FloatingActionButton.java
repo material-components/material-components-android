@@ -18,6 +18,7 @@ package android.support.design.widget;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.animation.Animator.AnimatorListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -492,6 +493,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().show(wrapOnVisibilityChangedListener(listener), fromUser);
   }
 
+  public void addOnShowAnimationListener(@NonNull AnimatorListener listener) {
+    getImpl().addOnShowAnimationListener(listener);
+  }
+
+  public void removeOnShowAnimationListener(@NonNull AnimatorListener listener) {
+    getImpl().removeOnShowAnimationListener(listener);
+  }
+
   /**
    * Hides the button.
    *
@@ -514,6 +523,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   void hide(@Nullable OnVisibilityChangedListener listener, boolean fromUser) {
     getImpl().hide(wrapOnVisibilityChangedListener(listener), fromUser);
+  }
+
+  public void addOnHideAnimationListener(@NonNull AnimatorListener listener) {
+    getImpl().addOnHideAnimationListener(listener);
+  }
+
+  public void removeOnHideAnimationListener(@NonNull AnimatorListener listener) {
+    getImpl().removeOnHideAnimationListener(listener);
   }
 
   @Override
@@ -614,6 +631,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         listener.onHidden(FloatingActionButton.this);
       }
     };
+  }
+
+  public boolean isOrWillBeHidden() {
+    return getImpl().isOrWillBeHidden();
+  }
+
+  public boolean isOrWillBeShown() {
+    return getImpl().isOrWillBeShown();
   }
 
   /**
