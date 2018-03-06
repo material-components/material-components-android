@@ -26,7 +26,6 @@ import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
 import android.support.design.internal.SnackbarContentLayout;
-import android.support.design.internal.ThemeEnforcement;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -163,15 +162,9 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
     }
 
     final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-    final boolean isUsingMaterialTheme = ThemeEnforcement.isMaterialTheme(parent.getContext());
     final SnackbarContentLayout content =
         (SnackbarContentLayout)
-            inflater.inflate(
-                isUsingMaterialTheme
-                    ? R.layout.design_layout_snackbar_include_material
-                    : R.layout.design_layout_snackbar_include,
-                parent,
-                false);
+            inflater.inflate(R.layout.design_layout_snackbar_include, parent, false);
     final Snackbar snackbar = new Snackbar(parent, content, content);
     snackbar.setText(text);
     snackbar.setDuration(duration);

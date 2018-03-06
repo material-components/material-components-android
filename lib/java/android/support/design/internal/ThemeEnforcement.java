@@ -117,24 +117,12 @@ public final class ThemeEnforcement {
     checkTheme(context, MATERIAL_CHECK_ATTRS, MATERIAL_THEME_NAME);
   }
 
-  public static boolean isAppCompatTheme(Context context) {
-    return isTheme(context, APPCOMPAT_CHECK_ATTRS);
-  }
-
-  public static boolean isMaterialTheme(Context context) {
-    return isTheme(context, MATERIAL_CHECK_ATTRS);
-  }
-
-  private static boolean isTheme(Context context, int[] themeAttributes) {
+  private static void checkTheme(Context context, int[] themeAttributes, String themeName) {
     TypedArray a = context.obtainStyledAttributes(themeAttributes);
-    final boolean success = a.hasValue(0);
+    final boolean failed = !a.hasValue(0);
     a.recycle();
 
-    return success;
-  }
-
-  private static void checkTheme(Context context, int[] themeAttributes, String themeName) {
-    if (!isTheme(context, themeAttributes)) {
+    if (failed) {
       throw new IllegalArgumentException(
           "The style on this component requires your app theme to be "
               + themeName
