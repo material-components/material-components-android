@@ -122,6 +122,9 @@
     <!-- Style to use for TextInputLayouts in this theme. -->
     <attr name="textInputStyle"/>
 
+    <!-- Style to use for action button within a Snackbar in this theme. -->
+    <attr name="snackbarButtonStyle"/>
+
     <!-- Text appearance for the Headline 1 style in this theme. -->
     <attr name="textAppearanceHeadline1"/>
     <!-- Text appearance for the Headline 2 style in this theme. -->
