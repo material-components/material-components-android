@@ -170,7 +170,7 @@
     <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
 
     <!-- Dialog themes -->
-    <item name="android:alertDialogTheme">@style/Theme.MaterialComponents.Dialog.Alert</item>
+    <item name="android:alertDialogTheme">@style/Theme.MaterialComponents.Light.Dialog.Alert</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
