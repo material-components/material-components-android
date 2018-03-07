@@ -97,6 +97,7 @@ import java.util.List;
 public class Chip extends AppCompatCheckBox implements Delegate {
 
   private static final int CLOSE_ICON_VIRTUAL_ID = 0;
+  private static final Rect EMPTY_BOUNDS = new Rect();
 
   private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
 
@@ -575,7 +576,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
     @Override
     protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
-      virtualViewIds.add(HOST_ID);
       if (hasCloseIcon()) {
         virtualViewIds.add(CLOSE_ICON_VIRTUAL_ID);
       }
@@ -592,6 +592,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         node.setEnabled(isEnabled());
       } else {
         node.setContentDescription("");
+        node.setBoundsInParent(EMPTY_BOUNDS);
       }
     }
 
