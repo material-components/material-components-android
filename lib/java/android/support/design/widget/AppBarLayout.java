@@ -611,7 +611,8 @@ public class AppBarLayout extends LinearLayout {
         SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
         SCROLL_FLAG_ENTER_ALWAYS,
         SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED,
-        SCROLL_FLAG_SNAP
+        SCROLL_FLAG_SNAP,
+        SCROLL_FLAG_SNAP_MARGINS,
       }
     )
     @Retention(RetentionPolicy.SOURCE)
@@ -658,6 +659,12 @@ public class AppBarLayout extends LinearLayout {
      * will be scrolled fully into view.
      */
     public static final int SCROLL_FLAG_SNAP = 0x10;
+
+    /**
+     * An additional flag to be used with 'snap'. If set, the view will be snapped to its top and
+     * bottom margins, as opposed to the edges of the view itself.
+     */
+    public static final int SCROLL_FLAG_SNAP_MARGINS = 0x20;
 
     /** Internal flags which allows quick checking features */
     static final int FLAG_QUICK_RETURN = SCROLL_FLAG_SCROLL | SCROLL_FLAG_ENTER_ALWAYS;
@@ -715,7 +722,8 @@ public class AppBarLayout extends LinearLayout {
      *
      * @param flags bitwise int of {@link #SCROLL_FLAG_SCROLL}, {@link
      *     #SCROLL_FLAG_EXIT_UNTIL_COLLAPSED}, {@link #SCROLL_FLAG_ENTER_ALWAYS}, {@link
-     *     #SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED} and {@link #SCROLL_FLAG_SNAP }.
+     *     #SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED}, {@link #SCROLL_FLAG_SNAP}, and {@link
+     *     #SCROLL_FLAG_SNAP_MARGINS}.
      * @see #getScrollFlags()
      * @attr ref android.support.design.R.styleable#AppBarLayout_Layout_layout_scrollFlags
      */
@@ -969,7 +977,17 @@ public class AppBarLayout extends LinearLayout {
     private int getChildIndexOnOffset(AppBarLayout abl, final int offset) {
       for (int i = 0, count = abl.getChildCount(); i < count; i++) {
         View child = abl.getChildAt(i);
-        if (child.getTop() <= -offset && child.getBottom() >= -offset) {
+        int top = child.getTop();
+        int bottom = child.getBottom();
+
+        final LayoutParams lp = (LayoutParams) child.getLayoutParams();
+        if (checkFlag(lp.getScrollFlags(), LayoutParams.SCROLL_FLAG_SNAP_MARGINS)) {
+          // Update top and bottom to include margins
+          top -= lp.topMargin;
+          bottom += lp.bottomMargin;
+        }
+
+        if (top <= -offset && bottom >= -offset) {
           return i;
         }
       }
@@ -1007,6 +1025,12 @@ public class AppBarLayout extends LinearLayout {
             } else {
               snapBottom = seam;
             }
+          }
+
+          if (checkFlag(flags, LayoutParams.SCROLL_FLAG_SNAP_MARGINS)) {
+            // Update snap destinations to include margins
+            snapTop += lp.topMargin;
+            snapBottom -= lp.bottomMargin;
           }
 
           final int newOffset = offset < (snapBottom + snapTop) / 2 ? snapBottom : snapTop;

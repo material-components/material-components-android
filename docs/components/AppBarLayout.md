@@ -50,6 +50,7 @@ respond to scrolling. These are interpreted by the `AppBarLayout.LayoutParams`.
 *   [exitUntilCollapsed](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)
 *   [scroll](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SCROLL)
 *   [snap](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP)
+*   [snapMargins](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP_MARGINS)
 
 Views using the scroll flag should be declared and visually positioned before
 other views in the `AppBarLayout`. This ensures that they are able to exit at the

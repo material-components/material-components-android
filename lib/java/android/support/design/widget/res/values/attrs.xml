@@ -61,6 +61,10 @@
       <!-- Upon a scroll ending, if the view is only partially visible then it will be
            snapped and scrolled to it's closest edge. -->
       <flag name="snap" value="0x10"/>
+
+      <!-- An additional flag to be used with 'snap'. If set, the view will be snapped to its
+           top and bottom margins, as opposed to the edges of the view itself. -->
+      <flag name="snapMargins" value="0x20"/>
     </attr>
 
     <!-- An interpolator to use when scrolling this View. Only takes effect when View
