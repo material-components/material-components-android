@@ -707,6 +707,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private float getYVelocity() {
+    if (velocityTracker == null) {
+      return 0;
+    }
     velocityTracker.computeCurrentVelocity(1000, maximumVelocity);
     return velocityTracker.getYVelocity(activePointerId);
   }
