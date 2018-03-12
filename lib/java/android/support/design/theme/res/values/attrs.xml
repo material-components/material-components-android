@@ -22,8 +22,8 @@
          This is set to colorSecondary by default, but can also be set to colorPrimary.  -->
     <attr name="colorAccent"/>
 
-    <!-- The follow attributes make up the theme's main color scheme. Components will expect all 6
-         colors to be defined. -->
+    <!-- The following attributes make up the theme's main color scheme. Components will expect all
+         6 colors to be defined. -->
     <eat-comment/>
 
     <!-- The primary branding color for the app. -->
@@ -32,7 +32,8 @@
     <attr name="colorPrimaryLight"/>
     <!-- The dark variant of the primary color. -->
     <attr name="colorPrimaryDark"/>
-    <!-- The secondary branding color for the app, usually a bright complement to the primary branding color. -->
+    <!-- The secondary branding color for the app, usually a bright complement to the primary
+         branding color. -->
     <attr name="colorSecondary"/>
     <!-- The light variant of the secondary color. -->
     <attr name="colorSecondaryLight"/>
@@ -40,7 +41,7 @@
     <attr name="colorSecondaryDark"/>
 
 
-    <!-- The follow attributes make up the theme's tonal palette. Components may use these colors
+    <!-- The following attributes make up the theme's tonal palette. Components may use these colors
          for accessibility when the main color scheme does not provide enough contrast. These colors
          are expected to be opaque, and go from light to dark. The number itself is an arbitrary
          designation. -->
@@ -95,7 +96,7 @@
     <attr name="scrimBackground"/>
 
     <!-- Default color of background imagery for floating components, ex. dialogs, popups, and cards. -->
-    <attr name="colorBackgroundFloating" />
+    <attr name="colorBackgroundFloating"/>
 
     <!-- Theme to use for modal bottom sheet dialogs spawned from this theme. -->
     <attr name="bottomSheetDialogTheme"/>
