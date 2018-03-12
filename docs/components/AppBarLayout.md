@@ -33,11 +33,11 @@ responsiveness to scrolling.
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 As a container for Toolbars, and other views, it works with
-[CoordinatorLayout](CoordinatorLayout.md)
+[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
 in order to respond to scrolling techniques. `AppBarLayout` depends heavily on
 being used as a direct child of the CoordinatorLayout and reacts to a sibling
-that supports scrolling
-(e.g. [NestedScrollView](https://developer.android.com/reference/android/support/v4/widget/NestedScrollView.html),
+that supports scrolling (e.g.
+[NestedScrollView](https://developer.android.com/reference/android/support/v4/widget/NestedScrollView.html),
 [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html)).
 
 Flags are added to each child of the `AppBarLayout` to control how they will
