@@ -201,7 +201,7 @@ public class TextInputLayout extends LinearLayout {
   private PorterDuff.Mode passwordToggleTintMode;
   private boolean hasPasswordToggleTintMode;
 
-  private ColorStateList defaultHintTextColor;
+  private ColorStateList defaultTextColor;
   private ColorStateList focusedTextColor;
 
   @ColorInt private final int defaultStrokeColor;
@@ -305,7 +305,7 @@ public class TextInputLayout extends LinearLayout {
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
     setBoxBackgroundMode(boxBackgroundMode);
     if (a.hasValue(R.styleable.TextInputLayout_android_textColorHint)) {
-      defaultHintTextColor =
+      defaultTextColor =
           focusedTextColor = a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
     }
     defaultStrokeColor =
@@ -784,8 +784,8 @@ public class TextInputLayout extends LinearLayout {
         });
 
     // Use the EditText's hint colors if we don't have one set
-    if (defaultHintTextColor == null) {
-      defaultHintTextColor = this.editText.getHintTextColors();
+    if (defaultTextColor == null) {
+      defaultTextColor = this.editText.getHintTextColors();
     }
 
     // If we do not have a valid hint, try and retrieve it from the EditText, if enabled
@@ -833,9 +833,9 @@ public class TextInputLayout extends LinearLayout {
     final boolean errorShouldBeShown = indicatorViewController.errorShouldBeShown();
 
     // Set the expanded and collapsed labels to the default text color.
-    if (defaultHintTextColor != null) {
-      collapsingTextHelper.setCollapsedTextColor(defaultHintTextColor);
-      collapsingTextHelper.setExpandedTextColor(defaultHintTextColor);
+    if (defaultTextColor != null) {
+      collapsingTextHelper.setCollapsedTextColor(defaultTextColor);
+      collapsingTextHelper.setExpandedTextColor(defaultTextColor);
     }
 
     // Set the collapsed and expanded label text colors based on the current state.
@@ -970,27 +970,6 @@ public class TextInputLayout extends LinearLayout {
       // Text size might have changed so update the top margin
       updateInputLayoutMargins();
     }
-  }
-
-  /**
-   * Sets the text color used by the hint in both the collapsed and expanded states.
-   */
-  public void setDefaultHintTextColor(@Nullable ColorStateList textColor) {
-    defaultHintTextColor = textColor;
-    focusedTextColor = textColor;
-
-    if (editText != null) {
-      updateLabelState(false);
-    }
-  }
-
-  /**
-   * Returns the text color used by the hint in both the collapsed and expanded states, or null if
-   * no color has been set.
-   */
-  @Nullable
-  public ColorStateList getDefaultHintTextColor() {
-    return defaultHintTextColor;
   }
 
   /**
