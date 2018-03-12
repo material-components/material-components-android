@@ -147,4 +147,4 @@ while the hide animation shrinks the widget and fades it out.
 
 ## Related Concepts
 
--   [CoordinatorLayout](CoordinatorLayout.md)
+-   [CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)

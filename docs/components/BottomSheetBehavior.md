@@ -13,7 +13,7 @@ path: /catalog/bottom-sheet-behavior/
 <!--{: .article__asset.article__asset--screenshot }-->
 
 `BottomSheetBehavior` is applied to a child of
-[CoordinatorLayout](CoordinatorLayout.md)
+[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
 to make that child a **persistent bottom sheet**.
 
 Persistent bottom sheets are views that come up from the bottom of the
@@ -69,7 +69,7 @@ sheet is trivial:
     -   `app:behavior_skipCollapsed` if the bottom sheet is hideable, and this
         is set to true, it does not have a collapsed state.
 
-To programatically control the bottom sheet you can call the `setState` method
+To programmatically control the bottom sheet you can call the `setState` method
 on the `BottomSheetBehavior`. A common pattern is setting a peek height and
 setting the state to collapsed to make it visible to the user:
 

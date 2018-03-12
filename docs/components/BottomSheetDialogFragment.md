@@ -19,9 +19,8 @@ is tapped then the bottom sheet is dismissed. Modal bottom sheets can be dragged
 vertically and dismissed by completely sliding them down.
 
 Note: To implement non-modal **Persistent bottom sheets** use
-[BottomSheetBehavior](BottomSheetBehavior.md)
-in conjunction with a
-[CoordinatorLayout](CoordinatorLayout.md).
+[BottomSheetBehavior](BottomSheetBehavior.md) in conjunction with a
+[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html).
 
 ## Design & API Documentation
 
@@ -60,4 +59,5 @@ may feel easier to use on larger devices.
 
 `BottomSheetDialogFragment`s look very similar to the effects of
 [BottomSheetBehavior](BottomSheetBehavior.md) but the latter is not modal and
-requires a [CoordinatorLayout](CoordinatorLayout.md).
+requires a
+[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html).
