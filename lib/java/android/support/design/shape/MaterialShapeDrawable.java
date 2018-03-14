@@ -356,7 +356,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     paint.setStrokeWidth(strokeWidth);
     paint.setStyle(paintStyle);
     if (shadowElevation > 0 && shadowEnabled) {
-      paint.setShadowLayer(shadowRadius, shadowElevation, shadowElevation, shadowColor);
+      paint.setShadowLayer(shadowRadius, 0, shadowElevation, shadowColor);
     }
     if (shapedViewModel != null) {
       getPath(canvas.getWidth(), canvas.getHeight(), path);
