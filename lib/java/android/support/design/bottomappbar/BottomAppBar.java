@@ -598,7 +598,11 @@ public class BottomAppBar extends Toolbar {
       int drawablePadding = rect.bottom;
 
       fabLayoutParams.bottomMargin =
-          (int) (child.getMeasuredHeight() / 2 + child.getCradleVerticalOffset()) - drawablePadding;
+          (int)
+                  (child.getMeasuredHeight()
+                      - fab.getMeasuredHeight() / 2
+                      + child.getCradleVerticalOffset())
+              - drawablePadding;
 
       // Ensure the FAB is correctly linked to this BAB so the animations can run correctly
       child.addFabAnimationListeners(fab);
