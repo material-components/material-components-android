@@ -16,12 +16,16 @@
 
 package android.support.design.widget;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.TimeInterpolator;
 import android.content.Context;
 import android.support.design.animation.AnimationUtils;
 import android.support.design.widget.CoordinatorLayout.Behavior;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewPropertyAnimator;
 
 /**
  * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off the
@@ -32,7 +36,12 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   private static final int ENTER_ANIMATION_DURATION = 225;
   private static final int EXIT_ANIMATION_DURATION = 175;
 
+  private static final int STATE_SCROLLED_DOWN = 1;
+  private static final int STATE_SCROLLED_UP = 2;
+
   private int height = 0;
+  private int currentState = STATE_SCROLLED_UP;
+  private ViewPropertyAnimator currentAnimator;
 
   /** Default constructor for instantiating HideBottomViewOnScrollBehaviors. */
   public HideBottomViewOnScrollBehavior() {}
@@ -80,20 +89,42 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   }
 
   private void slideUp(V child) {
-    child.clearAnimation();
-    child
-        .animate()
-        .translationY(0)
-        .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
-        .setDuration(ENTER_ANIMATION_DURATION);
+    if (currentState != STATE_SCROLLED_UP) {
+      if (currentAnimator != null) {
+        currentAnimator.cancel();
+        child.clearAnimation();
+      }
+      currentState = STATE_SCROLLED_UP;
+      animateChildTo(
+          child, 0, ENTER_ANIMATION_DURATION, AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    }
   }
 
   private void slideDown(V child) {
-    child.clearAnimation();
-    child
-        .animate()
-        .translationY(height)
-        .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
-        .setDuration(EXIT_ANIMATION_DURATION);
+    if (currentState != STATE_SCROLLED_DOWN) {
+      if (currentAnimator != null) {
+        currentAnimator.cancel();
+        child.clearAnimation();
+      }
+      currentState = STATE_SCROLLED_DOWN;
+      animateChildTo(
+          child, height, EXIT_ANIMATION_DURATION, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+    }
+  }
+
+  private void animateChildTo(V child, int targetY, long duration, TimeInterpolator interpolator) {
+    currentAnimator =
+        child
+            .animate()
+            .translationY(targetY)
+            .setInterpolator(interpolator)
+            .setDuration(duration)
+            .setListener(
+                new AnimatorListenerAdapter() {
+                  @Override
+                  public void onAnimationEnd(Animator animation) {
+                    currentAnimator = null;
+                  }
+                });
   }
 }
