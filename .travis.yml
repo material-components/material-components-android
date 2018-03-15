@@ -10,8 +10,8 @@ env:
   global:
     # Notice global environment variables are available during the install phase for android >
     # components. These are the only variables that can be used in that section
-    - SDK_API=26
-    - BUILD_TOOLS_VERSION=26.0.0
+    - SDK_API=P
+    - BUILD_TOOLS_VERSION=27.0.3
   matrix:
     # Notice matrix environment variables are not available during the install phase for android >
     # components.
