@@ -10,6 +10,8 @@ dependencies {
   api compatibility("core_ui")
   api compatibility("v7/appcompat")
 
+  implementation project(fromPath("lib/java/android/support/design/animation"))
+  // The dependency on FAB requires this dependency for now.
   implementation project(fromPath("lib/java/android/support/design/expandable"))
   implementation project(fromPath("lib/java/android/support/design/internal"))
   implementation project(fromPath("lib/java/android/support/design/shape"))

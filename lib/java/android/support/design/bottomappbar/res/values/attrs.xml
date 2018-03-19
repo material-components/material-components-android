@@ -33,6 +33,8 @@
     <attr name="fabCradleRoundedCornerRadius" format="dimension"/>
     <!-- The vertical offset between the fab from the cradle. -->
     <attr name="fabCradleVerticalOffset" format="dimension"/>
+    <!-- Whether the BottomAppBar should hide when a NestedScrollView is scrolled. -->
+    <attr name="hideOnScroll" format="boolean"/>
   </declare-styleable>
 
   <!-- Style to use for BottomAppBar in this theme. -->

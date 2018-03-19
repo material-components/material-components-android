@@ -33,15 +33,19 @@ import android.support.annotation.IntDef;
 import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.animation.AnimationUtils;
 import android.support.design.internal.ThemeEnforcement;
 import android.support.design.resources.MaterialResources;
 import android.support.design.shape.MaterialShapeDrawable;
 import android.support.design.shape.ShapePathModel;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.HideBottomViewOnScrollBehavior;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
+import android.support.v4.view.ViewCompat.NestedScrollType;
+import android.support.v4.view.ViewCompat.ScrollAxis;
 import android.support.v7.widget.ActionMenuView;
 import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
@@ -89,6 +93,7 @@ public class BottomAppBar extends Toolbar {
   @Nullable private Animator modeAnimator;
   @Nullable private Animator menuAnimator;
   @FabAlignmentMode private int fabAlignmentMode;
+  private boolean hideOnScroll;
 
   /** If the fab is actually cradled in the {@link BottomAppBar} or if it's floating above it. */
   private boolean fabAttached;
@@ -124,6 +129,7 @@ public class BottomAppBar extends Toolbar {
     fabAttached = a.getBoolean(R.styleable.BottomAppBar_fabAttached, true);
     fabAlignmentMode =
         a.getInt(R.styleable.BottomAppBar_fabAlignmentMode, FAB_ALIGNMENT_MODE_CENTER);
+    hideOnScroll = a.getBoolean(R.styleable.BottomAppBar_hideOnScroll, false);
 
     a.recycle();
 
@@ -191,6 +197,24 @@ public class BottomAppBar extends Toolbar {
       topEdgeTreatment.setCradleVerticalOffset(verticalOffset);
       materialShapeDrawable.invalidateSelf();
     }
+  }
+
+  /**
+   * Returns true if the {@link BottomAppBar} should hide when a {@link
+   * android.support.v4.view.NestedScrollingChild} is scrolled. This is handled by {@link
+   * BottomAppBar.Behavior}.
+   */
+  public boolean getHideOnScroll() {
+    return hideOnScroll;
+  }
+
+  /**
+   * Sets if the {@link BottomAppBar} should hide when a {@link
+   * android.support.v4.view.NestedScrollingChild} is scrolled. This is handled by {@link
+   * BottomAppBar.Behavior}.
+   */
+  public void setHideOnScroll(boolean hide) {
+    hideOnScroll = hide;
   }
 
   /**
@@ -425,10 +449,22 @@ public class BottomAppBar extends Toolbar {
       return 0;
     }
 
-    // Calculate the height of the FAB minus the shadow
-    Rect fabHeightRect = new Rect();
-    fab.getContentRect(fabHeightRect);
-    return targetAttached ? 0 : -fabHeightRect.height() + getCradleVerticalOffset();
+    // Get the content rect to calculate the amount of padding added with shadow.
+    Rect fabContentRect = new Rect();
+    fab.getContentRect(fabContentRect);
+
+    float fabHeight = fabContentRect.height();
+    if (fabHeight == 0) {
+      // If the fab hasn't been laid out yet, lets look at the measured height.
+      fabHeight = fab.getMeasuredHeight();
+    }
+    float fabBottomShadow = fab.getHeight() - fabContentRect.bottom;
+    float fabVerticalShadowPadding = fab.getHeight() - fabContentRect.height();
+
+    float attached = -getCradleVerticalOffset() + fabHeight / 2 + fabBottomShadow;
+    float detached = fabVerticalShadowPadding - fab.getPaddingBottom();
+
+    return -getMeasuredHeight() + (targetAttached ? attached : detached);
   }
 
   private float getFabTranslationY() {
@@ -585,24 +621,26 @@ public class BottomAppBar extends Toolbar {
    * Behavior designed for use with {@link BottomAppBar} instances. Its main function is to link a
    * dependent {@link FloatingActionButton} so that it can be shown docked in the cradle.
    */
-  public static class Behavior extends CoordinatorLayout.Behavior<BottomAppBar> {
+  public static class Behavior extends HideBottomViewOnScrollBehavior<BottomAppBar> {
+
+    /** Default constructor for instantiating this Behavior. */
+    public Behavior() {}
+
+    /**
+     * Default constructor for inflating this Behavior from layout.
+     *
+     * @param context The {@link Context}.
+     * @param attrs The {@link AttributeSet}.
+     */
+    public Behavior(Context context, AttributeSet attrs) {
+      super(context, attrs);
+    }
 
     private boolean updateFabPositionAndVisibility(FloatingActionButton fab, BottomAppBar child) {
       // Set the initial position of the FloatingActionButton with the BottomAppBar vertical offset.
       CoordinatorLayout.LayoutParams fabLayoutParams =
           (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
       fabLayoutParams.anchorGravity = Gravity.CENTER;
-
-      Rect rect = new Rect();
-      fab.getBackground().getPadding(rect);
-      int drawablePadding = rect.bottom;
-
-      fabLayoutParams.bottomMargin =
-          (int)
-                  (child.getMeasuredHeight()
-                      - fab.getMeasuredHeight() / 2
-                      + child.getCradleVerticalOffset())
-              - drawablePadding;
 
       // Ensure the FAB is correctly linked to this BAB so the animations can run correctly
       child.addFabAnimationListeners(fab);
@@ -626,7 +664,51 @@ public class BottomAppBar extends Toolbar {
 
       // Now let the CoordinatorLayout lay out the BAB
       parent.onLayoutChild(child, layoutDirection);
-      return true;
+      return super.onLayoutChild(parent, child, layoutDirection);
+    }
+
+    @Override
+    public boolean onStartNestedScroll(
+        @NonNull CoordinatorLayout coordinatorLayout,
+        @NonNull BottomAppBar child,
+        @NonNull View directTargetChild,
+        @NonNull View target,
+        @ScrollAxis int axes,
+        @NestedScrollType int type) {
+      // We will ask to start on nested scroll if the BottomAppBar is set to hide.
+      return child.getHideOnScroll()
+          && super.onStartNestedScroll(
+              coordinatorLayout, child, directTargetChild, target, axes, type);
+    }
+
+    @Override
+    protected void slideUp(BottomAppBar child) {
+      super.slideUp(child);
+      FloatingActionButton fab = child.findDependentFab();
+      if (fab != null) {
+        fab.clearAnimation();
+        fab.animate()
+            .translationY(child.getFabTranslationY())
+            .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
+            .setDuration(ENTER_ANIMATION_DURATION);
+      }
+    }
+
+    @Override
+    protected void slideDown(BottomAppBar child) {
+      super.slideDown(child);
+      FloatingActionButton fab = child.findDependentFab();
+      if (fab != null) {
+        Rect contentRect = new Rect();
+        fab.getContentRect(contentRect);
+        float fabShadowPadding = fab.getMeasuredHeight() - contentRect.height();
+
+        fab.clearAnimation();
+        fab.animate()
+            .translationY(-fab.getPaddingBottom() + fabShadowPadding)
+            .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
+            .setDuration(EXIT_ANIMATION_DURATION);
+      }
     }
   }
 

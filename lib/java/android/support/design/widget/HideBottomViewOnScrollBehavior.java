@@ -33,8 +33,8 @@ import android.view.ViewPropertyAnimator;
  */
 public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
 
-  private static final int ENTER_ANIMATION_DURATION = 225;
-  private static final int EXIT_ANIMATION_DURATION = 175;
+  protected static final int ENTER_ANIMATION_DURATION = 225;
+  protected static final int EXIT_ANIMATION_DURATION = 175;
 
   private static final int STATE_SCROLLED_DOWN = 1;
   private static final int STATE_SCROLLED_UP = 2;
@@ -81,35 +81,31 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       int dyConsumed,
       int dxUnconsumed,
       int dyUnconsumed) {
-    if (dyConsumed > 0) {
+    if (currentState != STATE_SCROLLED_DOWN && dyConsumed > 0) {
       slideDown(child);
-    } else if (dyConsumed < 0) {
+    } else if (currentState != STATE_SCROLLED_UP && dyConsumed < 0) {
       slideUp(child);
     }
   }
 
-  private void slideUp(V child) {
-    if (currentState != STATE_SCROLLED_UP) {
-      if (currentAnimator != null) {
-        currentAnimator.cancel();
-        child.clearAnimation();
-      }
-      currentState = STATE_SCROLLED_UP;
-      animateChildTo(
-          child, 0, ENTER_ANIMATION_DURATION, AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+  protected void slideUp(V child) {
+    if (currentAnimator != null) {
+      currentAnimator.cancel();
+      child.clearAnimation();
     }
+    currentState = STATE_SCROLLED_UP;
+    animateChildTo(
+        child, 0, ENTER_ANIMATION_DURATION, AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
   }
 
-  private void slideDown(V child) {
-    if (currentState != STATE_SCROLLED_DOWN) {
-      if (currentAnimator != null) {
-        currentAnimator.cancel();
-        child.clearAnimation();
-      }
-      currentState = STATE_SCROLLED_DOWN;
-      animateChildTo(
-          child, height, EXIT_ANIMATION_DURATION, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+  protected void slideDown(V child) {
+    if (currentAnimator != null) {
+      currentAnimator.cancel();
+      child.clearAnimation();
     }
+    currentState = STATE_SCROLLED_DOWN;
+    animateChildTo(
+        child, height, EXIT_ANIMATION_DURATION, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
   }
 
   private void animateChildTo(V child, int targetY, long duration, TimeInterpolator interpolator) {
