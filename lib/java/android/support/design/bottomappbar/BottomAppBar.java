@@ -69,6 +69,14 @@ import java.util.List;
  * <p>Do not use the {@code android:background} attribute or call {@code BottomAppBar.setBackground}
  * because the BottomAppBar manages its background internally. Instead use {@code
  * app:backgroundTint}.
+ *
+ * @attr ref android.support.design.bottomappbar.R.styleable#BottomAppBar_backgroundTint
+ * @attr ref android.support.design.bottomappbar.R.styleable#BottomAppBar_fabAlignmentMode
+ * @attr ref android.support.design.bottomappbar.R.styleable#BottomAppBar_fabAttached
+ * @attr ref android.support.design.bottomappbar.R.styleable#BottomAppBar_fabCradleDiameter
+ * @attr ref android.support.design.bottomappbar.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
+ * @attr ref android.support.design.bottomappbar.R.styleable#BottomAppBar_fabCradleVerticalOffset
+ *
  */
 @CoordinatorLayout.DefaultBehavior(BottomAppBar.Behavior.class)
 public class BottomAppBar extends Toolbar {
