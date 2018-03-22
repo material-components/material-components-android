@@ -535,10 +535,32 @@ final class IndicatorViewController {
     return errorView != null ? errorView.getTextColors() : null;
   }
 
+  void setErrorViewTextColor(@Nullable ColorStateList textColors) {
+    if (errorView != null) {
+      errorView.setTextColor(textColors);
+    }
+  }
+
   void setErrorTextAppearance(@StyleRes int resId) {
     errorTextAppearance = resId;
     if (errorView != null) {
       textInputView.setTextAppearanceCompatWithErrorFallback(errorView, resId);
+    }
+  }
+
+  @ColorInt
+  int getHelperTextViewCurrentTextColor() {
+    return helperTextView != null ? helperTextView.getCurrentTextColor() : -1;
+  }
+
+  @Nullable
+  ColorStateList getHelperTextViewColors() {
+    return helperTextView != null ? helperTextView.getTextColors() : null;
+  }
+
+  void setHelperTextViewTextColor(@Nullable ColorStateList textColors) {
+    if (helperTextView != null) {
+      helperTextView.setTextColor(textColors);
     }
   }
 

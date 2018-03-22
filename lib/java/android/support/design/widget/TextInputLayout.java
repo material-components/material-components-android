@@ -1013,6 +1013,19 @@ public class TextInputLayout extends LinearLayout {
     indicatorViewController.setErrorTextAppearance(resId);
   }
 
+  /** Sets the text color used by the error message in all states. */
+  public void setErrorTextColor(@Nullable ColorStateList textColors) {
+    indicatorViewController.setErrorViewTextColor(textColors);
+  }
+
+  /**
+   * Returns the text color used by the error message in current state.
+   */
+  @ColorInt
+  public int getErrorCurrentTextColors() {
+    return indicatorViewController.getErrorViewCurrentTextColor();
+  }
+
   /**
    * Sets the text color and size for the helper text from the specified TextAppearance resource.
    *
@@ -1077,6 +1090,19 @@ public class TextInputLayout extends LinearLayout {
    */
   public boolean isHelperTextEnabled() {
     return indicatorViewController.isHelperTextEnabled();
+  }
+
+  /** Sets the text color used by the helper text in all states. */
+  public void setHelperTextColor(@Nullable ColorStateList textColors) {
+    indicatorViewController.setHelperTextViewTextColor(textColors);
+  }
+
+  /**
+   * Returns the text color used by the helper text in the current states.
+   */
+  @ColorInt
+  public int getHelperTextCurrentTextColor() {
+    return indicatorViewController.getHelperTextViewCurrentTextColor();
   }
 
   /**
