@@ -2179,6 +2179,17 @@ public class TabLayout extends HorizontalScrollView {
           addView(iconView, 0);
           this.iconView = iconView;
         }
+        final Drawable icon =
+            (tab != null && tab.getIcon() != null)
+                ? DrawableCompat.wrap(tab.getIcon()).mutate()
+                : null;
+        if (icon != null) {
+          DrawableCompat.setTintList(icon, tabIconTint);
+          if (tabIconTintMode != null) {
+            DrawableCompat.setTintMode(icon, tabIconTintMode);
+          }
+        }
+
         if (this.textView == null) {
           TextView textView =
               (TextView)
@@ -2224,10 +2235,6 @@ public class TabLayout extends HorizontalScrollView {
 
       if (iconView != null) {
         if (icon != null) {
-          DrawableCompat.setTintList(icon, tabIconTint);
-          if (tabIconTintMode != null) {
-            DrawableCompat.setTintMode(icon, tabIconTintMode);
-          }
           iconView.setImageDrawable(icon);
           iconView.setVisibility(VISIBLE);
           setVisibility(VISIBLE);
