@@ -106,8 +106,7 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light" parent="Platform.MaterialComponents.Light">
-    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater
-    </item>
+    <item name="viewInflaterClass">android.support.design.theme.MaterialComponentsViewInflater</item>
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
