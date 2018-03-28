@@ -17,8 +17,6 @@
 
 <resources>
 
-  <dimen name="design_tab_scrollable_min_width">160dp</dimen>
-
   <dimen name="design_snackbar_min_width">320dp</dimen>
   <dimen name="design_snackbar_max_width">576dp</dimen>
   <dimen name="design_snackbar_padding_vertical_2lines">@dimen/design_snackbar_padding_vertical

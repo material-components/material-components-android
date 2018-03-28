@@ -6,6 +6,10 @@ version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   implementation compatibility("v7/appcompat")
+
+  implementation project(fromPath("lib/java/android/support/design/animation"))
+  implementation project(fromPath("lib/java/android/support/design/internal"))
+  implementation project(fromPath("lib/java/android/support/design/math"))
 }
 
 android {

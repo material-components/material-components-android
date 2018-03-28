@@ -6,9 +6,10 @@ version = rootProject.ext.mdcLibraryVersion
 dependencies {
   api compatibility("v7/appcompat")
 
-  api project(fromPath("lib/java/android/support/design/widget"))
-
   implementation project(fromPath("lib/java/android/support/design/internal"))
+  implementation project(fromPath("lib/java/android/support/design/resources"))
+  implementation project(fromPath("lib/java/android/support/design/ripple"))
+  implementation project(fromPath("lib/java/android/support/design/shape"))
 }
 
 android {

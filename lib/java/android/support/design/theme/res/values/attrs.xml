@@ -106,14 +106,14 @@
     <attr name="materialButtonStyle"/>
     <!-- Style to use MaterialSwitch in this theme. -->
     <attr name="materialSwitchStyle"/>
-    <!-- Style to use for FloatingActionButtons in this theme. -->
-    <attr name="floatingActionButtonStyle"/>
     <!-- Style to use for ChipGroups in this theme. -->
     <attr name="chipGroupStyle"/>
     <!-- Style to use for Chips in this theme, usually to be used as a view. -->
     <attr name="chipStyle"/>
     <!-- Style to use for standalone Chips in this theme, usually to be used in an EditText. -->
     <attr name="chipStandaloneStyle"/>
+    <!-- Style to use for FloatingActionButtons in this theme. -->
+    <attr name="floatingActionButtonStyle"/>
     <!-- Style to use for MaterialCardView in this theme. -->
     <attr name="materialCardViewStyle"/>
     <!-- Style to use for NavigationView in this theme. -->

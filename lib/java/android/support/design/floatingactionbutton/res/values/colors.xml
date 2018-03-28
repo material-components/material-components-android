@@ -25,12 +25,4 @@
   <!-- Color for the bottom inner pixels in the stroke: 4% black (these are multiplied) -->
   <color name="design_fab_stroke_end_inner_color">#0A000000</color>
 
-  <!-- Shadow color for the first pixels of a shadow -->
-  <color name="design_fab_shadow_start_color">#44000000</color>
-  <!-- Shadow color for the middle pixels of a shadow -->
-  <color name="design_fab_shadow_mid_color">#14000000</color>
-  <!-- Shadow color for the furthest pixels of a shadow -->
-  <color name="design_fab_shadow_end_color">@android:color/transparent</color>
-
 </resources>
-

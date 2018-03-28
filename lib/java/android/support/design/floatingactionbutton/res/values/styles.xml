@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
   <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
     <item name="android:background">@drawable/design_fab_background</item>

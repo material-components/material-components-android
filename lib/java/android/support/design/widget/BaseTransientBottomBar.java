@@ -80,11 +80,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     /** @hide */
     @RestrictTo(LIBRARY_GROUP)
     @IntDef({
-      DISMISS_EVENT_SWIPE,
-      DISMISS_EVENT_ACTION,
-      DISMISS_EVENT_TIMEOUT,
-      DISMISS_EVENT_MANUAL,
-      DISMISS_EVENT_CONSECUTIVE
+        DISMISS_EVENT_SWIPE,
+        DISMISS_EVENT_ACTION,
+        DISMISS_EVENT_TIMEOUT,
+        DISMISS_EVENT_MANUAL,
+        DISMISS_EVENT_CONSECUTIVE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface DismissEvent {}
@@ -528,10 +528,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void animateViewOut(final int event) {
-      final ValueAnimator animator = new ValueAnimator();
+    final ValueAnimator animator = new ValueAnimator();
     animator.setIntValues(0, view.getHeight());
-      animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
-      animator.setDuration(ANIMATION_DURATION);
+    animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
+    animator.setDuration(ANIMATION_DURATION);
     animator.addListener(
         new AnimatorListenerAdapter() {
           @Override
@@ -562,7 +562,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             previousAnimatedIntValue = currentAnimatedIntValue;
           }
         });
-      animator.start();
+    animator.start();
   }
 
   final void hideView(@BaseCallback.DismissEvent final int event) {

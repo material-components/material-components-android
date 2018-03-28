@@ -15,6 +15,8 @@ dependencies {
   api compatibility("v7/recyclerview")
 
   api project(fromPath("lib/java/android/support/design/animation"))
+  api project(fromPath("lib/java/android/support/design/appbar"))
+  api project(fromPath("lib/java/android/support/design/behavior"))
   api project(fromPath("lib/java/android/support/design/bottomnavigation"))
   api project(fromPath("lib/java/android/support/design/circularreveal"))
   api project(fromPath("lib/java/android/support/design/circularreveal/cardview"))

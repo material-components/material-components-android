@@ -8,7 +8,14 @@ dependencies {
   implementation compatibility("v7/appcompat")
 
   implementation project(fromPath("lib/java/android/support/design/animation"))
-  implementation project(fromPath("lib/java/android/support/design/color"))
+  implementation project(fromPath("lib/java/android/support/design/appbar"))
+  implementation project(fromPath("lib/java/android/support/design/bottomsheet"))
+  implementation project(fromPath("lib/java/android/support/design/expandable"))
+  implementation project(fromPath("lib/java/android/support/design/internal"))
+  implementation project(fromPath("lib/java/android/support/design/shadow"))
+  implementation project(fromPath("lib/java/android/support/design/resources"))
+  implementation project(fromPath("lib/java/android/support/design/ripple"))
+  implementation project(fromPath("lib/java/android/support/design/stateful"))
 }
 
 android {

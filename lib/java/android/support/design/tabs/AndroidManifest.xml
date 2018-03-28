@@ -16,7 +16,7 @@
   -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="android.support.design.textfield">
+  package="android.support.design.tabs">
 
   <uses-sdk android:minSdkVersion="14"/>
 

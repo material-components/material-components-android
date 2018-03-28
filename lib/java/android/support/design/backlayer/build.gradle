@@ -8,8 +8,9 @@ dependencies {
   api compatibility("compat")
   api compatibility("v7/appcompat")
 
-  api project(fromPath("lib"))
+  api project(fromPath("lib/java/android/support/design/expandable"))
   api project(fromPath("lib/java/android/support/design/stateful"))
+  api project(fromPath("lib/java/android/support/design/transformation"))
 }
 
 android {

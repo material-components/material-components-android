@@ -8,6 +8,7 @@ dependencies {
   implementation compatibility("v7/appcompat")
 
   implementation project(fromPath("lib/java/android/support/design/dialog"))
+  implementation project(fromPath("lib/java/android/support/design/math"))
 }
 
 android {

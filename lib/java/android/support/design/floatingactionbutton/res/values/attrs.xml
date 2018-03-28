@@ -15,8 +15,6 @@
   ~ limitations under the License.
 -->
 <resources>
-  <attr name="floatingActionButtonStyle" format="reference"/>
-
   <declare-styleable name="FloatingActionButton">
     <!-- Background for the FloatingActionButton -->
     <attr name="backgroundTint"/>
@@ -59,4 +57,6 @@
     <attr name="behavior_autoHide" format="boolean"/>
   </declare-styleable>
 
+  <!-- Style to use for FloatingActionButtons in this theme. -->
+  <attr name="floatingActionButtonStyle"/>
 </resources>

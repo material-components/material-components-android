@@ -25,6 +25,7 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
 import android.os.Build;
+import android.support.design.internal.BaseDynamicCoordinatorLayoutTest;
 import android.support.design.testapp.R;
 import android.support.design.testapp.custom.TestFloatingBehavior;
 import android.support.design.testutils.SnackbarUtils;

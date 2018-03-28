@@ -16,15 +16,6 @@
 -->
 <resources>
 
-  <dimen name="design_bottom_navigation_height">56dp</dimen>
-  <dimen name="design_bottom_navigation_margin">8dp</dimen>
-  <dimen name="design_bottom_navigation_text_size">12sp</dimen>
-  <dimen name="design_bottom_navigation_active_text_size">14sp</dimen>
-  <dimen name="design_bottom_navigation_item_min_width">56dp</dimen>
-  <dimen name="design_bottom_navigation_item_max_width">96dp</dimen>
-  <dimen name="design_bottom_navigation_active_item_max_width">168dp</dimen>
-  <dimen name="design_bottom_navigation_active_item_min_width">96dp</dimen>
-
   <dimen name="design_navigation_icon_size">24dp</dimen>
   <dimen name="design_navigation_icon_padding">32dp</dimen>
   <dimen name="design_navigation_separator_vertical_padding">8dp</dimen>
@@ -32,4 +23,5 @@
 
   <dimen name="design_snackbar_padding_vertical">14dp</dimen>
   <dimen name="design_snackbar_padding_vertical_2lines">24dp</dimen>
+
 </resources>

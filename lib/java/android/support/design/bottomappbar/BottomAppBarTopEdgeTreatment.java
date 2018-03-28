@@ -16,12 +16,13 @@
 
 package android.support.design.bottomappbar;
 
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.support.design.shape.EdgeTreatment;
 import android.support.design.shape.ShapePath;
 
 /**
  * Top edge treatment for the bottom app bar which "cradles" a circular {@link
- * android.support.design.widget.FloatingActionButton}.
+ * FloatingActionButton}.
  *
  * <p>This edge features a downward semi-circular cutout from the edge line. The two corners created
  * by the cutout can optionally be rounded. The circular cutout can also support a vertically offset
@@ -41,8 +42,8 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
    * @param roundedCornerRadius the radius, in pixels, of the rounded corners created by the cutout.
    *     A value of 0 will produce a sharp cutout.
    * @param cradleVerticalOffset vertical offset, in pixels, of the {@link
-   *     android.support.design.widget.FloatingActionButton} being cradled. An offset of 0 indicates
-   *     the vertical center of the {@link android.support.design.widget.FloatingActionButton} is
+   *     FloatingActionButton} being cradled. An offset of 0 indicates
+   *     the vertical center of the {@link FloatingActionButton} is
    *     positioned on the top edge.
    */
   public BottomAppBarTopEdgeTreatment(
@@ -102,8 +103,8 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
 
   /**
    * @return vertical offset, in pixels, of the {@link
-   *     android.support.design.widget.FloatingActionButton} being cradled. An offset of 0 indicates
-   *     the vertical center of the {@link android.support.design.widget.FloatingActionButton} is
+   *     FloatingActionButton} being cradled. An offset of 0 indicates
+   *     the vertical center of the {@link FloatingActionButton} is
    *     positioned on the top edge.
    */
   public float getCradleVerticalOffset() {
@@ -112,8 +113,8 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
 
   /**
    * @param cradleVerticalOffset vertical offset, in pixels, of the {@link
-   *     android.support.design.widget.FloatingActionButton} being cradled. An offset of 0 indicates
-   *     the vertical center of the {@link android.support.design.widget.FloatingActionButton} is
+   *     FloatingActionButton} being cradled. An offset of 0 indicates
+   *     the vertical center of the {@link FloatingActionButton} is
    *     positioned on the top edge.
    */
   public void setCradleVerticalOffset(float cradleVerticalOffset) {

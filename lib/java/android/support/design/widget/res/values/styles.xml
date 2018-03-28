@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
 
   <style name="TextAppearance.Design.Snackbar.Message" parent="android:TextAppearance">
     <item name="android:textSize">@dimen/design_snackbar_text_size</item>
@@ -29,24 +29,6 @@
     <item name="android:paddingRight">@dimen/design_snackbar_padding_horizontal</item>
     <item name="elevation">@dimen/design_snackbar_elevation</item>
     <item name="maxActionInlineWidth">@dimen/design_snackbar_action_inline_max_width</item>
-  </style>
-
-  <style name="Widget.Design.CollapsingToolbar" parent="android:Widget">
-    <item name="expandedTitleMargin">32dp</item>
-    <item name="statusBarScrim">?attr/colorPrimaryDark</item>
-  </style>
-
-  <style name="Widget.Design.AppBarLayout" parent="android:Widget">
-    <item name="android:background">?attr/colorPrimary</item>
-    <item name="android:stateListAnimator" tools:ignore="NewApi">
-      @animator/design_appbar_state_list_animator
-    </item>
-    <item name="android:keyboardNavigationCluster" tools:ignore="NewApi">true</item>
-    <item name="android:touchscreenBlocksFocus" tools:ignore="NewApi">true</item>
-  </style>
-
-  <style name="TextAppearance.Design.CollapsingToolbar.Expanded" parent="TextAppearance.AppCompat.Display1">
-    <item name="android:textColor">?android:attr/textColorPrimary</item>
   </style>
 
 </resources>

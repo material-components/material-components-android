@@ -26,6 +26,8 @@ dependencies {
 
 def srcDirs = [
   'android/support/design/animation',
+  'android/support/design/appbar',
+  'android/support/design/behavior',
   'android/support/design/bottomappbar',
   'android/support/design/bottomnavigation',
   'android/support/design/bottomsheet',
@@ -47,6 +49,7 @@ def srcDirs = [
   'android/support/design/resources',
   'android/support/design/ripple',
   'android/support/design/shape',
+  'android/support/design/shadow',
   'android/support/design/snackbar',
   'android/support/design/stateful',
   'android/support/design/tabs',

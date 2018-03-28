@@ -18,14 +18,14 @@ package android.support.design.widget;
 
 import android.app.Dialog;
 import android.os.Bundle;
-import android.support.v4.app.DialogFragment;
-import android.support.v7.app.AppCompatDialogFragment;
 
 /**
- * Modal bottom sheet. This is a version of {@link DialogFragment} that shows a bottom sheet using
- * {@link BottomSheetDialog} instead of a floating dialog.
+ * @deprecated This version of the BottomSheetDialogFragment is deprecated use {@link
+ *     android.support.design.bottomsheet.BottomSheetDialogFragment} instead.
  */
-public class BottomSheetDialogFragment extends AppCompatDialogFragment {
+@Deprecated
+public class BottomSheetDialogFragment
+    extends android.support.design.bottomsheet.BottomSheetDialogFragment {
 
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {

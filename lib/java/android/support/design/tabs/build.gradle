@@ -5,7 +5,15 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
+  implementation compatibility("annotations")
+  implementation compatibility("compat")
+  implementation compatibility("core_ui")
   implementation compatibility("v7/appcompat")
+
+  implementation project(fromPath("lib/java/android/support/design/animation"))
+  implementation project(fromPath("lib/java/android/support/design/internal"))
+  implementation project(fromPath("lib/java/android/support/design/resources"))
+  implementation project(fromPath("lib/java/android/support/design/ripple"))
 }
 
 android {
