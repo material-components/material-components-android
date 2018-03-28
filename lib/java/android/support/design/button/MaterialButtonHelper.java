@@ -16,6 +16,8 @@
 
 package android.support.design.button;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;

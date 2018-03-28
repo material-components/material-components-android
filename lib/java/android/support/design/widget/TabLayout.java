@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_DRAGGING;
 import static android.support.v4.view.ViewPager.SCROLL_STATE_IDLE;

@@ -47,17 +47,19 @@
     <attr name="additionalPaddingLeftForIcon" format="dimension"/>
     <!-- Padding to add/remove from the right side of the button when an icon is present. -->
     <attr name="additionalPaddingRightForIcon" format="dimension"/>
-    <!-- Specifies the color used to draw the path outline of the button. -->
-    <attr name="strokeColor" format="color"/>
-    <!-- Width of the stroke path of the button. Default is 0. -->
-    <attr name="strokeWidth" format="dimension"/>
+    <!-- Specifies the color used to draw the path outline of the button. Attribute type definition
+         is in resources package. -->
+    <attr name="strokeColor"/>
+    <!-- Width of the stroke path of the button. Default is 0. Attribute type definition is in
+         resources package. -->
+    <attr name="strokeWidth"/>
     <!--
         Specifies the radius for the corners of the button. Default is 0, for non-rounded corners.
     -->
     <attr name="cornerRadius" format="dimension"/>
     <!-- Ripple color for the button. This may be a color state list, if the desired ripple color
-         should be stateful. -->
-    <attr name="rippleColor" format="color"/>
+         should be stateful. Attribute type definition is in resources package. -->
+    <attr name="rippleColor"/>
   </declare-styleable>
 
 </resources>

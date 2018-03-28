@@ -16,6 +16,8 @@
 
 package android.support.design.chip;
 
+import android.support.design.R;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;

@@ -43,7 +43,9 @@
     <attr name="switchTextAppearance" format="reference" />
     <!-- Amount of padding on either side of text within the switch thumb. -->
     <attr name="thumbTextPadding" format="dimension" />
-    <attr name="rippleColor" format="color"/>
+    <!-- Ripple color of clickable part of switch. Attribute type definition is in resources
+         package. -->
+    <attr name="rippleColor"/>
     <attr name="rippleAlpha" format="color"/>
 
     <!-- Drawable to use as the "track" that the switch thumb slides within. -->

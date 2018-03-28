@@ -37,11 +37,6 @@
   <public name="expandedTitleMarginTop" type="attr"/>
   <public name="expandedTitleTextAppearance" type="attr"/>
   <public name="fabSize" type="attr"/>
-  <public name="headerLayout" type="attr"/>
-  <public name="itemBackground" type="attr"/>
-  <public name="itemIconTint" type="attr"/>
-  <public name="itemTextAppearance" type="attr"/>
-  <public name="itemTextColor" type="attr"/>
   <public name="keylines" type="attr"/>
   <public name="layout_anchor" type="attr"/>
   <public name="layout_anchorGravity" type="attr"/>
@@ -51,9 +46,7 @@
   <public name="layout_keyline" type="attr"/>
   <public name="layout_scrollFlags" type="attr"/>
   <public name="layout_scrollInterpolator" type="attr"/>
-  <public name="menu" type="attr"/>
   <public name="pressedTranslationZ" type="attr"/>
-  <public name="rippleColor" type="attr"/>
   <public name="statusBarBackground" type="attr"/>
   <public name="statusBarScrim" type="attr"/>
   <public name="title" type="attr"/>

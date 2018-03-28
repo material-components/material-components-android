@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.support.design.R;
+
 import static android.support.design.widget.IndicatorViewController.COUNTER_INDEX;
 
 import android.animation.ValueAnimator;

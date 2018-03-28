@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.support.design.R;
+
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.support.v7.widget.TintTypedArray;

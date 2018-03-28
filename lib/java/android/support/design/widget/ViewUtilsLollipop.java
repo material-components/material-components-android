@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.support.design.R;
+
 import android.animation.AnimatorInflater;
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;

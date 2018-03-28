@@ -27,10 +27,6 @@
 
   <style name="Platform.MaterialComponents.Light" parent="Theme.AppCompat.Light"/>
 
-  <style name="Platform.MaterialComponents.Dialog" parent="Theme.AppCompat.Dialog"/>
-
-  <style name="Platform.MaterialComponents.Light.Dialog" parent="Theme.AppCompat.Light.Dialog"/>
-
   <!-- All new attributes should be set in the following four Base.V14 themes. -->
   <eat-comment/>
 

@@ -155,10 +155,11 @@
   </declare-styleable>
 
   <declare-styleable name="DesignTheme">
+    <!-- Attribute type definitions are in bottomsheet package. -->
     <!-- Theme to use for modal bottom sheet dialogs spawned from this theme. -->
-    <attr name="bottomSheetDialogTheme" format="reference"/>
+    <attr name="bottomSheetDialogTheme"/>
     <!-- Style to use for modal bottom sheets in this theme. -->
-    <attr name="bottomSheetStyle" format="reference"/>
+    <attr name="bottomSheetStyle"/>
   </declare-styleable>
 
 </resources>

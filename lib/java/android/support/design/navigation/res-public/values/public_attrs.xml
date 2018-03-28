@@ -17,9 +17,12 @@
 
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
-  <public name="bottomNavigationStyle" type="attr"/>
-
-  <public name="itemTextAppearanceInactive" type="attr"/>
-  <public name="itemTextAppearanceActive" type="attr"/>
-  <public name="labelVisibilityMode" type="attr"/>
+  <public name="itemBackground" type="attr"/>
+  <public name="itemIconTint" type="attr"/>
+  <public name="itemTextColor" type="attr"/>
+  <public name="menu" type="attr"/>
+  <public name="itemTextAppearance" type="attr"/>
+  <public name="headerLayout" type="attr"/>
+  <public name="itemHorizontalPadding" type="attr"/>
+  <public name="itemIconPadding" type="attr"/>
 </resources>

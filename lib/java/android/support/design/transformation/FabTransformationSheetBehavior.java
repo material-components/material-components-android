@@ -15,6 +15,8 @@
  */
 package android.support.design.transformation;
 
+import android.support.design.R;
+
 import android.content.Context;
 import android.support.annotation.AnimatorRes;
 import android.support.design.animation.MotionSpec;

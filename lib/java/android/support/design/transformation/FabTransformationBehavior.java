@@ -16,6 +16,8 @@
 
 package android.support.design.transformation;
 
+import android.support.design.R;
+
 import static android.support.design.animation.AnimationUtils.lerp;
 
 import android.animation.Animator;

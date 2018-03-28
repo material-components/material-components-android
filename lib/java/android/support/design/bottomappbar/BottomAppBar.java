@@ -16,6 +16,8 @@
 
 package android.support.design.bottomappbar;
 
+import android.support.design.R;
+
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;

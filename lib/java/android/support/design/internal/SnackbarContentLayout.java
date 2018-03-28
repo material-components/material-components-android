@@ -15,6 +15,8 @@
  */
 package android.support.design.internal;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;

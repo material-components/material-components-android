@@ -16,10 +16,6 @@
 -->
 <resources>
 
-  <!-- 5 * standard increment (56dp) -->
-  <dimen name="design_navigation_max_width">280dp</dimen>
-  <dimen name="design_navigation_elevation">16dp</dimen>
-
   <dimen name="design_snackbar_min_width">-1px</dimen>
   <dimen name="design_snackbar_max_width">-1px</dimen>
   <dimen name="design_snackbar_elevation">6dp</dimen>

@@ -51,28 +51,6 @@
       parent="Base.Theme.MaterialComponents.Light.DialogWhenLarge">
   </style>
 
-  <style name="Theme.MaterialComponents.Dialog" parent="Base.Theme.MaterialComponents.Dialog"/>
-
-  <style name="Theme.MaterialComponents.Light.Dialog" parent="Base.Theme.MaterialComponents.Light.Dialog"/>
-
-
-  <!--
-    Material theme for alert dialog windows, which is used by the AlertDialog class.
-    This is basically a dialog but sets the background to empty so it can do
-    two-tone backgrounds. For applications targeting Honeycomb or newer, this is the default
-    AlertDialog theme.
-  -->
-  <style name="Theme.MaterialComponents.Dialog.Alert" parent="Base.Theme.MaterialComponents.Dialog.Alert"/>
-
-  <style name="Theme.MaterialComponents.Light.Dialog.Alert" parent="Base.Theme.MaterialComponents.Light.Dialog.Alert"/>
-
-  <!--
-    Variant of Theme.MaterialComponents.Dialog that has a nice minimum width for a regular dialog.
-  -->
-  <style name="Theme.MaterialComponents.Dialog.MinWidth" parent="Base.Theme.MaterialComponents.Dialog.MinWidth"/>
-
-  <style name="Theme.MaterialComponents.Light.Dialog.MinWidth" parent="Base.Theme.MaterialComponents.Light.Dialog.MinWidth"/>
-
   <!-- Menu/item attributes -->
   <style name="Theme.MaterialComponents.CompactMenu" parent="Base.Theme.MaterialComponents.CompactMenu"/>
 
@@ -103,10 +81,6 @@
     text color.
   -->
   <style name="ThemeOverlay.MaterialComponents.Dark.ActionBar" parent="ThemeOverlay.AppCompat.Dark.ActionBar"/>
-
-  <style name="ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog"/>
-
-  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert"/>
 
   <!-- Deprecated. Use Theme.MaterialComponents instead. -->
   <style name="Theme.Design" parent="Theme.AppCompat">

@@ -16,6 +16,8 @@
 
 package android.support.design.card;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.res.TypedArray;

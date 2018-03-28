@@ -208,23 +208,13 @@ subprojects {
           })
 
           project.android {
-            def JAVA_SOURCES_TEMP_DIR = "$buildDir/javaSources"
-
-            task copyJavaSources(type: Copy) {
-              def projectDir = mdcLibraryDir
-              if (project.name != 'lib') {
-                projectDir += project.name.replace('lib/java/' + mdcLibraryDir, '')
-              }
+            task sourcesJar(type: Jar) {
+              classifier = 'sources'
               from(android.sourceSets.main.java.srcDirs) {
                 // Needed because we have Java sources and resources in same directory
-                include '*.java'
+                include '**/*.java'
+                includeEmptyDirs = false
               }
-              into JAVA_SOURCES_TEMP_DIR + '/' + projectDir
-            }
-
-            task sourcesJar(type: Jar, dependsOn: copyJavaSources) {
-              classifier = 'sources'
-              from JAVA_SOURCES_TEMP_DIR
             }
 
             artifacts {

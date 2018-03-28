@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.support.design.R;
+
 import static android.view.View.TRANSLATION_Y;
 import static android.view.View.VISIBLE;
 

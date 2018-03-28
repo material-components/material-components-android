@@ -16,6 +16,8 @@
 
 package android.support.design.materialswitch;
 
+import android.support.design.R;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;

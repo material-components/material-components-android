@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.support.design.R;
+
 import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.LinearGradient;

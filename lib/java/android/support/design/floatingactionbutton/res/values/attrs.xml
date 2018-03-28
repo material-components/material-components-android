@@ -15,6 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
+  <attr name="floatingActionButtonStyle" format="reference"/>
 
   <declare-styleable name="FloatingActionButton">
     <!-- Background for the FloatingActionButton -->

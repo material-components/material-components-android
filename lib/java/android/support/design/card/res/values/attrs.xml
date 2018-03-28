@@ -24,10 +24,12 @@
   <attr name="materialCardViewStyle" format="reference"/>
 
   <declare-styleable name="MaterialCardView">
-    <!-- Specifies the color used to draw the path outline of the card. -->
-    <attr name="strokeColor" format="color"/>
-    <!-- Width of the stroke path of the card. Default is 0. -->
-    <attr name="strokeWidth" format="dimension"/>
+    <!-- Specifies the color used to draw the path outline of the card. Attribute type definition is
+         in resources package. -->
+    <attr name="strokeColor"/>
+    <!-- Width of the stroke path of the card. Default is 0. Attribute type definition is in
+         resources package. -->
+    <attr name="strokeWidth"/>
   </declare-styleable>
 
 </resources>

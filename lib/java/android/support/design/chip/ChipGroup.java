@@ -16,6 +16,8 @@
 
 package android.support.design.chip;
 
+import android.support.design.R;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;

@@ -16,6 +16,8 @@
 
 package android.support.design.widget;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static android.support.design.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 
