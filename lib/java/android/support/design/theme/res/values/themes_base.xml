@@ -72,7 +72,6 @@
 
     <!-- Widget styles -->
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
-    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">
       @style/Widget.MaterialComponents.BottomNavigationView.Colored
     </item>
@@ -147,7 +146,6 @@
 
     <!-- Widget styles -->
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
-    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>

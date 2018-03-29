@@ -7,7 +7,6 @@ version = rootProject.ext.mdcLibraryVersion
 dependencies {
   implementation compatibility("v7/appcompat")
 
-  implementation project(fromPath("lib/java/android/support/design/bottomappbar"))
   implementation project(fromPath("lib/java/android/support/design/bottomnavigation"))
   implementation project(fromPath("lib/java/android/support/design/button"))
   implementation project(fromPath("lib/java/android/support/design/card"))
