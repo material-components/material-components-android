@@ -41,6 +41,9 @@ import static org.mockito.Mockito.verifyNoMoreInteractions;
 import android.content.res.Resources;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
+import android.support.design.snackbar.BaseSnackbar;
+import android.support.design.snackbar.BaseTransientBottomBar;
+import android.support.design.snackbar.Snackbar;
 import android.support.design.testapp.R;
 import android.support.design.testapp.SnackbarActivity;
 import android.support.design.testutils.SnackbarUtils;
@@ -94,7 +97,7 @@ public class SnackbarTest {
     withText(expectedMessage)
         .matches(
             allOf(
-                isDescendantOfA(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+                isDescendantOfA(isAssignableFrom(BaseSnackbar.SnackbarLayout.class)),
                 isCompletelyDisplayed()));
 
     // If the action is not empty, verify that we're showing it
@@ -102,7 +105,7 @@ public class SnackbarTest {
       withText(expectedAction)
           .matches(
               allOf(
-                  isDescendantOfA(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+                  isDescendantOfA(isAssignableFrom(BaseSnackbar.SnackbarLayout.class)),
                   isCompletelyDisplayed()));
     }
 
@@ -213,7 +216,7 @@ public class SnackbarTest {
   @Test
   public void testDismissViaSwipe() throws Throwable {
     verifyDismissCallback(
-        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        onView(isAssignableFrom(BaseSnackbar.SnackbarLayout.class)),
         swipeRight(),
         null,
         Snackbar.LENGTH_LONG,
@@ -227,7 +230,7 @@ public class SnackbarTest {
       // On devices that support RTL layout, the start-to-end dismiss swipe is done
       // with swipeLeft() action
       verifyDismissCallback(
-          onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+          onView(isAssignableFrom(BaseSnackbar.SnackbarLayout.class)),
           swipeLeft(),
           null,
           Snackbar.LENGTH_LONG,
@@ -238,7 +241,7 @@ public class SnackbarTest {
   @Test
   public void testDismissViaApi() throws Throwable {
     verifyDismissCallback(
-        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        onView(isAssignableFrom(BaseSnackbar.SnackbarLayout.class)),
         null,
         new DismissAction() {
           @Override
@@ -253,7 +256,7 @@ public class SnackbarTest {
   @Test
   public void testDismissViaTimeout() throws Throwable {
     verifyDismissCallback(
-        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        onView(isAssignableFrom(BaseSnackbar.SnackbarLayout.class)),
         null,
         null,
         Snackbar.LENGTH_LONG,
@@ -263,7 +266,7 @@ public class SnackbarTest {
   @Test
   public void testSwipeUpDismissesViaTimeout() throws Throwable {
     verifyDismissCallback(
-        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        onView(isAssignableFrom(BaseSnackbar.SnackbarLayout.class)),
         // This is a swipe up, from the middle center of the view, to above the view
         // (outside the bounds)
         new GeneralSwipeAction(
@@ -298,7 +301,7 @@ public class SnackbarTest {
     // Our dismiss action is to show another snackbar (and verify that the original snackbar
     // is now dismissed with CONSECUTIVE event)
     verifyDismissCallback(
-        onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
+        onView(isAssignableFrom(BaseSnackbar.SnackbarLayout.class)),
         null,
         new DismissAction() {
           @Override

@@ -21,7 +21,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.support.design.widget.BaseTransientBottomBar;
+import android.support.design.snackbar.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
@@ -31,9 +31,8 @@ public class SnackbarUtils {
     void perform() throws Throwable;
   }
 
-  private static class TransientBottomBarShownCallback
-      extends BaseTransientBottomBar.BaseCallback<BaseTransientBottomBar>
-      implements IdlingResource {
+  private static class TransientBottomBarShownCallback<B extends BaseTransientBottomBar<B>>
+      extends BaseTransientBottomBar.BaseCallback<B> implements IdlingResource {
     private boolean isShown = false;
 
     @Nullable private IdlingResource.ResourceCallback callback;
@@ -60,7 +59,7 @@ public class SnackbarUtils {
     }
 
     @Override
-    public void onShown(BaseTransientBottomBar transientBottomBar) {
+    public void onShown(B transientBottomBar) {
       isShown = true;
       if (callback != null) {
         callback.onTransitionToIdle();
@@ -68,9 +67,8 @@ public class SnackbarUtils {
     }
   }
 
-  private static class TransientBottomBarDismissedCallback
-      extends BaseTransientBottomBar.BaseCallback<BaseTransientBottomBar>
-      implements IdlingResource {
+  private static class TransientBottomBarDismissedCallback<B extends BaseTransientBottomBar<B>>
+      extends BaseTransientBottomBar.BaseCallback<B> implements IdlingResource {
     private boolean isDismissed = false;
 
     @Nullable private IdlingResource.ResourceCallback callback;
@@ -97,7 +95,7 @@ public class SnackbarUtils {
     }
 
     @Override
-    public void onDismissed(BaseTransientBottomBar transientBottomBar, @DismissEvent int event) {
+    public void onDismissed(B transientBottomBar, @DismissEvent int event) {
       isDismissed = true;
       if (callback != null) {
         callback.onTransitionToIdle();
@@ -109,8 +107,8 @@ public class SnackbarUtils {
    * Helper method that shows that specified {@link Snackbar} and waits until it has been fully
    * shown.
    */
-  public static void showTransientBottomBarAndWaitUntilFullyShown(
-      @NonNull BaseTransientBottomBar transientBottomBar) {
+  public static <B extends BaseTransientBottomBar<B>>
+      void showTransientBottomBarAndWaitUntilFullyShown(@NonNull B transientBottomBar) {
     TransientBottomBarShownCallback callback = new TransientBottomBarShownCallback();
     transientBottomBar.addCallback(callback);
     try {
@@ -137,8 +135,9 @@ public class SnackbarUtils {
    * Helper method that dismissed that specified {@link Snackbar} and waits until it has been fully
    * dismissed.
    */
-  public static void dismissTransientBottomBarAndWaitUntilFullyDismissed(
-      @NonNull final BaseTransientBottomBar transientBottomBar) throws Throwable {
+  public static <B extends BaseTransientBottomBar<B>>
+      void dismissTransientBottomBarAndWaitUntilFullyDismissed(@NonNull final B transientBottomBar)
+          throws Throwable {
     performActionAndWaitUntilFullyDismissed(
         transientBottomBar,
         new TransientBottomBarAction() {
@@ -153,9 +152,8 @@ public class SnackbarUtils {
    * Helper method that dismissed that specified {@link Snackbar} and waits until it has been fully
    * dismissed.
    */
-  public static void performActionAndWaitUntilFullyDismissed(
-      @NonNull BaseTransientBottomBar transientBottomBar, @NonNull TransientBottomBarAction action)
-      throws Throwable {
+  public static <B extends BaseTransientBottomBar<B>> void performActionAndWaitUntilFullyDismissed(
+      @NonNull B transientBottomBar, @NonNull TransientBottomBarAction action) throws Throwable {
     TransientBottomBarDismissedCallback callback = new TransientBottomBarDismissedCallback();
     transientBottomBar.addCallback(callback);
     try {
@@ -179,7 +177,8 @@ public class SnackbarUtils {
   }
 
   /** Helper method that waits until the given bar has been fully dismissed. */
-  public static void waitUntilFullyDismissed(@NonNull BaseTransientBottomBar transientBottomBar) {
+  public static <B extends BaseTransientBottomBar<B>> void waitUntilFullyDismissed(
+      @NonNull B transientBottomBar) {
     TransientBottomBarDismissedCallback callback = new TransientBottomBarDismissedCallback();
     transientBottomBar.addCallback(callback);
     try {

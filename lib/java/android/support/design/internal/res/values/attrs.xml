@@ -38,12 +38,6 @@
     <attr name="insetForeground" format="color|reference"/>
   </declare-styleable>
 
-  <declare-styleable name="SnackbarLayout">
-    <attr name="android:maxWidth"/>
-    <attr name="elevation"/>
-    <attr name="maxActionInlineWidth" format="dimension"/>
-  </declare-styleable>
-
   <declare-styleable name="FlexboxLayout_Layout">
     <attr name="layout_order" format="integer"/>
 
