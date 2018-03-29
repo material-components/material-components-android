@@ -1855,7 +1855,15 @@ public class TextInputLayout extends LinearLayout {
     applyPasswordToggleTint();
   }
 
-  private void passwordVisibilityToggleRequested(boolean shouldSkipAnimations) {
+  /**
+   * Handles visiblity for a password toggle icon when changing obfuscation in a password edit text.
+   * Public so that clients can override this method for custom UI changes when toggling the display
+   * of password text
+   *
+   * @param shouldSkipAnimations true if the password toggle indicator icon should not animate
+   *     changes
+   */
+  public void passwordVisibilityToggleRequested(boolean shouldSkipAnimations) {
     if (passwordToggleEnabled) {
       // Store the current cursor position
       final int selection = editText.getSelectionEnd();
