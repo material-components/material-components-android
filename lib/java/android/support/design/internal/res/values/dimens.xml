@@ -21,7 +21,4 @@
   <dimen name="design_navigation_separator_vertical_padding">8dp</dimen>
   <dimen name="design_navigation_padding_bottom">8dp</dimen>
 
-  <dimen name="design_snackbar_padding_vertical">14dp</dimen>
-  <dimen name="design_snackbar_padding_vertical_2lines">24dp</dimen>
-
 </resources>

@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package android.support.design.internal;
+package android.support.design.snackbar;
 
 import android.support.design.R;
 
@@ -22,7 +22,6 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.annotation.RestrictTo;
-import android.support.design.snackbar.ContentViewCallback;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;

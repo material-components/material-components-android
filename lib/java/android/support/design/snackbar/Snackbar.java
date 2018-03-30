@@ -14,9 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.design.widget;
-
-import android.support.design.R;
+package android.support.design.snackbar;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
@@ -25,22 +23,37 @@ import android.content.res.ColorStateList;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
-import android.support.design.snackbar.BaseSnackbar;
-import android.support.design.snackbar.SnackbarContentLayout;
+import android.support.design.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 
 /**
- * @deprecated This version of the Snackbar is deprecated use {@link
- *     android.support.design.snackbar.Snackbar} instead.
+ * Snackbars provide lightweight feedback about an operation. They show a brief message at the
+ * bottom of the screen on mobile and lower left on larger devices. Snackbars appear above all other
+ * elements on screen and only one can be displayed at a time.
+ *
+ * <p>They automatically disappear after a timeout or after user interaction elsewhere on the
+ * screen, particularly after interactions that summon a new surface or activity. Snackbars can be
+ * swiped off screen.
+ *
+ * <p>Snackbars can contain an action which is set via {@link #setAction(CharSequence,
+ * android.view.View.OnClickListener)}.
+ *
+ * <p>To be notified when a snackbar has been shown or dismissed, you can provide a {@link Callback}
+ * via {@link BaseTransientBottomBar#addCallback(BaseCallback)}.
  */
-@Deprecated
 public final class Snackbar extends BaseSnackbar<Snackbar> {
 
-  /** @deprecated */
-  @Deprecated
+  /**
+   * Callback class for {@link Snackbar} instances.
+   *
+   * <p>Note: this class is here to provide backwards-compatible way for apps written before the
+   * existence of the base {@link BaseTransientBottomBar} class.
+   *
+   * @see BaseTransientBottomBar#addCallback(BaseCallback)
+   */
   public static class Callback extends BaseCallback<Snackbar> {
     /** Indicates that the Snackbar was dismissed via a swipe. */
     public static final int DISMISS_EVENT_SWIPE = BaseCallback.DISMISS_EVENT_SWIPE;
@@ -71,13 +84,22 @@ public final class Snackbar extends BaseSnackbar<Snackbar> {
     super(parent, content, contentViewCallback);
   }
 
-  @Override
-  protected int getSnackbarBaseLayoutResId() {
-    return R.layout.design_layout_snackbar_legacy;
-  }
-
-  /** @deprecated */
-  @Deprecated
+  /**
+   * Make a Snackbar to display a message
+   *
+   * <p>Snackbar will try and find a parent view to hold Snackbar's view from the value given to
+   * {@code view}. Snackbar will walk up the view tree trying to find a suitable parent, which is
+   * defined as a {@link CoordinatorLayout} or the window decor's content view, whichever comes
+   * first.
+   *
+   * <p>Having a {@link CoordinatorLayout} in your view hierarchy allows Snackbar to enable certain
+   * features, such as swipe-to-dismiss and automatically moving of widgets.
+   *
+   * @param view The view to find a parent from.
+   * @param text The text to show. Can be formatted text.
+   * @param duration How long to display the message. Either {@link #LENGTH_SHORT} or {@link
+   *     #LENGTH_LONG}
+   */
   @NonNull
   public static Snackbar make(
       @NonNull View view, @NonNull CharSequence text, @Duration int duration) {
@@ -94,8 +116,22 @@ public final class Snackbar extends BaseSnackbar<Snackbar> {
     return snackbar;
   }
 
-  /** @deprecated */
-  @Deprecated
+  /**
+   * Make a Snackbar to display a message.
+   *
+   * <p>Snackbar will try and find a parent view to hold Snackbar's view from the value given to
+   * {@code view}. Snackbar will walk up the view tree trying to find a suitable parent, which is
+   * defined as a {@link CoordinatorLayout} or the window decor's content view, whichever comes
+   * first.
+   *
+   * <p>Having a {@link CoordinatorLayout} in your view hierarchy allows Snackbar to enable certain
+   * features, such as swipe-to-dismiss and automatically moving of widgets.
+   *
+   * @param view The view to find a parent from.
+   * @param resId The resource id of the string resource to use. Can be formatted text.
+   * @param duration How long to display the message. Either {@link #LENGTH_SHORT} or {@link
+   *     #LENGTH_LONG}
+   */
   @NonNull
   public static Snackbar make(@NonNull View view, @StringRes int resId, @Duration int duration) {
     return make(view, view.getResources().getText(resId), duration);
@@ -160,8 +196,10 @@ public final class Snackbar extends BaseSnackbar<Snackbar> {
     return super.setCallback(callback);
   }
 
-  /** @deprecated */
-  @Deprecated
+  /**
+   * @hide Note: this class is here to provide backwards-compatible way for apps written before the
+   *     existence of the base {@link BaseTransientBottomBar} class.
+   */
   @RestrictTo(LIBRARY_GROUP)
   public static final class SnackbarLayout extends BaseSnackbar.SnackbarLayout {
     public SnackbarLayout(Context context) {

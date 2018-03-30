@@ -30,4 +30,8 @@
   <dimen name="design_snackbar_action_inline_max_width">128dp</dimen>
 
   <dimen name="design_snackbar_text_size">14sp</dimen>
+
+  <dimen name="design_snackbar_padding_vertical">14dp</dimen>
+  <dimen name="design_snackbar_padding_vertical_2lines">24dp</dimen>
+
 </resources>

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2018 The Android Open Source Project
+  ~ Copyright (C) 2015 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -14,17 +14,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
 
-  <declare-styleable name="Snackbar">
-    <!-- Style to use for action button within a Snackbar in this theme. -->
-    <attr name="snackbarButtonStyle" format="reference"/>
-  </declare-styleable>
-
-  <declare-styleable name="SnackbarLayout">
-    <attr name="android:maxWidth"/>
-    <attr name="elevation"/>
-    <attr name="maxActionInlineWidth" format="dimension"/>
-  </declare-styleable>
-
-</resources>
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    style="@style/Widget.Design.Snackbar"
+    class="android.support.design.snackbar.Snackbar$SnackbarLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"/>

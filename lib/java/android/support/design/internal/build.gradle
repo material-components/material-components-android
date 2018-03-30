@@ -13,7 +13,6 @@ dependencies {
   implementation project(fromPath("lib/java/android/support/design/animation"))
   implementation project(fromPath("lib/java/android/support/design/color"))
   implementation project(fromPath("lib/java/android/support/design/math"))
-  implementation project(fromPath("lib/java/android/support/design/snackbar"))
 }
 
 android {

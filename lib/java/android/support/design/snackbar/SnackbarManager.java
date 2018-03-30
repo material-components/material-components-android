@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.design.widget;
+package android.support.design.snackbar;
 
 import android.os.Handler;
 import android.os.Looper;
