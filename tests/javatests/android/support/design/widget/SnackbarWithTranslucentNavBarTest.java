@@ -19,7 +19,6 @@ package android.support.design.widget;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import android.support.design.snackbar.Snackbar;
 import android.support.design.testapp.R;
 import android.support.design.testapp.SnackbarWithTranslucentNavBarActivity;
 import android.support.design.testutils.SnackbarUtils;

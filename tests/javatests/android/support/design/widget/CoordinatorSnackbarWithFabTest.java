@@ -26,8 +26,6 @@ import static org.mockito.Mockito.mock;
 
 import android.os.Build;
 import android.support.design.internal.BaseDynamicCoordinatorLayoutTest;
-import android.support.design.snackbar.BaseSnackbar;
-import android.support.design.snackbar.Snackbar;
 import android.support.design.testapp.R;
 import android.support.design.testapp.custom.TestFloatingBehavior;
 import android.support.design.testutils.SnackbarUtils;
@@ -62,7 +60,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
   /** Returns the location of our snackbar on the screen. */
   private static int[] getSnackbarLocationOnScreen() {
     final int[] location = new int[2];
-    onView(isAssignableFrom(BaseSnackbar.SnackbarLayout.class))
+    onView(isAssignableFrom(Snackbar.SnackbarLayout.class))
         .perform(
             new ViewAction() {
               @Override

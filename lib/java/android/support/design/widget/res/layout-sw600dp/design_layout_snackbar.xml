@@ -17,8 +17,8 @@
 
 <view xmlns:android="http://schemas.android.com/apk/res/android"
     style="@style/Widget.Design.Snackbar"
-    class="android.support.design.snackbar.BaseSnackbar$SnackbarLayout"
-    android:layout_width="match_parent"
+    class="android.support.design.widget.Snackbar$SnackbarLayout"
+    android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:layout_gravity="bottom"
+    android:layout_gravity="bottom|center_horizontal"
     android:theme="@style/ThemeOverlay.AppCompat.Dark"/>

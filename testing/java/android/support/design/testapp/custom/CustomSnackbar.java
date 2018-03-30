@@ -15,7 +15,7 @@
  */
 package android.support.design.testapp.custom;
 
-import android.support.design.snackbar.BaseTransientBottomBar;
+import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.CoordinatorLayout;
 import android.view.View;
 import android.widget.TextView;

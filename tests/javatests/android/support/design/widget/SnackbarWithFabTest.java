@@ -18,7 +18,6 @@ package android.support.design.widget;
 
 import static org.junit.Assert.assertEquals;
 
-import android.support.design.snackbar.Snackbar;
 import android.support.design.testapp.R;
 import android.support.design.testapp.SnackbarWithFabActivity;
 import android.support.design.testutils.SnackbarUtils;
