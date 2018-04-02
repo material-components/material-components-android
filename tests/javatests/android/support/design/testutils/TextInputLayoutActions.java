@@ -22,7 +22,7 @@ import android.graphics.Typeface;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
 import android.support.design.R;
-import android.support.design.widget.TextInputLayout;
+import android.support.design.textfield.TextInputLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.matcher.ViewMatchers;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.design.widget;
+package android.support.design.snackbar;
 
 import static android.support.design.testutils.TestUtilsActions.setLayoutDirection;
 import static android.support.test.espresso.Espresso.onView;
@@ -44,6 +44,7 @@ import android.support.annotation.StringRes;
 import android.support.design.testapp.R;
 import android.support.design.testapp.SnackbarActivity;
 import android.support.design.testutils.SnackbarUtils;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.ViewInteraction;
 import android.support.test.espresso.action.CoordinatesProvider;

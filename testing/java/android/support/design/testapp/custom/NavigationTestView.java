@@ -16,7 +16,7 @@
 package android.support.design.testapp.custom;
 
 import android.content.Context;
-import android.support.design.widget.NavigationView;
+import android.support.design.navigation.NavigationView;
 import android.support.v4.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 

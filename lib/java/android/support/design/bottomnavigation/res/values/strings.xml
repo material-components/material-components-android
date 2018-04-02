@@ -16,5 +16,5 @@
   -->
 <resources>
   <!-- The class name for the HideBottomViewOnScrollBehavior -->
-  <string name="hide_bottom_view_on_scroll_behavior" translatable="false">android.support.design.widget.HideBottomViewOnScrollBehavior</string>
+  <string name="hide_bottom_view_on_scroll_behavior" translatable="false">android.support.design.behavior.HideBottomViewOnScrollBehavior</string>
 </resources>

@@ -61,7 +61,7 @@ sheet is trivial:
 
 1.  Add any View as a direct child of CoordinatorLayout.
 2.  Apply the behavior by adding the following xml attribute
-    `app:layout_behavior="android.support.design.widget.BottomSheetBehavior"`
+    `app:layout_behavior="android.support.design.bottomsheet.BottomSheetBehavior"`
 3.  Set the desired behavior flags
     -   `app:behavior_hideable` whether this bottom sheet can be hidden by
         dragging it down.

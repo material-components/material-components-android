@@ -29,7 +29,6 @@ import android.app.Instrumentation;
 import android.os.SystemClock;
 import android.support.design.testapp.AppBarHorizontalScrollingActivity;
 import android.support.design.testapp.R;
-import android.support.design.widget.AppBarLayout;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;

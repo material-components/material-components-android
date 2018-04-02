@@ -21,7 +21,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
@@ -32,14 +32,14 @@
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|enterAlways|snap"/>
 
-        <android.support.design.widget.TabLayout
+        <android.support.design.tabs.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             app:layout_scrollFlags="scroll|enterAlways|snap"
             app:tabMode="scrollable"/>
 
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.appbar.AppBarLayout>
 
     <include layout="@layout/include_appbar_scrollview"/>
 

@@ -34,8 +34,6 @@ import android.content.DialogInterface;
 import android.os.SystemClock;
 import android.support.design.testapp.BottomSheetDialogActivity;
 import android.support.design.testapp.R;
-import android.support.design.widget.BottomSheetBehavior;
-import android.support.design.widget.BottomSheetDialog;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.UiController;

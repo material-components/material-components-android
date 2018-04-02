@@ -22,7 +22,7 @@ import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.snackbar.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
+import android.support.design.snackbar.Snackbar;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.IdlingResource;
 

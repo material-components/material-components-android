@@ -26,7 +26,6 @@ import static android.support.test.espresso.matcher.ViewMatchers.withId;
 import android.support.design.testapp.AppBarLayoutCollapsePinActivity;
 import android.support.design.testapp.R;
 import android.support.design.testutils.ActivityUtils;
-import android.support.design.widget.AppBarLayout;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.Rule;

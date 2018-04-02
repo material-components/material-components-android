@@ -14,13 +14,14 @@
  * limitations under the License.
  */
 
-package android.support.design.widget;
+package android.support.design.snackbar;
 
 import static org.junit.Assert.assertEquals;
 
 import android.support.design.testapp.R;
 import android.support.design.testapp.SnackbarWithFabActivity;
 import android.support.design.testutils.SnackbarUtils;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.test.filters.LargeTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;

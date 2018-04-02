@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package android.support.design.widget;
+package android.support.design.snackbar;
 
 import static android.support.design.testutils.DesignViewActions.setVisibility;
 import static android.support.test.espresso.Espresso.onView;
@@ -29,6 +29,7 @@ import android.support.design.internal.BaseDynamicCoordinatorLayoutTest;
 import android.support.design.testapp.R;
 import android.support.design.testapp.custom.TestFloatingBehavior;
 import android.support.design.testutils.SnackbarUtils;
+import android.support.design.widget.CoordinatorLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.filters.MediumTest;
@@ -113,7 +114,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
 
     // Take into account bottom padding and bottom margin to account for how drop shadow is
     // emulated on pre-Lollipop devices
-    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
+    final View fab = mCoordinatorLayout.findViewById(R.id.fab);
     verifySnackbarViewStacking(
         fab,
         fab.getPaddingBottom()
@@ -135,7 +136,7 @@ public class CoordinatorSnackbarWithFabTest extends BaseDynamicCoordinatorLayout
     // Take into account bottom padding and bottom margin to account for how drop shadow is
     // emulated on pre-Lollipop devices
     onView(withId(R.id.fab)).perform(setVisibility(View.VISIBLE));
-    final FloatingActionButton fab = mCoordinatorLayout.findViewById(R.id.fab);
+    final View fab = mCoordinatorLayout.findViewById(R.id.fab);
     verifySnackbarViewStacking(
         fab,
         fab.getPaddingBottom()

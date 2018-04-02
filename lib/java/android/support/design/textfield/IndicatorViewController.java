@@ -52,7 +52,7 @@ import java.util.List;
 
 /**
  * Controller for indicator views underneath the text input line in {@link
- * android.support.design.widget.TextInputLayout}. This class controls helper and error views.
+ * android.support.design.textfield.TextInputLayout}. This class controls helper and error views.
  */
 final class IndicatorViewController {
   /*

@@ -57,7 +57,7 @@
 
   </android.support.v4.widget.NestedScrollView>
 
-  <android.support.design.widget.BottomNavigationView
+  <android.support.design.bottomnavigation.BottomNavigationView
       android:id="@+id/bottom_navigation"
       android:layout_width="match_parent"
       android:layout_height="56dp"

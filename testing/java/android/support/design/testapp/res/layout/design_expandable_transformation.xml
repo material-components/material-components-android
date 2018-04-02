@@ -30,7 +30,7 @@
       android:visibility="invisible"
       app:layout_behavior="@string/fab_transformation_scrim_behavior"/>
 
-  <android.support.design.widget.FloatingActionButton
+  <android.support.design.floatingactionbutton.FloatingActionButton
       android:id="@+id/fab"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

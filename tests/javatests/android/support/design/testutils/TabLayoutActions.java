@@ -19,7 +19,7 @@ package android.support.design.testutils;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
+import android.support.design.tabs.TabLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.matcher.ViewMatchers;

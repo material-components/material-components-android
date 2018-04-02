@@ -28,7 +28,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IdRes;
 import android.support.annotation.NonNull;
 import android.support.design.expandable.ExpandableWidget;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.support.test.espresso.matcher.BoundedMatcher;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;

@@ -17,5 +17,5 @@
 <resources>
   <!-- The class name for the BottomSheetBehavior -->
   <!-- TODO: change to android.support.design.bottomsheet after the widget migration -->
-  <string name="bottom_sheet_behavior" translatable="false">android.support.design.widget.BottomSheetBehavior</string>
+  <string name="bottom_sheet_behavior" translatable="false">android.support.design.bottomsheet.BottomSheetBehavior</string>
 </resources>

@@ -24,7 +24,6 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import android.support.design.testapp.CoordinatorLayoutActivity;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.test.espresso.Espresso;
 import android.support.test.espresso.NoMatchingViewException;

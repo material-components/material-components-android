@@ -18,9 +18,9 @@ package android.support.design.appbar;
 
 import static org.junit.Assert.assertEquals;
 
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.support.design.testapp.R;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.test.filters.SmallTest;
 import android.support.test.runner.AndroidJUnit4;
 import org.junit.Before;

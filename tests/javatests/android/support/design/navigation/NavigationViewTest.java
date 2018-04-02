@@ -68,7 +68,6 @@ import android.support.design.testapp.NavigationViewActivity;
 import android.support.design.testapp.R;
 import android.support.design.testapp.custom.NavigationTestView;
 import android.support.design.testutils.TestDrawable;
-import android.support.design.widget.NavigationView;
 import android.support.test.espresso.matcher.ViewMatchers.Visibility;
 import android.support.test.filters.MediumTest;
 import android.support.test.rule.ActivityTestRule;

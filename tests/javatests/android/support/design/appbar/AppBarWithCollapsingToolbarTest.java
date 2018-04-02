@@ -22,10 +22,9 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 
 import android.os.Build;
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.support.design.testapp.R;
 import android.support.design.testutils.PollingCheck;
-import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.SdkSuppress;
 import android.support.test.runner.AndroidJUnit4;

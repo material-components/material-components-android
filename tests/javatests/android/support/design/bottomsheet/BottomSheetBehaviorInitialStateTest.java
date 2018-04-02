@@ -22,7 +22,6 @@ import static org.hamcrest.core.Is.is;
 import android.content.Context;
 import android.content.Intent;
 import android.support.design.testapp.BottomSheetBehaviorActivity;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;

@@ -22,28 +22,28 @@
     android:padding="16dp"
     android:orientation="vertical">
 
-  <android.support.design.widget.TextInputLayout
+  <android.support.design.textfield.TextInputLayout
       android:id="@+id/textinput"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:errorEnabled="true">
 
-    <android.support.design.widget.TextInputEditText
+    <android.support.design.textfield.TextInputEditText
         android:id="@+id/textinput_edittext"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/textinput_hint"
         android:imeOptions="flagNoExtractUi"/>
 
-  </android.support.design.widget.TextInputLayout>
+  </android.support.design.textfield.TextInputLayout>
 
-  <android.support.design.widget.TextInputLayout
+  <android.support.design.textfield.TextInputLayout
       android:id="@+id/textinput_password"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:passwordToggleEnabled="true">
 
-    <android.support.design.widget.TextInputEditText
+    <android.support.design.textfield.TextInputEditText
         android:id="@+id/textinput_edittext_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -51,44 +51,44 @@
         android:imeOptions="flagNoExtractUi"
         android:inputType="textPassword"/>
 
-  </android.support.design.widget.TextInputLayout>
+  </android.support.design.textfield.TextInputLayout>
 
-  <android.support.design.widget.TextInputLayout
+  <android.support.design.textfield.TextInputLayout
       android:id="@+id/textinput_noedittext"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>
 
-  <android.support.design.widget.TextInputLayout
+  <android.support.design.textfield.TextInputLayout
       android:id="@+id/textinput_with_text"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputEditText
+    <android.support.design.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/textinput_hint"
         android:imeOptions="flagNoExtractUi"
         android:text="@string/snackbar_text"/>
 
-  </android.support.design.widget.TextInputLayout>
+  </android.support.design.textfield.TextInputLayout>
 
-  <android.support.design.widget.TextInputLayout
+  <android.support.design.textfield.TextInputLayout
       android:id="@+id/textinput_box_filled"
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:helperText="@string/textinput_helper_not_enabled">
 
-    <android.support.design.widget.TextInputEditText
+    <android.support.design.textfield.TextInputEditText
         android:id="@+id/textinput_edittext_filled"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/textinput_hint"
         android:imeOptions="flagNoExtractUi"/>
 
-  </android.support.design.widget.TextInputLayout>
+  </android.support.design.textfield.TextInputLayout>
 
-  <android.support.design.widget.TextInputLayout
+  <android.support.design.textfield.TextInputLayout
       android:id="@+id/textinput_box_outline"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
       android:layout_width="match_parent"
@@ -96,25 +96,25 @@
       app:helperText="@string/textinput_helper"
       app:helperTextEnabled="true">
 
-    <android.support.design.widget.TextInputEditText
+    <android.support.design.textfield.TextInputEditText
         android:id="@+id/textinput_edittext_outline"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/textinput_hint"
         android:imeOptions="flagNoExtractUi"/>
 
-  </android.support.design.widget.TextInputLayout>
+  </android.support.design.textfield.TextInputLayout>
 
-  <android.support.design.widget.TextInputLayout
+  <android.support.design.textfield.TextInputLayout
       android:id="@+id/textinput_box_outline_no_hint"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-    <android.support.design.widget.TextInputEditText
+    <android.support.design.textfield.TextInputEditText
         android:id="@+id/textinput_edittext_outline_no_hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:imeOptions="flagNoExtractUi"/>
-  </android.support.design.widget.TextInputLayout>
+  </android.support.design.textfield.TextInputLayout>
 </LinearLayout>

@@ -22,7 +22,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-    <android.support.design.widget.AppBarLayout
+    <android.support.design.appbar.AppBarLayout
         android:id="@+id/app_bar"
         android:layout_height="wrap_content"
         android:layout_width="match_parent">
@@ -33,7 +33,7 @@
             android:layout_width="match_parent"
             app:layout_scrollFlags="scroll|enterAlways"/>
 
-    </android.support.design.widget.AppBarLayout>
+    </android.support.design.appbar.AppBarLayout>
 
     <include layout="@layout/include_appbar_scrollview"/>
 
