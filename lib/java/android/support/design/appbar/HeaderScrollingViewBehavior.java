@@ -119,10 +119,10 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
           parent.getWidth() - parent.getPaddingRight() - lp.rightMargin,
           parent.getHeight() + header.getBottom() - parent.getPaddingBottom() - lp.bottomMargin);
 
-      // TODO: Remove reflection once cl/190431932 is rolled forward
+      // TODO: Remove reflection once CoordinatorLayout#getLastWindowInsets() is public
       WindowInsetsCompat parentInsetsReflection = null;
       try {
-        Method method = CoordinatorLayout.class.getMethod("getLastWindowInsets");
+        Method method = CoordinatorLayout.class.getDeclaredMethod("getLastWindowInsets");
         method.setAccessible(true);
         parentInsetsReflection = (WindowInsetsCompat) method.invoke(parent);
       } catch (NoSuchMethodException e) {

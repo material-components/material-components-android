@@ -29,8 +29,8 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
+import java.lang.reflect.Method;
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -52,8 +52,6 @@ public class SnackbarWithTranslucentNavBarTest {
     coordinatorLayout = activityTestRule.getActivity().findViewById(R.id.col);
   }
 
-  // TODO: Un-ignore and uncomment getLastWindowInsets once cl/190431932 is rolled forward
-  @Ignore
   @Test
   @MediumTest
   public void testDrawsAboveNavigationBar() {
@@ -61,12 +59,23 @@ public class SnackbarWithTranslucentNavBarTest {
     final Snackbar snackbar = Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT);
     SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
-    final WindowInsetsCompat colLastInsets = null; // coordinatorLayout.getLastWindowInsets();
+    // TODO: Remove reflection once CoordinatorLayout#getLastWindowInsets() is public
+    final WindowInsetsCompat colLastInsets = getLastWindowInsets(coordinatorLayout);
     assertNotNull(colLastInsets);
 
     // Check that the Snackbar view has padding set to display above the nav bar
     final View view = snackbar.getView();
     assertNotNull(view);
     assertEquals(colLastInsets.getSystemWindowInsetBottom(), view.getPaddingBottom());
+  }
+
+  private WindowInsetsCompat getLastWindowInsets(CoordinatorLayout coordinatorLayout) {
+    try {
+      Method method = CoordinatorLayout.class.getDeclaredMethod("getLastWindowInsets");
+      method.setAccessible(true);
+      return (WindowInsetsCompat) method.invoke(coordinatorLayout);
+    } catch (Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 }
