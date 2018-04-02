@@ -20,10 +20,13 @@ import android.support.design.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.content.Context;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
+import android.util.AttributeSet;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import java.lang.annotation.Retention;
@@ -97,5 +100,40 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     return R.layout.design_layout_snackbar_legacy;
   }
 
-  final class Behavior extends android.support.design.snackbar.BaseTransientBottomBar<B>.Behavior {}
+  @Override
+  protected android.support.design.behavior.SwipeDismissBehavior<SnackbarBaseLayout>
+      getNewBehavior() {
+    return new Behavior();
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @Deprecated
+  protected static class SnackbarBaseLayout
+      extends android.support.design.snackbar.BaseTransientBottomBar.SnackbarBaseLayout {
+
+    protected SnackbarBaseLayout(Context context) {
+      super(context);
+    }
+
+    protected SnackbarBaseLayout(Context context, AttributeSet attrs) {
+      super(context, attrs);
+    }
+  }
+
+  /** @deprecated */
+  @Deprecated
+  final class Behavior extends SwipeDismissBehavior<SnackbarBaseLayout> {
+    @Override
+    public boolean canSwipeDismissView(View child) {
+      return child instanceof SnackbarBaseLayout;
+    }
+
+    @Override
+    public boolean onInterceptTouchEvent(
+        CoordinatorLayout parent, SnackbarBaseLayout child, MotionEvent event) {
+      handleBehaviorTouchEvent(parent, child, event);
+      return super.onInterceptTouchEvent(parent, child, event);
+    }
+  }
 }
