@@ -817,7 +817,24 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * them.
    */
   // TODO: remove this generic type after the widget migration is done
-  public static class Behavior<T extends FloatingActionButton>
+  public static class Behavior extends BaseBehavior<FloatingActionButton> {
+
+    public Behavior() {
+      super();
+    }
+
+    public Behavior(Context context, AttributeSet attrs) {
+      super(context, attrs);
+    }
+  }
+
+  /**
+   * Behavior designed for use with {@link FloatingActionButton} instances. Its main function is to
+   * move {@link FloatingActionButton} views so that any displayed {@link Snackbar}s do not cover
+   * them.
+   */
+  // TODO: remove this generic type after the widget migration is done
+  protected static class BaseBehavior<T extends FloatingActionButton>
       extends CoordinatorLayout.Behavior<T> {
     private static final boolean AUTO_HIDE_DEFAULT = true;
 
@@ -825,12 +842,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     private OnVisibilityChangedListener internalAutoHideListener;
     private boolean autoHideEnabled;
 
-    public Behavior() {
+    public BaseBehavior() {
       super();
       autoHideEnabled = AUTO_HIDE_DEFAULT;
     }
 
-    public Behavior(Context context, AttributeSet attrs) {
+    public BaseBehavior(Context context, AttributeSet attrs) {
       super(context, attrs);
       TypedArray a =
           context.obtainStyledAttributes(attrs, R.styleable.FloatingActionButton_Behavior_Layout);
