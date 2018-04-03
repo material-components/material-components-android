@@ -793,40 +793,13 @@ public class AppBarLayout extends LinearLayout {
    * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
    * handling with offsetting.
    */
-  //TODO: remove the base class and generic type after the widget migration is done
-  public static class Behavior extends BaseBehavior<AppBarLayout> {
-
-    /** Callback to allow control over any {@link AppBarLayout} dragging. */
-    public abstract static class DragCallback extends BaseBehavior.BaseDragCallback<AppBarLayout> {}
-
-    /**
-     * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
-     * handling with offsetting.
-     */
-    public Behavior() {
-      super();
-    }
-
-    /**
-     * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
-     * handling with offsetting.
-     */
-    public Behavior(Context context, AttributeSet attrs) {
-      super(context, attrs);
-    }
-  }
-
-  /**
-   * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
-   * handling with offsetting.
-   */
-  //TODO: remove this base class and generic type after the widget migration is done
-  protected static class BaseBehavior<T extends AppBarLayout> extends HeaderBehavior<T> {
+  //TODO: remove this generic type after the widget migration is done
+  public static class Behavior<T extends AppBarLayout> extends HeaderBehavior<T> {
     private static final int MAX_OFFSET_ANIMATION_DURATION = 600; // ms
     private static final int INVALID_POSITION = -1;
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
-    //TODO: remove this base class and generic type after the widget migration
+    //TODO: remove this base class and genertic type after the widet migration
     public abstract static class BaseDragCallback<T extends AppBarLayout> {
       /**
        * Allows control over whether the given {@link AppBarLayout} can be dragged or not.
@@ -844,8 +817,7 @@ public class AppBarLayout extends LinearLayout {
 
     }
 
-    //TODO: make private after the widget migration
-    protected int offsetDelta;
+    private int offsetDelta;
 
     @NestedScrollType private int lastStartedType;
 
@@ -858,9 +830,9 @@ public class AppBarLayout extends LinearLayout {
     private WeakReference<View> lastNestedScrollingChildRef;
     private BaseDragCallback onDragCallback;
 
-    public BaseBehavior() {}
+    public Behavior() {}
 
-    public BaseBehavior(Context context, AttributeSet attrs) {
+    public Behavior(Context context, AttributeSet attrs) {
       super(context, attrs);
     }
 
