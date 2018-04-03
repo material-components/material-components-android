@@ -35,15 +35,14 @@ import android.graphics.drawable.Drawable;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
+import android.support.design.internal.Experimental;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 
 /**
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
  * generated path.
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
+@Experimental("The shapes API is currently experimental and subject to change")
 public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable {
 
   private final Paint paint = new Paint();

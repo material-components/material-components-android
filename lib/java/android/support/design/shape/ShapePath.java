@@ -19,8 +19,7 @@ package android.support.design.shape;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
+import android.support.design.internal.Experimental;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -29,7 +28,7 @@ import java.util.List;
  * transformations can be applied to them when the {@link android.graphics.Path} is produced by the
  * {@link MaterialShapeDrawable}.
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
+@Experimental("The shapes API is currently experimental and subject to change")
 public class ShapePath {
   public float startX;
   public float startY;

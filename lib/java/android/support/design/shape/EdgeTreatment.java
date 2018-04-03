@@ -16,11 +16,10 @@
 
 package android.support.design.shape;
 
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
+import android.support.design.internal.Experimental;
 
 /** A basic edge treatment (a single straight line). Sub-classed for custom edge treatments. */
-@RestrictTo(Scope.LIBRARY_GROUP)
+@Experimental("The shapes API is currently experimental and subject to change")
 public class EdgeTreatment {
 
   /**

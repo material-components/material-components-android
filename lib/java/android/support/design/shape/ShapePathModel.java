@@ -16,14 +16,13 @@
 
 package android.support.design.shape;
 
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
+import android.support.design.internal.Experimental;
 
 /**
  * This class models the edges and corners of a shape, which are used by {@link
  * MaterialShapeDrawable} to generate and render the shape for a view's background.
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
+@Experimental("The shapes API is currently experimental and subject to change")
 public class ShapePathModel {
   private static final CornerTreatment DEFAULT_CORNER_TREATMENT = new CornerTreatment();
   private static final EdgeTreatment DEFAULT_EDGE_TREATMENT = new EdgeTreatment();

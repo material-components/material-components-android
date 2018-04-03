@@ -16,10 +16,13 @@
 
 package android.support.design.shape;
 
+import android.support.design.internal.Experimental;
+
 /**
  * An edge treatment which draws triangles at the midpoint of an edge, facing into or out of the
  * shape.
  */
+@Experimental("The shapes API is currently experimental and subject to change")
 public class TriangleEdgeTreatment extends EdgeTreatment {
 
   private final float size;

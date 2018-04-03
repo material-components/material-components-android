@@ -16,15 +16,14 @@
 
 package android.support.design.shape;
 
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
+import android.support.design.internal.Experimental;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.ScrollView;
 
 /** Helper class to handle shape interpolation when shaped views enter or exit the window. */
-@RestrictTo(Scope.LIBRARY_GROUP)
+@Experimental("The shapes API is currently experimental and subject to change")
 public class InterpolateOnScrollPositionChangeHelper {
 
   private View shapedView;
