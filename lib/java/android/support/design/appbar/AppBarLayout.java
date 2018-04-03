@@ -799,7 +799,8 @@ public class AppBarLayout extends LinearLayout {
     private static final int INVALID_POSITION = -1;
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
-    public abstract static class DragCallback {
+    //TODO: remove this base class and genertic type after the widet migration
+    public abstract static class BaseDragCallback<T extends AppBarLayout> {
       /**
        * Allows control over whether the given {@link AppBarLayout} can be dragged or not.
        *
@@ -808,7 +809,12 @@ public class AppBarLayout extends LinearLayout {
        *
        * @return true if we are in a position to scroll the AppBarLayout via a drag, false if not.
        */
-      public abstract boolean canDrag(@NonNull AppBarLayout appBarLayout);
+      public abstract boolean canDrag(@NonNull T appBarLayout);
+    }
+
+    /** Callback to allow control over any {@link AppBarLayout} dragging. */
+    public abstract static class DragCallback extends BaseDragCallback<AppBarLayout> {
+
     }
 
     private int offsetDelta;
@@ -822,7 +828,7 @@ public class AppBarLayout extends LinearLayout {
     private float offsetToChildIndexOnLayoutPerc;
 
     private WeakReference<View> lastNestedScrollingChildRef;
-    private DragCallback onDragCallback;
+    private BaseDragCallback onDragCallback;
 
     public Behavior() {}
 
@@ -833,7 +839,7 @@ public class AppBarLayout extends LinearLayout {
     @Override
     public boolean onStartNestedScroll(
         CoordinatorLayout parent,
-        AppBarLayout child,
+        T child,
         View directTargetChild,
         View target,
         int nestedScrollAxes,
@@ -936,10 +942,7 @@ public class AppBarLayout extends LinearLayout {
      *
      * @param callback the callback to use, or {@code null} to use the default behavior.
      */
-    // TODO: change back to setDragCallback once the widget migration is done
-    // This needs to be changed since some callers pass null, and the overriding wrapper class
-    // declares its own version of this method.
-    public void setDragCallbackInternal(@Nullable DragCallback callback) {
+    public void setDragCallback(@Nullable BaseDragCallback callback) {
       onDragCallback = callback;
     }
 
@@ -995,7 +998,7 @@ public class AppBarLayout extends LinearLayout {
       offsetAnimator.start();
     }
 
-    private int getChildIndexOnOffset(AppBarLayout abl, final int offset) {
+    private int getChildIndexOnOffset(T abl, final int offset) {
       for (int i = 0, count = abl.getChildCount(); i < count; i++) {
         View child = abl.getChildAt(i);
         int top = child.getTop();
@@ -1155,7 +1158,7 @@ public class AppBarLayout extends LinearLayout {
     }
 
     @Override
-    boolean canDragView(AppBarLayout view) {
+    boolean canDragView(T view) {
       if (onDragCallback != null) {
         // If there is a drag callback set, it's in control
         return onDragCallback.canDrag(view);
@@ -1181,19 +1184,19 @@ public class AppBarLayout extends LinearLayout {
     }
 
     @Override
-    int getMaxDragOffset(AppBarLayout view) {
+    int getMaxDragOffset(T view) {
       return -view.getDownNestedScrollRange();
     }
 
     @Override
-    int getScrollRangeForDragFling(AppBarLayout view) {
+    int getScrollRangeForDragFling(T view) {
       return view.getTotalScrollRange();
     }
 
     @Override
     int setHeaderTopBottomOffset(
         CoordinatorLayout coordinatorLayout,
-        AppBarLayout appBarLayout,
+        T appBarLayout,
         int newOffset,
         int minOffset,
         int maxOffset) {
@@ -1249,7 +1252,7 @@ public class AppBarLayout extends LinearLayout {
       return offsetAnimator != null && offsetAnimator.isRunning();
     }
 
-    private int interpolateOffset(AppBarLayout layout, final int offset) {
+    private int interpolateOffset(T layout, final int offset) {
       final int absOffset = Math.abs(offset);
 
       for (int i = 0, z = layout.getChildCount(); i < z; i++) {
@@ -1299,7 +1302,7 @@ public class AppBarLayout extends LinearLayout {
 
     private void updateAppBarLayoutDrawableState(
         final CoordinatorLayout parent,
-        final AppBarLayout layout,
+        final T layout,
         final int offset,
         final int direction,
         final boolean forceJump) {
@@ -1338,7 +1341,7 @@ public class AppBarLayout extends LinearLayout {
       }
     }
 
-    private boolean shouldJumpElevationState(CoordinatorLayout parent, AppBarLayout layout) {
+    private boolean shouldJumpElevationState(CoordinatorLayout parent, T layout) {
       // We should jump the elevated state if we have a dependent scrolling view which has
       // an overlapping top (i.e. overlaps us)
       final List<View> dependencies = parent.getDependents(layout);
