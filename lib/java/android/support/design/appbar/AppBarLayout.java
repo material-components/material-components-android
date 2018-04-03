@@ -224,7 +224,9 @@ public class AppBarLayout extends LinearLayout {
    * @param listener The listener that will be called when the offset changes.]
    * @see #removeOnOffsetChangedListener(OnOffsetChangedListener)
    */
-  public void addOnOffsetChangedListener(BaseOnOffsetChangedListener listener) {
+  // TODO: change back to addOnOffsetChangedListener once the widget migration is
+  // finished since the shim class needs to implement this method.
+  public void addOnOffsetChangedListenerInternal(BaseOnOffsetChangedListener listener) {
     if (listeners == null) {
       listeners = new ArrayList<>();
     }
@@ -234,16 +236,35 @@ public class AppBarLayout extends LinearLayout {
   }
 
   /**
+   * Add a listener that will be called when the offset of this {@link AppBarLayout} changes.
+   *
+   * @param listener The listener that will be called when the offset changes.]
+   * @see #removeOnOffsetChangedListener(OnOffsetChangedListener)
+   */
+  public void addOnOffsetChangedListener(OnOffsetChangedListener listener) {
+    addOnOffsetChangedListenerInternal(listener);
+  }
+
+  /**
    * Remove the previously added {@link OnOffsetChangedListener}.
    *
    * @param listener the listener to remove.
    */
   // TODO: change back to removeOnOffsetChangedListener once the widget migration is
   // finished since the shim class needs to implement this method.
-  public void removeOnOffsetChangedListener(BaseOnOffsetChangedListener listener) {
+  public void removeOnOffsetChangedListenerInternal(BaseOnOffsetChangedListener listener) {
     if (listeners != null && listener != null) {
       listeners.remove(listener);
     }
+  }
+
+  /**
+   * Remove the previously added {@link OnOffsetChangedListener}.
+   *
+   * @param listener the listener to remove.
+   */
+  public void removeOnOffsetChangedListener(OnOffsetChangedListener listener) {
+    removeOnOffsetChangedListenerInternal(listener);
   }
 
   @Override
