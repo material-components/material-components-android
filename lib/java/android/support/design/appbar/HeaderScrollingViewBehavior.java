@@ -28,8 +28,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -119,21 +117,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
           parent.getWidth() - parent.getPaddingRight() - lp.rightMargin,
           parent.getHeight() + header.getBottom() - parent.getPaddingBottom() - lp.bottomMargin);
 
-      // TODO: Remove reflection once CoordinatorLayout#getLastWindowInsets() is public
-      WindowInsetsCompat parentInsetsReflection = null;
-      try {
-        Method method = CoordinatorLayout.class.getDeclaredMethod("getLastWindowInsets");
-        method.setAccessible(true);
-        parentInsetsReflection = (WindowInsetsCompat) method.invoke(parent);
-      } catch (NoSuchMethodException e) {
-        e.printStackTrace();
-      } catch (IllegalAccessException e) {
-        e.printStackTrace();
-      } catch (InvocationTargetException e) {
-        e.printStackTrace();
-      }
-
-      final WindowInsetsCompat parentInsets = parentInsetsReflection;
+      final WindowInsetsCompat parentInsets = parent.getLastWindowInsets();
       if (parentInsets != null
           && ViewCompat.getFitsSystemWindows(parent)
           && !ViewCompat.getFitsSystemWindows(child)) {

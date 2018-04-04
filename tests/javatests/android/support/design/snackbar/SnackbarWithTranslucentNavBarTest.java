@@ -29,7 +29,6 @@ import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
 import android.support.v4.view.WindowInsetsCompat;
 import android.view.View;
-import java.lang.reflect.Method;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -59,23 +58,12 @@ public class SnackbarWithTranslucentNavBarTest {
     final Snackbar snackbar = Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT);
     SnackbarUtils.showTransientBottomBarAndWaitUntilFullyShown(snackbar);
 
-    // TODO: Remove reflection once CoordinatorLayout#getLastWindowInsets() is public
-    final WindowInsetsCompat colLastInsets = getLastWindowInsets(coordinatorLayout);
+    final WindowInsetsCompat colLastInsets = coordinatorLayout.getLastWindowInsets();
     assertNotNull(colLastInsets);
 
     // Check that the Snackbar view has padding set to display above the nav bar
     final View view = snackbar.getView();
     assertNotNull(view);
     assertEquals(colLastInsets.getSystemWindowInsetBottom(), view.getPaddingBottom());
-  }
-
-  private WindowInsetsCompat getLastWindowInsets(CoordinatorLayout coordinatorLayout) {
-    try {
-      Method method = CoordinatorLayout.class.getDeclaredMethod("getLastWindowInsets");
-      method.setAccessible(true);
-      return (WindowInsetsCompat) method.invoke(coordinatorLayout);
-    } catch (Exception e) {
-      throw new RuntimeException(e);
-    }
   }
 }
