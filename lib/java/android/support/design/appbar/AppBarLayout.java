@@ -233,6 +233,10 @@ public class AppBarLayout extends LinearLayout {
     }
   }
 
+  public void addOnOffsetChangedListener(OnOffsetChangedListener listener) {
+    addOnOffsetChangedListener((BaseOnOffsetChangedListener) listener);
+  }
+
   /**
    * Remove the previously added {@link OnOffsetChangedListener}.
    *
@@ -244,6 +248,10 @@ public class AppBarLayout extends LinearLayout {
     if (listeners != null && listener != null) {
       listeners.remove(listener);
     }
+  }
+
+  public void removeOnOffsetChangedListener(OnOffsetChangedListener listener) {
+    removeOnOffsetChangedListener((BaseOnOffsetChangedListener) listener);
   }
 
   @Override
