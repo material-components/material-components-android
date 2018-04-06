@@ -198,6 +198,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private List<BaseCallback<B>> callbacks;
 
+  private BaseTransientBottomBar.Behavior behavior;
+
   private final AccessibilityManager accessibilityManager;
 
   /** @hide */
@@ -302,6 +304,26 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     return duration;
   }
 
+  /**
+   * Set the {@link BaseTransientBottomBar.Behavior} to be used in this
+   * {@link BaseTransientBottomBar}.
+   *
+   * @param behavior {@link BaseTransientBottomBar.Behavior} to be applied.
+   */
+  public B setBehavior(BaseTransientBottomBar.Behavior behavior) {
+    this.behavior = behavior;
+    return (B) this;
+  }
+
+  /**
+   * Return the behavior.
+   *
+   * @see #setBehavior(BaseTransientBottomBar.Behavior)
+   */
+  public BaseTransientBottomBar.Behavior getBehavior() {
+    return behavior;
+  }
+
   /** Returns the {@link BaseTransientBottomBar}'s context. */
   @NonNull
   public Context getContext() {
@@ -394,7 +416,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         }
       };
 
-  protected SwipeDismissBehavior<? extends SnackbarBaseLayout> getNewBehavior() {
+  protected SwipeDismissBehavior<? extends View> getNewBehavior() {
     return new Behavior();
   }
 
@@ -406,10 +428,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         // If our LayoutParams are from a CoordinatorLayout, we'll setup our Behavior
         final CoordinatorLayout.LayoutParams clp = (CoordinatorLayout.LayoutParams) lp;
 
-        final SwipeDismissBehavior<? extends SnackbarBaseLayout> behavior = getNewBehavior();
-        behavior.setStartAlphaSwipeDistance(0.1f);
-        behavior.setEndAlphaSwipeDistance(0.6f);
-        behavior.setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_START_TO_END);
+        final SwipeDismissBehavior<? extends View> behavior =
+            this.behavior == null ? getNewBehavior() : this.behavior;
+
+        if (behavior instanceof BaseTransientBottomBar.Behavior) {
+          ((BaseTransientBottomBar.Behavior) behavior).setBaseTransientBottomBar(this);
+        }
         behavior.setListener(
             new SwipeDismissBehavior.OnDismissListener() {
               @Override
@@ -681,39 +705,67 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
   }
 
-  // TODO: make package private after the widget migration is finished
-  protected void handleBehaviorTouchEvent(
-      CoordinatorLayout parent, SnackbarBaseLayout child, MotionEvent event) {
-    switch (event.getActionMasked()) {
-      case MotionEvent.ACTION_DOWN:
-        // We want to make sure that we disable any Snackbar timeouts if the user is
-        // currently touching the Snackbar. We restore the timeout when complete
-        if (parent.isPointInChildBounds(child, (int) event.getX(), (int) event.getY())) {
-          SnackbarManager.getInstance().pauseTimeout(managerCallback);
-        }
-        break;
-      case MotionEvent.ACTION_UP:
-      case MotionEvent.ACTION_CANCEL:
-        SnackbarManager.getInstance().restoreTimeoutIfPaused(managerCallback);
-        break;
-      default:
-        break;
-    }
-  }
-
   /** Behavior for {@link BaseTransientBottomBar}. */
-  // TODO: make package private after the widget migration is finished
-  protected final class Behavior extends SwipeDismissBehavior<SnackbarBaseLayout> {
+  public static class Behavior extends SwipeDismissBehavior<View> {
+    private final BehaviorDelegate delegate;
+
+    public Behavior() {
+      delegate = new BehaviorDelegate(this);
+    }
+
+    private void setBaseTransientBottomBar(BaseTransientBottomBar<?> baseTransientBottomBar) {
+      delegate.setBaseTransientBottomBar(baseTransientBottomBar);
+    }
+
     @Override
     public boolean canSwipeDismissView(View child) {
-      return child instanceof SnackbarBaseLayout;
+      return delegate.canSwipeDismissView(child);
     }
 
     @Override
     public boolean onInterceptTouchEvent(
-        CoordinatorLayout parent, SnackbarBaseLayout child, MotionEvent event) {
-      handleBehaviorTouchEvent(parent, child, event);
+        CoordinatorLayout parent, View child, MotionEvent event) {
+      delegate.onInterceptTouchEvent(parent, child, event);
       return super.onInterceptTouchEvent(parent, child, event);
+    }
+  }
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  // TODO: Delegate can be rolled up into behavior after the widget migration is finished.
+  public static class BehaviorDelegate {
+    private SnackbarManager.Callback managerCallback;
+
+    public BehaviorDelegate(SwipeDismissBehavior<?> behavior) {
+      behavior.setStartAlphaSwipeDistance(0.1f);
+      behavior.setEndAlphaSwipeDistance(0.6f);
+      behavior.setSwipeDirection(SwipeDismissBehavior.SWIPE_DIRECTION_START_TO_END);
+    }
+
+    public void setBaseTransientBottomBar(BaseTransientBottomBar<?> baseTransientBottomBar) {
+      this.managerCallback = baseTransientBottomBar.managerCallback;
+    }
+
+    public boolean canSwipeDismissView(View child) {
+      return child instanceof SnackbarBaseLayout;
+    }
+
+    public void onInterceptTouchEvent(CoordinatorLayout parent, View child, MotionEvent event) {
+      switch (event.getActionMasked()) {
+        case MotionEvent.ACTION_DOWN:
+          // We want to make sure that we disable any Snackbar timeouts if the user is
+          // currently touching the Snackbar. We restore the timeout when complete
+          if (parent.isPointInChildBounds(child, (int) event.getX(), (int) event.getY())) {
+            SnackbarManager.getInstance().pauseTimeout(managerCallback);
+          }
+          break;
+        case MotionEvent.ACTION_UP:
+        case MotionEvent.ACTION_CANCEL:
+          SnackbarManager.getInstance().restoreTimeoutIfPaused(managerCallback);
+          break;
+        default:
+          break;
+      }
     }
   }
 }
