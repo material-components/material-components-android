@@ -80,7 +80,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStructure;
 import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -246,10 +245,6 @@ public class TextInputLayout extends LinearLayout {
     setOrientation(VERTICAL);
     setWillNotDraw(false);
     setAddStatesFromChildren(true);
-    // TextInputLayout itself isn't exposed to accessibility because its children (an EditText and
-    // a label for the EditText) should be exposed to accessibility separately in order to properly
-    // use the hint and helper text.
-    ViewCompat.setImportantForAccessibility(this, IMPORTANT_FOR_ACCESSIBILITY_NO);
 
     inputFrame = new FrameLayout(context);
     inputFrame.setAddStatesFromChildren(true);
@@ -760,24 +755,6 @@ public class TextInputLayout extends LinearLayout {
     }
 
     this.editText = editText;
-    this.editText.setAccessibilityDelegate(new AccessibilityDelegate() {
-      @Override
-      public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfo info) {
-        super.onInitializeAccessibilityNodeInfo(host, info);
-        CharSequence text = editText.getText();
-        boolean isTextEmpty = TextUtils.isEmpty(text);
-        if (VERSION.SDK_INT >= VERSION_CODES.O) {
-          info.setHintText(getHint());
-          info.setShowingHintText(isTextEmpty);
-        }
-
-        if (isTextEmpty) {
-          text = getHint();
-        }
-
-        info.setText(text);
-      }
-    });
     onApplyBoxBackgroundMode();
 
     final boolean hasPasswordTransformation = hasPasswordTransformation();
