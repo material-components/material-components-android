@@ -18,10 +18,10 @@ package android.support.design.testapp;
 
 import android.content.Intent;
 import android.support.annotation.VisibleForTesting;
+import android.support.design.bottomsheet.BottomSheetBehavior;
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.support.design.testapp.base.BaseTestActivity;
-import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.widget.LinearLayout;
 
 public class BottomSheetBehaviorActivity extends BaseTestActivity {

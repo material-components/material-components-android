@@ -16,8 +16,8 @@
 package android.support.design.testapp.custom;
 
 import android.content.Context;
+import android.support.design.snackbar.Snackbar;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;

@@ -16,6 +16,8 @@
 
 package android.support.design.card;
 
+import android.support.design.R;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.support.design.internal.ThemeEnforcement;
@@ -39,16 +41,15 @@ public class MaterialCardView extends CardView {
   }
 
   public MaterialCardView(Context context, AttributeSet attrs) {
-    this(context, attrs, android.support.design.card.R.attr.cardViewStyle);
+    this(context, attrs, R.attr.materialCardViewStyle);
   }
 
   public MaterialCardView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     TypedArray attributes =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.MaterialCardView,
             defStyleAttr,

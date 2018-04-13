@@ -1,34 +1,16 @@
 include ':lib'
-include ':lib:coordinatorlayout:java:android:support:design:widget'
-include ':lib:java:android:support:design:animation'
-include ':lib:java:android:support:design:backlayer'
-include ':lib:java:android:support:design:bottomnavigation'
-include ':lib:java:android:support:design:canvas'
-include ':lib:java:android:support:design:chip'
-include ':lib:java:android:support:design:circularreveal'
-include ':lib:java:android:support:design:circularreveal:cardview'
-include ':lib:java:android:support:design:circularreveal:coordinatorlayout'
-include ':lib:java:android:support:design:drawable'
-include ':lib:java:android:support:design:expandable'
-include ':lib:java:android:support:design:internal'
-include ':lib:java:android:support:design:math'
-include ':lib:java:android:support:design:resources'
-include ':lib:java:android:support:design:ripple'
-include ':lib:java:android:support:design:snackbar'
-include ':lib:java:android:support:design:stateful'
-include ':lib:java:android:support:design:theme'
-include ':lib:java:android:support:design:transformation'
-include ':lib:java:android:support:design:widget'
 
 include ':testing:java:android:support:design:testapp'
 include ':testing:java:android:support:design:testapp:animation'
-include ':testing:java:android:support:design:testapp:backlayer'
+// TODO: uncomment when backlayer is included in top-level build
+//include ':testing:java:android:support:design:testapp:backlayer'
 include ':testing:java:android:support:design:testapp:base'
 include ':testing:java:android:support:design:testapp:custom'
 
 include ':tests'
 include ':tests:javatests:android:support:design:animation'
-include ':tests:javatests:android:support:design:backlayer'
+// TODO: uncomment when backlayer is included in top-level build
+//include ':tests:javatests:android:support:design:backlayer'
 
 include ':demos:java:io:material:demo:shrine'
 include ':demos:java:io:material:demo:shrine:filters'
@@ -42,9 +24,9 @@ rootProject.children.each { p ->
   while (!curChildren.isEmpty()) {
     allChildren.addAll(curChildren)
     curChildren =
-        (curChildren.findResults {
-                it.children.isEmpty() ? null : it.children
-            }).flatten()
+      (curChildren.findResults {
+        it.children.isEmpty() ? null : it.children
+      }).flatten()
   }
 
   allChildren.each { project ->

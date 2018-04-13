@@ -12,24 +12,8 @@ dependencies {
   api compatibility("fragment")
   api compatibility("transition")
   api compatibility("v7/appcompat")
+  api compatibility("v7/cardview")
   api compatibility("v7/recyclerview")
-
-  implementation project(fromPath("lib/java/android/support/design/internal"))
-  implementation project(fromPath("lib/java/android/support/design/theme"))
-
-  api project(fromPath("lib/coordinatorlayout/java/android/support/design/widget"))
-  api project(fromPath("lib/java/android/support/design/animation"))
-  api project(fromPath("lib/java/android/support/design/bottomnavigation"))
-  api project(fromPath("lib/java/android/support/design/circularreveal"))
-  api project(fromPath("lib/java/android/support/design/circularreveal/cardview"))
-  api project(fromPath("lib/java/android/support/design/expandable"))
-  api project(fromPath("lib/java/android/support/design/math"))
-  api project(fromPath("lib/java/android/support/design/resources"))
-  api project(fromPath("lib/java/android/support/design/ripple"))
-  api project(fromPath("lib/java/android/support/design/snackbar"))
-  api project(fromPath("lib/java/android/support/design/stateful"))
-  api project(fromPath("lib/java/android/support/design/transformation"))
-  api project(fromPath("lib/java/android/support/design/widget"))
 
   testImplementation("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
     exclude module: 'support-annotations'
@@ -40,18 +24,53 @@ dependencies {
   testImplementation "org.robolectric:robolectric:3.3.2"
 }
 
+def srcDirs = [
+  'android/support/design/animation',
+  'android/support/design/appbar',
+  'android/support/design/behavior',
+  'android/support/design/bottomappbar',
+  'android/support/design/bottomnavigation',
+  'android/support/design/bottomsheet',
+  'android/support/design/button',
+  'android/support/design/canvas',
+  'android/support/design/card',
+  'android/support/design/chip',
+  'android/support/design/circularreveal',
+  'android/support/design/circularreveal/cardview',
+  'android/support/design/circularreveal/coordinatorlayout',
+  'android/support/design/color',
+  'android/support/design/dialog',
+  'android/support/design/drawable',
+  'android/support/design/expandable',
+  'android/support/design/floatingactionbutton',
+  'android/support/design/internal',
+  'android/support/design/math',
+  'android/support/design/navigation',
+  'android/support/design/resources',
+  'android/support/design/ripple',
+  'android/support/design/shape',
+  'android/support/design/shadow',
+  'android/support/design/snackbar',
+  'android/support/design/stateful',
+  'android/support/design/tabs',
+  'android/support/design/textfield',
+  'android/support/design/theme',
+  'android/support/design/transformation',
+  'android/support/design/typography',
+]
+
 android {
   sourceSets {
-    main.manifest.srcFile 'AndroidManifest.xml'
-    main.java.srcDir '.'
-    main.java.includes = ["*.java"]
+    main.manifest.srcFile 'java/android/support/design/AndroidManifest.xml'
+    main.java.srcDir 'java'
+    main.java.includes = srcDirs.collect { it + "/**/*.java" }
     main.java.excludes = [
       '**/build/**',
     ]
-    main.res.srcDirs = [
-      'res',
-      'res-public',
-    ]
+    srcDirs.forEach {
+      main.res.srcDirs += "java/" + it + "/res"
+      main.res.srcDirs += "java/" + it + "/res-public"
+    }
 
     test.java.srcDir 'javatests'
   }

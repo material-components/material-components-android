@@ -16,6 +16,8 @@
 
 package android.support.design.transformation;
 
+import android.support.design.R;
+
 import static android.support.design.animation.AnimationUtils.lerp;
 
 import android.animation.Animator;
@@ -50,9 +52,9 @@ import android.support.design.circularreveal.CircularRevealHelper;
 import android.support.design.circularreveal.CircularRevealWidget;
 import android.support.design.circularreveal.CircularRevealWidget.CircularRevealScrimColorProperty;
 import android.support.design.circularreveal.CircularRevealWidget.RevealInfo;
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.support.design.math.MathUtils;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;

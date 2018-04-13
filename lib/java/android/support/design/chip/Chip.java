@@ -16,6 +16,8 @@
 
 package android.support.design.chip;
 
+import android.support.design.R;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -41,10 +43,9 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.chip.ChipDrawable.Delegate;
-import android.support.design.internal.ThemeEnforcement;
+import android.support.design.internal.ViewUtils;
 import android.support.design.resources.TextAppearance;
 import android.support.design.ripple.RippleUtils;
-import android.support.design.widget.ViewUtils;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -98,6 +99,7 @@ import java.util.List;
 public class Chip extends AppCompatCheckBox implements Delegate {
 
   private static final int CLOSE_ICON_VIRTUAL_ID = 0;
+  private static final Rect EMPTY_BOUNDS = new Rect();
 
   private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
 
@@ -129,8 +131,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   public Chip(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-
-    ThemeEnforcement.checkAppCompatTheme(context);
 
     ChipDrawable drawable =
         ChipDrawable.createFromAttributes(
@@ -578,7 +578,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
     @Override
     protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
-      virtualViewIds.add(HOST_ID);
       if (hasCloseIcon()) {
         virtualViewIds.add(CLOSE_ICON_VIRTUAL_ID);
       }
@@ -595,6 +594,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         node.setEnabled(isEnabled());
       } else {
         node.setContentDescription("");
+        node.setBoundsInParent(EMPTY_BOUNDS);
       }
     }
 
@@ -602,10 +602,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     protected void onPopulateNodeForHost(AccessibilityNodeInfoCompat node) {
       node.setCheckable(chipDrawable != null && chipDrawable.isCheckable());
       node.setClassName(Chip.class.getName());
-      node.setContentDescription(
-          Chip.class.getSimpleName()
-              + ". "
-              + (chipDrawable != null ? chipDrawable.getChipText() : ""));
+      node.setContentDescription(chipDrawable != null ? chipDrawable.getChipText() : "");
     }
 
     @Override

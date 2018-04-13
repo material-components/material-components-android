@@ -16,6 +16,8 @@
 
 package android.support.design.chip;
 
+import android.support.design.R;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -54,6 +56,7 @@ import android.support.annotation.XmlRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.canvas.CanvasCompat;
 import android.support.design.drawable.DrawableUtils;
+import android.support.design.internal.ThemeEnforcement;
 import android.support.design.resources.MaterialResources;
 import android.support.design.resources.TextAppearance;
 import android.support.design.ripple.RippleUtils;
@@ -309,7 +312,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private void loadFromAttributes(
       AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
     TypedArray a =
-        context.obtainStyledAttributes(attrs, R.styleable.ChipDrawable, defStyleAttr, defStyleRes);
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.ChipDrawable, defStyleAttr, defStyleRes);
 
     setChipBackgroundColor(
         MaterialResources.getColorStateList(
@@ -534,15 +538,20 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    * that the stroke perfectly fills the bounds of the chip.
    */
   private void drawChipStroke(@NonNull Canvas canvas, Rect bounds) {
-    chipPaint.setColor(currentChipStrokeColor);
-    chipPaint.setStyle(Style.STROKE);
-    chipPaint.setColorFilter(getTintColorFilter());
-    rectF.set(
-        bounds.left + chipStrokeWidth / 2f,
-        bounds.top + chipStrokeWidth / 2f,
-        bounds.right - chipStrokeWidth / 2f,
-        bounds.bottom - chipStrokeWidth / 2f);
-    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
+    if (chipStrokeWidth > 0) {
+      chipPaint.setColor(currentChipStrokeColor);
+      chipPaint.setStyle(Style.STROKE);
+      chipPaint.setColorFilter(getTintColorFilter());
+      rectF.set(
+          bounds.left + chipStrokeWidth / 2f,
+          bounds.top + chipStrokeWidth / 2f,
+          bounds.right - chipStrokeWidth / 2f,
+          bounds.bottom - chipStrokeWidth / 2f);
+      // We need to adjust stroke's corner radius so that the corners of the background are not
+      // drawn outside stroke
+      float strokeCornerRadius = chipCornerRadius - chipStrokeWidth / 2f;
+      canvas.drawRoundRect(rectF, strokeCornerRadius, strokeCornerRadius, chipPaint);
+    }
   }
 
   private void drawCompatRipple(@NonNull Canvas canvas, Rect bounds) {
@@ -735,14 +744,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (chipText != null) {
       float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
       float offsetFromEnd = chipEndPadding + calculateCloseIconWidth() + textEndPadding;
-      ;
 
       if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
         outBounds.left = bounds.left + offsetFromStart;
         outBounds.right = bounds.right - offsetFromEnd;
       } else {
+        outBounds.left = bounds.left + offsetFromEnd;
         outBounds.right = bounds.right - offsetFromStart;
-        outBounds.left = bounds.left + offsetFromStart;
       }
 
       // Top and bottom included for completion. Don't position the chip text vertically based on

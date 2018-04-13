@@ -22,8 +22,8 @@ import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
 import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
+import android.support.design.bottomnavigation.BottomNavigationView;
 import android.support.design.bottomnavigation.LabelVisibilityMode;
-import android.support.design.widget.BottomNavigationView;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;
@@ -111,6 +111,27 @@ public class BottomNavigationViewActions {
       public void perform(UiController uiController, View view) {
         BottomNavigationView navigationView = (BottomNavigationView) view;
         navigationView.setLabelVisibilityMode(mode);
+      }
+    };
+  }
+
+  /** Set the bottom navigation view's icon size. */
+  public static ViewAction setIconSize(final int size) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set the bottom navigation's icon size to " + size;
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomNavigationView navigationView = (BottomNavigationView) view;
+        navigationView.setItemIconSize(size);
       }
     };
   }

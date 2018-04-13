@@ -5,7 +5,6 @@ dependencies {
   api compatibility("v7/appcompat")
 
   api project(fromPath("lib"))
-  api project(fromPath("lib/java/android/support/design/internal"))
 }
 
 android {

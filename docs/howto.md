@@ -7,13 +7,24 @@ path: /docs/
 
 # How to use Material Components for Android
 
-Material Components for Android is available through Android's SDK manager. To
-use it:
+Material Components for Android is available through Google's Maven repository.
+To use it:
 
-1. Make sure you've downloaded the Android Support Repository using the SDK
-Manager.
-2. Open the build.gradle file for your application.
-3. Add the library to the dependencies section:
+1. Open the `build.gradle` file for your application.
+2. Make sure that the `repositories` section includes a maven section with the
+`"https://maven.google.com"` endpoint. For example:
+
+  ```groovy
+    allprojects {
+      repositories {
+        jcenter()
+        maven {
+          url "https://maven.google.com"
+        }
+      }
+    }
+  ```
+3. Add the library to the `dependencies` section:
 
   ```groovy
     dependencies {
@@ -44,13 +55,21 @@ Clone the repository:
 git clone https://github.com/material-components/material-components-android.git
 ```
 
-Then, build an AAR using Gradle:
+Then, build the library's AARs using Gradle:
 
 ```sh
-./gradlew assembleRelease
+./gradlew uploadArchives -PmavenRepoUrl="file://localhost/<path_to_aars>"
 ```
 
-(the AAR file will be located in `lib/build/outputs/aar/`)
+This will output AARs and Maven artifacts for each of the library's modules
+to the path on your machine, e.g., `$HOME/Desktop/material_aars`.
+
+To use the AARs in your app locally, copy the output from your AAR directory
+into your local Maven repository (`~/.m2/repository`). Then add `mavenLocal()`
+as a repository in your project's top-level `build.gradle` file. Finally, add
+the Design Library dependency as you would normally, using the version
+specified as `mdcLibraryVersion` in the library's top-level `build.gradle`
+file.
 
 ### Running tests
 

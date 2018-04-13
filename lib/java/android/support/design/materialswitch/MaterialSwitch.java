@@ -16,6 +16,8 @@
 
 package android.support.design.materialswitch;
 
+import android.support.design.R;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -54,10 +56,9 @@ public class MaterialSwitch extends SwitchCompat {
   public MaterialSwitch(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     TypedArray attributes =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.MaterialSwitch,
             defStyleAttr,

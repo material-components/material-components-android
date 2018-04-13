@@ -33,11 +33,11 @@ responsiveness to scrolling.
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 As a container for Toolbars, and other views, it works with
-[CoordinatorLayout](CoordinatorLayout.md)
+[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
 in order to respond to scrolling techniques. `AppBarLayout` depends heavily on
 being used as a direct child of the CoordinatorLayout and reacts to a sibling
-that supports scrolling
-(e.g. [NestedScrollView](https://developer.android.com/reference/android/support/v4/widget/NestedScrollView.html),
+that supports scrolling (e.g.
+[NestedScrollView](https://developer.android.com/reference/android/support/v4/widget/NestedScrollView.html),
 [RecyclerView](https://developer.android.com/reference/android/support/v7/widget/RecyclerView.html)).
 
 Flags are added to each child of the `AppBarLayout` to control how they will
@@ -50,6 +50,7 @@ respond to scrolling. These are interpreted by the `AppBarLayout.LayoutParams`.
 *   [exitUntilCollapsed](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)
 *   [scroll](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SCROLL)
 *   [snap](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP)
+*   [snapMargins](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP_MARGINS)
 
 Views using the scroll flag should be declared and visually positioned before
 other views in the `AppBarLayout`. This ensures that they are able to exit at the

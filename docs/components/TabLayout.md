@@ -35,13 +35,27 @@ on implementing `TabLayout`.
 
 ## Usage
 
-The Material Design guidelines for individual tabs is done in the tabs
-themselves; the `TabLayout` displays groups of these tabs and controls how they
-interact with each other.
+To use a `TabLayout` with a static number of tabs, define each tab as a
+`TabItem` directly in the layout.
 
-A `TabLayout` is a single row of tabs and can be fixed or scrollable. For a fixed
-layout, the maximum number of tabs is limited by the size and number of the tabs
-and the screen size. Fixed tabs have equal width, based on the widest tab text.
+```xml
+<android.support.design.widget.TabLayout
+    android:id="@+id/tabs"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+  <android.support.design.widget.TabItem
+      android:icon="@drawable/ic_icon_a_24"
+      android:text="@string/tab_a_label"/>
+  <android.support.design.widget.TabItem
+      android:icon="@drawable/ic_icon_b_24"
+      android:text="@string/tab_b_label"/>
+  <android.support.design.widget.TabItem
+      android:icon="@drawable/ic_icon_c_24"
+      android:text="@string/tab_c_label"/>
+
+</android.support.design.widget.TabLayout>
+```
 
 A tab layout should be used above the content associated with the respective
 tabs and lets the user quickly change between content views. These content views
@@ -52,6 +66,13 @@ Use [setupWithViewPager(ViewPager)](https://developer.android.com/reference/andr
 to link a `TabLayout` with a ViewPager. The
 individual tabs in the `TabLayout` will be automatically populated with the page
 titles from the PagerAdapter.
+
+```java
+ViewPager pager;
+TabLayout tabs = (TabLayout) findViewById(R.id.tabs);
+
+tabs.setupWithViewPager(pager);
+```
 
 Alternatively, you can add a `TabLayout` to a ViewPager in XML:
 
@@ -67,3 +88,73 @@ Alternatively, you can add a `TabLayout` to a ViewPager in XML:
 
 </android.support.v4.view.ViewPager>
 ```
+
+### Material Styles
+
+Using `TabLayout` with an updated Material theme (`Theme.MaterialComponents`)
+will provide the correct updated Material styles to your tabs by default. If you
+need to use updated Material tabs and your application theme does not inherit
+from an updated Material theme, you can apply one of the updated Material styles
+directly to your widget in XML.
+
+#### Updated Material Style (Default)
+
+The updated Material `TabLayout` style consists of updated icon and label tints,
+ripple color, and ripple shape.
+
+```xml
+<android.support.design.widget.TabLayout
+    style="@style/Widget.MaterialComponents.TabLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
+
+#### Colored Material Style
+
+The colored Material `TabLayout` style consists of updated background color
+based on `?attr/colorAccent`.
+
+```xml
+<android.support.design.widget.TabLayout
+    style="@style/Widget.MaterialComponents.TabLayout.Colored"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
+
+#### Legacy Material Style
+
+```xml
+<android.support.design.widget.TabLayout
+    style="@style/Widget.Design.TabLayout"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"/>
+```
+
+### Attributes
+
+Feature    | Relevant attributes
+:--------- | :--------------------------
+Size       | `app:tabMinWidth`
+           | `app:tabMaxWidth`
+Scroll     | `app:tabMode`
+Centered   | `app:tabGravity`
+Background | `app:tabBackground`
+Icon       | `app:tabIconTint`
+           | `app:tabIconTintMode`
+Label      | `app:tabInlineLabel`
+           | `app:tabTextAppearance`
+           | `app:tabTextColor`
+           | `app:tabSelectedTextColor`
+Indicator  | `app:tabIndicatorColor`
+           | `app:tabIndicatorHeight`
+           | `app:tabIndicator`
+           | `app:tabIndicatorGravity`
+           | `app:tabIndicatorFullWidth`
+Position   | `app:tabContentStart`
+           | `app:tabPaddingStart`
+           | `app:tabPaddingTop`
+           | `app:tabPaddingEnd`
+           | `app:tabPaddingBottom`
+           | `app:tabPadding`
+Ripple     | `app:tabRippleColor`
+           | `app:tabUnboundedRipple`

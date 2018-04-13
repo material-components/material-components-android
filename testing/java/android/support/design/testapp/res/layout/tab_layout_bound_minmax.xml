@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 
-<android.support.design.widget.TabLayout
+<android.support.design.tabs.TabLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:app="http://schemas.android.com/apk/res-auto"
         android:id="@+id/tabs"

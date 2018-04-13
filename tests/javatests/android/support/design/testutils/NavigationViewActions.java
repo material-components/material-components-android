@@ -27,7 +27,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
-import android.support.design.widget.NavigationView;
+import android.support.design.navigation.NavigationView;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.LayoutInflater;

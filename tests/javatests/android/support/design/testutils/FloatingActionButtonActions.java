@@ -21,8 +21,8 @@ import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFro
 import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
 import android.support.annotation.DrawableRes;
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.FloatingActionButton;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;

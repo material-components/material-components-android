@@ -15,10 +15,9 @@
 -->
 
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-  package="android.support.design.math">
+    package="android.support.design.math">
 
-  <uses-sdk
-    android:minSdkVersion="14"
-    android:targetSdkVersion="27"/>
+  <uses-sdk android:minSdkVersion="14"/>
+
   <application/>
 </manifest>

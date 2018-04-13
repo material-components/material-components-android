@@ -16,27 +16,27 @@
 -->
 
 <!-- Width is fixed to test scrolling -->
-<android.support.design.widget.TabLayout
+<android.support.design.tabs.TabLayout
   xmlns:android="http://schemas.android.com/apk/res/android"
   xmlns:app="http://schemas.android.com/apk/res-auto"
   android:id="@+id/tabs"
   android:layout_width="160dp"
   android:layout_height="wrap_content"
   app:tabMode="scrollable">
-  <android.support.design.widget.TabItem
+  <android.support.design.tabs.TabItem
     android:text="Tab 0" />
-  <android.support.design.widget.TabItem
+  <android.support.design.tabs.TabItem
     android:text="Tab 1" />
-  <android.support.design.widget.TabItem
+  <android.support.design.tabs.TabItem
     android:text="Tab 2" />
-  <android.support.design.widget.TabItem
+  <android.support.design.tabs.TabItem
     android:text="Tab 3" />
-  <android.support.design.widget.TabItem
+  <android.support.design.tabs.TabItem
     android:text="Tab 4" />
-  <android.support.design.widget.TabItem
+  <android.support.design.tabs.TabItem
     android:text="Tab 5" />
-  <android.support.design.widget.TabItem
+  <android.support.design.tabs.TabItem
     android:text="Tab 6" />
-  <android.support.design.widget.TabItem
+  <android.support.design.tabs.TabItem
     android:text="Tab 7" />
-</android.support.design.widget.TabLayout>
+</android.support.design.tabs.TabLayout>

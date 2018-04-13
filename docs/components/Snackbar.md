@@ -50,7 +50,7 @@ could be found.
 - [LENGTH_SHORT](https://developer.android.com/reference/android/support/design/widget/Snackbar.html#LENGTH_SHORT)
 
 **NOTE:** Snackbars work best if they are displayed inside of a
-[CoordinatorLayout](CoordinatorLayout.md).
+[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html).
 `CoordinatorLayout` allows the snackbar to enable behavior like
 swipe-to-dismiss, as well as automatically moving widgets like
 [FloatingActionButton](FloatingActionButton.md).

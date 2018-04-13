@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+
+  <!-- Style to use for TabLayout in the theme. -->
+  <attr name="tabStyle" format="reference"/>
+
+  <declare-styleable name="TabLayout">
+    <!-- Color of the indicator used to show the currently selected tab. -->
+    <attr name="tabIndicatorColor" format="color"/>
+    <!-- {@deprecated Instead, set the intrinsic size of the custom drawable provided to the
+         tabIndicator attribute in order to change the indicator height. For example, this can be
+         done by setting the <size> property in a <shape> resource.} -->
+    <attr name="tabIndicatorHeight" format="dimension"/>
+    <!-- Position in the Y axis from the starting edge that tabs should be positioned from. -->
+    <attr name="tabContentStart" format="dimension"/>
+    <!-- Reference to a background to be applied to tabs. -->
+    <attr name="tabBackground" format="reference"/>
+    <!-- Reference to a drawable to use as selection indicator for tabs. If this attribute is not
+         specified, indicator defaults to a line along the bottom of the tab. -->
+    <attr name="tabIndicator" format="reference"/>
+    <!-- Gravity constant for tab selection indicator. -->
+    <attr name="tabIndicatorGravity">
+      <!-- Align indicator to the bottom of this tab layout. -->
+      <enum name="bottom" value="0"/>
+      <!-- Align indicator along the center of this tab layout. -->
+      <enum name="center" value="1"/>
+      <!-- Align indicator to the top of this tab layout. -->
+      <enum name="top" value="2"/>
+      <!-- Stretch indicator to match the height and width of a tab item in this layout. -->
+      <enum name="stretch" value="3"/>
+    </attr>
+    <!-- Duration in milliseconds for the animation of the selection indicator from one tab item
+         to another. -->
+    <attr name="tabIndicatorAnimationDuration" format="integer"/>
+    <!-- Whether the selection indicator width should fill the full width of the tab item,
+         or if it should be fitted to the content of the tab text label. If no text label is
+         present, it will be set to the width of the icon or to a minimum width of 24dp. -->
+    <attr name="tabIndicatorFullWidth" format="boolean"/>
+    <!-- The behavior mode for the Tabs in this layout -->
+    <attr name="tabMode">
+      <enum name="scrollable" value="0"/>
+      <enum name="fixed" value="1"/>
+    </attr>
+    <!-- Gravity constant for tabs. -->
+    <attr name="tabGravity">
+      <enum name="fill" value="0"/>
+      <enum name="center" value="1"/>
+    </attr>
+    <!-- Whether to display tab labels horizontally inline with icons, or underneath icons. -->
+    <attr name="tabInlineLabel" format="boolean"/>
+    <!-- The minimum width for tabs. -->
+    <attr name="tabMinWidth" format="dimension"/>
+    <!-- The maximum width for tabs. -->
+    <attr name="tabMaxWidth" format="dimension"/>
+    <!-- A reference to a TextAppearance style to be applied to tabs. -->
+    <attr name="tabTextAppearance" format="reference"/>
+    <!-- The default text color to be applied to tabs. -->
+    <attr name="tabTextColor" format="color"/>
+    <!-- {@deprecated Instead, provide a ColorStateList to the tabTextColor attribute with a
+         selected color set.}  -->
+    <attr name="tabSelectedTextColor" format="color"/>
+    <!-- The preferred padding along the start edge of tabs. -->
+    <attr name="tabPaddingStart" format="dimension"/>
+    <!-- The preferred padding along the top edge of tabs. -->
+    <attr name="tabPaddingTop" format="dimension"/>
+    <!-- The preferred padding along the end edge of tabs. -->
+    <attr name="tabPaddingEnd" format="dimension"/>
+    <!-- The preferred padding along the bottom edge of tabs. -->
+    <attr name="tabPaddingBottom" format="dimension"/>
+    <!-- The preferred padding along all edges of tabs. -->
+    <attr name="tabPadding" format="dimension"/>
+    <!-- Tint to apply to tab icons, if present. This can be a color state list or a color. -->
+    <attr name="tabIconTint" format="color"/>
+    <!-- Blending mode to apply to tab icons. -->
+    <attr name="tabIconTintMode">
+      <enum name="src_over" value="3"/>
+      <enum name="src_in" value="5"/>
+      <enum name="src_atop" value="9"/>
+      <enum name="multiply" value="14"/>
+      <enum name="screen" value="15"/>
+      <enum name="add" value="16"/>
+    </attr>
+    <!-- Ripple color for the tabs. This may be a color state list, if the desired ripple color
+         should be stateful.-->
+    <attr name="tabRippleColor" format="color"/>
+    <!-- Whether to use unbounded ripple effect for tabs, or if ripple should instead be bound to
+         tab item bounds. -->
+    <attr name="tabUnboundedRipple" format="boolean"/>
+  </declare-styleable>
+
+  <declare-styleable name="TabItem">
+    <!-- Text to display in the tab. -->
+    <attr name="android:text"/>
+    <!-- Icon to display in the tab. -->
+    <attr name="android:icon"/>
+    <!-- A reference to a layout resource to be displayed in the tab. -->
+    <attr name="android:layout"/>
+  </declare-styleable>
+
+</resources>

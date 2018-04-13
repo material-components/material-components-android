@@ -31,6 +31,6 @@ android {
       '**/backlayer/**',
       '**/build/**',
     ]
-    main.manifest.srcFile 'javatests/android/support/design/widget/AndroidManifest.xml'
+    main.manifest.srcFile 'javatests/android/support/design/AndroidManifest.xml'
   }
 }

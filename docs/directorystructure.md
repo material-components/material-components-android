@@ -3,9 +3,9 @@
 All of the Material Components are located under **[lib/](https://github.com/material-components/material-components-android/tree/master/lib)**. The library is
 sub-divided into:
 
-*   [base/](components.md#base/)
+*   base/
 *   platform-specific overrides
-*   [src/](components.md#src/))
+*   src/
 
 Any widgets that require a platform-specific implementation can be found in
 the **base/** directory, while all other widgets are located under **src/**.

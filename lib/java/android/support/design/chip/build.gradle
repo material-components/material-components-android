@@ -1,21 +1,21 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
-archivesBaseName = 'design'
+archivesBaseName = getArchivesBaseName(project.name)
+version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   implementation compatibility("annotations")
   implementation compatibility("compat")
   implementation compatibility("v7/appcompat")
 
-  implementation "com.google.android:flexbox:0.3.0"
-
   implementation project(fromPath("lib/java/android/support/design/animation"))
   implementation project(fromPath("lib/java/android/support/design/canvas"))
+  implementation project(fromPath("lib/java/android/support/design/color"))
   implementation project(fromPath("lib/java/android/support/design/drawable"))
   implementation project(fromPath("lib/java/android/support/design/internal"))
   implementation project(fromPath("lib/java/android/support/design/resources"))
   implementation project(fromPath("lib/java/android/support/design/ripple"))
-  implementation project(fromPath("lib/java/android/support/design/widget"))
 }
 
 android {
@@ -30,6 +30,13 @@ android {
       'res-public'
     ]
     main.assets.srcDir 'assets'
-    main.resources.srcDir 'res'
+  }
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: rootProject.ext.mavenRepoUrl)
+    }
   }
 }

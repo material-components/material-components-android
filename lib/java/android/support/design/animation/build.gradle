@@ -21,7 +21,6 @@ android {
       'res',
     ]
     main.assets.srcDir 'assets'
-    main.resources.srcDir 'res'
   }
 }
 

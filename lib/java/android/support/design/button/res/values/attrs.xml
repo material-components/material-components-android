@@ -17,23 +17,24 @@
 
 <resources>
 
+  <!-- Style to use for MaterialButtons in this theme. -->
+  <attr name="materialButtonStyle" format="reference"/>
+
   <declare-styleable name="MaterialButton">
-    <attr name="android:minWidth"/>
-    <attr name="android:minHeight"/>
     <attr name="android:padding"/>
     <attr name="android:paddingLeft"/>
+    <attr name="android:paddingStart"/>
     <attr name="android:paddingRight"/>
+    <attr name="android:paddingEnd"/>
     <attr name="android:paddingTop"/>
     <attr name="android:paddingBottom"/>
-    <attr name="android:textAppearance"/>
-    <attr name="android:stateListAnimator"/>
-    <attr name="android:focusable"/>
-    <attr name="android:clickable"/>
     <attr name="android:insetLeft"/>
     <attr name="android:insetRight"/>
     <attr name="android:insetTop"/>
     <attr name="android:insetBottom"/>
-    <attr name="android:gravity"/>
+    <!-- Background for the MaterialButton -->
+    <attr name="backgroundTint"/>
+    <attr name="backgroundTintMode"/>
     <!-- Icon drawable to display at the start of this view. -->
     <attr name="icon" format="reference"/>
     <!-- Padding between icon and button text. -->
@@ -46,22 +47,19 @@
     <attr name="additionalPaddingLeftForIcon" format="dimension"/>
     <!-- Padding to add/remove from the right side of the button when an icon is present. -->
     <attr name="additionalPaddingRightForIcon" format="dimension"/>
-    <!--
-        Color state list or color specifying background tints for the button. This attribute is
-        separate from backgroundTint. If you set this attribute, do not set backgroundTint.
-    -->
-    <attr name="buttonBackgroundTint" format="color"/>
-    <!-- Specifies the color used to draw the path outline of the button. -->
-    <attr name="strokeColor" format="color"/>
-    <!-- Width of the stroke path of the button. Default is 0. -->
-    <attr name="strokeWidth" format="dimension"/>
+    <!-- Specifies the color used to draw the path outline of the button. Attribute type definition
+         is in resources package. -->
+    <attr name="strokeColor"/>
+    <!-- Width of the stroke path of the button. Default is 0. Attribute type definition is in
+         resources package. -->
+    <attr name="strokeWidth"/>
     <!--
         Specifies the radius for the corners of the button. Default is 0, for non-rounded corners.
     -->
     <attr name="cornerRadius" format="dimension"/>
     <!-- Ripple color for the button. This may be a color state list, if the desired ripple color
-         should be stateful. -->
-    <attr name="rippleColor" format="color"/>
+         should be stateful. Attribute type definition is in resources package. -->
+    <attr name="rippleColor"/>
   </declare-styleable>
 
 </resources>

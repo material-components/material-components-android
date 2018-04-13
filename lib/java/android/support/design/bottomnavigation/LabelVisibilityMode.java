@@ -29,11 +29,12 @@ import java.lang.annotation.RetentionPolicy;
  * LabelVisibilityMode#LABEL_VISIBILITY_LABELED} sets the label to always show, and {@link
  * LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED} sets the label to never show.
  *
- * <p>Setting the label visibility mode to {@link LabelVisibilityMode#LABEL_VISIBILITY_LEGACY} sets
- * the label to behave as it used to with {@link ShiftingMode}.
+ * <p>Setting the label visibility mode to {@link LabelVisibilityMode#LABEL_VISIBILITY_AUTO} sets
+ * the label to behave as "labeled" when there are 3 items or less, or "selected" when there are 4
+ * items or more.
  */
 @IntDef({
-  LabelVisibilityMode.LABEL_VISIBILITY_LEGACY,
+  LabelVisibilityMode.LABEL_VISIBILITY_AUTO,
   LabelVisibilityMode.LABEL_VISIBILITY_SELECTED,
   LabelVisibilityMode.LABEL_VISIBILITY_LABELED,
   LabelVisibilityMode.LABEL_VISIBILITY_UNLABELED
@@ -41,11 +42,10 @@ import java.lang.annotation.RetentionPolicy;
 @Retention(RetentionPolicy.SOURCE)
 public @interface LabelVisibilityMode {
   /**
-   * Label is shown when {@link ShiftingMode} is enabled, or hidden when it is not.
-   *
-   * @deprecated Use an explicit {@link LabelVisibilityMode}s instead.
+   * Label behaves as "labeled" when there are 3 items or less, or "selected" when there are 4 items
+   * or more.
    */
-  @Deprecated int LABEL_VISIBILITY_LEGACY = -1;
+  int LABEL_VISIBILITY_AUTO = -1;
 
   /** Label is shown on the selected navigation item. */
   int LABEL_VISIBILITY_SELECTED = 0;

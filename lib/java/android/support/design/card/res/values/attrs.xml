@@ -17,11 +17,19 @@
 
 <resources>
 
+  <!-- Style to use for MaterialCardView in this theme. This explicitly defines a new attribute
+      and does not use cardViewStyle from the attribute in the v7 Support Library. We do this
+      so that CardView and MaterialCardView can be used side-by-side in the same app. This
+      attribute name may change in the future if that usage restriction changes. -->
+  <attr name="materialCardViewStyle" format="reference"/>
+
   <declare-styleable name="MaterialCardView">
-    <!-- Specifies the color used to draw the path outline of the card. -->
-    <attr name="strokeColor" format="color"/>
-    <!-- Width of the stroke path of the card. Default is 0. -->
-    <attr name="strokeWidth" format="dimension"/>
+    <!-- Specifies the color used to draw the path outline of the card. Attribute type definition is
+         in resources package. -->
+    <attr name="strokeColor"/>
+    <!-- Width of the stroke path of the card. Default is 0. Attribute type definition is in
+         resources package. -->
+    <attr name="strokeWidth"/>
   </declare-styleable>
 
 </resources>

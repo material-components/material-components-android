@@ -16,6 +16,8 @@
 
 package android.support.design.backlayer;
 
+import android.support.design.R;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
