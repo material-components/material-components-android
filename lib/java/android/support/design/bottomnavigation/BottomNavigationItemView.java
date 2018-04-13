@@ -40,7 +40,6 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -218,6 +217,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     }
 
     refreshDrawableState();
+
+    // Set the item as selected to send an AccessibilityEvent.TYPE_VIEW_SELECTED from View, so that
+    // the item is read out as selected.
+    setSelected(checked);
   }
 
   private void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {
@@ -323,11 +326,5 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     Drawable backgroundDrawable =
         background == 0 ? null : ContextCompat.getDrawable(getContext(), background);
     ViewCompat.setBackground(this, backgroundDrawable);
-  }
-
-  @Override
-  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
-    super.onInitializeAccessibilityNodeInfo(info);
-    info.setSelected(itemData.isChecked());
   }
 }
