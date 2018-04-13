@@ -51,6 +51,7 @@ import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -162,16 +163,12 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  /**
-   * Returns the ChipDrawable backing this chip.
-   */
+  /** Returns the ChipDrawable backing this chip. */
   public Drawable getChipDrawable() {
     return chipDrawable;
   }
 
-  /**
-   * Sets the ChipDrawable backing this chip.
-   */
+  /** Sets the ChipDrawable backing this chip. */
   public void setChipDrawable(@NonNull ChipDrawable drawable) {
     if (chipDrawable != drawable) {
       unapplyChipDrawable(chipDrawable);
@@ -587,8 +584,13 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     protected void onPopulateNodeForVirtualView(
         int virtualViewId, AccessibilityNodeInfoCompat node) {
       if (hasCloseIcon()) {
+        CharSequence chipText = getChipText();
         node.setContentDescription(
-            getContext().getString(R.string.mtrl_chip_close_icon_content_description));
+            getContext()
+                .getString(
+                    R.string.mtrl_chip_close_icon_content_description,
+                    !TextUtils.isEmpty(chipText) ? chipText : "")
+                .trim());
         node.setBoundsInParent(getCloseIconTouchBoundsInt());
         node.addAction(AccessibilityActionCompat.ACTION_CLICK);
         node.setEnabled(isEnabled());
