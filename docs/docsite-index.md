@@ -69,7 +69,7 @@ to help developers easily create beautiful apps.
 
 4.  {: .step-list-item } ### What's next?
 
-    * [View the components](./catalog)
+    * [View the components](./docsite-components.md)
     * [Contributing](./contributing.md)
     * [Class documentation](https://developer.android.com/reference/android/support/design/widget/package-summary.html)
     * [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)

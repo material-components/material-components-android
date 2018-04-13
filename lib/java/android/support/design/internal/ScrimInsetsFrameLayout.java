@@ -16,6 +16,8 @@
 
 package android.support.design.internal;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
@@ -53,7 +55,8 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
     super(context, attrs, defStyleAttr);
 
     final TypedArray a =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.ScrimInsetsFrameLayout,
             defStyleAttr,

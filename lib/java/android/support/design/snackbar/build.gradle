@@ -1,8 +1,18 @@
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
-archivesBaseName = 'design'
+archivesBaseName = getArchivesBaseName(project.name)
+version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
+  implementation compatibility("annotations")
+  implementation compatibility("compat")
+  implementation compatibility("core_ui")
+  implementation compatibility("v7/appcompat")
+
+  implementation project(fromPath("lib/java/android/support/design/animation"))
+  implementation project(fromPath("lib/java/android/support/design/behavior"))
+  implementation project(fromPath("lib/java/android/support/design/internal"))
 }
 
 android {
@@ -17,6 +27,13 @@ android {
       'res-public'
     ]
     main.assets.srcDir 'assets'
-    main.resources.srcDir 'res'
+  }
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: rootProject.ext.mavenRepoUrl)
+    }
   }
 }

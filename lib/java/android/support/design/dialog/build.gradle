@@ -1,0 +1,44 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
+
+archivesBaseName = getArchivesBaseName(project.name)
+version = rootProject.ext.mdcLibraryVersion
+
+dependencies {
+  implementation compatibility("v7/appcompat")
+
+  implementation project(fromPath("lib/java/android/support/design/bottomnavigation"))
+  implementation project(fromPath("lib/java/android/support/design/bottomappbar"))
+  implementation project(fromPath("lib/java/android/support/design/button"))
+  implementation project(fromPath("lib/java/android/support/design/card"))
+  implementation project(fromPath("lib/java/android/support/design/chip"))
+  implementation project(fromPath("lib/java/android/support/design/color"))
+  implementation project(fromPath("lib/java/android/support/design/floatingactionbutton"))
+  implementation project(fromPath("lib/java/android/support/design/navigation"))
+  implementation project(fromPath("lib/java/android/support/design/tabs"))
+  implementation project(fromPath("lib/java/android/support/design/textfield"))
+  implementation project(fromPath("lib/java/android/support/design/typography"))
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.java.excludes = [
+      '**/build/**',
+    ]
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+  }
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: rootProject.ext.mavenRepoUrl)
+    }
+  }
+}

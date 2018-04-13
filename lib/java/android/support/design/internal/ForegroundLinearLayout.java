@@ -16,6 +16,8 @@
 
 package android.support.design.internal;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;
@@ -59,7 +61,8 @@ public class ForegroundLinearLayout extends LinearLayoutCompat {
     super(context, attrs, defStyle);
 
     TypedArray a =
-        context.obtainStyledAttributes(attrs, R.styleable.ForegroundLinearLayout, defStyle, 0);
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.ForegroundLinearLayout, defStyle, 0);
 
     foregroundGravity =
         a.getInt(R.styleable.ForegroundLinearLayout_android_foregroundGravity, foregroundGravity);

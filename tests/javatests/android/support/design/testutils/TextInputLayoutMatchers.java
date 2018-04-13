@@ -17,8 +17,8 @@
 package android.support.design.testutils;
 
 import android.support.design.R;
-import android.support.design.widget.CheckableImageButton;
-import android.support.design.widget.TextInputLayout;
+import android.support.design.internal.CheckableImageButton;
+import android.support.design.textfield.TextInputLayout;
 import android.text.TextUtils;
 import android.view.View;
 import org.hamcrest.Description;

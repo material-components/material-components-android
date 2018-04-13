@@ -19,7 +19,7 @@ package android.support.design.testutils;
 import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
 
 import android.support.annotation.ColorInt;
-import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.design.appbar.CollapsingToolbarLayout;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.view.View;

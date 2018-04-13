@@ -1,17 +1,18 @@
-package android.support.design.card
-
 apply plugin: 'com.android.library'
+apply plugin: 'com.github.dcendents.android-maven'
 
-archivesBaseName = 'design'
+archivesBaseName = getArchivesBaseName(project.name)
+version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   api compatibility("annotations")
   api compatibility("core_utils")
   api compatibility("v7/appcompat")
+  api compatibility("v7/cardview")
 
-  api project(fromPath("lib"))
+  implementation project(fromPath("lib/java/android/support/design/internal"))
+
   api project(fromPath("lib/java/android/support/design/resources"))
-  api project(fromPath("lib/java/android/support/design/theme"))
 }
 
 android {
@@ -26,6 +27,13 @@ android {
       'res-public'
     ]
     main.assets.srcDir 'assets'
-    main.resources.srcDir 'res'
+  }
+}
+
+uploadArchives {
+  repositories {
+    mavenDeployer {
+      repository(url: rootProject.ext.mavenRepoUrl)
+    }
   }
 }

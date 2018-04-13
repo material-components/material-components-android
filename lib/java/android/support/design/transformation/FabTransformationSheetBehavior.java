@@ -15,11 +15,13 @@
  */
 package android.support.design.transformation;
 
+import android.support.design.R;
+
 import android.content.Context;
 import android.support.annotation.AnimatorRes;
 import android.support.design.animation.MotionSpec;
 import android.support.design.animation.Positioning;
-import android.support.design.widget.FloatingActionButton;
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.util.AttributeSet;
 import android.view.Gravity;
 

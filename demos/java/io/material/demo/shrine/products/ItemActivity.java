@@ -19,7 +19,7 @@ package io.material.demo.shrine.products;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.widget.Snackbar;
+import android.support.design.snackbar.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -95,12 +95,13 @@ public class ItemActivity extends AppCompatActivity {
     findViewById(R.id.FloatingActionButton).setOnClickListener(clickListener);
   }
 
-  private final OnClickListener clickListener = new OnClickListener() {
-    @Override
-    public void onClick(View v) {
-      Snackbar.make(v, fabMessage, Snackbar.LENGTH_SHORT).show();
-    }
-  };
+  private final OnClickListener clickListener =
+      new OnClickListener() {
+        @Override
+        public void onClick(View v) {
+          Snackbar.make(v, fabMessage, Snackbar.LENGTH_SHORT).show();
+        }
+      };
 
   private void initSpinner() {
     Spinner spinner = (Spinner) findViewById(R.id.QuantitySpinner);

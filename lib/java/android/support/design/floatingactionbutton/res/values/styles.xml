@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2017 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
+    <item name="android:background">@drawable/design_fab_background</item>
+    <item name="android:clickable">true</item>
+    <item name="android:focusable">true</item>
+    <item name="backgroundTint">?attr/colorAccent</item>
+    <item name="fabSize">auto</item>
+    <item name="elevation">@dimen/design_fab_elevation</item>
+    <item name="hoveredFocusedTranslationZ">@dimen/design_fab_translation_z_hovered_focused</item>
+    <item name="pressedTranslationZ">@dimen/design_fab_translation_z_pressed</item>
+    <item name="rippleColor">?attr/colorControlHighlight</item>
+    <item name="borderWidth">@dimen/design_fab_border_width</item>
+    <item name="maxImageSize">@dimen/design_fab_image_size</item>
+    <item name="showMotionSpec">@animator/design_fab_show_motion_spec</item>
+    <item name="hideMotionSpec">@animator/design_fab_hide_motion_spec</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.FloatingActionButton" parent="Widget.Design.FloatingActionButton">
+    <item name="elevation">@dimen/mtrl_fab_elevation</item>
+    <item name="hoveredFocusedTranslationZ">@dimen/mtrl_fab_translation_z_hovered_focused</item>
+    <item name="pressedTranslationZ">@dimen/mtrl_fab_translation_z_pressed</item>
+    <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
+    <item name="showMotionSpec">@animator/mtrl_fab_show_motion_spec</item>
+    <item name="hideMotionSpec">@animator/mtrl_fab_hide_motion_spec</item>
+  </style>
+
+</resources>
+
+

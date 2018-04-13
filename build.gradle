@@ -5,7 +5,7 @@ buildscript {
   }
   dependencies {
     classpath 'com.android.tools.build:gradle:3.0.1'
-    classpath 'com.github.dcendents:android-maven-gradle-plugin:1.5'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
   }
 }
 
@@ -13,14 +13,15 @@ allprojects {
   repositories {
     google()
     jcenter()
+    mavenLocal()
   }
 }
 
 ext {
-  compileSdkVersion = 27
+  compileSdkVersion = 'android-P'
   minSdkVersion = 14
   targetSdkVersion = 27
-  supportVersion = '27.0.2'
+  supportVersion = '28.0.0-alpha1'
 
   testRunnerVersion = '1.0.0'
   espressoVersion = '3.0.0'
@@ -33,8 +34,10 @@ ext {
   preDexLibs = !project.hasProperty('disablePreDex')
 
   mavenRepoUrl = (project.hasProperty('mavenRepoUrl')
-      ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
-  mdcLibraryVersion = '1.0'
+    ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
+  mdcLibraryVersion = '28.0.0-alpha1'
+  mdcLibraryPackage = "android.support.design"
+  mdcLibraryDir = "android/support/design"
 }
 
 // lint every library
@@ -47,7 +50,7 @@ task clean(type: Delete) {
   delete rootProject.buildDir
 }
 
-private def getTransformedProjectPath (projectPath) {
+private def getTransformedProjectPath(projectPath) {
   def pathComponents = projectPath.tokenize('/')
   def result = ''
   def currentPath = ''
@@ -57,7 +60,7 @@ private def getTransformedProjectPath (projectPath) {
     } else {
       currentPath += '/' + component
     }
-    result += ':' +  currentPath
+    result += ':' + currentPath
   }
   return result
 }
@@ -112,12 +115,12 @@ def fromPath(path) {
   return getTransformedProjectPath(path)
 }
 
-def getArchivesBaseName (name) {
+def getArchivesBaseName(name) {
   if (name == 'lib') {
-    return 'design-core'
+    return 'design'
   }
   def pathComponents = name.tokenize('/')
-  def knownComponents = ['lib', 'java', 'android', 'support',  'design']
+  def knownComponents = ['lib', 'java', 'android', 'support', 'design']
   def firstUnknownComponent = knownComponents.size();
   for (def i = 0; i < knownComponents.size() && i < pathComponents.size(); i++) {
     if (pathComponents[i] != knownComponents[i]) {
@@ -168,7 +171,6 @@ subprojects {
         compileSdkVersion rootProject.ext.compileSdkVersion
 
         defaultConfig.minSdkVersion rootProject.ext.minSdkVersion
-        defaultConfig.targetSdkVersion rootProject.ext.targetSdkVersion
         // This disables the builds tools automatic vector -> PNG generation
         defaultConfig.generatedDensities = []
 
@@ -176,6 +178,88 @@ subprojects {
         compileOptions.targetCompatibility JavaVersion.VERSION_1_7
 
         aaptOptions.additionalParameters "--no-version-vectors"
+
+        if (isAndroidLibrary) {
+          def JAVA_RESOURCES_TEMP_DIR = "$buildDir/javaResources"
+
+          task writeVersionFile() {
+            def versionFileDir = JAVA_RESOURCES_TEMP_DIR + '/META-INF'
+            def versionFileName = mdcLibraryPackage + '_' + getArchivesBaseName(project.name) + '.version'
+
+            new File(versionFileDir).mkdirs()
+            new File(versionFileDir + '/' + versionFileName).text = mdcLibraryVersion
+          }
+
+          libraryVariants.all {
+            it.processJavaResources.dependsOn(writeVersionFile)
+          }
+
+          project.android.sourceSets.main.resources.srcDir JAVA_RESOURCES_TEMP_DIR
+        }
+      }
+
+      if (isAndroidLibrary) {
+        project.afterEvaluate {
+          project.tasks.all({
+            if (it instanceof com.android.build.gradle.tasks.GenerateBuildConfig) {
+              // Disable generating BuildConfig.java
+              it.enabled = false
+            }
+          })
+
+          project.android {
+            task sourcesJar(type: Jar) {
+              classifier = 'sources'
+              from(android.sourceSets.main.java.srcDirs) {
+                // Needed because we have Java sources and resources in same directory
+                include '**/*.java'
+                includeEmptyDirs = false
+              }
+            }
+
+            artifacts {
+              archives sourcesJar
+            }
+          }
+
+          if (project.uploadArchives.repositories.hasProperty("mavenDeployer")) {
+            project.uploadArchives.repositories.mavenDeployer.pom {
+              project {
+                name 'Android Design Support Library'
+                description 'The Android Design Support Library is a static library that you can add to your Android application in order to use APIs that provide implementations of the Material Design specification. Compatible on devices running API 14 or later.'
+                url 'http://developer.android.com/tools/extras/support-library.html'
+                inceptionYear '2015'
+                licenses {
+                  license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                    distribution 'repo'
+                  }
+                }
+                developers {
+                  developer {
+                    name 'The Android Open Source Project'
+                  }
+                }
+                scm {
+                  connection 'scm:git:https://github.com/material-components/material-components-android.git'
+                  url 'https://github.com/material-components/material-components-android'
+                }
+              }
+              // Adds a <type> tag for each dependency. This assumes that all dependencies except
+              // for support-annotations are aars, but it can break if in the future we depend on
+              // anything else that's not an aar.
+              // TODO: Remove this once Gradle automatically determines dependency types.
+              whenConfigured { pom ->
+                pom.dependencies.findAll { dependency ->
+                  if (dependency.artifactId != 'support-annotations') {
+                    dependency.type = 'aar'
+                  }
+                }
+              }
+            }
+          }
+        }
       }
     }
   }

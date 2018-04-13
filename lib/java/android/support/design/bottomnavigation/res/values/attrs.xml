@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<resources>
+
+  <!-- Style to use for BottomNavigationViews in the theme. -->
+  <attr name="bottomNavigationStyle" format="reference"/>
+
+  <declare-styleable name="BottomNavigationView">
+    <!-- The menu resource to inflate and populate items from. Attribute type definition is in
+         navigation package. -->
+    <attr name="menu"/>
+    <!-- Whether navigation items display with a label, without a label, or with a label during
+         selected state. Can also be "auto", which uses the item count to determine whether to show
+         or hide the label. -->
+    <attr name="labelVisibilityMode">
+      <!-- Label behaves as "labeled" when there are 3 items or less, or "selected" when there are
+           4 items or more. -->
+      <enum name="auto" value="-1"/>
+      <!-- Label is shown on the selected navigation item. -->
+      <enum name="selected" value="0"/>
+      <!-- Label is shown on all navigation items. -->
+      <enum name="labeled" value="1"/>
+      <!-- Label is not shown on any navigation items. -->
+      <enum name="unlabeled" value="2"/>
+    </attr>
+    <!-- The background for the navigation items. Attribute type definition is in navigation
+         package. -->
+    <attr name="itemBackground"/>
+    <!-- The size to provide for the navigation item icons. -->
+    <attr name="itemIconSize" format="dimension"/>
+    <!-- The tint to apply to the navigation item icons. Attribute type definition is in navigation
+         package. -->
+    <attr name="itemIconTint"/>
+    <!-- The text appearance to apply to the inactive navigation item labels. Setting
+         android:textColor in itemTextAppearanceInactive will take precedence over android:textColor
+         in itemTextAppearanceActive. Instead, set itemTextColor with a ColorStateList to make
+         the text color stateful. -->
+    <attr name="itemTextAppearanceInactive" format="reference"/>
+    <!-- The text appearance to apply to the active navigation item label. You should not set
+         android:textColor in itemTextAppearanceActive. Instead, set itemTextColor to a
+         ColorStateList to make the text color stateful. -->
+    <attr name="itemTextAppearanceActive" format="reference"/>
+    <!-- The color to apply to the navigation items' text. Setting itemTextColor will take
+         precedence over android:textColor in itemTextAppearanceInactive or
+         itemTextAppearanceActive. Attribute type definition is in navigation package. -->
+    <attr name="itemTextColor"/>
+    <!-- Whether the items should translate horizontally when in "selected" label visibility
+         mode. -->
+    <attr name="itemHorizontalTranslation" format="boolean"/>
+    <attr name="elevation"/>
+  </declare-styleable>
+
+</resources>

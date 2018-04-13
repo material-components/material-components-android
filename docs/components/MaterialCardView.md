@@ -3,17 +3,27 @@ title: "Material Card"
 layout: detail
 section: components
 excerpt: "Cards display content and actions on a single subject."
-iconId: materialcard
+iconId: card
 path: /catalog/material-card-view/
 -->
 
 # Material Card
 
-`Material Card` is a customizable component based on [`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
-from the Android Support Library. `MaterialCardView` provides all of the features
-of `CardView` and also includes an unelevated card style and parameters for an
-outline stroke on the card. The stroke outline should be used for unelevated
-cards and requires width and color values.
+A card is a sheet of material that may contain a photo, text, and a link about a
+single subject. They may display content containing elements of varying size,
+such as photos with captions of variable length.
+
+`MaterialCardView` is a customizable component based on
+[`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
+from the Android Support Library. `MaterialCardView` provides all of the
+features of `CardView`, but adds attributes for customizing the stroke and uses
+an updated Material style by default.
+
+Note: `MaterialCardView` is an _in-progress_ implementation, and will continue
+to receive new features and updates. The majority of these updates will be
+style-based with additional options for the layout of content inside of a card
+(for example: dividers, images, actions, and text treatments). Updates will also
+include functionality for card behavior in groups of cards.
 
 ## Design & API Documentation
 
@@ -28,15 +38,6 @@ cards and requires width and color values.
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
-
-The `MaterialCardView` component provides an _in-progress_ implementation of
-Material Design's card component. It will continue to receive new features and
-updates.
-
-The majority of these updates will be style-based with additional
-options for the layout of content inside of a card (for example: dividers,
-images, actions, and text treatments). Updates will also include functionality
-for card behavior in groups of cards.
 
 Example code of how to include the component in your layout is listed here
 for reference. Note that the margins around the card (its "gutters") need to
@@ -57,12 +58,58 @@ be listed in the layout of the card and cannot be included in a `style` tag.
 </android.support.design.card.MaterialCardView>
 ```
 
-See the summary for [`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
-for standard attributes that can be changed for a `CardView`.
+### Material Styles
 
-The following additional attributes can be changed for a Material card:
+Using `MaterialCardView` with an updated Material theme
+(`Theme.MaterialComponents`) will provide the correct updated Material styles to
+your cards by default. If you need to use an updated Material card and your
+application theme does not inherit from an updated Material theme, you can apply
+the `Widget.MaterialComponents.CardView` style directly to your widget in XML.
 
--   `strokeColor`: Color of the stroke path for a card. A stroke will not be
-    drawn unless a `strokeColor` is provided, regardless of the `strokeWidth`
-    attribute value.
--   `strokeWidth`: Size of the stroke path for a card. The default is 0.
+#### Updated Material Style
+
+The updated `MaterialCardView` style consists of updated elevation and
+background color.
+
+```xml
+<android.support.design.card.MaterialCardView
+    style="@style/Widget.MaterialComponents.CardView"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/mtrl_card_spacing"
+    android:layout_marginTop="@dimen/mtrl_card_spacing"
+    android:layout_marginRight="@dimen/mtrl_card_spacing"
+    android:minHeight="200dp">
+
+  <!-- Card contents. -->
+
+</android.support.design.card.MaterialCardView>
+```
+
+#### Legacy Material Style
+
+```xml
+<android.support.v7.widget.CardView
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginLeft="@dimen/mtrl_card_spacing"
+    android:layout_marginTop="@dimen/mtrl_card_spacing"
+    android:layout_marginRight="@dimen/mtrl_card_spacing"
+    android:minHeight="200dp">
+
+  <!-- Card contents. -->
+
+</android.support.v7.widget.CardView>
+```
+
+### Attributes
+
+`MaterialCardView` supports all of the standard attributes that can be changed
+for a
+[`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html).
+The following additional attributes can be changed for a `MaterialCardView`:
+
+Feature | Relevant attributes
+:------ | :------------------
+Border  | `app:strokeColor`
+        | `app:strokeWidth`

@@ -16,6 +16,8 @@
 
 package android.support.design.internal;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
@@ -263,5 +265,13 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
   public void setNeedsEmptyIcon(boolean needsEmptyIcon) {
     this.needsEmptyIcon = needsEmptyIcon;
+  }
+
+  public void setHorizontalPadding(int padding) {
+    setPadding(padding, 0, padding, 0);
+  }
+
+  public void setIconPadding(int padding) {
+    textView.setCompoundDrawablePadding(padding);
   }
 }

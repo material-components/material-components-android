@@ -29,14 +29,14 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <android.support.design.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_standard"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:layout_margin="16dp"
         android:src="@drawable/ic_add"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <android.support.design.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_tint"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
@@ -44,7 +44,7 @@
         android:src="@drawable/ic_add"
         app:backgroundTint="#FF00FF"/>
 
-    <android.support.design.widget.FloatingActionButton
+    <android.support.design.floatingactionbutton.FloatingActionButton
         android:id="@+id/fab_state_tint"
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"

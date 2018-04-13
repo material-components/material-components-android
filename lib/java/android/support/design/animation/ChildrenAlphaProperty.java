@@ -15,6 +15,8 @@
  */
 package android.support.design.animation;
 
+import android.support.design.R;
+
 import android.util.Property;
 import android.view.View;
 import android.view.ViewGroup;

@@ -53,7 +53,7 @@ layout:
 
 <android.support.design.button.MaterialButton
     android:id="@+id/material_unelevated_button"
-    style="@style/Widget.Design.Button.MaterialButton.UnelevatedButton"
+    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/unelevated_button_label_enabled"/>
@@ -64,11 +64,15 @@ color of the component, and the text color is white by default. For unelevated
 buttons, your theme's `colorAccent` provides the default text color of the
 component, and the background color is transparent by default.
 
+## Attributes
+
 The following attributes can be changed for Material Button:
 
 -   `icon`: Add an icon to the start of the component.
 -   `iconPadding`, `iconTint`, `iconTintMode`: Set the corresponding icon
     properties.
+-   `additionalPaddingForIconLeft`, `additionalPaddingForIconRight`: Padding to
+    add to the left/right side of the button when an icon is present.
 -   `buttonBackgroundTint`: Change the background color.
 -   `rippleColor`: Change the ripple/press color. Ripple opacity will be
     determined by the Android framework when available. Otherwise, this color

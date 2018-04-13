@@ -17,8 +17,8 @@
 package android.support.design.testapp;
 
 import android.support.annotation.VisibleForTesting;
+import android.support.design.floatingactionbutton.FloatingActionButton;
 import android.support.design.testapp.base.BaseTestActivity;
-import android.support.design.widget.FloatingActionButton;
 import android.view.View;
 
 /** Test Activity for ExpandableTransformationBehaviors. */

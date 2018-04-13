@@ -29,6 +29,5 @@ Material Components for Android are based on Android’s Design support library
 
 ## Documentation
 
-*   [Documentation home](docs/index.md)
 *   [Directory structure](docs/directorystructure.md)
-*   [Components](docs/components.md)
+*   [Components](docs/components/)

@@ -15,18 +15,18 @@
      limitations under the License.
 -->
 
-<android.support.design.widget.TabLayout
+<android.support.design.tabs.TabLayout
         xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-    <android.support.design.widget.TabItem
+    <android.support.design.tabs.TabItem
             android:text="@string/tab_layout_text"/>
 
-    <android.support.design.widget.TabItem
+    <android.support.design.tabs.TabItem
             android:icon="@android:drawable/star_on"/>
 
-    <android.support.design.widget.TabItem
+    <android.support.design.tabs.TabItem
             android:layout="@layout/design_tab_item_custom"/>
 
-</android.support.design.widget.TabLayout>
+</android.support.design.tabs.TabLayout>

@@ -16,29 +16,34 @@
 
 package android.support.design.button;
 
+import android.support.design.R;
+
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-import android.animation.AnimatorInflater;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.ColorRes;
+import android.support.annotation.DimenRes;
+import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
 import android.support.design.internal.ThemeEnforcement;
+import android.support.design.internal.ViewUtils;
 import android.support.design.resources.MaterialResources;
-import android.support.design.widget.ViewUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
+import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
-import android.view.Gravity;
+import android.util.Log;
 
 /**
  * A convenience class for creating a new Material button.
@@ -46,28 +51,63 @@ import android.view.Gravity;
  * <p>This class supplies updated Material styles for the button in the constructor. The widget will
  * display the correct default Material styles without the use of the style flag.
  *
- * <p>For filled Material buttons, this class uses your theme's {@code ?attr/colorAccent} for the
- * background fill color and white for the text color. For unfilled buttons, this class uses {@code
- * ?attr/colorAccent} for the text color and transparent for the background.
+ * <p>All attributes from {@link android.support.design.button.R.styleable#MaterialButton} are
+ * supported. Do not use the {@code android:background} attribute. MaterialButton manages its own
+ * background drawable, and setting a new background means {@link MaterialButton} can no longer
+ * guarantee that the new attributes it introduces will function properly. If the default background
+ * is changed, {@link MaterialButton} cannot guarantee well-defined behavior.
  *
- * <p>Add icons to the start of this Material Button using the {@code icon}, {@code iconPadding},
- * {@code iconTint} and {@code iconTintMode} attributes.
+ * <p>For filled buttons, this class uses your theme's {@code ?attr/colorAccent} for the background
+ * tint color and white for the text color. For unfilled buttons, this class uses {@code
+ * ?attr/colorAccent} for the text color and transparent for the background tint.
  *
- * <p>Specify background tint using the {@code buttonBackgroundTint} attribute, which accepts either
- * a color or a color state list.
+ * <p>Add icons to the start of this button using the {@link R.attr#icon app:icon}, {@link
+ * R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint} and {@link
+ * R.attr#iconTintMode app:iconTintMode} attributes.
  *
- * <p>Ripple color / press state color can be specified using the {@code rippleColor} attribute.
- * Ripple opacity will be determined by the Android framework when available. Otherwise, this color
- * will be overlaid on the button at a 50% opacity when button is pressed.
+ * <p>Add additional padding to the left and right side of the button icon, when present, using the
+ * {@link R.attr#additionalPaddingLeftForIcon app:additionalPaddingLeftForIcon} and {@link
+ * R.attr#additionalPaddingRightForIcon app:additionalPaddingRightForIcon} attributes.
  *
- * <p>Set the stroke color using the {@code strokeColor} attribute, which accepts either a color or
- * a color state list. Stroke width can be set using the {@code strokeWidth} attribute.
+ * <p>Specify background tint using the {@link R.attr#backgroundTint app:backgroundTint} and {@link
+ * R.attr#backgroundTintMode app:backgroundTintMode} attributes, which accepts either a color or a
+ * color state list.
  *
- * <p>Specify the radius of all four corners of the button using the {@code cornerRadius} attribute.
+ * <p>Ripple color / press state color can be specified using the {@link R.attr#rippleColor
+ * app:rippleColor} attribute. Ripple opacity will be determined by the Android framework when
+ * available. Otherwise, this color will be overlaid on the button at a 50% opacity when button is
+ * pressed.
+ *
+ * <p>Set the stroke color using the {@link R.attr#strokeColor app:strokeColor} attribute, which
+ * accepts either a color or a color state list. Stroke width can be set using the {@link
+ * R.attr#strokeWidth app:strokeWidth} attribute.
+ *
+ * <p>Specify the radius of all four corners of the button using the {@link R.attr#cornerRadius
+ * app:cornerRadius} attribute.
  */
 public class MaterialButton extends AppCompatButton {
 
-  private final MaterialButtonHelper materialButtonHelper;
+  private static final String LOG_TAG = "MaterialButton";
+
+  @Nullable private final MaterialButtonHelper materialButtonHelper;
+
+  private int paddingStart;
+  private int paddingEnd;
+  private int paddingTop;
+  private int paddingBottom;
+
+  private int insetLeft;
+  private int insetRight;
+  private int insetTop;
+  private int insetBottom;
+
+  private int additionalPaddingLeftForIcon;
+  private int additionalPaddingRightForIcon;
+
+  private int iconPadding;
+  private Mode iconTintMode;
+  private ColorStateList iconTint;
+  private Drawable icon;
 
   public MaterialButton(Context context) {
     this(context, null /* attrs */);
@@ -80,104 +120,83 @@ public class MaterialButton extends AppCompatButton {
   public MaterialButton(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    ThemeEnforcement.checkAppCompatTheme(context);
-
     TypedArray attributes =
-        context.obtainStyledAttributes(
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
             attrs,
             R.styleable.MaterialButton,
             defStyleAttr,
-            R.style.Widget_Design_Button_MaterialButton);
-    int minWidth = attributes.getDimensionPixelSize(R.styleable.MaterialButton_android_minWidth, 0);
-    int minHeight =
-        attributes.getDimensionPixelSize(R.styleable.MaterialButton_android_minHeight, 0);
+            R.style.Widget_MaterialComponents_Button);
 
     int padding = attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_padding, 0);
     int paddingLeft =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_paddingLeft, padding);
+    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+      paddingStart =
+          attributes.getDimensionPixelOffset(
+              R.styleable.MaterialButton_android_paddingStart, paddingLeft);
+    } else {
+      paddingStart = paddingLeft;
+    }
+
     int paddingRight =
         attributes.getDimensionPixelOffset(
             R.styleable.MaterialButton_android_paddingRight, padding);
-    int paddingTop =
+    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
+      paddingEnd =
+          attributes.getDimensionPixelOffset(
+              R.styleable.MaterialButton_android_paddingEnd, paddingRight);
+    } else {
+      paddingEnd = paddingRight;
+    }
+
+    paddingTop =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_paddingTop, padding);
-    int paddingBottom =
+    paddingBottom =
         attributes.getDimensionPixelOffset(
             R.styleable.MaterialButton_android_paddingBottom, padding);
-    int insetLeft =
-        attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetLeft, 0);
-    int insetRight =
+
+    insetLeft = attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetLeft, 0);
+    insetRight =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetRight, 0);
-    int insetTop =
-        attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetTop, 0);
-    int insetBottom =
+    insetTop = attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetTop, 0);
+    insetBottom =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetBottom, 0);
 
-    int additionalPaddingLeftForIcon =
+    additionalPaddingLeftForIcon =
         attributes.getDimensionPixelOffset(
             R.styleable.MaterialButton_additionalPaddingLeftForIcon, 0);
-    int additionalPaddingRightForIcon =
+    additionalPaddingRightForIcon =
         attributes.getDimensionPixelOffset(
             R.styleable.MaterialButton_additionalPaddingRightForIcon, 0);
 
-    @StyleRes
-    int textAppearanceStyleRes =
-        attributes.getResourceId(R.styleable.MaterialButton_android_textAppearance, 0);
-    int animatorResId =
-        attributes.getResourceId(R.styleable.MaterialButton_android_stateListAnimator, 0);
-    boolean isFocusable = attributes.getBoolean(R.styleable.MaterialButton_android_focusable, true);
-    boolean isClickable = attributes.getBoolean(R.styleable.MaterialButton_android_clickable, true);
-    int iconPadding = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconPadding, 0);
-    int gravity = attributes.getInt(R.styleable.MaterialButton_android_gravity, Gravity.CENTER);
-    Mode iconTintMode =
+    iconPadding = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconPadding, 0);
+    iconTintMode =
         ViewUtils.parseTintMode(
-            attributes.getInt(R.styleable.MaterialButton_iconTintMode, -1), null);
+            attributes.getInt(R.styleable.MaterialButton_iconTintMode, -1), Mode.SRC_IN);
 
-    // Workaround to support VectorDrawables on pre-Lollipop, as there is no compat implementation
-    // for icon within AppCompatButton
-    ColorStateList iconTint =
+    iconTint =
         MaterialResources.getColorStateList(
             getContext(), attributes, R.styleable.MaterialButton_iconTint);
-    Drawable icon =
-        MaterialResources.getDrawable(getContext(), attributes, R.styleable.MaterialButton_icon);
+    icon = MaterialResources.getDrawable(getContext(), attributes, R.styleable.MaterialButton_icon);
 
     // Loads and sets background drawable attributes
     materialButtonHelper = new MaterialButtonHelper(this);
     materialButtonHelper.loadFromAttributes(attributes);
 
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && animatorResId != 0) {
-      setStateListAnimator(AnimatorInflater.loadStateListAnimator(context, animatorResId));
-    }
-
-    TextViewCompat.setTextAppearance(this, textAppearanceStyleRes);
-    setMinWidth(minWidth);
-    setMinHeight(minHeight);
-    setFocusable(isFocusable);
-    setClickable(isClickable);
-    setCompoundDrawablePadding(iconPadding);
-    setGravity(gravity);
-
-    // TODO: Add attributes for elevation/translationZ
-
-    // setPadding() sets padding on button including inset, so we have to add inset and padding
-    // attributes to get the button's visible padding to look correct.
-    ViewCompat.setPaddingRelative(
-        this,
-        paddingLeft + (icon != null ? additionalPaddingLeftForIcon : 0) + insetLeft,
-        paddingTop + insetTop,
-        paddingRight + (icon != null ? additionalPaddingRightForIcon : 0) + insetRight,
-        paddingBottom + insetBottom);
-
-    if (icon != null) {
-      icon = icon.mutate();
-      DrawableCompat.setTintList(icon, iconTint);
-      if (iconTintMode != null) {
-        DrawableCompat.setTintMode(icon, iconTintMode);
-      }
-    }
-
-    TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, icon, null, null, null);
-
     attributes.recycle();
+
+    setCompoundDrawablePadding(iconPadding);
+    updateIcon();
+  }
+
+  @Override
+  public void draw(Canvas canvas) {
+    super.draw(canvas);
+    // Manually draw stroke on top of background for Kit Kat (API 19) and earlier versions
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && isUsingOriginalBackground()) {
+      materialButtonHelper.drawStroke(canvas);
+    }
   }
 
   /**
@@ -189,8 +208,12 @@ public class MaterialButton extends AppCompatButton {
   @RestrictTo(LIBRARY_GROUP)
   @Override
   public void setSupportBackgroundTintList(@Nullable ColorStateList tint) {
-    if (materialButtonHelper != null) {
+    if (isUsingOriginalBackground()) {
       materialButtonHelper.setSupportBackgroundTintList(tint);
+    } else if (materialButtonHelper != null) {
+      // If default MaterialButton background has been overwritten, we will let AppCompatButton
+      // handle the tinting
+      super.setSupportBackgroundTintList(tint);
     }
   }
 
@@ -204,9 +227,14 @@ public class MaterialButton extends AppCompatButton {
   @Override
   @Nullable
   public ColorStateList getSupportBackgroundTintList() {
-    return materialButtonHelper != null
-        ? materialButtonHelper.getSupportBackgroundTintList()
-        : null;
+    if (isUsingOriginalBackground()) {
+      return materialButtonHelper.getSupportBackgroundTintList();
+    } else {
+      // If default MaterialButton background has been overwritten, we will let AppCompatButton
+      // handle the tinting
+      // return null;
+      return super.getSupportBackgroundTintList();
+    }
   }
 
   /**
@@ -218,7 +246,13 @@ public class MaterialButton extends AppCompatButton {
   @RestrictTo(LIBRARY_GROUP)
   @Override
   public void setSupportBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
-    // We currently do not support background tint mode for MaterialButton
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setSupportBackgroundTintMode(tintMode);
+    } else if (materialButtonHelper != null) {
+      // If default MaterialButton background has been overwritten, we will let AppCompatButton
+      // handle the tint Mode
+      super.setSupportBackgroundTintMode(tintMode);
+    }
   }
 
   /**
@@ -231,7 +265,534 @@ public class MaterialButton extends AppCompatButton {
   @Override
   @Nullable
   public PorterDuff.Mode getSupportBackgroundTintMode() {
-    // We currently do not support background tint mode for MaterialButton
-    return null;
+    if (isUsingOriginalBackground()) {
+      return materialButtonHelper.getSupportBackgroundTintMode();
+    } else {
+      // If default MaterialButton background has been overwritten, we will let AppCompatButton
+      // handle the tint mode
+      return super.getSupportBackgroundTintMode();
+    }
+  }
+
+  @Override
+  public void setBackgroundTintList(@Nullable ColorStateList tintList) {
+    setSupportBackgroundTintList(tintList);
+  }
+
+  @Nullable
+  @Override
+  public ColorStateList getBackgroundTintList() {
+    return getSupportBackgroundTintList();
+  }
+
+  @Override
+  public void setBackgroundTintMode(@Nullable Mode tintMode) {
+    setSupportBackgroundTintMode(tintMode);
+  }
+
+  @Nullable
+  @Override
+  public Mode getBackgroundTintMode() {
+    return getSupportBackgroundTintMode();
+  }
+
+  @Override
+  public void setBackgroundColor(int color) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setBackgroundColor(color);
+    } else {
+      // If default MaterialButton background has been overwritten, we will let View handle
+      // setting the background color.
+      super.setBackgroundColor(color);
+    }
+  }
+
+  @Override
+  public void setBackground(Drawable background) {
+    setBackgroundDrawable(background);
+  }
+
+  @Override
+  public void setBackgroundResource(@DrawableRes int backgroundResourceId) {
+    Drawable background = null;
+    if (backgroundResourceId != 0) {
+      background = AppCompatResources.getDrawable(getContext(), backgroundResourceId);
+    }
+    setBackgroundDrawable(background);
+  }
+
+  @Override
+  public void setBackgroundDrawable(Drawable background) {
+    if (isUsingOriginalBackground()) {
+      if (background != this.getBackground()) {
+        Log.i(LOG_TAG, "Setting a custom background is not supported.");
+        materialButtonHelper.setBackgroundOverwritten();
+        super.setBackgroundDrawable(background);
+      } else {
+        // ViewCompat.setBackgroundTintList() and setBackgroundTintMode() call setBackground() on
+        // the view in API 21, since background state doesn't automatically update in API 21. We
+        // capture this case here, and update our background without replacing it or re-tinting it.
+        getBackground().setState(background.getState());
+      }
+    } else {
+      super.setBackgroundDrawable(background);
+    }
+  }
+
+  @Override
+  protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
+    super.onLayout(changed, left, top, right, bottom);
+    // Workaround for API 21 ripple bug (possibly internal in GradientDrawable)
+    if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP && materialButtonHelper != null) {
+      materialButtonHelper.updateMaskBounds(bottom - top, right - left);
+    }
+  }
+
+  /**
+   * Update the button's background without changing the background state in {@link
+   * MaterialButtonHelper}. This should be used when we initially set the background drawable
+   * created by {@link MaterialButtonHelper}.
+   *
+   * @param background Background to set on this button
+   */
+  void setInternalBackground(Drawable background) {
+    super.setBackgroundDrawable(background);
+  }
+
+  /**
+   * Sets the start, top, end, and bottom padding values for this button. Note that this is
+   * compounded with any values set for {@link #additionalPaddingLeftForIcon}, {@link
+   * #additionalPaddingRightForIcon}, and any insets to calculate the full padding for the view.
+   *
+   * <p>To retrieve just the base padding values, use {@link #getButtonPaddingStart()}, {@link
+   * #getButtonPaddingTop()}, {@link #getButtonPaddingEnd()}, {@link #getButtonPaddingBottom()}
+   */
+  public void setButtonPadding(int start, int top, int end, int bottom) {
+    paddingStart = start;
+    paddingTop = top;
+    paddingEnd = end;
+    paddingBottom = bottom;
+    updatePadding();
+  }
+
+  /**
+   * @return Padding start value for this button.
+   * @see #setButtonPadding(int, int, int, int)
+   */
+  public int getButtonPaddingStart() {
+    return paddingStart;
+  }
+
+  /**
+   * @return Padding top value for this button.
+   * @see #setButtonPadding(int, int, int, int)
+   */
+  public int getButtonPaddingTop() {
+    return paddingTop;
+  }
+
+  /**
+   * @return Padding end value for this button.
+   * @see #setButtonPadding(int, int, int, int)
+   */
+  public int getButtonPaddingEnd() {
+    return paddingEnd;
+  }
+
+  /**
+   * @return Padding bottom value for this button.
+   * @see #setButtonPadding(int, int, int, int)
+   */
+  public int getButtonPaddingBottom() {
+    return paddingBottom;
+  }
+
+  /**
+   * Set the additional padding to add/remove to the left side of this button when an icon is
+   * present.
+   *
+   * @param additionalPaddingLeftForIcon Additional padding to add/remove to the left side of this
+   *     button when an icon is present
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_additionalPaddingLeftForIcon
+   * @see #getAdditionalPaddingLeftForIcon()
+   */
+  public void setAdditionalPaddingLeftForIcon(int additionalPaddingLeftForIcon) {
+    if (this.additionalPaddingLeftForIcon != additionalPaddingLeftForIcon) {
+      this.additionalPaddingLeftForIcon = additionalPaddingLeftForIcon;
+      updatePadding();
+    }
+  }
+
+  /**
+   * Get the additional padding added/removed to the left side of this button when an icon is
+   * present.
+   *
+   * @return Additional padding added/removed to the left side of this button when an icon is
+   *     present
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_additionalPaddingLeftForIcon
+   * @see #setAdditionalPaddingLeftForIcon(int)
+   */
+  public int getAdditionalPaddingLeftForIcon() {
+    return additionalPaddingLeftForIcon;
+  }
+
+  /**
+   * Set the additional padding to add/remove to the right side of this button when an icon is
+   * present.
+   *
+   * @param additionalPaddingRightForIcon Additional padding to add/remove to the right side of this
+   *     button when an icon is present
+   * @attr ref
+   *     android.support.design.button.R.styleable#MaterialButton_additionalPaddingRightForIcon
+   * @see #getAdditionalPaddingRightForIcon()
+   */
+  public void setAdditionalPaddingRightForIcon(int additionalPaddingRightForIcon) {
+    if (this.additionalPaddingRightForIcon != additionalPaddingRightForIcon) {
+      this.additionalPaddingRightForIcon = additionalPaddingRightForIcon;
+      updatePadding();
+    }
+  }
+
+  /**
+   * Get the additional padding added/removed to the right side of this button when an icon is
+   * present.
+   *
+   * @return Additional padding added/removed to the right side of this button when an icon is
+   *     present
+   * @attr ref
+   *     android.support.design.button.R.styleable#MaterialButton_additionalPaddingRightForIcon
+   * @see #setAdditionalPaddingRightForIcon(int)
+   */
+  public int getAdditionalPaddingRightForIcon() {
+    return additionalPaddingRightForIcon;
+  }
+
+  /**
+   * Updates the relative padding for this button. setPadding() sets padding on button including
+   * inset, so we have to add inset and padding attributes to get the button's visible padding to
+   * look correct.
+   */
+  private void updatePadding() {
+    ViewCompat.setPaddingRelative(
+        this,
+        paddingStart + (icon != null ? additionalPaddingLeftForIcon : 0) + insetLeft,
+        paddingTop + insetTop,
+        paddingEnd + (icon != null ? additionalPaddingRightForIcon : 0) + insetRight,
+        paddingBottom + insetBottom);
+  }
+
+  /**
+   * Sets the padding between the button icon and the button text, if icon is present.
+   *
+   * @param iconPadding Padding between the button icon and the button text, if icon is present.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_iconPadding
+   * @see #getIconPadding()
+   */
+  public void setIconPadding(int iconPadding) {
+    if (this.iconPadding != iconPadding) {
+      this.iconPadding = iconPadding;
+      setCompoundDrawablePadding(iconPadding);
+    }
+  }
+
+  /**
+   * Gets the padding between the button icon and the button text, if icon is present.
+   *
+   * @return Padding between the button icon and the button text, if icon is present.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_iconPadding
+   * @see #setIconPadding(int)
+   */
+  public int getIconPadding() {
+    return iconPadding;
+  }
+
+  /**
+   * Sets the icon to show for this button. By default, this icon will be shown on the left side of
+   * the button.
+   *
+   * @param icon Drawable to use for the button's icon.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_icon
+   * @see #setIconResource(int)
+   * @see #getIcon()
+   */
+  public void setIcon(Drawable icon) {
+    if (this.icon != icon) {
+      this.icon = icon;
+      updateIcon();
+    }
+  }
+  /**
+   * Sets the icon drawable resource to show for this button. By default, this icon will be shown on
+   * the left side of the button.
+   *
+   * @param iconResourceId Drawable resource ID to use for the button's icon.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_icon
+   * @see #setIcon(Drawable)
+   * @see #getIcon()
+   */
+  public void setIconResource(@DrawableRes int iconResourceId) {
+    Drawable icon = null;
+    if (iconResourceId != 0) {
+      icon = AppCompatResources.getDrawable(getContext(), iconResourceId);
+    }
+    setIcon(icon);
+  }
+
+  /**
+   * Gets the icon shown for this button, if present.
+   *
+   * @return Icon shown for this button, if present.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_icon
+   * @see #setIcon(Drawable)
+   * @see #setIconResource(int)
+   */
+  public Drawable getIcon() {
+    return icon;
+  }
+
+  /**
+   * Sets the tint list for the icon shown for this button.
+   *
+   * @param iconTint Tint list for the icon shown for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_iconTint
+   * @see #setIconTintResource(int)
+   * @see #getIconTint()
+   */
+  public void setIconTint(@Nullable ColorStateList iconTint) {
+    if (this.iconTint != iconTint) {
+      this.iconTint = iconTint;
+      updateIcon();
+    }
+  }
+
+  /**
+   * Sets the tint list color resource for the icon shown for this button.
+   *
+   * @param iconTintResourceId Tint list color resource for the icon shown for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_iconTint
+   * @see #setIconTint(ColorStateList)
+   * @see #getIconTint()
+   */
+  public void setIconTintResource(@ColorRes int iconTintResourceId) {
+    setIconTint(AppCompatResources.getColorStateList(getContext(), iconTintResourceId));
+  }
+
+  /**
+   * Gets the tint list for the icon shown for this button.
+   *
+   * @return Tint list for the icon shown for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_iconTint
+   * @see #setIconTint(ColorStateList)
+   * @see #setIconTintResource(int)
+   */
+  public ColorStateList getIconTint() {
+    return iconTint;
+  }
+
+  /**
+   * Sets the tint mode for the icon shown for this button.
+   *
+   * @param iconTintMode Tint mode for the icon shown for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_iconTintMode
+   * @see #getIconTintMode()
+   */
+  public void setIconTintMode(Mode iconTintMode) {
+    if (this.iconTintMode != iconTintMode) {
+      this.iconTintMode = iconTintMode;
+      updateIcon();
+    }
+  }
+
+  /**
+   * Gets the tint mode for the icon shown for this button.
+   *
+   * @return Tint mode for the icon shown for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_iconTintMode
+   * @see #setIconTintMode(Mode)
+   */
+  public Mode getIconTintMode() {
+    return iconTintMode;
+  }
+
+  /** Updates the icon, icon tint, and icon tint mode for this button. */
+  private void updateIcon() {
+    if (icon != null) {
+      icon = icon.mutate();
+      DrawableCompat.setTintList(icon, iconTint);
+      if (iconTintMode != null) {
+        DrawableCompat.setTintMode(icon, iconTintMode);
+      }
+    }
+
+    TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, icon, null, null, null);
+    updatePadding();
+  }
+
+  /**
+   * Sets the ripple color for this button.
+   *
+   * @param rippleColor Color to use for the ripple.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_rippleColor
+   * @see #setRippleColorResource(int)
+   * @see #getRippleColor()
+   */
+  public void setRippleColor(@Nullable ColorStateList rippleColor) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setRippleColor(rippleColor);
+    }
+  }
+
+  /**
+   * Sets the ripple color resource for this button.
+   *
+   * @param rippleColorResourceId Color resource to use for the ripple.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_rippleColor
+   * @see #setRippleColor(ColorStateList)
+   * @see #getRippleColor()
+   */
+  public void setRippleColorResource(@ColorRes int rippleColorResourceId) {
+    if (isUsingOriginalBackground()) {
+      setRippleColor(AppCompatResources.getColorStateList(getContext(), rippleColorResourceId));
+    }
+  }
+
+  /**
+   * Gets the ripple color for this button.
+   *
+   * @return The color used for the ripple.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_rippleColor
+   * @see #setRippleColor(ColorStateList)
+   * @see #setRippleColorResource(int)
+   */
+  public ColorStateList getRippleColor() {
+    return isUsingOriginalBackground() ? materialButtonHelper.getRippleColor() : null;
+  }
+
+  /**
+   * Sets the stroke color for this button. Both stroke color and stroke width must be set for a
+   * stroke to be drawn.
+   *
+   * @param strokeColor Color to use for the stroke.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_strokeColor
+   * @see #setStrokeColorResource(int)
+   * @see #getStrokeColor()
+   */
+  public void setStrokeColor(@Nullable ColorStateList strokeColor) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setStrokeColor(strokeColor);
+    }
+  }
+
+  /**
+   * Sets the stroke color resource for this button. Both stroke color and stroke width must be set
+   * for a stroke to be drawn.
+   *
+   * @param strokeColorResourceId Color resource to use for the stroke.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_strokeColor
+   * @see #setStrokeColor(ColorStateList)
+   * @see #getStrokeColor()
+   */
+  public void setStrokeColorResource(@ColorRes int strokeColorResourceId) {
+    if (isUsingOriginalBackground()) {
+      setStrokeColor(AppCompatResources.getColorStateList(getContext(), strokeColorResourceId));
+    }
+  }
+
+  /**
+   * Gets the stroke color for this button.
+   *
+   * @return The color used for the stroke.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_strokeColor
+   * @see #setStrokeColor(ColorStateList)
+   * @see #setStrokeColorResource(int)
+   */
+  public ColorStateList getStrokeColor() {
+    return isUsingOriginalBackground() ? materialButtonHelper.getStrokeColor() : null;
+  }
+
+  /**
+   * Sets the stroke width for this button. Both stroke color and stroke width must be set for a
+   * stroke to be drawn.
+   *
+   * @param strokeWidth Stroke width for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_strokeWidth
+   * @see #setStrokeWidthResource(int)
+   * @see #getStrokeWidth()
+   */
+  public void setStrokeWidth(int strokeWidth) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setStrokeWidth(strokeWidth);
+    }
+  }
+
+  /**
+   * Sets the stroke width dimension resource for this button. Both stroke color and stroke width
+   * must be set for a stroke to be drawn.
+   *
+   * @param strokeWidthResourceId Stroke width dimension resource for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_strokeWidth
+   * @see #setStrokeWidth(int)
+   * @see #getStrokeWidth()
+   */
+  public void setStrokeWidthResource(@DimenRes int strokeWidthResourceId) {
+    if (isUsingOriginalBackground()) {
+      setStrokeWidth(getResources().getDimensionPixelSize(strokeWidthResourceId));
+    }
+  }
+
+  /**
+   * Gets the stroke width for this button.
+   *
+   * @return Stroke width for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_strokeWidth
+   * @see #setStrokeWidth(int)
+   * @see #setStrokeWidthResource(int)
+   */
+  public int getStrokeWidth() {
+    return isUsingOriginalBackground() ? materialButtonHelper.getStrokeWidth() : 0;
+  }
+
+  /**
+   * Sets the corner radius for this button.
+   *
+   * @param cornerRadius Corner radius for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_cornerRadius
+   * @see #setCornerRadiusResource(int)
+   * @see #getCornerRadius()
+   */
+  public void setCornerRadius(int cornerRadius) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setCornerRadius(cornerRadius);
+    }
+  }
+
+  /**
+   * Sets the corner radius dimension resource for this button.
+   *
+   * @param cornerRadiusResourceId Corner radius dimension resource for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_cornerRadius
+   * @see #setCornerRadius(int)
+   * @see #getCornerRadius()
+   */
+  public void setCornerRadiusResource(@DimenRes int cornerRadiusResourceId) {
+    if (isUsingOriginalBackground()) {
+      setCornerRadius(getResources().getDimensionPixelSize(cornerRadiusResourceId));
+    }
+  }
+
+  /**
+   * Gets the corner radius for this button.
+   *
+   * @return Corner radius for this button.
+   * @attr ref android.support.design.button.R.styleable#MaterialButton_cornerRadius
+   * @see #setCornerRadius(int)
+   * @see #setCornerRadiusResource(int)
+   */
+  public int getCornerRadius() {
+    return isUsingOriginalBackground() ? materialButtonHelper.getCornerRadius() : 0;
+  }
+
+  private boolean isUsingOriginalBackground() {
+    return materialButtonHelper != null && !materialButtonHelper.isBackgroundOverwritten();
   }
 }
