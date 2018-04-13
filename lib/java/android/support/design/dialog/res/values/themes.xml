@@ -47,6 +47,10 @@
 
   <style name="ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog"/>
 
-  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert"/>
+  <!--
+    Theme overlay that is used by default MaterialComponents themes for alert dialogs, via the
+    alertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
 
 </resources>

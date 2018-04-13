@@ -180,6 +180,11 @@
     <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
   </style>
 
+  <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+    <!-- Widget styles -->
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+  </style>
+
   <!-- Themes in the "Base.Theme" family vary based on the current platform
        version to provide the correct basis on each device. You probably don't
        want to use them directly in your apps.
@@ -225,5 +230,7 @@
     <item name="windowFixedHeightMajor">@dimen/abc_dialog_fixed_height_major</item>
     <item name="windowFixedHeightMinor">@dimen/abc_dialog_fixed_height_minor</item>
   </style>
+
+  <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
 
 </resources>
