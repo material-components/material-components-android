@@ -26,6 +26,8 @@
          For example, tinting a vector drawable with a non-existent theme attribute is known to
          crash on pre-21 devices. -->
     <attr name="enforceMaterialTheme" format="boolean"/>
+    <!-- Attribute used to check that a component has a TextAppearance specified on it. -->
+    <attr name="android:textAppearance"/>
   </declare-styleable>
 
   <declare-styleable name="ForegroundLinearLayout">
