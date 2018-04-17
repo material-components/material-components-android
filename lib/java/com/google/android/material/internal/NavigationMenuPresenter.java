@@ -194,8 +194,13 @@ public class NavigationMenuPresenter implements MenuPresenter {
     }
   }
 
-  public void setCheckedItem(MenuItemImpl item) {
+  public void setCheckedItem(@NonNull MenuItemImpl item) {
     adapter.setCheckedItem(item);
+  }
+
+  @Nullable
+  public MenuItemImpl getCheckedItem() {
+    return adapter.getCheckedItem();
   }
 
   public View inflateHeaderView(@LayoutRes int res) {
@@ -558,6 +563,10 @@ public class NavigationMenuPresenter implements MenuPresenter {
       }
       this.checkedItem = checkedItem;
       checkedItem.setChecked(true);
+    }
+
+    public MenuItemImpl getCheckedItem() {
+      return checkedItem;
     }
 
     public Bundle createInstanceState() {

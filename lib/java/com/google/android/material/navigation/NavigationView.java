@@ -464,6 +464,29 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
+   * Sets the currently checked item in this navigation menu.
+   *
+   * @param checkedItem The checked item from the menu available from {@link #getMenu()}.
+   */
+  public void setCheckedItem(@NonNull MenuItem checkedItem) {
+    MenuItem item = menu.findItem(checkedItem.getItemId());
+    if (item != null) {
+      presenter.setCheckedItem((MenuItemImpl) item);
+    } else {
+      throw new IllegalArgumentException(
+          "Called setCheckedItem(MenuItem) with an item that is not in the current menu.");
+    }
+  }
+
+  /**
+   * @return Returns the currently checked item in this navigation menu.
+   */
+  @Nullable
+  public MenuItem getCheckedItem() {
+    return presenter.getCheckedItem();
+  }
+
+  /**
    * Set the text appearance of the menu items to a given resource.
    *
    * @attr ref R.styleable#NavigationView_itemTextAppearance
