@@ -31,7 +31,7 @@ include functionality for card behavior in groups of cards.
     Cards](https://material.io/guidelines/components/cards.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/card/MaterialCardView.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/MaterialCardView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Superclass
     overview](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
@@ -44,7 +44,7 @@ for reference. Note that the margins around the card (its "gutters") need to
 be listed in the layout of the card and cannot be included in a `style` tag.
 
 ```xml
-<android.support.design.card.MaterialCardView
+<com.google.android.material.card.MaterialCardView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
@@ -55,7 +55,7 @@ be listed in the layout of the card and cannot be included in a `style` tag.
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/demo_card_text"/>
-</android.support.design.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>
 ```
 
 ### Material Styles
@@ -72,7 +72,7 @@ The updated `MaterialCardView` style consists of updated elevation and
 background color.
 
 ```xml
-<android.support.design.card.MaterialCardView
+<com.google.android.material.card.MaterialCardView
     style="@style/Widget.MaterialComponents.CardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -83,7 +83,7 @@ background color.
 
   <!-- Card contents. -->
 
-</android.support.design.card.MaterialCardView>
+</com.google.android.material.card.MaterialCardView>
 ```
 
 #### Legacy Material Style

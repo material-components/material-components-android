@@ -20,7 +20,7 @@ focus on features, increases engagement, and visually anchors the UI.
     Bar](https://material.io/guidelines/components/bottom-app-bar.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/bottomappbar/BottomAppBar.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomappbar/BottomAppBar.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 
 ## Usage
@@ -36,14 +36,14 @@ Here's an example of how to include the widget in your layout:
 
   <!-- Other components and views -->
 
-  <android.support.design.bottomappbar.BottomAppBar
+  <com.google.android.material.bottomappbar.BottomAppBar
       android:id="@+id/bar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
       app:navigationIcon="@drawable/ic_menu_24"/>
 
-  <android.support.design.widget.FloatingActionButton
+  <com.google.android.material.widget.FloatingActionButton
       android:id="@+id/fab"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

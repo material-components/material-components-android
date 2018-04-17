@@ -1,0 +1,29 @@
+apply plugin: 'com.android.library'
+
+archivesBaseName = getArchivesBaseName(project.name)
+version = rootProject.ext.mdcLibraryVersion
+
+dependencies {
+  api compatibility("annotations")
+  api compatibility("compat")
+  api compatibility("v7/appcompat")
+
+  api project(fromPath("lib/java/com/google/android/material/expandable"))
+  api project(fromPath("lib/java/com/google/android/material/stateful"))
+  api project(fromPath("lib/java/com/google/android/material/transformation"))
+}
+
+android {
+  sourceSets {
+    main.manifest.srcFile 'AndroidManifest.xml'
+    main.java.srcDir '.'
+    main.java.excludes = [
+      '**/build/**',
+    ]
+    main.res.srcDirs = [
+      'res',
+      'res-public'
+    ]
+    main.assets.srcDir 'assets'
+  }
+}

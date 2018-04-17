@@ -25,10 +25,10 @@ side, used to display in-app navigation links.
 ## Design & API Documentation
 
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/NavigationView.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/widget/NavigationView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/NavigationView.html)
+    overview](https://developer.android.com/reference/com/google/android/material/widget/NavigationView.html)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -38,7 +38,7 @@ side, used to display in-app navigation links.
 the menu.
 
 ```xml
-<android.support.design.widget.NavigationView
+<com.google.android.material.widget.NavigationView
   android:id="@+id/navigation"
   android:layout_width="wrap_content"
   android:layout_height="match_parent"
@@ -89,7 +89,7 @@ this:
     <!-- Your content goes here -->
   </android.support.design.widget.CoordinatorLayout>
 
-  <android.support.design.widget.NavigationView
+  <com.google.android.material.widget.NavigationView
     android:id="@+id/navigation"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"

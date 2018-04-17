@@ -19,7 +19,7 @@ package io.material.demo.shrine.products;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.support.design.snackbar.Snackbar;
+import com.google.android.material.snackbar.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;

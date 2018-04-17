@@ -17,11 +17,11 @@ dependencies {
 
 android {
   defaultConfig {
-    testApplicationId "android.support.design.tests"
+    testApplicationId "com.google.android.material.tests"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
 
-  targetProjectPath getTransformedProjectPath('testing/java/android/support/design/testapp')
+  targetProjectPath getTransformedProjectPath('testing/java/com/google/android/material/testapp')
 
   sourceSets {
     main.setRoot('./')
@@ -31,6 +31,6 @@ android {
       '**/backlayer/**',
       '**/build/**',
     ]
-    main.manifest.srcFile 'javatests/android/support/design/AndroidManifest.xml'
+    main.manifest.srcFile 'javatests/com/google/android/material/AndroidManifest.xml'
   }
 }

@@ -25,10 +25,10 @@ different actions. These levels of emphasis include:
     Buttons](https://material.io/guidelines/components/buttons.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/button/MaterialButton.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/button/MaterialButton.html)
+    overview](https://developer.android.com/reference/com/google/android/material/button/MaterialButton.html)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -38,20 +38,20 @@ Design's button component. Example code of how to include the component in your
 layout:
 
 ```xml
-<android.support.design.button.MaterialButton
+<com.google.android.material.button.MaterialButton
     android:id="@+id/material_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/button_label_enabled"/>
 
-<android.support.design.button.MaterialButton
+<com.google.android.material.button.MaterialButton
     android:id="@+id/disabled_material_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:enabled="false"
     android:text="@string/button_label_disabled"/>
 
-<android.support.design.button.MaterialButton
+<com.google.android.material.button.MaterialButton
     android:id="@+id/material_unelevated_button"
     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
     android:layout_width="wrap_content"
@@ -85,7 +85,7 @@ The following shows an example of setting `icon` and `iconPadding` attributes on
 a button:
 
 ```xml
-<android.support.design.button.MaterialButton
+<com.google.android.material.button.MaterialButton
     android:id="@+id/material_icon_button"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"

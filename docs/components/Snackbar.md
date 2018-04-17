@@ -26,10 +26,10 @@ action that was just taken, or retrying an action that had failed.
     Snackbars](https://material.io/guidelines/components/snackbars-toasts.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/Snackbar.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/widget/Snackbar.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/Snackbar.html)
+    overview](https://developer.android.com/reference/com/google/android/material/widget/Snackbar.html)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -45,9 +45,9 @@ could be found.
 
 **Available duration presets are:**
 
-- [LENGTH_INDEFINITE](https://developer.android.com/reference/android/support/design/widget/Snackbar.html#LENGTH_INDEFINITE)
-- [LENGTH_LONG](https://developer.android.com/reference/android/support/design/widget/Snackbar.html#LENGTH_LONG)
-- [LENGTH_SHORT](https://developer.android.com/reference/android/support/design/widget/Snackbar.html#LENGTH_SHORT)
+- [LENGTH_INDEFINITE](https://developer.android.com/reference/com/google/android/material/widget/Snackbar.html#LENGTH_INDEFINITE)
+- [LENGTH_LONG](https://developer.android.com/reference/com/google/android/material/widget/Snackbar.html#LENGTH_LONG)
+- [LENGTH_SHORT](https://developer.android.com/reference/com/google/android/material/widget/Snackbar.html#LENGTH_SHORT)
 
 **NOTE:** Snackbars work best if they are displayed inside of a
 [CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html).
@@ -99,7 +99,7 @@ Action text color can be customized through the `setActionTextColor` methods
 
 Temporary bottom bars with other sorts of content layouts can be implemented by
 subclassing
-[BaseTransientBottomBar](https://developer.android.com/reference/android/support/design/widget/BaseTransientBottomBar.html).
+[BaseTransientBottomBar](https://developer.android.com/reference/com/google/android/material/widget/BaseTransientBottomBar.html).
 
 Android also provides a
 [Toast](https://developer.android.com/reference/android/widget/Toast.html) class

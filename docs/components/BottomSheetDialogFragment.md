@@ -28,11 +28,11 @@ Note: To implement non-modal **Persistent bottom sheets** use
     Sheets](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-modal-bottom-sheets)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/BottomSheetDialogFragment.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/widget/BottomSheetDialogFragment.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetDialogFragment.html)
+    overview](https://developer.android.com/reference/com/google/android/material/widget/BottomSheetDialogFragment.html)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage

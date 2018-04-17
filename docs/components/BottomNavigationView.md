@@ -24,11 +24,11 @@ navigate to.
     Navigation](https://material.io/guidelines/components/bottom-navigation.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/BottomNavigationView.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/widget/BottomNavigationView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/BottomNavigationView.html)
+    overview](https://developer.android.com/reference/com/google/android/material/widget/BottomNavigationView.html)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -53,7 +53,7 @@ A typical layout file would look like this:
 
   <!-- Main content -->
 
-  <android.support.design.widget.BottomNavigationView
+  <com.google.android.material.widget.BottomNavigationView
       android:id="@+id/bottom_navigation"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -89,7 +89,7 @@ For example, you could have a `bottom_navigation_colors.xml` that contains:
 And you would use it like this on your `BottomNavigationView`:
 
 ```xml
-<android.support.design.widget.BottomNavigationView
+<com.google.android.material.widget.BottomNavigationView
     android:id="@+id/bottom_navigation"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"

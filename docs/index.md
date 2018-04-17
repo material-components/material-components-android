@@ -2,23 +2,33 @@
 
 ## Getting Started
 
-### Using the support library version
+### How to use Material Components for Android
 
-For most users, the Android Design support library is the best version to use in
-their application. The Android SDK contains the latest stable version of this
-library. To use it:
+Material Components for Android is available through Google's Maven repository.
+To use it:
 
-1. Make sure you've downloaded the Android Support Repository using the SDK
-   Manager.
-2. Open the `build.gradle` file for your application.
-3. Add the Design support library to the `dependencies` section:
+1. Open the `build.gradle` file for your application.
+2. Make sure that the `repositories` section includes a maven section with the
+`"https://maven.google.com"` endpoint. For example:
 
   ```groovy
-  dependencies {
-    // ...
-    compile 'com.android.support:design:25.3.1'
-    // ...
-  }
+    allprojects {
+      repositories {
+        jcenter()
+        maven {
+          url "https://maven.google.com"
+        }
+      }
+    }
+  ```
+3. Add the library to the `dependencies` section:
+
+  ```groovy
+    dependencies {
+      // ...
+      compile 'com.google.android.material:material:[Library version code]'
+      // ...
+    }
   ```
 
 ### Building from source
@@ -27,19 +37,27 @@ If you'll be contributing to the library, or need a version newer than what has
 been released in the Android support libraries, Material Components for Android
 can also be built from source. To do so:
 
-Clone this repository:
+Clone the repository:
 
 ```sh
 git clone https://github.com/material-components/material-components-android.git
 ```
 
-Then, build an AAR using Gradle:
+Then, build the library's AARs using Gradle:
 
 ```sh
-./gradlew assembleRelease
+./gradlew uploadArchives -PmavenRepoUrl="file://localhost/<path_to_aars>"
 ```
 
-(the AAR file will be located in `lib/build/outputs/aar/`)
+This will output AARs and Maven artifacts for each of the library's modules
+to the path on your machine, e.g., `$HOME/Desktop/material_aars`.
+
+To use the AARs in your app locally, copy the output from your AAR directory
+into your local Maven repository (`~/.m2/repository`). Then add `mavenLocal()`
+as a repository in your project's top-level `build.gradle` file. Finally, add
+the Design Library dependency as you would normally, using the version
+specified as `mdcLibraryVersion` in the library's top-level `build.gradle`
+file.
 
 ### Running tests
 

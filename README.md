@@ -16,7 +16,7 @@ Material Components for Android are based on Android’s Design support library
 - [All Components](https://github.com/material-components/material-components-android/tree/master/lib/)
 - [Contributing](docs/contributing.md)
 - [Class
-  documentation](https://developer.android.com/reference/android/support/design/widget/package-summary.html)
+  documentation](https://developer.android.com/reference/com/google/android/material/widget/package-summary.html)
   (external site)
 - [MDC-Android on Stack
   Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)

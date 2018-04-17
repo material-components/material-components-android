@@ -34,10 +34,10 @@ content layer.
 ## Design & API Documentation
 
 -   [BackLayerLayout class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/backlayer/BackLayerLayout.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/backlayer/BackLayerLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [BackLayerSiblingBehavior class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/backlayer/BackLayerSiblingBehavior.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/backlayer/BackLayerSiblingBehavior.java)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -66,7 +66,7 @@ The back layer must:
     -   Either set `android:minimumHeight` and `android:minimumWidth`
         appropriately, or
     -   put all of the content that should be shown at all times inside a
-        `android.support.design.backlayer.CollapsedBackLayerContents` and let
+        `com.google.android.material.backlayer.CollapsedBackLayerContents` and let
         the `BackLayerLayout` calculate its own minimum size. There must be
         exactly one of such `CollapsedBackLayerContents`subviews.
 -   NOT use a `ViewGroup.OnHierarchyChangedListener`. The back layer uses
@@ -130,7 +130,7 @@ the new size.
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <android.support.design.backlayer.BackLayerLayout
+  <com.google.android.material.backlayer.BackLayerLayout
       android:id="@+id/backlayer"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -138,7 +138,7 @@ the new size.
       android:background="@android:color/white"
       android:gravity="top"
       android:orientation="vertical">
-    <android.support.design.backlayer.CollapsedBackLayerContents
+    <com.google.android.material.backlayer.CollapsedBackLayerContents
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
       <!-- This part of the back layer is always visible. -->
@@ -167,7 +167,7 @@ the new size.
             android:layout_height="wrap_content"
             android:src="@android:drawable/ic_menu_search"/>
       </LinearLayout>
-    </android.support.design.backlayer.CollapsedBackLayerContents>
+    </com.google.android.material.backlayer.CollapsedBackLayerContents>
     <!-- This is the part of the back layer that is obscured by the content
          layer -->
     <NavigationView
@@ -182,7 +182,7 @@ the new size.
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:visibility="gone"/>
-  </android.support.design.backlayer.BackLayerLayout>
+  </com.google.android.material.backlayer.BackLayerLayout>
   <!-- The content layer is below the BackLayerLayout in the xml layout, but the
        content layer uses a higher elevation. It can be any view you like as
        long as it sets the BackLayerSiblingBehavior as its app:layout_behavior.

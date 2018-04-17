@@ -29,10 +29,10 @@ Note: If you want to use Bottom Sheets that are modal (dialogs), use
     Sheets](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/BottomSheetBehavior.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/widget/BottomSheetBehavior.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/BottomSheetBehavior.html)
+    overview](https://developer.android.com/reference/com/google/android/material/widget/BottomSheetBehavior.html)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -61,7 +61,7 @@ sheet is trivial:
 
 1.  Add any View as a direct child of CoordinatorLayout.
 2.  Apply the behavior by adding the following xml attribute
-    `app:layout_behavior="android.support.design.bottomsheet.BottomSheetBehavior"`
+    `app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior"`
 3.  Set the desired behavior flags
     -   `app:behavior_hideable` whether this bottom sheet can be hidden by
         dragging it down.

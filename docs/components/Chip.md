@@ -29,7 +29,7 @@ of text with a `ChipDrawable` using a span to represent it as a semantic entity.
     Chips](https://material.io/guidelines/components/chips.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/chip/Chip.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/chip/Chip.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 
 ## Usage
@@ -38,7 +38,7 @@ The `Chip` widget provides a complete implementation of Material Design's chip
 component. Example code of how to include the widget in your layout:
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:chipText="@string/hello_world"/>
@@ -60,7 +60,7 @@ This style usually contains an optional chip icon, optional close icon, and is
 optionally checkable.
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Entry"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -78,7 +78,7 @@ This style usually contains an optional chip icon, an optional close icon, and
 is always checkable.
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Filter"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -95,7 +95,7 @@ options.
 This style usually contains an optional chip icon and is always checkable.
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Choice"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -111,7 +111,7 @@ Use action chips to trigger an action that is contextual to primary content.
 This style usually contains an optional chip icon and is never checkable.
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Action"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
@@ -206,13 +206,13 @@ multiple-exclusion scope, similarly to a `RadioGroup`.
 A `ChipGroup` will by default reflow its chips across multiple lines.
 
 ```xml
-<android.support.design.chip.ChipGroup
+<com.google.android.material.chip.ChipGroup
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
   <!-- Chips can be declared here, or added dynamically. -->
 
-</android.support.design.chip.ChipGroup>
+</com.google.android.material.chip.ChipGroup>
 ```
 
 A `ChipGroup` can also constrain its chips to a single horizontal line using the
@@ -223,14 +223,14 @@ A `ChipGroup` can also constrain its chips to a single horizontal line using the
 <HorizontalScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-  <android.support.design.chip.ChipGroup
+  <com.google.android.material.chip.ChipGroup
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:singleLine="true">
 
     <!-- Chips can be declared here, or added dynamically. -->
 
-  </android.support.design.chip.ChipGroup>
+  </com.google.android.material.chip.ChipGroup>
 </HorizontalScrollView>
 ```
 
@@ -240,14 +240,14 @@ A `ChipGroup` can be configured to only allow a single chip to be checked at a
 time using the `app:singleSelection` attribute.
 
 ```xml
-<android.support.design.chip.ChipGroup
+<com.google.android.material.chip.ChipGroup
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:singleSelection="true">
 
   <!-- ... -->
 
-</android.support.design.chip.ChipGroup>
+</com.google.android.material.chip.ChipGroup>
 ```
 
 #### Handling Checked Chips
