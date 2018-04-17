@@ -27,12 +27,19 @@ import android.graphics.Typeface;
 import android.support.annotation.FontRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 import android.support.annotation.StyleRes;
 import android.support.v4.content.res.ResourcesCompat;
 import android.text.TextPaint;
 import android.util.Log;
 
-/** Utility class that contains the data from parsing a TextAppearance style resource. */
+/**
+ * Utility class that contains the data from parsing a TextAppearance style resource.
+ *
+ * @hide
+ */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class TextAppearance {
 
   private static final String TAG = "TextAppearance";
