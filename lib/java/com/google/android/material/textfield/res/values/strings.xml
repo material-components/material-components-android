@@ -17,6 +17,8 @@
 <resources>
   <!-- The text pattern for the character counter -->
   <string name="character_counter_pattern" translatable="false">%1$d / %2$d</string>
+  <!-- Content description for the character counter text -->
+  <string name="character_counter_content_description">Character limit exceeded %1$d of %2$d</string>
   <!-- Content description for the password visibility toggle button. [CHAR LIMIT=NONE] -->
   <string name="password_toggle_content_description">Show password</string>
 </resources>

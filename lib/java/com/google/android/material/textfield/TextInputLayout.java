@@ -978,9 +978,7 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  /**
-   * Sets the text color used by the hint in both the collapsed and expanded states.
-   */
+  /** Sets the text color used by the hint in both the collapsed and expanded states. */
   public void setDefaultHintTextColor(@Nullable ColorStateList textColor) {
     defaultHintTextColor = textColor;
     focusedTextColor = textColor;
@@ -1024,9 +1022,7 @@ public class TextInputLayout extends LinearLayout {
     indicatorViewController.setErrorViewTextColor(textColors);
   }
 
-  /**
-   * Returns the text color used by the error message in current state.
-   */
+  /** Returns the text color used by the error message in current state. */
   @ColorInt
   public int getErrorCurrentTextColors() {
     return indicatorViewController.getErrorViewCurrentTextColor();
@@ -1103,9 +1099,7 @@ public class TextInputLayout extends LinearLayout {
     indicatorViewController.setHelperTextViewTextColor(textColors);
   }
 
-  /**
-   * Returns the text color used by the helper text in the current states.
-   */
+  /** Returns the text color used by the helper text in the current states. */
   @ColorInt
   public int getHelperTextCurrentTextColor() {
     return indicatorViewController.getHelperTextViewCurrentTextColor();
@@ -1230,13 +1224,29 @@ public class TextInputLayout extends LinearLayout {
       counterView.setText(String.valueOf(length));
       counterOverflowed = false;
     } else {
+      // Make sure the counter view region is not live to prevent spamming the user with the counter
+      // overflow message on every key press.
+      if (ViewCompat.getAccessibilityLiveRegion(counterView)
+          == ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE) {
+        ViewCompat.setAccessibilityLiveRegion(
+            counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
+      }
       counterOverflowed = length > counterMaxLength;
       if (wasCounterOverflowed != counterOverflowed) {
         setTextAppearanceCompatWithErrorFallback(
             counterView, counterOverflowed ? counterOverflowTextAppearance : counterTextAppearance);
+
+        // Announce when the character limit is exceeded.
+        if (counterOverflowed) {
+          ViewCompat.setAccessibilityLiveRegion(
+              counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+        }
       }
       counterView.setText(
           getContext().getString(R.string.character_counter_pattern, length, counterMaxLength));
+      counterView.setContentDescription(
+          getContext()
+              .getString(R.string.character_counter_content_description, length, counterMaxLength));
     }
     if (editText != null && wasCounterOverflowed != counterOverflowed) {
       updateLabelState(false);
