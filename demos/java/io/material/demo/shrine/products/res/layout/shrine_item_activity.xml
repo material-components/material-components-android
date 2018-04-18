@@ -99,7 +99,7 @@
         </LinearLayout>
       </ScrollView>
     </LinearLayout>
-    <com.google.android.material.widget.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/FloatingActionButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -109,7 +109,7 @@
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add_shopping_cart_vd_theme_24"/>
   </android.support.design.widget.CoordinatorLayout>
-  <com.google.android.material.widget.BottomNavigationView
+  <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/BottomNavView"
       style="@style/Shrine.BottomNavView"
       app:menu="@menu/shrine_bottom_nav_view_menu"/>
