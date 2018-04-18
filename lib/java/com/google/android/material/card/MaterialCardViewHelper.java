@@ -23,6 +23,8 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.support.annotation.ColorInt;
+import android.support.annotation.Dimension;
 import android.support.annotation.RestrictTo;
 
 /** @hide */
@@ -45,6 +47,27 @@ class MaterialCardViewHelper {
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
     materialCardView.setForeground(createForegroundDrawable());
     adjustContentPadding();
+  }
+
+  void setStrokeColor(@ColorInt int strokeColor) {
+    this.strokeColor = strokeColor;
+    materialCardView.setForeground(createForegroundDrawable());
+  }
+
+  @ColorInt
+  int getStrokeColor() {
+    return strokeColor;
+  }
+
+  void setStrokeWidth(@Dimension(unit = Dimension.PX) int strokeWidth) {
+    this.strokeWidth = strokeWidth;
+    materialCardView.setForeground(createForegroundDrawable());
+    adjustContentPadding();
+  }
+
+  @Dimension(unit = Dimension.PX)
+  int getStrokeWidth() {
+    return strokeWidth;
   }
 
   /**

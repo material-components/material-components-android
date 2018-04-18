@@ -20,6 +20,8 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.support.annotation.ColorInt;
+import android.support.annotation.Dimension;
 import com.google.android.material.internal.ThemeEnforcement;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
@@ -35,6 +37,8 @@ import android.util.AttributeSet;
  * stroked border, regardless of the {@code strokeWidth} value.
  */
 public class MaterialCardView extends CardView {
+
+  private final MaterialCardViewHelper cardViewHelper;
 
   public MaterialCardView(Context context) {
     this(context, null /* attrs */);
@@ -56,9 +60,39 @@ public class MaterialCardView extends CardView {
             R.style.Widget_MaterialComponents_CardView);
 
     // Loads and sets background drawable attributes
-    MaterialCardViewHelper cardViewHelper = new MaterialCardViewHelper(this);
+    cardViewHelper = new MaterialCardViewHelper(this);
     cardViewHelper.loadFromAttributes(attributes);
 
     attributes.recycle();
+  }
+
+  /**
+   * Sets the stroke color of this card view.
+   *
+   * @param strokeColor The color of the stroke.
+   */
+  public void setStrokeColor(@ColorInt int strokeColor) {
+    cardViewHelper.setStrokeColor(strokeColor);
+  }
+
+  /** Returns the stroke color of this card view. */
+  @ColorInt
+  public int getStrokeColor() {
+    return cardViewHelper.getStrokeColor();
+  }
+
+  /**
+   * Sets the stroke width of this card view.
+   *
+   * @param strokeWidth The width in pixels of the stroke.
+   */
+  public void setStrokeWidth(@Dimension(unit = Dimension.PX) int strokeWidth) {
+    cardViewHelper.setStrokeWidth(strokeWidth);
+  }
+
+  /** Returns the stroke width of this card view. */
+  @Dimension(unit = Dimension.PX)
+  public int getStrokeWidth() {
+    return cardViewHelper.getStrokeWidth();
   }
 }
