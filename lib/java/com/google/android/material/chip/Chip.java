@@ -331,6 +331,11 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   @Override
+  public boolean dispatchKeyEvent(KeyEvent event) {
+    return touchHelper.dispatchKeyEvent(event) || super.dispatchKeyEvent(event);
+  }
+
+  @Override
   protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
     if (focused) {
       // If we've gained focus from another view, always focus the chip first.
@@ -341,6 +346,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     invalidate();
 
     super.onFocusChanged(focused, direction, previouslyFocusedRect);
+    touchHelper.onFocusChanged(focused, direction, previouslyFocusedRect);
   }
 
   @Override
@@ -604,7 +610,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     protected void onPopulateNodeForHost(AccessibilityNodeInfoCompat node) {
       node.setCheckable(chipDrawable != null && chipDrawable.isCheckable());
       node.setClassName(Chip.class.getName());
-      node.setContentDescription(chipDrawable != null ? chipDrawable.getChipText() : "");
+      node.setText(chipDrawable != null ? chipDrawable.getChipText() : "");
     }
 
     @Override
