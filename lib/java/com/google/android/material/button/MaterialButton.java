@@ -126,7 +126,8 @@ public class MaterialButton extends AppCompatButton {
             attrs,
             R.styleable.MaterialButton,
             defStyleAttr,
-            R.style.Widget_MaterialComponents_Button);
+            R.style.Widget_MaterialComponents_Button,
+            true);
 
     int padding = attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_padding, 0);
     int paddingLeft =
