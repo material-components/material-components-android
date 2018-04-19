@@ -281,10 +281,10 @@ public class BottomNavigationView extends FrameLayout {
    *
    * <p>For best image resolution, use an icon with the same size set in this method.
    *
-   * @param iconSize the size in dp to provide for the menu item icons
+   * @param iconSize the size in pixels to provide for the menu item icons
    * @attr ref R.styleable#BottomNavigationView_itemIconSize
    */
-  public void setItemIconSize(@Dimension(unit = Dimension.DP) int iconSize) {
+  public void setItemIconSize(@Dimension int iconSize) {
     menuView.setItemIconSize(iconSize);
   }
 
@@ -301,12 +301,12 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Returns the size provided for the menu item icons in dp.
+   * Returns the size provided for the menu item icons in pixels.
    *
    * @see #setItemIconSize(int)
    * @attr ref R.styleable#BottomNavigationView_itemIconSize
    */
-  @Dimension(unit = Dimension.DP)
+  @Dimension
   public int getItemIconSize() {
     return menuView.getItemIconSize();
   }

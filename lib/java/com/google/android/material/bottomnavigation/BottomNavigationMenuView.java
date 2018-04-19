@@ -67,11 +67,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private BottomNavigationItemView[] buttons;
   private int selectedItemId = 0;
   private int selectedItemPosition = 0;
+
   private ColorStateList itemIconTint;
-
-  @Dimension(unit = Dimension.DP)
-  private int itemIconSize;
-
+  @Dimension private int itemIconSize;
   private ColorStateList itemTextColorFromUser;
   private final ColorStateList itemTextColorDefault;
   @StyleRes private int itemTextAppearanceInactive;
@@ -257,9 +255,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    *
    * <p>For best image resolution, use an icon with the same size set in this method.
    *
-   * @param iconSize the size to provide for the menu item icons
+   * @param iconSize the size to provide for the menu item icons in pixels
    */
-  public void setItemIconSize(@Dimension(unit = Dimension.DP) int iconSize) {
+  public void setItemIconSize(@Dimension int iconSize) {
     this.itemIconSize = iconSize;
     if (buttons != null) {
       for (BottomNavigationItemView item : buttons) {
@@ -268,8 +266,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     }
   }
 
-  /** Returns the size provided for the menu item icons. */
-  @Dimension(unit = Dimension.DP)
+  /** Returns the size in pixels provided for the menu item icons. */
+  @Dimension
   public int getItemIconSize() {
     return itemIconSize;
   }
