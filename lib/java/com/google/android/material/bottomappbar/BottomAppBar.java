@@ -43,6 +43,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapePathModel;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.design.widget.CoordinatorLayout.AttachedBehavior;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
@@ -80,8 +81,7 @@ import java.util.List;
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleVerticalOffset
  *
  */
-@CoordinatorLayout.DefaultBehavior(BottomAppBar.Behavior.class)
-public class BottomAppBar extends Toolbar {
+public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private static final long ANIMATION_DURATION = 300;
 
   public static final int FAB_ALIGNMENT_MODE_CENTER = 0;
@@ -625,6 +625,12 @@ public class BottomAppBar extends Toolbar {
   @Override
   public void setSubtitle(CharSequence subtitle) {
     // Don't do anything. BottomAppBar can't have a subtitle.
+  }
+
+  @NonNull
+  @Override
+  public CoordinatorLayout.Behavior<BottomAppBar> getBehavior() {
+    return new Behavior();
   }
 
   /**
