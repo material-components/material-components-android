@@ -92,7 +92,7 @@ up](https://developer.android.com/studio/run/managing-avds.html) and do:
 ## Useful Links
 - [Contributing](contributing.md)
 - [Class
-  documentation](https://developer.android.com/reference/com/google/android/material/widget/package-summary.html)
+  documentation](https://developer.android.com/reference/com/google/android/material/package-summary.html)
 - [MDC-Android on Stack
   Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
 - [Android Developer’s

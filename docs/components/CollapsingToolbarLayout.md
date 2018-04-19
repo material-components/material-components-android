@@ -16,7 +16,7 @@ path: /catalog/collapsing-toolbar-layout/
 characteristics and interactions for **collapsing toolbars** specified in the
 material guidelines. To create the collapsing toolbar, `CollapsingToolbarLayout`
 integrates with
-[`AppBarLayout`](https://developer.android.com/reference/com/google/android/material/widget/AppBarLayout.html),
+[`AppBarLayout`](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.html),
 [`CoordinatorLayout`](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html),
 [`Toolbar`](https://developer.android.com/reference/android/support/v7/widget/Toolbar.html),
 and a scrollable content view, such as
@@ -31,10 +31,10 @@ and a scrollable content view, such as
     behavior](https://material.io/guidelines/patterns/scrolling-techniques.html#scrolling-techniques-behavior)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/widget/CollapsingToolbarLayout.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/CollapsingToolbarLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 *   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/widget/CollapsingToolbarLayout.html)
+    overview](https://developer.android.com/reference/com/google/android/material/appbar/CollapsingToolbarLayout.html)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -54,11 +54,11 @@ A layout with a collapsing toolbar might look something like this:
 
     <!-- Scrollable view here -->
 
-  <com.google.android.material.widget.AppBarLayout
+  <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
       android:layout_height="@dimen/tall_toolbar_height">
 
-    <com.google.android.material.widget.CollapsingToolbarLayout
+    <com.google.android.material.appbar.CollapsingToolbarLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:contentScrim="?attr/colorPrimary"
@@ -69,8 +69,8 @@ A layout with a collapsing toolbar might look something like this:
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
           app:layout_collapseMode="pin"/>
-    </com.google.android.material.widget.CollapsingToolbarLayout>
-  </com.google.android.material.widget.AppBarLayout>
+    </com.google.android.material.appbar.CollapsingToolbarLayout>
+  </com.google.android.material.appbar.AppBarLayout>
 </android.support.design.widget.CoordinatorLayout>
 ```
 
@@ -84,7 +84,7 @@ multipliers in the XML for as many of the siblings as you like.
 A toolbar with a collapsing image might look something like this:
 
 ```xml
-<com.google.android.material.widget.CollapsingToolbarLayout
+<com.google.android.material.appbar.CollapsingToolbarLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:contentScrim="?attr/colorPrimary"
@@ -105,7 +105,7 @@ A toolbar with a collapsing image might look something like this:
       android:layout_width="match_parent"
       android:layout_height="@dimen/shrine_toolbar_collapsed_height"
       app:layout_collapseMode="pin"/>
-</com.google.android.material.widget.CollapsingToolbarLayout>
+</com.google.android.material.appbar.CollapsingToolbarLayout>
 ```
 
 You can combine the basic collapsing toolbar with scroll flags,
@@ -113,7 +113,7 @@ You can combine the basic collapsing toolbar with scroll flags,
 would like to achieve your desired toolbar.
 
 *   Make sure to call
-    [`setTitle()`](https://developer.android.com/reference/com/google/android/material/widget/CollapsingToolbarLayout.html#setTitle\(java.lang.CharSequence\))
+    [`setTitle()`](https://developer.android.com/reference/com/google/android/material/appbar/CollapsingToolbarLayout.html#setTitle\(java.lang.CharSequence\))
     on the `CollapsingToolbarLayout` instead of the `Toolbar`. This allows
     `CollapsingToolbarLayout` the ability to resize the title based on the
     toolbar's current size.
@@ -128,5 +128,5 @@ would like to achieve your desired toolbar.
 
 ## Related Concepts
 
-*   [AppBarLayout](https://developer.android.com/reference/com/google/android/material/widget/AppBarLayout.html)
-*   [TabLayout](https://developer.android.com/reference/com/google/android/material/widget/TabLayout.html)
+*   [AppBarLayout](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.html)
+*   [TabLayout](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout.html)

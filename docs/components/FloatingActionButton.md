@@ -29,10 +29,10 @@ other UI elements on the screen.
     Buttons](https://material.io/guidelines/components/buttons-floating-action-button.html)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/widget/FloatingActionButton.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/widget/FloatingActionButton.html)
+    overview](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton.html)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -50,7 +50,7 @@ widget in your layout:
 
   <!-- Main content -->
 
-  <com.google.android.material.widget.FloatingActionButton
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/floating_action_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -82,7 +82,7 @@ The updated Material `FloatingActionButton` style consists of updated elevation,
 ripple, and motion changes.
 
 ```xml
-<com.google.android.material.widget.FloatingActionButton
+<com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/floating_action_button"
     style="@/style/Widget.MaterialComponents.FloatingActionButton"
     android:layout_width="wrap_content"
@@ -95,7 +95,7 @@ ripple, and motion changes.
 #### Legacy Material Style
 
 ```xml
-<com.google.android.material.widget.FloatingActionButton
+<com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/floating_action_button"
     style="@/style/Widget.Design.FloatingActionButton"
     android:layout_width="wrap_content"

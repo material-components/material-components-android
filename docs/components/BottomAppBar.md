@@ -43,7 +43,7 @@ Here's an example of how to include the widget in your layout:
       android:layout_gravity="bottom"
       app:navigationIcon="@drawable/ic_menu_24"/>
 
-  <com.google.android.material.widget.FloatingActionButton
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/fab"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
