@@ -32,13 +32,13 @@
   <style name="Base.Widget.MaterialComponents.TextInputLayout" parent="Widget.Design.TextInputLayout">
     <item name="boxBackgroundMode">outline</item>
     <item name="boxBackgroundColor">@null</item>
-    <item name="boxCornerRadiusTopLeft">@dimen/mtrl_textinput_box_corner_radius_medium</item>
-    <item name="boxCornerRadiusTopRight">@dimen/mtrl_textinput_box_corner_radius_medium</item>
-    <item name="boxCornerRadiusBottomRight">@dimen/mtrl_textinput_box_corner_radius_medium</item>
-    <item name="boxCornerRadiusBottomLeft">@dimen/mtrl_textinput_box_corner_radius_medium</item>
+    <item name="boxCornerRadiusTopStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
+    <item name="boxCornerRadiusTopEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
+    <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
+    <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxStrokeColor">?attr/colorControlActivated</item>
-    <item name="boxPaddingLeft">@dimen/mtrl_textinput_box_padding_left</item>
-    <item name="boxPaddingRight">@dimen/mtrl_textinput_box_padding_right</item>
+    <item name="boxPaddingStart">@dimen/mtrl_textinput_box_padding_start</item>
+    <item name="boxPaddingEnd">@dimen/mtrl_textinput_box_padding_end</item>
     <item name="boxCollapsedPaddingTop">
       @dimen/mtrl_textinput_outline_box_collapsed_padding_top
     </item>
@@ -52,8 +52,8 @@
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
     <item name="boxBackgroundMode">filled</item>
     <item name="boxBackgroundColor">@color/mtrl_textinput_filled_box_default_background_color</item>
-    <item name="boxCornerRadiusBottomLeft">@dimen/mtrl_textinput_box_corner_radius_small</item>
-    <item name="boxCornerRadiusBottomRight">@dimen/mtrl_textinput_box_corner_radius_small</item>
+    <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_small</item>
+    <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_small</item>
     <item name="boxCollapsedPaddingTop">@dimen/mtrl_textinput_filled_box_collapsed_padding</item>
     <item name="boxCollapsedPaddingBottom">@dimen/mtrl_textinput_box_padding_bottom</item>
     <item name="boxExpandedPaddingTop">@dimen/mtrl_textinput_filled_box_expanded_padding</item>

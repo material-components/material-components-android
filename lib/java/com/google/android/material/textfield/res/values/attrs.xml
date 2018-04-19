@@ -88,24 +88,24 @@
       <!-- Outline box mode for the text input box. -->
       <enum name="outline" value="2"/>
     </attr>
-    <!-- Value to use for the EditText's left padding in box mode. -->
-    <attr name="boxPaddingLeft" format="dimension"/>
+    <!-- Value to use for the EditText's start padding in box mode. -->
+    <attr name="boxPaddingStart" format="dimension"/>
     <!-- Value to use for the EditText's collapsed top padding in box mode. -->
     <attr name="boxCollapsedPaddingTop" format="dimension"/>
     <!-- Value to use for the EditText's expanded top padding in box mode. -->
     <attr name="boxExpandedPaddingTop" format="dimension"/>
-    <!-- Value to use for the EditText's right padding in box mode. -->
-    <attr name="boxPaddingRight" format="dimension"/>
+    <!-- Value to use for the EditText's end padding in box mode. -->
+    <attr name="boxPaddingEnd" format="dimension"/>
     <!-- Value to use for the EditText's collapsed bottom padding in box mode. -->
     <attr name="boxCollapsedPaddingBottom" format="dimension"/>
-    <!-- The value to use for the box's top left corner radius when in box mode. -->
-    <attr name="boxCornerRadiusTopLeft" format="dimension"/>
-    <!-- The value to use for the box's top right corner radius when in box mode. -->
-    <attr name="boxCornerRadiusTopRight" format="dimension"/>
-    <!-- The value to use for the box's bottom left corner radius when in box mode. -->
-    <attr name="boxCornerRadiusBottomLeft" format="dimension"/>
-    <!-- The value to use for the box's bottom right corner radius when in box mode. -->
-    <attr name="boxCornerRadiusBottomRight" format="dimension"/>
+    <!-- The value to use for the box's top start corner radius when in box mode. -->
+    <attr name="boxCornerRadiusTopStart" format="dimension"/>
+    <!-- The value to use for the box's top end corner radius when in box mode. -->
+    <attr name="boxCornerRadiusTopEnd" format="dimension"/>
+    <!-- The value to use for the box's bottom start corner radius when in box mode. -->
+    <attr name="boxCornerRadiusBottomStart" format="dimension"/>
+    <!-- The value to use for the box's bottom end corner radius when in box mode. -->
+    <attr name="boxCornerRadiusBottomEnd" format="dimension"/>
     <!-- Value to use for the EditText's expanded bottom padding in box mode. -->
     <attr name="boxExpandedPaddingBottom" format="dimension"/>
     <!-- The color to use for the box's stroke when in outline box mode. -->

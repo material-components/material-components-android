@@ -158,19 +158,19 @@ public class TextInputLayout extends LinearLayout {
   private CharSequence hint;
 
   private GradientDrawable boxBackground;
-  private int boxPaddingLeftPx;
+  private int boxPaddingStartPx;
   private int boxExpandedPaddingTopPx;
   private int boxCollapsedPaddingTopPx;
-  private int boxPaddingRightPx;
+  private int boxPaddingEndPx;
   private int boxExpandedPaddingBottomPx;
   private int boxCollapsedPaddingBottomPx;
   private final int boxBottomOffsetPx;
   private final int boxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int boxBackgroundMode;
-  private float boxCornerRadiusTopLeft;
-  private float boxCornerRadiusTopRight;
-  private float boxCornerRadiusBottomRight;
-  private float boxCornerRadiusBottomLeft;
+  private float boxCornerRadiusTopStart;
+  private float boxCornerRadiusTopEnd;
+  private float boxCornerRadiusBottomEnd;
+  private float boxCornerRadiusBottomStart;
   private int boxStrokeWidthPx;
   private final int boxStrokeWidthDefaultPx;
   private final int boxStrokeWidthFocusedPx;
@@ -266,14 +266,14 @@ public class TextInputLayout extends LinearLayout {
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     hintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
-    boxPaddingLeftPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingLeft, 0);
+    boxPaddingStartPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingStart, 0);
     boxCollapsedPaddingTopPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingTop, 0);
     boxCollapsedPaddingBottomPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingBottom, 0);
     boxExpandedPaddingTopPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxExpandedPaddingTop, 0);
-    boxPaddingRightPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingRight, 0);
+    boxPaddingEndPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingEnd, 0);
     boxExpandedPaddingBottomPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxExpandedPaddingBottom, 0);
     boxBottomOffsetPx =
@@ -283,13 +283,13 @@ public class TextInputLayout extends LinearLayout {
             .getResources()
             .getDimensionPixelOffset(R.dimen.mtrl_textinput_box_label_cutout_padding);
 
-    boxCornerRadiusTopLeft = a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopLeft, 0f);
-    boxCornerRadiusTopRight =
-        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopRight, 0f);
-    boxCornerRadiusBottomRight =
-        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomRight, 0f);
-    boxCornerRadiusBottomLeft =
-        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomLeft, 0f);
+    boxCornerRadiusTopStart =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopStart, 0f);
+    boxCornerRadiusTopEnd = a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopEnd, 0f);
+    boxCornerRadiusBottomEnd =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomEnd, 0f);
+    boxCornerRadiusBottomStart =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomStart, 0f);
 
     defaultBoxBackgroundColor =
         a.getColor(R.styleable.TextInputLayout_boxBackgroundColor, Color.TRANSPARENT);
@@ -448,46 +448,57 @@ public class TextInputLayout extends LinearLayout {
     }
     // Set box padding on the edit text.
     if (boxBackgroundMode != BOX_BACKGROUND_NONE && editText != null) {
-      editText.setPadding(
-          boxPaddingLeftPx, boxExpandedPaddingTopPx, boxPaddingRightPx, boxExpandedPaddingBottomPx);
+      if (!ViewUtils.isLayoutRtl(this)) {
+        editText.setPadding(
+            boxPaddingStartPx,
+            boxExpandedPaddingTopPx,
+            boxPaddingEndPx,
+            boxExpandedPaddingBottomPx);
+      } else {
+        editText.setPadding(
+            boxPaddingEndPx,
+            boxExpandedPaddingTopPx,
+            boxPaddingStartPx,
+            boxExpandedPaddingBottomPx);
+      }
     }
   }
 
   /**
    * Set the box's padding.
    *
-   * @param boxPaddingLeft the value in pixels to use for the box's left padding
+   * @param boxPaddingStart the value in pixels to use for the box's start padding
    * @param boxCollapsedPaddingTop the value in pixels to use for the box's collapsed top padding
    * @param boxExpandedPaddingTop the value in pixels to use for the box's expanded top padding
-   * @param boxPaddingRight the value in pixels to use for the box's right padding
+   * @param boxPaddingEnd the value in pixels to use for the box's end padding
    * @param boxCollapsedPaddingBottom the value in pixels to use for the box's collapsed bottom
    *     padding
    * @param boxExpandedPaddingBottom the value in pixels to use for the box's expanded bottom
    *     padding
    */
   public void setBoxPadding(
-      int boxPaddingLeft,
+      int boxPaddingStart,
       int boxCollapsedPaddingTop,
       int boxExpandedPaddingTop,
-      int boxPaddingRight,
+      int boxPaddingEnd,
       int boxCollapsedPaddingBottom,
       int boxExpandedPaddingBottom) {
-    boxPaddingLeftPx = boxPaddingLeft;
+    boxPaddingStartPx = boxPaddingStart;
     boxCollapsedPaddingTopPx = boxCollapsedPaddingTop;
     boxExpandedPaddingTopPx = boxExpandedPaddingTop;
-    boxPaddingRightPx = boxPaddingRight;
+    boxPaddingEndPx = boxPaddingEnd;
     boxCollapsedPaddingBottomPx = boxCollapsedPaddingBottom;
     boxExpandedPaddingBottomPx = boxExpandedPaddingBottom;
     applyEditTextBoxPadding();
   }
 
   /**
-   * Get the box's left padding.
+   * Get the box's start padding.
    *
-   * @return the box's left padding in pixels
+   * @return the box's start padding in pixels
    */
-  public int getBoxPaddingLeft() {
-    return boxPaddingLeftPx;
+  public int getBoxPaddingStart() {
+    return boxPaddingStartPx;
   }
 
   /**
@@ -509,12 +520,12 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Get the box's right padding.
+   * Get the box's end padding.
    *
-   * @return the box's right padding in pixels
+   * @return the box's end padding in pixels
    */
-  public int getBoxPaddingRight() {
-    return boxPaddingRightPx;
+  public int getBoxPaddingEnd() {
+    return boxPaddingEndPx;
   }
 
   /**
@@ -595,105 +606,117 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Set the resources used for the box's corner radii.
    *
-   * @param boxCornerRadiusTopLeftId the resource to use for the box's top left corner radius
-   * @param boxCornerRadiusTopRightId the resource to use for the box's top right corner radius
-   * @param boxCornerRadiusBottomRightId the resource to use for the box's bottom right corner
+   * @param boxCornerRadiusTopStartId the resource to use for the box's top start corner radius
+   * @param boxCornerRadiusTopEndId the resource to use for the box's top end corner radius
+   * @param boxCornerRadiusBottomEndId the resource to use for the box's bottom end corner radius
+   * @param boxCornerRadiusBottomStartId the resource to use for the box's bottom start corner
    *     radius
-   * @param boxCornerRadiusBottomLeftId the resource to use for the box's bottom left corner radius
    */
   public void setBoxCornerRadiiResources(
-      @DimenRes int boxCornerRadiusTopLeftId,
-      @DimenRes int boxCornerRadiusTopRightId,
-      @DimenRes int boxCornerRadiusBottomRightId,
-      @DimenRes int boxCornerRadiusBottomLeftId) {
+      @DimenRes int boxCornerRadiusTopStartId,
+      @DimenRes int boxCornerRadiusTopEndId,
+      @DimenRes int boxCornerRadiusBottomEndId,
+      @DimenRes int boxCornerRadiusBottomStartId) {
     setBoxCornerRadii(
-        getContext().getResources().getDimension(boxCornerRadiusTopLeftId),
-        getContext().getResources().getDimension(boxCornerRadiusTopRightId),
-        getContext().getResources().getDimension(boxCornerRadiusBottomRightId),
-        getContext().getResources().getDimension(boxCornerRadiusBottomLeftId));
+        getContext().getResources().getDimension(boxCornerRadiusTopStartId),
+        getContext().getResources().getDimension(boxCornerRadiusTopEndId),
+        getContext().getResources().getDimension(boxCornerRadiusBottomEndId),
+        getContext().getResources().getDimension(boxCornerRadiusBottomStartId));
   }
 
   /**
    * Set the box's corner radii.
    *
-   * @param boxCornerRadiusTopLeft the value to use for the box's top left corner radius
-   * @param boxCornerRadiusTopRight the value to use for the box's top right corner radius
-   * @param boxCornerRadiusBottomRight the value to use for the box's bottom right corner radius
-   * @param boxCornerRadiusBottomLeft the value to use for the box's bottom left corner radius
-   * @see #getBoxCornerRadiusTopLeft()
-   * @see #getBoxCornerRadiusTopRight()
-   * @see #getBoxCornerRadiusBottomRight()
-   * @see #getBoxCornerRadiusBottomLeft()
+   * @param boxCornerRadiusTopStart the value to use for the box's top start corner radius
+   * @param boxCornerRadiusTopEnd the value to use for the box's top end corner radius
+   * @param boxCornerRadiusBottomEnd the value to use for the box's bottom end corner radius
+   * @param boxCornerRadiusBottomStart the value to use for the box's bottom start corner radius
+   * @see #getBoxCornerRadiusTopStart()
+   * @see #getBoxCornerRadiusTopEnd()
+   * @see #getBoxCornerRadiusBottomEnd()
+   * @see #getBoxCornerRadiusBottomStart()
    */
   public void setBoxCornerRadii(
-      float boxCornerRadiusTopLeft,
-      float boxCornerRadiusTopRight,
-      float boxCornerRadiusBottomLeft,
-      float boxCornerRadiusBottomRight) {
-    if (this.boxCornerRadiusTopLeft != boxCornerRadiusTopLeft
-        || this.boxCornerRadiusTopRight != boxCornerRadiusTopRight
-        || this.boxCornerRadiusBottomRight != boxCornerRadiusBottomRight
-        || this.boxCornerRadiusBottomLeft != boxCornerRadiusBottomLeft) {
-      this.boxCornerRadiusTopLeft = boxCornerRadiusTopLeft;
-      this.boxCornerRadiusTopRight = boxCornerRadiusTopRight;
-      this.boxCornerRadiusBottomRight = boxCornerRadiusBottomRight;
-      this.boxCornerRadiusBottomLeft = boxCornerRadiusBottomLeft;
+      float boxCornerRadiusTopStart,
+      float boxCornerRadiusTopEnd,
+      float boxCornerRadiusBottomStart,
+      float boxCornerRadiusBottomEnd) {
+    if (this.boxCornerRadiusTopStart != boxCornerRadiusTopStart
+        || this.boxCornerRadiusTopEnd != boxCornerRadiusTopEnd
+        || this.boxCornerRadiusBottomEnd != boxCornerRadiusBottomEnd
+        || this.boxCornerRadiusBottomStart != boxCornerRadiusBottomStart) {
+      this.boxCornerRadiusTopStart = boxCornerRadiusTopStart;
+      this.boxCornerRadiusTopEnd = boxCornerRadiusTopEnd;
+      this.boxCornerRadiusBottomEnd = boxCornerRadiusBottomEnd;
+      this.boxCornerRadiusBottomStart = boxCornerRadiusBottomStart;
       applyBoxAttributes();
     }
   }
 
   /**
-   * Returns the box's top left corner radius.
+   * Returns the box's top start corner radius.
    *
-   * @return the value used for the box's top left corner radius
+   * @return the value used for the box's top start corner radius
    * @see #setBoxCornerRadii(float, float, float, float)
    */
-  public float getBoxCornerRadiusTopLeft() {
-    return boxCornerRadiusTopLeft;
+  public float getBoxCornerRadiusTopStart() {
+    return boxCornerRadiusTopStart;
   }
 
   /**
-   * Returns the box's top right corner radius.
+   * Returns the box's top end corner radius.
    *
-   * @return the value used for the box's top right corner radius
+   * @return the value used for the box's top end corner radius
    * @see #setBoxCornerRadii(float, float, float, float)
    */
-  public float getBoxCornerRadiusTopRight() {
-    return boxCornerRadiusTopRight;
+  public float getBoxCornerRadiusTopEnd() {
+    return boxCornerRadiusTopEnd;
   }
 
   /**
-   * Returns the box's bottom right corner radius.
+   * Returns the box's bottom end corner radius.
    *
-   * @return the value used for the box's bottom right corner radius
+   * @return the value used for the box's bottom end corner radius
    * @see #setBoxCornerRadii(float, float, float, float)
    */
-  public float getBoxCornerRadiusBottomRight() {
-    return boxCornerRadiusBottomRight;
+  public float getBoxCornerRadiusBottomEnd() {
+    return boxCornerRadiusBottomEnd;
   }
 
   /**
-   * Returns the box's bottom left corner radius.
+   * Returns the box's bottom start corner radius.
    *
-   * @return the value used for the box's bottom left corner radius
+   * @return the value used for the box's bottom start corner radius
    * @see #setBoxCornerRadii(float, float, float, float)
    */
-  public float getBoxCornerRadiusBottomLeft() {
-    return boxCornerRadiusBottomLeft;
+  public float getBoxCornerRadiusBottomStart() {
+    return boxCornerRadiusBottomStart;
   }
 
   private float[] getCornerRadiiAsArray() {
-    float[] cornerRadii = {
-      boxCornerRadiusTopLeft,
-      boxCornerRadiusTopLeft,
-      boxCornerRadiusTopRight,
-      boxCornerRadiusTopRight,
-      boxCornerRadiusBottomRight,
-      boxCornerRadiusBottomRight,
-      boxCornerRadiusBottomLeft,
-      boxCornerRadiusBottomLeft
-    };
-    return cornerRadii;
+    if (!ViewUtils.isLayoutRtl(this)) {
+      return new float[] {
+        boxCornerRadiusTopStart,
+        boxCornerRadiusTopStart,
+        boxCornerRadiusTopEnd,
+        boxCornerRadiusTopEnd,
+        boxCornerRadiusBottomEnd,
+        boxCornerRadiusBottomEnd,
+        boxCornerRadiusBottomStart,
+        boxCornerRadiusBottomStart,
+      };
+    } else {
+      return new float[] {
+        boxCornerRadiusTopEnd,
+        boxCornerRadiusTopEnd,
+        boxCornerRadiusTopStart,
+        boxCornerRadiusTopStart,
+        boxCornerRadiusBottomStart,
+        boxCornerRadiusBottomStart,
+        boxCornerRadiusBottomEnd,
+        boxCornerRadiusBottomEnd
+      };
+    }
   }
 
   /**
