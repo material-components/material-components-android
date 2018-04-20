@@ -36,6 +36,7 @@ import android.support.v4.widget.TextViewCompat;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.widget.TooltipCompat;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -87,6 +88,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     icon = findViewById(R.id.icon);
     smallLabel = findViewById(R.id.smallLabel);
     largeLabel = findViewById(R.id.largeLabel);
+    // The labels used aren't always visible, so they are unreliable for accessibility. Instead,
+    // the content description of the BottomNavigationItemView should be used for accessibility.
+    ViewCompat.setImportantForAccessibility(smallLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    ViewCompat.setImportantForAccessibility(largeLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
   }
 
@@ -99,7 +104,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     setIcon(itemData.getIcon());
     setTitle(itemData.getTitle());
     setId(itemData.getItemId());
-    setContentDescription(itemData.getContentDescription());
+    if (!TextUtils.isEmpty(itemData.getContentDescription())) {
+      setContentDescription(itemData.getContentDescription());
+    }
     TooltipCompat.setTooltipText(this, itemData.getTooltipText());
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
   }
@@ -143,6 +150,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setTitle(CharSequence title) {
     smallLabel.setText(title);
     largeLabel.setText(title);
+    if (itemData == null || TextUtils.isEmpty(itemData.getContentDescription())) {
+      setContentDescription(title);
+    }
   }
 
   @Override
