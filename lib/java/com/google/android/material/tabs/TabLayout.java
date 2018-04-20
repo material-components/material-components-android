@@ -1342,6 +1342,11 @@ public class TabLayout extends HorizontalScrollView {
     tabView.setTab(tab);
     tabView.setFocusable(true);
     tabView.setMinimumWidth(getTabMinWidth());
+    if (TextUtils.isEmpty(tab.contentDesc)) {
+      tabView.setContentDescription(tab.text);
+    } else {
+      tabView.setContentDescription(tab.contentDesc);
+    }
     return tabView;
   }
 
@@ -1676,6 +1681,9 @@ public class TabLayout extends HorizontalScrollView {
     private Object tag;
     private Drawable icon;
     private CharSequence text;
+    // This represents the content description that has been explicitly set on the Tab or TabItem
+    // in XML or through #setContentDescription. If the content description is empty, text should
+    // be used as the content description instead, but contentDesc should remain empty.
     private CharSequence contentDesc;
     private int position = INVALID_POSITION;
     private View customView;
@@ -1825,6 +1833,12 @@ public class TabLayout extends HorizontalScrollView {
      */
     @NonNull
     public Tab setText(@Nullable CharSequence text) {
+      if (TextUtils.isEmpty(contentDesc) && !TextUtils.isEmpty(text)) {
+        // If no content description has been set, use the text as the content description of the
+        // TabView. If the text is null, don't update the content description.
+        view.setContentDescription(text);
+      }
+
       this.text = text;
       updateView();
       return this;
@@ -1903,7 +1917,9 @@ public class TabLayout extends HorizontalScrollView {
      */
     @Nullable
     public CharSequence getContentDescription() {
-      return contentDesc;
+      // This returns the view's content description instead of contentDesc because if the title
+      // is used as a replacement for the content description, contentDesc will be empty.
+      return (view == null) ? null : view.getContentDescription();
     }
 
     void updateView() {
@@ -2233,6 +2249,11 @@ public class TabLayout extends HorizontalScrollView {
         }
       }
 
+      if (tab != null && !TextUtils.isEmpty(tab.contentDesc)) {
+        // Only update the TabView's content description from Tab if the Tab's content description
+        // has been explicitly set.
+        setContentDescription(tab.contentDesc);
+      }
       // Finally update our selected state
       setSelected(tab != null && tab.isSelected());
     }
@@ -2253,7 +2274,6 @@ public class TabLayout extends HorizontalScrollView {
               ? DrawableCompat.wrap(tab.getIcon()).mutate()
               : null;
       final CharSequence text = tab != null ? tab.getText() : null;
-      final CharSequence contentDesc = tab != null ? tab.getContentDescription() : null;
 
       if (iconView != null) {
         if (icon != null) {
@@ -2264,7 +2284,6 @@ public class TabLayout extends HorizontalScrollView {
           iconView.setVisibility(GONE);
           iconView.setImageDrawable(null);
         }
-        iconView.setContentDescription(contentDesc);
       }
 
       final boolean hasText = !TextUtils.isEmpty(text);
@@ -2277,7 +2296,6 @@ public class TabLayout extends HorizontalScrollView {
           textView.setVisibility(GONE);
           textView.setText(null);
         }
-        textView.setContentDescription(contentDesc);
       }
 
       if (iconView != null) {
@@ -2306,6 +2324,7 @@ public class TabLayout extends HorizontalScrollView {
         }
       }
 
+      final CharSequence contentDesc = tab != null ? tab.contentDesc : null;
       TooltipCompat.setTooltipText(this, hasText ? null : contentDesc);
     }
 
