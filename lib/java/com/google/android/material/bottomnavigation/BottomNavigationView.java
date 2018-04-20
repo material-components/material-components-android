@@ -150,7 +150,10 @@ public class BottomNavigationView extends FrameLayout {
           menuView.createDefaultColorStateList(android.R.attr.textColorSecondary));
     }
 
-    setItemIconSize(a.getDimensionPixelSize(R.styleable.BottomNavigationView_itemIconSize, 0));
+    setItemIconSize(
+        a.getDimensionPixelSize(
+            R.styleable.BottomNavigationView_itemIconSize,
+            getResources().getDimensionPixelSize(R.dimen.design_bottom_navigation_icon_size)));
     if (a.hasValue(R.styleable.BottomNavigationView_itemTextAppearanceInactive)) {
       setItemTextAppearanceInactive(
           a.getResourceId(R.styleable.BottomNavigationView_itemTextAppearanceInactive, 0));
