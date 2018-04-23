@@ -59,13 +59,13 @@ class MaterialCardViewHelper {
     return strokeColor;
   }
 
-  void setStrokeWidth(@Dimension(unit = Dimension.PX) int strokeWidth) {
+  void setStrokeWidth(@Dimension int strokeWidth) {
     this.strokeWidth = strokeWidth;
     updateForeground();
     adjustContentPadding();
   }
 
-  @Dimension(unit = Dimension.PX)
+  @Dimension
   int getStrokeWidth() {
     return strokeWidth;
   }

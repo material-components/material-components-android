@@ -86,12 +86,12 @@ public class MaterialCardView extends CardView {
    *
    * @param strokeWidth The width in pixels of the stroke.
    */
-  public void setStrokeWidth(@Dimension(unit = Dimension.PX) int strokeWidth) {
+  public void setStrokeWidth(@Dimension int strokeWidth) {
     cardViewHelper.setStrokeWidth(strokeWidth);
   }
 
   /** Returns the stroke width of this card view. */
-  @Dimension(unit = Dimension.PX)
+  @Dimension
   public int getStrokeWidth() {
     return cardViewHelper.getStrokeWidth();
   }
