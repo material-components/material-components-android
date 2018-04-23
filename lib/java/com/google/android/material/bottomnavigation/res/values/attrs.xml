@@ -58,9 +58,8 @@
          precedence over android:textColor in itemTextAppearanceInactive or
          itemTextAppearanceActive. Attribute type definition is in navigation package. -->
     <attr name="itemTextColor"/>
-    <!-- Whether the items should translate horizontally when in "selected" label visibility
-         mode. -->
-    <attr name="itemHorizontalTranslation" format="boolean"/>
+    <!-- Whether the items translate horizontally when in "selected" label visibility mode. -->
+    <attr name="itemHorizontalTranslationEnabled" format="boolean"/>
     <attr name="elevation"/>
   </declare-styleable>
 

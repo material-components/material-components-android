@@ -61,7 +61,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final OnClickListener onClickListener;
   private final Pools.Pool<BottomNavigationItemView> itemPool = new Pools.SynchronizedPool<>(5);
 
-  private boolean itemHorizontalTranslation;
+  private boolean itemHorizontalTranslationEnabled;
   @LabelVisibilityMode private int labelVisibilityMode;
 
   private BottomNavigationItemView[] buttons;
@@ -133,7 +133,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
 
     final int heightSpec = MeasureSpec.makeMeasureSpec(itemHeight, MeasureSpec.EXACTLY);
 
-    if (isShifting(labelVisibilityMode, visibleCount) && itemHorizontalTranslation) {
+    if (isShifting(labelVisibilityMode, visibleCount) && itemHorizontalTranslationEnabled) {
       final View activeChild = getChildAt(selectedItemPosition);
       int activeItemWidth = activeItemMinWidth;
       if (activeChild.getVisibility() != View.GONE) {
@@ -406,11 +406,12 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * Sets whether the menu items horizontally translate on selection when the combined item widths
    * fill the screen.
    *
-   * @param itemHorizontalTranslation whether the menu items horizontally translate on selection
-   * @see #getItemHorizontalTranslation()
+   * @param itemHorizontalTranslationEnabled whether the menu items horizontally translate on
+   *     selection
+   * @see #isItemHorizontalTranslationEnabled()
    */
-  public void setItemHorizontalTranslation(boolean itemHorizontalTranslation) {
-    this.itemHorizontalTranslation = itemHorizontalTranslation;
+  public void setItemHorizontalTranslationEnabled(boolean itemHorizontalTranslationEnabled) {
+    this.itemHorizontalTranslationEnabled = itemHorizontalTranslationEnabled;
   }
 
   /**
@@ -418,10 +419,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * widths fill the screen.
    *
    * @return whether the menu items horizontally translate on selection
-   * @see #setItemHorizontalTranslation(boolean)
+   * @see #setItemHorizontalTranslationEnabled(boolean)
    */
-  public boolean getItemHorizontalTranslation() {
-    return itemHorizontalTranslation;
+  public boolean isItemHorizontalTranslationEnabled() {
+    return itemHorizontalTranslationEnabled;
   }
 
   public ColorStateList createDefaultColorStateList(int baseColorThemeAttr) {

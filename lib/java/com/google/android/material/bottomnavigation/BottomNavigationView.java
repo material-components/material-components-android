@@ -175,8 +175,8 @@ public class BottomNavigationView extends FrameLayout {
         a.getInteger(
             R.styleable.BottomNavigationView_labelVisibilityMode,
             LabelVisibilityMode.LABEL_VISIBILITY_AUTO));
-    setItemHorizontalTranslation(
-        a.getBoolean(R.styleable.BottomNavigationView_itemHorizontalTranslation, true));
+    setItemHorizontalTranslationEnabled(
+        a.getBoolean(R.styleable.BottomNavigationView_itemHorizontalTranslationEnabled, true));
 
     int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
     menuView.setItemBackgroundRes(itemBackground);
@@ -475,12 +475,12 @@ public class BottomNavigationView extends FrameLayout {
    * Sets whether the menu items horizontally translate on selection when the combined item widths
    * fill up the screen.
    *
-   * @param itemHorizontalTranslation whether the items horizontally translate on selection
-   * @see #getItemHorizontalTranslation()
+   * @param itemHorizontalTranslationEnabled whether the items horizontally translate on selection
+   * @see #isItemHorizontalTranslationEnabled()
    */
-  public void setItemHorizontalTranslation(boolean itemHorizontalTranslation) {
-    if (menuView.getItemHorizontalTranslation() != itemHorizontalTranslation) {
-      menuView.setItemHorizontalTranslation(itemHorizontalTranslation);
+  public void setItemHorizontalTranslationEnabled(boolean itemHorizontalTranslationEnabled) {
+    if (menuView.isItemHorizontalTranslationEnabled() != itemHorizontalTranslationEnabled) {
+      menuView.setItemHorizontalTranslationEnabled(itemHorizontalTranslationEnabled);
       presenter.updateMenuView(false);
     }
   }
@@ -490,10 +490,10 @@ public class BottomNavigationView extends FrameLayout {
    * screen.
    *
    * @return whether the menu items horizontally translate on selection
-   * @see #setItemHorizontalTranslation(boolean)
+   * @see #setItemHorizontalTranslationEnabled(boolean)
    */
-  public boolean getItemHorizontalTranslation() {
-    return menuView.getItemHorizontalTranslation();
+  public boolean isItemHorizontalTranslationEnabled() {
+    return menuView.isItemHorizontalTranslationEnabled();
   }
 
   /** Listener for handling selection events on bottom navigation items. */
