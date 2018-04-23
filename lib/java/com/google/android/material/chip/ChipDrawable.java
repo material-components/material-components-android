@@ -108,7 +108,7 @@ import org.xmlpull.v1.XmlPullParserException;
  *
  * <ul>
  *   <li>{@link ChipDrawable#setBounds(int, int, int, int)}, taking into account {@link
- *       ChipDrawable#getIntrinsicWidth()} and {@link ChipDrawable#getIntrinsicWidth()}.
+ *       ChipDrawable#getIntrinsicHeight()} and {@link ChipDrawable#getIntrinsicWidth()}.
  *   <li>{@link ChipDrawable#draw(Canvas)}
  *   <li>{@link ChipDrawable#setCallback(Callback)}, to support invalidations on the chip drawable
  *       or any of its child drawables. This includes animations.
