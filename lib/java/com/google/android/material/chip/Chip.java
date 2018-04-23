@@ -18,6 +18,7 @@ package com.google.android.material.chip;
 
 import com.google.android.material.R;
 
+import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -53,6 +54,7 @@ import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
@@ -63,6 +65,9 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.List;
 
 /**
@@ -98,6 +103,8 @@ import java.util.List;
  * @see ChipDrawable
  */
 public class Chip extends AppCompatCheckBox implements Delegate {
+
+  private static final String TAG = "Chip";
 
   private static final int CLOSE_ICON_VIRTUAL_ID = 0;
   private static final Rect EMPTY_BOUNDS = new Rect();
@@ -325,9 +332,47 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     return super.onHoverEvent(event);
   }
 
+  // There is a bug which causes the AccessibilityEvent.TYPE_VIEW_HOVER_ENTER and
+  // AccessibilityEvent.TYPE_VIEW_HOVER_EXIT events to only fire the first time a chip gets focused.
+  // Until the accessibility focus bug is fixed in ExploreByTouchHelper, we simulate the correct
+  // behavior here. Once that bug is fixed we can remove this.
+  @SuppressLint("PrivateApi")
+  private boolean handleAccessibilityExit(MotionEvent event) {
+    if (event.getAction() == MotionEvent.ACTION_HOVER_EXIT) {
+      try {
+        Field f = ExploreByTouchHelper.class.getDeclaredField("mHoveredVirtualViewId");
+        f.setAccessible(true);
+        int mHoveredVirtualViewId = (int) f.get(touchHelper);
+
+        if (mHoveredVirtualViewId != ExploreByTouchHelper.INVALID_ID) {
+          Method m =
+              ExploreByTouchHelper.class.getDeclaredMethod("updateHoveredVirtualView", int.class);
+          m.setAccessible(true);
+          m.invoke(touchHelper, ExploreByTouchHelper.INVALID_ID);
+          return true;
+        }
+      } catch (NoSuchMethodException e) {
+        // Multi-catch for reflection requires API level 19
+        Log.e(TAG, "Unable to send Accessibility Exit event", e);
+      } catch (IllegalAccessException e) {
+        // Multi-catch for reflection requires API level 19
+        Log.e(TAG, "Unable to send Accessibility Exit event", e);
+      } catch (InvocationTargetException e) {
+        // Multi-catch for reflection requires API level 19
+        Log.e(TAG, "Unable to send Accessibility Exit event", e);
+      } catch (NoSuchFieldException e) {
+        // Multi-catch for reflection requires API level 19
+        Log.e(TAG, "Unable to send Accessibility Exit event", e);
+      }
+    }
+    return false;
+  }
+
   @Override
   protected boolean dispatchHoverEvent(MotionEvent event) {
-    return touchHelper.dispatchHoverEvent(event) || super.dispatchHoverEvent(event);
+    return handleAccessibilityExit(event)
+        || touchHelper.dispatchHoverEvent(event)
+        || super.dispatchHoverEvent(event);
   }
 
   @Override
