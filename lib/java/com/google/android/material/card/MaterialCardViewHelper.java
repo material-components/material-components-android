@@ -45,13 +45,13 @@ class MaterialCardViewHelper {
     strokeColor =
         attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
-    materialCardView.setForeground(createForegroundDrawable());
+    updateForeground();
     adjustContentPadding();
   }
 
   void setStrokeColor(@ColorInt int strokeColor) {
     this.strokeColor = strokeColor;
-    materialCardView.setForeground(createForegroundDrawable());
+    updateForeground();
   }
 
   @ColorInt
@@ -61,13 +61,21 @@ class MaterialCardViewHelper {
 
   void setStrokeWidth(@Dimension(unit = Dimension.PX) int strokeWidth) {
     this.strokeWidth = strokeWidth;
-    materialCardView.setForeground(createForegroundDrawable());
+    updateForeground();
     adjustContentPadding();
   }
 
   @Dimension(unit = Dimension.PX)
   int getStrokeWidth() {
     return strokeWidth;
+  }
+
+  /**
+   * Recreates a foreground drawable based on the current card radius, stroke color and width and
+   * sets it as the foreground.
+   */
+  void updateForeground() {
+    materialCardView.setForeground(createForegroundDrawable());
   }
 
   /**

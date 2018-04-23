@@ -95,4 +95,10 @@ public class MaterialCardView extends CardView {
   public int getStrokeWidth() {
     return cardViewHelper.getStrokeWidth();
   }
+
+  @Override
+  public void setRadius(float radius) {
+    super.setRadius(radius);
+    cardViewHelper.updateForeground();
+  }
 }
