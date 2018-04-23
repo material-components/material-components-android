@@ -28,7 +28,6 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
-import android.support.annotation.IntegerRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -402,24 +401,6 @@ public class BottomNavigationView extends FrameLayout {
       menuView.setLabelVisibilityMode(labelVisibilityMode);
       presenter.updateMenuView(false);
     }
-  }
-
-  /**
-   * Sets the navigation items' label visibility mode using a resource ID.
-   *
-   * <p>The label is either always shown, never shown, or only shown when activated. Also supports
-   * "auto" mode, which uses the item count to determine whether to show or hide the label.
-   *
-   * @attr ref com.google.android.material.R.styleable#BottomNavigationView_labelVisibilityMode
-   * @param labelVisibilityModeId mode which decides whether or not the label should be shown. Can
-   *     be one of {@link LabelVisibilityMode#LABEL_VISIBILITY_AUTO}, {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_SELECTED}, {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_LABELED}, or {@link
-   *     LabelVisibilityMode#LABEL_VISIBILITY_UNLABELED}
-   * @see #getLabelVisibilityMode()
-   */
-  public void setLabelVisibilityModeResource(@IntegerRes int labelVisibilityModeId) {
-    setLabelVisibilityMode(getResources().getInteger(labelVisibilityModeId));
   }
 
   /**
