@@ -24,7 +24,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.BoolRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
@@ -484,17 +483,6 @@ public class BottomNavigationView extends FrameLayout {
       menuView.setItemHorizontalTranslation(itemHorizontalTranslation);
       presenter.updateMenuView(false);
     }
-  }
-
-  /**
-   * Sets whether the menu items horizontally translate on selection when the combined item widths
-   * fill up the screen.
-   *
-   * @param itemHorizontalTranslation whether the items horizontally translate on selection
-   * @see #getItemHorizontalTranslation()
-   */
-  public void setItemHorizontalTranslation(@BoolRes int itemHorizontalTranslation) {
-    setItemHorizontalTranslation(getResources().getBoolean(itemHorizontalTranslation));
   }
 
   /**
