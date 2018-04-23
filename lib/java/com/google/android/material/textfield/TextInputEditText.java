@@ -48,7 +48,7 @@ public class TextInputEditText extends AppCompatEditText {
   public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
     final InputConnection ic = super.onCreateInputConnection(outAttrs);
     if (ic != null && outAttrs.hintText == null) {
-      // If we don't have a hint and our parent is a TextInputLayout, use it's hint for the
+      // If we don't have a hint and our parent is a TextInputLayout, use its hint for the
       // EditorInfo. This allows us to display a hint in 'extract mode'.
       ViewParent parent = getParent();
       while (parent instanceof View) {
