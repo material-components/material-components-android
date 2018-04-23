@@ -63,13 +63,13 @@ android {
   sourceSets {
     main.manifest.srcFile 'java/com/google/android/material/AndroidManifest.xml'
     main.java.srcDir 'java'
-    main.java.includes = srcDirs.collect { it + "/**/*.java" }
+    main.java.includes = srcDirs.collect { it + '/**/*.java' }
     main.java.excludes = [
       '**/build/**',
     ]
     srcDirs.forEach {
-      main.res.srcDirs += "java/" + it + "/res"
-      main.res.srcDirs += "java/" + it + "/res-public"
+      main.res.srcDirs += 'java/' + it + '/res'
+      main.res.srcDirs += 'java/' + it + '/res-public'
     }
 
     test.java.srcDir 'javatests'
