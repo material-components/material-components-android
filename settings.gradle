@@ -32,8 +32,8 @@ rootProject.children.each { p ->
   allChildren.each { project ->
     // Give each project a repository-wide unique name based on their path from
     // the top-level dir (e.g. the project at demos/java/io/material/shrine will
-    // be named :demos/java/io/material/shrine). Doing so avoids the need to
+    // be named :demos-java-io-material-shrine). Doing so avoids the need to
     // have unique directory names throughout our subprojects.
-    project.name = project.path.substring(1).replace(':', '/')
+    project.name = project.path.substring(1).replace(':', '-')
   }
 }

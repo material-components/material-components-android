@@ -58,7 +58,7 @@ private def getTransformedProjectPath(projectPath) {
     if (currentPath == '') {
       currentPath += component
     } else {
-      currentPath += '/' + component
+      currentPath += '-' + component
     }
     result += ':' + currentPath
   }
@@ -119,7 +119,7 @@ def getArchivesBaseName(name) {
   if (name == 'lib') {
     return 'material'
   }
-  def pathComponents = name.tokenize('/')
+  def pathComponents = name.tokenize('-')
   def knownComponents = ['lib', 'java', 'com', 'google', 'android', 'material']
   def firstUnknownComponent = knownComponents.size();
   for (def i = 0; i < knownComponents.size() && i < pathComponents.size(); i++) {
