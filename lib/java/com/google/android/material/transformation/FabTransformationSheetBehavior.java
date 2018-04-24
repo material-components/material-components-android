@@ -18,12 +18,20 @@ package com.google.android.material.transformation;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.os.Build;
 import android.support.annotation.AnimatorRes;
+import android.support.annotation.CallSuper;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.Positioning;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
+import android.view.View;
+import android.view.ViewParent;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Behavior that should be attached to any sheet that should appear when a {@link
@@ -33,6 +41,8 @@ import android.view.Gravity;
  * and may have a scrim underneath.
  */
 public class FabTransformationSheetBehavior extends FabTransformationBehavior {
+
+  private Map<View, Integer> importantForAccessibilityMap;
 
   public FabTransformationSheetBehavior() {}
 
@@ -53,5 +63,53 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
     spec.timings = MotionSpec.createFromResource(context, specRes);
     spec.positioning = new Positioning(Gravity.CENTER, 0f, 0f);
     return spec;
+  }
+
+  @CallSuper
+  @Override
+  protected boolean onExpandedStateChange(
+      View dependency, View child, boolean expanded, boolean animated) {
+    updateImportantForAccessibility(child, expanded);
+    return super.onExpandedStateChange(dependency, child, expanded, animated);
+  }
+
+  private void updateImportantForAccessibility(View sheet, boolean expanded) {
+    ViewParent viewParent = sheet.getParent();
+    if (!(viewParent instanceof CoordinatorLayout)) {
+      return;
+    }
+
+    CoordinatorLayout parent = (CoordinatorLayout) viewParent;
+    final int childCount = parent.getChildCount();
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN && expanded) {
+      importantForAccessibilityMap = new HashMap<>(childCount);
+    }
+
+    for (int i = 0; i < childCount; i++) {
+      final View child = parent.getChildAt(i);
+      if (child == sheet) {
+        continue;
+      }
+
+      if (!expanded) {
+        if (importantForAccessibilityMap != null
+            && importantForAccessibilityMap.containsKey(child)) {
+          // Restores the original important for accessibility value of the child view.
+          ViewCompat.setImportantForAccessibility(child, importantForAccessibilityMap.get(child));
+        }
+      } else {
+        // Saves the important for accessibility value of the child view.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+          importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
+        }
+
+        ViewCompat.setImportantForAccessibility(
+            child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      }
+    }
+
+    if (!expanded) {
+      importantForAccessibilityMap = null;
+    }
   }
 }
