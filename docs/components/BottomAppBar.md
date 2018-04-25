@@ -74,7 +74,7 @@ Feature                  | Relevant attributes
 Background Tint          | `app:backgroundTint`
 FAB Alignment Mode       | `app:fabAlignmentMode`
 FAB Attached             | `app:fabAttached`
-FAB Cradle Diameter      | `app:fabCradleDiameter`
+FAB Cradle Margin        | `app:fabCradleMargin`
 FAB Cradle Corner Radius | `app:fabCradleRoundedCornerRadius`
 FAB Vertical Offset      | `app:fabCradleVerticalOffset`
 
@@ -88,12 +88,12 @@ xml. Instead, the `app:backgroundTint` attribute will allow you to set a tint.
 #### Fab Attributes
 
 The placement of the FAB can be controlled by `fabAlignmentMode`, `fabAttached`,
-`fabCradleDiameter`, `fabCradleRoundedCornerRadius`, and
+`fabCradleMargin`, `fabCradleRoundedCornerRadius`, and
 `fabCradleVerticalOffset`. The starting alignment mode (`fabAlignmentMode`) can
 be set to either `center` or `end`. If `fabAttached` is set to true, the fab
-will be laid out attached to the `BottomAppBar`. The `fabCradleDiameter` is the
-diameter of the cradle, changing this value will increase or decrease the
-apparent distance between the FAB and the `BottomAppBar`.
+will be laid out attached to the `BottomAppBar`. The `fabCradleMargin` is the
+difference in size between the cradle and the fab, changing this value will
+increase or decrease the apparent distance between the FAB and the `BottomAppBar`.
 `fabCradleRoundedCornerRadius` specifies the roundness of the corner around the
 cutout. `fabCradleVerticalOffset` specifies the vertical offset between the FAB
 and the `BottomAppBar`. If `fabCradleVerticalOffset` is 0, the center of the FAB
