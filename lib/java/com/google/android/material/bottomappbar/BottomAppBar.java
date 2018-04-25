@@ -76,7 +76,7 @@ import java.util.List;
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_backgroundTint
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabAlignmentMode
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabAttached
- * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleDiameter
+ * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleMargin
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleVerticalOffset
  *
@@ -130,8 +130,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     ColorStateList backgroundTint =
         MaterialResources.getColorStateList(context, a, R.styleable.BottomAppBar_backgroundTint);
 
-    float fabCradleDiameter =
-        a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleDiameter, 0);
+    float fabCradleMargin =
+        a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleMargin, 0);
     float fabCornerRadius =
         a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleRoundedCornerRadius, 0);
     float fabVerticalOffset =
@@ -147,7 +147,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         getResources().getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fabOffsetEndMode);
 
     topEdgeTreatment =
-        new BottomAppBarTopEdgeTreatment(fabCradleDiameter, fabCornerRadius, fabVerticalOffset);
+        new BottomAppBarTopEdgeTreatment(fabCradleMargin, fabCornerRadius, fabVerticalOffset);
     ShapePathModel appBarModel = new ShapePathModel();
     appBarModel.setTopEdge(topEdgeTreatment);
     materialShapeDrawable = new MaterialShapeDrawable(appBarModel);
@@ -197,6 +197,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     return topEdgeTreatment.getCradleVerticalOffset();
   }
 
+  /** Returns the diameter of the fab or 0 if not present. */
+  public float getFabDiameter() {
+    return topEdgeTreatment.getFabDiameter();
+  }
+
   /**
    * Sets the cradle vertical offset
    *
@@ -205,6 +210,19 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   public void setCradleVerticalOffset(int verticalOffset) {
     if (verticalOffset != getCradleVerticalOffset()) {
       topEdgeTreatment.setCradleVerticalOffset(verticalOffset);
+      materialShapeDrawable.invalidateSelf();
+    }
+  }
+
+
+  /**
+   * Sets the fab diameter
+   *
+   * @param diameter
+   */
+  public void setFabDiameter(int diameter) {
+    if (diameter != getFabDiameter()) {
+      topEdgeTreatment.setFabDiameter(diameter);
       materialShapeDrawable.invalidateSelf();
     }
   }
@@ -639,8 +657,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   public static class Behavior extends HideBottomViewOnScrollBehavior<BottomAppBar> {
 
+    private final Rect fabContentRect;
+
     /** Default constructor for instantiating this Behavior. */
-    public Behavior() {}
+    public Behavior() {
+      fabContentRect = new Rect();
+    }
 
     /**
      * Default constructor for inflating this Behavior from layout.
@@ -650,6 +672,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
      */
     public Behavior(Context context, AttributeSet attrs) {
       super(context, attrs);
+      fabContentRect = new Rect();
     }
 
     private boolean updateFabPositionAndVisibility(FloatingActionButton fab, BottomAppBar child) {
@@ -670,6 +693,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       FloatingActionButton fab = child.findDependentFab();
       if (fab != null) {
         updateFabPositionAndVisibility(fab, child);
+        fab.getContentRect(fabContentRect);
+        child.setFabDiameter(fabContentRect.height());
       }
 
       // If an animation is running, it should update the cutout to match the FAB, so don't do
@@ -715,9 +740,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       super.slideDown(child);
       FloatingActionButton fab = child.findDependentFab();
       if (fab != null) {
-        Rect contentRect = new Rect();
-        fab.getContentRect(contentRect);
-        float fabShadowPadding = fab.getMeasuredHeight() - contentRect.height();
+        fab.getContentRect(fabContentRect);
+        float fabShadowPadding = fab.getMeasuredHeight() - fabContentRect.height();
 
         fab.clearAnimation();
         fab.animate()

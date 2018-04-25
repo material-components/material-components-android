@@ -32,13 +32,14 @@ import com.google.android.material.shape.ShapePath;
  */
 public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
 
-  private final float cradleDiameter;
   private final float roundedCornerRadius;
+  private final float fabMargin;
+  private float fabDiameter;
   private float cradleVerticalOffset;
   private float horizontalOffset;
 
   /**
-   * @param cradleDiameter the diameter, in pixels, of the semi-circular cutout.
+   * @param fabMargin the margin in pixels between the cutout and the fab.
    * @param roundedCornerRadius the radius, in pixels, of the rounded corners created by the cutout.
    *     A value of 0 will produce a sharp cutout.
    * @param cradleVerticalOffset vertical offset, in pixels, of the {@link
@@ -47,8 +48,8 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
    *     positioned on the top edge.
    */
   public BottomAppBarTopEdgeTreatment(
-      float cradleDiameter, float roundedCornerRadius, float cradleVerticalOffset) {
-    this.cradleDiameter = cradleDiameter;
+      float fabMargin, float roundedCornerRadius, float cradleVerticalOffset) {
+    this.fabMargin = fabMargin;
     this.roundedCornerRadius = roundedCornerRadius;
     this.cradleVerticalOffset = cradleVerticalOffset;
     // TODO: potentially support negative values.
@@ -72,6 +73,7 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
 
   @Override
   public void getEdgePath(float length, float interpolation, ShapePath shapePath) {
+    float cradleDiameter = fabMargin + fabDiameter;
     float cradleRadius = interpolation * cradleDiameter / 2f;
     float roundedCornerOffset = interpolation * roundedCornerRadius;
     float middle = length / 2f + horizontalOffset;
@@ -119,5 +121,13 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
    */
   public void setCradleVerticalOffset(float cradleVerticalOffset) {
     this.cradleVerticalOffset = cradleVerticalOffset;
+  }
+
+  public float getFabDiameter() {
+    return fabDiameter;
+  }
+
+  public void setFabDiameter(float fabDiameter) {
+    this.fabDiameter = fabDiameter;
   }
 }

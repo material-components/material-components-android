@@ -27,8 +27,8 @@
     </attr>
     <!-- Whether the fab should start attached to the BottomAppBar. -->
     <attr name="fabAttached" format="boolean"/>
-    <!-- The diameter of the semi-circular cradle for the fab. -->
-    <attr name="fabCradleDiameter" format="dimension"/>
+    <!-- The margin between the semi-circular cradle for the fab and the fab. -->
+    <attr name="fabCradleMargin" format="dimension"/>
     <!-- The radius of the rounded corners on each side of the cradle. -->
     <attr name="fabCradleRoundedCornerRadius" format="dimension"/>
     <!-- The vertical offset between the fab from the cradle. -->

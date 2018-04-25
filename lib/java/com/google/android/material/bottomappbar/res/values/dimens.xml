@@ -18,7 +18,7 @@
 <resources>
   <!-- When the fabAlignmentMode is set to the end, the fab should be offset by this amount. -->
   <dimen name="mtrl_bottomappbar_fabOffsetEndMode">60dp</dimen>
-  <dimen name="mtrl_bottomappbar_fab_cradle_diameter">64dp</dimen>
+  <dimen name="mtrl_bottomappbar_fab_cradle_margin">10dp</dimen>
   <dimen name="mtrl_bottomappbar_fab_cradle_rounded_corner_radius">8dp</dimen>
   <dimen name="mtrl_bottomappbar_fab_cradle_vertical_offset">0dp</dimen>
   <dimen name="mtrl_bottomappbar_height">56dp</dimen>
