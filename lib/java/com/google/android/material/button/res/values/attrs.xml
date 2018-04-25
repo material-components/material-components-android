@@ -43,10 +43,10 @@
     <attr name="iconTint" format="color"/>
     <!-- Tint mode for icon drawable to display. -->
     <attr name="iconTintMode"/>
-    <!-- Padding to add/remove from the left side of the button when an icon is present. -->
-    <attr name="additionalPaddingLeftForIcon" format="dimension"/>
-    <!-- Padding to add/remove from the right side of the button when an icon is present. -->
-    <attr name="additionalPaddingRightForIcon" format="dimension"/>
+    <!-- Padding to add/remove from the start of the button when an icon is present. -->
+    <attr name="additionalPaddingStartForIcon" format="dimension"/>
+    <!-- Padding to add/remove from the end of the button when an icon is present. -->
+    <attr name="additionalPaddingEndForIcon" format="dimension"/>
     <!-- Specifies the color used to draw the path outline of the button. Attribute type definition
          is in resources package. -->
     <attr name="strokeColor"/>

@@ -32,8 +32,8 @@
     <item name="cornerRadius">@dimen/mtrl_btn_corner_radius</item>
     <item name="iconPadding">@dimen/mtrl_btn_icon_padding</item>
     <item name="iconTint">@color/mtrl_btn_text_color_selector</item>
-    <item name="additionalPaddingLeftForIcon">@dimen/mtrl_btn_additional_padding_left_for_icon</item>
-    <item name="additionalPaddingRightForIcon">@dimen/mtrl_btn_additional_padding_right_for_icon</item>
+    <item name="additionalPaddingStartForIcon">@dimen/mtrl_btn_additional_padding_start_for_icon</item>
+    <item name="additionalPaddingEndForIcon">@dimen/mtrl_btn_additional_padding_end_for_icon</item>
     <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
     <item name="backgroundTint">@color/mtrl_btn_bg_color_selector</item>
   </style>

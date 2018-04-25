@@ -66,8 +66,8 @@ import android.util.Log;
  * R.attr#iconTintMode app:iconTintMode} attributes.
  *
  * <p>Add additional padding to the left and right side of the button icon, when present, using the
- * {@link R.attr#additionalPaddingLeftForIcon app:additionalPaddingLeftForIcon} and {@link
- * R.attr#additionalPaddingRightForIcon app:additionalPaddingRightForIcon} attributes.
+ * {@link R.attr#additionalPaddingStartForIcon app:additionalPaddingStartForIcon} and {@link
+ * R.attr#additionalPaddingEndForIcon app:additionalPaddingEndForIcon} attributes.
  *
  * <p>Specify background tint using the {@link R.attr#backgroundTint app:backgroundTint} and {@link
  * R.attr#backgroundTintMode app:backgroundTintMode} attributes, which accepts either a color or a
@@ -101,8 +101,8 @@ public class MaterialButton extends AppCompatButton {
   private int insetTop;
   private int insetBottom;
 
-  private int additionalPaddingLeftForIcon;
-  private int additionalPaddingRightForIcon;
+  private int additionalPaddingStartForIcon;
+  private int additionalPaddingEndForIcon;
 
   private int iconPadding;
   private Mode iconTintMode;
@@ -163,12 +163,12 @@ public class MaterialButton extends AppCompatButton {
     insetBottom =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetBottom, 0);
 
-    additionalPaddingLeftForIcon =
+    additionalPaddingStartForIcon =
         attributes.getDimensionPixelOffset(
-            R.styleable.MaterialButton_additionalPaddingLeftForIcon, 0);
-    additionalPaddingRightForIcon =
+            R.styleable.MaterialButton_additionalPaddingStartForIcon, 0);
+    additionalPaddingEndForIcon =
         attributes.getDimensionPixelOffset(
-            R.styleable.MaterialButton_additionalPaddingRightForIcon, 0);
+            R.styleable.MaterialButton_additionalPaddingEndForIcon, 0);
 
     iconPadding = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconPadding, 0);
     iconTintMode =
@@ -361,8 +361,8 @@ public class MaterialButton extends AppCompatButton {
 
   /**
    * Sets the start, top, end, and bottom padding values for this button. Note that this is
-   * compounded with any values set for {@link #additionalPaddingLeftForIcon}, {@link
-   * #additionalPaddingRightForIcon}, and any insets to calculate the full padding for the view.
+   * compounded with any values set for {@link #additionalPaddingStartForIcon}, {@link
+   * #additionalPaddingEndForIcon}, and any insets to calculate the full padding for the view.
    *
    * <p>To retrieve just the base padding values, use {@link #getButtonPaddingStart()}, {@link
    * #getButtonPaddingTop()}, {@link #getButtonPaddingEnd()}, {@link #getButtonPaddingBottom()}
@@ -408,63 +408,59 @@ public class MaterialButton extends AppCompatButton {
   }
 
   /**
-   * Set the additional padding to add/remove to the left side of this button when an icon is
-   * present.
+   * Set the additional padding to add/remove to the start of this button when an icon is present.
    *
-   * @param additionalPaddingLeftForIcon Additional padding to add/remove to the left side of this
+   * @param additionalPaddingStartForIcon Additional padding to add/remove to the start of this
    *     button when an icon is present
-   * @attr ref com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingLeftForIcon
-   * @see #getAdditionalPaddingLeftForIcon()
+   * @attr ref
+   *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingStartForIcon
+   * @see #getAdditionalPaddingStartForIcon()
    */
-  public void setAdditionalPaddingLeftForIcon(int additionalPaddingLeftForIcon) {
-    if (this.additionalPaddingLeftForIcon != additionalPaddingLeftForIcon) {
-      this.additionalPaddingLeftForIcon = additionalPaddingLeftForIcon;
+  public void setAdditionalPaddingStartForIcon(int additionalPaddingStartForIcon) {
+    if (this.additionalPaddingStartForIcon != additionalPaddingStartForIcon) {
+      this.additionalPaddingStartForIcon = additionalPaddingStartForIcon;
       updatePadding();
     }
   }
 
   /**
-   * Get the additional padding added/removed to the left side of this button when an icon is
-   * present.
+   * Get the additional padding added/removed to the start of this button when an icon is present.
    *
-   * @return Additional padding added/removed to the left side of this button when an icon is
-   *     present
-   * @attr ref com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingLeftForIcon
-   * @see #setAdditionalPaddingLeftForIcon(int)
+   * @return Additional padding added/removed to the start of this button when an icon is present
+   * @attr ref
+   *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingStartForIcon
+   * @see #setAdditionalPaddingStartForIcon(int)
    */
-  public int getAdditionalPaddingLeftForIcon() {
-    return additionalPaddingLeftForIcon;
+  public int getAdditionalPaddingStartForIcon() {
+    return additionalPaddingStartForIcon;
   }
 
   /**
-   * Set the additional padding to add/remove to the right side of this button when an icon is
-   * present.
+   * Set the additional padding to add/remove to the end of this button when an icon is present.
    *
-   * @param additionalPaddingRightForIcon Additional padding to add/remove to the right side of this
-   *     button when an icon is present
+   * @param additionalPaddingEndForIcon Additional padding to add/remove to the end of this button
+   *     when an icon is present
    * @attr ref
-   *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingRightForIcon
-   * @see #getAdditionalPaddingRightForIcon()
+   *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingEndForIcon
+   * @see #getAdditionalPaddingEndForIcon()
    */
-  public void setAdditionalPaddingRightForIcon(int additionalPaddingRightForIcon) {
-    if (this.additionalPaddingRightForIcon != additionalPaddingRightForIcon) {
-      this.additionalPaddingRightForIcon = additionalPaddingRightForIcon;
+  public void setAdditionalPaddingEndForIcon(int additionalPaddingEndForIcon) {
+    if (this.additionalPaddingEndForIcon != additionalPaddingEndForIcon) {
+      this.additionalPaddingEndForIcon = additionalPaddingEndForIcon;
       updatePadding();
     }
   }
 
   /**
-   * Get the additional padding added/removed to the right side of this button when an icon is
-   * present.
+   * Get the additional padding added/removed to the end of this button when an icon is present.
    *
-   * @return Additional padding added/removed to the right side of this button when an icon is
-   *     present
+   * @return Additional padding added/removed to the end of this button when an icon is present
    * @attr ref
-   *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingRightForIcon
-   * @see #setAdditionalPaddingRightForIcon(int)
+   *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingEndForIcon
+   * @see #setAdditionalPaddingEndForIcon(int)
    */
-  public int getAdditionalPaddingRightForIcon() {
-    return additionalPaddingRightForIcon;
+  public int getAdditionalPaddingEndForIcon() {
+    return additionalPaddingEndForIcon;
   }
 
   /**
@@ -475,9 +471,9 @@ public class MaterialButton extends AppCompatButton {
   private void updatePadding() {
     ViewCompat.setPaddingRelative(
         this,
-        paddingStart + (icon != null ? additionalPaddingLeftForIcon : 0) + insetLeft,
+        paddingStart + (icon != null ? additionalPaddingStartForIcon : 0) + insetLeft,
         paddingTop + insetTop,
-        paddingEnd + (icon != null ? additionalPaddingRightForIcon : 0) + insetRight,
+        paddingEnd + (icon != null ? additionalPaddingEndForIcon : 0) + insetRight,
         paddingBottom + insetBottom);
   }
 
