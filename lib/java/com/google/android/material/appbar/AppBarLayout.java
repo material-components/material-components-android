@@ -625,7 +625,7 @@ public class AppBarLayout extends LinearLayout {
     return insets;
   }
 
-  /** TODO: Add a real comment here after the widget migration */
+  /** A {@link ViewGroup.LayoutParams} implementation for {@link AppBarLayout}. */
   public static class LayoutParams extends LinearLayout.LayoutParams {
 
     /** @hide */
@@ -1443,7 +1443,7 @@ public class AppBarLayout extends LinearLayout {
       }
     }
 
-    /** TODO: Add a real comment here after the widget migration */
+    /** A {@link Parcelable} implementation for {@link AppBarLayout}. */
     protected static class SavedState extends AbsSavedState {
       int firstVisibleChildIndex;
       float firstVisibleChildPercentageShown;

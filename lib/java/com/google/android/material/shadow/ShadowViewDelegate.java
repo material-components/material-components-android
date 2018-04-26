@@ -18,7 +18,7 @@ package com.google.android.material.shadow;
 
 import android.graphics.drawable.Drawable;
 
-/** TODO: Add a real comment here after the widget migration */
+/** Delegate interface that can be used to facilitate rendering of shadows pre-lollipop. */
 public interface ShadowViewDelegate {
   float getRadius();
 

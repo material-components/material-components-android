@@ -25,7 +25,12 @@ import android.support.annotation.RestrictTo;
 import android.util.StateSet;
 import java.util.ArrayList;
 
-/** TODO: Add a real comment here after the widget migration */
+/**
+ * Lets you define a number of Animators that will run on the attached View depending on the View's
+ * drawable state.
+ *
+ * @hide
+ */
 @RestrictTo(LIBRARY_GROUP)
 public final class StateListAnimator {
 

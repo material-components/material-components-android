@@ -23,7 +23,11 @@ import android.support.annotation.RestrictTo;
 import android.util.AttributeSet;
 import android.widget.ImageButton;
 
-/** TODO: Add a real comment here after the widget migration */
+/**
+ * An {@link ImageButton} that keeps track of visibility changes.
+ *
+ * @hide
+ */
 @RestrictTo(LIBRARY_GROUP)
 public class VisibilityAwareImageButton extends ImageButton {
 

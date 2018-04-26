@@ -24,7 +24,11 @@ import android.support.annotation.RestrictTo;
 import android.util.Log;
 import java.lang.reflect.Method;
 
-/** Caution. Gross hacks ahead. */
+/**
+ * Utility class for functionality relating to {@link Drawable}s.
+ *
+ * @hide
+ */
 @RestrictTo(LIBRARY_GROUP)
 public class DrawableUtils {
 

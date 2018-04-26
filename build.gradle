@@ -44,8 +44,6 @@ ext {
 task(lint) << {
 }
 
-// TODO: setup docs build and API txt generation
-
 task clean(type: Delete) {
   delete rootProject.buildDir
 }

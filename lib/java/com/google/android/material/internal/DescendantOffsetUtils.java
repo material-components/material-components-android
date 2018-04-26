@@ -26,7 +26,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 
-/** TODO: Add a real comment here after the widget migration */
+/**
+ * Utility class for descendant {@link Rect} calculations.
+ *
+ * @hide
+ */
 @RestrictTo(LIBRARY_GROUP)
 public class DescendantOffsetUtils {
   private static final ThreadLocal<Matrix> matrix = new ThreadLocal<>();
