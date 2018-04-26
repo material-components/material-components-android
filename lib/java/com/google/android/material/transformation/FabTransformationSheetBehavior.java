@@ -87,7 +87,13 @@ public class FabTransformationSheetBehavior extends FabTransformationBehavior {
 
     for (int i = 0; i < childCount; i++) {
       final View child = parent.getChildAt(i);
-      if (child == sheet) {
+
+      // Don't change the accessibility importance of the sheet or the scrim.
+      boolean hasScrimBehavior =
+          (child.getLayoutParams() instanceof CoordinatorLayout.LayoutParams)
+              && (((CoordinatorLayout.LayoutParams) child.getLayoutParams()).getBehavior()
+                  instanceof FabTransformationScrimBehavior);
+      if (child == sheet || hasScrimBehavior) {
         continue;
       }
 
