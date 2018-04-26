@@ -114,6 +114,12 @@ task generateJavadocs(type: Javadoc) {
   failOnError false
 }
 
+afterEvaluate {
+  generateJavadocs.classpath += files(android.libraryVariants.collect { variant ->
+    variant.javaCompile.classpath.files
+  })
+}
+
 uploadArchives {
   repositories {
     mavenDeployer {
