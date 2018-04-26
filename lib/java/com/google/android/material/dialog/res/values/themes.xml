@@ -45,7 +45,7 @@
 
   <style name="Theme.MaterialComponents.Light.Dialog.MinWidth" parent="Base.Theme.MaterialComponents.Light.Dialog.MinWidth"/>
 
-  <style name="ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog"/>
+  <style name="ThemeOverlay.MaterialComponents.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog"/>
 
   <!--
     Theme overlay that is used by default MaterialComponents themes for alert dialogs, via the
