@@ -107,7 +107,7 @@ public class BottomSheetDialog extends AppCompatDialog {
   @Override
   protected void onStart() {
     super.onStart();
-    if (behavior != null) {
+    if (behavior != null && behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
       behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
     }
   }
