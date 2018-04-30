@@ -96,22 +96,24 @@ task generateJavadocs(type: Javadoc) {
     options.addStringOption("dac_dataname", "MATERIAL_DATA")
   }
 
-  def docletPathRoot = project.property("docletPathRoot")
+  if (project.hasProperty("docletPathRoot")) {
+    def docletPathRoot = project.property("docletPathRoot")
 
-  source = android.sourceSets.main.java.source
-  source = source.findAll { it.name.endsWith(".java") }
-  title = null
-  destinationDir = new File("doclava-out")
-  classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-  options.addStringOption("federate Android", "https://developer.android.com")
-  options.encoding = "UTF-8"
-  options.doclet = "com.google.doclava.Doclava"
-  options.docletpath = [
-    file(docletPathRoot + "/doclava/current/doclava.jar"),
-    file(docletPathRoot + "/jsilver/v1_0_0/jsilver.jar")
-  ]
-  // TODO: remove once all errors are resolved
-  failOnError false
+    source = android.sourceSets.main.java.source
+    source = source.findAll { it.name.endsWith(".java") }
+    title = null
+    destinationDir = new File("doclava-out")
+    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+    options.addStringOption("federate Android", "https://developer.android.com")
+    options.encoding = "UTF-8"
+    options.doclet = "com.google.doclava.Doclava"
+    options.docletpath = [
+      file(docletPathRoot + "/doclava/current/doclava.jar"),
+      file(docletPathRoot + "/jsilver/v1_0_0/jsilver.jar")
+    ]
+    // TODO: remove once all errors are resolved
+    failOnError false
+  }
 }
 
 afterEvaluate {
