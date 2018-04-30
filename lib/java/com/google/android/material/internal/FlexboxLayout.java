@@ -99,9 +99,8 @@ public class FlexboxLayout extends ViewGroup implements FlexContainer {
    * to those set methods.
    */
   @IntDef(
-    flag = true,
-    value = {SHOW_DIVIDER_NONE, SHOW_DIVIDER_BEGINNING, SHOW_DIVIDER_MIDDLE, SHOW_DIVIDER_END}
-  )
+      flag = true,
+      value = {SHOW_DIVIDER_NONE, SHOW_DIVIDER_BEGINNING, SHOW_DIVIDER_MIDDLE, SHOW_DIVIDER_END})
   @Retention(RetentionPolicy.SOURCE)
   @SuppressWarnings("WeakerAccess")
   public @interface DividerMode {}
@@ -965,24 +964,40 @@ public class FlexboxLayout extends ViewGroup implements FlexContainer {
     public LayoutParams(Context context, AttributeSet attrs) {
       super(context, attrs);
 
-      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.FlexboxLayout_Layout);
-      order = a.getInt(R.styleable.FlexboxLayout_Layout_layout_order, ORDER_DEFAULT);
-      flexGrow = a.getFloat(R.styleable.FlexboxLayout_Layout_layout_flexGrow, FLEX_GROW_DEFAULT);
+      TypedArray a =
+          context.obtainStyledAttributes(
+              attrs, R.styleable.MaterialComponents_FlexboxLayout_Layout);
+      order =
+          a.getInt(R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_order, ORDER_DEFAULT);
+      flexGrow =
+          a.getFloat(
+              R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_flexGrow,
+              FLEX_GROW_DEFAULT);
       flexShrink =
-          a.getFloat(R.styleable.FlexboxLayout_Layout_layout_flexShrink, FLEX_SHRINK_DEFAULT);
+          a.getFloat(
+              R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_flexShrink,
+              FLEX_SHRINK_DEFAULT);
       flexBasisPercent =
           a.getFraction(
-              R.styleable.FlexboxLayout_Layout_layout_flexBasisPercent,
+              R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_flexBasisPercent,
               1,
               1,
               FLEX_BASIS_PERCENT_DEFAULT);
-      minWidth = a.getDimensionPixelSize(R.styleable.FlexboxLayout_Layout_layout_minWidth, 0);
-      minHeight = a.getDimensionPixelSize(R.styleable.FlexboxLayout_Layout_layout_minHeight, 0);
+      minWidth =
+          a.getDimensionPixelSize(
+              R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_minWidth, 0);
+      minHeight =
+          a.getDimensionPixelSize(
+              R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_minHeight, 0);
       maxWidth =
-          a.getDimensionPixelSize(R.styleable.FlexboxLayout_Layout_layout_maxWidth, MAX_SIZE);
+          a.getDimensionPixelSize(
+              R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_maxWidth, MAX_SIZE);
       maxHeight =
-          a.getDimensionPixelSize(R.styleable.FlexboxLayout_Layout_layout_maxHeight, MAX_SIZE);
-      wrapBefore = a.getBoolean(R.styleable.FlexboxLayout_Layout_layout_wrapBefore, false);
+          a.getDimensionPixelSize(
+              R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_maxHeight, MAX_SIZE);
+      wrapBefore =
+          a.getBoolean(
+              R.styleable.MaterialComponents_FlexboxLayout_Layout_layout_wrapBefore, false);
       a.recycle();
     }
 

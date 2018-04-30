@@ -40,7 +40,7 @@
     <attr name="insetForeground" format="color|reference"/>
   </declare-styleable>
 
-  <declare-styleable name="FlexboxLayout_Layout">
+  <declare-styleable name="MaterialComponents_FlexboxLayout_Layout">
     <attr name="layout_order" format="integer"/>
 
     <!-- Negative numbers are invalid. -->
