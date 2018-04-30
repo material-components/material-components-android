@@ -693,7 +693,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       FloatingActionButton fab = child.findDependentFab();
       if (fab != null) {
         updateFabPositionAndVisibility(fab, child);
-        fab.getContentRect(fabContentRect);
+        fab.getMeasuredContentRect(fabContentRect);
         child.setFabDiameter(fabContentRect.height());
       }
 

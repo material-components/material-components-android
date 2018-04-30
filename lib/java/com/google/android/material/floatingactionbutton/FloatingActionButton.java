@@ -754,18 +754,34 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * coordinates. This is defined as anything within any visible shadow.
    *
    * @return true if this view actually has been laid out and has a content rect, else false.
+   * @deprecated prefer {@link FloatingActionButton#getMeasuredContentRect} instead, so you don't
+   * need to handle the case where the view isn't laid out.
    */
+  @Deprecated
   public boolean getContentRect(@NonNull Rect rect) {
     if (ViewCompat.isLaidOut(this)) {
       rect.set(0, 0, getWidth(), getHeight());
-      rect.left += shadowPadding.left;
-      rect.top += shadowPadding.top;
-      rect.right -= shadowPadding.right;
-      rect.bottom -= shadowPadding.bottom;
+      offsetRectWithShadow(rect);
       return true;
     } else {
       return false;
     }
+  }
+
+  /**
+   * Return in {@code rect} the bounds of the actual floating action button content in view-local
+   * coordinates. This is defined as anything within any visible shadow.
+   */
+  public void getMeasuredContentRect(@NonNull Rect rect) {
+    rect.set(0, 0, getMeasuredWidth(), getMeasuredHeight());
+    offsetRectWithShadow(rect);
+  }
+
+  private void offsetRectWithShadow(@NonNull Rect rect) {
+    rect.left += shadowPadding.left;
+    rect.top += shadowPadding.top;
+    rect.right -= shadowPadding.right;
+    rect.bottom -= shadowPadding.bottom;
   }
 
   /** Returns the FloatingActionButton's background, minus any compatible shadow implementation. */
