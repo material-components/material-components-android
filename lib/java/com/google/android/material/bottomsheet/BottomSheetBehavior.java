@@ -22,6 +22,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
@@ -44,6 +45,8 @@ import android.view.ViewParent;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * An interaction behavior plugin for a child view of {@link CoordinatorLayout} to make it work as a
@@ -169,6 +172,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   private int initialY;
 
   boolean touchingScrollingChild;
+
+  private Map<View, Integer> importantForAccessibilityMap;
 
   /** Default constructor for instantiating BottomSheetBehaviors. */
   public BottomSheetBehavior() {}
@@ -662,6 +667,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
     this.state = state;
+    if (state == STATE_HALF_EXPANDED || state == STATE_EXPANDED) {
+      updateImportantForAccessibility(true);
+    } else if (state == STATE_HIDDEN) {
+      updateImportantForAccessibility(false);
+    }
+
     View bottomSheet = viewRef.get();
     if (bottomSheet != null && callback != null) {
       callback.onStateChanged(bottomSheet, state);
@@ -970,5 +981,54 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       throw new IllegalArgumentException("The view is not associated with BottomSheetBehavior");
     }
     return (BottomSheetBehavior<V>) behavior;
+  }
+
+  private void updateImportantForAccessibility(boolean expanded) {
+    if (viewRef == null) {
+      return;
+    }
+
+    ViewParent viewParent = viewRef.get().getParent();
+    if (!(viewParent instanceof CoordinatorLayout)) {
+      return;
+    }
+
+    CoordinatorLayout parent = (CoordinatorLayout) viewParent;
+    final int childCount = parent.getChildCount();
+    if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) && expanded) {
+      if (importantForAccessibilityMap == null) {
+        importantForAccessibilityMap = new HashMap<>(childCount);
+      } else {
+        // The important for accessibility values of the child views have been saved already.
+        return;
+      }
+    }
+
+    for (int i = 0; i < childCount; i++) {
+      final View child = parent.getChildAt(i);
+      if (child == viewRef.get()) {
+        continue;
+      }
+
+      if (!expanded) {
+        if (importantForAccessibilityMap != null
+            && importantForAccessibilityMap.containsKey(child)) {
+          // Restores the original important for accessibility value of the child view.
+          ViewCompat.setImportantForAccessibility(child, importantForAccessibilityMap.get(child));
+        }
+      } else {
+        // Saves the important for accessibility value of the child view.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+          importantForAccessibilityMap.put(child, child.getImportantForAccessibility());
+        }
+
+        ViewCompat.setImportantForAccessibility(
+            child, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO_HIDE_DESCENDANTS);
+      }
+    }
+
+    if (!expanded) {
+      importantForAccessibilityMap = null;
+    }
   }
 }
