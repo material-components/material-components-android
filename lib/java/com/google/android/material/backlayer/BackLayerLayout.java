@@ -336,6 +336,7 @@ public class BackLayerLayout extends LinearLayout implements ExpandableWidget {
   }
 
   void onExpandAnimationEnd() {
+    childViewAccessibilityHelper.restoreChildFocus();
     for (BackLayerCallback callback : callbacks) {
       callback.onAfterExpand();
     }
