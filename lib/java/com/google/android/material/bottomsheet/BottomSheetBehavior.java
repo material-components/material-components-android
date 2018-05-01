@@ -669,7 +669,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     this.state = state;
     if (state == STATE_HALF_EXPANDED || state == STATE_EXPANDED) {
       updateImportantForAccessibility(true);
-    } else if (state == STATE_HIDDEN) {
+    } else if (state == STATE_HIDDEN || state == STATE_COLLAPSED) {
       updateImportantForAccessibility(false);
     }
 
