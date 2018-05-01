@@ -62,7 +62,7 @@ implement your navigation logic.
 ### Header views
 
 You can add one header in the XML layout, but you can add multiple header views
-programatically with `addHeaderView(View)` (even if you already added one in the
+programmatically with `addHeaderView(View)` (even if you already added one in the
 XML layout). You can use `getHeaderView(int)` to get any of the header views at
 runtime.
 

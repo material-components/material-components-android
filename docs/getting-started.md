@@ -1,8 +1,11 @@
-# Material Components for Android
+<!--docs:
+title: "Getting Started"
+layout: landing
+section: docs
+path: /docs/getting-started/
+-->
 
-## Getting Started
-
-### How to use Material Components for Android
+# Getting started with Material Components for Android
 
 Material Components for Android is available through Google's Maven repository.
 To use it:
@@ -30,6 +33,15 @@ To use it:
       // ...
     }
   ```
+
+## Contributors
+
+Material Components for Android welcomes contributions from the community. Check
+out our [contributing guidelines](contributing.md) as well as an overview of
+the [directory structure](directorystructure.md) before getting started.
+
+To make a contribution, you'll need to be able to build the library from source
+and run our tests.
 
 ### Building from source
 
@@ -65,15 +77,25 @@ Material Components for Android has JVM tests as well as Emulator tests.
 
 To run the JVM tests, do:
 
-```
+```sh
 ./gradlew test
 ```
 
 To run the emulator tests, ensure you have [a virtual device set
 up](https://developer.android.com/studio/run/managing-avds.html) and do:
 
-```
+```sh
 ./gradlew connectedAndroidTest
 ```
 
 
+## Useful Links
+- [Contributing](contributing.md)
+- [Class
+  documentation](https://developer.android.com/reference/com/google/android/material/package-summary.html)
+- [MDC-Android on Stack
+  Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
+- [Android Developer’s
+  Guide](https://developer.android.com/training/material/index.html)
+- [Material.io](https://www.material.io)
+- [Material Design Guidelines](https://material.google.com)
