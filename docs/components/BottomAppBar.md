@@ -17,7 +17,7 @@ focus on features, increases engagement, and visually anchors the UI.
 ## Design & API Documentation
 
 -   [Material Design guidelines: Bottom App
-    Bar](https://material.io/guidelines/components/bottom-app-bar.html)
+    Bar](https://material.io/go/design-app-bar-bottom)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomappbar/BottomAppBar.java)
