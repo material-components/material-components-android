@@ -70,7 +70,7 @@ to help developers easily create beautiful apps.
 4.  {: .step-list-item } ### What's next?
 
     *   [View the components](./docsite-components.md)
-    *   [View the schemes](./docsite-schemes.md)
+    *   [View the theming](./docsite-theming.md)
     *   [Contributing](./contributing.md)
     *   [Class
         documentation](https://developer.android.com/reference/com/google/android/material/package-summary.html)
