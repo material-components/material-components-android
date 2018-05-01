@@ -26,7 +26,7 @@ other UI elements on the screen.
 ## Design & API Documentation
 
 -   [Material Design guidelines: Floating Action
-    Buttons](https://material.io/guidelines/components/buttons-floating-action-button.html)
+    Buttons](https://material.io/go/design-fab)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)

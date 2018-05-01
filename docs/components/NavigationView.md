@@ -18,7 +18,7 @@ resource.
 This is most commonly used in conjunction with
 [`DrawerLayout`](https://developer.android.com/reference/android/support/v4/widget/DrawerLayout.html)
 to implement [Material navigation
-drawers](https://material.io/guidelines/patterns/navigation-drawer.html#).
+drawers](https://material.io/go/design-navigation-drawer).
 Navigation drawers are modal elevated dialogs that come from the start/left
 side, used to display in-app navigation links.
 

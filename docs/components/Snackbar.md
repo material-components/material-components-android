@@ -23,7 +23,7 @@ action that was just taken, or retrying an action that had failed.
 ## Design & API Documentation
 
 -   [Material Design guidelines:
-    Snackbars](https://material.io/guidelines/components/snackbars-toasts.html)
+    Snackbars](https://material.io/go/design-snackbars)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/snackbar/Snackbar.java)

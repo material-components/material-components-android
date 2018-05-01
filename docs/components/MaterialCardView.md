@@ -28,7 +28,7 @@ include functionality for card behavior in groups of cards.
 ## Design & API Documentation
 
 -   [Material Design guidelines:
-    Cards](https://material.io/guidelines/components/cards.html)
+    Cards](https://material.io/go/design-cards)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/MaterialCardView.java)

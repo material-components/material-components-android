@@ -21,7 +21,7 @@ navigate to.
 ## Design & API Documentation
 
 -   [Material Design guidelines: Bottom
-    Navigation](https://material.io/guidelines/components/bottom-navigation.html)
+    Navigation](https://material.io/go/design-bottom-navigation)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/BottomNavigationView.java)

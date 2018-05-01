@@ -24,7 +24,7 @@ on implementing `TabLayout`.
 ## Design & API Documentation
 
 -   [Material Design guidelines:
-    Tabs](https://material.io/guidelines/components/tabs.html)
+    Tabs](https://material.io/go/design-tabs)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)

@@ -26,7 +26,7 @@ Note: If you want to use Bottom Sheets that are modal (dialogs), use
 ## Design & API Documentation
 
 -   [Material Design guidelines: Bottom
-    Sheets](https://material.io/guidelines/components/bottom-sheets.html#bottom-sheets-persistent-bottom-sheets)
+    Sheets](https://material.io/go/design-sheets-bottom#bottom-sheets-persistent-bottom-sheets)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetBehavior.java)

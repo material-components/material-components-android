@@ -26,7 +26,7 @@ of text with a `ChipDrawable` using a span to represent it as a semantic entity.
 ## Design & API Documentation
 
 -   [Material Design guidelines:
-    Chips](https://material.io/guidelines/components/chips.html)
+    Chips](https://material.io/go/design-chips)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/chip/Chip.java)

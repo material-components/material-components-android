@@ -13,7 +13,7 @@ path: /catalog/text-input-layout/
 <!--{: .article__asset.article__asset--screenshot }-->
 
 `TextInputLayout` provides an implementation for [Material text
-fields](https://material.io/guidelines/components/text-fields.html). Used in
+fields](https://material.io/go/design-text-fields). Used in
 conjunction with a
 [`TextInputEditText`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputEditText.html),
 `TextInputLayout` makes it easy to include Material **text fields** in your
@@ -22,7 +22,7 @@ layouts.
 ## Design & API Documentation
 
 -   [Material Design guidelines: Text
-    Fields](https://material.io/guidelines/components/text-fields.html)
+    Fields](https://material.io/go/design-text-fields)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/textfield/TextInputLayout.java)
@@ -131,7 +131,7 @@ like corner radii, you can apply the following attributes to your
 ## Common features
 
 `TextInputLayout` provides functionality for a number of Material [text field
-features](https://material.io/guidelines/components/text-fields.html#text-fields-layout).
+features](https://material.io/go/design-text-fields#text-fields-layout).
 These are some commonly used properties you can update to control the look of
 your text field:
 

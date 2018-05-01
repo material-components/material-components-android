@@ -22,7 +22,7 @@ different actions. These levels of emphasis include:
 ## Design & API Documentation
 
 -   [Material Design guidelines:
-    Buttons](https://material.io/guidelines/components/buttons.html)
+    Buttons](https://material.io/go/design-buttons)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButton.java)
