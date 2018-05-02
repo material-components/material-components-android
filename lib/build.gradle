@@ -83,9 +83,6 @@ android {
 // TODO: setup API txt generation
 
 task generateJavadocs(type: Javadoc) {
-  options.addStringOption("hidePackage", "com.google.android.material.backlayer")
-  options.addStringOption("hidePackage", "com.google.android.material.materialswitch")
-
   if (project.hasProperty("online")) {
     options.addStringOption("toroot", "/")
     options.addStringOption("hdf", "android.whichdoc online")

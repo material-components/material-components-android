@@ -2,15 +2,11 @@ include ':lib'
 
 include ':testing:java:com:google:android:material:testapp'
 include ':testing:java:com:google:android:material:testapp:animation'
-// TODO: uncomment when backlayer is included in top-level build
-//include ':testing:java:com:google:android:material:testapp:backlayer'
 include ':testing:java:com:google:android:material:testapp:base'
 include ':testing:java:com:google:android:material:testapp:custom'
 
 include ':tests'
 include ':tests:javatests:com:google:android:material:animation'
-// TODO: uncomment when backlayer is included in top-level build
-//include ':tests:javatests:com:google:android:material:backlayer'
 
 include ':catalog'
 

@@ -31,8 +31,4 @@
   <!-- Default color of background imagery for floating components, ex. dialogs, popups, and cards. -->
   <attr name="colorBackgroundFloating" format="color" />
 
-  <!-- TODO: move the below attributes into their relevant packages -->
-  <!-- Style to use MaterialSwitch in this theme. -->
-  <attr name="materialSwitchStyle" format="reference"/>
-
 </resources>

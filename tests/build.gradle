@@ -28,7 +28,6 @@ android {
     main.java.srcDir 'javatests'
     main.java.excludes = [
       '**/animation/**',
-      '**/backlayer/**',
       '**/build/**',
     ]
     main.manifest.srcFile 'javatests/com/google/android/material/AndroidManifest.xml'
