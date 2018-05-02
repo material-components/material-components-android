@@ -20,8 +20,8 @@ take a look at our [Getting Started](docs/getting-started.md) guide.
 - [All Components](https://github.com/material-components/material-components-android/tree/master/lib/)
 - [Getting Started](docs/getting-started.md)
 - [Contributing](docs/contributing.md)
-- [Building From Source](building-from-source.md)
-- [Catalog App](catalog-app.md)
+- [Building From Source](docs/building-from-source.md)
+- [Catalog App](docs/catalog-app.md)
 - [Class
   documentation](https://developer.android.com/reference/com/google/android/material/classes)
   (external site)
