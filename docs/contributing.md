@@ -72,6 +72,7 @@ We follow the
 ## Useful Links
 - [Getting Started](getting-started.md)
 - [Building From Source](building-from-source.md)
+- [Catalog App](catalog-app.md)
 - [Class
   documentation](https://developer.android.com/reference/com/google/android/material/classes)
 - [MDC-Android on Stack

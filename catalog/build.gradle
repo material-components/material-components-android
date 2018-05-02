@@ -1,0 +1,69 @@
+apply plugin: 'com.android.application'
+
+dependencies {
+  api 'com.google.dagger:dagger:2.15'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
+
+  api 'com.google.dagger:dagger-android:2.15'
+  api 'com.google.dagger:dagger-android-support:2.15'
+  annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
+
+  api 'com.android.support:multidex:1.0.3'
+
+  api project(':lib')
+}
+
+def srcDirs = [
+  'application',
+  'application/attrs',
+  'application/legacymultidex',
+  'application/scope',
+  'application/theme',
+  'assets',
+  'bottomappbar',
+  'bottomnav',
+  'button',
+  'card',
+  'chip',
+  'draggable',
+  'fab',
+  'feature',
+  'font',
+  'main',
+  'tableofcontents',
+  'tabs',
+  'textfield',
+  'themeswitcher',
+  'topappbar',
+  'transformation'
+]
+
+android {
+  defaultConfig {
+    manifestPlaceholders = [
+      application_name             : 'CatalogApplication',
+      application_theme            : 'Catalog',
+      catalog_application_component: 'io.material.catalog.application.DaggerCatalogApplicationComponent'
+    ]
+  }
+
+  sourceSets {
+    main {
+      manifest.srcFile 'java/io/material/catalog/AndroidManifest.xml'
+      java.srcDir 'java'
+      java.includes = srcDirs.collect { 'io/material/catalog/' + it + '/**/*.java' }
+      java.excludes = [
+        '**/build/**',
+      ]
+      res.srcDirs = ['java/io/material/catalog/res']
+      srcDirs.forEach {
+        res.srcDirs += 'java/io/material/catalog/' + it + '/res'
+      }
+    }
+  }
+
+  compileOptions {
+    sourceCompatibility JavaVersion.VERSION_1_8
+    targetCompatibility JavaVersion.VERSION_1_8
+  }
+}

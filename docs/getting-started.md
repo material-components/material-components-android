@@ -161,6 +161,7 @@ the [directory structure](directorystructure.md) before getting started.
 ## Useful Links
 - [Contributing](contributing.md)
 - [Building From Source](building-from-source.md)
+- [Catalog App](catalog-app.md)
 - [Class
   documentation](https://developer.android.com/reference/com/google/android/material/classes)
 - [MDC-Android on Stack

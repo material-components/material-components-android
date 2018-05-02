@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <GridLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:paddingLeft="16dp"
+      android:clipToPadding="false"
+      android:columnCount="2">
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="@string/cat_btn_text"
+        android:textColor="?attr/colorSecondaryDark"
+        android:textSize="16sp"/>
+
+    <Space/>
+
+    <Button
+        android:id="@+id/material_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_enabled"/>
+
+    <Button
+        android:id="@+id/disabled_material_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:enabled="false"
+        android:text="@string/cat_button_label_disabled"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_unelevated_btn_text"
+        android:textColor="?attr/colorSecondaryDark"
+        android:textSize="16sp"/>
+
+    <Space/>
+
+    <Button
+        android:id="@+id/material_unelevated_button"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_enabled"/>
+
+    <Button
+        android:id="@+id/disabled_material_unelevated_button"
+        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:enabled="false"
+        android:text="@string/cat_button_label_disabled"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_icon_btn_text"
+        android:textColor="?attr/colorSecondaryDark"
+        android:textSize="16sp"/>
+
+    <Space/>
+
+    <Button
+        android:id="@+id/material_icon_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_enabled"
+        app:icon="@drawable/ic_dialogs_24px"/>
+
+    <Button
+        android:id="@+id/disabled_material_icon_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:enabled="false"
+        android:text="@string/cat_button_label_disabled"
+        app:icon="@drawable/ic_dialogs_24px"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_text_btn_text"
+        android:textColor="?attr/colorSecondaryDark"
+        android:textSize="16sp"/>
+
+    <Space/>
+
+    <Button
+        android:id="@+id/material_text_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_enabled"/>
+
+    <Button
+        android:id="@+id/disabled_material_text_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:enabled="false"
+        android:text="@string/cat_button_label_disabled"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_icon_text_btn_text"
+        android:textColor="?attr/colorSecondaryDark"
+        android:textSize="16sp"/>
+
+    <Space/>
+
+    <Button
+        android:id="@+id/material_icon_text_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_enabled"
+        app:icon="@drawable/ic_dialogs_24px"/>
+
+    <Button
+        android:id="@+id/disabled_material_icon_text_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:enabled="false"
+        android:text="@string/cat_button_label_disabled"
+        app:icon="@drawable/ic_dialogs_24px"/>
+  </GridLayout>
+</ScrollView>

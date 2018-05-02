@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <string name="cat_tabs_title">Tabs</string>
+  <string name="cat_tabs_description">
+    Tabs enable content organization at a high level, such as switching between views, data sets, or
+    functional aspects of an app.\n\nPresent tabs as a single row above their associated content.
+    Tab labels should succinctly describe the content within.\n\nTabs allow navigation between
+    different top-level groups of content, such as different sections of a newspaper, different
+    music genres, or different types of documents.
+  </string>
+  <string name="cat_tab_item_label">Tab %d</string>
+  <string name="cat_tab_item_content">Swipe here - Tab %d</string>
+  <string name="cat_tabs_icon_switch_label">Show icons</string>
+  <string name="cat_tabs_labels_switch_label">Show labels</string>
+  <string name="cat_tabs_gravity_selector_label">Gravity</string>
+  <string name="cat_tabs_gravity_fill">Fill</string>
+  <string name="cat_tabs_gravity_center">Center</string>
+  <string name="cat_tabs_inline_switch_label">Inline</string>
+  <string name="cat_tabs_indicator_spinner_label">Indicator</string>
+  <string name="cat_tabs_legacy_tabs_label">Legacy Tabs</string>
+  <string name="cat_tabs_material_tabs_label">Material Tabs</string>
+  <string name="cat_tabs_colored_tabs_label">Material Tabs (Colored)</string>
+  <string name="cat_tabs_controllable_demo_title">Controllable Tabs Demo</string>
+  <string name="cat_tabs_scrollable_demo_title">Scrollable Tabs Demo</string>
+
+  <!-- Selected indicator names -->
+  <string name="cat_tabs_selected_indicator_line_bottom">Line (bottom)</string>
+  <string name="cat_tabs_selected_indicator_line_top">Line (top)</string>
+  <string name="cat_tabs_selected_indicator_line_center">Line (center)</string>
+  <string name="cat_tabs_selected_indicator_pill">Pill</string>
+  <string name="cat_tabs_selected_indicator_oval">Oval</string>
+  <string name="cat_tabs_selected_indicator_box">Box</string>
+  <string name="cat_tabs_selected_indicator_rounded_line">Rounded line</string>
+
+  <!-- Scrollable tab labels -->
+  <string name="cat_tabs_label_all">All</string>
+  <string name="cat_tabs_label_shopping">Shopping</string>
+  <string name="cat_tabs_label_news">News</string>
+  <string name="cat_tabs_label_maps">Maps</string>
+  <string name="cat_tabs_label_images">Images</string>
+  <string name="cat_tabs_label_updates">Updates</string>
+  <string name="cat_tabs_label_settings">Settings</string>
+  <string name="cat_tabs_label_plugins">Plugins</string>
+  <string name="cat_tabs_label_more">More</string>
+
+</resources>

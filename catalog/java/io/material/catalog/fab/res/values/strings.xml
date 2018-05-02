@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <string name="cat_fab_title">Floating Action Button</string>
+  <string name="cat_fab_description">The Floating Action Button (FAB) represents your product\'s primary action, and should be considered a direct extension of its brand.</string>
+
+  <string name="regular_fab_label">Regular</string>
+  <string name="legacy_fab_label">Legacy</string>
+  <string name="theme_fab_label">Theme</string>
+
+  <string name="hide_fabs_label">Hide FABs</string>
+  <string name="show_fabs_label">Show FABs</string>
+
+  <string name="cat_fab_clicked">FAB clicked</string>
+
+  <!-- Content descriptions for demo FABs. -->
+  <string name="cat_regular_fab_content_desc">Regular FAB</string>
+  <string name="cat_regular_fab_mini_content_desc">Regular mini FAB</string>
+  <string name="cat_legacy_fab_content_desc">Legacy FAB</string>
+  <string name="cat_legacy_fab_mini_content_desc">Legacy mini FAB</string>
+  <string name="cat_theme_fab_content_desc">Themed FAB</string>
+  <string name="cat_theme_fab_mini_content_desc">Mini themed FAB</string>
+
+</resources>

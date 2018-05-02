@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+  <!-- This purpose of this attr is to allow a different Toolbar style based on the Catalog app.
+       The reason we can't set toolbarStyle globally in the Catalog's app theme is because the
+       android:theme attribute, which is in the Toolbar style, does not get applied to the Toolbar
+       when the style is set globally, due to how ThemeOverlays get created and resolved. So,
+       instead on each Toolbar we have to explicitly set style="?attr/catalogToolbarStyle" or
+       style="?attr/catalogToolbarWithCloseButtonStyle" if the toolbar contains a close button. -->
+  <attr name="catalogToolbarStyle" format="reference"/>
+  <attr name="catalogToolbarWithCloseButtonStyle" format="reference"/>
+</resources>

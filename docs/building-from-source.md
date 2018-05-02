@@ -36,6 +36,7 @@ file.
 ## Useful Links
 - [Getting Started](getting-started.md)
 - [Contributing](contributing.md)
+- [Catalog App](catalog-app.md)
 - [Class
   documentation](https://developer.android.com/reference/com/google/android/material/classes)
 - [MDC-Android on Stack

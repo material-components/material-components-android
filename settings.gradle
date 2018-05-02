@@ -12,6 +12,8 @@ include ':tests:javatests:com:google:android:material:animation'
 // TODO: uncomment when backlayer is included in top-level build
 //include ':tests:javatests:com:google:android:material:backlayer'
 
+include ':catalog'
+
 include ':demos:java:io:material:demo:shrine'
 include ':demos:java:io:material:demo:shrine:filters'
 include ':demos:java:io:material:demo:shrine:products'

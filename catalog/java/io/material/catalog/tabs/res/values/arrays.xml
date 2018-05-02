@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+<resources>
+  <string-array name="cat_tabs_selected_indicator_drawables">
+    <item>@drawable/cat_tabs_line_indicator</item>
+    <item>@drawable/cat_tabs_line_indicator</item>
+    <item>@drawable/cat_tabs_line_indicator</item>
+    <item>@drawable/cat_tabs_pill_indicator</item>
+    <item>@drawable/cat_tabs_oval_indicator</item>
+    <item>@drawable/cat_tabs_box_indicator</item>
+    <item>@drawable/cat_tabs_rounded_line_indicator</item>
+  </string-array>
+
+  <string-array name="cat_tabs_selected_indicator_drawable_titles">
+    <item>@string/cat_tabs_selected_indicator_line_bottom</item>
+    <item>@string/cat_tabs_selected_indicator_line_top</item>
+    <item>@string/cat_tabs_selected_indicator_line_center</item>
+    <item>@string/cat_tabs_selected_indicator_pill</item>
+    <item>@string/cat_tabs_selected_indicator_oval</item>
+    <item>@string/cat_tabs_selected_indicator_box</item>
+    <item>@string/cat_tabs_selected_indicator_rounded_line</item>
+  </string-array>
+
+  <integer-array name="cat_tabs_selected_indicator_drawable_gravities">
+    <!-- Bottom -->
+    <item>0</item>
+    <!-- Top -->
+    <item>2</item>
+    <!-- Center -->
+    <item>1</item>
+    <!-- Stretch -->
+    <item>3</item>
+    <!-- Stretch -->
+    <item>3</item>
+    <!-- Stretch -->
+    <item>3</item>
+    <!-- Bottom -->
+    <item>0</item>
+  </integer-array>
+</resources>

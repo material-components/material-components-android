@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+
+  <string name="cat_toc_buttons">Buttons</string>
+  <string name="cat_buttons_title">Buttons</string>
+  <string name="cat_buttons_description">
+    Buttons communicate the action that will occur when the user touches them.
+    They may display text, imagery, or both.
+    Flat buttons and raised buttons are the most commonly used types.
+  </string>
+  <string name="cat_button_label_enabled">Enabled</string>
+  <string name="cat_button_label_disabled">Disabled</string>
+  <string name="cat_btn_text">Material button</string>
+  <string name="cat_unelevated_btn_text">Unelevated button</string>
+  <string name="cat_text_btn_text">Text button</string>
+  <string name="cat_stroked_btn_text">Stroked button</string>
+  <string name="cat_icon_btn_text">Icon button</string>
+  <string name="cat_icon_text_btn_text">Icon text button</string>
+  <string name="cat_filled_buttons_section_title">Filled buttons</string>
+  <string name="cat_unfilled_buttons_section_title">Unfilled buttons</string>
+
+  <string name="cat_button_clicked">Button clicked</string>
+  <string name="cat_snackbar_action_button_text">Done</string>
+</resources>
