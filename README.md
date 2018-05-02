@@ -8,12 +8,17 @@ Material Components for Android (MDC-Android) help developers execute
 engineers and UX designers at Google, these components enable a reliable
 development workflow to build beautiful and functional Android apps.
 
-Material Components for Android are based on Android’s Design support library
-(DesignLib) which will continue to be released as part of Android’s SDK.
+Material Components for Android is a drop-in replacement for Android's
+Design Support Library.
 
+## Getting Started
+
+For information on how to get started with Material Components for Android,
+take a look at our [Getting Started](docs/getting-started.md) guide.
 
 ## Useful Links
 - [All Components](https://github.com/material-components/material-components-android/tree/master/lib/)
+- [Getting Started](docs/getting-started.md)
 - [Contributing](docs/contributing.md)
 - [Class
   documentation](https://developer.android.com/reference/com/google/android/material/classes)
