@@ -78,8 +78,9 @@ hexidecimal color values for these attributes and you can:
 
 The new color theme will be based around a primary and secondary color. To
 select primary and secondary colors, and generate variations of each, use the
-[Material palette generator](https://material.io/color/), Material Plugin for
-Sketch, or 2014 Material Design palettes.
+[Material palette generator](https://material.io/go/tools-color), [Material
+Plugin for Sketch](https://material.io/go/tools-theme-editor), or 2014 Material
+Design palettes.
 
 The full list of new attribute names will be as follows:
 
