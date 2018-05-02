@@ -132,29 +132,28 @@ based on `?attr/colorAccent`.
 
 ### Attributes
 
-Feature    | Relevant attributes
-:--------- | :--------------------------
-Size       | `app:tabMinWidth`
-           | `app:tabMaxWidth`
-Scroll     | `app:tabMode`
-Centered   | `app:tabGravity`
-Background | `app:tabBackground`
-Icon       | `app:tabIconTint`
-           | `app:tabIconTintMode`
-Label      | `app:tabInlineLabel`
-           | `app:tabTextAppearance`
-           | `app:tabTextColor`
-           | `app:tabSelectedTextColor`
-Indicator  | `app:tabIndicatorColor`
-           | `app:tabIndicatorHeight`
-           | `app:tabIndicator`
-           | `app:tabIndicatorGravity`
-           | `app:tabIndicatorFullWidth`
-Position   | `app:tabContentStart`
-           | `app:tabPaddingStart`
-           | `app:tabPaddingTop`
-           | `app:tabPaddingEnd`
-           | `app:tabPaddingBottom`
-           | `app:tabPadding`
-Ripple     | `app:tabRippleColor`
-           | `app:tabUnboundedRipple`
+| Feature    | Relevant attributes          |
+| ---------- | ---------------------------- |
+| Size       | `app:tabMinWidth` \          |
+:            : `app\:tabMaxWidth`           :
+| Scroll     | `app:tabMode`                |
+| Centered   | `app:tabGravity`             |
+| Background | `app:tabBackground`          |
+| Icon       | `app:tabIconTint` \          |
+:            : `app\:tabIconTintMode`       :
+| Label      | `app:tabInlineLabel` \       |
+:            : `app\:tabTextAppearance` \   :
+:            : `app\:tabTextColor` \        :
+:            : `app\:tabSelectedTextColor`  :
+| Indicator  | `app:tabIndicatorColor` \    |
+:            : `app\:tabIndicatorHeight` \  :
+:            : `app\:tabIndicator` \        :
+:            : `app\:tabIndicatorGravity` \ :
+:            : `app\:tabIndicatorFullWidth` :
+| Position   | `app:tabContentStart` \      |
+:            : `app\:tabPaddingStart` \     :
+:            : `app\:tabPaddingTop` \       :
+:            : `app\:tabPaddingEnd` \       :
+:            : `app\:tabPaddingBottom` \    :
+:            : `app\:tabPadding`            :
+| Ripple     | `app:tabRippleColor`         |
