@@ -68,18 +68,34 @@ component, and the background color is transparent by default.
 
 The following attributes can be changed for Material Button:
 
--   `icon`: Add an icon to the start of the component.
--   `iconPadding`, `iconTint`, `iconTintMode`: Set the corresponding icon
-    properties.
--   `additionalPaddingForIconLeft`, `additionalPaddingForIconRight`: Padding to
-    add to the left/right side of the button when an icon is present.
--   `buttonBackgroundTint`: Change the background color.
--   `rippleColor`: Change the ripple/press color. Ripple opacity will be
-    determined by the Android framework when available. Otherwise, this color
-    will be overlaid on the button at a 50% opacity when button is pressed.
--   `strokeColor`: Add a solid stroke with the specified color.
--   `strokeWidth`: Set the width of the solid stroke.
--   `cornerRadius`: Set the radius of all four corners of the button.
+| Description                            | Relevant attributes                 |
+| -------------------------------------- | ----------------------------------- |
+| Button padding                         | `android:padding` \                 |
+:                                        : `android\:paddingLeft` \            :
+:                                        : `android\:paddingRight` \           :
+:                                        : `android\:paddingStart` \           :
+:                                        : `android\:paddingEnd` \             :
+:                                        : `android\:paddingTop` \             :
+:                                        : `android\:paddingBottom`            :
+| Button inset                           | `android:insetLeft` \               |
+:                                        : `android\:insetRight` \             :
+:                                        : `android\:insetTop` \               :
+:                                        : `android\:insetBottom`              :
+| Background color                       | `app:backgroundTint` \              |
+:                                        : `app\:backgroundTintMode`           :
+| Icon drawable                          | `app:icon`                          |
+| Padding between icon and button text   | `app:iconPadding`                   |
+| Icon color                             | `app:iconTint` \                    |
+:                                        : `app\:iconTintMode`                 :
+| Padding at the start of a button when  | `app:additionalPaddingStartForIcon` |
+: an icon is present                     :                                     :
+| Padding at the end of a button when an | `app:additionalPaddingEndForIcon`   |
+: icon is present                        :                                     :
+| Stroke                                 | `app:strokeColor` \                 |
+:                                        : `app\:strokeWidth`                  :
+| The radius of all four corners of the  | `app:cornerRadius`                  |
+: button                                 :                                     :
+| Ripple                                 | `app:rippleColor`                   |
 
 The following shows an example of setting `icon` and `iconPadding` attributes on
 a button:
