@@ -73,7 +73,7 @@ to help developers easily create beautiful apps.
     *   [View the theming](./docsite-theming.md)
     *   [Contributing](./contributing.md)
     *   [Class
-        documentation](https://developer.android.com/reference/com/google/android/material/package-summary.html)
+        documentation](https://developer.android.com/reference/com/google/android/material/classes)
     *   [MDC-Android on Stack
         Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
     *   [Android Developer’s
