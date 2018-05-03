@@ -9,11 +9,11 @@ path: /catalog/floating-action-button/
 
 # Floating Action Buttons
 
-`FloatingActionButton` displays the primary action in an application. It is
+A `FloatingActionButton` displays the primary action in an application. It is
 a round icon button that's elevated above other page content. **Floating action
 buttons** come in a default and mini size.
 
-Floating action buttons provide quick-access to important or common actions
+Floating action buttons provide quick access to important or common actions
 within an app. They have a variety of uses, including:
 
 -   Performing a common action, such as starting a new email in a mail app.
@@ -38,8 +38,8 @@ other UI elements on the screen.
 ## Usage
 
 The `FloatingActionButton` widget provides a complete implementation of Material
-Design's floating action button component. Example code of how to include the
-widget in your layout:
+Design's floating action button component. Here's how to include the widget in
+your layout:
 
 ```xml
 <android.support.design.widget.CoordinatorLayout
