@@ -62,7 +62,7 @@ import java.util.List;
  * app:layout_scrollFlags}.
  *
  * <p>This view depends heavily on being used as a direct child within a {@link CoordinatorLayout}.
- * If you use AppBarLayout within a different {@link ViewGroup}, most of it's functionality will not
+ * If you use AppBarLayout within a different {@link ViewGroup}, most of its functionality will not
  * work.
  *
  * <p>AppBarLayout also requires a separate scrolling sibling in order to know when to scroll. The
