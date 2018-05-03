@@ -64,6 +64,49 @@ color of the component, and the text color is white by default. For unelevated
 buttons, your theme's `colorAccent` provides the default text color of the
 component, and the background color is transparent by default.
 
+## Styles
+
+We provide several default styles for the `MaterialButton` component.
+
+The default style represents an elevated button with a colored background. This
+should be used for important, final actions that complete a flow, like 'Save' or
+'Confirm'. If no style attribute is specified for a `MaterialButton`, this is
+the style that will be used.
+
+```
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/material_button"
+    style="@style/Widget.MaterialComponents.Button"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/button_label_enabled"/>
+```
+
+The `UnelevatedButton` style represents an unelevated button with a colored
+background.
+
+```
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/material_unelevated_button"
+    style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/unelevated_button_label_enabled"/>
+```
+
+The `TextButton` style has a transparent background with colored text. Text
+buttons are used for low-priority actions, especially when presenting multiple
+options.
+
+```
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/material_text_button"
+    style="@style/Widget.MaterialComponents.Button.TextButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/text_button_label_enabled"/>
+```
+
 ## Attributes
 
 The following attributes can be changed for Material Button:
