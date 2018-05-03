@@ -23,6 +23,8 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IntDef;
+import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
@@ -37,6 +39,9 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
+
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Snackbars provide lightweight feedback about an operation. They show a brief message at the
@@ -54,6 +59,13 @@ import android.widget.TextView;
  * via {@link BaseTransientBottomBar#addCallback(BaseCallback)}.
  */
 public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
+
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
+  @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
+  @IntRange(from = 1)
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface Duration {}
 
   /**
    * Show the Snackbar indefinitely. This means that the Snackbar will be displayed from the time
