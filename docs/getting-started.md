@@ -66,7 +66,7 @@ latest component styles and theme-level attributes.
 Update your app theme to inherit from one of these themes, e.g.:
 
 ```xml
-<style name="MyAppTheme" parent="Theme.MaterialComponents">
+<style name="MyAppTheme" parent="Theme.MaterialComponents.Light">
     <!-- ... -->
 </style>
 ```

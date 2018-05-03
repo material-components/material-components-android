@@ -45,7 +45,7 @@ background tint rather than `colorSecondary`, all you would have to do is define
 your own button style that extends from a Material Design style and set the
 mapping yourself:
 
-```
+```xml
 <style name="Widget.MyApp.MyButton" parent="Widget.MaterialComponents.Button">
   <item name="backgroundTint">?attr/colorPrimary</item>
 </style>
@@ -55,8 +55,8 @@ Then, you can apply this style to individual buttons directly, or apply it to
 all of your buttons by setting the `materialButtonStyle` attribute in your
 theme:
 
-```
-<style name="MyAppTheme" parent="Theme.MaterialComponents">
+```xml
+<style name="MyAppTheme" parent="Theme.MaterialComponents.Light">
   ...
   <item name="materialButtonStyle">@style/Widget.MyApp.MyButton</item>
   ...
