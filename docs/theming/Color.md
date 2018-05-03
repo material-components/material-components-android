@@ -56,7 +56,7 @@ all of your buttons by setting the `materialButtonStyle` attribute in your
 theme:
 
 ```xml
-<style name="MyAppTheme" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
   ...
   <item name="materialButtonStyle">@style/Widget.MyApp.MyButton</item>
   ...

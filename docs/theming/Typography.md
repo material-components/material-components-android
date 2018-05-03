@@ -71,7 +71,7 @@ in your theme:
 ```
 
 ```xml
-<style name="MyAppTheme" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
   ...
   <item name="textAppearanceHeadline1">@style/TextAppearance.MyApp.Headline1</item>
   ...

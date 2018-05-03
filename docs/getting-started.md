@@ -66,7 +66,7 @@ latest component styles and theme-level attributes.
 Update your app theme to inherit from one of these themes, e.g.:
 
 ```xml
-<style name="MyAppTheme" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
     <!-- ... -->
 </style>
 ```
@@ -85,7 +85,7 @@ However, you must add the following new theme attributes to your existing app
 theme, or you will encounter `ThemeEnforcement` errors:
 
 ```xml
-<style name="MyAppTheme" parent="Theme.AppCompat">
+<style name="Theme.MyApp" parent="Theme.AppCompat">
 
   <!-- Original AppCompat attributes. -->
   <item name="colorPrimary">@color/my_app_primary_color</item>

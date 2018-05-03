@@ -50,7 +50,7 @@ corners in your app to cut corners. You'd be able to specify attributes like
 look something like this:
 
 ```xml
-<style name="MyAppTheme" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
   ...
   <item name="cornerRadiusPrimary">8dp</item>
   <item name="cornerStylePrimary">cut</item>
@@ -79,7 +79,7 @@ the desired theme attributes:
 And set the mapping to the custom component style in the theme:
 
 ```xml
-<style name="MyAppTheme" parent="Theme.MaterialComponents.Light">
+<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
   ...
   <item name="materialCardViewStyle">@style/Widget.MyApp.MyCard</item>
   ...
