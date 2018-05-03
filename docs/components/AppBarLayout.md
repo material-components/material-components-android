@@ -18,11 +18,10 @@ responsiveness to scrolling.
 
 ## Design & API Documentation
 
-*   [Material Design guidelines: App
-    Bars](https://material.io/guidelines/layout/structure.html#structure-app-bar)
+*   [Material Design guidelines: Top App Bar](https://material.io/go/design-app-bar-top)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Material Design guidelines: Scrolling
-    techniques](https://material.io/guidelines/patterns/scrolling-techniques.html)
+    techniques](https://material.io/go/design-app-bar-top#behavior)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/AppBarLayout.java)
@@ -73,6 +72,5 @@ element should be *Top App Bar*.
 A CollapsingToolbarLayout is often used as a wrapper around the Toolbar to
 provide additional UI features in relation to scrolling.
 
-*   [App bar](https://material.io/guidelines/layout/structure.html#structure-app-bar)
-*   [Toolbars](https://material.io/guidelines/components/toolbars.html#toolbars-usage)
+*   [Top App Bar](https://material.io/go/design-app-bar-top)
 *   [CollapsingToolbarLayout](CollapsingToolbarLayout.md)
