@@ -71,8 +71,8 @@ Update your app theme to inherit from one of these themes, e.g.:
 </style>
 ```
 
-For more information on how to set up theme-level color attributes for your
-app, take a look at our [Color Theming](theming/Color.md) guide.
+For more information on how to set up theme-level attributes for your app,
+take a look at our [Theming](theming.md) guide.
 
 #### **AppCompat Themes** {#app-compat-themes}
 
@@ -159,6 +159,7 @@ out our [contributing guidelines](contributing.md) as well as an overview of
 the [directory structure](directorystructure.md) before getting started.
 
 ## Useful Links
+- [Theming Guide](theming.md)
 - [Contributing](contributing.md)
 - [Building From Source](building-from-source.md)
 - [Catalog App](catalog-app.md)

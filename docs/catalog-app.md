@@ -21,6 +21,7 @@ Android Studio or run the following Gradle command:
 
 ## Useful Links
 - [Getting Started](getting-started.md)
+- [Theming Guide](theming.md)
 - [Contributing](contributing.md)
 - [Building From Source](building-from-source.md)
 - [Class
