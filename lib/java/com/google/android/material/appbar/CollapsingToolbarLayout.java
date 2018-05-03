@@ -79,7 +79,7 @@ import java.lang.annotation.RetentionPolicy;
  *
  * <h4>Status bar scrim</h4>
  *
- * A scrim which is show or hidden behind the status bar when the scroll position has hit a certain
+ * A scrim which is shown or hidden behind the status bar when the scroll position has hit a certain
  * threshold. You can change this via {@link #setStatusBarScrim(Drawable)}. This only works on
  * {@link android.os.Build.VERSION_CODES#LOLLIPOP LOLLIPOP} devices when we set to fit system
  * windows.
@@ -491,7 +491,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
     if (toolbar != null) {
       if (collapsingTitleEnabled && TextUtils.isEmpty(collapsingTextHelper.getText())) {
         // If we do not currently have a title, try and grab it from the Toolbar
-        collapsingTextHelper.setText(toolbar.getTitle());
+        setTitle(toolbar.getTitle());
       }
       if (toolbarDirectChild == null || toolbarDirectChild == this) {
         setMinimumHeight(getHeightWithMargins(toolbar));
@@ -530,6 +530,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
    */
   public void setTitle(@Nullable CharSequence title) {
     collapsingTextHelper.setText(title);
+    updateContentDescriptionFromTitle();
   }
 
   /**
@@ -555,6 +556,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   public void setTitleEnabled(boolean enabled) {
     if (enabled != collapsingTitleEnabled) {
       collapsingTitleEnabled = enabled;
+      updateContentDescriptionFromTitle();
       updateDummyView();
       requestLayout();
     }
@@ -1232,6 +1234,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
     final ViewOffsetHelper offsetHelper = getViewOffsetHelper(child);
     final LayoutParams lp = (LayoutParams) child.getLayoutParams();
     return getHeight() - offsetHelper.getLayoutTop() - child.getHeight() - lp.bottomMargin;
+  }
+
+  private void updateContentDescriptionFromTitle() {
+    // Set this layout's contentDescription to match the title if it's shown by CollapsingTextHelper
+    setContentDescription(getTitle());
   }
 
   private class OffsetUpdateListener implements AppBarLayout.OnOffsetChangedListener {
