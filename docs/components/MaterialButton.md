@@ -66,7 +66,9 @@ component, and the background color is transparent by default.
 
 ## Styles
 
-We provide several default styles for the `MaterialButton` component.
+We provide several styles for the `MaterialButton` component.
+
+### Filled, elevated button (default)
 
 The default style represents an elevated button with a colored background. This
 should be used for important, final actions that complete a flow, like 'Save' or
@@ -82,6 +84,8 @@ the style that will be used.
     android:text="@string/button_label_enabled"/>
 ```
 
+### Filled, unelevated button
+
 The `UnelevatedButton` style represents an unelevated button with a colored
 background.
 
@@ -93,6 +97,8 @@ background.
     android:layout_height="wrap_content"
     android:text="@string/unelevated_button_label_enabled"/>
 ```
+
+### Text button
 
 The `TextButton` style has a transparent background with colored text. Text
 buttons are used for low-priority actions, especially when presenting multiple
