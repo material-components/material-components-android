@@ -42,7 +42,7 @@ with up to 5 navigation targets (`BottomNavigationView` does not support more th
 resource.
 4. Listen for selection events using `setOnNavigationItemSelectedListener(...)`.
 
-A typical layout file would look like this:
+A typical layout file would look something like this:
 
 ```xml
 <FrameLayout
@@ -73,7 +73,8 @@ The `app:itemIconTint` and `app:itemTextColor` take a
 instead of a simple color. This means that you can write a `selector` for these
 colors that responds to the items' state changes.
 
-For example, you could have a `bottom_navigation_colors.xml` that contains:
+For example, you could have a `bottom_navigation_colors.xml` `ColorStateList`
+that contains:
 
 ```xml
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
@@ -99,9 +100,48 @@ And you would use it like this on your `BottomNavigationView`:
     app:menu="@menu/bottom_navigation_menu" />
 ```
 
+#### Material Styles
+
+Using `BottomNavigationView` with an updated Material theme
+(`Theme.MaterialComponents`) will provide the correct updated Material styles to
+your `BottomNavigationView`s by default. If you need to use an updated
+`BottomNavigationView` and your application theme does not inherit from an
+updated Material theme, or if you'd like to use a variant style, you can apply
+one of the updated Material styles directly to your widget in XML:
+
+#### Updated Material Style (Default)
+
+The default Material `BottomNavigationView` style consists of updated colors,
+text sizing, and behavior. The default BottomNavigationView has white background
+and icons and text colored with `colorPrimary`.
+
+```
+style="@style/Widget.MaterialComponents.BottomNavigationView"
+```
+
+##### Colored Material Style
+
+This style inherits from the default style but sets the colors to different
+mappings. Use the colored style to get a bottom navigation bar with a
+`colorPrimary` background and shades of white for the icon and text colors.
+
+```
+style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+```
+
+### Legacy Style
+
+You can set this style on your `BottomNavigationView` if you'd like a bottom
+navigation bar with the old behavior. However, we recommend you use the updated
+Material style where possible.
+
+```
+style="@style/Widget.Design.BottomNavigationView"
+```
+
 ## Related Concepts
 
-There are other navigation patterns you should be aware of
+There are other navigation patterns you should be aware of:
 
 -   [Hierarchical navigation](https://developer.android.com/training/implementing-navigation/index.html).
     *See also [Navigation with Back and
