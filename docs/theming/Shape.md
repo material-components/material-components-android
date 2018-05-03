@@ -19,7 +19,7 @@ custom shapes while taking shadows, elevation, scale and color into account.
 ## Design & API Documentation
 
 -   [Material Design guidelines:
-    Shape](https://material.io/go/design-shape-theming/)
+    Shape](https://material.io/go/design-shape)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 
 ## Usage
