@@ -37,7 +37,7 @@ to help developers easily create beautiful apps.
 
     ```groovy
     dependencies {
-      compile 'com.google.android.material:material:[Library version code]'
+      compile 'com.google.android.material:material:1.0.0-alpha1'
     }
     ```
 
