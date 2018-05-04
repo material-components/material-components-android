@@ -176,6 +176,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Nullable private Drawable closeIcon;
   @Nullable private ColorStateList closeIconTint;
   private float closeIconSize;
+  @Nullable private CharSequence closeIconContentDescription;
 
   // Checkable
   private boolean checkable;
@@ -1502,6 +1503,20 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         onSizeChange();
       }
     }
+  }
+
+  public void setCloseIconContentDescription(@Nullable CharSequence closeIconContentDescription) {
+    if (this.closeIconContentDescription != closeIconContentDescription) {
+      this.closeIconContentDescription =
+          BidiFormatter.getInstance().unicodeWrap(closeIconContentDescription);
+
+      invalidateSelf();
+    }
+  }
+
+  @Nullable
+  public CharSequence getCloseIconContentDescription() {
+    return closeIconContentDescription;
   }
 
   public boolean isCheckable() {

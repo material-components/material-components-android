@@ -635,13 +635,18 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     protected void onPopulateNodeForVirtualView(
         int virtualViewId, AccessibilityNodeInfoCompat node) {
       if (hasCloseIcon()) {
-        CharSequence chipText = getChipText();
-        node.setContentDescription(
-            getContext()
-                .getString(
-                    R.string.mtrl_chip_close_icon_content_description,
-                    !TextUtils.isEmpty(chipText) ? chipText : "")
-                .trim());
+        CharSequence closeIconContentDescription = getCloseIconContentDescription();
+        if (closeIconContentDescription != null) {
+          node.setContentDescription(closeIconContentDescription);
+        } else {
+          CharSequence chipText = getChipText();
+          node.setContentDescription(
+              getContext()
+                  .getString(
+                      R.string.mtrl_chip_close_icon_content_description,
+                      !TextUtils.isEmpty(chipText) ? chipText : "")
+                  .trim());
+        }
         node.setBoundsInParent(getCloseIconTouchBoundsInt());
         node.addAction(AccessibilityActionCompat.ACTION_CLICK);
         node.setEnabled(isEnabled());
@@ -917,6 +922,17 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconSize(closeIconSize);
     }
+  }
+
+  public void setCloseIconContentDescription(@Nullable CharSequence closeIconContentDescription) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconContentDescription(closeIconContentDescription);
+    }
+  }
+
+  @Nullable
+  public CharSequence getCloseIconContentDescription() {
+    return chipDrawable != null ? chipDrawable.getCloseIconContentDescription() : null;
   }
 
   public boolean isCheckable() {
