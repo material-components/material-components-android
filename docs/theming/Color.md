@@ -84,29 +84,20 @@ Design palettes.
 
 The full list of new attribute names will be as follows:
 
-| Attribute name          | Description                                       |
-| ----------------------- | ------------------------------------------------- |
-| `colorPrimary`          | Displayed most frequently across your app.        |
-| `colorPrimaryVariant`   | A tonal variation of primary color.               |
-| `colorSecondary`        | Accents select parts of your UI. \                |
-:                         : _If not provided, use primary._                   :
-| `colorSecondaryVariant` | A tonal variation of secondary color.             |
-| `colorBackground`       | The underlying color of an app’s content. \       |
-:                         : _Typically the background color of scrollable     :
-:                         : content._                                         :
-| `colorError`            | The color used to indicate error status.          |
-| `colorSurface`          | The color of surfaces such as cards, sheets,      |
-:                         : menus.                                            :
-| `colorOnPrimary`        | A color that passes accessibility guidelines for  |
-:                         : text/iconography when drawn on top of primary.    :
-| `colorOnSecondary`      | A color that passes accessibility guidelines for  |
-:                         : text/iconography when drawn on top of secondary.  :
-| `colorOnBackground`     | A color that passes accessibility guidelines for  |
-:                         : text/iconography when drawn on top of background. :
-| `colorOnError`          | A color that passes accessibility guidelines for  |
-:                         : text/iconography when drawn on top of error.      :
-| `colorOnSurface`        | A color that passes accessibility guidelines for  |
-:                         : text/iconography when drawn on top of surface.    :
+Attribute name            | Description
+------------------------- | --------------------
+`colorPrimary`            | Displayed most frequently across your app.
+`colorPrimaryVariant`     | A tonal variation of primary color.
+`colorSecondary`          | Accents select parts of your UI.<br/>_If not provided, use primary._
+`colorSecondaryVariant`   | A tonal variation of secondary color.
+`colorBackground`         | The underlying color of an app’s content.<br/>_Typically the background color of scrollable content._
+`colorError`              | The color used to indicate error status.
+`colorSurface`            | The color of surfaces such as cards, sheets, menus.
+`colorOnPrimary`          | A color that passes accessibility guidelines for text/iconography when drawn on top of primary.
+`colorOnSecondary`        | A color that passes accessibility guidelines for text/iconography when drawn on top of secondary.
+`colorOnBackground`       | A color that passes accessibility guidelines for text/iconography when drawn on top of background.
+`colorOnError`            | A color that passes accessibility guidelines for text/iconography when drawn on top of error.
+`colorOnSurface`          | A color that passes accessibility guidelines for text/iconography when drawn on top of surface.
 
 Surface, background, and error colors typically do not represent brand. Surface
 colors typically map to components such as cards, sheets, and menus. The

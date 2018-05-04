@@ -132,28 +132,14 @@ based on `?attr/colorAccent`.
 
 ### Attributes
 
-| Feature    | Relevant attributes          |
-| ---------- | ---------------------------- |
-| Size       | `app:tabMinWidth` \          |
-:            : `app\:tabMaxWidth`           :
-| Scroll     | `app:tabMode`                |
-| Centered   | `app:tabGravity`             |
-| Background | `app:tabBackground`          |
-| Icon       | `app:tabIconTint` \          |
-:            : `app\:tabIconTintMode`       :
-| Label      | `app:tabInlineLabel` \       |
-:            : `app\:tabTextAppearance` \   :
-:            : `app\:tabTextColor` \        :
-:            : `app\:tabSelectedTextColor`  :
-| Indicator  | `app:tabIndicatorColor` \    |
-:            : `app\:tabIndicatorHeight` \  :
-:            : `app\:tabIndicator` \        :
-:            : `app\:tabIndicatorGravity` \ :
-:            : `app\:tabIndicatorFullWidth` :
-| Position   | `app:tabContentStart` \      |
-:            : `app\:tabPaddingStart` \     :
-:            : `app\:tabPaddingTop` \       :
-:            : `app\:tabPaddingEnd` \       :
-:            : `app\:tabPaddingBottom` \    :
-:            : `app\:tabPadding`            :
-| Ripple     | `app:tabRippleColor`         |
+Feature    | Relevant attributes
+---------- | -------------------
+Size       | `app:tabMinWidth`<br/>`app:tabMaxWidth`
+Scroll     | `app:tabMode`
+Centered   | `app:tabGravity`
+Background | `app:tabBackground`
+Icon       | `app:tabIconTint`<br/>`app:tabIconTintMode`
+Label      | `app:tabInlineLabel`<br/>`app:tabTextAppearance`<br/>`app:tabTextColor`<br/>`app:tabSelectedTextColor`
+Indicator  | `app:tabIndicatorColor`<br/>`app:tabIndicatorHeight`<br/>`app:tabIndicator`<br/>`app:tabIndicatorGravity`<br/>`app:tabIndicatorFullWidth`
+Position   | `app:tabContentStart`<br/>`app:tabPaddingStart`<br/>`app:tabPaddingTop`<br/>`app:tabPaddingEnd`<br/>`app:tabPaddingBottom`<br/>`app:tabPadding`
+Ripple     | `app:tabRippleColor`
