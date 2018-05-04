@@ -660,7 +660,14 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     protected void onPopulateNodeForHost(AccessibilityNodeInfoCompat node) {
       node.setCheckable(chipDrawable != null && chipDrawable.isCheckable());
       node.setClassName(Chip.class.getName());
-      node.setText(chipDrawable != null ? chipDrawable.getChipText() : "");
+      CharSequence chipText = chipDrawable != null ? chipDrawable.getChipText() : "";
+      if (VERSION.SDK_INT >= VERSION_CODES.M) {
+        node.setText(chipText);
+      } else {
+        // Before M, TalkBack doesn't get the text from setText, so we have to set the content
+        // description instead.
+        node.setContentDescription(chipText);
+      }
     }
 
     @Override
