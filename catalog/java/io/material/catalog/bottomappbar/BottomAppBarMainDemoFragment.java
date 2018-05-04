@@ -140,7 +140,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
 
     bar.setNavigationOnClickListener(
         v -> bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED));
-    bar.setNavigationIcon(R.drawable.ic_menu_24);
+    bar.setNavigationIcon(R.drawable.ic_drawer_menu_24px);
     bar.replaceMenu(R.menu.demo_primary);
   }
 }

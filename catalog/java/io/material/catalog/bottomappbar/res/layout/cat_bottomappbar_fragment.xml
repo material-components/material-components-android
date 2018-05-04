@@ -29,7 +29,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
-      app:navigationIcon="@drawable/ic_menu_24"
+      app:navigationIcon="@drawable/ic_drawer_menu_24px"
       app:navigationContentDescription="@string/cat_bottomappbar_navigation_button_content_description"/>
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton

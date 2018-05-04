@@ -18,19 +18,19 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
   <item
-      android:icon="@drawable/ic_search_24"
+      android:icon="@drawable/ic_search_24px"
       android:title="@string/cat_bottomappbar_search"
       app:showAsAction="ifRoom"/>
   <item
-      android:icon="@drawable/ic_3d_rotation_24"
+      android:icon="@drawable/ic_3d_rotation_24px"
       android:title="@string/cat_bottomappbar_3d"
       app:showAsAction="ifRoom"/>
   <item
-      android:icon="@drawable/ic_accelerator_24"
+      android:icon="@drawable/ic_accelerator_24px"
       android:title="@string/cat_bottomappbar_accelerator"
       app:showAsAction="ifRoom"/>
   <item
-      android:icon="@drawable/ic_dashboard_24"
+      android:icon="@drawable/ic_dashboard_24px"
       android:title="@string/cat_bottomappbar_dashboard"
       app:showAsAction="ifRoom"/>
 </menu>
