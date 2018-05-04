@@ -158,5 +158,31 @@
         android:enabled="false"
         android:text="@string/cat_button_label_disabled"
         app:icon="@drawable/ic_dialogs_24px"/>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_outlined_btn_text"
+        android:textColor="?attr/colorSecondaryDark"
+        android:textSize="16sp"
+        android:textStyle="bold" />
+
+    <Space/>
+
+    <Button
+        android:id="@+id/material_outlined_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:text="@string/cat_button_label_enabled" />
+
+    <Button
+        android:id="@+id/disabled_material_outlined_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:enabled="false"
+        android:text="@string/cat_button_label_disabled" />
   </GridLayout>
 </ScrollView>

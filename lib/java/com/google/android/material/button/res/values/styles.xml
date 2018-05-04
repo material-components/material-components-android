@@ -52,6 +52,13 @@
     <item name="rippleColor">@color/mtrl_btn_text_btn_ripple_color</item>
   </style>
 
+  <style name="Widget.MaterialComponents.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="android:paddingLeft">@dimen/mtrl_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/mtrl_btn_padding_right</item>
+    <item name="strokeColor">@color/mtrl_btn_stroke_color_selector</item>
+    <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
+  </style>
+
   <style name="Widget.MaterialComponents.Button.TextButton.Dialog">
     <item name="android:minWidth">@dimen/mtrl_btn_dialog_btn_min_width</item>
   </style>
