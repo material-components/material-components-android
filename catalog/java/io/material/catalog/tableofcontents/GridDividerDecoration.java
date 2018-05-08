@@ -22,6 +22,7 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Px;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.ItemDecoration;
@@ -77,6 +78,8 @@ public class GridDividerDecoration extends RecyclerView.ItemDecoration {
 
   private void drawVertical(Canvas canvas, RecyclerView parent) {
     final int childCount = parent.getChildCount();
+    final boolean isRTL =
+        ViewCompat.getLayoutDirection(parent) == ViewCompat.LAYOUT_DIRECTION_RTL;
     for (int i = 0; i < childCount; i++) {
       final View child = parent.getChildAt(i);
 
@@ -85,7 +88,7 @@ public class GridDividerDecoration extends RecyclerView.ItemDecoration {
       }
 
       parent.getDecoratedBoundsWithMargins(child, bounds);
-      final int x = bounds.right;
+      final int x = isRTL ? bounds.left : bounds.right;
       final int startY = bounds.top;
       final int stopY = bounds.bottom;
       canvas.drawLine(x, startY, x, stopY, dividerPaint);
