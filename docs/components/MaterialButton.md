@@ -21,14 +21,13 @@ different actions. These levels of emphasis include:
 
 ## Design & API Documentation
 
--   [Material Design guidelines:
-    Buttons](https://material.io/go/design-buttons)
+-   [Material Design guidelines: Buttons](https://material.io/go/design-buttons)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/button/MaterialButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/button/MaterialButton.html)
+    overview](https://developer.android.com/reference/com/google/android/material/button/MaterialButton)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage

@@ -13,7 +13,7 @@ path: /catalog/bottom-sheet-behavior/
 <!--{: .article__asset.article__asset--screenshot }-->
 
 `BottomSheetBehavior` is applied to a child of
-[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
+[CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)
 to make that child a **persistent bottom sheet**.
 
 Persistent bottom sheets are views that come up from the bottom of the
@@ -32,7 +32,7 @@ Note: If you want to use Bottom Sheets that are modal (dialogs), use
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomsheet/BottomSheetBehavior.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior.html)
+    overview](https://developer.android.com/reference/com/google/android/material/bottomsheet/BottomSheetBehavior)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage

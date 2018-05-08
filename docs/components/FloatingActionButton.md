@@ -32,7 +32,7 @@ other UI elements on the screen.
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton.html)
+    overview](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -147,4 +147,4 @@ while the hide animation shrinks the widget and fades it out.
 
 ## Related Concepts
 
--   [CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
+-   [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)

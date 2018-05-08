@@ -28,7 +28,7 @@ navigate to.
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView.html)
+    overview](https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage

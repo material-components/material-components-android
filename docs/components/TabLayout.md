@@ -18,19 +18,19 @@ interactions for a group of tabs including:
 - animations,
 - and alignment.
 
-The Android Developers site provides [detailed documentation](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout.html)
+The Android Developers site provides [detailed
+documentation](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
 on implementing `TabLayout`.
 
 ## Design & API Documentation
 
--   [Material Design guidelines:
-    Tabs](https://material.io/go/design-tabs)
+-   [Material Design guidelines: Tabs](https://material.io/go/design-tabs)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout.html)
+    overview](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -62,10 +62,10 @@ tabs and lets the user quickly change between content views. These content views
 are often held in a
 [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html).
 
-Use [setupWithViewPager(ViewPager)](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout.html#setupWithViewPager(android.support.v4.view.ViewPager))
-to link a `TabLayout` with a ViewPager. The
-individual tabs in the `TabLayout` will be automatically populated with the page
-titles from the PagerAdapter.
+Use
+[setupWithViewPager(ViewPager)](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager(ViewPager))
+to link a `TabLayout` with a ViewPager. The individual tabs in the `TabLayout`
+will be automatically populated with the page titles from the PagerAdapter.
 
 ```java
 ViewPager pager;

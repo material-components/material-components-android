@@ -13,9 +13,8 @@ path: /catalog/text-input-layout/
 <!--{: .article__asset.article__asset--screenshot }-->
 
 `TextInputLayout` provides an implementation for [Material text
-fields](https://material.io/go/design-text-fields). Used in
-conjunction with a
-[`TextInputEditText`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputEditText.html),
+fields](https://material.io/go/design-text-fields). Used in conjunction with a
+[`TextInputEditText`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputEditText),
 `TextInputLayout` makes it easy to include Material **text fields** in your
 layouts.
 
@@ -29,7 +28,7 @@ layouts.
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html)
+    overview](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -137,16 +136,16 @@ your text field:
 
 Text field element                     | Relevant attributes/methods
 :------------------------------------- | :--------------------------
-Label (also called a “Floating Label”) | [`android:hint`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_android_hint)
-                                       | [`app:hintEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_hintEnabled)
-Error message                          | [`app:errorEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_errorEnabled)
-                                       | [`#setError(CharSequence)`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#setError\(java.lang.CharSequence\))
-Helper text                            | [`app:helperTextEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_helperTextEnabled)
-                                       | [`app:helperText`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_helperText)
-Password redaction                     | [`app:passwordToggleEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_passwordToggleEnabled)
-                                       | [`app:passwordToggleDrawable`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_passwordToggleDrawable)
-Character counter                      | [`app:counterEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_counterEnabled)
-                                       | [`app:counterMaxLength`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout.html#attr_TextInputLayout_counterMaxLength)
+Label (also called a “Floating Label”) | [`android:hint`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_android_hint)
+                                       | [`app:hintEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_hintEnabled)
+Error message                          | [`app:errorEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_errorEnabled)
+                                       | [`#setError(CharSequence)`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#setError(java.lang.CharSequence))
+Helper text                            | [`app:helperTextEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_helperTextEnabled)
+                                       | [`app:helperText`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_helperText)
+Password redaction                     | [`app:passwordToggleEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_passwordToggleEnabled)
+                                       | [`app:passwordToggleDrawable`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_passwordToggleDrawable)
+Character counter                      | [`app:counterEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_counterEnabled)
+                                       | [`app:counterMaxLength`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_counterMaxLength)
 
 ## Notes about setting the hint
 

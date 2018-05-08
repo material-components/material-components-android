@@ -18,7 +18,8 @@ responsiveness to scrolling.
 
 ## Design & API Documentation
 
-*   [Material Design guidelines: Top App Bar](https://material.io/go/design-app-bar-top)
+*   [Material Design guidelines: Top App
+    Bar](https://material.io/go/design-app-bar-top)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Material Design guidelines: Scrolling
     techniques](https://material.io/go/design-app-bar-top#behavior)
@@ -28,11 +29,11 @@ responsiveness to scrolling.
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 *   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.html)
+    overview](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 As a container for Toolbars, and other views, it works with
-[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
+[CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)
 in order to respond to scrolling techniques. `AppBarLayout` depends heavily on
 being used as a direct child of the CoordinatorLayout and reacts to a sibling
 that supports scrolling (e.g.
@@ -44,12 +45,12 @@ respond to scrolling. These are interpreted by the `AppBarLayout.LayoutParams`.
 
 **Available flags are:**
 
-*   [enterAlways](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams.html#SCROLL_FLAG_ENTER_ALWAYS)
-*   [enterAlwaysCollapsed](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams.html#SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED)
-*   [exitUntilCollapsed](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams.html#SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)
-*   [scroll](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SCROLL)
-*   [snap](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP)
-*   [snapMargins](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP_MARGINS)
+*   [enterAlways](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_ENTER_ALWAYS)
+*   [enterAlwaysCollapsed](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED)
+*   [exitUntilCollapsed](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)
+*   [scroll](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_SCROLL)
+*   [snap](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_SNAP)
+*   [snapMargins](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_SNAP_MARGINS)
 
 Views using the scroll flag should be declared and visually positioned before
 other views in the `AppBarLayout`. This ensures that they are able to exit at the

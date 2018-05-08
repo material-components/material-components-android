@@ -33,8 +33,8 @@ include functionality for card behavior in groups of cards.
 -   [Class
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/MaterialCardView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
--   [Superclass
-    overview](https://developer.android.com/reference/android/support/v7/widget/CardView.html)
+-   [Class
+    overview](https://developer.android.com/reference/com/google/android/material/card/MaterialCardView)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage

@@ -28,7 +28,7 @@ side, used to display in-app navigation links.
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/NavigationView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/navigation/NavigationView.html)
+    overview](https://developer.android.com/reference/com/google/android/material/navigation/NavigationView)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage

@@ -29,7 +29,7 @@ action that was just taken, or retrying an action that had failed.
     definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/snackbar/Snackbar.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar.html)
+    overview](https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -45,12 +45,12 @@ could be found.
 
 **Available duration presets are:**
 
-- [LENGTH_INDEFINITE](https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar.html#LENGTH_INDEFINITE)
-- [LENGTH_LONG](https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar.html#LENGTH_LONG)
-- [LENGTH_SHORT](https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar.html#LENGTH_SHORT)
+-   [LENGTH_INDEFINITE](https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar#LENGTH_INDEFINITE)
+-   [LENGTH_LONG](https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar#LENGTH_LONG)
+-   [LENGTH_SHORT](https://developer.android.com/reference/com/google/android/material/snackbar/Snackbar#LENGTH_SHORT)
 
 **NOTE:** Snackbars work best if they are displayed inside of a
-[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html).
+[CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout).
 `CoordinatorLayout` allows the snackbar to enable behavior like
 swipe-to-dismiss, as well as automatically moving widgets like
 [FloatingActionButton](FloatingActionButton.md).
@@ -99,7 +99,7 @@ Action text color can be customized through the `setActionTextColor` methods
 
 Temporary bottom bars with other sorts of content layouts can be implemented by
 subclassing
-[BaseTransientBottomBar](https://developer.android.com/reference/com/google/android/material/snackbar/BaseTransientBottomBar.html).
+[BaseTransientBottomBar](https://developer.android.com/reference/com/google/android/material/snackbar/BaseTransientBottomBar).
 
 Android also provides a
 [Toast](https://developer.android.com/reference/android/widget/Toast.html) class
