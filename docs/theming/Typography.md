@@ -77,3 +77,11 @@ in your theme:
   ...
 </style>
 ```
+
+## Downloadable Fonts
+
+Android O and Android Support Library 26 add support for [Downloadable
+Fonts](https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-fonts.html).
+This allows you to easily use the entire Google Fonts Open Source collection
+without bundling a font with your apk. Find more information at
+https://developers.google.com/fonts/docs/android.
