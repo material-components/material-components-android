@@ -15,70 +15,125 @@
   limitations under the License.
   -->
 
-<GridLayout
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+<RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    android:columnCount="2"
+    android:layout_margin="16dp"
     tools:showIn="@layout/cat_chip_fragment">
 
   <TextView
+      android:id="@+id/cat_chip_entry"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:layout_alignEnd="@+id/cat_chip_choice"
+      android:layout_alignRight="@id/cat_chip_choice"
       android:layout_gravity="center_vertical|end"
-      android:text="@string/cat_chip_entry_label"/>
+      android:text="@string/cat_chip_entry_label"
+      android:textAlignment="viewEnd"/>
 
   <com.google.android.material.chip.Chip
+      android:id="@+id/cat_chip_entry_chip"
       style="@style/Widget.MaterialComponents.Chip.Entry"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
+      android:layout_alignBaseline="@id/cat_chip_entry"
       android:layout_gravity="center_vertical|start"
+      android:layout_toEndOf="@id/cat_chip_entry"
+      android:layout_toRightOf="@id/cat_chip_entry"
+      android:ellipsize="end"
       app:chipIcon="@drawable/ic_placeholder_circle_24"
       app:chipText="@string/cat_chip_text"/>
 
   <TextView
+      android:id="@+id/cat_chip_filter"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:layout_alignEnd="@id/cat_chip_choice"
+      android:layout_alignRight="@id/cat_chip_choice"
+      android:layout_below="@id/cat_chip_entry_chip"
       android:layout_gravity="center_vertical|end"
-      android:text="@string/cat_chip_filter_label"/>
+      android:text="@string/cat_chip_filter_label"
+      android:textAlignment="viewEnd"/>
 
   <com.google.android.material.chip.Chip
+      android:id="@+id/cat_chip_filter_chip"
       style="@style/Widget.MaterialComponents.Chip.Filter"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
+      android:layout_alignBaseline="@id/cat_chip_filter"
+      android:layout_below="@id/cat_chip_entry_chip"
       android:layout_gravity="center_vertical|start"
+      android:layout_toEndOf="@id/cat_chip_filter"
+      android:layout_toRightOf="@id/cat_chip_filter"
+      android:ellipsize="end"
       app:chipText="@string/cat_chip_text"/>
 
   <TextView
+      android:id="@+id/cat_chip_choice"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:layout_below="@id/cat_chip_filter_chip"
       android:layout_gravity="center_vertical|end"
-      android:text="@string/cat_chip_choice_label"/>
+      android:text="@string/cat_chip_choice_label"
+      android:textAlignment="viewEnd"/>
 
   <com.google.android.material.chip.Chip
+      android:id="@+id/cat_chip_choice_chip"
       style="@style/Widget.MaterialComponents.Chip.Choice"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
+      android:layout_alignBaseline="@id/cat_chip_choice"
+      android:layout_below="@id/cat_chip_filter_chip"
       android:layout_gravity="center_vertical|start"
+      android:layout_toEndOf="@id/cat_chip_choice"
+      android:layout_toRightOf="@id/cat_chip_choice"
+      android:ellipsize="end"
       app:chipText="@string/cat_chip_text"/>
 
   <TextView
+      android:id="@+id/cat_chip_action"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:layout_alignEnd="@id/cat_chip_choice"
+      android:layout_alignParentLeft="true"
+      android:layout_alignParentStart="true"
+      android:layout_alignRight="@id/cat_chip_choice"
+      android:layout_below="@id/cat_chip_choice_chip"
       android:layout_gravity="center_vertical|end"
-      android:text="@string/cat_chip_action_label"/>
+      android:text="@string/cat_chip_action_label"
+      android:textAlignment="viewEnd"/>
 
   <com.google.android.material.chip.Chip
+      android:id="@+id/cat_chip_action_chip"
       style="@style/Widget.MaterialComponents.Chip.Action"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
+      android:layout_alignBaseline="@id/cat_chip_action"
+      android:layout_below="@id/cat_chip_choice"
       android:layout_gravity="center_vertical|start"
+      android:layout_toEndOf="@id/cat_chip_action"
+      android:layout_toRightOf="@id/cat_chip_action"
+      android:ellipsize="end"
       app:chipIcon="@drawable/ic_placeholder_circle_24"
       app:chipText="@string/cat_chip_text"/>
-</GridLayout>
+
+  <Switch
+      android:id="@+id/cat_chip_text_length_switch"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_below="@id/cat_chip_action_chip"
+      android:layout_marginTop="16dp"
+      android:layout_centerHorizontal="true"
+      android:text="@string/cat_chip_long_text_switch_label"/>
+</RelativeLayout>

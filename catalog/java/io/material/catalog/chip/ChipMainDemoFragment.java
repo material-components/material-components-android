@@ -27,6 +27,7 @@ import com.google.android.material.snackbar.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Switch;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -51,6 +52,15 @@ public class ChipMainDemoFragment extends DemoFragment {
             Snackbar.make(view, "Clicked close icon.", BaseTransientBottomBar.LENGTH_SHORT).show();
           });
     }
+    Switch longTextSwitch = view.findViewById(R.id.cat_chip_text_length_switch);
+    longTextSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          for (Chip chip : chips) {
+            CharSequence updatedText =
+                getText(isChecked ? R.string.cat_chip_text_to_truncate : R.string.cat_chip_text);
+            chip.setChipText(updatedText);
+          }
+        });
 
     return view;
   }

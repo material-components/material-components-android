@@ -67,6 +67,7 @@ import android.support.v4.text.BidiFormatter;
 import android.support.v7.content.res.AppCompatResources;
 import android.text.TextPaint;
 import android.text.TextUtils;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Xml;
 import android.view.View;
@@ -101,6 +102,8 @@ import org.xmlpull.v1.XmlPullParserException;
  *       use @null to display no icon. Usually on the left.
  *   <li>{@link R.attr#closeIcon app:closeIcon} - Sets a custom icon that the user can click to
  *       close, or use @null to display no icon. Usually on the right.
+ *   <li>{@link android.R.attr#ellipsize} - Currently does not support {@link
+ *       android.text.TextUtils.TruncateAt#MARQUEE}
  * </ul>
  *
  * <p>When used in this stand-alone mode, the host view must explicitly manage the ChipDrawable's
@@ -245,6 +248,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private WeakReference<Delegate> delegate = new WeakReference<>(null);
   private boolean chipTextWidthDirty = true;
   private float chipTextWidth;
+  private TruncateAt truncateAt;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -332,6 +336,24 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         MaterialResources.getTextAppearance(
             context, a, R.styleable.ChipDrawable_android_textAppearance));
 
+    int ellipsize = a.getInt(R.styleable.ChipDrawable_android_ellipsize, 0);
+    // Convert to supported TextUtils.TruncateAt values
+    switch (ellipsize) {
+      case 1:
+        setEllipsize(TextUtils.TruncateAt.START);
+        break;
+      case 2:
+        setEllipsize(TextUtils.TruncateAt.MIDDLE);
+        break;
+      case 3:
+        setEllipsize(TextUtils.TruncateAt.END);
+        break;
+      case 4: // fall through
+        // TODO: Support TextUtils.TruncateAt.MARQUEE
+      default: // fall out
+        break;
+    }
+
     setChipIconEnabled(a.getBoolean(R.styleable.ChipDrawable_chipIconEnabled, false));
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_chipIcon));
     setChipIconSize(a.getDimension(R.styleable.ChipDrawable_chipIconSize, 0f));
@@ -409,14 +431,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   /** Returns the width at which the chip would like to be laid out. */
   @Override
   public int getIntrinsicWidth() {
-    return (int)
+    return Math.round(
         (chipStartPadding
             + calculateChipIconWidth()
             + textStartPadding
             + getChipTextWidth()
             + textEndPadding
             + calculateCloseIconWidth()
-            + chipEndPadding);
+            + chipEndPadding));
   }
 
   /** Returns the height at which the chip would like to be laid out. */
@@ -605,13 +627,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       }
       textPaint.setTextAlign(align);
 
-      boolean clip = getChipTextWidth() > rectF.width();
+      boolean clip = Math.round(getChipTextWidth()) > Math.round(rectF.width());
       int saveCount = 0;
       if (clip) {
         saveCount = canvas.save();
         canvas.clipRect(rectF);
       }
-      canvas.drawText(chipText, 0, chipText.length(), pointF.x, pointF.y, textPaint);
+
+      CharSequence finalChipText = chipText;
+      if (clip && truncateAt != null) {
+        finalChipText = TextUtils.ellipsize(chipText, textPaint, rectF.width(), truncateAt);
+      }
+      canvas.drawText(finalChipText, 0, finalChipText.length(), pointF.x, pointF.y, textPaint);
       if (clip) {
         canvas.restoreToCount(saveCount);
       }
@@ -1331,6 +1358,14 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       onStateChange(getState());
       onSizeChange();
     }
+  }
+
+  public TruncateAt getEllipsize() {
+    return truncateAt;
+  }
+
+  public void setEllipsize(@Nullable TruncateAt truncateAt) {
+    this.truncateAt = truncateAt;
   }
 
   public boolean isChipIconEnabled() {
