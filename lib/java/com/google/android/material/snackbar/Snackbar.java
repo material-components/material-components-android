@@ -164,7 +164,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @param view The view to find a parent from.
    * @param text The text to show. Can be formatted text.
    * @param duration How long to display the message. Either {@link #LENGTH_SHORT} or {@link
-   *     #LENGTH_LONG}
+   *     #LENGTH_LONG}, or a custom duration in milliseconds.
    */
   @NonNull
   public static Snackbar make(
@@ -205,7 +205,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @param view The view to find a parent from.
    * @param resId The resource id of the string resource to use. Can be formatted text.
    * @param duration How long to display the message. Either {@link #LENGTH_SHORT} or {@link
-   *     #LENGTH_LONG}
+   *     #LENGTH_LONG}, or a custom duration in milliseconds.
    */
   @NonNull
   public static Snackbar make(@NonNull View view, @StringRes int resId, @Duration int duration) {
