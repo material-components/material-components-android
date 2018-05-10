@@ -31,9 +31,9 @@ import android.support.annotation.StyleRes;
 import android.support.annotation.StyleableRes;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.app.AlertDialog;
+import android.support.v7.widget.AppCompatRadioButton;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import dagger.android.support.DaggerAppCompatDialogFragment;
 import javax.inject.Inject;
@@ -126,7 +126,7 @@ public class ThemeSwitcherDialogFragment extends DaggerAppCompatDialogFragment {
       @StyleRes int paletteThemeOverlay = colorsArray.getResourceId(i, 0);
       ColorPalette palette = new ColorPalette(paletteThemeOverlay, themeOverlayAttrs);
 
-      RadioButton button = new RadioButton(getContext());
+      AppCompatRadioButton button = new AppCompatRadioButton(getContext());
       CompoundButtonCompat.setButtonTintList(
           button, ColorStateList.valueOf(convertToDisplay(palette.main)));
       button.setTag(palette);
