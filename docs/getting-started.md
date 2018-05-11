@@ -19,10 +19,8 @@ To use it:
   ```groovy
     allprojects {
       repositories {
+        google()
         jcenter()
-        maven {
-          url "https://maven.google.com"
-        }
       }
     }
   ```
@@ -31,7 +29,7 @@ To use it:
   ```groovy
     dependencies {
       // ...
-      compile 'com.google.android.material:material:1.0.0-alpha1'
+      implementation 'com.google.android.material:material:1.0.0-alpha1'
       // ...
     }
   ```
