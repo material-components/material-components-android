@@ -27,6 +27,7 @@ import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.DimenRes;
+import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IdRes;
 import android.support.annotation.LayoutRes;
@@ -397,6 +398,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @see #setItemHorizontalPadding(int)
    * @attr ref R.styleable#NavigationView_itemHorizontalPadding
    */
+  @Dimension
   public int getItemHorizontalPadding() {
     return presenter.getItemHorizontalPadding();
   }
@@ -407,7 +409,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @param padding The horizontal padding in pixels.
    * @attr ref R.styleable#NavigationView_itemHorizontalPadding
    */
-  public void setItemHorizontalPadding(int padding) {
+  public void setItemHorizontalPadding(@Dimension int padding) {
     presenter.setItemHorizontalPadding(padding);
   }
 
@@ -427,6 +429,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @see #setItemIconPadding(int)
    * @attr ref R.styleable#NavigationView_itemIconPadding
    */
+  @Dimension
   public int getItemIconPadding() {
     return presenter.getItemIconPadding();
   }
@@ -437,7 +440,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    * @param padding The padding in pixels.
    * @attr ref R.styleable#NavigationView_itemIconPadding
    */
-  public void setItemIconPadding(int padding) {
+  public void setItemIconPadding(@Dimension int padding) {
     presenter.setItemIconPadding(padding);
   }
 
