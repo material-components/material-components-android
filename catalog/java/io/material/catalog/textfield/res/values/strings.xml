@@ -41,7 +41,7 @@
   <string name="cat_textfield_error">Error</string>
   <string name="cat_textfield_customize_label_text">Label text</string>
   <string name="cat_textfield_customize_error_text">Error text</string>
-  <string name="cat_textfield_customize_color">Change color</string>
+  <string name="cat_textfield_customize_box_color">Change box color</string>
   <string name="cat_textfield_customize_counter_text">Character counter max</string>
   <string name="cat_textfield_update_label_text">Update label</string>
   <string name="cat_textfield_update_error_text">Update error</string>
