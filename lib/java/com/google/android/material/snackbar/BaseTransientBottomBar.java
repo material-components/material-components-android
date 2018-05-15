@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 
+import android.accessibilityservice.AccessibilityServiceInfo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
@@ -643,7 +644,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   /** Returns true if we should animate the Snackbar view in/out. */
   boolean shouldAnimate() {
-    return !accessibilityManager.isEnabled();
+    final int feedbackFlags = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
+    List<AccessibilityServiceInfo> serviceList = accessibilityManager
+        .getEnabledAccessibilityServiceList(feedbackFlags);
+    return serviceList != null && serviceList.isEmpty();
   }
 
   /** @hide */
