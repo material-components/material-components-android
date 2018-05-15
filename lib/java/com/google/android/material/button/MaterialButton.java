@@ -31,6 +31,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
+import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
@@ -512,7 +513,7 @@ public class MaterialButton extends AppCompatButton {
    * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconSize
    * @see #getIconSize()
    */
-  public void setIconSize(int iconSize) {
+  public void setIconSize(@Dimension int iconSize) {
     if (iconSize < 0) {
       throw new IllegalArgumentException("iconSize cannot be less than 0");
     }
@@ -530,6 +531,7 @@ public class MaterialButton extends AppCompatButton {
    * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconSize
    * @see #setIconSize(int)
    */
+  @Dimension
   public int getIconSize() {
     return iconSize;
   }
