@@ -37,6 +37,8 @@
     <attr name="backgroundTintMode"/>
     <!-- Icon drawable to display at the start of this view. -->
     <attr name="icon" format="reference"/>
+    <!-- Specifies the width and height to use for the icon drawable. -->
+    <attr name="iconSize" format="dimension"/>
     <!-- Padding between icon and button text. -->
     <attr name="iconPadding" format="dimension"/>
     <!-- Tint for icon drawable to display. -->

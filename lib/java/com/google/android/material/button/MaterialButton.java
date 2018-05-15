@@ -108,6 +108,7 @@ public class MaterialButton extends AppCompatButton {
   private Mode iconTintMode;
   private ColorStateList iconTint;
   private Drawable icon;
+  private int iconSize;
 
   public MaterialButton(Context context) {
     this(context, null /* attrs */);
@@ -179,6 +180,8 @@ public class MaterialButton extends AppCompatButton {
         MaterialResources.getColorStateList(
             getContext(), attributes, R.styleable.MaterialButton_iconTint);
     icon = MaterialResources.getDrawable(getContext(), attributes, R.styleable.MaterialButton_icon);
+
+    iconSize = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconSize, 0);
 
     // Loads and sets background drawable attributes
     materialButtonHelper = new MaterialButtonHelper(this);
@@ -503,6 +506,35 @@ public class MaterialButton extends AppCompatButton {
   }
 
   /**
+   * Sets the width and height of the icon. Use 0 to use source Drawable size.
+   *
+   * @param iconSize new dimension for width and height of the icon in pixels.
+   * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconSize
+   * @see #getIconSize()
+   */
+  public void setIconSize(int iconSize) {
+    if (iconSize < 0) {
+      throw new IllegalArgumentException("iconSize cannot be less than 0");
+    }
+
+    if (this.iconSize != iconSize) {
+      this.iconSize = iconSize;
+      updateIcon();
+    }
+  }
+
+  /**
+   * Returns the size of the icon if it was set.
+   *
+   * @return Returns the size of the icon if it was set in pixels, 0 otherwise.
+   * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconSize
+   * @see #setIconSize(int)
+   */
+  public int getIconSize() {
+    return iconSize;
+  }
+
+  /**
    * Sets the icon to show for this button. By default, this icon will be shown on the left side of
    * the button.
    *
@@ -618,9 +650,13 @@ public class MaterialButton extends AppCompatButton {
       if (iconTintMode != null) {
         DrawableCompat.setTintMode(icon, iconTintMode);
       }
+
+      int width = iconSize != 0 ? iconSize : icon.getIntrinsicWidth();
+      int height = iconSize != 0 ? iconSize : icon.getIntrinsicHeight();
+      icon.setBounds(0, 0, width, height);
     }
 
-    TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(this, icon, null, null, null);
+    TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
     updatePadding();
   }
 
