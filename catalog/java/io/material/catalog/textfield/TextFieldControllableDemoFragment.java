@@ -32,7 +32,7 @@ import io.material.catalog.feature.DemoFragment;
 /** A fragment that displays the main text field demos for the Catalog app. */
 public class TextFieldControllableDemoFragment extends DemoFragment {
   private int colorIndex = 0;
-  private final int[] colors =
+  private int[] colors =
       new int[] {
         Color.BLUE, Color.RED, Color.GREEN, Color.DKGRAY,
       };
@@ -46,11 +46,6 @@ public class TextFieldControllableDemoFragment extends DemoFragment {
 
     // Initialize text inputs.
     TextInputLayout textInputDemoBoxOutline = view.findViewById(R.id.text_input_demo_box_outline);
-    TextInputLayout textInputDemoBoxOutlineDense =
-        view.findViewById(R.id.text_input_demo_box_outline_dense);
-    TextInputLayout textInputDemoBoxFilled = view.findViewById(R.id.text_input_demo_box_filled);
-    TextInputLayout textInputDemoBoxFilledDense =
-        view.findViewById(R.id.text_input_demo_box_filled_dense);
 
     TextInputLayout textInputError = view.findViewById(R.id.text_input_error);
     TextInputLayout textInputLabel = view.findViewById(R.id.text_input_label);
@@ -62,11 +57,7 @@ public class TextFieldControllableDemoFragment extends DemoFragment {
         new OnClickListener() {
           @Override
           public void onClick(View v) {
-            int boxColor = getNextColor();
-            textInputDemoBoxOutline.setBoxStrokeColor(boxColor);
-            textInputDemoBoxOutlineDense.setBoxStrokeColor(boxColor);
-            textInputDemoBoxFilled.setBoxBackgroundColor(boxColor);
-            textInputDemoBoxFilledDense.setBoxBackgroundColor(boxColor);
+            textInputDemoBoxOutline.setBoxStrokeColor(getNextColor());
           }
         });
 

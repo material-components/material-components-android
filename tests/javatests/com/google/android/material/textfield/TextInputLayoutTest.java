@@ -708,13 +708,13 @@ public class TextInputLayoutTest {
     @ColorInt int blue = Color.BLUE;
     @ColorInt int yellow = Color.YELLOW;
 
-    // Change the filled box's background color to blue.
+    // Change the outline box's background color to blue.
     onView(withId(R.id.textinput_box_filled)).perform(setBoxBackgroundColor(blue));
-    // Check that the filled box's background color is blue.
+    // Check that the outline box's background color is blue.
     onView(withId(R.id.textinput_box_filled)).check(isBoxBackgroundColor(blue));
-    // Change the filled box's background color to yellow.
+    // Change the outline box's background color to yellow.
     onView(withId(R.id.textinput_box_filled)).perform(setBoxBackgroundColor(yellow));
-    // Check that the filled box's background color is yellow.
+    // Check that the outline box's background color is yellow.
     onView(withId(R.id.textinput_box_filled)).check(isBoxBackgroundColor(yellow));
   }
 

@@ -24,22 +24,6 @@
       android:layout_margin="@dimen/cat_textfield_standard_spacing"
       android:orientation="vertical">
 
-    <Button
-        android:id="@+id/button_change_color"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/cat_textfield_standard_spacing"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/cat_textfield_customize_box_color"/>
-
-    <Button
-        android:id="@+id/button_toggle_error"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/cat_textfield_standard_spacing"
-        android:layout_gravity="center_horizontal"
-        android:text="@string/cat_textfield_show_error_text"/>
-
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_demo_box_outline"
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
@@ -53,6 +37,22 @@
           android:layout_width="match_parent"
           android:layout_height="wrap_content"/>
     </com.google.android.material.textfield.TextInputLayout>
+
+    <Button
+        android:id="@+id/button_change_color"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/cat_textfield_standard_spacing"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/cat_textfield_customize_color"/>
+
+    <Button
+        android:id="@+id/button_toggle_error"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/cat_textfield_standard_spacing"
+        android:layout_gravity="center_horizontal"
+        android:text="@string/cat_textfield_show_error_text"/>
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/text_input_demo_box_outline_dense"

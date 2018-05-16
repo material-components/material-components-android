@@ -214,6 +214,8 @@ public class TextInputLayout extends LinearLayout {
   @ColorInt private final int hoveredStrokeColor;
   @ColorInt private int focusedStrokeColor;
 
+  @ColorInt private int defaultBoxBackgroundColor;
+
   @ColorInt private final int disabledColor;
 
   // Only used for testing
@@ -289,8 +291,9 @@ public class TextInputLayout extends LinearLayout {
     boxCornerRadiusBottomStart =
         a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomStart, 0f);
 
-    boxBackgroundColor =
+    defaultBoxBackgroundColor =
         a.getColor(R.styleable.TextInputLayout_boxBackgroundColor, Color.TRANSPARENT);
+    boxBackgroundColor = defaultBoxBackgroundColor;
 
     focusedStrokeColor = a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
     boxStrokeWidthDefaultPx =
@@ -584,8 +587,8 @@ public class TextInputLayout extends LinearLayout {
    * @see #getBoxBackgroundColor()
    */
   public void setBoxBackgroundColor(@ColorInt int boxBackgroundColor) {
-    if (this.boxBackgroundColor != boxBackgroundColor) {
-      this.boxBackgroundColor = boxBackgroundColor;
+    if (defaultBoxBackgroundColor != boxBackgroundColor) {
+      defaultBoxBackgroundColor = boxBackgroundColor;
       applyBoxAttributes();
     }
   }
@@ -597,7 +600,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxBackgroundColor(int)
    */
   public int getBoxBackgroundColor() {
-    return boxBackgroundColor;
+    return defaultBoxBackgroundColor;
   }
 
   /**
@@ -1647,12 +1650,13 @@ public class TextInputLayout extends LinearLayout {
 
   @Override
   public void draw(Canvas canvas) {
-    if (boxBackground != null) {
-      boxBackground.draw(canvas);
-    }
     super.draw(canvas);
+
     if (hintEnabled) {
       collapsingTextHelper.draw(canvas);
+    }
+    if (boxBackground != null) {
+      boxBackground.draw(canvas);
     }
   }
 
