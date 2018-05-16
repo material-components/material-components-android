@@ -102,8 +102,8 @@ import org.xmlpull.v1.XmlPullParserException;
  *       use @null to display no icon. Usually on the left.
  *   <li>{@link R.attr#closeIcon app:closeIcon} - Sets a custom icon that the user can click to
  *       close, or use @null to display no icon. Usually on the right.
- *   <li>{@link android.R.attr#ellipsize} - Currently does not support {@link
- *       android.text.TextUtils.TruncateAt#MARQUEE}
+ *   <li>{@link android.R.attr#ellipsize} - Does not support {@link
+ *       android.text.TextUtils.TruncateAt#MARQUEE} because chip text should not scroll.
  * </ul>
  *
  * <p>When used in this stand-alone mode, the host view must explicitly manage the ChipDrawable's
@@ -349,7 +349,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         setEllipsize(TextUtils.TruncateAt.END);
         break;
       case 4: // fall through
-        // TODO: Support TextUtils.TruncateAt.MARQUEE
+        // Does not support TextUtils.TruncateAt.MARQUEE, chip text should not scroll.
       default: // fall out
         break;
     }
@@ -617,7 +617,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   /** Draws the chip text, which should appear centered vertically in the chip. */
   private void drawChipText(@NonNull Canvas canvas, Rect bounds) {
     if (chipText != null) {
-      // TODO: Bounds may be smaller than intrinsic size. Ellipsize, clip, or multiline the text.
+      // If bounds are smaller than intrinsic size. Ellipsize or clip the text depending on
+      // ellipsize attribute.
       Align align = calculateChipTextOrigin(bounds, pointF);
       calculateChipTextBounds(bounds, rectF);
 

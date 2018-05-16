@@ -53,6 +53,7 @@ import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.Accessi
 import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.text.TextUtils;
+import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.KeyEvent;
@@ -219,6 +220,20 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   @Override
+  public TruncateAt getEllipsize() {
+    return chipDrawable != null ? chipDrawable.getEllipsize() : null;
+  }
+
+  @Override
+  public void setEllipsize(TruncateAt where) {
+    if (where == TruncateAt.MARQUEE) {
+      throw new UnsupportedOperationException("Text within a chip are not allowed to scroll.");
+    }
+    if (chipDrawable != null) {
+      chipDrawable.setEllipsize(where);
+    }
+  }
+
   public void onChipDrawableSizeChange() {
     requestLayout();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
