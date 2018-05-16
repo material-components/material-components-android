@@ -16,32 +16,49 @@ To use it:
 2. Make sure that the `repositories` section includes a maven section with the
 `"https://maven.google.com"` endpoint. For example:
 
-  ```groovy
-    allprojects {
-      repositories {
-        jcenter()
-        maven {
-          url "https://maven.google.com"
+    ```groovy
+      allprojects {
+        repositories {
+          jcenter()
+          maven {
+            url "https://maven.google.com"
+          }
         }
       }
-    }
-  ```
+    ```
 3. Add the library to the `dependencies` section:
 
-  ```groovy
-    dependencies {
-      // ...
-      compile 'com.google.android.material:material:1.0.0-alpha1'
-      // ...
-    }
-  ```
+    ```groovy
+      dependencies {
+        // ...
+        compile 'com.google.android.material:material:1.0.0-alpha1'
+        // ...
+      }
+    ```
 
-Note: If your app currently depends on the original Design Support Library, you
-can make use of the `Refactor to AndroidX…` option provided by Android Studio.
-Doing so will update your app's dependencies and code to use the newly packaged
-`androidx` and `com.google.android.material` libraries.
+If your app currently depends on the original Design Support Library, you
+can make use of the [`Refactor to
+AndroidX…`](https://developer.android.com/studio/preview/features/#androidx_refactoring)
+option provided by Android Studio. Doing so will update your app's dependencies
+and code to use the newly packaged `androidx` and `com.google.android.material`
+libraries.
 
-### 2. Change your app theme to inherit from a Material Components theme
+If you don't want to switch over to the new `androidx` and
+`com.google.android.material` packages yet, you can use Material Components via
+the `com.android.support:design:28.0.0-alpha1` dependency.
+
+Note: You should not use the `com.android.support` and
+`com.google.android.material` dependencies in your app at the same time.
+
+### 2. Compile your app with Android P
+
+In order to use Material Components for Android, and the latest versions of the
+Support Libraries, you will have to update your app's `compileSdkVersion` to
+`'android-P'` and download the Android P Preview using the SDK manager. For
+more information on Android P and its timeline, take a look at the [Program
+Overview](https://developer.android.com/preview/overview) page.
+
+### 3. Change your app theme to inherit from a Material Components theme
 
 Doing an app-wide migration by changing your app theme to inherit from a
 Material Components theme is the recommended approach. However, be sure to
