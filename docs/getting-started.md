@@ -58,7 +58,14 @@ Support Libraries, you will have to update your app's `compileSdkVersion` to
 more information on Android P and its timeline, take a look at the [Program
 Overview](https://developer.android.com/preview/overview) page.
 
-### 3. Change your app theme to inherit from a Material Components theme
+### 3. Ensure you are using `AppCompatActivity`
+
+Using `AppCompatActivity` will ensure that all the components work correctly. If
+you are unable to extend from `AppCompatActivity`, update your activities to use
+`AppCompatDelegate`. This will enable the `AppCompat` versions of components to
+be inflated among other important things.
+
+### 4. Change your app theme to inherit from a Material Components theme
 
 Doing an app-wide migration by changing your app theme to inherit from a
 Material Components theme is the recommended approach. However, be sure to
@@ -120,7 +127,7 @@ theme, or you will encounter `ThemeEnforcement` errors:
 </style>
 ```
 
-### 3. Add a Material component to your app
+### 5. Add a Material component to your app
 
 Take a look at our [documentation](https://www.material.io/components/android)
 for the full list of available Material components. Each component's page has
