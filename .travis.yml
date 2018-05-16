@@ -51,4 +51,4 @@ script:
   - ./gradlew assemble -PdisablePreDex;
   - ./travis_run_unit_tests.sh
   - travis_wait ./travis_set_up_emulator.sh
-  - travis_wait ./travis_run_instrumentation_tests.sh
+  - travis_wait 60 ./travis_run_instrumentation_tests.sh
