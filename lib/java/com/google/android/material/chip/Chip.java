@@ -82,7 +82,10 @@ import java.util.List;
  *
  * <p>All attributes from {@link R.styleable#ChipDrawable} are supported. Do not use the {@code
  * android:background} and {@code android:text} attributes. They will be ignored because Chip
- * manages its own background Drawable and text. The basic attributes you can set are:
+ * manages its own background Drawable and text. Also do not use the {@code android:drawableStart}
+ * and {@code android:drawableEnd} attributes. They will be ignored because Chip manages its own
+ * start ({@code app:chipIcon}) and end ({@code app:closeIcon}) drawables. The basic attributes you
+ * can set are:
  *
  * <ul>
  *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
@@ -112,6 +115,8 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
 
+  private static final String NAMESPACE_ANDROID = "http://schemas.android.com/apk/res/android";
+
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({ExploreByTouchHelper.INVALID_ID, ExploreByTouchHelper.HOST_ID, CLOSE_ICON_VIRTUAL_ID})
   private @interface VirtualId {}
@@ -140,18 +145,32 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   public Chip(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-
+    validateAttributes(attrs);
     ChipDrawable drawable =
         ChipDrawable.createFromAttributes(
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     setChipDrawable(drawable);
-
     touchHelper = new ChipTouchHelper(this);
     ViewCompat.setAccessibilityDelegate(this, touchHelper);
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
     initOutlineProvider();
     setChecked(deferredCheckedValue);
+  }
+
+  private void validateAttributes(AttributeSet attributeSet) {
+    if (attributeSet.getAttributeValue(NAMESPACE_ANDROID, "drawableLeft") != null) {
+      throw new UnsupportedOperationException("Please set left drawable using R.attr#chipIcon.");
+    }
+    if (attributeSet.getAttributeValue(NAMESPACE_ANDROID, "drawableStart") != null) {
+      throw new UnsupportedOperationException("Please set start drawable using R.attr#chipIcon.");
+    }
+    if (attributeSet.getAttributeValue(NAMESPACE_ANDROID, "drawableEnd") != null) {
+      throw new UnsupportedOperationException("Please set end drawable using R.attr#closeIcon.");
+    }
+    if (attributeSet.getAttributeValue(NAMESPACE_ANDROID, "drawableRight") != null) {
+      throw new UnsupportedOperationException("Please set end drawable using R.attr#closeIcon.");
+    }
   }
 
   private void initOutlineProvider() {
@@ -217,6 +236,94 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       mergeDrawableStates(state, SELECTED_STATE);
     }
     return state;
+  }
+
+  @Override
+  public void setCompoundDrawables(
+      @Nullable Drawable left,
+      @Nullable Drawable top,
+      @Nullable Drawable right,
+      @Nullable Drawable bottom) {
+    if (left != null) {
+      throw new UnsupportedOperationException("Please set start drawable using R.attr#chipIcon.");
+    }
+    if (right != null) {
+      throw new UnsupportedOperationException("Please set end drawable using R.attr#closeIcon.");
+    }
+
+    super.setCompoundDrawables(left, top, right, bottom);
+  }
+
+  @Override
+  public void setCompoundDrawablesWithIntrinsicBounds(int left, int top, int right, int bottom) {
+    if (left != 0) {
+      throw new UnsupportedOperationException("Please set start drawable using R.attr#chipIcon.");
+    }
+    if (right != 0) {
+      throw new UnsupportedOperationException("Please set end drawable using R.attr#closeIcon.");
+    }
+
+    super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
+  }
+
+  @Override
+  public void setCompoundDrawablesWithIntrinsicBounds(
+      @Nullable Drawable left,
+      @Nullable Drawable top,
+      @Nullable Drawable right,
+      @Nullable Drawable bottom) {
+    if (left != null) {
+      throw new UnsupportedOperationException("Please set left drawable using R.attr#chipIcon.");
+    }
+    if (right != null) {
+      throw new UnsupportedOperationException("Please set right drawable using R.attr#closeIcon.");
+    }
+
+    super.setCompoundDrawablesWithIntrinsicBounds(left, top, right, bottom);
+  }
+
+  @Override
+  public void setCompoundDrawablesRelative(
+      @Nullable Drawable start,
+      @Nullable Drawable top,
+      @Nullable Drawable end,
+      @Nullable Drawable bottom) {
+    if (start != null) {
+      throw new UnsupportedOperationException("Please set start drawable using R.attr#chipIcon.");
+    }
+    if (end != null) {
+      throw new UnsupportedOperationException("Please set end drawable using R.attr#closeIcon.");
+    }
+
+    super.setCompoundDrawablesRelative(start, top, end, bottom);
+  }
+
+  @Override
+  public void setCompoundDrawablesRelativeWithIntrinsicBounds(
+      int start, int top, int end, int bottom) {
+    if (start != 0) {
+      throw new UnsupportedOperationException("Please set start drawable using R.attr#chipIcon.");
+    }
+    if (end != 0) {
+      throw new UnsupportedOperationException("Please set end drawable using R.attr#closeIcon.");
+    }
+
+    super.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
+  }
+
+  @Override
+  public void setCompoundDrawablesRelativeWithIntrinsicBounds(
+      @Nullable Drawable start,
+      @Nullable Drawable top,
+      @Nullable Drawable end,
+      @Nullable Drawable bottom) {
+    if (start != null) {
+      throw new UnsupportedOperationException("Please set start drawable using R.attr#chipIcon.");
+    }
+    if (end != null) {
+      throw new UnsupportedOperationException("Please set end drawable using R.attr#closeIcon.");
+    }
+    super.setCompoundDrawablesRelativeWithIntrinsicBounds(start, top, end, bottom);
   }
 
   @Override
