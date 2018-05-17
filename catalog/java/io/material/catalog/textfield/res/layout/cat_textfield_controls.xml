@@ -37,7 +37,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center_horizontal"
-        android:text="@string/cat_textfield_customize_color"/>
+        android:text="@string/cat_textfield_customize_box_color"/>
 
     <TextView
         android:layout_width="wrap_content"
