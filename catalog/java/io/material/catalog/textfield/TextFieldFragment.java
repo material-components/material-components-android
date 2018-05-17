@@ -57,10 +57,17 @@ public class TextFieldFragment extends DemoLandingFragment {
   public List<Demo> getAdditionalDemos() {
     List<Demo> additionalDemos = new ArrayList<>();
     additionalDemos.add(
-        new Demo(R.string.cat_textfield_controllable_demo_title) {
+        new Demo(R.string.cat_textfield_filled_demo_title) {
           @Override
           public Fragment createFragment() {
-            return new TextFieldControllableDemoFragment();
+            return new TextFieldFilledDemoFragment();
+          }
+        });
+    additionalDemos.add(
+        new Demo(R.string.cat_textfield_outline_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TextFieldOutlineDemoFragment();
           }
         });
     return additionalDemos;

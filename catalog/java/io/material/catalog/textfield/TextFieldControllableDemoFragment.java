@@ -19,18 +19,16 @@ package io.material.catalog.textfield;
 import io.material.catalog.R;
 
 import android.graphics.Color;
-import android.os.Bundle;
-import android.support.annotation.Nullable;
+import android.support.annotation.LayoutRes;
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.view.ViewGroup;
 import android.widget.Button;
-import io.material.catalog.feature.DemoFragment;
 
-/** A fragment that displays the main text field demos for the Catalog app. */
-public class TextFieldControllableDemoFragment extends DemoFragment {
+/** A base class for controllable text field demos in the Catalog app. */
+public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFragment {
   private int colorIndex = 0;
   private int[] colors =
       new int[] {
@@ -38,91 +36,80 @@ public class TextFieldControllableDemoFragment extends DemoFragment {
       };
 
   @Override
-  public View onCreateDemoView(
-      LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    View view =
-        layoutInflater.inflate(
-            R.layout.cat_textfield_controllable_fragment, viewGroup, false /* attachToRoot */);
+  public void initTextFieldDemoControls(LayoutInflater layoutInflater, View view) {
+    super.initTextFieldDemoControls(layoutInflater, view);
 
-    // Initialize text inputs.
-    TextInputLayout textInputDemoBoxOutline = view.findViewById(R.id.text_input_demo_box_outline);
-
-    TextInputLayout textInputError = view.findViewById(R.id.text_input_error);
-    TextInputLayout textInputLabel = view.findViewById(R.id.text_input_label);
-    TextInputLayout textInputCounterMax = view.findViewById(R.id.text_input_counter_max);
-
-    // Initialize button for changing the outline box color.
+    // Initialize button for updating the box color.
     Button changeColorButton = view.findViewById(R.id.button_change_color);
-    changeColorButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            textInputDemoBoxOutline.setBoxStrokeColor(getNextColor());
-          }
-        });
+    changeColorButton.setOnClickListener(v -> changeTextFieldBoxColors(getNextColor()));
+
+    // Initialize button for updating the label text.
+    TextInputLayout labelTextField = view.findViewById(R.id.text_input_label);
+    view.findViewById(R.id.button_update_label_text)
+        .setOnClickListener(
+            v -> {
+              if (!checkTextInputIsNull(labelTextField)) {
+                setAllTextFieldsLabel(String.valueOf(labelTextField.getEditText().getText()));
+              }
+            });
 
     // Initialize button for toggling the error text visibility.
     Button toggleErrorButton = view.findViewById(R.id.button_toggle_error);
     toggleErrorButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            if (textInputDemoBoxOutline.getError() == null) {
-              if (textInputError.getEditText().length() == 0) {
-                textInputDemoBoxOutline.setError(
-                    getResources().getString(R.string.cat_textfield_error));
-              } else {
-                textInputDemoBoxOutline.setError(textInputError.getEditText().getText());
-              }
-              toggleErrorButton.setText(
-                  getResources().getString(R.string.cat_textfield_hide_error_text));
-            } else {
-              textInputDemoBoxOutline.setError(null);
-              toggleErrorButton.setText(
-                  getResources().getString(R.string.cat_textfield_show_error_text));
-            }
+        v -> {
+          if (!textfields.isEmpty() && textfields.get(0).getError() == null) {
+            TextInputEditText errorEditText = view.findViewById(R.id.edit_text_error);
+            String error =
+                !TextUtils.isEmpty(errorEditText.getText())
+                    ? String.valueOf(errorEditText.getText())
+                    : getResources().getString(R.string.cat_textfield_error);
+            setAllTextFieldsError(error);
+            toggleErrorButton.setText(
+                getResources().getString(R.string.cat_textfield_hide_error_text));
+          } else {
+            setAllTextFieldsError(null);
+            toggleErrorButton.setText(
+                getResources().getString(R.string.cat_textfield_show_error_text));
           }
         });
 
-    // Initialize button for updating the label text.
-    view.findViewById(R.id.button_update_label_text)
-        .setOnClickListener(
-            new OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                if (!checkTextInputIsNull(textInputLabel)) {
-                  textInputDemoBoxOutline.setHint(textInputLabel.getEditText().getText());
-                }
-              }
-            });
-
-    // Initialize button for updating the error text.
-    view.findViewById(R.id.button_update_error_text)
-        .setOnClickListener(
-            new OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                if (!checkTextInputIsNull(textInputError)) {
-                  textInputDemoBoxOutline.setError(textInputError.getEditText().getText());
-                  toggleErrorButton.setText(
-                      getResources().getString(R.string.cat_textfield_hide_error_text));
-                }
-              }
-            });
-
     // Initialize button for updating the counter max.
+    TextInputLayout counterMaxTextField = view.findViewById(R.id.text_input_counter_max);
     view.findViewById(R.id.button_counter_max)
         .setOnClickListener(
-            new OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                if (!checkTextInputIsNull(textInputCounterMax)) {
-                  textInputDemoBoxOutline.setCounterMaxLength(
-                      Integer.parseInt(textInputCounterMax.getEditText().getText().toString()));
-                }
+            v -> {
+              if (!checkTextInputIsNull(counterMaxTextField)) {
+                int length =
+                    Integer.parseInt(counterMaxTextField.getEditText().getText().toString());
+                setAllTextFieldsCounterMax(length);
               }
             });
-    return view;
+  }
+
+  private void changeTextFieldBoxColors(int color) {
+    for (TextInputLayout textfield : textfields) {
+      onChangeTextFieldBoxColors(textfield, color);
+    }
+  }
+
+  public abstract void onChangeTextFieldBoxColors(TextInputLayout textfield, int color);
+
+  private void setAllTextFieldsLabel(String label) {
+    for (TextInputLayout textfield : textfields) {
+      textfield.setHint(label);
+    }
+  }
+
+  private void setAllTextFieldsError(String error) {
+    for (TextInputLayout textfield : textfields) {
+      textfield.setError(error);
+    }
+  }
+
+  private void setAllTextFieldsCounterMax(int length) {
+    for (TextInputLayout textfield : textfields) {
+      textfield.setCounterMaxLength(length);
+    }
   }
 
   private boolean checkTextInputIsNull(TextInputLayout textInputLayout) {
@@ -139,5 +126,11 @@ public class TextFieldControllableDemoFragment extends DemoFragment {
   private int getNextColor() {
     colorIndex = (colorIndex + 1) % colors.length;
     return colors[colorIndex];
+  }
+
+  @Override
+  @LayoutRes
+  public int getTextFieldDemoControlsLayout() {
+    return R.layout.cat_textfield_controls;
   }
 }

@@ -17,7 +17,8 @@
 
 <resources>
   <string name="cat_textfield_title">Text Field</string>
-  <string name="cat_textfield_controllable_demo_title">Controllable Text Field Demo</string>
+  <string name="cat_textfield_filled_demo_title">Filled Text Field Demo</string>
+  <string name="cat_textfield_outline_demo_title">Outline Text Field Demo</string>
   <string name="cat_textfield_description">
     Text fields allow users to input, edit, and select text. Text fields typically reside in forms
     but can appear in other places, like dialog boxes and search.
@@ -31,10 +32,9 @@
   <string name="cat_textfield_outline_helper_text">Outline text field</string>
   <string name="cat_textfield_outline_dense_helper_text">Dense outline text field</string>
 
-  <string name="cat_textfield_demo_section_title">Sample text field</string>
-  <string name="cat_textfield_customize_section_title">Customize sample text field</string>
+  <string name="cat_textfield_customize_section_title">Customize text fields</string>
   <string name="cat_textfield_customize_section_description">
-    Enter values below to customize the sample text field.
+    Enter values below to customize the text fields.
   </string>
   <string name="cat_textfield_label">Label</string>
   <string name="cat_textfield_password">Password</string>

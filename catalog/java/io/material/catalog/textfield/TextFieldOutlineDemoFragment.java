@@ -18,25 +18,20 @@ package io.material.catalog.textfield;
 
 import io.material.catalog.R;
 
-import android.os.Bundle;
 import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import com.google.android.material.textfield.TextInputLayout;
 
-/** A fragment that displays the main text field demos for the Catalog app. */
-public class TextFieldMainDemoFragment extends TextFieldDemoFragment {
+/** A fragment that displays the outline text field demos with controls for the Catalog app. */
+public class TextFieldOutlineDemoFragment extends TextFieldControllableDemoFragment {
 
   @Override
-  public View onCreateDemoView(
-      LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    return layoutInflater.inflate(getTextFieldContent(), viewGroup, false /* attachToRoot */);
+  public void onChangeTextFieldBoxColors(TextInputLayout textfield, int color) {
+    textfield.setBoxStrokeColor(color);
   }
 
   @Override
   @LayoutRes
   public int getTextFieldContent() {
-    return R.layout.cat_textfield_content;
+    return R.layout.cat_textfield_outline_content;
   }
 }
