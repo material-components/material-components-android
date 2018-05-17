@@ -158,7 +158,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setChecked(deferredCheckedValue);
   }
 
-  private void validateAttributes(AttributeSet attributeSet) {
+  private void validateAttributes(@Nullable AttributeSet attributeSet) {
+    if (attributeSet == null) {
+      return;
+    }
     if (attributeSet.getAttributeValue(NAMESPACE_ANDROID, "drawableLeft") != null) {
       throw new UnsupportedOperationException("Please set left drawable using R.attr#chipIcon.");
     }
