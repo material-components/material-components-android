@@ -35,12 +35,9 @@
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
-    <item name="colorPrimaryLight">?attr/colorPrimary</item>
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
 
     <item name="colorSecondary">?attr/colorPrimary</item>
-    <item name="colorSecondaryLight">?attr/colorPrimaryLight</item>
-    <item name="colorSecondaryDark">?attr/colorPrimaryDark</item>
 
     <item name="colorAccent">?attr/colorSecondary</item>
 
@@ -87,12 +84,9 @@
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
-    <item name="colorPrimaryLight">?attr/colorPrimary</item>
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
 
     <item name="colorSecondary">?attr/colorPrimary</item>
-    <item name="colorSecondaryLight">?attr/colorPrimaryLight</item>
-    <item name="colorSecondaryDark">?attr/colorPrimaryDark</item>
 
     <item name="colorAccent">?attr/colorSecondary</item>
 

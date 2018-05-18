@@ -40,7 +40,7 @@ public final class ThemeEnforcement {
   private static final int[] APPCOMPAT_CHECK_ATTRS = {R.attr.colorPrimary};
   private static final String APPCOMPAT_THEME_NAME = "Theme.AppCompat";
 
-  private static final int[] MATERIAL_CHECK_ATTRS = {R.attr.colorSecondaryLight};
+  private static final int[] MATERIAL_CHECK_ATTRS = {R.attr.colorSecondary};
   private static final String MATERIAL_THEME_NAME = "Theme.MaterialComponents";
 
   private ThemeEnforcement() {}
@@ -53,7 +53,7 @@ public final class ThemeEnforcement {
    * <code>true</code> to ensure that the Context's theme inherits from {@link
    * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
    * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
-   * {@link R.attr#colorSecondaryLight colorSecondaryLight}.
+   * {@link R.attr#colorSecondary colorSecondary}.
    */
   public static TypedArray obtainStyledAttributes(
       Context context,
@@ -73,7 +73,7 @@ public final class ThemeEnforcement {
    * <code>true</code> to ensure that the Context's theme inherits from {@link
    * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
    * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
-   * {@link R.attr#colorSecondaryLight colorSecondaryLight}.
+   * {@link R.attr#colorSecondary colorSecondary}.
    */
   public static TypedArray obtainStyledAttributes(
       Context context,
@@ -104,7 +104,7 @@ public final class ThemeEnforcement {
    * <code>true</code> to ensure that the Context's theme inherits from {@link
    * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
    * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
-   * {@link R.attr#colorSecondaryLight colorSecondaryLight}.
+   * {@link R.attr#colorSecondary colorSecondary}.
    *
    * <p>New components should prefer to use {@link #obtainStyledAttributes(Context, AttributeSet,
    * int[], int, int)}, and use {@link com.google.android.material.resources.MaterialResources} as a
@@ -129,7 +129,7 @@ public final class ThemeEnforcement {
    * <code>true</code> to ensure that the Context's theme inherits from {@link
    * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
    * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
-   * {@link R.attr#colorSecondaryLight colorSecondaryLight}.
+   * {@link R.attr#colorSecondary colorSecondary}.
    *
    * <p>New components should prefer to use {@link #obtainStyledAttributes(Context, AttributeSet,
    * int[], int, int)}, and use {@link com.google.android.material.resources.MaterialResources} as a

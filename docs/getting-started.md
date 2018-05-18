@@ -117,10 +117,7 @@ theme, or you will encounter `ThemeEnforcement` errors:
   <item name="colorAccent">@color/my_app_accent_color</item>
 
   <!-- New MaterialComponents attributes. -->
-  <item name="colorPrimaryLight">?attr/colorPrimary</item>
   <item name="colorSecondary">?attr/colorPrimary</item>
-  <item name="colorSecondaryLight">?attr/colorPrimaryLight</item>
-  <item name="colorSecondaryDark">?attr/colorPrimaryDark</item>
   <item name="scrimBackground">@color/mtrl_scrim_color</item>
   <item name="snackbarButtonStyle">?attr/borderlessButtonStyle</item>
 

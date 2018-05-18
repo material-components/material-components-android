@@ -32,8 +32,8 @@ these styles reference color attributes from the Material Design theme
 app by simply modifying the color attributes in your theme. These attributes
 are:
 
-*   `colorPrimary`, `colorPrimaryDark`, `colorPrimaryLight`
-*   `colorSecondary`, `colorSecondaryDark`, `colorSecondaryLight`
+*   `colorPrimary`, `colorPrimaryDark`
+*   `colorSecondary`
 
 By changing `colorPrimary` and `colorSecondary` (along with their dark and light
 variants), you can easily change the style of all the Material components to

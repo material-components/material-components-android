@@ -46,13 +46,10 @@ public class ThemeSwitcherDialogFragment extends DaggerAppCompatDialogFragment {
 
   @StyleableRes
   private static final int[] PRIMARY_THEME_OVERLAY_ATTRS = {
-    R.attr.colorPrimary, R.attr.colorPrimaryLight, R.attr.colorPrimaryDark
+    R.attr.colorPrimary, R.attr.colorPrimaryDark
   };
 
-  @StyleableRes
-  private static final int[] SECONDARY_THEME_OVERLAY_ATTRS = {
-    R.attr.colorSecondary, R.attr.colorSecondaryLight, R.attr.colorSecondaryDark
-  };
+  @StyleableRes private static final int[] SECONDARY_THEME_OVERLAY_ATTRS = {R.attr.colorSecondary};
 
   @Inject ThemeSwitcherResourceProvider resourceProvider;
   private RadioGroup primaryGroup;
@@ -151,7 +148,6 @@ public class ThemeSwitcherDialogFragment extends DaggerAppCompatDialogFragment {
     @StyleRes private final int themeOverlay;
 
     @ColorInt private final int main;
-    @ColorInt private final int light;
     @ColorInt private final int dark;
 
     @SuppressLint("ResourceType")
@@ -160,8 +156,7 @@ public class ThemeSwitcherDialogFragment extends DaggerAppCompatDialogFragment {
 
       TypedArray a = getContext().obtainStyledAttributes(themeOverlay, themeOverlayAttrs);
       main = a.getColor(0, Color.TRANSPARENT);
-      light = a.getColor(1, Color.TRANSPARENT);
-      dark = a.getColor(2, Color.TRANSPARENT);
+      dark = a.getColor(1, Color.TRANSPARENT);
       a.recycle();
     }
   }

@@ -19,10 +19,7 @@
   <color name="cat_background_color">#FFFFFF</color>
 
   <color name="cat_color_primary">#212121</color>
-  <color name="cat_color_primary_light">#535353</color>
   <color name="cat_color_primary_dark">#000000</color>
 
   <color name="cat_color_secondary">#30E57E</color>
-  <color name="cat_color_secondary_light">#33F286</color>
-  <color name="cat_color_secondary_dark">#25B363</color>
 </resources>

@@ -18,12 +18,9 @@
 
   <style name="Theme.Catalog" parent="Theme.MaterialComponents.Light.NoActionBar">
     <item name="colorPrimary">@color/cat_color_primary</item>
-    <item name="colorPrimaryLight">@color/cat_color_primary_light</item>
     <item name="colorPrimaryDark">@color/cat_color_primary_dark</item>
 
     <item name="colorSecondary">@color/cat_color_secondary</item>
-    <item name="colorSecondaryLight">@color/cat_color_secondary_light</item>
-    <item name="colorSecondaryDark">@color/cat_color_secondary_dark</item>
 
     <item name="android:colorBackground">@color/cat_background_color</item>
 

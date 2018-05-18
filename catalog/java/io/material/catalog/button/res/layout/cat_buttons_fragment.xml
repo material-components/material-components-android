@@ -34,7 +34,7 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="@string/cat_btn_text"
-        android:textColor="?attr/colorSecondaryDark"
+        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
@@ -58,7 +58,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_unelevated_btn_text"
-        android:textColor="?attr/colorSecondaryDark"
+        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
@@ -84,7 +84,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_icon_btn_text"
-        android:textColor="?attr/colorSecondaryDark"
+        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
@@ -110,7 +110,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_text_btn_text"
-        android:textColor="?attr/colorSecondaryDark"
+        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
@@ -136,7 +136,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_icon_text_btn_text"
-        android:textColor="?attr/colorSecondaryDark"
+        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
@@ -163,7 +163,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_outlined_btn_text"
-        android:textColor="?attr/colorSecondaryDark"
+        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"
         android:textStyle="bold" />
 

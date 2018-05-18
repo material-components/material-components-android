@@ -18,68 +18,46 @@
 
   <style name="ThemeOverlay.SecondaryPalette.Default" parent="">
     <item name="colorSecondary">@color/cat_color_secondary</item>
-    <item name="colorSecondaryLight">@color/cat_color_secondary_light</item>
-    <item name="colorSecondaryDark">@color/cat_color_secondary_dark</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Red" parent="">
     <item name="colorSecondary">#e53935</item>
-    <item name="colorSecondaryLight">#ff6f60</item>
-    <item name="colorSecondaryDark">#ab000d</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Purple" parent="">
     <item name="colorSecondary">#8e24aa</item>
-    <item name="colorSecondaryLight">#c158dc</item>
-    <item name="colorSecondaryDark">#5c007a</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Indigo" parent="">
     <item name="colorSecondary">#3949ab</item>
-    <item name="colorSecondaryLight">#6f74dd</item>
-    <item name="colorSecondaryDark">#00227b</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Blue" parent="">
     <item name="colorSecondary">#1b87e5</item>
-    <item name="colorSecondaryLight">#69b6ff</item>
-    <item name="colorSecondaryDark">#005bb2</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Green" parent="">
     <item name="colorSecondary">#43a047</item>
-    <item name="colorSecondaryLight">#76d275</item>
-    <item name="colorSecondaryDark">#00701a</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Yellow" parent="">
     <item name="colorSecondary">#fdd835</item>
-    <item name="colorSecondaryLight">#ffff6b</item>
-    <item name="colorSecondaryDark">#c6a700</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Orange" parent="">
     <item name="colorSecondary">#fb8c00</item>
-    <item name="colorSecondaryLight">#ffbd45</item>
-    <item name="colorSecondaryDark">#c25e00</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Brown" parent="">
     <item name="colorSecondary">#6d4c41</item>
-    <item name="colorSecondaryLight">#9c786c</item>
-    <item name="colorSecondaryDark">#40241a</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.Grey" parent="">
     <item name="colorSecondary">#757575</item>
-    <item name="colorSecondaryLight">#a4a4a4</item>
-    <item name="colorSecondaryDark">#494949</item>
   </style>
 
   <style name="ThemeOverlay.SecondaryPalette.BlueGrey" parent="">
     <item name="colorSecondary">#546e7a</item>
-    <item name="colorSecondaryLight">#819ca9</item>
-    <item name="colorSecondaryDark">#29434e</item>
   </style>
 
 </resources>

@@ -15,14 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <!-- The light variant of the primary color. -->
-  <attr name="colorPrimaryLight" format="color"/>
   <!-- The secondary branding color for the app, usually a bright complement to the primary branding color. -->
   <attr name="colorSecondary" format="color"/>
-  <!-- The light variant of the secondary color. -->
-  <attr name="colorSecondaryLight" format="color"/>
-  <!-- The dark variant of the secondary color. -->
-  <attr name="colorSecondaryDark" format="color"/>
 
   <!-- The scrim background that appears below modals and expanded navigation menus.
        The background can either be a color or a bitmap drawable with tileMode set to repeat. -->
