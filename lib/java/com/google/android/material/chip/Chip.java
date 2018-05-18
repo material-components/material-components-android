@@ -174,6 +174,12 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (attributeSet.getAttributeValue(NAMESPACE_ANDROID, "drawableRight") != null) {
       throw new UnsupportedOperationException("Please set end drawable using R.attr#closeIcon.");
     }
+    if (!attributeSet.getAttributeBooleanValue(NAMESPACE_ANDROID, "singleLine", true)
+        || (attributeSet.getAttributeIntValue(NAMESPACE_ANDROID, "lines", 1) != 1)
+        || (attributeSet.getAttributeIntValue(NAMESPACE_ANDROID, "minLines", 1) != 1)
+        || (attributeSet.getAttributeIntValue(NAMESPACE_ANDROID, "maxLines", 1) != 1)) {
+      throw new UnsupportedOperationException("Chip does not support multi-line text");
+    }
   }
 
   private void initOutlineProvider() {
@@ -344,6 +350,39 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  @Override
+  public void setSingleLine(boolean singleLine) {
+    if (!singleLine) {
+      throw new UnsupportedOperationException("Chip does not support multi-line text");
+    }
+    super.setSingleLine(singleLine);
+  }
+
+  @Override
+  public void setLines(int lines) {
+    if (lines > 1) {
+      throw new UnsupportedOperationException("Chip does not support multi-line text");
+    }
+    super.setLines(lines);
+  }
+
+  @Override
+  public void setMinLines(int minLines) {
+    if (minLines > 1) {
+      throw new UnsupportedOperationException("Chip does not support multi-line text");
+    }
+    super.setMinLines(minLines);
+  }
+
+  @Override
+  public void setMaxLines(int maxLines) {
+    if (maxLines > 1) {
+      throw new UnsupportedOperationException("Chip does not support multi-line text");
+    }
+    super.setMaxLines(maxLines);
+  }
+
+  @Override
   public void onChipDrawableSizeChange() {
     requestLayout();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
