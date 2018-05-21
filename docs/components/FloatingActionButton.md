@@ -84,7 +84,7 @@ ripple, and motion changes.
 ```xml
 <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/floating_action_button"
-    style="@/style/Widget.MaterialComponents.FloatingActionButton"
+    style="@style/Widget.MaterialComponents.FloatingActionButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|right"
@@ -97,7 +97,7 @@ ripple, and motion changes.
 ```xml
 <com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/floating_action_button"
-    style="@/style/Widget.Design.FloatingActionButton"
+    style="@style/Widget.Design.FloatingActionButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|right"
