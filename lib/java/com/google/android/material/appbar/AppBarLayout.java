@@ -119,7 +119,7 @@ public class AppBarLayout extends LinearLayout {
    * Interface definition for a callback to be invoked when an {@link AppBarLayout}'s vertical
    * offset changes.
    */
-  //TODO: remove this base interface after the widget migration
+  // TODO: remove this base interface after the widget migration
   public interface BaseOnOffsetChangedListener<T extends AppBarLayout> {
 
     /**
@@ -137,7 +137,7 @@ public class AppBarLayout extends LinearLayout {
    * Interface definition for a callback to be invoked when an {@link AppBarLayout}'s vertical
    * offset changes.
    */
-  //TODO: update this interface after the widget migration
+  // TODO: update this interface after the widget migration
   public interface OnOffsetChangedListener extends BaseOnOffsetChangedListener<AppBarLayout> {
     void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset);
   }
@@ -156,8 +156,10 @@ public class AppBarLayout extends LinearLayout {
 
   private List<BaseOnOffsetChangedListener> listeners;
 
-  private boolean collapsible;
-  private boolean collapsed;
+  private boolean liftable;
+  private boolean lifted;
+
+  private boolean liftOnScroll;
 
   private int[] tmpStatesArray;
 
@@ -206,6 +208,7 @@ public class AppBarLayout extends LinearLayout {
             a.getBoolean(R.styleable.AppBarLayout_android_touchscreenBlocksFocus, false));
       }
     }
+    liftOnScroll = a.getBoolean(R.styleable.AppBarLayout_liftOnScroll, false);
     a.recycle();
 
     ViewCompat.setOnApplyWindowInsetsListener(
@@ -277,18 +280,16 @@ public class AppBarLayout extends LinearLayout {
       }
     }
 
-    updateCollapsible();
+    setLiftableState(liftOnScroll || hasCollapsibleChild());
   }
 
-  private void updateCollapsible() {
-    boolean haveCollapsibleChild = false;
+  private boolean hasCollapsibleChild() {
     for (int i = 0, z = getChildCount(); i < z; i++) {
       if (((LayoutParams) getChildAt(i).getLayoutParams()).isCollapsible()) {
-        haveCollapsibleChild = true;
-        break;
+        return true;
       }
     }
-    setCollapsibleState(haveCollapsibleChild);
+    return false;
   }
 
   private void invalidateScrollRanges() {
@@ -302,7 +303,7 @@ public class AppBarLayout extends LinearLayout {
   public void setOrientation(int orientation) {
     if (orientation != VERTICAL) {
       throw new IllegalArgumentException(
-          "AppBarLayout is always vertical and does" + " not support horizontal orientation");
+          "AppBarLayout is always vertical and does not support horizontal orientation");
     }
     super.setOrientation(orientation);
   }
@@ -530,28 +531,32 @@ public class AppBarLayout extends LinearLayout {
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
     if (tmpStatesArray == null) {
-      // Note that we can't allocate this at the class level (in declaration) since
-      // some paths in super View constructor are going to call this method before
-      // that
-      tmpStatesArray = new int[2];
+      // Note that we can't allocate this at the class level (in declaration) since some paths in
+      // super View constructor are going to call this method before that
+      tmpStatesArray = new int[4];
     }
     final int[] extraStates = tmpStatesArray;
     final int[] states = super.onCreateDrawableState(extraSpace + extraStates.length);
 
-    extraStates[0] = collapsible ? R.attr.state_collapsible : -R.attr.state_collapsible;
-    extraStates[1] = collapsible && collapsed ? R.attr.state_collapsed : -R.attr.state_collapsed;
+    extraStates[0] = liftable ? R.attr.state_liftable : -R.attr.state_liftable;
+    extraStates[1] = liftable && lifted ? R.attr.state_lifted : -R.attr.state_lifted;
+
+    // Note that state_collapsible and state_collapsed are deprecated. This is to keep compatibility
+    // with existing state list animators that depend on these states.
+    extraStates[2] = liftable ? R.attr.state_collapsible : -R.attr.state_collapsible;
+    extraStates[3] = liftable && lifted ? R.attr.state_collapsed : -R.attr.state_collapsed;
 
     return mergeDrawableStates(states, extraStates);
   }
 
   /**
-   * Sets whether the AppBarLayout has collapsible children or not.
+   * Sets whether the {@link AppBarLayout} is liftable or not.
    *
-   * @return true if the collapsible state changed
+   * @return true if the liftable state changed
    */
-  private boolean setCollapsibleState(boolean collapsible) {
-    if (this.collapsible != collapsible) {
-      this.collapsible = collapsible;
+  private boolean setLiftableState(boolean liftable) {
+    if (this.liftable != liftable) {
+      this.liftable = liftable;
       refreshDrawableState();
       return true;
     }
@@ -559,17 +564,34 @@ public class AppBarLayout extends LinearLayout {
   }
 
   /**
-   * Sets whether the AppBarLayout is in a collapsed state or not.
+   * Sets whether the {@link AppBarLayout} is in a lifted state or not.
    *
-   * @return true if the collapsed state changed
+   * @return true if the lifted state changed
    */
-  boolean setCollapsedState(boolean collapsed) {
-    if (this.collapsed != collapsed) {
-      this.collapsed = collapsed;
+  boolean setLiftedState(boolean lifted) {
+    if (this.lifted != lifted) {
+      this.lifted = lifted;
       refreshDrawableState();
       return true;
     }
     return false;
+  }
+
+  /**
+   * Sets whether the {@link AppBarLayout} lifts on scroll or not.
+   *
+   * <p>If set to true, the {@link AppBarLayout} will animate to the lifted, or elevated, state when
+   * content is scrolled beneath it. Requires
+   * `app:layout_behavior="@string/appbar_scrolling_view_behavior` to be set on the scrolling
+   * sibling (e.g., `NestedScrollView`, `RecyclerView`, etc.).
+   */
+  public void setLiftOnScroll(boolean liftOnScroll) {
+    this.liftOnScroll = liftOnScroll;
+  }
+
+  /** Returns whether the {@link AppBarLayout} lifts on scroll or not. */
+  public boolean isLiftOnScroll() {
+    return liftOnScroll;
   }
 
   /**
@@ -631,16 +653,15 @@ public class AppBarLayout extends LinearLayout {
     /** @hide */
     @RestrictTo(LIBRARY_GROUP)
     @IntDef(
-      flag = true,
-      value = {
-        SCROLL_FLAG_SCROLL,
-        SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
-        SCROLL_FLAG_ENTER_ALWAYS,
-        SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED,
-        SCROLL_FLAG_SNAP,
-        SCROLL_FLAG_SNAP_MARGINS,
-      }
-    )
+        flag = true,
+        value = {
+          SCROLL_FLAG_SCROLL,
+          SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
+          SCROLL_FLAG_ENTER_ALWAYS,
+          SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED,
+          SCROLL_FLAG_SNAP,
+          SCROLL_FLAG_SNAP_MARGINS,
+        })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ScrollFlags {}
 
@@ -801,7 +822,7 @@ public class AppBarLayout extends LinearLayout {
    * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
    * handling with offsetting.
    */
-  //TODO: remove the base class and generic type after the widget migration is done
+  // TODO: remove the base class and generic type after the widget migration is done
   public static class Behavior extends BaseBehavior<AppBarLayout> {
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
@@ -828,13 +849,13 @@ public class AppBarLayout extends LinearLayout {
    * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
    * handling with offsetting.
    */
-  //TODO: remove this base class and generic type after the widget migration is done
+  // TODO: remove this base class and generic type after the widget migration is done
   protected static class BaseBehavior<T extends AppBarLayout> extends HeaderBehavior<T> {
     private static final int MAX_OFFSET_ANIMATION_DURATION = 600; // ms
     private static final int INVALID_POSITION = -1;
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
-    //TODO: remove this base class and generic type after the widget migration
+    // TODO: remove this base class and generic type after the widget migration
     public abstract static class BaseDragCallback<T extends AppBarLayout> {
       /**
        * Allows control over whether the given {@link AppBarLayout} can be dragged or not.
@@ -874,11 +895,11 @@ public class AppBarLayout extends LinearLayout {
         View target,
         int nestedScrollAxes,
         int type) {
-      // Return true if we're nested scrolling vertically, and we have scrollable children
-      // and the scrolling view is big enough to scroll
+      // Return true if we're nested scrolling vertically, and we either have lift on scroll enabled
+      // or scrollable children, and the scrolling view is big enough to scroll
       final boolean started =
           (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0
-              && child.hasScrollableChildren()
+              && (child.isLiftOnScroll() || child.hasScrollableChildren())
               && parent.getHeight() - directTargetChild.getHeight() <= child.getHeight();
 
       if (started && offsetAnimator != null) {
@@ -938,6 +959,9 @@ public class AppBarLayout extends LinearLayout {
         // the top of it's content
         scroll(coordinatorLayout, child, dyUnconsumed, -child.getDownNestedScrollRange(), 0);
         stopNestedScrollIfNeeded(dyUnconsumed, child, target, type);
+      }
+      if (child.isLiftOnScroll()) {
+        child.setLiftedState(target.getScrollY() > 0);
       }
     }
 
@@ -1360,7 +1384,7 @@ public class AppBarLayout extends LinearLayout {
           }
         }
 
-        final boolean changed = layout.setCollapsedState(collapsed);
+        final boolean changed = layout.setLiftedState(collapsed);
 
         if (Build.VERSION.SDK_INT >= 11
             && (forceJump || (changed && shouldJumpElevationState(parent, layout)))) {
@@ -1429,8 +1453,7 @@ public class AppBarLayout extends LinearLayout {
     }
 
     @Override
-    public void onRestoreInstanceState(
-        CoordinatorLayout parent, T appBarLayout, Parcelable state) {
+    public void onRestoreInstanceState(CoordinatorLayout parent, T appBarLayout, Parcelable state) {
       if (state instanceof SavedState) {
         final SavedState ss = (SavedState) state;
         super.onRestoreInstanceState(parent, appBarLayout, ss.getSuperState());

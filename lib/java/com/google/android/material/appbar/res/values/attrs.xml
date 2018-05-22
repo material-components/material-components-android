@@ -25,15 +25,26 @@
     <attr name="expanded" format="boolean"/>
     <attr name="android:keyboardNavigationCluster"/>
     <attr name="android:touchscreenBlocksFocus"/>
+    <!-- Whether the {@link AppBarLayout} should lift on scroll. If set to
+         true, the {@link AppBarLayout} will animate to the lifted, or
+         elevated, state when content is scrolled beneath it. Requires
+         `app:layout_behavior="@string/appbar_scrolling_view_behavior` to be
+         set on the scrolling sibling (e.g., `NestedScrollView`,
+         `RecyclerView`, etc.). Default is false. -->
+    <attr name="liftOnScroll" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">
-    <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
-         has been collapsed. -->
+    <!-- @deprecated in favor of {@link R.attr#state_lifted}. -->
     <attr name="state_collapsed" format="boolean"/>
-    <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
-         has children which are capable of being collapsed. -->
+    <!-- @deprecated in favor of {@link R.attr#state_liftable}. -->
     <attr name="state_collapsible" format="boolean"/>
+    <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
+     is lifted (elevated). -->
+    <attr name="state_lifted" format="boolean"/>
+    <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
+         is liftable (e.g., elevates on collapse or scroll). -->
+    <attr name="state_liftable" format="boolean"/>
   </declare-styleable>
 
   <declare-styleable name="AppBarLayout_Layout">

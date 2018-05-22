@@ -18,8 +18,8 @@
 
   <item
       android:state_enabled="true"
-      app:state_collapsed="false"
-      app:state_collapsible="true">
+      app:state_lifted="false"
+      app:state_liftable="true">
     <objectAnimator
         android:duration="@integer/app_bar_elevation_anim_duration"
         android:propertyName="elevation"

@@ -20,6 +20,14 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+  <android.support.v4.widget.NestedScrollView
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <include layout="@layout/cat_topappbar_filler_text_view"/>
+  </android.support.v4.widget.NestedScrollView>
+
   <com.google.android.material.appbar.AppBarLayout
       android:layout_width="match_parent"
       android:layout_height="@dimen/cat_topappbar_tall_toolbar_height">
@@ -45,12 +53,4 @@
           app:title="@string/cat_topappbar_collapsing_demo_toolbar_title"/>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
-
-  <android.support.v4.widget.NestedScrollView
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"
-      app:layout_behavior="@string/appbar_scrolling_view_behavior">
-
-    <include layout="@layout/cat_topappbar_filler_text_view"/>
-  </android.support.v4.widget.NestedScrollView>
 </android.support.design.widget.CoordinatorLayout>

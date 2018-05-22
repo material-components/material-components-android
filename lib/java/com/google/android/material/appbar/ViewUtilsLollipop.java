@@ -61,9 +61,9 @@ class ViewUtilsLollipop {
 
     final StateListAnimator sla = new StateListAnimator();
 
-    // Enabled and collapsible, but not collapsed means not elevated
+    // Enabled and liftable, but not lifted means not elevated
     sla.addState(
-        new int[] {android.R.attr.enabled, R.attr.state_collapsible, -R.attr.state_collapsed},
+        new int[] {android.R.attr.enabled, R.attr.state_liftable, -R.attr.state_lifted},
         ObjectAnimator.ofFloat(view, "elevation", 0f).setDuration(dur));
 
     // Default enabled state

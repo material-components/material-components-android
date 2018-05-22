@@ -56,6 +56,17 @@ Views using the scroll flag should be declared and visually positioned before
 other views in the `AppBarLayout`. This ensures that they are able to exit at the
 top of the screen, leaving behind fixed, or pinned, elements.
 
+### Lift On Scroll
+
+Top App Bars can also be fixed in place and positioned at the same elevation as
+content. Upon scroll, they can increase elevation and let content scroll behind
+them. This design pattern is called "Lift On Scroll" and can be implemented by
+setting `app:liftOnScroll="true"` on your `AppBarLayout`.
+
+Note: the `liftOnScroll` attribute requires that you apply the
+`@string/appbar_scrolling_view_behavior` `layout_behavior` to your scrolling view (e.g.,
+`NestedScrollView`, `RecyclerView`, etc.).
+
 ## Related Concepts
 
 The Top App Bar is a way of referencing a specific type of *Toolbar*. It's not a
