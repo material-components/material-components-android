@@ -40,7 +40,7 @@
     <!-- @deprecated in favor of {@link R.attr#state_liftable}. -->
     <attr name="state_collapsible" format="boolean"/>
     <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
-     is lifted (elevated). -->
+         is lifted (elevated). -->
     <attr name="state_lifted" format="boolean"/>
     <!-- State value for {@link com.google.android.material.appbar.AppBarLayout} set when the view
          is liftable (e.g., elevates on collapse or scroll). -->
