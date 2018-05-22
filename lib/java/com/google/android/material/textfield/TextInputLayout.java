@@ -116,12 +116,12 @@ import java.lang.annotation.RetentionPolicy;
  * <pre>
  * &lt;com.google.android.material.textfield.TextInputLayout
  *         android:layout_width=&quot;match_parent&quot;
- *         android:layout_height=&quot;wrap_content&quot;&gt;
+ *         android:layout_height=&quot;wrap_content&quot;
+ *         android:hint=&quot;@string/form_username&quot;&gt;
  *
  *     &lt;com.google.android.material.textfield.TextInputEditText
  *             android:layout_width=&quot;match_parent&quot;
- *             android:layout_height=&quot;wrap_content&quot;
- *             android:hint=&quot;@string/form_username&quot;/&gt;
+ *             android:layout_height=&quot;wrap_content&quot;/&gt;
  *
  * &lt;/com.google.android.material.textfield.TextInputLayout&gt;
  * </pre>
@@ -156,6 +156,13 @@ public class TextInputLayout extends LinearLayout {
 
   private boolean hintEnabled;
   private CharSequence hint;
+
+  /**
+   * {@code true} when providing a hint on behalf of a child {@link EditText}. If the child is an
+   * instance of {@link TextInputEditText}, this value defines the behavior of its {@link
+   * TextInputEditText#getHint()} method.
+   */
+  private boolean isProvidingHint;
 
   private GradientDrawable boxBackground;
   private int boxPaddingStartPx;
@@ -364,13 +371,9 @@ public class TextInputLayout extends LinearLayout {
 
     applyPasswordToggleTint();
 
-    if (ViewCompat.getImportantForAccessibility(this)
-        == ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_AUTO) {
-      // Make sure we're important for accessibility if we haven't been explicitly not
-      ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
-    }
-
-    ViewCompat.setAccessibilityDelegate(this, new TextInputAccessibilityDelegate());
+    // For accessibility, consider TextInputLayout itself to be a simple container for an EditText,
+    // and do not expose it to accessibility services.
+    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
   }
 
   @Override
@@ -752,12 +755,16 @@ public class TextInputLayout extends LinearLayout {
 
     // Temporarily sets child's hint to its original value so it is properly set in the
     // child's ViewStructure.
+    boolean wasProvidingHint = isProvidingHint;
+    // Ensures a child TextInputEditText does not retrieve its hint from this TextInputLayout.
+    isProvidingHint = false;
     final CharSequence hint = editText.getHint();
     editText.setHint(originalHint);
     try {
       super.dispatchProvideAutofillStructure(structure, flags);
     } finally {
       editText.setHint(hint);
+      isProvidingHint = wasProvidingHint;
     }
   }
 
@@ -776,6 +783,7 @@ public class TextInputLayout extends LinearLayout {
 
     this.editText = editText;
     onApplyBoxBackgroundMode();
+    setTextInputAccessibilityDelegate(new AccessibilityDelegate(this));
 
     final boolean hasPasswordTransformation = hasPasswordTransformation();
 
@@ -815,13 +823,15 @@ public class TextInputLayout extends LinearLayout {
     }
 
     // If we do not have a valid hint, try and retrieve it from the EditText, if enabled
-    if (hintEnabled && TextUtils.isEmpty(hint)) {
-      // Save the hint so it can be restored on dispatchProvideAutofillStructure();
-      originalHint = this.editText.getHint();
-      setHint(originalHint);
-      setHint(this.editText.getHint());
-      // Clear the EditText's hint as we will display it ourselves
-      this.editText.setHint(null);
+    if (hintEnabled) {
+      if (TextUtils.isEmpty(hint)) {
+        // Save the hint so it can be restored on dispatchProvideAutofillStructure();
+        originalHint = this.editText.getHint();
+        setHint(originalHint);
+        // Clear the EditText's hint as we will display it ourselves
+        this.editText.setHint(null);
+      }
+      this.isProvidingHint = true;
     }
 
     if (counterView != null) {
@@ -944,17 +954,17 @@ public class TextInputLayout extends LinearLayout {
   public void setHintEnabled(boolean enabled) {
     if (enabled != hintEnabled) {
       hintEnabled = enabled;
-
-      final CharSequence editTextHint = editText.getHint();
       if (!hintEnabled) {
-        if (!TextUtils.isEmpty(hint) && TextUtils.isEmpty(editTextHint)) {
-          // If the hint is disabled, but we have a hint set, and the EditText doesn't,
-          // pass it through...
+        // Ensures a child TextInputEditText provides its internal hint, not this TextInputLayout's.
+        isProvidingHint = false;
+        if (!TextUtils.isEmpty(hint) && TextUtils.isEmpty(editText.getHint())) {
+          // If the child EditText has no hint, but this layout does, restore it on the child.
           editText.setHint(hint);
         }
         // Now clear out any set hint
         setHintInternal(null);
       } else {
+        final CharSequence editTextHint = editText.getHint();
         if (!TextUtils.isEmpty(editTextHint)) {
           // If the hint is now enabled and the EditText has one set, we'll use it if
           // we don't already have one, and clear the EditText's
@@ -963,6 +973,7 @@ public class TextInputLayout extends LinearLayout {
           }
           editText.setHint(null);
         }
+        isProvidingHint = true;
       }
 
       // Now update the EditText top margin
@@ -980,6 +991,15 @@ public class TextInputLayout extends LinearLayout {
    */
   public boolean isHintEnabled() {
     return hintEnabled;
+  }
+
+  /**
+   * Returns whether or not this layout is actively managing a child {@link EditText}'s hint. If the
+   * child is an instance of {@link TextInputEditText}, this value defines the behavior of {@link
+   * TextInputEditText#getHint()}.
+   */
+  boolean isProvidingHint() {
+    return isProvidingHint;
   }
 
   /**
@@ -1915,6 +1935,19 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  /**
+   * Sets an {@link TextInputLayout.AccessibilityDelegate} providing an accessibility implementation
+   * for the {@link EditText} used by this layout.
+   *
+   * <p>Note: This method should be used in place of providing an {@link AccessibilityDelegate}
+   * directly on the {@link EditText}.
+   */
+  public void setTextInputAccessibilityDelegate(TextInputLayout.AccessibilityDelegate delegate) {
+    if (editText != null) {
+      ViewCompat.setAccessibilityDelegate(editText, delegate);
+    }
+  }
+
   private boolean hasPasswordTransformation() {
     return editText != null
         && editText.getTransformationMethod() instanceof PasswordTransformationMethod;
@@ -2151,48 +2184,55 @@ public class TextInputLayout extends LinearLayout {
     return indicatorViewController.getErrorViewCurrentTextColor();
   }
 
-  private class TextInputAccessibilityDelegate extends AccessibilityDelegateCompat {
-    TextInputAccessibilityDelegate() {}
+  /**
+   * An AccessibilityDelegate intended to be set on an {@link EditText} or {@link TextInputEditText}
+   * with {@link
+   * TextInputLayout#setTextInputAccessibilityDelegate(TextInputLayout.AccessibilityDelegate}} to
+   * provide attributes for accessibility that are managed by {@link TextInputLayout}.
+   */
+  public static class AccessibilityDelegate extends AccessibilityDelegateCompat {
+    private final TextInputLayout layout;
 
-    @Override
-    public void onInitializeAccessibilityEvent(View host, AccessibilityEvent event) {
-      super.onInitializeAccessibilityEvent(host, event);
-      event.setClassName(TextInputLayout.class.getSimpleName());
-    }
-
-    @Override
-    public void onPopulateAccessibilityEvent(View host, AccessibilityEvent event) {
-      super.onPopulateAccessibilityEvent(host, event);
-
-      final CharSequence hint = collapsingTextHelper.getText();
-      if (!TextUtils.isEmpty(hint)) {
-        event.getText().add(hint);
-      }
-
-      final CharSequence helperText = indicatorViewController.getHelperText();
-      if (!TextUtils.isEmpty(helperText)) {
-        event.getText().add(helperText);
-      }
+    public AccessibilityDelegate(TextInputLayout layout) {
+      this.layout = layout;
     }
 
     @Override
     public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
       super.onInitializeAccessibilityNodeInfo(host, info);
-      info.setClassName(TextInputLayout.class.getSimpleName());
+      EditText editText = layout.getEditText();
+      CharSequence text = (editText != null) ? editText.getText() : null;
+      CharSequence hintText = layout.getHint();
+      CharSequence errorText = layout.getError();
+      boolean showingText = !TextUtils.isEmpty(text);
+      boolean hasHint = !TextUtils.isEmpty(hintText);
+      boolean showingError = !TextUtils.isEmpty(errorText);
 
-      final CharSequence hint = collapsingTextHelper.getText();
-
-      if (!TextUtils.isEmpty(hint)) {
-        info.setText(hint);
+      if (showingText) {
+        info.setText(text);
+      } else if (hasHint) {
+        info.setText(hintText);
       }
 
-      if (editText != null) {
-        info.setLabelFor(editText);
+      if (hasHint) {
+        info.setHintText(hintText);
+        info.setShowingHintText(!showingText && hasHint);
       }
 
-      if (indicatorViewController.errorIsDisplayed()) {
-        info.setContentInvalid(true);
-        info.setError(indicatorViewController.getErrorText());
+      if (showingError) {
+        info.setError(errorText);
+        info.setContentInvalid(showingError);
+      }
+    }
+
+    @Override
+    public void onPopulateAccessibilityEvent(View host, AccessibilityEvent event) {
+      super.onPopulateAccessibilityEvent(host, event);
+      EditText editText = layout.getEditText();
+      CharSequence text = (editText != null) ? editText.getText() : null;
+      CharSequence eventText = TextUtils.isEmpty(text) ? layout.getHint() : text;
+      if (!TextUtils.isEmpty(eventText)) {
+        event.getText().add(eventText);
       }
     }
   }

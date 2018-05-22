@@ -17,6 +17,7 @@
 package com.google.android.material.textfield;
 
 import android.content.Context;
+import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.View;
@@ -28,7 +29,8 @@ import android.view.inputmethod.InputConnection;
  * A special sub-class of {@link android.widget.EditText} designed for use as a child of {@link
  * com.google.android.material.textfield.TextInputLayout}.
  *
- * <p>Using this class allows us to display a hint in the IME when in 'extract' mode.
+ * <p>Using this class allows us to display a hint in the IME when in 'extract' mode and provides
+ * accessibility support for {@link com.google.android.material.textfield.TextInputLayout}.
  */
 public class TextInputEditText extends AppCompatEditText {
 
@@ -45,20 +47,42 @@ public class TextInputEditText extends AppCompatEditText {
   }
 
   @Override
+  public CharSequence getHint() {
+    // Certain test frameworks expect the actionable element to expose its hint as a label. When
+    // TextInputLayout is providing our hint, retrieve it from the parent layout.
+    TextInputLayout layout = getTextInputLayout();
+    if ((layout != null) && layout.isProvidingHint()) {
+      return layout.getHint();
+    }
+    return super.getHint();
+  }
+
+  @Override
   public InputConnection onCreateInputConnection(EditorInfo outAttrs) {
     final InputConnection ic = super.onCreateInputConnection(outAttrs);
     if (ic != null && outAttrs.hintText == null) {
       // If we don't have a hint and our parent is a TextInputLayout, use its hint for the
       // EditorInfo. This allows us to display a hint in 'extract mode'.
-      ViewParent parent = getParent();
-      while (parent instanceof View) {
-        if (parent instanceof TextInputLayout) {
-          outAttrs.hintText = ((TextInputLayout) parent).getHint();
-          break;
-        }
-        parent = parent.getParent();
-      }
+      outAttrs.hintText = getHintFromLayout();
     }
     return ic;
+  }
+
+  @Nullable
+  private TextInputLayout getTextInputLayout() {
+    ViewParent parent = getParent();
+    while (parent instanceof View) {
+      if (parent instanceof TextInputLayout) {
+        return (TextInputLayout) parent;
+      }
+      parent = parent.getParent();
+    }
+    return null;
+  }
+
+  @Nullable
+  private CharSequence getHintFromLayout() {
+    TextInputLayout layout = getTextInputLayout();
+    return (layout != null) ? layout.getHint() : null;
   }
 }
