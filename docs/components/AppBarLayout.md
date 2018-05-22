@@ -64,8 +64,8 @@ them. This design pattern is called "Lift On Scroll" and can be implemented by
 setting `app:liftOnScroll="true"` on your `AppBarLayout`.
 
 Note: the `liftOnScroll` attribute requires that you apply the
-`@string/appbar_scrolling_view_behavior` `layout_behavior` to your scrolling view (e.g.,
-`NestedScrollView`, `RecyclerView`, etc.).
+`@string/appbar_scrolling_view_behavior` `layout_behavior` to your scrolling
+view (e.g., `NestedScrollView`, `RecyclerView`, etc.).
 
 ## Related Concepts
 
