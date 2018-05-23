@@ -98,6 +98,11 @@ Update your app theme to inherit from one of these themes, e.g.:
 For more information on how to set up theme-level attributes for your app,
 take a look at our [Theming](theming.md) guide.
 
+Note: Using a Material Components theme enables a custom view inflater which
+replaces default components with their Material counterparts. Currently, this
+only replaces `<Button>` XML components with
+[`<MaterialButton>`](components/MaterialButton.md).
+
 #### **AppCompat Themes** {#app-compat-themes}
 
 You can also incrementally test new Material components without changing

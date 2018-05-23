@@ -19,6 +19,16 @@ different actions. These levels of emphasis include:
 -   unelevated button: A button made of ink that displays ink reactions on press
     but does not lift
 
+Note: `MaterialButton` is visually different from `Button` and
+`AppCompatButton`. One of the main differences is that `AppCompatButton` has a
+`4dp` inset on the left and right sides, whereas `MaterialButton` does not. To
+add an inset to match `AppCompatButton`, set `android:insetLeft` and
+`android:insetRight` on the button to `4dp`, or change the spacing on the
+button's parent layout.
+
+When replacing buttons in your app with `MaterialButton`, you should inspect
+these changes for sizing and spacing differences.
+
 ## Design & API Documentation
 
 -   [Material Design guidelines: Buttons](https://material.io/go/design-buttons)
