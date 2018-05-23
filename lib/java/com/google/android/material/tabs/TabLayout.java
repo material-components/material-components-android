@@ -1586,10 +1586,12 @@ public class TabLayout extends HorizontalScrollView {
           setSelectedTabView(newPosition);
         }
       }
+      // Setting selectedTab before dispatching 'tab unselected' events, so that currentTab's state
+      // will be interpreted as unselected
+      selectedTab = tab;
       if (currentTab != null) {
         dispatchTabUnselected(currentTab);
       }
-      selectedTab = tab;
       if (tab != null) {
         dispatchTabSelected(tab);
       }
