@@ -39,6 +39,7 @@ import com.google.android.material.math.MathUtils;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v4.view.AbsSavedState;
+import android.support.v4.view.NestedScrollingChild;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.ViewCompat.NestedScrollType;
 import android.support.v4.view.WindowInsetsCompat;
@@ -1364,7 +1365,7 @@ public class AppBarLayout extends LinearLayout {
       if (child != null) {
         final AppBarLayout.LayoutParams childLp = (LayoutParams) child.getLayoutParams();
         final int flags = childLp.getScrollFlags();
-        boolean collapsed = false;
+        boolean lifted = false;
 
         if ((flags & LayoutParams.SCROLL_FLAG_SCROLL) != 0) {
           final int minHeight = ViewCompat.getMinimumHeight(child);
@@ -1376,15 +1377,24 @@ public class AppBarLayout extends LinearLayout {
                   != 0) {
             // We're set to enter always collapsed so we are only collapsed when
             // being scrolled down, and in a collapsed offset
-            collapsed = -offset >= child.getBottom() - minHeight - layout.getTopInset();
+            lifted = -offset >= child.getBottom() - minHeight - layout.getTopInset();
           } else if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
             // We're set to exit until collapsed, so any offset which results in
             // the minimum height (or less) being shown is collapsed
-            collapsed = -offset >= child.getBottom() - minHeight - layout.getTopInset();
+            lifted = -offset >= child.getBottom() - minHeight - layout.getTopInset();
           }
         }
 
-        final boolean changed = layout.setLiftedState(collapsed);
+        if (layout.isLiftOnScroll()) {
+          // Only update lifted state based on first scrolling child because it represents the
+          // content that would be scrolled beneath the app bar.
+          View scrollingChild = findFirstScrollingChild(parent);
+          if (scrollingChild != null) {
+            lifted = scrollingChild.getScrollY() > 0;
+          }
+        }
+
+        final boolean changed = layout.setLiftedState(lifted);
 
         if (Build.VERSION.SDK_INT >= 11
             && (forceJump || (changed && shouldJumpElevationState(parent, layout)))) {
@@ -1417,6 +1427,17 @@ public class AppBarLayout extends LinearLayout {
       for (int i = 0, z = layout.getChildCount(); i < z; i++) {
         final View child = layout.getChildAt(i);
         if (absOffset >= child.getTop() && absOffset <= child.getBottom()) {
+          return child;
+        }
+      }
+      return null;
+    }
+
+    @Nullable
+    private View findFirstScrollingChild(CoordinatorLayout parent) {
+      for (int i = 0, z = parent.getChildCount(); i < z; i++) {
+        final View child = parent.getChildAt(i);
+        if (child instanceof NestedScrollingChild) {
           return child;
         }
       }
@@ -1538,6 +1559,7 @@ public class AppBarLayout extends LinearLayout {
     @Override
     public boolean onDependentViewChanged(CoordinatorLayout parent, View child, View dependency) {
       offsetChildAsNeeded(child, dependency);
+      updateLiftedStateIfNeeded(child, dependency);
       return false;
     }
 
@@ -1626,6 +1648,15 @@ public class AppBarLayout extends LinearLayout {
         return ((AppBarLayout) v).getTotalScrollRange();
       } else {
         return super.getScrollRange(v);
+      }
+    }
+
+    private void updateLiftedStateIfNeeded(View child, View dependency) {
+      if (dependency instanceof AppBarLayout) {
+        AppBarLayout appBarLayout = (AppBarLayout) dependency;
+        if (appBarLayout.isLiftOnScroll()) {
+          appBarLayout.setLiftedState(child.getScrollY() > 0);
+        }
       }
     }
   }
