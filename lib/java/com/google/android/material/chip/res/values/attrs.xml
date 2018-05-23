@@ -38,7 +38,7 @@
     <attr name="rippleColor"/>
 
     <!-- Text to display on the chip. -->
-    <attr name="chipText" format="string" localization="suggested"/>
+    <attr name="android:text"/>
     <!-- Default appearance of text: color, typeface, size, and style. -->
     <attr name="android:textAppearance"/>
     <!-- If set, causes words that are longer than the view is wide to be ellipsized instead of

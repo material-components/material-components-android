@@ -38,7 +38,7 @@
     <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_circle</item>
     <item name="closeIcon">@drawable/ic_mtrl_chip_close_circle</item>
 
-    <item name="chipText">@null</item>
+    <item name="android:text">@null</item>
     <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Chip</item>
     <item name="closeIconTint">@color/mtrl_chip_close_icon_tint</item>
 

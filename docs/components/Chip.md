@@ -44,7 +44,7 @@ component. Example code of how to include the widget in your layout:
 <com.google.android.material.chip.Chip
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 ### Material Styles
@@ -68,7 +68,7 @@ optionally checkable.
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:chipIcon="@drawable/ic_avatar_circle_24"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 Note: Entry chips are usually used with a standalone `ChipDrawable`.
@@ -85,7 +85,7 @@ is always checkable.
     style="@style/Widget.MaterialComponents.Chip.Filter"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 Note: Filter chips are usually placed within a `ChipGroup`.
@@ -102,7 +102,7 @@ This style usually contains an optional chip icon and is always checkable.
     style="@style/Widget.MaterialComponents.Chip.Choice"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 Note: Choice chips are usually placed within a `ChipGroup`.
@@ -119,7 +119,7 @@ This style usually contains an optional chip icon and is never checkable.
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:chipIcon="@drawable/ic_action_24"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 ### Chip Attributes
@@ -132,7 +132,7 @@ Background   | `app:chipBackgroundColor`
 Border       | `app:chipStrokeColor`
              | `app:chipStrokeWidth`
 Ripple       | `app:rippleColor`
-Label        | `app:chipText`
+Label        | `android:text`
              | `android:textAppearance`
 Chip Icon    | `app:chipIconEnabled`
              | `app:chipIcon`
@@ -287,7 +287,7 @@ To use a `ChipDrawable`, first create a chip resource in `res/xml`.
 <chip
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:chipIcon="@drawable/ic_avatar_circle_24"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 After inflating it dynamically, you can treat it as any other `Drawable`.
@@ -316,7 +316,7 @@ can apply any of the other styles using a `style` attribute.
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.MaterialComponents.Chip.Filter"
     app:chipIcon="@drawable/ic_avatar_circle_24"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 #### Attributes

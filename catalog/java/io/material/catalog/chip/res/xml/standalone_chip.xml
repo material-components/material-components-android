@@ -16,6 +16,7 @@
   -->
 
 <chip
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:chipIcon="@drawable/ic_placeholder_circle_24"
-    app:chipText="@string/cat_chip_text"/>
+    android:text="@string/cat_chip_text"/>

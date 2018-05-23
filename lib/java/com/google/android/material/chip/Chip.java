@@ -81,16 +81,15 @@ import java.util.List;
  * sub-views, and contain their own navigation behavior and state.
  *
  * <p>All attributes from {@link R.styleable#ChipDrawable} are supported. Do not use the {@code
- * android:background} and {@code android:text} attributes. They will be ignored because Chip
- * manages its own background Drawable and text. Also do not use the {@code android:drawableStart}
- * and {@code android:drawableEnd} attributes. They will be ignored because Chip manages its own
- * start ({@code app:chipIcon}) and end ({@code app:closeIcon}) drawables. The basic attributes you
- * can set are:
+ * android:background} attribute. It will be ignored because Chip manages its own background
+ * Drawable. Also do not use the {@code android:drawableStart} and {@code android:drawableEnd}
+ * attributes. They will be ignored because Chip manages its own start ({@code app:chipIcon}) and
+ * end ({@code app:closeIcon}) drawables. The basic attributes you can set are:
  *
  * <ul>
  *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
  *       false, the chip acts like a button.
- *   <li>{@link R.attr#chipText app:chipText} - Sets the text of the chip.
+ *   <li>{@link android.R.attr#text android:text} - Sets the text of the chip.
  *   <li>{@link R.attr#chipIcon app:chipIcon} and {@link R.attr#chipIconEnabled app:chipIconEnabled}
  *       - Sets the icon of the chip. Usually on the left.
  *   <li>{@link R.attr#checkedIcon app:checkedIcon} and {@link R.attr#checkedIconEnabled
@@ -150,6 +149,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         ChipDrawable.createFromAttributes(
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     setChipDrawable(drawable);
+    // Clear out the text to prevent it from being drawn because ChipDrawable will handle text
+    // rendering.
+    setText(null);
     touchHelper = new ChipTouchHelper(this);
     ViewCompat.setAccessibilityDelegate(this, touchHelper);
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);

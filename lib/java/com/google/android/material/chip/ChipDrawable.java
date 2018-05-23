@@ -87,7 +87,7 @@ import org.xmlpull.v1.XmlPullParserException;
  *
  * <pre>{@code
  * <chip xmlns:app="http://schemas.android.com/apk/res-auto"
- *     app:chipText="Hello, World!"/>
+ *     android:text="Hello, World!"/>
  * }</pre>
  *
  * <p>The basic attributes you can set are:
@@ -95,7 +95,7 @@ import org.xmlpull.v1.XmlPullParserException;
  * <ul>
  *   <li>{@link android.R.attr#checkable android:checkable} - If true, the chip can be toggled. If
  *       false, the chip acts like a button.
- *   <li>{@link R.attr#chipText app:chipText} - Sets the text of the chip.
+ *   <li>{@link android.R.attr#text android:text} - Sets the text of the chip.
  *   <li>{@link R.attr#chipIcon app:chipIcon} - Sets the icon of the chip, or use @null to display
  *       no icon. Usually on the left.
  *   <li>{@link R.attr#checkedIcon app:checkedIcon} - Sets a custom icon to use when checked, or
@@ -331,7 +331,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setRippleColor(
         MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleColor));
 
-    setChipText(a.getText(R.styleable.ChipDrawable_chipText));
+    setChipText(a.getText(R.styleable.ChipDrawable_android_text));
     setTextAppearance(
         MaterialResources.getTextAppearance(
             context, a, R.styleable.ChipDrawable_android_textAppearance));
