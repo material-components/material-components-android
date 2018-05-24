@@ -50,12 +50,16 @@
             android:id="@+id/center"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:insetLeft="4dp"
+            android:insetRight="4dp"
             android:text="@string/cat_bottomappbar_center"/>
 
         <Button
             android:id="@+id/end"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:insetLeft="4dp"
+            android:insetRight="4dp"
             android:text="@string/cat_bottomappbar_end"/>
 
         <ToggleButton
