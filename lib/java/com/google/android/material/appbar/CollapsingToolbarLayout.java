@@ -19,7 +19,6 @@ package com.google.android.material.appbar;
 import com.google.android.material.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.math.MathUtils.constrain;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -45,6 +44,7 @@ import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.math.MathUtils;
 import android.support.v4.util.ObjectsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -1258,7 +1258,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
         switch (lp.collapseMode) {
           case LayoutParams.COLLAPSE_MODE_PIN:
             offsetHelper.setTopAndBottomOffset(
-                constrain(-verticalOffset, 0, getMaxOffsetForPinChild(child)));
+                MathUtils.clamp(-verticalOffset, 0, getMaxOffsetForPinChild(child)));
             break;
           case LayoutParams.COLLAPSE_MODE_PARALLAX:
             offsetHelper.setTopAndBottomOffset(Math.round(-verticalOffset * lp.parallaxMult));

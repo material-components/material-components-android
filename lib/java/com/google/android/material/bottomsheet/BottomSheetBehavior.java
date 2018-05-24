@@ -29,8 +29,8 @@ import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
-import com.google.android.material.math.MathUtils;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.math.MathUtils;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.ViewDragHelper;
@@ -863,7 +863,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
         @Override
         public int clampViewPositionVertical(@NonNull View child, int top, int dy) {
-          return MathUtils.constrain(
+          return MathUtils.clamp(
               top, getExpandedOffset(), hideable ? parentHeight : collapsedOffset);
         }
 

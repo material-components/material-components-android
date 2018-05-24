@@ -33,7 +33,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.math.MathUtils;
+import android.support.v4.math.MathUtils;
 import android.support.v4.text.TextDirectionHeuristicsCompat;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
@@ -359,7 +359,7 @@ public final class CollapsingTextHelper {
    * indicates that the layout is fully collapsed.
    */
   public void setExpansionFraction(float fraction) {
-    fraction = MathUtils.constrain(fraction, 0f, 1f);
+    fraction = MathUtils.clamp(fraction, 0f, 1f);
 
     if (fraction != expandedFraction) {
       expandedFraction = fraction;

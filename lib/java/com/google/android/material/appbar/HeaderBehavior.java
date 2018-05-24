@@ -17,9 +17,9 @@
 package com.google.android.material.appbar;
 
 import android.content.Context;
-import com.google.android.material.math.MathUtils;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.CoordinatorLayout.Behavior;
+import android.support.v4.math.MathUtils;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
@@ -208,7 +208,7 @@ abstract class HeaderBehavior<V extends View> extends ViewOffsetBehavior<V> {
     if (minOffset != 0 && curOffset >= minOffset && curOffset <= maxOffset) {
       // If we have some scrolling range, and we're currently within the min and max
       // offsets, calculate a new offset
-      newOffset = MathUtils.constrain(newOffset, minOffset, maxOffset);
+      newOffset = MathUtils.clamp(newOffset, minOffset, maxOffset);
 
       if (curOffset != newOffset) {
         setTopAndBottomOffset(newOffset);

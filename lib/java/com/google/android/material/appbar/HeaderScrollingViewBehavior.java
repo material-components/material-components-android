@@ -18,9 +18,9 @@ package com.google.android.material.appbar;
 
 import android.content.Context;
 import android.graphics.Rect;
-import com.google.android.material.math.MathUtils;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.CoordinatorLayout.Behavior;
+import android.support.v4.math.MathUtils;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
@@ -155,7 +155,7 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
   final int getOverlapPixelsForOffset(final View header) {
     return overlayTop == 0
         ? 0
-        : MathUtils.constrain((int) (getOverlapRatioForOffset(header) * overlayTop), 0, overlayTop);
+        : MathUtils.clamp((int) (getOverlapRatioForOffset(header) * overlayTop), 0, overlayTop);
   }
 
   private static int resolveGravity(int gravity) {
