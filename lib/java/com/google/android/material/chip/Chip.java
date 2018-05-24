@@ -826,7 +826,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     protected void onPopulateNodeForHost(AccessibilityNodeInfoCompat node) {
       node.setCheckable(chipDrawable != null && chipDrawable.isCheckable());
       node.setClassName(Chip.class.getName());
-      CharSequence chipText = chipDrawable != null ? chipDrawable.getChipText() : "";
+      CharSequence chipText = chipDrawable != null ? chipDrawable.getText() : "";
       if (VERSION.SDK_INT >= VERSION_CODES.M) {
         node.setText(chipText);
       } else {
@@ -950,18 +950,18 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   @Nullable
   public CharSequence getChipText() {
-    return chipDrawable != null ? chipDrawable.getChipText() : null;
+    return chipDrawable != null ? chipDrawable.getText() : null;
   }
 
   public void setChipTextResource(@StringRes int id) {
     if (chipDrawable != null) {
-      chipDrawable.setChipTextResource(id);
+      chipDrawable.setTextResource(id);
     }
   }
 
   public void setChipText(@Nullable CharSequence chipText) {
     if (chipDrawable != null) {
-      chipDrawable.setChipText(chipText);
+      chipDrawable.setText(chipText);
     }
   }
 
