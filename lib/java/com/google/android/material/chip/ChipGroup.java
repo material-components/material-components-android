@@ -26,6 +26,7 @@ import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Parcel;
 import android.support.annotation.BoolRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Dimension;
@@ -65,6 +66,35 @@ public class ChipGroup extends FlexboxLayout {
      * @param checkedId the unique identifier of the newly checked chip
      */
     public void onCheckedChanged(ChipGroup group, @IdRes int checkedId);
+  }
+
+  /**
+   * {@link FlexboxLayout.LayoutParams for {@link ChipGroup}.
+   */
+  public static class LayoutParams extends FlexboxLayout.LayoutParams {
+    public LayoutParams(Context context, AttributeSet attrs) {
+      super(context, attrs);
+    }
+
+    public LayoutParams(FlexboxLayout.LayoutParams source) {
+      super(source);
+    }
+
+    public LayoutParams(ViewGroup.LayoutParams source) {
+      super(source);
+    }
+
+    public LayoutParams(int width, int height) {
+      super(width, height);
+    }
+
+    public LayoutParams(MarginLayoutParams source) {
+      super(source);
+    }
+
+    protected LayoutParams(Parcel in) {
+      super(in);
+    }
   }
 
   private final SpacingDrawable spacingDrawable = new SpacingDrawable();
@@ -121,6 +151,26 @@ public class ChipGroup extends FlexboxLayout {
     setWillNotDraw(true);
 
     super.setOnHierarchyChangeListener(passThroughListener);
+  }
+
+  @Override
+  public FlexboxLayout.LayoutParams generateLayoutParams(AttributeSet attrs) {
+    return new ChipGroup.LayoutParams(getContext(), attrs);
+  }
+
+  @Override
+  protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
+    return new ChipGroup.LayoutParams(lp);
+  }
+
+  @Override
+  protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+    return new ChipGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+  }
+
+  @Override
+  protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+    return super.checkLayoutParams(p) && (p instanceof ChipGroup.LayoutParams);
   }
 
   @Override
