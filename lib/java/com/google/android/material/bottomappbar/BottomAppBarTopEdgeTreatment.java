@@ -73,7 +73,7 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
 
   @Override
   public void getEdgePath(float length, float interpolation, ShapePath shapePath) {
-    float cradleDiameter = fabMargin + fabDiameter;
+    float cradleDiameter = fabMargin * 2 + fabDiameter;
     float cradleRadius = interpolation * cradleDiameter / 2f;
     float roundedCornerOffset = interpolation * roundedCornerRadius;
     float middle = length / 2f + horizontalOffset;
