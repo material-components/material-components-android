@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Design.TextInputLayout" parent="android:Widget">
     <item name="boxBackgroundMode">none</item>
@@ -32,60 +32,88 @@
   <style name="Base.Widget.MaterialComponents.TextInputLayout" parent="Widget.Design.TextInputLayout">
     <item name="boxBackgroundMode">outline</item>
     <item name="boxBackgroundColor">@null</item>
+    <item name="boxCollapsedPaddingTop">0dp</item>
     <item name="boxCornerRadiusTopStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusTopEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxStrokeColor">?attr/colorControlActivated</item>
-    <item name="boxPaddingStart">@dimen/mtrl_textinput_box_padding_start</item>
-    <item name="boxPaddingEnd">@dimen/mtrl_textinput_box_padding_end</item>
-    <item name="boxCollapsedPaddingTop">
-      @dimen/mtrl_textinput_outline_box_collapsed_padding_top
-    </item>
-    <item name="boxCollapsedPaddingBottom">
-      @dimen/mtrl_textinput_outline_box_collapsed_padding_bottom
-    </item>
-    <item name="boxExpandedPaddingTop">@dimen/mtrl_textinput_outline_box_expanded_padding</item>
-    <item name="boxExpandedPaddingBottom">@dimen/mtrl_textinput_outline_box_expanded_padding</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
+    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox
+    </item>
     <item name="boxBackgroundMode">filled</item>
     <item name="boxBackgroundColor">@color/mtrl_textinput_filled_box_default_background_color</item>
+    <item name="boxCollapsedPaddingTop">12dp</item>
     <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_small</item>
     <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_small</item>
-    <item name="boxCollapsedPaddingTop">@dimen/mtrl_textinput_filled_box_collapsed_padding</item>
-    <item name="boxCollapsedPaddingBottom">@dimen/mtrl_textinput_box_padding_bottom</item>
-    <item name="boxExpandedPaddingTop">@dimen/mtrl_textinput_filled_box_expanded_padding</item>
-    <item name="boxExpandedPaddingBottom">@dimen/mtrl_textinput_outline_box_expanded_padding</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
-    <item name="boxCollapsedPaddingTop">
-      @dimen/mtrl_textinput_filled_box_collapsed_padding_dense
+    <item name="android:theme">
+      @style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense
     </item>
-    <item name="boxCollapsedPaddingBottom">
-      @dimen/mtrl_textinput_filled_box_collapsed_padding_dense
+    <item name="boxCollapsedPaddingTop">8dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
+    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox
     </item>
-    <item name="boxExpandedPaddingTop">
-      @dimen/mtrl_textinput_filled_box_expanded_padding_dense
-    </item>
-    <item name="boxExpandedPaddingBottom">
-      @dimen/mtrl_textinput_filled_box_expanded_padding_dense
+    <item name="boxCollapsedPaddingTop">0dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense">
+    <item name="android:theme">
+      @style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox.Dense
     </item>
   </style>
 
-  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox" parent="Base.Widget.MaterialComponents.TextInputLayout"/>
+  <!-- Base style for TextInputEditText. You should use one of the sub-styles instead. -->
+  <style name="Base.Widget.MaterialComponents.TextInputEditText" parent="Widget.AppCompat.EditText">
+    <item name="android:paddingStart" tools:ignore="NewApi">12dp</item>
+    <item name="android:paddingEnd" tools:ignore="NewApi">12dp</item>
+    <item name="android:paddingLeft">12dp</item>
+    <item name="android:paddingRight">12dp</item>
+    <item name="android:paddingTop">16dp</item>
+    <item name="android:paddingBottom">16dp</item>
+  </style>
 
-  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense">
-    <item name="boxCollapsedPaddingBottom">
-      @dimen/mtrl_textinput_outline_box_collapsed_padding_dense
+  <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Base.Widget.MaterialComponents.TextInputEditText">
+    <item name="android:paddingTop">20dp</item>
+    <item name="android:paddingBottom">16dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TextInputEditText.FilledBox.Dense">
+    <item name="android:paddingTop">16dp</item>
+    <item name="android:paddingBottom">16dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TextInputEditText.OutlineBox" parent="Base.Widget.MaterialComponents.TextInputEditText"/>
+
+  <style name="Widget.MaterialComponents.TextInputEditText.OutlineBox.Dense">
+    <item name="android:paddingTop">12dp</item>
+    <item name="android:paddingBottom">12dp</item>
+  </style>
+
+  <!-- Set of ThemeOverlays to be used internally in the TextInputLayout box styles to automatically apply the correct TextInputEditText box style to the TextInputEditText. -->
+  <style name="ThemeOverlay.MaterialComponents.TextInputEditText" parent=""/>
+
+  <style name="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox">
+    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.FilledBox</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense">
+    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.FilledBox.Dense
     </item>
-    <item name="boxExpandedPaddingTop">
-      @dimen/mtrl_textinput_outline_box_expanded_padding_dense
-    </item>
-    <item name="boxExpandedPaddingBottom">
-      @dimen/mtrl_textinput_outline_box_expanded_padding_dense
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox">
+    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlineBox</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox.Dense">
+    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlineBox.Dense
     </item>
   </style>
 

@@ -165,15 +165,10 @@ public class TextInputLayout extends LinearLayout {
   private boolean isProvidingHint;
 
   private GradientDrawable boxBackground;
-  private int boxPaddingStartPx;
-  private int boxExpandedPaddingTopPx;
-  private int boxCollapsedPaddingTopPx;
-  private int boxPaddingEndPx;
-  private int boxExpandedPaddingBottomPx;
-  private int boxCollapsedPaddingBottomPx;
   private final int boxBottomOffsetPx;
   private final int boxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int boxBackgroundMode;
+  private final int boxCollapsedPaddingTopPx;
   private float boxCornerRadiusTopStart;
   private float boxCornerRadiusTopEnd;
   private float boxCornerRadiusBottomEnd;
@@ -271,16 +266,6 @@ public class TextInputLayout extends LinearLayout {
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     hintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
-    boxPaddingStartPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingStart, 0);
-    boxCollapsedPaddingTopPx =
-        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingTop, 0);
-    boxCollapsedPaddingBottomPx =
-        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingBottom, 0);
-    boxExpandedPaddingTopPx =
-        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxExpandedPaddingTop, 0);
-    boxPaddingEndPx = a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxPaddingEnd, 0);
-    boxExpandedPaddingBottomPx =
-        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxExpandedPaddingBottom, 0);
     boxBottomOffsetPx =
         context.getResources().getDimensionPixelOffset(R.dimen.mtrl_textinput_box_bottom_offset);
     boxLabelCutoutPaddingPx =
@@ -288,6 +273,8 @@ public class TextInputLayout extends LinearLayout {
             .getResources()
             .getDimensionPixelOffset(R.dimen.mtrl_textinput_box_label_cutout_padding);
 
+    boxCollapsedPaddingTopPx =
+        a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingTop, 0);
     boxCornerRadiusTopStart =
         a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopStart, 0f);
     boxCornerRadiusTopEnd = a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopEnd, 0f);
@@ -424,7 +411,6 @@ public class TextInputLayout extends LinearLayout {
       updateInputLayoutMargins();
     }
     updateTextInputBoxBounds();
-    applyEditTextBoxPadding();
   }
 
   private void assignBoxBackgroundByMode() {
@@ -433,117 +419,13 @@ public class TextInputLayout extends LinearLayout {
     } else if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE
         && hintEnabled
         && !(boxBackground instanceof CutoutDrawable)) {
-      // Make mBoxBackground a CutoutDrawable if in outline mode, there is a hint, and
-      // mBoxBackground isn't already a CutoutDrawable.
+      // Make boxBackground a CutoutDrawable if in outline mode, there is a hint, and
+      // boxBackground isn't already a CutoutDrawable.
       boxBackground = new CutoutDrawable();
     } else if (!(boxBackground instanceof GradientDrawable)) {
-      // Otherwise, make mBoxBackground a GradientDrawable if it isn't already.
+      // Otherwise, make boxBackground a GradientDrawable if it isn't already.
       boxBackground = new GradientDrawable();
     }
-  }
-
-  private void applyEditTextBoxPadding() {
-    if (boxBackgroundMode == BOX_BACKGROUND_NONE) {
-      return;
-    }
-    // Set box padding on the edit text.
-    if (boxBackgroundMode != BOX_BACKGROUND_NONE && editText != null) {
-      if (!ViewUtils.isLayoutRtl(this)) {
-        editText.setPadding(
-            boxPaddingStartPx,
-            boxExpandedPaddingTopPx,
-            boxPaddingEndPx,
-            boxExpandedPaddingBottomPx);
-      } else {
-        editText.setPadding(
-            boxPaddingEndPx,
-            boxExpandedPaddingTopPx,
-            boxPaddingStartPx,
-            boxExpandedPaddingBottomPx);
-      }
-    }
-  }
-
-  /**
-   * Set the box's padding.
-   *
-   * @param boxPaddingStart the value in pixels to use for the box's start padding
-   * @param boxCollapsedPaddingTop the value in pixels to use for the box's collapsed top padding
-   * @param boxExpandedPaddingTop the value in pixels to use for the box's expanded top padding
-   * @param boxPaddingEnd the value in pixels to use for the box's end padding
-   * @param boxCollapsedPaddingBottom the value in pixels to use for the box's collapsed bottom
-   *     padding
-   * @param boxExpandedPaddingBottom the value in pixels to use for the box's expanded bottom
-   *     padding
-   */
-  public void setBoxPadding(
-      int boxPaddingStart,
-      int boxCollapsedPaddingTop,
-      int boxExpandedPaddingTop,
-      int boxPaddingEnd,
-      int boxCollapsedPaddingBottom,
-      int boxExpandedPaddingBottom) {
-    boxPaddingStartPx = boxPaddingStart;
-    boxCollapsedPaddingTopPx = boxCollapsedPaddingTop;
-    boxExpandedPaddingTopPx = boxExpandedPaddingTop;
-    boxPaddingEndPx = boxPaddingEnd;
-    boxCollapsedPaddingBottomPx = boxCollapsedPaddingBottom;
-    boxExpandedPaddingBottomPx = boxExpandedPaddingBottom;
-    applyEditTextBoxPadding();
-  }
-
-  /**
-   * Get the box's start padding.
-   *
-   * @return the box's start padding in pixels
-   */
-  public int getBoxPaddingStart() {
-    return boxPaddingStartPx;
-  }
-
-  /**
-   * Get the box's collapsed top padding.
-   *
-   * @return the box's collapsed top padding in pixels
-   */
-  public int getBoxCollapsedPaddingTop() {
-    return boxCollapsedPaddingTopPx;
-  }
-
-  /**
-   * Get the box's expanded top padding.
-   *
-   * @return the box's expanded top padding in pixels
-   */
-  public int getBoxExpandedPaddingTop() {
-    return boxExpandedPaddingTopPx;
-  }
-
-  /**
-   * Get the box's end padding.
-   *
-   * @return the box's end padding in pixels
-   */
-  public int getBoxPaddingEnd() {
-    return boxPaddingEndPx;
-  }
-
-  /**
-   * Get the box's collapsed bottom padding.
-   *
-   * @return the box's collapsed bottom padding in pixels
-   */
-  public int getBoxCollapsedPaddingBottom() {
-    return boxCollapsedPaddingBottomPx;
-  }
-
-  /**
-   * Get the box's expanded bottom padding.
-   *
-   * @return the box's expanded bottom padding in pixels
-   */
-  public int getBoxExpandedPaddingBottom() {
-    return boxExpandedPaddingBottomPx;
   }
 
   /**

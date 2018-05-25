@@ -49,10 +49,9 @@ a `TextInputEditText` as a direct child.
 </com.google.android.material.textfield.TextInputLayout>
 ```
 
-Note: You can also use an `EditText` for your input text component. However,
-using `TextInputEditText` allows `TextInputLayout` greater control over the
-visual aspects of the input text - it allows `TextInputLayout` to display hint
-in the text field when in "extract mode" (such as landscape mode).
+Note: An `EditText` may work for your input text component. However, using
+`TextInputEditText` allows `TextInputLayout` greater control over the visual
+aspects of the input text and provides accessibility support for the text field.
 
 ### Material Styles
 
@@ -68,7 +67,7 @@ Filled text fields have a solid background color and draw more attention,
 especially in layouts where the field is surrounded by other elements. To use a
 filled text field, apply the following style to your `TextInputLayout`:
 
-```
+```xml
 style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
 ```
 
@@ -80,7 +79,7 @@ To change the background color of a filled text field, you can set the
 Outline text fields have a stroked border and are less emphasized. To use an
 outline text field, apply the following style to your `TextInputLayout`:
 
-```
+```xml
 style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
 ```
 
@@ -96,29 +95,22 @@ height.
 
 In order to reduce the height of a text box, you can use a dense style, which
 will reduce the vertical padding within the text box. You can achieve this by
-applying the appropriate styles to your `TextInputLayout`, depending on whether
-you are using a filled or outline text field:
+applying the appropriate styles to your `TextInputLayout` and
+`TextInputEditText`, depending on whether you are using a filled or outline text
+field:
 
-```
-style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
-```
+##### Dense Filled Box
 
-```
-style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"
-```
+Apply this style to your `TextInputLayout`: `xml
+style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"`
 
-Additionally, to change a text field's internal padding as well as other values
-like corner radii, you can apply the following attributes to your
-`TextInputLayout`:
+##### Dense Outline Box
 
-##### Padding
+Apply this style to your `TextInputLayout`: `xml
+style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"`
 
-* `boxPaddingLeft`
-* `boxCollapsedPaddingTop`
-* `boxExpandedPaddingTop`
-* `boxPaddingRight`
-* `boxCollapsedPaddingBottom`
-* `boxExpandedPaddingBottom`
+To change a text box's internal padding and overall dimensions, you can adjust
+the `android:padding` attributes on the `TextInputEditText`.
 
 ##### Corner Radius
 
@@ -148,6 +140,16 @@ If a hint is specified on the child `EditText` in XML, then the
 `TextInputLayout` will use the `EditText`'s hint as its floating label. To
 specify or change the hint programmatically, make sure to call the `setHint()`
 method on `TextInputLayout`, instead of on the `EditText`.
+
+## Notes about using `TextInputLayout` and `TextInputEditText` programmatically
+
+If you construct a `TextInputEditText` programmatically, you should use
+`TextInputLayout's` context to create the view. This will allow TextInputLayout
+to pass along the appropriate styling to the `TextInputEditText`.
+
+```java
+TextInputEditText editText = new TextInputEditText(textInputLayout.getContext());
+```
 
 ## Related concepts
 

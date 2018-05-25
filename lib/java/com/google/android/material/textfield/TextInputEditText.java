@@ -16,6 +16,8 @@
 
 package com.google.android.material.textfield;
 
+import com.google.android.material.R;
+
 import android.content.Context;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.AppCompatEditText;
@@ -35,11 +37,11 @@ import android.view.inputmethod.InputConnection;
 public class TextInputEditText extends AppCompatEditText {
 
   public TextInputEditText(Context context) {
-    super(context);
+    this(context, null);
   }
 
   public TextInputEditText(Context context, AttributeSet attrs) {
-    super(context, attrs);
+    this(context, attrs, R.attr.editTextStyle);
   }
 
   public TextInputEditText(Context context, AttributeSet attrs, int defStyleAttr) {

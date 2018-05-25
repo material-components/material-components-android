@@ -60,9 +60,9 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_label"
-          style="@style/Widget.Design.TextInputLayout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_margin="4dp"
           android:hint="@string/cat_textfield_customize_label_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
@@ -77,9 +77,9 @@
           android:text="@string/cat_textfield_update_label_text"/>
 
       <com.google.android.material.textfield.TextInputLayout
-          style="@style/Widget.Design.TextInputLayout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_margin="4dp"
           android:hint="@string/cat_textfield_customize_error_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
@@ -96,9 +96,9 @@
 
       <com.google.android.material.textfield.TextInputLayout
           android:id="@+id/text_input_counter_max"
-          style="@style/Widget.Design.TextInputLayout"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:layout_margin="4dp"
           android:hint="@string/cat_textfield_customize_counter_text"
           app:errorEnabled="true">
         <com.google.android.material.textfield.TextInputEditText
