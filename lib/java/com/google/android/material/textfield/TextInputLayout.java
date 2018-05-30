@@ -1140,10 +1140,23 @@ public class TextInputLayout extends LinearLayout {
     return counterMaxLength;
   }
 
+  /**
+   * Returns the {@code contentDescription} for accessibility purposes of the counter view, or
+   * {@code null} if the counter is not enabled, not overflowed, or has no description.
+   */
+  @Nullable
+  CharSequence getCounterOverflowDescription() {
+    if (counterEnabled && counterOverflowed && (counterView != null)) {
+      return counterView.getContentDescription();
+    }
+    return null;
+  }
+
   void updateCounter(int length) {
     boolean wasCounterOverflowed = counterOverflowed;
     if (counterMaxLength == INVALID_MAX_LENGTH) {
       counterView.setText(String.valueOf(length));
+      counterView.setContentDescription(null);
       counterOverflowed = false;
     } else {
       // Make sure the counter view region is not live to prevent spamming the user with the counter
@@ -2086,9 +2099,11 @@ public class TextInputLayout extends LinearLayout {
       CharSequence text = (editText != null) ? editText.getText() : null;
       CharSequence hintText = layout.getHint();
       CharSequence errorText = layout.getError();
+      CharSequence counterDesc = layout.getCounterOverflowDescription();
       boolean showingText = !TextUtils.isEmpty(text);
       boolean hasHint = !TextUtils.isEmpty(hintText);
       boolean showingError = !TextUtils.isEmpty(errorText);
+      boolean contentInvalid = showingError || !TextUtils.isEmpty(counterDesc);
 
       if (showingText) {
         info.setText(text);
@@ -2101,9 +2116,9 @@ public class TextInputLayout extends LinearLayout {
         info.setShowingHintText(!showingText && hasHint);
       }
 
-      if (showingError) {
-        info.setError(errorText);
-        info.setContentInvalid(showingError);
+      if (contentInvalid) {
+        info.setError(showingError ? errorText : counterDesc);
+        info.setContentInvalid(true);
       }
     }
 
