@@ -80,6 +80,7 @@ import java.util.List;
  * @attr ref
  *     com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleVerticalOffset
+ * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_hideOnScroll
  */
 public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private static final long ANIMATION_DURATION = 300;
