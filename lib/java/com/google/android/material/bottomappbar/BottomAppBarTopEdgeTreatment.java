@@ -37,8 +37,9 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
   private static final int ANGLE_UP = 270;
   private static final int ANGLE_LEFT = 180;
 
-  private final float roundedCornerRadius;
-  private final float fabMargin;
+  private float roundedCornerRadius;
+  private float fabMargin;
+
   private float fabDiameter;
   private float cradleVerticalOffset;
   private float horizontalOffset;
@@ -61,16 +62,6 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
       throw new IllegalArgumentException("cradleVerticalOffset must be positive.");
     }
     this.horizontalOffset = 0f;
-  }
-
-  /** Set the horizontal offset, in pixels, of the cradle from center. */
-  public void setHorizontalOffset(float horizontalOffset) {
-    this.horizontalOffset = horizontalOffset;
-  }
-
-  /** Returns the horizontal offset, in pixels, of the cradle from center. */
-  public float getHorizontalOffset() {
-    return horizontalOffset;
   }
 
   @Override
@@ -147,29 +138,55 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
     shapePath.lineTo(/* x= */ length, /* y= */ 0);
   }
 
+  /** Sets the horizontal offset, in pixels, of the cradle from center. */
+  void setHorizontalOffset(float horizontalOffset) {
+    this.horizontalOffset = horizontalOffset;
+  }
+
+  /** Returns the horizontal offset, in pixels, of the cradle from center. */
+  float getHorizontalOffset() {
+    return horizontalOffset;
+  }
+
   /**
-   * @return vertical offset, in pixels, of the {@link FloatingActionButton} being cradled. An
-   *     offset of 0 indicates the vertical center of the {@link FloatingActionButton} is positioned
-   *     on the top edge.
+   * Returns vertical offset, in pixels, of the {@link FloatingActionButton} being cradled. An
+   * offset of 0 indicates the vertical center of the {@link FloatingActionButton} is positioned on
+   * the top edge.
    */
-  public float getCradleVerticalOffset() {
+  float getCradleVerticalOffset() {
     return cradleVerticalOffset;
   }
 
   /**
-   * @param cradleVerticalOffset vertical offset, in pixels, of the {@link FloatingActionButton}
-   *     being cradled. An offset of 0 indicates the vertical center of the {@link
-   *     FloatingActionButton} is positioned on the top edge.
+   * Sets the vertical offset, in pixels, of the {@link FloatingActionButton} being cradled. An
+   * offset of 0 indicates the vertical center of the {@link FloatingActionButton} is positioned on
+   * the top edge.
    */
-  public void setCradleVerticalOffset(float cradleVerticalOffset) {
+  void setCradleVerticalOffset(float cradleVerticalOffset) {
     this.cradleVerticalOffset = cradleVerticalOffset;
   }
 
-  public float getFabDiameter() {
+  float getFabDiameter() {
     return fabDiameter;
   }
 
-  public void setFabDiameter(float fabDiameter) {
+  void setFabDiameter(float fabDiameter) {
     this.fabDiameter = fabDiameter;
+  }
+
+  float getFabCradleMargin() {
+    return fabMargin;
+  }
+
+  void setFabCradleMargin(float fabMargin) {
+    this.fabMargin = fabMargin;
+  }
+
+  float getFabCradleRoundedCornerRadius() {
+    return roundedCornerRadius;
+  }
+
+  void setFabCradleRoundedCornerRadius(float roundedCornerRadius) {
+    this.roundedCornerRadius = roundedCornerRadius;
   }
 }
