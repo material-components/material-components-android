@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2018 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <public name="chipGroupStyle" type="attr"/>
+  <public name="chipStyle" type="attr"/>
+  <public name="chipStandaloneStyle" type="attr"/>
+  <public name="chipBackgroundColor" type="attr"/>
+  <public name="chipMinHeight" type="attr"/>
+  <public name="chipCornerRadius" type="attr"/>
+  <public name="chipStrokeColor" type="attr"/>
+  <public name="chipIconEnabled" type="attr"/>
+  <public name="chipIcon" type="attr"/>
+  <public name="chipIconSize" type="attr"/>
+  <public name="closeIconEnabled" type="attr"/>
+  <public name="closeIconSize" type="attr"/>
+  <public name="checkedIconEnabled" type="attr"/>
+  <public name="checkedIcon" type="attr"/>
+  <public name="chipStartPadding" type="attr"/>
+  <public name="iconStartPadding" type="attr"/>
+  <public name="iconEndPadding" type="attr"/>
+  <public name="textStartPadding" type="attr"/>
+  <public name="textEndPadding" type="attr"/>
+  <public name="closeIconStartPadding" type="attr"/>
+  <public name="chipSpacing" type="attr"/>
+  <public name="chipSpacingHorizontal" type="attr"/>
+  <public name="chipSpacingVertical" type="attr"/>
+  <public name="singleLine" type="attr"/>
+  <public name="singleSelection" type="attr"/>
+  <public name="checkedChip" type="attr"/>
+  <public name="Widget.MaterialComponents.ChipGroup" type="style"/>
+</resources>
+
