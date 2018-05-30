@@ -347,7 +347,7 @@ final class IndicatorViewController {
           ViewCompat.getPaddingStart(textInputView.getEditText()),
           0,
           ViewCompat.getPaddingEnd(textInputView.getEditText()),
-          textInputView.getEditText().getPaddingBottom());
+          0);
     }
   }
 
