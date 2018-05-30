@@ -23,6 +23,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Outline;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
@@ -121,6 +122,8 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private @interface VirtualId {}
 
   @Nullable private ChipDrawable chipDrawable;
+  //noinspection NewApi
+  @Nullable private RippleDrawable ripple;
 
   @Nullable private OnClickListener onCloseIconClickListener;
   @Nullable private OnCheckedChangeListener onCheckedChangeListenerInternal;
@@ -163,6 +166,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
     if (attributeSet == null) {
       return;
+    }
+    if (attributeSet.getAttributeValue(NAMESPACE_ANDROID, "background") != null) {
+      throw new UnsupportedOperationException(
+          "Do not set the background; Chip manages its own background drawable.");
     }
     if (attributeSet.getAttributeValue(NAMESPACE_ANDROID, "drawableLeft") != null) {
       throw new UnsupportedOperationException("Please set left drawable using R.attr#chipIcon.");
@@ -215,7 +222,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
       if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
         //noinspection NewApi
-        RippleDrawable ripple =
+        ripple =
             new RippleDrawable(
                 RippleUtils.convertToRippleDrawableColor(chipDrawable.getRippleColor()),
                 chipDrawable,
@@ -247,6 +254,50 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       mergeDrawableStates(state, SELECTED_STATE);
     }
     return state;
+  }
+
+  @Override
+  public void setBackgroundTintList(@Nullable ColorStateList tint) {
+    throw new UnsupportedOperationException(
+        "Do not set the background tint list; Chip manages its own background drawable.");
+  }
+
+  @Override
+  public void setBackgroundTintMode(@Nullable Mode tintMode) {
+    throw new UnsupportedOperationException(
+        "Do not set the background tint mode; Chip manages its own background drawable.");
+  }
+
+  @Override
+  public void setBackgroundColor(int color) {
+    throw new UnsupportedOperationException(
+        "Do not set the background color; Chip manages its own background drawable.");
+  }
+
+  @Override
+  public void setBackgroundResource(int resid) {
+    throw new UnsupportedOperationException(
+        "Do not set the background resource; Chip manages its own background drawable.");
+  }
+
+  @Override
+  public void setBackground(Drawable background) {
+    if (background != chipDrawable && background != ripple) {
+      throw new UnsupportedOperationException(
+          "Do not set the background; Chip manages its own background drawable.");
+    } else {
+      super.setBackground(background);
+    }
+  }
+
+  @Override
+  public void setBackgroundDrawable(Drawable background) {
+    if (background != chipDrawable && background != ripple) {
+      throw new UnsupportedOperationException(
+          "Do not set the background drawable; Chip manages its own background drawable.");
+    } else {
+      super.setBackgroundDrawable(background);
+    }
   }
 
   @Override
