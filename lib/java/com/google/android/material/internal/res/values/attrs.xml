@@ -26,6 +26,9 @@
          For example, tinting a vector drawable with a non-existent theme attribute is known to
          crash on pre-21 devices. -->
     <attr name="enforceMaterialTheme" format="boolean"/>
+    <!-- Internal flag used to denote that a style requires that the textAppearance attribute is
+         specified and evaluates to a valid text appearance. -->
+    <attr name="enforceTextAppearance" format="boolean"/>
     <!-- Attribute used to check that a component has a TextAppearance specified on it. -->
     <attr name="android:textAppearance"/>
   </declare-styleable>

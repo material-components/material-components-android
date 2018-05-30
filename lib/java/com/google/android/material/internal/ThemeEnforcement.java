@@ -87,9 +87,7 @@ public final class ThemeEnforcement {
     checkCompatibleTheme(context, set, defStyleAttr, defStyleRes);
 
     // Then, check that a textAppearance is set if enforceTextAppearance is true
-    if (enforceTextAppearance) {
-      checkTextAppearance(context, set, defStyleAttr, defStyleRes);
-    }
+    checkTextAppearance(context, set, defStyleAttr, defStyleRes);
 
     // Then, safely retrieve the styled attribute information.
     return context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
@@ -116,39 +114,11 @@ public final class ThemeEnforcement {
       @StyleableRes int[] attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
-    return obtainTintedStyledAttributes(context, set, attrs, defStyleAttr, defStyleRes, false);
-  }
-
-  /**
-   * Safely retrieve styled attribute information in this Context's theme using {@link
-   * android.support.v7.widget.TintTypedArray}, after checking whether the theme is compatible with
-   * the component's given style. Also checks whether a textAppearance is set on the component if
-   * <code>enforceTextAppearance</code> is set to <code>true</code>.
-   *
-   * <p>Set a component's {@link R.attr#enforceMaterialTheme enforceMaterialTheme} attribute to
-   * <code>true</code> to ensure that the Context's theme inherits from {@link
-   * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
-   * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
-   * {@link R.attr#colorSecondary colorSecondary}.
-   *
-   * <p>New components should prefer to use {@link #obtainStyledAttributes(Context, AttributeSet,
-   * int[], int, int)}, and use {@link com.google.android.material.resources.MaterialResources} as a
-   * replacement for the functionality in {@link android.support.v7.widget.TintTypedArray}.
-   */
-  public static TintTypedArray obtainTintedStyledAttributes(
-      Context context,
-      AttributeSet set,
-      @StyleableRes int[] attrs,
-      @AttrRes int defStyleAttr,
-      @StyleRes int defStyleRes,
-      boolean enforceTextAppearance) {
     // First, check for a compatible theme.
     checkCompatibleTheme(context, set, defStyleAttr, defStyleRes);
 
     // Then, check that a textAppearance is set if enforceTextAppearance is true
-    if (enforceTextAppearance) {
-      checkTextAppearance(context, set, defStyleAttr, defStyleRes);
-    }
+    checkTextAppearance(context, set, defStyleAttr, defStyleRes);
 
     // Then, safely retrieve the styled attribute information.
     return TintTypedArray.obtainStyledAttributes(context, set, attrs, defStyleAttr, defStyleRes);
@@ -167,6 +137,28 @@ public final class ThemeEnforcement {
       checkMaterialTheme(context);
     }
     checkAppCompatTheme(context);
+  }
+
+  private static void checkTextAppearance(
+      Context context, AttributeSet set, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    TypedArray a =
+        context.obtainStyledAttributes(
+            set, R.styleable.ThemeEnforcement, defStyleAttr, defStyleRes);
+    boolean enforceTextAppearance =
+        a.getBoolean(R.styleable.ThemeEnforcement_enforceTextAppearance, false);
+
+    if (enforceTextAppearance) {
+      int textAppearanceResId =
+          a.getResourceId(R.styleable.ThemeEnforcement_android_textAppearance, -1);
+      a.recycle();
+
+      if (textAppearanceResId == -1) {
+        throw new IllegalArgumentException(
+            "This component requires that you specify a valid android:textAppearance attribute.");
+      }
+    } else {
+      a.recycle();
+    }
   }
 
   public static void checkAppCompatTheme(Context context) {
@@ -199,21 +191,6 @@ public final class ThemeEnforcement {
           "The style on this component requires your app theme to be "
               + themeName
               + " (or a descendant).");
-    }
-  }
-
-  private static void checkTextAppearance(
-      Context context, AttributeSet set, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    TypedArray a =
-        context.obtainStyledAttributes(
-            set, R.styleable.ThemeEnforcement, defStyleAttr, defStyleRes);
-    int textAppearanceResId =
-        a.getResourceId(R.styleable.ThemeEnforcement_android_textAppearance, -1);
-    a.recycle();
-
-    if (textAppearanceResId == -1) {
-      throw new IllegalArgumentException(
-          "This component requires that you specify a valid android:textAppearance attribute.");
     }
   }
 }
