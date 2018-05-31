@@ -31,10 +31,12 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.Dimension;
 import android.support.annotation.IntDef;
 import android.support.annotation.MenuRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Px;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -211,7 +213,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   /**
    * Sets the cradle margin for the fab cutout. This is the space between the fab and the cutout.
    */
-  public void setFabCradleMargin(float cradleMargin) {
+  public void setFabCradleMargin(@Dimension float cradleMargin) {
     if (cradleMargin != getFabCradleMargin()) {
       topEdgeTreatment.setFabCradleMargin(cradleMargin);
       materialShapeDrawable.invalidateSelf();
@@ -219,12 +221,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   /** Returns the rounded corner radius for the cutout. A value of 0 will be a sharp edge. */
+  @Dimension
   public float getFabCradleRoundedCornerRadius() {
     return topEdgeTreatment.getFabCradleRoundedCornerRadius();
   }
 
   /** Sets the rounded corner radius for the fab cutout. A value of 0 will be a sharp edge. */
-  public void setFabCradleRoundedCornerRadius(float roundedCornerRadius) {
+  public void setFabCradleRoundedCornerRadius(@Dimension float roundedCornerRadius) {
     if (roundedCornerRadius != getFabCradleRoundedCornerRadius()) {
       topEdgeTreatment.setFabCradleRoundedCornerRadius(roundedCornerRadius);
       materialShapeDrawable.invalidateSelf();
@@ -235,6 +238,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    * Returns the vertical offset for the fab cutout. An offset of 0 indicates the vertical center of
    * the {@link FloatingActionButton} is positioned on the top edge.
    */
+  @Dimension
   public float getCradleVerticalOffset() {
     return topEdgeTreatment.getCradleVerticalOffset();
   }
@@ -244,7 +248,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    * offset of 0 indicates the vertical center of the {@link FloatingActionButton} is positioned on
    * the top edge.
    */
-  public void setCradleVerticalOffset(float verticalOffset) {
+  public void setCradleVerticalOffset(@Dimension float verticalOffset) {
     if (verticalOffset != getCradleVerticalOffset()) {
       topEdgeTreatment.setCradleVerticalOffset(verticalOffset);
       materialShapeDrawable.invalidateSelf();
@@ -283,7 +287,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    * Sets the fab diameter. This will be called automatically by the {@link BottomAppBar.Behavior}
    * if the fab is anchored to this {@link BottomAppBar}.
    */
-  void setFabDiameter(int diameter) {
+  void setFabDiameter(@Px int diameter) {
     if (diameter != topEdgeTreatment.getFabDiameter()) {
       topEdgeTreatment.setFabDiameter(diameter);
       materialShapeDrawable.invalidateSelf();
