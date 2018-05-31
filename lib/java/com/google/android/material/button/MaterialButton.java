@@ -29,11 +29,12 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
-import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.Nullable;
+import android.support.annotation.Px;
 import android.support.annotation.RestrictTo;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
@@ -92,24 +93,24 @@ public class MaterialButton extends AppCompatButton {
 
   @Nullable private final MaterialButtonHelper materialButtonHelper;
 
-  private int paddingStart;
-  private int paddingEnd;
-  private int paddingTop;
-  private int paddingBottom;
+  @Px private int paddingStart;
+  @Px private int paddingEnd;
+  @Px private int paddingTop;
+  @Px private int paddingBottom;
 
-  private int insetLeft;
-  private int insetRight;
-  private int insetTop;
-  private int insetBottom;
+  @Px private final int insetLeft;
+  @Px private final int insetRight;
+  @Px private final int insetTop;
+  @Px private final int insetBottom;
 
-  private int additionalPaddingStartForIcon;
-  private int additionalPaddingEndForIcon;
+  @Px private int additionalPaddingStartForIcon;
+  @Px private int additionalPaddingEndForIcon;
 
-  private int iconPadding;
+  @Px private int iconPadding;
   private Mode iconTintMode;
   private ColorStateList iconTint;
   private Drawable icon;
-  private int iconSize;
+  @Px private int iconSize;
 
   public MaterialButton(Context context) {
     this(context, null /* attrs */);
@@ -301,7 +302,7 @@ public class MaterialButton extends AppCompatButton {
   }
 
   @Override
-  public void setBackgroundColor(int color) {
+  public void setBackgroundColor(@ColorInt int color) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setBackgroundColor(color);
     } else {
@@ -371,7 +372,7 @@ public class MaterialButton extends AppCompatButton {
    * <p>To retrieve just the base padding values, use {@link #getButtonPaddingStart()}, {@link
    * #getButtonPaddingTop()}, {@link #getButtonPaddingEnd()}, {@link #getButtonPaddingBottom()}
    */
-  public void setButtonPadding(int start, int top, int end, int bottom) {
+  public void setButtonPadding(@Px int start, @Px int top, @Px int end, @Px int bottom) {
     paddingStart = start;
     paddingTop = top;
     paddingEnd = end;
@@ -383,6 +384,7 @@ public class MaterialButton extends AppCompatButton {
    * @return Padding start value for this button.
    * @see #setButtonPadding(int, int, int, int)
    */
+  @Px
   public int getButtonPaddingStart() {
     return paddingStart;
   }
@@ -391,6 +393,7 @@ public class MaterialButton extends AppCompatButton {
    * @return Padding top value for this button.
    * @see #setButtonPadding(int, int, int, int)
    */
+  @Px
   public int getButtonPaddingTop() {
     return paddingTop;
   }
@@ -399,6 +402,7 @@ public class MaterialButton extends AppCompatButton {
    * @return Padding end value for this button.
    * @see #setButtonPadding(int, int, int, int)
    */
+  @Px
   public int getButtonPaddingEnd() {
     return paddingEnd;
   }
@@ -407,6 +411,7 @@ public class MaterialButton extends AppCompatButton {
    * @return Padding bottom value for this button.
    * @see #setButtonPadding(int, int, int, int)
    */
+  @Px
   public int getButtonPaddingBottom() {
     return paddingBottom;
   }
@@ -420,7 +425,7 @@ public class MaterialButton extends AppCompatButton {
    *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingStartForIcon
    * @see #getAdditionalPaddingStartForIcon()
    */
-  public void setAdditionalPaddingStartForIcon(int additionalPaddingStartForIcon) {
+  public void setAdditionalPaddingStartForIcon(@Px int additionalPaddingStartForIcon) {
     if (this.additionalPaddingStartForIcon != additionalPaddingStartForIcon) {
       this.additionalPaddingStartForIcon = additionalPaddingStartForIcon;
       updatePadding();
@@ -435,6 +440,7 @@ public class MaterialButton extends AppCompatButton {
    *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingStartForIcon
    * @see #setAdditionalPaddingStartForIcon(int)
    */
+  @Px
   public int getAdditionalPaddingStartForIcon() {
     return additionalPaddingStartForIcon;
   }
@@ -448,7 +454,7 @@ public class MaterialButton extends AppCompatButton {
    *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingEndForIcon
    * @see #getAdditionalPaddingEndForIcon()
    */
-  public void setAdditionalPaddingEndForIcon(int additionalPaddingEndForIcon) {
+  public void setAdditionalPaddingEndForIcon(@Px int additionalPaddingEndForIcon) {
     if (this.additionalPaddingEndForIcon != additionalPaddingEndForIcon) {
       this.additionalPaddingEndForIcon = additionalPaddingEndForIcon;
       updatePadding();
@@ -463,6 +469,7 @@ public class MaterialButton extends AppCompatButton {
    *     com.google.android.material.button.R.styleable#MaterialButton_additionalPaddingEndForIcon
    * @see #setAdditionalPaddingEndForIcon(int)
    */
+  @Px
   public int getAdditionalPaddingEndForIcon() {
     return additionalPaddingEndForIcon;
   }
@@ -488,7 +495,7 @@ public class MaterialButton extends AppCompatButton {
    * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconPadding
    * @see #getIconPadding()
    */
-  public void setIconPadding(int iconPadding) {
+  public void setIconPadding(@Px int iconPadding) {
     if (this.iconPadding != iconPadding) {
       this.iconPadding = iconPadding;
       setCompoundDrawablePadding(iconPadding);
@@ -502,6 +509,7 @@ public class MaterialButton extends AppCompatButton {
    * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconPadding
    * @see #setIconPadding(int)
    */
+  @Px
   public int getIconPadding() {
     return iconPadding;
   }
@@ -513,7 +521,7 @@ public class MaterialButton extends AppCompatButton {
    * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconSize
    * @see #getIconSize()
    */
-  public void setIconSize(@Dimension int iconSize) {
+  public void setIconSize(@Px int iconSize) {
     if (iconSize < 0) {
       throw new IllegalArgumentException("iconSize cannot be less than 0");
     }
@@ -531,7 +539,7 @@ public class MaterialButton extends AppCompatButton {
    * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconSize
    * @see #setIconSize(int)
    */
-  @Dimension
+  @Px
   public int getIconSize() {
     return iconSize;
   }
@@ -753,7 +761,7 @@ public class MaterialButton extends AppCompatButton {
    * @see #setStrokeWidthResource(int)
    * @see #getStrokeWidth()
    */
-  public void setStrokeWidth(int strokeWidth) {
+  public void setStrokeWidth(@Px int strokeWidth) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setStrokeWidth(strokeWidth);
     }
@@ -782,6 +790,7 @@ public class MaterialButton extends AppCompatButton {
    * @see #setStrokeWidth(int)
    * @see #setStrokeWidthResource(int)
    */
+  @Px
   public int getStrokeWidth() {
     return isUsingOriginalBackground() ? materialButtonHelper.getStrokeWidth() : 0;
   }
@@ -794,7 +803,7 @@ public class MaterialButton extends AppCompatButton {
    * @see #setCornerRadiusResource(int)
    * @see #getCornerRadius()
    */
-  public void setCornerRadius(int cornerRadius) {
+  public void setCornerRadius(@Px int cornerRadius) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setCornerRadius(cornerRadius);
     }
@@ -822,6 +831,7 @@ public class MaterialButton extends AppCompatButton {
    * @see #setCornerRadius(int)
    * @see #setCornerRadiusResource(int)
    */
+  @Px
   public int getCornerRadius() {
     return isUsingOriginalBackground() ? materialButtonHelper.getCornerRadius() : 0;
   }
