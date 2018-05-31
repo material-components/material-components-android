@@ -152,6 +152,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         ChipDrawable.createFromAttributes(
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     setChipDrawable(drawable);
+    // Clear out the text to prevent it from being drawn because ChipDrawable will handle text
+    // rendering.
+    setText(null);
     touchHelper = new ChipTouchHelper(this);
     ViewCompat.setAccessibilityDelegate(this, touchHelper);
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
@@ -996,38 +999,21 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  @Override
-  public CharSequence getText() {
+  @Nullable
+  public CharSequence getChipText() {
     return chipDrawable != null ? chipDrawable.getText() : null;
   }
 
-  /** @deprecated Use {@link Chip#getText()} instead. */
-  @Deprecated
-  @Nullable
-  public CharSequence getChipText() {
-    return getText();
-  }
-
-  @Override
-  public void setText(CharSequence text, BufferType type) {
-    // Clear out the text to prevent it from being drawn because ChipDrawable will handle text
-    // rendering.
-    super.setText(null, type);
+  public void setChipTextResource(@StringRes int id) {
     if (chipDrawable != null) {
-      chipDrawable.setText(text);
+      chipDrawable.setTextResource(id);
     }
   }
 
-  /** @deprecated Use {@link Chip#setText(int)} instead. */
-  @Deprecated
-  public void setChipTextResource(@StringRes int id) {
-    setText(getResources().getString(id));
-  }
-
-  /** @deprecated Use {@link Chip#setText(CharSequence)} instead. */
-  @Deprecated
   public void setChipText(@Nullable CharSequence chipText) {
-    setText(chipText, BufferType.NORMAL);
+    if (chipDrawable != null) {
+      chipDrawable.setText(chipText);
+    }
   }
 
   @Nullable
