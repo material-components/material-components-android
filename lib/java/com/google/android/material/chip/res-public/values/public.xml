@@ -42,5 +42,8 @@
   <public name="singleSelection" type="attr"/>
   <public name="checkedChip" type="attr"/>
   <public name="Widget.MaterialComponents.ChipGroup" type="style"/>
+  <public name="Widget.MaterialComponents.Chip.Entry" type="style"/>
+  <public name="Widget.MaterialComponents.Chip.Filter" type="style"/>
+  <public name="Widget.MaterialComponents.Chip.Choice" type="style"/>
+  <public name="Widget.MaterialComponents.Chip.Action" type="style"/>
 </resources>
-

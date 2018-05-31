@@ -17,4 +17,5 @@
 <!-- Definitions of attributes to be exposed as public -->
 <resources>
   <public name="snackbarButtonStyle" type="attr"/>
+  <public name="Widget.Design.Snackbar" type="style"/>
 </resources>

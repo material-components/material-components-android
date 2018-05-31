@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
   <style name="Widget.Design.NavigationView" parent="">
     <item name="elevation">@dimen/design_navigation_elevation</item>
     <item name="itemIconPadding">@dimen/design_navigation_item_icon_padding</item>

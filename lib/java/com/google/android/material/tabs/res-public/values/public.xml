@@ -37,6 +37,10 @@
   <public name="tabPaddingTop" type="attr"/>
   <public name="tabRippleColor" type="attr"/>
   <public name="tabSelectedTextColor" type="attr"/>
+  <public name="tabStyle" type="attr"/>
   <public name="tabTextAppearance" type="attr"/>
   <public name="tabTextColor" type="attr"/>
+  <public name="Widget.Design.TabLayout" type="style"/>
+  <public name="Widget.MaterialComponents.TabLayout" type="style"/>
+  <public name="Widget.MaterialComponents.TabLayout.Colored" type="style"/>
 </resources>
