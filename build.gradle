@@ -35,7 +35,7 @@ ext {
 
   mavenRepoUrl = (project.hasProperty('mavenRepoUrl')
     ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
-  mdcLibraryVersion = '1.0.0-alpha2'
+  mdcLibraryVersion = '1.0.0-alpha3'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }
