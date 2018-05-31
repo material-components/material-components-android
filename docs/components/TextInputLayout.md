@@ -80,7 +80,7 @@ Outline text fields have a stroked border and are less emphasized. To use an
 outline text field, apply the following style to your `TextInputLayout`:
 
 ```xml
-style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
+style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 ```
 
 To change the stroke color and width for an outline text field, you can set the
@@ -107,7 +107,7 @@ style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"`
 ##### Dense Outline Box
 
 Apply this style to your `TextInputLayout`: `xml
-style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense"`
+style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"`
 
 To change a text box's internal padding and overall dimensions, you can adjust
 the `android:padding` attributes on the `TextInputEditText`.

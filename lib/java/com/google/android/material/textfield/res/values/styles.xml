@@ -54,13 +54,16 @@
     <item name="boxCollapsedPaddingTop">8dp</item>
   </style>
 
-  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
-    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox</item>
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
+    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox
+    </item>
     <item name="boxCollapsedPaddingTop">0dp</item>
   </style>
 
-  <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense">
-    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox.Dense</item>
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+    <item name="android:theme">
+      @style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox.Dense
+    </item>
   </style>
 
   <!-- Base style for TextInputEditText. You should use one of the sub-styles instead. -->
@@ -83,9 +86,9 @@
     <item name="android:paddingBottom">16dp</item>
   </style>
 
-  <style name="Widget.MaterialComponents.TextInputEditText.OutlineBox" parent="Base.Widget.MaterialComponents.TextInputEditText"/>
+  <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputEditText"/>
 
-  <style name="Widget.MaterialComponents.TextInputEditText.OutlineBox.Dense">
+  <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
     <item name="android:paddingTop">12dp</item>
     <item name="android:paddingBottom">12dp</item>
   </style>
@@ -102,12 +105,12 @@
     </item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox">
-    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlineBox</item>
+  <style name="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox">
+    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox.Dense">
-    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlineBox.Dense
+  <style name="ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
+    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense
     </item>
   </style>
 

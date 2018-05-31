@@ -90,7 +90,7 @@
 
   <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/textinput_box_outline"
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:helperText="@string/textinput_helper"
@@ -107,7 +107,7 @@
 
   <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/textinput_box_outline_no_hint"
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 

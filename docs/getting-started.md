@@ -167,7 +167,7 @@ text field in XML:
 
 ```xml
 <com.google.android.material.textfield.TextInputLayout
-    style="@style/Widget.MaterialComponents.TextInputLayout.OutlineBox"
+    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:hint="@string/textfield_label">

@@ -54,9 +54,9 @@
   <public name="passwordToggleTint" type="attr"/>
   <public name="passwordToggleTintMode" type="attr"/>
 
-  <public name="Widget.Design.TextInputLayout" type="attr"/>
-  <public name="Widget.MaterialComponents.TextInputLayout.FilledBox" type="attr"/>
-  <public name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense" type="attr"/>
-  <public name="Widget.MaterialComponents.TextInputLayout.OutlineBox" type="attr"/>
-  <public name="Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense" type="attr"/>
+  <public name="Widget.Design.TextInputLayout" type="style"/>
+  <public name="Widget.MaterialComponents.TextInputLayout.FilledBox" type="style"/>
+  <public name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense" type="style"/>
+  <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox" type="style"/>
+  <public name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense" type="style"/>
 </resources>
