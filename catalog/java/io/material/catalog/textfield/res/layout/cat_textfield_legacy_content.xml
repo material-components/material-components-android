@@ -27,6 +27,7 @@
       android:layout_height="wrap_content"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
+      android:layout_margin="4dp"
       app:counterEnabled="true"
       app:counterMaxLength="10"
       app:helperText="@string/cat_textfield_filled_helper_text"

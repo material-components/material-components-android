@@ -25,10 +25,11 @@
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_margin="4dp"
       android:hint="@string/cat_textfield_label"
-      app:errorEnabled="true"
       app:counterEnabled="true"
       app:counterMaxLength="10"
+      app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_helper_text"
       app:helperTextEnabled="true">
     <com.google.android.material.textfield.TextInputEditText
@@ -40,6 +41,7 @@
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_margin="4dp"
       android:hint="@string/cat_textfield_label"
       app:counterEnabled="true"
       app:counterMaxLength="10"
@@ -56,6 +58,7 @@
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.Dense"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_margin="4dp"
       android:hint="@string/cat_textfield_password"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_dense_password_helper_text"
