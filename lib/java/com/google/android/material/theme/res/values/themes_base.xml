@@ -51,14 +51,13 @@
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
-    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.FilledBox</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
     <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
     <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
     <item name="snackbarButtonStyle">?attr/borderlessButtonStyle</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout.Colored</item>
-    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
+    <item name="textInputStyle">@style/Widget.Design.TextInputLayout</item>
 
     <!-- Dialog themes -->
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
@@ -101,14 +100,13 @@
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
     <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
-    <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.FilledBox</item>
     <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
     <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
     <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
     <item name="snackbarButtonStyle">?attr/borderlessButtonStyle</item>
     <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout</item>
-    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
+    <item name="textInputStyle">@style/Widget.Design.TextInputLayout</item>
 
     <!-- Dialog themes -->
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>

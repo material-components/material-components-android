@@ -70,6 +70,13 @@ public class TextFieldFragment extends DemoLandingFragment {
             return new TextFieldOutlineDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_textfield_legacy_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TextFieldLegacyDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

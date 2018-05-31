@@ -18,20 +18,26 @@ package io.material.catalog.textfield;
 
 import io.material.catalog.R;
 
-import android.support.annotation.LayoutRes;
+import android.graphics.PorterDuff.Mode;
+import android.graphics.drawable.Drawable;
 import com.google.android.material.textfield.TextInputLayout;
+import android.widget.EditText;
 
-/** A fragment that displays the filled text field demos with controls for the Catalog app. */
-public class TextFieldFilledDemoFragment extends TextFieldControllableDemoFragment {
+/** A fragment that displays the legacy text field demos with controls for the Catalog app. */
+public class TextFieldLegacyDemoFragment extends TextFieldControllableDemoFragment {
 
   @Override
   public void onChangeTextFieldColors(TextInputLayout textfield, int color) {
-    textfield.setBoxBackgroundColor(color);
+    EditText editText = textfield.getEditText();
+    Drawable background = editText != null ? editText.getBackground() : null;
+
+    if (background != null) {
+      background.setColorFilter(color, Mode.SRC_IN);
+    }
   }
 
   @Override
-  @LayoutRes
   public int getTextFieldContent() {
-    return R.layout.cat_textfield_filled_content;
+    return R.layout.cat_textfield_legacy_content;
   }
 }

@@ -25,7 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 public class TextFieldOutlineDemoFragment extends TextFieldControllableDemoFragment {
 
   @Override
-  public void onChangeTextFieldBoxColors(TextInputLayout textfield, int color) {
+  public void onChangeTextFieldColors(TextInputLayout textfield, int color) {
     textfield.setBoxStrokeColor(color);
   }
 

@@ -41,8 +41,7 @@
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
-    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox
-    </item>
+    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox</item>
     <item name="boxBackgroundMode">filled</item>
     <item name="boxBackgroundColor">@color/mtrl_textinput_filled_box_default_background_color</item>
     <item name="boxCollapsedPaddingTop">12dp</item>
@@ -51,22 +50,17 @@
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
-    <item name="android:theme">
-      @style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense
-    </item>
+    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense</item>
     <item name="boxCollapsedPaddingTop">8dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
-    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox
-    </item>
+    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox</item>
     <item name="boxCollapsedPaddingTop">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlineBox.Dense">
-    <item name="android:theme">
-      @style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox.Dense
-    </item>
+    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlineBox.Dense</item>
   </style>
 
   <!-- Base style for TextInputEditText. You should use one of the sub-styles instead. -->

@@ -41,7 +41,7 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
 
     // Initialize button for updating the box color.
     Button changeColorButton = view.findViewById(R.id.button_change_color);
-    changeColorButton.setOnClickListener(v -> changeTextFieldBoxColors(getNextColor()));
+    changeColorButton.setOnClickListener(v -> changeTextFieldColors(getNextColor()));
 
     // Initialize button for updating the label text.
     TextInputLayout labelTextField = view.findViewById(R.id.text_input_label);
@@ -86,13 +86,13 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
             });
   }
 
-  private void changeTextFieldBoxColors(int color) {
+  private void changeTextFieldColors(int color) {
     for (TextInputLayout textfield : textfields) {
-      onChangeTextFieldBoxColors(textfield, color);
+      onChangeTextFieldColors(textfield, color);
     }
   }
 
-  public abstract void onChangeTextFieldBoxColors(TextInputLayout textfield, int color);
+  public abstract void onChangeTextFieldColors(TextInputLayout textfield, int color);
 
   private void setAllTextFieldsLabel(String label) {
     for (TextInputLayout textfield : textfields) {
