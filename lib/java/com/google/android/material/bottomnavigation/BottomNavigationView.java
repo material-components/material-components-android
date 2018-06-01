@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -341,7 +342,9 @@ public class BottomNavigationView extends FrameLayout {
    *
    * @see #setItemBackgroundResource(int)
    * @attr ref R.styleable#BottomNavigationView_itemBackground
+   * @deprecated Use {@link #getItemBackground()} instead.
    */
+  @Deprecated
   @DrawableRes
   public int getItemBackgroundResource() {
     return menuView.getItemBackgroundRes();
@@ -355,6 +358,27 @@ public class BottomNavigationView extends FrameLayout {
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
     menuView.setItemBackgroundRes(resId);
+  }
+
+  /**
+   * Returns the background drawable of the menu items.
+   *
+   * @see #setItemBackground(Drawable)
+   * @attr ref R.styleable#BottomNavigationView_itemBackground
+   */
+  @Nullable
+  public Drawable getItemBackground() {
+    return menuView.getItemBackground();
+  }
+
+  /**
+   * Set the background of our menu items to the given drawable.
+   *
+   * @param background The drawable for the background.
+   * @attr ref R.styleable#BottomNavigationView_itemBackground
+   */
+  public void setItemBackground(@Nullable Drawable background) {
+    menuView.setItemBackground(background);
   }
 
   /**

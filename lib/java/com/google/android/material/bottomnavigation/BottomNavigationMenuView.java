@@ -23,6 +23,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
+import android.graphics.drawable.Drawable;
 import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
@@ -74,6 +75,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final ColorStateList itemTextColorDefault;
   @StyleRes private int itemTextAppearanceInactive;
   @StyleRes private int itemTextAppearanceActive;
+  private Drawable itemBackground;
   private int itemBackgroundRes;
   private int[] tempChildWidths;
 
@@ -371,9 +373,41 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
    * Returns the resource ID for the background of the menu items.
    *
    * @return the resource ID for the background
+   * @deprecated Use {@link #getItemBackground()} instead.
    */
+  @Deprecated
   public int getItemBackgroundRes() {
     return itemBackgroundRes;
+  }
+
+  /**
+   * Sets the drawable to be used for item backgrounds.
+   *
+   * @param background the drawable of the background
+   */
+  public void setItemBackground(@Nullable Drawable background) {
+    itemBackground = background;
+    if (buttons != null) {
+      for (BottomNavigationItemView item : buttons) {
+        item.setItemBackground(background);
+      }
+    }
+  }
+
+  /**
+   * Returns the drawable for the background of the menu items.
+   *
+   * @return the drawable for the background
+   */
+  @Nullable
+  public Drawable getItemBackground() {
+    if (buttons != null && buttons.length > 0) {
+      // Return button background instead of itemBackground if possible, so that the correct
+      // drawable is returned if the background is set via #setItemBackgroundRes.
+      return buttons[0].getBackground();
+    } else {
+      return itemBackground;
+    }
   }
 
   /**
@@ -479,7 +513,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       child.setTextAppearanceInactive(itemTextAppearanceInactive);
       child.setTextAppearanceActive(itemTextAppearanceActive);
       child.setTextColor(itemTextColorFromUser);
-      child.setItemBackground(itemBackgroundRes);
+      if (itemBackground != null) {
+        child.setItemBackground(itemBackground);
+      } else {
+        child.setItemBackground(itemBackgroundRes);
+      }
       child.setShifting(shifting);
       child.setLabelVisibilityMode(labelVisibilityMode);
       child.initialize((MenuItemImpl) menu.getItem(i), 0);

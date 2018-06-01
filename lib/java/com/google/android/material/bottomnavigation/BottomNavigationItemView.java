@@ -335,6 +335,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public void setItemBackground(int background) {
     Drawable backgroundDrawable =
         background == 0 ? null : ContextCompat.getDrawable(getContext(), background);
-    ViewCompat.setBackground(this, backgroundDrawable);
+    setItemBackground(backgroundDrawable);
+  }
+
+  public void setItemBackground(@Nullable Drawable background) {
+    ViewCompat.setBackground(this, background);
   }
 }
