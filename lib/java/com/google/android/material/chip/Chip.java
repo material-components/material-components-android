@@ -81,7 +81,7 @@ import java.util.List;
  * accessibility navigation. The main chip and close icon are considered to be separate logical
  * sub-views, and contain their own navigation behavior and state.
  *
- * <p>All attributes from {@link R.styleable#ChipDrawable} are supported. Do not use the {@code
+ * <p>All attributes from {@link R.styleable#Chip} are supported. Do not use the {@code
  * android:background} attribute. It will be ignored because Chip manages its own background
  * Drawable. Also do not use the {@code android:drawableStart} and {@code android:drawableEnd}
  * attributes. They will be ignored because Chip manages its own start ({@code app:chipIcon}) and

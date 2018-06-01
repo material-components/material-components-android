@@ -262,8 +262,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   /**
    * Returns a ChipDrawable from the given XML resource. All attributes from {@link
-   * R.styleable#ChipDrawable} and a custom <code>style</code> attribute are supported. A chip
-   * resource may look like:
+   * R.styleable#Chip} and a custom <code>style</code> attribute are supported. A chip resource may
+   * look like:
    *
    * <pre>{@code
    * <chip
@@ -321,25 +321,22 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
-            context, attrs, R.styleable.ChipDrawable, defStyleAttr, defStyleRes);
+            context, attrs, R.styleable.Chip, defStyleAttr, defStyleRes);
 
     setChipBackgroundColor(
-        MaterialResources.getColorStateList(
-            context, a, R.styleable.ChipDrawable_chipBackgroundColor));
-    setChipMinHeight(a.getDimension(R.styleable.ChipDrawable_chipMinHeight, 0f));
-    setChipCornerRadius(a.getDimension(R.styleable.ChipDrawable_chipCornerRadius, 0f));
+        MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipBackgroundColor));
+    setChipMinHeight(a.getDimension(R.styleable.Chip_chipMinHeight, 0f));
+    setChipCornerRadius(a.getDimension(R.styleable.Chip_chipCornerRadius, 0f));
     setChipStrokeColor(
-        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_chipStrokeColor));
-    setChipStrokeWidth(a.getDimension(R.styleable.ChipDrawable_chipStrokeWidth, 0f));
-    setRippleColor(
-        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_rippleColor));
+        MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipStrokeColor));
+    setChipStrokeWidth(a.getDimension(R.styleable.Chip_chipStrokeWidth, 0f));
+    setRippleColor(MaterialResources.getColorStateList(context, a, R.styleable.Chip_rippleColor));
 
-    setText(a.getText(R.styleable.ChipDrawable_android_text));
+    setText(a.getText(R.styleable.Chip_android_text));
     setTextAppearance(
-        MaterialResources.getTextAppearance(
-            context, a, R.styleable.ChipDrawable_android_textAppearance));
+        MaterialResources.getTextAppearance(context, a, R.styleable.Chip_android_textAppearance));
 
-    int ellipsize = a.getInt(R.styleable.ChipDrawable_android_ellipsize, 0);
+    int ellipsize = a.getInt(R.styleable.Chip_android_ellipsize, 0);
     // Convert to supported TextUtils.TruncateAt values
     switch (ellipsize) {
       case 1:
@@ -357,33 +354,31 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         break;
     }
 
-    setChipIconEnabled(a.getBoolean(R.styleable.ChipDrawable_chipIconEnabled, false));
-    setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_chipIcon));
-    setChipIconSize(a.getDimension(R.styleable.ChipDrawable_chipIconSize, 0f));
+    setChipIconEnabled(a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
+    setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_chipIcon));
+    setChipIconSize(a.getDimension(R.styleable.Chip_chipIconSize, 0f));
 
-    setCloseIconEnabled(a.getBoolean(R.styleable.ChipDrawable_closeIconEnabled, false));
-    setCloseIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_closeIcon));
+    setCloseIconEnabled(a.getBoolean(R.styleable.Chip_closeIconEnabled, false));
+    setCloseIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_closeIcon));
     setCloseIconTint(
-        MaterialResources.getColorStateList(context, a, R.styleable.ChipDrawable_closeIconTint));
-    setCloseIconSize(a.getDimension(R.styleable.ChipDrawable_closeIconSize, 0f));
+        MaterialResources.getColorStateList(context, a, R.styleable.Chip_closeIconTint));
+    setCloseIconSize(a.getDimension(R.styleable.Chip_closeIconSize, 0f));
 
-    setCheckable(a.getBoolean(R.styleable.ChipDrawable_android_checkable, false));
-    setCheckedIconEnabled(a.getBoolean(R.styleable.ChipDrawable_checkedIconEnabled, false));
-    setCheckedIcon(MaterialResources.getDrawable(context, a, R.styleable.ChipDrawable_checkedIcon));
+    setCheckable(a.getBoolean(R.styleable.Chip_android_checkable, false));
+    setCheckedIconEnabled(a.getBoolean(R.styleable.Chip_checkedIconEnabled, false));
+    setCheckedIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_checkedIcon));
 
-    setShowMotionSpec(
-        MotionSpec.createFromAttribute(context, a, R.styleable.ChipDrawable_showMotionSpec));
-    setHideMotionSpec(
-        MotionSpec.createFromAttribute(context, a, R.styleable.ChipDrawable_hideMotionSpec));
+    setShowMotionSpec(MotionSpec.createFromAttribute(context, a, R.styleable.Chip_showMotionSpec));
+    setHideMotionSpec(MotionSpec.createFromAttribute(context, a, R.styleable.Chip_hideMotionSpec));
 
-    setChipStartPadding(a.getDimension(R.styleable.ChipDrawable_chipStartPadding, 0f));
-    setIconStartPadding(a.getDimension(R.styleable.ChipDrawable_iconStartPadding, 0f));
-    setIconEndPadding(a.getDimension(R.styleable.ChipDrawable_iconEndPadding, 0f));
-    setTextStartPadding(a.getDimension(R.styleable.ChipDrawable_textStartPadding, 0f));
-    setTextEndPadding(a.getDimension(R.styleable.ChipDrawable_textEndPadding, 0f));
-    setCloseIconStartPadding(a.getDimension(R.styleable.ChipDrawable_closeIconStartPadding, 0f));
-    setCloseIconEndPadding(a.getDimension(R.styleable.ChipDrawable_closeIconEndPadding, 0f));
-    setChipEndPadding(a.getDimension(R.styleable.ChipDrawable_chipEndPadding, 0f));
+    setChipStartPadding(a.getDimension(R.styleable.Chip_chipStartPadding, 0f));
+    setIconStartPadding(a.getDimension(R.styleable.Chip_iconStartPadding, 0f));
+    setIconEndPadding(a.getDimension(R.styleable.Chip_iconEndPadding, 0f));
+    setTextStartPadding(a.getDimension(R.styleable.Chip_textStartPadding, 0f));
+    setTextEndPadding(a.getDimension(R.styleable.Chip_textEndPadding, 0f));
+    setCloseIconStartPadding(a.getDimension(R.styleable.Chip_closeIconStartPadding, 0f));
+    setCloseIconEndPadding(a.getDimension(R.styleable.Chip_closeIconEndPadding, 0f));
+    setChipEndPadding(a.getDimension(R.styleable.Chip_chipEndPadding, 0f));
 
     a.recycle();
   }
