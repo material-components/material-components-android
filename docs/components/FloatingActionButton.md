@@ -145,6 +145,35 @@ Use the `show` and `hide` methods to animate the visibility of a
 `FloatingActionButton`. The show animation grows the widget and fades it in,
 while the hide animation shrinks the widget and fades it out.
 
+### Sizing
+
+The `FloatingActionButton` can be sized either by using the discrete sizing
+modes or a totally custom size.
+
+##### Sizing Modes
+
+The supported sizing modes are as follows:
+
+* `normal` - the normal sized button, 56dp.
+* `mini` - the mini sized button, 40dp.
+* `auto` - the button size will change based on the window size. For small
+sized windows (largest screen dimension < 470dp) this will select a mini sized
+button, and for larger sized windows it will select a normal sized button.
+
+By default, the sizing mode will be `auto`, but this can be adjusted via the
+`app:fabSize` attribute or the `FloatingActionButton#setSize` method.
+
+##### Custom Size
+
+To set a custom size for your `FloatingActionButton`, you can use the
+`app:fabCustomSize` attribute or the `FloatingActionButton#setCustomSize`
+method.
+
+If you've set a custom size and would like to clear it, you can call the
+`FloatingActionButton#clearCustomSize` method. If called, custom sizing will
+not be used and the size will be calculated based on the value set using
+`FloatingActionButton#setSize` or the `app:fabSize` attribute.
+
 ## Related Concepts
 
 -   [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)

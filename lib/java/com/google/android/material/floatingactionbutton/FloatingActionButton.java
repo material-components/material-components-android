@@ -40,6 +40,7 @@ import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Px;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import com.google.android.material.animation.MotionSpec;
@@ -116,14 +117,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   // These values must match those in the attrs declaration
 
   /**
-   * The mini sized button. Will always been smaller than {@link #SIZE_NORMAL}.
+   * The mini sized button, 40dp. Will always be smaller than {@link #SIZE_NORMAL}.
    *
    * @see #setSize(int)
    */
   public static final int SIZE_MINI = 1;
 
   /**
-   * The normal sized button. Will always been larger than {@link #SIZE_MINI}.
+   * The normal sized button, 56dp. Will always be larger than {@link #SIZE_MINI}.
    *
    * @see #setSize(int)
    */
@@ -131,17 +132,25 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   /**
    * Size which will change based on the window size. For small sized windows (largest screen
-   * dimension < 470dp) this will select a small sized button, and for larger sized windows it will
-   * select a larger size.
+   * dimension < 470dp) this will select a mini sized button ({@link #SIZE_MINI}), and for larger
+   * sized windows it will select a normal sized button ({@link #SIZE_NORMAL}).
    *
    * @see #setSize(int)
    */
   public static final int SIZE_AUTO = -1;
 
-  /** Indicates that the FloatingActionButton should not have a custom size. */
+  /**
+   * Indicates that the {@link FloatingActionButton} should not have a custom size, and instead that
+   * the size should be calculated based on the value set using {@link #setSize(int)} or the {@code
+   * fabSize} attribute. Instead of using this constant directly, you can call the {@link
+   * #clearCustomSize()} method.
+   */
   public static final int NO_CUSTOM_SIZE = 0;
 
-  /** The switch point for the largest screen edge where SIZE_AUTO switches from mini to normal. */
+  /**
+   * The switch point for the largest screen edge where {@link #SIZE_AUTO} switches from mini to
+   * normal.
+   */
   private static final int AUTO_MINI_LARGEST_SCREEN_WIDTH = 470;
 
   /** @hide */
@@ -211,11 +220,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     maxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
 
     MotionSpec showMotionSpec =
-        MotionSpec.createFromAttribute(
-            context, a, R.styleable.FloatingActionButton_showMotionSpec);
+        MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_showMotionSpec);
     MotionSpec hideMotionSpec =
-        MotionSpec.createFromAttribute(
-            context, a, R.styleable.FloatingActionButton_hideMotionSpec);
+        MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_hideMotionSpec);
 
     a.recycle();
 
@@ -650,14 +657,16 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /**
-   * Sets the size of the button to be a custom value in pixels. If set to {@link #NO_CUSTOM_SIZE},
-   * custom sizing will not be used and the size will be calculated based on the value set using
-   * {@link #setSize(int)} or the {@code fabSize} attribute.
+   * Sets the size of the button to be a custom value in pixels.
+   *
+   * <p>If you've set a custom size and would like to clear it, you can use the {@link
+   * #clearCustomSize()} method. If called, custom sizing will not be used and the size will be
+   * calculated based on the value set using {@link #setSize(int)} or the {@code fabSize} attribute.
    *
    * @param size preferred size in pixels, or {@link #NO_CUSTOM_SIZE}
    * @attr ref com.google.android.material.R.styleable.FloatingActionButton_fabCustomSize
    */
-  public void setCustomSize(int size) {
+  public void setCustomSize(@Px int size) {
     if (size < 0) {
       throw new IllegalArgumentException("Custom size must be non-negative");
     }
@@ -666,12 +675,23 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /**
-   * Returns the custom size for this FloatingActionButton.
+   * Returns the custom size for this {@link FloatingActionButton}.
    *
    * @return size in pixels, or {@link #NO_CUSTOM_SIZE}
    */
+  @Px
   public int getCustomSize() {
     return customSize;
+  }
+
+  /**
+   * Clears the custom size for this {@link FloatingActionButton}.
+   *
+   * <p>If called, custom sizing will not be used and the size will be calculated based on the value
+   * set using {@link #setSize(int)} or the {@code fabSize} attribute
+   */
+  public void clearCustomSize() {
+    setCustomSize(NO_CUSTOM_SIZE);
   }
 
   int getSizeDimension() {
@@ -755,7 +775,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    *
    * @return true if this view actually has been laid out and has a content rect, else false.
    * @deprecated prefer {@link FloatingActionButton#getMeasuredContentRect} instead, so you don't
-   * need to handle the case where the view isn't laid out.
+   *     need to handle the case where the view isn't laid out.
    */
   @Deprecated
   public boolean getContentRect(@NonNull Rect rect) {
