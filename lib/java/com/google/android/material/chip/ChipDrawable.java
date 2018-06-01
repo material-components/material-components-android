@@ -305,6 +305,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   private ChipDrawable(Context context) {
     this.context = context;
+    rawText = "";
 
     textPaint.density = context.getResources().getDisplayMetrics().density;
     debugPaint = DEBUG ? new Paint(Paint.ANTI_ALIAS_FLAG) : null;
@@ -1321,7 +1322,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
-  @Nullable
+  @NonNull
   public CharSequence getText() {
     return rawText;
   }
@@ -1331,6 +1332,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setText(@Nullable CharSequence text) {
+    if (text == null) {
+      text = "";
+    }
     if (this.rawText != text) {
       this.rawText = text;
       this.unicodeWrappedText = BidiFormatter.getInstance().unicodeWrap(text);
