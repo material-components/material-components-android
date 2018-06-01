@@ -814,10 +814,16 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 targetState = STATE_EXPANDED;
               }
             }
-          } else if (hideable && shouldHide(releasedChild, yvel)) {
+          } else if (hideable
+              && shouldHide(releasedChild, yvel)
+              && (releasedChild.getTop() > collapsedOffset || Math.abs(xvel) < Math.abs(yvel))) {
+            // Hide if we shouldn't collapse and the view was either released low or it was a
+            // vertical swipe.
             top = parentHeight;
             targetState = STATE_HIDDEN;
-          } else if (yvel == 0.f) {
+          } else if (yvel == 0.f || Math.abs(xvel) > Math.abs(yvel)) {
+            // If the Y velocity is 0 or the swipe was mostly horizontal indicated by the X velocity
+            // being greater than the Y velocity, settle to the nearest correct height.
             int currentTop = releasedChild.getTop();
             if (fitToContents) {
               if (Math.abs(currentTop - fitToContentsOffset)
