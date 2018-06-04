@@ -41,6 +41,14 @@
     <attr name="iconSize" format="dimension"/>
     <!-- Padding between icon and button text. -->
     <attr name="iconPadding" format="dimension"/>
+    <!-- Specifies how the icon should be positioned on the X axis. -->
+    <attr name="iconGravity">
+      <!-- Push icon to the start of the button. -->
+      <flag name="start" value="0x1" />
+      <!-- Push the icon to the start of the text keeping a distance equal to
+           {@link R.attr#iconPadding} from the text. -->
+      <flag name="textStart" value="0x2" />
+    </attr>
     <!-- Tint for icon drawable to display. -->
     <attr name="iconTint" format="color"/>
     <!-- Tint mode for icon drawable to display. -->

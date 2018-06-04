@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
+import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.drawable.Drawable;
@@ -33,6 +34,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
+import android.support.annotation.IntDef;
 import android.support.annotation.Nullable;
 import android.support.annotation.Px;
 import android.support.annotation.RestrictTo;
@@ -46,6 +48,8 @@ import android.support.v7.content.res.AppCompatResources;
 import android.support.v7.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Log;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * A convenience class for creating a new Material button.
@@ -63,9 +67,10 @@ import android.util.Log;
  * tint color and white for the text color. For unfilled buttons, this class uses {@code
  * ?attr/colorAccent} for the text color and transparent for the background tint.
  *
- * <p>Add icons to the start of this button using the {@link R.attr#icon app:icon}, {@link
- * R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint} and {@link
- * R.attr#iconTintMode app:iconTintMode} attributes.
+ * <p>Add icons to the start or center of this button of this button using the {@link R.attr#icon
+ * app:icon}, {@link R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint},
+ * {@link R.attr#iconTintMode app:iconTintMode} and {@link R.attr#iconGravity app:iconGravity}
+ * attributes.
  *
  * <p>Add additional padding to the left and right side of the button icon, when present, using the
  * {@link R.attr#additionalPaddingStartForIcon app:additionalPaddingStartForIcon} and {@link
@@ -89,6 +94,28 @@ import android.util.Log;
  */
 public class MaterialButton extends AppCompatButton {
 
+  /**
+   * Gravity used to position the icon at the start of the view.
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_START = 0x1;
+
+  /**
+   * Gravity used to position the icon in the center of the view at the start of the text
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_TEXT_START = 0x2;
+
+
+  /** Positions the icon can be set to. */
+  @IntDef({ICON_GRAVITY_START, ICON_GRAVITY_TEXT_START})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface IconGravity {}
+
   private static final String LOG_TAG = "MaterialButton";
 
   @Nullable private final MaterialButtonHelper materialButtonHelper;
@@ -111,6 +138,9 @@ public class MaterialButton extends AppCompatButton {
   private ColorStateList iconTint;
   private Drawable icon;
   @Px private int iconSize;
+  @Px private int iconLeft;
+
+  @IconGravity private int iconGravity;
 
   public MaterialButton(Context context) {
     this(context, null /* attrs */);
@@ -182,6 +212,7 @@ public class MaterialButton extends AppCompatButton {
         MaterialResources.getColorStateList(
             getContext(), attributes, R.styleable.MaterialButton_iconTint);
     icon = MaterialResources.getDrawable(getContext(), attributes, R.styleable.MaterialButton_icon);
+    iconGravity = attributes.getInteger(R.styleable.MaterialButton_iconGravity, ICON_GRAVITY_START);
 
     iconSize = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconSize, 0);
 
@@ -352,6 +383,42 @@ public class MaterialButton extends AppCompatButton {
       materialButtonHelper.updateMaskBounds(bottom - top, right - left);
     }
   }
+
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    if (icon == null || iconGravity != ICON_GRAVITY_TEXT_START) {
+      return;
+    }
+
+    Paint textPaint = getPaint();
+    int textWidth = (int) textPaint.measureText(getText().toString());
+    int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
+    int newIconLeft =
+        (getWidth()
+            - textWidth
+            - paddingEnd
+            - additionalPaddingStartForIcon
+            - additionalPaddingEndForIcon
+            - localIconSize
+            - iconPadding
+            - paddingStart)
+            / 2;
+
+    if (isLayoutRTL()) {
+      newIconLeft = -newIconLeft;
+    }
+
+    if (iconLeft != newIconLeft) {
+      iconLeft = newIconLeft;
+      updateIcon();
+    }
+  }
+
+  private boolean isLayoutRTL() {
+    return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
+  }
+
 
   /**
    * Update the button's background without changing the background state in {@link
@@ -834,6 +901,29 @@ public class MaterialButton extends AppCompatButton {
   @Px
   public int getCornerRadius() {
     return isUsingOriginalBackground() ? materialButtonHelper.getCornerRadius() : 0;
+  }
+
+  /**
+   * Gets the icon gravity for this button
+   *
+   * @return Icon gravity of the button.
+   * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconGravity
+   * @see #setIconGravity(int)
+   */
+  @IconGravity
+  public int getIconGravity() {
+    return iconGravity;
+  }
+
+  /**
+   * Sets the icon gravity for this button
+   *
+   * @attr ref com.google.android.material.button.R.styleable#MaterialButton_iconGravity
+   * @param iconGravity icon gravity for this button
+   * @see #getIconGravity()
+   */
+  public void setIconGravity(@IconGravity int iconGravity) {
+    this.iconGravity = iconGravity;
   }
 
   private boolean isUsingOriginalBackground() {
