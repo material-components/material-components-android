@@ -279,7 +279,8 @@ A standalone `ChipDrawable` can be used in contexts that require a `Drawable`.
 The most obvious use case is in text fields that "chipify" contacts, commonly
 found in communications apps.
 
-To use a `ChipDrawable`, first create a chip resource in `res/xml`.
+To use a `ChipDrawable`, first create a chip resource in `res/xml`. Note that
+you must use the `<chip` tag in your resource file.
 
 **res/xml/standalone_chip.xml**
 
