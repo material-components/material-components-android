@@ -18,9 +18,16 @@ package com.google.android.material.animation;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.support.annotation.RestrictTo;
+import android.support.annotation.RestrictTo.Scope;
 import java.util.List;
 
-/** Compatibility utils for {@link android.animation.AnimatorSet}. */
+/**
+ * Compatibility utils for {@link android.animation.AnimatorSet}.
+ *
+ * @hide
+ */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class AnimatorSetCompat {
 
   /** Sets up this AnimatorSet to play all of the supplied animations at the same time. */
