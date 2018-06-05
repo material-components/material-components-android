@@ -153,7 +153,6 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     ShapePathModel appBarModel = new ShapePathModel();
     appBarModel.setTopEdge(topEdgeTreatment);
     materialShapeDrawable = new MaterialShapeDrawable(appBarModel);
-    materialShapeDrawable.setStrokeWidth(1f /* hairline */);
     materialShapeDrawable.setShadowEnabled(true);
     materialShapeDrawable.setPaintStyle(Style.FILL);
     DrawableCompat.setTintList(materialShapeDrawable, backgroundTint);
