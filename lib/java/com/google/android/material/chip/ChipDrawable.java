@@ -174,6 +174,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   // Chip icon
   private boolean chipIconEnabled;
   @Nullable private Drawable chipIcon;
+  @Nullable private ColorStateList chipIconTint;
   private float chipIconSize;
 
   // Close icon
@@ -356,6 +357,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     setChipIconEnabled(a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_chipIcon));
+    setChipIconTint(MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipIconTint));
     setChipIconSize(a.getDimension(R.styleable.Chip_chipIconSize, 0f));
 
     setCloseIconEnabled(a.getBoolean(R.styleable.Chip_closeIconEnabled, false));
@@ -1409,10 +1411,10 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setChipIcon(@Nullable Drawable chipIcon) {
-    Drawable oldChipIcon = this.chipIcon;
+    Drawable oldChipIcon = this.chipIcon != null ? DrawableCompat.unwrap(this.chipIcon) : null;
     if (oldChipIcon != chipIcon) {
       float oldChipIconWidth = calculateChipIconWidth();
-      this.chipIcon = chipIcon;
+      this.chipIcon = chipIcon != null ? DrawableCompat.wrap(chipIcon).mutate() : null;
       float newChipIconWidth = calculateChipIconWidth();
 
       unapplyChildDrawable(oldChipIcon);
@@ -1424,6 +1426,40 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       if (oldChipIconWidth != newChipIconWidth) {
         onSizeChange();
       }
+    }
+  }
+
+  /** Returns the {@link android.content.res.ColorStateList} used to tint the chip icon. */
+  @Nullable
+  public ColorStateList getChipIconTint() {
+    return chipIconTint;
+  }
+
+  /**
+   * Sets the chip icon's color tint using a resource ID.
+   *
+   * @param id Resource id of a {@link android.content.res.ColorStateList} to tint the chip icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
+   */
+  public void setChipIconTintResource(@ColorRes int id) {
+    setChipIconTint(AppCompatResources.getColorStateList(context, id));
+  }
+
+  /**
+   * Sets the chip icon's color tint using the specified {@link android.content.res.ColorStateList}.
+   *
+   * @param chipIconTint ColorStateList to tint the chip icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
+   */
+  public void setChipIconTint(@Nullable ColorStateList chipIconTint) {
+    if (this.chipIconTint != chipIconTint) {
+      this.chipIconTint = chipIconTint;
+
+      if (showsChipIcon()) {
+        DrawableCompat.setTintList(chipIcon, chipIconTint);
+      }
+
+      onStateChange(getState());
     }
   }
 

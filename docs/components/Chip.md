@@ -136,6 +136,7 @@ Label        | `android:text`
              | `android:textAppearance`
 Chip Icon    | `app:chipIconEnabled`
              | `app:chipIcon`
+             | `app:chipIconTint`
              | `app:chipIconSize`
 Close Icon   | `app:closeIconEnabled`
              | `app:closeIcon`

@@ -49,6 +49,8 @@
     <attr name="chipIconEnabled" format="boolean"/>
     <!-- Icon drawable to display at the start of the chip. -->
     <attr name="chipIcon" format="reference"/>
+    <!-- Tint to apply to the chip icon. -->
+    <attr name="chipIconTint" format="color"/>
     <!-- Size of the chip's icon and checked icon. -->
     <attr name="chipIconSize" format="dimension"/>
 

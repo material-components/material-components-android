@@ -1092,6 +1092,36 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  /** Returns the {@link android.content.res.ColorStateList} used to tint the chip icon. */
+  @Nullable
+  public ColorStateList getChipIconTint() {
+    return chipDrawable != null ? chipDrawable.getChipIconTint() : null;
+  }
+
+  /**
+   * Sets the chip icon's color tint using a resource ID.
+   *
+   * @param id Resource id of a {@link android.content.res.ColorStateList} to tint the chip icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
+   */
+  public void setChipIconTintResource(@ColorRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconTintResource(id);
+    }
+  }
+
+  /**
+   * Sets the chip icon's color tint using the specified {@link android.content.res.ColorStateList}.
+   *
+   * @param chipIconTint ColorStateList to tint the chip icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
+   */
+  public void setChipIconTint(@Nullable ColorStateList chipIconTint) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconTint(chipIconTint);
+    }
+  }
+
   public float getChipIconSize() {
     return chipDrawable != null ? chipDrawable.getChipIconSize() : 0;
   }
