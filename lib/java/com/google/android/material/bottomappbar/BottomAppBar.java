@@ -77,6 +77,7 @@ import java.util.List;
  *
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_backgroundTint
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabAlignmentMode
+ * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabAttached
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleMargin
  * @attr ref
  *     com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
@@ -107,13 +108,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @FabAlignmentMode private int fabAlignmentMode;
   private boolean hideOnScroll;
 
-  /**
-   * If the {@link FloatingActionButton} is actually cradled in the {@link BottomAppBar} or if the
-   * {@link FloatingActionButton} is detached which will happen when the
-   * {@link FloatingActionButton} is not visible, or when the {@link BottomAppBar} is scrolled off
-   * the screen.
-   */
-  private boolean fabAttached = true;
+  /** If the fab is actually cradled in the {@link BottomAppBar} or if it's floating above it. */
+  private boolean fabAttached;
 
   public BottomAppBar(Context context) {
     this(context, null, 0);
@@ -142,6 +138,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleRoundedCornerRadius, 0);
     float fabVerticalOffset =
         a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleVerticalOffset, 0);
+    fabAttached = a.getBoolean(R.styleable.BottomAppBar_fabAttached, true);
     fabAlignmentMode =
         a.getInt(R.styleable.BottomAppBar_fabAlignmentMode, FAB_ALIGNMENT_MODE_CENTER);
     hideOnScroll = a.getBoolean(R.styleable.BottomAppBar_hideOnScroll, false);
@@ -191,6 +188,18 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Nullable
   public ColorStateList getBackgroundTint() {
     return materialShapeDrawable.getTintList();
+  }
+
+  /** Returns true if the FAB should be cradled, false otherwise. */
+  public boolean isFabAttached() {
+    return fabAttached;
+  }
+
+  /** Sets the current state which determines if the FAB is cradled or not. */
+  public void setFabAttached(boolean attached) {
+    maybeAnimateAttachChange(attached);
+    maybeAnimateMenuView(fabAlignmentMode, attached);
+    this.fabAttached = attached;
   }
 
   /**

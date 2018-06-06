@@ -25,6 +25,8 @@
       <!-- Mode that aligns the fab to the end. -->
       <enum name="end" value="1"/>
     </attr>
+    <!-- Whether the fab should start attached to the BottomAppBar. -->
+    <attr name="fabAttached" format="boolean"/>
     <!-- The margin between the semi-circular cradle for the fab and the fab. -->
     <attr name="fabCradleMargin" format="dimension"/>
     <!-- The radius of the rounded corners on each side of the cradle. -->

@@ -23,7 +23,6 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import com.google.android.material.bottomappbar.BottomAppBar;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import android.support.design.widget.CoordinatorLayout;
@@ -36,6 +35,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ToggleButton;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.OnBackPressedHandler;
@@ -96,7 +96,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
 
     setUpBottomDrawer(view);
 
-    FloatingActionButton fab = view.findViewById(R.id.fab);
+    ImageButton fab = view.findViewById(R.id.fab);
     fab.setOnClickListener(
         v -> Snackbar.make(getView(), fab.getContentDescription(), Snackbar.LENGTH_SHORT).show());
     NavigationView navigationView = view.findViewById(R.id.navigation_view);
@@ -109,18 +109,12 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
     Button centerButton = view.findViewById(R.id.center);
     Button endButton = view.findViewById(R.id.end);
     ToggleButton attachToggle = view.findViewById(R.id.attach_toggle);
-    attachToggle.setChecked(fab.getVisibility() == View.VISIBLE);
+    attachToggle.setChecked(bar.isFabAttached());
     centerButton.setOnClickListener(
         v -> bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_CENTER));
     endButton.setOnClickListener(v -> bar.setFabAlignmentMode(BottomAppBar.FAB_ALIGNMENT_MODE_END));
     attachToggle.setOnCheckedChangeListener(
-        (buttonView, isChecked) -> {
-          if (isChecked) {
-            fab.show();
-          } else {
-            fab.hide();
-          }
-        });
+        (buttonView, isChecked) -> bar.setFabAttached(isChecked));
 
     return view;
   }

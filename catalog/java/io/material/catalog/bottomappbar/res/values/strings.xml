@@ -30,8 +30,8 @@ Aenean nunc velit, lacinia sed dolor sed, ultrices viverra nulla. Etiam a venena
 Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. In volutpat arcu ut felis sagittis, in finibus massa gravida. Pellentesque id tellus orci. Integer dictum, lorem sed efficitur ullamcorper, libero justo consectetur ipsum, in mollis nisl ex sed nisl. Donec maximus ullamcorper sodales. Praesent bibendum rhoncus tellus nec feugiat. In a ornare nulla. Donec rhoncus libero vel nunc consequat, quis tincidunt nisl eleifend. Cras bibendum enim a justo luctus vestibulum. Fusce dictum libero quis erat maximus, vitae volutpat diam dignissim."</string>
 
   <string name="cat_bottomappbar_center">Center</string>
-  <string name="cat_bottomappbar_fab_hide">Hide Fab</string>
-  <string name="cat_bottomappbar_fab_show">Show Fab</string>
+  <string name="cat_bottomappbar_detached">Detached</string>
+  <string name="cat_bottomappbar_attached">Attached</string>
   <string name="cat_bottomappbar_end">End</string>
 
   <string name="cat_bottomappbar_3d">3D</string>

@@ -76,6 +76,7 @@ Feature                  | Relevant attributes
 :----------------------- | :---------------------------------
 Background Tint          | `app:backgroundTint`
 FAB Alignment Mode       | `app:fabAlignmentMode`
+FAB Attached             | `app:fabAttached`
 FAB Cradle Margin        | `app:fabCradleMargin`
 FAB Cradle Corner Radius | `app:fabCradleRoundedCornerRadius`
 FAB Vertical Offset      | `app:fabCradleVerticalOffset`
@@ -83,23 +84,23 @@ FAB Vertical Offset      | `app:fabCradleVerticalOffset`
 #### Background Tint
 
 The `BottomAppBar` internally handles its own background. This allows it to
-automatically cradle the `FloatingActionButton` when it is attached, but it also
-means that you shouldn't call `setBackground()` or use the `android:background`
-attribute in xml. Instead, the `app:backgroundTint` attribute will allow you to
-set a tint.
+automatically cradle the FAB when it is attached, but it also means that you
+shouldn't call `setBackground()` or use the `android:background` attribute in
+xml. Instead, the `app:backgroundTint` attribute will allow you to set a tint.
 
-#### `FloatingActionButton` Attributes
+#### Fab Attributes
 
-The placement of the `FloatingActionButton` can be controlled by
-`fabAlignmentMode`, `fabCradleMargin`, `fabCradleRoundedCornerRadius`, and
+The placement of the FAB can be controlled by `fabAlignmentMode`, `fabAttached`,
+`fabCradleMargin`, `fabCradleRoundedCornerRadius`, and
 `fabCradleVerticalOffset`. The starting alignment mode (`fabAlignmentMode`) can
-be set to either `center` or `end`. Changing the `fabCradleMargin` will increase
-or decrease the distance between the `FloatingActionButton` and the
-`BottomAppBar`. The `fabCradleRoundedCornerRadius` specifies the roundness of
-the corner around the cutout. The `fabCradleVerticalOffset` specifies the
-vertical offset between the `FloatingActionButton` and the `BottomAppBar`. If
-`fabCradleVerticalOffset` is 0, the center of the `FloatingActionButton` will be
-aligned with the top of the `BottomAppBar`.
+be set to either `center` or `end`. If `fabAttached` is set to true, the fab
+will be laid out attached to the `BottomAppBar`. The `fabCradleMargin` is the
+difference in size between the cradle and the fab, changing this value will
+increase or decrease the apparent distance between the FAB and the `BottomAppBar`.
+`fabCradleRoundedCornerRadius` specifies the roundness of the corner around the
+cutout. `fabCradleVerticalOffset` specifies the vertical offset between the FAB
+and the `BottomAppBar`. If `fabCradleVerticalOffset` is 0, the center of the FAB
+will be aligned with the top of the `BottomAppBar`.
 
 ### Handling Menu Options
 
@@ -148,11 +149,16 @@ bar.setNavigationOnClickListener(new OnClickListener() {
 });
 ```
 
-### Fab Alignment Modes
+### FAB Attached States
 
-The `FloatingActionButton` can be aligned either to the center
-(`FAB_ALIGNMENT_MODE_CENTER`) as the primary action or to the end
-(`FAB_ALIGNMENT_MODE_END`) as a secondary action by calling
-`setFabAlignmentMode(int)`. The default animation will automatically be run.
-This can be coordinated with a Fragment transition to allow for a smooth
+The FAB can either be attached or detached by calling `setFabAttached(boolean)`.
+When attached, the FAB will be cradled in the `BottomAppBar`. When detached, the
+FAB will float above it.
+
+### FAB Alignment Modes
+
+The FAB can be aligned either to the center (`FAB_ALIGNMENT_MODE_CENTER`) as the
+primary action or to the end (`FAB_ALIGNMENT_MODE_END`) as a secondary action by
+calling `setFabAlignmentMode(int)`. The default animation will automatically be
+run. This can be coordinated with a Fragment transition to allow for a smooth
 animation from a primary screen to a secondary screen.
