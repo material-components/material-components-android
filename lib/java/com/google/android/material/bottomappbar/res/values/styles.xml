@@ -17,7 +17,6 @@
 <resources>
   <style name="Widget.MaterialComponents.BottomAppBar" parent="Widget.AppCompat.Toolbar">
     <item name="backgroundTint">@android:color/white</item>
-    <item name="fabAttached">true</item>
     <item name="fabCradleMargin">@dimen/mtrl_bottomappbar_fab_cradle_margin</item>
     <item name="fabCradleRoundedCornerRadius">
       @dimen/mtrl_bottomappbar_fab_cradle_rounded_corner_radius

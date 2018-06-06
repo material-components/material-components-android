@@ -66,8 +66,8 @@
             android:id="@+id/attach_toggle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textOff="@string/cat_bottomappbar_detached"
-            android:textOn="@string/cat_bottomappbar_attached"/>
+            android:textOff="@string/cat_bottomappbar_fab_show"
+            android:textOn="@string/cat_bottomappbar_fab_hide"/>
 
       </LinearLayout>
 
