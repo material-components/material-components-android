@@ -156,7 +156,8 @@ public class ThemeSwitcherDialogFragment extends DaggerAppCompatDialogFragment {
 
       TypedArray a = getContext().obtainStyledAttributes(themeOverlay, themeOverlayAttrs);
       main = a.getColor(0, Color.TRANSPARENT);
-      dark = a.getColor(1, Color.TRANSPARENT);
+      dark = themeOverlayAttrs.length > 1 ? a.getColor(1, Color.TRANSPARENT) : Color.TRANSPARENT;
+
       a.recycle();
     }
   }
