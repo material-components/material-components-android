@@ -32,6 +32,7 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.support.annotation.AnimatorRes;
 import android.support.annotation.BoolRes;
 import android.support.annotation.CallSuper;
@@ -158,6 +159,14 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
     initOutlineProvider();
     setChecked(deferredCheckedValue);
+  }
+
+  @Override
+  public void onRestoreInstanceState(Parcelable state) {
+    CharSequence chipText = getText();
+    super.onRestoreInstanceState(state);
+    // Restores chip text after it's being cleared by TextView's onRestoreInstanceState.
+    setText(chipText);
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
