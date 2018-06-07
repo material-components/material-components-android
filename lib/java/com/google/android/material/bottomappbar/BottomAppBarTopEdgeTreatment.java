@@ -66,6 +66,12 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
 
   @Override
   public void getEdgePath(float length, float interpolation, ShapePath shapePath) {
+    if (fabDiameter == 0) {
+      // There is no cutout to draw.
+      shapePath.lineTo(length, 0);
+      return;
+    }
+
     float cradleDiameter = fabMargin * 2 + fabDiameter;
     float cradleRadius = cradleDiameter / 2f;
     float roundedCornerOffset = interpolation * roundedCornerRadius;
