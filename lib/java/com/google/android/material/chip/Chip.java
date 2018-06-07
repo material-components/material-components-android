@@ -862,7 +862,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         if (closeIconContentDescription != null) {
           node.setContentDescription(closeIconContentDescription);
         } else {
-          CharSequence chipText = getChipText();
+          CharSequence chipText = getText();
           node.setContentDescription(
               getContext()
                   .getString(
@@ -1012,7 +1012,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   /** @deprecated Use {@link Chip#getText()} instead. */
   @Deprecated
-  @Nullable
   public CharSequence getChipText() {
     return getText();
   }
