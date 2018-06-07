@@ -80,6 +80,7 @@ FAB Attached             | `app:fabAttached`
 FAB Cradle Margin        | `app:fabCradleMargin`
 FAB Cradle Corner Radius | `app:fabCradleRoundedCornerRadius`
 FAB Vertical Offset      | `app:fabCradleVerticalOffset`
+Hide on scroll           | `app:hideOnScroll`
 
 #### Background Tint
 
@@ -88,7 +89,15 @@ automatically cradle the FAB when it is attached, but it also means that you
 shouldn't call `setBackground()` or use the `android:background` attribute in
 xml. Instead, the `app:backgroundTint` attribute will allow you to set a tint.
 
-#### Fab Attributes
+#### `FloatingActionButton` Alignment Modes
+
+The `FloatingActionButton` can be aligned either to the center
+(`FAB_ALIGNMENT_MODE_CENTER`) or to the end (`FAB_ALIGNMENT_MODE_END`) by
+calling `setFabAlignmentMode(int)`. The default animation will automatically be
+run. This can be coordinated with a `Fragment` transition to allow for a smooth
+animation from a primary screen to a secondary screen.
+
+#### `FloatingActionButton` Attributes
 
 The placement of the FAB can be controlled by `fabAlignmentMode`, `fabAttached`,
 `fabCradleMargin`, `fabCradleRoundedCornerRadius`, and
@@ -101,6 +110,14 @@ increase or decrease the apparent distance between the FAB and the `BottomAppBar
 cutout. `fabCradleVerticalOffset` specifies the vertical offset between the FAB
 and the `BottomAppBar`. If `fabCradleVerticalOffset` is 0, the center of the FAB
 will be aligned with the top of the `BottomAppBar`.
+
+#### Hide on scroll
+
+The `BottomAppBar` can be set to hide on scroll with the `hideOnScroll`
+attribute. To enable this behavior, you should ensure that the scrolling content
+is in a `NestedScrollView`. There's no need to wrap the `BottomAppBar` in an
+`AppBarLayout` or use any of the scroll flags associated with `AppBarLayout`
+such as `app:layout_scrollFlags`.
 
 ### Handling Menu Options
 
@@ -149,16 +166,3 @@ bar.setNavigationOnClickListener(new OnClickListener() {
 });
 ```
 
-### FAB Attached States
-
-The FAB can either be attached or detached by calling `setFabAttached(boolean)`.
-When attached, the FAB will be cradled in the `BottomAppBar`. When detached, the
-FAB will float above it.
-
-### FAB Alignment Modes
-
-The FAB can be aligned either to the center (`FAB_ALIGNMENT_MODE_CENTER`) as the
-primary action or to the end (`FAB_ALIGNMENT_MODE_END`) as a secondary action by
-calling `setFabAlignmentMode(int)`. The default animation will automatically be
-run. This can be coordinated with a Fragment transition to allow for a smooth
-animation from a primary screen to a secondary screen.
