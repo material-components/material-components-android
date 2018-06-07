@@ -1403,7 +1403,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   @Nullable
   public Drawable getChipIcon() {
-    return chipIcon;
+    return chipIcon != null ? DrawableCompat.unwrap(chipIcon) : null;
   }
 
   public void setChipIconResource(@DrawableRes int id) {
@@ -1411,7 +1411,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setChipIcon(@Nullable Drawable chipIcon) {
-    Drawable oldChipIcon = this.chipIcon != null ? DrawableCompat.unwrap(this.chipIcon) : null;
+    Drawable oldChipIcon = getChipIcon();
     if (oldChipIcon != chipIcon) {
       float oldChipIconWidth = calculateChipIconWidth();
       this.chipIcon = chipIcon != null ? DrawableCompat.wrap(chipIcon).mutate() : null;
@@ -1514,7 +1514,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   @Nullable
   public Drawable getCloseIcon() {
-    return closeIcon;
+    return closeIcon != null ? DrawableCompat.unwrap(closeIcon) : null;
   }
 
   public void setCloseIconResource(@DrawableRes int id) {
@@ -1522,7 +1522,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   public void setCloseIcon(@Nullable Drawable closeIcon) {
-    Drawable oldCloseIcon = this.closeIcon != null ? DrawableCompat.unwrap(this.closeIcon) : null;
+    Drawable oldCloseIcon = getCloseIcon();
     if (oldCloseIcon != closeIcon) {
       float oldCloseIconWidth = calculateCloseIconWidth();
       this.closeIcon = closeIcon != null ? DrawableCompat.wrap(closeIcon).mutate() : null;
