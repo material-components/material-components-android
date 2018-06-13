@@ -129,31 +129,15 @@ Feature      | Relevant attributes
 Shape        | `app:chipCornerRadius`
 Size         | `app:chipMinHeight`
 Background   | `app:chipBackgroundColor`
-Border       | `app:chipStrokeColor`
-             | `app:chipStrokeWidth`
+Border       | `app:chipStrokeColor`<br>`app:chipStrokeWidth`
 Ripple       | `app:rippleColor`
-Label        | `android:text`
-             | `android:textAppearance`
-Chip Icon    | `app:chipIconEnabled`
-             | `app:chipIcon`
-             | `app:chipIconSize`
-Close Icon   | `app:closeIconEnabled`
-             | `app:closeIcon`
-             | `app:closeIconSize`
-             | `app:closeIconTint`
+Label        | `android:text`<br>`android:textAppearance`
+Chip Icon    | `app:chipIconEnabled`<br>`app:chipIcon`<br>`app:chipIconSize`
+Close Icon   | `app:closeIconEnabled`<br>`app:closeIcon`<br>`app:closeIconSize`<br>`app:closeIconTint`
 Checkable    | `app:checkable`
-Checked Icon | `app:checkedIconEnabled`
-             | `app:checkedIcon`
-Motion       | `app:showMotionSpec`
-             | `app:hideMotionSpec`
-Paddings     | `app:chipStartPadding`
-             | `app:iconStartPadding`
-             | `app:iconEndPadding`
-             | `app:textStartPadding`
-             | `app:textEndPadding`
-             | `app:closeIconStartPadding`
-             | `app:closeIconEndPadding`
-             | `app:chipEndPadding`
+Checked Icon | `app:checkedIconEnabled`<br>`app:checkedIcon`
+Motion       | `app:showMotionSpec`<br>`app:hideMotionSpec`
+Paddings     |`app:chipStartPadding`<br>`app:iconStartPadding`<br>`app:iconEndPadding`<br>`app:textStartPadding`<br>`app:textEndPadding`<br>`app:closeIconStartPadding`<br>`app:closeIconEndPadding`<br>`app:chipEndPadding`
 
 ### Handling Clicks
 
