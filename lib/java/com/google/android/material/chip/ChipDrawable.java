@@ -252,6 +252,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private boolean textWidthDirty = true;
   private float textWidth;
   private TruncateAt truncateAt;
+  private boolean shouldDrawText;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -316,6 +317,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
     setState(DEFAULT_STATE);
     setCloseIconState(DEFAULT_STATE);
+    shouldDrawText = true;
   }
 
   private void loadFromAttributes(
@@ -468,7 +470,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   /** Returns the width of the chip icon plus padding, which only apply if the chip icon exists. */
-  private float calculateChipIconWidth() {
+  float calculateChipIconWidth() {
     if (showsChipIcon() || (showsCheckedIcon())) {
       return iconStartPadding + chipIconSize + iconEndPadding;
     }
@@ -535,7 +537,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     drawCheckedIcon(canvas, bounds);
 
     // 6. Draw chip text.
-    drawText(canvas, bounds);
+    if (shouldDrawText) {
+      drawText(canvas, bounds);
+    }
 
     // 7. Draw close icon.
     drawCloseIcon(canvas, bounds);
@@ -617,9 +621,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   /** Draws the chip text, which should appear centered vertically in the chip. */
   private void drawText(@NonNull Canvas canvas, Rect bounds) {
     if (unicodeWrappedText != null) {
+      Align align = calculateTextOriginAndAlignment(bounds, pointF);
       // If bounds are smaller than intrinsic size. Ellipsize or clip the text depending on
       // ellipsize attribute.
-      Align align = calculateTextOrigin(bounds, pointF);
       calculateTextBounds(bounds, rectF);
 
       if (textAppearance != null) {
@@ -721,11 +725,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
-  /**
-   * Calculates the chip text's ChipDrawable-absolute bounds (top-left is <code>
-   * [ChipDrawable.getBounds().left, ChipDrawable.getBounds().top]</code>).
-   */
-  private Align calculateTextOrigin(Rect bounds, PointF pointF) {
+  /** Calculates the chip text's origin and alignment based on the ChipDrawable-absolute bounds. */
+  Align calculateTextOriginAndAlignment(Rect bounds, PointF pointF) {
     pointF.set(0, 0);
     Align align = Align.LEFT;
 
@@ -783,7 +784,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       }
 
       // Top and bottom included for completion. Don't position the chip text vertically based on
-      // these bounds. Instead, use #calculateTextOrigin().
+      // these bounds. Instead, use #calculateTextOriginAndAlignment().
       outBounds.top = bounds.top;
       outBounds.bottom = bounds.bottom;
     }
@@ -1838,5 +1839,19 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       invalidateSelf();
       onSizeChange();
     }
+  }
+
+  boolean shouldDrawText() {
+    return shouldDrawText;
+  }
+
+  /**
+   * Specifies whether ChipDrawable should draw text to the canvas during the draw call. This is
+   * intended to be used by {@link Chip} only.
+   *
+   * @param shouldDrawText whether to draw the text.
+   */
+  void setShouldDrawText(boolean shouldDrawText) {
+    this.shouldDrawText = shouldDrawText;
   }
 }

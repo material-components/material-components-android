@@ -22,6 +22,7 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Canvas;
 import android.graphics.Outline;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
@@ -32,7 +33,6 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
-import android.os.Parcelable;
 import android.support.annotation.AnimatorRes;
 import android.support.annotation.BoolRes;
 import android.support.annotation.CallSuper;
@@ -49,15 +49,18 @@ import com.google.android.material.chip.ChipDrawable.Delegate;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
+import android.support.v4.text.BidiFormatter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import android.support.v4.widget.ExploreByTouchHelper;
 import android.support.v7.widget.AppCompatCheckBox;
+import android.text.TextPaint;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
@@ -158,15 +161,64 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
     initOutlineProvider();
+    // Set deferred values
     setChecked(deferredCheckedValue);
+    // Defers to TextView to draw the text and ChipDrawable to render the
+    // rest (e.g. chip / check / close icons).
+    drawable.setShouldDrawText(false);
+    setText(drawable.getText());
+    setEllipsize(drawable.getEllipsize());
+
+    setIncludeFontPadding(false);
+    updateTextPaintDrawState(getTextAppearance());
+
+    // Chip text should not extend to more than 1 line.
+    setSingleLine();
+    // Chip text should be vertically center aligned and start aligned.
+    // Final horizontal text origin is set during the onDraw call via canvas translation.
+    setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
+    // Helps TextView calculate the available text width.
+    updatePaddingInternal();
   }
 
-  @Override
-  public void onRestoreInstanceState(Parcelable state) {
-    CharSequence chipText = getText();
-    super.onRestoreInstanceState(state);
-    // Restores chip text after it's being cleared by TextView's onRestoreInstanceState.
-    setText(chipText);
+  /**
+   * Updates the padding to inform {@link android.widget.TextView} how much width the text can
+   * occupy. Horizontal text origin is configured in {@link Chip#onDraw} via canvas translation.
+   */
+  private void updatePaddingInternal() {
+    if (TextUtils.isEmpty(getText()) || chipDrawable == null) {
+      return;
+    }
+    float paddingEnd =
+        chipDrawable.getChipStartPadding()
+            + chipDrawable.getChipEndPadding()
+            + chipDrawable.getTextStartPadding()
+            + chipDrawable.getTextEndPadding();
+
+    if ((chipDrawable.isChipIconEnabled() && chipDrawable.getChipIcon() != null)
+        || (chipDrawable.getCheckedIcon() != null
+            && chipDrawable.isCheckedIconEnabled()
+            && isChecked())) {
+      paddingEnd +=
+          chipDrawable.getIconStartPadding()
+              + chipDrawable.getIconEndPadding()
+              + chipDrawable.getChipIconSize();
+    }
+    if (chipDrawable.isCloseIconEnabled() && chipDrawable.getCloseIcon() != null) {
+      paddingEnd +=
+          chipDrawable.getCloseIconStartPadding()
+              + chipDrawable.getCloseIconEndPadding()
+              + chipDrawable.getCloseIconSize();
+    }
+
+    if (getPaddingEnd() != paddingEnd) {
+      ViewCompat.setPaddingRelative(
+          this,
+          ViewCompat.getPaddingStart(this),
+          getPaddingTop(),
+          (int) paddingEnd,
+          getPaddingBottom());
+    }
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
@@ -263,6 +315,28 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   @Override
+  protected void onDraw(Canvas canvas) {
+    if (TextUtils.isEmpty(getText()) || chipDrawable == null || chipDrawable.shouldDrawText()) {
+      super.onDraw(canvas);
+      return;
+    }
+
+    int saveCount = canvas.save();
+    canvas.translate(calculateTextOffsetFromStart(chipDrawable), 0);
+    super.onDraw(canvas);
+    canvas.restoreToCount(saveCount);
+  }
+
+  private float calculateTextOffsetFromStart(@NonNull ChipDrawable chipDrawable) {
+    float offsetFromStart =
+        getChipStartPadding() + chipDrawable.calculateChipIconWidth() + getTextStartPadding();
+    if (ViewCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
+      return offsetFromStart;
+    } else {
+      return -offsetFromStart;
+    }
+  }
+
   public void setBackgroundTintList(@Nullable ColorStateList tint) {
     throw new UnsupportedOperationException(
         "Do not set the background tint list; Chip manages its own background drawable.");
@@ -401,9 +475,13 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   @Override
   public void setEllipsize(TruncateAt where) {
+    if (chipDrawable == null) {
+      return;
+    }
     if (where == TruncateAt.MARQUEE) {
       throw new UnsupportedOperationException("Text within a chip are not allowed to scroll.");
     }
+    super.setEllipsize(where);
     if (chipDrawable != null) {
       chipDrawable.setEllipsize(where);
     }
@@ -443,6 +521,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   @Override
   public void onChipDrawableSizeChange() {
+    updatePaddingInternal();
     requestLayout();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       invalidateOutline();
@@ -1018,12 +1097,14 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   @Override
   public void setText(CharSequence text, BufferType type) {
+    if (chipDrawable == null) {
+      return;
+    }
     if (text == null) {
       text = "";
     }
-    // Clear out the text to prevent it from being drawn because ChipDrawable will handle text
-    // rendering.
-    super.setText(null, type);
+    CharSequence unicodeWrappedText = BidiFormatter.getInstance().unicodeWrap(text);
+    super.setText(chipDrawable.shouldDrawText() ? null : unicodeWrappedText, type);
     if (chipDrawable != null) {
       chipDrawable.setText(text);
     }
@@ -1042,20 +1123,49 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   @Nullable
-  public TextAppearance getTextAppearance() {
+  private TextAppearance getTextAppearance() {
     return chipDrawable != null ? chipDrawable.getTextAppearance() : null;
+  }
+
+  private void updateTextPaintDrawState(TextAppearance textAppearance) {
+    TextPaint textPaint = getPaint();
+    textPaint.drawableState = chipDrawable.getState();
+    textAppearance.updateDrawState(getContext(), textPaint);
   }
 
   public void setTextAppearanceResource(@StyleRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearanceResource(id);
     }
+    this.setTextAppearance(getContext(), id);
   }
 
   public void setTextAppearance(@Nullable TextAppearance textAppearance) {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearance(textAppearance);
     }
+    getTextAppearance().updateMeasureState(getContext(), getPaint());
+    updateTextPaintDrawState(textAppearance);
+  }
+
+  @Override
+  public void setTextAppearance(Context context, int resId) {
+    super.setTextAppearance(context, resId);
+    if (chipDrawable != null) {
+      chipDrawable.setTextAppearanceResource(resId);
+    }
+    getTextAppearance().updateMeasureState(context, getPaint());
+    updateTextPaintDrawState(getTextAppearance());
+  }
+
+  @Override
+  public void setTextAppearance(int resId) {
+    super.setTextAppearance(resId);
+    if (chipDrawable != null) {
+      chipDrawable.setTextAppearanceResource(resId);
+    }
+    getTextAppearance().updateMeasureState(getContext(), getPaint());
+    updateTextPaintDrawState(getTextAppearance());
   }
 
   public boolean isChipIconEnabled() {
@@ -1422,6 +1532,20 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   public void setChipEndPadding(float chipEndPadding) {
     if (chipDrawable != null) {
       chipDrawable.setChipEndPadding(chipEndPadding);
+    }
+  }
+
+  public void setShouldChipDrawableDrawText(boolean shouldDrawText) {
+    if (chipDrawable == null) {
+      return;
+    }
+
+    CharSequence savedText = getText();
+    setText(null);
+    chipDrawable.setShouldDrawText(shouldDrawText);
+    setText(savedText);
+    if (shouldDrawText) {
+      invalidate();
     }
   }
 }

@@ -55,10 +55,10 @@ public class ChipMainDemoFragment extends DemoFragment {
     Switch longTextSwitch = view.findViewById(R.id.cat_chip_text_length_switch);
     longTextSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
+          CharSequence updatedText =
+              getText(isChecked ? R.string.cat_chip_text_to_truncate : R.string.cat_chip_text);
           for (Chip chip : chips) {
-            CharSequence updatedText =
-                getText(isChecked ? R.string.cat_chip_text_to_truncate : R.string.cat_chip_text);
-            chip.setChipText(updatedText);
+            chip.setText(updatedText);
           }
         });
 
