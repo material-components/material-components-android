@@ -1535,17 +1535,4 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  public void setShouldChipDrawableDrawText(boolean shouldDrawText) {
-    if (chipDrawable == null) {
-      return;
-    }
-
-    CharSequence savedText = getText();
-    setText(null);
-    chipDrawable.setShouldDrawText(shouldDrawText);
-    setText(savedText);
-    if (shouldDrawText) {
-      invalidate();
-    }
-  }
 }
