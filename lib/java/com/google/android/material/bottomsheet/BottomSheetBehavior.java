@@ -292,7 +292,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           return false;
         }
         break;
-      case MotionEvent.ACTION_MOVE:
       case MotionEvent.ACTION_DOWN:
         int initialX = (int) event.getX();
         initialY = (int) event.getY();
