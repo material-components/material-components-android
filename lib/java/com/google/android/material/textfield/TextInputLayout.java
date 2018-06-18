@@ -88,8 +88,8 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
 /**
- * Layout which wraps an {@link android.widget.EditText} (or descendant) to show a floating label
- * when the hint is hidden while the user inputs text.
+ * Layout which wraps a {@link TextInputEditText}, {@link android.widget.EditText}, or descendant to
+ * show a floating label when the hint is hidden while the user inputs text.
  *
  * <p>Also supports:
  *
@@ -106,12 +106,13 @@ import java.lang.annotation.RetentionPolicy;
  *       <p><strong>Note:</strong> When using the password toggle functionality, the 'end' compound
  *       drawable of the EditText will be overridden while the toggle is enabled. To ensure that any
  *       existing drawables are restored correctly, you should set those compound drawables
- *       relatively (start/end), opposed to absolutely (left/right).
+ *       relatively (start/end), as opposed to absolutely (left/right).
  * </ul>
  *
- * <p>The {@link TextInputEditText} class is provided to be used as a child of this layout. Using
- * TextInputEditText allows TextInputLayout greater control over the visual aspects of any text
- * input. An example usage is as so:
+ * <p>The {@link TextInputEditText} class is provided to be used as the input text child of this
+ * layout. Using TextInputEditText instead of an EditText provides accessibility support for the
+ * text field and allows TextInputLayout greater control over the visual aspects of the text field.
+ * An example usage is as so:
  *
  * <pre>
  * &lt;com.google.android.material.textfield.TextInputLayout
@@ -126,9 +127,16 @@ import java.lang.annotation.RetentionPolicy;
  * &lt;/com.google.android.material.textfield.TextInputLayout&gt;
  * </pre>
  *
+ * The hint should be set on the TextInputLayout, rather than the EditText. If a hint is specified
+ * on the child EditText in XML, the TextInputLayout might still work correctly; TextInputLayout
+ * will use the EditText's hint as its floating label. However, future calls to modify the hint will
+ * not update TextInputLayout's hint. To avoid unintended behavior, call {@link
+ * TextInputLayout#setHint(CharSequence)} and {@link TextInputLayout#getHint()} on TextInputLayout,
+ * instead of on EditText.
+ *
  * <p><strong>Note:</strong> The actual view hierarchy present under TextInputLayout is
  * <strong>NOT</strong> guaranteed to match the view hierarchy as written in XML. As a result, calls
- * to getParent() on children of the TextInputLayout -- such as an TextInputEditText -- may not
+ * to getParent() on children of the TextInputLayout -- such as a TextInputEditText -- may not
  * return the TextInputLayout itself, but rather an intermediate View. If you need to access a View
  * directly, set an {@code android:id} and use {@link View#findViewById(int)}.
  */
