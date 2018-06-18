@@ -897,11 +897,10 @@ public class AppBarLayout extends LinearLayout {
         int nestedScrollAxes,
         int type) {
       // Return true if we're nested scrolling vertically, and we either have lift on scroll enabled
-      // or scrollable children, and the scrolling view is big enough to scroll
+      // or we can scroll the children.
       final boolean started =
           (nestedScrollAxes & ViewCompat.SCROLL_AXIS_VERTICAL) != 0
-              && (child.isLiftOnScroll() || child.hasScrollableChildren())
-              && parent.getHeight() - directTargetChild.getHeight() <= child.getHeight();
+              && (child.isLiftOnScroll() || canScrollChildren(parent, child, directTargetChild));
 
       if (started && offsetAnimator != null) {
         // Cancel any offset animation
@@ -915,6 +914,12 @@ public class AppBarLayout extends LinearLayout {
       lastStartedType = type;
 
       return started;
+    }
+
+    // Return true if there are scrollable children and the scrolling view is big enough to scroll.
+    private boolean canScrollChildren(CoordinatorLayout parent, T child, View directTargetChild) {
+      return child.hasScrollableChildren()
+          && parent.getHeight() - directTargetChild.getHeight() <= child.getHeight();
     }
 
     @Override
