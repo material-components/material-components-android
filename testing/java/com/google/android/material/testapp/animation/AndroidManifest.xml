@@ -25,6 +25,8 @@
     android:supportsRtl="true"
     android:theme="@style/Theme.Design">
 
-    <activity android:name="android.support.v7.app.AppCompatActivity"/>
+    <activity
+      android:name=".AnimationActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
   </application>
 </manifest>

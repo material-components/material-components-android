@@ -28,6 +28,10 @@
     android:theme="@style/Theme.Design">
 
     <activity
+      android:name=".animation.AnimationActivity"
+      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+
+    <activity
       android:name=".AppBarHorizontalScrollingActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 

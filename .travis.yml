@@ -1,4 +1,4 @@
-language: android
+language: java
 jdk: oraclejdk8
 
 # Choosing faster environment since it's a full VM.
@@ -10,45 +10,63 @@ env:
   global:
     # Notice global environment variables are available during the install phase for android >
     # components. These are the only variables that can be used in that section
-    - SDK_API=P
-    - BUILD_TOOLS_VERSION=26.0.2
+    # - SDK_API=P
+    # - BUILD_TOOLS_VERSION=26.0.2
+    - ANDROID_HOME=$HOME/android-sdk
   matrix:
     # Notice matrix environment variables are not available during the install phase for android >
     # components.
     # These CANNOT BE USED in the android > components section, only in before_script and script.
     - TEST_TYPE=unit
     - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=16 ABI=armeabi-v7a
-    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=19 ABI=armeabi-v7a
     - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=21 ABI=armeabi-v7a
+    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=24 ABI=armeabi-v7a
+
+addons:
+  apt:
+    packages:
+      - lynx
 
 before_cache:
+  # Do not cache a few Gradle files/directories (see https://docs.travis-ci.com/user/languages/java/#Caching)
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
   - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
 
 cache:
   directories:
+    # Android SDK
+    - $HOME/android-sdk-dl
+    - $HOME/android-sdk
+
+    # Gradle dependencies
     - $HOME/.gradle/caches/
     - $HOME/.gradle/wrapper/
+
+    # Android build cache (see http://tools.android.com/tech-docs/build-cache)
     - $HOME/.android/build-cache
 
-android:
-  components:
-    - tools # to get the new `repository-11.xml`
-    - platform-tools #latest
-    - tools # to install Android SDK tools 25+, latest, cannot get more granular control than this
-    # See https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943 for more
-    # details.
-    - build-tools-$BUILD_TOOLS_VERSION
-    - android-$SDK_API
+install:
+  # Download and unzip the Android SDK tools (if not already there thanks to the cache mechanism)
+  # Latest version available here: https://developer.android.com/studio/index.html#downloads
+  - if test ! -e $HOME/android-sdk-dl/sdk-tools.zip ; then curl https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip > $HOME/android-sdk-dl/sdk-tools.zip ; fi
+  - unzip -qq -n $HOME/android-sdk-dl/sdk-tools.zip -d $HOME/android-sdk
 
-  licenses:
-    - 'android-sdk-license-.+'
+  # Install or update Android SDK components (will not do anything if already up to date thanks to the cache mechanism)
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'tools' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platform-tools' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'build-tools;26.0.2' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platforms;android-28' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
+  - export PATH=$HOME/android-sdk/platform-tools:$PATH
 
 before_script:
   - ./travis_before_script.sh
 
 script:
-  - ./gradlew assemble -PdisablePreDex;
+  - ./gradlew assemble --no-daemon -PdisablePreDex
   - ./travis_run_unit_tests.sh
   - travis_wait ./travis_set_up_emulator.sh
-  - travis_wait 60 ./travis_run_instrumentation_tests.sh
+  - travis_wait ./travis_run_instrumentation_tests.sh
+
+after_script:
+ - if [ -f /home/travis/build/material-components/material-components-android/tests/build/reports/androidTests/connected/index.html ]; then lynx -dump /home/travis/build/material-components/material-components-android/tests/build/reports/androidTests/connected/index.html; fi

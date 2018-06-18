@@ -11,7 +11,7 @@ if [ "$TEST_TYPE" == "unit" ]; then
   echo "This is unit test run, skipping emulator set up."
 elif [ "$TEST_TYPE" == "instrumentation" ]; then
   echo "Waiting for emulator setup..."
-  android-wait-for-emulator
+  adb wait-for-device
   adb shell input keyevent 82 &
   # Avoid having it lock itself again.
   adb shell svc power stayon true
