@@ -76,7 +76,6 @@ Feature                  | Relevant attributes
 :----------------------- | :---------------------------------
 Background Tint          | `app:backgroundTint`
 FAB Alignment Mode       | `app:fabAlignmentMode`
-FAB Attached             | `app:fabAttached`
 FAB Cradle Margin        | `app:fabCradleMargin`
 FAB Cradle Corner Radius | `app:fabCradleRoundedCornerRadius`
 FAB Vertical Offset      | `app:fabCradleVerticalOffset`
@@ -85,9 +84,10 @@ Hide on scroll           | `app:hideOnScroll`
 #### Background Tint
 
 The `BottomAppBar` internally handles its own background. This allows it to
-automatically cradle the FAB when it is attached, but it also means that you
-shouldn't call `setBackground()` or use the `android:background` attribute in
-xml. Instead, the `app:backgroundTint` attribute will allow you to set a tint.
+automatically cradle the `FloatingActionButton` when it is attached, but it also
+means that you shouldn't call `setBackground()` or use the `android:background`
+attribute in xml. Instead, the `app:backgroundTint` attribute will allow you to
+set a tint.
 
 #### `FloatingActionButton` Alignment Modes
 
@@ -99,17 +99,16 @@ animation from a primary screen to a secondary screen.
 
 #### `FloatingActionButton` Attributes
 
-The placement of the FAB can be controlled by `fabAlignmentMode`, `fabAttached`,
-`fabCradleMargin`, `fabCradleRoundedCornerRadius`, and
+The placement of the `FloatingActionButton` can be controlled by
+`fabAlignmentMode`, `fabCradleMargin`, `fabCradleRoundedCornerRadius`, and
 `fabCradleVerticalOffset`. The starting alignment mode (`fabAlignmentMode`) can
-be set to either `center` or `end`. If `fabAttached` is set to true, the fab
-will be laid out attached to the `BottomAppBar`. The `fabCradleMargin` is the
-difference in size between the cradle and the fab, changing this value will
-increase or decrease the apparent distance between the FAB and the `BottomAppBar`.
-`fabCradleRoundedCornerRadius` specifies the roundness of the corner around the
-cutout. `fabCradleVerticalOffset` specifies the vertical offset between the FAB
-and the `BottomAppBar`. If `fabCradleVerticalOffset` is 0, the center of the FAB
-will be aligned with the top of the `BottomAppBar`.
+be set to either `center` or `end`. Changing the `fabCradleMargin` will increase
+or decrease the distance between the `FloatingActionButton` and the
+`BottomAppBar`. The `fabCradleRoundedCornerRadius` specifies the roundness of
+the corner around the cutout. The `fabCradleVerticalOffset` specifies the
+vertical offset between the `FloatingActionButton` and the `BottomAppBar`. If
+`fabCradleVerticalOffset` is 0, the center of the `FloatingActionButton` will be
+aligned with the top of the `BottomAppBar`.
 
 #### Hide on scroll
 
@@ -165,4 +164,3 @@ bar.setNavigationOnClickListener(new OnClickListener() {
     }
 });
 ```
-
