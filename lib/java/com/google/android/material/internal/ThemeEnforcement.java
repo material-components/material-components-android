@@ -61,32 +61,11 @@ public final class ThemeEnforcement {
       @StyleableRes int[] attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
-    return obtainStyledAttributes(context, set, attrs, defStyleAttr, defStyleRes, false);
-  }
-
-  /**
-   * Safely retrieve styled attribute information in this Context's theme, after checking whether
-   * the theme is compatible with the component's given style. Also checks whether a textAppearance
-   * is set on the component if <code>enforceTextAppearance</code> is set to <code>true</code>.
-   *
-   * <p>Set a component's {@link R.attr#enforceMaterialTheme enforceMaterialTheme} attribute to
-   * <code>true</code> to ensure that the Context's theme inherits from {@link
-   * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
-   * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
-   * {@link R.attr#colorSecondary colorSecondary}.
-   */
-  public static TypedArray obtainStyledAttributes(
-      Context context,
-      AttributeSet set,
-      int[] attrs,
-      int defStyleAttr,
-      int defStyleRes,
-      boolean enforceTextAppearance) {
 
     // First, check for a compatible theme.
     checkCompatibleTheme(context, set, defStyleAttr, defStyleRes);
 
-    // Then, check that a textAppearance is set if enforceTextAppearance is true
+    // Then, check that a textAppearance is set if enforceTextAppearance attribute is true
     checkTextAppearance(context, set, defStyleAttr, defStyleRes);
 
     // Then, safely retrieve the styled attribute information.
