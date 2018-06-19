@@ -1534,5 +1534,4 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       chipDrawable.setChipEndPadding(chipEndPadding);
     }
   }
-
 }
