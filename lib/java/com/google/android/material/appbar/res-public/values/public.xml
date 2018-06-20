@@ -30,5 +30,6 @@
   <public name="Widget.Design.AppBarLayout" type="style"/>
   <public name="Widget.Design.CollapsingToolbar" type="style"/>
   <public name="TextAppearance.Design.CollapsingToolbar.Expanded" type="style"/>
+  <public name="appbar_scrolling_view_behavior" type="string"/>
 </resources>
 
