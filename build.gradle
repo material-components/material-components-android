@@ -4,7 +4,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.0.1'
+    classpath 'com.android.tools.build:gradle:3.1.3'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
   }
 }
@@ -18,10 +18,10 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 'android-P'
+  compileSdkVersion = 28
   minSdkVersion = 14
   targetSdkVersion = 27
-  supportVersion = '28.0.0-alpha1'
+  supportVersion = '28.0.0-alpha3'
 
   testRunnerVersion = '1.0.0'
   espressoVersion = '3.0.0'

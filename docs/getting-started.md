@@ -31,7 +31,7 @@ To use it:
     ```groovy
       dependencies {
         // ...
-        compile 'com.google.android.material:material:1.0.0-alpha1'
+        compile 'com.google.android.material:material:1.0.0-alpha3'
         // ...
       }
     ```
@@ -45,7 +45,7 @@ libraries.
 
 If you don't want to switch over to the new `androidx` and
 `com.google.android.material` packages yet, you can use Material Components via
-the `com.android.support:design:28.0.0-alpha1` dependency.
+the `com.android.support:design:28.0.0-alpha3` dependency.
 
 Note: You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.
@@ -54,8 +54,8 @@ Note: You should not use the `com.android.support` and
 
 In order to use Material Components for Android, and the latest versions of the
 Support Libraries, you will have to update your app's `compileSdkVersion` to
-`'android-P'` and download the Android P Preview using the SDK manager. For
-more information on Android P and its timeline, take a look at the [Program
+`28` and download the Android P Preview using the SDK manager. For more
+information on Android P and its timeline, take a look at the [Program
 Overview](https://developer.android.com/preview/overview) page.
 
 ### 3. Ensure you are using `AppCompatActivity`
