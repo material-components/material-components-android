@@ -63,7 +63,7 @@ in your theme:
   ...
   <item name="fontFamily">@font/custom_font</item>
   <item name="android:textStyle">normal</item>
-  <item name="textAllCaps">false</item>
+  <item name="android:textAllCaps">false</item>
   <item name="android:textSize">64sp</item>
   <item name="android:letterSpacing">0</item>
   ...
@@ -77,6 +77,10 @@ in your theme:
   ...
 </style>
 ```
+
+Note: `AppCompat` must be used to handle backwards compatibility for sdk < 16.
+If you don't need to support devices < 16 and aren't using AppCompat, you
+should set `android:fontFamily` instead of `fontFamily` or `app:fontFamily`.
 
 ## Downloadable Fonts
 
