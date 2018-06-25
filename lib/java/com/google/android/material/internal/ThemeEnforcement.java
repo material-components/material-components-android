@@ -54,19 +54,25 @@ public final class ThemeEnforcement {
    * R.style#Theme_MaterialComponents Theme.MaterialComponents}. For example, you'll want to do this
    * if the component uses a new attribute defined in <code>Theme.MaterialComponents</code> like
    * {@link R.attr#colorSecondary colorSecondary}.
+   *
+   * <p>If {@link R.attr#enforceTextAppearance} attribute is set to <code>true</code> and
+   * textAppearanceResIndices parameter is specified and has non-negative values, this will also
+   * check that a valid TextAppearance is set on this component for the text appearance resources
+   * passed in.
    */
   public static TypedArray obtainStyledAttributes(
       Context context,
       AttributeSet set,
       @StyleableRes int[] attrs,
       @AttrRes int defStyleAttr,
-      @StyleRes int defStyleRes) {
+      @StyleRes int defStyleRes,
+      @StyleableRes int... textAppearanceResIndices) {
 
     // First, check for a compatible theme.
     checkCompatibleTheme(context, set, defStyleAttr, defStyleRes);
 
     // Then, check that a textAppearance is set if enforceTextAppearance attribute is true
-    checkTextAppearance(context, set, defStyleAttr, defStyleRes);
+    checkTextAppearance(context, set, attrs, defStyleAttr, defStyleRes, textAppearanceResIndices);
 
     // Then, safely retrieve the styled attribute information.
     return context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
@@ -84,20 +90,27 @@ public final class ThemeEnforcement {
    * {@link R.attr#colorSecondary colorSecondary}.
    *
    * <p>New components should prefer to use {@link #obtainStyledAttributes(Context, AttributeSet,
-   * int[], int, int)}, and use {@link com.google.android.material.resources.MaterialResources} as a
-   * replacement for the functionality in {@link android.support.v7.widget.TintTypedArray}.
+   * int[], int, int, int...)}, and use {@link com.google.android.material.resources.MaterialResources}
+   * as a replacement for the functionality in {@link android.support.v7.widget.TintTypedArray}.
+   *
+   * <p>If {@link R.attr#enforceTextAppearance} attribute is set to <code>true</code> and
+   * textAppearanceResIndices parameter is specified and has non-negative values, this will also
+   * check that a valid TextAppearance is set on this component for the text appearance resources
+   * passed in.
    */
   public static TintTypedArray obtainTintedStyledAttributes(
       Context context,
       AttributeSet set,
       @StyleableRes int[] attrs,
       @AttrRes int defStyleAttr,
-      @StyleRes int defStyleRes) {
+      @StyleRes int defStyleRes,
+      @StyleableRes int... textAppearanceResIndices) {
+
     // First, check for a compatible theme.
     checkCompatibleTheme(context, set, defStyleAttr, defStyleRes);
 
-    // Then, check that a textAppearance is set if enforceTextAppearance is true
-    checkTextAppearance(context, set, defStyleAttr, defStyleRes);
+    // Then, check that a textAppearance is set if enforceTextAppearance attribute is true
+    checkTextAppearance(context, set, attrs, defStyleAttr, defStyleRes, textAppearanceResIndices);
 
     // Then, safely retrieve the styled attribute information.
     return TintTypedArray.obtainStyledAttributes(context, set, attrs, defStyleAttr, defStyleRes);
@@ -119,25 +132,63 @@ public final class ThemeEnforcement {
   }
 
   private static void checkTextAppearance(
-      Context context, AttributeSet set, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    TypedArray a =
+      Context context,
+      AttributeSet set,
+      @StyleableRes int[] attrs,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes,
+      @StyleableRes int... textAppearanceResIndices) {
+    TypedArray themeEnforcementAttrs =
         context.obtainStyledAttributes(
             set, R.styleable.ThemeEnforcement, defStyleAttr, defStyleRes);
     boolean enforceTextAppearance =
-        a.getBoolean(R.styleable.ThemeEnforcement_enforceTextAppearance, false);
+        themeEnforcementAttrs.getBoolean(R.styleable.ThemeEnforcement_enforceTextAppearance, false);
 
-    if (enforceTextAppearance) {
-      int textAppearanceResId =
-          a.getResourceId(R.styleable.ThemeEnforcement_android_textAppearance, -1);
-      a.recycle();
-
-      if (textAppearanceResId == -1) {
-        throw new IllegalArgumentException(
-            "This component requires that you specify a valid android:textAppearance attribute.");
-      }
-    } else {
-      a.recycle();
+    if (!enforceTextAppearance) {
+      themeEnforcementAttrs.recycle();
+      return;
     }
+
+    boolean validTextAppearance;
+
+    if (textAppearanceResIndices == null || textAppearanceResIndices.length == 0) {
+      // No custom TextAppearance attributes passed in, check android:textAppearance
+      validTextAppearance =
+          themeEnforcementAttrs.getResourceId(
+                  R.styleable.ThemeEnforcement_android_textAppearance, -1)
+              != -1;
+    } else {
+      // Check custom TextAppearances are valid
+      validTextAppearance =
+          isCustomTextAppearanceValid(
+              context, set, attrs, defStyleAttr, defStyleRes, textAppearanceResIndices);
+    }
+
+    themeEnforcementAttrs.recycle();
+
+    if (!validTextAppearance) {
+      throw new IllegalArgumentException(
+          "This component requires that you specify a valid TextAppearance attribute.");
+    }
+  }
+
+  private static boolean isCustomTextAppearanceValid(
+      Context context,
+      AttributeSet set,
+      @StyleableRes int[] attrs,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes,
+      @StyleableRes int... textAppearanceResIndices) {
+    TypedArray componentAttrs =
+        context.obtainStyledAttributes(set, attrs, defStyleAttr, defStyleRes);
+    for (int customTextAppearanceIndex : textAppearanceResIndices) {
+      if (componentAttrs.getResourceId(customTextAppearanceIndex, -1) == -1) {
+        componentAttrs.recycle();
+        return false;
+      }
+    }
+    componentAttrs.recycle();
+    return true;
   }
 
   public static void checkAppCompatTheme(Context context) {
