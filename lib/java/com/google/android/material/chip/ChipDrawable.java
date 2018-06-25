@@ -38,6 +38,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Drawable.Callback;
 import android.os.Build.VERSION_CODES;
@@ -60,6 +61,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
+import android.support.v4.content.res.ResourcesCompat.FontCallback;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
@@ -170,6 +172,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Nullable private CharSequence unicodeWrappedText;
 
   @Nullable private TextAppearance textAppearance;
+  private final FontCallback fontCallback =
+      new FontCallback() {
+        @Override
+        public void onFontRetrieved(@NonNull Typeface typeface) {
+          textWidthDirty = true;
+          onSizeChange();
+          invalidateSelf();
+        }
+
+        @Override
+        public void onFontRetrievalFailed(int reason) {}
+      };
 
   // Chip icon
   private boolean chipIconEnabled;
@@ -628,7 +642,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
       if (textAppearance != null) {
         textPaint.drawableState = getState();
-        textAppearance.updateDrawState(context, textPaint);
+        textAppearance.updateDrawState(context, textPaint, fontCallback);
       }
       textPaint.setTextAlign(align);
 
@@ -1357,7 +1371,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       this.textAppearance = textAppearance;
 
       if (textAppearance != null) {
-        textAppearance.updateMeasureState(context, textPaint);
+        textAppearance.updateMeasureState(context, textPaint, fontCallback);
         textWidthDirty = true;
       }
 

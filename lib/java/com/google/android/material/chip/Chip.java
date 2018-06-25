@@ -27,6 +27,7 @@ import android.graphics.Outline;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.RectF;
+import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
@@ -49,6 +50,7 @@ import com.google.android.material.chip.ChipDrawable.Delegate;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
+import android.support.v4.content.res.ResourcesCompat.FontCallback;
 import android.support.v4.text.BidiFormatter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
@@ -140,6 +142,19 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
   private final RectF rectF = new RectF();
+  private final FontCallback fontCallback =
+      new FontCallback() {
+        @Override
+        public void onFontRetrieved(@NonNull Typeface typeface) {
+          // Set text to re-trigger internal ellipsize width calculation.
+          setText(getText());
+          requestLayout();
+          invalidate();
+        }
+
+        @Override
+        public void onFontRetrievalFailed(int reason) {}
+      };
 
   public Chip(Context context) {
     this(context, null);
@@ -170,8 +185,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setEllipsize(drawable.getEllipsize());
 
     setIncludeFontPadding(false);
-    updateTextPaintDrawState(getTextAppearance());
-
+    if (getTextAppearance() != null) {
+      updateTextPaintDrawState(getTextAppearance());
+    }
     // Chip text should not extend to more than 1 line.
     setSingleLine();
     // Chip text should be vertically center aligned and start aligned.
@@ -1130,7 +1146,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private void updateTextPaintDrawState(TextAppearance textAppearance) {
     TextPaint textPaint = getPaint();
     textPaint.drawableState = chipDrawable.getState();
-    textAppearance.updateDrawState(getContext(), textPaint);
+    textAppearance.updateDrawState(getContext(), textPaint, fontCallback);
   }
 
   public void setTextAppearanceResource(@StyleRes int id) {
@@ -1144,8 +1160,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearance(textAppearance);
     }
-    getTextAppearance().updateMeasureState(getContext(), getPaint());
-    updateTextPaintDrawState(textAppearance);
+    if (getTextAppearance() != null) {
+      getTextAppearance().updateMeasureState(getContext(), getPaint(), fontCallback);
+      updateTextPaintDrawState(textAppearance);
+    }
   }
 
   @Override
@@ -1154,8 +1172,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearanceResource(resId);
     }
-    getTextAppearance().updateMeasureState(context, getPaint());
-    updateTextPaintDrawState(getTextAppearance());
+    if (getTextAppearance() != null) {
+      getTextAppearance().updateMeasureState(context, getPaint(), fontCallback);
+      updateTextPaintDrawState(getTextAppearance());
+    }
   }
 
   @Override
@@ -1164,8 +1184,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearanceResource(resId);
     }
-    getTextAppearance().updateMeasureState(getContext(), getPaint());
-    updateTextPaintDrawState(getTextAppearance());
+    if (getTextAppearance() != null) {
+      getTextAppearance().updateMeasureState(getContext(), getPaint(), fontCallback);
+      updateTextPaintDrawState(getTextAppearance());
+    }
   }
 
   public boolean isChipIconEnabled() {
