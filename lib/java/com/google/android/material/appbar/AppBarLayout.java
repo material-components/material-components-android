@@ -157,6 +157,7 @@ public class AppBarLayout extends LinearLayout {
 
   private List<BaseOnOffsetChangedListener> listeners;
 
+  private boolean liftableOverride;
   private boolean liftable;
   private boolean lifted;
 
@@ -281,7 +282,10 @@ public class AppBarLayout extends LinearLayout {
       }
     }
 
-    setLiftableState(liftOnScroll || hasCollapsibleChild());
+    // If the user has set liftable manually, don't set liftable state automatically.
+    if (!liftableOverride) {
+      setLiftableState(liftOnScroll || hasCollapsibleChild());
+    }
   }
 
   private boolean hasCollapsibleChild() {
@@ -555,6 +559,12 @@ public class AppBarLayout extends LinearLayout {
    *
    * @return true if the liftable state changed
    */
+  public boolean setLiftable(boolean liftable) {
+    this.liftableOverride = true;
+    return setLiftableState(liftable);
+  }
+
+  // Internal helper method that updates liftable state without enabling the override.
   private boolean setLiftableState(boolean liftable) {
     if (this.liftable != liftable) {
       this.liftable = liftable;
@@ -569,6 +579,11 @@ public class AppBarLayout extends LinearLayout {
    *
    * @return true if the lifted state changed
    */
+  public boolean setLifted(boolean lifted) {
+    return setLiftedState(lifted);
+  }
+
+  // Internal helper method that updates lifted state.
   boolean setLiftedState(boolean lifted) {
     if (this.lifted != lifted) {
       this.lifted = lifted;
