@@ -13,20 +13,10 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
--->
-<resources>
+  -->
 
-  <declare-styleable name="Snackbar">
-    <!-- Style to use for Snackbars in this theme. -->
-    <attr name="snackbarStyle" format="reference"/>
-    <!-- Style to use for action button within a Snackbar in this theme. -->
-    <attr name="snackbarButtonStyle" format="reference"/>
-  </declare-styleable>
-
-  <declare-styleable name="SnackbarLayout">
-    <attr name="android:maxWidth"/>
-    <attr name="elevation"/>
-    <attr name="maxActionInlineWidth" format="dimension"/>
-  </declare-styleable>
-
-</resources>
+<shape xmlns:android="http://schemas.android.com/apk/res/android"
+    android:shape="rectangle">
+  <corners android:radius="@dimen/mtrl_snackbar_background_corner_radius"/>
+  <solid android:color="@color/design_snackbar_background_color"/>
+</shape>

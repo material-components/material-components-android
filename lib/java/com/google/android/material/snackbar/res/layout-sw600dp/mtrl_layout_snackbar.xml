@@ -14,19 +14,11 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
 
-  <declare-styleable name="Snackbar">
-    <!-- Style to use for Snackbars in this theme. -->
-    <attr name="snackbarStyle" format="reference"/>
-    <!-- Style to use for action button within a Snackbar in this theme. -->
-    <attr name="snackbarButtonStyle" format="reference"/>
-  </declare-styleable>
-
-  <declare-styleable name="SnackbarLayout">
-    <attr name="android:maxWidth"/>
-    <attr name="elevation"/>
-    <attr name="maxActionInlineWidth" format="dimension"/>
-  </declare-styleable>
-
-</resources>
+<view xmlns:android="http://schemas.android.com/apk/res/android"
+    style="?attr/snackbarStyle"
+    class="com.google.android.material.snackbar.Snackbar$SnackbarLayout"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="bottom|center_horizontal"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark"/>

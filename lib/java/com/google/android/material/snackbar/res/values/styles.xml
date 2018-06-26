@@ -31,4 +31,11 @@
     <item name="maxActionInlineWidth">@dimen/design_snackbar_action_inline_max_width</item>
   </style>
 
+  <style name="Widget.MaterialComponents.Snackbar" parent="Widget.Design.Snackbar">
+    <item name="android:background">@drawable/mtrl_snackbar_background</item>
+    <item name="android:layout_margin">@dimen/mtrl_snackbar_margin</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Snackbar.FullWidth" parent="Widget.Design.Snackbar"/>
+
 </resources>

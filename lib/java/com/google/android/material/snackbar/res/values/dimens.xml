@@ -34,4 +34,7 @@
   <dimen name="design_snackbar_padding_vertical">14dp</dimen>
   <dimen name="design_snackbar_padding_vertical_2lines">24dp</dimen>
 
+  <dimen name="mtrl_snackbar_background_corner_radius">4dp</dimen>
+  <dimen name="mtrl_snackbar_margin">8dp</dimen>
+
 </resources>
