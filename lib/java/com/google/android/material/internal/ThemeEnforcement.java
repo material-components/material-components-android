@@ -168,7 +168,8 @@ public final class ThemeEnforcement {
 
     if (!validTextAppearance) {
       throw new IllegalArgumentException(
-          "This component requires that you specify a valid TextAppearance attribute.");
+          "This component requires that you specify a valid TextAppearance attribute. Update your "
+              + "app theme to inherit from Theme.MaterialComponents (or a descendant).");
     }
   }
 
