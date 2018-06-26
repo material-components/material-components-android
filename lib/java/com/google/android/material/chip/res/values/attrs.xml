@@ -44,6 +44,8 @@
     <!-- If set, causes words that are longer than the view is wide to be ellipsized instead of
          truncated at the end. -->
     <attr name="android:ellipsize"/>
+    <!-- Make the Chip to be at most this many pixels wide. -->
+    <attr name="android:maxWidth"/>
 
     <!-- Whether to show the chip icon. -->
     <attr name="chipIconEnabled" format="boolean"/>

@@ -51,6 +51,7 @@ import android.support.annotation.DimenRes;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Px;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.annotation.XmlRes;
@@ -267,6 +268,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private float textWidth;
   private TruncateAt truncateAt;
   private boolean shouldDrawText;
+  private int maxWidth;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
@@ -398,6 +400,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setCloseIconEndPadding(a.getDimension(R.styleable.Chip_closeIconEndPadding, 0f));
     setChipEndPadding(a.getDimension(R.styleable.Chip_chipEndPadding, 0f));
 
+    setMaxWidth(a.getDimensionPixelSize(R.styleable.Chip_android_maxWidth, Integer.MAX_VALUE));
+
     a.recycle();
   }
 
@@ -447,14 +451,16 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   /** Returns the width at which the chip would like to be laid out. */
   @Override
   public int getIntrinsicWidth() {
-    return Math.round(
-        (chipStartPadding
-            + calculateChipIconWidth()
-            + textStartPadding
-            + getTextWidth()
-            + textEndPadding
-            + calculateCloseIconWidth()
-            + chipEndPadding));
+    int calculatedWidth =
+        Math.round(
+            (chipStartPadding
+                + calculateChipIconWidth()
+                + textStartPadding
+                + getTextWidth()
+                + textEndPadding
+                + calculateCloseIconWidth()
+                + chipEndPadding));
+    return Math.min(calculatedWidth, maxWidth);
   }
 
   /** Returns the height at which the chip would like to be laid out. */
@@ -1853,6 +1859,17 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       invalidateSelf();
       onSizeChange();
     }
+  }
+
+  /** Returns the maximum width of TextView in terms of pixels. */
+  @Px
+  public int getMaxWidth() {
+    return maxWidth;
+  }
+
+  /** Sets the width of the TextView to be exactly {@code pixels} wide. */
+  public void setMaxWidth(@Px int maxWidth) {
+    this.maxWidth = maxWidth;
   }
 
   boolean shouldDrawText() {

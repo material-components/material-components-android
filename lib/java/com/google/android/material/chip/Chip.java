@@ -43,6 +43,7 @@ import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.annotation.Px;
 import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import com.google.android.material.animation.MotionSpec;
@@ -533,6 +534,14 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       throw new UnsupportedOperationException("Chip does not support multi-line text");
     }
     super.setMaxLines(maxLines);
+  }
+
+  @Override
+  public void setMaxWidth(@Px int maxWidth) {
+    super.setMaxWidth(maxWidth);
+    if (chipDrawable != null) {
+      chipDrawable.setMaxWidth(maxWidth);
+    }
   }
 
   @Override
