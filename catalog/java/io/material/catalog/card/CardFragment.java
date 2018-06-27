@@ -63,7 +63,7 @@ public class CardFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_card_title, R.drawable.ic_card_24px) {
+      return new FeatureDemo(R.string.cat_card_title, R.drawable.ic_card) {
         @Override
         public Fragment createFragment() {
           return new CardFragment();

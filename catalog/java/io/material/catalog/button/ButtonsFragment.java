@@ -63,7 +63,7 @@ public class ButtonsFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_buttons_title, R.drawable.ic_buttons_24px) {
+      return new FeatureDemo(R.string.cat_buttons_title, R.drawable.ic_button) {
         @Override
         public Fragment createFragment() {
           return new ButtonsFragment();

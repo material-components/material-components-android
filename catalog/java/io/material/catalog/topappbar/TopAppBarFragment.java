@@ -85,7 +85,7 @@ public class TopAppBarFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_topappbar_title, R.drawable.ic_topappbar_24px) {
+      return new FeatureDemo(R.string.cat_topappbar_title, R.drawable.ic_topappbar) {
         @Override
         public Fragment createFragment() {
           return new TopAppBarFragment();

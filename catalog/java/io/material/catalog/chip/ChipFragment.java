@@ -78,7 +78,7 @@ public class ChipFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_chip_title, R.drawable.ic_chips_24px) {
+      return new FeatureDemo(R.string.cat_chip_title, R.drawable.ic_chips) {
         @Override
         public Fragment createFragment() {
           return new ChipFragment();

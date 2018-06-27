@@ -63,7 +63,7 @@ public class FabFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_fab_title, R.drawable.ic_fab_24px) {
+      return new FeatureDemo(R.string.cat_fab_title, R.drawable.ic_fab) {
         @Override
         public Fragment createFragment() {
           return new FabFragment();

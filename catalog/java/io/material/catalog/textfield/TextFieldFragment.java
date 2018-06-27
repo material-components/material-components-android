@@ -91,7 +91,7 @@ public class TextFieldFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_textfield_title, R.drawable.ic_text_field_24px) {
+      return new FeatureDemo(R.string.cat_textfield_title, R.drawable.ic_textfield) {
         @Override
         public Fragment createFragment() {
           return new TextFieldFragment();
