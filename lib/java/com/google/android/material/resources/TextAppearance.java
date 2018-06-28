@@ -142,7 +142,8 @@ public class TextAppearance {
    * @param callback Callback to notify when font is available.
    * @see android.support.v7.widget.AppCompatTextHelper
    */
-  public void getFontAsync(Context context, TextPaint textPaint, @NonNull FontCallback callback) {
+  public void getFontAsync(
+      Context context, final TextPaint textPaint, @NonNull final FontCallback callback) {
     if (fontResolved) {
       updateTextPaintMeasureState(textPaint, font);
       return;
