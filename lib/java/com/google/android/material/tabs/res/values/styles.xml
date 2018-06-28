@@ -44,11 +44,13 @@
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout" parent="Widget.Design.TabLayout">
+    <item name="enforceTextAppearance">true</item>
     <item name="android:background">@android:color/white</item>
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
     <item name="tabIndicatorAnimationDuration">@integer/mtrl_tab_indicator_anim_duration_ms</item>
     <item name="tabIndicatorColor">?attr/colorAccent</item>
-    <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab</item>
+    <item name="tabTextAppearance">?attr/textAppearanceButton</item>
+    <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector</item>
     <item name="tabRippleColor">@color/mtrl_tabs_ripple_color</item>
     <item name="tabUnboundedRipple">true</item>
   </style>
@@ -57,16 +59,13 @@
     <item name="android:background">?attr/colorAccent</item>
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_colored</item>
     <item name="tabIndicatorColor">@android:color/white</item>
-    <item name="tabTextAppearance">@style/TextAppearance.MaterialComponents.Tab.Colored</item>
+    <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>
     <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
   </style>
 
+  <!-- TODO: Remove these text appearances -->
   <style name="TextAppearance.MaterialComponents.Tab" parent="TextAppearance.Design.Tab">
     <item name="android:textColor">@color/mtrl_tabs_icon_color_selector</item>
-  </style>
-
-  <style name="TextAppearance.MaterialComponents.Tab.Colored">
-    <item name="android:textColor">@color/mtrl_tabs_icon_color_selector_colored</item>
   </style>
 
 </resources>

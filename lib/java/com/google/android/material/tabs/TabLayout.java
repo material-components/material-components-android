@@ -415,7 +415,12 @@ public class TabLayout extends HorizontalScrollView {
 
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
-            context, attrs, R.styleable.TabLayout, defStyleAttr, R.style.Widget_Design_TabLayout);
+            context,
+            attrs,
+            R.styleable.TabLayout,
+            defStyleAttr,
+            R.style.Widget_Design_TabLayout,
+            R.styleable.TabLayout_tabTextAppearance);
 
     slidingTabIndicator.setSelectedIndicatorHeight(
         a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, -1));
