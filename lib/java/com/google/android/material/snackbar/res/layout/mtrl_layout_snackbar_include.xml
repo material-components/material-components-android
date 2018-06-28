@@ -36,7 +36,7 @@
     android:ellipsize="end"
     android:maxLines="@integer/design_snackbar_text_max_lines"
     android:textAlignment="viewStart"
-    android:textAppearance="@style/TextAppearance.Design.Snackbar.Message"/>
+    android:textAppearance="?attr/textAppearanceBody2"/>
 
   <Button
     android:id="@+id/snackbar_action"

@@ -181,7 +181,7 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
         (SnackbarContentLayout)
             inflater.inflate(
                 isUsingMaterialTheme
-                    ? R.layout.design_layout_snackbar_include_material
+                    ? R.layout.mtrl_layout_snackbar_include
                     : R.layout.design_layout_snackbar_include,
                 parent,
                 false);
