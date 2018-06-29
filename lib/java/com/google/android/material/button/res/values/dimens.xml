@@ -24,9 +24,7 @@
   <dimen name="mtrl_btn_padding_bottom">4dp</dimen>
   <dimen name="mtrl_btn_text_btn_padding_left">8dp</dimen>
   <dimen name="mtrl_btn_text_btn_padding_right">8dp</dimen>
-
-  <dimen name="mtrl_btn_additional_padding_start_for_icon">-4dp</dimen>
-  <dimen name="mtrl_btn_additional_padding_end_for_icon">0dp</dimen>
+  <dimen name="mtrl_btn_icon_btn_padding_left">12dp</dimen>
 
   <dimen name="mtrl_btn_corner_radius">4dp</dimen>
 

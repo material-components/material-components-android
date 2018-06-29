@@ -122,6 +122,37 @@ options.
     android:text="@string/text_button_label_enabled"/>
 ```
 
+### Icon button
+
+Every style for Material Button has an additional `.Icon` style. This style is
+meant to be used when the `icon` attribute is set for the button. The icon
+button style has smaller start and end paddings to achieve visual balance in the
+button when an icon is present.
+
+The following shows a filled, elevated button with an icon:
+
+```xml
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/material_icon_button"
+    style="@style/Widget.MaterialComponents.Button.Icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/icon_button_label_enabled"
+    app:icon="@drawable/icon_24px"/>
+```
+
+The following shows a text button with an icon:
+
+```xml
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/material_icon_button"
+    style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/icon_button_label_enabled"
+    app:icon="@drawable/icon_24px"/>
+```
+
 ## Attributes
 
 The following attributes can be changed for Material Button:
@@ -134,8 +165,6 @@ Background color                                             | `app:backgroundTi
 Icon drawable                                                | `app:icon`
 Padding between icon and button text                         | `app:iconPadding`
 Icon color                                                   | `app:iconTint`<br/>`app:iconTintMode`
-Padding at the start of a button when<br/>an icon is present | `app:additionalPaddingStartForIcon`
-Padding at the end of a button when an<br/>icon is present   | `app:additionalPaddingEndForIcon`
 Stroke                                                       | `app:strokeColor`<br/>`app:strokeWidth`
 The radius of all four corners of the<br/>button             | `app:cornerRadius`
 Ripple                                                       | `app:rippleColor`
@@ -146,6 +175,7 @@ a button:
 ```xml
 <com.google.android.material.button.MaterialButton
     android:id="@+id/material_icon_button"
+    style="@style/Widget.MaterialComponents.Button.Icon"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:text="@string/icon_button_label_enabled"

@@ -43,6 +43,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
+import android.support.v4.view.ViewCompat;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -120,9 +121,23 @@ class MaterialButtonHelper {
             ? strokeColor.getColorForState(materialButton.getDrawableState(), Color.TRANSPARENT)
             : Color.TRANSPARENT);
 
+    // Store padding before setting background, since background overwrites padding values
+    int paddingStart = ViewCompat.getPaddingStart(materialButton);
+    int paddingTop = materialButton.getPaddingTop();
+    int paddingEnd = ViewCompat.getPaddingEnd(materialButton);
+    int paddingBottom = materialButton.getPaddingBottom();
+
     // Update materialButton's background without triggering setBackgroundOverwritten()
     materialButton.setInternalBackground(
         IS_LOLLIPOP ? createBackgroundLollipop() : createBackgroundCompat());
+
+    // Set the stored padding values
+    ViewCompat.setPaddingRelative(
+        materialButton,
+        paddingStart + insetLeft,
+        paddingTop + insetTop,
+        paddingEnd + insetRight,
+        paddingBottom + insetBottom);
   }
 
   /**

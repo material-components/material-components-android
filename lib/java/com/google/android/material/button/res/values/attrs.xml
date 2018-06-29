@@ -21,13 +21,6 @@
   <attr name="materialButtonStyle" format="reference"/>
 
   <declare-styleable name="MaterialButton">
-    <attr name="android:padding"/>
-    <attr name="android:paddingLeft"/>
-    <attr name="android:paddingStart"/>
-    <attr name="android:paddingRight"/>
-    <attr name="android:paddingEnd"/>
-    <attr name="android:paddingTop"/>
-    <attr name="android:paddingBottom"/>
     <attr name="android:insetLeft"/>
     <attr name="android:insetRight"/>
     <attr name="android:insetTop"/>
@@ -53,10 +46,6 @@
     <attr name="iconTint" format="color"/>
     <!-- Tint mode for icon drawable to display. -->
     <attr name="iconTintMode"/>
-    <!-- Padding to add/remove from the start of the button when an icon is present. -->
-    <attr name="additionalPaddingStartForIcon" format="dimension"/>
-    <!-- Padding to add/remove from the end of the button when an icon is present. -->
-    <attr name="additionalPaddingEndForIcon" format="dimension"/>
     <!-- Specifies the color used to draw the path outline of the button. Attribute type definition
          is in resources package. -->
     <attr name="strokeColor"/>
