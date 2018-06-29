@@ -186,5 +186,34 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:enabled="false"
         android:text="@string/cat_button_label_disabled" />
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_outlined_icon_btn_text"
+        android:textColor="?attr/colorSecondary"
+        android:textSize="16sp"/>
+
+    <Space/>
+
+    <Button
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:icon="@drawable/ic_dialogs_24px"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"/>
+
+    <Button
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:enabled="false"
+        app:icon="@drawable/ic_dialogs_24px"
+        app:iconGravity="textStart"
+        app:iconPadding="0dp"/>
+    
   </GridLayout>
 </ScrollView>

@@ -336,7 +336,7 @@ public class MaterialButton extends AppCompatButton {
     int textWidth = (int) textPaint.measureText(getText().toString());
     int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
     int newIconLeft =
-        (getWidth()
+        (getMeasuredWidth()
                 - textWidth
                 - ViewCompat.getPaddingEnd(this)
                 - localIconSize
@@ -545,7 +545,7 @@ public class MaterialButton extends AppCompatButton {
 
       int width = iconSize != 0 ? iconSize : icon.getIntrinsicWidth();
       int height = iconSize != 0 ? iconSize : icon.getIntrinsicHeight();
-      icon.setBounds(0, 0, width, height);
+      icon.setBounds(iconLeft, 0, iconLeft + width, height);
     }
 
     TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
