@@ -48,6 +48,8 @@
     <attr name="android:maxWidth"/>
 
     <!-- Whether to show the chip icon. -->
+    <attr name="chipIconVisible" format="boolean"/>
+    <!-- Deprecated. Use chipIconVisible instead. -->
     <attr name="chipIconEnabled" format="boolean"/>
     <!-- Icon drawable to display at the start of the chip. -->
     <attr name="chipIcon" format="reference"/>
@@ -57,6 +59,8 @@
     <attr name="chipIconSize" format="dimension"/>
 
     <!-- Whether to show the close icon. -->
+    <attr name="closeIconVisible" format="boolean"/>
+    <!-- Deprecated. Use closeIconVisible instead. -->
     <attr name="closeIconEnabled" format="boolean"/>
     <!-- Close icon drawable to display at the end of the chip. -->
     <attr name="closeIcon" format="reference"/>
@@ -68,6 +72,8 @@
     <!-- Whether the chip can be checked. If false, the chip will act as a button. -->
     <attr name="android:checkable"/>
     <!-- Whether to show the checked icon. -->
+    <attr name="checkedIconVisible" format="boolean"/>
+    <!-- Deprecated. Use checkedIconVisible instead -->
     <attr name="checkedIconEnabled" format="boolean"/>
     <!-- Check icon drawable to overlay the chip's icon. -->
     <attr name="checkedIcon" format="reference"/>

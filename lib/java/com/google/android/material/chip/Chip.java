@@ -212,16 +212,16 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             + chipDrawable.getTextStartPadding()
             + chipDrawable.getTextEndPadding();
 
-    if ((chipDrawable.isChipIconEnabled() && chipDrawable.getChipIcon() != null)
+    if ((chipDrawable.isChipIconVisible() && chipDrawable.getChipIcon() != null)
         || (chipDrawable.getCheckedIcon() != null
-            && chipDrawable.isCheckedIconEnabled()
+            && chipDrawable.isCheckedIconVisible()
             && isChecked())) {
       paddingEnd +=
           chipDrawable.getIconStartPadding()
               + chipDrawable.getIconEndPadding()
               + chipDrawable.getChipIconSize();
     }
-    if (chipDrawable.isCloseIconEnabled() && chipDrawable.getCloseIcon() != null) {
+    if (chipDrawable.isCloseIconVisible() && chipDrawable.getCloseIcon() != null) {
       paddingEnd +=
           chipDrawable.getCloseIconStartPadding()
               + chipDrawable.getCloseIconEndPadding()
@@ -1199,20 +1199,38 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  public boolean isChipIconVisible() {
+    return chipDrawable != null && chipDrawable.isChipIconVisible();
+  }
+
+  /** @deprecated Use {@link Chip#isChipIconVisible()} instead. */
+  @Deprecated
   public boolean isChipIconEnabled() {
-    return chipDrawable != null && chipDrawable.isChipIconEnabled();
+    return isChipIconVisible();
   }
 
+  public void setChipIconVisible(@BoolRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconVisible(id);
+    }
+  }
+
+  public void setChipIconVisible(boolean chipIconVisible) {
+    if (chipDrawable != null) {
+      chipDrawable.setChipIconVisible(chipIconVisible);
+    }
+  }
+
+  /** @deprecated Use {@link Chip#setChipIconVisible(int)} instead. */
+  @Deprecated
   public void setChipIconEnabledResource(@BoolRes int id) {
-    if (chipDrawable != null) {
-      chipDrawable.setChipIconEnabledResource(id);
-    }
+    setChipIconVisible(id);
   }
 
+  /** @deprecated Use {@link Chip#setChipIconVisible(boolean)} instead. */
+  @Deprecated
   public void setChipIconEnabled(boolean chipIconEnabled) {
-    if (chipDrawable != null) {
-      chipDrawable.setChipIconEnabled(chipIconEnabled);
-    }
+    setChipIconVisible(chipIconEnabled);
   }
 
   @Nullable
@@ -1278,20 +1296,38 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  public boolean isCloseIconVisible() {
+    return chipDrawable != null && chipDrawable.isCloseIconVisible();
+  }
+
+  /** @deprecated Use {@link Chip#isCloseIconVisible()} instead. */
+  @Deprecated
   public boolean isCloseIconEnabled() {
-    return chipDrawable != null && chipDrawable.isCloseIconEnabled();
+    return isCloseIconVisible();
   }
 
+  public void setCloseIconVisible(@BoolRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconVisible(id);
+    }
+  }
+
+  public void setCloseIconVisible(boolean closeIconVisible) {
+    if (chipDrawable != null) {
+      chipDrawable.setCloseIconVisible(closeIconVisible);
+    }
+  }
+
+  /** @deprecated Use {@link Chip#setCloseIconVisible(int)} instead. */
+  @Deprecated
   public void setCloseIconEnabledResource(@BoolRes int id) {
-    if (chipDrawable != null) {
-      chipDrawable.setCloseIconEnabledResource(id);
-    }
+    setCloseIconVisible(id);
   }
 
+  /** @deprecated Use {@link Chip#setCloseIconVisible(boolean)} instead. */
+  @Deprecated
   public void setCloseIconEnabled(boolean closeIconEnabled) {
-    if (chipDrawable != null) {
-      chipDrawable.setCloseIconEnabled(closeIconEnabled);
-    }
+    setCloseIconVisible(closeIconEnabled);
   }
 
   @Nullable
@@ -1371,20 +1407,38 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  public boolean isCheckedIconVisible() {
+    return chipDrawable != null && chipDrawable.isCheckedIconVisible();
+  }
+
+  /** @deprecated Use {@link Chip#isCheckedIconVisible()} instead. */
+  @Deprecated
   public boolean isCheckedIconEnabled() {
-    return chipDrawable != null && chipDrawable.isCheckedIconEnabled();
+    return isCheckedIconVisible();
   }
 
+  public void setCheckedIconVisible(@BoolRes int id) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckedIconVisible(id);
+    }
+  }
+
+  public void setCheckedIconVisible(boolean checkedIconVisible) {
+    if (chipDrawable != null) {
+      chipDrawable.setCheckedIconVisible(checkedIconVisible);
+    }
+  }
+
+  /** @deprecated Use {@link Chip#setCheckedIconVisible(int)} instead. */
+  @Deprecated
   public void setCheckedIconEnabledResource(@BoolRes int id) {
-    if (chipDrawable != null) {
-      chipDrawable.setCheckedIconEnabledResource(id);
-    }
+    setCheckedIconVisible(id);
   }
 
+  /** @deprecated Use {@link Chip#setCheckedIconVisible(boolean)} instead. */
+  @Deprecated
   public void setCheckedIconEnabled(boolean checkedIconEnabled) {
-    if (chipDrawable != null) {
-      chipDrawable.setCheckedIconEnabled(checkedIconEnabled);
-    }
+    setCheckedIconVisible(checkedIconEnabled);
   }
 
   @Nullable

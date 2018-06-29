@@ -22,11 +22,17 @@
   <public name="chipMinHeight" type="attr"/>
   <public name="chipCornerRadius" type="attr"/>
   <public name="chipStrokeColor" type="attr"/>
+  <public name="chipIconVisible" type="attr"/>
+  <!-- Deprecated. Use chipIconVisible instead. -->
   <public name="chipIconEnabled" type="attr"/>
   <public name="chipIcon" type="attr"/>
   <public name="chipIconSize" type="attr"/>
+  <public name="closeIconVisible" type="attr"/>
+  <!-- Deprecated. Use closeIconVisible instead. -->
   <public name="closeIconEnabled" type="attr"/>
   <public name="closeIconSize" type="attr"/>
+  <public name="checkedIconVisible" type="attr"/>
+  <!-- Deprecated. Use checkedIconVisible instead. -->
   <public name="checkedIconEnabled" type="attr"/>
   <public name="checkedIcon" type="attr"/>
   <public name="chipStartPadding" type="attr"/>

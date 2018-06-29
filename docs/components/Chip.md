@@ -134,16 +134,16 @@ Border       | `app:chipStrokeColor`
 Ripple       | `app:rippleColor`
 Label        | `android:text`
              | `android:textAppearance`
-Chip Icon    | `app:chipIconEnabled`
+Chip Icon    | `app:chipIconVisible`
              | `app:chipIcon`
              | `app:chipIconTint`
              | `app:chipIconSize`
-Close Icon   | `app:closeIconEnabled`
+Close Icon   | `app:closeIconVisible`
              | `app:closeIcon`
              | `app:closeIconSize`
              | `app:closeIconTint`
 Checkable    | `app:checkable`
-Checked Icon | `app:checkedIconEnabled`
+Checked Icon | `app:checkedIconVisible`
              | `app:checkedIcon`
 Motion       | `app:showMotionSpec`
              | `app:hideMotionSpec`

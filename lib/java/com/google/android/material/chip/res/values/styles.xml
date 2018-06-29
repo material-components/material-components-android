@@ -30,9 +30,9 @@
       @animator/mtrl_chip_state_list_anim
     </item>
 
-    <item name="chipIconEnabled">true</item>
-    <item name="checkedIconEnabled">true</item>
-    <item name="closeIconEnabled">true</item>
+    <item name="chipIconVisible">true</item>
+    <item name="checkedIconVisible">true</item>
+    <item name="closeIconVisible">true</item>
 
     <item name="chipIcon">@null</item>
     <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_circle</item>
@@ -85,8 +85,8 @@
   <style name="Widget.MaterialComponents.Chip.Filter" parent="Base.Widget.MaterialComponents.Chip">
     <item name="android:checkable">true</item>
 
-    <item name="chipIconEnabled">false</item>
-    <item name="closeIconEnabled">false</item>
+    <item name="chipIconVisible">false</item>
+    <item name="closeIconVisible">false</item>
 
     <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_black</item>
   </style>
@@ -102,9 +102,9 @@
   <style name="Widget.MaterialComponents.Chip.Choice" parent="Base.Widget.MaterialComponents.Chip">
     <item name="android:checkable">true</item>
 
-    <item name="chipIconEnabled">false</item>
-    <item name="checkedIconEnabled">false</item>
-    <item name="closeIconEnabled">false</item>
+    <item name="chipIconVisible">false</item>
+    <item name="checkedIconVisible">false</item>
+    <item name="closeIconVisible">false</item>
 
     <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_black</item>
   </style>
@@ -118,7 +118,7 @@
        checkable - never
        checkedIconEnabled - never -->
   <style name="Widget.MaterialComponents.Chip.Action" parent="Base.Widget.MaterialComponents.Chip">
-    <item name="closeIconEnabled">false</item>
+    <item name="closeIconVisible">false</item>
   </style>
 
   <style name="TextAppearance.MaterialComponents.Chip" parent="TextAppearance.AppCompat">

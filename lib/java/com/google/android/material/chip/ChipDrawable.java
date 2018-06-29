@@ -187,13 +187,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       };
 
   // Chip icon
-  private boolean chipIconEnabled;
+  private boolean chipIconVisible;
   @Nullable private Drawable chipIcon;
   @Nullable private ColorStateList chipIconTint;
   private float chipIconSize;
 
   // Close icon
-  private boolean closeIconEnabled;
+  private boolean closeIconVisible;
   @Nullable private Drawable closeIcon;
   @Nullable private ColorStateList closeIconTint;
   private float closeIconSize;
@@ -201,7 +201,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   // Checkable
   private boolean checkable;
-  private boolean checkedIconEnabled;
+  private boolean checkedIconVisible;
   @Nullable private Drawable checkedIcon;
 
   // Animations
@@ -373,19 +373,25 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         break;
     }
 
-    setChipIconEnabled(a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
+    setChipIconVisible(
+        a.getBoolean(R.styleable.Chip_chipIconVisible, false)
+            || a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_chipIcon));
     setChipIconTint(MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipIconTint));
     setChipIconSize(a.getDimension(R.styleable.Chip_chipIconSize, 0f));
 
-    setCloseIconEnabled(a.getBoolean(R.styleable.Chip_closeIconEnabled, false));
+    setCloseIconVisible(
+        a.getBoolean(R.styleable.Chip_closeIconVisible, false)
+            || a.getBoolean(R.styleable.Chip_closeIconEnabled, false));
     setCloseIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_closeIcon));
     setCloseIconTint(
         MaterialResources.getColorStateList(context, a, R.styleable.Chip_closeIconTint));
     setCloseIconSize(a.getDimension(R.styleable.Chip_closeIconSize, 0f));
 
     setCheckable(a.getBoolean(R.styleable.Chip_android_checkable, false));
-    setCheckedIconEnabled(a.getBoolean(R.styleable.Chip_checkedIconEnabled, false));
+    setCheckedIconVisible(
+        a.getBoolean(R.styleable.Chip_checkedIconVisible, false)
+            || a.getBoolean(R.styleable.Chip_checkedIconEnabled, false));
     setCheckedIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_checkedIcon));
 
     setShowMotionSpec(MotionSpec.createFromAttribute(context, a, R.styleable.Chip_showMotionSpec));
@@ -471,22 +477,22 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   /** Returns whether we will show the chip icon. */
   private boolean showsChipIcon() {
-    return chipIconEnabled && chipIcon != null;
+    return chipIconVisible && chipIcon != null;
   }
 
   /** Returns whether we will show the checked icon. */
   private boolean showsCheckedIcon() {
-    return checkedIconEnabled && checkedIcon != null && currentChecked;
+    return checkedIconVisible && checkedIcon != null && currentChecked;
   }
 
   /** Returns whether we will show the close icon. */
   private boolean showsCloseIcon() {
-    return closeIconEnabled && closeIcon != null;
+    return closeIconVisible && closeIcon != null;
   }
 
   /** Returns whether we can show the checked icon if our drawable state changes. */
   private boolean canShowCheckedIcon() {
-    return checkedIconEnabled && checkedIcon != null && checkable;
+    return checkedIconVisible && checkedIcon != null && checkable;
   }
 
   /** Returns the width of the chip icon plus padding, which only apply if the chip icon exists. */
@@ -1394,18 +1400,24 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     this.truncateAt = truncateAt;
   }
 
+  public boolean isChipIconVisible() {
+    return chipIconVisible;
+  }
+
+  /** @deprecated Use {@link ChipDrawable#isChipIconVisible()} instead. */
+  @Deprecated
   public boolean isChipIconEnabled() {
-    return chipIconEnabled;
+    return isChipIconVisible();
   }
 
-  public void setChipIconEnabledResource(@BoolRes int id) {
-    setChipIconEnabled(context.getResources().getBoolean(id));
+  public void setChipIconVisible(@BoolRes int id) {
+    setChipIconVisible(context.getResources().getBoolean(id));
   }
 
-  public void setChipIconEnabled(boolean chipIconEnabled) {
-    if (this.chipIconEnabled != chipIconEnabled) {
+  public void setChipIconVisible(boolean chipIconVisible) {
+    if (this.chipIconVisible != chipIconVisible) {
       boolean oldShowsChipIcon = showsChipIcon();
-      this.chipIconEnabled = chipIconEnabled;
+      this.chipIconVisible = chipIconVisible;
       boolean newShowsChipIcon = showsChipIcon();
 
       boolean changed = oldShowsChipIcon != newShowsChipIcon;
@@ -1420,6 +1432,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         onSizeChange();
       }
     }
+  }
+
+  /** @deprecated Use {@link ChipDrawable#setChipIconVisible(int)} instead. */
+  @Deprecated
+  public void setChipIconEnabledResource(@BoolRes int id) {
+    setChipIconVisible(id);
+  }
+
+  /** @deprecated Use {@link ChipDrawable#setChipIconVisible(boolean)} instead. */
+  @Deprecated
+  public void setChipIconEnabled(boolean chipIconEnabled) {
+    setChipIconVisible(chipIconEnabled);
   }
 
   @Nullable
@@ -1505,18 +1529,24 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
+  public boolean isCloseIconVisible() {
+    return closeIconVisible;
+  }
+
+  /** @deprecated Use {@link ChipDrawable#isCloseIconVisible()} instead. */
+  @Deprecated
   public boolean isCloseIconEnabled() {
-    return closeIconEnabled;
+    return isCloseIconVisible();
   }
 
-  public void setCloseIconEnabledResource(@BoolRes int id) {
-    setCloseIconEnabled(context.getResources().getBoolean(id));
+  public void setCloseIconVisible(@BoolRes int id) {
+    setCloseIconVisible(context.getResources().getBoolean(id));
   }
 
-  public void setCloseIconEnabled(boolean closeIconEnabled) {
-    if (this.closeIconEnabled != closeIconEnabled) {
+  public void setCloseIconVisible(boolean closeIconVisible) {
+    if (this.closeIconVisible != closeIconVisible) {
       boolean oldShowsCloseIcon = showsCloseIcon();
-      this.closeIconEnabled = closeIconEnabled;
+      this.closeIconVisible = closeIconVisible;
       boolean newShowsCloseIcon = showsCloseIcon();
 
       boolean changed = oldShowsCloseIcon != newShowsCloseIcon;
@@ -1531,6 +1561,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         onSizeChange();
       }
     }
+  }
+
+  /** @deprecated Use {@link ChipDrawable#setCloseIconVisible(int)} instead. */
+  @Deprecated
+  public void setCloseIconEnabledResource(@BoolRes int id) {
+    setCloseIconVisible(id);
+  }
+
+  /** @deprecated Use {@link ChipDrawable#setCloseIconVisible(int)} instead. */
+  @Deprecated
+  public void setCloseIconEnabled(boolean closeIconEnabled) {
+    setCloseIconVisible(closeIconEnabled);
   }
 
   @Nullable
@@ -1639,18 +1681,24 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     }
   }
 
+  public boolean isCheckedIconVisible() {
+    return checkedIconVisible;
+  }
+
+  /** @deprecated Use {@link ChipDrawable#isCheckedIconVisible()} instead. */
+  @Deprecated
   public boolean isCheckedIconEnabled() {
-    return checkedIconEnabled;
+    return isCheckedIconVisible();
   }
 
-  public void setCheckedIconEnabledResource(@BoolRes int id) {
-    setCheckedIconEnabled(context.getResources().getBoolean(id));
+  public void setCheckedIconVisible(@BoolRes int id) {
+    setCheckedIconVisible(context.getResources().getBoolean(id));
   }
 
-  public void setCheckedIconEnabled(boolean checkedIconEnabled) {
-    if (this.checkedIconEnabled != checkedIconEnabled) {
+  public void setCheckedIconVisible(boolean checkedIconVisible) {
+    if (this.checkedIconVisible != checkedIconVisible) {
       boolean oldShowsCheckedIcon = showsCheckedIcon();
-      this.checkedIconEnabled = checkedIconEnabled;
+      this.checkedIconVisible = checkedIconVisible;
       boolean newShowsCheckedIcon = showsCheckedIcon();
 
       boolean changed = oldShowsCheckedIcon != newShowsCheckedIcon;
@@ -1665,6 +1713,18 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         onSizeChange();
       }
     }
+  }
+
+  /** @deprecated Use {@link ChipDrawable#setCheckedIconVisible(int)} instead. */
+  @Deprecated
+  public void setCheckedIconEnabledResource(@BoolRes int id) {
+    setCheckedIconVisible(context.getResources().getBoolean(id));
+  }
+
+  /** @deprecated Use {@link ChipDrawable#setCheckedIconVisible(boolean)} instead. */
+  @Deprecated
+  public void setCheckedIconEnabled(boolean checkedIconEnabled) {
+    setCheckedIconVisible(checkedIconEnabled);
   }
 
   @Nullable
