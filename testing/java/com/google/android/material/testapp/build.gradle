@@ -7,9 +7,15 @@ dependencies {
   api project(fromPath("lib"))
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
   api project(fromPath("testing/java/com/google/android/material/testapp/custom"))
+
+  api 'com.android.support:multidex:1.0.3'
 }
 
 android {
+  defaultConfig {
+    multiDexEnabled true
+  }
+
   sourceSets {
     main.manifest.srcFile 'AndroidManifest.xml'
     main.java.srcDirs = [ '.' ]

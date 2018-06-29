@@ -15,7 +15,9 @@
   ~ limitations under the License.
 -->
 <resources>
-  
+
   <dimen name="design_appbar_elevation">4dp</dimen>
+
+  <dimen name="mtrl_toolbar_default_height">56dp</dimen>
 
 </resources>

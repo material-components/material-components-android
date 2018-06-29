@@ -34,4 +34,14 @@
     <item name="android:textColor">?android:attr/textColorPrimary</item>
   </style>
 
+  <style name="Widget.MaterialComponents.Toolbar" parent="Widget.AppCompat.Toolbar">
+    <item name="titleTextAppearance">?attr/textAppearanceHeadline6</item>
+    <item name="titleTextColor">?android:attr/textColorPrimary</item>
+    <item name="subtitleTextAppearance">?attr/textAppearanceSubtitle1</item>
+    <item name="subtitleTextColor">?android:attr/textColorSecondary</item>
+    <!-- Overrides minimum height in landscape to avoid headline6 and subtitle1
+         height concerns. -->
+    <item name="android:minHeight">@dimen/mtrl_toolbar_default_height</item>
+  </style>
+
 </resources>

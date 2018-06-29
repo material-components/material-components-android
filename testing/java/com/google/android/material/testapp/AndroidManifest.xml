@@ -24,6 +24,7 @@
     tools:overrideLibrary="android.support.test, android.app, android.support.test.rule, android.support.test.espresso, android.support.test.espresso.idling"/>
 
   <application
+    android:name="android.support.multidex.MultiDexApplication"
     android:supportsRtl="true"
     android:theme="@style/Theme.Design">
 
