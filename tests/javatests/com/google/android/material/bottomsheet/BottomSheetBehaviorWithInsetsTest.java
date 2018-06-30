@@ -20,11 +20,11 @@ import static org.hamcrest.CoreMatchers.is;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.google.android.material.testapp.BottomSheetBehaviorWithInsetsActivity;
+import android.support.v4.view.ViewCompat;
+import android.view.ViewGroup;
 import android.support.test.filters.SmallTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import android.support.v4.view.ViewCompat;
-import android.view.ViewGroup;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;

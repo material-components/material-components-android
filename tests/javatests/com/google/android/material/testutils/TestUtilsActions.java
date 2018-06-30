@@ -31,8 +31,6 @@ import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.expandable.ExpandableWidget;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
 import android.util.SparseArray;
@@ -40,6 +38,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.support.test.espresso.UiController;
+import android.support.test.espresso.ViewAction;
 import org.hamcrest.Matcher;
 
 public class TestUtilsActions {

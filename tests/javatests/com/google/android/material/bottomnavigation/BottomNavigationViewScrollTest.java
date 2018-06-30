@@ -29,10 +29,10 @@ import android.support.annotation.LayoutRes;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.Shakespeare;
-import android.support.test.filters.MediumTest;
-import android.support.test.runner.AndroidJUnit4;
 import android.text.TextUtils;
 import android.widget.TextView;
+import android.support.test.filters.MediumTest;
+import android.support.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

@@ -25,10 +25,10 @@ import android.os.Build;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.PollingCheck;
+import android.widget.ImageView;
 import android.support.test.filters.LargeTest;
 import android.support.test.filters.SdkSuppress;
 import android.support.test.runner.AndroidJUnit4;
-import android.widget.ImageView;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

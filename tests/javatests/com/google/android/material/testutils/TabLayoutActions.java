@@ -20,11 +20,11 @@ import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtL
 
 import android.support.annotation.Nullable;
 import com.google.android.material.tabs.TabLayout;
+import android.support.v4.view.ViewPager;
+import android.view.View;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
 import android.support.test.espresso.matcher.ViewMatchers;
-import android.support.v4.view.ViewPager;
-import android.view.View;
 import org.hamcrest.Matcher;
 
 public class TabLayoutActions {

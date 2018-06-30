@@ -17,8 +17,8 @@
 package com.google.android.material.testutils;
 
 import com.google.android.material.appbar.AppBarLayout;
-import android.support.test.espresso.matcher.BoundedMatcher;
 import android.view.View;
+import android.support.test.espresso.matcher.BoundedMatcher;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 

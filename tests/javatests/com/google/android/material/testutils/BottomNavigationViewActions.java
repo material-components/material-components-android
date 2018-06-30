@@ -24,9 +24,9 @@ import android.support.annotation.IdRes;
 import android.support.annotation.Nullable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.LabelVisibilityMode;
+import android.view.View;
 import android.support.test.espresso.UiController;
 import android.support.test.espresso.ViewAction;
-import android.view.View;
 import org.hamcrest.Matcher;
 
 public class BottomNavigationViewActions {
