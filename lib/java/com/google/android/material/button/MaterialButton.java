@@ -168,8 +168,8 @@ public class MaterialButton extends AppCompatButton {
   }
 
   @Override
-  public void draw(Canvas canvas) {
-    super.draw(canvas);
+  protected void onDraw(Canvas canvas) {
+    super.onDraw(canvas);
     // Manually draw stroke on top of background for Kit Kat (API 19) and earlier versions
     if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && isUsingOriginalBackground()) {
       materialButtonHelper.drawStroke(canvas);
