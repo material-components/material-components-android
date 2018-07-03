@@ -324,11 +324,11 @@ public class TextInputLayout extends LinearLayout {
       setHintTextAppearance(a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, 0));
     }
 
-    final int mErrorTextAppearance =
+    final int errorTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
     final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
 
-    final int mHelperTextTextAppearance =
+    final int helperTextTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_helperTextTextAppearance, 0);
     final boolean helperTextEnabled =
         a.getBoolean(R.styleable.TextInputLayout_helperTextEnabled, false);
@@ -359,9 +359,9 @@ public class TextInputLayout extends LinearLayout {
 
     setHelperTextEnabled(helperTextEnabled);
     setHelperText(helperText);
-    setHelperTextTextAppearance(mHelperTextTextAppearance);
+    setHelperTextTextAppearance(helperTextTextAppearance);
     setErrorEnabled(errorEnabled);
-    setErrorTextAppearance(mErrorTextAppearance);
+    setErrorTextAppearance(errorTextAppearance);
     setCounterEnabled(counterEnabled);
 
     applyPasswordToggleTint();
