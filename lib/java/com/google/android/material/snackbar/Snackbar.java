@@ -16,20 +16,9 @@
 
 package com.google.android.material.snackbar;
 
-import com.google.android.material.R;
-
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.support.annotation.ColorInt;
-import android.support.annotation.IntDef;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StringRes;
-import com.google.android.material.internal.ThemeEnforcement;
+import android.support.annotation.*;
 import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -40,8 +29,13 @@ import android.view.ViewParent;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
+import com.google.android.material.R;
+import com.google.android.material.internal.ThemeEnforcement;
+
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /**
  * Snackbars provide lightweight feedback about an operation. They show a brief message at the
@@ -163,8 +157,8 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    *
    * @param view The view to find a parent from.
    * @param text The text to show. Can be formatted text.
-   * @param duration How long to display the message. Either {@link #LENGTH_SHORT} or {@link
-   *     #LENGTH_LONG}
+   * @param duration How long to display the message. Can be {@link #LENGTH_SHORT}, {@link
+   *     #LENGTH_LONG}, {@link #LENGTH_INDEFINITE}, or a custom duration in milliseconds.
    */
   @NonNull
   public static Snackbar make(
@@ -204,8 +198,8 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    *
    * @param view The view to find a parent from.
    * @param resId The resource id of the string resource to use. Can be formatted text.
-   * @param duration How long to display the message. Either {@link #LENGTH_SHORT} or {@link
-   *     #LENGTH_LONG}
+   * @param duration How long to display the message. Can be {@link #LENGTH_SHORT}, {@link
+   *     #LENGTH_LONG}, {@link #LENGTH_INDEFINITE}, or a custom duration in milliseconds.
    */
   @NonNull
   public static Snackbar make(@NonNull View view, @StringRes int resId, @Duration int duration) {
