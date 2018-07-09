@@ -264,6 +264,12 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         || (attributeSet.getAttributeIntValue(NAMESPACE_ANDROID, "maxLines", 1) != 1)) {
       throw new UnsupportedOperationException("Chip does not support multi-line text");
     }
+
+    if (attributeSet.getAttributeIntValue(
+            NAMESPACE_ANDROID, "gravity", (Gravity.CENTER_VERTICAL | Gravity.START))
+        != (Gravity.CENTER_VERTICAL | Gravity.START)) {
+      Log.w(TAG, "Chip text must be vertically center and start aligned");
+    }
   }
 
   private void initOutlineProvider() {
@@ -342,6 +348,15 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     canvas.translate(calculateTextOffsetFromStart(chipDrawable), 0);
     super.onDraw(canvas);
     canvas.restoreToCount(saveCount);
+  }
+
+  @Override
+  public void setGravity(int gravity) {
+    if (gravity != (Gravity.CENTER_VERTICAL | Gravity.START)) {
+      Log.w(TAG, "Chip text must be vertically center and start aligned");
+    } else {
+      super.setGravity(gravity);
+    }
   }
 
   private float calculateTextOffsetFromStart(@NonNull ChipDrawable chipDrawable) {
