@@ -1193,6 +1193,7 @@ public class TextInputLayout extends LinearLayout {
     }
     if (editText != null && wasCounterOverflowed != counterOverflowed) {
       updateLabelState(false);
+      updateTextInputBoxState();
       updateEditTextBackground();
     }
   }
@@ -2009,6 +2010,8 @@ public class TextInputLayout extends LinearLayout {
         boxStrokeColor = disabledColor;
       } else if (indicatorViewController.errorShouldBeShown()) {
         boxStrokeColor = indicatorViewController.getErrorViewCurrentTextColor();
+      } else if (counterOverflowed && counterView != null) {
+        boxStrokeColor = counterView.getCurrentTextColor();
       } else if (hasFocus) {
         boxStrokeColor = focusedStrokeColor;
       } else if (isHovered) {
