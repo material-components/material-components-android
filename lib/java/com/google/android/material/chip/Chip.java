@@ -228,7 +228,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
               + chipDrawable.getCloseIconSize();
     }
 
-    if (getPaddingEnd() != paddingEnd) {
+    if (ViewCompat.getPaddingEnd(this) != paddingEnd) {
       ViewCompat.setPaddingRelative(
           this,
           ViewCompat.getPaddingStart(this),
