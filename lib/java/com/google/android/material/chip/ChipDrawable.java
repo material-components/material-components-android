@@ -159,6 +159,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   private static final boolean DEBUG = false;
   private static final int[] DEFAULT_STATE = new int[] {android.R.attr.state_enabled};
+  private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
 
   // Visuals
   @Nullable private ColorStateList chipBackgroundColor;
@@ -373,25 +374,39 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         break;
     }
 
-    setChipIconVisible(
-        a.getBoolean(R.styleable.Chip_chipIconVisible, false)
-            || a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
+    setChipIconVisible(a.getBoolean(R.styleable.Chip_chipIconVisible, false));
+    // If the user explicitly sets the deprecated attribute (chipIconEnabled) but NOT the
+    // replacement attribute (chipIconVisible), use the value specified in the deprecated attribute.
+    if (attrs.getAttributeValue(NAMESPACE_APP, "chipIconEnabled") != null
+        && attrs.getAttributeValue(NAMESPACE_APP, "chipIconVisible") == null) {
+      setChipIconVisible(a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
+    }
     setChipIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_chipIcon));
     setChipIconTint(MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipIconTint));
     setChipIconSize(a.getDimension(R.styleable.Chip_chipIconSize, 0f));
 
-    setCloseIconVisible(
-        a.getBoolean(R.styleable.Chip_closeIconVisible, false)
-            || a.getBoolean(R.styleable.Chip_closeIconEnabled, false));
+    setCloseIconVisible(a.getBoolean(R.styleable.Chip_closeIconVisible, false));
+    // If the user explicitly sets the deprecated attribute (closeIconEnabled) but NOT the
+    // replacement attribute (closeIconVisible), use the value specified in the deprecated
+    // attribute.
+    if (attrs.getAttributeValue(NAMESPACE_APP, "closeIconEnabled") != null
+        && attrs.getAttributeValue(NAMESPACE_APP, "closeIconVisible") == null) {
+      setCloseIconVisible(a.getBoolean(R.styleable.Chip_closeIconEnabled, false));
+    }
     setCloseIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_closeIcon));
     setCloseIconTint(
         MaterialResources.getColorStateList(context, a, R.styleable.Chip_closeIconTint));
     setCloseIconSize(a.getDimension(R.styleable.Chip_closeIconSize, 0f));
 
     setCheckable(a.getBoolean(R.styleable.Chip_android_checkable, false));
-    setCheckedIconVisible(
-        a.getBoolean(R.styleable.Chip_checkedIconVisible, false)
-            || a.getBoolean(R.styleable.Chip_checkedIconEnabled, false));
+    setCheckedIconVisible(a.getBoolean(R.styleable.Chip_checkedIconVisible, false));
+    // If the user explicitly sets the deprecated attribute (checkedIconEnabled) but NOT the
+    // replacement attribute (checkedIconVisible), use the value specified in the deprecated
+    // attribute.
+    if (attrs.getAttributeValue(NAMESPACE_APP, "checkedIconEnabled") != null
+        && attrs.getAttributeValue(NAMESPACE_APP, "checkedIconVisible") == null) {
+      setCheckedIconVisible(a.getBoolean(R.styleable.Chip_checkedIconEnabled, false));
+    }
     setCheckedIcon(MaterialResources.getDrawable(context, a, R.styleable.Chip_checkedIcon));
 
     setShowMotionSpec(MotionSpec.createFromAttribute(context, a, R.styleable.Chip_showMotionSpec));
