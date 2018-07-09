@@ -26,11 +26,14 @@ of text with a `ChipDrawable` using a span to represent it as a semantic entity.
 ## Design & API Documentation
 
 -   [Material Design guidelines:
-    Chips](https://material.io/guidelines/components/chips.html)
+    Chips](https://material.io/go/design-chips)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/chip/Chip.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/chip/Chip.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
+-   [Class
+    overview](https://developer.android.com/reference/com/google/android/material/chip/Chip)
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 
@@ -38,10 +41,10 @@ The `Chip` widget provides a complete implementation of Material Design's chip
 component. Example code of how to include the widget in your layout:
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 ### Material Styles
@@ -60,12 +63,12 @@ This style usually contains an optional chip icon, optional close icon, and is
 optionally checkable.
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Entry"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:chipIcon="@drawable/ic_avatar_circle_24"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 Note: Entry chips are usually used with a standalone `ChipDrawable`.
@@ -78,11 +81,11 @@ This style usually contains an optional chip icon, an optional close icon, and
 is always checkable.
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Filter"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 Note: Filter chips are usually placed within a `ChipGroup`.
@@ -95,11 +98,11 @@ options.
 This style usually contains an optional chip icon and is always checkable.
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Choice"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 Note: Choice chips are usually placed within a `ChipGroup`.
@@ -111,12 +114,12 @@ Use action chips to trigger an action that is contextual to primary content.
 This style usually contains an optional chip icon and is never checkable.
 
 ```xml
-<android.support.design.chip.Chip
+<com.google.android.material.chip.Chip
     style="@style/Widget.MaterialComponents.Chip.Action"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     app:chipIcon="@drawable/ic_action_24"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 ### Chip Attributes
@@ -129,17 +132,18 @@ Background   | `app:chipBackgroundColor`
 Border       | `app:chipStrokeColor`
              | `app:chipStrokeWidth`
 Ripple       | `app:rippleColor`
-Label        | `app:chipText`
+Label        | `android:text`
              | `android:textAppearance`
-Chip Icon    | `app:chipIconEnabled`
+Chip Icon    | `app:chipIconVisible`
              | `app:chipIcon`
+             | `app:chipIconTint`
              | `app:chipIconSize`
-Close Icon   | `app:closeIconEnabled`
+Close Icon   | `app:closeIconVisible`
              | `app:closeIcon`
              | `app:closeIconSize`
              | `app:closeIconTint`
 Checkable    | `app:checkable`
-Checked Icon | `app:checkedIconEnabled`
+Checked Icon | `app:checkedIconVisible`
              | `app:checkedIcon`
 Motion       | `app:showMotionSpec`
              | `app:hideMotionSpec`
@@ -206,13 +210,13 @@ multiple-exclusion scope, similarly to a `RadioGroup`.
 A `ChipGroup` will by default reflow its chips across multiple lines.
 
 ```xml
-<android.support.design.chip.ChipGroup
+<com.google.android.material.chip.ChipGroup
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
   <!-- Chips can be declared here, or added dynamically. -->
 
-</android.support.design.chip.ChipGroup>
+</com.google.android.material.chip.ChipGroup>
 ```
 
 A `ChipGroup` can also constrain its chips to a single horizontal line using the
@@ -223,14 +227,14 @@ A `ChipGroup` can also constrain its chips to a single horizontal line using the
 <HorizontalScrollView
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
-  <android.support.design.chip.ChipGroup
+  <com.google.android.material.chip.ChipGroup
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:singleLine="true">
 
     <!-- Chips can be declared here, or added dynamically. -->
 
-  </android.support.design.chip.ChipGroup>
+  </com.google.android.material.chip.ChipGroup>
 </HorizontalScrollView>
 ```
 
@@ -240,14 +244,14 @@ A `ChipGroup` can be configured to only allow a single chip to be checked at a
 time using the `app:singleSelection` attribute.
 
 ```xml
-<android.support.design.chip.ChipGroup
+<com.google.android.material.chip.ChipGroup
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     app:singleSelection="true">
 
   <!-- ... -->
 
-</android.support.design.chip.ChipGroup>
+</com.google.android.material.chip.ChipGroup>
 ```
 
 #### Handling Checked Chips
@@ -276,7 +280,8 @@ A standalone `ChipDrawable` can be used in contexts that require a `Drawable`.
 The most obvious use case is in text fields that "chipify" contacts, commonly
 found in communications apps.
 
-To use a `ChipDrawable`, first create a chip resource in `res/xml`.
+To use a `ChipDrawable`, first create a chip resource in `res/xml`. Note that
+you must use the `<chip` tag in your resource file.
 
 **res/xml/standalone_chip.xml**
 
@@ -284,7 +289,7 @@ To use a `ChipDrawable`, first create a chip resource in `res/xml`.
 <chip
     xmlns:app="http://schemas.android.com/apk/res-auto"
     app:chipIcon="@drawable/ic_avatar_circle_24"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 After inflating it dynamically, you can treat it as any other `Drawable`.
@@ -313,7 +318,7 @@ can apply any of the other styles using a `style` attribute.
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.MaterialComponents.Chip.Filter"
     app:chipIcon="@drawable/ic_avatar_circle_24"
-    app:chipText="@string/hello_world"/>
+    android:text="@string/hello_world"/>
 ```
 
 #### Attributes

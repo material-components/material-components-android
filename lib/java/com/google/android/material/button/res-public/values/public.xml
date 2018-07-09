@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2018 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <public name="materialButtonStyle" type="attr"/>
+  <public name="icon" type="attr"/>
+  <public name="iconSize" type="attr"/>
+  <public name="iconPadding" type="attr"/>
+  <public name="iconTint" type="attr"/>
+  <public name="iconTintMode" type="attr"/>
+  <public name="additionalPaddingStartForIcon" type="attr"/>
+  <public name="additionalPaddingEndForIcon" type="attr"/>
+  <public name="cornerRadius" type="attr"/>
+  <public name="Widget.MaterialComponents.Button" type="style"/>
+  <public name="Widget.MaterialComponents.Button.UnelevatedButton" type="style"/>
+  <public name="Widget.MaterialComponents.Button.TextButton" type="style"/>
+  <public name="Widget.MaterialComponents.Button.OutlinedButton" type="style"/>
+  <public name="Widget.MaterialComponents.Button.TextButton.Dialog" type="style"/>
+</resources>
+

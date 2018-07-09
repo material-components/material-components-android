@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2018 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+<resources>
+
+  <style name="Widget.Design.BottomNavigationView" parent="">
+    <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
+    <item name="labelVisibilityMode">auto</item>
+    <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
+    <item name="itemHorizontalTranslationEnabled">true</item>
+    <item name="itemIconSize">@dimen/design_bottom_navigation_icon_size</item>
+  </style>
+
+  <!-- Default style for BottomNavigationViews.
+       Use the default style to get the default bottom navigation bar with a white background and
+       colorPrimary for the icon and text colors. -->
+  <style name="Widget.MaterialComponents.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
+    <item name="android:background">@android:color/white</item>
+    <item name="itemHorizontalTranslationEnabled">false</item>
+    <item name="itemIconTint">@color/mtrl_bottom_nav_item_tint</item>
+    <item name="itemTextAppearanceInactive">
+      @style/TextAppearance.MaterialComponents.BottomNavigationView
+    </item>
+    <item name="itemTextAppearanceActive">
+      @style/TextAppearance.MaterialComponents.BottomNavigationView.Active
+    </item>
+  </style>
+
+  <!-- Colored style for Bottom NavigationViews.
+       Use the colored style to get a bottom navigation bar with a colorPrimary background and
+       percentages of white for the icon and text colors. -->
+  <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
+    <item name="android:background">?attr/colorPrimary</item>
+    <item name="itemIconTint">@color/mtrl_bottom_nav_colored_item_tint</item>
+    <item name="itemTextAppearanceInactive">
+      @style/TextAppearance.MaterialComponents.BottomNavigationView.Colored
+    </item>
+    <item name="itemTextAppearanceActive">
+      @style/TextAppearance.MaterialComponents.BottomNavigationView.Colored.Active
+    </item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.BottomNavigationView" parent="TextAppearance.AppCompat.Caption">
+    <item name="android:textColor">@color/mtrl_bottom_nav_item_tint</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.BottomNavigationView.Active"/>
+
+  <style name="TextAppearance.MaterialComponents.BottomNavigationView.Colored">
+    <item name="android:textColor">@color/mtrl_bottom_nav_colored_item_tint</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.BottomNavigationView.Colored.Active"/>
+
+</resources>

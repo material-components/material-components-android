@@ -31,29 +31,29 @@ to help developers easily create beautiful apps.
 
 ## Getting Started
 
-1.  {: .step-list-item } ### Modify build.gradle
-    To use the Material Components library with the Gradle build system, include
-    the library in the build.gradle dependencies for your app.
+1.  {: .step-list-item } ### Modify build.gradle To use the Material Components
+    library with the Gradle build system, include the library in the
+    build.gradle dependencies for your app.
 
     ```groovy
     dependencies {
-      compile 'com.android.support:design:[Library version code]'
+      compile 'com.google.android.material:material:1.0.0-alpha3'
     }
     ```
 
-2.  {: .step-list-item } ### Update your Layout
-    Add a reference to the component (widget) that you want to use in your XML
-    layout. (You can also dynamically instantiate a widget in Java.)
+2.  {: .step-list-item } ### Update your Layout Add a reference to the component
+    (widget) that you want to use in your XML layout. (You can also dynamically
+    instantiate a widget in Java.)
 
     ```xml
-    <android.support.design.widget.FloatingActionButton android:id="@id/fab" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton android:id="@id/fab" />
     ```
 
-3.  {: .step-list-item } ### Use the Component
-    You can then reference that widget in your Java class. First import it,
+3.  {: .step-list-item } ### Use the Component You can then reference that
+    widget in your Java class. First import it,
 
     ```java
-    import android.support.design.widget.FloatingActionButton;
+    import com.google.android.material.floatingactionbutton.FloatingActionButton;
     ```
 
     then use it.
@@ -69,11 +69,15 @@ to help developers easily create beautiful apps.
 
 4.  {: .step-list-item } ### What's next?
 
-    * [View the components](./docsite-components.md)
-    * [Contributing](./contributing.md)
-    * [Class documentation](https://developer.android.com/reference/android/support/design/widget/package-summary.html)
-    * [MDC-Android on Stack Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
-    * [Android Developer’s Guide](https://developer.android.com/training/material/index.html)
-    * [Material.io](https://www.material.io)
-    * [Material Design Guidelines](https://material.google.com)
-{: .step-list }
+    *   [View the components](./docsite-components.md)
+    *   [View the theming](./docsite-theming.md)
+    *   [Contributing](./contributing.md)
+    *   [Class
+        documentation](https://developer.android.com/reference/com/google/android/material/classes)
+    *   [MDC-Android on Stack
+        Overflow](https://www.stackoverflow.com/questions/tagged/material-components+android)
+    *   [Android Developer’s
+        Guide](https://developer.android.com/training/material/index.html)
+    *   [Material.io](https://www.material.io)
+    *   [Material Design Guidelines](https://material.google.com)
+        {: .step-list }

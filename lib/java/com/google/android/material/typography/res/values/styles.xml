@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2015 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
+
+  <style name="TextAppearance.MaterialComponents.Headline1" parent="TextAppearance.AppCompat.Display4">
+    <item name="fontFamily">sans-serif-light</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">96sp</item>
+    <item name="android:letterSpacing">-0.015625</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Headline2" parent="TextAppearance.AppCompat.Display3">
+    <item name="fontFamily">sans-serif-light</item>
+    <item name="android:fontFamily">sans-serif-light</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">60sp</item>
+    <item name="android:letterSpacing">-0.00833333333</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Headline3" parent="TextAppearance.AppCompat.Display2">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">48sp</item>
+    <item name="android:letterSpacing">0</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Headline4" parent="TextAppearance.AppCompat.Display1">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">34sp</item>
+    <item name="android:letterSpacing">0.00735294118</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Headline5" parent="TextAppearance.AppCompat.Headline">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">24sp</item>
+    <item name="android:letterSpacing">0</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Headline6" parent="TextAppearance.AppCompat.Title">
+    <!-- Fake Roboto Medium. -->
+    <item name="fontFamily">sans-serif-medium</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">20sp</item>
+    <item name="android:letterSpacing">0.0125</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Subtitle1" parent="TextAppearance.AppCompat.Subhead">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:letterSpacing">0.009375</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Subtitle2" parent="TextAppearance.AppCompat.Subhead">
+    <!-- Fake Roboto Medium. -->
+    <item name="fontFamily">sans-serif-medium</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.00714285714</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Body1" parent="TextAppearance.AppCompat.Body2">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">16sp</item>
+    <item name="android:letterSpacing">0.03125</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Body2" parent="TextAppearance.AppCompat.Body1">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.0178571429</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Caption" parent="TextAppearance.AppCompat.Caption">
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
+    <item name="android:textAllCaps">false</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:letterSpacing">0.0333333333</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Button" parent="TextAppearance.AppCompat.Button">
+    <!-- Fake Roboto Medium. -->
+    <item name="fontFamily">sans-serif-medium</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">14sp</item>
+    <item name="android:letterSpacing">0.0892857143</item>
+  </style>
+
+  <style name="TextAppearance.MaterialComponents.Overline" parent="TextAppearance.AppCompat">
+    <!-- Fake Roboto Medium. -->
+    <item name="fontFamily">sans-serif-medium</item>
+    <item name="android:fontFamily">sans-serif-medium</item>
+    <item name="android:textStyle">bold</item>
+    <item name="android:textAllCaps">true</item>
+    <item name="android:textSize">12sp</item>
+    <item name="android:letterSpacing">0.166666667</item>
+  </style>
+
+</resources>

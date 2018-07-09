@@ -17,11 +17,14 @@ focus on features, increases engagement, and visually anchors the UI.
 ## Design & API Documentation
 
 -   [Material Design guidelines: Bottom App
-    Bar](https://material.io/guidelines/components/bottom-app-bar.html)
+    Bar](https://material.io/go/design-app-bar-bottom)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/bottomappbar/BottomAppBar.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomappbar/BottomAppBar.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
+-   [Class
+    overview](https://developer.android.com/reference/com/google/android/material/bottomappbar/BottomAppBar)
+    <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 
@@ -36,14 +39,14 @@ Here's an example of how to include the widget in your layout:
 
   <!-- Other components and views -->
 
-  <android.support.design.bottomappbar.BottomAppBar
+  <com.google.android.material.bottomappbar.BottomAppBar
       android:id="@+id/bar"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
       app:navigationIcon="@drawable/ic_menu_24"/>
 
-  <android.support.design.widget.FloatingActionButton
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/fab"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -73,31 +76,47 @@ Feature                  | Relevant attributes
 :----------------------- | :---------------------------------
 Background Tint          | `app:backgroundTint`
 FAB Alignment Mode       | `app:fabAlignmentMode`
-FAB Attached             | `app:fabAttached`
-FAB Cradle Diameter      | `app:fabCradleDiameter`
+FAB Cradle Margin        | `app:fabCradleMargin`
 FAB Cradle Corner Radius | `app:fabCradleRoundedCornerRadius`
 FAB Vertical Offset      | `app:fabCradleVerticalOffset`
+Hide on scroll           | `app:hideOnScroll`
 
 #### Background Tint
 
 The `BottomAppBar` internally handles its own background. This allows it to
-automatically cradle the FAB when it is attached, but it also means that you
-shouldn't call `setBackground()` or use the `android:background` attribute in
-xml. Instead, the `app:backgroundTint` attribute will allow you to set a tint.
+automatically cradle the `FloatingActionButton` when it is attached, but it also
+means that you shouldn't call `setBackground()` or use the `android:background`
+attribute in xml. Instead, the `app:backgroundTint` attribute will allow you to
+set a tint.
 
-#### Fab Attributes
+#### `FloatingActionButton` Alignment Modes
 
-The placement of the FAB can be controlled by `fabAlignmentMode`, `fabAttached`,
-`fabCradleDiameter`, `fabCradleRoundedCornerRadius`, and
+The `FloatingActionButton` can be aligned either to the center
+(`FAB_ALIGNMENT_MODE_CENTER`) or to the end (`FAB_ALIGNMENT_MODE_END`) by
+calling `setFabAlignmentMode(int)`. The default animation will automatically be
+run. This can be coordinated with a `Fragment` transition to allow for a smooth
+animation from a primary screen to a secondary screen.
+
+#### `FloatingActionButton` Attributes
+
+The placement of the `FloatingActionButton` can be controlled by
+`fabAlignmentMode`, `fabCradleMargin`, `fabCradleRoundedCornerRadius`, and
 `fabCradleVerticalOffset`. The starting alignment mode (`fabAlignmentMode`) can
-be set to either `center` or `end`. If `fabAttached` is set to true, the fab
-will be laid out attached to the `BottomAppBar`. The `fabCradleDiameter` is the
-diameter of the cradle, changing this value will increase or decrease the
-apparent distance between the FAB and the `BottomAppBar`.
-`fabCradleRoundedCornerRadius` specifies the roundness of the corner around the
-cutout. `fabCradleVerticalOffset` specifies the vertical offset between the FAB
-and the `BottomAppBar`. If `fabCradleVerticalOffset` is 0, the center of the FAB
-will be aligned with the top of the `BottomAppBar`.
+be set to either `center` or `end`. Changing the `fabCradleMargin` will increase
+or decrease the distance between the `FloatingActionButton` and the
+`BottomAppBar`. The `fabCradleRoundedCornerRadius` specifies the roundness of
+the corner around the cutout. The `fabCradleVerticalOffset` specifies the
+vertical offset between the `FloatingActionButton` and the `BottomAppBar`. If
+`fabCradleVerticalOffset` is 0, the center of the `FloatingActionButton` will be
+aligned with the top of the `BottomAppBar`.
+
+#### Hide on scroll
+
+The `BottomAppBar` can be set to hide on scroll with the `hideOnScroll`
+attribute. To enable this behavior, you should ensure that the scrolling content
+is in a `NestedScrollView`. There's no need to wrap the `BottomAppBar` in an
+`AppBarLayout` or use any of the scroll flags associated with `AppBarLayout`
+such as `app:layout_scrollFlags`.
 
 ### Handling Menu Options
 
@@ -145,17 +164,3 @@ bar.setNavigationOnClickListener(new OnClickListener() {
     }
 });
 ```
-
-### FAB Attached States
-
-The FAB can either be attached or detached by calling `setFabAttached(boolean)`.
-When attached, the FAB will be cradled in the `BottomAppBar`. When detached, the
-FAB will float above it.
-
-### FAB Alignment Modes
-
-The FAB can be aligned either to the center (`FAB_ALIGNMENT_MODE_CENTER`) as the
-primary action or to the end (`FAB_ALIGNMENT_MODE_END`) as a secondary action by
-calling `setFabAlignmentMode(int)`. The default animation will automatically be
-run. This can be coordinated with a Fragment transition to allow for a smooth
-animation from a primary screen to a secondary screen.

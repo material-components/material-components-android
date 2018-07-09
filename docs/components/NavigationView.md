@@ -18,17 +18,17 @@ resource.
 This is most commonly used in conjunction with
 [`DrawerLayout`](https://developer.android.com/reference/android/support/v4/widget/DrawerLayout.html)
 to implement [Material navigation
-drawers](https://material.io/guidelines/patterns/navigation-drawer.html#).
+drawers](https://material.io/go/design-navigation-drawer).
 Navigation drawers are modal elevated dialogs that come from the start/left
 side, used to display in-app navigation links.
 
 ## Design & API Documentation
 
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/NavigationView.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/navigation/NavigationView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/NavigationView.html)
+    overview](https://developer.android.com/reference/com/google/android/material/navigation/NavigationView)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -38,7 +38,7 @@ side, used to display in-app navigation links.
 the menu.
 
 ```xml
-<android.support.design.widget.NavigationView
+<com.google.android.material.navigation.NavigationView
   android:id="@+id/navigation"
   android:layout_width="wrap_content"
   android:layout_height="match_parent"
@@ -62,7 +62,7 @@ implement your navigation logic.
 ### Header views
 
 You can add one header in the XML layout, but you can add multiple header views
-programatically with `addHeaderView(View)` (even if you already added one in the
+programmatically with `addHeaderView(View)` (even if you already added one in the
 XML layout). You can use `getHeaderView(int)` to get any of the header views at
 runtime.
 
@@ -89,7 +89,7 @@ this:
     <!-- Your content goes here -->
   </android.support.design.widget.CoordinatorLayout>
 
-  <android.support.design.widget.NavigationView
+  <com.google.android.material.navigation.NavigationView
     android:id="@+id/navigation"
     android:layout_width="wrap_content"
     android:layout_height="match_parent"

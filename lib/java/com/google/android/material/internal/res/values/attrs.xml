@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2017 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+
+  <declare-styleable name="ThemeEnforcement">
+    <!-- Internal flag used to denote that a style uses new attributes defined by
+         Theme.MaterialComponents, and that the component should check via ThemeEnforcement that the
+         client's app theme inherits from Theme.MaterialComponents.
+
+         Not all usages of new attributes are problematic in the context of a legacy app theme. You
+         should only use this flag if a particular usage is known to cause a visual glitch or crash.
+         For example, tinting a vector drawable with a non-existent theme attribute is known to
+         crash on pre-21 devices. -->
+    <attr name="enforceMaterialTheme" format="boolean"/>
+    <!-- Internal flag used to denote that a style requires that the textAppearance attribute is
+         specified and evaluates to a valid text appearance. -->
+    <attr name="enforceTextAppearance" format="boolean"/>
+    <!-- Attribute used to check that a component has a TextAppearance specified on it. -->
+    <attr name="android:textAppearance"/>
+  </declare-styleable>
+
+  <declare-styleable name="ForegroundLinearLayout">
+    <attr name="android:foreground"/>
+    <attr name="android:foregroundGravity"/>
+    <attr name="foregroundInsidePadding" format="boolean"/>
+  </declare-styleable>
+
+  <declare-styleable name="ScrimInsetsFrameLayout">
+    <attr name="insetForeground" format="color|reference"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialComponents_FlexboxLayout_Layout">
+    <attr name="layout_order" format="integer"/>
+
+    <!-- Negative numbers are invalid. -->
+    <attr name="layout_flexGrow" format="float"/>
+
+    <!-- Negative numbers are invalid. -->
+    <attr name="layout_flexShrink" format="float"/>
+
+    <!--
+        The initial length in a percentage format relative to its parent. This is similar to the
+        flex-basis property in the original CSS specification.
+        (https://www.w3.org/TR/css-flexbox-1/#flex-basis-property)
+        But unlike the flex-basis property, this attribute only accepts a value in fraction
+        (percentage), whereas flex-basis property accepts width values such as 1em, 10px and
+        the 'content' string.
+        But specifying initial fixed width values can be done by specifying width values in
+        layout_width (or layout_height, varies depending on the flexDirection). Also the same
+        effect can be done by specifying "wrap_content" in layout_width (or layout_height) if
+        developers want to achieve the same effect as 'content'.
+        Thus, this attribute only accepts fraction values, which can't be done through
+        layout_width (or layout_height) for simplicity.
+    -->
+    <attr name="layout_flexBasisPercent" format="fraction"/>
+
+    <!--
+        Omitting flex property since it's a shorthand for layout_flexGrow and layout_flexShrink
+        and layout_percentInParent (flex-basis in the original CSS spec).
+    -->
+
+    <attr name="layout_minWidth" format="dimension"/>
+    <attr name="layout_minHeight" format="dimension"/>
+    <attr name="layout_maxWidth" format="dimension"/>
+    <attr name="layout_maxHeight" format="dimension"/>
+
+    <!--
+        This attribute forces a flex line wrapping. i.e. if this is set to true for a
+        flex item, the item will become the first item of a flex line. (A wrapping happens
+        regardless of the flex items being processed in the the previous flex line)
+        This attribute is ignored if the flex_wrap attribute is set to nowrap.
+        The equivalent attribute isn't defined in the original CSS Flexible Box Module
+        specification, but having this attribute is useful for Android developers to flatten
+        the layouts when building a grid like layout or for a situation where developers want
+        to put a new flex line to make a semantic difference from the previous one, etc.
+    -->
+    <attr name="layout_wrapBefore" format="boolean"/>
+  </declare-styleable>
+</resources>

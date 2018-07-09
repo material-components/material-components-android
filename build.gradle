@@ -4,7 +4,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.0.1'
+    classpath 'com.android.tools.build:gradle:3.1.3'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
   }
 }
@@ -18,10 +18,10 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 'android-P'
+  compileSdkVersion = 28
   minSdkVersion = 14
   targetSdkVersion = 27
-  supportVersion = '28.0.0-alpha1'
+  supportVersion = '28.0.0-alpha3'
 
   testRunnerVersion = '1.0.0'
   espressoVersion = '3.0.0'
@@ -35,16 +35,14 @@ ext {
 
   mavenRepoUrl = (project.hasProperty('mavenRepoUrl')
     ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
-  mdcLibraryVersion = '28.0.0-alpha1'
-  mdcLibraryPackage = "android.support.design"
-  mdcLibraryDir = "android/support/design"
+  mdcLibraryVersion = '1.0.0-beta01'
+  mdcLibraryPackage = "com.google.android.material"
+  mdcLibraryDir = "com/google/android/material"
 }
 
 // lint every library
 task(lint) << {
 }
-
-// TODO: setup docs build and API txt generation
 
 task clean(type: Delete) {
   delete rootProject.buildDir
@@ -58,7 +56,7 @@ private def getTransformedProjectPath(projectPath) {
     if (currentPath == '') {
       currentPath += component
     } else {
-      currentPath += '/' + component
+      currentPath += '-' + component
     }
     result += ':' + currentPath
   }
@@ -117,10 +115,10 @@ def fromPath(path) {
 
 def getArchivesBaseName(name) {
   if (name == 'lib') {
-    return 'design'
+    return 'material'
   }
-  def pathComponents = name.tokenize('/')
-  def knownComponents = ['lib', 'java', 'android', 'support', 'design']
+  def pathComponents = name.tokenize('-')
+  def knownComponents = ['lib', 'java', 'com', 'google', 'android', 'material']
   def firstUnknownComponent = knownComponents.size();
   for (def i = 0; i < knownComponents.size() && i < pathComponents.size(); i++) {
     if (pathComponents[i] != knownComponents[i]) {
@@ -128,7 +126,7 @@ def getArchivesBaseName(name) {
       break;
     }
   }
-  def result = 'design'
+  def result = 'material'
   for (def i = firstUnknownComponent; i < pathComponents.size(); i++) {
     result = result + '-' + pathComponents[i];
   }
@@ -137,7 +135,7 @@ def getArchivesBaseName(name) {
 
 subprojects {
   version = rootProject.ext.supportVersion
-  group = 'com.android.support'
+  group = 'com.google.android.material'
 
   project.plugins.whenPluginAdded { plugin ->
     def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)
@@ -225,8 +223,8 @@ subprojects {
           if (project.uploadArchives.repositories.hasProperty("mavenDeployer")) {
             project.uploadArchives.repositories.mavenDeployer.pom {
               project {
-                name 'Android Design Support Library'
-                description 'The Android Design Support Library is a static library that you can add to your Android application in order to use APIs that provide implementations of the Material Design specification. Compatible on devices running API 14 or later.'
+                name 'Material Components for Android'
+                description 'Material Components for Android is a static library that you can add to your Android application in order to use APIs that provide implementations of the Material Design specification. Compatible on devices running API 14 or later.'
                 url 'http://developer.android.com/tools/extras/support-library.html'
                 inceptionYear '2015'
                 licenses {

@@ -17,8 +17,8 @@ package io.material.circularreveal;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.support.design.circularreveal.CircularRevealWidget.CircularRevealEvaluator;
-import android.support.design.circularreveal.CircularRevealWidget.RevealInfo;
+import com.google.android.material.circularreveal.CircularRevealWidget.CircularRevealEvaluator;
+import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
 import com.google.common.collect.Range;
 import org.robolectric.RobolectricTestRunner;
 import org.junit.Before;

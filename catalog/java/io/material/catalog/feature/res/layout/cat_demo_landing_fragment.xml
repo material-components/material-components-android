@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2017 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<android.support.design.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <android.support.v4.widget.NestedScrollView
+      android:id="@+id/cat_demo_landing_content"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginTop="20dp"
+          android:layout_marginBottom="16dp"
+          android:layout_marginLeft="16dp"
+          android:layout_marginRight="16dp"
+          android:text="@string/cat_demo_landing_description_header"
+          android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+
+      <TextView
+          android:id="@+id/cat_demo_landing_description"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_marginBottom="8dp"
+          android:layout_marginLeft="16dp"
+          android:layout_marginRight="16dp"
+          android:lineSpacingMultiplier="1.5"
+          android:textAppearance="@style/TextAppearance.Catalog.Body"
+          tools:text="This is placeholder text for the description of the feature demo which should explain the key aspects of the feature."/>
+
+      <FrameLayout
+          android:id="@+id/cat_demo_landing_main_demo_container"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"/>
+
+      <LinearLayout
+          android:id="@+id/cat_demo_landing_additional_demos_section"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/cat_list_divider_size"
+            android:background="?android:attr/listDivider"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:text="@string/cat_demo_landing_additional_demos_header"
+            android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+
+        <LinearLayout
+            android:id="@+id/cat_demo_landing_additional_demos_container"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"/>
+      </LinearLayout>
+
+      <include layout="@layout/cat_demo_landing_links_section"/>
+
+    </LinearLayout>
+  </android.support.v4.widget.NestedScrollView>
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:liftOnScroll="true">
+
+    <android.support.v7.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?attr/catalogToolbarStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+  </com.google.android.material.appbar.AppBarLayout>
+</android.support.design.widget.CoordinatorLayout>

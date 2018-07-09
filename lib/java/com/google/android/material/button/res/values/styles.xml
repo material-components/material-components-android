@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+    Copyright 2017 The Android Open Source Project
+
+    Licensed under the Apache License, Version 2.0 (the "License");
+    you may not use this file except in compliance with the License.
+    You may obtain a copy of the License at
+
+        http://www.apache.org/licenses/LICENSE-2.0
+
+    Unless required by applicable law or agreed to in writing, software
+    distributed under the License is distributed on an "AS IS" BASIS,
+    WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+    See the License for the specific language governing permissions and
+    limitations under the License.
+-->
+
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+  <!-- Defines the base Material button style. -->
+  <style name="Widget.MaterialComponents.Button" parent="Widget.AppCompat.Button">
+    <item name="enforceTextAppearance">true</item>
+    <item name="android:textAppearance">?attr/textAppearanceButton</item>
+    <item name="android:textColor">@color/mtrl_btn_text_color_selector</item>
+    <item name="android:paddingLeft">@dimen/mtrl_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/mtrl_btn_padding_right</item>
+    <item name="android:paddingTop">@dimen/mtrl_btn_padding_top</item>
+    <item name="android:paddingBottom">@dimen/mtrl_btn_padding_bottom</item>
+    <item name="android:insetLeft">0dp</item>
+    <item name="android:insetRight">0dp</item>
+    <item name="android:insetTop">@dimen/mtrl_btn_inset</item>
+    <item name="android:insetBottom">@dimen/mtrl_btn_inset</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_state_list_anim</item>
+    <item name="cornerRadius">@dimen/mtrl_btn_corner_radius</item>
+    <item name="iconPadding">@dimen/mtrl_btn_icon_padding</item>
+    <item name="iconTint">@color/mtrl_btn_text_color_selector</item>
+    <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
+    <item name="backgroundTint">@color/mtrl_btn_bg_color_selector</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.Icon">
+    <item name="android:paddingLeft">@dimen/mtrl_btn_icon_btn_padding_left</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.UnelevatedButton">
+    <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_unelevated_state_list_anim</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.UnelevatedButton.Icon">
+    <item name="android:paddingLeft">@dimen/mtrl_btn_icon_btn_padding_left</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.TextButton" parent="Widget.MaterialComponents.Button.UnelevatedButton">
+    <item name="android:textColor">@color/mtrl_text_btn_text_color_selector</item>
+    <item name="android:paddingLeft">@dimen/mtrl_btn_text_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/mtrl_btn_text_btn_padding_right</item>
+    <item name="iconTint">@color/mtrl_text_btn_text_color_selector</item>
+    <item name="iconPadding">@dimen/mtrl_btn_text_btn_icon_padding</item>
+    <item name="backgroundTint">@color/mtrl_btn_transparent_bg_color</item>
+    <item name="rippleColor">@color/mtrl_btn_text_btn_ripple_color</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.TextButton.Icon">
+    <!-- Icon text button has the same padding as a regular text button -->
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.TextButton">
+    <item name="android:paddingLeft">@dimen/mtrl_btn_padding_left</item>
+    <item name="android:paddingRight">@dimen/mtrl_btn_padding_right</item>
+    <item name="strokeColor">@color/mtrl_btn_stroke_color_selector</item>
+    <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.OutlinedButton.Icon">
+    <item name="android:paddingLeft">@dimen/mtrl_btn_icon_btn_padding_left</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.TextButton.Dialog">
+    <item name="android:minWidth">@dimen/mtrl_btn_dialog_btn_min_width</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.TextButton.Dialog.Icon">
+    <!-- Icon text button has the same padding as a regular text button -->
+  </style>
+
+</resources>

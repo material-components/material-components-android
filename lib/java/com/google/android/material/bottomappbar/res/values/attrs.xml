@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2017 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources>
+  <declare-styleable name="BottomAppBar">
+    <!-- Background for the BottomAppBar. -->
+    <attr name="backgroundTint"/>
+    <!-- The alignment of the fab relative to the BottomAppBar. -->
+    <attr name="fabAlignmentMode">
+      <!-- Mode that aligns the fab to the center. -->
+      <enum name="center" value="0"/>
+      <!-- Mode that aligns the fab to the end. -->
+      <enum name="end" value="1"/>
+    </attr>
+    <!-- The margin between the semi-circular cradle for the fab and the fab. -->
+    <attr name="fabCradleMargin" format="dimension"/>
+    <!-- The radius of the rounded corners on each side of the cradle. -->
+    <attr name="fabCradleRoundedCornerRadius" format="dimension"/>
+    <!-- The vertical offset between the fab from the cradle. -->
+    <attr name="fabCradleVerticalOffset" format="dimension"/>
+    <!-- Whether the BottomAppBar should hide when a NestedScrollView is scrolled. -->
+    <attr name="hideOnScroll" format="boolean"/>
+  </declare-styleable>
+
+  <!-- Style to use for BottomAppBar in this theme. -->
+  <attr name="bottomAppBarStyle" format="reference"/>
+</resources>

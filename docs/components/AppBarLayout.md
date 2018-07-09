@@ -18,22 +18,22 @@ responsiveness to scrolling.
 
 ## Design & API Documentation
 
-*   [Material Design guidelines: App
-    Bars](https://material.io/guidelines/layout/structure.html#structure-app-bar)
+*   [Material Design guidelines: Top App
+    Bar](https://material.io/go/design-app-bar-top)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Material Design guidelines: Scrolling
-    techniques](https://material.io/guidelines/patterns/scrolling-techniques.html)
+    techniques](https://material.io/go/design-app-bar-top#behavior)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 *   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/AppBarLayout.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/appbar/AppBarLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 *   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.html)
+    overview](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 As a container for Toolbars, and other views, it works with
-[CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
+[CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)
 in order to respond to scrolling techniques. `AppBarLayout` depends heavily on
 being used as a direct child of the CoordinatorLayout and reacts to a sibling
 that supports scrolling (e.g.
@@ -45,16 +45,27 @@ respond to scrolling. These are interpreted by the `AppBarLayout.LayoutParams`.
 
 **Available flags are:**
 
-*   [enterAlways](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_ENTER_ALWAYS)
-*   [enterAlwaysCollapsed](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED)
-*   [exitUntilCollapsed](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)
-*   [scroll](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SCROLL)
-*   [snap](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP)
-*   [snapMargins](https://developer.android.com/reference/android/support/design/widget/AppBarLayout.LayoutParams.html#SCROLL_FLAG_SNAP_MARGINS)
+*   [enterAlways](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_ENTER_ALWAYS)
+*   [enterAlwaysCollapsed](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED)
+*   [exitUntilCollapsed](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_EXIT_UNTIL_COLLAPSED)
+*   [scroll](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_SCROLL)
+*   [snap](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_SNAP)
+*   [snapMargins](https://developer.android.com/reference/com/google/android/material/appbar/AppBarLayout.LayoutParams#SCROLL_FLAG_SNAP_MARGINS)
 
 Views using the scroll flag should be declared and visually positioned before
 other views in the `AppBarLayout`. This ensures that they are able to exit at the
 top of the screen, leaving behind fixed, or pinned, elements.
+
+### Lift On Scroll
+
+Top App Bars can also be fixed in place and positioned at the same elevation as
+content. Upon scroll, they can increase elevation and let content scroll behind
+them. This design pattern is called "Lift On Scroll" and can be implemented by
+setting `app:liftOnScroll="true"` on your `AppBarLayout`.
+
+Note: the `liftOnScroll` attribute requires that you apply the
+`@string/appbar_scrolling_view_behavior` `layout_behavior` to your scrolling
+view (e.g., `NestedScrollView`, `RecyclerView`, etc.).
 
 ## Related Concepts
 
@@ -73,6 +84,5 @@ element should be *Top App Bar*.
 A CollapsingToolbarLayout is often used as a wrapper around the Toolbar to
 provide additional UI features in relation to scrolling.
 
-*   [App bar](https://material.io/guidelines/layout/structure.html#structure-app-bar)
-*   [Toolbars](https://material.io/guidelines/components/toolbars.html#toolbars-usage)
+*   [Top App Bar](https://material.io/go/design-app-bar-top)
 *   [CollapsingToolbarLayout](CollapsingToolbarLayout.md)

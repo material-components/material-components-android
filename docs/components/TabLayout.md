@@ -18,19 +18,19 @@ interactions for a group of tabs including:
 - animations,
 - and alignment.
 
-The Android Developers site provides [detailed documentation](https://developer.android.com/reference/android/support/design/widget/TabLayout.html)
+The Android Developers site provides [detailed
+documentation](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
 on implementing `TabLayout`.
 
 ## Design & API Documentation
 
--   [Material Design guidelines:
-    Tabs](https://material.io/guidelines/components/tabs.html)
+-   [Material Design guidelines: Tabs](https://material.io/go/design-tabs)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/TabLayout.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/TabLayout.html)
+    overview](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -39,22 +39,22 @@ To use a `TabLayout` with a static number of tabs, define each tab as a
 `TabItem` directly in the layout.
 
 ```xml
-<android.support.design.widget.TabLayout
+<com.google.android.material.tabs.TabLayout
     android:id="@+id/tabs"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
-  <android.support.design.widget.TabItem
+  <com.google.android.material.tabs.TabItem
       android:icon="@drawable/ic_icon_a_24"
       android:text="@string/tab_a_label"/>
-  <android.support.design.widget.TabItem
+  <com.google.android.material.tabs.TabItem
       android:icon="@drawable/ic_icon_b_24"
       android:text="@string/tab_b_label"/>
-  <android.support.design.widget.TabItem
+  <com.google.android.material.tabs.TabItem
       android:icon="@drawable/ic_icon_c_24"
       android:text="@string/tab_c_label"/>
 
-</android.support.design.widget.TabLayout>
+</com.google.android.material.tabs.TabLayout>
 ```
 
 A tab layout should be used above the content associated with the respective
@@ -62,10 +62,10 @@ tabs and lets the user quickly change between content views. These content views
 are often held in a
 [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html).
 
-Use [setupWithViewPager(ViewPager)](https://developer.android.com/reference/android/support/design/widget/TabLayout.html#setupWithViewPager(android.support.v4.view.ViewPager))
-to link a `TabLayout` with a ViewPager. The
-individual tabs in the `TabLayout` will be automatically populated with the page
-titles from the PagerAdapter.
+Use
+[setupWithViewPager(ViewPager)](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager(ViewPager))
+to link a `TabLayout` with a ViewPager. The individual tabs in the `TabLayout`
+will be automatically populated with the page titles from the PagerAdapter.
 
 ```java
 ViewPager pager;
@@ -81,7 +81,7 @@ Alternatively, you can add a `TabLayout` to a ViewPager in XML:
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <android.support.design.widget.TabLayout
+  <com.google.android.material.tabs.TabLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="top" />
@@ -103,7 +103,7 @@ The updated Material `TabLayout` style consists of updated icon and label tints,
 ripple color, and ripple shape.
 
 ```xml
-<android.support.design.widget.TabLayout
+<com.google.android.material.tabs.TabLayout
     style="@style/Widget.MaterialComponents.TabLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
@@ -115,7 +115,7 @@ The colored Material `TabLayout` style consists of updated background color
 based on `?attr/colorAccent`.
 
 ```xml
-<android.support.design.widget.TabLayout
+<com.google.android.material.tabs.TabLayout
     style="@style/Widget.MaterialComponents.TabLayout.Colored"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
@@ -124,7 +124,7 @@ based on `?attr/colorAccent`.
 #### Legacy Material Style
 
 ```xml
-<android.support.design.widget.TabLayout
+<com.google.android.material.tabs.TabLayout
     style="@style/Widget.Design.TabLayout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
@@ -133,28 +133,13 @@ based on `?attr/colorAccent`.
 ### Attributes
 
 Feature    | Relevant attributes
-:--------- | :--------------------------
-Size       | `app:tabMinWidth`
-           | `app:tabMaxWidth`
+---------- | -------------------
+Size       | `app:tabMinWidth`<br/>`app:tabMaxWidth`
 Scroll     | `app:tabMode`
 Centered   | `app:tabGravity`
 Background | `app:tabBackground`
-Icon       | `app:tabIconTint`
-           | `app:tabIconTintMode`
-Label      | `app:tabInlineLabel`
-           | `app:tabTextAppearance`
-           | `app:tabTextColor`
-           | `app:tabSelectedTextColor`
-Indicator  | `app:tabIndicatorColor`
-           | `app:tabIndicatorHeight`
-           | `app:tabIndicator`
-           | `app:tabIndicatorGravity`
-           | `app:tabIndicatorFullWidth`
-Position   | `app:tabContentStart`
-           | `app:tabPaddingStart`
-           | `app:tabPaddingTop`
-           | `app:tabPaddingEnd`
-           | `app:tabPaddingBottom`
-           | `app:tabPadding`
+Icon       | `app:tabIconTint`<br/>`app:tabIconTintMode`
+Label      | `app:tabInlineLabel`<br/>`app:tabTextAppearance`<br/>`app:tabTextColor`<br/>`app:tabSelectedTextColor`
+Indicator  | `app:tabIndicatorColor`<br/>`app:tabIndicatorHeight`<br/>`app:tabIndicator`<br/>`app:tabIndicatorGravity`<br/>`app:tabIndicatorFullWidth`
+Position   | `app:tabContentStart`<br/>`app:tabPaddingStart`<br/>`app:tabPaddingTop`<br/>`app:tabPaddingEnd`<br/>`app:tabPaddingBottom`<br/>`app:tabPadding`
 Ripple     | `app:tabRippleColor`
-           | `app:tabUnboundedRipple`

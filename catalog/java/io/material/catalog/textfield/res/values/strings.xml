@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright 2017 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~     https://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+  -->
+
+<resources>
+  <string name="cat_textfield_title">Text Field</string>
+  <string name="cat_textfield_filled_demo_title">Filled Text Field Demo</string>
+  <string name="cat_textfield_outline_demo_title">Outline Text Field Demo</string>
+  <string name="cat_textfield_legacy_demo_title">Legacy Text Field Demo</string>
+  <string name="cat_textfield_description">
+    Text fields allow users to input, edit, and select text. Text fields typically reside in forms
+    but can appear in other places, like dialog boxes and search.
+  </string>
+
+  <string name="cat_textfield_filled_helper_text">Filled text field</string>
+  <string name="cat_textfield_filled_dense_helper_text">Dense filled text field</string>
+  <string name="cat_textfield_filled_dense_password_helper_text">
+    Dense filled password text field
+  </string>
+  <string name="cat_textfield_outline_helper_text">Outline text field</string>
+  <string name="cat_textfield_outline_dense_helper_text">Dense outline text field</string>
+
+  <string name="cat_textfield_customize_section_title">Customize text fields</string>
+  <string name="cat_textfield_customize_section_description">
+    Enter values below to customize the text fields.
+  </string>
+  <string name="cat_textfield_label">Label</string>
+  <string name="cat_textfield_password">Password</string>
+  <string name="cat_textfield_error">Error</string>
+  <string name="cat_textfield_customize_label_text">Label text</string>
+  <string name="cat_textfield_customize_error_text">Error text</string>
+  <string name="cat_textfield_customize_color">Change color</string>
+  <string name="cat_textfield_customize_counter_text">Character counter max</string>
+  <string name="cat_textfield_update_label_text">Update label</string>
+  <string name="cat_textfield_update_error_text">Update error</string>
+  <string name="cat_textfield_update_counter_text">Update character counter</string>
+  <string name="cat_textfield_null_input_error_text">Enter a value</string>
+  <string name="cat_textfield_show_error_text">Show error</string>
+  <string name="cat_textfield_hide_error_text">Hide error</string>
+  <string name="cat_textfield_disable">Disable</string>
+  <string name="cat_textfield_enable">Enable</string>
+</resources>

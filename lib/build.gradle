@@ -25,59 +25,98 @@ dependencies {
 }
 
 def srcDirs = [
-  'android/support/design/animation',
-  'android/support/design/appbar',
-  'android/support/design/behavior',
-  'android/support/design/bottomappbar',
-  'android/support/design/bottomnavigation',
-  'android/support/design/bottomsheet',
-  'android/support/design/button',
-  'android/support/design/canvas',
-  'android/support/design/card',
-  'android/support/design/chip',
-  'android/support/design/circularreveal',
-  'android/support/design/circularreveal/cardview',
-  'android/support/design/circularreveal/coordinatorlayout',
-  'android/support/design/color',
-  'android/support/design/dialog',
-  'android/support/design/drawable',
-  'android/support/design/expandable',
-  'android/support/design/floatingactionbutton',
-  'android/support/design/internal',
-  'android/support/design/math',
-  'android/support/design/navigation',
-  'android/support/design/resources',
-  'android/support/design/ripple',
-  'android/support/design/shape',
-  'android/support/design/shadow',
-  'android/support/design/snackbar',
-  'android/support/design/stateful',
-  'android/support/design/tabs',
-  'android/support/design/textfield',
-  'android/support/design/theme',
-  'android/support/design/transformation',
-  'android/support/design/typography',
+  'com/google/android/material/animation',
+  'com/google/android/material/appbar',
+  'com/google/android/material/behavior',
+  'com/google/android/material/bottomappbar',
+  'com/google/android/material/bottomnavigation',
+  'com/google/android/material/bottomsheet',
+  'com/google/android/material/button',
+  'com/google/android/material/canvas',
+  'com/google/android/material/card',
+  'com/google/android/material/chip',
+  'com/google/android/material/circularreveal',
+  'com/google/android/material/circularreveal/cardview',
+  'com/google/android/material/circularreveal/coordinatorlayout',
+  'com/google/android/material/color',
+  'com/google/android/material/dialog',
+  'com/google/android/material/drawable',
+  'com/google/android/material/expandable',
+  'com/google/android/material/floatingactionbutton',
+  'com/google/android/material/internal',
+  'com/google/android/material/math',
+  'com/google/android/material/navigation',
+  'com/google/android/material/resources',
+  'com/google/android/material/ripple',
+  'com/google/android/material/shape',
+  'com/google/android/material/shadow',
+  'com/google/android/material/snackbar',
+  'com/google/android/material/stateful',
+  'com/google/android/material/tabs',
+  'com/google/android/material/textfield',
+  'com/google/android/material/theme',
+  'com/google/android/material/transformation',
+  'com/google/android/material/typography',
 ]
 
 android {
   sourceSets {
-    main.manifest.srcFile 'java/android/support/design/AndroidManifest.xml'
+    main.manifest.srcFile 'java/com/google/android/material/AndroidManifest.xml'
     main.java.srcDir 'java'
-    main.java.includes = srcDirs.collect { it + "/**/*.java" }
+    main.java.includes = srcDirs.collect { it + '/**/*.java' }
     main.java.excludes = [
       '**/build/**',
     ]
     srcDirs.forEach {
-      main.res.srcDirs += "java/" + it + "/res"
-      main.res.srcDirs += "java/" + it + "/res-public"
+      main.res.srcDirs += 'java/' + it + '/res'
+      main.res.srcDirs += 'java/' + it + '/res-public'
     }
 
     test.java.srcDir 'javatests'
   }
 
   buildTypes.all {
-    consumerProguardFiles 'proguard-rules.pro'
+    consumerProguardFiles 'proguard-behaviors.pro'
   }
+}
+
+// TODO: setup API txt generation
+
+task generateJavadocs(type: Javadoc) {
+  if (project.hasProperty("online")) {
+    options.addStringOption("toroot", "/")
+    options.addStringOption("hdf", "android.whichdoc online")
+    options.addStringOption("hdf", "dac")
+    options.addBooleanOption("devsite", true)
+    options.addBooleanOption("yamlV2", true)
+    options.addStringOption("dac_libraryroot", "com/google/android/material")
+    options.addStringOption("dac_dataname", "MATERIAL_DATA")
+  }
+
+  if (project.hasProperty("docletPathRoot")) {
+    def docletPathRoot = project.property("docletPathRoot")
+
+    source = android.sourceSets.main.java.source
+    source = source.findAll { it.name.endsWith(".java") }
+    title = null
+    destinationDir = new File("doclava-out")
+    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+    options.addStringOption("federate Android", "https://developer.android.com")
+    options.encoding = "UTF-8"
+    options.doclet = "com.google.doclava.Doclava"
+    options.docletpath = [
+      file(docletPathRoot + "/doclava/current/doclava.jar"),
+      file(docletPathRoot + "/jsilver/v1_0_0/jsilver.jar")
+    ]
+    // TODO: remove once all errors are resolved
+    failOnError false
+  }
+}
+
+afterEvaluate {
+  generateJavadocs.classpath += files(android.libraryVariants.collect { variant ->
+    variant.javaCompile.classpath.files
+  })
 }
 
 uploadArchives {

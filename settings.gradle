@@ -1,16 +1,14 @@
 include ':lib'
 
-include ':testing:java:android:support:design:testapp'
-include ':testing:java:android:support:design:testapp:animation'
-// TODO: uncomment when backlayer is included in top-level build
-//include ':testing:java:android:support:design:testapp:backlayer'
-include ':testing:java:android:support:design:testapp:base'
-include ':testing:java:android:support:design:testapp:custom'
+include ':testing:java:com:google:android:material:testapp'
+include ':testing:java:com:google:android:material:testapp:animation'
+include ':testing:java:com:google:android:material:testapp:base'
+include ':testing:java:com:google:android:material:testapp:custom'
 
 include ':tests'
-include ':tests:javatests:android:support:design:animation'
-// TODO: uncomment when backlayer is included in top-level build
-//include ':tests:javatests:android:support:design:backlayer'
+include ':tests:javatests:com:google:android:material:animation'
+
+include ':catalog'
 
 include ':demos:java:io:material:demo:shrine'
 include ':demos:java:io:material:demo:shrine:filters'
@@ -32,8 +30,8 @@ rootProject.children.each { p ->
   allChildren.each { project ->
     // Give each project a repository-wide unique name based on their path from
     // the top-level dir (e.g. the project at demos/java/io/material/shrine will
-    // be named :demos/java/io/material/shrine). Doing so avoids the need to
+    // be named :demos-java-io-material-shrine). Doing so avoids the need to
     // have unique directory names throughout our subprojects.
-    project.name = project.path.substring(1).replace(':', '/')
+    project.name = project.path.substring(1).replace(':', '-')
   }
 }

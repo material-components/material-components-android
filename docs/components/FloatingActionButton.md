@@ -9,11 +9,11 @@ path: /catalog/floating-action-button/
 
 # Floating Action Buttons
 
-`FloatingActionButton` displays the primary action in an application. It is
+A `FloatingActionButton` displays the primary action in an application. It is
 a round icon button that's elevated above other page content. **Floating action
 buttons** come in a default and mini size.
 
-Floating action buttons provide quick-access to important or common actions
+Floating action buttons provide quick access to important or common actions
 within an app. They have a variety of uses, including:
 
 -   Performing a common action, such as starting a new email in a mail app.
@@ -26,20 +26,20 @@ other UI elements on the screen.
 ## Design & API Documentation
 
 -   [Material Design guidelines: Floating Action
-    Buttons](https://material.io/guidelines/components/buttons-floating-action-button.html)
+    Buttons](https://material.io/go/design-fab)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/android/support/design/widget/FloatingActionButton.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
-    overview](https://developer.android.com/reference/android/support/design/widget/FloatingActionButton.html)
+    overview](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 
 The `FloatingActionButton` widget provides a complete implementation of Material
-Design's floating action button component. Example code of how to include the
-widget in your layout:
+Design's floating action button component. Here's how to include the widget in
+your layout:
 
 ```xml
 <android.support.design.widget.CoordinatorLayout
@@ -50,7 +50,7 @@ widget in your layout:
 
   <!-- Main content -->
 
-  <android.support.design.widget.FloatingActionButton
+  <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/floating_action_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -82,9 +82,9 @@ The updated Material `FloatingActionButton` style consists of updated elevation,
 ripple, and motion changes.
 
 ```xml
-<android.support.design.widget.FloatingActionButton
+<com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/floating_action_button"
-    style="@/style/Widget.MaterialComponents.FloatingActionButton"
+    style="@style/Widget.MaterialComponents.FloatingActionButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|right"
@@ -95,9 +95,9 @@ ripple, and motion changes.
 #### Legacy Material Style
 
 ```xml
-<android.support.design.widget.FloatingActionButton
+<com.google.android.material.floatingactionbutton.FloatingActionButton
     android:id="@+id/floating_action_button"
-    style="@/style/Widget.Design.FloatingActionButton"
+    style="@style/Widget.Design.FloatingActionButton"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="bottom|right"
@@ -145,6 +145,35 @@ Use the `show` and `hide` methods to animate the visibility of a
 `FloatingActionButton`. The show animation grows the widget and fades it in,
 while the hide animation shrinks the widget and fades it out.
 
+### Sizing
+
+The `FloatingActionButton` can be sized either by using the discrete sizing
+modes or a totally custom size.
+
+##### Sizing Modes
+
+The supported sizing modes are as follows:
+
+* `normal` - the normal sized button, 56dp.
+* `mini` - the mini sized button, 40dp.
+* `auto` - the button size will change based on the window size. For small
+sized windows (largest screen dimension < 470dp) this will select a mini sized
+button, and for larger sized windows it will select a normal sized button.
+
+By default, the sizing mode will be `auto`, but this can be adjusted via the
+`app:fabSize` attribute or the `FloatingActionButton#setSize` method.
+
+##### Custom Size
+
+To set a custom size for your `FloatingActionButton`, you can use the
+`app:fabCustomSize` attribute or the `FloatingActionButton#setCustomSize`
+method.
+
+If you've set a custom size and would like to clear it, you can call the
+`FloatingActionButton#clearCustomSize` method. If called, custom sizing will
+not be used and the size will be calculated based on the value set using
+`FloatingActionButton#setSize` or the `app:fabSize` attribute.
+
 ## Related Concepts
 
--   [CoordinatorLayout](https://developer.android.com/reference/android/support/design/widget/CoordinatorLayout.html)
+-   [CoordinatorLayout](https://developer.android.com/reference/androidx/coordinatorlayout/widget/CoordinatorLayout)
