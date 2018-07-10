@@ -302,8 +302,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   /**
    * Set how long to show the view for.
    *
-   * @param duration either be one of the predefined lengths: {@link #LENGTH_SHORT}, {@link
-   *     #LENGTH_LONG}, or a custom duration in milliseconds.
+   * @param duration How long to display the message. Can be {@link #LENGTH_SHORT}, {@link
+   *     #LENGTH_LONG}, {@link #LENGTH_INDEFINITE}, or a custom duration in milliseconds.
    */
   @NonNull
   public B setDuration(@Duration int duration) {
