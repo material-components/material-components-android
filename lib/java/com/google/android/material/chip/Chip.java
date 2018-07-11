@@ -1002,7 +1002,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     protected void onPopulateNodeForHost(AccessibilityNodeInfoCompat node) {
       node.setCheckable(chipDrawable != null && chipDrawable.isCheckable());
       node.setClassName(Chip.class.getName());
-      CharSequence chipText = chipDrawable != null ? chipDrawable.getText() : "";
+      CharSequence chipText = getText();
       if (VERSION.SDK_INT >= VERSION_CODES.M) {
         node.setText(chipText);
       } else {
