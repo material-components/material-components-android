@@ -174,7 +174,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setChipDrawable(drawable);
     touchHelper = new ChipTouchHelper(this);
     ViewCompat.setAccessibilityDelegate(this, touchHelper);
-    ViewCompat.setImportantForAccessibility(this, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
     initOutlineProvider();
     // Set deferred values
