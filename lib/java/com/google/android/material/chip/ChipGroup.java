@@ -20,15 +20,21 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.PixelFormat;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Parcel;
 import android.support.annotation.BoolRes;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Dimension;
 import android.support.annotation.IdRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import com.google.android.material.internal.FlowLayout;
+import com.google.android.material.internal.FlexWrap;
+import com.google.android.material.internal.FlexboxLayout;
 import com.google.android.material.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.View;
@@ -46,7 +52,7 @@ import android.widget.CompoundButton;
  * group unchecks any previously checked chip within the same group. The behavior mirrors that of
  * {@link android.widget.RadioGroup}.
  */
-public class ChipGroup extends FlowLayout {
+public class ChipGroup extends FlexboxLayout {
 
   /**
    * Interface definition for a callback to be invoked when the checked chip changed in this group.
@@ -62,8 +68,39 @@ public class ChipGroup extends FlowLayout {
     public void onCheckedChanged(ChipGroup group, @IdRes int checkedId);
   }
 
+  /**
+   * {@link FlexboxLayout.LayoutParams for {@link ChipGroup}.
+   */
+  public static class LayoutParams extends FlexboxLayout.LayoutParams {
+    public LayoutParams(Context context, AttributeSet attrs) {
+      super(context, attrs);
+    }
+
+    public LayoutParams(FlexboxLayout.LayoutParams source) {
+      super(source);
+    }
+
+    public LayoutParams(ViewGroup.LayoutParams source) {
+      super(source);
+    }
+
+    public LayoutParams(int width, int height) {
+      super(width, height);
+    }
+
+    public LayoutParams(MarginLayoutParams source) {
+      super(source);
+    }
+
+    protected LayoutParams(Parcel in) {
+      super(in);
+    }
+  }
+
+  private final SpacingDrawable spacingDrawable = new SpacingDrawable();
   @Dimension private int chipSpacingHorizontal;
   @Dimension private int chipSpacingVertical;
+  private boolean singleLine;
   private boolean singleSelection;
 
   @Nullable private OnCheckedChangeListener onCheckedChangeListener;
@@ -107,7 +144,33 @@ public class ChipGroup extends FlowLayout {
     }
 
     a.recycle();
+
+    setDividerDrawable(spacingDrawable);
+    setShowDivider(SHOW_DIVIDER_MIDDLE);
+    // Superclass uses presence of dividers to determine whether it needs to draw.
+    setWillNotDraw(true);
+
     super.setOnHierarchyChangeListener(passThroughListener);
+  }
+
+  @Override
+  public FlexboxLayout.LayoutParams generateLayoutParams(AttributeSet attrs) {
+    return new ChipGroup.LayoutParams(getContext(), attrs);
+  }
+
+  @Override
+  protected ViewGroup.LayoutParams generateLayoutParams(ViewGroup.LayoutParams lp) {
+    return new ChipGroup.LayoutParams(lp);
+  }
+
+  @Override
+  protected ViewGroup.LayoutParams generateDefaultLayoutParams() {
+    return new ChipGroup.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+  }
+
+  @Override
+  protected boolean checkLayoutParams(ViewGroup.LayoutParams p) {
+    return super.checkLayoutParams(p) && (p instanceof ChipGroup.LayoutParams);
   }
 
   @Override
@@ -142,38 +205,43 @@ public class ChipGroup extends FlowLayout {
     super.addView(child, index, params);
   }
 
-  /** Deprecated. Use {@link ChipGroup#setChipSpacingHorizontal(int)} instead. */
-  @Deprecated
+  @Override
   public void setDividerDrawableHorizontal(Drawable divider) {
-    throw new UnsupportedOperationException(
-        "Changing divider drawables have no effect. ChipGroup do not use divider drawables as "
-            + "spacing.");
+    if (divider != spacingDrawable) {
+      throw new UnsupportedOperationException(
+          "Changing divider drawables not allowed. ChipGroup uses divider drawables as spacing.");
+    }
+    super.setDividerDrawableHorizontal(divider);
   }
 
-  /** Deprecated. Use {@link ChipGroup#setChipSpacingVertical(int)} instead. */
-  @Deprecated
+  @Override
   public void setDividerDrawableVertical(@Nullable Drawable divider) {
-    throw new UnsupportedOperationException(
-        "Changing divider drawables have no effect. ChipGroup do not use divider drawables as "
-            + "spacing.");
+    if (divider != spacingDrawable) {
+      throw new UnsupportedOperationException(
+          "Changing divider drawables not allowed. ChipGroup uses divider drawables as spacing.");
+    }
+    super.setDividerDrawableVertical(divider);
   }
 
-  /** Deprecated. Use {@link ChipGroup#setChipSpacingHorizontal(int)} instead. */
-  @Deprecated
+  @Override
   public void setShowDividerHorizontal(int dividerMode) {
-    throw new UnsupportedOperationException(
-        "Changing divider modes has no effect. ChipGroup do not use divider drawables as spacing.");
+    if (dividerMode != SHOW_DIVIDER_MIDDLE) {
+      throw new UnsupportedOperationException(
+          "Changing divider modes not allowed. ChipGroup uses divider drawables as spacing.");
+    }
+    super.setShowDividerHorizontal(dividerMode);
   }
 
-  /** Deprecated. Use {@link ChipGroup#setChipSpacingVertical(int)} instead. */
-  @Deprecated
+  @Override
   public void setShowDividerVertical(int dividerMode) {
-    throw new UnsupportedOperationException(
-        "Changing divider modes has no effect. ChipGroup do not use divider drawables as spacing.");
+    if (dividerMode != SHOW_DIVIDER_MIDDLE) {
+      throw new UnsupportedOperationException(
+          "Changing divider modes not allowed. ChipGroup uses divider drawables as spacing.");
+    }
+    super.setShowDividerVertical(dividerMode);
   }
 
-  /** Deprecated Use {@link ChipGroup#setSingleLine(int)} instead. */
-  @Deprecated
+  @Override
   public void setFlexWrap(int flexWrap) {
     throw new UnsupportedOperationException(
         "Changing flex wrap not allowed. ChipGroup exposes a singleLine attribute instead.");
@@ -287,7 +355,6 @@ public class ChipGroup extends FlowLayout {
   public void setChipSpacingHorizontal(@Dimension int chipSpacingHorizontal) {
     if (this.chipSpacingHorizontal != chipSpacingHorizontal) {
       this.chipSpacingHorizontal = chipSpacingHorizontal;
-      setItemSpacing(chipSpacingHorizontal);
       requestLayout();
     }
   }
@@ -307,7 +374,6 @@ public class ChipGroup extends FlowLayout {
   public void setChipSpacingVertical(@Dimension int chipSpacingVertical) {
     if (this.chipSpacingVertical != chipSpacingVertical) {
       this.chipSpacingVertical = chipSpacingVertical;
-      setLineSpacing(chipSpacingVertical);
       requestLayout();
     }
   }
@@ -315,6 +381,17 @@ public class ChipGroup extends FlowLayout {
   /** Sets the vertical spacing between chips in this group. */
   public void setChipSpacingVerticalResource(@DimenRes int id) {
     setChipSpacingVertical(getResources().getDimensionPixelOffset(id));
+  }
+
+  /** Returns whether this chip group is single line, or reflowed multiline. */
+  public boolean isSingleLine() {
+    return singleLine;
+  }
+
+  /** Sets whether this chip group is single line, or reflowed multiline. */
+  public void setSingleLine(boolean singleLine) {
+    this.singleLine = singleLine;
+    super.setFlexWrap(singleLine ? FlexWrap.NOWRAP : FlexWrap.WRAP);
   }
 
   /** Sets whether this chip group is single line, or reflowed multiline. */
@@ -347,6 +424,43 @@ public class ChipGroup extends FlowLayout {
    */
   public void setSingleSelection(@BoolRes int id) {
     setSingleSelection(getResources().getBoolean(id));
+  }
+
+  /**
+   * Drawable that only has intrinsic width/height and nothing else. Intended to be used as spacing
+   * for {@link ChipGroup#setDividerDrawable(Drawable)}.
+   */
+  private class SpacingDrawable extends Drawable {
+
+    @Override
+    public int getIntrinsicWidth() {
+      return chipSpacingHorizontal;
+    }
+
+    @Override
+    public int getIntrinsicHeight() {
+      return chipSpacingVertical;
+    }
+
+    @Override
+    public void draw(@NonNull Canvas canvas) {
+      // No-op.
+    }
+
+    @Override
+    public void setAlpha(int alpha) {
+      // No-op.
+    }
+
+    @Override
+    public void setColorFilter(@Nullable ColorFilter colorFilter) {
+      // No-op.
+    }
+
+    @Override
+    public int getOpacity() {
+      return PixelFormat.TRANSPARENT;
+    }
   }
 
   private class CheckedStateTracker implements CompoundButton.OnCheckedChangeListener {
