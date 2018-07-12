@@ -16,6 +16,13 @@ Design Support Library.
 For information on how to get started with Material Components for Android,
 take a look at our [Getting Started](docs/getting-started.md) guide.
 
+## Submitting Bugs or Feature Requests
+
+For usage questions: ask on
+[Stack  Overflow](http://stackoverflow.com/questions/tagged/material-components).
+
+Bugs or feature requests should be submitted at https://issuetracker.google.com/issues/new?component=439535
+
 ## Useful Links
 - [All Components](https://github.com/material-components/material-components-android/tree/master/lib/)
 - [Getting Started](docs/getting-started.md)
