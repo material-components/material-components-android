@@ -92,6 +92,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     // the content description of the BottomNavigationItemView should be used for accessibility.
     ViewCompat.setImportantForAccessibility(smallLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     ViewCompat.setImportantForAccessibility(largeLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    setFocusable(true);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
   }
 
