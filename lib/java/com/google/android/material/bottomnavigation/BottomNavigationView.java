@@ -140,7 +140,9 @@ public class BottomNavigationView extends FrameLayout {
             attrs,
             R.styleable.BottomNavigationView,
             defStyleAttr,
-            R.style.Widget_Design_BottomNavigationView);
+            R.style.Widget_Design_BottomNavigationView,
+            R.styleable.BottomNavigationView_itemTextAppearanceInactive,
+            R.styleable.BottomNavigationView_itemTextAppearanceActive);
 
     if (a.hasValue(R.styleable.BottomNavigationView_itemIconTint)) {
       menuView.setIconTintList(a.getColorStateList(R.styleable.BottomNavigationView_itemIconTint));
