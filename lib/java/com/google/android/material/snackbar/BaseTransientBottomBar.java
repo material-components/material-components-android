@@ -355,7 +355,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   /** Show the {@link BaseTransientBottomBar}. */
   public void show() {
-    SnackbarManager.getInstance().show(duration, managerCallback);
+    SnackbarManager.getInstance().show(getDuration(), managerCallback);
   }
 
   /** Dismiss the {@link BaseTransientBottomBar}. */
@@ -694,7 +694,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       }
       a.recycle();
 
-      setClickable(true);
+      setFocusable(true);
     }
 
     @Override

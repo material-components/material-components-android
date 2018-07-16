@@ -37,6 +37,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 
@@ -59,6 +60,9 @@ import java.lang.annotation.RetentionPolicy;
  * via {@link BaseTransientBottomBar#addCallback(BaseCallback)}.
  */
 public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
+
+  private final AccessibilityManager accessibilityManager;
+  private boolean hasAction;
 
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
@@ -127,6 +131,8 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
       View content,
       com.google.android.material.snackbar.ContentViewCallback contentViewCallback) {
     super(parent, content, contentViewCallback);
+    accessibilityManager =
+        (AccessibilityManager) parent.getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
   }
 
   // TODO: Delete this once custom Robolectric shadows no longer depend on this method being present
@@ -284,11 +290,12 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public Snackbar setAction(CharSequence text, final View.OnClickListener listener) {
     final SnackbarContentLayout contentLayout = (SnackbarContentLayout) this.view.getChildAt(0);
     final TextView tv = contentLayout.getActionView();
-
     if (TextUtils.isEmpty(text) || listener == null) {
       tv.setVisibility(View.GONE);
       tv.setOnClickListener(null);
+      hasAction = false;
     } else {
+      hasAction = true;
       tv.setVisibility(View.VISIBLE);
       tv.setText(text);
       tv.setOnClickListener(
@@ -302,6 +309,14 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
           });
     }
     return this;
+  }
+
+  @Override
+  public int getDuration() {
+    // If touch exploration is enabled override duration to give people chance to interact.
+    return hasAction && accessibilityManager.isTouchExplorationEnabled()
+        ? BaseTransientBottomBar.LENGTH_INDEFINITE
+        : super.getDuration();
   }
 
   /**
