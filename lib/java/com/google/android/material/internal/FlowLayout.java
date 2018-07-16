@@ -110,12 +110,6 @@ public class FlowLayout extends ViewGroup {
             ? width
             : Integer.MAX_VALUE;
 
-    if (getChildCount() == 0) {
-      // Do not re-layout when there are no children.
-      super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-      return;
-    }
-
     int childLeft = getPaddingLeft();
     int childTop = getPaddingTop();
     int childBottom = childTop;
