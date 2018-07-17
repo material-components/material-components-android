@@ -12,26 +12,25 @@ path: /docs/getting-started/
 Material Components for Android is available through Google's Maven repository.
 To use it:
 
-1. Open the `build.gradle` file for your application.
-2. Make sure that the `repositories` section includes a maven section with the
-`"https://maven.google.com"` endpoint. For example:
+1.  Open the `build.gradle` file for your application.
+2.  Make sure that the `repositories` section includes a maven section with the
+    `"https://maven.google.com"` endpoint. For example:
 
     ```groovy
       allprojects {
         repositories {
+          google()
           jcenter()
-          maven {
-            url "https://maven.google.com"
-          }
         }
       }
     ```
-3. Add the library to the `dependencies` section:
+
+3.  Add the library to the `dependencies` section:
 
     ```groovy
       dependencies {
         // ...
-        compile 'com.google.android.material:material:1.0.0-alpha3'
+        implementation 'com.google.android.material:material:1.0.0-beta01'
         // ...
       }
     ```
