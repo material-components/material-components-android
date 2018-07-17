@@ -23,6 +23,11 @@
   <public name="Theme.MaterialComponents.DialogWhenLarge" type="style"/>
   <public name="Theme.MaterialComponents.Light.DialogWhenLarge" type="style"/>
   <public name="Theme.MaterialComponents.CompactMenu" type="style"/>
+  <public name="Theme.MaterialComponents.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Light.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.NoActionBar.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Light.NoActionBar.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.Light.DarkActionBar.Bridge" type="style"/>
   <public name="ThemeOverlay.MaterialComponents" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Light" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dark" type="style"/>

@@ -72,9 +72,13 @@ Material Components theme is the recommended approach. However, be sure to
 test thoroughly afterwards, as components in existing layouts may change
 their looks and behavior.
 
-Note: If you **can't** change your theme, you can continue to inherit from an
-AppCompat theme and add some new theme attributes to your theme. See the [**App
-Compat Themes**](#app-compat-themes) section for more details.
+Note: If you **can't** change your theme, you can do one of the following:
+
+*   Inherit from one of our Material Components **Bridge** themes. See the
+    [**Bridge Themes**](#bridge-themes) section for more details.
+*   Continue to inherit from an AppCompat theme and add some new theme
+    attributes to your theme. See the
+    [**App Compat Themes**](#app-compat-themes) section for more details.
 
 #### **Material Components themes**
 
@@ -103,6 +107,29 @@ replaces default components with their Material counterparts. Currently, this
 only replaces `<Button>` XML components with
 [`<MaterialButton>`](components/MaterialButton.md).
 
+#### **Bridge Themes** {#bridge-themes}
+
+If you cannot change your theme to inherit from a Material Components theme, you
+can inherit from a Material Components **Bridge** theme.
+
+```xml
+<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light.Bridge">
+    <!-- ... -->
+</style>
+```
+
+Both `Theme.MaterialComponents` and `Theme.MaterialComponents.Light` have
+`.Bridge` themes:
+
+*   `Theme.MaterialComponents.Bridge`
+*   `Theme.MaterialComponents.Light.Bridge`
+*   `Theme.MaterialComponents.NoActionBar.Bridge`
+*   `Theme.MaterialComponents.Light.NoActionBar.Bridge`
+
+Bridge themes inherit from AppCompat themes, but also define the new Material
+Components theme attributes for you. If you use a bridge theme, you can start
+using Material Design components without changing your app theme.
+
 #### **AppCompat Themes** {#app-compat-themes}
 
 You can also incrementally test new Material components without changing
@@ -124,7 +151,19 @@ theme, or you will encounter `ThemeEnforcement` errors:
   <!-- New MaterialComponents attributes. -->
   <item name="colorSecondary">?attr/colorPrimary</item>
   <item name="scrimBackground">@color/mtrl_scrim_color</item>
-  <item name="snackbarButtonStyle">?attr/borderlessButtonStyle</item>
+  <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+  <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+  <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+  <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+  <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+  <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+  <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+  <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+  <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+  <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+  <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+  <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+  <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
 
 </style>
 ```

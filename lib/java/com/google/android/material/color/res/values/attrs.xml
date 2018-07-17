@@ -22,7 +22,4 @@
        The background can either be a color or a bitmap drawable with tileMode set to repeat. -->
   <attr name="scrimBackground" format="color|reference"/>
 
-  <!-- Default color of background imagery for floating components, ex. dialogs, popups, and cards. -->
-  <attr name="colorBackgroundFloating" format="color" />
-
 </resources>

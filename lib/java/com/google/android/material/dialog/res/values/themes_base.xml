@@ -42,7 +42,6 @@
     <item name="colorAccent">?attr/colorSecondary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
-    <item name="colorBackgroundFloating">@color/background_floating_material_dark</item>
 
     <!-- Widget styles -->
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
@@ -90,7 +89,6 @@
     <item name="colorAccent">?attr/colorSecondary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
-    <item name="colorBackgroundFloating">@color/background_floating_material_light</item>
 
     <!-- Widget styles -->
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>

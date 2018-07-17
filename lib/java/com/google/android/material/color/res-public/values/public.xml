@@ -17,7 +17,6 @@
 <resources>
   <public name="colorSecondary" type="attr"/>
   <public name="scrimBackground" type="attr"/>
-  <public name="colorBackgroundFloating" type="attr"/>
   <public name="design_default_color_primary" type="color"/>
   <public name="design_default_color_primary_dark" type="color"/>
 </resources>

@@ -22,6 +22,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
@@ -29,7 +30,6 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StringRes;
-import com.google.android.material.internal.ThemeEnforcement;
 import android.support.design.widget.CoordinatorLayout;
 import android.text.TextUtils;
 import android.util.AttributeSet;
@@ -40,7 +40,6 @@ import android.view.ViewParent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -92,6 +91,8 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * @see #setDuration
    */
   public static final int LENGTH_LONG = BaseTransientBottomBar.LENGTH_LONG;
+
+  private static final int[] SNACKBAR_BUTTON_STYLE_ATTR = new int[] {R.attr.snackbarButtonStyle};
 
   /**
    * Callback class for {@link Snackbar} instances.
@@ -182,11 +183,10 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
     }
 
     final LayoutInflater inflater = LayoutInflater.from(parent.getContext());
-    final boolean isUsingMaterialTheme = ThemeEnforcement.isMaterialTheme(parent.getContext());
     final SnackbarContentLayout content =
         (SnackbarContentLayout)
             inflater.inflate(
-                isUsingMaterialTheme
+                hasSnackbarButtonStyleAttr(parent.getContext())
                     ? R.layout.mtrl_layout_snackbar_include
                     : R.layout.design_layout_snackbar_include,
                 parent,
@@ -195,6 +195,18 @@ public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
     snackbar.setText(text);
     snackbar.setDuration(duration);
     return snackbar;
+  }
+
+  /**
+   * {@link Snackbar}s should still work with AppCompat themes, which don't specify a {@code
+   * snackbarButtonStyle}. This method helps to check if a valid {@code snackbarButtonStyle} is set
+   * within the current context, so that we know whether we can use the attribute.
+   */
+  protected static boolean hasSnackbarButtonStyleAttr(Context context) {
+    TypedArray a = context.obtainStyledAttributes(SNACKBAR_BUTTON_STYLE_ATTR);
+    int snackbarButtonStyleResId = a.getResourceId(0, -1);
+    a.recycle();
+    return snackbarButtonStyleResId != -1;
   }
 
   /**

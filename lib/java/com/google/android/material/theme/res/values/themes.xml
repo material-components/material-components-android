@@ -43,6 +43,23 @@
     <item name="windowNoTitle">true</item>
   </style>
 
+  <!-- Bridge themes containing only new attributes defined in MaterialComponents themes. -->
+  <style name="Theme.MaterialComponents.Bridge" parent="Base.Theme.MaterialComponents.Bridge"/>
+
+  <style name="Theme.MaterialComponents.Light.Bridge" parent="Base.Theme.MaterialComponents.Light.Bridge"/>
+
+  <style name="Theme.MaterialComponents.NoActionBar.Bridge" parent="Theme.MaterialComponents.Bridge">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Light.NoActionBar.Bridge" parent="Theme.MaterialComponents.Light.Bridge">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
+  <style name="Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Base.Theme.MaterialComponents.Light.DarkActionBar.Bridge"/>
+
   <style name="Theme.MaterialComponents.DialogWhenLarge"
       parent="Base.Theme.MaterialComponents.DialogWhenLarge">
   </style>
