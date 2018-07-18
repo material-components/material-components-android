@@ -28,6 +28,12 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.support.annotation.ColorInt;
+import android.support.annotation.Dimension;
+import android.support.annotation.FloatRange;
+import android.support.annotation.IntRange;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.v4.graphics.ColorUtils;
 
@@ -45,19 +51,21 @@ public class CircularBorderDrawable extends Drawable {
   final Paint paint;
   final Rect rect = new Rect();
   final RectF rectF = new RectF();
+  final CircularBorderState state = new CircularBorderState();
 
-  float borderWidth;
+  @Dimension float borderWidth;
 
-  private int topOuterStrokeColor;
-  private int topInnerStrokeColor;
-  private int bottomOuterStrokeColor;
-  private int bottomInnerStrokeColor;
+  @ColorInt private int topOuterStrokeColor;
+  @ColorInt private int topInnerStrokeColor;
+  @ColorInt private int bottomOuterStrokeColor;
+  @ColorInt private int bottomInnerStrokeColor;
 
   private ColorStateList borderTint;
-  private int currentBorderTintColor;
+  @ColorInt private int currentBorderTintColor;
 
   private boolean invalidateShader = true;
 
+  @FloatRange(from = 0, to = 360)
   private float rotation;
 
   public CircularBorderDrawable() {
@@ -65,11 +73,17 @@ public class CircularBorderDrawable extends Drawable {
     paint.setStyle(Paint.Style.STROKE);
   }
 
+  @Nullable
+  @Override
+  public ConstantState getConstantState() {
+    return state;
+  }
+
   public void setGradientColors(
-      int topOuterStrokeColor,
-      int topInnerStrokeColor,
-      int bottomOuterStrokeColor,
-      int bottomInnerStrokeColor) {
+      @ColorInt int topOuterStrokeColor,
+      @ColorInt int topInnerStrokeColor,
+      @ColorInt int bottomOuterStrokeColor,
+      @ColorInt int bottomInnerStrokeColor) {
     this.topOuterStrokeColor = topOuterStrokeColor;
     this.topInnerStrokeColor = topInnerStrokeColor;
     this.bottomOuterStrokeColor = bottomOuterStrokeColor;
@@ -77,7 +91,7 @@ public class CircularBorderDrawable extends Drawable {
   }
 
   /** Set the border width */
-  public void setBorderWidth(float width) {
+  public void setBorderWidth(@Dimension float width) {
     if (borderWidth != width) {
       borderWidth = width;
       paint.setStrokeWidth(width * DRAW_STROKE_WIDTH_MULTIPLE);
@@ -120,7 +134,7 @@ public class CircularBorderDrawable extends Drawable {
   }
 
   @Override
-  public void setAlpha(int alpha) {
+  public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
     paint.setAlpha(alpha);
     invalidateSelf();
   }
@@ -210,5 +224,23 @@ public class CircularBorderDrawable extends Drawable {
 
     return new LinearGradient(
         0, rect.top, 0, rect.bottom, colors, positions, Shader.TileMode.CLAMP);
+  }
+
+  /**
+   * Dummy implementation of constant state. This drawable doesn't have shared state. Implementing
+   * so that calls to getConstantState().newDrawable() don't crash on L and M.
+   */
+  private class CircularBorderState extends ConstantState {
+
+    @NonNull
+    @Override
+    public Drawable newDrawable() {
+      return CircularBorderDrawable.this;
+    }
+
+    @Override
+    public int getChangingConfigurations() {
+      return 0;
+    }
   }
 }
