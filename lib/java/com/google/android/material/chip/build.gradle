@@ -16,6 +16,7 @@ dependencies {
   implementation project(fromPath("lib/java/com/google/android/material/internal"))
   implementation project(fromPath("lib/java/com/google/android/material/resources"))
   implementation project(fromPath("lib/java/com/google/android/material/ripple"))
+  implementation project(fromPath("lib/java/com/google/android/material/typography"))
 }
 
 android {

@@ -39,7 +39,9 @@
     <item name="closeIcon">@drawable/ic_mtrl_chip_close_circle</item>
 
     <item name="android:text">@null</item>
-    <item name="android:textAppearance">@style/TextAppearance.MaterialComponents.Chip</item>
+    <item name="enforceTextAppearance">true</item>
+    <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    <item name="android:textColor">@color/mtrl_chip_text_color</item>
     <item name="closeIconTint">@color/mtrl_chip_close_icon_tint</item>
 
     <item name="chipBackgroundColor">@color/mtrl_chip_background_color</item>
