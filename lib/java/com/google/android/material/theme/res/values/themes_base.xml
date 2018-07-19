@@ -79,6 +79,7 @@
     <!-- Dialog themes -->
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
     <item name="android:datePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:timePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Bridge" parent="Platform.MaterialComponents.Light">
@@ -130,6 +131,7 @@
     <!-- Dialog themes -->
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
     <item name="android:datePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
+    <item name="android:timePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Theme.AppCompat.Light.DarkActionBar">
