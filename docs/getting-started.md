@@ -13,8 +13,7 @@ Material Components for Android is available through Google's Maven repository.
 To use it:
 
 1.  Open the `build.gradle` file for your application.
-2.  Make sure that the `repositories` section includes a maven section with the
-    `"https://maven.google.com"` endpoint. For example:
+2.  Make sure that the `repositories` section includes Google's Maven repository `google()`. For example:
 
     ```groovy
       allprojects {
@@ -124,6 +123,7 @@ Both `Theme.MaterialComponents` and `Theme.MaterialComponents.Light` have
 *   `Theme.MaterialComponents.Light.Bridge`
 *   `Theme.MaterialComponents.NoActionBar.Bridge`
 *   `Theme.MaterialComponents.Light.NoActionBar.Bridge`
+*   `Theme.MaterialComponents.Light.DarkActionBar.Bridge`
 
 Bridge themes inherit from AppCompat themes, but also define the new Material
 Components theme attributes for you. If you use a bridge theme, you can start
