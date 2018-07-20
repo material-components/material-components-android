@@ -29,6 +29,7 @@ import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -40,8 +41,12 @@ import android.support.annotation.RestrictTo;
 import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import android.support.design.widget.CoordinatorLayout;
+import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
+import android.support.v4.view.accessibility.AccessibilityManagerCompat;
+import android.support.v4.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -275,6 +280,28 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
                 v.getPaddingRight(),
                 insets.getSystemWindowInsetBottom());
             return insets;
+          }
+        });
+
+    // Handle accessibility events
+    ViewCompat.setAccessibilityDelegate(
+        view,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View host, AccessibilityNodeInfoCompat info) {
+            super.onInitializeAccessibilityNodeInfo(host, info);
+            info.addAction(AccessibilityNodeInfoCompat.ACTION_DISMISS);
+            info.setDismissable(true);
+          }
+
+          @Override
+          public boolean performAccessibilityAction(View host, int action, Bundle args) {
+            if (action == AccessibilityNodeInfoCompat.ACTION_DISMISS) {
+              dismiss();
+              return true;
+            }
+            return super.performAccessibilityAction(host, action, args);
           }
         });
 
@@ -678,6 +705,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
   protected static class SnackbarBaseLayout extends FrameLayout {
+
+    private final AccessibilityManager accessibilityManager;
+    private final TouchExplorationStateChangeListener touchExplorationStateChangeListener;
+
     private BaseTransientBottomBar.OnLayoutChangeListener onLayoutChangeListener;
     private BaseTransientBottomBar.OnAttachStateChangeListener onAttachStateChangeListener;
 
@@ -694,7 +725,24 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       }
       a.recycle();
 
-      setFocusable(true);
+      accessibilityManager =
+          (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+      touchExplorationStateChangeListener =
+          new TouchExplorationStateChangeListener() {
+            @Override
+            public void onTouchExplorationStateChanged(boolean enabled) {
+              setClickableOrFocusableBasedOnAccessibility(enabled);
+            }
+          };
+
+      AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
+          accessibilityManager, touchExplorationStateChangeListener);
+      setClickableOrFocusableBasedOnAccessibility(accessibilityManager.isTouchExplorationEnabled());
+    }
+
+    private void setClickableOrFocusableBasedOnAccessibility(boolean touchExplorationEnabled) {
+      setClickable(!touchExplorationEnabled);
+      setFocusable(touchExplorationEnabled);
     }
 
     @Override
@@ -721,6 +769,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       if (onAttachStateChangeListener != null) {
         onAttachStateChangeListener.onViewDetachedFromWindow(this);
       }
+
+      AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
+          accessibilityManager, touchExplorationStateChangeListener);
     }
 
     void setOnLayoutChangeListener(
