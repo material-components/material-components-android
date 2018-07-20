@@ -56,13 +56,10 @@ control over the visual aspects of the input text.
 
 ### Material Styles
 
-Using `TextInputLayout` with an updated Material theme
-(`Theme.MaterialComponents`) will provide the correct updated Material styles to
-your text fields by default. If you need to use an updated Material text field
-and your application theme does not inherit from an updated Material theme, you
-can apply one of the updated Material styles directly to your widget in XML.
+To use an updated `TextInputLayout`, apply one of the updated Material styles
+directly to your widget in XML.
 
-#### Filled Box (Default)
+#### Filled Box
 
 Filled text fields have a solid background color and draw more attention,
 especially in layouts where the field is surrounded by other elements. To use a
