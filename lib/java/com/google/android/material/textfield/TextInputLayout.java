@@ -243,12 +243,12 @@ public class TextInputLayout extends LinearLayout {
     this(context, null);
   }
 
-  public TextInputLayout(Context context, AttributeSet attrs) {
+  public TextInputLayout(Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.textInputStyle);
   }
 
-  public TextInputLayout(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+  public TextInputLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
+    super(ThemeEnforcement.createThemedContext(context, defStyleAttr), attrs, defStyleAttr);
 
     setOrientation(VERTICAL);
     setWillNotDraw(false);

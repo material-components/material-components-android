@@ -26,6 +26,7 @@ import android.support.annotation.AttrRes;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.annotation.StyleableRes;
+import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.TintTypedArray;
 import android.util.AttributeSet;
 
@@ -223,5 +224,26 @@ public final class ThemeEnforcement {
               + themeName
               + " (or a descendant).");
     }
+  }
+
+  /**
+   * Ensures the context has theme information. This can be used in a constructor to allow the
+   * defStyleAttr to use a theme overlay if one has been defined.
+   */
+  public static Context createThemedContext(Context context, int defStyleAttr) {
+    if (context instanceof ContextThemeWrapper) {
+      return context;
+    }
+
+    TypedArray a = context.getTheme().obtainStyledAttributes(new int[] {defStyleAttr});
+    int style = a.getResourceId(0 /* index */, 0 /* defaultVal */);
+    a.recycle();
+
+    if (style == 0) {
+      // No style was set in the theme.
+      return context;
+    }
+
+    return new ContextThemeWrapper(context, style);
   }
 }
