@@ -310,6 +310,25 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
+   * Get the current flags used by the shape's paint.
+   *
+   * @return current paint flags.
+   */
+  public int getPaintFlags() {
+    return paint.getFlags();
+  }
+
+  /**
+   * Set the flags used by the shape's paint.
+   *
+   * @param flags the desired flags.
+   */
+  public void setPaintFlags(int flags) {
+    paint.setFlags(flags);
+    invalidateSelf();
+  }
+
+  /**
    * Get the current style used by the shape's paint.
    *
    * @return current used paint style.

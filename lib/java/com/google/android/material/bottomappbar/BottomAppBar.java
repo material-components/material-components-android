@@ -27,6 +27,7 @@ import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.os.Parcel;
@@ -158,6 +159,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     materialShapeDrawable = new MaterialShapeDrawable(appBarModel);
     materialShapeDrawable.setShadowEnabled(true);
     materialShapeDrawable.setPaintStyle(Style.FILL);
+    materialShapeDrawable.setPaintFlags(Paint.ANTI_ALIAS_FLAG);
     DrawableCompat.setTintList(materialShapeDrawable, backgroundTint);
     ViewCompat.setBackground(this, materialShapeDrawable);
   }
