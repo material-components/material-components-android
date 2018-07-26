@@ -346,7 +346,8 @@ class FloatingActionButtonImpl {
 
   void removeOnShowAnimationListener(@NonNull AnimatorListener listener) {
     if (showListeners == null) {
-      // This can happen if this method is called before the first call to addDrawerListener.
+      // This can happen if this method is called before the first call to
+      // addOnShowAnimationListener.
       return;
     }
     showListeners.remove(listener);
@@ -361,7 +362,8 @@ class FloatingActionButtonImpl {
 
   public void removeOnHideAnimationListener(@NonNull AnimatorListener listener) {
     if (hideListeners == null) {
-      // This can happen if this method is called before the first call to addDrawerListener.
+      // This can happen if this method is called before the first call to
+      // addOnHideAnimationListener.
       return;
     }
     hideListeners.remove(listener);
