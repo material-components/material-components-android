@@ -400,12 +400,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   private void setCornerPathAndTransform(int index, int width, int height) {
-    getCoordinatesOfCorner(index, width, height, pointF);
     float angle = angleOfCorner(index, width, height);
     getCornerTreatmentForIndex(index).getCornerPath(angle, interpolation, cornerPaths[index]);
 
     float prevEdgeAngle = angleOfEdge((index - 1 + 4) % 4, width, height) + (float) Math.PI / 2f;
     cornerTransforms[index].reset();
+    getCoordinatesOfCorner(index, width, height, pointF);
     cornerTransforms[index].setTranslate(pointF.x, pointF.y);
     cornerTransforms[index].preRotate((float) Math.toDegrees(prevEdgeAngle));
   }
