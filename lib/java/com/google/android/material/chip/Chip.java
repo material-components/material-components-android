@@ -22,6 +22,8 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
+import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Outline;
 import android.graphics.PorterDuff.Mode;
@@ -39,6 +41,7 @@ import android.support.annotation.BoolRes;
 import android.support.annotation.CallSuper;
 import android.support.annotation.ColorRes;
 import android.support.annotation.DimenRes;
+import android.support.annotation.Dimension;
 import android.support.annotation.DrawableRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
@@ -48,6 +51,8 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.chip.ChipDrawable.Delegate;
+import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.TouchTargetUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
@@ -63,14 +68,18 @@ import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
 import android.view.SoundEffectConstants;
+import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
+import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.accessibility.AccessibilityEvent;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -123,6 +132,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
 
   private static final String NAMESPACE_ANDROID = "http://schemas.android.com/apk/res/android";
+  private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
+
+  /** Value taken from Android Accessibility Guide */
+  private static final int MIN_TOUCH_TARGET_DP = 48;
 
   @Retention(RetentionPolicy.SOURCE)
   @IntDef({ExploreByTouchHelper.INVALID_ID, ExploreByTouchHelper.HOST_ID, CLOSE_ICON_VIRTUAL_ID})
@@ -139,6 +152,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private boolean closeIconPressed;
   private boolean closeIconHovered;
   private boolean closeIconFocused;
+  private int touchTargetDelegateResId;
+
+  @Dimension(unit = Dimension.PX)
+  private int minTouchTargetSize;
 
   private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
@@ -195,6 +212,50 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
     // Helps TextView calculate the available text width.
     updatePaddingInternal();
+    setupTouchTargetDelegate(context, attrs, defStyleAttr);
+  }
+
+  private void setupTouchTargetDelegate(Context context, AttributeSet attrs, int defStyleAttr) {
+    // Checks if the Chip should meet Android's minimum touch target size.
+    TypedArray a =
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
+            attrs,
+            R.styleable.Chip,
+            defStyleAttr,
+            R.style.Widget_MaterialComponents_Chip_Action);
+    touchTargetDelegateResId =
+        attrs.getAttributeIntValue(NAMESPACE_APP, "chipTouchTargetDelegate", -1);
+    touchTargetDelegateResId =
+        touchTargetDelegateResId > 0
+            ? touchTargetDelegateResId
+            : a.getResourceId(R.styleable.Chip_chipTouchTargetDelegate, -1);
+
+    if (attrs.getAttributeValue(NAMESPACE_APP, "chipMinTouchTargetSize") != null) {
+      minTouchTargetSize =
+          attrs.getAttributeIntValue(NAMESPACE_APP, "chipMinTouchTargetSize", MIN_TOUCH_TARGET_DP);
+      minTouchTargetSize = (int) Math.ceil(dpToPx(minTouchTargetSize, getContext()));
+    } else {
+      minTouchTargetSize =
+          (int)
+              Math.ceil(
+                  a.getDimension(R.styleable.Chip_chipMinTouchTargetSize, MIN_TOUCH_TARGET_DP));
+    }
+
+    ViewTreeObserver viewTreeObserver = getViewTreeObserver();
+    viewTreeObserver.addOnGlobalLayoutListener(
+        new OnGlobalLayoutListener() {
+          @Override
+          public void onGlobalLayout() {
+            if (touchTargetDelegateResId > 0) {
+              ensureAccessibleTouchTarget(
+                  TouchTargetUtils.findViewAncestor(Chip.this, touchTargetDelegateResId),
+                  minTouchTargetSize);
+              touchTargetDelegateResId = -1;
+            }
+          }
+        });
+    a.recycle();
   }
 
   /**
@@ -1632,5 +1693,32 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setChipEndPadding(chipEndPadding);
     }
+  }
+
+  /**
+   * Extends the tap target of this chip using a {@link TouchDelegate}.
+   *
+   * <p>This also adds an OnAttachStateChangeListener to the view to remove the TouchDelegate from
+   * its ancestor when it is detached from its parent.
+   *
+   * <p>What this means for views which are part of a reusable layout is that you should call this
+   * method to extend its tap target every time it is attached to a new ancestor.
+   *
+   * @param ancestor an ancestor of the given view. This ancestor must have bounds which include the
+   *     extended tap target.
+   * @param minTargetPx minimum toucch target size in pixel.
+   */
+  public void ensureAccessibleTouchTarget(View ancestor, @Dimension int minTargetPx) {
+    int deltaHeight = Math.max(0, minTargetPx - getHeight());
+    int deltaWidth = Math.max(0, minTargetPx - getWidth());
+    int deltaX = deltaWidth > 0 ? deltaWidth / 2 : 0;
+    int deltaY = deltaHeight > 0 ? deltaHeight / 2 : 0;
+    TouchTargetUtils.extendViewTouchTarget(this, ancestor, deltaX, deltaY, deltaX, deltaY);
+  }
+
+  @Dimension(unit = Dimension.PX)
+  private static float dpToPx(@Dimension(unit = Dimension.DP) int dp, Context context) {
+    Resources r = context.getResources();
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
   }
 }

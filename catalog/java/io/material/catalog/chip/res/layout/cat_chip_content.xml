@@ -19,6 +19,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/chip_parent"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_margin="16dp"
@@ -51,7 +52,8 @@
       android:layout_toRightOf="@id/cat_chip_entry"
       android:ellipsize="end"
       android:text="@string/cat_chip_text"
-      app:chipIcon="@drawable/ic_placeholder_circle_24"/>
+      app:chipIcon="@drawable/ic_placeholder_circle_24"
+      app:chipTouchTargetDelegate="@id/chip_parent"/>
 
   <TextView
       android:id="@+id/cat_chip_filter"
@@ -77,7 +79,8 @@
       android:layout_toEndOf="@id/cat_chip_filter"
       android:layout_toRightOf="@id/cat_chip_filter"
       android:ellipsize="end"
-      android:text="@string/cat_chip_text"/>
+      android:text="@string/cat_chip_text"
+      app:chipTouchTargetDelegate="@id/chip_parent"/>
 
   <TextView
       android:id="@+id/cat_chip_choice"
@@ -101,7 +104,8 @@
       android:layout_toEndOf="@id/cat_chip_choice"
       android:layout_toRightOf="@id/cat_chip_choice"
       android:ellipsize="end"
-      android:text="@string/cat_chip_text"/>
+      android:text="@string/cat_chip_text"
+      app:chipTouchTargetDelegate="@id/chip_parent"/>
 
   <TextView
       android:id="@+id/cat_chip_action"
@@ -130,7 +134,8 @@
       android:layout_toRightOf="@id/cat_chip_action"
       android:ellipsize="end"
       android:text="@string/cat_chip_text"
-      app:chipIcon="@drawable/ic_placeholder_circle_24"/>
+      app:chipIcon="@drawable/ic_placeholder_circle_24"
+      app:chipTouchTargetDelegate="@id/chip_parent"/>
 
   <Switch
       android:id="@+id/cat_chip_text_length_switch"

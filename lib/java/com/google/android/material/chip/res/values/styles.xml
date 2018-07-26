@@ -49,6 +49,7 @@
     <item name="chipStrokeWidth">0dp</item>
     <item name="rippleColor">@color/mtrl_chip_ripple_color</item>
 
+    <item name="chipMinTouchTargetSize">48dp</item>
     <item name="chipMinHeight">32dp</item>
     <item name="chipCornerRadius">16dp</item>
     <item name="chipIconSize">24dp</item>

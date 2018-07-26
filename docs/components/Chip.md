@@ -122,10 +122,18 @@ This style usually contains an optional chip icon and is never checkable.
     android:text="@string/hello_world"/>
 ```
 
+### Chip Touch Target
+
+To ensure that a `Chip` is accessible, specify the `app:chipTouchTargetDelegate`
+to extend chip's touch target (when necessary) to meet Android's recommended
+[accessibility touch target size](https://support.google.com/accessibility/android/answer/7101858).
+Developers can override chip's minimum touch target size using
+`app:chipMinTouchTargetSize`.
+
 ### Chip Attributes
 
 Feature      | Relevant attributes
-:----------- | :--------------------------
+:----------- | :----------------------------
 Shape        | `app:chipCornerRadius`
 Size         | `app:chipMinHeight`
 Background   | `app:chipBackgroundColor`
@@ -155,6 +163,8 @@ Paddings     | `app:chipStartPadding`
              | `app:closeIconStartPadding`
              | `app:closeIconEndPadding`
              | `app:chipEndPadding`
+TouchTarget  | 'app:chipMinTouchTargetSize'
+             | 'app:chipTouchTargetDelegate'
 
 ### Handling Clicks
 

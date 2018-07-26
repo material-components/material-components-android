@@ -36,6 +36,11 @@
     <attr name="chipStrokeWidth" format="dimension"/>
     <!-- Ripple color to apply to the chip. -->
     <attr name="rippleColor"/>
+    <!-- Minimum size of chip's touch target, by default, Android recommended 48dp. -->
+    <attr name="chipMinTouchTargetSize" format="dimension"/>
+    <!-- Reference to touch target delegate used to ensure that chip meets the minimum accessible
+     touch target size (48dp by default). Ignored if chip's hitRect already meets the minimum. -->
+    <attr name="chipTouchTargetDelegate" format="reference"/>
 
     <!-- Text to display on the chip. -->
     <attr name="android:text"/>
