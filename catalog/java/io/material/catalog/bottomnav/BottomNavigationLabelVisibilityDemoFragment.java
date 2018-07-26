@@ -40,7 +40,7 @@ public class BottomNavigationLabelVisibilityDemoFragment extends BottomNavigatio
 
   @Override
   protected int getBottomNavDemoControlsLayout() {
-    return R.layout.cat_bottom_nav_label_visibility_controls;
+    return R.layout.cat_bottom_navs_label_visibility_controls;
   }
 
   private void setAllBottomNavsLabelVisibilityMode(@LabelVisibilityMode int labelVisibilityMode) {

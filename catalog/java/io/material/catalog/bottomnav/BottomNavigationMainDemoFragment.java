@@ -16,5 +16,13 @@
 
 package io.material.catalog.bottomnav;
 
+import io.material.catalog.R;
+
 /** A fragment that displays the main bottom nav demos for the Catalog app. */
-public class BottomNavigationMainDemoFragment extends BottomNavigationDemoFragment {}
+public class BottomNavigationMainDemoFragment extends BottomNavigationDemoFragment {
+
+  @Override
+  protected int getBottomNavsContent() {
+    return R.layout.cat_bottom_nav;
+  }
+}

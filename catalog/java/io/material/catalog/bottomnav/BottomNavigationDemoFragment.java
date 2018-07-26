@@ -164,7 +164,7 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
 
   @LayoutRes
   protected int getBottomNavsContent() {
-    return R.layout.cat_bottom_nav;
+    return R.layout.cat_bottom_navs;
   }
 
   @LayoutRes

@@ -23,6 +23,6 @@ public class BottomNavigationColorStylesDemoFragment extends BottomNavigationDem
 
   @Override
   protected int getBottomNavsContent() {
-    return R.layout.cat_bottom_nav_color_styles;
+    return R.layout.cat_bottom_navs_color_styles;
   }
 }
