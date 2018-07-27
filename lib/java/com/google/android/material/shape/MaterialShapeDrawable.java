@@ -45,6 +45,8 @@ import android.support.v4.graphics.drawable.TintAwareDrawable;
 @Experimental("The shapes API is currently experimental and subject to change")
 public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable {
 
+  private static final float HALF_PI = (float) (Math.PI / 2.0);
+
   private final Paint paint = new Paint();
   // Inter-method state.
   private final Matrix[] cornerTransforms = new Matrix[4];
@@ -59,6 +61,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final Region scratchRegion = new Region();
   private final float[] scratch = new float[2];
   private final float[] scratch2 = new float[2];
+
   @Nullable private ShapePathModel shapedViewModel = null;
   private boolean shadowEnabled = false;
   private boolean useTintColorForShadow = false;
@@ -405,7 +408,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // corner treatment.
     for (int index = 0; index < 4; index++) {
       setCornerPathAndTransform(index, width, height);
-      setEdgeTransform(index, width, height);
+      setEdgeTransform(index);
     }
 
     // Apply corners and edges to the path in clockwise interleaving sequence: top-left corner, top
@@ -419,21 +422,20 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   private void setCornerPathAndTransform(int index, int width, int height) {
-    float angle = angleOfCorner(index, width, height);
-    getCornerTreatmentForIndex(index).getCornerPath(angle, interpolation, cornerPaths[index]);
+    getCornerTreatmentForIndex(index).getCornerPath(HALF_PI, interpolation, cornerPaths[index]);
 
-    float prevEdgeAngle = angleOfEdge((index - 1 + 4) % 4, width, height) + (float) Math.PI / 2f;
+    float prevEdgeAngle = angleOfEdge(index - 1) + HALF_PI;
     cornerTransforms[index].reset();
     getCoordinatesOfCorner(index, width, height, pointF);
     cornerTransforms[index].setTranslate(pointF.x, pointF.y);
     cornerTransforms[index].preRotate((float) Math.toDegrees(prevEdgeAngle));
   }
 
-  private void setEdgeTransform(int index, int width, int height) {
+  private void setEdgeTransform(int index) {
     scratch[0] = cornerPaths[index].endX;
     scratch[1] = cornerPaths[index].endY;
     cornerTransforms[index].mapPoints(scratch);
-    float edgeAngle = angleOfEdge(index, width, height);
+    float edgeAngle = angleOfEdge(index);
     edgeTransforms[index].reset();
     edgeTransforms[index].setTranslate(scratch[0], scratch[1]);
     edgeTransforms[index].preRotate((float) Math.toDegrees(edgeAngle));
@@ -513,49 +515,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
   }
 
-  private float angleOfCorner(int index, int width, int height) {
-    getCoordinatesOfCorner((index - 1 + 4) % 4, width, height, pointF);
-    float prevCornerCoordX = pointF.x;
-    float prevCornerCoordY = pointF.y;
-
-    getCoordinatesOfCorner((index + 1) % 4, width, height, pointF);
-    float nextCornerCoordX = pointF.x;
-    float nextCornerCoordY = pointF.y;
-
-    getCoordinatesOfCorner(index, width, height, pointF);
-    float cornerCoordX = pointF.x;
-    float cornerCoordY = pointF.y;
-
-    float prevVectorX = prevCornerCoordX - cornerCoordX;
-    float prevVectorY = prevCornerCoordY - cornerCoordY;
-
-    float nextVectorX = nextCornerCoordX - cornerCoordX;
-    float nextVectorY = nextCornerCoordY - cornerCoordY;
-
-    float prevAngle = (float) Math.atan2(prevVectorY, prevVectorX);
-    float nextAngle = (float) Math.atan2(nextVectorY, nextVectorX);
-    float angle = prevAngle - nextAngle;
-    if (angle < 0) {
-      angle = (float) (angle + 2 * Math.PI);
-    }
-    return angle;
-  }
-
-  private float angleOfEdge(int index, int width, int height) {
-    int startCornerPosition = index;
-    int endCornerPoisition = (index + 1) % 4;
-
-    getCoordinatesOfCorner(startCornerPosition, width, height, pointF);
-    float startCornerCoordX = pointF.x;
-    float startCornerCoordY = pointF.y;
-
-    getCoordinatesOfCorner(endCornerPoisition, width, height, pointF);
-    float endCornerCoordX = pointF.x;
-    float endCornerCoordY = pointF.y;
-
-    float edgeVectorX = endCornerCoordX - startCornerCoordX;
-    float edgeVectorY = endCornerCoordY - startCornerCoordY;
-    return (float) Math.atan2(edgeVectorY, edgeVectorX);
+  private float angleOfEdge(int index) {
+    return HALF_PI * ((index + 4) % 4);
   }
 
   private void getPath(int width, int height, Path path) {
