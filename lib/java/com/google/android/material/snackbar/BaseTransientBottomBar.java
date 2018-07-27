@@ -25,6 +25,7 @@ import android.accessibilityservice.AccessibilityServiceInfo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -37,6 +38,7 @@ import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import com.google.android.material.behavior.SwipeDismissBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -44,8 +46,6 @@ import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.AccessibilityDelegateCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
-import android.support.v4.view.accessibility.AccessibilityManagerCompat;
-import android.support.v4.view.accessibility.AccessibilityManagerCompat.TouchExplorationStateChangeListener;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -706,8 +706,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   @RestrictTo(LIBRARY_GROUP)
   protected static class SnackbarBaseLayout extends FrameLayout {
 
-    private final AccessibilityManager accessibilityManager;
-    private final TouchExplorationStateChangeListener touchExplorationStateChangeListener;
+    private static final OnTouchListener consumeAllTouchListener =
+        new OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+            // Prevent touches from passing through this view.
+            return true;
+          }
+        };
 
     private BaseTransientBottomBar.OnLayoutChangeListener onLayoutChangeListener;
     private BaseTransientBottomBar.OnAttachStateChangeListener onAttachStateChangeListener;
@@ -725,24 +732,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       }
       a.recycle();
 
-      accessibilityManager =
-          (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
-      touchExplorationStateChangeListener =
-          new TouchExplorationStateChangeListener() {
-            @Override
-            public void onTouchExplorationStateChanged(boolean enabled) {
-              setClickableOrFocusableBasedOnAccessibility(enabled);
-            }
-          };
-
-      AccessibilityManagerCompat.addTouchExplorationStateChangeListener(
-          accessibilityManager, touchExplorationStateChangeListener);
-      setClickableOrFocusableBasedOnAccessibility(accessibilityManager.isTouchExplorationEnabled());
+      setOnTouchListener(consumeAllTouchListener);
+      setFocusable(true);
     }
 
-    private void setClickableOrFocusableBasedOnAccessibility(boolean touchExplorationEnabled) {
-      setClickable(!touchExplorationEnabled);
-      setFocusable(touchExplorationEnabled);
+    @Override
+    public void setOnClickListener(@Nullable OnClickListener onClickListener) {
+      // Clear touch listener that consumes all touches if there is a custom click listener.
+      setOnTouchListener(onClickListener != null ? null : consumeAllTouchListener);
+      super.setOnClickListener(onClickListener);
     }
 
     @Override
@@ -769,9 +767,6 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       if (onAttachStateChangeListener != null) {
         onAttachStateChangeListener.onViewDetachedFromWindow(this);
       }
-
-      AccessibilityManagerCompat.removeTouchExplorationStateChangeListener(
-          accessibilityManager, touchExplorationStateChangeListener);
     }
 
     void setOnLayoutChangeListener(
