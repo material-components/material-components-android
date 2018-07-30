@@ -34,4 +34,9 @@
     <item>Quantity 3</item>
     <item>Quantity 4</item>
   </string-array>
+
+  <!-- The class name for the ScrollingChildBehavior required for AppBarLayout. The string is
+       redefined here to work around an issue where the class name was not being transformed. -->
+  <!-- TODO: Remove once the widget migration is completed. -->
+  <string name="appbar_scrolling_view_behavior" translatable="false">com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior</string>
 </resources>
