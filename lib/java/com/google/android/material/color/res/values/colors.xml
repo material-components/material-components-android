@@ -16,8 +16,15 @@
 -->
 <resources>
 
-  <color name="design_default_color_primary">#3F51B5</color>
+  <color name="design_default_color_primary">#6200EE</color>
   <color name="design_default_color_primary_dark">#303F9F</color>
+  <color name="design_default_color_primary_variant">#3700B3</color>
+  <color name="design_default_color_secondary">#03DAC6</color>
+  <color name="design_default_color_secondary_variant">#018786</color>
+  <color name="design_default_color_background">#FFFFFF</color>
+  <color name="design_default_color_error">#B00020</color>
+  <color name="design_default_color_on_primary">#FFFFFF</color>
+  <color name="design_default_color_on_secondary">#000000</color>
 
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>

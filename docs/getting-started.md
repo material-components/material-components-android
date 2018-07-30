@@ -144,11 +144,19 @@ theme, or you will encounter `ThemeEnforcement` errors:
 
   <!-- Original AppCompat attributes. -->
   <item name="colorPrimary">@color/my_app_primary_color</item>
-  <item name="colorPrimaryDark">@color/my_app_primary_dark_color</item>
-  <item name="colorAccent">@color/my_app_accent_color</item>
+  <item name="colorSecondary">@color/my_app_secondary_color</item>
+  <item name="android:colorBackground">@color/my_app_background_color</item>
+  <item name="colorError">@color/my_app_error_color</item>
 
   <!-- New MaterialComponents attributes. -->
-  <item name="colorSecondary">?attr/colorPrimary</item>
+  <item name="colorPrimaryVariant">@color/my_app_primary_variant_color</item>
+  <item name="colorSecondaryVariant">@color/my_app_secondary_variant_color</item>
+  <item name="colorSurface">@color/my_app_surface_color</item>
+  <item name="colorOnPrimary">@color/my_app_color_on_primary</item>
+  <item name="colorOnSecondary">@color/my_app_color_on_secondary</item>
+  <item name="colorOnBackground">@color/my_app_color_on_background</item>
+  <item name="colorOnError">@color/my_app_color_on_error</item>
+  <item name="colorOnSurface">@color/my_app_color_on_surface</item>
   <item name="scrimBackground">@color/mtrl_scrim_color</item>
   <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
   <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>

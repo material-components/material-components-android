@@ -15,8 +15,24 @@
   ~ limitations under the License.
 -->
 <resources>
+  <public name="colorPrimaryVariant" type="attr"/>
   <public name="colorSecondary" type="attr"/>
+  <public name="colorSecondaryVariant" type="attr"/>
+  <public name="colorSurface" type="attr"/>
+  <public name="colorOnPrimary" type="attr"/>
+  <public name="colorOnSecondary" type="attr"/>
+  <public name="colorOnBackground" type="attr"/>
+  <public name="colorOnError" type="attr"/>
+  <public name="colorOnSurface" type="attr"/>
   <public name="scrimBackground" type="attr"/>
+
   <public name="design_default_color_primary" type="color"/>
   <public name="design_default_color_primary_dark" type="color"/>
+  <public name="design_default_color_primary_variant" type="color"/>
+  <public name="design_default_color_secondary" type="color"/>
+  <public name="design_default_color_secondary_variant" type="color"/>
+  <public name="design_default_color_background" type="color"/>
+  <public name="design_default_color_error" type="color"/>
+  <public name="design_default_color_on_primary" type="color"/>
+  <public name="design_default_color_on_secondary" type="color"/>
 </resources>

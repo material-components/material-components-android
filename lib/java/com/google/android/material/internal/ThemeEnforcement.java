@@ -29,6 +29,7 @@ import android.support.annotation.StyleableRes;
 import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.TintTypedArray;
 import android.util.AttributeSet;
+import android.util.TypedValue;
 
 /**
  * Utility methods to check Theme compatibility with components.
@@ -41,7 +42,7 @@ public final class ThemeEnforcement {
   private static final int[] APPCOMPAT_CHECK_ATTRS = {R.attr.colorPrimary};
   private static final String APPCOMPAT_THEME_NAME = "Theme.AppCompat";
 
-  private static final int[] MATERIAL_CHECK_ATTRS = {R.attr.colorSecondary};
+  private static final int[] MATERIAL_CHECK_ATTRS = {R.attr.colorPrimaryVariant};
   private static final String MATERIAL_THEME_NAME = "Theme.MaterialComponents";
 
   private ThemeEnforcement() {}
@@ -127,7 +128,16 @@ public final class ThemeEnforcement {
     a.recycle();
 
     if (enforceMaterialTheme) {
-      checkMaterialTheme(context);
+      TypedValue isMaterialTheme = new TypedValue();
+      boolean resolvedValue =
+          context.getTheme().resolveAttribute(R.attr.isMaterialTheme, isMaterialTheme, true);
+
+      if (!resolvedValue
+          || (isMaterialTheme.type == TypedValue.TYPE_INT_BOOLEAN && isMaterialTheme.data == 0)) {
+        // If we were unable to resolve isMaterialTheme boolean attribute, or isMaterialTheme is
+        // false, check for Material Theme color attributes
+        checkMaterialTheme(context);
+      }
     }
     checkAppCompatTheme(context);
   }
@@ -211,10 +221,14 @@ public final class ThemeEnforcement {
 
   private static boolean isTheme(Context context, int[] themeAttributes) {
     TypedArray a = context.obtainStyledAttributes(themeAttributes);
-    final boolean success = a.hasValue(0);
+    for (int i = 0; i < themeAttributes.length; i++) {
+      if (!a.hasValue(i)) {
+        a.recycle();
+        return false;
+      }
+    }
     a.recycle();
-
-    return success;
+    return true;
   }
 
   private static void checkTheme(Context context, int[] themeAttributes, String themeName) {

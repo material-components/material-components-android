@@ -31,7 +31,16 @@
   <eat-comment/>
 
   <style name="Base.V14.Theme.MaterialComponents.Bridge" parent="Platform.MaterialComponents">
-    <item name="colorSecondary">?attr/colorPrimary</item>
+    <item name="isMaterialTheme">true</item>
+
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+    <item name="colorSurface">@color/design_default_color_background</item>
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">?attr/colorOnSecondary</item>
+    <item name="colorOnError">?attr/colorOnPrimary</item>
+    <item name="colorOnSurface">?attr/colorOnSecondary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
@@ -57,7 +66,11 @@
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
+    <item name="colorSecondary">@color/design_default_color_secondary</item>
     <item name="colorAccent">?attr/colorSecondary</item>
+
+    <item name="android:colorBackground">@color/design_default_color_background</item>
+    <item name="colorError">@color/design_default_color_error</item>
 
     <!-- Widget styles -->
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
@@ -83,7 +96,16 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Bridge" parent="Platform.MaterialComponents.Light">
-    <item name="colorSecondary">?attr/colorPrimary</item>
+    <item name="isMaterialTheme">true</item>
+
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+    <item name="colorSurface">@color/design_default_color_background</item>
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">?attr/colorOnSecondary</item>
+    <item name="colorOnError">?attr/colorOnPrimary</item>
+    <item name="colorOnSurface">?attr/colorOnSecondary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
@@ -109,7 +131,11 @@
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
+    <item name="colorSecondary">@color/design_default_color_secondary</item>
     <item name="colorAccent">?attr/colorSecondary</item>
+
+    <item name="android:colorBackground">@color/design_default_color_background</item>
+    <item name="colorError">@color/design_default_color_error</item>
 
     <!-- Widget styles -->
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
@@ -135,6 +161,17 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="isMaterialTheme">true</item>
+
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+    <item name="colorSurface">@color/design_default_color_background</item>
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">?attr/colorOnSecondary</item>
+    <item name="colorOnError">?attr/colorOnPrimary</item>
+    <item name="colorOnSurface">?attr/colorOnSecondary</item>
+
     <item name="colorSecondary">?attr/colorPrimary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>

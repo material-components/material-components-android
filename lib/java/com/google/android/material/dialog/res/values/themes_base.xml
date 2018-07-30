@@ -31,13 +31,27 @@
   <eat-comment/>
 
   <style name="Base.V14.Theme.MaterialComponents.Dialog" parent="Platform.MaterialComponents.Dialog">
+    <item name="isMaterialTheme">true</item>
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
-    <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
 
-    <item name="colorSecondary">?attr/colorPrimary</item>
+    <item name="colorSecondary">@color/design_default_color_secondary</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+
+    <item name="android:colorBackground">@color/design_default_color_background</item>
+    <item name="colorError">@color/design_default_color_error</item>
+    <item name="colorSurface">@color/design_default_color_background</item>
+
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">?attr/colorOnSecondary</item>
+    <item name="colorOnError">?attr/colorOnPrimary</item>
+    <item name="colorOnSurface">?attr/colorOnSecondary</item>
+
+    <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
 
     <item name="colorAccent">?attr/colorSecondary</item>
 
@@ -78,13 +92,27 @@
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Dialog" parent="Platform.MaterialComponents.Light.Dialog">
+    <item name="isMaterialTheme">true</item>
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 
     <!-- Colors -->
     <item name="colorPrimary">@color/design_default_color_primary</item>
-    <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
 
-    <item name="colorSecondary">?attr/colorPrimary</item>
+    <item name="colorSecondary">@color/design_default_color_secondary</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+
+    <item name="android:colorBackground">@color/design_default_color_background</item>
+    <item name="colorError">@color/design_default_color_error</item>
+    <item name="colorSurface">@color/design_default_color_background</item>
+
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">?attr/colorOnSecondary</item>
+    <item name="colorOnError">?attr/colorOnPrimary</item>
+    <item name="colorOnSurface">?attr/colorOnSecondary</item>
+
+    <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
 
     <item name="colorAccent">?attr/colorSecondary</item>
 
