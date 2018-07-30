@@ -49,7 +49,7 @@ public class MaterialCardView extends CardView {
   }
 
   public MaterialCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(ThemeEnforcement.createThemedContext(context, defStyleAttr), attrs, defStyleAttr);
+    super(ThemeEnforcement.createThemedContext(context, attrs, defStyleAttr), attrs, defStyleAttr);
 
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(

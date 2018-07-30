@@ -244,12 +244,18 @@ public final class ThemeEnforcement {
    * Ensures the context has theme information. This can be used in a constructor to allow the
    * defStyleAttr to use a theme overlay if one has been defined.
    */
-  public static Context createThemedContext(Context context, int defStyleAttr) {
-    if (context instanceof ContextThemeWrapper) {
+  public static Context createThemedContext(Context context, AttributeSet attrs, int defStyleAttr) {
+    TypedArray a = context.obtainStyledAttributes(attrs, new int[] {android.R.attr.theme});
+    int themeId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
+    a.recycle();
+
+    if (themeId != 0) {
+      // If the theme is set in the style of the view, just use that directly
       return context;
     }
 
-    TypedArray a = context.getTheme().obtainStyledAttributes(new int[] {defStyleAttr});
+    // Read the default style from the theme
+    a = context.getTheme().obtainStyledAttributes(new int[] {defStyleAttr});
     int style = a.getResourceId(0 /* index */, 0 /* defaultVal */);
     a.recycle();
 
@@ -258,6 +264,17 @@ public final class ThemeEnforcement {
       return context;
     }
 
-    return new ContextThemeWrapper(context, style);
+    // Read the android:theme attribute from the default style
+    a = context.obtainStyledAttributes(style, new int[] {android.R.attr.theme});
+    themeId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
+    a.recycle();
+
+    if (themeId != 0 && (!(context instanceof ContextThemeWrapper)
+        || ((ContextThemeWrapper) context).getThemeResId() != themeId)) {
+      // If the context isn't a ContextThemeWrapper, or it is but does not have
+      // the same theme as we need, wrap it in a new wrapper
+      context = new ContextThemeWrapper(context, themeId);
+    }
+    return context;
   }
 }
