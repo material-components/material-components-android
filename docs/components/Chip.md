@@ -134,7 +134,6 @@ Developers can override chip's minimum touch target size using
 
 Feature      | Relevant attributes
 :----------- | :----------------------------
-Checkable    | `android:checkable`
 Label        | `android:text`
              | `android:textAppearance`
 Shape        | `app:chipCornerRadius`
@@ -151,6 +150,7 @@ Close Icon   | `app:closeIconVisible`
              | `app:closeIcon`
              | `app:closeIconSize`
              | `app:closeIconTint`
+Checkable    | `android:checkable`
 Checked Icon | `app:checkedIconVisible`
              | `app:checkedIcon`
 Motion       | `app:showMotionSpec`
