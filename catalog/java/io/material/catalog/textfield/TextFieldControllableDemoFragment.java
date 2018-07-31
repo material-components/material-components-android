@@ -73,6 +73,17 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
           }
         });
 
+    // Initialize button for updating the helper text.
+    TextInputLayout helperTextTextField = view.findViewById(R.id.text_input_helper_text);
+    view.findViewById(R.id.button_update_helper_text)
+        .setOnClickListener(
+            v -> {
+              if (!checkTextInputIsNull(helperTextTextField)) {
+                setAllTextFieldsHelperText(
+                    String.valueOf(helperTextTextField.getEditText().getText()));
+              }
+            });
+
     // Initialize button for updating the counter max.
     TextInputLayout counterMaxTextField = view.findViewById(R.id.text_input_counter_max);
     view.findViewById(R.id.button_counter_max)
@@ -103,6 +114,12 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
   private void setAllTextFieldsError(String error) {
     for (TextInputLayout textfield : textfields) {
       textfield.setError(error);
+    }
+  }
+
+  private void setAllTextFieldsHelperText(String helperText) {
+    for (TextInputLayout textfield : textfields) {
+      textfield.setHelperText(helperText);
     }
   }
 

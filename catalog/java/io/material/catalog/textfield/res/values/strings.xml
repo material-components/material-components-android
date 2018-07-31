@@ -42,10 +42,12 @@
   <string name="cat_textfield_error">Error</string>
   <string name="cat_textfield_customize_label_text">Label text</string>
   <string name="cat_textfield_customize_error_text">Error text</string>
+  <string name="cat_textfield_customize_helper_text">Helper text</string>
   <string name="cat_textfield_customize_color">Change color</string>
   <string name="cat_textfield_customize_counter_text">Character counter max</string>
   <string name="cat_textfield_update_label_text">Update label</string>
   <string name="cat_textfield_update_error_text">Update error</string>
+  <string name="cat_textfield_update_helper_text">Update helper</string>
   <string name="cat_textfield_update_counter_text">Update character counter</string>
   <string name="cat_textfield_null_input_error_text">Enter a value</string>
   <string name="cat_textfield_show_error_text">Show error</string>
