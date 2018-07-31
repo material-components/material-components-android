@@ -313,8 +313,13 @@ public class TextInputLayout extends LinearLayout {
       defaultHintTextColor =
           focusedTextColor = a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
     }
-    defaultStrokeColor =
-        ContextCompat.getColor(context, R.color.mtrl_textinput_default_box_stroke_color);
+    if (a.hasValue(R.styleable.TextInputLayout_defaultBoxStrokeColor)) {
+      defaultStrokeColor =
+          a.getColor(R.styleable.TextInputLayout_defaultBoxStrokeColor, Color.TRANSPARENT);
+    } else {
+      defaultStrokeColor =
+          ContextCompat.getColor(context, R.color.mtrl_textinput_default_box_stroke_color);
+    }
     disabledColor = ContextCompat.getColor(context, R.color.mtrl_textinput_disabled_color);
     hoveredStrokeColor =
         ContextCompat.getColor(context, R.color.mtrl_textinput_hovered_box_stroke_color);

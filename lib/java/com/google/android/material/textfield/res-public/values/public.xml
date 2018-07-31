@@ -35,6 +35,7 @@
   <public name="boxPaddingBottom" type="attr"/>
   <public name="boxStrokeColor" type="attr"/>
   <public name="boxStrokeWidth" type="attr"/>
+  <public name="defaultBoxStrokeColor" type="attr"/>
 
   <public name="counterEnabled" type="attr"/>
   <public name="counterMaxLength" type="attr"/>
