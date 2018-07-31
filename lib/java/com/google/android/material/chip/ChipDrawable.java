@@ -1222,6 +1222,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         if (drawable.isStateful()) {
           drawable.setState(getState());
         }
+        if (drawable == chipIcon) {
+          DrawableCompat.setTintList(chipIcon, chipIconTint);
+        }
       }
     }
   }
