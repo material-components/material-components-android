@@ -28,6 +28,7 @@ import android.graphics.drawable.GradientDrawable;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -62,7 +63,10 @@ class MaterialCardViewHelper {
 
 
   @TargetApi(VERSION_CODES.LOLLIPOP)
-  void createOutlineProvider(View contentView) {
+  void createOutlineProvider(@Nullable View contentView) {
+    if (contentView == null) {
+      return;
+    }
     // To draw the stroke outside the outline, call {@link View#setClipToOutline} on the child
     // rather than on the card view.
     materialCardView.setClipToOutline(false);

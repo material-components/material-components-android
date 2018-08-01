@@ -82,14 +82,26 @@ public class MaterialCardView extends CardView {
     cardViewHelper.loadFromAttributes(attributes);
     // Add a content view to allow the border to be drawn outside the outline.
     contentLayout = new FrameLayout(context);
-    contentLayout.setMinimumHeight(ViewCompat.getMinimumHeight(this));
-    contentLayout.setMinimumWidth(ViewCompat.getMinimumWidth(this));
+    contentLayout.setMinimumHeight(getContentMinimumHeight());
+    contentLayout.setMinimumWidth(getContentMinimumWidth());
     super.addView(contentLayout, -1, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    updateContentLayout();
+
+    attributes.recycle();
+  }
+
+  private void updateContentLayout() {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       cardViewHelper.createOutlineProvider(contentLayout);
     }
+  }
 
-    attributes.recycle();
+  private int getContentMinimumWidth() {
+    return ViewCompat.getMinimumWidth(this) - getContentPaddingLeft() - getContentPaddingRight();
+  }
+
+  private int getContentMinimumHeight() {
+    return ViewCompat.getMinimumHeight(this) - getContentPaddingBottom() - getContentPaddingTop();
   }
 
   /**
@@ -114,6 +126,7 @@ public class MaterialCardView extends CardView {
    */
   public void setStrokeWidth(@Dimension int strokeWidth) {
     cardViewHelper.setStrokeWidth(strokeWidth);
+    updateContentLayout();
   }
 
   /** Returns the stroke width of this card view. */
@@ -126,6 +139,7 @@ public class MaterialCardView extends CardView {
   public void setRadius(float radius) {
     super.setRadius(radius);
     cardViewHelper.updateForeground();
+    updateContentLayout();
   }
 
   @Override
