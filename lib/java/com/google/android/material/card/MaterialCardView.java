@@ -18,27 +18,45 @@ package com.google.android.material.card;
 
 import com.google.android.material.R;
 
+import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
 import com.google.android.material.internal.ThemeEnforcement;
+import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 /**
  * Provides a Material card.
  *
- * <p>This class supplies Material styles for the card in the constructor. The widget will
- * display the correct default Material styles without the use of a style flag.
+ * <p>This class supplies Material styles for the card in the constructor. The widget will display
+ * the correct default Material styles without the use of a style flag.
  *
  * <p>Stroke width can be set using the {@code strokeWidth} attribute. Set the stroke color using
  * the {@code strokeColor} attribute. Without a {@code strokeColor}, the card will not render a
  * stroked border, regardless of the {@code strokeWidth} value.
+ *
+ * * <p><strong>Note:</strong> Avoid setting {@link View#setClipToOutline} to true. There is an
+ * intermediate view to clip the content, setting this will have negative performance consequences.
+ *
+ * <p><strong>Note:</strong> The actual view hierarchy present under MaterialCardView is
+ * <strong>NOT</strong> guaranteed to match the view hierarchy as written in XML. As a result, calls
+ * to getParent() on children of the MaterialCardView, will not return the MaterialCardView itself,
+ * but rather an intermediate View. If you need to access a MaterialCardView directly,
+ * set an {@code android:id} and use {@link View#findViewById(int)}.
  */
 public class MaterialCardView extends CardView {
 
   private final MaterialCardViewHelper cardViewHelper;
+  private final FrameLayout contentLayout;
 
   public MaterialCardView(Context context) {
     this(context, null /* attrs */);
@@ -62,6 +80,14 @@ public class MaterialCardView extends CardView {
     // Loads and sets background drawable attributes
     cardViewHelper = new MaterialCardViewHelper(this);
     cardViewHelper.loadFromAttributes(attributes);
+    // Add a content view to allow the border to be drawn outside the outline.
+    contentLayout = new FrameLayout(context);
+    contentLayout.setMinimumHeight(ViewCompat.getMinimumHeight(this));
+    contentLayout.setMinimumWidth(ViewCompat.getMinimumWidth(this));
+    super.addView(contentLayout, -1, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      cardViewHelper.createOutlineProvider(contentLayout);
+    }
 
     attributes.recycle();
   }
@@ -100,5 +126,20 @@ public class MaterialCardView extends CardView {
   public void setRadius(float radius) {
     super.setRadius(radius);
     cardViewHelper.updateForeground();
+  }
+
+  @Override
+  public void setLayoutParams(ViewGroup.LayoutParams params) {
+    super.setLayoutParams(params);
+    LayoutParams layoutParams = (LayoutParams) contentLayout.getLayoutParams();
+    if (params instanceof LayoutParams) {
+      layoutParams.gravity = ((LayoutParams) params).gravity;
+      contentLayout.requestLayout();
+    }
+  }
+
+  @Override
+  public void addView(View child, int index, ViewGroup.LayoutParams params) {
+    contentLayout.addView(child, index, params);
   }
 }

@@ -20,12 +20,17 @@ import com.google.android.material.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.annotation.TargetApi;
 import android.content.res.TypedArray;
+import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
 import android.support.annotation.RestrictTo;
+import android.view.View;
+import android.view.ViewOutlineProvider;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -45,6 +50,7 @@ class MaterialCardViewHelper {
     strokeColor =
         attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
+
     updateForeground();
     adjustContentPadding();
   }
@@ -52,6 +58,27 @@ class MaterialCardViewHelper {
   void setStrokeColor(@ColorInt int strokeColor) {
     this.strokeColor = strokeColor;
     updateForeground();
+  }
+
+
+  @TargetApi(VERSION_CODES.LOLLIPOP)
+  void createOutlineProvider(View contentView) {
+    // To draw the stroke outside the outline, call {@link View#setClipToOutline} on the child
+    // rather than on the card view.
+    materialCardView.setClipToOutline(false);
+    contentView.setClipToOutline(true);
+    contentView.setOutlineProvider(
+        new ViewOutlineProvider() {
+          @Override
+          public void getOutline(View view, Outline outline) {
+            outline.setRoundRect(
+                0,
+                0,
+                view.getWidth(),
+                view.getHeight(),
+                materialCardView.getRadius() - strokeWidth);
+          }
+        });
   }
 
   @ColorInt
