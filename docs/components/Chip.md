@@ -124,10 +124,11 @@ This style usually contains an optional chip icon and is never checkable.
 
 ### Chip Touch Target
 
-To ensure that a `Chip` is accessible, specify the `app:chipTouchTargetDelegate`
+To ensure that a `Chip` is accessible, specify a `app:chipTouchTargetDelegate`
 to extend chip's touch target (when necessary) to meet Android's recommended
 [accessibility touch target size](https://support.google.com/accessibility/android/answer/7101858).
-Developers can override chip's minimum touch target size using
+Make sure that the touch delegate's boundaries encompasses the expanded touch
+target region. Developers can override chip's minimum touch target size using
 `app:chipMinTouchTargetSize`.
 
 ### Chip Attributes
