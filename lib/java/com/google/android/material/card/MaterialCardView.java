@@ -156,4 +156,34 @@ public class MaterialCardView extends CardView {
   public void addView(View child, int index, ViewGroup.LayoutParams params) {
     contentLayout.addView(child, index, params);
   }
+
+  @Override
+  public void removeAllViews() {
+    contentLayout.removeAllViews();
+  }
+
+  @Override
+  public void removeView(View view) {
+    contentLayout.removeView(view);
+  }
+
+  @Override
+  public void removeViewInLayout(View view) {
+    contentLayout.removeViewInLayout(view);
+  }
+
+  @Override
+  public void removeViewsInLayout(int start, int count) {
+    contentLayout.removeViewsInLayout(start, count);
+  }
+
+  @Override
+  public void removeViewAt(int index) {
+    contentLayout.removeViewAt(index);
+  }
+
+  @Override
+  public void removeViews(int start, int count) {
+    contentLayout.removeViews(start, count);
+  }
 }
