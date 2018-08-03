@@ -104,6 +104,9 @@
     <attr name="boxBackgroundColor" format="color"/>
     <!-- The value to use for the box's stroke when in outline box mode. -->
     <attr name="boxStrokeWidth" format="dimension"/>
+    <!-- The default color to use for the box's stroke color. -->
+    <attr name="defaultBoxStrokeColor" format="color"/>
+
   </declare-styleable>
 
 </resources>
