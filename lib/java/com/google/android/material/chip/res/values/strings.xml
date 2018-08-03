@@ -16,5 +16,5 @@
   -->
 
 <resources>
-  <string name="mtrl_chip_close_icon_content_description">Remove %1$s</string>
+  <string name="mtrl_chip_close_icon_content_description" description="Content description for a close icon that lets the user remove content from the screen">Remove %1$s</string>
 </resources>
