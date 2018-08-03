@@ -170,8 +170,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   @Nullable private ColorStateList rippleColor;
 
   // Text
-  @Nullable private CharSequence rawText;
-  @Nullable private CharSequence unicodeWrappedText;
+  @Nullable private CharSequence text;
 
   @Nullable private TextAppearance textAppearance;
   private final FontCallback fontCallback =
@@ -324,7 +323,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   private ChipDrawable(Context context) {
     this.context = context;
-    rawText = "";
+    text = "";
 
     textPaint.density = context.getResources().getDisplayMetrics().density;
     debugPaint = DEBUG ? new Paint(Paint.ANTI_ALIAS_FLAG) : null;
@@ -523,7 +522,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       return textWidth;
     }
 
-    textWidth = calculateTextWidth(unicodeWrappedText);
+    textWidth = calculateTextWidth(text);
 
     textWidthDirty = false;
     return textWidth;
@@ -661,7 +660,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   /** Draws the chip text, which should appear centered vertically in the chip. */
   private void drawText(@NonNull Canvas canvas, Rect bounds) {
-    if (unicodeWrappedText != null) {
+    if (text != null) {
       Align align = calculateTextOriginAndAlignment(bounds, pointF);
       // If bounds are smaller than intrinsic size. Ellipsize or clip the text depending on
       // ellipsize attribute.
@@ -680,9 +679,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         canvas.clipRect(rectF);
       }
 
-      CharSequence finalText = unicodeWrappedText;
+      CharSequence finalText = text;
       if (clip && truncateAt != null) {
-        finalText = TextUtils.ellipsize(unicodeWrappedText, textPaint, rectF.width(), truncateAt);
+        finalText = TextUtils.ellipsize(text, textPaint, rectF.width(), truncateAt);
       }
       canvas.drawText(finalText, 0, finalText.length(), pointF.x, pointF.y, textPaint);
       if (clip) {
@@ -720,7 +719,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       }
 
       // Chip text.
-      if (unicodeWrappedText != null) {
+      if (text != null) {
         canvas.drawLine(
             bounds.left, bounds.exactCenterY(), bounds.right, bounds.exactCenterY(), debugPaint);
       }
@@ -771,7 +770,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     pointF.set(0, 0);
     Align align = Align.LEFT;
 
-    if (unicodeWrappedText != null) {
+    if (text != null) {
       float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
 
       if (DrawableCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
@@ -812,7 +811,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private void calculateTextBounds(Rect bounds, RectF outBounds) {
     outBounds.setEmpty();
 
-    if (unicodeWrappedText != null) {
+    if (text != null) {
       float offsetFromStart = chipStartPadding + calculateChipIconWidth() + textStartPadding;
       float offsetFromEnd = chipEndPadding + calculateCloseIconWidth() + textEndPadding;
 
@@ -1366,7 +1365,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
 
   @NonNull
   public CharSequence getText() {
-    return rawText;
+    return text;
   }
 
   public void setTextResource(@StringRes int id) {
@@ -1377,9 +1376,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (text == null) {
       text = "";
     }
-    if (this.rawText != text) {
-      this.rawText = text;
-      this.unicodeWrappedText = BidiFormatter.getInstance().unicodeWrap(text);
+    if (this.text != text) {
+      this.text = text;
       textWidthDirty = true;
 
       invalidateSelf();

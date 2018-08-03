@@ -57,7 +57,6 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
 import android.support.v4.content.res.ResourcesCompat.FontCallback;
-import android.support.v4.text.BidiFormatter;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -1187,11 +1186,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  @Override
-  public CharSequence getText() {
-    return chipDrawable != null ? chipDrawable.getText() : "";
-  }
-
   /** @deprecated Use {@link Chip#getText()} instead. */
   @Deprecated
   public CharSequence getChipText() {
@@ -1206,8 +1200,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (text == null) {
       text = "";
     }
-    CharSequence unicodeWrappedText = BidiFormatter.getInstance().unicodeWrap(text);
-    super.setText(chipDrawable.shouldDrawText() ? null : unicodeWrappedText, type);
+    super.setText(chipDrawable.shouldDrawText() ? null : text, type);
     if (chipDrawable != null) {
       chipDrawable.setText(text);
     }
