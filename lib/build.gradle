@@ -95,11 +95,12 @@ task generateJavadocs(type: Javadoc) {
 
   if (project.hasProperty("docletPathRoot")) {
     def docletPathRoot = project.property("docletPathRoot")
+    def outputPath = project.hasProperty("outputPath") ? project.property("outputPath") : "doclava-out"
 
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
     title = null
-    destinationDir = new File("doclava-out")
+    destinationDir = new File(outputPath)
     classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
     options.addStringOption("federate Android", "https://developer.android.com")
     options.encoding = "UTF-8"
