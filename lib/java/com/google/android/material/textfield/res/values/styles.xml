@@ -17,6 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Design.TextInputLayout" parent="android:Widget">
+    <item name="android:theme">@style/ThemeOverlay.Design.TextInputEditText</item>
     <item name="boxBackgroundMode">none</item>
     <item name="hintTextAppearance">@style/TextAppearance.Design.Hint</item>
     <item name="helperTextTextAppearance">@style/TextAppearance.Design.HelperText</item>
@@ -93,8 +94,10 @@
     <item name="android:paddingBottom">12dp</item>
   </style>
 
-  <!-- Set of ThemeOverlays to be used internally in the TextInputLayout box styles to automatically apply the correct TextInputEditText box style to the TextInputEditText. -->
-  <style name="ThemeOverlay.MaterialComponents.TextInputEditText" parent=""/>
+  <!-- Set of ThemeOverlays to be used internally in the TextInputLayout styles to automatically apply the correct TextInputEditText style to the TextInputEditText. -->
+  <style name="ThemeOverlay.Design.TextInputEditText" parent=""/>
+
+  <style name="ThemeOverlay.MaterialComponents.TextInputEditText" parent="ThemeOverlay.Design.TextInputEditText"/>
 
   <style name="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox">
     <item name="editTextStyle">@style/Widget.MaterialComponents.TextInputEditText.FilledBox</item>
