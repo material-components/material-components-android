@@ -255,6 +255,11 @@ public class Chip extends AppCompatCheckBox implements Delegate {
                   minTouchTargetSize);
               touchTargetDelegateResId = -1;
             }
+            if (Build.VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN) {
+              getViewTreeObserver().removeGlobalOnLayoutListener(this);
+            } else {
+              getViewTreeObserver().removeOnGlobalLayoutListener(this);
+            }
           }
         });
     a.recycle();
