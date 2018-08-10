@@ -26,6 +26,7 @@ import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.Dimension;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -73,6 +74,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
   Drawable itemBackground;
   int itemHorizontalPadding;
   int itemIconPadding;
+  int itemIconSize;
+  boolean hasCustomItemIconSize;
 
   /**
    * Padding to be inserted at the top of the list to avoid the first menu item from being placed
@@ -284,6 +287,14 @@ public class NavigationMenuPresenter implements MenuPresenter {
     updateMenuView(false);
   }
 
+  public void setItemIconSize(@Dimension int itemIconSize) {
+    if (this.itemIconSize != itemIconSize) {
+      this.itemIconSize = itemIconSize;
+      hasCustomItemIconSize = true;
+      updateMenuView(false);
+    }
+  }
+
   public void setUpdateSuspended(boolean updateSuspended) {
     if (adapter != null) {
       adapter.setUpdateSuspended(updateSuspended);
@@ -439,6 +450,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
             itemView.setNeedsEmptyIcon(item.needsEmptyIcon);
             itemView.setHorizontalPadding(itemHorizontalPadding);
             itemView.setIconPadding(itemIconPadding);
+            if (hasCustomItemIconSize) {
+              itemView.setIconSize(itemIconSize);
+            }
             itemView.initialize(item.getMenuItem(), 0);
             break;
           }

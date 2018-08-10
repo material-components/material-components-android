@@ -143,6 +143,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       textAppearanceSet = true;
     }
 
+    if (a.hasValue(R.styleable.NavigationView_itemIconSize)) {
+      setItemIconSize(a.getDimensionPixelSize(R.styleable.NavigationView_itemIconSize, 0));
+    }
+
     ColorStateList itemTextColor = null;
     if (a.hasValue(R.styleable.NavigationView_itemTextColor)) {
       itemTextColor = a.getColorStateList(R.styleable.NavigationView_itemTextColor);
@@ -496,6 +500,16 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    */
   public void setItemTextAppearance(@StyleRes int resId) {
     presenter.setItemTextAppearance(resId);
+  }
+
+  /**
+   * Sets the size to be used for the menu item icons in pixels.
+   * If no icons are set, calling this method will do nothing.
+   *
+   * @attr ref R.styleable#NavigationView_itemIconSize
+   */
+  public void setItemIconSize(@Dimension int iconSize) {
+    presenter.setItemIconSize(iconSize);
   }
 
   private MenuInflater getMenuInflater() {

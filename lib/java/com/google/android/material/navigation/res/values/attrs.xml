@@ -34,5 +34,7 @@
     <attr name="itemHorizontalPadding" format="dimension"/>
     <!-- Padding between the icon and the text for navigation items that display an icon  -->
     <attr name="itemIconPadding" format="dimension"/>
+    <!-- The size of the icon navigation items that display an icon  -->
+    <attr name="itemIconSize" format="dimension"/>
   </declare-styleable>
 </resources>

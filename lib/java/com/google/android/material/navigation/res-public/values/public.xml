@@ -20,6 +20,7 @@
   <public name="navigationViewStyle" type="attr"/>
   <public name="itemBackground" type="attr"/>
   <public name="itemIconTint" type="attr"/>
+  <public name="itemIconSize" type="attr"/>
   <public name="itemTextColor" type="attr"/>
   <public name="menu" type="attr"/>
   <public name="itemTextAppearance" type="attr"/>

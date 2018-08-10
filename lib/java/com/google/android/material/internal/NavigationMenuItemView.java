@@ -26,6 +26,7 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
+import android.support.annotation.Dimension;
 import android.support.annotation.RestrictTo;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -51,7 +52,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
-  private final int iconSize;
+  private int iconSize;
 
   private boolean needsEmptyIcon;
 
@@ -91,7 +92,7 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
     super(context, attrs, defStyleAttr);
     setOrientation(HORIZONTAL);
     LayoutInflater.from(context).inflate(R.layout.design_navigation_menu_item, this, true);
-    iconSize = context.getResources().getDimensionPixelSize(R.dimen.design_navigation_icon_size);
+    setIconSize(context.getResources().getDimensionPixelSize(R.dimen.design_navigation_icon_size));
     textView = findViewById(R.id.design_menu_item_text);
     textView.setDuplicateParentStateEnabled(true);
     ViewCompat.setAccessibilityDelegate(textView, accessibilityDelegate);
@@ -225,6 +226,10 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
       icon = emptyDrawable;
     }
     TextViewCompat.setCompoundDrawablesRelative(textView, icon, null, null, null);
+  }
+
+  public void setIconSize(@Dimension int iconSize) {
+    this.iconSize = iconSize;
   }
 
   @Override
