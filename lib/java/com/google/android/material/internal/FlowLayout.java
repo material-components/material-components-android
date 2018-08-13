@@ -135,6 +135,9 @@ public class FlowLayout extends ViewGroup {
 
       childRight = childLeft + leftMargin + child.getMeasuredWidth();
 
+      // If the current child's right bound exceeds Flowlayout's max right bound and flowlayout is
+      // not confined to a single line, move this child to the next line and reset its left bound to
+      // flowlayout's left bound.
       if (childRight > maxRight && !isSingleLine()) {
         childLeft = getPaddingLeft();
         childTop = childBottom + lineSpacing;
@@ -143,11 +146,19 @@ public class FlowLayout extends ViewGroup {
       childRight = childLeft + leftMargin + child.getMeasuredWidth();
       childBottom = childTop + child.getMeasuredHeight();
 
+      // Updates Flowlayout's max right bound if current child's right bound exceeds it.
       if (childRight > maxChildRight) {
         maxChildRight = childRight;
       }
 
       childLeft += (leftMargin + rightMargin + child.getMeasuredWidth()) + itemSpacing;
+
+      // For all preceding children, the child's right margin is taken into account in the next
+      // child's left bound (childLeft). However, childLeft is ignored after the last child so the
+      // last child's right margin needs to be explicitly added to Flowlayout's max right bound.
+      if (i == (getChildCount() - 1)) {
+        maxChildRight += rightMargin;
+      }
     }
 
     int finalWidth = getMeasuredDimension(width, widthMode, maxChildRight);
