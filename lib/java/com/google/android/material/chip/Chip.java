@@ -233,6 +233,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             ? touchTargetDelegateResId
             : a.getResourceId(R.styleable.Chip_chipTouchTargetDelegate, -1);
 
+    if (touchTargetDelegateResId <= 0) {
+      return;
+    }
+
     if (attrs.getAttributeValue(NAMESPACE_APP, "chipMinTouchTargetSize") != null) {
       minTouchTargetSize =
           attrs.getAttributeIntValue(NAMESPACE_APP, "chipMinTouchTargetSize", MIN_TOUCH_TARGET_DP);
@@ -249,12 +253,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         new OnGlobalLayoutListener() {
           @Override
           public void onGlobalLayout() {
-            if (touchTargetDelegateResId > 0) {
-              ensureAccessibleTouchTarget(
-                  TouchTargetUtils.findViewAncestor(Chip.this, touchTargetDelegateResId),
-                  minTouchTargetSize);
-              touchTargetDelegateResId = -1;
-            }
+            ensureAccessibleTouchTarget(
+                TouchTargetUtils.findViewAncestor(Chip.this, touchTargetDelegateResId),
+                minTouchTargetSize);
+            touchTargetDelegateResId = -1;
             if (Build.VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN) {
               getViewTreeObserver().removeGlobalOnLayoutListener(this);
             } else {
