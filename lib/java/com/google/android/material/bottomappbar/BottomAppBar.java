@@ -116,6 +116,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   private boolean fabAttached = true;
 
+  private Behavior behavior;
+
   public BottomAppBar(Context context) {
     this(context, null, 0);
   }
@@ -679,7 +681,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @NonNull
   @Override
   public CoordinatorLayout.Behavior<BottomAppBar> getBehavior() {
-    return new Behavior();
+    if (behavior == null) {
+      behavior = new Behavior();
+    }
+    return behavior;
   }
 
   /**
@@ -754,7 +759,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     }
 
     @Override
-    protected void slideUp(BottomAppBar child) {
+    public void slideUp(BottomAppBar child) {
       super.slideUp(child);
       FloatingActionButton fab = child.findDependentFab();
       if (fab != null) {
@@ -767,7 +772,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     }
 
     @Override
-    protected void slideDown(BottomAppBar child) {
+    public void slideDown(BottomAppBar child) {
       super.slideDown(child);
       FloatingActionButton fab = child.findDependentFab();
       if (fab != null) {
