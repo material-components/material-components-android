@@ -153,6 +153,12 @@ public class MaterialCardView extends CardView {
   }
 
   @Override
+  public void setClickable(boolean clickable) {
+    super.setClickable(clickable);
+    cardViewHelper.updateForeground();
+  }
+
+  @Override
   public void addView(View child, int index, ViewGroup.LayoutParams params) {
     contentLayout.addView(child, index, params);
   }
