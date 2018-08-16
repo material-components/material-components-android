@@ -66,7 +66,7 @@ class MaterialCardViewHelper {
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
     rippleColor = getRippleColor();
     updateForeground();
-    adjustContentPadding();
+    adjustContentPadding(strokeWidth);
   }
 
   void setStrokeColor(@ColorInt int strokeColor) {
@@ -103,9 +103,14 @@ class MaterialCardViewHelper {
   }
 
   void setStrokeWidth(@Dimension int strokeWidth) {
+    if (strokeWidth == this.strokeWidth) {
+      return;
+    }
+
+    int strokeWidthDelta = strokeWidth - this.strokeWidth;
     this.strokeWidth = strokeWidth;
     updateForeground();
-    adjustContentPadding();
+    adjustContentPadding(strokeWidthDelta);
   }
 
   @Dimension
@@ -163,11 +168,11 @@ class MaterialCardViewHelper {
   }
 
   /** Guarantee at least enough content padding to account for the stroke width. */
-  private void adjustContentPadding() {
-    int contentPaddingLeft = materialCardView.getContentPaddingLeft() + strokeWidth;
-    int contentPaddingTop = materialCardView.getContentPaddingTop() + strokeWidth;
-    int contentPaddingRight = materialCardView.getContentPaddingRight() + strokeWidth;
-    int contentPaddingBottom = materialCardView.getContentPaddingBottom() + strokeWidth;
+  private void adjustContentPadding(int strokeWidthDelta) {
+    int contentPaddingLeft = materialCardView.getContentPaddingLeft() + strokeWidthDelta;
+    int contentPaddingTop = materialCardView.getContentPaddingTop() + strokeWidthDelta;
+    int contentPaddingRight = materialCardView.getContentPaddingRight() + strokeWidthDelta;
+    int contentPaddingBottom = materialCardView.getContentPaddingBottom() + strokeWidthDelta;
     materialCardView.setContentPadding(
         contentPaddingLeft, contentPaddingTop, contentPaddingRight, contentPaddingBottom);
   }
