@@ -537,7 +537,7 @@ public class MaterialButton extends AppCompatButton {
   /** Updates the icon, icon tint, and icon tint mode for this button. */
   private void updateIcon() {
     if (icon != null) {
-      icon = icon.mutate();
+      icon = DrawableCompat.wrap(icon).mutate();
       DrawableCompat.setTintList(icon, iconTint);
       if (iconTintMode != null) {
         DrawableCompat.setTintMode(icon, iconTintMode);
