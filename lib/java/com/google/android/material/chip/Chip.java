@@ -201,9 +201,8 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setEllipsize(drawable.getEllipsize());
 
     setIncludeFontPadding(false);
-    if (getTextAppearance() != null) {
-      updateTextPaintDrawState(getTextAppearance());
-    }
+    updateTextPaintDrawState();
+
     // Chip text should not extend to more than 1 line.
     setSingleLine();
     // Chip text should be vertically center aligned and start aligned.
@@ -1225,17 +1224,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setText(chipText);
   }
 
-  @Nullable
-  private TextAppearance getTextAppearance() {
-    return chipDrawable != null ? chipDrawable.getTextAppearance() : null;
-  }
-
-  private void updateTextPaintDrawState(TextAppearance textAppearance) {
-    TextPaint textPaint = getPaint();
-    textPaint.drawableState = chipDrawable.getState();
-    textAppearance.updateDrawState(getContext(), textPaint, fontCallback);
-  }
-
   public void setTextAppearanceResource(@StyleRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearanceResource(id);
@@ -1247,10 +1235,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearance(textAppearance);
     }
-    if (getTextAppearance() != null) {
-      getTextAppearance().updateMeasureState(getContext(), getPaint(), fontCallback);
-      updateTextPaintDrawState(textAppearance);
-    }
+    updateTextPaintDrawState();
   }
 
   @Override
@@ -1259,10 +1244,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearanceResource(resId);
     }
-    if (getTextAppearance() != null) {
-      getTextAppearance().updateMeasureState(context, getPaint(), fontCallback);
-      updateTextPaintDrawState(getTextAppearance());
-    }
+    updateTextPaintDrawState();
   }
 
   @Override
@@ -1271,10 +1253,23 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setTextAppearanceResource(resId);
     }
-    if (getTextAppearance() != null) {
-      getTextAppearance().updateMeasureState(getContext(), getPaint(), fontCallback);
-      updateTextPaintDrawState(getTextAppearance());
+    updateTextPaintDrawState();
+  }
+
+  private void updateTextPaintDrawState() {
+    TextPaint textPaint = getPaint();
+    if (chipDrawable != null) {
+      textPaint.drawableState = chipDrawable.getState();
     }
+    TextAppearance textAppearance = getTextAppearance();
+    if (textAppearance != null) {
+      textAppearance.updateDrawState(getContext(), textPaint, fontCallback);
+    }
+  }
+
+  @Nullable
+  private TextAppearance getTextAppearance() {
+    return chipDrawable != null ? chipDrawable.getTextAppearance() : null;
   }
 
   public boolean isChipIconVisible() {

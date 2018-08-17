@@ -67,7 +67,7 @@ public class TextAppearance {
   @FontRes private final int fontFamilyResourceId;
 
   private boolean fontResolved = false;
-  @Nullable private Typeface font;
+  private Typeface font;
 
   /** Parses the given TextAppearance style resource. */
   public TextAppearance(Context context, @StyleRes int id) {
@@ -104,7 +104,7 @@ public class TextAppearance {
   }
 
   /**
-   * Returns the font Typeface resolved from the fontFamily, style, and typeface.
+   * Synchronously resolves the font Typeface using the fontFamily, style, and typeface.
    *
    * @see android.support.v7.widget.AppCompatTextHelper
    */
@@ -115,7 +115,7 @@ public class TextAppearance {
       return font;
     }
 
-    // 1. Try resolving fontFamily as a font resource.
+    // Try resolving fontFamily as a font resource.
     if (!context.isRestricted()) {
       try {
         font = ResourcesCompat.getFont(context, fontFamilyResourceId);
@@ -129,37 +129,47 @@ public class TextAppearance {
       }
     }
 
+    // If not resolved create fallback and resolve.
     createFallbackTypeface();
     fontResolved = true;
+
     return font;
   }
 
   /**
    * Asynchronously resolves the requested font Typeface using the fontFamily, style, and typeface.
+   * Immediately returns the requested font if it has been loaded already or a fallback font to be
+   * used until async load completes. {@link #isFontResolved()} can be used to decide whether the
+   * returned font is already resolved or it's a fallback and the client code should wait for the
+   * async callback.
    *
-   * @param context The {@link Context}.
-   * @param textPaint {@link TextPaint} to be updated.
-   * @param callback Callback to notify when font is available.
+   * @param context the {@link Context}.
+   * @param callback callback to notify when font is loaded asynchronously; the callback
+   *     is only guaranteed to be called when this method results in async fetch, if the font is
+   *     already loaded or otherwise cannot be loaded asynchronously, the return value of this
+   *     method should be used.
+   * @return fallback font if {@link #isFontResolved()} is false; otherwise already resolved font.
+   *
    * @see android.support.v7.widget.AppCompatTextHelper
    */
-  public void getFontAsync(
-      Context context, final TextPaint textPaint, @NonNull final FontCallback callback) {
-    if (fontResolved) {
-      updateTextPaintMeasureState(textPaint, font);
-      return;
+  public Typeface getFontAsync(Context context, @NonNull final FontCallback callback) {
+    if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
+      return getFont(context);
     }
 
-    // 0. Create fallback typeface when the font is not immediately available but still trigger
-    // download in the background, if step 1 is applicable.
+    if (fontResolved) {
+      return font;
+    }
+
+    // First create fallback font in case font cannot be resolved asynchronously.
     createFallbackTypeface();
 
-    if (context.isRestricted()) {
+    if (context.isRestricted() || fontFamilyResourceId == 0) {
       fontResolved = true;
-      updateTextPaintMeasureState(textPaint, font);
-      return;
+      return font;
     }
 
-    // 1. Try resolving fontFamily as a font resource.
+    // Try to resolve fontFamily asynchronously. If failed fallback font is used instead.
     try {
       ResourcesCompat.getFont(
           context,
@@ -168,9 +178,8 @@ public class TextAppearance {
             @Override
             public void onFontRetrieved(@NonNull Typeface typeface) {
               font = Typeface.create(typeface, textStyle);
-              updateTextPaintMeasureState(textPaint, typeface);
               fontResolved = true;
-              callback.onFontRetrieved(typeface);
+              callback.onFontRetrieved(font);
             }
 
             @Override
@@ -183,18 +192,63 @@ public class TextAppearance {
           null);
     } catch (UnsupportedOperationException | Resources.NotFoundException e) {
       // Expected if it is not a font resource.
+      fontResolved = true;
     } catch (Exception e) {
       Log.d(TAG, "Error loading font " + fontFamily, e);
+      fontResolved = true;
     }
+    return font;
+  }
+
+  /**
+   * Asynchronously resolves the requested font Typeface using the fontFamily, style, and typeface,
+   * and automatically updates given {@code textPaint} using {@link #updateTextPaintMeasureState} on
+   * successful load.
+   *
+   * @param context The {@link Context}.
+   * @param textPaint {@link TextPaint} to be updated.
+   * @param callback Callback to notify when font is available.
+   * @see #getFontAsync(Context, FontCallback)
+   */
+  public void getFontAsync(
+      Context context, final TextPaint textPaint, @NonNull final FontCallback callback) {
+    Typeface font =
+        getFontAsync(
+            context,
+            new FontCallback() {
+              @Override
+              public void onFontRetrieved(@NonNull Typeface typeface) {
+                updateTextPaintMeasureState(textPaint, typeface);
+                callback.onFontRetrieved(typeface);
+              }
+
+              @Override
+              public void onFontRetrievalFailed(int i) {
+                callback.onFontRetrievalFailed(i);
+              }
+            });
+    // Updates text paint using fallback font while waiting for font to be requested.
+    updateTextPaintMeasureState(textPaint, font);
+  }
+
+  /**
+   * Returns {@code true} if {@link Typeface} or this TextAppearance has been resolved already,
+   * {@code false} otherwise. Should be used specifically after requesting the font asynchronously
+   * with {@link #getFontAsync(Context, FontCallback)} to decide whether returned fallback font is
+   * the final one or if it's still being resolved asynchronously and the client should wait for
+   * async callback.
+   */
+  public boolean isFontResolved() {
+    return fontResolved;
   }
 
   private void createFallbackTypeface() {
-    // 2. Try resolving fontFamily as a string name.
-    if (font == null) {
+    // Try resolving fontFamily as a string name if specified.
+    if (font == null && fontFamily != null) {
       font = Typeface.create(fontFamily, textStyle);
     }
 
-    // 3. Try resolving typeface.
+    // Try resolving typeface if specified otherwise fallback to Typeface.DEFAULT.
     if (font == null) {
       switch (typeface) {
         case TYPEFACE_SANS:
@@ -210,11 +264,11 @@ public class TextAppearance {
           font = Typeface.DEFAULT;
           break;
       }
-      if (font != null) {
-        font = Typeface.create(font, textStyle);
-      }
+      font = Typeface.create(font, textStyle);
     }
   }
+
+  // TODO: Move the TextPaint utilities below to a separate class.
 
   /**
    * Applies the attributes that affect drawing from TextAppearance to the given TextPaint. Note
@@ -222,7 +276,8 @@ public class TextAppearance {
    *
    * @see android.text.style.TextAppearanceSpan#updateDrawState(TextPaint)
    */
-  public void updateDrawState(Context context, TextPaint textPaint, FontCallback callback) {
+  public void updateDrawState(
+      Context context, TextPaint textPaint, @NonNull FontCallback callback) {
     updateMeasureState(context, textPaint, callback);
 
     textPaint.setColor(
@@ -245,15 +300,11 @@ public class TextAppearance {
    * @see android.text.style.TextAppearanceSpan#updateMeasureState(TextPaint)
    */
   public void updateMeasureState(
-      Context context, TextPaint textPaint, @Nullable FontCallback callback) {
+      Context context, TextPaint textPaint, @NonNull FontCallback callback) {
     if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
       updateTextPaintMeasureState(textPaint, getFont(context));
     } else {
       getFontAsync(context, textPaint, callback);
-      if (!fontResolved) {
-        // Updates text paint using fallback font while waiting for font to be requested.
-        updateTextPaintMeasureState(textPaint, font);
-      }
     }
   }
 
