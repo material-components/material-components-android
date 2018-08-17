@@ -39,7 +39,6 @@ import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import com.google.android.material.ripple.RippleUtils;
-import android.support.v4.graphics.drawable.DrawableCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -75,29 +74,6 @@ class MaterialCardViewHelper {
     updateForeground();
   }
 
-  @TargetApi(VERSION_CODES.LOLLIPOP)
-  void createOutlineProvider(@Nullable View contentView) {
-    if (contentView == null) {
-      return;
-    }
-    // To draw the stroke outside the outline, call {@link View#setClipToOutline} on the child
-    // rather than on the card view.
-    materialCardView.setClipToOutline(false);
-    contentView.setClipToOutline(true);
-    contentView.setOutlineProvider(
-        new ViewOutlineProvider() {
-          @Override
-          public void getOutline(View view, Outline outline) {
-            outline.setRoundRect(
-                0,
-                0,
-                view.getWidth(),
-                view.getHeight(),
-                materialCardView.getRadius() - strokeWidth);
-          }
-        });
-  }
-
   @ColorInt
   int getStrokeColor() {
     return strokeColor;
@@ -127,6 +103,29 @@ class MaterialCardViewHelper {
     materialCardView.setForeground(createForegroundDrawable());
   }
 
+  @TargetApi(VERSION_CODES.LOLLIPOP)
+  void createOutlineProvider(@Nullable View contentView) {
+    if (contentView == null) {
+      return;
+    }
+    // To draw the stroke outside the outline, call {@link View#setClipToOutline} on the child
+    // rather than on the card view.
+    materialCardView.setClipToOutline(false);
+    contentView.setClipToOutline(true);
+    contentView.setOutlineProvider(
+        new ViewOutlineProvider() {
+          @Override
+          public void getOutline(View view, Outline outline) {
+            outline.setRoundRect(
+                0,
+                0,
+                view.getWidth(),
+                view.getHeight(),
+                materialCardView.getRadius() - strokeWidth);
+          }
+        });
+  }
+
   /**
    * Creates a drawable foreground for the card in order to handle a stroke outline.
    *
@@ -149,19 +148,7 @@ class MaterialCardViewHelper {
       return fgDrawable;
     }
 
-    Drawable rippleDrawable;
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-      //noinspection NewApi
-      rippleDrawable =
-          new RippleDrawable(
-              ColorStateList.valueOf(rippleColor), null, createForegroundShape(radius));
-    } else {
-      rippleDrawable = new StateListDrawable();
-      Drawable foregroundShape = createForegroundShape(radius);
-      DrawableCompat.setTint(foregroundShape, rippleColor);
-      ((StateListDrawable) rippleDrawable)
-          .addState(new int[] {android.R.attr.state_pressed}, foregroundShape);
-    }
+    Drawable rippleDrawable = createForegroundRippleDrawable(radius);
 
     return new LayerDrawable(
         new Drawable[] {
@@ -186,11 +173,26 @@ class MaterialCardViewHelper {
     return value.data;
   }
 
-  private Drawable createForegroundShape(float radius) {
+  private Drawable createForegroundRippleDrawable(float radius) {
+    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
+      //noinspection NewApi
+      return new RippleDrawable(
+          ColorStateList.valueOf(rippleColor), null, createForegroundShape(radius));
+    }
+
+    Drawable rippleDrawable = new StateListDrawable();
+    ShapeDrawable foregroundShape = createForegroundShape(radius);
+    foregroundShape.getPaint().setColor(rippleColor);
+    ((StateListDrawable) rippleDrawable)
+        .addState(new int[] {android.R.attr.state_pressed}, foregroundShape);
+
+    return rippleDrawable;
+  }
+
+  private ShapeDrawable createForegroundShape(float radius) {
     float[] radii = new float[8];
     Arrays.fill(radii, radius);
     RoundRectShape shape = new RoundRectShape(radii, null, null);
-    ShapeDrawable shapeDrawable = new ShapeDrawable(shape);
-    return shapeDrawable;
+    return new ShapeDrawable(shape);
   }
 }
