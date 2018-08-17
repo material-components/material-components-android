@@ -30,6 +30,7 @@ def srcDirs = [
   'feature',
   'font',
   'main',
+  'switchmaterial',
   'tableofcontents',
   'tabs',
   'textfield',

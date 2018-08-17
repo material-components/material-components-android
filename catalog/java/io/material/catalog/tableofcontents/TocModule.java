@@ -26,6 +26,7 @@ import io.material.catalog.card.CardFragment;
 import io.material.catalog.chip.ChipFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
+import io.material.catalog.switchmaterial.SwitchFragment;
 import io.material.catalog.tabs.TabsFragment;
 import io.material.catalog.textfield.TextFieldFragment;
 import io.material.catalog.themeswitcher.ThemeSwitcherDialogFragment;
@@ -38,20 +39,20 @@ import io.material.catalog.transformation.TransformationFragment;
  *
  */
 @dagger.Module(
-  includes = {
-    BottomAppBarFragment.Module.class,
-    ButtonsFragment.Module.class,
-    BottomNavigationFragment.Module.class,
-    CardFragment.Module.class,
-    ChipFragment.Module.class,
-    FabFragment.Module.class,
-    FontFragment.Module.class,
-    TabsFragment.Module.class,
-    TextFieldFragment.Module.class,
-    TopAppBarFragment.Module.class,
-    TransformationFragment.Module.class,
-  }
-)
+    includes = {
+      BottomAppBarFragment.Module.class,
+      ButtonsFragment.Module.class,
+      BottomNavigationFragment.Module.class,
+      CardFragment.Module.class,
+      ChipFragment.Module.class,
+      FabFragment.Module.class,
+      FontFragment.Module.class,
+      SwitchFragment.Module.class,
+      TabsFragment.Module.class,
+      TextFieldFragment.Module.class,
+      TopAppBarFragment.Module.class,
+      TransformationFragment.Module.class,
+    })
 public abstract class TocModule {
   @FragmentScope
   @ContributesAndroidInjector
