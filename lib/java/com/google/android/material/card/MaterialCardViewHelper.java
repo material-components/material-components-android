@@ -24,6 +24,7 @@ import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.Color;
 import android.graphics.Outline;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
@@ -133,6 +134,7 @@ class MaterialCardViewHelper {
    */
   private Drawable createForegroundDrawable() {
     GradientDrawable fgDrawable = new GradientDrawable();
+    fgDrawable.setColor(Color.TRANSPARENT);
     float radius = materialCardView.getRadius();
     fgDrawable.setCornerRadius(radius);
 
