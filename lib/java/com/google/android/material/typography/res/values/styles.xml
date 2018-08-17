@@ -61,7 +61,7 @@
     <item name="android:letterSpacing">0</item>
   </style>
 
-  <style name="TextAppearance.MaterialComponents.Headline6" parent="TextAppearance.AppCompat.Title">
+  <style name="Base.TextAppearance.MaterialComponents.Headline6" parent="TextAppearance.AppCompat.Title">
     <!-- Fake Roboto Medium. -->
     <item name="fontFamily">sans-serif-medium</item>
     <item name="android:fontFamily">sans-serif-medium</item>
@@ -70,6 +70,8 @@
     <item name="android:textSize">20sp</item>
     <item name="android:letterSpacing">0.0125</item>
   </style>
+
+  <style name="TextAppearance.MaterialComponents.Headline6" parent="Base.TextAppearance.MaterialComponents.Headline6"/>
 
   <style name="TextAppearance.MaterialComponents.Subtitle1" parent="TextAppearance.AppCompat.Subhead">
     <item name="fontFamily">sans-serif</item>
@@ -80,7 +82,7 @@
     <item name="android:letterSpacing">0.009375</item>
   </style>
 
-  <style name="TextAppearance.MaterialComponents.Subtitle2" parent="TextAppearance.AppCompat.Subhead">
+  <style name="Base.TextAppearance.MaterialComponents.Subtitle2" parent="TextAppearance.AppCompat.Subhead">
     <!-- Fake Roboto Medium. -->
     <item name="fontFamily">sans-serif-medium</item>
     <item name="android:fontFamily">sans-serif-medium</item>
@@ -89,6 +91,8 @@
     <item name="android:textSize">14sp</item>
     <item name="android:letterSpacing">0.00714285714</item>
   </style>
+
+  <style name="TextAppearance.MaterialComponents.Subtitle2" parent="Base.TextAppearance.MaterialComponents.Subtitle2"/>
 
   <style name="TextAppearance.MaterialComponents.Body1" parent="TextAppearance.AppCompat.Body2">
     <item name="fontFamily">sans-serif</item>
@@ -117,7 +121,7 @@
     <item name="android:letterSpacing">0.0333333333</item>
   </style>
 
-  <style name="TextAppearance.MaterialComponents.Button" parent="TextAppearance.AppCompat.Button">
+  <style name="Base.TextAppearance.MaterialComponents.Button" parent="TextAppearance.AppCompat.Button">
     <!-- Fake Roboto Medium. -->
     <item name="fontFamily">sans-serif-medium</item>
     <item name="android:fontFamily">sans-serif-medium</item>
@@ -127,13 +131,14 @@
     <item name="android:letterSpacing">0.0892857143</item>
   </style>
 
+  <style name="TextAppearance.MaterialComponents.Button" parent="Base.TextAppearance.MaterialComponents.Button"/>
+
   <style name="TextAppearance.MaterialComponents.Overline" parent="TextAppearance.AppCompat">
-    <!-- Fake Roboto Medium. -->
-    <item name="fontFamily">sans-serif-medium</item>
-    <item name="android:fontFamily">sans-serif-medium</item>
-    <item name="android:textStyle">bold</item>
+    <item name="fontFamily">sans-serif</item>
+    <item name="android:fontFamily">sans-serif</item>
+    <item name="android:textStyle">normal</item>
     <item name="android:textAllCaps">true</item>
-    <item name="android:textSize">12sp</item>
+    <item name="android:textSize">10sp</item>
     <item name="android:letterSpacing">0.166666667</item>
   </style>
 
