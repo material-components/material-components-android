@@ -89,3 +89,7 @@ Fonts](https://developer.android.com/guide/topics/ui/look-and-feel/downloadable-
 This allows you to easily use the entire Google Fonts Open Source collection
 without bundling a font with your apk. Find more information at
 https://developers.google.com/fonts/docs/android.
+
+Note: If you want to use a Downloadable Font before Android O, make sure you are
+using `AppCompatTextView` or that you are loading the font yourself with
+`ResourcesCompat.getFont()`.
