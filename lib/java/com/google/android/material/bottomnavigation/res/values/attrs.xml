@@ -41,7 +41,7 @@
          package. -->
     <attr name="itemBackground"/>
     <!-- The size to provide for the navigation item icons. -->
-    <attr name="itemIconSize" format="dimension"/>
+    <attr name="itemIconSize"/>
     <!-- The tint to apply to the navigation item icons. Attribute type definition is in navigation
          package. -->
     <attr name="itemIconTint"/>
