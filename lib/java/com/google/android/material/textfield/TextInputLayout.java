@@ -430,8 +430,8 @@ public class TextInputLayout extends LinearLayout {
       // Make boxBackground a CutoutDrawable if in outline mode, there is a hint, and
       // boxBackground isn't already a CutoutDrawable.
       boxBackground = new CutoutDrawable();
-    } else if (!(boxBackground instanceof GradientDrawable)) {
-      // Otherwise, make boxBackground a GradientDrawable if it isn't already.
+    } else if (boxBackground == null) {
+      // Otherwise, make boxBackground a GradientDrawable if it hasn't yet been initialized.
       boxBackground = new GradientDrawable();
     }
   }
