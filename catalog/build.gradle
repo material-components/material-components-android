@@ -24,6 +24,7 @@ def srcDirs = [
   'bottomnav',
   'button',
   'card',
+  'checkbox',
   'chip',
   'draggable',
   'fab',

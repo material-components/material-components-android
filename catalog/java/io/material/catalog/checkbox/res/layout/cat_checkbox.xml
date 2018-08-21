@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_viewGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/cat_checkbox_padding"
+    android:orientation="vertical">
+  <GridLayout
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:columnCount="2"
+      android:useDefaultMargins="true">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_columnSpan="2"
+        android:text="@string/cat_checkbox_color_guide"
+        android:textSize="@dimen/cat_checkbox_header_size"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="true"
+        android:enabled="true"
+        android:text="@string/cat_checkbox_enabled"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:enabled="true"
+        android:text="@string/cat_checkbox_enabled"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_columnSpan="2"
+        android:text="@string/cat_checkbox_disabled_guide"
+        android:textSize="@dimen/cat_checkbox_header_size"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="true"
+        android:enabled="false"
+        android:text="@string/cat_checkbox_disabled"/>
+    <CheckBox
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:checked="false"
+        android:enabled="false"
+        android:text="@string/cat_checkbox_disabled"/>
+  </GridLayout>
+  <ImageView
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/cat_checkbox_line_separator_thickness"
+      android:layout_marginTop="@dimen/cat_checkbox_line_separator_margin"
+      android:layout_marginBottom="@dimen/cat_checkbox_line_separator_margin"
+      android:background="?attr/colorSecondary"/>
+  <CheckBox
+      android:id="@+id/checkbox_toggle"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:checked="false"
+      android:enabled="true"
+      android:text="@string/cat_checkbox_enablable_description"
+      android:textSize="@dimen/cat_checkbox_header_size"/>
+</LinearLayout>

@@ -34,6 +34,7 @@ def srcDirs = [
   'com/google/android/material/button',
   'com/google/android/material/canvas',
   'com/google/android/material/card',
+  'com/google/android/material/checkbox',
   'com/google/android/material/chip',
   'com/google/android/material/circularreveal',
   'com/google/android/material/circularreveal/cardview',

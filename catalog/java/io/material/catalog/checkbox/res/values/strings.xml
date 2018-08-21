@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+  <string name="cat_checkbox_title">Checkbox</string>
+  <string name="cat_checkbox_description">
+    The CheckBox provides a selectable element, usually part of a list,
+    that toggles between two states.</string>
+  <string name="cat_checkbox_color_guide">CheckBox elements respond to changes in colorSecondary</string>
+  <string name="cat_checkbox_disabled_guide">CheckBox elements that are disabled cannot be interacted with and will appear faded</string>
+  <string name="cat_checkbox_enabled">Enabled</string>
+  <string name="cat_checkbox_disabled">Disabled</string>
+  <string name="cat_checkbox_enablable_description">Check this checkbox to control the enabled state of the boxes below.</string>
+  <string name="cat_checkbox_toggle">Controlled by a checkbox</string>
+</resources>

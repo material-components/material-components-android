@@ -23,6 +23,7 @@ import io.material.catalog.bottomappbar.BottomAppBarFragment;
 import io.material.catalog.bottomnav.BottomNavigationFragment;
 import io.material.catalog.button.ButtonsFragment;
 import io.material.catalog.card.CardFragment;
+import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
@@ -44,6 +45,7 @@ import io.material.catalog.transformation.TransformationFragment;
       ButtonsFragment.Module.class,
       BottomNavigationFragment.Module.class,
       CardFragment.Module.class,
+      CheckBoxFragment.Module.class,
       ChipFragment.Module.class,
       FabFragment.Module.class,
       FontFragment.Module.class,
