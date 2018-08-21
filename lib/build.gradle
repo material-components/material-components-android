@@ -114,6 +114,26 @@ task generateJavadocs(type: Javadoc) {
   }
 }
 
+task getVersion << {
+    println version
+}
+
+task generateApiXml(type: Javadoc) {
+  if (project.hasProperty("apiName")) {
+    def jdiff = project.property("jdiffJar")
+    def apiName = project.property("apiName")
+    source = android.sourceSets.main.java.source
+    source = source.findAll { it.name.endsWith(".java") }
+    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+    options.doclet = "jdiff.JDiff"
+    options.addStringOption("subpackages", ".")
+    options.addStringOption("apiname", apiName)
+    options.docletpath = [
+      file(jdiff),
+    ]
+  }
+}
+
 afterEvaluate {
   generateJavadocs.classpath += files(android.libraryVariants.collect { variant ->
     variant.javaCompile.classpath.files
