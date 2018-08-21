@@ -514,18 +514,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     Rect fabContentRect = new Rect();
     fab.getContentRect(fabContentRect);
 
-    float fabHeight = fabContentRect.height();
-    if (fabHeight == 0) {
-      // If the fab hasn't been laid out yet, lets look at the measured height.
-      fabHeight = fab.getMeasuredHeight();
-    }
     float fabBottomShadow = fab.getHeight() - fabContentRect.bottom;
     float fabVerticalShadowPadding = fab.getHeight() - fabContentRect.height();
 
-    float attached = -getCradleVerticalOffset() + fabHeight / 2 + fabBottomShadow;
-    float detached = fabVerticalShadowPadding - fab.getPaddingBottom();
+    float attached = -getCradleVerticalOffset() + fabBottomShadow;
+    float detached = fabVerticalShadowPadding - fab.getPaddingBottom() - getMeasuredHeight();
 
-    return -getMeasuredHeight() + (targetAttached ? attached : detached);
+    return targetAttached ? attached : detached;
   }
 
   private float getFabTranslationY() {
@@ -715,7 +710,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       // Set the initial position of the FloatingActionButton with the BottomAppBar vertical offset.
       CoordinatorLayout.LayoutParams fabLayoutParams =
           (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
-      fabLayoutParams.anchorGravity = Gravity.CENTER;
+      fabLayoutParams.anchorGravity = Gravity.CENTER_HORIZONTAL | Gravity.TOP;
 
       // Ensure the FAB is correctly linked to this BAB so the animations can run correctly
       child.addFabAnimationListeners(fab);
