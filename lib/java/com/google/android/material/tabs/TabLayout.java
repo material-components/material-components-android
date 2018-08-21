@@ -218,7 +218,7 @@ public class TabLayout extends HorizontalScrollView {
 
   /**
    * Gravity used to fill the {@link TabLayout} as much as possible. This option only takes effect
-   * when used with {@link #MODE_FIXED}.
+   * when used with {@link #MODE_FIXED} on non-landscape screens less than 600dp wide.
    *
    * @see #setTabGravity(int)
    * @see #getTabGravity()
