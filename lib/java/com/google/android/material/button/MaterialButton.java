@@ -63,9 +63,9 @@ import java.lang.annotation.RetentionPolicy;
  * guarantee that the new attributes it introduces will function properly. If the default background
  * is changed, {@link MaterialButton} cannot guarantee well-defined behavior.
  *
- * <p>For filled buttons, this class uses your theme's {@code ?attr/colorAccent} for the background
- * tint color and white for the text color. For unfilled buttons, this class uses {@code
- * ?attr/colorAccent} for the text color and transparent for the background tint.
+ * <p>For filled buttons, this class uses your theme's {@code ?attr/colorPrimary} for the background
+ * tint color and {@code ?attr/colorOnPrimary} for the text color. For unfilled buttons, this class
+ * uses {@code ?attr/colorPrimary} for the text color and transparent for the background tint.
  *
  * <p>Add icons to the start or center of this button of this button using the {@link R.attr#icon
  * app:icon}, {@link R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint},

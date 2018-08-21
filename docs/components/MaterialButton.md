@@ -68,9 +68,9 @@ layout:
     android:text="@string/unelevated_button_label_enabled"/>
 ```
 
-For raised buttons, your theme's `colorAccent` provides the default background
-color of the component, and the text color is white by default. For unelevated
-buttons, your theme's `colorAccent` provides the default text color of the
+For filled buttons, your theme's `colorPrimary` provides the default background
+color of the component, and the text color is `colorOnPrimary`. For unfilled
+buttons, your theme's `colorPrimary` provides the default text color of the
 component, and the background color is transparent by default.
 
 ## Styles

@@ -19,6 +19,7 @@
 
   <!-- Defines the base Material button style. -->
   <style name="Widget.MaterialComponents.Button" parent="Widget.AppCompat.Button">
+    <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:textAppearance">?attr/textAppearanceButton</item>
     <item name="android:textColor">@color/mtrl_btn_text_color_selector</item>
@@ -56,12 +57,17 @@
     <item name="android:paddingRight">@dimen/mtrl_btn_text_btn_padding_right</item>
     <item name="iconTint">@color/mtrl_text_btn_text_color_selector</item>
     <item name="iconPadding">@dimen/mtrl_btn_text_btn_icon_padding</item>
-    <item name="backgroundTint">@color/mtrl_btn_transparent_bg_color</item>
+    <item name="backgroundTint">@android:color/transparent</item>
     <item name="rippleColor">@color/mtrl_btn_text_btn_ripple_color</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.TextButton.Icon">
     <!-- Icon text button has the same padding as a regular text button -->
+  </style>
+
+  <!-- Button style to show in the Snackbar component. -->
+  <style name="Widget.MaterialComponents.Button.TextButton.Snackbar">
+    <item name="android:textColor">?attr/colorSecondary</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.TextButton">

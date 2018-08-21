@@ -41,12 +41,14 @@
 
     <Button
         android:id="@+id/material_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"/>
 
     <Button
         android:id="@+id/disabled_material_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -65,6 +67,7 @@
 
     <Button
         android:id="@+id/material_unelevated_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -72,6 +75,7 @@
 
     <Button
         android:id="@+id/disabled_material_unelevated_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -91,6 +95,7 @@
 
     <Button
         android:id="@+id/material_icon_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -99,6 +104,7 @@
 
     <Button
         android:id="@+id/disabled_material_icon_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,6 +125,7 @@
 
     <Button
         android:id="@+id/material_text_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -126,6 +133,7 @@
 
     <Button
         android:id="@+id/disabled_material_text_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -145,6 +153,7 @@
 
     <Button
         android:id="@+id/material_icon_text_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -153,6 +162,7 @@
 
     <Button
         android:id="@+id/disabled_material_icon_text_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -173,6 +183,7 @@
 
     <Button
         android:id="@+id/material_outlined_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -180,6 +191,7 @@
 
     <Button
         android:id="@+id/disabled_material_outlined_button"
+        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -199,6 +211,7 @@
 
     <Button
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:icon="@drawable/ic_dialogs_24px"
@@ -207,6 +220,7 @@
 
     <Button
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
@@ -214,6 +228,6 @@
         app:icon="@drawable/ic_dialogs_24px"
         app:iconGravity="textStart"
         app:iconPadding="0dp"/>
-    
+
   </GridLayout>
 </ScrollView>

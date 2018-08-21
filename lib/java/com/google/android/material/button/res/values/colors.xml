@@ -17,8 +17,6 @@
 
 <resources>
 
-  <!-- 12% opacity black background color -->
-  <color name="mtrl_btn_bg_color_disabled">#1F000000</color>
   <!-- 38% opacity black text color -->
   <color name="mtrl_btn_text_color_disabled">#61000000</color>
   <!-- 0% opacity white container fill -->

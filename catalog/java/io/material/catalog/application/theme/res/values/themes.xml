@@ -27,4 +27,11 @@
     <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
   </style>
+
+  <!-- Temporary theme to apply to transitioned components until all of our components are
+       transitioned to the new color system. -->
+  <style name="Theme.Catalog.Swapped">
+    <item name="colorPrimary">@color/cat_color_secondary</item>
+    <item name="colorSecondary">@color/cat_color_primary</item>
+  </style>
 </resources>

@@ -16,5 +16,5 @@
 -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="0.12" android:color="@android:color/black"/>
+  <item android:alpha="0.12" android:color="?attr/colorOnSurface"/>
 </selector>

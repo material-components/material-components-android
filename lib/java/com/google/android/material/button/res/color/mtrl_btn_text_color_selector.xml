@@ -16,6 +16,6 @@
 -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="@android:color/white" android:state_enabled="true"/>
-  <item android:color="@color/mtrl_btn_text_color_disabled"/>
+  <item android:color="?attr/colorOnPrimary" android:state_enabled="true"/>
+  <item android:alpha="0.38" android:color="?attr/colorOnSurface"/>
 </selector>
