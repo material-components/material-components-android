@@ -44,10 +44,12 @@ import android.support.annotation.Px;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import com.google.android.material.animation.MotionSpec;
+import com.google.android.material.animation.TransformationListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.expandable.ExpandableTransformationWidget;
 import com.google.android.material.expandable.ExpandableWidgetHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalTransformationListener;
 import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -1242,6 +1244,60 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   public void setHideMotionSpecResource(@AnimatorRes int id) {
     setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
+  }
+
+  public void addTransformationListener(TransformationListener<FloatingActionButton> listener) {
+    getImpl().addTransformationListener(wrap(listener));
+  }
+
+  public void removeTransformationListener(TransformationListener<FloatingActionButton> listener) {
+    getImpl().removeTransformationListener(wrap(listener));
+  }
+
+  private InternalTransformationListener wrap(
+      TransformationListener<FloatingActionButton> listener) {
+    return new InternalTransformationListener() {
+      @Override
+      public void onTranslationChanged() {
+        listener.onTranslationChanged(FloatingActionButton.this);
+      }
+
+      @Override
+      public void onScaleChanged() {
+        listener.onScaleChanged(FloatingActionButton.this);
+      }
+    };
+  }
+
+  @Override
+  public void setTranslationX(float translationX) {
+    super.setTranslationX(translationX);
+    getImpl().onTranslationChanged();
+  }
+
+  @Override
+  public void setTranslationY(float translationY) {
+    super.setTranslationY(translationY);
+    getImpl().onTranslationChanged();
+  }
+
+  @Override
+  public void setTranslationZ(float translationZ) {
+    super.setTranslationZ(translationZ);
+    getImpl().onTranslationChanged();
+  }
+
+  @Override
+  public void setScaleX(float scaleX) {
+    super.setScaleX(scaleX);
+    getImpl().onScaleChanged();
+
+  }
+
+  @Override
+  public void setScaleY(float scaleY) {
+    super.setScaleY(scaleY);
+    getImpl().onScaleChanged();
   }
 
   private FloatingActionButtonImpl getImpl() {
