@@ -1367,6 +1367,8 @@ public class TabLayout extends HorizontalScrollView {
 
   private void addTabView(Tab tab) {
     final TabView tabView = tab.view;
+    tabView.setSelected(false);
+    tabView.setActivated(false);
     slidingTabIndicator.addView(tabView, tab.getPosition(), createLayoutParamsForTabs());
   }
 
@@ -1554,6 +1556,10 @@ public class TabLayout extends HorizontalScrollView {
     scrollAnimator.addListener(listener);
   }
 
+  /**
+   * Called when a selected tab is added. Unselects all other tabs in the TabLayout.
+   * @param position Position of the selected tab.
+   */
   private void setSelectedTabView(int position) {
     final int tabCount = slidingTabIndicator.getChildCount();
     if (position < tabCount) {
