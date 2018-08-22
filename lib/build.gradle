@@ -135,8 +135,39 @@ task generateApiXml(type: Javadoc) {
   }
 }
 
+task generateJdiffReport(type: Javadoc) {
+  if (project.hasProperty("oldApi")) {
+    def jdiff = project.property("jdiffjar")
+    def xerces = project.property("xercesjar")
+    def oldApi = project.property("oldApi")
+    def newApi = project.property("newApi")
+    def newApiDir = project.property("newApiDir")
+    def oldApiDir = project.property("oldApiDir")
+    source = android.sourceSets.main.java.source
+    source = source.findAll { it.name.endsWith(".java") }
+    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+    options.doclet = "jdiff.JDiff"
+    options.addStringOption("subpackages", ".")
+    options.addStringOption("newapidir", newApiDir)
+    options.addStringOption("oldapidir", oldApiDir)
+    options.addStringOption("oldapi", oldApi)
+    options.addBooleanOption("verbose", true)
+    options.addStringOption("newapi", newApi)
+    options.docletpath = [
+      file(jdiff),
+      file(xerces),
+    ]
+  }
+}
+
 afterEvaluate {
   generateJavadocs.classpath += files(android.libraryVariants.collect { variant ->
+    variant.javaCompile.classpath.files
+  })
+  generateApiXml.classpath += files(android.libraryVariants.collect { variant ->
+    variant.javaCompile.classpath.files
+  })
+  generateJdiffReport.classpath += files(android.libraryVariants.collect { variant ->
     variant.javaCompile.classpath.files
   })
 }
