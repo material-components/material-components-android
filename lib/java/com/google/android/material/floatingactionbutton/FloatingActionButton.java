@@ -1285,7 +1285,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
     
     public void setMaxImageSize(int maxImageSize) {
-      this.maxImageSize = maxImageSize;
       getImpl().setMaxImageSize(maxImageSize);
     }
   }
