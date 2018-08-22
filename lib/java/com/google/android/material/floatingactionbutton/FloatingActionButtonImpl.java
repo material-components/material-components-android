@@ -103,13 +103,6 @@ class FloatingActionButtonImpl {
 
   private ArrayList<AnimatorListener> showListeners;
   private ArrayList<AnimatorListener> hideListeners;
-  private ArrayList<InternalTransformationListener> transformationListeners;
-
-  interface InternalTransformationListener {
-    void onTranslationChanged();
-
-    void onScaleChanged();
-  }
 
   interface InternalVisibilityChangedListener {
     void onShown();
@@ -546,38 +539,6 @@ class FloatingActionButtonImpl {
     AnimatorSet set = new AnimatorSet();
     AnimatorSetCompat.playTogether(set, animators);
     return set;
-  }
-
-  void addTransformationListener(@NonNull InternalTransformationListener listener) {
-    if (transformationListeners == null) {
-      transformationListeners = new ArrayList<>();
-    }
-    transformationListeners.add(listener);
-  }
-
-  void removeTransformationListener(@NonNull InternalTransformationListener listener) {
-    if (transformationListeners == null) {
-      // This can happen if this method is called before the first call to
-      // addTransformationListener.
-      return;
-    }
-    transformationListeners.remove(listener);
-  }
-
-  void onTranslationChanged() {
-    if (transformationListeners != null) {
-      for (InternalTransformationListener l : transformationListeners) {
-        l.onTranslationChanged();
-      }
-    }
-  }
-
-  void onScaleChanged() {
-    if (transformationListeners != null) {
-      for (InternalTransformationListener l : transformationListeners) {
-        l.onScaleChanged();
-      }
-    }
   }
 
   final Drawable getContentBackground() {
