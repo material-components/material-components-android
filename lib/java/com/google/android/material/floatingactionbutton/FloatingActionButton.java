@@ -1283,5 +1283,10 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     public boolean isCompatPaddingEnabled() {
       return compatPadding;
     }
+    
+    public void setMaxImageSize(int maxImageSize) {
+      this.maxImageSize = maxImageSize;
+      getImpl().setMaxImageSize(maxImageSize);
+    }
   }
 }
