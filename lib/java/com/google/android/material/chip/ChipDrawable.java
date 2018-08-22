@@ -183,7 +183,12 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         }
 
         @Override
-        public void onFontRetrievalFailed(int reason) {}
+        public void onFontRetrievalFailed(int reason) {
+          // Use fallback font.
+          textWidthDirty = true;
+          onSizeChange();
+          invalidateSelf();
+        }
       };
 
   // Chip icon
@@ -1376,7 +1381,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (text == null) {
       text = "";
     }
-    if (this.text != text) {
+    if (!TextUtils.equals(this.text, text)) {
       this.text = text;
       textWidthDirty = true;
 
@@ -1404,7 +1409,6 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
       }
 
       onStateChange(getState());
-      onSizeChange();
     }
   }
 

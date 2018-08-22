@@ -158,6 +158,7 @@ public class TextAppearance {
     }
 
     if (fontResolved) {
+      callback.onFontRetrieved(font);
       return font;
     }
 
@@ -166,6 +167,7 @@ public class TextAppearance {
 
     if (context.isRestricted() || fontFamilyResourceId == 0) {
       fontResolved = true;
+      callback.onFontRetrieved(font);
       return font;
     }
 
