@@ -229,6 +229,7 @@ public class AppBarLayout extends LinearLayout {
    * @param listener The listener that will be called when the offset changes.]
    * @see #removeOnOffsetChangedListener(OnOffsetChangedListener)
    */
+  @SuppressWarnings("FunctionalInterfaceClash")
   public void addOnOffsetChangedListener(BaseOnOffsetChangedListener listener) {
     if (listeners == null) {
       listeners = new ArrayList<>();
@@ -238,6 +239,7 @@ public class AppBarLayout extends LinearLayout {
     }
   }
 
+  @SuppressWarnings("FunctionalInterfaceClash")
   public void addOnOffsetChangedListener(OnOffsetChangedListener listener) {
     addOnOffsetChangedListener((BaseOnOffsetChangedListener) listener);
   }
@@ -249,12 +251,14 @@ public class AppBarLayout extends LinearLayout {
    */
   // TODO: change back to removeOnOffsetChangedListener once the widget migration is
   // finished since the shim class needs to implement this method.
+  @SuppressWarnings("FunctionalInterfaceClash")
   public void removeOnOffsetChangedListener(BaseOnOffsetChangedListener listener) {
     if (listeners != null && listener != null) {
       listeners.remove(listener);
     }
   }
 
+  @SuppressWarnings("FunctionalInterfaceClash")
   public void removeOnOffsetChangedListener(OnOffsetChangedListener listener) {
     removeOnOffsetChangedListener((BaseOnOffsetChangedListener) listener);
   }
@@ -844,18 +848,10 @@ public class AppBarLayout extends LinearLayout {
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
     public abstract static class DragCallback extends BaseBehavior.BaseDragCallback<AppBarLayout> {}
 
-    /**
-     * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
-     * handling with offsetting.
-     */
     public Behavior() {
       super();
     }
 
-    /**
-     * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
-     * handling with offsetting.
-     */
     public Behavior(Context context, AttributeSet attrs) {
       super(context, attrs);
     }

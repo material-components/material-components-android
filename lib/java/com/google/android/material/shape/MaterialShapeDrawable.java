@@ -77,14 +77,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
   private ColorStateList tintList = null;
 
-  /** Instantiate a basic Material Shape Drawable with no {@link ShapePathModel}. */
   public MaterialShapeDrawable() {
     this(null);
   }
 
   /**
-   * Instantiate with a given model.
-   *
    * @param shapePathModel the {@link ShapePathModel} containing the path that will be rendered in
    *     this drawable.
    */

@@ -44,15 +44,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
   private int currentState = STATE_SCROLLED_UP;
   private ViewPropertyAnimator currentAnimator;
 
-  /** Default constructor for instantiating HideBottomViewOnScrollBehaviors. */
   public HideBottomViewOnScrollBehavior() {}
 
-  /**
-   * Default constructor for inflating HideBottomViewOnScrollBehaviors from layout.
-   *
-   * @param context The {@link Context}.
-   * @param attrs The {@link AttributeSet}.
-   */
   public HideBottomViewOnScrollBehavior(Context context, AttributeSet attrs) {
     super(context, attrs);
   }

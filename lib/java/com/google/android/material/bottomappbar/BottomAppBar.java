@@ -695,17 +695,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     private final Rect fabContentRect;
 
-    /** Default constructor for instantiating this Behavior. */
     public Behavior() {
       fabContentRect = new Rect();
     }
 
-    /**
-     * Default constructor for inflating this Behavior from layout.
-     *
-     * @param context The {@link Context}.
-     * @param attrs The {@link AttributeSet}.
-     */
     public Behavior(Context context, AttributeSet attrs) {
       super(context, attrs);
       fabContentRect = new Rect();

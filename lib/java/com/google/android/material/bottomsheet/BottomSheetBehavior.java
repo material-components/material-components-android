@@ -175,15 +175,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private Map<View, Integer> importantForAccessibilityMap;
 
-  /** Default constructor for instantiating BottomSheetBehaviors. */
   public BottomSheetBehavior() {}
 
-  /**
-   * Default constructor for inflating BottomSheetBehaviors from layout.
-   *
-   * @param context The {@link Context}.
-   * @param attrs The {@link AttributeSet}.
-   */
   public BottomSheetBehavior(Context context, AttributeSet attrs) {
     super(context, attrs);
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
@@ -927,6 +920,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
   }
 
+  /** State persisted across instances */
   protected static class SavedState extends AbsSavedState {
     @State final int state;
 
