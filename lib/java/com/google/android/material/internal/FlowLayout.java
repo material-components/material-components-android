@@ -161,6 +161,9 @@ public class FlowLayout extends ViewGroup {
       }
     }
 
+    maxChildRight += getPaddingRight();
+    childBottom += getPaddingBottom();
+
     int finalWidth = getMeasuredDimension(width, widthMode, maxChildRight);
     int finalHeight = getMeasuredDimension(height, heightMode, childBottom);
     setMeasuredDimension(finalWidth, finalHeight);
