@@ -539,7 +539,15 @@ class FloatingActionButtonImpl {
     calculateImageMatrixFromScale(iconScale, tmpMatrix);
     animator =
         ObjectAnimator.ofObject(
-            view, new ImageMatrixProperty(), new MatrixEvaluator(), new Matrix(tmpMatrix));
+            view, new ImageMatrixProperty(), new MatrixEvaluator() {
+              @Override
+              public Matrix evaluate(float fraction, Matrix startValue, Matrix endValue) {
+                // Also set the current imageMatrixScale fraction so it can be used to correctly
+                // calculate the image matrix at any given point.
+                imageMatrixScale = fraction;
+                return super.evaluate(fraction, startValue, endValue);
+              }
+            }, new Matrix(tmpMatrix));
     spec.getTiming("iconScale").apply(animator);
     animators.add(animator);
 
