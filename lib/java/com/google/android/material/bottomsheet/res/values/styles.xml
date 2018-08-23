@@ -21,6 +21,11 @@
     <item name="android:windowExitAnimation">@anim/design_bottom_sheet_slide_out</item>
   </style>
 
+  <style name="Animation.MaterialComponents.BottomSheetDialog" parent="Animation.AppCompat.Dialog">
+    <item name="android:windowEnterAnimation">@anim/mtrl_bottom_sheet_slide_in</item>
+    <item name="android:windowExitAnimation">@anim/mtrl_bottom_sheet_slide_out</item>
+  </style>
+
   <style name="Widget.Design.BottomSheet.Modal" parent="android:Widget">
     <item name="android:background">?android:attr/colorBackground</item>
     <item name="android:elevation" tools:ignore="NewApi">
