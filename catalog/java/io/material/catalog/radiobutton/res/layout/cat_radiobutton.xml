@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_viewGroup"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="@dimen/cat_radiobutton_padding"
+    android:orientation="vertical">
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:text="@string/cat_radiobutton_color_guide"
+        android:textSize="@dimen/cat_radiobutton_header_size"/>
+    <RadioGroup
+        android:checkedButton="@+id/enabled_selected"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+      <RadioButton
+          android:id="@+id/enabled_selected"
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:enabled="true"
+          android:text="@string/cat_radiobutton_enabled"/>
+      <RadioButton
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:checked="false"
+          android:enabled="true"
+          android:text="@string/cat_radiobutton_enabled"/>
+      <RadioButton
+          android:layout_width="match_parent"
+          android:layout_height="match_parent"
+          android:checked="false"
+          android:enabled="true"
+          android:text="@string/cat_radiobutton_enabled"/>
+    </RadioGroup>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_radiobutton_disabled_guide"
+        android:textSize="@dimen/cat_radiobutton_header_size"/>
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:checkedButton="@+id/selected_disabled"
+        android:orientation="horizontal">
+      <RadioButton
+          android:id="@id/selected_disabled"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:enabled="false"
+          android:text="@string/cat_radiobutton_disabled"/>
+      <RadioButton
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:checked="false"
+          android:enabled="false"
+          android:text="@string/cat_radiobutton_disabled"/>
+    </RadioGroup>
+</LinearLayout>

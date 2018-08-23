@@ -27,6 +27,7 @@ import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
+import io.material.catalog.radiobutton.RadioButtonFragment;
 import io.material.catalog.switchmaterial.SwitchFragment;
 import io.material.catalog.tabs.TabsFragment;
 import io.material.catalog.textfield.TextFieldFragment;
@@ -49,6 +50,7 @@ import io.material.catalog.transformation.TransformationFragment;
       ChipFragment.Module.class,
       FabFragment.Module.class,
       FontFragment.Module.class,
+      RadioButtonFragment.Module.class,
       SwitchFragment.Module.class,
       TabsFragment.Module.class,
       TextFieldFragment.Module.class,
