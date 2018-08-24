@@ -24,7 +24,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Outline;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
@@ -267,42 +266,28 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   /**
-   * Updates the padding to inform {@link android.widget.TextView} how much width the text can
-   * occupy. Horizontal text origin is configured in {@link Chip#onDraw} via canvas translation.
+   * Updates the paddings to inform {@link android.widget.TextView} how much width the text can
+   * occupy.
    */
   private void updatePaddingInternal() {
     if (TextUtils.isEmpty(getText()) || chipDrawable == null) {
       return;
     }
-    float paddingEnd =
-        chipDrawable.getChipStartPadding()
-            + chipDrawable.getChipEndPadding()
-            + chipDrawable.getTextStartPadding()
-            + chipDrawable.getTextEndPadding();
+    int paddingEnd =
+        (int) (
+            chipDrawable.getChipEndPadding()
+                + chipDrawable.getTextEndPadding()
+                + chipDrawable.calculateCloseIconWidth());
+    int paddingStart =
+        (int) (
+            chipDrawable.getChipStartPadding()
+                + chipDrawable.getTextStartPadding()
+                + chipDrawable.calculateChipIconWidth());
 
-    if ((chipDrawable.isChipIconVisible() && chipDrawable.getChipIcon() != null)
-        || (chipDrawable.getCheckedIcon() != null
-            && chipDrawable.isCheckedIconVisible()
-            && isChecked())) {
-      paddingEnd +=
-          chipDrawable.getIconStartPadding()
-              + chipDrawable.getIconEndPadding()
-              + chipDrawable.getChipIconSize();
-    }
-    if (chipDrawable.isCloseIconVisible() && chipDrawable.getCloseIcon() != null) {
-      paddingEnd +=
-          chipDrawable.getCloseIconStartPadding()
-              + chipDrawable.getCloseIconEndPadding()
-              + chipDrawable.getCloseIconSize();
-    }
-
-    if (ViewCompat.getPaddingEnd(this) != paddingEnd) {
+    if (ViewCompat.getPaddingEnd(this) != paddingEnd
+        || ViewCompat.getPaddingStart(this) != paddingStart) {
       ViewCompat.setPaddingRelative(
-          this,
-          ViewCompat.getPaddingStart(this),
-          getPaddingTop(),
-          (int) paddingEnd,
-          getPaddingBottom());
+          this, paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
     }
   }
 
@@ -406,34 +391,11 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   @Override
-  protected void onDraw(Canvas canvas) {
-    if (TextUtils.isEmpty(getText()) || chipDrawable == null || chipDrawable.shouldDrawText()) {
-      super.onDraw(canvas);
-      return;
-    }
-
-    int saveCount = canvas.save();
-    canvas.translate(calculateTextOffsetFromStart(chipDrawable), 0);
-    super.onDraw(canvas);
-    canvas.restoreToCount(saveCount);
-  }
-
-  @Override
   public void setGravity(int gravity) {
     if (gravity != (Gravity.CENTER_VERTICAL | Gravity.START)) {
       Log.w(TAG, "Chip text must be vertically center and start aligned");
     } else {
       super.setGravity(gravity);
-    }
-  }
-
-  private float calculateTextOffsetFromStart(@NonNull ChipDrawable chipDrawable) {
-    float offsetFromStart =
-        getChipStartPadding() + chipDrawable.calculateChipIconWidth() + getTextStartPadding();
-    if (ViewCompat.getLayoutDirection(this) == View.LAYOUT_DIRECTION_LTR) {
-      return offsetFromStart;
-    } else {
-      return -offsetFromStart;
     }
   }
 
@@ -1225,13 +1187,11 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   public void setTextAppearanceResource(@StyleRes int id) {
-    if (chipDrawable != null) {
-      chipDrawable.setTextAppearanceResource(id);
-    }
     this.setTextAppearance(getContext(), id);
   }
 
   public void setTextAppearance(@Nullable TextAppearance textAppearance) {
+    // TODO: Make sure this also updates parent TextView styles.
     if (chipDrawable != null) {
       chipDrawable.setTextAppearance(textAppearance);
     }

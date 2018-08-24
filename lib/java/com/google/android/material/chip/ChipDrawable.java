@@ -545,7 +545,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    * Returns the width of the chip close icon plus padding, which only apply if the chip close icon
    * exists.
    */
-  private float calculateCloseIconWidth() {
+  float calculateCloseIconWidth() {
     if (showsCloseIcon()) {
       return closeIconStartPadding + closeIconSize + closeIconEndPadding;
     }
