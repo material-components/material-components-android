@@ -355,20 +355,24 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       applyChipDrawable(chipDrawable);
 
       if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-        //noinspection NewApi
-        ripple =
-            new RippleDrawable(
-                RippleUtils.convertToRippleDrawableColor(chipDrawable.getRippleColor()),
-                chipDrawable,
-                null);
-        chipDrawable.setUseCompatRipple(false);
-        //noinspection NewApi
-        ViewCompat.setBackground(this, ripple);
+        updateFrameworkRippleBackground();
       } else {
         chipDrawable.setUseCompatRipple(true);
         ViewCompat.setBackground(this, chipDrawable);
       }
     }
+  }
+
+  private void updateFrameworkRippleBackground() {
+    //noinspection NewApi
+    ripple =
+        new RippleDrawable(
+            RippleUtils.convertToRippleDrawableColor(chipDrawable.getRippleColor()),
+            chipDrawable,
+            null);
+    chipDrawable.setUseCompatRipple(false);
+    //noinspection NewApi
+    ViewCompat.setBackground(this, ripple);
   }
 
   private void unapplyChipDrawable(@Nullable ChipDrawable chipDrawable) {
@@ -1145,12 +1149,18 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   public void setRippleColorResource(@ColorRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setRippleColorResource(id);
+      if (!chipDrawable.getUseCompatRipple()) {
+        updateFrameworkRippleBackground();
+      }
     }
   }
 
   public void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (chipDrawable != null) {
       chipDrawable.setRippleColor(rippleColor);
+    }
+    if (!chipDrawable.getUseCompatRipple()) {
+      updateFrameworkRippleBackground();
     }
   }
 
