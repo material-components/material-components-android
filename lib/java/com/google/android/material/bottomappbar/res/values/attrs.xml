@@ -25,6 +25,13 @@
       <!-- Mode that aligns the fab to the end. -->
       <enum name="end" value="1"/>
     </attr>
+    <!-- The animation mode that should be used when the fab animates between alignment modes. -->
+    <attr name="fabAnimationMode">
+      <!-- Mode that scales the fab down to a point, moves it, then scales the fab back to its normal size. -->
+      <enum name="scale" value="0"/>
+      <!-- Mode that slides the fab from one alignment mode to the next. -->
+      <enum name="slide" value="1"/>
+    </attr>
     <!-- The margin between the semi-circular cradle for the fab and the fab. -->
     <attr name="fabCradleMargin" format="dimension"/>
     <!-- The radius of the rounded corners on each side of the cradle. -->

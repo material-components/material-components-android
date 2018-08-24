@@ -77,6 +77,7 @@ import java.util.List;
  *
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_backgroundTint
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabAlignmentMode
+ * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabAnimationMode
  * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleMargin
  * @attr ref
  *     com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
@@ -97,6 +98,19 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Retention(RetentionPolicy.SOURCE)
   public @interface FabAlignmentMode {}
 
+  public static final int FAB_ANIMATION_MODE_SCALE = 0;
+  public static final int FAB_ANIMATION_MODE_SLIDE = 1;
+
+  /**
+   * The fabAnimationMode determines the animation used to move the FAB between different alignment
+   * modes. Can be either scale, or slide. Scale mode will scale the fab down to a point and then
+   * scale it back in at it's new position. Slide mode will slide the fab from one position to the
+   * other.
+   */
+  @IntDef({FAB_ANIMATION_MODE_SCALE, FAB_ANIMATION_MODE_SLIDE})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface FabAnimationMode {}
+
   private final int fabOffsetEndMode;
   private final MaterialShapeDrawable materialShapeDrawable;
   private final BottomAppBarTopEdgeTreatment topEdgeTreatment;
@@ -105,6 +119,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Nullable private Animator menuAnimator;
   private final int fabVerticalOffset;
   @FabAlignmentMode private int fabAlignmentMode;
+  @FabAnimationMode private int fabAnimationMode;
   private boolean hideOnScroll;
 
   /**
@@ -174,6 +189,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleVerticalOffset, 0);
     fabAlignmentMode =
         a.getInt(R.styleable.BottomAppBar_fabAlignmentMode, FAB_ALIGNMENT_MODE_CENTER);
+    fabAnimationMode =
+        a.getInt(R.styleable.BottomAppBar_fabAnimationMode, FAB_ANIMATION_MODE_SCALE);
     hideOnScroll = a.getBoolean(R.styleable.BottomAppBar_hideOnScroll, false);
 
     a.recycle();
@@ -213,6 +230,26 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     maybeAnimateModeChange(fabAlignmentMode);
     maybeAnimateMenuView(fabAlignmentMode, fabAttached);
     this.fabAlignmentMode = fabAlignmentMode;
+  }
+
+  /**
+   * Returns the current fabAlignmentMode, either {@link #FAB_ANIMATION_MODE_SCALE} or {@link
+   * #FAB_ANIMATION_MODE_SLIDE}.
+   */
+  @FabAnimationMode
+  public int getFabAnimationMode() {
+    return fabAnimationMode;
+  }
+
+  /**
+   * Sets the current fabAlignmentMode. Determines which animation will be played when the fab is
+   * animated from from one {@link FabAlignmentMode} to another.
+   *
+   * @param fabAnimationMode the desired fabAlignmentMode, either {@link #FAB_ALIGNMENT_MODE_CENTER}
+   *     or {@link #FAB_ALIGNMENT_MODE_END}.
+   */
+  public void setFabAnimationMode(@FabAnimationMode int fabAnimationMode) {
+    this.fabAnimationMode = fabAnimationMode;
   }
 
   public void setBackgroundTint(@Nullable ColorStateList backgroundTint) {
@@ -326,7 +363,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     List<Animator> animators = new ArrayList<>();
 
-    createFabTranslationXAnimation(targetMode, animators);
+    if (fabAnimationMode == FAB_ANIMATION_MODE_SLIDE) {
+      createFabTranslationXAnimation(targetMode, animators);
+    } else {
+      createFabDefaultXAnimation(targetMode, animators);
+    }
 
     AnimatorSet set = new AnimatorSet();
     set.playTogether(animators);
@@ -361,6 +402,30 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private boolean isFabVisible() {
     FloatingActionButton fab = findDependentFab();
     return fab != null && fab.isOrWillBeShown();
+  }
+
+  protected void createFabDefaultXAnimation(
+      final @FabAlignmentMode int targetMode, List<Animator> animators) {
+    final FloatingActionButton fab = findDependentFab();
+
+    if (fab == null) {
+      return;
+    }
+
+    AnimatorSet hideAnimator = fab.createHideAnimator();
+    AnimatorSet showAnimator = fab.createShowAnimator();
+
+    showAnimator.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationStart(Animator animation) {
+            fab.setTranslationX(getFabTranslationX(targetMode));
+          }
+        });
+
+    AnimatorSet set = new AnimatorSet();
+    set.playSequentially(hideAnimator, showAnimator);
+    animators.add(set);
   }
 
   private void createFabTranslationXAnimation(

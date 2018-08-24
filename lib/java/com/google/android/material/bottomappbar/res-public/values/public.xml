@@ -17,6 +17,7 @@
 <resources>
   <public name="bottomAppBarStyle" type="attr"/>
   <public name="fabAlignmentMode" type="attr"/>
+  <public name="fabAnimationMode" type="attr"/>
   <public name="fabCradleMargin" type="attr"/>
   <public name="fabCradleRoundedCornerRadius" type="attr"/>
   <public name="fabCradleVerticalOffset" type="attr"/>

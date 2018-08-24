@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.Animator.AnimatorListener;
+import android.animation.AnimatorSet;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
@@ -1244,6 +1245,16 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    */
   public void setHideMotionSpecResource(@AnimatorRes int id) {
     setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
+  }
+
+  @NonNull
+  public AnimatorSet createHideAnimator() {
+    return getImpl().createHideAnimator();
+  }
+
+  @NonNull
+  public AnimatorSet createShowAnimator() {
+    return getImpl().createShowAnimator();
   }
 
   public void addTransformationListener(TransformationListener<FloatingActionButton> listener) {
