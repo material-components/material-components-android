@@ -22,6 +22,7 @@
       @dimen/mtrl_bottomappbar_fab_cradle_rounded_corner_radius
     </item>
     <item name="fabCradleVerticalOffset">@dimen/mtrl_bottomappbar_fab_cradle_vertical_offset</item>
+    <item name="android:minHeight">@dimen/mtrl_bottomappbar_height</item>
   </style>
 
   <style name="Widget.MaterialComponents.BottomAppBar.Colored" parent="Widget.MaterialComponents.BottomAppBar">
