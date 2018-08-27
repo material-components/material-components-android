@@ -42,6 +42,7 @@
     <!-- Overrides minimum height in landscape to avoid headline6 and subtitle1
          height concerns. -->
     <item name="android:minHeight">@dimen/mtrl_toolbar_default_height</item>
+    <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
   </style>
 
 </resources>

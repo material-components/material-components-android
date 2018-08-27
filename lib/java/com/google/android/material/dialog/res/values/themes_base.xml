@@ -57,6 +57,8 @@
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
+    <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+
     <!-- Widget styles -->
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
@@ -118,6 +120,8 @@
     <item name="colorAccent">?attr/colorSecondary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
+    <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
 
     <!-- Widget styles -->
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
