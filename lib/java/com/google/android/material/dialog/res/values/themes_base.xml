@@ -47,9 +47,9 @@
 
     <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
     <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
-    <item name="colorOnBackground">?attr/colorOnSecondary</item>
-    <item name="colorOnError">?attr/colorOnPrimary</item>
-    <item name="colorOnSurface">?attr/colorOnSecondary</item>
+    <item name="colorOnBackground">@color/design_default_color_on_background</item>
+    <item name="colorOnError">@color/design_default_color_on_error</item>
+    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
 
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
 
@@ -111,9 +111,9 @@
 
     <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
     <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
-    <item name="colorOnBackground">?attr/colorOnSecondary</item>
-    <item name="colorOnError">?attr/colorOnPrimary</item>
-    <item name="colorOnSurface">?attr/colorOnSecondary</item>
+    <item name="colorOnBackground">@color/design_default_color_on_background</item>
+    <item name="colorOnError">@color/design_default_color_on_error</item>
+    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
 
     <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
 

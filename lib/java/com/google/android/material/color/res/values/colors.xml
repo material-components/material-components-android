@@ -25,6 +25,9 @@
   <color name="design_default_color_error">#B00020</color>
   <color name="design_default_color_on_primary">#FFFFFF</color>
   <color name="design_default_color_on_secondary">#000000</color>
+  <color name="design_default_color_on_background">#000000</color>
+  <color name="design_default_color_on_surface">#000000</color>
+  <color name="design_default_color_on_error">#FFFFFF</color>
 
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
