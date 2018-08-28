@@ -272,13 +272,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         new android.support.v4.view.OnApplyWindowInsetsListener() {
           @Override
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
-            // Copy over the bottom inset as padding so that we're displayed
-            // above the navigation bar
-            v.setPadding(
-                v.getPaddingLeft(),
-                v.getPaddingTop(),
-                v.getPaddingRight(),
-                insets.getSystemWindowInsetBottom());
+            // Copy over the bottom inset as bottom margin so that we're displayed above the
+            // navigation bar
+            MarginLayoutParams layoutParams = (MarginLayoutParams) v.getLayoutParams();
+            layoutParams.bottomMargin += insets.getSystemWindowInsetBottom();
+            v.setLayoutParams(layoutParams);
             return insets;
           }
         });
