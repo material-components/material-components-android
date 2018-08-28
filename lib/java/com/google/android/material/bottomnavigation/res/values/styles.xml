@@ -18,6 +18,8 @@
 
   <style name="Widget.Design.BottomNavigationView" parent="">
     <item name="elevation">@dimen/design_bottom_navigation_elevation</item>
+    <item name="enforceTextAppearance">false</item>
+    <item name="enforceMaterialTheme">false</item>
     <item name="itemBackground">?attr/selectableItemBackgroundBorderless</item>
     <item name="itemHorizontalTranslationEnabled">true</item>
     <item name="itemIconSize">@dimen/design_bottom_navigation_icon_size</item>
@@ -25,11 +27,12 @@
   </style>
 
   <!-- Default style for BottomNavigationViews.
-       Use the default style to get the default bottom navigation bar with a white background and
+       Use the default style to get the default bottom navigation bar with a colorSurface background and
        colorPrimary for the icon and text colors. -->
   <style name="Widget.MaterialComponents.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-    <item name="android:background">@android:color/white</item>
+    <item name="android:background">?attr/colorSurface</item>
     <item name="enforceTextAppearance">true</item>
+    <item name="enforceMaterialTheme">true</item>
     <item name="itemHorizontalTranslationEnabled">false</item>
     <item name="itemIconTint">@color/mtrl_bottom_nav_item_tint</item>
     <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
@@ -39,9 +42,11 @@
 
   <!-- Colored style for Bottom NavigationViews.
        Use the colored style to get a bottom navigation bar with a colorPrimary background and
-       percentages of white for the icon and text colors. -->
+       percentages of colorOnPrimary for the icon and text colors. -->
   <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
     <item name="android:background">?attr/colorPrimary</item>
+    <item name="enforceTextAppearance">true</item>
+    <item name="enforceMaterialTheme">true</item>
     <item name="itemIconTint">@color/mtrl_bottom_nav_colored_item_tint</item>
     <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
     <item name="itemTextAppearanceActive">?attr/textAppearanceCaption</item>

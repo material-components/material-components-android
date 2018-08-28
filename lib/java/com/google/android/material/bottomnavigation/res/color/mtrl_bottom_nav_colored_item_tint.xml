@@ -16,8 +16,8 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="1.0" android:color="@android:color/white" android:state_checked="true" android:state_enabled="true"/>
-  <item android:alpha="0.54" android:color="@android:color/white" android:state_enabled="true"/>
+  <item android:alpha="1.0" android:color="?attr/colorOnPrimary" android:state_checked="true" android:state_enabled="true"/>
+  <item android:alpha="0.54" android:color="?attr/colorOnPrimary" android:state_enabled="true"/>
   <!-- 38% of 0.54 -->
-  <item android:alpha="0.21" android:color="@android:color/white"/>
+  <item android:alpha="0.21" android:color="?attr/colorOnPrimary"/>
 </selector>
