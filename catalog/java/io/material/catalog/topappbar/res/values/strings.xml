@@ -20,6 +20,8 @@
   <string name="cat_topappbar_description">The Top App Bar, formerly known as the action bar in Android, is a special kind of toolbar that’s used for branding, navigation, search, and actions.</string>
   <string name="cat_topappbar_scrolling_title">Scrolling Demo</string>
   <string name="cat_topappbar_collapsing_title">Collapsing Demo</string>
+  <string name="cat_topappbar_action_bar_title">Action Bar Demo</string>
+  <string name="cat_topappbar_dark_action_bar_title">Dark Action Bar Demo</string>
 
   <string name="cat_topappbar_lorem_ipsum" translatable="false">
     \t\tLorem ipsum dolor sit amet, consectetur adipiscing elit. Nam in scelerisque sem. Mauris volutpat, dolor id interdum ullamcorper, risus dolor egestas lectus, sit amet mattis purus dui nec risus. Maecenas non sodales nisi, vel dictum dolor. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Suspendisse blandit eleifend diam, vel rutrum tellus vulputate quis. Aliquam eget libero aliquet, imperdiet nisl a, ornare ex. Sed rhoncus est ut libero porta lobortis. Fusce in dictum tellus.
@@ -36,4 +38,12 @@
   <string name="cat_topappbar_favorite_menu_item_title">Favorite</string>
   <string name="cat_topappbar_settings_menu_item_title">Settings</string>
   <string name="cat_topappbar_help_and_feedback_menu_item_title">Help &amp; feedback</string>
+
+  <string name="cat_topappbar_action_bar_subtitle">Subtitle text</string>
+  <string name="cat_topappbar_action_bar_description">
+    Action Bars within a Material Components theme will default to a titleTextStyle of
+    textAppearanceHeadline6 and a subtitleTextStyle of textAppearanceSubtitle1.
+    \n\nAdditionally, the height of Material Action Bars will be the same in portrait and landscape,
+    in order to avoid vertical space concerns with the above-mentioned text appearances.
+  </string>
 </resources>

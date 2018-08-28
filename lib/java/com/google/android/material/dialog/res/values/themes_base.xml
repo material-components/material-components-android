@@ -60,6 +60,7 @@
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
 
     <!-- Widget styles -->
+    <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
@@ -124,6 +125,7 @@
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
 
     <!-- Widget styles -->
+    <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
