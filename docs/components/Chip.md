@@ -193,6 +193,18 @@ chip.setOnCloseIconClickListener(new OnClickListener() {
 });
 ```
 
+### RTL-friendly Chip Layout
+
+Call `setLayoutDirection(int)` with `View.LAYOUT_DIRECTION_LOCALE` to ensure
+that the Chip's ancestor `TextView` renders the text with proper paddings.
+Without this, the initial rendering may look like the text has its padding set
+according to LTR direction.
+
+```java
+Chip chip = (Chip) findViewById(R.id.chip);
+chip.setLayoutDirection(View.LAYOUT_DIRECTION_LOCALE);
+```
+
 ### ChipGroup
 
 A `ChipGroup` contains a set of `Chip`s and manages their layout and

@@ -118,6 +118,12 @@ import java.util.List;
  * or {@link #setOnCheckedChangeListener(OnCheckedChangeListener)}. You can register a listener on
  * the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
  *
+ * <p>For proper rendering of the ancestor TextView in RTL mode, call {@link
+ * #setLayoutDirection(int)} with {@link View.LAYOUT_DIRECTION_LOCALE}. By default, TextView's
+ * layout rendering sets the text padding in LTR on initial rendering and it only renders correctly
+ * after the layout has been invalidated so you need to ensure that initial rendering has the
+ * correct layout.
+ *
  * @see ChipDrawable
  */
 public class Chip extends AppCompatCheckBox implements Delegate {
@@ -1168,6 +1174,19 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   @Deprecated
   public CharSequence getChipText() {
     return getText();
+  }
+
+  @Override
+  public void setLayoutDirection(int layoutDirection) {
+    if (chipDrawable == null) {
+      return;
+    }
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+      super.setLayoutDirection(layoutDirection);
+    } else {
+      ViewCompat.setLayoutDirection(this, layoutDirection);
+    }
+    chipDrawable.setLayoutDirection(layoutDirection);
   }
 
   @Override
