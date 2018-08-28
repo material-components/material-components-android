@@ -135,19 +135,19 @@ target region. Developers can override chip's minimum touch target size using
 
 Feature       | Relevant attributes
 --------------| -----------------------------
-|Label        | `android:text` <br> `android:textAppearance`
-|Shape        | `app:chipCornerRadius`
-|Size         | `app:chipMinHeight`
-|Background   | `app:chipBackgroundColor`
-|Border       | `app:chipStrokeColor` <br> `app:chipStrokeWidth`
-|Ripple       | `app:rippleColor`
-|Chip Icon    | `app:chipIconVisible` <br> `app:chipIcon` <br> `app:chipIconTint` <br> `app:chipIconSize`
-|Close Icon   | `app:closeIconVisible` <br> `app:closeIcon` <br> `app:closeIconSize` <br> `app:closeIconTint`
-|Checkable    | `android:checkable`
-|Checked Icon | `app:checkedIconVisible` <br> `app:checkedIcon`
-|Motion       | `app:showMotionSpec` <br> `app:hideMotionSpec`
-|Paddings     | `app:chipStartPadding` <br> `app:iconStartPadding` <br> `app:iconEndPadding` <br> `app:textStartPadding` <br> `app:textEndPadding` <br> `app:closeIconStartPadding` <br> `app:closeIconEndPadding` <br> `app:chipEndPadding`
-|TouchTarget  | `app:chipMinTouchTargetSize` <br> `app:chipTouchTargetDelegate`
+Label         | `android:text` <br> `android:textAppearance`
+Shape         | `app:chipCornerRadius`
+Size          | `app:chipMinHeight`
+Background    | `app:chipBackgroundColor`
+Border        | `app:chipStrokeColor` <br> `app:chipStrokeWidth`
+Ripple        | `app:rippleColor`
+Chip Icon     | `app:chipIconVisible` <br> `app:chipIcon` <br> `app:chipIconTint` <br> `app:chipIconSize`
+Close Icon    | `app:closeIconVisible` <br> `app:closeIcon` <br> `app:closeIconSize` <br> `app:closeIconTint`
+Checkable     | `android:checkable`
+Checked Icon  | `app:checkedIconVisible` <br> `app:checkedIcon`
+Motion        | `app:showMotionSpec` <br> `app:hideMotionSpec`
+Paddings      | `app:chipStartPadding` <br> `app:iconStartPadding` <br> `app:iconEndPadding` <br> `app:textStartPadding` <br> `app:textEndPadding` <br> `app:closeIconStartPadding` <br> `app:closeIconEndPadding` <br> `app:chipEndPadding`
+TouchTarget   | `app:chipMinTouchTargetSize` <br> `app:chipTouchTargetDelegate`
 
 ### Handling Clicks
 
