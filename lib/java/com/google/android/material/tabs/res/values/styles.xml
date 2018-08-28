@@ -44,11 +44,12 @@
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout" parent="Widget.Design.TabLayout">
+    <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
-    <item name="android:background">@android:color/white</item>
+    <item name="android:background">?attr/colorSurface</item>
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector</item>
     <item name="tabIndicatorAnimationDuration">@integer/mtrl_tab_indicator_anim_duration_ms</item>
-    <item name="tabIndicatorColor">?attr/colorAccent</item>
+    <item name="tabIndicatorColor">?attr/colorPrimary</item>
     <item name="tabTextAppearance">?attr/textAppearanceButton</item>
     <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector</item>
     <item name="tabRippleColor">@color/mtrl_tabs_ripple_color</item>
@@ -56,9 +57,9 @@
   </style>
 
   <style name="Widget.MaterialComponents.TabLayout.Colored">
-    <item name="android:background">?attr/colorAccent</item>
+    <item name="android:background">?attr/colorPrimary</item>
     <item name="tabIconTint">@color/mtrl_tabs_icon_color_selector_colored</item>
-    <item name="tabIndicatorColor">@android:color/white</item>
+    <item name="tabIndicatorColor">?attr/colorOnPrimary</item>
     <item name="tabTextColor">@color/mtrl_tabs_icon_color_selector_colored</item>
     <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
   </style>

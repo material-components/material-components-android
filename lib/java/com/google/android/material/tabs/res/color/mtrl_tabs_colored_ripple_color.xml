@@ -17,10 +17,10 @@
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <item android:alpha="0.16" android:color="@android:color/white" android:state_pressed="true"/>
-  <item android:alpha="0.32" android:color="@android:color/white" android:state_focused="true" android:state_hovered="true"/>
-  <item android:alpha="0.24" android:color="@android:color/white" android:state_focused="true"/>
-  <item android:alpha="0.08" android:color="@android:color/white" android:state_hovered="true"/>
-  <item android:alpha="0.00" android:color="@android:color/white"/>
+  <item android:alpha="0.16" android:color="?attr/colorOnPrimary" android:state_pressed="true"/>
+  <item android:alpha="0.32" android:color="?attr/colorOnPrimary" android:state_focused="true" android:state_hovered="true"/>
+  <item android:alpha="0.24" android:color="?attr/colorOnPrimary" android:state_focused="true"/>
+  <item android:alpha="0.08" android:color="?attr/colorOnPrimary" android:state_hovered="true"/>
+  <item android:alpha="0.00" android:color="?attr/colorOnPrimary"/>
 
 </selector>

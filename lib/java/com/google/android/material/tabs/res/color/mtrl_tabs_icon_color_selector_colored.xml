@@ -16,7 +16,6 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:color="@android:color/white" android:state_selected="true"/>
-  <!-- 60% opacity white -->
-  <item android:color="#99FFFFFF"/>
+  <item android:color="?attr/colorOnPrimary" android:state_selected="true"/>
+  <item android:alpha="0.60" android:color="?attr/colorOnPrimary"/>
 </selector>
