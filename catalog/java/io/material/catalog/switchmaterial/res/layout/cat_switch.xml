@@ -35,13 +35,13 @@
         android:layout_columnSpan="2"
         android:text="@string/cat_switch_color_guide"
         android:textSize="@dimen/cat_switch_header_size"/>
-    <android.support.v7.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="true"
         android:enabled="true"
         android:text="@string/cat_switch_enabled"/>
-    <android.support.v7.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="false"
@@ -53,13 +53,13 @@
         android:layout_columnSpan="2"
         android:text="@string/cat_switch_disabled_guide"
         android:textSize="@dimen/cat_switch_header_size"/>
-    <android.support.v7.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="true"
         android:enabled="false"
         android:text="@string/cat_switch_disabled"/>
-    <android.support.v7.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:checked="false"
@@ -72,7 +72,7 @@
       android:layout_marginTop="@dimen/cat_switch_line_separator_margin"
       android:layout_marginBottom="@dimen/cat_switch_line_separator_margin"
       android:background="?attr/colorSecondary"/>
-  <android.support.v7.widget.SwitchCompat
+  <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/switch_toggle"
       android:layout_width="match_parent"
       android:layout_height="match_parent"

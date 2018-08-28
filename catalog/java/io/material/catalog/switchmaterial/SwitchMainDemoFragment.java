@@ -20,7 +20,7 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.SwitchCompat;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,14 +40,14 @@ public class SwitchMainDemoFragment extends DemoFragment {
     View toggledView =
         layoutInflater.inflate(R.layout.cat_switch_toggled, switchDemoViewGroup, false);
     switchDemoViewGroup.addView(toggledView);
-    List<SwitchCompat> toggledSwitches =
-        DemoUtils.findViewsWithType(toggledView, SwitchCompat.class);
+    List<SwitchMaterial> toggledSwitches =
+        DemoUtils.findViewsWithType(toggledView, SwitchMaterial.class);
 
-    SwitchCompat switchToggle = view.findViewById(R.id.switch_toggle);
+    SwitchMaterial switchToggle = view.findViewById(R.id.switch_toggle);
     switchToggle.setOnCheckedChangeListener(
         (CompoundButton buttonView, boolean isChecked) -> {
-          for (SwitchCompat sc : toggledSwitches) {
-            sc.setEnabled(isChecked);
+          for (SwitchMaterial switchMaterial : toggledSwitches) {
+            switchMaterial.setEnabled(isChecked);
           }
         });
     return view;
