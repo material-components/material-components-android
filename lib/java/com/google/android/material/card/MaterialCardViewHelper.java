@@ -55,11 +55,6 @@ class MaterialCardViewHelper {
   private @ColorInt int strokeColor;
   private @ColorInt int rippleColor;
   private @Dimension int strokeWidth;
-  private @Dimension float radius;
-
-  private GradientDrawable fgDrawable;
-  private LayerDrawable layerDrawable;
-  private Drawable rippleDrawable;
 
   public MaterialCardViewHelper(MaterialCardView card) {
     materialCardView = card;
@@ -75,10 +70,6 @@ class MaterialCardViewHelper {
   }
 
   void setStrokeColor(@ColorInt int strokeColor) {
-    if (this.strokeColor == strokeColor) {
-      return;
-    }
-
     this.strokeColor = strokeColor;
     updateForeground();
   }
@@ -141,17 +132,11 @@ class MaterialCardViewHelper {
    * @return drawable representing foreground for a card.
    */
   private Drawable createForegroundDrawable() {
-    if (fgDrawable == null) {
-      fgDrawable = new GradientDrawable();
-      fgDrawable.setColor(Color.TRANSPARENT);
-    }
-
+    GradientDrawable fgDrawable = new GradientDrawable();
+    fgDrawable.setColor(Color.TRANSPARENT);
     float radius = materialCardView.getRadius();
-    if (Math.abs(radius - this.radius) > 0.001f) {
-      fgDrawable.setCornerRadius(radius);
-    }
+    fgDrawable.setCornerRadius(radius);
 
-    this.radius = radius;
     // In order to set a stroke, a size and color both need to be set. We default to a zero-width
     // width size, but won't set a default color. This prevents drawing a stroke that blends in with
     // the card but that could affect card spacing.
@@ -163,35 +148,12 @@ class MaterialCardViewHelper {
       return fgDrawable;
     }
 
-    if (rippleDrawable == null) {
-      rippleDrawable = createForegroundRippleDrawable();
-    } else {
-      updateRippleShape();
-    }
+    Drawable rippleDrawable = createForegroundRippleDrawable(radius);
 
-    if (layerDrawable == null) {
-      layerDrawable = new LayerDrawable(new Drawable[] {rippleDrawable, fgDrawable});
-      layerDrawable.setId(0, R.id.foregroundRippleLayerDrawable);
-      layerDrawable.setId(1, R.id.foregroundBorderLayerDrawable);
-    } else {
-      layerDrawable.setDrawableByLayerId(R.id.foregroundRippleLayerDrawable, rippleDrawable);
-      layerDrawable.setDrawableByLayerId(R.id.foregroundBorderLayerDrawable, fgDrawable);
-    }
-
-    return layerDrawable;
-  }
-
-  private void updateRippleShape() {
-    //noinspection NewApi
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE && rippleDrawable instanceof RippleDrawable) {
-      ShapeDrawable shapeDrawable =
-          (ShapeDrawable) ((RippleDrawable) rippleDrawable).getDrawable(0);
-      shapeDrawable.setShape(createRoundRectShape());
-      return;
-    }
-
-    // No way to update this one, create a new one.
-    rippleDrawable = createCompatRippleDrawable();
+    return new LayerDrawable(
+        new Drawable[] {
+          rippleDrawable, fgDrawable,
+        });
   }
 
   /** Guarantee at least enough content padding to account for the stroke width. */
@@ -211,34 +173,26 @@ class MaterialCardViewHelper {
     return value.data;
   }
 
-  private Drawable createForegroundRippleDrawable() {
+  private Drawable createForegroundRippleDrawable(float radius) {
     if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
       //noinspection NewApi
       return new RippleDrawable(
-          ColorStateList.valueOf(rippleColor), null, createForegroundShapeDrawable());
+          ColorStateList.valueOf(rippleColor), null, createForegroundShape(radius));
     }
 
-    Drawable rippleDrawable = createCompatRippleDrawable();
-    return rippleDrawable;
-  }
-
-  private Drawable createCompatRippleDrawable() {
     Drawable rippleDrawable = new StateListDrawable();
-    ShapeDrawable foregroundShape = createForegroundShapeDrawable();
+    ShapeDrawable foregroundShape = createForegroundShape(radius);
     foregroundShape.getPaint().setColor(rippleColor);
     ((StateListDrawable) rippleDrawable)
         .addState(new int[] {android.R.attr.state_pressed}, foregroundShape);
+
     return rippleDrawable;
   }
 
-  private ShapeDrawable createForegroundShapeDrawable() {
-    RoundRectShape shape = createRoundRectShape();
-    return new ShapeDrawable(shape);
-  }
-
-  private RoundRectShape createRoundRectShape() {
+  private ShapeDrawable createForegroundShape(float radius) {
     float[] radii = new float[8];
     Arrays.fill(radii, radius);
-    return new RoundRectShape(radii, null, null);
+    RoundRectShape shape = new RoundRectShape(radii, null, null);
+    return new ShapeDrawable(shape);
   }
 }
