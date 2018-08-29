@@ -53,6 +53,7 @@ def srcDirs = [
   'com/google/android/material/shadow',
   'com/google/android/material/snackbar',
   'com/google/android/material/stateful',
+  'com/google/android/material/switchmaterial',
   'com/google/android/material/tabs',
   'com/google/android/material/textfield',
   'com/google/android/material/theme',
