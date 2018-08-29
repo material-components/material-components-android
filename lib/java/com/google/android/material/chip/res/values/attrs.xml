@@ -24,6 +24,8 @@
   <attr name="chipStandaloneStyle" format="reference"/>
 
   <declare-styleable name="Chip">
+    <!-- Surface layer color to apply to the chip. -->
+    <attr name="chipSurfaceColor" format="color"/>
     <!-- Background color to apply to the chip. -->
     <attr name="chipBackgroundColor" format="color"/>
     <!-- Min height to apply to the chip. Total height includes stroke width. -->

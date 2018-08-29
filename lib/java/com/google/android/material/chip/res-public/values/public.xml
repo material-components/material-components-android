@@ -18,6 +18,7 @@
   <public name="chipGroupStyle" type="attr"/>
   <public name="chipStyle" type="attr"/>
   <public name="chipStandaloneStyle" type="attr"/>
+  <public name="chipSurfaceColor" type="attr"/>
   <public name="chipBackgroundColor" type="attr"/>
   <public name="chipMinHeight" type="attr"/>
   <public name="chipCornerRadius" type="attr"/>

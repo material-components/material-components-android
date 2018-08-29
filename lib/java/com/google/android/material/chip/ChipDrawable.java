@@ -162,6 +162,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
 
   // Visuals
+  @Nullable private ColorStateList chipSurfaceColor;
   @Nullable private ColorStateList chipBackgroundColor;
   private float chipMinHeight;
   private float chipCornerRadius;
@@ -253,6 +254,7 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private final RectF rectF = new RectF();
   private final PointF pointF = new PointF();
 
+  @ColorInt private int currentChipSurfaceColor;
   @ColorInt private int currentChipBackgroundColor;
   @ColorInt private int currentChipStrokeColor;
   @ColorInt private int currentCompatRippleColor;
@@ -347,6 +349,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.Chip, defStyleAttr, defStyleRes);
 
+    setChipSurfaceColor(
+        MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipSurfaceColor));
     setChipBackgroundColor(
         MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipBackgroundColor));
     setChipMinHeight(a.getDimension(R.styleable.Chip_chipMinHeight, 0f));
@@ -566,6 +570,9 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
               canvas, bounds.left, bounds.top, bounds.right, bounds.bottom, alpha);
     }
 
+    // 0. Draw 100% opaque surface layer underneath partial transparent background.
+    drawChipSurface(canvas, bounds);
+
     // 1. Draw chip background.
     drawChipBackground(canvas, bounds);
 
@@ -595,6 +602,13 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     if (alpha < 255) {
       canvas.restoreToCount(saveCount);
     }
+  }
+
+  private void drawChipSurface(@NonNull Canvas canvas, Rect bounds) {
+    chipPaint.setColor(currentChipSurfaceColor);
+    chipPaint.setStyle(Style.FILL);
+    rectF.set(bounds);
+    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
   }
 
   private void drawChipBackground(@NonNull Canvas canvas, Rect bounds) {
@@ -909,7 +923,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
    */
   @Override
   public boolean isStateful() {
-    return isStateful(chipBackgroundColor)
+    return isStateful(chipSurfaceColor)
+        || isStateful(chipBackgroundColor)
         || isStateful(chipStrokeColor)
         || (useCompatRipple && isStateful(compatRippleColor))
         || isStateful(textAppearance)
@@ -961,6 +976,15 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   private boolean onStateChange(int[] chipState, int[] closeIconState) {
     boolean invalidate = super.onStateChange(chipState);
     boolean sizeChanged = false;
+
+    int newChipSurfaceColor =
+        chipSurfaceColor != null
+            ? chipSurfaceColor.getColorForState(chipState, currentChipSurfaceColor)
+            : 0;
+    if (currentChipSurfaceColor != newChipSurfaceColor) {
+      currentChipSurfaceColor = newChipSurfaceColor;
+      invalidate = true;
+    }
 
     int newChipBackgroundColor =
         chipBackgroundColor != null
@@ -1269,6 +1293,22 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   // Getters and setters for attributes.
+
+  @Nullable
+  public ColorStateList getChipSurfaceColor() {
+    return chipSurfaceColor;
+  }
+
+  public void setChipSurfaceColorResource(@ColorRes int id) {
+    setChipSurfaceColor(AppCompatResources.getColorStateList(context, id));
+  }
+
+  public void setChipSurfaceColor(@Nullable ColorStateList chipSurfaceColor) {
+    if (this.chipSurfaceColor != chipSurfaceColor) {
+      this.chipSurfaceColor = chipSurfaceColor;
+      onStateChange(getState());
+    }
+  }
 
   @Nullable
   public ColorStateList getChipBackgroundColor() {

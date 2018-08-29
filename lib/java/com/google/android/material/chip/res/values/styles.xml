@@ -44,6 +44,7 @@
     <item name="android:textColor">@color/mtrl_chip_text_color</item>
     <item name="closeIconTint">@color/mtrl_chip_close_icon_tint</item>
 
+    <item name="chipSurfaceColor">@color/mtrl_chip_surface_color</item>
     <item name="chipBackgroundColor">@color/mtrl_chip_background_color</item>
     <item name="chipStrokeColor">#00000000</item>
     <item name="chipStrokeWidth">0dp</item>
