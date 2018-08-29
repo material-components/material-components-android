@@ -510,8 +510,8 @@ public class TextInputLayout extends LinearLayout {
     setBoxCornerRadii(
         getContext().getResources().getDimension(boxCornerRadiusTopStartId),
         getContext().getResources().getDimension(boxCornerRadiusTopEndId),
-        getContext().getResources().getDimension(boxCornerRadiusBottomEndId),
-        getContext().getResources().getDimension(boxCornerRadiusBottomStartId));
+        getContext().getResources().getDimension(boxCornerRadiusBottomStartId),
+        getContext().getResources().getDimension(boxCornerRadiusBottomEndId));
   }
 
   /**
