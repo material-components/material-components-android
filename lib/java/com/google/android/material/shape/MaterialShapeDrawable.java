@@ -171,7 +171,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public Region getTransparentRegion() {
     Rect bounds = getBounds();
     transparentRegion.set(bounds);
-    getPath(bounds.width(), bounds.height(), path);
+    getPath(bounds, path);
     scratchRegion.setPath(path, transparentRegion);
     transparentRegion.op(scratchRegion, Op.DIFFERENCE);
     return transparentRegion;
@@ -376,12 +376,15 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (shadowElevation > 0 && shadowEnabled) {
       paint.setShadowLayer(shadowRadius, 0, shadowElevation, shadowColor);
     }
+
+    Rect bounds = getBounds();
     if (shapedViewModel != null) {
-      getPath(canvas.getWidth(), canvas.getHeight(), path);
+      getPath(bounds, path);
       canvas.drawPath(path, paint);
     } else {
-      canvas.drawRect(0, 0, canvas.getWidth(), canvas.getHeight(), paint);
+      canvas.drawRect(bounds, paint);
     }
+
     paint.setAlpha(prevAlpha);
   }
 
@@ -389,12 +392,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Writes to the given {@link Path} for the current edge and corner treatments at the specified
    * size.
    *
-   * @param width width of target path.
-   * @param height height of target path.
+   * @param bounds bounds of target path.
    * @param path the returned path out-var.
    * @return the generated path.
    */
-  public void getPathForSize(int width, int height, Path path) {
+  public void getPathForSize(Rect bounds, Path path) {
     path.rewind();
 
     if (shapedViewModel == null) {
@@ -404,7 +406,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // Calculate the transformations (rotations and translations) necessary for each edge and
     // corner treatment.
     for (int index = 0; index < 4; index++) {
-      setCornerPathAndTransform(index, width, height);
+      setCornerPathAndTransform(index, bounds);
       setEdgeTransform(index);
     }
 
@@ -418,12 +420,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     path.close();
   }
 
-  private void setCornerPathAndTransform(int index, int width, int height) {
+  private void setCornerPathAndTransform(int index, Rect bounds) {
     getCornerTreatmentForIndex(index).getCornerPath(HALF_PI, interpolation, cornerPaths[index]);
 
     float prevEdgeAngle = angleOfEdge(index - 1) + HALF_PI;
     cornerTransforms[index].reset();
-    getCoordinatesOfCorner(index, width, height, pointF);
+    getCoordinatesOfCorner(index, bounds, pointF);
     cornerTransforms[index].setTranslate(pointF.x, pointF.y);
     cornerTransforms[index].preRotate((float) Math.toDegrees(prevEdgeAngle));
   }
@@ -494,20 +496,20 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
   }
 
-  private void getCoordinatesOfCorner(int index, int width, int height, PointF pointF) {
+  private void getCoordinatesOfCorner(int index, Rect bounds, PointF pointF) {
     switch (index) {
       case 1: // top-right
-        pointF.set(width, 0);
+        pointF.set(bounds.right, bounds.top);
         break;
       case 2: // bottom-right
-        pointF.set(width, height);
+        pointF.set(bounds.right, bounds.bottom);
         break;
       case 3: // bottom-left
-        pointF.set(0, height);
+        pointF.set(bounds.left, bounds.bottom);
         break;
       case 0: // top-left
       default:
-        pointF.set(0, 0);
+        pointF.set(bounds.left, bounds.top);
         break;
     }
   }
@@ -516,13 +518,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return HALF_PI * ((index + 4) % 4);
   }
 
-  private void getPath(int width, int height, Path path) {
-    getPathForSize(width, height, path);
+  private void getPath(Rect bounds, Path path) {
+    getPathForSize(bounds, path);
     if (scale == 1f) {
       return;
     }
     matrix.reset();
-    matrix.setScale(scale, scale, width / 2, height / 2);
+    matrix.setScale(scale, scale, bounds.width() / 2, bounds.height() / 2);
     path.transform(matrix);
   }
 
