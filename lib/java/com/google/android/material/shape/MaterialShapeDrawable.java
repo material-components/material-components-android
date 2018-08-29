@@ -539,4 +539,15 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       shadowColor = color;
     }
   }
+
+  @Override
+  public boolean isStateful() {
+    return tintList != null && tintList.isStateful();
+  }
+
+  @Override
+  protected boolean onStateChange(int[] state) {
+    updateTintFilter();
+    return super.onStateChange(state);
+  }
 }
