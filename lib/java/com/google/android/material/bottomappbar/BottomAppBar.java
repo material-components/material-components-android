@@ -149,14 +149,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       new TransformationListener<FloatingActionButton>() {
         @Override
         public void onScaleChanged(FloatingActionButton fab) {
-          materialShapeDrawable.setInterpolation(fab.getScaleY());
+          materialShapeDrawable.setInterpolation(isFabVisible() ? fab.getScaleY() : 0);
         }
 
         @Override
         public void onTranslationChanged(FloatingActionButton fab) {
           topEdgeTreatment.setHorizontalOffset(fab.getTranslationX());
           topEdgeTreatment.setCradleVerticalOffset(-fab.getTranslationY());
-          materialShapeDrawable.setInterpolation(fab.getScaleY());
+          materialShapeDrawable.setInterpolation(isFabVisible() ? fab.getScaleY() : 0);
         }
       };
 
