@@ -387,7 +387,12 @@ class FloatingActionButtonImpl {
     }
 
     if (shouldAnimateVisibilityChange()) {
-      AnimatorSet set = createHideAnimator();
+      AnimatorSet set =
+          createAnimator(
+              hideMotionSpec != null ? hideMotionSpec : getDefaultHideMotionSpec(),
+              HIDE_OPACITY,
+              HIDE_SCALE,
+              HIDE_ICON_SCALE);
       set.addListener(
           new AnimatorListenerAdapter() {
             private boolean cancelled;
@@ -453,7 +458,12 @@ class FloatingActionButtonImpl {
         setImageMatrixScale(0f);
       }
 
-      AnimatorSet set = createShowAnimator();
+      AnimatorSet set =
+          createAnimator(
+              showMotionSpec != null ? showMotionSpec : getDefaultShowMotionSpec(),
+              SHOW_OPACITY,
+              SHOW_SCALE,
+              SHOW_ICON_SCALE);
       set.addListener(
           new AnimatorListenerAdapter() {
             @Override
@@ -544,24 +554,6 @@ class FloatingActionButtonImpl {
     AnimatorSet set = new AnimatorSet();
     AnimatorSetCompat.playTogether(set, animators);
     return set;
-  }
-
-  @NonNull
-  AnimatorSet createHideAnimator() {
-    return createAnimator(
-        hideMotionSpec != null ? hideMotionSpec : getDefaultHideMotionSpec(),
-        HIDE_OPACITY,
-        HIDE_SCALE,
-        HIDE_ICON_SCALE);
-  }
-
-  @NonNull
-  AnimatorSet createShowAnimator() {
-    return createAnimator(
-        showMotionSpec != null ? showMotionSpec : getDefaultShowMotionSpec(),
-        SHOW_OPACITY,
-        SHOW_SCALE,
-        SHOW_ICON_SCALE);
   }
 
   void addTransformationListener(@NonNull InternalTransformationListener listener) {

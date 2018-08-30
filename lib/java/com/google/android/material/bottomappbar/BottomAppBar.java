@@ -40,6 +40,7 @@ import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.TransformationListener;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -409,28 +410,28 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     return fab != null && fab.getVisibility() == VISIBLE;
   }
 
+  /**
+   * Creates the default animation for moving a fab between alignment modes. Can be overridden by
+   * extending classes to create a custom animation. Animations that should be executed should be
+   * added to the animators list. The default animation defined here calls {@link
+   * FloatingActionButton#hide()} and {@link FloatingActionButton#show()} rather than using custom
+   * animations.
+   */
   protected void createFabDefaultXAnimation(
       final @FabAlignmentMode int targetMode, List<Animator> animators) {
     final FloatingActionButton fab = findDependentFab();
 
-    if (fab == null) {
+    if (fab == null || fab.isOrWillBeHidden()) {
       return;
     }
 
-    AnimatorSet hideAnimator = fab.createHideAnimator();
-    AnimatorSet showAnimator = fab.createShowAnimator();
-
-    showAnimator.addListener(
-        new AnimatorListenerAdapter() {
-          @Override
-          public void onAnimationStart(Animator animation) {
-            fab.setTranslationX(getFabTranslationX(targetMode));
-          }
-        });
-
-    AnimatorSet set = new AnimatorSet();
-    set.playSequentially(hideAnimator, showAnimator);
-    animators.add(set);
+    fab.hide(new OnVisibilityChangedListener() {
+      @Override
+      public void onHidden(FloatingActionButton fab) {
+        fab.setTranslationX(getFabTranslationX(targetMode));
+        fab.show();
+      }
+    });
   }
 
   private void createFabTranslationXAnimation(
@@ -639,7 +640,18 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   private void addFabAnimationListeners(@NonNull FloatingActionButton fab) {
     fab.addOnHideAnimationListener(fabAnimationListener);
-    fab.addOnShowAnimationListener(fabAnimationListener);
+    fab.addOnShowAnimationListener(new AnimatorListenerAdapter() {
+      @Override
+      public void onAnimationStart(Animator animation) {
+        fabAnimationListener.onAnimationStart(animation);
+
+        // Any time the fab is being shown make sure it is in the correct position.
+        FloatingActionButton fab = findDependentFab();
+        if (fab != null) {
+          fab.setTranslationX(getFabTranslationX());
+        }
+      }
+    });
     fab.addTransformationListener(fabTransformationListener);
   }
 
