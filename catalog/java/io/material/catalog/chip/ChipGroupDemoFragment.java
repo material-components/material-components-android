@@ -38,9 +38,7 @@ public class ChipGroupDemoFragment extends DemoFragment {
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    View view =
-        layoutInflater.inflate(
-            R.layout.cat_chip_group_fragment, viewGroup, false /* attachToRoot */);
+    View view = layoutInflater.inflate(getChipGroupContent(), viewGroup, false /* attachToRoot */);
 
     ViewGroup content = view.findViewById(R.id.content);
 
@@ -60,6 +58,11 @@ public class ChipGroupDemoFragment extends DemoFragment {
     initChipGroup(scrollGroup);
 
     return view;
+  }
+
+  @LayoutRes
+  protected int getChipGroupContent() {
+    return R.layout.cat_chip_group_fragment;
   }
 
   @LayoutRes

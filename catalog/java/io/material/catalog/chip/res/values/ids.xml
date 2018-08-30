@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2017 The Android Open Source Project
+  Copyright 2018 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,10 +15,7 @@
   limitations under the License.
   -->
 
-<com.google.android.material.chip.Chip
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    style="@style/Widget.MaterialComponents.Chip.Choice"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:chipTouchTargetDelegate="@id/chip_group_parent"/>
+<resources>
+  <!-- Used by app:chipTouchTargetDelegate to extend a touch boundary in a chip set. -->
+  <item type="id" name="chip_group_parent"/>
+</resources>

@@ -39,8 +39,11 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center_vertical">
       <LinearLayout
+          android:id="@id/chip_group_parent"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
+          android:paddingTop="8dp"
+          android:paddingBottom="8dp"
           android:gravity="center_horizontal"
           android:orientation="vertical">
 
@@ -53,7 +56,8 @@
             android:id="@+id/reflow_group"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="16dp"/>
+            android:layout_margin="16dp"
+            app:chipSpacing="8dp"/>
 
         <!-- Scrolling chip group. -->
         <TextView
@@ -68,6 +72,7 @@
               android:id="@+id/scroll_group"
               android:layout_width="match_parent"
               android:layout_height="wrap_content"
+              app:chipSpacing="8dp"
               app:singleLine="true"/>
         </HorizontalScrollView>
       </LinearLayout>
