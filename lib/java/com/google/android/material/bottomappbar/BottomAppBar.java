@@ -399,9 +399,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     return null;
   }
 
-  private boolean isFabVisible() {
+  private boolean isFabVisibleOrWillBeShown() {
     FloatingActionButton fab = findDependentFab();
     return fab != null && fab.isOrWillBeShown();
+  }
+
+  private boolean isFabVisible() {
+    FloatingActionButton fab = findDependentFab();
+    return fab != null && fab.getVisibility() == VISIBLE;
   }
 
   protected void createFabDefaultXAnimation(
@@ -448,7 +453,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     List<Animator> animators = new ArrayList<>();
 
     // If there's no visible FAB, treat the animation like the FAB is going away.
-    if (!isFabVisible()) {
+    if (!isFabVisibleOrWillBeShown()) {
       targetMode = FAB_ALIGNMENT_MODE_CENTER;
       newFabAttached = false;
     }
@@ -610,7 +615,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     // Layout all elements related to the positioning of the fab.
     topEdgeTreatment.setHorizontalOffset(getFabTranslationX());
     FloatingActionButton fab = findDependentFab();
-    materialShapeDrawable.setInterpolation(fabAttached && isFabVisible() ? 1 : 0);
+    materialShapeDrawable.setInterpolation(fabAttached && isFabVisibleOrWillBeShown() ? 1 : 0);
     if (fab != null) {
       fab.setTranslationY(getFabTranslationY());
       fab.setTranslationX(getFabTranslationX());
@@ -618,7 +623,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     ActionMenuView actionMenuView = getActionMenuView();
     if (actionMenuView != null) {
       actionMenuView.setAlpha(1.0f);
-      if (!isFabVisible()) {
+      if (!isFabVisibleOrWillBeShown()) {
         translateActionMenuView(actionMenuView, FAB_ALIGNMENT_MODE_CENTER, false);
       } else {
         translateActionMenuView(actionMenuView, fabAlignmentMode, fabAttached);
