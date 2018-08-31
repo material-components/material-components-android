@@ -109,19 +109,13 @@ ripple, and motion changes.
 
 Feature    | Relevant attributes
 :--------- | :-------------------------------
-Icon       | `app:srcCompat`
-           | `app:tint`
-           | `app:maxImageSize`
-Size       | `app:fabSize`
-           | `app:fabCustomSize`
+Icon       | `app:srcCompat`<br> `app:tint`<br> `app:maxImageSize`
+Size       | `app:fabSize`<br> `app:fabCustomSize`
 Background | `app:backgroundTint`
 Ripple     | `app:rippleColor`
 Border     | `app:borderWidth`
-Elevation  | `app:elevation`
-           | `app:hoveredFocusedTranslationZ`
-           | `app:pressedTranslationZ`
-Motion     | `app:showMotionSpec`
-           | `app:hideMotionSpec`
+Elevation  | `app:elevation`<br> `app:hoveredFocusedTranslationZ`<br> `app:pressedTranslationZ`
+Motion     | `app:showMotionSpec`<br> `app:hideMotionSpec`
 
 ### Handling Clicks
 
