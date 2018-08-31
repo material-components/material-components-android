@@ -57,6 +57,7 @@ import com.google.android.material.math.MathUtils;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.ViewCompat;
 import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewAnimationUtils;
@@ -75,6 +76,11 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
   private final RectF tmpRectF1 = new RectF();
   private final RectF tmpRectF2 = new RectF();
   private final int[] tmpArray = new int[2];
+
+  // The original translation of the dependency. Used to translate the dependency back to its
+  // original position.
+  private float dependencyOriginalTranslationX;
+  private float dependencyOriginalTranslationY;
 
   public FabTransformationBehavior() {}
 
@@ -114,6 +120,11 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       final View dependency, final View child, final boolean expanded, boolean isAnimating) {
     FabTransformationSpec spec = onCreateMotionSpec(child.getContext(), expanded);
 
+    if (expanded) {
+      dependencyOriginalTranslationX = dependency.getTranslationX();
+      dependencyOriginalTranslationY = dependency.getTranslationY();
+    }
+
     List<Animator> animations = new ArrayList<>();
     List<AnimatorListener> listeners = new ArrayList<>();
 
@@ -128,6 +139,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     float childWidth = childBounds.width();
     float childHeight = childBounds.height();
 
+    createDependencyTranslationAnimation(dependency, child, expanded, spec, animations);
     createIconFadeAnimation(dependency, child, expanded, isAnimating, spec, animations, listeners);
     createExpansionAnimation(
         dependency,
@@ -201,6 +213,40 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     animations.add(animator);
   }
 
+  private void createDependencyTranslationAnimation(
+      View dependency,
+      View child,
+      boolean expanded,
+      FabTransformationSpec spec,
+      List<Animator> animations) {
+    float translationX = calculateTranslationX(dependency, child, spec.positioning);
+    float translationY = calculateTranslationY(dependency, child, spec.positioning);
+
+    ValueAnimator translationXAnimator;
+    ValueAnimator translationYAnimator;
+
+    Pair<MotionTiming, MotionTiming> motionTiming =
+        calculateMotionTiming(translationX, translationY, expanded, spec);
+    MotionTiming translationXTiming = motionTiming.first;
+    MotionTiming translationYTiming = motionTiming.second;
+
+    translationXAnimator =
+        ObjectAnimator.ofFloat(
+            dependency,
+            View.TRANSLATION_X,
+            expanded ? translationX : dependencyOriginalTranslationX);
+    translationYAnimator =
+        ObjectAnimator.ofFloat(
+            dependency,
+            View.TRANSLATION_Y,
+            expanded ? translationY : dependencyOriginalTranslationY);
+
+    translationXTiming.apply(translationXAnimator);
+    translationYTiming.apply(translationYAnimator);
+    animations.add(translationXAnimator);
+    animations.add(translationYAnimator);
+  }
+
   private void createTranslationAnimation(
       View dependency,
       View child,
@@ -216,21 +262,10 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     ValueAnimator translationXAnimator;
     ValueAnimator translationYAnimator;
 
-    MotionTiming translationXTiming;
-    MotionTiming translationYTiming;
-    if (translationX == 0 || translationY == 0) {
-      // Horizontal or vertical motion.
-      translationXTiming = spec.timings.getTiming("translationXLinear");
-      translationYTiming = spec.timings.getTiming("translationYLinear");
-    } else if ((expanded && translationY < 0) || (!expanded && translationY > 0)) {
-      // Upwards motion.
-      translationXTiming = spec.timings.getTiming("translationXCurveUpwards");
-      translationYTiming = spec.timings.getTiming("translationYCurveUpwards");
-    } else {
-      // Downwards motion.
-      translationXTiming = spec.timings.getTiming("translationXCurveDownwards");
-      translationYTiming = spec.timings.getTiming("translationYCurveDownwards");
-    }
+    Pair<MotionTiming, MotionTiming> motionTiming =
+        calculateMotionTiming(translationX, translationY, expanded, spec);
+    MotionTiming translationXTiming = motionTiming.first;
+    MotionTiming translationYTiming = motionTiming.second;
 
     if (expanded) {
       if (!currentlyAnimating) {
@@ -488,11 +523,32 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     animations.add(animator);
   }
 
+  private Pair<MotionTiming, MotionTiming> calculateMotionTiming(
+      float translationX, float translationY, boolean expanded, FabTransformationSpec spec) {
+    MotionTiming translationXTiming;
+    MotionTiming translationYTiming;
+    if (translationX == 0 || translationY == 0) {
+      // Horizontal or vertical motion.
+      translationXTiming = spec.timings.getTiming("translationXLinear");
+      translationYTiming = spec.timings.getTiming("translationYLinear");
+    } else if ((expanded && translationY < 0) || (!expanded && translationY > 0)) {
+      // Upwards motion.
+      translationXTiming = spec.timings.getTiming("translationXCurveUpwards");
+      translationYTiming = spec.timings.getTiming("translationYCurveUpwards");
+    } else {
+      // Downwards motion.
+      translationXTiming = spec.timings.getTiming("translationXCurveDownwards");
+      translationYTiming = spec.timings.getTiming("translationYCurveDownwards");
+    }
+
+    return new Pair<>(translationXTiming, translationYTiming);
+  }
+
   private float calculateTranslationX(View dependency, View child, Positioning positioning) {
     RectF dependencyBounds = tmpRectF1;
     RectF childBounds = tmpRectF2;
 
-    calculateWindowBounds(dependency, dependencyBounds);
+    calculateDependencyWindowBounds(dependency, dependencyBounds);
     calculateWindowBounds(child, childBounds);
 
     float translationX = 0f;
@@ -517,7 +573,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     RectF dependencyBounds = tmpRectF1;
     RectF childBounds = tmpRectF2;
 
-    calculateWindowBounds(dependency, dependencyBounds);
+    calculateDependencyWindowBounds(dependency, dependencyBounds);
     calculateWindowBounds(child, childBounds);
 
     float translationY = 0f;
@@ -552,11 +608,16 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     windowBounds.offset((int) -view.getTranslationX(), (int) -view.getTranslationY());
   }
 
+  private void calculateDependencyWindowBounds(View view, RectF rect) {
+    calculateWindowBounds(view, rect);
+    rect.offset(dependencyOriginalTranslationX, dependencyOriginalTranslationY);
+  }
+
   private float calculateRevealCenterX(View dependency, View child, Positioning positioning) {
     RectF dependencyBounds = tmpRectF1;
     RectF childBounds = tmpRectF2;
 
-    calculateWindowBounds(dependency, dependencyBounds);
+    calculateDependencyWindowBounds(dependency, dependencyBounds);
     calculateWindowBounds(child, childBounds);
 
     float translationX = calculateTranslationX(dependency, child, positioning);
@@ -569,7 +630,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     RectF dependencyBounds = tmpRectF1;
     RectF childBounds = tmpRectF2;
 
-    calculateWindowBounds(dependency, dependencyBounds);
+    calculateDependencyWindowBounds(dependency, dependencyBounds);
     calculateWindowBounds(child, childBounds);
 
     float translationY = calculateTranslationY(dependency, child, positioning);

@@ -150,14 +150,16 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       new TransformationListener<FloatingActionButton>() {
         @Override
         public void onScaleChanged(FloatingActionButton fab) {
-          materialShapeDrawable.setInterpolation(isFabVisible() ? fab.getScaleY() : 0);
+          materialShapeDrawable.setInterpolation(
+              fab.getVisibility() != View.GONE ? fab.getScaleY() : 0);
         }
 
         @Override
         public void onTranslationChanged(FloatingActionButton fab) {
           topEdgeTreatment.setHorizontalOffset(fab.getTranslationX());
           topEdgeTreatment.setCradleVerticalOffset(-fab.getTranslationY());
-          materialShapeDrawable.setInterpolation(isFabVisible() ? fab.getScaleY() : 0);
+          materialShapeDrawable.setInterpolation(
+              fab.getVisibility() != View.GONE ? fab.getScaleY() : 0);
         }
       };
 
@@ -403,11 +405,6 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private boolean isFabVisibleOrWillBeShown() {
     FloatingActionButton fab = findDependentFab();
     return fab != null && fab.isOrWillBeShown();
-  }
-
-  private boolean isFabVisible() {
-    FloatingActionButton fab = findDependentFab();
-    return fab != null && fab.getVisibility() == VISIBLE;
   }
 
   /**
