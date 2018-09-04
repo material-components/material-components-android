@@ -43,10 +43,27 @@
     <item name="windowNoTitle">true</item>
   </style>
 
+  <!--
+    Theme provides capability to switch between dark and light color schemes depending on time
+    of day. Extends from Theme.AppCompt.DayNight and requires equivalent implementation steps. See
+    Theme.AppCompat.DayNight developer documentation for further details.
+    Pre-API 14 devices will default to light.
+  -->
+  <style name="Theme.MaterialComponents.DayNight" parent="Base.Theme.MaterialComponents.DayNight"/>
+
+  <style name="Theme.MaterialComponents.DayNight.DarkActionBar" parent="Base.Theme.MaterialComponents.DayNight.DarkActionBar"/>
+
+  <style name="Theme.MaterialComponents.DayNight.NoActionBar" parent="Theme.MaterialComponents.DayNight">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
   <!-- Bridge themes containing only new attributes defined in MaterialComponents themes. -->
   <style name="Theme.MaterialComponents.Bridge" parent="Base.Theme.MaterialComponents.Bridge"/>
 
   <style name="Theme.MaterialComponents.Light.Bridge" parent="Base.Theme.MaterialComponents.Light.Bridge"/>
+
+  <style name="Theme.MaterialComponents.DayNight.Bridge" parent="Base.Theme.MaterialComponents.DayNight.Bridge"/>
 
   <style name="Theme.MaterialComponents.NoActionBar.Bridge" parent="Theme.MaterialComponents.Bridge">
     <item name="windowActionBar">false</item>
@@ -60,12 +77,21 @@
 
   <style name="Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Base.Theme.MaterialComponents.Light.DarkActionBar.Bridge"/>
 
+  <style name="Theme.MaterialComponents.DayNight.NoActionBar.Bridge" parent="Theme.MaterialComponents.DayNight.Bridge">
+    <item name="windowActionBar">false</item>
+    <item name="windowNoTitle">true</item>
+  </style>
+
   <style name="Theme.MaterialComponents.DialogWhenLarge"
       parent="Base.Theme.MaterialComponents.DialogWhenLarge">
   </style>
 
   <style name="Theme.MaterialComponents.Light.DialogWhenLarge"
       parent="Base.Theme.MaterialComponents.Light.DialogWhenLarge">
+  </style>
+
+  <style name="Theme.MaterialComponents.DayNight.DialogWhenLarge"
+      parent="Base.Theme.MaterialComponents.DayNight.DialogWhenLarge">
   </style>
 
   <!-- Menu/item attributes -->
