@@ -79,6 +79,7 @@ import android.view.ViewParent;
 import android.view.ViewTreeObserver;
 import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityNodeInfo;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
@@ -193,9 +194,13 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         ChipDrawable.createFromAttributes(
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     setChipDrawable(drawable);
-    touchHelper = new ChipTouchHelper(this);
-    ViewCompat.setAccessibilityDelegate(this, touchHelper);
 
+    touchHelper = new ChipTouchHelper(this);
+    if (VERSION.SDK_INT >= VERSION_CODES.N) {
+      ViewCompat.setAccessibilityDelegate(this, touchHelper);
+    } else {
+      updateAccessibilityDelegate();
+    }
     initOutlineProvider();
     // Set deferred values
     setChecked(deferredCheckedValue);
@@ -216,6 +221,27 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     // Helps TextView calculate the available text width.
     updatePaddingInternal();
     setupTouchTargetDelegate(context, attrs, defStyleAttr);
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    info.setClassName(Chip.class.getName());
+    info.setCheckable(isCheckable());
+    info.setClickable(isClickable());
+  }
+
+  // TODO: Due to a11y bug, avoid setting custom ExploreByTouchHelper as delegate
+  // unless there's a close/trailing icon. Revert this once bug is fixed.
+  private void updateAccessibilityDelegate() {
+    if (VERSION.SDK_INT >= VERSION_CODES.N) {
+      return;
+    }
+    if ((hasCloseIcon() && isCloseIconVisible())) {
+      ViewCompat.setAccessibilityDelegate(this, touchHelper);
+    } else {
+      ViewCompat.setAccessibilityDelegate(this, null);
+    }
   }
 
   private void setupTouchTargetDelegate(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -1040,7 +1066,8 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
     @Override
     protected void onPopulateNodeForHost(AccessibilityNodeInfoCompat node) {
-      node.setCheckable(chipDrawable != null && chipDrawable.isCheckable());
+      node.setCheckable(isCheckable());
+      node.setClickable(isClickable());
       node.setClassName(Chip.class.getName());
       CharSequence chipText = getText();
       if (VERSION.SDK_INT >= VERSION_CODES.M) {
@@ -1369,15 +1396,14 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   public void setCloseIconVisible(@BoolRes int id) {
-    if (chipDrawable != null) {
-      chipDrawable.setCloseIconVisible(id);
-    }
+    setCloseIconVisible(getResources().getBoolean(id));
   }
 
   public void setCloseIconVisible(boolean closeIconVisible) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconVisible(closeIconVisible);
     }
+    updateAccessibilityDelegate();
   }
 
   /** @deprecated Use {@link Chip#setCloseIconVisible(int)} instead. */
@@ -1401,12 +1427,14 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconResource(id);
     }
+    updateAccessibilityDelegate();
   }
 
   public void setCloseIcon(@Nullable Drawable closeIcon) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIcon(closeIcon);
     }
+    updateAccessibilityDelegate();
   }
 
   @Nullable
