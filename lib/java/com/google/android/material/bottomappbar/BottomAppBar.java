@@ -603,10 +603,15 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
     super.onLayout(changed, l, t, r, b);
 
-    // Stop any animations that might be trying to move things around.
-    cancelAnimations();
+    // If the layout hasn't changed this means the position and size hasn't changed so we don't need
+    // to update the position of the cutout and we can continue any running animations. Otherwise,
+    // we should stop any animations that might be trying to move things around and reset the
+    // position of the cutout.
+    if (changed) {
+      cancelAnimations();
 
-    setCutoutState();
+      setCutoutState();
+    }
   }
 
   private void setCutoutState() {
