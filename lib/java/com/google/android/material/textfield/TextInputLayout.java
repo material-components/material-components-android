@@ -797,8 +797,11 @@ public class TextInputLayout extends LinearLayout {
 
   @Override
   public int getBaseline() {
-    EditText text = getEditText();
-    return text == null ? super.getBaseline() : text.getPaddingTop() + text.getBaseline();
+    if (editText != null) {
+      return editText.getPaddingTop() + editText.getBaseline();
+    } else {
+      return super.getBaseline();
+    }
   }
 
   /**
