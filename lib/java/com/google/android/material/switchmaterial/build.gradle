@@ -23,6 +23,7 @@ version = rootProject.ext.mdcLibraryVersion
 dependencies {
   implementation compatibility("v7/appcompat")
   implementation project(fromPath("lib/java/com/google/android/material/internal"))
+  implementation project(fromPath("lib/java/com/google/android/material/color"))
 }
 
 android {

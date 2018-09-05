@@ -30,7 +30,6 @@ import android.support.v7.view.ContextThemeWrapper;
 import android.support.v7.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
-import android.view.View;
 
 /**
  * Utility methods to check Theme compatibility with components.
@@ -47,24 +46,6 @@ public final class ThemeEnforcement {
   private static final String MATERIAL_THEME_NAME = "Theme.MaterialComponents";
 
   private ThemeEnforcement() {}
-
-  public static TypedValue resolveAttributeOrThrow(
-      View componentView, @AttrRes int attributeResId) {
-    TypedValue typedValue = new TypedValue();
-    Context context = componentView.getContext();
-    if (!context.getTheme().resolveAttribute(attributeResId, typedValue, true)) {
-      String errorMessage =
-          "The %1$s view requires a value for the %2$s attribute to be set in your app theme. "
-              + "You can either set the attribute in your theme or "
-              + "update your theme to inherit from Theme.MaterialComponents (or a descendant).";
-      throw new IllegalArgumentException(
-          String.format(
-              errorMessage,
-              componentView.getClass().getCanonicalName(),
-              context.getResources().getResourceName(attributeResId)));
-    }
-    return typedValue;
-  }
 
   /**
    * Safely retrieve styled attribute information in this Context's theme, after checking whether

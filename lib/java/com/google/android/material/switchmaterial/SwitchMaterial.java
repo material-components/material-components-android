@@ -21,8 +21,7 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.support.annotation.Nullable;
-import com.google.android.material.internal.ThemeEnforcement;
-import android.support.v4.graphics.ColorUtils;
+import com.google.android.material.color.MaterialColors;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
 
@@ -45,12 +44,6 @@ public class SwitchMaterial extends SwitchCompat {
         new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [3]
       };
 
-  private final int[][] enabledStates =
-      new int[][] {
-        new int[] {android.R.attr.state_enabled}, // [0]
-        new int[] {-android.R.attr.state_enabled}, // [1]
-      };
-
   public SwitchMaterial(Context context) {
     this(context, null);
   }
@@ -62,29 +55,31 @@ public class SwitchMaterial extends SwitchCompat {
   public SwitchMaterial(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    int colorSecondary = ThemeEnforcement.resolveAttributeOrThrow(this, R.attr.colorSecondary).data;
-    int colorSurface = ThemeEnforcement.resolveAttributeOrThrow(this, R.attr.colorSurface).data;
-    int colorOnSurface = ThemeEnforcement.resolveAttributeOrThrow(this, R.attr.colorOnSurface).data;
-    int colorText = this.getCurrentTextColor();
+    int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
+    int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
+    int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
 
     int[] switchThumbColorsList = new int[enabledCheckedStates.length];
-    switchThumbColorsList[0] = colorSecondary;
-    switchThumbColorsList[1] = colorSurface;
-    switchThumbColorsList[2] = ColorUtils.blendARGB(colorSurface, colorSecondary, 0.38F);
-    switchThumbColorsList[3] = colorSurface;
+    switchThumbColorsList[0] =
+        MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
+    switchThumbColorsList[1] =
+        MaterialColors.layer(colorSurface, colorSurface, MaterialColors.ALPHA_FULL);
+    switchThumbColorsList[2] =
+        MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_DISABLED);
+    switchThumbColorsList[3] =
+        MaterialColors.layer(colorSurface, colorSurface, MaterialColors.ALPHA_FULL);
 
     int[] switchTrackColorsList = new int[enabledCheckedStates.length];
-    switchTrackColorsList[0] = ColorUtils.blendARGB(colorSurface, colorSecondary, 0.54F);
-    switchTrackColorsList[1] = ColorUtils.blendARGB(colorSurface, colorOnSurface, 0.32F);
-    switchTrackColorsList[2] = ColorUtils.blendARGB(colorSurface, colorSecondary, 0.12F);
-    switchTrackColorsList[3] = ColorUtils.blendARGB(colorSurface, colorOnSurface, 0.12F);
-
-    int[] switchTextColorList = new int[enabledStates.length];
-    switchTextColorList[0] = colorText;
-    switchTextColorList[1] = ColorUtils.blendARGB(colorSurface, colorText, 0.38F);
+    switchTrackColorsList[0] =
+        MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_MEDIUM);
+    switchTrackColorsList[1] =
+        MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_LOW);
+    switchTrackColorsList[2] =
+        MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_DISABLED_LOW);
+    switchTrackColorsList[3] =
+        MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED_LOW);
 
     setThumbTintList(new ColorStateList(enabledCheckedStates, switchThumbColorsList));
     setTrackTintList(new ColorStateList(enabledCheckedStates, switchTrackColorsList));
-    setTextColor(new ColorStateList(enabledStates, switchTextColorList));
   }
 }
