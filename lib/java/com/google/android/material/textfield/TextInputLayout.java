@@ -31,9 +31,7 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.DrawableContainer;
 import android.graphics.drawable.GradientDrawable;
-import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -52,7 +50,6 @@ import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.internal.DescendantOffsetUtils;
-import com.google.android.material.internal.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import android.support.v4.content.ContextCompat;
@@ -234,7 +231,6 @@ public class TextInputLayout extends LinearLayout {
   private boolean hintAnimationEnabled;
   private ValueAnimator animator;
 
-  private boolean hasReconstructedEditTextBackground;
   private boolean inDrawableStateChanged;
 
   private boolean restoringSavedState;
@@ -1379,8 +1375,6 @@ public class TextInputLayout extends LinearLayout {
       return;
     }
 
-    ensureBackgroundDrawableStateWorkaround();
-
     if (android.support.v7.widget.DrawableUtils.canSafelyMutateDrawable(editTextBackground)) {
       editTextBackground = editTextBackground.mutate();
     }
@@ -1400,45 +1394,6 @@ public class TextInputLayout extends LinearLayout {
       // normal tint is used
       DrawableCompat.clearColorFilter(editTextBackground);
       editText.refreshDrawableState();
-    }
-  }
-
-  private void ensureBackgroundDrawableStateWorkaround() {
-    final int sdk = Build.VERSION.SDK_INT;
-    if (sdk != 21 && sdk != 22) {
-      // The workaround is only required on API 21-22
-      return;
-    }
-    final Drawable bg = editText.getBackground();
-    if (bg == null) {
-      return;
-    }
-
-    if (!hasReconstructedEditTextBackground) {
-      // This is gross. There is an issue in the platform which affects container Drawables
-      // where the first drawable retrieved from resources will propagate any changes
-      // (like color filter) to all instances from the cache. We'll try to work around it...
-
-      final Drawable newBg = bg.getConstantState().newDrawable();
-
-      if (bg instanceof DrawableContainer) {
-        // If we have a Drawable container, we can try and set its constant state via
-        // reflection from the new Drawable
-        hasReconstructedEditTextBackground =
-            DrawableUtils.setContainerConstantState(
-                (DrawableContainer) bg, newBg.getConstantState());
-      }
-
-      if (!hasReconstructedEditTextBackground) {
-        // If we reach here then we just need to set a brand new instance of the Drawable
-        // as the background. This has the unfortunate side-effect of wiping out any
-        // user set padding, but I'd hope that use of custom padding on an EditText
-        // is limited.
-        ViewCompat.setBackground(editText, newBg);
-        hasReconstructedEditTextBackground = true;
-        // Re-apply box background mode to set the EditText's box padding if in box mode.
-        onApplyBoxBackgroundMode();
-      }
     }
   }
 
