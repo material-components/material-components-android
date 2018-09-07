@@ -744,6 +744,15 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  @Override
+  public int getBaseline() {
+    if (editText != null) {
+      return editText.getBaseline() + getPaddingTop() + calculateLabelMarginTop();
+    } else {
+      return super.getBaseline();
+    }
+  }
+
   void updateLabelState(boolean animate) {
     updateLabelState(animate, false);
   }
