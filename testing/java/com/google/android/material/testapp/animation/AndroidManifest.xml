@@ -22,6 +22,7 @@
     android:targetSdkVersion="27"/>
 
   <application
+    android:name="android.support.multidex.MultiDexApplication"
     android:supportsRtl="true"
     android:theme="@style/Theme.Design">
 
