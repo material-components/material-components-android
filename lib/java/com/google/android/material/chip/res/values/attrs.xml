@@ -46,6 +46,8 @@
 
     <!-- Text to display on the chip. -->
     <attr name="android:text"/>
+    <!-- Text color. -->
+    <attr name="android:textColor"/>
     <!-- Default appearance of text: color, typeface, size, and style. -->
     <attr name="android:textAppearance"/>
     <!-- If set, causes words that are longer than the view is wide to be ellipsized instead of

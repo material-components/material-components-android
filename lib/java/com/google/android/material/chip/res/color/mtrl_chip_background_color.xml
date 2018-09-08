@@ -16,9 +16,10 @@
   -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-
-  <item android:color="#CACACA" android:state_enabled="true" android:state_selected="true"/>
-  <item android:color="#EBEBEB" android:state_enabled="true"/>
-  <item android:color="#F7F7F7"/>
+  <!-- 8% + 8% opacity -->
+  <item android:alpha="0.18" android:color="?attr/colorOnSurface" android:state_enabled="true" android:state_selected="true"/>
+  <!-- 12% of 87% opacity -->
+  <item android:alpha="0.10" android:color="?attr/colorOnSurface" android:state_enabled="true"/>
+  <item android:alpha="0.12" android:color="?attr/colorOnSurface"/>
 
 </selector>

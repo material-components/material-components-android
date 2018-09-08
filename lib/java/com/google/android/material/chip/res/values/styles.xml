@@ -39,6 +39,7 @@
     <item name="closeIcon">@drawable/ic_mtrl_chip_close_circle</item>
 
     <item name="android:text">@null</item>
+    <item name="enforceMaterialTheme">true</item>
     <item name="enforceTextAppearance">true</item>
     <item name="android:textAppearance">?attr/textAppearanceBody2</item>
     <item name="android:textColor">@color/mtrl_chip_text_color</item>
@@ -46,7 +47,7 @@
 
     <item name="chipSurfaceColor">@color/mtrl_chip_surface_color</item>
     <item name="chipBackgroundColor">@color/mtrl_chip_background_color</item>
-    <item name="chipStrokeColor">#00000000</item>
+    <item name="chipStrokeColor">?attr/colorOnSurface</item>
     <item name="chipStrokeWidth">0dp</item>
     <item name="rippleColor">@color/mtrl_chip_ripple_color</item>
 
