@@ -19,6 +19,7 @@
   <style name="Theme.Catalog" parent="Theme.MaterialComponents.Light.NoActionBar">
     <item name="colorPrimary">@color/cat_color_primary</item>
     <item name="colorPrimaryDark">@color/cat_color_primary_dark</item>
+    <item name="colorOnSecondary">@color/cat_color_on_secondary</item>
 
     <item name="colorSecondary">@color/cat_color_secondary</item>
 

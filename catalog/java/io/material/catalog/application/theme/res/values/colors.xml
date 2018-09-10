@@ -22,4 +22,5 @@
   <color name="cat_color_primary_dark">#000000</color>
 
   <color name="cat_color_secondary">#30E57E</color>
+  <color name="cat_color_on_secondary">#FFFFFF</color>
 </resources>
