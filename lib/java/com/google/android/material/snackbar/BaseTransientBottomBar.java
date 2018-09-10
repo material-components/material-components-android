@@ -28,6 +28,8 @@ import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -41,6 +43,7 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import com.google.android.material.behavior.SwipeDismissBehavior;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.view.AccessibilityDelegateCompat;
@@ -260,6 +263,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     // in the extending Snackbar class. This is to prevent breakage of apps that have custom
     // coordinator layout behaviors that depend on that layout.
     view = (SnackbarBaseLayout) inflater.inflate(getSnackbarBaseLayoutResId(), targetParent, false);
+    if (view.getBackground() == null) {
+      ViewCompat.setBackground(view, createThemedBackground());
+    }
     view.addView(content);
 
     ViewCompat.setAccessibilityLiveRegion(view, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
@@ -305,6 +311,19 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
+  }
+
+  private Drawable createThemedBackground() {
+    int backgroundColor =
+        MaterialColors.layer(view, R.attr.colorSurface, R.attr.colorOnSurface, 0.8f);
+    float cornerRadius =
+        view.getResources().getDimension(R.dimen.mtrl_snackbar_background_corner_radius);
+
+    GradientDrawable background = new GradientDrawable();
+    background.setShape(GradientDrawable.RECTANGLE);
+    background.setColor(backgroundColor);
+    background.setCornerRadius(cornerRadius);
+    return background;
   }
 
   @LayoutRes

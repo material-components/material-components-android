@@ -44,13 +44,32 @@ public class MaterialColors {
     return MaterialAttributes.resolveAttributeOrThrow(view, colorAttributeResId).data;
   }
 
+  /**
+   * Convenience method that wraps {@link MaterialColors#layer(int, int, float)} for layering colors
+   * from theme attributes.
+   */
+  @ColorInt
+  public static int layer(
+      View view,
+      @AttrRes int backgroundColorAttributeResId,
+      @AttrRes int overlayColorAttributeResId,
+      @FloatRange(from = 0.0, to = 1.0) float overlayAlpha) {
+    int backgroundColor = getColor(view, backgroundColorAttributeResId);
+    int overlayColor = getColor(view, overlayColorAttributeResId);
+    return layer(backgroundColor, overlayColor, overlayAlpha);
+  }
+
+  /**
+   * Calculates a color that represents the layering of the {@code overlayColor} (with {@code
+   * overlayAlpha} applied) on top of the {@code backgroundColor}.
+   */
   @ColorInt
   public static int layer(
       @ColorInt int backgroundColor,
       @ColorInt int overlayColor,
       @FloatRange(from = 0.0, to = 1.0) float overlayAlpha) {
     int computedAlpha = Math.round(Color.alpha(overlayColor) * overlayAlpha);
-    return ColorUtils.compositeColors(
-        ColorUtils.setAlphaComponent(overlayColor, computedAlpha), backgroundColor);
+    int computedOverlayColor = ColorUtils.setAlphaComponent(overlayColor, computedAlpha);
+    return ColorUtils.compositeColors(computedOverlayColor, backgroundColor);
   }
 }

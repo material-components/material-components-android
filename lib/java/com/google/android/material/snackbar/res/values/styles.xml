@@ -32,7 +32,9 @@
   </style>
 
   <style name="Widget.MaterialComponents.Snackbar" parent="Widget.Design.Snackbar">
-    <item name="android:background">@drawable/mtrl_snackbar_background</item>
+    <!-- Null out the background here so the programmatically defined default Snackbar background
+         will be used, which supports the Material color theming attributes. -->
+    <item name="android:background">@null</item>
     <item name="android:layout_margin">@dimen/mtrl_snackbar_margin</item>
   </style>
 
