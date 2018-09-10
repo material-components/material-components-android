@@ -36,6 +36,7 @@ import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.StringRes;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
+import com.google.android.material.resources.TextAppearanceConfig;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.Shakespeare;
 import android.support.v4.view.ViewCompat;
@@ -72,6 +73,7 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
   @CallSuper
   protected void configureContent(@LayoutRes final int layoutResId, @StringRes final int titleResId)
       throws Throwable {
+    TextAppearanceConfig.setShouldLoadFontSynchronously(true);
     onView(withId(R.id.coordinator_stub)).perform(inflateViewStub(layoutResId));
 
     mAppBar = mCoordinatorLayout.findViewById(R.id.app_bar);
