@@ -22,6 +22,7 @@
   <color name="design_default_color_secondary">#03DAC6</color>
   <color name="design_default_color_secondary_variant">#018786</color>
   <color name="design_default_color_background">#FFFFFF</color>
+  <color name="design_default_color_surface">#FFFFFF</color>
   <color name="design_default_color_error">#B00020</color>
   <color name="design_default_color_on_primary">#FFFFFF</color>
   <color name="design_default_color_on_secondary">#000000</color>

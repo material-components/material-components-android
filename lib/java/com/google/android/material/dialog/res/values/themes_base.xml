@@ -43,7 +43,7 @@
 
     <item name="android:colorBackground">@color/design_default_color_background</item>
     <item name="colorError">@color/design_default_color_error</item>
-    <item name="colorSurface">@color/design_default_color_background</item>
+    <item name="colorSurface">@color/design_default_color_surface</item>
 
     <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
     <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
@@ -108,7 +108,7 @@
 
     <item name="android:colorBackground">@color/design_default_color_background</item>
     <item name="colorError">@color/design_default_color_error</item>
-    <item name="colorSurface">@color/design_default_color_background</item>
+    <item name="colorSurface">@color/design_default_color_surface</item>
 
     <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
     <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>

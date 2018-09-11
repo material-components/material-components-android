@@ -32,6 +32,7 @@
   <public name="design_default_color_secondary" type="color"/>
   <public name="design_default_color_secondary_variant" type="color"/>
   <public name="design_default_color_background" type="color"/>
+  <public name="design_default_color_surface" type="color"/>
   <public name="design_default_color_error" type="color"/>
   <public name="design_default_color_on_primary" type="color"/>
   <public name="design_default_color_on_secondary" type="color"/>
