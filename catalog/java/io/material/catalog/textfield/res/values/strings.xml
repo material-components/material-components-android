@@ -30,8 +30,10 @@
   <string name="cat_textfield_filled_dense_password_helper_text">
     Dense filled password text field
   </string>
+  <string name="cat_textfield_filled_start_icon_helper_text">Filled start icon text field</string>
   <string name="cat_textfield_outline_helper_text">Outline text field</string>
   <string name="cat_textfield_outline_dense_helper_text">Dense outline text field</string>
+  <string name="cat_textfield_outline_start_icon_helper_text">Outline start icon text field</string>
 
   <string name="cat_textfield_customize_section_title">Customize text fields</string>
   <string name="cat_textfield_customize_section_description">

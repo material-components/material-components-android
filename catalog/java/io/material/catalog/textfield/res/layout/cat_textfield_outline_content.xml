@@ -27,8 +27,8 @@
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:hint="@string/cat_textfield_label"
       android:layout_margin="4dp"
+      android:hint="@string/cat_textfield_label"
       app:counterEnabled="true"
       app:counterMaxLength="10"
       app:errorEnabled="true"
@@ -44,8 +44,8 @@
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:hint="@string/cat_textfield_label"
       android:layout_margin="4dp"
+      android:hint="@string/cat_textfield_label"
       app:counterEnabled="true"
       app:counterMaxLength="10"
       app:errorEnabled="true"
@@ -54,5 +54,25 @@
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/text_input_demo_box_outline_start_icon"
+      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="4dp"
+      android:hint="@string/cat_textfield_label"
+      app:counterEnabled="true"
+      app:counterMaxLength="10"
+      app:errorEnabled="true"
+      app:helperText="@string/cat_textfield_outline_start_icon_helper_text"
+      app:helperTextEnabled="true">
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_search_24px"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_search_24px"/>
   </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

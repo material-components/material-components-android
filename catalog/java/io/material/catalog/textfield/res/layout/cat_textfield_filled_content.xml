@@ -68,4 +68,24 @@
         android:layout_height="wrap_content"
         android:inputType="textPassword"/>
   </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/text_input_demo_box_filled_start_icon"
+      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="4dp"
+      android:hint="@string/cat_textfield_label"
+      app:counterEnabled="true"
+      app:counterMaxLength="10"
+      app:errorEnabled="true"
+      app:helperText="@string/cat_textfield_filled_start_icon_helper_text"
+      app:helperTextEnabled="true">
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:drawableLeft="@drawable/ic_search_24px"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_search_24px"/>
+  </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
