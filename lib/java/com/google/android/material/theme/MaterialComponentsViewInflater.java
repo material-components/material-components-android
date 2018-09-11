@@ -20,9 +20,11 @@ import android.content.Context;
 import android.support.annotation.Keep;
 import android.support.annotation.NonNull;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
 import android.support.v7.app.AppCompatViewInflater;
 import android.support.v7.widget.AppCompatButton;
+import android.support.v7.widget.AppCompatCheckBox;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 
@@ -37,6 +39,12 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
   @Override
   protected AppCompatButton createButton(Context context, AttributeSet attrs) {
     return new MaterialButton(context, attrs);
+  }
+
+  @NonNull
+  @Override
+  protected AppCompatCheckBox createCheckBox(Context context, AttributeSet attrs) {
+    return new MaterialCheckBox(context, attrs);
   }
 
   @NonNull
