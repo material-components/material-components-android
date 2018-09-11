@@ -20,11 +20,9 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
 import com.google.android.material.color.MaterialColors;
+import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 
@@ -55,13 +53,12 @@ public class MaterialRadioButton extends AppCompatRadioButton {
 
   public MaterialRadioButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      computeAndSetButtonTintList();
+    if (CompoundButtonCompat.getButtonTintList(this) == null) {
+      setColorThemedButtonTintList();
     }
   }
 
-  @RequiresApi(api = VERSION_CODES.LOLLIPOP)
-  private void computeAndSetButtonTintList() {
+  private void setColorThemedButtonTintList() {
     int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
     int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
     int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
@@ -75,8 +72,7 @@ public class MaterialRadioButton extends AppCompatRadioButton {
         MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
     radioButtonColorList[3] =
         MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
-    setButtonTintList(new ColorStateList(enabledCheckedStates, radioButtonColorList));
+    CompoundButtonCompat.setButtonTintList(
+        this, new ColorStateList(enabledCheckedStates, radioButtonColorList));
   }
-
-
 }

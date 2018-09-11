@@ -54,11 +54,11 @@ public class MaterialCheckBox extends AppCompatCheckBox {
   public MaterialCheckBox(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     if (CompoundButtonCompat.getButtonTintList(this) == null) {
-      setColorThemedButtonTint();
+      setColorThemedButtonTintList();
     }
   }
 
-  private void setColorThemedButtonTint() {
+  private void setColorThemedButtonTintList() {
     int[] checkBoxColorsList = new int[enabledCheckedStates.length];
     int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
     int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);

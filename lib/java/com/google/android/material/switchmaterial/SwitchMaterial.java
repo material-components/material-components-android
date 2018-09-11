@@ -55,10 +55,21 @@ public class SwitchMaterial extends SwitchCompat {
   public SwitchMaterial(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
-    int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
-    int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
+    if (getThumbTintList() == null || getTrackTintList() == null) {
+      int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
+      int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
 
+      if (getThumbTintList() == null) {
+        setColorThemedThumbTintList(colorSurface, colorSecondary);
+      }
+      if (getTrackTintList() == null) {
+        int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
+        setColorThemedTrackTintList(colorSurface, colorSecondary, colorOnSurface);
+      }
+    }
+  }
+
+  private void setColorThemedThumbTintList(int colorSurface, int colorSecondary) {
     int[] switchThumbColorsList = new int[enabledCheckedStates.length];
     switchThumbColorsList[0] =
         MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
@@ -68,7 +79,11 @@ public class SwitchMaterial extends SwitchCompat {
         MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_DISABLED);
     switchThumbColorsList[3] =
         MaterialColors.layer(colorSurface, colorSurface, MaterialColors.ALPHA_FULL);
+    setThumbTintList(new ColorStateList(enabledCheckedStates, switchThumbColorsList));
+  }
 
+  private void setColorThemedTrackTintList(
+      int colorSurface, int colorSecondary, int colorOnSurface) {
     int[] switchTrackColorsList = new int[enabledCheckedStates.length];
     switchTrackColorsList[0] =
         MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_MEDIUM);
@@ -79,7 +94,6 @@ public class SwitchMaterial extends SwitchCompat {
     switchTrackColorsList[3] =
         MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED_LOW);
 
-    setThumbTintList(new ColorStateList(enabledCheckedStates, switchThumbColorsList));
     setTrackTintList(new ColorStateList(enabledCheckedStates, switchTrackColorsList));
   }
 }
