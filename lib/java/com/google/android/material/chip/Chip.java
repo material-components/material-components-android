@@ -57,6 +57,7 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
 import android.support.v4.content.res.ResourcesCompat.FontCallback;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -1224,7 +1225,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     } else {
       ViewCompat.setLayoutDirection(this, layoutDirection);
     }
-    chipDrawable.setLayoutDirection(layoutDirection);
+    DrawableCompat.setLayoutDirection(chipDrawable, layoutDirection);
   }
 
   @Override

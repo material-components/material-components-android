@@ -385,7 +385,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     setChipIconVisible(a.getBoolean(R.styleable.Chip_chipIconVisible, false));
     // If the user explicitly sets the deprecated attribute (chipIconEnabled) but NOT the
     // replacement attribute (chipIconVisible), use the value specified in the deprecated attribute.
-    if (attrs != null && attrs.getAttributeValue(NAMESPACE_APP, "chipIconEnabled") != null
+    if (attrs != null
+        && attrs.getAttributeValue(NAMESPACE_APP, "chipIconEnabled") != null
         && attrs.getAttributeValue(NAMESPACE_APP, "chipIconVisible") == null) {
       setChipIconVisible(a.getBoolean(R.styleable.Chip_chipIconEnabled, false));
     }
@@ -397,7 +398,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     // If the user explicitly sets the deprecated attribute (closeIconEnabled) but NOT the
     // replacement attribute (closeIconVisible), use the value specified in the deprecated
     // attribute.
-    if (attrs != null && attrs.getAttributeValue(NAMESPACE_APP, "closeIconEnabled") != null
+    if (attrs != null
+        && attrs.getAttributeValue(NAMESPACE_APP, "closeIconEnabled") != null
         && attrs.getAttributeValue(NAMESPACE_APP, "closeIconVisible") == null) {
       setCloseIconVisible(a.getBoolean(R.styleable.Chip_closeIconEnabled, false));
     }
@@ -411,7 +413,8 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
     // If the user explicitly sets the deprecated attribute (checkedIconEnabled) but NOT the
     // replacement attribute (checkedIconVisible), use the value specified in the deprecated
     // attribute.
-    if (attrs != null && attrs.getAttributeValue(NAMESPACE_APP, "checkedIconEnabled") != null
+    if (attrs != null
+        && attrs.getAttributeValue(NAMESPACE_APP, "checkedIconEnabled") != null
         && attrs.getAttributeValue(NAMESPACE_APP, "checkedIconVisible") == null) {
       setCheckedIconVisible(a.getBoolean(R.styleable.Chip_checkedIconEnabled, false));
     }
@@ -1077,18 +1080,17 @@ public class ChipDrawable extends Drawable implements TintAwareDrawable, Callbac
   }
 
   @Override
-  @TargetApi(VERSION_CODES.M)
   public boolean onLayoutDirectionChanged(int layoutDirection) {
     boolean invalidate = super.onLayoutDirectionChanged(layoutDirection);
 
     if (showsChipIcon()) {
-      invalidate |= chipIcon.setLayoutDirection(layoutDirection);
+      invalidate |= DrawableCompat.setLayoutDirection(chipIcon, layoutDirection);
     }
     if (showsCheckedIcon()) {
-      invalidate |= checkedIcon.setLayoutDirection(layoutDirection);
+      invalidate |= DrawableCompat.setLayoutDirection(checkedIcon, layoutDirection);
     }
     if (showsCloseIcon()) {
-      invalidate |= closeIcon.setLayoutDirection(layoutDirection);
+      invalidate |= DrawableCompat.setLayoutDirection(closeIcon, layoutDirection);
     }
 
     if (invalidate) {
