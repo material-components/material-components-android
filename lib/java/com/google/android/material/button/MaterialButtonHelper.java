@@ -195,7 +195,8 @@ class MaterialButtonHelper {
     rippleDrawableCompat.setColor(Color.WHITE);
 
     tintableRippleDrawableCompat = DrawableCompat.wrap(rippleDrawableCompat);
-    DrawableCompat.setTintList(tintableRippleDrawableCompat, rippleColor);
+    DrawableCompat.setTintList(
+        tintableRippleDrawableCompat, RippleUtils.convertToRippleDrawableColor(rippleColor));
 
     return wrapDrawableWithInset(
         new LayerDrawable(
@@ -296,9 +297,11 @@ class MaterialButtonHelper {
     if (this.rippleColor != rippleColor) {
       this.rippleColor = rippleColor;
       if (IS_LOLLIPOP && materialButton.getBackground() instanceof RippleDrawable) {
-        ((RippleDrawable) materialButton.getBackground()).setColor(rippleColor);
+        ((RippleDrawable) materialButton.getBackground())
+            .setColor(RippleUtils.convertToRippleDrawableColor(rippleColor));
       } else if (!IS_LOLLIPOP && tintableRippleDrawableCompat != null) {
-        DrawableCompat.setTintList(tintableRippleDrawableCompat, rippleColor);
+        DrawableCompat.setTintList(
+            tintableRippleDrawableCompat, RippleUtils.convertToRippleDrawableColor(rippleColor));
       }
     }
   }
