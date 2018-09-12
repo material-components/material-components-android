@@ -241,41 +241,65 @@ public final class ThemeEnforcement {
   }
 
   /**
-   * Ensures the context has theme information. This can be used in a constructor to allow the
-   * defStyleAttr to use a theme overlay if one has been defined.
+   * Uses the materialThemeOverlay attribute to create a themed context. This allows us to use
+   * ThemeOverlays with a default style, and gives us some protection against losing our
+   * ThemeOverlay by clients who set android:theme or app:theme. If android:theme or app:theme is
+   * specified by the client, any attributes defined there will take precedence over attributes
+   * defined in materialThemeOverlay.
    */
   public static Context createThemedContext(Context context, AttributeSet attrs, int defStyleAttr) {
-    TypedArray a = context.obtainStyledAttributes(attrs, new int[] {android.R.attr.theme});
-    int themeId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
+    TypedArray a =
+        context.obtainStyledAttributes(
+            attrs, new int[] {R.attr.materialThemeOverlay, android.R.attr.theme, R.attr.theme});
+    int materialThemeOverlayId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
+    int androidThemeId = a.getResourceId(1 /* index */, 0 /* defaultVal */);
+    int appThemeId = a.getResourceId(2 /* index */, 0 /* defaultVal */);
     a.recycle();
 
-    if (themeId != 0) {
-      // If the theme is set in the style of the view, just use that directly
-      return context;
+    // Check for the attribute from the default style if it wasn't set directly in the attrs set.
+    if (materialThemeOverlayId == 0) {
+      materialThemeOverlayId =
+          resolveDefaultStyleAttribute(
+              context, defStyleAttr, R.attr.materialThemeOverlay, 0 /* defaultVal */);
     }
 
+    if (materialThemeOverlayId != 0
+        && (!(context instanceof ContextThemeWrapper)
+            || ((ContextThemeWrapper) context).getThemeResId() != materialThemeOverlayId)) {
+      // If the context isn't a ContextThemeWrapper, or it is but does not have
+      // the same theme as we need, wrap it in a new wrapper
+      context = new ContextThemeWrapper(context, materialThemeOverlayId);
+
+      // We want values set in android:theme or app:theme to always override values supplied by
+      // materialThemeOverlay, so we'll wrap the context again if either of those are set.
+      if (androidThemeId != 0) {
+        context = new ContextThemeWrapper(context, androidThemeId);
+      } else if (appThemeId != 0) {
+        context = new ContextThemeWrapper(context, appThemeId);
+      }
+    }
+
+    return context;
+  }
+
+  private static int resolveDefaultStyleAttribute(
+      Context context, int defStyleAttr, int attr, int defaultValue) {
     // Read the default style from the theme
-    a = context.getTheme().obtainStyledAttributes(new int[] {defStyleAttr});
+    TypedArray a = context.getTheme().obtainStyledAttributes(new int[] {defStyleAttr});
     int style = a.getResourceId(0 /* index */, 0 /* defaultVal */);
     a.recycle();
 
     if (style == 0) {
-      // No style was set in the theme.
-      return context;
+      // No default style was set in the theme.
+      return defaultValue;
     }
 
-    // Read the android:theme attribute from the default style
-    a = context.obtainStyledAttributes(style, new int[] {android.R.attr.theme});
-    themeId = a.getResourceId(0 /* index */, 0 /* defaultVal */);
-    a.recycle();
-
-    if (themeId != 0
-        && (!(context instanceof ContextThemeWrapper)
-            || ((ContextThemeWrapper) context).getThemeResId() != themeId)) {
-      // If the context isn't a ContextThemeWrapper, or it is but does not have
-      // the same theme as we need, wrap it in a new wrapper
-      context = new ContextThemeWrapper(context, themeId);
+    // Read the materialThemeOverlay attribute from the default style
+    a = context.obtainStyledAttributes(style, new int[] {attr});
+    try {
+      return a.getResourceId(0 /* index */, defaultValue);
+    } finally {
+      a.recycle();
     }
-    return context;
   }
 }

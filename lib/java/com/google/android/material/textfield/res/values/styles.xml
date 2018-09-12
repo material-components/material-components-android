@@ -17,7 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Design.TextInputLayout" parent="android:Widget">
-    <item name="android:theme">@style/ThemeOverlay.Design.TextInputEditText</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.Design.TextInputEditText</item>
     <item name="boxBackgroundMode">none</item>
     <item name="hintTextAppearance">@style/TextAppearance.Design.Hint</item>
     <item name="helperTextTextAppearance">@style/TextAppearance.Design.HelperText</item>
@@ -42,7 +42,7 @@
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
-    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox</item>
     <item name="boxBackgroundMode">filled</item>
     <item name="boxBackgroundColor">@color/mtrl_textinput_filled_box_default_background_color</item>
     <item name="boxCollapsedPaddingTop">12dp</item>
@@ -51,18 +51,18 @@
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
-    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense</item>
     <item name="boxCollapsedPaddingTop">8dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
-    <item name="android:theme">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox
     </item>
     <item name="boxCollapsedPaddingTop">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
-    <item name="android:theme">
+    <item name="materialThemeOverlay">
       @style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox.Dense
     </item>
   </style>

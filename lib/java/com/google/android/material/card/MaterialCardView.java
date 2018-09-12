@@ -68,6 +68,8 @@ public class MaterialCardView extends CardView {
 
   public MaterialCardView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(ThemeEnforcement.createThemedContext(context, attrs, defStyleAttr), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
