@@ -47,7 +47,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private static final float HALF_PI = (float) (Math.PI / 2.0);
 
-  private final Paint paint = new Paint();
+  private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
   // Inter-method state.
   private final Matrix[] cornerTransforms = new Matrix[4];
   private final Matrix[] edgeTransforms = new Matrix[4];
