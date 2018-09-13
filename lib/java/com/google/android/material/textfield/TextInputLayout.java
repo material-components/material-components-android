@@ -1548,8 +1548,8 @@ public class TextInputLayout extends LinearLayout {
 
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
-    updatePasswordToggleView();
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    updatePasswordToggleView();
   }
 
   private void updatePasswordToggleView() {
