@@ -53,7 +53,6 @@ import com.google.android.material.chip.ChipDrawable.Delegate;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.TouchTargetUtils;
 import com.google.android.material.internal.ViewUtils;
-import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
 import android.support.v4.content.res.ResourcesCompat.FontCallback;
@@ -197,15 +196,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     setChipDrawable(drawable);
 
-    TypedArray a =
-        ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.Chip,
-            defStyleAttr,
-            R.style.Widget_MaterialComponents_Chip_Action);
-    setTextColor(
-        MaterialResources.getColorStateList(context, a, R.styleable.Chip_android_textColor));
+    setTextColor(drawable.getTextAppearance().textColor);
 
     touchHelper = new ChipTouchHelper(this);
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
