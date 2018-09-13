@@ -197,16 +197,19 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     setChipDrawable(drawable);
 
-    TypedArray a =
-        ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.Chip,
-            defStyleAttr,
-            R.style.Widget_MaterialComponents_Chip_Action);
-    setTextColor(
-        MaterialResources.getColorStateList(context, a, R.styleable.Chip_android_textColor));
-
+    if (VERSION.SDK_INT < VERSION_CODES.M) {
+      // This is necessary to work around a bug that doesn't support themed color referenced in
+      // ColorStateList for API level < 23.
+      TypedArray a =
+          ThemeEnforcement.obtainStyledAttributes(
+              context,
+              attrs,
+              R.styleable.Chip,
+              defStyleAttr,
+              R.style.Widget_MaterialComponents_Chip_Action);
+      setTextColor(
+          MaterialResources.getColorStateList(context, a, R.styleable.Chip_android_textColor));
+    }
     touchHelper = new ChipTouchHelper(this);
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
       ViewCompat.setAccessibilityDelegate(this, touchHelper);
