@@ -48,6 +48,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private static final float HALF_PI = (float) (Math.PI / 2.0);
 
   private final Paint paint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
   // Inter-method state.
   private final Matrix[] cornerTransforms = new Matrix[4];
   private final Matrix[] edgeTransforms = new Matrix[4];
@@ -71,11 +72,15 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private int shadowRadius = 10;
   private int alpha = 255;
   private float scale = 1f;
-  private float strokeWidth = 0f;
   private Style paintStyle = Style.FILL_AND_STROKE;
+
   @Nullable private PorterDuffColorFilter tintFilter;
   private PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
   private ColorStateList tintList = null;
+
+  @Nullable private PorterDuffColorFilter strokeTintFilter;
+  private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private ColorStateList strokeTintList = null;
 
   public MaterialShapeDrawable() {
     this(null);
@@ -87,6 +92,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   public MaterialShapeDrawable(@Nullable ShapePathModel shapePathModel) {
     this.shapedViewModel = shapePathModel;
+    strokePaint.setStyle(Style.STROKE);
+    paint.setStyle(Style.FILL);
 
     for (int i = 0; i < 4; i++) {
       cornerTransforms[i] = new Matrix();
@@ -129,11 +136,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return tintList;
   }
 
-  @Override
-  public void setTintList(ColorStateList tintList) {
-    this.tintList = tintList;
-    updateTintFilter();
-    invalidateSelf();
+  /**
+   * @return the stroke's current {@link ColorStateList}
+   */
+  public ColorStateList getStrokeTintList() {
+    return strokeTintList;
   }
 
   @Override
@@ -144,8 +151,33 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   @Override
+  public void setTintList(ColorStateList tintList) {
+    this.tintList = tintList;
+    updateTintFilter();
+    invalidateSelf();
+  }
+
+  @Override
   public void setTint(@ColorInt int tintColor) {
     setTintList(ColorStateList.valueOf(tintColor));
+  }
+
+  /** @param tintList the {@link ColorStateList} for the shape's stroke */
+  public void setStrokeTintList(ColorStateList tintList) {
+    this.strokeTintList = tintList;
+    updateTintFilter();
+    invalidateSelf();
+  }
+
+  /** @param tintColor an int representing the Color to use for the shape's stroke */
+  public void setStrokeTint(@ColorInt int tintColor) {
+    setStrokeTintList(ColorStateList.valueOf(tintColor));
+  }
+
+  /* Get the int representing the Color of the shape's stroke in the current state */
+  @ColorInt
+  public int getStrokeTint() {
+    return strokePaint.getColor();
   }
 
   @Override
@@ -171,7 +203,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public Region getTransparentRegion() {
     Rect bounds = getBounds();
     transparentRegion.set(bounds);
-    getPath(bounds, path);
+    transformPath(bounds, path);
     scratchRegion.setPath(path, transparentRegion);
     transparentRegion.op(scratchRegion, Op.DIFFERENCE);
     return transparentRegion;
@@ -325,6 +357,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   public void setPaintFlags(int flags) {
     paint.setFlags(flags);
+    strokePaint.setFlags(flags);
     invalidateSelf();
   }
 
@@ -353,7 +386,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @return current stroke width.
    */
   public float getStrokeWidth() {
-    return strokeWidth;
+    return strokePaint.getStrokeWidth();
   }
 
   /**
@@ -362,8 +395,20 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @param strokeWidth desired stroke width.
    */
   public void setStrokeWidth(float strokeWidth) {
-    this.strokeWidth = strokeWidth;
+    paint.setStrokeWidth(strokeWidth);
+    strokePaint.setStrokeWidth(strokeWidth);
     invalidateSelf();
+  }
+
+  /** Returns whether the shape has a fill */
+  public boolean hasFill() {
+    return paintStyle == Style.FILL_AND_STROKE || paintStyle == Style.FILL;
+  }
+
+  /** Returns whether the shape has a stroke with a positive width */
+  public boolean hasStroke() {
+    return (paintStyle == Style.FILL_AND_STROKE || paintStyle == Style.STROKE)
+        && strokePaint.getStrokeWidth() > 0;
   }
 
   @Override
@@ -371,21 +416,35 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     paint.setColorFilter(tintFilter);
     final int prevAlpha = paint.getAlpha();
     paint.setAlpha(modulateAlpha(prevAlpha, alpha));
-    paint.setStrokeWidth(strokeWidth);
-    paint.setStyle(paintStyle);
+
+    strokePaint.setColorFilter(strokeTintFilter);
+    final int prevStrokeAlpha = strokePaint.getAlpha();
+    strokePaint.setAlpha(modulateAlpha(prevStrokeAlpha, alpha));
+
     if (shadowElevation > 0 && shadowEnabled) {
       paint.setShadowLayer(shadowRadius, 0, shadowElevation, shadowColor);
     }
 
     Rect bounds = getBounds();
     if (shapedViewModel != null) {
-      getPath(bounds, path);
-      canvas.drawPath(path, paint);
+      transformPath(bounds, path);
+      if (hasFill()) {
+        canvas.drawPath(path, paint);
+      }
+      if (hasStroke()) {
+        canvas.drawPath(path, strokePaint);
+      }
     } else {
-      canvas.drawRect(bounds, paint);
+      if (hasFill()) {
+        canvas.drawRect(bounds, paint);
+      }
+      if (hasStroke()) {
+        canvas.drawRect(bounds, strokePaint);
+      }
     }
 
     paint.setAlpha(prevAlpha);
+    strokePaint.setAlpha(prevStrokeAlpha);
   }
 
   /**
@@ -407,7 +466,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // corner treatment.
     for (int index = 0; index < 4; index++) {
       setCornerPathAndTransform(index, bounds);
-      setEdgeTransform(index);
+      setEdgeAndTransform(index);
     }
 
     // Apply corners and edges to the path in clockwise interleaving sequence: top-left corner, top
@@ -430,7 +489,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     cornerTransforms[index].preRotate((float) Math.toDegrees(prevEdgeAngle));
   }
 
-  private void setEdgeTransform(int index) {
+  private void setEdgeAndTransform(int index) {
     scratch[0] = cornerPaths[index].endX;
     scratch[1] = cornerPaths[index].endY;
     cornerTransforms[index].mapPoints(scratch);
@@ -518,7 +577,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return HALF_PI * ((index + 4) % 4);
   }
 
-  private void getPath(Rect bounds, Path path) {
+  private void transformPath(Rect bounds, Path path) {
     getPathForSize(bounds, path);
     if (scale == 1f) {
       return;
@@ -529,20 +588,27 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   private void updateTintFilter() {
-    if (tintList == null || tintMode == null) {
-      tintFilter = null;
-      return;
-    }
-    final int color = tintList.getColorForState(getState(), Color.TRANSPARENT);
-    tintFilter = new PorterDuffColorFilter(color, tintMode);
+    tintFilter = computeTintFilter(tintList, tintMode);
+    strokeTintFilter = computeTintFilter(strokeTintList, tintMode);
     if (useTintColorForShadow) {
-      shadowColor = color;
+      shadowColor = tintList.getColorForState(getState(), Color.TRANSPARENT);
     }
+  }
+
+  @Nullable
+  private PorterDuffColorFilter computeTintFilter(
+      ColorStateList tintList, PorterDuff.Mode tintMode) {
+    if (tintList == null || tintMode == null) {
+      return null;
+    }
+    return new PorterDuffColorFilter(
+        tintList.getColorForState(getState(), Color.TRANSPARENT), tintMode);
   }
 
   @Override
   public boolean isStateful() {
-    return tintList != null && tintList.isStateful();
+    return (tintList != null && tintList.isStateful())
+        || (strokeTintList != null && strokeTintList.isStateful());
   }
 
   @Override
