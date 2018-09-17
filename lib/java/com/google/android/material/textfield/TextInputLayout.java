@@ -198,6 +198,7 @@ public class TextInputLayout extends LinearLayout {
   public static final int BOX_BACKGROUND_OUTLINE = 2;
 
   private final Rect tmpRect = new Rect();
+  private final Rect tmpBoundsRect = new Rect();
   private final RectF tmpRectF = new RectF();
   private Typeface typeface;
 
@@ -1288,15 +1289,44 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private int calculateCollapsedTextTopBounds() {
+  private Rect calculateCollapsedTextBounds(Rect rect) {
+    if (editText == null) {
+      throw new IllegalStateException();
+    }
+    Rect bounds = tmpBoundsRect;
+
+    bounds.bottom = rect.bottom;
     switch (boxBackgroundMode) {
       case BOX_BACKGROUND_OUTLINE:
-        return getBoxBackground().getBounds().top - calculateLabelMarginTop();
+        bounds.left = rect.left + editText.getPaddingLeft();
+        bounds.top = getBoxBackground().getBounds().top - calculateLabelMarginTop();
+        bounds.right = rect.right - editText.getPaddingRight();
+        return bounds;
       case BOX_BACKGROUND_FILLED:
-        return getBoxBackground().getBounds().top + boxCollapsedPaddingTopPx;
+        bounds.left = rect.left + editText.getCompoundPaddingLeft();
+        bounds.top = getBoxBackground().getBounds().top + boxCollapsedPaddingTopPx;
+        bounds.right = rect.right - editText.getCompoundPaddingRight();
+        return bounds;
       default:
-        return getPaddingTop();
+        bounds.left = rect.left + editText.getCompoundPaddingLeft();
+        bounds.top = getPaddingTop();
+        bounds.right = rect.right - editText.getCompoundPaddingRight();
+        return bounds;
     }
+  }
+
+  private Rect calculateExpandedTextBounds(Rect rect) {
+    if (editText == null) {
+      throw new IllegalStateException();
+    }
+    Rect bounds = tmpBoundsRect;
+
+    bounds.left = rect.left + editText.getCompoundPaddingLeft();
+    bounds.top = rect.top + editText.getCompoundPaddingTop();
+    bounds.right = rect.right - editText.getCompoundPaddingRight();
+    bounds.bottom = rect.bottom - editText.getCompoundPaddingBottom();
+
+    return bounds;
   }
 
   private void updateEditTextBackgroundBounds() {
@@ -1855,22 +1885,11 @@ public class TextInputLayout extends LinearLayout {
     }
 
     if (hintEnabled && editText != null) {
-      final Rect rect = tmpRect;
+      Rect rect = tmpRect;
       DescendantOffsetUtils.getDescendantRect(this, editText, rect);
 
-      final int l = rect.left + editText.getCompoundPaddingLeft();
-      final int r = rect.right - editText.getCompoundPaddingRight();
-      final int t = calculateCollapsedTextTopBounds();
-
-      collapsingTextHelper.setExpandedBounds(
-          l,
-          rect.top + editText.getCompoundPaddingTop(),
-          r,
-          rect.bottom - editText.getCompoundPaddingBottom());
-
-      // Set the collapsed bounds to be the full height (minus padding) to match the
-      // EditText's editable area
-      collapsingTextHelper.setCollapsedBounds(l, t, r, bottom - top - getPaddingBottom());
+      collapsingTextHelper.setExpandedBounds(calculateExpandedTextBounds(rect));
+      collapsingTextHelper.setCollapsedBounds(calculateCollapsedTextBounds(rect));
       collapsingTextHelper.recalculate();
 
       // If the label should be collapsed, set the cutout bounds on the CutoutDrawable to make sure

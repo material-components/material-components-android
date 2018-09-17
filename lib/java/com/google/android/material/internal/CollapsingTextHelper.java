@@ -181,12 +181,20 @@ public final class CollapsingTextHelper {
     }
   }
 
+  public void setExpandedBounds(Rect bounds) {
+    setExpandedBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
+  }
+
   public void setCollapsedBounds(int left, int top, int right, int bottom) {
     if (!rectEquals(collapsedBounds, left, top, right, bottom)) {
       collapsedBounds.set(left, top, right, bottom);
       boundsChanged = true;
       onBoundsChanged();
     }
+  }
+
+  public void setCollapsedBounds(Rect bounds) {
+    setCollapsedBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   }
 
   public float calculateCollapsedTextWidth() {
