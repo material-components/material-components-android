@@ -18,6 +18,7 @@ package com.google.android.material.card;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 import android.content.Context;
@@ -55,6 +56,8 @@ import android.widget.FrameLayout;
  */
 public class MaterialCardView extends CardView {
 
+  private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
+
   private final MaterialCardViewHelper cardViewHelper;
   private final FrameLayout contentLayout;
 
@@ -67,17 +70,13 @@ public class MaterialCardView extends CardView {
   }
 
   public MaterialCardView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(ThemeEnforcement.createThemedContext(context, attrs, defStyleAttr), attrs, defStyleAttr);
+    super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.MaterialCardView,
-            defStyleAttr,
-            R.style.Widget_MaterialComponents_CardView);
+            context, attrs, R.styleable.MaterialCardView, defStyleAttr, DEF_STYLE_RES);
 
     // Loads and sets background drawable attributes
     cardViewHelper = new MaterialCardViewHelper(this);

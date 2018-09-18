@@ -18,6 +18,7 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static com.google.android.material.textfield.IndicatorViewController.COUNTER_INDEX;
 
 import android.animation.ValueAnimator;
@@ -139,6 +140,8 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class TextInputLayout extends LinearLayout {
 
+  private static final int DEF_STYLE_RES = R.style.Widget_Design_TextInputLayout;
+
   /** Duration for the label's scale up and down animations. */
   private static final int LABEL_SCALE_ANIMATION_DURATION = 167;
 
@@ -245,7 +248,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   public TextInputLayout(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(ThemeEnforcement.createThemedContext(context, attrs, defStyleAttr), attrs, defStyleAttr);
+    super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
@@ -263,11 +266,7 @@ public class TextInputLayout extends LinearLayout {
 
     final TintTypedArray a =
         ThemeEnforcement.obtainTintedStyledAttributes(
-            context,
-            attrs,
-            R.styleable.TextInputLayout,
-            defStyleAttr,
-            R.style.Widget_Design_TextInputLayout);
+            context, attrs, R.styleable.TextInputLayout, defStyleAttr, DEF_STYLE_RES);
 
     hintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
