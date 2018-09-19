@@ -32,6 +32,11 @@
          set on the scrolling sibling (e.g., `NestedScrollView`,
          `RecyclerView`, etc.). Default is false. -->
     <attr name="liftOnScroll" format="boolean"/>
+    <!-- The id of the view that the {@link AppBarLayout} should use to determine whether
+         it should be lifted (i.e., only if {@link R.attr#liftOnScroll} is set to true).
+         If this id is not set, the {@link AppBarLayout} will use the target view provided
+         by nested scrolling to determine whether it should be lifted. -->
+    <attr name="liftOnScrollTargetViewId" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">

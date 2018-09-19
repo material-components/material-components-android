@@ -31,5 +31,8 @@
   <public name="Widget.Design.CollapsingToolbar" type="style"/>
   <public name="TextAppearance.Design.CollapsingToolbar.Expanded" type="style"/>
   <public name="appbar_scrolling_view_behavior" type="string"/>
+  <public name="expanded" type="attr"/>
+  <public name="liftOnScroll" type="attr"/>
+  <public name="liftOnScrollTargetViewId" type="attr"/>
 </resources>
 

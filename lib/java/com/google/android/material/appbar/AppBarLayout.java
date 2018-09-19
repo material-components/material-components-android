@@ -21,12 +21,14 @@ import com.google.android.material.R;
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.ValueAnimator;
+import android.app.Activity;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -34,6 +36,7 @@ import android.support.annotation.RequiresApi;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.math.MathUtils;
@@ -48,6 +51,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
+import android.widget.ListView;
+import android.widget.ScrollView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -162,6 +167,8 @@ public class AppBarLayout extends LinearLayout {
   private boolean lifted;
 
   private boolean liftOnScroll;
+  @IdRes private int liftOnScrollTargetViewId;
+  @Nullable private WeakReference<View> liftOnScrollTargetView;
 
   private int[] tmpStatesArray;
 
@@ -211,6 +218,8 @@ public class AppBarLayout extends LinearLayout {
       }
     }
     liftOnScroll = a.getBoolean(R.styleable.AppBarLayout_liftOnScroll, false);
+    liftOnScrollTargetViewId =
+        a.getResourceId(R.styleable.AppBarLayout_liftOnScrollTargetViewId, View.NO_ID);
     a.recycle();
 
     ViewCompat.setOnApplyWindowInsetsListener(
@@ -378,6 +387,13 @@ public class AppBarLayout extends LinearLayout {
       return new LayoutParams((MarginLayoutParams) p);
     }
     return new LayoutParams(p);
+  }
+
+  @Override
+  protected void onDetachedFromWindow() {
+    super.onDetachedFromWindow();
+
+    clearLiftOnScrollTargetView();
   }
 
   boolean hasChildWithInterpolator() {
@@ -612,6 +628,58 @@ public class AppBarLayout extends LinearLayout {
   /** Returns whether the {@link AppBarLayout} lifts on scroll or not. */
   public boolean isLiftOnScroll() {
     return liftOnScroll;
+  }
+
+  /**
+   * Sets the id of the view that the {@link AppBarLayout} should use to determine whether it should
+   * be lifted.
+   */
+  public void setLiftOnScrollTargetViewId(@IdRes int liftOnScrollTargetViewId) {
+    this.liftOnScrollTargetViewId = liftOnScrollTargetViewId;
+    // Invalidate cached target view so it will be looked up on next scroll.
+    clearLiftOnScrollTargetView();
+  }
+
+  /**
+   * Returns the id of the view that the {@link AppBarLayout} should use to determine whether it
+   * should be lifted.
+   */
+  @IdRes
+  public int getLiftOnScrollTargetViewId() {
+    return liftOnScrollTargetViewId;
+  }
+
+  boolean shouldLift(@Nullable View defaultScrollingView) {
+    View scrollingView = findLiftOnScrollTargetView();
+    if (scrollingView == null) {
+      scrollingView = defaultScrollingView;
+    }
+    return scrollingView != null
+        && (scrollingView.canScrollVertically(-1) || scrollingView.getScrollY() > 0);
+  }
+
+  @Nullable
+  private View findLiftOnScrollTargetView() {
+    View targetView = null;
+    if (liftOnScrollTargetView == null && liftOnScrollTargetViewId != View.NO_ID) {
+      Activity activity = ContextUtils.getActivity(getContext());
+      if (activity != null) {
+        targetView = activity.findViewById(liftOnScrollTargetViewId);
+      } else if (getParent() instanceof ViewGroup) {
+        targetView = ((ViewGroup) getParent()).findViewById(liftOnScrollTargetViewId);
+      }
+    }
+    if (targetView != null) {
+      liftOnScrollTargetView = new WeakReference<>(targetView);
+    }
+    return targetView;
+  }
+
+  private void clearLiftOnScrollTargetView() {
+    if (liftOnScrollTargetView != null) {
+      liftOnScrollTargetView.clear();
+    }
+    liftOnScrollTargetView = null;
   }
 
   /**
@@ -959,6 +1027,9 @@ public class AppBarLayout extends LinearLayout {
           stopNestedScrollIfNeeded(dy, child, target, type);
         }
       }
+      if (child.isLiftOnScroll()) {
+        child.setLiftedState(child.shouldLift(target));
+      }
     }
 
     @Override
@@ -976,9 +1047,6 @@ public class AppBarLayout extends LinearLayout {
         // the top of it's content
         scroll(coordinatorLayout, child, dyUnconsumed, -child.getDownNestedScrollRange(), 0);
         stopNestedScrollIfNeeded(dyUnconsumed, child, target, type);
-      }
-      if (child.isLiftOnScroll()) {
-        child.setLiftedState(target.getScrollY() > 0);
       }
     }
 
@@ -1002,6 +1070,9 @@ public class AppBarLayout extends LinearLayout {
       if (lastStartedType == ViewCompat.TYPE_TOUCH || type == ViewCompat.TYPE_NON_TOUCH) {
         // If we haven't been flung, or a fling is ending
         snapToChildIfNeeded(coordinatorLayout, abl);
+        if (abl.isLiftOnScroll()) {
+          abl.setLiftedState(abl.shouldLift(target));
+        }
       }
 
       // Keep a reference to the previous nested scrolling child
@@ -1249,6 +1320,9 @@ public class AppBarLayout extends LinearLayout {
     void onFlingFinished(CoordinatorLayout parent, T layout) {
       // At the end of a manual fling, check to see if we need to snap to the edge-child
       snapToChildIfNeeded(parent, layout);
+      if (layout.isLiftOnScroll()) {
+        layout.setLiftedState(layout.shouldLift(findFirstScrollingChild(parent)));
+      }
     }
 
     @Override
@@ -1399,12 +1473,9 @@ public class AppBarLayout extends LinearLayout {
         }
 
         if (layout.isLiftOnScroll()) {
-          // Only update lifted state based on first scrolling child because it represents the
-          // content that would be scrolled beneath the app bar.
-          View scrollingChild = findFirstScrollingChild(parent);
-          if (scrollingChild != null) {
-            lifted = scrollingChild.getScrollY() > 0;
-          }
+          // Use first scrolling child as default scrolling view for updating lifted state because
+          // it represents the content that would be scrolled beneath the app bar.
+          lifted = layout.shouldLift(findFirstScrollingChild(parent));
         }
 
         final boolean changed = layout.setLiftedState(lifted);
@@ -1450,7 +1521,9 @@ public class AppBarLayout extends LinearLayout {
     private View findFirstScrollingChild(CoordinatorLayout parent) {
       for (int i = 0, z = parent.getChildCount(); i < z; i++) {
         final View child = parent.getChildAt(i);
-        if (child instanceof NestedScrollingChild) {
+        if (child instanceof NestedScrollingChild
+            || child instanceof ListView
+            || child instanceof ScrollView) {
           return child;
         }
       }
@@ -1668,7 +1741,7 @@ public class AppBarLayout extends LinearLayout {
       if (dependency instanceof AppBarLayout) {
         AppBarLayout appBarLayout = (AppBarLayout) dependency;
         if (appBarLayout.isLiftOnScroll()) {
-          appBarLayout.setLiftedState(child.getScrollY() > 0);
+          appBarLayout.setLiftedState(appBarLayout.shouldLift(child));
         }
       }
     }
