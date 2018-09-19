@@ -26,6 +26,7 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayout.LabelVisibility;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.SwitchCompat;
 import android.view.LayoutInflater;
@@ -90,7 +91,15 @@ public class TabsControllableDemoFragment extends DemoFragment {
           @Override
           public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
             showLabels = isChecked;
-            setAllTabLayoutText(LABEL_STRING_RES);
+            if (isChecked) {
+              for (TabLayout tabLayout : tabLayouts) {
+                setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_LABELED);
+              }
+            } else {
+              for (TabLayout tabLayout : tabLayouts) {
+                setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_UNLABELED);
+              }
+            }
           }
         });
 
@@ -197,12 +206,14 @@ public class TabsControllableDemoFragment extends DemoFragment {
 
   private void setTabLayoutText(TabLayout tabLayout, @StringRes int stringResId) {
     for (int i = 0; i < tabLayout.getTabCount(); i++) {
-      if (showLabels) {
-        // Convert tab index (zero-based) to readable tab label starting at 1.
-        tabLayout.getTabAt(i).setText(getResources().getString(stringResId, i + 1));
-      } else {
-        tabLayout.getTabAt(i).setText(null);
-      }
+      // Convert tab index (zero-based) to readable tab label starting at 1.
+      tabLayout.getTabAt(i).setText(getResources().getString(stringResId, i + 1));
+    }
+  }
+
+  private void setLabelVisibility(TabLayout tabLayout, @LabelVisibility int mode) {
+     for (int i = 0; i < tabLayout.getTabCount(); i++) {
+      tabLayout.getTabAt(i).setTabLabelVisibility(mode);
     }
   }
 

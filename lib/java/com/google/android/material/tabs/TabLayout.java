@@ -217,6 +217,26 @@ public class TabLayout extends HorizontalScrollView {
   public @interface Mode {}
 
   /**
+   * If a tab is instantiated with {@link #setText(CharSequence)}, and this mode is set, the text
+   * will be saved and utilized for the content description, but no visible labels will be created.
+   *
+   * @see #setTabLabelVisibility()
+   **/
+  public static final int TAB_LABEL_VISIBILITY_UNLABELED = 0;
+
+  /**
+   * This mode is set by default.
+   * If a tab is instantiated with {@link #setText(CharSequence)}, a visible label will be created.
+   *
+   * @see #setTabLabelVisibility()
+   **/
+  public static final int TAB_LABEL_VISIBILITY_LABELED = 1;
+
+  /** @hide */
+  @IntDef(value = {TAB_LABEL_VISIBILITY_UNLABELED, TAB_LABEL_VISIBILITY_LABELED})
+  public @interface LabelVisibility {}
+
+  /**
    * Gravity used to fill the {@link TabLayout} as much as possible. This option only takes effect
    * when used with {@link #MODE_FIXED} on non-landscape screens less than 600dp wide.
    *
@@ -236,9 +256,8 @@ public class TabLayout extends HorizontalScrollView {
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef(
-    flag = true,
-    value = {GRAVITY_FILL, GRAVITY_CENTER}
-  )
+      flag = true,
+      value = {GRAVITY_FILL, GRAVITY_CENTER})
   @Retention(RetentionPolicy.SOURCE)
   public @interface TabGravity {}
 
@@ -296,17 +315,16 @@ public class TabLayout extends HorizontalScrollView {
   @RestrictTo(LIBRARY_GROUP)
   @IntDef(
       value = {
-      INDICATOR_GRAVITY_BOTTOM,
-      INDICATOR_GRAVITY_CENTER,
-      INDICATOR_GRAVITY_TOP,
-      INDICATOR_GRAVITY_STRETCH
-    }
-  )
+        INDICATOR_GRAVITY_BOTTOM,
+        INDICATOR_GRAVITY_CENTER,
+        INDICATOR_GRAVITY_TOP,
+        INDICATOR_GRAVITY_STRETCH
+      })
   @Retention(RetentionPolicy.SOURCE)
   public @interface TabIndicatorGravity {}
 
   /** Callback interface invoked when a tab's selection state changes. */
-  //TODO: Remove this base listener when the widget migration is finished.
+  // TODO: Remove this base listener when the widget migration is finished.
   public interface BaseOnTabSelectedListener<T extends Tab> {
     /**
      * Called when a tab enters the selected state.
@@ -332,9 +350,7 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   /** Callback interface invoked when a tab's selection state changes. */
-  public interface OnTabSelectedListener extends BaseOnTabSelectedListener<Tab> {
-
-  }
+  public interface OnTabSelectedListener extends BaseOnTabSelectedListener<Tab> {}
 
   private final ArrayList<Tab> tabs = new ArrayList<>();
   private Tab selectedTab;
@@ -704,7 +720,7 @@ public class TabLayout extends HorizontalScrollView {
     return tab;
   }
 
-  //TODO: remove this method and just create the final field after the widget migration
+  // TODO: remove this method and just create the final field after the widget migration
   protected Tab createTabFromPool() {
     Tab tab = tabPool.acquire();
     if (tab == null) {
@@ -713,7 +729,7 @@ public class TabLayout extends HorizontalScrollView {
     return tab;
   }
 
-  //TODO: remove this method and just create the final field after the widget migration
+  // TODO: remove this method and just create the final field after the widget migration
   protected boolean releaseFromTabPool(Tab tab) {
     return tabPool.release(tab);
   }
@@ -1558,6 +1574,7 @@ public class TabLayout extends HorizontalScrollView {
 
   /**
    * Called when a selected tab is added. Unselects all other tabs in the TabLayout.
+   *
    * @param position Position of the selected tab.
    */
   private void setSelectedTabView(int position) {
@@ -1681,7 +1698,7 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   /** A tab in this layout. Instances can be created via {@link #newTab()}. */
-  //TODO: make class final after the widget migration is finished
+  // TODO: make class final after the widget migration is finished
   public static class Tab {
 
     /**
@@ -1700,13 +1717,14 @@ public class TabLayout extends HorizontalScrollView {
     private CharSequence contentDesc;
     private int position = INVALID_POSITION;
     private View customView;
+    private @LabelVisibility int labelVisibilityMode = TAB_LABEL_VISIBILITY_LABELED;
 
-    //TODO: make package private after the widget migration is finished
+    // TODO: make package private after the widget migration is finished
     public TabLayout parent;
-    //TODO: make package private after the widget migration is finished
+    // TODO: make package private after the widget migration is finished
     public TabView view;
 
-    //TODO: make package private constructor after the widget migration is finished
+    // TODO: make package private constructor after the widget migration is finished
     public Tab() {
       // Private constructor
     }
@@ -1871,6 +1889,25 @@ public class TabLayout extends HorizontalScrollView {
       }
       return setText(parent.getResources().getText(resId));
     }
+
+    /**
+   * Sets the visibility mode for the Labels in this Tab. The valid input options are:
+   *
+   * <ul>
+   *   <li>{@link #TAB_LABEL_VISIBILITY_UNLABELED}: Tabs will appear without labels regardless of
+   *        whether text is set.
+   *   <li>{@link #TAB_LABEL_VISIBILITY_LABELED}: Tabs will appear labeled if text is set.
+   * </ul>
+   *
+   * @param mode one of {@link #TAB_LABEL_VISIBILITY_UNLABELED}
+   * or {@link #TAB_LABEL_VISIBILITY_LABELED}.
+   * @return The current instance for call chaining.
+   */
+  public Tab setTabLabelVisibility(@LabelVisibility int mode) {
+    this.labelVisibilityMode = mode;
+    this.updateView();
+    return this;
+  }
 
     /** Select this tab. Only valid if the tab has been added to the action bar. */
     public void select() {
@@ -2303,7 +2340,11 @@ public class TabLayout extends HorizontalScrollView {
       if (textView != null) {
         if (hasText) {
           textView.setText(text);
-          textView.setVisibility(VISIBLE);
+          if (tab.labelVisibilityMode == TAB_LABEL_VISIBILITY_LABELED) {
+            textView.setVisibility(VISIBLE);
+          } else {
+            textView.setVisibility(GONE);
+          }
           setVisibility(VISIBLE);
         } else {
           textView.setVisibility(GONE);
