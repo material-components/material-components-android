@@ -29,6 +29,7 @@
     <item name="android:paddingRight">@dimen/design_snackbar_padding_horizontal</item>
     <item name="elevation">@dimen/design_snackbar_elevation</item>
     <item name="maxActionInlineWidth">@dimen/design_snackbar_action_inline_max_width</item>
+    <item name="animationMode">slide</item>
   </style>
 
   <style name="Widget.MaterialComponents.Snackbar" parent="Widget.Design.Snackbar">
@@ -36,6 +37,7 @@
          will be used, which supports the Material color theming attributes. -->
     <item name="android:background">@null</item>
     <item name="android:layout_margin">@dimen/mtrl_snackbar_margin</item>
+    <item name="animationMode">fade</item>
   </style>
 
   <style name="Widget.MaterialComponents.Snackbar.FullWidth" parent="Widget.Design.Snackbar"/>

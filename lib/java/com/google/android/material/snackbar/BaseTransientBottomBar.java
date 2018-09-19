@@ -20,10 +20,13 @@ import com.google.android.material.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
+import static com.google.android.material.animation.AnimationUtils.LINEAR_INTERPOLATOR;
+import static com.google.android.material.animation.AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -73,6 +76,18 @@ import java.util.List;
  * @param <B> The transient bottom bar subclass.
  */
 public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>> {
+
+  /** Animation mode that corresponds to the slide in and out animations. */
+  public static final int ANIMATION_MODE_SLIDE = 0;
+
+  /** Animation mode that corresponds to the fade in and out animations. */
+  public static final int ANIMATION_MODE_FADE = 1;
+
+  /** Animation modes that can be set on the {@link BaseTransientBottomBar}. */
+  @IntDef({ANIMATION_MODE_SLIDE, ANIMATION_MODE_FADE})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface AnimationMode {}
+
   /**
    * Base class for {@link BaseTransientBottomBar} callbacks.
    *
@@ -166,8 +181,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
    */
   public static final int LENGTH_LONG = 0;
 
+  // Legacy slide animation duration constant.
   static final int ANIMATION_DURATION = 250;
+  // Legacy slide animation content fade duration constant.
   static final int ANIMATION_FADE_DURATION = 180;
+
+  // Fade and scale animation constants.
+  private static final int ANIMATION_FADE_IN_DURATION = 150;
+  private static final int ANIMATION_FADE_OUT_DURATION = 75;
+  private static final float ANIMATION_SCALE_FROM_VALUE = 0.8f;
 
   static final Handler handler;
   static final int MSG_SHOW = 0;
@@ -363,6 +385,18 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   @Duration
   public int getDuration() {
     return duration;
+  }
+
+  /** Returns the {@link AnimationMode}. */
+  @AnimationMode
+  public int getAnimationMode() {
+    return view.getAnimationMode();
+  }
+
+  /** Sets the {@link AnimationMode}. */
+  public B setAnimationMode(@AnimationMode int animationMode) {
+    view.setAnimationMode(animationMode);
+    return (B) this;
   }
 
   /**
@@ -580,6 +614,80 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   void animateViewIn() {
+    if (view.getAnimationMode() == ANIMATION_MODE_FADE) {
+      startFadeInAnimation();
+    } else {
+      startSlideInAnimation();
+    }
+  }
+
+  private void animateViewOut(final int event) {
+    if (view.getAnimationMode() == ANIMATION_MODE_FADE) {
+      startFadeOutAnimation(event);
+    } else {
+      startSlideOutAnimation(event);
+    }
+  }
+
+  private void startFadeInAnimation() {
+    ValueAnimator alphaAnimator = getAlphaAnimator(0, 1);
+    ValueAnimator scaleAnimator = getScaleAnimator(ANIMATION_SCALE_FROM_VALUE, 1);
+
+    AnimatorSet animatorSet = new AnimatorSet();
+    animatorSet.playTogether(alphaAnimator, scaleAnimator);
+    animatorSet.setDuration(ANIMATION_FADE_IN_DURATION);
+    animatorSet.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animator) {
+            onViewShown();
+          }
+        });
+    animatorSet.start();
+  }
+
+  private void startFadeOutAnimation(final int event) {
+    final ValueAnimator animator = getAlphaAnimator(1, 0);
+    animator.setDuration(ANIMATION_FADE_OUT_DURATION);
+    animator.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animator) {
+            onViewHidden(event);
+          }
+        });
+    animator.start();
+  }
+
+  private ValueAnimator getAlphaAnimator(float... alphaValues) {
+    ValueAnimator animator = ValueAnimator.ofFloat(alphaValues);
+    animator.setInterpolator(LINEAR_INTERPOLATOR);
+    animator.addUpdateListener(
+        new ValueAnimator.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animator) {
+            view.setAlpha((Float) animator.getAnimatedValue());
+          }
+        });
+    return animator;
+  }
+
+  private ValueAnimator getScaleAnimator(float... scaleValues) {
+    ValueAnimator animator = ValueAnimator.ofFloat(scaleValues);
+    animator.setInterpolator(LINEAR_OUT_SLOW_IN_INTERPOLATOR);
+    animator.addUpdateListener(
+        new ValueAnimator.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animator) {
+            float scale = (float) animator.getAnimatedValue();
+            view.setScaleX(scale);
+            view.setScaleY(scale);
+          }
+        });
+    return animator;
+  }
+
+  private void startSlideInAnimation() {
     final int translationYBottom = getTranslationYBottom();
     if (USE_OFFSET_API) {
       ViewCompat.offsetTopAndBottom(view, translationYBottom);
@@ -625,7 +733,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     animator.start();
   }
 
-  private void animateViewOut(final int event) {
+  private void startSlideOutAnimation(final int event) {
     final ValueAnimator animator = new ValueAnimator();
     animator.setIntValues(0, getTranslationYBottom());
     animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
@@ -735,6 +843,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     private BaseTransientBottomBar.OnLayoutChangeListener onLayoutChangeListener;
     private BaseTransientBottomBar.OnAttachStateChangeListener onAttachStateChangeListener;
+    @AnimationMode private int animationMode;
 
     protected SnackbarBaseLayout(Context context) {
       this(context, null);
@@ -747,6 +856,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         ViewCompat.setElevation(
             this, a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0));
       }
+      animationMode = a.getInt(R.styleable.SnackbarLayout_animationMode, ANIMATION_MODE_SLIDE);
       a.recycle();
 
       setOnTouchListener(consumeAllTouchListener);
@@ -794,6 +904,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     void setOnAttachStateChangeListener(
         BaseTransientBottomBar.OnAttachStateChangeListener listener) {
       onAttachStateChangeListener = listener;
+    }
+
+    @AnimationMode
+    int getAnimationMode() {
+      return animationMode;
+    }
+
+    void setAnimationMode(@AnimationMode int animationMode) {
+      this.animationMode = animationMode;
     }
   }
 

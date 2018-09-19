@@ -27,6 +27,13 @@
     <attr name="android:maxWidth"/>
     <attr name="elevation"/>
     <attr name="maxActionInlineWidth" format="dimension"/>
+    <!-- Sets the enter and exit animations for a Snackbar. -->
+    <attr name="animationMode" format="enum">
+      <!-- Mode that corresponds to the slide in and out animations. -->
+      <enum name="slide" value="0"/>
+      <!-- Mode that corresponds to the fade in and out animations. -->
+      <enum name="fade" value="1"/>
+    </attr>
   </declare-styleable>
 
 </resources>
