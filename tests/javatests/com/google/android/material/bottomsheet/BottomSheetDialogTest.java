@@ -48,7 +48,6 @@ import android.support.test.espresso.matcher.ViewMatchers;
 import android.support.test.filters.MediumTest;
 import android.support.test.rule.ActivityTestRule;
 import android.support.test.runner.AndroidJUnit4;
-import com.google.android.apps.common.testing.testrunner.annotations.RecordVideo;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
@@ -76,7 +75,6 @@ public class BottomSheetDialogTest {
     }
   }
 
-  @RecordVideo
   @Test
   public void testBasicDialogSetup() throws Throwable {
     showDialog();
@@ -96,7 +94,6 @@ public class BottomSheetDialogTest {
     assertThat(dialog.isShowing(), is(false));
   }
 
-  @RecordVideo
   @Test
   public void testTouchInside() throws Throwable {
     showDialog();
@@ -112,7 +109,6 @@ public class BottomSheetDialogTest {
     assertThat(dialog.isShowing(), is(true));
   }
 
-  @RecordVideo
   @Test
   public void testClickContent() throws Throwable {
     final View.OnClickListener mockListener = mock(View.OnClickListener.class);
@@ -131,7 +127,6 @@ public class BottomSheetDialogTest {
     verify(mockListener, times(1)).onClick(any(View.class));
   }
 
-  @RecordVideo
   @Test
   public void testShortDialog() throws Throwable {
     showDialog();
@@ -151,7 +146,6 @@ public class BottomSheetDialogTest {
     assertThat(bottomSheet.getTop(), is(coordinator.getHeight() - bottomSheet.getHeight()));
   }
 
-  @RecordVideo
   @Test
   public void testNonCancelableDialog() throws Throwable {
     showDialog();
@@ -172,7 +166,6 @@ public class BottomSheetDialogTest {
     });
   }
 
-  @RecordVideo
   @Test
   public void testHideBottomSheet() throws Throwable {
     final AtomicBoolean canceled = new AtomicBoolean(false);
@@ -196,7 +189,6 @@ public class BottomSheetDialogTest {
     }
   }
 
-  @RecordVideo
   @Test
   @MediumTest
   public void testHideThenShow() throws Throwable {
