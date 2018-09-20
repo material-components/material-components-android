@@ -29,6 +29,7 @@ import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuffColorFilter;
 import android.graphics.Rect;
+import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
@@ -57,6 +58,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final Matrix matrix = new Matrix();
   private final Path path = new Path();
   private final PointF pointF = new PointF();
+  private final RectF rectF = new RectF();
   private final ShapePath shapePath = new ShapePath();
   private final Region transparentRegion = new Region();
   private final Region scratchRegion = new Region();
@@ -216,10 +218,16 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public Region getTransparentRegion() {
     Rect bounds = getBounds();
     transparentRegion.set(bounds);
-    calculatePath(bounds, path);
+    calculatePath(getBoundsAsRectF(), path);
     scratchRegion.setPath(path, transparentRegion);
     transparentRegion.op(scratchRegion, Op.DIFFERENCE);
     return transparentRegion;
+  }
+
+  private RectF getBoundsAsRectF() {
+    Rect bounds = getBounds();
+    rectF.set(bounds.left, bounds.top, bounds.right, bounds.bottom);
+    return rectF;
   }
 
   /**
@@ -440,7 +448,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     Rect bounds = getBounds();
     if (shapedViewModel != null) {
-      calculatePath(bounds, path);
+      calculatePath(getBoundsAsRectF(), path);
       if (hasFill()) {
         canvas.drawPath(path, fillPaint);
       }
@@ -468,7 +476,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @param path the returned path out-var.
    * @return the generated path.
    */
-  private void calculatePathForSize(Rect bounds, Path path) {
+  private void calculatePathForSize(RectF bounds, Path path) {
     path.rewind();
 
     if (shapedViewModel == null) {
@@ -492,7 +500,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     path.close();
   }
 
-  private void setCornerPathAndTransform(int index, Rect bounds) {
+  private void setCornerPathAndTransform(int index, RectF bounds) {
     getCornerTreatmentForIndex(index).getCornerPath(HALF_PI, interpolation, cornerPaths[index]);
 
     float prevEdgeAngle = angleOfEdge(index - 1) + HALF_PI;
@@ -568,7 +576,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
   }
 
-  private void getCoordinatesOfCorner(int index, Rect bounds, PointF pointF) {
+  private void getCoordinatesOfCorner(int index, RectF bounds, PointF pointF) {
     switch (index) {
       case 1: // top-right
         pointF.set(bounds.right, bounds.top);
@@ -590,13 +598,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return HALF_PI * ((index + 4) % 4);
   }
 
-  private void calculatePath(Rect bounds, Path path) {
+  private void calculatePath(RectF bounds, Path path) {
     calculatePathForSize(bounds, path);
     if (scale == 1f) {
       return;
     }
     matrix.reset();
-    matrix.setScale(scale, scale, bounds.width() / 2, bounds.height() / 2);
+    matrix.setScale(scale, scale, bounds.width() / 2.0f, bounds.height() / 2.0f);
     path.transform(matrix);
   }
 
