@@ -57,8 +57,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   // Pre-allocated objects that are re-used several times during path computation and rendering.
   private final Matrix matrix = new Matrix();
   private final Path path = new Path();
+  private final Path pathInsetByStroke = new Path();
   private final PointF pointF = new PointF();
   private final RectF rectF = new RectF();
+  private final RectF insetRectF = new RectF();
   private final ShapePath shapePath = new ShapePath();
   private final Region transparentRegion = new Region();
   private final Region scratchRegion = new Region();
@@ -171,7 +173,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    *
    * @param tintList the {@link ColorStateList} for the shape's stroke.
    */
-  public void setStrokeTintList(ColorStateList tintList) {
+  public void setStrokeTint(ColorStateList tintList) {
     this.strokeTintList = tintList;
     updateTintFilter();
     invalidateSelf();
@@ -183,16 +185,58 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @param tintColor an int representing the Color to use for the shape's stroke.
    */
   public void setStrokeTint(@ColorInt int tintColor) {
-    setStrokeTintList(ColorStateList.valueOf(tintColor));
+    setStrokeTint(ColorStateList.valueOf(tintColor));
   }
 
-  /** Get the int representing the Color of the shape's stroke in the current state.
+  /**
+   * Set the shape's stroke width and stroke color.
+   *
+   * @param width a float for the width of the stroke.
+   * @param tintColor an int representing the Color to use for the shape's stroke.
+   */
+  public void setStroke(float width, @ColorInt int tintColor) {
+    setStrokeWidth(width);
+    setStrokeTint(tintColor);
+  }
+
+  /**
+   * Set the shape's stroke {@link ColorStateList}
+   *
+   * @param width a float for the width of the stroke.
+   * @param tintList the {@link ColorStateList} for the shape's stroke.
+   */
+  public void setStroke(float width, ColorStateList tintList) {
+    setStrokeWidth(width);
+    setStrokeTint(tintList);
+  }
+
+  /**
+   * Get the int representing the Color of the shape's stroke in the current state.
    *
    * @return the stroke's current color.
-   **/
+   */
   @ColorInt
   public int getStrokeTint() {
     return strokePaint.getColor();
+  }
+
+  /**
+   * Get the stroke width used by the shape's paint.
+   *
+   * @return the stroke's current width.
+   */
+  public float getStrokeWidth() {
+    return strokePaint.getStrokeWidth();
+  }
+
+  /**
+   * Set the stroke width used by the shape's paint.
+   *
+   * @param strokeWidth desired stroke width.
+   */
+  public void setStrokeWidth(float strokeWidth) {
+    strokePaint.setStrokeWidth(strokeWidth);
+    invalidateSelf();
   }
 
   @Override
@@ -401,26 +445,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     invalidateSelf();
   }
 
-  /**
-   * Get the stroke width used by the shape's paint.
-   *
-   * @return current stroke width.
-   */
-  public float getStrokeWidth() {
-    return strokePaint.getStrokeWidth();
-  }
-
-  /**
-   * Set the stroke width used by the shape's paint.
-   *
-   * @param strokeWidth desired stroke width.
-   */
-  public void setStrokeWidth(float strokeWidth) {
-    fillPaint.setStrokeWidth(strokeWidth);
-    strokePaint.setStrokeWidth(strokeWidth);
-    invalidateSelf();
-  }
-
   /** Returns whether the shape has a fill. */
   private boolean hasFill() {
     return paintStyle == Style.FILL_AND_STROKE || paintStyle == Style.FILL;
@@ -446,21 +470,20 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       fillPaint.setShadowLayer(shadowRadius, 0, shadowElevation, shadowColor);
     }
 
-    Rect bounds = getBounds();
     if (shapedViewModel != null) {
-      calculatePath(getBoundsAsRectF(), path);
+      calculatePath(getBoundsInsetByStroke(), pathInsetByStroke);
       if (hasFill()) {
-        canvas.drawPath(path, fillPaint);
+        canvas.drawPath(pathInsetByStroke, fillPaint);
       }
       if (hasStroke()) {
-        canvas.drawPath(path, strokePaint);
+        canvas.drawPath(pathInsetByStroke, strokePaint);
       }
     } else {
       if (hasFill()) {
-        canvas.drawRect(bounds, fillPaint);
+        canvas.drawRect(getBoundsInsetByStroke(), fillPaint);
       }
       if (hasStroke()) {
-        canvas.drawRect(bounds, strokePaint);
+        canvas.drawRect(getBoundsInsetByStroke(), strokePaint);
       }
     }
 
@@ -636,5 +659,20 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   protected boolean onStateChange(int[] state) {
     updateTintFilter();
     return super.onStateChange(state);
+  }
+
+  private float getStrokeInsetLength() {
+    if (hasStroke()) {
+      return strokePaint.getStrokeWidth() / 2.0f;
+    }
+    return 0f;
+  }
+
+  private RectF getBoundsInsetByStroke() {
+    RectF rectF = getBoundsAsRectF();
+    float inset = getStrokeInsetLength();
+    insetRectF.set(
+        rectF.left + inset, rectF.top + inset, rectF.right - inset, rectF.bottom - inset);
+    return insetRectF;
   }
 }
