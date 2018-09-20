@@ -25,6 +25,7 @@ import io.material.catalog.button.ButtonsFragment;
 import io.material.catalog.card.CardFragment;
 import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
+import io.material.catalog.dialog.DialogDemoLandingFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.radiobutton.RadioButtonFragment;
@@ -48,6 +49,7 @@ import io.material.catalog.transformation.TransformationFragment;
       CardFragment.Module.class,
       CheckBoxFragment.Module.class,
       ChipFragment.Module.class,
+      DialogDemoLandingFragment.Module.class,
       FabFragment.Module.class,
       FontFragment.Module.class,
       RadioButtonFragment.Module.class,

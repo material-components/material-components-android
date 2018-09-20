@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<resources>
+  <string name="cat_dialog_title">Dialogs</string>
+  <string name="cat_dialog_description">Dialogs create modals that users must interact with before performing any other actions. Dialogs should only be used for user input and notices that cannot be delayed.</string>
+  <string name="message_2_actions">Message, 2 Actions</string>
+  <string name="title_2_actions">Title, 2 Actions</string>
+  <string name="title_message_3_actions">Title, Message, 3 Actions</string>
+  <string name="title_message_3_long_actions">Title, Message, 3 Long Actions</string>
+  <string name="long_title_message_too_long_action">Long Title, Message, Over-length Button</string>
+  <string name="icon_title_message_2_actions">Icon, Title, Message, 2 Actions</string>
+  <string name="title_choices_as_actions">Selection triggers action</string>
+  <string name="title_checkboxes_2_actions">Multi-select</string>
+  <string name="title_radiobuttons_2_actions">Single select</string>
+  <string name="title_slider_2_actions">Custom View</string>
+  <string name="title_scrolling_2_actions">Scrolling Content</string>
+
+  <string name="positive">Accept</string>
+  <string name="negative">Decline</string>
+  <string name="neutral">Cancel</string>
+  <string name="title">Title</string>
+  <string name="message">Message</string>
+  <string name="long_positive">This is a long Accept message.</string>
+  <string name="long_negative">This is a long Decline message.</string>
+  <string name="long_neutral">This is a long Cancel message.</string>
+  <string name="long_title">This is a long title. It is so long that it spans multiple lines on normal screens.</string>
+  <string name="too_long_positive">This is a long Accept message. It is so long that it spans multiple lines on normal screens.</string>
+  <string name="line">"Line "</string>
+</resources>
