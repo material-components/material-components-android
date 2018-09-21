@@ -660,19 +660,19 @@ public class AppBarLayout extends LinearLayout {
 
   @Nullable
   private View findLiftOnScrollTargetView() {
-    View targetView = null;
     if (liftOnScrollTargetView == null && liftOnScrollTargetViewId != View.NO_ID) {
+      View targetView = null;
       Activity activity = ContextUtils.getActivity(getContext());
       if (activity != null) {
         targetView = activity.findViewById(liftOnScrollTargetViewId);
       } else if (getParent() instanceof ViewGroup) {
         targetView = ((ViewGroup) getParent()).findViewById(liftOnScrollTargetViewId);
       }
+      if (targetView != null) {
+        liftOnScrollTargetView = new WeakReference<>(targetView);
+      }
     }
-    if (targetView != null) {
-      liftOnScrollTargetView = new WeakReference<>(targetView);
-    }
-    return targetView;
+    return liftOnScrollTargetView != null ? liftOnScrollTargetView.get() : null;
   }
 
   private void clearLiftOnScrollTargetView() {
