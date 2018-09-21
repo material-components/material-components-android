@@ -62,6 +62,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import android.support.v4.content.res.ResourcesCompat.FontCallback;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -155,7 +156,7 @@ import org.xmlpull.v1.XmlPullParserException;
  *
  * @see Chip
  */
-public class ChipDrawable extends Drawable implements TintAwareDrawable, Callback {
+public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDrawable, Callback {
 
   private static final boolean DEBUG = false;
   private static final int[] DEFAULT_STATE = new int[] {android.R.attr.state_enabled};
