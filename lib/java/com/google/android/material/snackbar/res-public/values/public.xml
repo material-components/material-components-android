@@ -21,4 +21,5 @@
   <public name="Widget.Design.Snackbar" type="style"/>
   <public name="Widget.MaterialComponents.Snackbar" type="style"/>
   <public name="Widget.MaterialComponents.Snackbar.FullWidth" type="style"/>
+  <public name="animationMode" type="attr"/>
 </resources>
