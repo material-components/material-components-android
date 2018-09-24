@@ -39,6 +39,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+import android.support.annotation.IdRes;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.LayoutRes;
@@ -230,6 +231,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   protected final SnackbarBaseLayout view;
   private final com.google.android.material.snackbar.ContentViewCallback contentViewCallback;
   private int duration;
+  @Nullable private View anchorView;
+
+  private final int originalBottomMargin;
+  private int extraBottomMarginInsets;
+  private int extraBottomMarginAnchorView;
 
   private List<BaseCallback<B>> callbacks;
 
@@ -290,6 +296,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
     view.addView(content);
 
+    originalBottomMargin = ((MarginLayoutParams) view.getLayoutParams()).bottomMargin;
+
     ViewCompat.setAccessibilityLiveRegion(view, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
     ViewCompat.setImportantForAccessibility(view, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
 
@@ -301,10 +309,9 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
           @Override
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
             // Copy over the bottom inset as bottom margin so that we're displayed above the
-            // navigation bar
-            MarginLayoutParams layoutParams = (MarginLayoutParams) v.getLayoutParams();
-            layoutParams.bottomMargin += insets.getSystemWindowInsetBottom();
-            v.setLayoutParams(layoutParams);
+            // navigation bar.
+            extraBottomMarginInsets = insets.getSystemWindowInsetBottom();
+            updateBottomMargin();
             return insets;
           }
         });
@@ -346,6 +353,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     background.setColor(backgroundColor);
     background.setCornerRadius(cornerRadius);
     return background;
+  }
+
+  private void updateBottomMargin() {
+    MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
+    layoutParams.bottomMargin =
+        originalBottomMargin + extraBottomMarginInsets + extraBottomMarginAnchorView;
+    view.setLayoutParams(layoutParams);
   }
 
   @LayoutRes
@@ -396,6 +410,30 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   /** Sets the {@link AnimationMode}. */
   public B setAnimationMode(@AnimationMode int animationMode) {
     view.setAnimationMode(animationMode);
+    return (B) this;
+  }
+
+  /**
+   * Returns the anchor view for this {@link BaseTransientBottomBar}.
+   *
+   * @see #setAnchorView(View)
+   */
+  @Nullable
+  public View getAnchorView() {
+    return anchorView;
+  }
+
+  /** Sets the view the {@link BaseTransientBottomBar} should be anchored above. */
+  @NonNull
+  public B setAnchorView(@Nullable View anchorView) {
+    this.anchorView = anchorView;
+    return (B) this;
+  }
+
+  /** Sets the id of the view the {@link BaseTransientBottomBar} should be anchored above. */
+  @NonNull
+  public B setAnchorView(@IdRes int anchorViewId) {
+    this.anchorView = targetParent.findViewById(anchorViewId);
     return (B) this;
   }
 
@@ -555,9 +593,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
               }
             });
         clp.setBehavior(behavior);
-        // Also set the inset edge so that views can dodge the bar correctly
-        clp.insetEdge = Gravity.BOTTOM;
+        // Also set the inset edge so that views can dodge the bar correctly, but only if there is
+        // no anchor view.
+        if (anchorView == null) {
+          clp.insetEdge = Gravity.BOTTOM;
+        }
       }
+
+      extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
+      updateBottomMargin();
 
       targetParent.addView(this.view);
     }
@@ -611,6 +655,22 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             }
           });
     }
+  }
+
+  private int calculateBottomMarginForAnchorView() {
+    if (anchorView == null) {
+      return 0;
+    }
+
+    int[] anchorViewLocation = new int[2];
+    anchorView.getLocationOnScreen(anchorViewLocation);
+    int anchorViewAbsoluteYTop = anchorViewLocation[1];
+
+    int[] targetParentLocation = new int[2];
+    targetParent.getLocationOnScreen(targetParentLocation);
+    int targetParentAbsoluteYBottom = targetParentLocation[1] + targetParent.getHeight();
+
+    return targetParentAbsoluteYBottom - anchorViewAbsoluteYTop;
   }
 
   void animateViewIn() {

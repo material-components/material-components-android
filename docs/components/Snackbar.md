@@ -95,6 +95,17 @@ Snackbar.make(contextView, R.string.item_removed_message, Snackbar.LENGTH_LONG)
 Action text color can be customized through the `setActionTextColor` methods
 (defaulting to your theme's accent color).
 
+### Anchoring a Snackbar
+
+By default, `Snackbar`s will be anchored to the bottom edge of their parent
+view. However, you can use the `Snackbar#setAnchorView` method to make a
+`Snackbar` appear above a specific view within your layout, e.g., a
+`FloatingActionButton`.
+
+This is especially helpful if you would like to place a `Snackbar` above
+navigational elements at the bottom of the screen, such as a `BottomAppBar` or
+`BottomNavigationView`.
+
 ### Related concepts
 
 Temporary bottom bars with other sorts of content layouts can be implemented by

@@ -46,6 +46,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
 
   protected BottomAppBar bar;
   protected CoordinatorLayout coordinatorLayout;
+  protected FloatingActionButton fab;
 
   @Nullable private ThemeSwitcherHelper themeSwitcherHelper;
   private BottomSheetBehavior<View> bottomDrawerBehavior;
@@ -67,7 +68,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
 
   @Override
   public boolean onOptionsItemSelected(MenuItem menuItem) {
-    Snackbar.make(getView(), menuItem.getTitle(), Snackbar.LENGTH_SHORT).show();
+    showSnackbar(menuItem.getTitle());
     return true;
   }
 
@@ -96,13 +97,12 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
 
     setUpBottomDrawer(view);
 
-    FloatingActionButton fab = view.findViewById(R.id.fab);
-    fab.setOnClickListener(
-        v -> Snackbar.make(getView(), fab.getContentDescription(), Snackbar.LENGTH_SHORT).show());
+    fab = view.findViewById(R.id.fab);
+    fab.setOnClickListener(v -> showSnackbar(fab.getContentDescription()));
     NavigationView navigationView = view.findViewById(R.id.navigation_view);
     navigationView.setNavigationItemSelectedListener(
         item -> {
-          Snackbar.make(getView(), item.getTitle(), Snackbar.LENGTH_SHORT).show();
+          showSnackbar(item.getTitle());
           return false;
         });
 
@@ -148,5 +148,11 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
         v -> bottomDrawerBehavior.setState(BottomSheetBehavior.STATE_HALF_EXPANDED));
     bar.setNavigationIcon(R.drawable.ic_drawer_menu_24px);
     bar.replaceMenu(R.menu.demo_primary);
+  }
+
+  private void showSnackbar(CharSequence text) {
+    Snackbar.make(coordinatorLayout, text, Snackbar.LENGTH_SHORT)
+        .setAnchorView(fab.getVisibility() == View.VISIBLE ? fab : bar)
+        .show();
   }
 }
