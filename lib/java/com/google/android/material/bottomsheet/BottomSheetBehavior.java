@@ -373,7 +373,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       // Ignore fling here. The ViewDragHelper handles it.
       return;
     }
-    View scrollingChild = nestedScrollingChildRef.get();
+    View scrollingChild = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
     if (target != scrollingChild) {
       return;
     }
@@ -417,7 +417,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       setStateInternal(STATE_EXPANDED);
       return;
     }
-    if (target != nestedScrollingChildRef.get() || !nestedScrolled) {
+    if (nestedScrollingChildRef == null
+        || target != nestedScrollingChildRef.get()
+        || !nestedScrolled) {
       return;
     }
     int top;
@@ -477,9 +479,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       @NonNull View target,
       float velocityX,
       float velocityY) {
-    return target == nestedScrollingChildRef.get()
-        && (state != STATE_EXPANDED
-        || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
+    if (nestedScrollingChildRef != null) {
+      return target == nestedScrollingChildRef.get()
+          && (state != STATE_EXPANDED
+              || super.onNestedPreFling(coordinatorLayout, child, target, velocityX, velocityY));
+    } else {
+      return false;
+    }
   }
 
   /**
@@ -767,7 +773,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             return false;
           }
           if (state == STATE_EXPANDED && activePointerId == pointerId) {
-            View scroll = nestedScrollingChildRef.get();
+            View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
             if (scroll != null && scroll.canScrollVertically(-1)) {
               // Let the content scroll up
               return false;
