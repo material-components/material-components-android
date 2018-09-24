@@ -21,24 +21,81 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
+import com.google.android.material.card.MaterialCardView;
+import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
+import android.widget.TextView;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
+import java.util.List;
 
 /** A fragment that displays the main Elevation demo for the Catalog app. */
 public class ElevationMainDemoFragment extends DemoFragment {
+  protected int currentElevation;
+  protected int elevationDP;
+  protected int[] elevationValues;
 
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getDemoContent(), viewGroup, false /* attachToRoot */);
-
+    setUpElevationValues();
+    setUp(view);
     return view;
   }
 
   @LayoutRes
   protected int getDemoContent() {
     return R.layout.cat_elevation_shadows_fragment;
+  }
+
+  protected void updateElevationLevel(View view, int newLevel) {
+    List<MaterialCardView> elevationCards =
+        DemoUtils.findViewsWithType(view, MaterialCardView.class);
+
+    TextView levelText = view.findViewById(R.id.current_elevation_level);
+
+    if (newLevel >= 0 && newLevel <= 7) {
+      currentElevation = newLevel;
+      elevationDP = elevationValues[currentElevation];
+      for (MaterialCardView elevationCard : elevationCards) {
+        ViewCompat.setElevation(elevationCard, elevationDP);
+      }
+      levelText.setText(
+          getResources()
+              .getString(R.string.cat_elevation_fragment_level, elevationDP));
+    }
+  }
+
+  protected void setUp(View view) {
+    currentElevation = 0;
+
+    Button increaseButton = view.findViewById(R.id.increase_elevation);
+    Button decreaseButton = view.findViewById(R.id.decrease_elevation);
+
+    elevationDP = elevationValues[currentElevation];
+
+    increaseButton.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View button) {
+            updateElevationLevel(view, currentElevation + 1);
+          }
+        });
+    decreaseButton.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View button) {
+            updateElevationLevel(view, currentElevation - 1);
+          }
+        });
+    updateElevationLevel(view, 0);
+  }
+
+  protected void setUpElevationValues() {
+    elevationValues = getResources().getIntArray(R.array.cat_elevation_values);
   }
 }
