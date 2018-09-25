@@ -37,6 +37,6 @@ public class RoundedCornerTreatment extends CornerTreatment {
   @Override
   public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {
     shapePath.reset(0, radius * interpolation);
-    shapePath.addArc(0, 0, 2 * radius * interpolation, 2 * radius * interpolation, angle + 180, 90);
+    shapePath.addArc(0, 0, 2 * radius * interpolation, 2 * radius * interpolation, 180, angle);
   }
 }

@@ -16,11 +16,13 @@
 
 package com.google.android.material.shape;
 
+import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
 import android.graphics.Matrix;
+import android.graphics.Outline;
 import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
@@ -33,11 +35,13 @@ import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import com.google.android.material.internal.Experimental;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
+import android.util.Log;
 
 /**
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
@@ -46,7 +50,7 @@ import android.support.v4.graphics.drawable.TintAwareDrawable;
 @Experimental("The shapes API is currently experimental and subject to change")
 public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable {
 
-  private static final float HALF_PI = (float) (Math.PI / 2.0);
+  private static final String TAG = MaterialShapeDrawable.class.getSimpleName();
 
   private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
@@ -513,8 +517,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       setEdgePathAndTransform(index);
     }
 
-    // Apply corners and edges to the path in clockwise interleaving sequence: top-left corner, top
-    // edge, top-right corner, right edge, bottom-right corner, etc.
+    // Apply corners and edges to the path in clockwise interleaving sequence: top-right corner,
+    // right edge, bottom-right corner, bottom edge, bottom-left corner etc. We start from the top
+    // right corner rather than the top left to work around a bug in API level 21 and 22 in which
+    // rounding error causes the path to incorrectly be marked as concave.
     for (int index = 0; index < 4; index++) {
       appendCornerPath(index, path);
       appendEdgePath(index, path);
@@ -523,14 +529,25 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     path.close();
   }
 
-  private void setCornerPathAndTransform(int index, RectF bounds) {
-    getCornerTreatmentForIndex(index).getCornerPath(HALF_PI, interpolation, cornerPaths[index]);
+  @TargetApi(VERSION_CODES.LOLLIPOP)
+  @Override
+  public void getOutline(Outline outline) {
+    calculatePath(getBoundsAsRectF(), path);
+    if (path.isConvex()) {
+      outline.setConvexPath(path);
+    } else {
+      Log.w(TAG, "Path is not convex. No shadow will be drawn.");
+    }
+  }
 
-    float prevEdgeAngle = angleOfEdge(index - 1) + HALF_PI;
+  private void setCornerPathAndTransform(int index, RectF bounds) {
+    getCornerTreatmentForIndex(index).getCornerPath(90, interpolation, cornerPaths[index]);
+
+    float edgeAngle = angleOfEdge(index);
     cornerTransforms[index].reset();
     getCoordinatesOfCorner(index, bounds, pointF);
     cornerTransforms[index].setTranslate(pointF.x, pointF.y);
-    cornerTransforms[index].preRotate((float) Math.toDegrees(prevEdgeAngle));
+    cornerTransforms[index].preRotate(edgeAngle);
   }
 
   private void setEdgePathAndTransform(int index) {
@@ -540,7 +557,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     float edgeAngle = angleOfEdge(index);
     edgeTransforms[index].reset();
     edgeTransforms[index].setTranslate(scratch[0], scratch[1]);
-    edgeTransforms[index].preRotate((float) Math.toDegrees(edgeAngle));
+    edgeTransforms[index].preRotate(edgeAngle);
   }
 
   private void appendCornerPath(int index, Path path) {
@@ -574,51 +591,51 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private CornerTreatment getCornerTreatmentForIndex(int index) {
     switch (index) {
       case 1:
-        return shapedViewModel.getTopRightCorner();
-      case 2:
         return shapedViewModel.getBottomRightCorner();
-      case 3:
+      case 2:
         return shapedViewModel.getBottomLeftCorner();
+      case 3:
+        return shapedViewModel.getTopLeftCorner();
       case 0:
       default:
-        return shapedViewModel.getTopLeftCorner();
+        return shapedViewModel.getTopRightCorner();
     }
   }
 
   private EdgeTreatment getEdgeTreatmentForIndex(int index) {
     switch (index) {
       case 1:
-        return shapedViewModel.getRightEdge();
-      case 2:
         return shapedViewModel.getBottomEdge();
-      case 3:
+      case 2:
         return shapedViewModel.getLeftEdge();
+      case 3:
+        return shapedViewModel.getTopEdge();
       case 0:
       default:
-        return shapedViewModel.getTopEdge();
+        return shapedViewModel.getRightEdge();
     }
   }
 
   private void getCoordinatesOfCorner(int index, RectF bounds, PointF pointF) {
     switch (index) {
-      case 1: // top-right
-        pointF.set(bounds.right, bounds.top);
-        break;
-      case 2: // bottom-right
+      case 1: // bottom-right
         pointF.set(bounds.right, bounds.bottom);
         break;
-      case 3: // bottom-left
+      case 2: // bottom-left
         pointF.set(bounds.left, bounds.bottom);
         break;
-      case 0: // top-left
-      default:
+      case 3: // top-left
         pointF.set(bounds.left, bounds.top);
+        break;
+      case 0: // top-right
+      default:
+        pointF.set(bounds.right, bounds.top);
         break;
     }
   }
 
   private float angleOfEdge(int index) {
-    return HALF_PI * ((index + 4) % 4);
+    return 90 * (index + 1 % 4);
   }
 
   private void calculatePath(RectF bounds, Path path) {

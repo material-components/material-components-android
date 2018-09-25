@@ -42,7 +42,9 @@ public class CutCornerTreatment extends CornerTreatment {
   public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {
     shapePath.reset(0, size * interpolation);
     shapePath.lineTo(
-        (float) (Math.sin(angle) * size * interpolation),
-        (float) (Math.cos(angle) * size * interpolation));
+        (float) (Math.sin(Math.toRadians(angle)) * size * interpolation),
+        // Something about using cos() is causing rounding which prevents the path from being convex
+        // on api levels 21 and 22. Using sin() with 90 - angle is helping for now.
+        (float) (Math.sin(Math.toRadians(90 - angle)) * size * interpolation));
   }
 }
