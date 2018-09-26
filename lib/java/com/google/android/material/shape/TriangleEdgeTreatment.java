@@ -43,10 +43,10 @@ public class TriangleEdgeTreatment extends EdgeTreatment {
   }
 
   @Override
-  public void getEdgePath(float length, float interpolation, ShapePath shapePath) {
-    shapePath.lineTo(length / 2 - (size * interpolation), 0);
-    shapePath.lineTo(length / 2, inside ? size * interpolation : -size * interpolation);
-    shapePath.lineTo(length / 2 + (size * interpolation), 0);
+  public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
+    shapePath.lineTo(center - (size * interpolation), 0);
+    shapePath.lineTo(center, inside ? size * interpolation : -size * interpolation);
+    shapePath.lineTo(center + (size * interpolation), 0);
     shapePath.lineTo(length, 0);
   }
 }

@@ -31,6 +31,8 @@ public class EdgeTreatment {
    * to all four edges.
    *
    * @param length the length of the edge.
+   * @param center the distance to the center of the shape. This takes into account any offset added
+   *     by the proceeding corner.
    * @param interpolation the interpolation of the edge treatment. Ranges between 0 (none) and 1
    *     (fully) interpolated. Custom edge treatments can implement interpolation to support shape
    *     transition between two arbitrary states. Typically, a value of 0 indicates that the custom
@@ -39,7 +41,7 @@ public class EdgeTreatment {
    *     "heal" or "reveal" an edge treatment.
    * @param shapePath the {@link ShapePath} that this treatment should write to.
    */
-  public void getEdgePath(float length, float interpolation, ShapePath shapePath) {
+  public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
     shapePath.lineTo(length, 0);
   }
 }

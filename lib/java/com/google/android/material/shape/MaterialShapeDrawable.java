@@ -583,9 +583,25 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     cornerTransforms[nextIndex].mapPoints(scratch2);
 
     float edgeLength = (float) Math.hypot(scratch[0] - scratch2[0], scratch[1] - scratch2[1]);
+    float center = getEdgeCenterForIndex(index);
     shapePath.reset(0, 0);
-    getEdgeTreatmentForIndex(index).getEdgePath(edgeLength, interpolation, shapePath);
+    getEdgeTreatmentForIndex(index).getEdgePath(edgeLength, center, interpolation, shapePath);
     shapePath.applyToPath(edgeTransforms[index], path);
+  }
+
+  private float getEdgeCenterForIndex(int index) {
+    scratch[0] = cornerPaths[index].endX;
+    scratch[1] = cornerPaths[index].endY;
+    cornerTransforms[index].mapPoints(scratch);
+    switch (index) {
+      case 1:
+      case 3:
+        return Math.abs(getBoundsAsRectF().centerX() - scratch[0]);
+      case 2:
+      case 0:
+      default:
+        return Math.abs(getBoundsAsRectF().centerY() - scratch[1]);
+    }
   }
 
   private CornerTreatment getCornerTreatmentForIndex(int index) {

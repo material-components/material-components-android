@@ -65,7 +65,7 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
   }
 
   @Override
-  public void getEdgePath(float length, float interpolation, ShapePath shapePath) {
+  public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
     if (fabDiameter == 0) {
       // There is no cutout to draw.
       shapePath.lineTo(length, 0);
@@ -75,7 +75,7 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
     float cradleDiameter = fabMargin * 2 + fabDiameter;
     float cradleRadius = cradleDiameter / 2f;
     float roundedCornerOffset = interpolation * roundedCornerRadius;
-    float middle = length / 2f + horizontalOffset;
+    float middle = center + horizontalOffset;
 
     // The center offset of the cutout tweens between the vertical offset when attached, and the
     // cradleRadius as it becomes detached.
