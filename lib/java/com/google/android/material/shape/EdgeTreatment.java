@@ -26,13 +26,14 @@ public class EdgeTreatment {
    * Generates a {@link ShapePath} for this edge treatment.
    *
    * <p>EdgeTreatments have an origin of (0, 0) and a destination of (0, length) (i.e. they
-   * represent the top edge), and are be automatically rotated and scaled as necessary when applied
-   * to other edges. Only the horizontal, top EdgeTreatment needs to be defined in order to apply it
-   * to all four edges.
+   * represent the top edge), and are automatically rotated and scaled as necessary when applied to
+   * other edges. Only the horizontal, top EdgeTreatment needs to be defined in order to apply it to
+   * all four edges.
    *
    * @param length the length of the edge.
-   * @param center the distance to the center of the shape. This takes into account any offset added
-   *     by the proceeding corner.
+   * @param center the distance to the center of the edge. This takes into account any offset added
+   *     by the proceeding corner. Drawing anything at (center, 0) will be center aligned with the
+   *     shape. Normally you'll want to use this instead of length / 2.
    * @param interpolation the interpolation of the edge treatment. Ranges between 0 (none) and 1
    *     (fully) interpolated. Custom edge treatments can implement interpolation to support shape
    *     transition between two arbitrary states. Typically, a value of 0 indicates that the custom
