@@ -71,7 +71,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final float[] scratch = new float[2];
   private final float[] scratch2 = new float[2];
 
-  @Nullable private ShapePathModel shapedViewModel = null;
+  private ShapeAppearanceModel shapeAppearanceModel;
   private boolean shadowEnabled = false;
   private boolean useTintColorForShadow = false;
   private float interpolation = 1f;
@@ -91,15 +91,15 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private ColorStateList strokeTintList = null;
 
   public MaterialShapeDrawable() {
-    this(null);
+    this(new ShapeAppearanceModel());
   }
 
   /**
-   * @param shapePathModel the {@link ShapePathModel} containing the path that will be rendered in
-   *     this drawable.
+   * @param shapeAppearanceModel the {@link ShapeAppearanceModel} containing the path that will be
+   *     rendered in this drawable.
    */
-  public MaterialShapeDrawable(@Nullable ShapePathModel shapePathModel) {
-    this.shapedViewModel = shapePathModel;
+  public MaterialShapeDrawable(ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
     strokePaint.setStyle(Style.STROKE);
     fillPaint.setStyle(Style.FILL);
 
@@ -116,23 +116,46 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Get the {@link ShapePathModel} containing the path that will be rendered in this drawable.
+   * Set the {@link ShapeAppearanceModel} containing the path that will be rendered in this
+   * drawable.
+   *
+   * @param shapeAppearanceModel the desired model.
+   */
+  public void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
+    invalidateSelf();
+  }
+
+  /**
+   * Get the {@link ShapeAppearanceModel} containing the path that will be rendered in this
+   * drawable.
    *
    * @return the current model.
    */
-  @Nullable
-  public ShapePathModel getShapedViewModel() {
-    return shapedViewModel;
+  public ShapeAppearanceModel getShapeAppearanceModel() {
+    return shapeAppearanceModel;
   }
 
   /**
    * Set the {@link ShapePathModel} containing the path that will be rendered in this drawable.
    *
+   * @deprecated Use {@link #setShapeAppearanceModel(ShapeAppearanceModel)} instead.
    * @param shapedViewModel the desired model.
    */
+  @Deprecated
   public void setShapedViewModel(ShapePathModel shapedViewModel) {
-    this.shapedViewModel = shapedViewModel;
-    invalidateSelf();
+    setShapeAppearanceModel(shapedViewModel);
+  }
+
+  /**
+   * Get the {@link ShapePathModel} containing the path that will be rendered in this drawable.
+   *
+   * @deprecated Use {@link #getShapeAppearanceModel()} instead.
+   * @return the current model.
+   */
+  @Deprecated
+  public ShapeAppearanceModel getShapedViewModel() {
+    return getShapeAppearanceModel();
   }
 
   /**
@@ -474,21 +497,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       fillPaint.setShadowLayer(shadowRadius, 0, shadowElevation, shadowColor);
     }
 
-    if (shapedViewModel != null) {
-      calculatePath(getBoundsInsetByStroke(), pathInsetByStroke);
-      if (hasFill()) {
-        canvas.drawPath(pathInsetByStroke, fillPaint);
-      }
-      if (hasStroke()) {
-        canvas.drawPath(pathInsetByStroke, strokePaint);
-      }
-    } else {
-      if (hasFill()) {
-        canvas.drawRect(getBoundsInsetByStroke(), fillPaint);
-      }
-      if (hasStroke()) {
-        canvas.drawRect(getBoundsInsetByStroke(), strokePaint);
-      }
+    calculatePath(getBoundsInsetByStroke(), pathInsetByStroke);
+    if (hasFill()) {
+      canvas.drawPath(pathInsetByStroke, fillPaint);
+    }
+    if (hasStroke()) {
+      canvas.drawPath(pathInsetByStroke, strokePaint);
     }
 
     fillPaint.setAlpha(prevAlpha);
@@ -505,10 +519,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   private void calculatePathForSize(RectF bounds, Path path) {
     path.rewind();
-
-    if (shapedViewModel == null) {
-      return;
-    }
 
     // Calculate the transformations (rotations and translations) necessary for each edge and
     // corner treatment.
@@ -607,28 +617,28 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private CornerTreatment getCornerTreatmentForIndex(int index) {
     switch (index) {
       case 1:
-        return shapedViewModel.getBottomRightCorner();
+        return shapeAppearanceModel.getBottomRightCorner();
       case 2:
-        return shapedViewModel.getBottomLeftCorner();
+        return shapeAppearanceModel.getBottomLeftCorner();
       case 3:
-        return shapedViewModel.getTopLeftCorner();
+        return shapeAppearanceModel.getTopLeftCorner();
       case 0:
       default:
-        return shapedViewModel.getTopRightCorner();
+        return shapeAppearanceModel.getTopRightCorner();
     }
   }
 
   private EdgeTreatment getEdgeTreatmentForIndex(int index) {
     switch (index) {
       case 1:
-        return shapedViewModel.getBottomEdge();
+        return shapeAppearanceModel.getBottomEdge();
       case 2:
-        return shapedViewModel.getLeftEdge();
+        return shapeAppearanceModel.getLeftEdge();
       case 3:
-        return shapedViewModel.getTopEdge();
+        return shapeAppearanceModel.getTopEdge();
       case 0:
       default:
-        return shapedViewModel.getRightEdge();
+        return shapeAppearanceModel.getRightEdge();
     }
   }
 

@@ -44,7 +44,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton.OnV
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapePathModel;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.CoordinatorLayout.AttachedBehavior;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -203,7 +203,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     topEdgeTreatment =
         new BottomAppBarTopEdgeTreatment(fabCradleMargin, fabCornerRadius, fabVerticalOffset);
-    ShapePathModel appBarModel = new ShapePathModel();
+    ShapeAppearanceModel appBarModel = new ShapeAppearanceModel();
     appBarModel.setTopEdge(topEdgeTreatment);
     materialShapeDrawable = new MaterialShapeDrawable(appBarModel);
     materialShapeDrawable.setShadowEnabled(true);
@@ -422,13 +422,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       return;
     }
 
-    fab.hide(new OnVisibilityChangedListener() {
-      @Override
-      public void onHidden(FloatingActionButton fab) {
-        fab.setTranslationX(getFabTranslationX(targetMode));
-        fab.show();
-      }
-    });
+    fab.hide(
+        new OnVisibilityChangedListener() {
+          @Override
+          public void onHidden(FloatingActionButton fab) {
+            fab.setTranslationX(getFabTranslationX(targetMode));
+            fab.show();
+          }
+        });
   }
 
   private void createFabTranslationXAnimation(
@@ -642,18 +643,19 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   private void addFabAnimationListeners(@NonNull FloatingActionButton fab) {
     fab.addOnHideAnimationListener(fabAnimationListener);
-    fab.addOnShowAnimationListener(new AnimatorListenerAdapter() {
-      @Override
-      public void onAnimationStart(Animator animation) {
-        fabAnimationListener.onAnimationStart(animation);
+    fab.addOnShowAnimationListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationStart(Animator animation) {
+            fabAnimationListener.onAnimationStart(animation);
 
-        // Any time the fab is being shown make sure it is in the correct position.
-        FloatingActionButton fab = findDependentFab();
-        if (fab != null) {
-          fab.setTranslationX(getFabTranslationX());
-        }
-      }
-    });
+            // Any time the fab is being shown make sure it is in the correct position.
+            FloatingActionButton fab = findDependentFab();
+            if (fab != null) {
+              fab.setTranslationX(getFabTranslationX());
+            }
+          }
+        });
     fab.addTransformationListener(fabTransformationListener);
   }
 
