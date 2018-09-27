@@ -142,7 +142,7 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
   }
 
   private void initBottomNavs(LayoutInflater layoutInflater, View view) {
-    inflateBottomNavs(layoutInflater, view.findViewById(R.id.content));
+    inflateBottomNavs(layoutInflater, view.findViewById(R.id.bottom_navs));
     inflateBottomNavDemoControls(layoutInflater, view.findViewById(R.id.demo_controls));
     addBottomNavsToList(view);
   }

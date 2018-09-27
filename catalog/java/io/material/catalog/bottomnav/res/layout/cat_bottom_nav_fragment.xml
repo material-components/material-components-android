@@ -14,65 +14,79 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<android.support.design.widget.CoordinatorLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/content"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
-  <LinearLayout
-      android:id="@+id/demo_controls"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+  <ScrollView
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
+      android:layout_weight="1"
+      android:fadeScrollbars="false">
+
+    <LinearLayout
+        android:id="@+id/demo_controls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/cat_bottom_nav_standard_spacing"
+        android:layout_marginBottom="@dimen/cat_bottom_nav_standard_spacing"
+        android:layout_marginLeft="@dimen/cat_bottom_nav_standard_spacing"
+        android:layout_marginRight="@dimen/cat_bottom_nav_standard_spacing"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+      <FrameLayout
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content">
+        <TextView
+            android:id="@+id/page_1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_bottom_nav_page_1_name"/>
+        <TextView
+            android:id="@+id/page_2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_bottom_nav_page_2_name"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/page_3"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_bottom_nav_page_3_name"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/page_4"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_bottom_nav_page_4_name"
+            android:visibility="gone"/>
+        <TextView
+            android:id="@+id/page_5"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/cat_bottom_nav_page_5_name"
+            android:visibility="gone"/>
+      </FrameLayout>
+
+      <Button
+          android:id="@+id/add_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_bottom_nav_add_nav_item"/>
+      <Button
+          android:id="@+id/remove_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_bottom_nav_remove_nav_item"/>
+    </LinearLayout>
+  </ScrollView>
+  <FrameLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginTop="@dimen/cat_bottom_nav_standard_spacing"
-      android:layout_marginBottom="@dimen/cat_bottom_nav_standard_spacing"
-      android:layout_marginLeft="@dimen/cat_bottom_nav_standard_spacing"
-      android:layout_marginRight="@dimen/cat_bottom_nav_standard_spacing"
-      android:gravity="center_horizontal"
-      android:orientation="vertical">
-
-    <FrameLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
-      <TextView
-          android:id="@+id/page_1"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottom_nav_page_1_name"/>
-      <TextView
-          android:id="@+id/page_2"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottom_nav_page_2_name"
-          android:visibility="gone"/>
-      <TextView
-          android:id="@+id/page_3"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottom_nav_page_3_name"
-          android:visibility="gone"/>
-      <TextView
-          android:id="@+id/page_4"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottom_nav_page_4_name"
-          android:visibility="gone"/>
-      <TextView
-          android:id="@+id/page_5"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:text="@string/cat_bottom_nav_page_5_name"
-          android:visibility="gone"/>
-    </FrameLayout>
-
-    <Button
-        android:id="@+id/add_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_bottom_nav_add_nav_item"/>
-    <Button
-        android:id="@+id/remove_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_bottom_nav_remove_nav_item"/>
-  </LinearLayout>
-</android.support.design.widget.CoordinatorLayout>
+      android:id="@+id/bottom_navs">
+  </FrameLayout>
+</LinearLayout>
