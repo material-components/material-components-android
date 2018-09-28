@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  ~ Copyright (C) 2018 The Android Open Source Project
+  ~
+  ~ Licensed under the Apache License, Version 2.0 (the "License");
+  ~ you may not use this file except in compliance with the License.
+  ~ You may obtain a copy of the License at
+  ~
+  ~      http://www.apache.org/licenses/LICENSE-2.0
+  ~
+  ~ Unless required by applicable law or agreed to in writing, software
+  ~ distributed under the License is distributed on an "AS IS" BASIS,
+  ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  ~ See the License for the specific language governing permissions and
+  ~ limitations under the License.
+-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+  <!--
+      Theme in the "Platform.MaterialComponents" family are designed to be aliases for the default
+      theme on a given platform version and should set up the default theme ready for adding our
+      material component attributes.
+  -->
+  <eat-comment/>
+
+  <style name="Platform.MaterialComponents" parent="Theme.AppCompat"/>
+
+  <style name="Platform.MaterialComponents.Light" parent="Theme.AppCompat.Light"/>
+
+  <style name="Platform.MaterialComponents.DayNight" parent="Theme.AppCompat.DayNight"/>
+
+  <!-- All new attributes should be set in the following four Base.V14 themes. -->
+  <eat-comment/>
+
+  <style name="Base.V14.Theme.MaterialComponents.Bridge" parent="Platform.MaterialComponents">
+    <item name="isMaterialTheme">true</item>
+
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+    <item name="colorSurface">@color/design_default_color_surface</item>
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">@color/design_default_color_on_background</item>
+    <item name="colorOnError">@color/design_default_color_on_error</item>
+    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
+
+    <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
+    <!-- Type styles -->
+    <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+    <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+    <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+    <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+    <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+    <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+    <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+    <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+    <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+    <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+    <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+    <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+  </style>
+
+  <style name="Base.V14.Theme.MaterialComponents.Light.Bridge" parent="Platform.MaterialComponents.Light">
+    <item name="isMaterialTheme">true</item>
+
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+    <item name="colorSurface">@color/design_default_color_surface</item>
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">@color/design_default_color_on_background</item>
+    <item name="colorOnError">@color/design_default_color_on_error</item>
+    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
+
+    <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
+    <!-- Type styles -->
+    <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+    <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+    <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+    <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+    <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+    <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+    <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+    <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+    <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+    <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+    <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+    <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+  </style>
+
+  <style name="Base.V14.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Theme.AppCompat.Light.DarkActionBar">
+    <item name="isMaterialTheme">true</item>
+
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+    <item name="colorSurface">@color/design_default_color_surface</item>
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">@color/design_default_color_on_background</item>
+    <item name="colorOnError">@color/design_default_color_on_error</item>
+    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
+
+    <item name="colorSecondary">?attr/colorPrimary</item>
+
+    <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
+    <!-- Type styles -->
+    <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+    <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+    <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+    <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+    <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+    <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+    <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+    <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+    <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+    <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+    <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+    <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+  </style>
+
+   <style name="Base.V14.Theme.MaterialComponents.DayNight.Bridge" parent="Platform.MaterialComponents.DayNight">
+    <item name="isMaterialTheme">true</item>
+
+    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
+    <item name="colorSurface">@color/design_default_color_surface</item>
+    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
+    <item name="colorOnBackground">@color/design_default_color_on_background</item>
+    <item name="colorOnError">@color/design_default_color_on_error</item>
+    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
+
+    <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
+    <!-- Type styles -->
+    <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
+    <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
+    <item name="textAppearanceHeadline3">@style/TextAppearance.MaterialComponents.Headline3</item>
+    <item name="textAppearanceHeadline4">@style/TextAppearance.MaterialComponents.Headline4</item>
+    <item name="textAppearanceHeadline5">@style/TextAppearance.MaterialComponents.Headline5</item>
+    <item name="textAppearanceHeadline6">@style/TextAppearance.MaterialComponents.Headline6</item>
+    <item name="textAppearanceSubtitle1">@style/TextAppearance.MaterialComponents.Subtitle1</item>
+    <item name="textAppearanceSubtitle2">@style/TextAppearance.MaterialComponents.Subtitle2</item>
+    <item name="textAppearanceBody1">@style/TextAppearance.MaterialComponents.Body1</item>
+    <item name="textAppearanceBody2">@style/TextAppearance.MaterialComponents.Body2</item>
+    <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
+    <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
+    <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
+  </style>
+
+  <!-- Themes in the "Base.Theme" family vary based on the current platform
+       version to provide the correct basis on each device. You probably don't
+       want to use them directly in your apps.
+
+       Themes in the "Theme.MaterialComponents" family are meant to be extended or used
+       directly by apps. -->
+  <eat-comment/>
+
+  <style name="Base.Theme.MaterialComponents.Bridge" parent="Base.V14.Theme.MaterialComponents.Bridge"/>
+
+  <style name="Base.Theme.MaterialComponents.Light.Bridge" parent="Base.V14.Theme.MaterialComponents.Light.Bridge"/>
+
+  <style name="Base.Theme.MaterialComponents.DayNight.Bridge" parent="Base.V14.Theme.MaterialComponents.DayNight.Bridge"/>
+
+  <style name="Base.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Base.V14.Theme.MaterialComponents.Light.DarkActionBar.Bridge"/>
+
+</resources>
