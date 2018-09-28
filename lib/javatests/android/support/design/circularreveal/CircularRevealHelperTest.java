@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.material.circularreveal;
+package com.google.android.material.circularreveal;
 
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Matchers.anyFloat;
@@ -33,23 +33,22 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Nullable;
-import com.google.android.material.circularreveal.CircularRevealHelper;
-import com.google.android.material.circularreveal.CircularRevealWidget;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
 import com.google.android.material.math.MathUtils;
 import android.view.View;
 import android.view.View.MeasureSpec;
-import org.robolectric.RobolectricTestRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Matchers;
 import org.robolectric.Robolectric;
+import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
+import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link CircularRevealHelper}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@DoNotInstrument
 public class CircularRevealHelperTest {
 
   private static final int DELEGATE_WIDTH = 100;

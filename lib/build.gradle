@@ -78,6 +78,8 @@ android {
     test.java.srcDir 'javatests'
   }
 
+  testOptions.unitTests.includeAndroidResources = true
+
   buildTypes.all {
     consumerProguardFiles 'proguard-behaviors.pro', 'proguard-inflater.pro'
   }

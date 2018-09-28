@@ -13,24 +13,22 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package io.material.circularreveal;
+package com.google.android.material.circularreveal;
 
 import static com.google.common.truth.Truth.assertThat;
 
 import com.google.android.material.circularreveal.CircularRevealWidget.CircularRevealEvaluator;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
 import com.google.common.collect.Range;
-import org.robolectric.RobolectricTestRunner;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.internal.DoNotInstrument;
 
-/**
- * Tests for {@link CircularRevealEvaluator}.
- */
+/** Tests for {@link CircularRevealEvaluator}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(manifest = Config.NONE)
+@DoNotInstrument
 public class CircularRevealEvaluatorTest {
 
   private CircularRevealEvaluator evaluator;
