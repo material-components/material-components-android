@@ -20,8 +20,10 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.ThemeEnforcement;
 import android.support.v4.widget.CompoundButtonCompat;
 import android.support.v7.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
@@ -53,7 +55,21 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
   public MaterialCheckBox(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    if (CompoundButtonCompat.getButtonTintList(this) == null) {
+
+    TypedArray attributes =
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
+            attrs,
+            R.styleable.MaterialCheckBox,
+            defStyleAttr,
+            R.style.Widget_MaterialComponents_CompoundButton_CheckBox);
+
+    boolean useMaterialThemeColors =
+        attributes.getBoolean(R.styleable.MaterialCheckBox_useMaterialThemeColors, false);
+
+    attributes.recycle();
+
+    if (useMaterialThemeColors && CompoundButtonCompat.getButtonTintList(this) == null) {
       setColorThemedButtonTintList();
     }
   }

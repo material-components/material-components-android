@@ -20,8 +20,10 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.support.annotation.Nullable;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.ThemeEnforcement;
 import android.support.v7.widget.SwitchCompat;
 import android.util.AttributeSet;
 
@@ -55,7 +57,20 @@ public class SwitchMaterial extends SwitchCompat {
   public SwitchMaterial(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
 
-    if (getThumbTintList() == null || getTrackTintList() == null) {
+    TypedArray attributes =
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
+            attrs,
+            R.styleable.SwitchMaterial,
+            defStyleAttr,
+            R.style.Widget_MaterialComponents_CompoundButton_Switch);
+
+    boolean useMaterialThemeColors =
+        attributes.getBoolean(R.styleable.SwitchMaterial_useMaterialThemeColors, false);
+
+    attributes.recycle();
+
+    if (useMaterialThemeColors && (getThumbTintList() == null || getTrackTintList() == null)) {
       int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
 

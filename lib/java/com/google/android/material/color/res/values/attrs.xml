@@ -48,4 +48,11 @@
        Theme.MaterialComponents.Bridge theme. -->
   <attr name="isMaterialTheme" format="boolean"/>
 
+  <!-- When set to true, the material selection controls will tint themselves according to
+       Material Theme colors. When set to false, Material Theme colors will
+       be ignored. This value should be set to false when using custom drawables
+       that should not be tinted. This value is ignored if a buttonTint is set.
+       Set this attribute on your styles for each selection control.-->
+    <attr name="useMaterialThemeColors" format="boolean"/>
+
 </resources>

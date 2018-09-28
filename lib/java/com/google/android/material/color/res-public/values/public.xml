@@ -36,4 +36,6 @@
   <public name="design_default_color_error" type="color"/>
   <public name="design_default_color_on_primary" type="color"/>
   <public name="design_default_color_on_secondary" type="color"/>
+
+  <public name="useMaterialThemeColors" type="attr"/>
 </resources>
