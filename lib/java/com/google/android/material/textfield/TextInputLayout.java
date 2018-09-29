@@ -1185,6 +1185,14 @@ public class TextInputLayout extends LinearLayout {
       if (wasCounterOverflowed != counterOverflowed) {
         setTextAppearanceCompatWithErrorFallback(
             counterView, counterOverflowed ? counterOverflowTextAppearance : counterTextAppearance);
+        counterView.setContentDescription(
+            getContext()
+                .getString(
+                    counterOverflowed
+                        ? R.string.character_counter_overflowed_content_description
+                        : R.string.character_counter_content_description,
+                    length,
+                    counterMaxLength));
 
         // Announce when the character limit is exceeded.
         if (counterOverflowed) {
@@ -1194,9 +1202,6 @@ public class TextInputLayout extends LinearLayout {
       }
       counterView.setText(
           getContext().getString(R.string.character_counter_pattern, length, counterMaxLength));
-      counterView.setContentDescription(
-          getContext()
-              .getString(R.string.character_counter_content_description, length, counterMaxLength));
     }
     if (editText != null && wasCounterOverflowed != counterOverflowed) {
       updateLabelState(false);
