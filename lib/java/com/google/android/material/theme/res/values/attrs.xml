@@ -123,6 +123,13 @@
     <attr name="textAppearanceButton"/>
     <!-- Text appearance for the Overline style in this theme. -->
     <attr name="textAppearanceOverline"/>
+
+    <!-- Shape appearance style reference for small components in this theme. -->
+    <attr name="shapeAppearanceSmallComponent"/>
+    <!-- Shape appearance style reference for medium components in this theme. -->
+    <attr name="shapeAppearanceMediumComponent"/>
+    <!-- Shape appearance style reference for large components in this theme. -->
+    <attr name="shapeAppearanceLargeComponent"/>
   </declare-styleable>
 
   <declare-styleable name="DesignTheme">

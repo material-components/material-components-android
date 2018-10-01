@@ -22,6 +22,21 @@ import com.google.android.material.internal.Experimental;
 @Experimental("The shapes API is currently experimental and subject to change")
 public class CornerTreatment {
 
+  protected final float cornerSize;
+
+  /** Default Constructor has no size. Using this treatment for all corners will draw a square */
+  public CornerTreatment() {
+    this.cornerSize = 0;
+  }
+
+  /**
+   * Most CornerTreatments have a concept of corner size. This constructor is exposed for extending
+   * classes.
+   */
+  protected CornerTreatment(float cornerSize) {
+    this.cornerSize = cornerSize;
+  }
+
   /**
    * Generates a {@link ShapePath} for this corner treatment.
    *
@@ -38,4 +53,8 @@ public class CornerTreatment {
    * @param shapePath the {@link ShapePath} that this treatment should write to.
    */
   public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {}
+
+  public float getCornerSize() {
+    return cornerSize;
+  }
 }
