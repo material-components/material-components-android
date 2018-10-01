@@ -22,6 +22,8 @@ import com.google.android.material.internal.Experimental;
 @Experimental("The shapes API is currently experimental and subject to change")
 public class RoundedCornerTreatment extends CornerTreatment {
 
+  private final float radius;
+
   /**
    * Instantiates a rounded corner treatment.
    *
@@ -29,12 +31,11 @@ public class RoundedCornerTreatment extends CornerTreatment {
    *     circle.
    */
   public RoundedCornerTreatment(float radius) {
-    super(radius);
+    this.radius = radius;
   }
 
   @Override
   public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {
-    float radius = cornerSize;
     shapePath.reset(0, radius * interpolation);
     shapePath.addArc(0, 0, 2 * radius * interpolation, 2 * radius * interpolation, 180, angle);
   }

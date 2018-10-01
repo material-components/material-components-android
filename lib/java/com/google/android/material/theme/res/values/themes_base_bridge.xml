@@ -60,17 +60,6 @@
     <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
     <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
     <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
-
-    <!-- Shape styles -->
-    <item name="shapeAppearanceSmallComponent">
-      @style/ShapeAppearance.MaterialComponents.SmallComponent
-    </item>
-    <item name="shapeAppearanceMediumComponent">
-      @style/ShapeAppearance.MaterialComponents.MediumComponent
-    </item>
-    <item name="shapeAppearanceLargeComponent">
-      @style/ShapeAppearance.MaterialComponents.LargeComponent
-    </item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Bridge" parent="Platform.MaterialComponents.Light">
@@ -101,17 +90,6 @@
     <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
     <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
     <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
-
-    <!-- Shape styles -->
-    <item name="shapeAppearanceSmallComponent">
-      @style/ShapeAppearance.MaterialComponents.SmallComponent
-    </item>
-    <item name="shapeAppearanceMediumComponent">
-      @style/ShapeAppearance.MaterialComponents.MediumComponent
-    </item>
-    <item name="shapeAppearanceLargeComponent">
-      @style/ShapeAppearance.MaterialComponents.LargeComponent
-    </item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -144,17 +122,6 @@
     <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
     <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
     <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
-
-    <!-- Shape styles -->
-    <item name="shapeAppearanceSmallComponent">
-      @style/ShapeAppearance.MaterialComponents.SmallComponent
-    </item>
-    <item name="shapeAppearanceMediumComponent">
-      @style/ShapeAppearance.MaterialComponents.MediumComponent
-    </item>
-    <item name="shapeAppearanceLargeComponent">
-      @style/ShapeAppearance.MaterialComponents.LargeComponent
-    </item>
   </style>
 
    <style name="Base.V14.Theme.MaterialComponents.DayNight.Bridge" parent="Platform.MaterialComponents.DayNight">
@@ -185,17 +152,6 @@
     <item name="textAppearanceCaption">@style/TextAppearance.MaterialComponents.Caption</item>
     <item name="textAppearanceButton">@style/TextAppearance.MaterialComponents.Button</item>
     <item name="textAppearanceOverline">@style/TextAppearance.MaterialComponents.Overline</item>
-
-    <!-- Shape styles -->
-    <item name="shapeAppearanceSmallComponent">
-      @style/ShapeAppearance.MaterialComponents.SmallComponent
-    </item>
-    <item name="shapeAppearanceMediumComponent">
-      @style/ShapeAppearance.MaterialComponents.MediumComponent
-    </item>
-    <item name="shapeAppearanceLargeComponent">
-      @style/ShapeAppearance.MaterialComponents.LargeComponent
-    </item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform

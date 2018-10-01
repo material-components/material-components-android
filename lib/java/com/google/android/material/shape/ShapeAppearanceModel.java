@@ -16,17 +16,7 @@
 
 package com.google.android.material.shape;
 
-import com.google.android.material.R;
-
-import android.content.Context;
-import android.content.res.TypedArray;
-import android.support.annotation.AttrRes;
-import android.support.annotation.Dimension;
-import android.support.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
-import com.google.android.material.internal.ThemeEnforcement;
-import android.util.AttributeSet;
-import android.view.ContextThemeWrapper;
 
 /**
  * This class models the edges and corners of a shape, which are used by {@link
@@ -52,70 +42,10 @@ public class ShapeAppearanceModel {
     topRightCorner = DEFAULT_CORNER_TREATMENT;
     bottomRightCorner = DEFAULT_CORNER_TREATMENT;
     bottomLeftCorner = DEFAULT_CORNER_TREATMENT;
-
     topEdge = DEFAULT_EDGE_TREATMENT;
     rightEdge = DEFAULT_EDGE_TREATMENT;
     bottomEdge = DEFAULT_EDGE_TREATMENT;
     leftEdge = DEFAULT_EDGE_TREATMENT;
-  }
-
-  public ShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
-    topLeftCorner = shapeAppearanceModel.getTopLeftCorner();
-    topRightCorner = shapeAppearanceModel.getTopRightCorner();
-    bottomRightCorner = shapeAppearanceModel.getBottomRightCorner();
-    bottomLeftCorner = shapeAppearanceModel.getBottomLeftCorner();
-
-    topEdge = shapeAppearanceModel.getTopEdge();
-    rightEdge = shapeAppearanceModel.getRightEdge();
-    leftEdge = shapeAppearanceModel.getLeftEdge();
-    bottomEdge = shapeAppearanceModel.getBottomEdge();
-  }
-
-  public ShapeAppearanceModel(
-      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    TypedArray a =
-        ThemeEnforcement.obtainStyledAttributes(
-            context, attrs, R.styleable.MaterialShape, defStyleAttr, defStyleRes);
-
-    int shapeAppearanceResId = a.getResourceId(R.styleable.MaterialShape_shapeAppearance, 0);
-    int shapeAppearanceOverlayResId =
-        a.getResourceId(R.styleable.MaterialShape_shapeAppearanceOverlay, 0);
-    a.recycle();
-
-    // The attributes in shapeAppearanceOverlay should be applied on top of shapeAppearance.
-    if (shapeAppearanceOverlayResId != 0) {
-      context = new ContextThemeWrapper(context, shapeAppearanceResId);
-      shapeAppearanceResId = shapeAppearanceOverlayResId;
-    }
-
-    a = context.obtainStyledAttributes(shapeAppearanceResId, R.styleable.ShapeAppearance);
-
-    int cornerFamily = a.getInt(R.styleable.ShapeAppearance_cornerFamily, CornerFamily.ROUNDED);
-    int cornerFamilyTopLeft =
-        a.getInt(R.styleable.ShapeAppearance_cornerFamilyTopLeft, cornerFamily);
-    int cornerFamilyTopRight =
-        a.getInt(R.styleable.ShapeAppearance_cornerFamilyTopRight, cornerFamily);
-    int cornerFamilyBottomRight =
-        a.getInt(R.styleable.ShapeAppearance_cornerFamilyBottomRight, cornerFamily);
-    int cornerFamilyBottomLeft =
-        a.getInt(R.styleable.ShapeAppearance_cornerFamilyBottomLeft, cornerFamily);
-
-    int cornerSize = a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSize, 0);
-    int cornerSizeTopLeft =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeTopLeft, cornerSize);
-    int cornerSizeTopRight =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeTopRight, cornerSize);
-    int cornerSizeBottomRight =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeBottomRight, cornerSize);
-    int cornerSizeBottomLeft =
-        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeBottomLeft, cornerSize);
-
-    setTopLeftCorner(cornerFamilyTopLeft, cornerSizeTopLeft);
-    setTopRightCorner(cornerFamilyTopRight, cornerSizeTopRight);
-    setBottomRightCorner(cornerFamilyBottomRight, cornerSizeBottomRight);
-    setBottomLeftCorner(cornerFamilyBottomLeft, cornerSizeBottomLeft);
-
-    a.recycle();
   }
 
   /**
@@ -128,10 +58,6 @@ public class ShapeAppearanceModel {
     topRightCorner = cornerTreatment;
     bottomRightCorner = cornerTreatment;
     bottomLeftCorner = cornerTreatment;
-  }
-
-  public void setAllCorners(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setAllCorners(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
   }
 
   /**
@@ -187,16 +113,6 @@ public class ShapeAppearanceModel {
   /**
    * Sets the corner treatment for the top-left corner.
    *
-   * @param cornerFamily the family to use to create the corner treatment
-   * @param cornerSize the size to use to create the corner treatment
-   */
-  public void setTopLeftCorner(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setTopLeftCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
-  }
-
-  /**
-   * Sets the corner treatment for the top-left corner.
-   *
    * @param topLeftCorner the desired treatment.
    */
   public void setTopLeftCorner(CornerTreatment topLeftCorner) {
@@ -210,16 +126,6 @@ public class ShapeAppearanceModel {
    */
   public CornerTreatment getTopLeftCorner() {
     return topLeftCorner;
-  }
-
-  /**
-   * Sets the corner treatment for the top-right corner.
-   *
-   * @param cornerFamily the family to use to create the corner treatment
-   * @param cornerSize the size to use to create the corner treatment
-   */
-  public void setTopRightCorner(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setTopRightCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
   }
 
   /**
@@ -243,16 +149,6 @@ public class ShapeAppearanceModel {
   /**
    * Sets the corner treatment for the bottom-right corner.
    *
-   * @param cornerFamily the family to use to create the corner treatment
-   * @param cornerSize the size to use to create the corner treatment
-   */
-  public void setBottomRightCorner(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setBottomRightCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
-  }
-
-  /**
-   * Sets the corner treatment for the bottom-right corner.
-   *
    * @param bottomRightCorner the desired treatment.
    */
   public void setBottomRightCorner(CornerTreatment bottomRightCorner) {
@@ -266,16 +162,6 @@ public class ShapeAppearanceModel {
    */
   public CornerTreatment getBottomRightCorner() {
     return bottomRightCorner;
-  }
-
-  /**
-   * Sets the corner treatment for the bottom-left corner.
-   *
-   * @param cornerFamily the family to use to create the corner treatment
-   * @param cornerSize the size to use to create the corner treatment
-   */
-  public void setBottomLeftCorner(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
-    setBottomLeftCorner(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
   }
 
   /**
