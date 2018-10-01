@@ -22,8 +22,6 @@ import com.google.android.material.internal.Experimental;
 @Experimental("The shapes API is currently experimental and subject to change")
 public class CutCornerTreatment extends CornerTreatment {
 
-  private final float size;
-
   /**
    * Instantiates a cut corner treatment of a given size. A cut corner treatment introduces two new
    * corners to a shape, produced by a straight line drawn between two points {@param size} pixels
@@ -35,16 +33,16 @@ public class CutCornerTreatment extends CornerTreatment {
    * @param size the length in pixels that the new corners will be drawn away from the origin.
    */
   public CutCornerTreatment(float size) {
-    this.size = size;
+    super(size);
   }
 
   @Override
   public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {
-    shapePath.reset(0, size * interpolation);
+    shapePath.reset(0, cornerSize * interpolation);
     shapePath.lineTo(
-        (float) (Math.sin(Math.toRadians(angle)) * size * interpolation),
+        (float) (Math.sin(Math.toRadians(angle)) * cornerSize * interpolation),
         // Something about using cos() is causing rounding which prevents the path from being convex
         // on api levels 21 and 22. Using sin() with 90 - angle is helping for now.
-        (float) (Math.sin(Math.toRadians(90 - angle)) * size * interpolation));
+        (float) (Math.sin(Math.toRadians(90 - angle)) * cornerSize * interpolation));
   }
 }

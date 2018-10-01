@@ -17,6 +17,7 @@
 package com.google.android.material.shape;
 
 import android.annotation.TargetApi;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -36,11 +37,14 @@ import android.graphics.Region;
 import android.graphics.Region.Op;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
+import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
+import android.support.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
+import android.util.AttributeSet;
 import android.util.Log;
 
 /**
@@ -92,6 +96,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   public MaterialShapeDrawable() {
     this(new ShapeAppearanceModel());
+  }
+
+  public MaterialShapeDrawable(
+      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    this(new ShapeAppearanceModel(context, attrs, defStyleAttr, defStyleRes));
   }
 
   /**
