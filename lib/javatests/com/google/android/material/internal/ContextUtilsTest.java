@@ -16,10 +16,11 @@
 
 package com.google.android.material.internal;
 
+import com.google.android.material.R;
+
 import android.app.Activity;
 import android.content.ContextWrapper;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.appcompat.R;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

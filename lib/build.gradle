@@ -85,7 +85,14 @@ android {
   }
 }
 
-// TODO: setup API txt generation
+// Add the resource directories to the main sourceSet for all test tasks
+gradle.projectsEvaluated {
+  tasks.withType(Test) { task ->
+    srcDirs.forEach {
+      android.sourceSets.main.res.srcDirs += 'javatests/' + it + '/res'
+    }
+  }
+}
 
 task generateJavadocs(type: Javadoc) {
   if (project.hasProperty("online")) {

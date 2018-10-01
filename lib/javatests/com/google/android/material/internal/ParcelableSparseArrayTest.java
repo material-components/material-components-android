@@ -16,6 +16,8 @@
 
 package com.google.android.material.internal;
 
+import com.google.android.material.R;
+
 import android.os.Bundle;
 import android.os.Parcel;
 import org.junit.Assert;
