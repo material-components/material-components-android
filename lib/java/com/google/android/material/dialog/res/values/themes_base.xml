@@ -61,6 +61,7 @@
 
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
+    <item name="alertDialogStyle">@style/AlertDialog.MaterialComponents</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
@@ -128,6 +129,7 @@
 
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
+    <item name="alertDialogStyle">@style/AlertDialog.MaterialComponents</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
