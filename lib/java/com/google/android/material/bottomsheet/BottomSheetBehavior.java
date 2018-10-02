@@ -527,6 +527,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
    */
   public final void setPeekHeight(int peekHeight) {
+    setPeekHeight(peekHeight, false);
+  }
+
+  /**
+   * Sets the height of the bottom sheet when it is collapsed while optionally animating between the
+   * old height and the new height.
+   *
+   * @param peekHeight The height of the collapsed bottom sheet in pixels, or {@link
+   *     #PEEK_HEIGHT_AUTO} to configure the sheet to peek automatically at 16:9 ratio keyline.
+   * @param animate Whether to animate between the old height and the new height.
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_peekHeight
+   */
+  public final void setPeekHeight(int peekHeight, boolean animate) {
     boolean layout = false;
     if (peekHeight == PEEK_HEIGHT_AUTO) {
       if (!peekHeightAuto) {
@@ -542,7 +555,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (layout && state == STATE_COLLAPSED && viewRef != null) {
       V view = viewRef.get();
       if (view != null) {
-        view.requestLayout();
+        if (animate) {
+          startSettlingAnimationPendingLayout(state);
+        } else {
+          view.requestLayout();
+        }
       }
     }
   }
@@ -630,6 +647,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
       return;
     }
+    startSettlingAnimationPendingLayout(state);
+  }
+
+  private void startSettlingAnimationPendingLayout(@State int state) {
     final V child = viewRef.get();
     if (child == null) {
       return;
