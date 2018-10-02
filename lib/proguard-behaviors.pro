@@ -19,4 +19,4 @@
 }
 
 # Make sure we keep annotations for CoordinatorLayout's DefaultBehavior
--keepattributes *Annotation*
+-keepattributes RuntimeVisible*Annotation*
