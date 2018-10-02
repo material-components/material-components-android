@@ -486,7 +486,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     if (getDrawable() != drawable) {
       super.setImageDrawable(drawable);
       getImpl().updateImageMatrixScale();
-      onApplySupportImageTint();
+      if (imageTint != null) {
+        onApplySupportImageTint();
+      }
     }
   }
 
@@ -1260,8 +1262,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   class TransformationListenerWrapper implements InternalTransformationListener {
 
-    @NonNull
-    private final TransformationListener<FloatingActionButton> listener;
+    @NonNull private final TransformationListener<FloatingActionButton> listener;
 
     TransformationListenerWrapper(@NonNull TransformationListener<FloatingActionButton> listener) {
       this.listener = listener;
@@ -1311,7 +1312,6 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public void setScaleX(float scaleX) {
     super.setScaleX(scaleX);
     getImpl().onScaleChanged();
-
   }
 
   @Override
