@@ -36,6 +36,15 @@
   <public name="design_default_color_error" type="color"/>
   <public name="design_default_color_on_primary" type="color"/>
   <public name="design_default_color_on_secondary" type="color"/>
+  <public name="mtrl_on_primary_disabled" type="color"/>
+  <public name="mtrl_on_primary_emphasis_high_type" type="color"/>
+  <public name="mtrl_on_primary_emphasis_medium" type="color"/>
+  <public name="mtrl_on_surface_disabled" type="color"/>
+  <public name="mtrl_on_surface_emphasis_high_type" type="color"/>
+  <public name="mtrl_on_surface_emphasis_medium" type="color"/>
+  <public name="mtrl_emphasis_high_type" format="float" type="dimen" />
+  <public name="mtrl_emphasis_medium" format="float" type="dimen"/>
+  <public name="mtrl_emphasis_disabled" format="float" type="dimen"/>
 
   <public name="useMaterialThemeColors" type="attr"/>
 </resources>

@@ -15,8 +15,22 @@
   ~ limitations under the License.
 -->
 <resources>
+  <!--
+    We are currently waiting for better attribute support in ColorStateLists to land in the support
+    library. https://android-review.googlesource.com/757091. Because we can't fully support color
+    theming on all API levels for the BottomAppBar, we are requiring you to opt in for now.
+
+    As a workaround to enable correct color theming in your app for API < 23 if you are using this
+    style, in addition to setting the colorOnSurface attributes in your theme, redefine
+    mtrl_on_surface_emphasis_medium to match with the correct opacity. For example, if you set the
+    colorOnSurface attribute in your theme to red (#FF0000). You should redefine
+    mtrl_on_surface_emphasis_medium to be #99FF0000. This sets the color value to be the correct
+    color and opacity to match the correct color theming that will be applied on API level 23 and
+    up. When the bugs are fixed in the support library you can remove this color definition.
+  -->
   <style name="Widget.MaterialComponents.BottomAppBar" parent="Widget.AppCompat.Toolbar">
-    <item name="backgroundTint">@android:color/white</item>
+    <item name="enforceMaterialTheme">true</item>
+    <item name="backgroundTint">?attr/colorSurface</item>
     <item name="fabCradleMargin">@dimen/mtrl_bottomappbar_fab_cradle_margin</item>
     <item name="fabCradleRoundedCornerRadius">
       @dimen/mtrl_bottomappbar_fab_cradle_rounded_corner_radius
@@ -28,5 +42,14 @@
 
   <style name="Widget.MaterialComponents.BottomAppBar.Colored" parent="Widget.MaterialComponents.BottomAppBar">
     <item name="backgroundTint">?attr/colorPrimary</item>
+    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.BottomAppBar.Primary</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Surface" parent="">
+    <item name="colorControlNormal">@color/mtrl_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Primary" parent="">
+    <item name="colorControlNormal">?attr/colorOnPrimary</item>
   </style>
 </resources>

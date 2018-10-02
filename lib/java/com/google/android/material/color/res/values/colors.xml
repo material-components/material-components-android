@@ -33,4 +33,23 @@
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
 
+  <!--
+    Note: We are currently waiting for better attribute support in ColorStateLists to land in the
+    support library. https://android-review.googlesource.com/757091
+
+    As a workaround to enable correct color theming in your app for API < 23, in addition to setting
+    the colorOnPrimary and colorOnSurface attributes in your theme, redefine these color resources
+    to match with the correct opacity. For example, if you set the colorOnPrimary attribute in your
+    theme to red (#FF0000). You should redefine mtrl_on_primary_disabled to be #61FF000,
+    mtrl_on_primary_emphasis_high_type to be #DEFF0000, and mtrl_on_primary_emphasis_medium to be
+    #99FF0000. That sets the color values to be the correct color and opacity to match the correct
+    color theming that will be applied on API level 23 and up. When the bugs are fixed in the
+    support library you can remove these color definitions.
+  -->
+  <color name="mtrl_on_primary_disabled">#61FFFFFF</color>
+  <color name="mtrl_on_primary_emphasis_high_type">#DEFFFFFF</color>
+  <color name="mtrl_on_primary_emphasis_medium">#99FFFFFF</color>
+  <color name="mtrl_on_surface_disabled">#61000000</color>
+  <color name="mtrl_on_surface_emphasis_high_type">#DE000000</color>
+  <color name="mtrl_on_surface_emphasis_medium">#99000000</color>
 </resources>
