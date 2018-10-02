@@ -113,12 +113,12 @@ components, e.g. `tabStyle`, `chipStyle`, `textInputStyle`, and so on.
 The following components have been updated to use the theme attributes described
 above:
 
-*   [BottomNavigationView](BottomNavigationView.md)
-*   [Chip](Chip.md)
-*   [FloatingActionButton](FloatingActionButton.md)
-*   [MaterialButton](MaterialButton.md)
-*   [MaterialCardView](MaterialCardView.md)
-*   [TabLayout](TabLayout.md)
+*   [BottomNavigationView](../components/BottomNavigationView.md)
+*   [Chip](../components/Chip.md)
+*   [FloatingActionButton](../components/FloatingActionButton.md)
+*   [MaterialButton](../components/MaterialButton.md)
+*   [MaterialCardView](../components/MaterialCardView.md)
+*   [TabLayout](../components/TabLayout.md)
 
 To understand how the high-level theme attributes map to specific parts of each
 component, please refer directly to the component's documentation.
