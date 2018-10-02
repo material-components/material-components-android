@@ -73,6 +73,7 @@ public class ShapeAppearanceModel {
 
   public ShapeAppearanceModel(
       Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    this();
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.MaterialShape, defStyleAttr, defStyleRes);
