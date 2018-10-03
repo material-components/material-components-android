@@ -32,7 +32,6 @@ def srcDirs = [
   'feature',
   'font',
   'main',
-  'menu',
   'radiobutton',
   'switchmaterial',
   'tableofcontents',
