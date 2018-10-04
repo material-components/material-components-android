@@ -693,9 +693,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       updateImportantForAccessibility(false);
     }
 
-    View bottomSheet = viewRef.get();
-    if (bottomSheet != null && callback != null) {
-      callback.onStateChanged(bottomSheet, state);
+    if (viewRef != null) {
+      View bottomSheet = viewRef.get();
+      if (bottomSheet != null && callback != null) {
+        callback.onStateChanged(bottomSheet, state);
+      }
     }
   }
 
