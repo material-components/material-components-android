@@ -65,4 +65,9 @@
     <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
   </style>
 
+  <!-- TODO: Remove these text appearances -->
+  <style name="TextAppearance.MaterialComponents.Tab" parent="TextAppearance.Design.Tab">
+    <item name="android:textColor">@color/mtrl_tabs_icon_color_selector</item>
+  </style>
+
 </resources>
