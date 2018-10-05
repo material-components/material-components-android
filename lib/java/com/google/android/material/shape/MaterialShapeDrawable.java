@@ -518,6 +518,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     strokePaint.setAlpha(prevStrokeAlpha);
   }
 
+  @Deprecated
+  public void getPathForSize(Rect bounds, Path path) {
+    calculatePathForSize(new RectF(bounds), path);
+  }
+
   /**
    * Writes to the given {@link Path} for the current edge and corner treatments at the specified
    * size.
