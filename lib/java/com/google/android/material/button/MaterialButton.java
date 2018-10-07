@@ -333,7 +333,7 @@ public class MaterialButton extends AppCompatButton {
     }
 
     Paint textPaint = getPaint();
-    int textWidth = (int) textPaint.measureText(getText().toString());
+    int textWidth = getLayout().getWidth();
     int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
     int newIconLeft =
         (getMeasuredWidth()
