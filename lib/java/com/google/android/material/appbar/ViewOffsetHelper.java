@@ -20,8 +20,8 @@ import android.support.v4.view.ViewCompat;
 import android.view.View;
 
 /**
- * Utility helper for moving a {@link View} around using {@link
- * View#offsetLeftAndRight(int)} and {@link View#offsetTopAndBottom(int)}.
+ * Utility helper for moving a {@link View} around using {@link View#offsetLeftAndRight(int)} and
+ * {@link View#offsetTopAndBottom(int)}.
  *
  * <p>Also the setting of absolute offsets (similar to translationX/Y), rather than additive
  * offsets.
@@ -34,6 +34,8 @@ class ViewOffsetHelper {
   private int layoutLeft;
   private int offsetTop;
   private int offsetLeft;
+  private boolean verticalOffsetEnabled = true;
+  private boolean horizontalOffsetEnabled = true;
 
   public ViewOffsetHelper(View view) {
     this.view = view;
@@ -60,7 +62,7 @@ class ViewOffsetHelper {
    * @return true if the offset has changed
    */
   public boolean setTopAndBottomOffset(int offset) {
-    if (offsetTop != offset) {
+    if (verticalOffsetEnabled && offsetTop != offset) {
       offsetTop = offset;
       updateOffsets();
       return true;
@@ -75,7 +77,7 @@ class ViewOffsetHelper {
    * @return true if the offset has changed
    */
   public boolean setLeftAndRightOffset(int offset) {
-    if (offsetLeft != offset) {
+    if (horizontalOffsetEnabled && offsetLeft != offset) {
       offsetLeft = offset;
       updateOffsets();
       return true;
@@ -97,5 +99,21 @@ class ViewOffsetHelper {
 
   public int getLayoutLeft() {
     return layoutLeft;
+  }
+
+  public void setVerticalOffsetEnabled(boolean verticalOffsetEnabled) {
+    this.verticalOffsetEnabled = verticalOffsetEnabled;
+  }
+
+  public boolean isVerticalOffsetEnabled() {
+    return verticalOffsetEnabled;
+  }
+
+  public void setHorizontalOffsetEnabled(boolean horizontalOffsetEnabled) {
+    this.horizontalOffsetEnabled = horizontalOffsetEnabled;
+  }
+
+  public boolean isHorizontalOffsetEnabled() {
+    return horizontalOffsetEnabled;
   }
 }
