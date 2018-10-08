@@ -24,16 +24,14 @@ public class CornerTreatment {
 
   protected final float cornerSize;
 
-  /** Default Constructor has no size. Using this treatment for all corners will draw a square */
   public CornerTreatment() {
+    // Default Constructor has no size. Using this treatment for all corners will draw a square
     this.cornerSize = 0;
   }
 
-  /**
-   * Most CornerTreatments have a concept of corner size. This constructor is exposed for extending
-   * classes.
-   */
   protected CornerTreatment(float cornerSize) {
+    // Most CornerTreatments have a concept of corner size. This constructor is exposed for
+    // extending classes.
     this.cornerSize = cornerSize;
   }
 
