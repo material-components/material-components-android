@@ -109,7 +109,7 @@ your `BottomNavigationView`s by default. If you need to use an updated
 updated Material theme, or if you'd like to use a variant style, you can apply
 one of the updated Material styles directly to your widget in XML:
 
-#### Updated Material Style (Default)
+##### Updated Material Style (Default)
 
 The default Material `BottomNavigationView` style consists of updated colors,
 text sizing, and behavior. The default BottomNavigationView has white background
@@ -129,7 +129,7 @@ mappings. Use the colored style to get a bottom navigation bar with a
 style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
 ```
 
-### Legacy Style
+##### Legacy Style
 
 You can set this style on your `BottomNavigationView` if you'd like a bottom
 navigation bar with the old behavior. However, we recommend you use the updated
@@ -138,6 +138,53 @@ Material style where possible.
 ```
 style="@style/Widget.Design.BottomNavigationView"
 ```
+
+#### Theme Attribute Mapping
+
+##### Updated Material Style (Default)
+
+```
+style="@style/Widget.MaterialComponents.BottomNavigationView"
+```
+
+Component Attribute                | Default Theme Attribute Value
+---------------------------------- | -------------------------------
+`itemTextAppearanceActive`         | `textAppearanceCaption`
+`itemTextAppearanceInactive`       | `textAppearanceCaption`
+`android:background`               | `colorSurface`
+`itemIconTint` (checked, enabled)  | `colorPrimary`
+`itemIconTint` (enabled)           | `colorOnSurface` at 54% opacity
+`itemIconTint` (disabled)          | `colorOnSurface` at 21% opacity
+`itemTextColor` (checked, enabled) | `colorPrimary`
+`itemTextColor` (enabled)          | `colorOnSurface` at 54% opacity
+`itemTextColor` (disabled)         | `colorOnSurface` at 21% opacity
+
+##### Colored Material Style
+
+```
+style="@style/Widget.MaterialComponents.BottomNavigationView.Colored"
+```
+
+Component Attribute                | Default Theme Attribute Value
+---------------------------------- | -------------------------------
+`itemTextAppearanceActive`         | `textAppearanceCaption`
+`itemTextAppearanceInactive`       | `textAppearanceCaption`
+`android:background`               | `colorPrimary`
+`itemIconTint` (checked, enabled)  | `colorOnPrimary`
+`itemIconTint` (enabled)           | `colorOnPrimary` at 54% opacity
+`itemIconTint` (disabled)          | `colorOnPrimary` at 21% opacity
+`itemTextColor` (checked, enabled) | `colorOnPrimary`
+`itemTextColor` (enabled)          | `colorOnPrimary` at 54% opacity
+`itemTextColor` (disabled)         | `colorOnPrimary` at 21% opacity
+
+##### Legacy Style
+
+```
+style="@style/Widget.Design.BottomNavigationView"
+```
+
+The legacy Material style of `BottomNavigationView` does not make use of our new
+theming attributes.
 
 ## Related Concepts
 

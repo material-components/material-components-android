@@ -112,7 +112,7 @@ ripple color, and ripple shape.
 #### Colored Material Style
 
 The colored Material `TabLayout` style consists of updated background color
-based on `?attr/colorAccent`.
+based on `?attr/colorPrimary`.
 
 ```xml
 <com.google.android.material.tabs.TabLayout
@@ -143,3 +143,48 @@ Label      | `app:tabInlineLabel`<br/>`app:tabTextAppearance`<br/>`app:tabTextCo
 Indicator  | `app:tabIndicatorColor`<br/>`app:tabIndicatorHeight`<br/>`app:tabIndicator`<br/>`app:tabIndicatorGravity`<br/>`app:tabIndicatorFullWidth`
 Position   | `app:tabContentStart`<br/>`app:tabPaddingStart`<br/>`app:tabPaddingTop`<br/>`app:tabPaddingEnd`<br/>`app:tabPaddingBottom`<br/>`app:tabPadding`
 Ripple     | `app:tabRippleColor`
+
+### Theme Attribute Mapping
+
+#### Updated Material Style (Default)
+
+```
+style="@style/Widget.MaterialComponents.TabLayout"
+```
+
+Component Attribute       | Default Theme Attribute Value
+------------------------- | -------------------------------
+`tabTextAppearance`       | `textAppearanceButton`
+`android:background`      | `colorSurface`
+`tabTextColor` (selected) | `colorPrimary`
+`tabTextColor`            | `colorOnSurface` at 60% opacity
+`tabIconTint` (selected)  | `colorPrimary`
+`tabIconTint`             | `colorOnSurface` at 60% opacity
+`tabRippleColor`          | `colorPrimary`
+`tabIndicatorColor`       | `colorPrimary`
+
+#### Colored Material Style
+
+```
+style="@style/Widget.MaterialComponents.TabLayout.Colored"
+```
+
+Component Attribute       | Default Theme Attribute Value
+------------------------- | -------------------------------
+`tabTextAppearance`       | `textAppearanceButton`
+`android:background`      | `colorPrimary`
+`tabTextColor` (selected) | `colorOnPrimary`
+`tabTextColor`            | `colorOnPrimary` at 60% opacity
+`tabIconTint` (selected)  | `colorOnPrimary`
+`tabIconTint`             | `colorOnPrimary` at 60% opacity
+`tabRippleColor`          | `colorOnPrimary`
+`tabIndicatorColor`       | `colorOnPrimary`
+
+#### Legacy Material Style
+
+```
+style="@style/Widget.Design.TabLayout"
+```
+
+The legacy Material style of `TabLayout` does not make use of our new theming
+attributes.

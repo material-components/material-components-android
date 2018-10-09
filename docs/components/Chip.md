@@ -149,6 +149,28 @@ Motion        | `app:showMotionSpec` <br> `app:hideMotionSpec`
 Paddings      | `app:chipStartPadding` <br> `app:iconStartPadding` <br> `app:iconEndPadding` <br> `app:textStartPadding` <br> `app:textEndPadding` <br> `app:closeIconStartPadding` <br> `app:closeIconEndPadding` <br> `app:chipEndPadding`
 TouchTarget   | `app:chipMinTouchTargetSize` <br> `app:chipTouchTargetDelegate`
 
+### Theme Attribute Mapping
+
+#### Entry Chip, Filter Chip, Choice Chip, Action Chip (Default)
+
+```
+style="@style/Widget.MaterialComponents.Chip.Entry"
+style="@style/Widget.MaterialComponents.Chip.Filter"
+style="@style/Widget.MaterialComponents.Chip.Choice"
+style="@style/Widget.MaterialComponents.Chip.Action" (default)
+```
+
+Component Attribute           | Default Theme Attribute Value
+----------------------------- | -------------------------------
+`android:textAppearance`      | `textAppearanceBody2`
+`android:textColor` (enabled) | `colorOnSurface` at 87% opacity
+`android:textColor`           | `colorOnSurface` at 33% opacity
+`chipBackgroundColor`         | `colorOnSurface`
+`chipSurfaceColor`            | `colorSurface`
+`chipStrokeColor`             | `colorOnSurface`
+`rippleColor`                 | `colorOnSurface`
+`closeIconTint`               | `colorOnSurface`
+
 ### Handling Clicks
 
 Call `setOnClickListener(OnClickListener)` to register a callback to be invoked

@@ -113,3 +113,25 @@ Feature | Relevant attributes
 :------ | :------------------
 Border  | `app:strokeColor`
         | `app:strokeWidth`
+
+### Theme Attribute Mapping
+
+#### Updated Material Style
+
+```
+style="@style/Widget.MaterialComponents.CardView"
+```
+
+Component Attribute   | Default Theme Attribute Value
+--------------------- | -----------------------------
+`cardBackgroundColor` | `colorSurface`
+`strokeColor`         | None
+
+#### Legacy Material Style
+
+```
+style="@style/CardView"
+```
+
+The legacy Material style of `MaterialCardView` does not make use of our new
+color theming attributes.

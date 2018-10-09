@@ -123,6 +123,29 @@ Elevation  | `app:elevation`
 Motion     | `app:showMotionSpec`
            | `app:hideMotionSpec`
 
+### Theme Attribute Mapping
+
+#### Updated Material Style
+
+```
+style="@style/Widget.MaterialComponents.FloatingActionButton"
+```
+
+Component Attribute | Default Theme Attribute Value
+------------------- | -----------------------------
+`backgroundTint`    | `colorSecondary`
+`tint`              | `colorOnSecondary`
+`rippleColor`       | `colorOnSecondary`
+
+#### Legacy Material Style
+
+```
+style="@style/Widget.Design.FloatingActionButton"
+```
+
+The legacy Material style of `FloatingActionButton` does not make use of our new
+color theming attributes.
+
 ### Handling Clicks
 
 `FloatingActionButton` handles clicks in the same way as all views:

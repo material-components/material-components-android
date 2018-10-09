@@ -107,6 +107,22 @@ background.
     android:text="@string/unelevated_button_label_enabled"/>
 ```
 
+### Outlined button
+
+The `OutlinedButton` style has a transparent background with colored text, and a
+small stroke around the button. Outlined buttons are medium-emphasis buttons.
+They contain actions that are important, but aren’t the primary action in an
+app.
+
+```
+<com.google.android.material.button.MaterialButton
+    android:id="@+id/material_text_button"
+    style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:text="@string/outlined_button_label_enabled"/>
+```
+
 ### Text button
 
 The `TextButton` style has a transparent background with colored text. Text
@@ -182,6 +198,56 @@ a button:
     app:icon="@drawable/icon_24px"
     app:iconPadding="8dp"/>
 ```
+
+## Theme Attribute Mapping
+
+### Filled button
+
+```
+style="@style/Widget.MaterialComponents.Button" (default)
+style="@style/Widget.MaterialComponents.Button.Icon"
+style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
+style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
+```
+
+Component Attribute      | Default Theme Attribute Value
+------------------------ | -----------------------------
+`android:textAppearance` | `textAppearanceButton`
+`android:textColor`      | `colorOnPrimary`
+`iconTint`               | `colorOnPrimary`
+`rippleColor`            | `colorOnPrimary`
+`backgroundTint`         | `colorPrimary`
+
+### Outlined button
+
+```
+style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
+```
+
+Component Attribute      | Default Theme Attribute Value
+------------------------ | -----------------------------
+`android:textAppearance` | `textAppearanceButton`
+`android:textColor`      | `colorPrimary`
+`iconTint`               | `colorPrimary`
+`rippleColor`            | `colorPrimary`
+`strokeColor`            | `colorOnSurface`
+`backgroundTint`         | Transparent
+
+### Text button
+
+```
+style="@style/Widget.MaterialComponents.Button.TextButton"
+style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
+```
+
+Component Attribute      | Default Theme Attribute Value
+------------------------ | -----------------------------
+`android:textAppearance` | `textAppearanceButton`
+`android:textColor`      | `colorPrimary`
+`iconTint`               | `colorPrimary`
+`rippleColor`            | `colorPrimary`
+`backgroundTint`         | Transparent
 
 ## Related Concepts
 
