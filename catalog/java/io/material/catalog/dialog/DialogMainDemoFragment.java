@@ -92,11 +92,13 @@ public class DialogMainDemoFragment extends DemoFragment {
     // long title, message, 1 action (too long)
     addDialogLauncher(
         dialogLaunchersLayout,
-        R.string.long_title_message_too_long_action,
+        R.string.long_title_message_too_long_actions,
         new AlertDialog.Builder(getContext())
             .setTitle(getResources().getString(R.string.long_title))
             .setMessage(message)
-            .setPositiveButton(getResources().getString(R.string.too_long_positive), null));
+            .setPositiveButton(getResources().getString(R.string.too_long_positive), null)
+            .setNegativeButton(getResources().getString(R.string.too_long_negative), null)
+            .setNeutralButton(getResources().getString(R.string.too_long_neutral), null));
 
     // icon, title, message, 2 actions
     addDialogLauncher(
@@ -157,6 +159,15 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setMessage(multiLineMessage.toString())
             .setPositiveButton(positiveText, null)
             .setNeutralButton(neutralText, null));
+
+    // title, short buttons
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.title_2_short_actions,
+        new AlertDialog.Builder(getContext())
+            .setTitle(title)
+            .setPositiveButton(R.string.short_text_1, null)
+            .setNeutralButton(R.string.short_text_2, null));
 
     return view;
   }
