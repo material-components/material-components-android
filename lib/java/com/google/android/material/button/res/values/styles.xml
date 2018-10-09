@@ -83,6 +83,9 @@
 
   <style name="Widget.MaterialComponents.Button.TextButton.Dialog">
     <item name="android:minWidth">@dimen/mtrl_btn_dialog_btn_min_width</item>
+    <item name="android:lines">1</item>
+    <item name="android:ellipsize">end</item>
+    <item name="android:singleLine">true</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.TextButton.Dialog.Icon">
