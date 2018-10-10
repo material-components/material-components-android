@@ -29,6 +29,7 @@ android {
     main.java.excludes = [
       '**/animation/**',
       '**/build/**',
+      '**/theme/**',
     ]
     main.manifest.srcFile 'javatests/com/google/android/material/AndroidManifest.xml'
   }
