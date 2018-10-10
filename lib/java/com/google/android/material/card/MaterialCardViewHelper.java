@@ -146,7 +146,10 @@ class MaterialCardViewHelper {
       fgDrawable.setColor(Color.TRANSPARENT);
     }
 
-    float radius = materialCardView.getRadius();
+    // Adjust the radius of the stroke by half the stroke width in order for the outside radius of
+    // the stroke to match the radius of the CardView. (The stroke is drawn calculating its radius
+    // at the center of the stroke.)
+    float radius = Math.max(materialCardView.getRadius() - strokeWidth * 0.5f, 0);
     if (Math.abs(radius - this.radius) > 0.001f) {
       fgDrawable.setCornerRadius(radius);
     }
