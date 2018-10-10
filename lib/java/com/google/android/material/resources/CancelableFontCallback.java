@@ -26,7 +26,7 @@ import android.support.v4.content.res.ResourcesCompat.FontCallback;
  * set / requested in the meantime. On failed fetch, specified fallback font will be applied.
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public final class CancelableFontCallback extends FontCallback {
+public final class CancelableFontCallback extends TextAppearanceFontCallback {
 
   /** Functional interface for method to call when font is retrieved (or fails with fallback). */
   public interface ApplyFont {
@@ -43,7 +43,7 @@ public final class CancelableFontCallback extends FontCallback {
   }
 
   @Override
-  public void onFontRetrieved(Typeface font) {
+  public void onFontRetrieved(Typeface font, boolean fontResolvedSynchronously) {
     updateIfNotCancelled(font);
   }
 

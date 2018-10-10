@@ -55,8 +55,8 @@ import com.google.android.material.internal.TouchTargetUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
+import com.google.android.material.resources.TextAppearanceFontCallback;
 import com.google.android.material.ripple.RippleUtils;
-import android.support.v4.content.res.ResourcesCompat.FontCallback;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
@@ -167,10 +167,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
   private final RectF rectF = new RectF();
-  private final FontCallback fontCallback =
-      new FontCallback() {
+  private final TextAppearanceFontCallback fontCallback =
+      new TextAppearanceFontCallback() {
         @Override
-        public void onFontRetrieved(@NonNull Typeface typeface) {
+        public void onFontRetrieved(@NonNull Typeface typeface, boolean fontResolvedSynchronously) {
           // Set text to re-trigger internal ellipsize width calculation.
           setText(getText());
           requestLayout();

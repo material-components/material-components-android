@@ -61,9 +61,9 @@ import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
+import com.google.android.material.resources.TextAppearanceFontCallback;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
-import android.support.v4.content.res.ResourcesCompat.FontCallback;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
@@ -175,10 +175,13 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   @Nullable private CharSequence text;
 
   @Nullable private TextAppearance textAppearance;
-  private final FontCallback fontCallback =
-      new FontCallback() {
+  private final TextAppearanceFontCallback fontCallback =
+      new TextAppearanceFontCallback() {
         @Override
-        public void onFontRetrieved(@NonNull Typeface typeface) {
+        public void onFontRetrieved(@NonNull Typeface typeface, boolean fontResolvedSynchronously) {
+          if (fontResolvedSynchronously) {
+            return;
+          }
           textWidthDirty = true;
           onSizeChange();
           invalidateSelf();
@@ -1427,7 +1430,6 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     if (!TextUtils.equals(this.text, text)) {
       this.text = text;
       textWidthDirty = true;
-
       invalidateSelf();
       onSizeChange();
     }

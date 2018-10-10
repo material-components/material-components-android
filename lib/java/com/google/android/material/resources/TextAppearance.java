@@ -138,18 +138,19 @@ public class TextAppearance {
   }
 
   /**
-   * Resolves the requested font using the fontFamily, style, and typeface.
-   * Immediately (and synchronously) calls {@link FontCallback#onFontRetrieved(Typeface)} with the
-   * requested font, if it has been resolved already, or {@link
-   * FontCallback#onFontRetrievalFailed(int)} if requested fontFamily is invalid. Otherwise callback
-   * is invoked asynchronously when the font is loaded (or async loading fails). While font is being
-   * fetched asynchronously, {@link #getFallbackFont()} can be used as a temporary font.
+   * Resolves the requested font using the fontFamily, style, and typeface. Immediately (and
+   * synchronously) calls {@link TextAppearanceFontCallback#onFontRetrieved(Typeface, boolean)} with
+   * the requested font, if it has been resolved already, or {@link
+   * TextAppearanceFontCallback#onFontRetrievalFailed(int)} if requested fontFamily is invalid.
+   * Otherwise callback is invoked asynchronously when the font is loaded (or async loading fails).
+   * While font is being fetched asynchronously, {@link #getFallbackFont()} can be used as a
+   * temporary font.
    *
    * @param context the {@link Context}.
    * @param callback callback to notify when font is loaded.
    * @see android.support.v7.widget.AppCompatTextHelper
    */
-  public void getFontAsync(Context context, @NonNull final FontCallback callback) {
+  public void getFontAsync(Context context, @NonNull final TextAppearanceFontCallback callback) {
     if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
       getFont(context);
     } else {
@@ -163,7 +164,7 @@ public class TextAppearance {
     }
 
     if (fontResolved) {
-      callback.onFontRetrieved(font);
+      callback.onFontRetrieved(font, true);
       return;
     }
 
@@ -177,7 +178,7 @@ public class TextAppearance {
             public void onFontRetrieved(@NonNull Typeface typeface) {
               font = Typeface.create(typeface, textStyle);
               fontResolved = true;
-              callback.onFontRetrieved(font);
+              callback.onFontRetrieved(font, false);
             }
 
             @Override
@@ -206,20 +207,23 @@ public class TextAppearance {
    * @param context The {@link Context}.
    * @param textPaint {@link TextPaint} to be updated.
    * @param callback Callback to notify when font is available.
-   * @see #getFontAsync(Context, FontCallback)
+   * @see #getFontAsync(Context, TextAppearanceFontCallback)
    */
   public void getFontAsync(
-      Context context, final TextPaint textPaint, @NonNull final FontCallback callback) {
+      Context context,
+      final TextPaint textPaint,
+      @NonNull final TextAppearanceFontCallback callback) {
     // Updates text paint using fallback font while waiting for font to be requested.
     updateTextPaintMeasureState(textPaint, getFallbackFont());
 
     getFontAsync(
         context,
-        new FontCallback() {
+        new TextAppearanceFontCallback() {
           @Override
-          public void onFontRetrieved(@NonNull Typeface typeface) {
+          public void onFontRetrieved(
+              @NonNull Typeface typeface, boolean fontResolvedSynchronously) {
             updateTextPaintMeasureState(textPaint, typeface);
-            callback.onFontRetrieved(typeface);
+            callback.onFontRetrieved(typeface, fontResolvedSynchronously);
           }
 
           @Override
@@ -277,7 +281,7 @@ public class TextAppearance {
    * @see android.text.style.TextAppearanceSpan#updateDrawState(TextPaint)
    */
   public void updateDrawState(
-      Context context, TextPaint textPaint, @NonNull FontCallback callback) {
+      Context context, TextPaint textPaint, @NonNull TextAppearanceFontCallback callback) {
     updateMeasureState(context, textPaint, callback);
 
     textPaint.setColor(
@@ -300,7 +304,7 @@ public class TextAppearance {
    * @see android.text.style.TextAppearanceSpan#updateMeasureState(TextPaint)
    */
   public void updateMeasureState(
-      Context context, TextPaint textPaint, @NonNull FontCallback callback) {
+      Context context, TextPaint textPaint, @NonNull TextAppearanceFontCallback callback) {
     if (TextAppearanceConfig.shouldLoadFontSynchronously()) {
       updateTextPaintMeasureState(textPaint, getFont(context));
     } else {
