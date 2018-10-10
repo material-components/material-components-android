@@ -95,7 +95,7 @@ gradle.projectsEvaluated {
   }
 }
 
-task generateJavadocs(type: Javadoc) {
+task generateJavadocs(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
   if (project.hasProperty("online")) {
     options.addStringOption("toroot", "/")
     options.addStringOption("hdf", "android.whichdoc online")
@@ -112,6 +112,8 @@ task generateJavadocs(type: Javadoc) {
 
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
+    include '**/com/google/android/material/**'
+
     title = null
     destinationDir = new File(outputPath)
     classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
@@ -128,16 +130,17 @@ task generateJavadocs(type: Javadoc) {
 }
 
 task getVersion << {
-    println version
+  println version
 }
 
-task generateApiXml(type: Javadoc) {
+task generateApiXml(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
   if (project.hasProperty("apiName")) {
     def jdiff = project.property("jdiffJar")
     def apiName = project.property("apiName")
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
     classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+    include '**/com/google/android/material/**'
     options.doclet = "jdiff.JDiff"
     options.addStringOption("subpackages", ".")
     options.addStringOption("apiname", apiName)
@@ -147,7 +150,7 @@ task generateApiXml(type: Javadoc) {
   }
 }
 
-task generateJdiffReport(type: Javadoc) {
+task generateJdiffReport(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
   if (project.hasProperty("oldApi")) {
     def jdiff = project.property("jdiffjar")
     def xerces = project.property("xercesjar")
@@ -158,6 +161,7 @@ task generateJdiffReport(type: Javadoc) {
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
     classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+    include '**/com/google/android/material/**'
     options.doclet = "jdiff.JDiff"
     options.addStringOption("subpackages", ".")
     options.addStringOption("newapidir", newApiDir)
@@ -173,15 +177,19 @@ task generateJdiffReport(type: Javadoc) {
 }
 
 afterEvaluate {
-  generateJavadocs.classpath += files(android.libraryVariants.collect { variant ->
-    variant.javaCompile.classpath.files
-  })
-  generateApiXml.classpath += files(android.libraryVariants.collect { variant ->
-    variant.javaCompile.classpath.files
-  })
-  generateJdiffReport.classpath += files(android.libraryVariants.collect { variant ->
-    variant.javaCompile.classpath.files
-  })
+  addResources([generateJavadocs, generateApiXml, generateJdiffReport])
+}
+
+def addResources(tasks) {
+  tasks.each {
+    def releaseVariant = android.libraryVariants.find { it.name == 'release' }
+    it.classpath += files(android.libraryVariants.collect { variant ->
+      variant.javaCompile.classpath.files
+    })
+    it.classpath += releaseVariant.getCompileClasspath(null)
+    it.classpath += it.project.files(releaseVariant.javaCompile.destinationDir)
+    it.source += releaseVariant.javaCompile.source
+  }
 }
 
 uploadArchives {
