@@ -122,10 +122,10 @@ import java.util.List;
  * the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
  *
  * <p>For proper rendering of the ancestor TextView in RTL mode, call {@link
- * #setLayoutDirection(int)} with {@link View.LAYOUT_DIRECTION_LOCALE}. By default, TextView's
- * layout rendering sets the text padding in LTR on initial rendering and it only renders correctly
- * after the layout has been invalidated so you need to ensure that initial rendering has the
- * correct layout.
+ * #setLayoutDirection(int)} with <code>View.LAYOUT_DIRECTION_LOCALE</code>. By default,
+ * TextView's layout rendering sets the text padding in LTR on initial rendering and it only renders
+ * correctly after the layout has been invalidated so you need to ensure that initial rendering has
+ * the correct layout.
  *
  * @see ChipDrawable
  */
@@ -680,11 +680,12 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   /**
-   * Call this chip's {@link #onCloseIconClickListener}, if it is defined. Performs all normal
-   * actions associated with clicking: reporting accessibility event, playing a sound, etc.
+   * Call this chip's close icon click listener, if it is defined. Performs all normal actions
+   * associated with clicking: reporting accessibility event, playing a sound, etc.
    *
-   * @return True there was an assigned {@link #onCloseIconClickListener} that was called, false
-   *     otherwise is returned.
+   * @return True there was an assigned close icon click listener that was called, false otherwise
+   *     is returned.
+   * @see #setOnCloseIconClickListener(OnClickListener)
    */
   @CallSuper
   public boolean performCloseIconClick() {

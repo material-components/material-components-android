@@ -857,8 +857,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   /**
    * Behavior designed for use with {@link FloatingActionButton} instances. Its main function is to
-   * move {@link FloatingActionButton} views so that any displayed {@link Snackbar}s do not cover
-   * them.
+   * move {@link FloatingActionButton} views so that any displayed {@link
+   * com.google.android.material.snackbar.Snackbar}s do not cover them.
    */
   // TODO: remove this generic type after the widget migration is done
   public static class Behavior extends BaseBehavior<FloatingActionButton> {
@@ -874,8 +874,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   /**
    * Behavior designed for use with {@link FloatingActionButton} instances. Its main function is to
-   * move {@link FloatingActionButton} views so that any displayed {@link Snackbar}s do not cover
-   * them.
+   * move {@link FloatingActionButton} views so that any displayed {@link
+   * com.google.android.material.snackbar.Snackbar}s do not cover them.
    */
   // TODO: remove this generic type after the widget migration is done
   protected static class BaseBehavior<T extends FloatingActionButton>

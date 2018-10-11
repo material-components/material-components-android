@@ -124,8 +124,6 @@ task generateJavadocs(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJava
       file(docletPathRoot + "/doclava/current/doclava.jar"),
       file(docletPathRoot + "/jsilver/v1_0_0/jsilver.jar")
     ]
-    // TODO: remove once all errors are resolved
-    failOnError false
   }
 }
 

@@ -2082,7 +2082,7 @@ public class TextInputLayout extends LinearLayout {
   /**
    * An AccessibilityDelegate intended to be set on an {@link EditText} or {@link TextInputEditText}
    * with {@link
-   * TextInputLayout#setTextInputAccessibilityDelegate(TextInputLayout.AccessibilityDelegate}} to
+   * TextInputLayout#setTextInputAccessibilityDelegate(TextInputLayout.AccessibilityDelegate) to
    * provide attributes for accessibility that are managed by {@link TextInputLayout}.
    */
   public static class AccessibilityDelegate extends AccessibilityDelegateCompat {

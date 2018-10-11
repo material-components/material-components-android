@@ -97,14 +97,14 @@ import java.util.List;
  * colorSurface}, as it is in the default style, you should set {@code materialThemeOverlay} to
  * {@code @style/ThemeOverlay.MaterialComponents.BottomAppBar.Surface}.
  *
- * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_backgroundTint
- * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabAlignmentMode
- * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabAnimationMode
- * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleMargin
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_backgroundTint
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAlignmentMode
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabAnimationMode
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleMargin
  * @attr ref
- *     com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
- * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_fabCradleVerticalOffset
- * @attr ref com.google.android.material.bottomappbar.R.styleable#BottomAppBar_hideOnScroll
+ *     com.google.android.material.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleVerticalOffset
+ * @attr ref com.google.android.material.R.styleable#BottomAppBar_hideOnScroll
  */
 public class BottomAppBar extends Toolbar implements AttachedBehavior {
 

@@ -924,12 +924,10 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
 
   /**
    * Indicates whether this chip drawable will change its appearance based on state.
-   *
-   * <p>The logic here and {@link #isCloseIconStateful()} must match {@link #onStateChange(int[],
-   * int[])}.
    */
   @Override
   public boolean isStateful() {
+    // The logic here and #isCloseIconStateful() must match #onStateChange(int[],int[]).
     return isStateful(chipSurfaceColor)
         || isStateful(chipBackgroundColor)
         || isStateful(chipStrokeColor)
@@ -943,10 +941,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
 
   /**
    * Indicates whether the close icon drawable will change its appearance based on state.
-   *
-   * <p>The logic here and {@link #isStateful()} must match {@link #onStateChange(int[], int[])}.
    */
   public boolean isCloseIconStateful() {
+    // The logic here and #isStateful() must match #onStateChange(int[], int[]).
     return isStateful(closeIcon);
   }
 
@@ -977,10 +974,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
 
   /**
    * Changes appearance in response to the specified state.
-   *
-   * <p>The logic here must match {@link #isStateful()} and {@link #isCloseIconStateful()}.
    */
   private boolean onStateChange(int[] chipState, int[] closeIconState) {
+    // The logic here must match #isStateful()} and #isCloseIconStateful()}.
     boolean invalidate = super.onStateChange(chipState);
     boolean sizeChanged = false;
 

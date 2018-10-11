@@ -109,7 +109,7 @@ import java.util.Iterator;
  * tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
  * </pre>
  *
- * You should set a listener via {@link #setOnTabSelectedListener(OnTabSelectedListener)} to be
+ * You should set a listener via {@link #setOnTabSelectedListener(BaseOnTabSelectedListener)} to be
  * notified when any tab's selection state has been changed.
  *
  * <p>You can also add items to TabLayout in your layout through the use of {@link TabItem}. An
@@ -217,19 +217,20 @@ public class TabLayout extends HorizontalScrollView {
   public @interface Mode {}
 
   /**
-   * If a tab is instantiated with {@link #setText(CharSequence)}, and this mode is set, the text
-   * will be saved and utilized for the content description, but no visible labels will be created.
+   * If a tab is instantiated with {@link TabLayout#setText(CharSequence)}, and this mode is set,
+   * the text will be saved and utilized for the content description, but no visible labels will be
+   * created.
    *
-   * @see #setTabLabelVisibility()
-   **/
+   * @see #setTabLabelVisibility
+   */
   public static final int TAB_LABEL_VISIBILITY_UNLABELED = 0;
 
   /**
-   * This mode is set by default.
-   * If a tab is instantiated with {@link #setText(CharSequence)}, a visible label will be created.
+   * This mode is set by default. If a tab is instantiated with {@link
+   * TabLayout#setText(CharSequence)}, a visible label will be created.
    *
-   * @see #setTabLabelVisibility()
-   **/
+   * @see #setTabLabelVisibility
+   */
   public static final int TAB_LABEL_VISIBILITY_LABELED = 1;
 
   /** @hide */
@@ -658,8 +659,8 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   /**
-   * @deprecated Use {@link #addOnTabSelectedListener(OnTabSelectedListener)} and {@link
-   *     #removeOnTabSelectedListener(OnTabSelectedListener)}.
+   * @deprecated Use {@link #addOnTabSelectedListener(BaseOnTabSelectedListener)} and {@link
+   *     #removeOnTabSelectedListener(BaseOnTabSelectedListener)}.
    */
   @Deprecated
   public void setOnTabSelectedListener(@Nullable BaseOnTabSelectedListener listener) {
@@ -680,7 +681,7 @@ public class TabLayout extends HorizontalScrollView {
    * Add a {@link TabLayout.OnTabSelectedListener} that will be invoked when tab selection changes.
    *
    * <p>Components that add a listener should take care to remove it when finished via {@link
-   * #removeOnTabSelectedListener(OnTabSelectedListener)}.
+   * #removeOnTabSelectedListener(BaseOnTabSelectedListener)}.
    *
    * @param listener listener to add
    */
@@ -692,7 +693,7 @@ public class TabLayout extends HorizontalScrollView {
 
   /**
    * Remove the given {@link TabLayout.OnTabSelectedListener} that was previously added via {@link
-   * #addOnTabSelectedListener(OnTabSelectedListener)}.
+   * #addOnTabSelectedListener(BaseOnTabSelectedListener)}.
    *
    * @param listener listener to remove
    */
