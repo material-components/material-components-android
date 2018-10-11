@@ -177,7 +177,11 @@ public class AppBarLayout extends LinearLayout {
   }
 
   public AppBarLayout(Context context, AttributeSet attrs) {
-    super(context, attrs);
+    this(context, attrs, 0);
+  }
+
+  public AppBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
+    super(context, attrs, defStyleAttr);
     setOrientation(VERTICAL);
 
     if (Build.VERSION.SDK_INT >= 21) {
@@ -188,12 +192,16 @@ public class AppBarLayout extends LinearLayout {
       // If we're running on API 21+, we should reset any state list animator from our
       // default style
       ViewUtilsLollipop.setStateListAnimatorFromAttrs(
-          this, attrs, 0, R.style.Widget_Design_AppBarLayout);
+          this, attrs, defStyleAttr, R.style.Widget_Design_AppBarLayout);
     }
 
     final TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
-            context, attrs, R.styleable.AppBarLayout, 0, R.style.Widget_Design_AppBarLayout);
+            context,
+            attrs,
+            R.styleable.AppBarLayout,
+            defStyleAttr,
+            R.style.Widget_Design_AppBarLayout);
     ViewCompat.setBackground(this, a.getDrawable(R.styleable.AppBarLayout_android_background));
     if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
       setExpanded(
