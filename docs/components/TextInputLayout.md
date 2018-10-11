@@ -39,12 +39,12 @@ a `TextInputEditText` as a direct child.
 ```xml
 <com.google.android.material.textfield.TextInputLayout
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="wrap_content"
+    android:hint="@string/hint_text">
 
   <com.google.android.material.textfield.TextInputEditText
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:hint="@string/hint_text"/>
+      android:layout_height="wrap_content"/>
 
 </com.google.android.material.textfield.TextInputLayout>
 ```
