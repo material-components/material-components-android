@@ -29,6 +29,13 @@
   <public name="toolbarId" type="attr"/>
   <public name="Widget.Design.AppBarLayout" type="style"/>
   <public name="Widget.Design.CollapsingToolbar" type="style"/>
+  <public name="Widget.MaterialComponents.Toolbar" type="style"/>
+  <public name="Widget.MaterialComponents.Toolbar.Primary" type="style"/>
+  <public name="Widget.MaterialComponents.Toolbar.Surface" type="style"/>
+  <public name="Widget.MaterialComponents.ActionBar.Solid" type="style"/>
+  <public name="Widget.MaterialComponents.Light.ActionBar.Solid" type="style"/>
+  <public name="ThemeOverlay.MaterialComponents.Toolbar.Primary" type="style"/>
+  <public name="ThemeOverlay.MaterialComponents.Toolbar.Surface" type="style"/>
   <public name="TextAppearance.Design.CollapsingToolbar.Expanded" type="style"/>
   <public name="appbar_scrolling_view_behavior" type="string"/>
   <public name="expanded" type="attr"/>

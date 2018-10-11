@@ -47,9 +47,11 @@
 
   <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Surface" parent="">
     <item name="colorControlNormal">@color/mtrl_on_surface_emphasis_medium</item>
+    <item name="actionMenuTextColor">@color/mtrl_on_surface_emphasis_medium</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.BottomAppBar.Primary" parent="">
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
+    <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
   </style>
 </resources>
