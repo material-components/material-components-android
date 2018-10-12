@@ -23,18 +23,5 @@
   <public name="Theme.MaterialComponents.Light.Dialog.MinWidth" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dialog" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dialog.Alert" type="style"/>
-  <public name="ThemeOverlay.MaterialComponents.Dialog.Alert.Centered" type="style"/>
-
-  <public name="alertDialogTitlePanelStyle" type="attr"/>
-  <public name="alertDialogTitleIconStyle" type="attr"/>
-  <public name="alertDialogTitleTextStyle" type="attr"/>
-
-  <public name="AlertDialog.MaterialComponents.Title.Panel" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Icon" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Text" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Panel.CenterStacked" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Icon.CenterStacked" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Text.CenterStacked" type="style"/>
-
 </resources>
 

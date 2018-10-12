@@ -22,7 +22,7 @@
     android:gravity="start|left|top"
     android:orientation="vertical">
 
-  <include layout="@layout/material_alert_dialog_title"/>
+  <include layout="@layout/abc_alert_dialog_title_material"/>
 
   <FrameLayout
       android:id="@+id/contentPanel"
