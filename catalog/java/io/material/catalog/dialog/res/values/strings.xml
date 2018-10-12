@@ -28,7 +28,8 @@
   <string name="title_checkboxes_2_actions">Multi-select</string>
   <string name="title_radiobuttons_2_actions">Single select</string>
   <string name="title_slider_2_actions">Custom View</string>
-  <string name="title_scrolling_2_actions">Scrolling Content</string>
+  <string name="title_scrolling_2_actions">Scrolling Content with Title and Actions</string>
+  <string name="title_scrolling">Scrolling Content</string>
   <string name="title_2_short_actions">Short Buttons</string>
 
   <string name="positive">Accept</string>
