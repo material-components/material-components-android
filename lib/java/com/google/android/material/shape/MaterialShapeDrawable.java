@@ -58,6 +58,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private static final String TAG = MaterialShapeDrawable.class.getSimpleName();
 
   private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private final MaterialShapeDrawableState state = new MaterialShapeDrawableState();
 
   // Inter-method state.
   private final Matrix[] cornerTransforms = new Matrix[4];
@@ -118,6 +119,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       edgeTransforms[i] = new Matrix();
       cornerPaths[i] = new ShapePath();
     }
+  }
+
+  @Nullable
+  @Override
+  public ConstantState getConstantState() {
+    return state;
   }
 
   private static int modulateAlpha(int paintAlpha, int alpha) {
@@ -742,5 +749,22 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     insetRectF.set(
         rectF.left + inset, rectF.top + inset, rectF.right - inset, rectF.bottom - inset);
     return insetRectF;
+  }
+
+  /**
+   * Dummy implementation of constant state. This drawable doesn't have shared state. Implementing
+   * so that calls to getConstantState().newDrawable() don't crash on L and M.
+   */
+  private class MaterialShapeDrawableState extends ConstantState {
+
+    @Override
+    public Drawable newDrawable() {
+      return MaterialShapeDrawable.this;
+    }
+
+    @Override
+    public int getChangingConfigurations() {
+      return 0;
+    }
   }
 }
