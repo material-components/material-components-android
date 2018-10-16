@@ -22,6 +22,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.view.LayoutInflater;
+import android.view.Menu;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -46,6 +47,12 @@ public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
     TextView demoDescriptionTextView = view.findViewById(R.id.action_bar_demo_description);
     demoDescriptionTextView.setText(getActionBarDemoDescription());
     return view;
+  }
+
+  @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    getMenuInflater().inflate(R.menu.cat_topappbar_menu, menu);
+    return true;
   }
 
   @Override

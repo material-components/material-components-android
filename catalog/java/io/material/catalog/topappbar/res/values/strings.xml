@@ -34,7 +34,7 @@
   <string name="cat_topappbar_scrolling_demo_toolbar_title">Scrolling Title</string>
   <string name="cat_topappbar_collapsing_demo_toolbar_title">Collapsing Title</string>
 
-  <string name="cat_topappbar_search_menu_item_title">Search</string>
+  <string name="cat_topappbar_edit_menu_item_title">Edit</string>
   <string name="cat_topappbar_favorite_menu_item_title">Favorite</string>
   <string name="cat_topappbar_settings_menu_item_title">Settings</string>
   <string name="cat_topappbar_help_and_feedback_menu_item_title">Help &amp; feedback</string>

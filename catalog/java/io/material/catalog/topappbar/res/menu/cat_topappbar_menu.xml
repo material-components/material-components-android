@@ -19,8 +19,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:ignore="AppCompatResource">
   <item
-      android:icon="@drawable/ic_search_vd_theme_24px"
-      android:title="@string/cat_topappbar_search_menu_item_title"
+      android:title="@string/cat_topappbar_edit_menu_item_title"
       app:showAsAction="ifRoom"/>
   <item
       android:icon="@drawable/ic_favorite_vd_theme_24px"

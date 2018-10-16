@@ -92,6 +92,16 @@
     <item name="maxButtonHeight">@dimen/mtrl_toolbar_default_height</item>
   </style>
 
+  <style name="Widget.MaterialComponents.ActionBar.Primary" parent="Widget.AppCompat.ActionBar.Solid">
+    <item name="background">?attr/colorPrimary</item>
+    <item name="elevation">@dimen/design_appbar_elevation</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.ActionBar.Surface" parent="Widget.AppCompat.Light.ActionBar.Solid">
+    <item name="background">?attr/colorSurface</item>
+    <item name="elevation">0dp</item>
+  </style>
+
   <style name="ThemeOverlay.MaterialComponents.Toolbar.Primary" parent="">
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
@@ -100,6 +110,24 @@
   <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="">
     <item name="colorControlNormal">@color/mtrl_on_surface_emphasis_medium</item>
     <item name="actionMenuTextColor">@color/mtrl_on_surface_emphasis_medium</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="">
+    <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
+    <item name="android:textColorSecondary">@color/mtrl_on_primary_emphasis_medium</item>
+    <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
+    <item name="colorControlNormal">?attr/colorOnPrimary</item>
+    <!-- Counteracts the effect of setting textColorPrimary for popup menus. -->
+    <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="">
+    <item name="android:textColorPrimary">@color/mtrl_on_surface_emphasis_high_type</item>
+    <item name="android:textColorSecondary">@color/mtrl_on_surface_emphasis_medium</item>
+    <item name="actionMenuTextColor">@color/mtrl_on_surface_emphasis_medium</item>
+    <item name="colorControlNormal">@color/mtrl_on_surface_emphasis_medium</item>
+    <!-- Counteracts the effect of setting textColorPrimary for popup menus. -->
+    <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
   </style>
 
 </resources>
