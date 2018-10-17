@@ -148,7 +148,7 @@ task generateApiXml(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac'
   }
 }
 
-task generateJdiffReport(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
+task generateJdiffReport(type: Javadoc) {
   if (project.hasProperty("oldApi")) {
     def jdiff = project.property("jdiffjar")
     def xerces = project.property("xercesjar")
@@ -159,7 +159,6 @@ task generateJdiffReport(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJ
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
     classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    include '**/com/google/android/material/**'
     options.doclet = "jdiff.JDiff"
     options.addStringOption("subpackages", ".")
     options.addStringOption("newapidir", newApiDir)
@@ -175,7 +174,7 @@ task generateJdiffReport(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJ
 }
 
 afterEvaluate {
-  addResources([generateJavadocs, generateApiXml, generateJdiffReport])
+  addResources([generateJavadocs, generateApiXml])
 }
 
 def addResources(tasks) {
