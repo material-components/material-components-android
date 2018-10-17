@@ -160,6 +160,13 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setPositiveButton(positiveText, null)
             .setNeutralButton(neutralText, null));
 
+    //scrolling view
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.title_scrolling,
+        new AlertDialog.Builder(getContext())
+            .setMessage(multiLineMessage.toString()));
+
     // title, short buttons
     addDialogLauncher(
         dialogLaunchersLayout,
