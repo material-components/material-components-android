@@ -16,10 +16,12 @@
 
 package com.google.android.material.shape;
 
+import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
 import com.google.android.material.internal.Experimental;
+import com.google.android.material.shadow.ShadowRenderer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,6 +38,7 @@ public class ShapePath {
   public float endY;
 
   private final List<PathOperation> operations = new ArrayList<>();
+  private final List<ShadowCompatOperation> shadowCompatOperations = new ArrayList<>();
 
   public ShapePath() {
     reset(0, 0);
@@ -51,6 +54,7 @@ public class ShapePath {
     this.endX = startX;
     this.endY = startY;
     this.operations.clear();
+    this.shadowCompatOperations.clear();
   }
 
   /**
@@ -64,6 +68,9 @@ public class ShapePath {
     operation.x = x;
     operation.y = y;
     operations.add(operation);
+
+    // The previous endX and endY is the starting point for this shadow operation.
+    shadowCompatOperations.add(new LineShadowOperation(operation, endX, endY));
 
     endX = x;
     endY = y;
@@ -106,6 +113,12 @@ public class ShapePath {
     operation.sweepAngle = sweepAngle;
     operations.add(operation);
 
+    // Previous ending point vs center of arc circle determines if it's a cutout or not. This
+    // determines the orientation of the shadow, ie. if it should be drawn on the outside, or inside
+    // of this arc.
+    boolean outsideShape = endY > (bottom + top) / 2;
+    shadowCompatOperations.add(new ArcShadowOperation(operation, outsideShape));
+
     endX = (left + right) * 0.5f
         + (right - left) / 2 * (float) Math.cos(Math.toRadians(startAngle + sweepAngle));
     endY = (top + bottom) * 0.5f
@@ -122,6 +135,81 @@ public class ShapePath {
     for (int i = 0, size = operations.size(); i < size; i++) {
       PathOperation operation = operations.get(i);
       operation.applyToPath(transform, path);
+    }
+  }
+
+  /**
+   * Creates a ShadowCompatOperation to draw compatibility shadow under the matrix transform for the
+   * whole path defined by this ShapePath.
+   */
+  ShadowCompatOperation createShadowCompatOperation() {
+    final List<ShadowCompatOperation> operations = new ArrayList<>(shadowCompatOperations);
+    return new ShadowCompatOperation() {
+      @Override
+      public void draw(
+          Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
+        for (ShadowCompatOperation op : operations) {
+          op.draw(transform, shadowRenderer, shadowElevation, canvas);
+        }
+      }
+    };
+  }
+
+  /**
+   * Interface to hold operations that will draw a compatible shadow in the case that native shadows
+   * can't be rendered.
+   */
+  abstract static class ShadowCompatOperation {
+
+    /** Draws the operation with the matrix transform on the canvas */
+    public abstract void draw(
+        Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas);
+  }
+
+  /** Sets up the correct shadow to be drawn for a line. */
+  static class LineShadowOperation extends ShadowCompatOperation {
+
+    private final PathLineOperation operation;
+    private final float startX;
+    private final float startY;
+
+    public LineShadowOperation(PathLineOperation operation, float startX, float startY) {
+      this.operation = operation;
+      this.startX = startX;
+      this.startY = startY;
+    }
+
+    @Override
+    public void draw(
+        Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
+      final RectF rect = new RectF();
+      rect.top = startY;
+      rect.bottom = startY;
+      rect.left = startX;
+      rect.right = operation.x;
+      shadowRenderer.drawEdgeShadow(canvas, transform, rect, shadowElevation);
+    }
+  }
+
+  /** Sets up the shadow to be drawn for an arc. */
+  static class ArcShadowOperation extends ShadowCompatOperation {
+
+    private final PathArcOperation operation;
+    private final boolean outsideShape;
+
+    public ArcShadowOperation(PathArcOperation operation, boolean outsideShape) {
+      this.operation = operation;
+      this.outsideShape = outsideShape;
+    }
+
+    @Override
+    public void draw(
+        Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
+      float startAngle = operation.startAngle;
+      float sweepAngle = operation.sweepAngle;
+      RectF rect = new RectF(operation.left, operation.top, operation.right, operation.bottom);
+      shadowRenderer.drawCornerShadow(
+          canvas, transform, rect, shadowElevation, startAngle, sweepAngle, outsideShape);
     }
   }
 

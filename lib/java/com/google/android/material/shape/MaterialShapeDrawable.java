@@ -37,6 +37,7 @@ import android.graphics.Region;
 import android.graphics.Region.Op;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
@@ -44,9 +45,10 @@ import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
+import com.google.android.material.shadow.ShadowRenderer;
+import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.util.AttributeSet;
-import android.util.Log;
 
 /**
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
@@ -64,6 +66,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final Matrix[] cornerTransforms = new Matrix[4];
   private final Matrix[] edgeTransforms = new Matrix[4];
   private final ShapePath[] cornerPaths = new ShapePath[4];
+  private final ShadowCompatOperation[] cornerShadowOperation = new ShadowCompatOperation[4];
+  private final ShadowCompatOperation[] edgeShadowOperation = new ShadowCompatOperation[4];
   // Pre-allocated objects that are re-used several times during path computation and rendering.
   private final Matrix matrix = new Matrix();
   private final Path path = new Path();
@@ -78,12 +82,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final float[] scratch2 = new float[2];
 
   private ShapeAppearanceModel shapeAppearanceModel;
-  private boolean shadowEnabled = false;
+  private boolean shadowEnabled = true;
+  private boolean paintShadowEnabled = false;
   private boolean useTintColorForShadow = false;
   private float interpolation = 1f;
-  private int shadowColor = Color.BLACK;
-  private int shadowElevation = 5;
-  private int shadowRadius = 10;
+  private int shadowElevation = 0;
+  private int shadowRadius = 0;
+  private int shadowOffset = 0;
   private int alpha = 255;
   private float scale = 1f;
   private Style paintStyle = Style.FILL_AND_STROKE;
@@ -95,6 +100,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Nullable private PorterDuffColorFilter strokeTintFilter;
   private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private ColorStateList strokeTintList = null;
+
+  private final ShadowRenderer shadowRenderer = new ShadowRenderer();
 
   public MaterialShapeDrawable() {
     this(new ShapeAppearanceModel());
@@ -337,22 +344,38 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Get shadow rendering status.
+   * Get shadow rendering status for shadows when {@link #requiresCompatShadow()} is true.
    *
-   * @return true if shadows are enabled; false if not.
+   * @return true if fake shadows should be drawn, false otherwise.
    */
   public boolean isShadowEnabled() {
     return shadowEnabled;
   }
 
   /**
-   * Set shadow rendering enabled or disabled.
+   * Set shadow rendering to be enabled or disabled when {@link #requiresCompatShadow()} is true.
+   * Setting this to false could provide some performance benefits on older devices if you don't
+   * mind no shadows being drawn.
    *
-   * @param shadowEnabled true if shadows are enabled; false if not.
+   * <p>Note: native shadows will still be drawn on API 21 and up if the shape is convex and the
+   * view with this background has elevation.
+   *
+   * @param shadowEnabled true if fake shadows should be drawn; false if not.
    */
   public void setShadowEnabled(boolean shadowEnabled) {
     this.shadowEnabled = shadowEnabled;
     invalidateSelf();
+  }
+
+  /**
+   * TODO: Remove the paint shadow
+   */
+  public void setPaintShadowEnabled(boolean paintShadowEnabled) {
+    this.paintShadowEnabled = paintShadowEnabled;
+    shadowEnabled = false;
+    // Backwards compatible defaults.
+    shadowElevation = 5;
+    shadowRadius = 10;
   }
 
   /**
@@ -378,21 +401,46 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Get the shadow elevation rendered by the path.
-   *
-   * @return shadow elevation rendered by the path.
+   * Returns the elevation used to render fake shadows when {@link #requiresCompatShadow()} is true.
+   * This value is the same as the native elevation that would be used to render shadows on API 21
+   * and up.
    */
   public int getShadowElevation() {
     return shadowElevation;
   }
 
   /**
-   * Set the shadow elevation rendered by the path.
+   * Sets the elevation used to render shadows when {@link #requiresCompatShadow()} is true. This
+   * value is the same as the native elevation that would be used to render shadows on API 21 and
+   * up.
    *
-   * @param shadowElevation the desired elevation.
+   * <p>TODO: The shadow radius should be the actual radius drawn, shadowElevation
+   * should be the height of the closest equivalent native elevation which produces a similar
+   * shadow.
    */
   public void setShadowElevation(int shadowElevation) {
+    this.shadowRadius = shadowElevation;
     this.shadowElevation = shadowElevation;
+    invalidateSelf();
+  }
+
+  /**
+   * Returns the shadow vertical offset rendered for shadows when {@link #requiresCompatShadow()} is
+   * true.
+   */
+  public int getShadowVerticalOffset() {
+    return shadowOffset;
+  }
+
+  /**
+   * Sets the shadow offset rendered by the fake shadow when {@link #requiresCompatShadow()} is
+   * true. This can make the shadow appear more on the bottom or top of the view to make a more
+   * realistic looking shadow depending on the placement of the view on the screen. Normally, if the
+   * View is positioned further down on the screen, less shadow appears above the View, and more
+   * shadow appears below it.
+   */
+  public void setShadowVerticalOffset(int shadowOffset) {
+    this.shadowOffset = shadowOffset;
     invalidateSelf();
   }
 
@@ -400,7 +448,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Get the shadow radius rendered by the path.
    *
    * @return the shadow radius rendered by the path.
+   * @deprecated use {@link #getShadowElevation()} instead.
    */
+  @Deprecated
   public int getShadowRadius() {
     return shadowRadius;
   }
@@ -409,10 +459,19 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Set the shadow radius rendered by the path.
    *
    * @param shadowRadius the desired shadow radius.
+   * @deprecated use {@link #setShadowElevation(int)} instead.
    */
+  @Deprecated
   public void setShadowRadius(int shadowRadius) {
     this.shadowRadius = shadowRadius;
-    invalidateSelf();
+  }
+
+  /**
+   * Returns true if fake shadows should be drawn. Native shadows can't be drawn on API < 21 or when
+   * the shape is concave.
+   */
+  public boolean requiresCompatShadow() {
+    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || !pathInsetByStroke.isConvex();
   }
 
   /**
@@ -435,7 +494,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Set whether shadow color should match next set tint color.
+   * Set whether fake shadow color should match next set tint color. This will only be drawn when
+   * {@link #requiresCompatShadow()} is true, otherwise native shadows will be drawn which don't
+   * support colored shadows.
    *
    * @param useTintColorForShadow true if color should match; false otherwise.
    */
@@ -445,18 +506,22 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Set color of shadow rendered behind shape.
+   * Set the color of fake shadow rendered behind the shape. This will only be drawn when {@link
+   * #requiresCompatShadow()} is true, otherwise native shadows will be drawn which don't support
+   * colored shadows.
+   *
+   * <p>Setting a shadow color will prevent the tint color from being used.
    *
    * @param shadowColor desired color.
    */
   public void setShadowColor(int shadowColor) {
-    this.shadowColor = shadowColor;
+    shadowRenderer.setShadowColor(shadowColor);
     useTintColorForShadow = false;
     invalidateSelf();
   }
 
   /**
-   * Get the current flags used by the shape's paint.
+   * Get the current flags used by the shape's fill paint.
    *
    * @return current paint flags.
    */
@@ -525,11 +590,23 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     final int prevStrokeAlpha = strokePaint.getAlpha();
     strokePaint.setAlpha(modulateAlpha(prevStrokeAlpha, alpha));
 
-    if (shadowElevation > 0 && shadowEnabled) {
-      fillPaint.setShadowLayer(shadowRadius, 0, shadowElevation, shadowColor);
+    if (shadowElevation > 0 && paintShadowEnabled) {
+      fillPaint.setShadowLayer(shadowRadius, 0, shadowElevation, Color.BLACK);
     }
 
     calculatePath(getBoundsInsetByStroke(), pathInsetByStroke);
+    if (shadowEnabled && shadowRadius > 0 && requiresCompatShadow()) {
+      // Save the canvas before changing the clip bounds.
+      canvas.save();
+
+      adjustBoundsForShadow(canvas);
+      offsetForShadow(canvas);
+      drawCompatShadow(canvas);
+
+      // Restore the canvas to the same size it was before drawing any shadows.
+      canvas.restore();
+    }
+
     if (hasFill()) {
       canvas.drawPath(pathInsetByStroke, fillPaint);
     }
@@ -539,6 +616,61 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     fillPaint.setAlpha(prevAlpha);
     strokePaint.setAlpha(prevStrokeAlpha);
+  }
+
+  private void adjustBoundsForShadow(Canvas canvas) {
+    // Add space and offset the canvas for the shadows. Otherwise any shadows drawn outside would
+    // be clipped and not visible.
+    Rect canvasClipBounds = canvas.getClipBounds();
+    canvasClipBounds.inset(-shadowRadius, -shadowRadius);
+    canvasClipBounds.offset(0, shadowOffset);
+    canvas.clipRect(canvasClipBounds, Region.Op.REPLACE);
+  }
+
+  private void offsetForShadow(Canvas canvas) {
+    // Clipping by a path is not supported in ICS. We skip these steps on that API level which
+    // means shadow could appear behind the shape if there is any transparency in the fill color.
+    if (VERSION.SDK_INT > VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+      // Clip out the part where we draw the main shape in case it has transparency. Otherwise
+      // shadow could be visible behind the shape.
+      canvas.clipPath(pathInsetByStroke, Op.DIFFERENCE);
+
+      // Translate the canvas by an amount specified by the shadowOffset. This will make the
+      // shadow appear to be more above or below the shape.
+      canvas.translate(0, shadowOffset);
+    }
+  }
+
+  /**
+   * Draws a shadow using gradients which can be used in the cases where native elevation can't.
+   * This draws the shadow in multiple parts. It draws the shadow for each corner and edge
+   * separately. Then it fills in the center space with the main shadow colored paint. If there is
+   * no shadow offset, this will skip the drawing of the center filled shadow since that will be
+   * completely covered by the shape.
+   */
+  private void drawCompatShadow(Canvas canvas) {
+    if (shouldHandleShadowOffset()) {
+      canvas.save();
+      // Clip out the part where we draw the main shadow below. This is required to handle cases
+      // where the shadow drawn by a corner or edge isn't perfect and actually draws inside the
+      // bounds of the shape. Without clipping, the shadow would be drawn twice in some places
+      // inside the bounds of the path.
+      canvas.clipPath(pathInsetByStroke, Op.DIFFERENCE);
+    }
+
+    // Draw the fake shadow for each of the corners and edges.
+    for (int index = 0; index < 4; index++) {
+      cornerShadowOperation[index].draw(
+          cornerTransforms[index], shadowRenderer, shadowRadius, canvas);
+      edgeShadowOperation[index].draw(edgeTransforms[index], shadowRenderer, shadowRadius, canvas);
+    }
+
+    if (shouldHandleShadowOffset()) {
+      // Restore the canvas to remove the clipPath operation so we can draw in that space.
+      canvas.restore();
+      // Draw the main shadow with the main shadow paint. This fills the center space of the shadow.
+      canvas.drawPath(pathInsetByStroke, shadowRenderer.getShadowPaint());
+    }
   }
 
   @Deprecated
@@ -582,8 +714,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     calculatePath(getBoundsAsRectF(), path);
     if (path.isConvex()) {
       outline.setConvexPath(path);
-    } else {
-      Log.w(TAG, "Path is not convex. No shadow will be drawn.");
     }
   }
 
@@ -617,6 +747,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       path.lineTo(scratch[0], scratch[1]);
     }
     cornerPaths[index].applyToPath(cornerTransforms[index], path);
+    cornerShadowOperation[index] = cornerPaths[index].createShadowCompatOperation();
   }
 
   private void appendEdgePath(int index, Path path) {
@@ -634,6 +765,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     shapePath.reset(0, 0);
     getEdgeTreatmentForIndex(index).getEdgePath(edgeLength, center, interpolation, shapePath);
     shapePath.applyToPath(edgeTransforms[index], path);
+    edgeShadowOperation[index] = shapePath.createShadowCompatOperation();
   }
 
   private float getEdgeCenterForIndex(int index) {
@@ -715,7 +847,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     tintFilter = calculateTintFilter(tintList, tintMode);
     strokeTintFilter = calculateTintFilter(strokeTintList, tintMode);
     if (useTintColorForShadow) {
-      shadowColor = tintList.getColorForState(getState(), Color.TRANSPARENT);
+      shadowRenderer.setShadowColor(tintList.getColorForState(getState(), Color.TRANSPARENT));
     }
   }
 
@@ -754,6 +886,18 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     insetRectF.set(
         rectF.left + inset, rectF.top + inset, rectF.right - inset, rectF.bottom - inset);
     return insetRectF;
+  }
+
+  /**
+   * Returns true if there is a shadow offset that should be taken into account.
+   *
+   * <p>We need to perform some operations only if there is a shadow offset. These operations throw
+   * exceptions on ICS, so we are ignoring the offset for that API version for now. There may be
+   * other operations that we can perform on ICS to handle correctly drawing the shadow, but it's a
+   * low priority for us for now.
+   */
+  private boolean shouldHandleShadowOffset() {
+    return shadowOffset != 0 && VERSION.SDK_INT > VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
   }
 
   /**
