@@ -318,6 +318,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return rectF;
   }
 
+  public void setCornerRadius(float cornerRadius) {
+    shapeAppearanceModel.setCornerRadius(cornerRadius);
+    invalidateSelf();
+  }
+
   /**
    * Determines whether a point is contained within the transparent region of the Drawable. A return
    * value of true generally suggests that the touched view should not process a touch event at that

@@ -124,6 +124,13 @@ public class ShapeAppearanceModel {
     setAllCorners(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
   }
 
+  public void setCornerRadius(float cornerRadius) {
+    topLeftCorner.setCornerSize(cornerRadius);
+    topRightCorner.setCornerSize(cornerRadius);
+    bottomRightCorner.setCornerSize(cornerRadius);
+    bottomLeftCorner.setCornerSize(cornerRadius);
+  }
+
   /**
    * Sets all edge treatments.
    *

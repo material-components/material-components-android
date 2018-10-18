@@ -22,7 +22,7 @@ import com.google.android.material.internal.Experimental;
 @Experimental("The shapes API is currently experimental and subject to change")
 public class CornerTreatment {
 
-  protected final float cornerSize;
+  protected float cornerSize;
 
   public CornerTreatment() {
     // Default Constructor has no size. Using this treatment for all corners will draw a square
@@ -54,5 +54,9 @@ public class CornerTreatment {
 
   public float getCornerSize() {
     return cornerSize;
+  }
+
+  public void setCornerSize(float cornerSize) {
+    this.cornerSize = cornerSize;
   }
 }
