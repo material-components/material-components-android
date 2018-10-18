@@ -150,15 +150,14 @@ task generateApiXml(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac'
 
 task generateJdiffReport(type: Javadoc) {
   if (project.hasProperty("oldApi")) {
+    def outputPath = project.hasProperty("outputPath") ? project.property("outputPath") : "diffs-out"
     def jdiff = project.property("jdiffjar")
     def xerces = project.property("xercesjar")
     def oldApi = project.property("oldApi")
     def newApi = project.property("newApi")
     def newApiDir = project.property("newApiDir")
     def oldApiDir = project.property("oldApiDir")
-    source = android.sourceSets.main.java.source
-    source = source.findAll { it.name.endsWith(".java") }
-    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
+    destinationDir = new File(outputPath)
     options.doclet = "jdiff.JDiff"
     options.addStringOption("subpackages", ".")
     options.addStringOption("newapidir", newApiDir)
