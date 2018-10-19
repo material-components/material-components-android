@@ -41,6 +41,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.AttrRes;
 import android.support.annotation.ColorInt;
+import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
@@ -49,6 +50,8 @@ import com.google.android.material.shadow.ShadowRenderer;
 import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.util.AttributeSet;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 
 /**
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
@@ -57,7 +60,31 @@ import android.util.AttributeSet;
 @Experimental("The shapes API is currently experimental and subject to change")
 public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable {
 
-  private static final String TAG = MaterialShapeDrawable.class.getSimpleName();
+  /**
+   * Try to draw native elevation shadows if possible, otherwise use fake shadows. This is best for
+   * paths which will always be convex. If the path might change to be concave, you should consider
+   * using {@link #SHADOW_COMPAT_MODE_ALWAYS} otherwise the shadows could suddenly switch from
+   * native to fake in the middle of an animation.
+   */
+  public static final int SHADOW_COMPAT_MODE_DEFAULT = 0;
+
+  /**
+   * Never draw fake shadows. You may want to enable this if backwards compatibility for shadows
+   * isn't as important as performance. Native shadow elevation shadows will still be drawn if
+   * possible.
+   */
+  public static final int SHADOW_COMPAT_MODE_NEVER = 1;
+
+  /**
+   * Always draw fake shadows, never draw native elevation shadows. If a path could be concave, this
+   * will prevent the shadow from suddenly being rendered natively.
+   */
+  public static final int SHADOW_COMPAT_MODE_ALWAYS = 2;
+
+  /** Determines when compatibility shadow is drawn vs. native elevation shadows. */
+  @IntDef({SHADOW_COMPAT_MODE_DEFAULT, SHADOW_COMPAT_MODE_NEVER, SHADOW_COMPAT_MODE_ALWAYS})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface CompatibilityShadowMode {}
 
   private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private final MaterialShapeDrawableState state = new MaterialShapeDrawableState();
@@ -82,13 +109,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final float[] scratch2 = new float[2];
 
   private ShapeAppearanceModel shapeAppearanceModel;
-  private boolean shadowEnabled = true;
+  private int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
   private boolean paintShadowEnabled = false;
   private boolean useTintColorForShadow = false;
   private float interpolation = 1f;
-  private int shadowElevation = 0;
-  private int shadowRadius = 0;
-  private int shadowOffset = 0;
+  private int shadowCompatElevation = 0;
+  private int shadowCompatRadius = 0;
+  private int shadowCompatOffset = 0;
   private int alpha = 255;
   private float scale = 1f;
   private Style paintStyle = Style.FILL_AND_STROKE;
@@ -343,13 +370,30 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return getTransparentRegion().contains(x, y);
   }
 
+  @CompatibilityShadowMode
+  public int getShadowCompatibilityMode() {
+    return shadowCompatMode;
+  }
+
+  /**
+   * Set the shadow compatibility mode. This allows control over when fake shadows should drawn
+   * instead of native elevation shadows.
+   */
+  public void setShadowCompatibilityMode(@CompatibilityShadowMode int mode) {
+    shadowCompatMode = mode;
+    invalidateSelf();
+  }
+
   /**
    * Get shadow rendering status for shadows when {@link #requiresCompatShadow()} is true.
    *
    * @return true if fake shadows should be drawn, false otherwise.
+   * @deprecated use {@link #getShadowCompatibilityMode()} instead
    */
+  @Deprecated
   public boolean isShadowEnabled() {
-    return shadowEnabled;
+    return shadowCompatMode == SHADOW_COMPAT_MODE_DEFAULT
+        || shadowCompatMode == SHADOW_COMPAT_MODE_ALWAYS;
   }
 
   /**
@@ -357,25 +401,25 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Setting this to false could provide some performance benefits on older devices if you don't
    * mind no shadows being drawn.
    *
-   * <p>Note: native shadows will still be drawn on API 21 and up if the shape is convex and the
-   * view with this background has elevation.
+   * <p>Note: native elevation shadows will still be drawn on API 21 and up if the shape is convex
+   * and the view with this background has elevation.
    *
    * @param shadowEnabled true if fake shadows should be drawn; false if not.
+   * @deprecated use {@link #setShadowCompatibilityMode(int)} instead.
    */
+  @Deprecated
   public void setShadowEnabled(boolean shadowEnabled) {
-    this.shadowEnabled = shadowEnabled;
-    invalidateSelf();
+    setShadowCompatibilityMode(
+        shadowEnabled ? SHADOW_COMPAT_MODE_DEFAULT : SHADOW_COMPAT_MODE_NEVER);
   }
 
-  /**
-   * TODO: Remove the paint shadow
-   */
+  /** TODO: Remove the paint shadow */
   public void setPaintShadowEnabled(boolean paintShadowEnabled) {
     this.paintShadowEnabled = paintShadowEnabled;
-    shadowEnabled = false;
+    shadowCompatMode = SHADOW_COMPAT_MODE_NEVER;
     // Backwards compatible defaults.
-    shadowElevation = 5;
-    shadowRadius = 10;
+    shadowCompatElevation = 5;
+    shadowCompatRadius = 10;
   }
 
   /**
@@ -406,7 +450,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * and up.
    */
   public int getShadowElevation() {
-    return shadowElevation;
+    return shadowCompatElevation;
   }
 
   /**
@@ -419,8 +463,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * shadow.
    */
   public void setShadowElevation(int shadowElevation) {
-    this.shadowRadius = shadowElevation;
-    this.shadowElevation = shadowElevation;
+    this.shadowCompatRadius = shadowElevation;
+    this.shadowCompatElevation = shadowElevation;
     invalidateSelf();
   }
 
@@ -429,7 +473,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * true.
    */
   public int getShadowVerticalOffset() {
-    return shadowOffset;
+    return shadowCompatOffset;
   }
 
   /**
@@ -440,7 +484,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * shadow appears below it.
    */
   public void setShadowVerticalOffset(int shadowOffset) {
-    this.shadowOffset = shadowOffset;
+    this.shadowCompatOffset = shadowOffset;
     invalidateSelf();
   }
 
@@ -452,7 +496,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   @Deprecated
   public int getShadowRadius() {
-    return shadowRadius;
+    return shadowCompatRadius;
   }
 
   /**
@@ -463,14 +507,14 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   @Deprecated
   public void setShadowRadius(int shadowRadius) {
-    this.shadowRadius = shadowRadius;
+    this.shadowCompatRadius = shadowRadius;
   }
 
   /**
-   * Returns true if fake shadows should be drawn. Native shadows can't be drawn on API < 21 or when
-   * the shape is concave.
+   * Returns true if fake shadows should be drawn. Native elevation shadows can't be drawn on API <
+   * 21 or when the shape is concave.
    */
-  public boolean requiresCompatShadow() {
+  private boolean requiresCompatShadow() {
     return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || !pathInsetByStroke.isConvex();
   }
 
@@ -495,8 +539,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /**
    * Set whether fake shadow color should match next set tint color. This will only be drawn when
-   * {@link #requiresCompatShadow()} is true, otherwise native shadows will be drawn which don't
-   * support colored shadows.
+   * {@link #requiresCompatShadow()} is true, otherwise native elevation shadows will be drawn which
+   * don't support colored shadows.
    *
    * @param useTintColorForShadow true if color should match; false otherwise.
    */
@@ -507,8 +551,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   /**
    * Set the color of fake shadow rendered behind the shape. This will only be drawn when {@link
-   * #requiresCompatShadow()} is true, otherwise native shadows will be drawn which don't support
-   * colored shadows.
+   * #requiresCompatShadow()} is true, otherwise native elevation shadows will be drawn which don't
+   * support colored shadows.
    *
    * <p>Setting a shadow color will prevent the tint color from being used.
    *
@@ -569,6 +613,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     invalidateSelf();
   }
 
+  /** Returns whether the shape should draw the compatibility shadow. */
+  private boolean hasCompatShadow() {
+    return shadowCompatMode != SHADOW_COMPAT_MODE_NEVER
+        && shadowCompatRadius > 0
+        && (shadowCompatMode == SHADOW_COMPAT_MODE_ALWAYS || requiresCompatShadow());
+  }
+
   /** Returns whether the shape has a fill. */
   private boolean hasFill() {
     return paintStyle == Style.FILL_AND_STROKE || paintStyle == Style.FILL;
@@ -590,12 +641,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     final int prevStrokeAlpha = strokePaint.getAlpha();
     strokePaint.setAlpha(modulateAlpha(prevStrokeAlpha, alpha));
 
-    if (shadowElevation > 0 && paintShadowEnabled) {
-      fillPaint.setShadowLayer(shadowRadius, 0, shadowElevation, Color.BLACK);
+    if (shadowCompatElevation > 0 && paintShadowEnabled) {
+      fillPaint.setShadowLayer(shadowCompatRadius, 0, shadowCompatElevation, Color.BLACK);
     }
 
     calculatePath(getBoundsInsetByStroke(), pathInsetByStroke);
-    if (shadowEnabled && shadowRadius > 0 && requiresCompatShadow()) {
+    if (hasCompatShadow()) {
       // Save the canvas before changing the clip bounds.
       canvas.save();
 
@@ -622,8 +673,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // Add space and offset the canvas for the shadows. Otherwise any shadows drawn outside would
     // be clipped and not visible.
     Rect canvasClipBounds = canvas.getClipBounds();
-    canvasClipBounds.inset(-shadowRadius, -shadowRadius);
-    canvasClipBounds.offset(0, shadowOffset);
+    canvasClipBounds.inset(-shadowCompatRadius, -shadowCompatRadius);
+    canvasClipBounds.offset(0, shadowCompatOffset);
     canvas.clipRect(canvasClipBounds, Region.Op.REPLACE);
   }
 
@@ -635,9 +686,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       // shadow could be visible behind the shape.
       canvas.clipPath(pathInsetByStroke, Op.DIFFERENCE);
 
-      // Translate the canvas by an amount specified by the shadowOffset. This will make the
+      // Translate the canvas by an amount specified by the shadowCompatOffset. This will make the
       // shadow appear to be more above or below the shape.
-      canvas.translate(0, shadowOffset);
+      canvas.translate(0, shadowCompatOffset);
     }
   }
 
@@ -661,8 +712,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // Draw the fake shadow for each of the corners and edges.
     for (int index = 0; index < 4; index++) {
       cornerShadowOperation[index].draw(
-          cornerTransforms[index], shadowRenderer, shadowRadius, canvas);
-      edgeShadowOperation[index].draw(edgeTransforms[index], shadowRenderer, shadowRadius, canvas);
+          cornerTransforms[index], shadowRenderer, shadowCompatRadius, canvas);
+      edgeShadowOperation[index].draw(
+          edgeTransforms[index], shadowRenderer, shadowCompatRadius, canvas);
     }
 
     if (shouldHandleShadowOffset()) {
@@ -897,7 +949,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * low priority for us for now.
    */
   private boolean shouldHandleShadowOffset() {
-    return shadowOffset != 0 && VERSION.SDK_INT > VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
+    return shadowCompatOffset != 0 && VERSION.SDK_INT > VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
   }
 
   /**
