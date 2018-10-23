@@ -87,6 +87,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public @interface CompatibilityShadowMode {}
 
   private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+  private ColorStateList fillColor = null;
+  private ColorStateList strokeColor = null;
+
   private final MaterialShapeDrawableState state = new MaterialShapeDrawableState();
 
   // Inter-method state.
@@ -210,21 +213,47 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Get the tint list used by the shape's paint.
+   * Set the color used for the fill.
    *
-   * @return current tint list.
+   * @param fillColor the color set on the {@link Paint} object responsible for the fill.
    */
-  public ColorStateList getTintList() {
-    return tintList;
+  public void setFillColor(@Nullable ColorStateList fillColor) {
+    if (this.fillColor != fillColor) {
+      this.fillColor = fillColor;
+      onStateChange(getState());
+    }
   }
 
   /**
-   * Get the stroke's current {@link ColorStateList}.
+   * Get the color used for the fill.
    *
-   * @return the stroke's current {@link ColorStateList}.
+   * @return the color set on the {@link Paint} object responsible for the fill.
    */
-  public ColorStateList getStrokeTintList() {
-    return strokeTintList;
+  @Nullable
+  public ColorStateList getFillColor() {
+    return fillColor;
+  }
+
+  /**
+   * Set the color used for the stroke.
+   *
+   * @param strokeColor the color set on the {@link Paint} object responsible for the stroke.
+   */
+  public void setStrokeColor(@Nullable ColorStateList strokeColor) {
+    if (this.strokeColor != strokeColor) {
+      this.strokeColor = strokeColor;
+      onStateChange(getState());
+    }
+  }
+
+  /**
+   * Get the color used for the stroke.
+   *
+   * @return the color set on the {@link Paint} object responsible for the stroke.
+   */
+  @Nullable
+  public ColorStateList getStrokeColor() {
+    return strokeColor;
   }
 
   @Override
@@ -239,6 +268,32 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     this.tintList = tintList;
     updateTintFilter();
     invalidateSelf();
+  }
+
+  /** Get the tint list used by the shape's paint. */
+  public ColorStateList getTintList() {
+    return tintList;
+  }
+
+  /**
+   * Get the stroke's current {@link ColorStateList}.
+   *
+   * @return the stroke's current {@link ColorStateList}.
+   */
+  public ColorStateList getStrokeTintList() {
+    return strokeTintList;
+  }
+
+  /**
+   * Get the int representing the Color of the shape's stroke in the current state.
+   *
+   * @deprecated Use {@link #getStrokeTintList()} instead.
+   * @return the stroke's current color.
+   */
+  @Deprecated
+  @ColorInt
+  public int getStrokeTint() {
+    return strokeTintList.getColorForState(getState(), Color.TRANSPARENT);
   }
 
   @Override
@@ -269,33 +324,23 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   /**
    * Set the shape's stroke width and stroke color.
    *
-   * @param width a float for the width of the stroke.
-   * @param tintColor an int representing the Color to use for the shape's stroke.
+   * @param strokeWidth a float for the width of the stroke.
+   * @param strokeColor an int representing the Color to use for the shape's stroke.
    */
-  public void setStroke(float width, @ColorInt int tintColor) {
-    setStrokeWidth(width);
-    setStrokeTint(tintColor);
+  public void setStroke(float strokeWidth, @ColorInt int strokeColor) {
+    setStrokeWidth(strokeWidth);
+    setStrokeColor(ColorStateList.valueOf(strokeColor));
   }
 
   /**
-   * Set the shape's stroke {@link ColorStateList}
+   * Set the shape's stroke width and stroke color using a {@link ColorStateList}.
    *
-   * @param width a float for the width of the stroke.
-   * @param tintList the {@link ColorStateList} for the shape's stroke.
+   * @param strokeWidth a float for the width of the stroke.
+   * @param strokeColor the {@link ColorStateList} for the shape's stroke.
    */
-  public void setStroke(float width, ColorStateList tintList) {
-    setStrokeWidth(width);
-    setStrokeTint(tintList);
-  }
-
-  /**
-   * Get the int representing the Color of the shape's stroke in the current state.
-   *
-   * @return the stroke's current color.
-   */
-  @ColorInt
-  public int getStrokeTint() {
-    return strokePaint.getColor();
+  public void setStroke(float strokeWidth, @Nullable ColorStateList strokeColor) {
+    setStrokeWidth(strokeWidth);
+    setStrokeColor(strokeColor);
   }
 
   /**
@@ -333,6 +378,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Override
   public void setColorFilter(@Nullable ColorFilter colorFilter) {
     fillPaint.setColorFilter(colorFilter);
+    strokePaint.setColorFilter(colorFilter);
     invalidateSelf();
   }
 
@@ -574,7 +620,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Set the flags used by the shape's paint.
+   * Sets the flags used by the shape's paint.
    *
    * @param flags the desired flags.
    */
@@ -921,8 +967,34 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Override
   protected boolean onStateChange(int[] state) {
+    boolean invalidateSelf = super.onStateChange(state);
+
+    updateColorsForState(state, invalidateSelf);
     updateTintFilter();
-    return super.onStateChange(state);
+
+    return invalidateSelf;
+  }
+
+  private boolean updateColorsForState(int[] state, boolean invalidateSelf) {
+    if (fillColor != null) {
+      final int previousFillColor = fillPaint.getColor();
+      final int newFillColor = fillColor.getColorForState(state, previousFillColor);
+      if (previousFillColor != newFillColor) {
+        fillPaint.setColor(newFillColor);
+        invalidateSelf = true;
+      }
+    }
+
+    if (strokeColor != null) {
+      final int previousStrokeColor = strokePaint.getColor();
+      final int newStrokeColor = strokeColor.getColorForState(state, previousStrokeColor);
+      if (previousStrokeColor != newStrokeColor) {
+        strokePaint.setColor(newStrokeColor);
+        invalidateSelf = true;
+      }
+    }
+
+    return invalidateSelf;
   }
 
   private float getStrokeInsetLength() {
