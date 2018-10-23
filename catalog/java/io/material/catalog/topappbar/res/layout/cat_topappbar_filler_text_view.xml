@@ -14,17 +14,9 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:padding="16dp"
-    android:background="#F2F2F2">
-
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="16dp"
-      android:background="#FFFFFF"
-      android:lineSpacingMultiplier="1.2"
-      android:text="@string/cat_topappbar_lorem_ipsum"/>
-</FrameLayout>
+    android:lineSpacingMultiplier="1.2"
+    android:text="@string/cat_topappbar_lorem_ipsum"/>

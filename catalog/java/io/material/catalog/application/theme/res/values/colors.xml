@@ -16,7 +16,6 @@
   -->
 <resources>
   <color name="cat_title_text_color">#FFFFFF</color>
-  <color name="cat_background_color">#FFFFFF</color>
 
   <color name="cat_color_primary">#212121</color>
   <color name="cat_color_primary_dark">#000000</color>

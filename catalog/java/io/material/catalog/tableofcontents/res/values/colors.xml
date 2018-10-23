@@ -16,7 +16,5 @@
   -->
 <resources>
   <color name="cat_toc_grid_divider_color">#E0E0E0</color>
-  <color name="cat_toc_grid_background_color">@color/cat_toc_grid_divider_color</color>
-  <color name="cat_toc_item_background_color">#FFFFFF</color>
   <color name="cat_toc_status_wip_background_color">#E0E0E0</color>
 </resources>

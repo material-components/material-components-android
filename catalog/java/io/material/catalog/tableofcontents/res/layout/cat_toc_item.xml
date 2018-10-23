@@ -18,7 +18,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/cat_toc_item_size"
-    android:background="@color/cat_toc_item_background_color"
     android:foreground="?attr/selectableItemBackground">
 
   <LinearLayout

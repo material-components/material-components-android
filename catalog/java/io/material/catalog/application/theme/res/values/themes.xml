@@ -23,7 +23,16 @@
 
     <item name="colorSecondary">@color/cat_color_secondary</item>
 
-    <item name="android:colorBackground">@color/cat_background_color</item>
+    <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
+    <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
+  </style>
+
+  <style name="Theme.Catalog.Dark" parent="Theme.MaterialComponents.NoActionBar">
+    <item name="colorPrimary">@color/cat_color_primary</item>
+    <item name="colorPrimaryDark">@color/cat_color_primary_dark</item>
+    <item name="colorOnSecondary">@color/cat_color_on_secondary</item>
+
+    <item name="colorSecondary">@color/cat_color_secondary</item>
 
     <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
@@ -31,7 +40,7 @@
 
   <!-- Temporary theme to apply to transitioned components until all of our components are
        transitioned to the new color system. -->
-  <style name="Theme.Catalog.Swapped">
+  <style name="Theme.Catalog.Swapped" parent="">
     <item name="colorPrimary">@color/cat_color_secondary</item>
     <item name="colorSecondary">@color/cat_color_primary</item>
   </style>
