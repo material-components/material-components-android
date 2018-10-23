@@ -64,6 +64,7 @@
       android:rotation="45"
       android:text="@string/cat_toc_status_wip"
       android:textAppearance="@style/TextAppearance.AppCompat.Body1"
+      android:textColor="@color/cat_toc_status_wip_text_color"
       android:translationX="48dp"
       android:visibility="gone"
       tools:visibility="visible"/>

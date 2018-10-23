@@ -34,197 +34,196 @@
         android:layout_height="wrap_content"
         android:paddingTop="8dp"
         android:text="@string/cat_btn_text"
-        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
 
     <Button
         android:id="@+id/material_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_enabled"/>
+        android:text="@string/cat_button_label_enabled"
+        android:theme="@style/Theme.Catalog.Swapped"/>
 
     <Button
         android:id="@+id/disabled_material_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:enabled="false"
-        android:text="@string/cat_button_label_disabled"/>
+        android:text="@string/cat_button_label_disabled"
+        android:theme="@style/Theme.Catalog.Swapped"/>
 
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="8dp"
         android:text="@string/cat_unelevated_btn_text"
-        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
 
     <Button
         android:id="@+id/material_unelevated_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_enabled"/>
+        android:text="@string/cat_button_label_enabled"
+        android:theme="@style/Theme.Catalog.Swapped"/>
 
     <Button
         android:id="@+id/disabled_material_unelevated_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:enabled="false"
-        android:text="@string/cat_button_label_disabled"/>
+        android:text="@string/cat_button_label_disabled"
+        android:theme="@style/Theme.Catalog.Swapped"/>
 
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="8dp"
         android:text="@string/cat_icon_btn_text"
-        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
 
     <Button
         android:id="@+id/material_icon_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"
+        android:theme="@style/Theme.Catalog.Swapped"
         app:icon="@drawable/ic_dialogs_24px"/>
 
     <Button
         android:id="@+id/disabled_material_icon_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:enabled="false"
         android:text="@string/cat_button_label_disabled"
+        android:theme="@style/Theme.Catalog.Swapped"
         app:icon="@drawable/ic_dialogs_24px"/>
 
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="8dp"
         android:text="@string/cat_text_btn_text"
-        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
 
     <Button
         android:id="@+id/material_text_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/cat_button_label_enabled"/>
+        android:text="@string/cat_button_label_enabled"
+        android:theme="@style/Theme.Catalog.Swapped"/>
 
     <Button
         android:id="@+id/disabled_material_text_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:enabled="false"
-        android:text="@string/cat_button_label_disabled"/>
+        android:text="@string/cat_button_label_disabled"
+        android:theme="@style/Theme.Catalog.Swapped"/>
 
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="8dp"
         android:text="@string/cat_icon_text_btn_text"
-        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
 
     <Button
         android:id="@+id/material_icon_text_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"
+        android:theme="@style/Theme.Catalog.Swapped"
         app:icon="@drawable/ic_dialogs_24px"/>
 
     <Button
         android:id="@+id/disabled_material_icon_text_button"
-        android:theme="@style/Theme.Catalog.Swapped"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:enabled="false"
         android:text="@string/cat_button_label_disabled"
+        android:theme="@style/Theme.Catalog.Swapped"
         app:icon="@drawable/ic_dialogs_24px"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/cat_outlined_btn_text"
-        android:textColor="?attr/colorSecondary"
-        android:textSize="16sp"
-        android:textStyle="bold" />
-
-    <Space/>
-
-    <Button
-        android:id="@+id/material_outlined_button"
-        android:theme="@style/Theme.Catalog.Swapped"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:text="@string/cat_button_label_enabled" />
-
-    <Button
-        android:id="@+id/disabled_material_outlined_button"
-        android:theme="@style/Theme.Catalog.Swapped"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:enabled="false"
-        android:text="@string/cat_button_label_disabled" />
 
     <TextView
         android:textStyle="bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:paddingTop="8dp"
+        android:text="@string/cat_outlined_btn_text"
+        android:textSize="16sp"/>
+
+    <Space/>
+
+    <Button
+        android:id="@+id/material_outlined_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_button_label_enabled"
+        android:theme="@style/Theme.Catalog.Swapped"/>
+
+    <Button
+        android:id="@+id/disabled_material_outlined_button"
+        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="16dp"
+        android:enabled="false"
+        android:text="@string/cat_button_label_disabled"
+        android:theme="@style/Theme.Catalog.Swapped"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:paddingTop="8dp"
         android:text="@string/cat_outlined_icon_btn_text"
-        android:textColor="?attr/colorSecondary"
         android:textSize="16sp"/>
 
     <Space/>
 
     <Button
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:theme="@style/Theme.Catalog.Swapped"
         app:icon="@drawable/ic_dialogs_24px"
         app:iconGravity="textStart"
         app:iconPadding="0dp"/>
 
     <Button
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:theme="@style/Theme.Catalog.Swapped"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
         android:enabled="false"
+        android:theme="@style/Theme.Catalog.Swapped"
         app:icon="@drawable/ic_dialogs_24px"
         app:iconGravity="textStart"
         app:iconPadding="0dp"/>

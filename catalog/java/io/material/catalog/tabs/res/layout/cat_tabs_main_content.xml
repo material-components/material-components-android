@@ -21,17 +21,18 @@
     android:orientation="vertical">
 
   <TextView
+      android:textStyle="bold"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:padding="@dimen/cat_tabs_standard_spacing"
       android:text="@string/cat_tabs_legacy_tabs_label"
-      android:textColor="?attr/colorSecondary"
       android:textSize="16sp"/>
 
   <com.google.android.material.tabs.TabLayout
       style="@style/Widget.Design.TabLayout"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp">
 
     <com.google.android.material.tabs.TabItem
         android:icon="@drawable/ic_colors_24px"
@@ -46,18 +47,19 @@
   </com.google.android.material.tabs.TabLayout>
 
   <TextView
+      android:textStyle="bold"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:padding="@dimen/cat_tabs_standard_spacing"
       android:text="@string/cat_tabs_material_tabs_label"
-      android:textColor="?attr/colorSecondary"
       android:textSize="16sp"/>
 
   <com.google.android.material.tabs.TabLayout
-      android:theme="@style/Theme.Catalog.Swapped"
       style="@style/Widget.MaterialComponents.TabLayout"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:theme="@style/Theme.Catalog.Swapped">
 
     <com.google.android.material.tabs.TabItem
         android:icon="@drawable/ic_colors_24px"
@@ -72,18 +74,18 @@
   </com.google.android.material.tabs.TabLayout>
 
   <TextView
+      android:textStyle="bold"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:padding="@dimen/cat_tabs_standard_spacing"
       android:text="@string/cat_tabs_colored_tabs_label"
-      android:textColor="?attr/colorSecondary"
       android:textSize="16sp"/>
 
   <com.google.android.material.tabs.TabLayout
-      android:theme="@style/Theme.Catalog.Swapped"
       style="@style/Widget.MaterialComponents.TabLayout.Colored"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:theme="@style/Theme.Catalog.Swapped">
 
     <com.google.android.material.tabs.TabItem
         android:icon="@drawable/ic_colors_24px"

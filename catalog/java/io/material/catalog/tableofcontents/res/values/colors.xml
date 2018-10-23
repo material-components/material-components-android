@@ -17,4 +17,5 @@
 <resources>
   <color name="cat_toc_grid_divider_color">#E0E0E0</color>
   <color name="cat_toc_status_wip_background_color">#E0E0E0</color>
+  <color name="cat_toc_status_wip_text_color">#DE000000</color>
 </resources>
