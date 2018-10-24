@@ -19,6 +19,7 @@ package com.google.android.material.shape;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.ColorFilter;
@@ -30,7 +31,9 @@ import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.PorterDuff;
+import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
+import android.graphics.PorterDuffXfermode;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
@@ -119,6 +122,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private int shadowCompatElevation = 0;
   private int shadowCompatRadius = 0;
   private int shadowCompatOffset = 0;
+  private int shadowCompatRotation = 0;
   private int alpha = 255;
   private float scale = 1f;
   private Style paintStyle = Style.FILL_AND_STROKE;
@@ -130,6 +134,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Nullable private PorterDuffColorFilter strokeTintFilter;
   private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private ColorStateList strokeTintList = null;
+
+  private final Paint clearPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
   private final ShadowRenderer shadowRenderer = new ShadowRenderer();
 
@@ -150,6 +156,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     this.shapeAppearanceModel = shapeAppearanceModel;
     strokePaint.setStyle(Style.STROKE);
     fillPaint.setStyle(Style.FILL);
+    clearPaint.setColor(Color.WHITE);
+    clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
 
     for (int i = 0; i < 4; i++) {
       cornerTransforms[i] = new Matrix();
@@ -535,6 +543,27 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
+   * Returns the rotation offset applied to the fake shadow which is drawn when {@link
+   * #requiresCompatShadow()} is true.
+   */
+  public int getShadowCompatRotation() {
+    return shadowCompatRotation;
+  }
+
+  /**
+   * Set the rotation offset applied to the fake shadow which is drawn when {@link
+   * #requiresCompatShadow()} is true. 0 degrees will draw the shadow below the shape.
+   *
+   * <p>This allows for the Drawable to be wrapped in a {@link
+   * android.graphics.drawable.RotateDrawable}, or rotated in a view while still having the fake
+   * shadow to appear to be drawn from the bottom.
+   */
+  public void setShadowCompatRotation(int shadowRotation) {
+    this.shadowCompatRotation = shadowRotation;
+    invalidateSelf();
+  }
+
+  /**
    * Get the shadow radius rendered by the path.
    *
    * @return the shadow radius rendered by the path.
@@ -696,9 +725,26 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       // Save the canvas before changing the clip bounds.
       canvas.save();
 
-      adjustBoundsForShadow(canvas);
-      offsetForShadow(canvas);
-      drawCompatShadow(canvas);
+      prepareCanvasForShadow(canvas);
+
+      // Drawing the shadow in a bitmap lets us use the clear paint rather than using clipPath to
+      // prevent drawing shadow under the shape. clipPath has problems :-/
+      Bitmap shadowLayer =
+          Bitmap.createBitmap(
+              getBounds().width() + shadowCompatRadius * 2,
+              getBounds().height() + shadowCompatRadius * 2,
+              Bitmap.Config.ARGB_8888);
+      Canvas shadowCanvas = new Canvas(shadowLayer);
+
+      shadowCanvas.translate(shadowCompatRadius, shadowCompatRadius);
+
+      drawCompatShadow(shadowCanvas);
+
+      canvas.drawBitmap(shadowLayer, -shadowCompatRadius, -shadowCompatRadius, null);
+
+      // Because we create the bitmap every time, we can recycle it. We may need to stop doing this
+      // if we end up keeping the bitmap in memory for performance.
+      shadowLayer.recycle();
 
       // Restore the canvas to the same size it was before drawing any shadows.
       canvas.restore();
@@ -735,27 +781,22 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
   }
 
-  private void adjustBoundsForShadow(Canvas canvas) {
+  private void prepareCanvasForShadow(Canvas canvas) {
+    // Calculate the translation to offset the canvas for the given offset and rotation.
+    int shadowOffsetX = (int) (shadowCompatOffset * Math.sin(Math.toRadians(shadowCompatRotation)));
+    int shadowOffsetY = (int) (shadowCompatOffset * Math.cos(Math.toRadians(shadowCompatRotation)));
+
     // Add space and offset the canvas for the shadows. Otherwise any shadows drawn outside would
     // be clipped and not visible.
     Rect canvasClipBounds = canvas.getClipBounds();
     canvasClipBounds.inset(-shadowCompatRadius, -shadowCompatRadius);
-    canvasClipBounds.offset(0, shadowCompatOffset);
+    //TODO: double check that offset doesn't work for sure
+    canvasClipBounds.inset(-Math.abs(shadowOffsetX), -Math.abs(shadowOffsetY));
     canvas.clipRect(canvasClipBounds, Region.Op.REPLACE);
-  }
 
-  private void offsetForShadow(Canvas canvas) {
-    // Clipping by a path is not supported in ICS. We skip these steps on that API level which
-    // means shadow could appear behind the shape if there is any transparency in the fill color.
-    if (VERSION.SDK_INT > VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
-      // Clip out the part where we draw the main shape in case it has transparency. Otherwise
-      // shadow could be visible behind the shape.
-      canvas.clipPath(pathInsetByStroke, Op.DIFFERENCE);
-
-      // Translate the canvas by an amount specified by the shadowCompatOffset. This will make the
-      // shadow appear to be more above or below the shape.
-      canvas.translate(0, shadowCompatOffset);
-    }
+    // Translate the canvas by an amount specified by the shadowCompatOffset. This will make the
+    // shadow appear at and angle from the shape.
+    canvas.translate(shadowOffsetX, shadowOffsetY);
   }
 
   /**
@@ -766,13 +807,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * completely covered by the shape.
    */
   private void drawCompatShadow(Canvas canvas) {
-    if (shouldHandleShadowOffset()) {
-      canvas.save();
-      // Clip out the part where we draw the main shadow below. This is required to handle cases
-      // where the shadow drawn by a corner or edge isn't perfect and actually draws inside the
-      // bounds of the shape. Without clipping, the shadow would be drawn twice in some places
-      // inside the bounds of the path.
-      canvas.clipPath(pathInsetByStroke, Op.DIFFERENCE);
+    if (shadowCompatOffset != 0) {
+      canvas.drawPath(pathInsetByStroke, shadowRenderer.getShadowPaint());
     }
 
     // Draw the fake shadow for each of the corners and edges.
@@ -783,12 +819,14 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
           edgeTransforms[index], shadowRenderer, shadowCompatRadius, canvas);
     }
 
-    if (shouldHandleShadowOffset()) {
-      // Restore the canvas to remove the clipPath operation so we can draw in that space.
-      canvas.restore();
-      // Draw the main shadow with the main shadow paint. This fills the center space of the shadow.
-      canvas.drawPath(pathInsetByStroke, shadowRenderer.getShadowPaint());
-    }
+    int shadowOffsetX =
+        (int) (shadowCompatOffset * Math.sin(Math.toRadians(shadowCompatRotation)));
+    int shadowOffsetY =
+        (int) (shadowCompatOffset * Math.cos(Math.toRadians(shadowCompatRotation)));
+
+    canvas.translate(-shadowOffsetX, -shadowOffsetY);
+    canvas.drawPath(pathInsetByStroke, clearPaint);
+    canvas.translate(shadowOffsetX, shadowOffsetY);
   }
 
   @Deprecated
@@ -1038,18 +1076,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     insetRectF.set(
         rectF.left + inset, rectF.top + inset, rectF.right - inset, rectF.bottom - inset);
     return insetRectF;
-  }
-
-  /**
-   * Returns true if there is a shadow offset that should be taken into account.
-   *
-   * <p>We need to perform some operations only if there is a shadow offset. These operations throw
-   * exceptions on ICS, so we are ignoring the offset for that API version for now. There may be
-   * other operations that we can perform on ICS to handle correctly drawing the shadow, but it's a
-   * low priority for us for now.
-   */
-  private boolean shouldHandleShadowOffset() {
-    return shadowCompatOffset != 0 && VERSION.SDK_INT > VERSION_CODES.ICE_CREAM_SANDWICH_MR1;
   }
 
   /**

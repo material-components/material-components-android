@@ -23,8 +23,10 @@ import android.graphics.Color;
 import android.graphics.LinearGradient;
 import android.graphics.Matrix;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.RadialGradient;
 import android.graphics.RectF;
+import android.graphics.Region.Op;
 import android.graphics.Shader;
 import android.support.annotation.RestrictTo;
 import android.support.v4.graphics.ColorUtils;
@@ -59,6 +61,8 @@ public class ShadowRenderer {
   private static final int[] cornerColors = new int[4];
   /** Start, beginning of corner, middle of shadow, and end of shadow positions */
   private static final float[] cornerPositions = new float[] {0f, 0f, .5f, 1f};
+
+  private final Path scratch = new Path();
 
   public ShadowRenderer() {
     this(Color.BLACK);
@@ -123,12 +127,20 @@ public class ShadowRenderer {
 
     boolean drawShadowInsideBounds = sweepAngle < 0;
 
+    Path arcBounds = scratch;
+
     if (drawShadowInsideBounds) {
       cornerColors[0] = 0;
       cornerColors[1] = shadowEndColor;
       cornerColors[2] = shadowMiddleColor;
       cornerColors[3] = shadowStartColor;
     } else {
+      // Calculate the arc bounds to prevent drawing shadow in the same part of the arc.
+      arcBounds.rewind();
+      arcBounds.moveTo(bounds.centerX(), bounds.centerY());
+      arcBounds.arcTo(bounds, startAngle, sweepAngle);
+      arcBounds.close();
+
       bounds.inset(-elevation, -elevation);
       cornerColors[0] = 0;
       cornerColors[1] = shadowStartColor;
@@ -154,6 +166,11 @@ public class ShadowRenderer {
 
     canvas.save();
     canvas.concat(matrix);
+
+    if (!drawShadowInsideBounds) {
+      canvas.clipPath(arcBounds, Op.DIFFERENCE);
+    }
+
     canvas.drawArc(bounds, startAngle, sweepAngle, true, cornerShadowPaint);
     canvas.restore();
   }
