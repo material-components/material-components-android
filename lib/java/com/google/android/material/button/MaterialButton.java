@@ -333,8 +333,17 @@ public class MaterialButton extends AppCompatButton {
     }
 
     Paint textPaint = getPaint();
-    int textWidth =
-        Math.min((int) textPaint.measureText(getText().toString()), getLayout().getWidth());
+    String buttonText = getText().toString();
+
+    if (getTransformationMethod() != null) {
+      // if text is transformed, add that transformation to to ensure correct calculation
+      // of icon padding.
+      buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
+    }
+
+     int textWidth =
+        Math.min((int) textPaint.measureText(buttonText), getLayout().getWidth());
+
     int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
     int newIconLeft =
         (getMeasuredWidth()
