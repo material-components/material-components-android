@@ -705,14 +705,34 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     if (hasFill()) {
-      canvas.drawPath(pathInsetByStroke, fillPaint);
+      drawFillShape(canvas);
     }
     if (hasStroke()) {
-      canvas.drawPath(pathInsetByStroke, strokePaint);
+      drawStrokeShape(canvas);
     }
 
     fillPaint.setAlpha(prevAlpha);
     strokePaint.setAlpha(prevStrokeAlpha);
+  }
+
+  private void drawStrokeShape(Canvas canvas) {
+    drawShape(canvas, strokePaint);
+  }
+
+  private void drawFillShape(Canvas canvas) {
+    drawShape(canvas, fillPaint);
+  }
+
+  /**
+   * Draw the path or try to draw a round rect if possible.
+   */
+  private void drawShape(Canvas canvas, Paint paint) {
+    if (shapeAppearanceModel.isRoundRect()) {
+      float cornerSize = shapeAppearanceModel.getTopRightCorner().getCornerSize();
+      canvas.drawRoundRect(getBoundsInsetByStroke(), cornerSize, cornerSize, paint);
+    } else {
+      canvas.drawPath(pathInsetByStroke, paint);
+    }
   }
 
   private void adjustBoundsForShadow(Canvas canvas) {
@@ -809,6 +829,14 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @TargetApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void getOutline(Outline outline) {
+    boolean isRoundRect = shapeAppearanceModel.isRoundRect();
+
+    if (isRoundRect) {
+      float radius = shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+      outline.setRoundRect(getBounds(), radius);
+      return;
+    }
+
     calculatePath(getBoundsAsRectF(), path);
     if (path.isConvex()) {
       outline.setConvexPath(path);

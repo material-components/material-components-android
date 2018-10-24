@@ -54,12 +54,15 @@ public class MaterialShapeDrawableOutlineTest {
   }
 
   @Test
-  public void roundedCorners_isConvex() throws Exception {
+  public void roundedCorners_isRoundRect() throws Exception {
     shapePathModel.setAllCorners(new RoundedCornerTreatment(DEFAULT_ANGLE));
     materialShapeDrawable.draw(new Canvas());
 
     materialShapeDrawable.getOutline(outline);
-    assertPathIsConvex(outline);
+    float radius = (float) Outline.class.getDeclaredField("mRadius").get(outline);
+
+    // Radius will be set if we use a round rect.
+    assertThat(radius, is(DEFAULT_ANGLE));
   }
 
   @Test

@@ -20,6 +20,9 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.support.annotation.AttrRes;
 import android.support.annotation.Dimension;
 import android.support.annotation.StyleRes;
@@ -363,5 +366,32 @@ public class ShapeAppearanceModel {
    */
   public EdgeTreatment getLeftEdge() {
     return leftEdge;
+  }
+
+  /**
+   * Checks Corner and Edge treatments to see if we can use {@link Canvas#drawRoundRect(RectF,float,
+   * float, Paint)} "} to draw this model.
+   */
+  boolean isRoundRect() {
+    boolean hasDefaultEdges =
+        leftEdge == DEFAULT_EDGE_TREATMENT
+            && rightEdge == DEFAULT_EDGE_TREATMENT
+            && topEdge == DEFAULT_EDGE_TREATMENT
+            && bottomEdge == DEFAULT_EDGE_TREATMENT;
+
+    float cornerSize = topLeftCorner.getCornerSize();
+
+    boolean cornersHaveSameSize =
+        topRightCorner.getCornerSize() == cornerSize
+            && bottomLeftCorner.getCornerSize() == cornerSize
+            && bottomRightCorner.getCornerSize() == cornerSize;
+
+    boolean hasRoundedCorners =
+        topRightCorner instanceof RoundedCornerTreatment
+            && topLeftCorner instanceof RoundedCornerTreatment
+            && bottomRightCorner instanceof RoundedCornerTreatment
+            && bottomLeftCorner instanceof RoundedCornerTreatment;
+
+    return hasDefaultEdges && cornersHaveSameSize && hasRoundedCorners;
   }
 }
