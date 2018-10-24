@@ -119,10 +119,11 @@ public class ShadowRenderer {
       RectF bounds,
       int elevation,
       float startAngle,
-      float sweepAngle,
-      boolean outsideShape) {
+      float sweepAngle) {
 
-    if (outsideShape) {
+    boolean drawShadowInsideBounds = sweepAngle < 0;
+
+    if (drawShadowInsideBounds) {
       cornerColors[0] = 0;
       cornerColors[1] = shadowEndColor;
       cornerColors[2] = shadowMiddleColor;

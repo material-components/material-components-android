@@ -113,11 +113,7 @@ public class ShapePath {
     operation.sweepAngle = sweepAngle;
     operations.add(operation);
 
-    // Previous ending point vs center of arc circle determines if it's a cutout or not. This
-    // determines the orientation of the shadow, ie. if it should be drawn on the outside, or inside
-    // of this arc.
-    boolean outsideShape = endY > (bottom + top) / 2;
-    shadowCompatOperations.add(new ArcShadowOperation(operation, outsideShape));
+    shadowCompatOperations.add(new ArcShadowOperation(operation));
 
     endX = (left + right) * 0.5f
         + (right - left) / 2 * (float) Math.cos(Math.toRadians(startAngle + sweepAngle));
@@ -195,11 +191,9 @@ public class ShapePath {
   static class ArcShadowOperation extends ShadowCompatOperation {
 
     private final PathArcOperation operation;
-    private final boolean outsideShape;
 
-    public ArcShadowOperation(PathArcOperation operation, boolean outsideShape) {
+    public ArcShadowOperation(PathArcOperation operation) {
       this.operation = operation;
-      this.outsideShape = outsideShape;
     }
 
     @Override
@@ -209,7 +203,7 @@ public class ShapePath {
       float sweepAngle = operation.sweepAngle;
       RectF rect = new RectF(operation.left, operation.top, operation.right, operation.bottom);
       shadowRenderer.drawCornerShadow(
-          canvas, transform, rect, shadowElevation, startAngle, sweepAngle, outsideShape);
+          canvas, transform, rect, shadowElevation, startAngle, sweepAngle);
     }
   }
 
