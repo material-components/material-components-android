@@ -922,9 +922,7 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
-  /**
-   * Indicates whether this chip drawable will change its appearance based on state.
-   */
+  /** Indicates whether this chip drawable will change its appearance based on state. */
   @Override
   public boolean isStateful() {
     // The logic here and #isCloseIconStateful() must match #onStateChange(int[],int[]).
@@ -939,9 +937,7 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
         || isStateful(tint);
   }
 
-  /**
-   * Indicates whether the close icon drawable will change its appearance based on state.
-   */
+  /** Indicates whether the close icon drawable will change its appearance based on state. */
   public boolean isCloseIconStateful() {
     // The logic here and #isStateful() must match #onStateChange(int[], int[]).
     return isStateful(closeIcon);
@@ -972,9 +968,7 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     return onStateChange(state, getCloseIconState());
   }
 
-  /**
-   * Changes appearance in response to the specified state.
-   */
+  /** Changes appearance in response to the specified state. */
   private boolean onStateChange(int[] chipState, int[] closeIconState) {
     // The logic here must match #isStateful()} and #isCloseIconStateful()}.
     boolean invalidate = super.onStateChange(chipState);
@@ -1273,6 +1267,13 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
         useCompatRipple ? RippleUtils.convertToRippleDrawableColor(rippleColor) : null;
   }
 
+  private void setChipSurfaceColor(@Nullable ColorStateList chipSurfaceColor) {
+    if (this.chipSurfaceColor != chipSurfaceColor) {
+      this.chipSurfaceColor = chipSurfaceColor;
+      onStateChange(getState());
+    }
+  }
+
   /** Returns whether the drawable state set contains the given state. */
   private static boolean hasState(@Nullable int[] stateSet, @AttrRes int state) {
     if (stateSet == null) {
@@ -1295,22 +1296,6 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   }
 
   // Getters and setters for attributes.
-
-  @Nullable
-  public ColorStateList getChipSurfaceColor() {
-    return chipSurfaceColor;
-  }
-
-  public void setChipSurfaceColorResource(@ColorRes int id) {
-    setChipSurfaceColor(AppCompatResources.getColorStateList(context, id));
-  }
-
-  public void setChipSurfaceColor(@Nullable ColorStateList chipSurfaceColor) {
-    if (this.chipSurfaceColor != chipSurfaceColor) {
-      this.chipSurfaceColor = chipSurfaceColor;
-      onStateChange(getState());
-    }
-  }
 
   @Nullable
   public ColorStateList getChipBackgroundColor() {
