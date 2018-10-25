@@ -58,8 +58,7 @@
       style="@style/Widget.MaterialComponents.TabLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp"
-      android:theme="@style/Theme.Catalog.Swapped">
+      android:layout_marginBottom="16dp">
 
     <com.google.android.material.tabs.TabItem
         android:icon="@drawable/ic_colors_24px"
@@ -84,8 +83,7 @@
   <com.google.android.material.tabs.TabLayout
       style="@style/Widget.MaterialComponents.TabLayout.Colored"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:theme="@style/Theme.Catalog.Swapped">
+      android:layout_height="wrap_content">
 
     <com.google.android.material.tabs.TabItem
         android:icon="@drawable/ic_colors_24px"

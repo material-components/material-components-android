@@ -32,8 +32,7 @@
       style="@style/Widget.MaterialComponents.TabLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_marginBottom="16dp"
-      android:theme="@style/Theme.Catalog.Swapped"/>
+      android:layout_marginBottom="16dp"/>
 
   <TextView
       android:textStyle="bold"
@@ -46,7 +45,6 @@
   <com.google.android.material.tabs.TabLayout
       style="@style/Widget.MaterialComponents.TabLayout.Colored"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:theme="@style/Theme.Catalog.Swapped"/>
+      android:layout_height="wrap_content"/>
 
 </LinearLayout>
