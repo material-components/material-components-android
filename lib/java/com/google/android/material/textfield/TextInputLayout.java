@@ -292,7 +292,6 @@ public class TextInputLayout extends LinearLayout {
     boxBackgroundColor =
         a.getColor(R.styleable.TextInputLayout_boxBackgroundColor, Color.TRANSPARENT);
 
-    focusedStrokeColor = a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
     boxStrokeWidthDefaultPx =
         context
             .getResources()
@@ -311,11 +310,30 @@ public class TextInputLayout extends LinearLayout {
       defaultHintTextColor =
           focusedTextColor = a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
     }
-    defaultStrokeColor =
-        ContextCompat.getColor(context, R.color.mtrl_textinput_default_box_stroke_color);
-    disabledColor = ContextCompat.getColor(context, R.color.mtrl_textinput_disabled_color);
-    hoveredStrokeColor =
-        ContextCompat.getColor(context, R.color.mtrl_textinput_hovered_box_stroke_color);
+
+    ColorStateList boxStrokeColorStateList =
+        AppCompatResources.getColorStateList(
+            context, a.getResourceId(R.styleable.TextInputLayout_boxStrokeColor, -1));
+    if (boxStrokeColorStateList.isStateful()) {
+      defaultStrokeColor = boxStrokeColorStateList.getDefaultColor();
+      disabledColor =
+          boxStrokeColorStateList.getColorForState(new int[] {-android.R.attr.state_enabled}, -1);
+      hoveredStrokeColor =
+          boxStrokeColorStateList.getColorForState(new int[] {android.R.attr.state_hovered}, -1);
+      focusedStrokeColor =
+          boxStrokeColorStateList.getColorForState(
+              new int[] {android.R.attr.state_focused}, Color.TRANSPARENT);
+    } else {
+      // If attribute boxStrokeColor is not a color state list but only a single value, its value
+      // will be applied to the outlined color in the focused state
+      focusedStrokeColor =
+          a.getColor(R.styleable.TextInputLayout_boxStrokeColor, Color.TRANSPARENT);
+      defaultStrokeColor =
+          ContextCompat.getColor(context, R.color.mtrl_textinput_default_box_stroke_color);
+      disabledColor = ContextCompat.getColor(context, R.color.mtrl_textinput_disabled_color);
+      hoveredStrokeColor =
+          ContextCompat.getColor(context, R.color.mtrl_textinput_hovered_box_stroke_color);
+    }
 
     final int hintAppearance = a.getResourceId(R.styleable.TextInputLayout_hintTextAppearance, -1);
     if (hintAppearance != -1) {
@@ -344,7 +362,9 @@ public class TextInputLayout extends LinearLayout {
         a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription);
     if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
       hasPasswordToggleTintList = true;
-      passwordToggleTintList = a.getColorStateList(R.styleable.TextInputLayout_passwordToggleTint);
+      passwordToggleTintList =
+          AppCompatResources.getColorStateList(
+              context, a.getResourceId(R.styleable.TextInputLayout_passwordToggleTint, -1));
     }
     if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
       hasPasswordToggleTintMode = true;

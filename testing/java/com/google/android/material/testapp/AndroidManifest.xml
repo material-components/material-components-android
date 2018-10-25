@@ -100,7 +100,7 @@
 
     <activity
       android:name=".TextInputLayoutActivity"
-      android:theme="@style/Theme.AppCompat.NoActionBar"/>
+      android:theme="@style/Theme.MaterialComponents.NoActionBar"/>
 
 
   </application>

@@ -22,6 +22,8 @@
   <color name="mtrl_textinput_default_box_stroke_color">#6B000000</color>
   <!-- Color for the text field's hovered box stroke: 87% black -->
   <color name="mtrl_textinput_hovered_box_stroke_color">#DE000000</color>
+  <!-- Color for the text field's focused box stroke: transparent -->
+  <color name="mtrl_textinput_focused_box_stroke_color">#00000000</color>
   <!-- Color for the text field's default box background: 4% black -->
   <color name="mtrl_textinput_filled_box_default_background_color">#0A000000</color>
 
