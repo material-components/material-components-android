@@ -24,9 +24,11 @@ import android.support.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import android.support.v4.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
@@ -68,6 +70,24 @@ public class FabMainDemoFragment extends DemoFragment {
             }
           }
           fabsShown = !fabsShown;
+        });
+
+    Button spinFabs = view.findViewById(R.id.rotate_fabs);
+    spinFabs.setOnClickListener(
+        v -> {
+          if (!fabsShown) {
+            return;
+          }
+
+          for (FloatingActionButton fab : fabs) {
+            fab.setRotation(0);
+            ViewCompat.animate(fab)
+                .rotation(360)
+                .withLayer()
+                .setDuration(1000)
+                .setInterpolator(new AccelerateDecelerateInterpolator())
+                .start();
+          }
         });
 
     return view;

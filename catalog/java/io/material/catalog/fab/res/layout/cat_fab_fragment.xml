@@ -72,4 +72,12 @@
       android:layout_height="wrap_content"
       android:layout_marginBottom="8dp"
       android:text="@string/hide_fabs_label"/>
+
+  <Button
+      android:id="@+id/rotate_fabs"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:text="@string/rotate_fabs_label"/>
+
 </LinearLayout>

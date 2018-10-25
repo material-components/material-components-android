@@ -26,6 +26,7 @@
 
   <string name="hide_fabs_label">Hide FABs</string>
   <string name="show_fabs_label">Show FABs</string>
+  <string name="rotate_fabs_label">Rotate FABs</string>
 
   <string name="cat_fab_clicked">FAB clicked</string>
 
