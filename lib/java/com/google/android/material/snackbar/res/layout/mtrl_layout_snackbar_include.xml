@@ -33,10 +33,12 @@
     android:paddingBottom="@dimen/design_snackbar_padding_vertical"
     android:paddingLeft="@dimen/design_snackbar_padding_horizontal"
     android:paddingRight="@dimen/design_snackbar_padding_horizontal"
+    android:alpha="@dimen/mtrl_emphasis_high_type"
     android:ellipsize="end"
     android:maxLines="@integer/design_snackbar_text_max_lines"
     android:textAlignment="viewStart"
-    android:textAppearance="?attr/textAppearanceBody2"/>
+    android:textAppearance="?attr/textAppearanceBody2"
+    android:textColor="?attr/colorSurface"/>
 
   <Button
     android:id="@+id/snackbar_action"

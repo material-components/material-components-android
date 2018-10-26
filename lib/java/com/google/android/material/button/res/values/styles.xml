@@ -67,7 +67,7 @@
 
   <!-- Button style to show in the Snackbar component. -->
   <style name="Widget.MaterialComponents.Button.TextButton.Snackbar">
-    <item name="android:textColor">?attr/colorSecondary</item>
+    <item name="android:textColor">?attr/colorPrimary</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.OutlinedButton" parent="Widget.MaterialComponents.Button.TextButton">

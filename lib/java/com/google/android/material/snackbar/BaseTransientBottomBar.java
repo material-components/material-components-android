@@ -294,6 +294,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     if (view.getBackground() == null) {
       ViewCompat.setBackground(view, createThemedBackground());
     }
+    if (content instanceof SnackbarContentLayout) {
+      ((SnackbarContentLayout) content)
+          .updateActionTextColorAlphaIfNeeded(view.getActionTextColorAlpha());
+    }
     view.addView(content);
 
     originalBottomMargin = ((MarginLayoutParams) view.getLayoutParams()).bottomMargin;
@@ -904,6 +908,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     private BaseTransientBottomBar.OnLayoutChangeListener onLayoutChangeListener;
     private BaseTransientBottomBar.OnAttachStateChangeListener onAttachStateChangeListener;
     @AnimationMode private int animationMode;
+    private final float actionTextColorAlpha;
 
     protected SnackbarBaseLayout(Context context) {
       this(context, null);
@@ -917,6 +922,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             this, a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0));
       }
       animationMode = a.getInt(R.styleable.SnackbarLayout_animationMode, ANIMATION_MODE_SLIDE);
+      actionTextColorAlpha = a.getFloat(R.styleable.SnackbarLayout_actionTextColorAlpha, 1);
       a.recycle();
 
       setOnTouchListener(consumeAllTouchListener);
@@ -973,6 +979,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     void setAnimationMode(@AnimationMode int animationMode) {
       this.animationMode = animationMode;
+    }
+
+    float getActionTextColorAlpha() {
+      return actionTextColorAlpha;
     }
   }
 
