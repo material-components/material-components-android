@@ -18,6 +18,8 @@
   <declare-styleable name="BottomAppBar">
     <!-- Background for the BottomAppBar. -->
     <attr name="backgroundTint"/>
+    <!-- Elevation for the BottomAppBar. -->
+    <attr name="elevation"/>
     <!-- The alignment of the fab relative to the BottomAppBar. -->
     <attr name="fabAlignmentMode">
       <!-- Mode that aligns the fab to the center. -->

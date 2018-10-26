@@ -19,6 +19,7 @@ package com.google.android.material.bottomappbar;
 import com.google.android.material.R;
 
 import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
+import static com.google.android.material.shape.MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -137,7 +138,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   public @interface FabAnimationMode {}
 
   private final int fabOffsetEndMode;
-  private final MaterialShapeDrawable materialShapeDrawable;
+  private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
   private final BottomAppBarTopEdgeTreatment topEdgeTreatment;
 
   @Nullable private Animator modeAnimator;
@@ -207,6 +208,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     ColorStateList backgroundTint =
         MaterialResources.getColorStateList(context, a, R.styleable.BottomAppBar_backgroundTint);
 
+    int elevation = a.getDimensionPixelSize(R.styleable.BottomAppBar_elevation, 0);
     float fabCradleMargin = a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleMargin, 0);
     float fabCornerRadius =
         a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleRoundedCornerRadius, 0);
@@ -225,12 +227,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     topEdgeTreatment =
         new BottomAppBarTopEdgeTreatment(fabCradleMargin, fabCornerRadius, fabVerticalOffset);
-    ShapeAppearanceModel appBarModel = new ShapeAppearanceModel();
+    ShapeAppearanceModel appBarModel = materialShapeDrawable.getShapeAppearanceModel();
     appBarModel.setTopEdge(topEdgeTreatment);
-    materialShapeDrawable = new MaterialShapeDrawable(appBarModel);
+    materialShapeDrawable.setShadowCompatibilityMode(SHADOW_COMPAT_MODE_ALWAYS);
     materialShapeDrawable.setPaintStyle(Style.FILL);
     materialShapeDrawable.setPaintFlags(Paint.ANTI_ALIAS_FLAG);
-    materialShapeDrawable.setPaintShadowEnabled(true);
+    setElevation(elevation);
     DrawableCompat.setTintList(materialShapeDrawable, backgroundTint);
     ViewCompat.setBackground(this, materialShapeDrawable);
   }
@@ -354,6 +356,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   public void setHideOnScroll(boolean hide) {
     hideOnScroll = hide;
+  }
+
+  @Override
+  public void setElevation(float elevation) {
+    materialShapeDrawable.setShadowElevation((int) elevation);
   }
 
   /**

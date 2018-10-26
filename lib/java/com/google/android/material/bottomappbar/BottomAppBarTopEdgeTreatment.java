@@ -109,7 +109,7 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
     float cutoutArcOffset = ARC_QUARTER - cornerRadiusArcLength;
 
     // Draw the starting line up to the left rounded corner.
-    shapePath.lineTo(/* x= */ leftRoundedCornerCircleX - roundedCornerOffset, /* y= */ 0);
+    shapePath.lineTo(/* x= */ leftRoundedCornerCircleX, /* y= */ 0);
 
     // Draw the arc for the left rounded corner circle. The bounding box is the area around the
     // circle's center which is at `(leftRoundedCornerCircleX, roundedCornerOffset)`.

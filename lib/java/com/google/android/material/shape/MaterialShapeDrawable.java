@@ -116,7 +116,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private ShapeAppearanceModel shapeAppearanceModel;
   private int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
-  private boolean paintShadowEnabled = false;
   private boolean useTintColorForShadow = false;
   private float interpolation = 1f;
   private int shadowCompatElevation = 0;
@@ -467,15 +466,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         shadowEnabled ? SHADOW_COMPAT_MODE_DEFAULT : SHADOW_COMPAT_MODE_NEVER);
   }
 
-  /** TODO: Remove the paint shadow */
-  public void setPaintShadowEnabled(boolean paintShadowEnabled) {
-    this.paintShadowEnabled = paintShadowEnabled;
-    shadowCompatMode = SHADOW_COMPAT_MODE_NEVER;
-    // Backwards compatible defaults.
-    shadowCompatElevation = 5;
-    shadowCompatRadius = 10;
-  }
-
   /**
    * Get the interpolation of the path, between 0 and 1. Ranges between 0 (none) and 1 (fully)
    * interpolated.
@@ -715,10 +705,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     strokePaint.setColorFilter(strokeTintFilter);
     final int prevStrokeAlpha = strokePaint.getAlpha();
     strokePaint.setAlpha(modulateAlpha(prevStrokeAlpha, alpha));
-
-    if (shadowCompatElevation > 0 && paintShadowEnabled) {
-      fillPaint.setShadowLayer(shadowCompatRadius, 0, shadowCompatElevation, Color.BLACK);
-    }
 
     calculatePath(getBoundsInsetByStroke(), pathInsetByStroke);
     if (hasCompatShadow()) {
