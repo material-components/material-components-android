@@ -107,7 +107,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final Path pathInsetByStroke = new Path();
   private final PointF pointF = new PointF();
   private final RectF rectF = new RectF();
-  private final RectF insetRectF = new RectF();
   private final ShapePath shapePath = new ShapePath();
   private final Region transparentRegion = new Region();
   private final Region scratchRegion = new Region();
@@ -755,9 +754,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     drawShape(canvas, fillPaint);
   }
 
-  /**
-   * Draw the path or try to draw a round rect if possible.
-   */
+  /** Draw the path or try to draw a round rect if possible. */
   private void drawShape(Canvas canvas, Paint paint) {
     if (shapeAppearanceModel.isRoundRect()) {
       float cornerSize = shapeAppearanceModel.getTopRightCorner().getCornerSize();
@@ -776,7 +773,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     // be clipped and not visible.
     Rect canvasClipBounds = canvas.getClipBounds();
     canvasClipBounds.inset(-shadowCompatRadius, -shadowCompatRadius);
-    //TODO: double check that offset doesn't work for sure
+    // TODO: double check that offset doesn't work for sure
     canvasClipBounds.inset(-Math.abs(shadowOffsetX), -Math.abs(shadowOffsetY));
     canvas.clipRect(canvasClipBounds, Region.Op.REPLACE);
 
@@ -805,10 +802,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
           edgeTransforms[index], shadowRenderer, shadowCompatRadius, canvas);
     }
 
-    int shadowOffsetX =
-        (int) (shadowCompatOffset * Math.sin(Math.toRadians(shadowCompatRotation)));
-    int shadowOffsetY =
-        (int) (shadowCompatOffset * Math.cos(Math.toRadians(shadowCompatRotation)));
+    int shadowOffsetX = (int) (shadowCompatOffset * Math.sin(Math.toRadians(shadowCompatRotation)));
+    int shadowOffsetY = (int) (shadowCompatOffset * Math.cos(Math.toRadians(shadowCompatRotation)));
 
     canvas.translate(-shadowOffsetX, -shadowOffsetY);
     canvas.drawPath(pathInsetByStroke, clearPaint);
@@ -1049,19 +1044,18 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return invalidateSelf;
   }
 
-  private float getStrokeInsetLength() {
+  private RectF getBoundsInsetByStroke() {
+    RectF bounds = getBoundsAsRectF();
+    float strokeInsetWidth = getStrokeInsetWidth();
+    bounds.inset(strokeInsetWidth, strokeInsetWidth);
+    return bounds;
+  }
+
+  private float getStrokeInsetWidth() {
     if (hasStroke()) {
       return strokePaint.getStrokeWidth() / 2.0f;
     }
     return 0f;
-  }
-
-  private RectF getBoundsInsetByStroke() {
-    RectF rectF = getBoundsAsRectF();
-    float inset = getStrokeInsetLength();
-    insetRectF.set(
-        rectF.left + inset, rectF.top + inset, rectF.right - inset, rectF.bottom - inset);
-    return insetRectF;
   }
 
   /**
