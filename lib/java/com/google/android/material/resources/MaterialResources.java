@@ -22,6 +22,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleableRes;
@@ -49,6 +51,16 @@ public class MaterialResources {
         }
       }
     }
+
+    // Reading a single color with getColorStateList() on API 15 and below doesn't always correctly
+    // read the value. Instead we'll first try to read the color directly here.
+    if (VERSION.SDK_INT <= VERSION_CODES.ICE_CREAM_SANDWICH_MR1) {
+      int color = attributes.getColor(index, -1);
+      if (color != -1) {
+        return ColorStateList.valueOf(color);
+      }
+    }
+
     return attributes.getColorStateList(index);
   }
 
