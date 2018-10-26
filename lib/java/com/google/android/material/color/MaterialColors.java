@@ -27,7 +27,7 @@ import android.support.v4.graphics.ColorUtils;
 import android.view.View;
 
 /**
- * A utility class for common color variants used in Material themes
+ * A utility class for common color variants used in Material themes.
  *
  * @hide
  */
@@ -42,6 +42,18 @@ public class MaterialColors {
 
   public static int getColor(View view, @AttrRes int colorAttributeResId) {
     return MaterialAttributes.resolveAttributeOrThrow(view, colorAttributeResId).data;
+  }
+
+  /**
+   * Convenience method that calculates {@link MaterialColors#layer(View, int, int, float)} without
+   * an {@code overlayAlpha} value by passing in {@code 1f} for the alpha value.
+   */
+  @ColorInt
+  public static int layer(
+      View view,
+      @AttrRes int backgroundColorAttributeResId,
+      @AttrRes int overlayColorAttributeResId) {
+    return layer(view, backgroundColorAttributeResId, overlayColorAttributeResId, 1f);
   }
 
   /**
@@ -70,6 +82,15 @@ public class MaterialColors {
       @FloatRange(from = 0.0, to = 1.0) float overlayAlpha) {
     int computedAlpha = Math.round(Color.alpha(overlayColor) * overlayAlpha);
     int computedOverlayColor = ColorUtils.setAlphaComponent(overlayColor, computedAlpha);
-    return ColorUtils.compositeColors(computedOverlayColor, backgroundColor);
+    return layer(backgroundColor, computedOverlayColor);
+  }
+
+  /**
+   * Calculates a color that represents the layering of the {@code overlayColor} on top of the
+   * {@code backgroundColor}.
+   */
+  @ColorInt
+  public static int layer(@ColorInt int backgroundColor, @ColorInt int overlayColor) {
+    return ColorUtils.compositeColors(overlayColor, backgroundColor);
   }
 }
