@@ -33,5 +33,5 @@
       android:includeFontPadding="false"
       android:text="@string/cat_toc_title"
       android:textAppearance="?attr/textAppearanceHeadline6"
-      android:textColor="@color/cat_title_text_color"/>
+      android:textColor="?colorOnPrimary"/>
 </LinearLayout>

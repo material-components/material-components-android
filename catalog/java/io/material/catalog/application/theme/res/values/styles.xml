@@ -16,11 +16,7 @@
   -->
 <resources>
 
-  <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar">
-    <item name="android:background">?attr/colorPrimary</item>
-    <item name="android:theme">@style/ThemeOverlay.AppCompat.Dark.ActionBar</item>
-    <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-  </style>
+  <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary"/>
 
   <style name="Widget.Catalog.Toolbar.WithCloseButton" parent="Widget.Catalog.Toolbar">
     <item name="navigationContentDescription">@string/toolbar_navigation_close_description</item>
