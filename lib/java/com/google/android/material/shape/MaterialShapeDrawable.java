@@ -107,6 +107,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final Path pathInsetByStroke = new Path();
   private final PointF pointF = new PointF();
   private final RectF rectF = new RectF();
+  private final RectF insetRectF = new RectF();
   private final ShapePath shapePath = new ShapePath();
   private final Region transparentRegion = new Region();
   private final Region scratchRegion = new Region();
@@ -115,6 +116,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private ShapeAppearanceModel shapeAppearanceModel;
   private int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
+  private boolean paintShadowEnabled = false;
   private boolean useTintColorForShadow = false;
   private float interpolation = 1f;
   private int shadowCompatElevation = 0;
@@ -465,6 +467,15 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         shadowEnabled ? SHADOW_COMPAT_MODE_DEFAULT : SHADOW_COMPAT_MODE_NEVER);
   }
 
+  /** TODO: Remove the paint shadow */
+  public void setPaintShadowEnabled(boolean paintShadowEnabled) {
+    this.paintShadowEnabled = paintShadowEnabled;
+    shadowCompatMode = SHADOW_COMPAT_MODE_NEVER;
+    // Backwards compatible defaults.
+    shadowCompatElevation = 5;
+    shadowCompatRadius = 10;
+  }
+
   /**
    * Get the interpolation of the path, between 0 and 1. Ranges between 0 (none) and 1 (fully)
    * interpolated.
@@ -579,7 +590,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * 21 or when the shape is concave.
    */
   private boolean requiresCompatShadow() {
-    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || !pathInsetByStroke.isConvex();
+    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || !path.isConvex();
   }
 
   /**
@@ -705,7 +716,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     final int prevStrokeAlpha = strokePaint.getAlpha();
     strokePaint.setAlpha(modulateAlpha(prevStrokeAlpha, alpha));
 
-    calculatePath(getBoundsInsetByStroke(), pathInsetByStroke);
+    if (shadowCompatElevation > 0 && paintShadowEnabled) {
+      fillPaint.setShadowLayer(shadowCompatRadius, 0, shadowCompatElevation, Color.BLACK);
+    }
+
+    calculatePath(getBoundsAsRectF(), path);
     if (hasCompatShadow()) {
       // Save the canvas before changing the clip bounds.
       canvas.save();
@@ -746,22 +761,72 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     strokePaint.setAlpha(prevStrokeAlpha);
   }
 
-  private void drawStrokeShape(Canvas canvas) {
-    drawShape(canvas, strokePaint);
+  /** Draw the path or try to draw a round rect if possible. */
+  private void drawShape(Canvas canvas, Paint paint, Path path, RectF bounds) {
+    if (shapeAppearanceModel.isRoundRect()) {
+      float cornerSize = shapeAppearanceModel.getTopRightCorner().getCornerSize();
+      canvas.drawRoundRect(bounds, cornerSize, cornerSize, paint);
+    } else {
+      canvas.drawPath(path, paint);
+    }
   }
 
   private void drawFillShape(Canvas canvas) {
-    drawShape(canvas, fillPaint);
+    drawShape(canvas, fillPaint, path, getFillBounds());
   }
 
-  /** Draw the path or try to draw a round rect if possible. */
-  private void drawShape(Canvas canvas, Paint paint) {
-    if (shapeAppearanceModel.isRoundRect()) {
-      float cornerSize = shapeAppearanceModel.getTopRightCorner().getCornerSize();
-      canvas.drawRoundRect(getBoundsInsetByStroke(), cornerSize, cornerSize, paint);
-    } else {
-      canvas.drawPath(pathInsetByStroke, paint);
+  private RectF getFillBounds() {
+    RectF fillBounds = getBoundsAsRectF();
+    // If there's a stroke, inset the bounds by a hairline to prevent the fill from peeking out from
+    // under the stroke.
+    if (hasStroke()) {
+      float hairline = 1f;
+      fillBounds.inset(hairline, hairline);
     }
+    return fillBounds;
+  }
+
+  private void drawStrokeShape(Canvas canvas) {
+    drawStrokeAdjustedForCornerSize(canvas);
+  }
+
+  private void drawStrokeAdjustedForCornerSize(Canvas canvas) {
+    float cornerSizeTopLeft = getShapeAppearanceModel().getTopLeftCorner().cornerSize;
+    float cornerSizeTopRight = getShapeAppearanceModel().getTopRightCorner().cornerSize;
+    float cornerSizeBottomRight = getShapeAppearanceModel().getBottomRightCorner().cornerSize;
+    float cornerSizeBottomLeft = getShapeAppearanceModel().getBottomLeftCorner().cornerSize;
+
+    // Adjust corner radius in order to draw the stroke so that the corners of the background are
+    // drawn on top of the edges.
+    setShapeAppearanceCornerSize(
+        adjustCornerSizeForStrokeSize(cornerSizeTopLeft),
+        adjustCornerSizeForStrokeSize(cornerSizeTopRight),
+        adjustCornerSizeForStrokeSize(cornerSizeBottomRight),
+        adjustCornerSizeForStrokeSize(cornerSizeBottomLeft));
+
+    RectF boundsInsetByStroke = getBoundsInsetByStroke();
+    calculatePath(boundsInsetByStroke, pathInsetByStroke);
+    drawShape(canvas, strokePaint, pathInsetByStroke, boundsInsetByStroke);
+
+    // Set the corner radius back to its original size so that it draws on top of the fill.
+    setShapeAppearanceCornerSize(
+        cornerSizeTopLeft, cornerSizeTopRight, cornerSizeBottomRight, cornerSizeBottomLeft);
+  }
+
+  private void setShapeAppearanceCornerSize(
+      float cornerSizeTopLeft,
+      float cornerSizeTopRight,
+      float cornerSizeBottomRight,
+      float cornerSizeBottomLeft) {
+    shapeAppearanceModel.getTopLeftCorner().setCornerSize(cornerSizeTopLeft);
+    shapeAppearanceModel.getTopRightCorner().setCornerSize(cornerSizeTopRight);
+    shapeAppearanceModel.getBottomRightCorner().setCornerSize(cornerSizeBottomRight);
+    shapeAppearanceModel.getBottomLeftCorner().setCornerSize(cornerSizeBottomLeft);
+  }
+
+  private float adjustCornerSizeForStrokeSize(float cornerSize) {
+    float adjustedCornerSize = cornerSize - getStrokeInsetLength();
+    return Math.max(adjustedCornerSize, 0);
   }
 
   private void prepareCanvasForShadow(Canvas canvas) {
@@ -791,7 +856,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    */
   private void drawCompatShadow(Canvas canvas) {
     if (shadowCompatOffset != 0) {
-      canvas.drawPath(pathInsetByStroke, shadowRenderer.getShadowPaint());
+      canvas.drawPath(path, shadowRenderer.getShadowPaint());
     }
 
     // Draw the fake shadow for each of the corners and edges.
@@ -806,7 +871,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     int shadowOffsetY = (int) (shadowCompatOffset * Math.cos(Math.toRadians(shadowCompatRotation)));
 
     canvas.translate(-shadowOffsetX, -shadowOffsetY);
-    canvas.drawPath(pathInsetByStroke, clearPaint);
+    canvas.drawPath(path, clearPaint);
     canvas.translate(shadowOffsetX, shadowOffsetY);
   }
 
@@ -1049,18 +1114,19 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return invalidateSelf;
   }
 
-  private RectF getBoundsInsetByStroke() {
-    RectF bounds = getBoundsAsRectF();
-    float strokeInsetWidth = getStrokeInsetWidth();
-    bounds.inset(strokeInsetWidth, strokeInsetWidth);
-    return bounds;
-  }
-
-  private float getStrokeInsetWidth() {
+  private float getStrokeInsetLength() {
     if (hasStroke()) {
       return strokePaint.getStrokeWidth() / 2.0f;
     }
     return 0f;
+  }
+
+  private RectF getBoundsInsetByStroke() {
+    RectF rectF = getBoundsAsRectF();
+    float inset = getStrokeInsetLength();
+    insetRectF.set(
+        rectF.left + inset, rectF.top + inset, rectF.right - inset, rectF.bottom - inset);
+    return insetRectF;
   }
 
   /**
