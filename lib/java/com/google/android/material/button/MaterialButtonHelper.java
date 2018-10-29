@@ -49,7 +49,7 @@ import android.support.v4.view.ViewCompat;
 @RestrictTo(LIBRARY_GROUP)
 class MaterialButtonHelper {
 
-  // This is a hacky workaround. Currently on certain devices/versions,
+  // This is a workaround. Currently on certain devices/versions,
   // LayerDrawable will draw a black background underneath any layer with a non-opaque color,
   // unless we set the shape to be something that's not a perfect rectangle.
   private static final float CORNER_RADIUS_ADJUSTMENT = 0.00001F;

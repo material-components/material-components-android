@@ -2031,7 +2031,7 @@ public class TabLayout extends HorizontalScrollView {
 
       if (tabRippleColorStateList != null) {
         GradientDrawable maskDrawable = new GradientDrawable();
-        // TODO: Find a non-hacky workaround for this. Currently on certain devices/versions,
+        // TODO: Find a workaround for this. Currently on certain devices/versions,
         // LayerDrawable will draw a black background underneath any layer with a non-opaque color,
         // (e.g. ripple) unless we set the shape to be something that's not a perfect rectangle.
         maskDrawable.setCornerRadius(0.00001F);
