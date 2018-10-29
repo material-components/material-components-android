@@ -19,6 +19,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.support.annotation.AttrRes;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.util.TypedValue;
 import android.view.View;
@@ -33,9 +34,9 @@ public class MaterialAttributes {
 
   public static TypedValue resolveAttributeOrThrow(
       View componentView, @AttrRes int attributeResId) {
-    TypedValue typedValue = new TypedValue();
     Context context = componentView.getContext();
-    if (!context.getTheme().resolveAttribute(attributeResId, typedValue, true)) {
+    TypedValue typedValue = resolveAttribute(context, attributeResId);
+    if (typedValue == null) {
       String errorMessage =
           "The %1$s view requires a value for the %2$s attribute to be set in your app theme. "
               + "You can either set the attribute in your theme or "
@@ -47,5 +48,14 @@ public class MaterialAttributes {
               context.getResources().getResourceName(attributeResId)));
     }
     return typedValue;
+  }
+
+  @Nullable
+  public static TypedValue resolveAttribute(Context context, @AttrRes int attributeResId) {
+    TypedValue typedValue = new TypedValue();
+    if (context.getTheme().resolveAttribute(attributeResId, typedValue, true)) {
+      return typedValue;
+    }
+    return null;
   }
 }

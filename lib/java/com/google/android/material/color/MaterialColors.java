@@ -24,6 +24,7 @@ import android.support.annotation.FloatRange;
 import android.support.annotation.RestrictTo;
 import com.google.android.material.resources.MaterialAttributes;
 import android.support.v4.graphics.ColorUtils;
+import android.util.TypedValue;
 import android.view.View;
 
 /**
@@ -40,8 +41,29 @@ public class MaterialColors {
   public static final float ALPHA_LOW = 0.32F;
   public static final float ALPHA_DISABLED_LOW = 0.12F;
 
+  /**
+   * Returns the color int for the provided theme color attribute, or throws an {@link
+   * IllegalArgumentException} if the attribute is not set in the current theme.
+   */
+  @ColorInt
   public static int getColor(View view, @AttrRes int colorAttributeResId) {
     return MaterialAttributes.resolveAttributeOrThrow(view, colorAttributeResId).data;
+  }
+
+  /**
+   * Returns the color int for the provided theme color attribute, or the default value if the
+   * attribute is not set in the current theme.
+   */
+  @ColorInt
+  public static int getColor(
+      View view, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
+    TypedValue typedValue =
+        MaterialAttributes.resolveAttribute(view.getContext(), colorAttributeResId);
+    if (typedValue != null) {
+      return typedValue.data;
+    } else {
+      return defaultValue;
+    }
   }
 
   /**
