@@ -19,8 +19,8 @@
   <string name="mtrl_theme_switcher_title">Theme Switcher</string>
   <string name="mtrl_theme_switcher_save">Save</string>
   <string name="mtrl_theme_switcher_cancel">Cancel</string>
+  <string name="mtrl_theme_switcher_reset">Reset</string>
 
-  <string name="mtrl_default_color">Default color</string>
   <string name="mtrl_red">Red</string>
   <string name="mtrl_purple">Purple</string>
   <string name="mtrl_indigo">Indigo</string>

@@ -16,11 +16,6 @@
   -->
 <resources>
 
-  <style name="ThemeOverlay.PrimaryPalette.Default" parent="">
-    <item name="colorPrimary">@color/cat_color_primary</item>
-    <item name="colorPrimaryDark">@color/cat_color_primary_dark</item>
-  </style>
-
   <style name="ThemeOverlay.PrimaryPalette.Red" parent="">
     <item name="colorPrimary">#e53935</item>
     <item name="colorPrimaryDark">#ab000d</item>

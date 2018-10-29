@@ -64,11 +64,17 @@ public class ThemeSwitcherDialogFragment extends DaggerAppCompatDialogFragment {
         .setView(onCreateDialogView(getActivity().getLayoutInflater()))
         .setPositiveButton(
             R.string.mtrl_theme_switcher_save,
-            (dialog, id) -> {
+            (dialog, which) -> {
               dialog.dismiss();
               applyThemeOverlays();
             })
-        .setNegativeButton(R.string.mtrl_theme_switcher_cancel, null);
+        .setNegativeButton(R.string.mtrl_theme_switcher_cancel, null)
+        .setNeutralButton(
+            R.string.mtrl_theme_switcher_reset,
+            (dialog, which) -> {
+              dialog.dismiss();
+              ThemeOverlayUtils.setThemeOverlays(getActivity(), 0, 0);
+            });
     return builder.create();
   }
 
@@ -97,13 +103,18 @@ public class ThemeSwitcherDialogFragment extends DaggerAppCompatDialogFragment {
   }
 
   private void applyThemeOverlays() {
-    ColorPalette primaryPalette =
-        (ColorPalette) getDialog().findViewById(primaryGroup.getCheckedRadioButtonId()).getTag();
-    ColorPalette secondaryPalette =
-        (ColorPalette) getDialog().findViewById(secondaryGroup.getCheckedRadioButtonId()).getTag();
-
     ThemeOverlayUtils.setThemeOverlays(
-        getActivity(), primaryPalette.themeOverlay, secondaryPalette.themeOverlay);
+        getActivity(), getThemeOverlayResId(primaryGroup), getThemeOverlayResId(secondaryGroup));
+  }
+
+  private int getThemeOverlayResId(RadioGroup radioGroup) {
+    if (radioGroup.getCheckedRadioButtonId() == View.NO_ID) {
+      return 0;
+    } else {
+      ColorPalette colorPalette =
+          (ColorPalette) getDialog().findViewById(radioGroup.getCheckedRadioButtonId()).getTag();
+      return colorPalette.themeOverlay;
+    }
   }
 
   private void initializeColors(
@@ -131,7 +142,7 @@ public class ThemeSwitcherDialogFragment extends DaggerAppCompatDialogFragment {
 
       group.addView(button);
 
-      if (palette.themeOverlay == currentThemeOverlay || (i == 0 && currentThemeOverlay == 0)) {
+      if (palette.themeOverlay == currentThemeOverlay) {
         group.check(button.getId());
       }
     }

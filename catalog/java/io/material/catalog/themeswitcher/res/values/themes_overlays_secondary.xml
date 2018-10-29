@@ -16,10 +16,6 @@
   -->
 <resources>
 
-  <style name="ThemeOverlay.SecondaryPalette.Default" parent="">
-    <item name="colorSecondary">@color/cat_color_secondary</item>
-  </style>
-
   <style name="ThemeOverlay.SecondaryPalette.Red" parent="">
     <item name="colorSecondary">#e53935</item>
   </style>

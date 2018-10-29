@@ -17,7 +17,6 @@
 <resources>
 
   <array name="mtrl_primary_palettes">
-    <item>@style/ThemeOverlay.PrimaryPalette.Default</item>
     <item>@style/ThemeOverlay.PrimaryPalette.Red</item>
     <item>@style/ThemeOverlay.PrimaryPalette.Purple</item>
     <item>@style/ThemeOverlay.PrimaryPalette.Indigo</item>
@@ -31,7 +30,6 @@
   </array>
 
   <array name="mtrl_secondary_palettes">
-    <item>@style/ThemeOverlay.SecondaryPalette.Default</item>
     <item>@style/ThemeOverlay.SecondaryPalette.Red</item>
     <item>@style/ThemeOverlay.SecondaryPalette.Purple</item>
     <item>@style/ThemeOverlay.SecondaryPalette.Indigo</item>
@@ -45,7 +43,6 @@
   </array>
 
   <array name="mtrl_palettes_content_description">
-    <item>@string/mtrl_default_color</item>
     <item>@string/mtrl_red</item>
     <item>@string/mtrl_purple</item>
     <item>@string/mtrl_indigo</item>
