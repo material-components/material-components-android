@@ -16,19 +16,39 @@
 -->
 <resources>
 
+  <!-- Light theme brand colors. -->
   <color name="design_default_color_primary">#6200EE</color>
   <color name="design_default_color_primary_dark">#303F9F</color>
   <color name="design_default_color_primary_variant">#3700B3</color>
+  <color name="design_default_color_on_primary">#FFFFFF</color>
   <color name="design_default_color_secondary">#03DAC6</color>
   <color name="design_default_color_secondary_variant">#018786</color>
-  <color name="design_default_color_background">#FFFFFF</color>
-  <color name="design_default_color_surface">#FFFFFF</color>
-  <color name="design_default_color_error">#B00020</color>
-  <color name="design_default_color_on_primary">#FFFFFF</color>
   <color name="design_default_color_on_secondary">#000000</color>
+
+  <!-- Light theme neutral colors. -->
+  <color name="design_default_color_background">#FFFFFF</color>
   <color name="design_default_color_on_background">#000000</color>
+  <color name="design_default_color_surface">#FFFFFF</color>
   <color name="design_default_color_on_surface">#000000</color>
+  <color name="design_default_color_error">#B00020</color>
   <color name="design_default_color_on_error">#FFFFFF</color>
+
+  <!-- Dark theme brand colors. -->
+  <color name="design_dark_default_color_primary">#BB86FC</color>
+  <color name="design_dark_default_color_primary_dark">#8858C8</color>
+  <color name="design_dark_default_color_primary_variant">#4B01D0</color>
+  <color name="design_dark_default_color_on_primary">#000000</color>
+  <color name="design_dark_default_color_secondary">#03DAC6</color>
+  <color name="design_dark_default_color_secondary_variant">#018786</color>
+  <color name="design_dark_default_color_on_secondary">#000000</color>
+
+  <!-- Dark theme neutral colors. -->
+  <color name="design_dark_default_color_background">#141414</color>
+  <color name="design_dark_default_color_on_background">#FFFFFF</color>
+  <color name="design_dark_default_color_surface">#282828</color>
+  <color name="design_dark_default_color_on_surface">#FFFFFF</color>
+  <color name="design_dark_default_color_error">#C26C7A</color>
+  <color name="design_dark_default_color_on_error">#000000</color>
 
   <!-- 32% opacity black -->
   <color name="mtrl_scrim_color">#52000000</color>
@@ -52,4 +72,11 @@
   <color name="mtrl_on_surface_disabled">#61000000</color>
   <color name="mtrl_on_surface_emphasis_high_type">#DE000000</color>
   <color name="mtrl_on_surface_emphasis_medium">#99000000</color>
+
+  <color name="mtrl_dark_on_primary_disabled">#61000000</color>
+  <color name="mtrl_dark_on_primary_emphasis_high_type">#DE000000</color>
+  <color name="mtrl_dark_on_primary_emphasis_medium">#99000000</color>
+  <color name="mtrl_dark_on_surface_disabled">#61FFFFFF</color>
+  <color name="mtrl_dark_on_surface_emphasis_high_type">#DEFFFFFF</color>
+  <color name="mtrl_dark_on_surface_emphasis_medium">#99FFFFFF</color>
 </resources>

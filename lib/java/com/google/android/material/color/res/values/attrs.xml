@@ -40,6 +40,15 @@
        surface. -->
   <attr name="colorOnSurface" format="color"/>
 
+  <!-- Private color attributes that help facilitate switching these pre-23 compatibility
+       values for the light and dark themes. -->
+  <attr name="colorOnPrimaryDisabled" format="color"/>
+  <attr name="colorOnPrimaryEmphasisHighType" format="color"/>
+  <attr name="colorOnPrimaryEmphasisMedium" format="color"/>
+  <attr name="colorOnSurfaceDisabled" format="color"/>
+  <attr name="colorOnSurfaceEmphasisHighType" format="color"/>
+  <attr name="colorOnSurfaceEmphasisMedium" format="color"/>
+
   <!-- The scrim background that appears below modals and expanded navigation menus.
        The background can either be a color or a bitmap drawable with tileMode set to repeat. -->
   <attr name="scrimBackground" format="color|reference"/>
@@ -53,6 +62,6 @@
        be ignored. This value should be set to false when using custom drawables
        that should not be tinted. This value is ignored if a buttonTint is set.
        Set this attribute on your styles for each selection control.-->
-    <attr name="useMaterialThemeColors" format="boolean"/>
+  <attr name="useMaterialThemeColors" format="boolean"/>
 
 </resources>

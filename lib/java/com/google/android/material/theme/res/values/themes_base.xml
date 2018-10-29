@@ -23,13 +23,13 @@
     <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
 
     <!-- Colors -->
-    <item name="colorPrimary">@color/design_default_color_primary</item>
-    <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
-    <item name="colorSecondary">@color/design_default_color_secondary</item>
+    <item name="colorPrimary">@color/design_dark_default_color_primary</item>
+    <item name="colorPrimaryDark">@color/design_dark_default_color_primary_dark</item>
+    <item name="colorSecondary">@color/design_dark_default_color_secondary</item>
     <item name="colorAccent">?attr/colorSecondary</item>
 
-    <item name="android:colorBackground">@color/design_default_color_background</item>
-    <item name="colorError">@color/design_default_color_error</item>
+    <item name="android:colorBackground">@color/design_dark_default_color_background</item>
+    <item name="colorError">@color/design_dark_default_color_error</item>
 
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
 

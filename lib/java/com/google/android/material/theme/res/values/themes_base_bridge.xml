@@ -35,16 +35,25 @@
   <style name="Base.V14.Theme.MaterialComponents.Bridge" parent="Platform.MaterialComponents">
     <item name="isMaterialTheme">true</item>
 
-    <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
-    <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
-    <item name="colorSurface">@color/design_default_color_surface</item>
-    <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
-    <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
-    <item name="colorOnBackground">@color/design_default_color_on_background</item>
-    <item name="colorOnError">@color/design_default_color_on_error</item>
-    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
+    <item name="colorPrimaryVariant">@color/design_dark_default_color_primary_variant</item>
+    <item name="colorSecondaryVariant">@color/design_dark_default_color_secondary_variant</item>
+    <item name="colorSurface">@color/design_dark_default_color_surface</item>
+    <item name="colorOnPrimary">@color/design_dark_default_color_on_primary</item>
+    <item name="colorOnSecondary">@color/design_dark_default_color_on_secondary</item>
+    <item name="colorOnBackground">@color/design_dark_default_color_on_background</item>
+    <item name="colorOnError">@color/design_dark_default_color_on_error</item>
+    <item name="colorOnSurface">@color/design_dark_default_color_on_surface</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
+    <item name="colorOnPrimaryDisabled">@color/mtrl_dark_on_primary_disabled</item>
+    <item name="colorOnPrimaryEmphasisHighType">@color/mtrl_dark_on_primary_emphasis_high_type
+    </item>
+    <item name="colorOnPrimaryEmphasisMedium">@color/mtrl_dark_on_primary_emphasis_medium</item>
+    <item name="colorOnSurfaceDisabled">@color/mtrl_dark_on_surface_disabled</item>
+    <item name="colorOnSurfaceEmphasisHighType">@color/mtrl_dark_on_surface_emphasis_high_type
+    </item>
+    <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_dark_on_surface_emphasis_medium</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -86,6 +95,13 @@
     <item name="colorOnSurface">@color/design_default_color_on_surface</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
+    <item name="colorOnPrimaryDisabled">@color/mtrl_on_primary_disabled</item>
+    <item name="colorOnPrimaryEmphasisHighType">@color/mtrl_on_primary_emphasis_high_type</item>
+    <item name="colorOnPrimaryEmphasisMedium">@color/mtrl_on_primary_emphasis_medium</item>
+    <item name="colorOnSurfaceDisabled">@color/mtrl_on_surface_disabled</item>
+    <item name="colorOnSurfaceEmphasisHighType">@color/mtrl_on_surface_emphasis_high_type</item>
+    <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_on_surface_emphasis_medium</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -130,6 +146,13 @@
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
+    <item name="colorOnPrimaryDisabled">@color/mtrl_on_primary_disabled</item>
+    <item name="colorOnPrimaryEmphasisHighType">@color/mtrl_on_primary_emphasis_high_type</item>
+    <item name="colorOnPrimaryEmphasisMedium">@color/mtrl_on_primary_emphasis_medium</item>
+    <item name="colorOnSurfaceDisabled">@color/mtrl_on_surface_disabled</item>
+    <item name="colorOnSurfaceEmphasisHighType">@color/mtrl_on_surface_emphasis_high_type</item>
+    <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_on_surface_emphasis_medium</item>
+
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
     <item name="textAppearanceHeadline2">@style/TextAppearance.MaterialComponents.Headline2</item>
@@ -157,7 +180,7 @@
     </item>
   </style>
 
-   <style name="Base.V14.Theme.MaterialComponents.DayNight.Bridge" parent="Platform.MaterialComponents.DayNight">
+  <style name="Base.V14.Theme.MaterialComponents.DayNight.Bridge" parent="Platform.MaterialComponents.DayNight">
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
@@ -170,6 +193,13 @@
     <item name="colorOnSurface">@color/design_default_color_on_surface</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
+
+    <item name="colorOnPrimaryDisabled">@color/mtrl_on_primary_disabled</item>
+    <item name="colorOnPrimaryEmphasisHighType">@color/mtrl_on_primary_emphasis_high_type</item>
+    <item name="colorOnPrimaryEmphasisMedium">@color/mtrl_on_primary_emphasis_medium</item>
+    <item name="colorOnSurfaceDisabled">@color/mtrl_on_surface_disabled</item>
+    <item name="colorOnSurfaceEmphasisHighType">@color/mtrl_on_surface_emphasis_high_type</item>
+    <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_on_surface_emphasis_medium</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
