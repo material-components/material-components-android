@@ -400,7 +400,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     return transparentRegion;
   }
 
-  private RectF getBoundsAsRectF() {
+  protected RectF getBoundsAsRectF() {
     Rect bounds = getBounds();
     rectF.set(bounds.left, bounds.top, bounds.right, bounds.bottom);
     return rectF;
@@ -762,7 +762,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /** Draw the path or try to draw a round rect if possible. */
-  private void drawShape(Canvas canvas, Paint paint, Path path, RectF bounds) {
+  protected void drawShape(Canvas canvas, Paint paint, Path path, RectF bounds) {
     if (shapeAppearanceModel.isRoundRect()) {
       float cornerSize = shapeAppearanceModel.getTopRightCorner().getCornerSize();
       canvas.drawRoundRect(bounds, cornerSize, cornerSize, paint);
