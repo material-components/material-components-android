@@ -848,6 +848,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @TargetApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void getOutline(Outline outline) {
+    if (shadowCompatMode == SHADOW_COMPAT_MODE_ALWAYS) {
+      // Don't draw the native shadow if we're always rendering with compat shadow.
+      return;
+    }
+
     boolean isRoundRect = shapeAppearanceModel.isRoundRect();
 
     if (isRoundRect) {
