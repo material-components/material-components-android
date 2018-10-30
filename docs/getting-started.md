@@ -43,7 +43,7 @@ libraries.
 
 If you don't want to switch over to the new `androidx` and
 `com.google.android.material` packages yet, you can use Material Components via
-the `com.android.support:design:28.0.0-alpha3` dependency.
+the `com.android.support:design:28.0.0` dependency.
 
 Note: You should not use the `com.android.support` and
 `com.google.android.material` dependencies in your app at the same time.

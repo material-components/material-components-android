@@ -21,7 +21,7 @@ ext {
   compileSdkVersion = 28
   minSdkVersion = 14
   targetSdkVersion = 27
-  supportVersion = '28.0.0-alpha3'
+  supportVersion = '28.0.0'
 
   testRunnerVersion = '1.0.0'
   espressoVersion = '3.0.0'
@@ -37,7 +37,7 @@ ext {
     ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.1.0'
+  mdcLibraryVersion = '1.1.0-alpha01'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }
