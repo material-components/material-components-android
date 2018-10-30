@@ -92,6 +92,13 @@
     <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
     <attr name="hideMotionSpec"/>
 
+    <!-- Shape appearance style reference for Chip. Attribute declaration is in the Shape
+     package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for Chip. To be used to augment attributes
+         declared in the shapeAppearance. Attribute declaration is in the Shape package. -->
+    <attr name="shapeAppearanceOverlay"/>
+
     <!-- The following attributes are adjustable padding on the chip, listed from start to end. -->
 
     <!-- Chip starts here. -->

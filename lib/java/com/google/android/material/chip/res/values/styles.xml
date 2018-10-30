@@ -53,7 +53,6 @@
 
     <item name="chipMinTouchTargetSize">48dp</item>
     <item name="chipMinHeight">32dp</item>
-    <item name="chipCornerRadius">16dp</item>
     <item name="chipIconSize">24dp</item>
     <item name="closeIconSize">18dp</item>
 
@@ -65,6 +64,16 @@
     <item name="closeIconStartPadding">2dp</item>
     <item name="closeIconEndPadding">2dp</item>
     <item name="chipEndPadding">6dp</item>
+
+    <item name="chipCornerRadius">16dp</item>
+
+    <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.Chip" parent="">
+    <!-- Replace with 50% -->
+    <item name="cornerSize">16dp</item>
   </style>
 
   <!-- Style for Chips that appear in text fields as a span.

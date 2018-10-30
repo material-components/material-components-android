@@ -32,6 +32,7 @@ import android.graphics.Paint;
 import android.graphics.Paint.Align;
 import android.graphics.Paint.FontMetrics;
 import android.graphics.Paint.Style;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.PointF;
 import android.graphics.PorterDuff.Mode;
@@ -64,6 +65,7 @@ import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.resources.TextAppearanceFontCallback;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.v4.graphics.ColorUtils;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
@@ -257,6 +259,7 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   private final FontMetrics fontMetrics = new FontMetrics();
   private final RectF rectF = new RectF();
   private final PointF pointF = new PointF();
+  private final Path shapePath = new Path();
 
   @ColorInt private int currentChipSurfaceColor;
   @ColorInt private int currentChipBackgroundColor;
@@ -280,11 +283,12 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   private TruncateAt truncateAt;
   private boolean shouldDrawText;
   private int maxWidth;
+  private boolean isShapeThemingEnabled;
 
   /** Returns a ChipDrawable from the given attributes. */
   public static ChipDrawable createFromAttributes(
       Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    ChipDrawable chip = new ChipDrawable(context);
+    ChipDrawable chip = new ChipDrawable(context, attrs, defStyleAttr, defStyleRes);
     chip.loadFromAttributes(attrs, defStyleAttr, defStyleRes);
     return chip;
   }
@@ -332,7 +336,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
-  private ChipDrawable(Context context) {
+  private ChipDrawable(
+      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    super(context, attrs, defStyleAttr, defStyleRes);
     this.context = context;
     text = "";
 
@@ -353,12 +359,15 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.Chip, defStyleAttr, defStyleRes);
 
+    isShapeThemingEnabled = a.hasValue(R.styleable.Chip_shapeAppearance);
     setChipSurfaceColor(
         MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipSurfaceColor));
     setChipBackgroundColor(
         MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipBackgroundColor));
     setChipMinHeight(a.getDimension(R.styleable.Chip_chipMinHeight, 0f));
-    setChipCornerRadius(a.getDimension(R.styleable.Chip_chipCornerRadius, 0f));
+    if (a.hasValue(R.styleable.Chip_chipCornerRadius)) {
+      setChipCornerRadius(a.getDimension(R.styleable.Chip_chipCornerRadius, 0f));
+    }
     setChipStrokeColor(
         MaterialResources.getColorStateList(context, a, R.styleable.Chip_chipStrokeColor));
     setChipStrokeWidth(a.getDimension(R.styleable.Chip_chipStrokeWidth, 0f));
@@ -563,6 +572,10 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     return 0f;
   }
 
+  boolean isShapeThemingEnabled() {
+    return isShapeThemingEnabled;
+  }
+
   @Override
   public void draw(@NonNull Canvas canvas) {
     Rect bounds = getBounds();
@@ -583,6 +596,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     // 1. Draw chip background.
     drawChipBackground(canvas, bounds);
 
+    if (isShapeThemingEnabled) {
+      super.draw(canvas);
+    }
     // 2. Draw chip stroke.
     drawChipStroke(canvas, bounds);
 
@@ -615,15 +631,22 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     chipPaint.setColor(currentChipSurfaceColor);
     chipPaint.setStyle(Style.FILL);
     rectF.set(bounds);
-    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
+    if (!isShapeThemingEnabled) {
+      canvas.drawRoundRect(rectF, getChipCornerRadius(), getChipCornerRadius(), chipPaint);
+    } else {
+      getPathForSize(bounds, shapePath);
+      super.drawShape(canvas, chipPaint, shapePath, getBoundsAsRectF());
+    }
   }
 
   private void drawChipBackground(@NonNull Canvas canvas, Rect bounds) {
-    chipPaint.setColor(currentChipBackgroundColor);
-    chipPaint.setStyle(Style.FILL);
-    chipPaint.setColorFilter(getTintColorFilter());
-    rectF.set(bounds);
-    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
+    if (!isShapeThemingEnabled) {
+      chipPaint.setColor(currentChipBackgroundColor);
+      chipPaint.setStyle(Style.FILL);
+      chipPaint.setColorFilter(getTintColorFilter());
+      rectF.set(bounds);
+      canvas.drawRoundRect(rectF, getChipCornerRadius(), getChipCornerRadius(), chipPaint);
+    }
   }
 
   /**
@@ -631,10 +654,12 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
    * that the stroke perfectly fills the bounds of the chip.
    */
   private void drawChipStroke(@NonNull Canvas canvas, Rect bounds) {
-    if (chipStrokeWidth > 0) {
+    if (chipStrokeWidth > 0 && !isShapeThemingEnabled) {
       chipPaint.setColor(currentChipStrokeColor);
       chipPaint.setStyle(Style.STROKE);
-      chipPaint.setColorFilter(getTintColorFilter());
+      if (!isShapeThemingEnabled) {
+        chipPaint.setColorFilter(getTintColorFilter());
+      }
       rectF.set(
           bounds.left + chipStrokeWidth / 2f,
           bounds.top + chipStrokeWidth / 2f,
@@ -651,7 +676,12 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     chipPaint.setColor(currentCompatRippleColor);
     chipPaint.setStyle(Style.FILL);
     rectF.set(bounds);
-    canvas.drawRoundRect(rectF, chipCornerRadius, chipCornerRadius, chipPaint);
+    if (!isShapeThemingEnabled) {
+      canvas.drawRoundRect(rectF, getChipCornerRadius(), getChipCornerRadius(), chipPaint);
+    } else {
+      getPathForSize(bounds, shapePath);
+      super.drawShape(canvas, chipPaint, shapePath, getBoundsAsRectF());
+    }
   }
 
   private void drawChipIcon(@NonNull Canvas canvas, Rect bounds) {
@@ -965,6 +995,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
 
   @Override
   protected boolean onStateChange(int[] state) {
+    if (isShapeThemingEnabled) {
+      super.onStateChange(state);
+    }
     return onStateChange(state, getCloseIconState());
   }
 
@@ -1189,6 +1222,10 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   @Override
   @TargetApi(VERSION_CODES.LOLLIPOP)
   public void getOutline(@NonNull Outline outline) {
+    if (isShapeThemingEnabled) {
+      super.getOutline(outline);
+      return;
+    }
     Rect bounds = getBounds();
     if (!bounds.isEmpty()) {
       outline.setRoundRect(bounds, chipCornerRadius);
@@ -1309,6 +1346,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   public void setChipBackgroundColor(@Nullable ColorStateList chipBackgroundColor) {
     if (this.chipBackgroundColor != chipBackgroundColor) {
       this.chipBackgroundColor = chipBackgroundColor;
+      if (isShapeThemingEnabled) {
+        setFillColor(chipBackgroundColor);
+      }
       onStateChange(getState());
     }
   }
@@ -1330,16 +1370,31 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   }
 
   public float getChipCornerRadius() {
-    return chipCornerRadius;
+    return isShapeThemingEnabled
+        ? getShapeAppearanceModel().getTopLeftCorner().getCornerSize()
+        : chipCornerRadius;
   }
 
+  /**
+   * @deprecated Use {@link com.google.android.material.shape.ShapeAppearanceModel#setAllCorners(int,
+   *     int)} instead.
+   */
+  @Deprecated
   public void setChipCornerRadiusResource(@DimenRes int id) {
     setChipCornerRadius(context.getResources().getDimension(id));
   }
 
+  /**
+   * @deprecated Use {@link com.google.android.material.shape.ShapeAppearanceModel#setAllCorners(int,
+   *     int)} instead.
+   */
+  @Deprecated
   public void setChipCornerRadius(float chipCornerRadius) {
     if (this.chipCornerRadius != chipCornerRadius) {
       this.chipCornerRadius = chipCornerRadius;
+
+      ShapeAppearanceModel shapeAppearanceModel = getShapeAppearanceModel();
+      shapeAppearanceModel.setCornerRadius(chipCornerRadius);
       invalidateSelf();
     }
   }
@@ -1356,6 +1411,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   public void setChipStrokeColor(@Nullable ColorStateList chipStrokeColor) {
     if (this.chipStrokeColor != chipStrokeColor) {
       this.chipStrokeColor = chipStrokeColor;
+      if (isShapeThemingEnabled) {
+        setStrokeColor(chipStrokeColor);
+      }
       onStateChange(getState());
     }
   }
@@ -1373,7 +1431,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
       this.chipStrokeWidth = chipStrokeWidth;
 
       chipPaint.setStrokeWidth(chipStrokeWidth);
-
+      if (isShapeThemingEnabled) {
+        super.setStrokeWidth(chipStrokeWidth);
+      }
       invalidateSelf();
     }
   }

@@ -163,7 +163,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   @Dimension(unit = Dimension.PX)
   private int minTouchTargetSize;
-
   private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
   private final RectF rectF = new RectF();
@@ -197,9 +196,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     setChipDrawable(drawable);
 
-    if (VERSION.SDK_INT < VERSION_CODES.M) {
-      // This is necessary to work around a bug that doesn't support themed color referenced in
-      // ColorStateList for API level < 23.
       TypedArray a =
           ThemeEnforcement.obtainStyledAttributes(
               context,
@@ -207,16 +203,24 @@ public class Chip extends AppCompatCheckBox implements Delegate {
               R.styleable.Chip,
               defStyleAttr,
               R.style.Widget_MaterialComponents_Chip_Action);
+    if (VERSION.SDK_INT < VERSION_CODES.M) {
+      // This is necessary to work around a bug that doesn't support themed color referenced in
+      // ColorStateList for API level < 23.
       setTextColor(
           MaterialResources.getColorStateList(context, a, R.styleable.Chip_android_textColor));
     }
+    boolean hasShapeAppearanceAttribute = a.hasValue(R.styleable.Chip_shapeAppearance);
+    a.recycle();
+
     touchHelper = new ChipTouchHelper(this);
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
       ViewCompat.setAccessibilityDelegate(this, touchHelper);
     } else {
       updateAccessibilityDelegate();
     }
-    initOutlineProvider();
+    if (!hasShapeAppearanceAttribute) {
+      initOutlineProvider();
+    }
     // Set deferred values
     setChecked(deferredCheckedValue);
     // Defers to TextView to draw the text and ChipDrawable to render the
@@ -1145,12 +1149,22 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     return chipDrawable != null ? chipDrawable.getChipCornerRadius() : 0;
   }
 
+  /**
+   * @deprecated Use {@link com.google.android.material.shape.ShapeAppearanceModel#setAllCorners(int,
+   *     int)} instead.
+   */
+  @Deprecated
   public void setChipCornerRadiusResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipCornerRadiusResource(id);
     }
   }
 
+  /**
+   * @deprecated Use {@link com.google.android.material.shape.ShapeAppearanceModel#setAllCorners(int,
+   *     int)} instead.
+   */
+  @Deprecated
   public void setChipCornerRadius(float chipCornerRadius) {
     if (chipDrawable != null) {
       chipDrawable.setChipCornerRadius(chipCornerRadius);
