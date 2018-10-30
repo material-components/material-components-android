@@ -1067,8 +1067,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Override
   public boolean isStateful() {
-    return (tintList != null && tintList.isStateful())
-        || (strokeTintList != null && strokeTintList.isStateful());
+    return super.isStateful()
+        || (tintList != null && tintList.isStateful())
+        || (strokeTintList != null && strokeTintList.isStateful())
+        || (strokeColor != null && strokeColor.isStateful())
+        || (fillColor != null && fillColor.isStateful());
   }
 
   @Override
