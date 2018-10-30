@@ -266,9 +266,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Override
   public void setTintMode(PorterDuff.Mode tintMode) {
-    this.tintMode = tintMode;
-    updateTintFilter();
-    invalidateSelf();
+    if (this.tintMode != tintMode) {
+      this.tintMode = tintMode;
+      updateTintFilter();
+      invalidateSelf();
+    }
   }
 
   @Override
@@ -379,8 +381,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Override
   public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
-    this.alpha = alpha;
-    invalidateSelf();
+    if (this.alpha != alpha) {
+      this.alpha = alpha;
+      invalidateSelf();
+    }
   }
 
   @Override
@@ -434,8 +438,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * instead of native elevation shadows.
    */
   public void setShadowCompatibilityMode(@CompatibilityShadowMode int mode) {
-    shadowCompatMode = mode;
-    invalidateSelf();
+    if (shadowCompatMode != mode) {
+      shadowCompatMode = mode;
+      invalidateSelf();
+    }
   }
 
   /**
@@ -494,8 +500,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @param interpolation the desired interpolation.
    */
   public void setInterpolation(float interpolation) {
-    this.interpolation = interpolation;
-    invalidateSelf();
+    if (this.interpolation != interpolation) {
+      this.interpolation = interpolation;
+      invalidateSelf();
+    }
   }
 
   /**
@@ -517,9 +525,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * shadow.
    */
   public void setShadowElevation(int shadowElevation) {
-    this.shadowCompatRadius = shadowElevation;
-    this.shadowCompatElevation = shadowElevation;
-    invalidateSelf();
+    if (this.shadowCompatElevation != shadowElevation) {
+      this.shadowCompatRadius = shadowElevation;
+      this.shadowCompatElevation = shadowElevation;
+      invalidateSelf();
+    }
   }
 
   /**
@@ -538,8 +548,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * shadow appears below it.
    */
   public void setShadowVerticalOffset(int shadowOffset) {
-    this.shadowCompatOffset = shadowOffset;
-    invalidateSelf();
+    if (this.shadowCompatOffset != shadowOffset) {
+      this.shadowCompatOffset = shadowOffset;
+      invalidateSelf();
+    }
   }
 
   /**
@@ -559,8 +571,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * shadow to appear to be drawn from the bottom.
    */
   public void setShadowCompatRotation(int shadowRotation) {
-    this.shadowCompatRotation = shadowRotation;
-    invalidateSelf();
+    if (this.shadowCompatRotation != shadowRotation) {
+      this.shadowCompatRotation = shadowRotation;
+      invalidateSelf();
+    }
   }
 
   /**
@@ -608,8 +622,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @param scale the desired scale.
    */
   public void setScale(float scale) {
-    this.scale = scale;
-    invalidateSelf();
+    if (this.scale != scale) {
+      this.scale = scale;
+      invalidateSelf();
+    }
   }
 
   /**
@@ -620,8 +636,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @param useTintColorForShadow true if color should match; false otherwise.
    */
   public void setUseTintColorForShadow(boolean useTintColorForShadow) {
-    this.useTintColorForShadow = useTintColorForShadow;
-    invalidateSelf();
+    if (this.useTintColorForShadow != useTintColorForShadow) {
+      this.useTintColorForShadow = useTintColorForShadow;
+      invalidateSelf();
+    }
   }
 
   /**
