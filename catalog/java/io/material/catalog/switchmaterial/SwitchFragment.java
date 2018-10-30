@@ -63,7 +63,7 @@ public class SwitchFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_switch_title, R.drawable.ic_switches_24px) {
+      return new FeatureDemo(R.string.cat_switch_title, R.drawable.ic_switch) {
         @Override
         public Fragment createFragment() {
           return new SwitchFragment();

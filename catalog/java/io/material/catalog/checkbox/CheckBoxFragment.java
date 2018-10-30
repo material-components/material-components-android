@@ -63,7 +63,7 @@ public class CheckBoxFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_checkbox_title, R.drawable.ic_check_box_black_24dp) {
+      return new FeatureDemo(R.string.cat_checkbox_title, R.drawable.ic_checkbox) {
         @Override
         public Fragment createFragment() {
           return new CheckBoxFragment();
