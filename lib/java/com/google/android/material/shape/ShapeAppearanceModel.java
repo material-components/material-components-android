@@ -66,6 +66,15 @@ public class ShapeAppearanceModel {
 
   public ShapeAppearanceModel(
       Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    this(context, attrs, defStyleAttr, defStyleRes, 0);
+  }
+
+  public ShapeAppearanceModel(
+      Context context,
+      AttributeSet attrs,
+      @AttrRes int defStyleAttr,
+      @StyleRes int defStyleRes,
+      int defaultCornerSize) {
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.MaterialShape, defStyleAttr, defStyleRes);
@@ -93,7 +102,8 @@ public class ShapeAppearanceModel {
     int cornerFamilyBottomLeft =
         a.getInt(R.styleable.ShapeAppearance_cornerFamilyBottomLeft, cornerFamily);
 
-    int cornerSize = a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSize, 0);
+    int cornerSize =
+        a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSize, defaultCornerSize);
     int cornerSizeTopLeft =
         a.getDimensionPixelSize(R.styleable.ShapeAppearance_cornerSizeTopLeft, cornerSize);
     int cornerSizeTopRight =
