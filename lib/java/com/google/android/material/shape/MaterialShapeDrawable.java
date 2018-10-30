@@ -772,18 +772,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   private void drawFillShape(Canvas canvas) {
-    drawShape(canvas, fillPaint, path, getFillBounds());
-  }
-
-  protected RectF getFillBounds() {
-    RectF fillBounds = getBoundsAsRectF();
-    // If there's a stroke, inset the bounds by a hairline to prevent the fill from peeking out from
-    // under the stroke.
-    if (hasStroke()) {
-      float hairline = 1f;
-      fillBounds.inset(hairline, hairline);
-    }
-    return fillBounds;
+    drawShape(canvas, fillPaint, path, getBoundsAsRectF());
   }
 
   private void drawStrokeShape(Canvas canvas) {
