@@ -754,11 +754,15 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
               Bitmap.Config.ARGB_8888);
       Canvas shadowCanvas = new Canvas(shadowLayer);
 
-      shadowCanvas.translate(shadowCompatRadius, shadowCompatRadius);
+      // Top Left of shadow (left - shadowCompatRadius, top - shadowCompatRadius) should be drawn at
+      // (0, 0) on shadowCanvas. Offset is handled by prepareCanvasForShadow and drawCompatShadow.
+      float shadowLeft = getBounds().left - shadowCompatRadius;
+      float shadowTop = getBounds().top - shadowCompatRadius;
+      shadowCanvas.translate(-shadowLeft, -shadowTop);
 
       drawCompatShadow(shadowCanvas);
 
-      canvas.drawBitmap(shadowLayer, -shadowCompatRadius, -shadowCompatRadius, null);
+      canvas.drawBitmap(shadowLayer, shadowLeft, shadowTop, null);
 
       // Because we create the bitmap every time, we can recycle it. We may need to stop doing this
       // if we end up keeping the bitmap in memory for performance.
