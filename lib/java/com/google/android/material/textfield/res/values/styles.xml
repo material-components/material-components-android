@@ -50,7 +50,7 @@
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
     <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox</item>
     <item name="boxBackgroundMode">filled</item>
-    <item name="boxBackgroundColor">@color/mtrl_textinput_filled_box_default_background_color</item>
+    <item name="boxBackgroundColor">@color/mtrl_filled_background_color</item>
     <item name="boxCollapsedPaddingTop">12dp</item>
     <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_small</item>
     <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_small</item>

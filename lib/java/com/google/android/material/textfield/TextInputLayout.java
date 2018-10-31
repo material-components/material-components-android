@@ -48,11 +48,13 @@ import android.support.annotation.StringRes;
 import android.support.annotation.StyleRes;
 import android.support.annotation.VisibleForTesting;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.internal.CollapsingTextHelper;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.resources.MaterialResources;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.AbsSavedState;
@@ -289,8 +291,14 @@ public class TextInputLayout extends LinearLayout {
     boxCornerRadiusBottomStart =
         a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomStart, 0f);
 
-    boxBackgroundColor =
-        a.getColor(R.styleable.TextInputLayout_boxBackgroundColor, Color.TRANSPARENT);
+    ColorStateList boxBackgroundColorStateList =
+        MaterialResources.getColorStateList(
+            context, a, R.styleable.TextInputLayout_boxBackgroundColor);
+    if (boxBackgroundColorStateList != null) {
+      boxBackgroundColor = boxBackgroundColorStateList.getDefaultColor();
+    } else {
+      boxBackgroundColor = Color.TRANSPARENT;
+    }
 
     boxStrokeWidthDefaultPx =
         context
@@ -312,9 +320,8 @@ public class TextInputLayout extends LinearLayout {
     }
 
     ColorStateList boxStrokeColorStateList =
-        AppCompatResources.getColorStateList(
-            context, a.getResourceId(R.styleable.TextInputLayout_boxStrokeColor, -1));
-    if (boxStrokeColorStateList.isStateful()) {
+        MaterialResources.getColorStateList(context, a, R.styleable.TextInputLayout_boxStrokeColor);
+    if (boxStrokeColorStateList != null && boxStrokeColorStateList.isStateful()) {
       defaultStrokeColor = boxStrokeColorStateList.getDefaultColor();
       disabledColor =
           boxStrokeColorStateList.getColorForState(new int[] {-android.R.attr.state_enabled}, -1);
@@ -1399,6 +1406,21 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  /*
+   * Calculates the box background color that should be set.
+   *
+   * The filled text field has a surface layer with value {@code ?attr/colorSurface} underneath its
+   * background that is taken into account when calculating the background color.
+   */
+  private int calculateBoxBackgroundColor() {
+    int backgroundColor = boxBackgroundColor;
+    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+      int surfaceLayerColor = MaterialColors.getColor(this, R.attr.colorSurface, Color.TRANSPARENT);
+      backgroundColor = MaterialColors.layer(surfaceLayerColor, boxBackgroundColor);
+    }
+    return backgroundColor;
+  }
+
   private void applyBoxAttributes() {
     if (boxBackground == null) {
       return;
@@ -1426,7 +1448,7 @@ public class TextInputLayout extends LinearLayout {
     }
 
     boxBackground.setCornerRadii(getCornerRadiiAsArray());
-    boxBackground.setColor(boxBackgroundColor);
+    boxBackground.setColor(calculateBoxBackgroundColor());
     invalidate();
   }
 
