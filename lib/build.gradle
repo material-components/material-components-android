@@ -158,6 +158,9 @@ task generateJdiffReport(type: Javadoc) {
     def newApiDir = project.property("newApiDir")
     def oldApiDir = project.property("oldApiDir")
     destinationDir = new File(outputPath)
+    source = android.sourceSets.main.java.source
+    source = source.findAll { it.name.endsWith(".java") }
+    classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
     options.doclet = "jdiff.JDiff"
     options.addStringOption("subpackages", ".")
     options.addStringOption("newapidir", newApiDir)
