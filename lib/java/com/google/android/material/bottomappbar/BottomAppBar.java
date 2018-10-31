@@ -60,6 +60,7 @@ import android.support.v7.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -705,6 +706,17 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       behavior = new Behavior();
     }
     return behavior;
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    // Automatically don't clip children for the parent view of BottomAppBar. This allows the shadow
+    // to be drawn outside the bounds.
+    if (getParent() instanceof ViewGroup) {
+      ((ViewGroup) getParent()).setClipChildren(false);
+    }
   }
 
   /**

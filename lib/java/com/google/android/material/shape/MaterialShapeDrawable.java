@@ -436,6 +436,12 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   /**
    * Set the shadow compatibility mode. This allows control over when fake shadows should drawn
    * instead of native elevation shadows.
+   *
+   * <p>Note: To prevent clipping of fake shadow for views on API levels above lollipop, the parent
+   * view must disable clipping of children by calling {@link
+   * android.view.ViewGroup#setClipChildren(boolean)}, or by setting `android:clipChildren="false"`
+   * in xml. `clipToPadding` may also need to be false if there is any padding on the parent that
+   * could intersect the shadow.
    */
   public void setShadowCompatibilityMode(@CompatibilityShadowMode int mode) {
     if (shadowCompatMode != mode) {
@@ -845,13 +851,17 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     int shadowOffsetX = (int) (shadowCompatOffset * Math.sin(Math.toRadians(shadowCompatRotation)));
     int shadowOffsetY = (int) (shadowCompatOffset * Math.cos(Math.toRadians(shadowCompatRotation)));
 
-    // Add space and offset the canvas for the shadows. Otherwise any shadows drawn outside would
-    // be clipped and not visible.
-    Rect canvasClipBounds = canvas.getClipBounds();
-    canvasClipBounds.inset(-shadowCompatRadius, -shadowCompatRadius);
-    // TODO: double check that offset doesn't work for sure
-    canvasClipBounds.inset(-Math.abs(shadowOffsetX), -Math.abs(shadowOffsetY));
-    canvas.clipRect(canvasClipBounds, Region.Op.REPLACE);
+    // We only handle clipping as a convenience for older apis where we are trying to seamlessly
+    // provide fake shadows. On newer versions of android, we require that the parent is set so that
+    // clipChildren is false.
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      // Add space and offset the canvas for the shadows. Otherwise any shadows drawn outside would
+      // be clipped and not visible.
+      Rect canvasClipBounds = canvas.getClipBounds();
+      canvasClipBounds.inset(-shadowCompatRadius, -shadowCompatRadius);
+      canvasClipBounds.offset(-Math.abs(shadowOffsetX), -Math.abs(shadowOffsetY));
+      canvas.clipRect(canvasClipBounds, Region.Op.REPLACE);
+    }
 
     // Translate the canvas by an amount specified by the shadowCompatOffset. This will make the
     // shadow appear at and angle from the shape.
