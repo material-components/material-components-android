@@ -38,7 +38,7 @@ public class CutCornerTreatment extends CornerTreatment {
 
   @Override
   public void getCornerPath(float angle, float interpolation, ShapePath shapePath) {
-    shapePath.reset(0, cornerSize * interpolation);
+    shapePath.reset(0, cornerSize * interpolation, ShapePath.ANGLE_LEFT, 180 - angle);
     shapePath.lineTo(
         (float) (Math.sin(Math.toRadians(angle)) * cornerSize * interpolation),
         // Something about using cos() is causing rounding which prevents the path from being convex

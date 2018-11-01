@@ -32,10 +32,16 @@ import java.util.List;
  */
 @Experimental("The shapes API is currently experimental and subject to change")
 public class ShapePath {
+
+  private static final float ANGLE_UP = 270;
+  protected static final float ANGLE_LEFT = 180;
+
   public float startX;
   public float startY;
   public float endX;
   public float endY;
+  public float currentShadowAngle;
+  public float endShadowAngle;
 
   private final List<PathOperation> operations = new ArrayList<>();
   private final List<ShadowCompatOperation> shadowCompatOperations = new ArrayList<>();
@@ -49,10 +55,16 @@ public class ShapePath {
   }
 
   public void reset(float startX, float startY) {
+    reset(startX, startY, ANGLE_UP, 0);
+  }
+
+  public void reset(float startX, float startY, float shadowStartAngle, float shadowSweepAngle) {
     this.startX = startX;
     this.startY = startY;
     this.endX = startX;
     this.endY = startY;
+    this.currentShadowAngle = shadowStartAngle;
+    this.endShadowAngle = (shadowStartAngle + shadowSweepAngle) % 360;
     this.operations.clear();
     this.shadowCompatOperations.clear();
   }
@@ -69,8 +81,13 @@ public class ShapePath {
     operation.y = y;
     operations.add(operation);
 
+    LineShadowOperation shadowOperation = new LineShadowOperation(operation, endX, endY);
+
     // The previous endX and endY is the starting point for this shadow operation.
-    shadowCompatOperations.add(new LineShadowOperation(operation, endX, endY));
+    addShadowCompatOperation(
+        shadowOperation,
+        ANGLE_UP + shadowOperation.getAngle(),
+        ANGLE_UP + shadowOperation.getAngle());
 
     endX = x;
     endY = y;
@@ -113,7 +130,16 @@ public class ShapePath {
     operation.sweepAngle = sweepAngle;
     operations.add(operation);
 
-    shadowCompatOperations.add(new ArcShadowOperation(operation));
+    ArcShadowOperation arcShadowOperation = new ArcShadowOperation(operation);
+    float endAngle = startAngle + sweepAngle;
+    // Flip the startAngle and endAngle when drawing the shadow inside the bounds. They represent
+    // the angles from the center of the circle to the start or end of the arc, respectively. When
+    // the shadow is drawn inside the arc, it is going the opposite direction.
+    boolean drawShadowInsideBounds = sweepAngle < 0;
+    addShadowCompatOperation(
+        arcShadowOperation,
+        drawShadowInsideBounds ? (180 + startAngle) % 360 : startAngle,
+        drawShadowInsideBounds ? (180 + endAngle) % 360 : endAngle);
 
     endX = (left + right) * 0.5f
         + (right - left) / 2 * (float) Math.cos(Math.toRadians(startAngle + sweepAngle));
@@ -139,6 +165,8 @@ public class ShapePath {
    * whole path defined by this ShapePath.
    */
   ShadowCompatOperation createShadowCompatOperation() {
+    // If the shadowCompatOperations don't end on the desired endShadowAngle, add an arc to do so.
+    addConnectingShadowIfNecessary(endShadowAngle);
     final List<ShadowCompatOperation> operations = new ArrayList<>(shadowCompatOperations);
     return new ShadowCompatOperation() {
       @Override
@@ -149,6 +177,38 @@ public class ShapePath {
         }
       }
     };
+  }
+
+  /**
+   * Adds a {@link ShadowCompatOperation}, adding an {@link ArcShadowOperation} if needed in order
+   * to connect the previous shadow end to the new shadow operation's beginning.
+   */
+  private void addShadowCompatOperation(
+      ShadowCompatOperation shadowOperation, float startShadowAngle, float endShadowAngle) {
+    addConnectingShadowIfNecessary(startShadowAngle);
+    shadowCompatOperations.add(shadowOperation);
+    currentShadowAngle = endShadowAngle;
+  }
+
+  /**
+   * Create an {@link ArcShadowOperation} to fill in a shadow between the currently drawn shadow and
+   * the next shadow angle, if there would be a gap.
+   */
+  private void addConnectingShadowIfNecessary(float nextShadowAngle) {
+    if (currentShadowAngle == nextShadowAngle) {
+      // Previously drawn shadow lines up with the next shadow, so don't draw anything.
+      return;
+    }
+    float shadowSweep = (nextShadowAngle - currentShadowAngle + 360) % 360;
+    if (shadowSweep > 180) {
+      // Shadows are actually overlapping, so don't draw anything.
+      return;
+    }
+    PathArcOperation pathArcOperation = new PathArcOperation(endX, endY, endX, endY);
+    pathArcOperation.startAngle = currentShadowAngle;
+    pathArcOperation.sweepAngle = shadowSweep;
+    shadowCompatOperations.add(new ArcShadowOperation(pathArcOperation));
+    currentShadowAngle = nextShadowAngle;
   }
 
   /**
@@ -178,12 +238,18 @@ public class ShapePath {
     @Override
     public void draw(
         Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
-      final RectF rect = new RectF();
-      rect.top = startY;
-      rect.bottom = startY;
-      rect.left = startX;
-      rect.right = operation.x;
-      shadowRenderer.drawEdgeShadow(canvas, transform, rect, shadowElevation);
+      final float height = operation.y - startY;
+      final float width = operation.x - startX;
+      final RectF rect = new RectF(0, 0, (float) Math.hypot(height, width), 0);
+      final Matrix edgeTransform = new Matrix(transform);
+      // transform & rotate the canvas so that the rect passed to drawEdgeShadow is horizontal.
+      edgeTransform.preTranslate(startX, startY);
+      edgeTransform.preRotate(getAngle());
+      shadowRenderer.drawEdgeShadow(canvas, edgeTransform, rect, shadowElevation);
+    }
+
+    float getAngle() {
+      return (float) Math.toDegrees(Math.atan((operation.y - startY) / (operation.x - startX)));
     }
   }
 

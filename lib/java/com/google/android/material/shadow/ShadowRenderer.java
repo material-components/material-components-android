@@ -105,8 +105,6 @@ public class ShadowRenderer {
             edgePositions,
             Shader.TileMode.CLAMP));
 
-    // TODO: handle angled edges, or cut corners by rotating the matrix
-
     canvas.save();
     canvas.concat(transform);
     canvas.drawRect(bounds, edgeShadowPaint);
