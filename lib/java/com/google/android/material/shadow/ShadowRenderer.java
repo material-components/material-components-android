@@ -71,14 +71,13 @@ public class ShadowRenderer {
   public ShadowRenderer(int color) {
     setShadowColor(color);
 
-    cornerShadowPaint = new Paint(Paint.ANTI_ALIAS_FLAG | Paint.DITHER_FLAG);
+    cornerShadowPaint = new Paint(Paint.DITHER_FLAG);
     cornerShadowPaint.setStyle(Paint.Style.FILL);
 
     shadowPaint = new Paint();
     shadowPaint.setColor(shadowStartColor);
 
     edgeShadowPaint = new Paint(cornerShadowPaint);
-    edgeShadowPaint.setAntiAlias(false);
   }
 
   public void setShadowColor(int color) {
