@@ -46,10 +46,10 @@ import com.google.android.material.animation.MatrixEvaluator;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.internal.CircularBorderDrawable;
 import com.google.android.material.internal.StateListAnimator;
-import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowDrawableWrapper;
 import com.google.android.material.shadow.ShadowViewDelegate;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
@@ -79,6 +79,8 @@ class FloatingActionButtonImpl {
   @Nullable Animator currentAnimator;
   @Nullable MotionSpec showMotionSpec;
   @Nullable MotionSpec hideMotionSpec;
+  @Nullable ShapeAppearanceModel shapeAppearance;
+  boolean usingDefaultCorner;
 
   @Nullable private MotionSpec defaultShowMotionSpec;
   @Nullable private MotionSpec defaultHideMotionSpec;
@@ -132,7 +134,7 @@ class FloatingActionButtonImpl {
   static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
   static final int[] EMPTY_STATE_SET = new int[0];
 
-  final VisibilityAwareImageButton view;
+  final FloatingActionButton view;
   final ShadowViewDelegate shadowViewDelegate;
 
   private final Rect tmpRect = new Rect();
@@ -142,7 +144,7 @@ class FloatingActionButtonImpl {
 
   private ViewTreeObserver.OnPreDrawListener preDrawListener;
 
-  FloatingActionButtonImpl(VisibilityAwareImageButton view, ShadowViewDelegate shadowViewDelegate) {
+  FloatingActionButtonImpl(FloatingActionButton view, ShadowViewDelegate shadowViewDelegate) {
     this.view = view;
     this.shadowViewDelegate = shadowViewDelegate;
 
@@ -185,7 +187,7 @@ class FloatingActionButtonImpl {
     }
 
     // Now we created a mask Drawable which will be used for touch feedback.
-    GradientDrawable touchFeedbackShape = createShapeDrawable();
+    GradientDrawable touchFeedbackShape = (GradientDrawable) createShapeDrawable();
 
     // We'll now wrap that touch feedback mask drawable with a ColorStateList. We do not need
     // to inset for any border here as LayerDrawable will nest the padding for us
@@ -308,6 +310,11 @@ class FloatingActionButtonImpl {
       // Then scale it as requested.
       matrix.postScale(scale, scale, maxImageSize / 2f, maxImageSize / 2f);
     }
+  }
+
+  final void setShapeAppearance(ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
+    this.shapeAppearance = shapeAppearance;
+    this.usingDefaultCorner = usingDefaultCorner;
   }
 
   @Nullable
@@ -596,6 +603,10 @@ class FloatingActionButtonImpl {
     // Ignore pre-v21
   }
 
+  void updateSize() {
+    // Ignore pre-v21
+  }
+
   final void updatePadding() {
     Rect rect = tmpRect;
     getPadding(rect);
@@ -665,15 +676,11 @@ class FloatingActionButtonImpl {
     }
   }
 
-  GradientDrawable createShapeDrawable() {
-    GradientDrawable d = newGradientDrawableForShape();
-    d.setShape(GradientDrawable.OVAL);
-    d.setColor(Color.WHITE);
-    return d;
-  }
-
-  GradientDrawable newGradientDrawableForShape() {
-    return new GradientDrawable();
+  Drawable createShapeDrawable() {
+    GradientDrawable drawable = new GradientDrawable();
+    drawable.setShape(GradientDrawable.OVAL);
+    drawable.setColor(Color.WHITE);
+    return drawable;
   }
 
   boolean isOrWillBeShown() {
@@ -774,7 +781,7 @@ class FloatingActionButtonImpl {
     return ViewCompat.isLaidOut(view) && !view.isInEditMode();
   }
 
-  private void updateFromViewRotation() {
+  void updateFromViewRotation() {
     if (Build.VERSION.SDK_INT == 19) {
       // KitKat seems to have an issue with views which are rotated with angles which are
       // not divisible by 90. Worked around by moving to software rendering in these cases.

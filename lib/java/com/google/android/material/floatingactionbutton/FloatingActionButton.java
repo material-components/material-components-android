@@ -57,6 +57,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shadow.ShadowViewDelegate;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.stateful.ExtendableSavedState;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.graphics.drawable.DrawableCompat;
@@ -97,6 +98,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
+  private static final int DEFAULT_STYLE_RES = R.style.Widget_Design_FloatingActionButton;
 
   /** Callback to be invoked when the visibility of a FloatingActionButton changes. */
   public abstract static class OnVisibilityChangedListener {
@@ -199,7 +201,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
             attrs,
             R.styleable.FloatingActionButton,
             defStyleAttr,
-            R.style.Widget_Design_FloatingActionButton);
+            DEFAULT_STYLE_RES);
     backgroundTint =
         MaterialResources.getColorStateList(
             context, a, R.styleable.FloatingActionButton_backgroundTint);
@@ -225,7 +227,10 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_showMotionSpec);
     MotionSpec hideMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_hideMotionSpec);
+    ShapeAppearanceModel shapeAppearance =
+        new ShapeAppearanceModel(context, attrs, defStyleAttr, DEFAULT_STYLE_RES, -1);
 
+    boolean usingDefaultCorner = isUsingDefaultCorner(shapeAppearance);
     a.recycle();
 
     imageHelper = new AppCompatImageHelper(this);
@@ -233,6 +238,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
+    getImpl().setShapeAppearance(shapeAppearance, usingDefaultCorner);
     getImpl().setBackgroundDrawable(backgroundTint, backgroundTintMode, rippleColor, borderWidth);
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
@@ -493,6 +499,13 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /**
+   * Set the FloatingActionButton shape appearance.
+   */
+  public void setShapeAppearance(ShapeAppearanceModel shapeAppearance) {
+    getImpl().setShapeAppearance(shapeAppearance, isUsingDefaultCorner(shapeAppearance));
+  }
+
+  /**
    * Shows the button.
    *
    * <p>This method will animate the button show if the view has already been laid out.
@@ -621,6 +634,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     customSize = NO_CUSTOM_SIZE;
     if (size != this.size) {
       this.size = size;
+      getImpl().updateSize();
       requestLayout();
     }
   }
@@ -1258,6 +1272,10 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   public void removeTransformationListener(TransformationListener<FloatingActionButton> listener) {
     getImpl().removeTransformationListener(new TransformationListenerWrapper(listener));
+  }
+
+  private boolean isUsingDefaultCorner(ShapeAppearanceModel shapeAppearance) {
+    return shapeAppearance.getTopRightCorner().getCornerSize() == -1;
   }
 
   class TransformationListenerWrapper implements InternalTransformationListener {

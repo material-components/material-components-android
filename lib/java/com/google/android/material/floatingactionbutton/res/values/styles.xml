@@ -42,6 +42,16 @@
     <item name="rippleColor">@color/mtrl_fab_ripple_color</item>
     <item name="showMotionSpec">@animator/mtrl_fab_show_motion_spec</item>
     <item name="hideMotionSpec">@animator/mtrl_fab_hide_motion_spec</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+    <item name="shapeAppearanceOverlay">
+      @style/ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton
+    </item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton" parent="">
+    <item name="cornerFamily">rounded</item>
+    <!-- use @null to change to 50% programmatically. -->
+    <item name="cornerSize">@null</item>
   </style>
 
 </resources>

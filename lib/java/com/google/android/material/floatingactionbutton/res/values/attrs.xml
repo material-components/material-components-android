@@ -50,6 +50,11 @@
     <attr name="showMotionSpec"/>
     <!-- Motion spec for hide animation. This should be a MotionSpec resource. -->
     <attr name="hideMotionSpec"/>
+    <!-- Shape appearance style reference for FloatingActionButton. Attribute declaration
+         is in the shape package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for FloatingActionButton. -->
+    <attr name="shapeAppearanceOverlay"/>
   </declare-styleable>
 
   <declare-styleable name="FloatingActionButton_Behavior_Layout">

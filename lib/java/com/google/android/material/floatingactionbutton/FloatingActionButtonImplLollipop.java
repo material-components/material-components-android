@@ -24,7 +24,6 @@ import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -34,11 +33,11 @@ import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import com.google.android.material.internal.CircularBorderDrawable;
 import com.google.android.material.internal.CircularBorderDrawableLollipop;
-import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowDrawableWrapper;
 import com.google.android.material.shadow.ShadowViewDelegate;
-import android.support.v4.graphics.drawable.DrawableCompat;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,7 +48,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   private InsetDrawable insetDrawable;
 
   FloatingActionButtonImplLollipop(
-      VisibilityAwareImageButton view, ShadowViewDelegate shadowViewDelegate) {
+      FloatingActionButton view, ShadowViewDelegate shadowViewDelegate) {
     super(view, shadowViewDelegate);
   }
 
@@ -60,10 +59,10 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
       ColorStateList rippleColor,
       int borderWidth) {
     // Now we need to tint the shape background with the tint
-    shapeDrawable = DrawableCompat.wrap(createShapeDrawable());
-    DrawableCompat.setTintList(shapeDrawable, backgroundTint);
+    shapeDrawable = createShapeDrawable();
+    shapeDrawable.setTintList(backgroundTint);
     if (backgroundTintMode != null) {
-      DrawableCompat.setTintMode(shapeDrawable, backgroundTintMode);
+      shapeDrawable.setTintMode(backgroundTintMode);
     }
 
     final Drawable rippleContent;
@@ -92,6 +91,14 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     } else {
       super.setRippleColor(rippleColor);
     }
+  }
+
+  @Override
+  Drawable createShapeDrawable() {
+    if (usingDefaultCorner) {
+      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
+    }
+    return new AlwaysStatefulMaterialShapeDrawable(shapeAppearance);
   }
 
   @Override
@@ -200,11 +207,27 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
         view.setTranslationZ(0);
       }
     }
-    ;
   }
 
   @Override
   void jumpDrawableToCurrentState() {
+    // no-op
+  }
+
+  @Override
+  void updateSize() {
+    if (!usingDefaultCorner) {
+      // Leave shape appearance as is.
+      return;
+    }
+
+    ShapeAppearanceModel shapeAppearanceModel =
+        ((MaterialShapeDrawable) shapeDrawable).getShapeAppearanceModel();
+    shapeAppearanceModel.setCornerRadius(view.getSizeDimension() / 2);
+  }
+
+  @Override
+  void updateFromViewRotation() {
     // no-op
   }
 
@@ -216,11 +239,6 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   @Override
   CircularBorderDrawable newCircularDrawable() {
     return new CircularBorderDrawableLollipop();
-  }
-
-  @Override
-  GradientDrawable newGradientDrawableForShape() {
-    return new AlwaysStatefulGradientDrawable();
   }
 
   @Override
@@ -248,7 +266,12 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
    * work for state changes. We workaround it by saying that we are always stateful. If we don't
    * have a stateful tint, the change is ignored anyway.
    */
-  static class AlwaysStatefulGradientDrawable extends GradientDrawable {
+  static class AlwaysStatefulMaterialShapeDrawable extends MaterialShapeDrawable {
+
+    AlwaysStatefulMaterialShapeDrawable(ShapeAppearanceModel shapeAppearanceModel) {
+      super(shapeAppearanceModel);
+    }
+
     @Override
     public boolean isStateful() {
       return true;
