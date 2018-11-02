@@ -122,10 +122,10 @@ import java.util.List;
  * the close icon with {@link #setOnCloseIconClickListener(OnClickListener)}.
  *
  * <p>For proper rendering of the ancestor TextView in RTL mode, call {@link
- * #setLayoutDirection(int)} with <code>View.LAYOUT_DIRECTION_LOCALE</code>. By default,
- * TextView's layout rendering sets the text padding in LTR on initial rendering and it only renders
- * correctly after the layout has been invalidated so you need to ensure that initial rendering has
- * the correct layout.
+ * #setLayoutDirection(int)} with <code>View.LAYOUT_DIRECTION_LOCALE</code>. By default, TextView's
+ * layout rendering sets the text padding in LTR on initial rendering and it only renders correctly
+ * after the layout has been invalidated so you need to ensure that initial rendering has the
+ * correct layout.
  *
  * @see ChipDrawable
  */
@@ -1112,39 +1112,81 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   // Getters and setters for attributes.
 
+  /**
+   * Returns this chip's background color.
+   *
+   * @see #setChipBackgroundColor(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipBackgroundColor
+   */
   @Nullable
   public ColorStateList getChipBackgroundColor() {
     return chipDrawable != null ? chipDrawable.getChipBackgroundColor() : null;
   }
 
+  /**
+   * Sets this chip's background color using a resource id.
+   *
+   * @param id The resource id of this chip's background color.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipBackgroundColor
+   */
   public void setChipBackgroundColorResource(@ColorRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipBackgroundColorResource(id);
     }
   }
 
+  /**
+   * Sets this chip's background color.
+   *
+   * @param chipBackgroundColor This chip's background color.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipBackgroundColor
+   */
   public void setChipBackgroundColor(@Nullable ColorStateList chipBackgroundColor) {
     if (chipDrawable != null) {
       chipDrawable.setChipBackgroundColor(chipBackgroundColor);
     }
   }
 
+  /**
+   * Returns this chip's minimum height.
+   *
+   * @see #setChipMinHeight(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
+   */
   public float getChipMinHeight() {
     return chipDrawable != null ? chipDrawable.getChipMinHeight() : 0;
   }
 
+  /**
+   * Sets this chip's minimum height using a resource id.
+   *
+   * @param id The resource id of this chip's mininum height.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
+   */
   public void setChipMinHeightResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipMinHeightResource(id);
     }
   }
 
+  /**
+   * Sets this chip's minimum height.
+   *
+   * @param minHeight This chip's mininum height.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
+   */
   public void setChipMinHeight(float minHeight) {
     if (chipDrawable != null) {
       chipDrawable.setChipMinHeight(minHeight);
     }
   }
 
+  /**
+   * Returns this chip's corner radius.
+   *
+   * @see #setChipCornerRadius(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipCornerRadius
+   */
   public float getChipCornerRadius() {
     return chipDrawable != null ? chipDrawable.getChipCornerRadius() : 0;
   }
@@ -1171,44 +1213,92 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  /**
+   * Returns this chip's stroke color.
+   *
+   * @see #setChipStrokeColor(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeColor
+   */
   @Nullable
   public ColorStateList getChipStrokeColor() {
     return chipDrawable != null ? chipDrawable.getChipStrokeColor() : null;
   }
 
+  /**
+   * Sets this chip's stroke color using a resource id.
+   *
+   * @param id The resource id of this chip's stroke color.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeColor
+   */
   public void setChipStrokeColorResource(@ColorRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipStrokeColorResource(id);
     }
   }
 
+  /**
+   * Sets this chip's stroke color.
+   *
+   * @param chipStrokeColor This chip's stroke color.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeColor
+   */
   public void setChipStrokeColor(@Nullable ColorStateList chipStrokeColor) {
     if (chipDrawable != null) {
       chipDrawable.setChipStrokeColor(chipStrokeColor);
     }
   }
 
+  /**
+   * Returns this chip's stroke width.
+   *
+   * @see #setChipStrokeWidth(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeWidth
+   */
   public float getChipStrokeWidth() {
     return chipDrawable != null ? chipDrawable.getChipStrokeWidth() : 0;
   }
 
+  /**
+   * Sets this chip's stroke width using a resource id.
+   *
+   * @param id The resource id of this chip's stroke width.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeWidth
+   */
   public void setChipStrokeWidthResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipStrokeWidthResource(id);
     }
   }
 
+  /**
+   * Sets this chip's stroke width.
+   *
+   * @param chipStrokeWidth This chip's stroke width.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeWidth
+   */
   public void setChipStrokeWidth(float chipStrokeWidth) {
     if (chipDrawable != null) {
       chipDrawable.setChipStrokeWidth(chipStrokeWidth);
     }
   }
 
+  /**
+   * Returns this chip's ripple color.
+   *
+   * @see #setRippleColor(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_rippleColor
+   */
   @Nullable
   public ColorStateList getRippleColor() {
     return chipDrawable != null ? chipDrawable.getRippleColor() : null;
   }
 
+  /**
+   * Sets this chip's ripple color using a resource id.
+   *
+   * @param id The resource id of this chip's ripple color.
+   * @attr ref com.google.android.material.R.styleable#Chip_rippleColor
+   */
   public void setRippleColorResource(@ColorRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setRippleColorResource(id);
@@ -1218,6 +1308,12 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  /**
+   * Sets this chip's ripple color.
+   *
+   * @param rippleColor This chip's ripple color.
+   * @attr ref com.google.android.material.R.styleable#Chip_rippleColor
+   */
   public void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (chipDrawable != null) {
       chipDrawable.setRippleColor(rippleColor);
@@ -1227,7 +1323,11 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  /** @deprecated Use {@link Chip#getText()} instead. */
+  /**
+   * Returns this chip's text.
+   *
+   * @deprecated Use {@link Chip#getText()} instead.
+   */
   @Deprecated
   public CharSequence getChipText() {
     return getText();
@@ -1272,10 +1372,22 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setText(chipText);
   }
 
+  /**
+   * Sets this chip's text appearance using a resource id.
+   *
+   * @param id The resource id of this chip's text appearance.
+   * @attr ref com.google.android.material.R.styleable#Chip_android_textappearance
+   */
   public void setTextAppearanceResource(@StyleRes int id) {
     this.setTextAppearance(getContext(), id);
   }
 
+  /**
+   * Sets this chip's text appearance.
+   *
+   * @param textAppearance This chip's text appearance.
+   * @attr ref com.google.android.material.R.styleable#Chip_android_textappearance
+   */
   public void setTextAppearance(@Nullable TextAppearance textAppearance) {
     // TODO: Make sure this also updates parent TextView styles.
     if (chipDrawable != null) {
@@ -1318,6 +1430,12 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     return chipDrawable != null ? chipDrawable.getTextAppearance() : null;
   }
 
+  /**
+   * Returns whether this chip's icon is visible.
+   *
+   * @see #setChipIsVisible(boolean)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconIsVisible
+   */
   public boolean isChipIconVisible() {
     return chipDrawable != null && chipDrawable.isChipIconVisible();
   }
@@ -1328,12 +1446,24 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     return isChipIconVisible();
   }
 
+  /**
+   * Sets the visibility of this chip's icon using a resource id.
+   *
+   * @param id The resource id for the visibility of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconIsVisible
+   */
   public void setChipIconVisible(@BoolRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipIconVisible(id);
     }
   }
 
+  /**
+   * Sets whether this chip's icon is visible.
+   *
+   * @param chipIconVisible The visibility of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconIsVisible
+   */
   public void setChipIconVisible(boolean chipIconVisible) {
     if (chipDrawable != null) {
       chipDrawable.setChipIconVisible(chipIconVisible);
@@ -1352,33 +1482,56 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setChipIconVisible(chipIconEnabled);
   }
 
+  /**
+   * Returns this chip's icon.
+   *
+   * @see #setChipIcon(Drawable)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIcon
+   */
   @Nullable
   public Drawable getChipIcon() {
     return chipDrawable != null ? chipDrawable.getChipIcon() : null;
   }
 
+  /**
+   * Sets this chip's icon using a resource id.
+   *
+   * @param id The resource id for this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIcon
+   */
   public void setChipIconResource(@DrawableRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipIconResource(id);
     }
   }
 
+  /**
+   * Sets this chip's icon.
+   *
+   * @param chipIcon drawable of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIcon
+   */
   public void setChipIcon(@Nullable Drawable chipIcon) {
     if (chipDrawable != null) {
       chipDrawable.setChipIcon(chipIcon);
     }
   }
 
-  /** Returns the {@link android.content.res.ColorStateList} used to tint the chip icon. */
+  /**
+   * Returns the {@link android.content.res.ColorStateList} used to tint the chip icon.
+   *
+   * @see #setChipIconTint(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
+   */
   @Nullable
   public ColorStateList getChipIconTint() {
     return chipDrawable != null ? chipDrawable.getChipIconTint() : null;
   }
 
   /**
-   * Sets the chip icon's color tint using a resource ID.
+   * Sets this chip icon's color tint using a resource id.
    *
-   * @param id Resource id of a {@link android.content.res.ColorStateList} to tint the chip icon.
+   * @param id The resource id for tinting the chip icon.
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
    */
   public void setChipIconTintResource(@ColorRes int id) {
@@ -1388,9 +1541,10 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   /**
-   * Sets the chip icon's color tint using the specified {@link android.content.res.ColorStateList}.
+   * Sets this chip icon's color tint using the specified {@link
+   * android.content.res.ColorStateList}.
    *
-   * @param chipIconTint ColorStateList to tint the chip icon.
+   * @param chipIconTint The tint color of this chip's icon.
    * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
    */
   public void setChipIconTint(@Nullable ColorStateList chipIconTint) {
@@ -1399,22 +1553,46 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
+  /**
+   * Returns this chip's icon size.
+   *
+   * @see #setChipIconSize(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconTint
+   */
   public float getChipIconSize() {
     return chipDrawable != null ? chipDrawable.getChipIconSize() : 0;
   }
 
+  /**
+   * Sets this chip icon's size using a resource id.
+   *
+   * @param id The resource id of this chip's icon size.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize
+   */
   public void setChipIconSizeResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipIconSizeResource(id);
     }
   }
 
+  /**
+   * Sets this chip icon's size.
+   *
+   * @param chipIconSize This chip's icon size.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize
+   */
   public void setChipIconSize(float chipIconSize) {
     if (chipDrawable != null) {
       chipDrawable.setChipIconSize(chipIconSize);
     }
   }
 
+  /**
+   * Returns whether this chip's close icon is visible.
+   *
+   * @see id #setCloseIconVisible(boolean)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipIconSize
+   */
   public boolean isCloseIconVisible() {
     return chipDrawable != null && chipDrawable.isCloseIconVisible();
   }
@@ -1425,10 +1603,22 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     return isCloseIconVisible();
   }
 
+  /**
+   * Sets whether this chip close icon is visible using a resource id.
+   *
+   * @param id The resource id of this chip's close icon visibility.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconVisible
+   */
   public void setCloseIconVisible(@BoolRes int id) {
     setCloseIconVisible(getResources().getBoolean(id));
   }
 
+  /**
+   * Sets whether this chip close icon is visible.
+   *
+   * @param closeIconVisible This chip's close icon visibility.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconVisible
+   */
   public void setCloseIconVisible(boolean closeIconVisible) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconVisible(closeIconVisible);
@@ -1448,11 +1638,23 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setCloseIconVisible(closeIconEnabled);
   }
 
+  /**
+   * Returns this chip's close icon.
+   *
+   * @see #setCloseIcon(Drawable).
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIcon
+   */
   @Nullable
   public Drawable getCloseIcon() {
     return chipDrawable != null ? chipDrawable.getCloseIcon() : null;
   }
 
+  /**
+   * Sets this chip's close icon using a resource id.
+   *
+   * @param id The resource id of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIcon
+   */
   public void setCloseIconResource(@DrawableRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconResource(id);
@@ -1460,6 +1662,12 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     updateAccessibilityDelegate();
   }
 
+  /**
+   * Sets this chip's close icon.
+   *
+   * @param closeIcon This chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIcon
+   */
   public void setCloseIcon(@Nullable Drawable closeIcon) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIcon(closeIcon);
@@ -1467,66 +1675,136 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     updateAccessibilityDelegate();
   }
 
+  /**
+   * Returns the tint color for this chip's close icon.
+   *
+   * @see #setCloseIconTint(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconTint
+   */
   @Nullable
   public ColorStateList getCloseIconTint() {
     return chipDrawable != null ? chipDrawable.getCloseIconTint() : null;
   }
 
+  /**
+   * Sets the tint color for this chip's close icon using a resource id.
+   *
+   * @param id The resource id of this chip's close icon tint.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconTint
+   */
   public void setCloseIconTintResource(@ColorRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconTintResource(id);
     }
   }
 
+  /**
+   * Sets the tint color for this chip's close icon.
+   *
+   * @param closeIconTint This chip's close icon tint.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconTint
+   */
   public void setCloseIconTint(@Nullable ColorStateList closeIconTint) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconTint(closeIconTint);
     }
   }
 
+  /**
+   * Returns this chip's close icon size.
+   *
+   * @see #setCloseIconSize(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconSize
+   */
   public float getCloseIconSize() {
     return chipDrawable != null ? chipDrawable.getCloseIconSize() : 0;
   }
 
+  /**
+   * Sets this chip's close icon size using a resource id.
+   *
+   * @param id The resource id of this chip's close icon size.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconSize
+   */
   public void setCloseIconSizeResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconSizeResource(id);
     }
   }
 
+  /**
+   * Sets this chip's close icon size.
+   *
+   * @param closeIconSize This chip's close icon size.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconSize
+   */
   public void setCloseIconSize(float closeIconSize) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconSize(closeIconSize);
     }
   }
 
+  /**
+   * Sets the content description for this chip's close icon.
+   *
+   * @param closeIconContentDescription The content description for this chip's close icon.
+   */
   public void setCloseIconContentDescription(@Nullable CharSequence closeIconContentDescription) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconContentDescription(closeIconContentDescription);
     }
   }
 
+  /**
+   * Returns this chip's close icon content description.
+   *
+   * @see #setCloseIconContentDescription(CharSequence)
+   */
   @Nullable
   public CharSequence getCloseIconContentDescription() {
     return chipDrawable != null ? chipDrawable.getCloseIconContentDescription() : null;
   }
 
+  /**
+   * Returns whether this chip is checkable.
+   *
+   * @see #setIsCheckable(boolean)
+   * @attr ref com.google.android.material.R.styleable#Chip_android_checkable
+   */
   public boolean isCheckable() {
     return chipDrawable != null && chipDrawable.isCheckable();
   }
 
+  /**
+   * Sets whether this chip is checkable using a resource id.
+   *
+   * @param id The resource id of this chip is checkable.
+   * @attr ref com.google.android.material.R.styleable#Chip_android_checkable
+   */
   public void setCheckableResource(@BoolRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setCheckableResource(id);
     }
   }
 
+  /**
+   * Sets whether this chip is checkable.
+   *
+   * @param checkable Whether this chip is checkable.
+   * @attr ref com.google.android.material.R.styleable#Chip_android_checkable
+   */
   public void setCheckable(boolean checkable) {
     if (chipDrawable != null) {
       chipDrawable.setCheckable(checkable);
     }
   }
 
+  /**
+   * Returns whether this chip's checked icon is visible.
+   *
+   * @see #setCheckedIconVisible(boolean)
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIconVisible
+   */
   public boolean isCheckedIconVisible() {
     return chipDrawable != null && chipDrawable.isCheckedIconVisible();
   }
@@ -1537,12 +1815,24 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     return isCheckedIconVisible();
   }
 
+  /**
+   * Sets whether this chip's checked icon is visible using  resource id.
+   *
+   * @param id The resource id of this chip's check icon visibility.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIconVisible
+   */
   public void setCheckedIconVisible(@BoolRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setCheckedIconVisible(id);
     }
   }
 
+  /**
+   * Sets whether this chip's checked icon is visible.
+   *
+   * @param checkedIconVisible This chip's checked icon visibility.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIconVisible
+   */
   public void setCheckedIconVisible(boolean checkedIconVisible) {
     if (chipDrawable != null) {
       chipDrawable.setCheckedIconVisible(checkedIconVisible);
@@ -1561,179 +1851,377 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setCheckedIconVisible(checkedIconEnabled);
   }
 
+  /**
+   * Returns this chip's checked icon.
+   *
+   * @see #setCheckedIcon(Drawable)
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIcon
+   */
   @Nullable
   public Drawable getCheckedIcon() {
     return chipDrawable != null ? chipDrawable.getCheckedIcon() : null;
   }
 
+  /**
+   * Sets this chip's checked icon using a resource id.
+   *
+   * @param id The resource id of this chip's checked icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIcon
+   */
   public void setCheckedIconResource(@DrawableRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setCheckedIconResource(id);
     }
   }
 
+  /**
+   * Sets this chip's checked icon.
+   *
+   * @param checkedIcon This chip's checked icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIcon
+   */
   public void setCheckedIcon(@Nullable Drawable checkedIcon) {
     if (chipDrawable != null) {
       chipDrawable.setCheckedIcon(checkedIcon);
     }
   }
 
+  /**
+   * Returns this chip's show motion spec.
+   *
+   * @see #setShowMotionSpec(Drawable)
+   * @attr ref com.google.android.material.R.styleable#Chip_showMotionSpec
+   */
   @Nullable
   public MotionSpec getShowMotionSpec() {
     return chipDrawable != null ? chipDrawable.getShowMotionSpec() : null;
   }
 
+  /**
+   * Sets this chip's show motion spec using a resource id.
+   *
+   * @param id The resource id of this chip's show motion spec.
+   * @attr ref com.google.android.material.R.styleable#Chip_showMotionSpec
+   */
   public void setShowMotionSpecResource(@AnimatorRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setShowMotionSpecResource(id);
     }
   }
 
+  /**
+   * Sets this chip's show motion spec.
+   *
+   * @param showMotionSpec This chip's show motion spec.
+   * @attr ref com.google.android.material.R.styleable#Chip_showMotionSpec
+   */
   public void setShowMotionSpec(@Nullable MotionSpec showMotionSpec) {
     if (chipDrawable != null) {
       chipDrawable.setShowMotionSpec(showMotionSpec);
     }
   }
 
+  /**
+   * Returns this chip's hide motion spec.
+   *
+   * @see #setHideMotionSpec(Drawable)
+   * @attr ref com.google.android.material.R.styleable#Chip_hideMotionSpec
+   */
   @Nullable
   public MotionSpec getHideMotionSpec() {
     return chipDrawable != null ? chipDrawable.getHideMotionSpec() : null;
   }
 
+  /**
+   * Sets this chip's hide motion spec using a resource id.
+   *
+   * @param id The resource id of this chip's hide motion spec.
+   * @attr ref com.google.android.material.R.styleable#Chip_hideMotionSpec
+   */
   public void setHideMotionSpecResource(@AnimatorRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setHideMotionSpecResource(id);
     }
   }
 
+  /**
+   * Sets this chip's hide motion spec.
+   *
+   * @param hideMotionSpec This chip's hide motion spec.
+   * @attr ref com.google.android.material.R.styleable#Chip_hideMotionSpec
+   */
   public void setHideMotionSpec(@Nullable MotionSpec hideMotionSpec) {
     if (chipDrawable != null) {
       chipDrawable.setHideMotionSpec(hideMotionSpec);
     }
   }
 
+  /**
+   * Returns this chip's start padding.
+   *
+   * @see #setChipStartPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStartPadding
+   */
   public float getChipStartPadding() {
     return chipDrawable != null ? chipDrawable.getChipStartPadding() : 0;
   }
 
+  /**
+   * Sets this chip's start padding using a resource id.
+   *
+   * @param id The resource id of this chip's start padding.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStartPadding
+   */
   public void setChipStartPaddingResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipStartPaddingResource(id);
     }
   }
 
+  /**
+   * Sets this chip's start padding.
+   *
+   * @param chipStartPadding This chip's start padding.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStartPadding
+   */
   public void setChipStartPadding(float chipStartPadding) {
     if (chipDrawable != null) {
       chipDrawable.setChipStartPadding(chipStartPadding);
     }
   }
 
+  /**
+   * Returns the start padding for this chip's icon.
+   *
+   * @see #setIconStartPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_iconStartPadding
+   */
   public float getIconStartPadding() {
     return chipDrawable != null ? chipDrawable.getIconStartPadding() : 0;
   }
 
+  /**
+   * Sets the start padding for this chip's icon using a resource id.
+   *
+   * @param id The resource id for the start padding of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_iconStartPadding
+   */
   public void setIconStartPaddingResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setIconStartPaddingResource(id);
     }
   }
 
+  /**
+   * Sets this chip's icon start padding.
+   *
+   * @param iconStartPadding The start padding of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_iconStartPadding
+   */
   public void setIconStartPadding(float iconStartPadding) {
     if (chipDrawable != null) {
       chipDrawable.setIconStartPadding(iconStartPadding);
     }
   }
 
+  /**
+   * Returns the end padding for this chip's icon.
+   *
+   * @see #setIconEndPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_iconEndPadding
+   */
   public float getIconEndPadding() {
     return chipDrawable != null ? chipDrawable.getIconEndPadding() : 0;
   }
 
+  /**
+   * Sets the end padding for this chip's icon using a resource id.
+   *
+   * @param id The resource id for the end padding of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_iconEndPadding
+   */
   public void setIconEndPaddingResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setIconEndPaddingResource(id);
     }
   }
 
+  /**
+   * Sets the end padding for this chip's icon.
+   *
+   * @param iconEndPadding The end padding of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_iconEndPadding
+   */
   public void setIconEndPadding(float iconEndPadding) {
     if (chipDrawable != null) {
       chipDrawable.setIconEndPadding(iconEndPadding);
     }
   }
 
+  /**
+   * Returns the start padding for this chip's text.
+   *
+   * @see #setTextStartPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_textStartPadding
+   */
   public float getTextStartPadding() {
     return chipDrawable != null ? chipDrawable.getTextStartPadding() : 0;
   }
 
+  /**
+   * Sets the start padding for this chip's text using a resource id.
+   *
+   * @param id The resource id for the start padding of this chip's text.
+   * @attr ref com.google.android.material.R.styleable#Chip_textStartPadding
+   */
   public void setTextStartPaddingResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setTextStartPaddingResource(id);
     }
   }
 
+  /**
+   * Sets the start padding for this chip's text.
+   *
+   * @param textStartPadding The start padding of this chip's text.
+   * @attr ref com.google.android.material.R.styleable#Chip_textStartPadding
+   */
   public void setTextStartPadding(float textStartPadding) {
     if (chipDrawable != null) {
       chipDrawable.setTextStartPadding(textStartPadding);
     }
   }
 
+  /**
+   * Returns the end padding for this chip's text.
+   *
+   * @see #setTextEndPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_textEndPadding
+   */
   public float getTextEndPadding() {
     return chipDrawable != null ? chipDrawable.getTextEndPadding() : 0;
   }
 
+  /**
+   * Sets the end padding for this chip's text using a resource id.
+   *
+   * @param id The resource id for the end padding of this chip's text.
+   * @attr ref com.google.android.material.R.styleable#Chip_textEndPadding
+   */
   public void setTextEndPaddingResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setTextEndPaddingResource(id);
     }
   }
 
+  /**
+   * Sets the end padding for this chip's text.
+   *
+   * @param textEndPadding The end padding of this chip's text.
+   * @attr ref com.google.android.material.R.styleable#Chip_textStartPadding
+   */
   public void setTextEndPadding(float textEndPadding) {
     if (chipDrawable != null) {
       chipDrawable.setTextEndPadding(textEndPadding);
     }
   }
 
+  /**
+   * Returns the start padding for this chip's close icon.
+   *
+   * @see #setCloseIconStartPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconStartPadding
+   */
   public float getCloseIconStartPadding() {
     return chipDrawable != null ? chipDrawable.getCloseIconStartPadding() : 0;
   }
 
+  /**
+   * Sets the start padding for this chip's close icon using a resource id.
+   *
+   * @param id The resource id for the start padding of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconStartPadding
+   */
   public void setCloseIconStartPaddingResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconStartPaddingResource(id);
     }
   }
 
+  /**
+   * Sets the start padding for this chip's close icon.
+   *
+   * @param closeIconStartPadding The start padding of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconStartPadding
+   */
   public void setCloseIconStartPadding(float closeIconStartPadding) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconStartPadding(closeIconStartPadding);
     }
   }
 
+  /**
+   * Returns the end padding for this chip's close icon.
+   *
+   * @see #setCloseIconEndPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconEndPadding
+   */
   public float getCloseIconEndPadding() {
     return chipDrawable != null ? chipDrawable.getCloseIconEndPadding() : 0;
   }
 
+  /**
+   * Sets the end padding for this chip's close icon using a resource id.
+   *
+   * @param id The resource id for the end padding of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconEndPadding
+   */
   public void setCloseIconEndPaddingResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconEndPaddingResource(id);
     }
   }
 
+  /**
+   * Sets the end padding for this chip's close icon.
+   *
+   * @param closeIconEndPadding The end padding of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconEndPadding
+   */
   public void setCloseIconEndPadding(float closeIconEndPadding) {
     if (chipDrawable != null) {
       chipDrawable.setCloseIconEndPadding(closeIconEndPadding);
     }
   }
 
+  /**
+   * Returns this chip's end padding.
+   *
+   * @see #setChipEndPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipEndPadding
+   */
   public float getChipEndPadding() {
     return chipDrawable != null ? chipDrawable.getChipEndPadding() : 0;
   }
 
+  /**
+   * Sets this chip's end padding using a resource id.
+   *
+   * @param id The resource id for this chip's end padding.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipEndPadding
+   */
   public void setChipEndPaddingResource(@DimenRes int id) {
     if (chipDrawable != null) {
       chipDrawable.setChipEndPaddingResource(id);
     }
   }
 
+  /**
+   * Sets this chip's end padding.
+   *
+   * @param chipEndPadding This chip's end padding.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipEndPadding
+   */
   public void setChipEndPadding(float chipEndPadding) {
     if (chipDrawable != null) {
       chipDrawable.setChipEndPadding(chipEndPadding);
