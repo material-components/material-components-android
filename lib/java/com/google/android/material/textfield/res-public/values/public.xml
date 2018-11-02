@@ -39,15 +39,20 @@
   <public name="counterEnabled" type="attr"/>
   <public name="counterMaxLength" type="attr"/>
   <public name="counterOverflowTextAppearance" type="attr"/>
+  <public name="counterOverflowTextColor" type="attr"/>
   <public name="counterTextAppearance" type="attr"/>
+  <public name="counterTextColor" type="attr"/>
   <public name="errorEnabled" type="attr"/>
   <public name="errorTextAppearance" type="attr"/>
+  <public name="errorTextColor" type="attr"/>
   <public name="helperText" type="attr"/>
   <public name="helperTextEnabled" type="attr"/>
   <public name="helperTextTextAppearance" type="attr"/>
+  <public name="helperTextTextColor" type="attr"/>
   <public name="hintAnimationEnabled" type="attr"/>
   <public name="hintEnabled" type="attr"/>
   <public name="hintTextAppearance" type="attr"/>
+  <public name="hintTextColor" type="attr"/>
   <public name="passwordToggleEnabled" type="attr"/>
   <public name="passwordToggleDrawable" type="attr"/>
   <public name="passwordToggleContentDescription" type="attr"/>

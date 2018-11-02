@@ -19,32 +19,52 @@
   <style name="Widget.Design.TextInputLayout" parent="android:Widget">
     <item name="materialThemeOverlay">@style/ThemeOverlay.Design.TextInputEditText</item>
     <item name="enforceMaterialTheme">false</item>
+    <item name="enforceTextAppearance">false</item>
+
     <item name="boxBackgroundMode">none</item>
-    <item name="hintTextAppearance">@style/TextAppearance.Design.Hint</item>
-    <item name="helperTextTextAppearance">@style/TextAppearance.Design.HelperText</item>
-    <item name="errorTextAppearance">@style/TextAppearance.Design.Error</item>
-    <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
-    <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
+    <item name="boxStrokeColor">@color/design_box_stroke_color</item>
     <item name="passwordToggleDrawable">@drawable/design_password_eye</item>
     <item name="passwordToggleTint">@color/design_tint_password_toggle</item>
     <item name="passwordToggleContentDescription">@string/password_toggle_content_description</item>
-    <item name="boxStrokeColor">@color/design_box_stroke_color</item>
+
+    <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
+    <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
+    <item name="errorTextAppearance">@style/TextAppearance.Design.Error</item>
+    <item name="helperTextTextAppearance">@style/TextAppearance.Design.HelperText</item>
+    <item name="hintTextAppearance">@style/TextAppearance.Design.Hint</item>
+
+    <item name="counterTextColor">@null</item>
+    <item name="counterOverflowTextColor">@null</item>
+    <item name="errorTextColor">@null</item>
+    <item name="helperTextTextColor">@null</item>
+    <item name="hintTextColor">@null</item>
   </style>
 
   <!-- Base style for TextInputLayout. You should use one of the sub-styles instead. -->
   <style name="Base.Widget.MaterialComponents.TextInputLayout" parent="Widget.Design.TextInputLayout">
     <item name="enforceMaterialTheme">true</item>
+    <item name="enforceTextAppearance">true</item>
+
     <item name="boxBackgroundMode">outline</item>
     <item name="boxBackgroundColor">@null</item>
-    <item name="hintTextAppearance">@style/TextAppearance.MaterialComponents.Hint</item>
-    <item name="errorTextAppearance">@style/TextAppearance.MaterialComponents.Error</item>
-    <item name="counterOverflowTextAppearance">@style/TextAppearance.MaterialComponents.Counter.Overflow</item>
     <item name="boxCollapsedPaddingTop">0dp</item>
     <item name="boxCornerRadiusTopStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusTopEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxStrokeColor">@color/mtrl_box_stroke_color</item>
+
+    <item name="counterTextAppearance">?attr/textAppearanceCaption</item>
+    <item name="counterOverflowTextAppearance">?attr/textAppearanceCaption</item>
+    <item name="errorTextAppearance">?attr/textAppearanceCaption</item>
+    <item name="helperTextTextAppearance">?attr/textAppearanceCaption</item>
+    <item name="hintTextAppearance">?attr/textAppearanceCaption</item>
+
+    <item name="counterTextColor">@null</item>
+    <item name="counterOverflowTextColor">@color/mtrl_error</item>
+    <item name="errorTextColor">@color/mtrl_error</item>
+    <item name="helperTextTextColor">@null</item>
+    <item name="hintTextColor">?attr/colorPrimary</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
@@ -131,26 +151,14 @@
     <item name="android:textColor">?attr/colorControlActivated</item>
   </style>
 
-  <style name="TextAppearance.MaterialComponents.Hint" parent="TextAppearance.AppCompat.Caption">
-    <item name="android:textColor">?attr/colorPrimary</item>
-  </style>
-
   <style name="TextAppearance.Design.Error" parent="TextAppearance.AppCompat.Caption">
     <item name="android:textColor">@color/design_error</item>
-  </style>
-
-  <style name="TextAppearance.MaterialComponents.Error" parent="TextAppearance.AppCompat.Caption">
-    <item name="android:textColor">@color/mtrl_error</item>
   </style>
 
   <style name="TextAppearance.Design.Counter" parent="TextAppearance.AppCompat.Caption"/>
 
   <style name="TextAppearance.Design.Counter.Overflow" parent="TextAppearance.AppCompat.Caption">
     <item name="android:textColor">@color/design_error</item>
-  </style>
-
-  <style name="TextAppearance.MaterialComponents.Counter.Overflow" parent="TextAppearance.AppCompat.Caption">
-    <item name="android:textColor">@color/mtrl_error</item>
   </style>
 
 </resources>

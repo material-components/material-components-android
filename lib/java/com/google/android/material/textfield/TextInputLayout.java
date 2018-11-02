@@ -161,8 +161,11 @@ public class TextInputLayout extends LinearLayout {
   private int counterMaxLength;
   private boolean counterOverflowed;
   private TextView counterView;
-  private final int counterOverflowTextAppearance;
-  private final int counterTextAppearance;
+  private int counterOverflowTextAppearance;
+  private int counterTextAppearance;
+
+  @Nullable private ColorStateList counterTextColor;
+  @Nullable private ColorStateList counterOverflowTextColor;
 
   private boolean hintEnabled;
   private CharSequence hint;
@@ -268,7 +271,16 @@ public class TextInputLayout extends LinearLayout {
 
     final TintTypedArray a =
         ThemeEnforcement.obtainTintedStyledAttributes(
-            context, attrs, R.styleable.TextInputLayout, defStyleAttr, DEF_STYLE_RES);
+            context,
+            attrs,
+            R.styleable.TextInputLayout,
+            defStyleAttr,
+            DEF_STYLE_RES,
+            R.styleable.TextInputLayout_counterTextAppearance,
+            R.styleable.TextInputLayout_counterOverflowTextAppearance,
+            R.styleable.TextInputLayout_errorTextAppearance,
+            R.styleable.TextInputLayout_helperTextTextAppearance,
+            R.styleable.TextInputLayout_hintTextAppearance);
 
     hintEnabled = a.getBoolean(R.styleable.TextInputLayout_hintEnabled, true);
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
@@ -380,14 +392,32 @@ public class TextInputLayout extends LinearLayout {
               a.getInt(R.styleable.TextInputLayout_passwordToggleTintMode, -1), null);
     }
 
-    a.recycle();
-
     setHelperTextEnabled(helperTextEnabled);
     setHelperText(helperText);
     setHelperTextTextAppearance(helperTextTextAppearance);
     setErrorEnabled(errorEnabled);
     setErrorTextAppearance(errorTextAppearance);
+    setCounterTextAppearance(counterTextAppearance);
+    setCounterOverflowTextAppearance(counterOverflowTextAppearance);
+
+    if (a.hasValue(R.styleable.TextInputLayout_errorTextColor)) {
+      setErrorTextColor(a.getColorStateList(R.styleable.TextInputLayout_errorTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_helperTextTextColor)) {
+      setHelperTextColor(a.getColorStateList(R.styleable.TextInputLayout_helperTextTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_hintTextColor)) {
+      setHintTextColor(a.getColorStateList(R.styleable.TextInputLayout_hintTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_counterTextColor)) {
+      setCounterTextColor(a.getColorStateList(R.styleable.TextInputLayout_counterTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_counterOverflowTextColor)) {
+      setCounterOverflowTextColor(
+          a.getColorStateList(R.styleable.TextInputLayout_counterOverflowTextColor));
+    }
     setCounterEnabled(counterEnabled);
+    a.recycle();
 
     applyPasswordToggleTint();
 
@@ -927,7 +957,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Sets the hint text color, size, style from the specified TextAppearance resource.
+   * Sets the collapsed hint text color, size, style from the specified TextAppearance resource.
    *
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintTextAppearance
    */
@@ -940,6 +970,31 @@ public class TextInputLayout extends LinearLayout {
       // Text size might have changed so update the top margin
       updateInputLayoutMargins();
     }
+  }
+  /**
+   * Sets the collapsed hint text color from the specified ColorStateList resource.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintTextColor
+   */
+  public void setHintTextColor(@Nullable ColorStateList hintTextColor) {
+    if (collapsingTextHelper.getCollapsedTextColor() != hintTextColor) {
+      collapsingTextHelper.setCollapsedTextColor(hintTextColor);
+      focusedTextColor = hintTextColor;
+
+      if (editText != null) {
+        updateLabelState(false);
+      }
+    }
+  }
+
+  /**
+   * Gets the collapsed hint text color.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintTextColor
+   */
+  @Nullable
+  public ColorStateList getHintTextColor() {
+    return collapsingTextHelper.getCollapsedTextColor();
   }
 
   /** Sets the text color used by the hint in both the collapsed and expanded states. */
@@ -977,13 +1032,13 @@ public class TextInputLayout extends LinearLayout {
    *
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorTextAppearance
    */
-  public void setErrorTextAppearance(@StyleRes int resId) {
-    indicatorViewController.setErrorTextAppearance(resId);
+  public void setErrorTextAppearance(@StyleRes int errorTextAppearance) {
+    indicatorViewController.setErrorTextAppearance(errorTextAppearance);
   }
 
   /** Sets the text color used by the error message in all states. */
-  public void setErrorTextColor(@Nullable ColorStateList textColors) {
-    indicatorViewController.setErrorViewTextColor(textColors);
+  public void setErrorTextColor(@Nullable ColorStateList errorTextColor) {
+    indicatorViewController.setErrorViewTextColor(errorTextColor);
   }
 
   /** Returns the text color used by the error message in current state. */
@@ -997,8 +1052,13 @@ public class TextInputLayout extends LinearLayout {
    *
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_helperTextTextAppearance
    */
-  public void setHelperTextTextAppearance(@StyleRes int resId) {
-    indicatorViewController.setHelperTextAppearance(resId);
+  public void setHelperTextTextAppearance(@StyleRes int helperTextTextAppearance) {
+    indicatorViewController.setHelperTextAppearance(helperTextTextAppearance);
+  }
+
+  /** Sets the text color used by the helper text in all states. */
+  public void setHelperTextColor(@Nullable ColorStateList helperTextColor) {
+    indicatorViewController.setHelperTextViewTextColor(helperTextColor);
   }
 
   /**
@@ -1058,11 +1118,6 @@ public class TextInputLayout extends LinearLayout {
     return indicatorViewController.isHelperTextEnabled();
   }
 
-  /** Sets the text color used by the helper text in all states. */
-  public void setHelperTextColor(@Nullable ColorStateList textColors) {
-    indicatorViewController.setHelperTextViewTextColor(textColors);
-  }
-
   /** Returns the text color used by the helper text in the current states. */
   @ColorInt
   public int getHelperTextCurrentTextColor() {
@@ -1110,19 +1165,99 @@ public class TextInputLayout extends LinearLayout {
           counterView.setTypeface(typeface);
         }
         counterView.setMaxLines(1);
-        setTextAppearanceCompatWithErrorFallback(counterView, counterTextAppearance);
         indicatorViewController.addIndicator(counterView, COUNTER_INDEX);
-        if (editText == null) {
-          updateCounter(0);
-        } else {
-          updateCounter(editText.getText().length());
-        }
+        updateCounterTextAppearanceAndColor();
+        updateCounter();
       } else {
         indicatorViewController.removeIndicator(counterView, COUNTER_INDEX);
         counterView = null;
       }
       counterEnabled = enabled;
     }
+  }
+
+  /**
+   * Sets the text color and size for the character counter using the specified TextAppearance
+   * resource.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_counterTextAppearance
+   * @see #setCounterTextColor(ColorStateList)
+   */
+  public void setCounterTextAppearance(int counterTextAppearance) {
+    if (this.counterTextAppearance != counterTextAppearance) {
+      this.counterTextAppearance = counterTextAppearance;
+      updateCounterTextAppearanceAndColor();
+    }
+  }
+
+  /**
+   * Sets the text color for the character counter using a ColorStateList.
+   *
+   * <p>This text color takes precedence over a text color set in counterTextAppearance.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_counterTextColor
+   * @param counterTextColor text color used for the character counter
+   */
+  public void setCounterTextColor(@Nullable ColorStateList counterTextColor) {
+    if (this.counterTextColor != counterTextColor) {
+      this.counterTextColor = counterTextColor;
+      updateCounterTextAppearanceAndColor();
+    }
+  }
+
+  /**
+   * Returns the text color used for the character counter, or null if one has not been set.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_counterOverflowTextColor
+   * @see #setCounterTextAppearance(int)
+   * @return the text color used for the character counter
+   */
+  @Nullable
+  public ColorStateList getCounterTextColor() {
+    return counterTextColor;
+  }
+
+  /**
+   * Sets the text color and size for the overflowed character counter using the specified
+   * TextAppearance resource.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_counterOverflowTextAppearance
+   * @see #setCounterOverflowTextColor(ColorStateList)
+   */
+  public void setCounterOverflowTextAppearance(int counterOverflowTextAppearance) {
+    if (this.counterOverflowTextAppearance != counterOverflowTextAppearance) {
+      this.counterOverflowTextAppearance = counterOverflowTextAppearance;
+      updateCounterTextAppearanceAndColor();
+    }
+  }
+
+  /**
+   * Sets the text color for the overflowed character counter using a ColorStateList.
+   *
+   * <p>This text color takes precedence over a text color set in counterOverflowTextAppearance.
+   *
+   * @see #setCounterOverflowTextAppearance(int)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_counterOverflowTextColor
+   * @param counterOverflowTextColor the text color used for the overflowed character counter
+   */
+  public void setCounterOverflowTextColor(@Nullable ColorStateList counterOverflowTextColor) {
+    if (this.counterOverflowTextColor != counterOverflowTextColor) {
+      this.counterOverflowTextColor = counterOverflowTextColor;
+      updateCounterTextAppearanceAndColor();
+    }
+  }
+
+  /**
+   * Returns the text color used for the overflowed character counter, or null if one has not been
+   * set.
+   *
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_counterOverflowTextColor
+   * @see #setCounterOverflowTextAppearance(int)
+   * @return the text color used for the overflowed character counter
+   */
+  @Nullable
+  public ColorStateList getCounterOverflowTextColor() {
+    return counterTextColor;
   }
 
   /**
@@ -1149,8 +1284,56 @@ public class TextInputLayout extends LinearLayout {
         counterMaxLength = INVALID_MAX_LENGTH;
       }
       if (counterEnabled) {
-        updateCounter(editText == null ? 0 : editText.getText().length());
+        updateCounter();
       }
+    }
+  }
+
+  private void updateCounter() {
+    if (counterView != null) {
+      updateCounter(editText == null ? 0 : editText.getText().length());
+    }
+  }
+
+  void updateCounter(int length) {
+    boolean wasCounterOverflowed = counterOverflowed;
+    if (counterMaxLength == INVALID_MAX_LENGTH) {
+      counterView.setText(String.valueOf(length));
+      counterView.setContentDescription(null);
+      counterOverflowed = false;
+    } else {
+      // Make sure the counter view region is not live to prevent spamming the user with the counter
+      // overflow message on every key press.
+      if (ViewCompat.getAccessibilityLiveRegion(counterView)
+          == ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE) {
+        ViewCompat.setAccessibilityLiveRegion(
+            counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
+      }
+      counterOverflowed = length > counterMaxLength;
+      if (wasCounterOverflowed != counterOverflowed) {
+        updateCounterTextAppearanceAndColor();
+        counterView.setContentDescription(
+            getContext()
+                .getString(
+                    counterOverflowed
+                        ? R.string.character_counter_overflowed_content_description
+                        : R.string.character_counter_content_description,
+                    length,
+                    counterMaxLength));
+
+        // Announce when the character limit is exceeded.
+        if (counterOverflowed) {
+          ViewCompat.setAccessibilityLiveRegion(
+              counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
+        }
+      }
+      counterView.setText(
+          getContext().getString(R.string.character_counter_pattern, length, counterMaxLength));
+    }
+    if (editText != null && wasCounterOverflowed != counterOverflowed) {
+      updateLabelState(false);
+      updateTextInputBoxState();
+      updateEditTextBackground();
     }
   }
 
@@ -1194,46 +1377,16 @@ public class TextInputLayout extends LinearLayout {
     return null;
   }
 
-  void updateCounter(int length) {
-    boolean wasCounterOverflowed = counterOverflowed;
-    if (counterMaxLength == INVALID_MAX_LENGTH) {
-      counterView.setText(String.valueOf(length));
-      counterView.setContentDescription(null);
-      counterOverflowed = false;
-    } else {
-      // Make sure the counter view region is not live to prevent spamming the user with the counter
-      // overflow message on every key press.
-      if (ViewCompat.getAccessibilityLiveRegion(counterView)
-          == ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE) {
-        ViewCompat.setAccessibilityLiveRegion(
-            counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
+  private void updateCounterTextAppearanceAndColor() {
+    if (counterView != null) {
+      setTextAppearanceCompatWithErrorFallback(
+          counterView, counterOverflowed ? counterOverflowTextAppearance : counterTextAppearance);
+      if (!counterOverflowed && counterTextColor != null) {
+        counterView.setTextColor(counterTextColor);
       }
-      counterOverflowed = length > counterMaxLength;
-      if (wasCounterOverflowed != counterOverflowed) {
-        setTextAppearanceCompatWithErrorFallback(
-            counterView, counterOverflowed ? counterOverflowTextAppearance : counterTextAppearance);
-        counterView.setContentDescription(
-            getContext()
-                .getString(
-                    counterOverflowed
-                        ? R.string.character_counter_overflowed_content_description
-                        : R.string.character_counter_content_description,
-                    length,
-                    counterMaxLength));
-
-        // Announce when the character limit is exceeded.
-        if (counterOverflowed) {
-          ViewCompat.setAccessibilityLiveRegion(
-              counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
-        }
+      if (counterOverflowed && counterOverflowTextColor != null) {
+        counterView.setTextColor(counterOverflowTextColor);
       }
-      counterView.setText(
-          getContext().getString(R.string.character_counter_pattern, length, counterMaxLength));
-    }
-    if (editText != null && wasCounterOverflowed != counterOverflowed) {
-      updateLabelState(false);
-      updateTextInputBoxState();
-      updateEditTextBackground();
     }
   }
 

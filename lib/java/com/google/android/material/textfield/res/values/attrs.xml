@@ -29,8 +29,11 @@
     <attr name="hintEnabled" format="boolean"/>
     <!-- Whether to animate hint state changes. -->
     <attr name="hintAnimationEnabled" format="boolean"/>
-    <!-- TextAppearance of the hint in the floating label. -->
+    <!-- TextAppearance of the hint in the collapsed floating label. -->
     <attr name="hintTextAppearance" format="reference"/>
+    <!-- Text color of the hint in the collapsed floating label.
+         If set, this takes precedence over hintTextAppearance. -->
+    <attr name="hintTextColor" format="color"/>
 
     <!-- The text to display as helper text underneath the text input area. -->
     <attr name="helperText" format="string"/>
@@ -38,11 +41,17 @@
     <attr name="helperTextEnabled" format="boolean"/>
     <!-- TextAppearance of the helper text displayed underneath the text input area. -->
     <attr name="helperTextTextAppearance" format="reference"/>
+    <!-- Text color of the helper text displayed underneath the text input area.
+         If set, this takes precedence over helperTextTextAppearance. -->
+    <attr name="helperTextTextColor" format="color"/>
 
     <!-- Whether the layout is laid out as if an error will be displayed. -->
     <attr name="errorEnabled" format="boolean"/>
     <!-- TextAppearance of any error message displayed. -->
     <attr name="errorTextAppearance" format="reference"/>
+    <!-- Text color for any error message displayed.
+         If set, this takes precedence over errorTextAppearance. -->
+    <attr name="errorTextColor" format="color"/>
 
     <!-- Whether the layout is laid out as if the character counter will be displayed. -->
     <attr name="counterEnabled" format="boolean"/>
@@ -50,8 +59,14 @@
     <attr name="counterMaxLength" format="integer"/>
     <!-- TextAppearance of the character counter. -->
     <attr name="counterTextAppearance" format="reference"/>
+    <!-- Text color of the character counter.
+         If set, this takes precedence over counterTextAppearance. -->
+    <attr name="counterTextColor" format="reference"/>
     <!-- TextAppearance of the character counter when the text is longer than the max. -->
     <attr name="counterOverflowTextAppearance" format="reference"/>
+    <!-- Text color of the character counter when the text is longer than the max.
+         If set, this takes precedence over counterOverflowTextAppearance. -->
+    <attr name="counterOverflowTextColor" format="reference"/>
 
     <!-- Whether the view will display a toggle when the EditText has a password. -->
     <attr name="passwordToggleEnabled" format="boolean"/>
