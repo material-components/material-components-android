@@ -1334,15 +1334,33 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
 
   // Getters and setters for attributes.
 
+  /**
+   * Returns this chip's background color.
+   *
+   * @see #setChipBackgroundColor(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipBackgroundColor
+   */
   @Nullable
   public ColorStateList getChipBackgroundColor() {
     return chipBackgroundColor;
   }
 
+  /**
+   * Sets this chip's background color using a resource id.
+   *
+   * @param id The resource id of this chip's background color.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipBackgroundColor
+   */
   public void setChipBackgroundColorResource(@ColorRes int id) {
     setChipBackgroundColor(AppCompatResources.getColorStateList(context, id));
   }
 
+  /**
+   * Sets this chip's background color.
+   *
+   * @param chipBackgroundColor This chip's background color.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipBackgroundColor
+   */
   public void setChipBackgroundColor(@Nullable ColorStateList chipBackgroundColor) {
     if (this.chipBackgroundColor != chipBackgroundColor) {
       this.chipBackgroundColor = chipBackgroundColor;
@@ -1353,14 +1371,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns this chip's minimum height.
+   *
+   * @see #setChipMinHeight(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
+   */
   public float getChipMinHeight() {
     return chipMinHeight;
   }
 
+  /**
+   * Sets this chip's minimum height using a resource id.
+   *
+   * @param id The resource id of this chip's mininum height.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
+   */
   public void setChipMinHeightResource(@DimenRes int id) {
     setChipMinHeight(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets this chip's minimum height.
+   *
+   * @param chipMinHeight This chip's mininum height.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipMinHeight
+   */
   public void setChipMinHeight(float chipMinHeight) {
     if (this.chipMinHeight != chipMinHeight) {
       this.chipMinHeight = chipMinHeight;
@@ -1369,6 +1405,12 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns this chip's corner radius.
+   *
+   * @see #setChipCornerRadius(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipCornerRadius
+   */
   public float getChipCornerRadius() {
     return isShapeThemingEnabled
         ? getShapeAppearanceModel().getTopLeftCorner().getCornerSize()
@@ -1399,15 +1441,33 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns this chip's stroke color.
+   *
+   * @see #setChipStrokeColor(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeColor
+   */
   @Nullable
   public ColorStateList getChipStrokeColor() {
     return chipStrokeColor;
   }
 
+  /**
+   * Sets this chip's stroke color using a resource id.
+   *
+   * @param id The resource id of this chip's stroke color.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeColor
+   */
   public void setChipStrokeColorResource(@ColorRes int id) {
     setChipStrokeColor(AppCompatResources.getColorStateList(context, id));
   }
 
+  /**
+   * Sets this chip's stroke color.
+   *
+   * @param chipStrokeColor This chip's stroke color.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeColor
+   */
   public void setChipStrokeColor(@Nullable ColorStateList chipStrokeColor) {
     if (this.chipStrokeColor != chipStrokeColor) {
       this.chipStrokeColor = chipStrokeColor;
@@ -1418,14 +1478,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns this chip's stroke width.
+   *
+   * @see #setChipStrokeWidth(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeWidth
+   */
   public float getChipStrokeWidth() {
     return chipStrokeWidth;
   }
 
+  /**
+   * Sets this chip's stroke width using a resource id.
+   *
+   * @param id The resource id of this chip's stroke width.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeWidth
+   */
   public void setChipStrokeWidthResource(@DimenRes int id) {
     setChipStrokeWidth(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets this chip's stroke width.
+   *
+   * @param chipStrokeWidth This chip's stroke width.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStrokeWidth
+   */
   public void setChipStrokeWidth(float chipStrokeWidth) {
     if (this.chipStrokeWidth != chipStrokeWidth) {
       this.chipStrokeWidth = chipStrokeWidth;
@@ -1438,15 +1516,33 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns this chip's ripple color.
+   *
+   * @see #setRippleColor(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#Chip_rippleColor
+   */
   @Nullable
   public ColorStateList getRippleColor() {
     return rippleColor;
   }
 
+  /**
+   * Sets this chip's ripple color using a resource id.
+   *
+   * @param id The resource id of this chip's ripple color.
+   * @attr ref com.google.android.material.R.styleable#Chip_rippleColor
+   */
   public void setRippleColorResource(@ColorRes int id) {
     setRippleColor(AppCompatResources.getColorStateList(context, id));
   }
 
+  /**
+   * Sets this chip's ripple color.
+   *
+   * @param rippleColor This chip's ripple color.
+   * @attr ref com.google.android.material.R.styleable#Chip_rippleColor
+   */
   public void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (this.rippleColor != rippleColor) {
       this.rippleColor = rippleColor;
@@ -1833,15 +1929,33 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     setCheckedIconVisible(checkedIconEnabled);
   }
 
+  /**
+   * Returns this chip's checked icon.
+   *
+   * @see #setCheckedIcon(Drawable)
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIcon
+   */
   @Nullable
   public Drawable getCheckedIcon() {
     return checkedIcon;
   }
 
+  /**
+   * Sets this chip's checked icon using a resource id.
+   *
+   * @param id The resource id of this chip's checked icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIcon
+   */
   public void setCheckedIconResource(@DrawableRes int id) {
     setCheckedIcon(AppCompatResources.getDrawable(context, id));
   }
 
+  /**
+   * Sets this chip's checked icon.
+   *
+   * @param checkedIcon This chip's checked icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_checkedIcon
+   */
   public void setCheckedIcon(@Nullable Drawable checkedIcon) {
     Drawable oldCheckedIcon = this.checkedIcon;
     if (oldCheckedIcon != checkedIcon) {
@@ -1859,40 +1973,94 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns this chip's show motion spec.
+   *
+   * @see #setShowMotionSpec(Drawable)
+   * @attr ref com.google.android.material.R.styleable#Chip_showMotionSpec
+   */
   @Nullable
   public MotionSpec getShowMotionSpec() {
     return showMotionSpec;
   }
 
+  /**
+   * Sets this chip's show motion spec using a resource id.
+   *
+   * @param id The resource id of this chip's show motion spec.
+   * @attr ref com.google.android.material.R.styleable#Chip_showMotionSpec
+   */
   public void setShowMotionSpecResource(@AnimatorRes int id) {
     setShowMotionSpec(MotionSpec.createFromResource(context, id));
   }
 
+  /**
+   * Sets this chip's show motion spec.
+   *
+   * @param showMotionSpec This chip's show motion spec.
+   * @attr ref com.google.android.material.R.styleable#Chip_showMotionSpec
+   */
   public void setShowMotionSpec(@Nullable MotionSpec showMotionSpec) {
     this.showMotionSpec = showMotionSpec;
   }
 
+  /**
+   * Returns this chip's hide motion spec.
+   *
+   * @see #setHideMotionSpec(Drawable)
+   * @attr ref com.google.android.material.R.styleable#Chip_hideMotionSpec
+   */
   @Nullable
   public MotionSpec getHideMotionSpec() {
     return hideMotionSpec;
   }
 
+  /**
+   * Sets this chip's hide motion spec using a resource id.
+   *
+   * @param id The resource id of this chip's hide motion spec.
+   * @attr ref com.google.android.material.R.styleable#Chip_hideMotionSpec
+   */
   public void setHideMotionSpecResource(@AnimatorRes int id) {
     setHideMotionSpec(MotionSpec.createFromResource(context, id));
   }
 
+  /**
+   * Sets this chip's hide motion spec.
+   *
+   * @param hideMotionSpec This chip's hide motion spec.
+   * @attr ref com.google.android.material.R.styleable#Chip_hideMotionSpec
+   */
   public void setHideMotionSpec(@Nullable MotionSpec hideMotionSpec) {
     this.hideMotionSpec = hideMotionSpec;
   }
 
+  /**
+   * Returns this chip's start padding.
+   *
+   * @see #setChipStartPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStartPadding
+   */
   public float getChipStartPadding() {
     return chipStartPadding;
   }
 
+  /**
+   * Sets this chip's start padding using a resource id.
+   *
+   * @param id The resource id of this chip's start padding.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStartPadding
+   */
   public void setChipStartPaddingResource(@DimenRes int id) {
     setChipStartPadding(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets this chip's start padding.
+   *
+   * @param chipStartPadding This chip's start padding.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipStartPadding
+   */
   public void setChipStartPadding(float chipStartPadding) {
     if (this.chipStartPadding != chipStartPadding) {
       this.chipStartPadding = chipStartPadding;
@@ -1901,14 +2069,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns the start padding for this chip's icon.
+   *
+   * @see #setIconStartPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_iconStartPadding
+   */
   public float getIconStartPadding() {
     return iconStartPadding;
   }
 
+  /**
+   * Sets the start padding for this chip's icon using a resource id.
+   *
+   * @param id The resource id for the start padding of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_iconStartPadding
+   */
   public void setIconStartPaddingResource(@DimenRes int id) {
     setIconStartPadding(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets this chip's icon start padding.
+   *
+   * @param iconStartPadding The start padding of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_iconStartPadding
+   */
   public void setIconStartPadding(float iconStartPadding) {
     if (this.iconStartPadding != iconStartPadding) {
       float oldChipIconWidth = calculateChipIconWidth();
@@ -1922,14 +2108,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns the end padding for this chip's icon.
+   *
+   * @see #setIconEndPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_iconEndPadding
+   */
   public float getIconEndPadding() {
     return iconEndPadding;
   }
 
+  /**
+   * Sets the end padding for this chip's icon using a resource id.
+   *
+   * @param id The resource id for the end padding of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_iconEndPadding
+   */
   public void setIconEndPaddingResource(@DimenRes int id) {
     setIconEndPadding(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets the end padding for this chip's icon.
+   *
+   * @param iconEndPadding The end padding of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_iconEndPadding
+   */
   public void setIconEndPadding(float iconEndPadding) {
     if (this.iconEndPadding != iconEndPadding) {
       float oldChipIconWidth = calculateChipIconWidth();
@@ -1943,14 +2147,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns the start padding for this chip's text.
+   *
+   * @see #setTextStartPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_textStartPadding
+   */
   public float getTextStartPadding() {
     return textStartPadding;
   }
 
+  /**
+   * Sets the start padding for this chip's text using a resource id.
+   *
+   * @param id The resource id for the start padding of this chip's text.
+   * @attr ref com.google.android.material.R.styleable#Chip_textStartPadding
+   */
   public void setTextStartPaddingResource(@DimenRes int id) {
     setTextStartPadding(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets the start padding for this chip's text.
+   *
+   * @param textStartPadding The start padding of this chip's text.
+   * @attr ref com.google.android.material.R.styleable#Chip_textStartPadding
+   */
   public void setTextStartPadding(float textStartPadding) {
     if (this.textStartPadding != textStartPadding) {
       this.textStartPadding = textStartPadding;
@@ -1959,14 +2181,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns the end padding for this chip's text.
+   *
+   * @see #setTextEndPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_textEndPadding
+   */
   public float getTextEndPadding() {
     return textEndPadding;
   }
 
+  /**
+   * Sets the end padding for this chip's text using a resource id.
+   *
+   * @param id The resource id for the end padding of this chip's text.
+   * @attr ref com.google.android.material.R.styleable#Chip_textEndPadding
+   */
   public void setTextEndPaddingResource(@DimenRes int id) {
     setTextEndPadding(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets the end padding for this chip's text.
+   *
+   * @param textEndPadding The end padding of this chip's text.
+   * @attr ref com.google.android.material.R.styleable#Chip_textStartPadding
+   */
   public void setTextEndPadding(float textEndPadding) {
     if (this.textEndPadding != textEndPadding) {
       this.textEndPadding = textEndPadding;
@@ -1975,14 +2215,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns the start padding for this chip's close icon.
+   *
+   * @see #setCloseIconStartPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconStartPadding
+   */
   public float getCloseIconStartPadding() {
     return closeIconStartPadding;
   }
 
+  /**
+   * Sets the start padding for this chip's close icon using a resource id.
+   *
+   * @param id The resource id for the start padding of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconStartPadding
+   */
   public void setCloseIconStartPaddingResource(@DimenRes int id) {
     setCloseIconStartPadding(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets the start padding for this chip's close icon.
+   *
+   * @param closeIconStartPadding The start padding of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconStartPadding
+   */
   public void setCloseIconStartPadding(float closeIconStartPadding) {
     if (this.closeIconStartPadding != closeIconStartPadding) {
       this.closeIconStartPadding = closeIconStartPadding;
@@ -1993,14 +2251,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns the end padding for this chip's close icon.
+   *
+   * @see #setCloseIconEndPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconEndPadding
+   */
   public float getCloseIconEndPadding() {
     return closeIconEndPadding;
   }
 
+  /**
+   * Sets the end padding for this chip's close icon using a resource id.
+   *
+   * @param id The resource id for the end padding of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconEndPadding
+   */
   public void setCloseIconEndPaddingResource(@DimenRes int id) {
     setCloseIconEndPadding(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets the end padding for this chip's close icon.
+   *
+   * @param closeIconEndPadding The end padding of this chip's close icon.
+   * @attr ref com.google.android.material.R.styleable#Chip_closeIconEndPadding
+   */
   public void setCloseIconEndPadding(float closeIconEndPadding) {
     if (this.closeIconEndPadding != closeIconEndPadding) {
       this.closeIconEndPadding = closeIconEndPadding;
@@ -2011,14 +2287,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
+  /**
+   * Returns this chip's end padding.
+   *
+   * @see #setChipEndPadding(float)
+   * @attr ref com.google.android.material.R.styleable#Chip_chipEndPadding
+   */
   public float getChipEndPadding() {
     return chipEndPadding;
   }
 
+  /**
+   * Sets this chip's end padding using a resource id.
+   *
+   * @param id The resource id for this chip's end padding.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipEndPadding
+   */
   public void setChipEndPaddingResource(@DimenRes int id) {
     setChipEndPadding(context.getResources().getDimension(id));
   }
 
+  /**
+   * Sets this chip's end padding.
+   *
+   * @param chipEndPadding This chip's end padding.
+   * @attr ref com.google.android.material.R.styleable#Chip_chipEndPadding
+   */
   public void setChipEndPadding(float chipEndPadding) {
     if (this.chipEndPadding != chipEndPadding) {
       this.chipEndPadding = chipEndPadding;
@@ -2027,13 +2321,21 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     }
   }
 
-  /** Returns the maximum width of TextView in terms of pixels. */
+  /**
+   * Returns the maximum width of TextView in terms of pixels.
+   *
+   * @see #setMaxWidth(int)
+   */
   @Px
   public int getMaxWidth() {
     return maxWidth;
   }
 
-  /** Sets the width of the TextView to be exactly {@code pixels} wide. */
+  /**
+   * Sets the width of the TextView to be exactly {@code pixels} wide.
+   *
+   * @param maxWidth maximum width of the textview.
+   */
   public void setMaxWidth(@Px int maxWidth) {
     this.maxWidth = maxWidth;
   }
