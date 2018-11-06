@@ -99,6 +99,7 @@ class FloatingActionButtonImpl {
   float elevation;
   float hoveredFocusedTranslationZ;
   float pressedTranslationZ;
+  int minTouchTargetSize;
 
   int maxImageSize;
   float imageMatrixScale = 1f;
@@ -232,6 +233,10 @@ class FloatingActionButtonImpl {
     }
   }
 
+  void setMinTouchTargetSize(int minTouchTargetSize) {
+    this.minTouchTargetSize = minTouchTargetSize;
+  }
+
   void setRippleColor(ColorStateList rippleColor) {
     if (rippleDrawable != null) {
       DrawableCompat.setTintList(
@@ -333,6 +338,10 @@ class FloatingActionButtonImpl {
 
   final void setHideMotionSpec(@Nullable MotionSpec spec) {
     hideMotionSpec = spec;
+  }
+
+  final boolean isAccessible() {
+    return view.getSizeDimension() >= minTouchTargetSize;
   }
 
   void onElevationsChanged(
@@ -616,6 +625,14 @@ class FloatingActionButtonImpl {
 
   void getPadding(Rect rect) {
     shadowDrawable.getPadding(rect);
+    int padDifferenceH = minTouchTargetSize - (rect.left + rect.right + view.getSizeDimension());
+    int padDifferenceV = minTouchTargetSize - (rect.top + rect.bottom + view.getSizeDimension());
+    if (padDifferenceH > 0) {
+      rect.inset(-padDifferenceH / 2, 0);
+    }
+    if (padDifferenceV > 0) {
+      rect.inset(0, -padDifferenceV / 2);
+    }
   }
 
   void onPaddingUpdated(Rect padding) {}

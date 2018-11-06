@@ -221,6 +221,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     final float pressedTranslationZ =
         a.getDimension(R.styleable.FloatingActionButton_pressedTranslationZ, 0f);
     compatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
+    int minTouchTargetSize = getResources()
+        .getDimensionPixelSize(R.dimen.mtrl_fab_min_touch_target);
     maxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
 
     MotionSpec showMotionSpec =
@@ -240,6 +242,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     getImpl().setShapeAppearance(shapeAppearance, usingDefaultCorner);
     getImpl().setBackgroundDrawable(backgroundTint, backgroundTintMode, rippleColor, borderWidth);
+    getImpl().setMinTouchTargetSize(minTouchTargetSize);
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
     getImpl().setPressedTranslationZ(pressedTranslationZ);

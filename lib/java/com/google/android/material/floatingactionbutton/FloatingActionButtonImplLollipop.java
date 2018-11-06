@@ -34,7 +34,6 @@ import android.support.annotation.RequiresApi;
 import com.google.android.material.internal.CircularBorderDrawable;
 import com.google.android.material.internal.CircularBorderDrawableLollipop;
 import com.google.android.material.ripple.RippleUtils;
-import com.google.android.material.shadow.ShadowDrawableWrapper;
 import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -152,7 +151,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
       view.setStateListAnimator(stateListAnimator);
     }
 
-    if (shadowViewDelegate.isCompatPaddingEnabled()) {
+    if (shouldAddPadding()) {
       updatePadding();
     }
   }
@@ -180,7 +179,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
   @Override
   void onPaddingUpdated(Rect padding) {
-    if (shadowViewDelegate.isCompatPaddingEnabled()) {
+    if (shouldAddPadding()) {
       insetDrawable =
           new InsetDrawable(
               rippleDrawable, padding.left, padding.top, padding.right, padding.bottom);
@@ -188,6 +187,10 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     } else {
       shadowViewDelegate.setBackgroundDrawable(rippleDrawable);
     }
+  }
+
+  private boolean shouldAddPadding() {
+    return shadowViewDelegate.isCompatPaddingEnabled() || !isAccessible();
   }
 
   @Override
@@ -243,18 +246,14 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
   @Override
   void getPadding(Rect rect) {
+    int minPadding = (minTouchTargetSize - view.getSizeDimension()) / 2;
     if (shadowViewDelegate.isCompatPaddingEnabled()) {
-      final float radius = shadowViewDelegate.getRadius();
       final float maxShadowSize = getElevation() + pressedTranslationZ;
-      final int hPadding =
-          (int)
-              Math.ceil(
-                  ShadowDrawableWrapper.calculateHorizontalPadding(maxShadowSize, radius, false));
-      final int vPadding =
-          (int)
-              Math.ceil(
-                  ShadowDrawableWrapper.calculateVerticalPadding(maxShadowSize, radius, false));
+      final int hPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize));
+      final int vPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize));
       rect.set(hPadding, vPadding, hPadding, vPadding);
+    } else if (!isAccessible()) {
+      rect.set(minPadding, minPadding, minPadding, minPadding);
     } else {
       rect.set(0, 0, 0, 0);
     }
