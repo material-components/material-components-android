@@ -26,23 +26,26 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Outline;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.ShapeDrawable;
 import android.graphics.drawable.StateListDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
+import android.os.Build;
+import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import android.support.v7.widget.CardView;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewOutlineProvider;
-import java.util.Arrays;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -50,19 +53,65 @@ class MaterialCardViewHelper {
 
   private static final int DEFAULT_STROKE_VALUE = -1;
 
+  // used to calculate content padding
+  private static final double COS_45 = Math.cos(Math.toRadians(45));
+
+  /**
+   * Multiplier for {@link MaterialCardView#getMaxCardElevation()} to calculate vertical shadow
+   * padding. Horizontal shadow padding is equal to getMaxCardElevation(). Shadow padding is the
+   * padding around the visible card that {@link CardView} adds in order to have space to render
+   * shadows pre-Lollipop.
+   *
+   * <p>CardView's pre-Lollipop shadow is getMaxCardElevation() larger than the card on all sides
+   * and offset down by 0.5 x getMaxCardElevation(). Thus, the additional padding required is:
+   *
+   * <ul>
+   *   <li>Left & Right: getMaxCardElevation()
+   *   <li>Top: 0.5 x getMaxCardElevation()
+   *   <li>Bottom: 1.5 x getMaxCardElevation()
+   * </ul>
+   *
+   * <p>In order to keep content that is centered in the center, extra padding is added on top to
+   * match the necessary bottom padding.
+   */
+  private static final float CARD_VIEW_SHADOW_MULTIPLIER = 1.5f;
+
+  private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
+  private static final float SHADOW_OFFSET_MULTIPLIER = .25f;
+
   private final MaterialCardView materialCardView;
 
-  private @ColorInt int strokeColor;
-  private @ColorInt int rippleColor;
-  private @Dimension int strokeWidth;
-  private @Dimension float radius;
+  @ColorInt private int strokeColor;
+  @ColorInt private int rippleColor;
+  @Dimension private int strokeWidth;
 
-  private GradientDrawable fgDrawable;
-  private LayerDrawable layerDrawable;
-  private Drawable rippleDrawable;
+  private final ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
+  private final MaterialShapeDrawable bgDrawable; // Will always wrapped in an InsetDrawable
+  private final MaterialShapeDrawable strokeDrawable; // Will always wrapped in an InsetDrawable
+  /** Either a {@link RippleDrawable} when using framework ripple or a {@link StateListDrawable}. */
+  @Nullable private Drawable rippleDrawable;
+  /** Layers stroke and ripple drawables. */
+  @Nullable private LayerDrawable clickableForegroundDrawable;
+  /**
+   * When not using framework drawable, this is used for the {@link StateListDrawable} stored in
+   * {@link #rippleDrawable}.
+   */
+  @Nullable private MaterialShapeDrawable compatRippleDrawable;
+
+  // If card is clickable, this is the clickableForegroundDrawable otherwise it is the
+  // strokeDrawable
+  private Drawable fgDrawable;
+
+  private boolean isBackgroundOverwritten = false;
 
   public MaterialCardViewHelper(MaterialCardView card) {
     materialCardView = card;
+    shapeAppearanceModel = new ShapeAppearanceModel();
+    bgDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    bgDrawable.setShadowColor(Color.DKGRAY);
+    strokeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    strokeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
+    fgDrawable = materialCardView.isClickable() ? getClickableForeground() : strokeDrawable;
   }
 
   public void loadFromAttributes(TypedArray attributes) {
@@ -70,8 +119,24 @@ class MaterialCardViewHelper {
         attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
     rippleColor = getRippleColor();
-    updateForeground();
+    updateRippleColor();
+
+    updateCornerRadius();
+    updateElevation();
+    updateStroke();
+
+    materialCardView.setBackgroundInternal(insetDrawable(bgDrawable));
+    materialCardView.setForeground(insetDrawable(fgDrawable));
+
     adjustContentPadding(strokeWidth);
+  }
+
+  boolean isBackgroundOverwritten() {
+    return isBackgroundOverwritten;
+  }
+
+  void setBackgroundOverwritten(boolean isBackgroundOverwritten) {
+    this.isBackgroundOverwritten = isBackgroundOverwritten;
   }
 
   void setStrokeColor(@ColorInt int strokeColor) {
@@ -80,7 +145,7 @@ class MaterialCardViewHelper {
     }
 
     this.strokeColor = strokeColor;
-    updateForeground();
+    updateStroke();
   }
 
   @ColorInt
@@ -95,7 +160,7 @@ class MaterialCardViewHelper {
 
     int strokeWidthDelta = strokeWidth - this.strokeWidth;
     this.strokeWidth = strokeWidth;
-    updateForeground();
+    updateStroke();
     adjustContentPadding(strokeWidthDelta);
   }
 
@@ -104,12 +169,54 @@ class MaterialCardViewHelper {
     return strokeWidth;
   }
 
-  /**
-   * Recreates a foreground drawable based on the current card radius, stroke color and width and
-   * sets it as the foreground.
-   */
-  void updateForeground() {
-    materialCardView.setForeground(createForegroundDrawable());
+  void setCardBackgroundColor(ColorStateList color) {
+    bgDrawable.setFillColor(color);
+  }
+
+  ColorStateList getCardBackgroundColor() {
+    return bgDrawable.getFillColor();
+  }
+
+  void updateClickable() {
+    Drawable previousFgDrawable = fgDrawable;
+    fgDrawable = materialCardView.isClickable() ? getClickableForeground() : strokeDrawable;
+    if (previousFgDrawable != fgDrawable) {
+      updateInsetForeground(fgDrawable);
+    }
+  }
+
+  void updateCornerRadius() {
+    shapeAppearanceModel.setCornerRadius(materialCardView.getRadius());
+    bgDrawable.invalidateSelf();
+    fgDrawable.invalidateSelf();
+  }
+
+  void updateElevation() {
+    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
+      bgDrawable.setShadowElevation((int) materialCardView.getCardElevation());
+      // TODO: Remove once radius and offset are changed by setShadowElevation.
+      bgDrawable.setShadowRadius(
+          (int) Math.ceil(materialCardView.getCardElevation() * SHADOW_RADIUS_MULTIPLIER));
+      bgDrawable.setShadowVerticalOffset(
+          (int) Math.ceil(materialCardView.getCardElevation() * SHADOW_OFFSET_MULTIPLIER));
+    }
+  }
+
+  void updateInsets() {
+    // No way to update the inset amounts for an InsetDrawable, so recreate insets as needed.
+    if (!isBackgroundOverwritten()) {
+      materialCardView.setBackgroundInternal(insetDrawable(bgDrawable));
+    }
+    materialCardView.setForeground(insetDrawable(fgDrawable));
+  }
+
+  void updateStroke() {
+    // In order to set a stroke, a size and color both need to be set. We default to a zero-width
+    // width size, but won't set a default color. This prevents drawing a stroke that blends in with
+    // the card but that could affect card spacing.
+    if (strokeColor != DEFAULT_STROKE_VALUE) {
+      strokeDrawable.setStroke(strokeWidth, strokeColor);
+    }
   }
 
   @TargetApi(VERSION_CODES.LOLLIPOP)
@@ -122,6 +229,7 @@ class MaterialCardViewHelper {
     materialCardView.setClipToOutline(false);
     contentView.setClipToOutline(true);
     contentView.setOutlineProvider(
+        // TODO: Derive outline from ShapeAppearanceModel
         new ViewOutlineProvider() {
           @Override
           public void getOutline(View view, Outline outline) {
@@ -136,65 +244,92 @@ class MaterialCardViewHelper {
   }
 
   /**
-   * Creates a drawable foreground for the card in order to handle a stroke outline.
-   *
-   * @return drawable representing foreground for a card.
+   * Attempts to update the {@link InsetDrawable} foreground to use the given {@link Drawable}.
+   * Changing the Drawable is only available in M+, so earlier versions will create a new
+   * InsetDrawable.
    */
-  private Drawable createForegroundDrawable() {
-    if (fgDrawable == null) {
-      fgDrawable = new GradientDrawable();
-      fgDrawable.setColor(Color.TRANSPARENT);
-    }
-
-    // Adjust the radius of the stroke by half the stroke width in order for the outside radius of
-    // the stroke to match the radius of the CardView. (The stroke is drawn calculating its radius
-    // at the center of the stroke.)
-    float radius = Math.max(materialCardView.getRadius() - strokeWidth * 0.5f, 0);
-    if (Math.abs(radius - this.radius) > 0.001f) {
-      fgDrawable.setCornerRadius(radius);
-    }
-
-    this.radius = radius;
-    // In order to set a stroke, a size and color both need to be set. We default to a zero-width
-    // width size, but won't set a default color. This prevents drawing a stroke that blends in with
-    // the card but that could affect card spacing.
-    if (strokeColor != DEFAULT_STROKE_VALUE) {
-      fgDrawable.setStroke(strokeWidth, strokeColor);
-    }
-
-    if (!materialCardView.isClickable()) {
-      return fgDrawable;
-    }
-
-    if (rippleDrawable == null) {
-      rippleDrawable = createForegroundRippleDrawable();
+  private void updateInsetForeground(Drawable insetForeground) {
+    if (VERSION.SDK_INT >= VERSION_CODES.M
+        && materialCardView.getForeground() instanceof InsetDrawable) {
+      ((InsetDrawable) materialCardView.getForeground()).setDrawable(insetForeground);
     } else {
-      updateRippleShape();
+      materialCardView.setForeground(insetDrawable(insetForeground));
     }
-
-    if (layerDrawable == null) {
-      layerDrawable = new LayerDrawable(new Drawable[] {rippleDrawable, fgDrawable});
-      layerDrawable.setId(0, R.id.foregroundRippleLayerDrawable);
-      layerDrawable.setId(1, R.id.foregroundBorderLayerDrawable);
-    } else {
-      layerDrawable.setDrawableByLayerId(R.id.foregroundRippleLayerDrawable, rippleDrawable);
-      layerDrawable.setDrawableByLayerId(R.id.foregroundBorderLayerDrawable, fgDrawable);
-    }
-
-    return layerDrawable;
   }
 
-  private void updateRippleShape() {
-    //noinspection NewApi
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE && rippleDrawable instanceof RippleDrawable) {
-      ShapeDrawable shapeDrawable =
-          (ShapeDrawable) ((RippleDrawable) rippleDrawable).getDrawable(0);
-      shapeDrawable.setShape(createRoundRectShape());
-      return;
+  /**
+   * Returns a {@link Drawable} that insets the given drawable by the amount of padding CardView
+   * would add for the shadow. This will always use an {@link InsetDrawable} even if there is no
+   * inset.
+   *
+   * <p>Always use an InsetDrawable even when the insets are 0 instead of only wrapping in an
+   * InsetDrawable when there is an inset. Replacing the background (or foreground) of a {@link
+   * View} with the same Drawable wrapped into an InsetDrawable will result in the View clearing the
+   * original Drawable's callback which should refer to the InsetDrawable.
+   */
+  private Drawable insetDrawable(Drawable originalDrawable) {
+    int insetVertical = 0;
+    int insetHorizontal = 0;
+    boolean isPreLollipop = Build.VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
+    if (isPreLollipop || materialCardView.getUseCompatPadding()) {
+      // Calculate the shadow padding used by CardView
+      boolean addInsetForCorners = materialCardView.getPreventCornerOverlap() && !isPreLollipop;
+      insetVertical =
+          (int)
+              Math.ceil(
+                  calculateVerticalPadding(
+                      materialCardView.getMaxCardElevation(),
+                      materialCardView.getRadius(),
+                      addInsetForCorners));
+      insetHorizontal =
+          (int)
+              Math.ceil(
+                  calculateHorizontalPadding(
+                      materialCardView.getMaxCardElevation(),
+                      materialCardView.getRadius(),
+                      addInsetForCorners));
+    }
+    return new InsetDrawable(
+        originalDrawable, insetHorizontal, insetVertical, insetHorizontal, insetVertical) {
+      @Override
+      public boolean getPadding(Rect padding) {
+        // Our very own special InsetDrawable that pretends it does not have padding so that
+        // using it as the background will *not* change the padding of the view.
+        return false;
+      }
+    };
+  }
+
+  /** Copied from {@link CardView} implementation. */
+  static float calculateVerticalPadding(
+      float maxShadowSize, float cornerRadius, boolean addPaddingForCorners) {
+    if (addPaddingForCorners) {
+      return (float) (maxShadowSize * CARD_VIEW_SHADOW_MULTIPLIER + (1 - COS_45) * cornerRadius);
+    } else {
+      return maxShadowSize * CARD_VIEW_SHADOW_MULTIPLIER;
+    }
+  }
+
+  /** Copied from {@link CardView} implementation. */
+  static float calculateHorizontalPadding(
+      float maxShadowSize, float cornerRadius, boolean addPaddingForCorners) {
+    if (addPaddingForCorners) {
+      return (float) (maxShadowSize + (1 - COS_45) * cornerRadius);
+    } else {
+      return maxShadowSize;
+    }
+  }
+
+  private Drawable getClickableForeground() {
+    if (rippleDrawable == null) {
+      rippleDrawable = createForegroundRippleDrawable();
     }
 
-    // No way to update this one, create a new one.
-    rippleDrawable = createCompatRippleDrawable();
+    if (clickableForegroundDrawable == null) {
+      clickableForegroundDrawable =
+          new LayerDrawable(new Drawable[] {rippleDrawable, strokeDrawable});
+    }
+    return clickableForegroundDrawable;
   }
 
   /** Guarantee at least enough content padding to account for the stroke width. */
@@ -225,22 +360,23 @@ class MaterialCardViewHelper {
   }
 
   private Drawable createCompatRippleDrawable() {
-    Drawable rippleDrawable = new StateListDrawable();
-    ShapeDrawable foregroundShape = createForegroundShapeDrawable();
-    foregroundShape.getPaint().setColor(rippleColor);
-    ((StateListDrawable) rippleDrawable)
-        .addState(new int[] {android.R.attr.state_pressed}, foregroundShape);
+    StateListDrawable rippleDrawable = new StateListDrawable();
+    compatRippleDrawable = createForegroundShapeDrawable();
+    compatRippleDrawable.setFillColor(ColorStateList.valueOf(rippleColor));
+    rippleDrawable.addState(new int[] {android.R.attr.state_pressed}, compatRippleDrawable);
     return rippleDrawable;
   }
 
-  private ShapeDrawable createForegroundShapeDrawable() {
-    RoundRectShape shape = createRoundRectShape();
-    return new ShapeDrawable(shape);
+  private void updateRippleColor() {
+    //noinspection NewApi
+    if (RippleUtils.USE_FRAMEWORK_RIPPLE && rippleDrawable != null) {
+      ((RippleDrawable) rippleDrawable).setColor(ColorStateList.valueOf(rippleColor));
+    } else if (compatRippleDrawable != null) {
+      compatRippleDrawable.setFillColor(ColorStateList.valueOf(rippleColor));
+    }
   }
 
-  private RoundRectShape createRoundRectShape() {
-    float[] radii = new float[8];
-    Arrays.fill(radii, radius);
-    return new RoundRectShape(radii, null, null);
+  private MaterialShapeDrawable createForegroundShapeDrawable() {
+    return new MaterialShapeDrawable(shapeAppearanceModel);
   }
 }

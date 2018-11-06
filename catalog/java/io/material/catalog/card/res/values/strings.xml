@@ -28,6 +28,9 @@
     Cards on mobile default to 8dp margins. layout_margin needs to be set directly on a View in its
     layout and will not work when included as part of a style.
   </string>
+  <string name="cat_card_clickable_desc">
+    Cards can be clickable.
+  </string>
   <string name="cat_card_elevation_desc">Cards have 1dp elevation.</string>
   <string name="cat_card_m1_desc">
     CardView from the Support Library works side-by-side with MaterialCardView. These cards default

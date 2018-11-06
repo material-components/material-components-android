@@ -50,6 +50,20 @@
           android:text="@string/cat_card_spacing_desc"/>
     </com.google.android.material.card.MaterialCardView>
 
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/mtrl_card_spacing"
+        android:layout_marginTop="@dimen/mtrl_card_spacing"
+        android:layout_marginRight="@dimen/mtrl_card_spacing"
+        android:minHeight="@dimen/cat_card_demo_min_height"
+        android:clickable="true">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_card_clickable_desc"/>
+    </com.google.android.material.card.MaterialCardView>
+
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

@@ -22,15 +22,19 @@ import static com.google.android.material.internal.ThemeEnforcement.createThemed
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
+import android.support.annotation.Nullable;
 import com.google.android.material.internal.ThemeEnforcement;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -57,9 +61,16 @@ import android.widget.FrameLayout;
 public class MaterialCardView extends CardView {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
+  private static final String LOG_TAG = "MaterialCardView";
 
   private final MaterialCardViewHelper cardViewHelper;
   private final FrameLayout contentLayout;
+
+  /**
+   * Keep track of when {@link CardView} is done initializing because we don't want to use the
+   * {@link Drawable} that it passes to {@link #setBackground(Drawable)}.
+   */
+  private final boolean isParentCardViewDoneInitializing;
 
   public MaterialCardView(Context context) {
     this(context, null /* attrs */);
@@ -71,6 +82,7 @@ public class MaterialCardView extends CardView {
 
   public MaterialCardView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    isParentCardViewDoneInitializing = true;
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
@@ -78,9 +90,12 @@ public class MaterialCardView extends CardView {
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.MaterialCardView, defStyleAttr, DEF_STYLE_RES);
 
-    // Loads and sets background drawable attributes
+    // Loads and sets background drawable attributes.
     cardViewHelper = new MaterialCardViewHelper(this);
+    // Get the card background color that CardView read from the attributes.
+    cardViewHelper.setCardBackgroundColor(super.getCardBackgroundColor());
     cardViewHelper.loadFromAttributes(attributes);
+
     // Add a content view to allow the border to be drawn outside the outline.
     contentLayout = new FrameLayout(context);
     contentLayout.setMinimumHeight(getContentMinimumHeight());
@@ -139,7 +154,7 @@ public class MaterialCardView extends CardView {
   @Override
   public void setRadius(float radius) {
     super.setRadius(radius);
-    cardViewHelper.updateForeground();
+    cardViewHelper.updateCornerRadius();
     updateContentLayout();
   }
 
@@ -156,7 +171,46 @@ public class MaterialCardView extends CardView {
   @Override
   public void setClickable(boolean clickable) {
     super.setClickable(clickable);
-    cardViewHelper.updateForeground();
+    cardViewHelper.updateClickable();
+  }
+
+  @Override
+  public void setCardBackgroundColor(@ColorInt int color) {
+    cardViewHelper.setCardBackgroundColor(ColorStateList.valueOf(color));
+  }
+
+  @Override
+  public void setCardBackgroundColor(@Nullable ColorStateList color) {
+    cardViewHelper.setCardBackgroundColor(color);;
+  }
+
+  @Override
+  public ColorStateList getCardBackgroundColor() {
+    return cardViewHelper.getCardBackgroundColor();
+  }
+
+  @Override
+  public void setCardElevation(float elevation) {
+    super.setCardElevation(elevation);
+    cardViewHelper.updateElevation();
+  }
+
+  @Override
+  public void setMaxCardElevation(float maxCardElevation) {
+    super.setMaxCardElevation(maxCardElevation);
+    cardViewHelper.updateInsets();
+  }
+
+  @Override
+  public void setUseCompatPadding(boolean useCompatPadding) {
+    super.setUseCompatPadding(useCompatPadding);
+    cardViewHelper.updateInsets();
+  }
+
+  @Override
+  public void setPreventCornerOverlap(boolean preventCornerOverlap) {
+    super.setPreventCornerOverlap(preventCornerOverlap);
+    cardViewHelper.updateInsets();
   }
 
   @Override
@@ -193,4 +247,27 @@ public class MaterialCardView extends CardView {
   public void removeViews(int start, int count) {
     contentLayout.removeViews(start, count);
   }
+
+  @Override
+  public void setBackground(Drawable drawable) {
+    setBackgroundDrawable(drawable);
+  }
+
+  @Override
+  public void setBackgroundDrawable(Drawable drawable) {
+    if (isParentCardViewDoneInitializing) {
+      if (!cardViewHelper.isBackgroundOverwritten()) {
+        Log.i(LOG_TAG, "Setting a custom background is not supported.");
+        cardViewHelper.setBackgroundOverwritten(true);
+      }
+      super.setBackgroundDrawable(drawable);
+    }
+    // Do nothing if CardView isn't done initializing because we don't want to use its background.
+  }
+
+  /** Allows {@link MaterialCardViewHelper} to set the background. */
+  void setBackgroundInternal(Drawable drawable) {
+    super.setBackgroundDrawable(drawable);
+  }
+
 }
