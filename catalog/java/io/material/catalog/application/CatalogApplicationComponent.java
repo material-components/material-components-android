@@ -18,18 +18,17 @@ package io.material.catalog.application;
 
 import android.app.Application;
 import dagger.BindsInstance;
-import dagger.android.support.AndroidSupportInjectionModule;
+import dagger.android.AndroidInjectionModule;
 import io.material.catalog.application.scope.ApplicationScope;
 import io.material.catalog.main.MainActivity;
 
 /** The Application's root component. */
 @ApplicationScope
 @dagger.Component(
-  modules = {
-    AndroidSupportInjectionModule.class,
-    MainActivity.Module.class,
-  }
-)
+    modules = {
+      AndroidInjectionModule.class,
+      MainActivity.Module.class,
+    })
 public interface CatalogApplicationComponent {
   void inject(CatalogApplication app);
 
