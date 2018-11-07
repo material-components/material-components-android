@@ -73,8 +73,9 @@ public class MenuMainDemoFragment extends DemoFragment {
     PopupMenu popup = new PopupMenu(getContext(), v);
     // Inflating the Popup using xml file
     popup.getMenuInflater().inflate(menuRes, popup.getMenu());
-    // Icons won't show unless we use this workaround.
-    // There is no public method so far to make this happen.
+    // There is no public API to make icons show on menus.
+    // IF you need the icons to show this works however it's discouraged to rely on library only
+    // APIs since they might disappear in future versions.
     if (popup.getMenu() instanceof MenuBuilder) {
       MenuBuilder menuBuilder = (MenuBuilder) popup.getMenu();
       //noinspection RestrictedApi
