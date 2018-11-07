@@ -124,11 +124,12 @@ This style usually contains an optional chip icon and is never checkable.
 
 ### Chip Touch Target
 
-To ensure that a `Chip` is accessible, specify a `app:chipTouchTargetDelegate`
+To ensure that a `Chip` is accessible, use a MaterialComponents.Chip style which
+uses an
+[InsetDrawable](https://developer.android.com/reference/android/graphics/drawable/InsetDrawable)
 to extend chip's touch target (when necessary) to meet Android's recommended
 [accessibility touch target size](https://support.google.com/accessibility/android/answer/7101858).
-Make sure that the touch delegate's boundaries encompasses the expanded touch
-target region. Developers can override chip's minimum touch target size using
+Developers can override chip's minimum touch target size using
 `app:chipMinTouchTargetSize`.
 
 ### Chip Attributes
@@ -147,8 +148,7 @@ Checkable     | `android:checkable`
 Checked Icon  | `app:checkedIconVisible` <br> `app:checkedIcon`
 Motion        | `app:showMotionSpec` <br> `app:hideMotionSpec`
 Paddings      | `app:chipStartPadding` <br> `app:iconStartPadding` <br> `app:iconEndPadding` <br> `app:textStartPadding` <br> `app:textEndPadding` <br> `app:closeIconStartPadding` <br> `app:closeIconEndPadding` <br> `app:chipEndPadding`
-TouchTarget   | `app:chipMinTouchTargetSize` <br> `app:chipTouchTargetDelegate`
-
+TouchTarget   | `app:chipMinTouchTargetSize` <br> `app:ensureMinTouchTargetSize`
 ### Theme Attribute Mapping
 
 #### Entry Chip, Filter Chip, Choice Chip, Action Chip (Default)

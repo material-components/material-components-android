@@ -17,7 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.MaterialComponents.ChipGroup" parent="android:Widget">
-    <item name="chipSpacing">4dp</item>
+    <item name="chipSpacingHorizontal">4dp</item>
     <item name="singleLine">false</item>
     <item name="singleSelection">false</item>
   </style>
@@ -52,6 +52,7 @@
     <item name="rippleColor">@color/mtrl_chip_ripple_color</item>
 
     <item name="chipMinTouchTargetSize">48dp</item>
+    <item name="ensureMinTouchTargetSize">true</item>
     <item name="chipMinHeight">32dp</item>
     <item name="chipIconSize">24dp</item>
     <item name="closeIconSize">18dp</item>

@@ -44,11 +44,11 @@
   <public name="chipSpacing" type="attr"/>
   <public name="chipSpacingHorizontal" type="attr"/>
   <public name="chipSpacingVertical" type="attr"/>
+  <public name="ensureMinTouchTargetSize" type="attr"/>
   <public name="singleLine" type="attr"/>
   <public name="singleSelection" type="attr"/>
   <public name="checkedChip" type="attr"/>
   <public name="chipMinTouchTargetSize" type="attr"/>
-  <public name="chipTouchTargetDelegate" type="attr"/>
   <public name="Widget.MaterialComponents.ChipGroup" type="style"/>
   <public name="Widget.MaterialComponents.Chip.Entry" type="style"/>
   <public name="Widget.MaterialComponents.Chip.Filter" type="style"/>

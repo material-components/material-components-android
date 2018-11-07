@@ -19,6 +19,6 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     style="@style/Widget.MaterialComponents.Chip.Choice"
+    android:id="@+id/cat_chip_group_item_choice"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    app:chipTouchTargetDelegate="@id/chip_group_parent"/>
+    android:layout_height="wrap_content"/>

@@ -30,6 +30,7 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
@@ -51,7 +52,6 @@ import android.support.annotation.StyleRes;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.chip.ChipDrawable.Delegate;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.TouchTargetUtils;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
@@ -74,12 +74,9 @@ import android.view.KeyEvent;
 import android.view.MotionEvent;
 import android.view.PointerIcon;
 import android.view.SoundEffectConstants;
-import android.view.TouchDelegate;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import android.view.ViewParent;
-import android.view.ViewTreeObserver;
-import android.view.ViewTreeObserver.OnGlobalLayoutListener;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import java.lang.annotation.Retention;
@@ -139,7 +136,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
 
   private static final String NAMESPACE_ANDROID = "http://schemas.android.com/apk/res/android";
-  private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
 
   /** Value taken from Android Accessibility Guide */
   private static final int MIN_TOUCH_TARGET_DP = 48;
@@ -149,6 +145,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private @interface VirtualId {}
 
   @Nullable private ChipDrawable chipDrawable;
+  @Nullable private InsetDrawable insetBackgroundDrawable;
   //noinspection NewApi
   @Nullable private RippleDrawable ripple;
 
@@ -159,10 +156,12 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private boolean closeIconPressed;
   private boolean closeIconHovered;
   private boolean closeIconFocused;
+  private boolean ensureMinTouchTargetSize;
   private int touchTargetDelegateResId;
 
   @Dimension(unit = Dimension.PX)
   private int minTouchTargetSize;
+
   private final ChipTouchHelper touchHelper;
   private final Rect rect = new Rect();
   private final RectF rectF = new RectF();
@@ -194,15 +193,16 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     ChipDrawable drawable =
         ChipDrawable.createFromAttributes(
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
+    initMinTouchTarget(context, attrs, defStyleAttr);
     setChipDrawable(drawable);
 
-      TypedArray a =
-          ThemeEnforcement.obtainStyledAttributes(
-              context,
-              attrs,
-              R.styleable.Chip,
-              defStyleAttr,
-              R.style.Widget_MaterialComponents_Chip_Action);
+    TypedArray a =
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
+            attrs,
+            R.styleable.Chip,
+            defStyleAttr,
+            R.style.Widget_MaterialComponents_Chip_Action);
     if (VERSION.SDK_INT < VERSION_CODES.M) {
       // This is necessary to work around a bug that doesn't support themed color referenced in
       // ColorStateList for API level < 23.
@@ -239,7 +239,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
     // Helps TextView calculate the available text width.
     updatePaddingInternal();
-    setupTouchTargetDelegate(context, attrs, defStyleAttr);
+    if (shouldEnsureMinTouchTargetSize()) {
+      setMinHeight(minTouchTargetSize);
+    }
   }
 
   @Override
@@ -263,7 +265,11 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     }
   }
 
-  private void setupTouchTargetDelegate(Context context, AttributeSet attrs, int defStyleAttr) {
+  private boolean shouldEnsureMinTouchTargetSize() {
+    return (ensureMinTouchTargetSize || touchTargetDelegateResId > 0);
+  }
+
+  private void initMinTouchTarget(Context context, AttributeSet attrs, int defStyleAttr) {
     if (attrs == null) {
       return;
     }
@@ -275,44 +281,15 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             R.styleable.Chip,
             defStyleAttr,
             R.style.Widget_MaterialComponents_Chip_Action);
-    touchTargetDelegateResId =
-        attrs.getAttributeIntValue(NAMESPACE_APP, "chipTouchTargetDelegate", -1);
-    touchTargetDelegateResId =
-        touchTargetDelegateResId > 0
-            ? touchTargetDelegateResId
-            : a.getResourceId(R.styleable.Chip_chipTouchTargetDelegate, -1);
+    touchTargetDelegateResId = a.getResourceId(R.styleable.Chip_chipTouchTargetDelegate, -1);
+    ensureMinTouchTargetSize = a.getBoolean(R.styleable.Chip_ensureMinTouchTargetSize, false);
 
-    if (touchTargetDelegateResId <= 0) {
-      return;
-    }
+    float defaultMinTouchTargetSize = (float) Math.ceil(dpToPx(MIN_TOUCH_TARGET_DP, getContext()));
+    minTouchTargetSize =
+        (int)
+            Math.ceil(
+                a.getDimension(R.styleable.Chip_chipMinTouchTargetSize, defaultMinTouchTargetSize));
 
-    if (attrs.getAttributeValue(NAMESPACE_APP, "chipMinTouchTargetSize") != null) {
-      minTouchTargetSize =
-          attrs.getAttributeIntValue(NAMESPACE_APP, "chipMinTouchTargetSize", MIN_TOUCH_TARGET_DP);
-      minTouchTargetSize = (int) Math.ceil(dpToPx(minTouchTargetSize, getContext()));
-    } else {
-      minTouchTargetSize =
-          (int)
-              Math.ceil(
-                  a.getDimension(R.styleable.Chip_chipMinTouchTargetSize, MIN_TOUCH_TARGET_DP));
-    }
-
-    ViewTreeObserver viewTreeObserver = getViewTreeObserver();
-    viewTreeObserver.addOnGlobalLayoutListener(
-        new OnGlobalLayoutListener() {
-          @Override
-          public void onGlobalLayout() {
-            ensureAccessibleTouchTarget(
-                TouchTargetUtils.findViewAncestor(Chip.this, touchTargetDelegateResId),
-                minTouchTargetSize);
-            touchTargetDelegateResId = -1;
-            if (Build.VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN) {
-              getViewTreeObserver().removeGlobalOnLayoutListener(this);
-            } else {
-              getViewTreeObserver().removeOnGlobalLayoutListener(this);
-            }
-          }
-        });
     a.recycle();
   }
 
@@ -334,7 +311,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             (chipDrawable.getChipStartPadding()
                 + chipDrawable.getTextStartPadding()
                 + chipDrawable.calculateChipIconWidth());
-
     if (ViewCompat.getPaddingEnd(this) != paddingEnd
         || ViewCompat.getPaddingStart(this) != paddingStart) {
       ViewCompat.setPaddingRelative(
@@ -404,14 +380,34 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       unapplyChipDrawable(chipDrawable);
       chipDrawable = drawable;
       applyChipDrawable(chipDrawable);
-
-      if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-        updateFrameworkRippleBackground();
-      } else {
-        chipDrawable.setUseCompatRipple(true);
-        ViewCompat.setBackground(this, chipDrawable);
-      }
+      ensureAccessibleTouchTarget(minTouchTargetSize);
+      updateBackgroundDrawable();
     }
+  }
+
+  private void updateBackgroundDrawable() {
+    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
+      updateFrameworkRippleBackground();
+    } else {
+      chipDrawable.setUseCompatRipple(true);
+      ViewCompat.setBackground(this, getBackgroundDrawable());
+      ensureChipDrawableHasCallback();
+    }
+  }
+
+  private void ensureChipDrawableHasCallback() {
+    if (getBackgroundDrawable() == insetBackgroundDrawable && chipDrawable.getCallback() == null) {
+      // View#setBackground nulls out the callback of the previous background drawable, so we need
+      // to reset it.
+      chipDrawable.setCallback(insetBackgroundDrawable);
+    }
+  }
+
+  public Drawable getBackgroundDrawable() {
+    if (insetBackgroundDrawable == null) {
+      return chipDrawable;
+    }
+    return insetBackgroundDrawable;
   }
 
   private void updateFrameworkRippleBackground() {
@@ -419,7 +415,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     ripple =
         new RippleDrawable(
             RippleUtils.convertToRippleDrawableColor(chipDrawable.getRippleColor()),
-            chipDrawable,
+            getBackgroundDrawable(),
             null);
     chipDrawable.setUseCompatRipple(false);
     //noinspection NewApi
@@ -479,7 +475,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   @Override
   public void setBackground(Drawable background) {
-    if (background != chipDrawable && background != ripple) {
+    if (background != getBackgroundDrawable() && background != ripple) {
       throw new UnsupportedOperationException(
           "Do not set the background; Chip manages its own background drawable.");
     } else {
@@ -489,7 +485,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   @Override
   public void setBackgroundDrawable(Drawable background) {
-    if (background != chipDrawable && background != ripple) {
+    if (background != getBackgroundDrawable() && background != ripple) {
       throw new UnsupportedOperationException(
           "Do not set the background drawable; Chip manages its own background drawable.");
     } else {
@@ -646,6 +642,8 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
   @Override
   public void onChipDrawableSizeChange() {
+    ensureAccessibleTouchTarget(minTouchTargetSize);
+    updateBackgroundDrawable();
     updatePaddingInternal();
     requestLayout();
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -1816,7 +1814,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   /**
-   * Sets whether this chip's checked icon is visible using  resource id.
+   * Sets whether this chip's checked icon is visible using a resource id.
    *
    * @param id The resource id of this chip's check icon visibility.
    * @attr ref com.google.android.material.R.styleable#Chip_checkedIconVisible
@@ -2229,27 +2227,56 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   /**
-   * Extends the tap target of this chip using a {@link TouchDelegate}.
+   * Extends the touch target of this chip using a {@link InsetDrawable} if chip's intrinsic width /
+   * height is smaller than the {@code minTargetPx}.
    *
-   * <p>This also adds an OnAttachStateChangeListener to the view to remove the TouchDelegate from
-   * its ancestor when it is detached from its parent.
-   *
-   * <p>What this means for views which are part of a reusable layout is that you should call this
-   * method to extend its tap target every time it is attached to a new ancestor.
-   *
-   * @param ancestor an ancestor of the given view. This ancestor must have bounds which include the
-   *     extended tap target.
-   * @param minTargetPx minimum toucch target size in pixel.
+   * @param minTargetPx minimum touch target size in pixel.
+   * @returns flag indicating whether the background was changed.
    */
-  public void ensureAccessibleTouchTarget(View ancestor, @Dimension int minTargetPx) {
-    int deltaHeight = Math.max(0, minTargetPx - getHeight());
-    int deltaWidth = Math.max(0, minTargetPx - getWidth());
+  public boolean ensureAccessibleTouchTarget(@Dimension int minTargetPx) {
+    minTouchTargetSize = minTargetPx;
+    if (!shouldEnsureMinTouchTargetSize()) {
+      return false;
+    }
+
+    int deltaHeight = Math.max(0, minTargetPx - chipDrawable.getIntrinsicHeight());
+    int deltaWidth = Math.max(0, minTargetPx - chipDrawable.getIntrinsicWidth());
+
+    if (deltaWidth <= 0 && deltaHeight <= 0) {
+      insetBackgroundDrawable = null;
+      return false;
+    }
+
     int deltaX = deltaWidth > 0 ? deltaWidth / 2 : 0;
     int deltaY = deltaHeight > 0 ? deltaHeight / 2 : 0;
-    TouchTargetUtils.extendViewTouchTarget(this, ancestor, deltaX, deltaY, deltaX, deltaY);
+
+    if (insetBackgroundDrawable != null) {
+      Rect padding = new Rect();
+      insetBackgroundDrawable.getPadding(padding);
+      if (padding.top == deltaY
+          && padding.bottom == deltaY
+          && padding.left == deltaX
+          && padding.right == deltaX) {
+        return true;
+      }
+    }
+    if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+      if (getMinHeight() != minTargetPx) {
+        setMinHeight(minTargetPx);
+      }
+    } else {
+      setMinHeight(minTargetPx);
+    }
+    insetChipBackgroundDrawable(deltaX, deltaY, deltaX, deltaY);
+    return true;
   }
 
-  @Dimension(unit = Dimension.PX)
+  private void insetChipBackgroundDrawable(
+      int insetLeft, int insetTop, int insetRight, int insetBottom) {
+    insetBackgroundDrawable =
+        new InsetDrawable(chipDrawable, insetLeft, insetTop, insetRight, insetBottom);
+  }
+
   private static float dpToPx(@Dimension(unit = Dimension.DP) int dp, Context context) {
     Resources r = context.getResources();
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
