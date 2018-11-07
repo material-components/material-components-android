@@ -18,8 +18,6 @@ package io.material.catalog.menu;
 
 import io.material.catalog.R;
 
-import static io.material.catalog.feature.FeatureDemo.STATUS_WIP;
-
 import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import dagger.Provides;
@@ -67,7 +65,7 @@ public class MenuFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_menus_title, R.drawable.ic_menu, STATUS_WIP) {
+      return new FeatureDemo(R.string.cat_menus_title, R.drawable.ic_menu) {
         @Override
         public Fragment createFragment() {
           return new MenuFragment();

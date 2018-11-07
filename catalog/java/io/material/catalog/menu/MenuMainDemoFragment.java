@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2017 The Android Open Source Project
+ * Copyright (C) 2018 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -18,24 +18,25 @@ package io.material.catalog.menu;
 
 import io.material.catalog.R;
 
-import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.MenuRes;
 import android.support.annotation.Nullable;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import com.google.android.material.snackbar.Snackbar;
+import android.support.v7.view.menu.MenuBuilder;
+import android.support.v7.widget.PopupMenu;
+import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.Button;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main menu demo for the Catalog app. */
 public class MenuMainDemoFragment extends DemoFragment {
-
-  private RecyclerView recyclerView;
-  private RecyclerView.LayoutManager layoutManager;
-  private MenuListAdapter adapter;
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
@@ -46,13 +47,51 @@ public class MenuMainDemoFragment extends DemoFragment {
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    Context context = getContext();
-    recyclerView = new RecyclerView(context);
-    recyclerView.setHasFixedSize(true);
-    layoutManager = new LinearLayoutManager(context);
-    recyclerView.setLayoutManager(layoutManager);
-    adapter = new MenuListAdapter();
-    recyclerView.setAdapter(adapter);
-    return recyclerView;
+    View view = layoutInflater.inflate(R.layout.cat_menu_fragment, viewGroup, false);
+    Button button = view.findViewById(R.id.menu_button);
+    Button iconMenuButton = view.findViewById(R.id.menu_button_with_icons);
+    button.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            showMenu(v, R.menu.popup_menu);
+          }
+        });
+    iconMenuButton.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            showMenu(v, R.menu.menu_with_icons);
+          }
+        });
+
+    return view;
+  }
+
+  @SuppressWarnings("RestrictTo")
+  private void showMenu(View v, @MenuRes int menuRes) {
+    PopupMenu popup = new PopupMenu(getContext(), v);
+    // Inflating the Popup using xml file
+    popup.getMenuInflater().inflate(menuRes, popup.getMenu());
+    // Icons won't show unless we use this workaround.
+    // There is no public method so far to make this happen.
+    if (popup.getMenu() instanceof MenuBuilder) {
+      MenuBuilder menuBuilder = (MenuBuilder) popup.getMenu();
+      //noinspection RestrictedApi
+      menuBuilder.setOptionalIconsVisible(true);
+    }
+    popup.setOnMenuItemClickListener(
+        new OnMenuItemClickListener() {
+          @Override
+          public boolean onMenuItemClick(MenuItem menuItem) {
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    menuItem.getTitle(),
+                    Snackbar.LENGTH_LONG)
+                .show();
+            return true;
+          }
+        });
+    popup.show();
   }
 }
