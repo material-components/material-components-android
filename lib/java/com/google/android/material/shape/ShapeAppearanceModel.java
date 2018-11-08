@@ -37,20 +37,26 @@ import android.view.ContextThemeWrapper;
  */
 @Experimental("The shapes API is currently experimental and subject to change")
 public class ShapeAppearanceModel {
-  private static final CornerTreatment DEFAULT_CORNER_TREATMENT = new RoundedCornerTreatment(0);
-  private static final EdgeTreatment DEFAULT_EDGE_TREATMENT = new EdgeTreatment();
-
-  private CornerTreatment topLeftCorner = DEFAULT_CORNER_TREATMENT;
-  private CornerTreatment topRightCorner = DEFAULT_CORNER_TREATMENT;
-  private CornerTreatment bottomRightCorner = DEFAULT_CORNER_TREATMENT;
-  private CornerTreatment bottomLeftCorner = DEFAULT_CORNER_TREATMENT;
-  private EdgeTreatment topEdge = DEFAULT_EDGE_TREATMENT;
-  private EdgeTreatment rightEdge = DEFAULT_EDGE_TREATMENT;
-  private EdgeTreatment bottomEdge = DEFAULT_EDGE_TREATMENT;
-  private EdgeTreatment leftEdge = DEFAULT_EDGE_TREATMENT;
+  private CornerTreatment topLeftCorner;
+  private CornerTreatment topRightCorner;
+  private CornerTreatment bottomRightCorner;
+  private CornerTreatment bottomLeftCorner;
+  private EdgeTreatment topEdge;
+  private EdgeTreatment rightEdge;
+  private EdgeTreatment bottomEdge;
+  private EdgeTreatment leftEdge;
 
   /** Constructs a default path generator with default edge and corner treatments. */
-  public ShapeAppearanceModel() {}
+  public ShapeAppearanceModel() {
+    setTopLeftCorner(getDefaultCornerTreatment());
+    setTopRightCorner(getDefaultCornerTreatment());
+    setBottomRightCorner(getDefaultCornerTreatment());
+    setBottomLeftCorner(getDefaultCornerTreatment());
+    setTopEdge(getDefaultEdgeTreatment());
+    setRightEdge(getDefaultEdgeTreatment());
+    setBottomEdge(getDefaultEdgeTreatment());
+    setLeftEdge(getDefaultEdgeTreatment());
+  }
 
   public ShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
     topLeftCorner = shapeAppearanceModel.getTopLeftCorner();
@@ -117,6 +123,10 @@ public class ShapeAppearanceModel {
     setTopRightCorner(cornerFamilyTopRight, cornerSizeTopRight);
     setBottomRightCorner(cornerFamilyBottomRight, cornerSizeBottomRight);
     setBottomLeftCorner(cornerFamilyBottomLeft, cornerSizeBottomLeft);
+    setTopEdge(getDefaultEdgeTreatment());
+    setRightEdge(getDefaultEdgeTreatment());
+    setBottomEdge(getDefaultEdgeTreatment());
+    setLeftEdge(getDefaultEdgeTreatment());
 
     a.recycle();
   }
@@ -384,10 +394,10 @@ public class ShapeAppearanceModel {
    */
   boolean isRoundRect() {
     boolean hasDefaultEdges =
-        leftEdge == DEFAULT_EDGE_TREATMENT
-            && rightEdge == DEFAULT_EDGE_TREATMENT
-            && topEdge == DEFAULT_EDGE_TREATMENT
-            && bottomEdge == DEFAULT_EDGE_TREATMENT;
+        leftEdge.getClass().equals(EdgeTreatment.class)
+            && rightEdge.getClass().equals(EdgeTreatment.class)
+            && topEdge.getClass().equals(EdgeTreatment.class)
+            && bottomEdge.getClass().equals(EdgeTreatment.class);
 
     float cornerSize = topLeftCorner.getCornerSize();
 
@@ -403,5 +413,13 @@ public class ShapeAppearanceModel {
             && bottomLeftCorner instanceof RoundedCornerTreatment;
 
     return hasDefaultEdges && cornersHaveSameSize && hasRoundedCorners;
+  }
+
+  private static CornerTreatment getDefaultCornerTreatment() {
+    return new RoundedCornerTreatment(0);
+  }
+
+  private static EdgeTreatment getDefaultEdgeTreatment() {
+    return new EdgeTreatment();
   }
 }
