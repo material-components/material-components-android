@@ -16,15 +16,17 @@
 
 package com.google.android.material.floatingactionbutton;
 
+import com.google.android.material.R;
+
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.PorterDuff;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
@@ -37,14 +39,13 @@ import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import android.support.v4.content.ContextCompat;
 import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
 @RequiresApi(21)
 class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
-
-  private InsetDrawable insetDrawable;
 
   FloatingActionButtonImplLollipop(
       FloatingActionButton view, ShadowViewDelegate shadowViewDelegate) {
@@ -78,8 +79,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
             RippleUtils.convertToRippleDrawableColor(rippleColor), rippleContent, null);
 
     contentBackground = rippleDrawable;
-
-    shadowViewDelegate.setBackgroundDrawable(rippleDrawable);
+    shadowViewDelegate.setBackgroundDrawable(contentBackground);
   }
 
   @Override
@@ -90,14 +90,6 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     } else {
       super.setRippleColor(rippleColor);
     }
-  }
-
-  @Override
-  Drawable createShapeDrawable() {
-    if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
-    }
-    return new AlwaysStatefulMaterialShapeDrawable(shapeAppearance);
   }
 
   @Override
@@ -178,18 +170,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void onPaddingUpdated(Rect padding) {
-    if (shouldAddPadding()) {
-      insetDrawable =
-          new InsetDrawable(
-              rippleDrawable, padding.left, padding.top, padding.right, padding.bottom);
-      shadowViewDelegate.setBackgroundDrawable(insetDrawable);
-    } else {
-      shadowViewDelegate.setBackgroundDrawable(rippleDrawable);
-    }
-  }
-
-  private boolean shouldAddPadding() {
+  boolean shouldAddPadding() {
     return shadowViewDelegate.isCompatPaddingEnabled() || !isAccessible();
   }
 
@@ -218,18 +199,6 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void updateSize() {
-    if (!usingDefaultCorner) {
-      // Leave shape appearance as is.
-      return;
-    }
-
-    ShapeAppearanceModel shapeAppearanceModel =
-        ((MaterialShapeDrawable) shapeDrawable).getShapeAppearanceModel();
-    shapeAppearanceModel.setCornerRadius(view.getSizeDimension() / 2);
-  }
-
-  @Override
   void updateFromViewRotation() {
     // no-op
   }
@@ -239,20 +208,33 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     return false;
   }
 
+  CircularBorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
+    final Context context = view.getContext();
+    CircularBorderDrawable borderDrawable =  new CircularBorderDrawableLollipop();
+    borderDrawable.setGradientColors(
+        ContextCompat.getColor(context, R.color.design_fab_stroke_top_outer_color),
+        ContextCompat.getColor(context, R.color.design_fab_stroke_top_inner_color),
+        ContextCompat.getColor(context, R.color.design_fab_stroke_end_inner_color),
+        ContextCompat.getColor(context, R.color.design_fab_stroke_end_outer_color));
+    borderDrawable.setBorderWidth(borderWidth);
+    borderDrawable.setBorderTint(backgroundTint);
+    return borderDrawable;
+  }
+
   @Override
-  CircularBorderDrawable newCircularDrawable() {
-    return new CircularBorderDrawableLollipop();
+  MaterialShapeDrawable createShapeDrawable() {
+    if (usingDefaultCorner) {
+      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
+    }
+    return new AlwaysStatefulMaterialShapeDrawable(shapeAppearance);
   }
 
   @Override
   void getPadding(Rect rect) {
-    int minPadding = (minTouchTargetSize - view.getSizeDimension()) / 2;
     if (shadowViewDelegate.isCompatPaddingEnabled()) {
-      final float maxShadowSize = getElevation() + pressedTranslationZ;
-      final int hPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize));
-      final int vPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize));
-      rect.set(hPadding, vPadding, hPadding, vPadding);
+      super.getPadding(rect);
     } else if (!isAccessible()) {
+      int minPadding = (minTouchTargetSize - view.getSizeDimension()) / 2;
       rect.set(minPadding, minPadding, minPadding, minPadding);
     } else {
       rect.set(0, 0, 0, 0);
