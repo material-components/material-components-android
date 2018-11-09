@@ -15,5 +15,7 @@
      limitations under the License.
 -->
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="0.04" android:color="?attr/colorOnSurface"/>
+  <item android:alpha="0.16" android:color="?attr/colorOnSurface" android:state_hovered="true"/>
+  <item android:alpha="0.04" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+  <item android:alpha="0.12" android:color="?attr/colorOnSurface"/>
 </selector>

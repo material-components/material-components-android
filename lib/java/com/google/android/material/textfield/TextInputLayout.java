@@ -230,6 +230,10 @@ public class TextInputLayout extends LinearLayout {
   @ColorInt private final int hoveredStrokeColor;
   @ColorInt private int focusedStrokeColor;
 
+  @ColorInt private int defaultFilledBackgroundColor;
+  @ColorInt private final int disabledFilledBackgroundColor;
+  @ColorInt private final int hoveredFilledBackgroundColor;
+
   @ColorInt private final int disabledColor;
 
   // Only used for testing
@@ -303,13 +307,34 @@ public class TextInputLayout extends LinearLayout {
     boxCornerRadiusBottomStart =
         a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomStart, 0f);
 
-    ColorStateList boxBackgroundColorStateList =
+    ColorStateList filledBackgroundColorStateList =
         MaterialResources.getColorStateList(
             context, a, R.styleable.TextInputLayout_boxBackgroundColor);
-    if (boxBackgroundColorStateList != null) {
-      boxBackgroundColor = boxBackgroundColorStateList.getDefaultColor();
+    if (filledBackgroundColorStateList != null) {
+      defaultFilledBackgroundColor = filledBackgroundColorStateList.getDefaultColor();
+      boxBackgroundColor = defaultFilledBackgroundColor;
+      if (filledBackgroundColorStateList.isStateful()) {
+        disabledFilledBackgroundColor =
+            filledBackgroundColorStateList.getColorForState(
+                new int[] {-android.R.attr.state_enabled}, -1);
+        hoveredFilledBackgroundColor =
+            filledBackgroundColorStateList.getColorForState(
+                new int[] {android.R.attr.state_hovered}, -1);
+      } else {
+        ColorStateList mtrlFilledBackgroundColorStateList =
+            AppCompatResources.getColorStateList(context, R.color.mtrl_filled_background_color);
+        disabledFilledBackgroundColor =
+            mtrlFilledBackgroundColorStateList.getColorForState(
+                new int[] {-android.R.attr.state_enabled}, -1);
+        hoveredFilledBackgroundColor =
+            mtrlFilledBackgroundColorStateList.getColorForState(
+                new int[] {android.R.attr.state_hovered}, -1);
+      }
     } else {
       boxBackgroundColor = Color.TRANSPARENT;
+      defaultFilledBackgroundColor = Color.TRANSPARENT;
+      disabledFilledBackgroundColor = Color.TRANSPARENT;
+      hoveredFilledBackgroundColor = Color.TRANSPARENT;
     }
 
     boxStrokeWidthDefaultPx =
@@ -534,6 +559,7 @@ public class TextInputLayout extends LinearLayout {
   public void setBoxBackgroundColor(@ColorInt int boxBackgroundColor) {
     if (this.boxBackgroundColor != boxBackgroundColor) {
       this.boxBackgroundColor = boxBackgroundColor;
+      defaultFilledBackgroundColor = boxBackgroundColor;
       applyBoxAttributes();
     }
   }
@@ -2209,8 +2235,17 @@ public class TextInputLayout extends LinearLayout {
       } else {
         boxStrokeWidthPx = boxStrokeWidthDefaultPx;
       }
-      applyBoxAttributes();
+    } else if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+      if (!isEnabled()) {
+        boxBackgroundColor = disabledFilledBackgroundColor;
+      } else if (isHovered) {
+        boxBackgroundColor = hoveredFilledBackgroundColor;
+      } else {
+        boxBackgroundColor = defaultFilledBackgroundColor;
+      }
     }
+
+    applyBoxAttributes();
   }
 
   private void expandHint(boolean animate) {
