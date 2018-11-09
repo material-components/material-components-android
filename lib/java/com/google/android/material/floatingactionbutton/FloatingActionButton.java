@@ -508,6 +508,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().setShapeAppearance(shapeAppearance, isUsingDefaultCorner(shapeAppearance));
   }
 
+  @Override
+  public void setVisibility(int visibility) {
+    super.setVisibility(visibility);
+  }
+
   /**
    * Shows the button.
    *
