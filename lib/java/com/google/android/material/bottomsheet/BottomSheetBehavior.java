@@ -288,10 +288,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       case MotionEvent.ACTION_DOWN:
         int initialX = (int) event.getX();
         initialY = (int) event.getY();
-        View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
-        if (scroll != null && parent.isPointInChildBounds(scroll, initialX, initialY)) {
-          activePointerId = event.getPointerId(event.getActionIndex());
-          touchingScrollingChild = true;
+        if (state != STATE_SETTLING) {
+          View scroll = nestedScrollingChildRef != null ? nestedScrollingChildRef.get() : null;
+          if (scroll != null && parent.isPointInChildBounds(scroll, initialX, initialY)) {
+            activePointerId = event.getPointerId(event.getActionIndex());
+            touchingScrollingChild = true;
+          }
         }
         ignoreEvents =
             activePointerId == MotionEvent.INVALID_POINTER_ID
@@ -944,7 +946,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       if (viewDragHelper != null && viewDragHelper.continueSettling(true)) {
         ViewCompat.postOnAnimation(view, this);
       } else {
-        setStateInternal(targetState);
+        if (state == STATE_SETTLING) {
+          setStateInternal(targetState);
+        }
       }
     }
   }
