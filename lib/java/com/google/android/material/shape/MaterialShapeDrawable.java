@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -47,6 +49,7 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.IntDef;
 import android.support.annotation.IntRange;
 import android.support.annotation.Nullable;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
 import com.google.android.material.shadow.ShadowRenderer;
@@ -542,6 +545,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Returns the shadow vertical offset rendered for shadows when {@link #requiresCompatShadow()} is
    * true.
    */
+  @RestrictTo(LIBRARY_GROUP)
   public int getShadowVerticalOffset() {
     return shadowCompatOffset;
   }
@@ -553,6 +557,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * View is positioned further down on the screen, less shadow appears above the View, and more
    * shadow appears below it.
    */
+  @RestrictTo(LIBRARY_GROUP)
   public void setShadowVerticalOffset(int shadowOffset) {
     if (this.shadowCompatOffset != shadowOffset) {
       this.shadowCompatOffset = shadowOffset;
