@@ -132,6 +132,9 @@
     <item name="colorSecondary">@color/design_default_color_secondary</item>
     <item name="colorAccent">?attr/colorSecondary</item>
 
+    <item name="android:colorBackground">@color/design_default_color_background</item>
+    <item name="colorError">@color/design_default_color_error</item>
+
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
 
     <!-- Widget styles -->

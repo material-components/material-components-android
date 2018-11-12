@@ -14,13 +14,6 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
-
-  <!-- On API 23+ these CSLs are theme-aware. -->
-  <color name="mtrl_dark_on_primary_disabled">@color/mtrl_on_primary_disabled</color>
-  <color name="mtrl_dark_on_primary_emphasis_high_type">@color/mtrl_on_primary_emphasis_high_type</color>
-  <color name="mtrl_dark_on_primary_emphasis_medium">@color/mtrl_on_primary_emphasis_medium</color>
-  <color name="mtrl_dark_on_surface_disabled">@color/mtrl_on_surface_disabled</color>
-  <color name="mtrl_dark_on_surface_emphasis_high_type">@color/mtrl_on_surface_emphasis_high_type</color>
-  <color name="mtrl_dark_on_surface_emphasis_medium">@color/mtrl_on_surface_emphasis_medium</color>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:alpha="@dimen/mtrl_emphasis_disabled" android:color="?attr/colorOnSurface"/>
+</selector>

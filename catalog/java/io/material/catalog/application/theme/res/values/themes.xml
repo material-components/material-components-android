@@ -31,4 +31,9 @@
     <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
   </style>
+
+  <style name="Theme.Catalog.DayNight" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+    <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
+    <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
+  </style>
 </resources>
