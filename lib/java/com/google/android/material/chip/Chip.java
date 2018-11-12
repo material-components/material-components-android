@@ -2227,6 +2227,29 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   /**
+   * Returns whether this chip will expand its bounds (if needed) to meet the minimum touch target
+   * size.
+   *
+   * @see #setEnsureMinTouchTargetSize(boolean)
+   * @attr ref com.google.android.material.R.styleable#Chip_ensureMinTouchTargetSize
+   */
+  public boolean getEnsureMinTouchTargetSize() {
+    return ensureMinTouchTargetSize;
+  }
+
+  /**
+   * Sets whether this chip should expand its bounds (if needed) to meet the minimum touch target
+   * size.
+   *
+   * @param flag Whether this chip should meet the min touch target size.
+   * @attr ref com.google.android.material.R.styleable#Chip_ensureMinTouchTargetSize
+   */
+  public void setEnsureMinTouchTargetSize(boolean flag) {
+    ensureMinTouchTargetSize = flag;
+    ensureAccessibleTouchTarget(minTouchTargetSize);
+  }
+
+  /**
    * Extends the touch target of this chip using a {@link InsetDrawable} if chip's intrinsic width /
    * height is smaller than the {@code minTargetPx}.
    *
