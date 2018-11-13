@@ -31,7 +31,6 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import com.google.android.material.internal.ThemeEnforcement;
-import android.support.v4.view.ViewCompat;
 import android.support.v7.widget.CardView;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -98,8 +97,6 @@ public class MaterialCardView extends CardView {
 
     // Add a content view to allow the border to be drawn outside the outline.
     contentLayout = new FrameLayout(context);
-    contentLayout.setMinimumHeight(getContentMinimumHeight());
-    contentLayout.setMinimumWidth(getContentMinimumWidth());
     super.addView(contentLayout, -1, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
     updateContentLayout();
 
@@ -110,14 +107,6 @@ public class MaterialCardView extends CardView {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       cardViewHelper.createOutlineProvider(contentLayout);
     }
-  }
-
-  private int getContentMinimumWidth() {
-    return ViewCompat.getMinimumWidth(this) - getContentPaddingLeft() - getContentPaddingRight();
-  }
-
-  private int getContentMinimumHeight() {
-    return ViewCompat.getMinimumHeight(this) - getContentPaddingBottom() - getContentPaddingTop();
   }
 
   /**
