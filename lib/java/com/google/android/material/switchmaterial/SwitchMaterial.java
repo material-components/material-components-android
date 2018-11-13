@@ -18,6 +18,8 @@ package com.google.android.material.switchmaterial;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -38,6 +40,8 @@ import android.util.AttributeSet;
  */
 public class SwitchMaterial extends SwitchCompat {
 
+  private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CompoundButton_Switch;
+
   private final int[][] enabledCheckedStates =
       new int[][] {
         new int[] {android.R.attr.state_enabled, android.R.attr.state_checked}, // [0]
@@ -55,15 +59,13 @@ public class SwitchMaterial extends SwitchCompat {
   }
 
   public SwitchMaterial(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.SwitchMaterial,
-            defStyleAttr,
-            R.style.Widget_MaterialComponents_CompoundButton_Switch);
+            context, attrs, R.styleable.SwitchMaterial, defStyleAttr, DEF_STYLE_RES);
 
     boolean useMaterialThemeColors =
         attributes.getBoolean(R.styleable.SwitchMaterial_useMaterialThemeColors, false);
