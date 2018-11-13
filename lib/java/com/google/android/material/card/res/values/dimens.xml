@@ -22,5 +22,7 @@
   <dimen name="mtrl_card_spacing">8dp</dimen>
   <!-- Default elevation for {@link MaterialCardView}. -->
   <dimen name="mtrl_card_elevation">1dp</dimen>
+  <!-- Default corner radius for {@link MaterialCardView}. -->
+  <dimen name="mtrl_card_corner_radius">4dp</dimen>
 
 </resources>
