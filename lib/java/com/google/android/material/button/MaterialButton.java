@@ -67,10 +67,9 @@ import java.lang.annotation.RetentionPolicy;
  * tint color and {@code ?attr/colorOnPrimary} for the text color. For unfilled buttons, this class
  * uses {@code ?attr/colorPrimary} for the text color and transparent for the background tint.
  *
- * <p>Add icons to the start or center of this button of this button using the {@link R.attr#icon
- * app:icon}, {@link R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint},
- * {@link R.attr#iconTintMode app:iconTintMode} and {@link R.attr#iconGravity app:iconGravity}
- * attributes.
+ * <p>Add icons to the start or center of this button using the {@link R.attr#icon app:icon}, {@link
+ * R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint}, {@link
+ * R.attr#iconTintMode app:iconTintMode} and {@link R.attr#iconGravity app:iconGravity} attributes.
  *
  * <p>Specify background tint using the {@link R.attr#backgroundTint app:backgroundTint} and {@link
  * R.attr#backgroundTintMode app:backgroundTintMode} attributes, which accepts either a color or a
