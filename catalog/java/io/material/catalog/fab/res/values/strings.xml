@@ -28,6 +28,9 @@
   <string name="show_fabs_label">Show FABs</string>
   <string name="rotate_fabs_label">Rotate FABs</string>
 
+  <string name="hide_fabs_event">Fab buttons are hidden</string>
+  <string name="show_fabs_event">Fab buttons are shown</string>
+
   <string name="cat_fab_clicked">FAB clicked</string>
 
   <!-- Content descriptions for demo FABs. -->
