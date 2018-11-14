@@ -63,6 +63,13 @@ public class ChipFragment extends DemoLandingFragment {
             return new ChipGroupDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_chip_recyclerview_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new ChipRecyclerviewDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

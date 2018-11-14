@@ -33,6 +33,8 @@
   <string name="cat_chip_reflow_group">Reflowing chip group</string>
   <string name="cat_chip_scroll_group">Scrolling chip group</string>
 
+  <string name="cat_chip_recyclerview_demo_title">Chip RecyclerView Demo</string>
+
   <string name="cat_chip_entry_label">Entry</string>
   <string name="cat_chip_filter_label">Filter</string>
   <string name="cat_chip_choice_label">Choice</string>
