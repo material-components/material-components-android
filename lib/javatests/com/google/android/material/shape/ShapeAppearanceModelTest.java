@@ -153,6 +153,17 @@ public class ShapeAppearanceModelTest {
         .isEqualTo(DEFAULT_CORNER_SIZE);
   }
 
+  @Test
+  public void setCornerRadius_defaultDoesNotChange() {
+    shapeAppearance = new ShapeAppearanceModel();
+    shapeAppearance.setCornerRadius(DEFAULT_CORNER_SIZE);
+    ShapeAppearanceModel largeCornerShape = new ShapeAppearanceModel();
+    largeCornerShape.setCornerRadius(LARGE_CORNER_SIZE);
+
+    assertCornerSize(shapeAppearance, DEFAULT_CORNER_SIZE);
+    assertCornerSize(largeCornerShape, LARGE_CORNER_SIZE);
+  }
+
   private AttributeSetBuilder buildStyleAttributeSet() {
     return Robolectric.buildAttributeSet()
         .addAttribute(R.attr.shapeAppearance, "@style/ShapeAppearance.MaterialComponents.Test");
@@ -166,6 +177,10 @@ public class ShapeAppearanceModelTest {
   }
 
   private void assertCornerSize(float cornerSize) {
+    assertCornerSize(shapeAppearance, cornerSize);
+  }
+
+  private void assertCornerSize(ShapeAppearanceModel shapeAppearance, float cornerSize) {
     assertThat(shapeAppearance.getTopLeftCorner().getCornerSize()).isEqualTo(cornerSize);
     assertThat(shapeAppearance.getTopRightCorner().getCornerSize()).isEqualTo(cornerSize);
     assertThat(shapeAppearance.getBottomLeftCorner().getCornerSize()).isEqualTo(cornerSize);
