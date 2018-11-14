@@ -327,21 +327,30 @@ public class MaterialButton extends AppCompatButton {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    if (icon == null || iconGravity != ICON_GRAVITY_TEXT_START) {
+    updateIconPosition();
+  }
+
+  @Override
+  protected void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+    super.onTextChanged(charSequence, i, i1, i2);
+    updateIconPosition();
+  }
+
+  private void updateIconPosition() {
+    if (icon == null || iconGravity != ICON_GRAVITY_TEXT_START || getLayout() == null) {
       return;
     }
 
     Paint textPaint = getPaint();
     String buttonText = getText().toString();
-
     if (getTransformationMethod() != null) {
       // if text is transformed, add that transformation to to ensure correct calculation
       // of icon padding.
       buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
     }
 
-     int textWidth =
-        Math.min((int) textPaint.measureText(buttonText), getLayout().getWidth());
+    int textWidth =
+       Math.min((int) textPaint.measureText(buttonText), getLayout().getWidth());
 
     int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
     int newIconLeft =
