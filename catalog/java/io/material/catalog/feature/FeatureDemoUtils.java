@@ -18,6 +18,9 @@ package io.material.catalog.feature;
 
 import io.material.catalog.R;
 
+import android.content.Context;
+import android.content.SharedPreferences;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 
@@ -25,6 +28,7 @@ import android.support.v4.app.FragmentActivity;
 public abstract class FeatureDemoUtils {
 
   private static final int MAIN_ACTIVITY_FRAGMENT_CONTAINER_ID = R.id.container;
+  private static final String DEFAULT_CATALOG_DEMO = "default_catalog_demo";
 
   public static void startFragment(FragmentActivity activity, Fragment fragment, String tag) {
     activity
@@ -44,5 +48,17 @@ public abstract class FeatureDemoUtils {
     return activity
         .getSupportFragmentManager()
         .findFragmentById(MAIN_ACTIVITY_FRAGMENT_CONTAINER_ID);
+  }
+
+  public static String getDefaultDemo(Context context) {
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    return preferences.getString(DEFAULT_CATALOG_DEMO, "");
+  }
+
+  public static void saveDefaultDemo(Context context, String val) {
+    SharedPreferences preferences = PreferenceManager.getDefaultSharedPreferences(context);
+    SharedPreferences.Editor editor = preferences.edit();
+    editor.putString(DEFAULT_CATALOG_DEMO, val);
+    editor.apply();
   }
 }

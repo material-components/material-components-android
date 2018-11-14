@@ -19,15 +19,22 @@ package io.material.catalog.feature;
 import io.material.catalog.R;
 
 import android.content.Intent;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.os.Bundle;
 import android.support.annotation.ArrayRes;
+import android.support.annotation.ColorInt;
 import android.support.annotation.DimenRes;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import android.support.v4.app.Fragment;
 import android.support.v4.view.MarginLayoutParamsCompat;
+import android.support.v4.view.MenuItemCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
@@ -40,6 +47,20 @@ import java.util.List;
 public abstract class DemoLandingFragment extends DaggerFragment {
 
   private static final String FRAGMENT_DEMO_CONTENT = "fragment_demo_content";
+  @ColorInt private int colorControlNormal;
+  @ColorInt private int colorSecondary;
+
+  @Override
+  public void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
+    setHasOptionsMenu(true);
+    TypedArray a =
+        getContext()
+            .getTheme()
+            .obtainStyledAttributes(new int[] {R.attr.colorControlNormal, R.attr.colorSecondary});
+    colorControlNormal = a.getColor(0, 0);
+    colorSecondary = a.getColor(1, 0);
+  }
 
   @Nullable
   @Override
@@ -153,6 +174,36 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     int margin = getResources().getDimensionPixelOffset(marginResId);
     MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
     MarginLayoutParamsCompat.setMarginStart(layoutParams, margin);
+  }
+
+  @Override
+  public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
+    menuInflater.inflate(R.menu.mtrl_favorite_menu, menu);
+    super.onCreateOptionsMenu(menu, menuInflater);
+  }
+
+  @Override
+  public void onPrepareOptionsMenu(Menu menu) {
+    MenuItem item = menu.findItem(R.id.favorite_toggle);
+    boolean isChecked =
+        FeatureDemoUtils.getDefaultDemo(getContext()).equals(getClass().getName());
+    item.setChecked(isChecked);
+    MenuItemCompat.setIconTintList(
+        item, ColorStateList.valueOf(isChecked ? colorSecondary : colorControlNormal));
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem menuItem) {
+    if (menuItem.getItemId() == R.id.favorite_toggle) {
+      boolean isChecked = !menuItem.isChecked();
+      FeatureDemoUtils.saveDefaultDemo(getContext(), isChecked ? getClass().getName() : "");
+      if (getActivity() != null) {
+        getActivity().invalidateOptionsMenu();
+      }
+      return true;
+    }
+
+    return super.onOptionsItemSelected(menuItem);
   }
 
   @StringRes

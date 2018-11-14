@@ -24,6 +24,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.math.MathUtils;
 import android.support.v7.app.AppCompatActivity;
@@ -36,6 +37,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import dagger.android.support.DaggerFragment;
 import io.material.catalog.feature.FeatureDemo;
+import io.material.catalog.feature.FeatureDemoUtils;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -111,6 +113,22 @@ public class TocFragment extends DaggerFragment {
     super.onDestroyView();
 
     ((AppCompatActivity) getActivity()).setSupportActionBar(null);
+  }
+
+  @Override
+  public void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
+    String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
+    if (!defaultDemo.isEmpty()) {
+      for (FeatureDemo demo : featureDemos) {
+        Fragment fragment = demo.createFragment();
+        String key = fragment.getClass().getName();
+        if (key.equals(defaultDemo)) {
+          FeatureDemoUtils.startFragment(getActivity(), fragment, "fragment_content");
+          return;
+        }
+      }
+    }
   }
 
   private void addGridTopDividerVisibilityListener() {
