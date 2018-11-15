@@ -1336,16 +1336,11 @@ public class TextInputLayout extends LinearLayout {
             counterView, ViewCompat.ACCESSIBILITY_LIVE_REGION_NONE);
       }
       counterOverflowed = length > counterMaxLength;
+      updateCounterContentDescription(
+          getContext(), counterView, length, counterMaxLength, counterOverflowed);
+
       if (wasCounterOverflowed != counterOverflowed) {
         updateCounterTextAppearanceAndColor();
-        counterView.setContentDescription(
-            getContext()
-                .getString(
-                    counterOverflowed
-                        ? R.string.character_counter_overflowed_content_description
-                        : R.string.character_counter_content_description,
-                    length,
-                    counterMaxLength));
 
         // Announce when the character limit is exceeded.
         if (counterOverflowed) {
@@ -1361,6 +1356,21 @@ public class TextInputLayout extends LinearLayout {
       updateTextInputBoxState();
       updateEditTextBackground();
     }
+  }
+
+  private static void updateCounterContentDescription(
+      Context context,
+      TextView counterView,
+      int length,
+      int counterMaxLength,
+      boolean counterOverflowed) {
+    counterView.setContentDescription(
+        context.getString(
+            counterOverflowed
+                ? R.string.character_counter_overflowed_content_description
+                : R.string.character_counter_content_description,
+            length,
+            counterMaxLength));
   }
 
   @Override
