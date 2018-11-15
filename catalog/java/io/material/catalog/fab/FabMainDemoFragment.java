@@ -18,7 +18,6 @@ package io.material.catalog.fab;
 
 import io.material.catalog.R;
 
-import android.content.Context;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
@@ -26,12 +25,9 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import android.support.v4.view.ViewCompat;
-import android.support.v4.view.accessibility.AccessibilityEventCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityEvent;
-import android.view.accessibility.AccessibilityManager;
 import android.view.animation.AccelerateDecelerateInterpolator;
 import android.widget.Button;
 import io.material.catalog.feature.DemoFragment;
@@ -42,13 +38,6 @@ import java.util.List;
 public class FabMainDemoFragment extends DemoFragment {
 
   private boolean fabsShown = true;
-  private AccessibilityManager manager;
-
-  @Override
-  public void onCreate(@Nullable Bundle bundle) {
-    super.onCreate(bundle);
-    manager = (AccessibilityManager) getContext().getSystemService(Context.ACCESSIBILITY_SERVICE);
-  }
 
   @Override
   public View onCreateDemoView(
@@ -81,7 +70,6 @@ public class FabMainDemoFragment extends DemoFragment {
             }
           }
           fabsShown = !fabsShown;
-          sendAccesibilityEvent(showHideFabs, fabsShown);
         });
 
     Button spinFabs = view.findViewById(R.id.rotate_fabs);
@@ -103,23 +91,6 @@ public class FabMainDemoFragment extends DemoFragment {
         });
 
     return view;
-  }
-
-  private void sendAccesibilityEvent(View source, boolean fabsShown) {
-    if (!manager.isEnabled()) {
-      return;
-    }
-
-    AccessibilityEvent event = AccessibilityEvent.obtain();
-    event.setEventType(AccessibilityEventCompat.TYPE_ANNOUNCEMENT);
-    event.setClassName(getClass().getName());
-    int eventStringResId = fabsShown ? R.string.show_fabs_event : R.string.hide_fabs_event;
-    event.getText().add(getContext().getString(eventStringResId));
-    if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
-      event.setSource(source);
-    }
-
-    manager.sendAccessibilityEvent(event);
   }
 
   @LayoutRes
