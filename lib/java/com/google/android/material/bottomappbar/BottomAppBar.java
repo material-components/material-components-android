@@ -231,6 +231,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     ShapeAppearanceModel appBarModel = materialShapeDrawable.getShapeAppearanceModel();
     appBarModel.setTopEdge(topEdgeTreatment);
     materialShapeDrawable.setShadowCompatibilityMode(SHADOW_COMPAT_MODE_ALWAYS);
+    materialShapeDrawable.setShadowVerticalOffset(elevation / 2);
     materialShapeDrawable.setPaintStyle(Style.FILL);
     materialShapeDrawable.setPaintFlags(Paint.ANTI_ALIAS_FLAG);
     setElevation(elevation);
