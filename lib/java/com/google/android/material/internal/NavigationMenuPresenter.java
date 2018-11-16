@@ -361,11 +361,15 @@ public class NavigationMenuPresenter implements MenuPresenter {
           setUpdateSuspended(true);
           MenuItemImpl item = itemView.getItemData();
           boolean result = menu.performItemAction(item, NavigationMenuPresenter.this, 0);
+          boolean checkStateChanged = false;
           if (item != null && item.isCheckable() && result) {
             adapter.setCheckedItem(item);
+            checkStateChanged = true;
           }
           setUpdateSuspended(false);
-          updateMenuView(false);
+          if (checkStateChanged) {
+            updateMenuView(false);
+          }
         }
       };
 
