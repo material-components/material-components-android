@@ -19,20 +19,15 @@ package io.material.demo.shrine.products;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.support.v7.widget.RecyclerView;
-import org.robolectric.RobolectricTestRunner;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
-import org.robolectric.annotation.Config;
+import org.robolectric.RobolectricTestRunner;
 
 /** Unit tests for {@link ProductListActivity}. */
 @RunWith(RobolectricTestRunner.class)
-@Config(
-  manifest =
-      "//third_party/java_src/android_libs/material_components/demos/java/io/material/demo/shrine/products" + ":products/AndroidManifest.xml"
-)
 public class ProductListActivityTest {
 
   private ProductListActivity productListActivity;
