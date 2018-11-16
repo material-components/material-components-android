@@ -23,4 +23,5 @@
   </string>
   <string name="cat_transformation_scrim_content_description">Close</string>
   <string name="cat_transformation_fab_content_description">FAB</string>
+  <string name="close_sheet">Close sheet</string>
 </resources>

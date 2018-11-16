@@ -69,6 +69,18 @@
         android:layout_width="200dp"
         android:layout_height="300dp">
 
+      <ImageButton
+          android:id="@+id/close_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="top|end"
+          android:padding="12dp"
+          android:background="?selectableItemBackgroundBorderless"
+          android:contentDescription="@string/close_sheet"
+          android:scaleType="fitCenter"
+          android:src="@drawable/ic_close_vd_theme_24px"
+          android:tint="?attr/colorOnSurface"/>
+
       <TextView
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"

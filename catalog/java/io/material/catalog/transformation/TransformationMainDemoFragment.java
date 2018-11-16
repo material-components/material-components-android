@@ -44,12 +44,14 @@ public class TransformationMainDemoFragment extends DemoFragment implements OnBa
 
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     fab = view.findViewById(R.id.fab);
+    View closeButton = view.findViewById(R.id.close_button);
     View sheet = view.findViewById(R.id.sheet);
     View scrim = view.findViewById(R.id.scrim);
 
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
 
     fab.setOnClickListener(v -> fab.setExpanded(!fab.isExpanded()));
+    closeButton.setOnClickListener(v -> fab.setExpanded(false));
     scrim.setOnClickListener(v -> fab.setExpanded(false));
 
     DraggableCoordinatorLayout container = (DraggableCoordinatorLayout) view;
