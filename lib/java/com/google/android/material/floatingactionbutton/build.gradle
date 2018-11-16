@@ -15,6 +15,7 @@ dependencies {
   implementation project(fromPath("lib/java/com/google/android/material/shadow"))
   implementation project(fromPath("lib/java/com/google/android/material/resources"))
   implementation project(fromPath("lib/java/com/google/android/material/ripple"))
+  implementation project(fromPath("lib/java/com/google/android/material/shape"))
   implementation project(fromPath("lib/java/com/google/android/material/stateful"))
 }
 
