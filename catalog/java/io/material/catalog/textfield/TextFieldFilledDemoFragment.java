@@ -47,7 +47,7 @@ public class TextFieldFilledDemoFragment extends TextFieldControllableDemoFragme
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    View view = layoutInflater.inflate(getTextFieldContent(), viewGroup, false);
+    View view = super.onCreateDemoView(layoutInflater, viewGroup, bundle);
     TextInputEditText startIconEditText = view.findViewById(R.id.edit_text_start_icon);
     Drawable startIcon =
         AppCompatResources.getDrawable(view.getContext(), R.drawable.ic_search_24px);
