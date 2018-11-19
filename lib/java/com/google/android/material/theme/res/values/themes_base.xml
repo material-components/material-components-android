@@ -123,58 +123,6 @@
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
   </style>
 
-  <style name="Base.V14.Theme.MaterialComponents.DayNight" parent="Base.V14.Theme.MaterialComponents.DayNight.Bridge">
-    <item name="viewInflaterClass">com.google.android.material.theme.MaterialComponentsViewInflater</item>
-
-    <!-- Colors -->
-    <item name="colorPrimary">@color/design_default_color_primary</item>
-    <item name="colorPrimaryDark">@color/design_default_color_primary_dark</item>
-    <item name="colorSecondary">@color/design_default_color_secondary</item>
-    <item name="colorAccent">?attr/colorSecondary</item>
-
-    <item name="android:colorBackground">@color/design_default_color_background</item>
-    <item name="colorError">@color/design_default_color_error</item>
-
-    <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
-
-    <!-- Widget styles -->
-    <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
-    <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
-    <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
-    <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
-    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
-    <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
-    <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
-    <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
-    <item name="chipStandaloneStyle">@style/Widget.MaterialComponents.Chip.Entry</item>
-    <item name="floatingActionButtonStyle">@style/Widget.MaterialComponents.FloatingActionButton</item>
-    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
-    <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
-    <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
-    <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
-    <item name="radioButtonStyle">@style/Widget.MaterialComponents.CompoundButton.RadioButton</item>
-    <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
-    <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
-    <item name="switchStyle">@style/Widget.MaterialComponents.CompoundButton.Switch</item>
-    <item name="tabStyle">@style/Widget.MaterialComponents.TabLayout.Colored</item>
-    <item name="textInputStyle">@style/Widget.MaterialComponents.TextInputLayout.FilledBox</item>
-    <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
-
-    <!-- Dialog themes -->
-    <item name="bottomSheetDialogTheme">@style/Theme.MaterialComponents.BottomSheetDialog</item>
-    <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
-    <item name="alertDialogStyle">@style/AlertDialog.MaterialComponents</item>
-    <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel</item>
-    <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon</item>
-    <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text</item>
-    <item name="android:datePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
-    <item name="android:timePickerDialogTheme" tools:ignore="NewApi">@style/ThemeOverlay.MaterialComponents.Dialog</item>
-
-    <!-- Type styles -->
-    <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
-    <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
-  </style>
-
   <!-- Themes in the "Base.Theme" family vary based on the current platform
        version to provide the correct basis on each device. You probably don't
        want to use them directly in your apps.
@@ -187,21 +135,7 @@
 
   <style name="Base.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light"/>
 
-  <style name="Base.Theme.MaterialComponents.DayNight" parent="Base.V14.Theme.MaterialComponents.DayNight"/>
-
   <style name="Base.Theme.MaterialComponents.Light.DarkActionBar" parent="Base.Theme.MaterialComponents.Light">
-    <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
-    <item name="actionBarWidgetTheme">@null</item>
-    <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
-
-    <!-- Panel attributes -->
-    <item name="listChoiceBackgroundIndicator">@drawable/abc_list_selector_holo_dark</item>
-
-    <item name="colorPrimaryDark">@color/primary_dark_material_dark</item>
-    <item name="colorPrimary">@color/primary_material_dark</item>
-  </style>
-
-  <style name="Base.Theme.MaterialComponents.DayNight.DarkActionBar" parent="Base.Theme.MaterialComponents.DayNight">
     <item name="actionBarPopupTheme">@style/ThemeOverlay.MaterialComponents.Light</item>
     <item name="actionBarWidgetTheme">@null</item>
     <item name="actionBarTheme">@style/ThemeOverlay.MaterialComponents.Dark.ActionBar</item>
@@ -224,7 +158,5 @@
   <style name="Base.Theme.MaterialComponents.DialogWhenLarge" parent="Theme.MaterialComponents"/>
 
   <style name="Base.Theme.MaterialComponents.Light.DialogWhenLarge" parent="Theme.MaterialComponents.Light"/>
-
-  <style name="Base.Theme.MaterialComponents.DayNight.DialogWhenLarge" parent="Theme.MaterialComponents.DayNight"/>
 
 </resources>
