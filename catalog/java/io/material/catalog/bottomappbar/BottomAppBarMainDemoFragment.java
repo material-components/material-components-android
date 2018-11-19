@@ -18,13 +18,19 @@ package io.material.catalog.bottomappbar;
 
 import io.material.catalog.R;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.support.annotation.LayoutRes;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import com.google.android.material.bottomappbar.BottomAppBar;
+import com.google.android.material.bottomappbar.BottomAppBarTopEdgeTreatment;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.shape.CornerFamily;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.snackbar.Snackbar;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -47,6 +53,8 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   protected BottomAppBar bar;
   protected CoordinatorLayout coordinatorLayout;
   protected FloatingActionButton fab;
+
+  private final Rect fabRect = new Rect();
 
   @Nullable private ThemeSwitcherHelper themeSwitcherHelper;
   private BottomSheetBehavior<View> bottomDrawerBehavior;
@@ -78,6 +86,7 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
   }
 
   @Override
+  @SuppressWarnings("RestrictTo")
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getBottomAppBarContent(), viewGroup, false);
@@ -121,8 +130,40 @@ public class BottomAppBarMainDemoFragment extends DemoFragment implements OnBack
             fab.hide();
           }
         });
+    ToggleButton shapeToggle = view.findViewById(R.id.shape_toggle);
+    shapeToggle.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          fab.getMeasuredContentRect(fabRect);
+          ((MaterialShapeDrawable) bar.getBackground())
+              .getShapeAppearanceModel()
+              .setTopEdge(createTopEdge(!isChecked));
+
+          ShapeAppearanceModel shapeAppearance = new ShapeAppearanceModel();
+          int cornerFamily = isChecked ? CornerFamily.CUT : CornerFamily.ROUNDED;
+          shapeAppearance.setAllCorners(cornerFamily, -1);
+          fab.setShapeAppearance(shapeAppearance);
+          bar.getBackground().invalidateSelf();
+        });
 
     return view;
+  }
+
+  @NonNull
+  @SuppressWarnings("RestrictTo")
+  private BottomAppBarTopEdgeTreatment createTopEdge(boolean isDefault) {
+    BottomAppBarTopEdgeTreatment topEdge =
+        isDefault
+            ? new BottomAppBarTopEdgeTreatment(
+                bar.getFabCradleMargin(),
+                bar.getFabCradleRoundedCornerRadius(),
+                bar.getCradleVerticalOffset())
+            : new BottomAppBarCutCornersTopEdge(
+                bar.getFabCradleMargin(),
+                bar.getFabCradleRoundedCornerRadius(),
+                bar.getCradleVerticalOffset());
+
+    topEdge.setFabDiameter(fabRect.width());
+    return topEdge;
   }
 
   @Override

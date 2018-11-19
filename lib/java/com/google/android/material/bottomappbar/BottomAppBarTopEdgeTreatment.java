@@ -16,6 +16,9 @@
 
 package com.google.android.material.bottomappbar;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
+import android.support.annotation.RestrictTo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.ShapePath;
@@ -144,13 +147,26 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
     shapePath.lineTo(/* x= */ length, /* y= */ 0);
   }
 
+  /** Returns current fab diameter in pixels. */
+  @RestrictTo(LIBRARY_GROUP)
+  public float getFabDiameter() {
+    return fabDiameter;
+  }
+
+  /** Sets the fab diameter the size of the fab in pixels. */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setFabDiameter(float fabDiameter) {
+    this.fabDiameter = fabDiameter;
+  }
+
   /** Sets the horizontal offset, in pixels, of the cradle from center. */
   void setHorizontalOffset(float horizontalOffset) {
     this.horizontalOffset = horizontalOffset;
   }
 
   /** Returns the horizontal offset, in pixels, of the cradle from center. */
-  float getHorizontalOffset() {
+  @RestrictTo(LIBRARY_GROUP)
+  public float getHorizontalOffset() {
     return horizontalOffset;
   }
 
@@ -172,13 +188,6 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
     this.cradleVerticalOffset = cradleVerticalOffset;
   }
 
-  float getFabDiameter() {
-    return fabDiameter;
-  }
-
-  void setFabDiameter(float fabDiameter) {
-    this.fabDiameter = fabDiameter;
-  }
 
   float getFabCradleMargin() {
     return fabMargin;

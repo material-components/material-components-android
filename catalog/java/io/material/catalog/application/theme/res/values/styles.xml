@@ -23,6 +23,10 @@
     <item name="navigationIcon">@drawable/ic_close_vd_theme_24px</item>
   </style>
 
+  <style name="Widget.Catalog.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+    <item name="borderWidth">0dp</item>
+  </style>
+
   <style name="TextAppearance.Catalog.SectionTitle" parent="TextAppearance.AppCompat.Subhead"/>
 
   <style name="TextAppearance.Catalog.Body" parent="TextAppearance.AppCompat.Body1"/>

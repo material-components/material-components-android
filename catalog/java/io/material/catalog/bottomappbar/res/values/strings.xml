@@ -32,6 +32,8 @@ Phasellus in aliquet mi. Pellentesque habitant morbi tristique senectus et netus
   <string name="cat_bottomappbar_center">Center</string>
   <string name="cat_bottomappbar_fab_hide">Hide Fab</string>
   <string name="cat_bottomappbar_fab_show">Show Fab</string>
+  <string name="cat_bottomappbar_fab_circle">Circle</string>
+  <string name="cat_bottomappbar_fab_diamond">Diamond</string>
   <string name="cat_bottomappbar_end">End</string>
 
   <string name="cat_bottomappbar_3d">3D</string>

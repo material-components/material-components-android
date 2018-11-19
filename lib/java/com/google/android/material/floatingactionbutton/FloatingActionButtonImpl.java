@@ -296,8 +296,19 @@ class FloatingActionButtonImpl {
   }
 
   final void setShapeAppearance(ShapeAppearanceModel shapeAppearance, boolean usingDefaultCorner) {
+    if (usingDefaultCorner) {
+      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
+    }
+
     this.shapeAppearance = shapeAppearance;
     this.usingDefaultCorner = usingDefaultCorner;
+    if (shapeDrawable != null) {
+      shapeDrawable.setShapeAppearanceModel(shapeAppearance);
+    }
+
+    if (rippleDrawable instanceof MaterialShapeDrawable) {
+      ((MaterialShapeDrawable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
+    }
   }
 
   @Nullable

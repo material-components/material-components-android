@@ -46,6 +46,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.design.widget.CoordinatorLayout;
@@ -139,12 +140,11 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   public @interface FabAnimationMode {}
 
   private final int fabOffsetEndMode;
+  private final int fabVerticalOffset;
   private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-  private final BottomAppBarTopEdgeTreatment topEdgeTreatment;
 
   @Nullable private Animator modeAnimator;
   @Nullable private Animator menuAnimator;
-  private final int fabVerticalOffset;
   @FabAlignmentMode private int fabAlignmentMode;
   @FabAnimationMode private int fabAnimationMode;
   private boolean hideOnScroll;
@@ -182,8 +182,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
         @Override
         public void onTranslationChanged(FloatingActionButton fab) {
-          topEdgeTreatment.setHorizontalOffset(fab.getTranslationX());
-          topEdgeTreatment.setCradleVerticalOffset(-fab.getTranslationY());
+          getTopEdgeTreatment().setHorizontalOffset(fab.getTranslationX());
+          getTopEdgeTreatment().setCradleVerticalOffset(-fab.getTranslationY());
           materialShapeDrawable.setInterpolation(
               fab.getVisibility() != View.GONE ? fab.getScaleY() : 0);
         }
@@ -226,7 +226,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     fabOffsetEndMode =
         getResources().getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fabOffsetEndMode);
 
-    topEdgeTreatment =
+    EdgeTreatment topEdgeTreatment =
         new BottomAppBarTopEdgeTreatment(fabCradleMargin, fabCornerRadius, fabVerticalOffset);
     ShapeAppearanceModel appBarModel = materialShapeDrawable.getShapeAppearanceModel();
     appBarModel.setTopEdge(topEdgeTreatment);
@@ -294,7 +294,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    * Returns the cradle margin for the fab cutout. This is the space between the fab and the cutout.
    */
   public float getFabCradleMargin() {
-    return topEdgeTreatment.getFabCradleMargin();
+    return getTopEdgeTreatment().getFabCradleMargin();
   }
 
   /**
@@ -302,7 +302,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   public void setFabCradleMargin(@Dimension float cradleMargin) {
     if (cradleMargin != getFabCradleMargin()) {
-      topEdgeTreatment.setFabCradleMargin(cradleMargin);
+      getTopEdgeTreatment().setFabCradleMargin(cradleMargin);
       materialShapeDrawable.invalidateSelf();
     }
   }
@@ -310,13 +310,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   /** Returns the rounded corner radius for the cutout. A value of 0 will be a sharp edge. */
   @Dimension
   public float getFabCradleRoundedCornerRadius() {
-    return topEdgeTreatment.getFabCradleRoundedCornerRadius();
+    return getTopEdgeTreatment().getFabCradleRoundedCornerRadius();
   }
 
   /** Sets the rounded corner radius for the fab cutout. A value of 0 will be a sharp edge. */
   public void setFabCradleRoundedCornerRadius(@Dimension float roundedCornerRadius) {
     if (roundedCornerRadius != getFabCradleRoundedCornerRadius()) {
-      topEdgeTreatment.setFabCradleRoundedCornerRadius(roundedCornerRadius);
+      getTopEdgeTreatment().setFabCradleRoundedCornerRadius(roundedCornerRadius);
       materialShapeDrawable.invalidateSelf();
     }
   }
@@ -327,7 +327,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   @Dimension
   public float getCradleVerticalOffset() {
-    return topEdgeTreatment.getCradleVerticalOffset();
+    return getTopEdgeTreatment().getCradleVerticalOffset();
   }
 
   /**
@@ -337,7 +337,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    */
   public void setCradleVerticalOffset(@Dimension float verticalOffset) {
     if (verticalOffset != getCradleVerticalOffset()) {
-      topEdgeTreatment.setCradleVerticalOffset(verticalOffset);
+      getTopEdgeTreatment().setCradleVerticalOffset(verticalOffset);
       materialShapeDrawable.invalidateSelf();
     }
   }
@@ -380,8 +380,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
    * if the fab is anchored to this {@link BottomAppBar}.
    */
   void setFabDiameter(@Px int diameter) {
-    if (diameter != topEdgeTreatment.getFabDiameter()) {
-      topEdgeTreatment.setFabDiameter(diameter);
+    if (diameter != getTopEdgeTreatment().getFabDiameter()) {
+      getTopEdgeTreatment().setFabDiameter(diameter);
       materialShapeDrawable.invalidateSelf();
     }
   }
@@ -646,9 +646,14 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     }
   }
 
+  private BottomAppBarTopEdgeTreatment getTopEdgeTreatment() {
+    return (BottomAppBarTopEdgeTreatment)
+        materialShapeDrawable.getShapeAppearanceModel().getTopEdge();
+  }
+
   private void setCutoutState() {
     // Layout all elements related to the positioning of the fab.
-    topEdgeTreatment.setHorizontalOffset(getFabTranslationX());
+    getTopEdgeTreatment().setHorizontalOffset(getFabTranslationX());
     FloatingActionButton fab = findDependentFab();
     materialShapeDrawable.setInterpolation(fabAttached && isFabVisibleOrWillBeShown() ? 1 : 0);
     if (fab != null) {
