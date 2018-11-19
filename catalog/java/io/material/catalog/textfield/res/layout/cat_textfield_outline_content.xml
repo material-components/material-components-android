@@ -69,10 +69,9 @@
       app:helperText="@string/cat_textfield_outline_start_icon_helper_text"
       app:helperTextEnabled="true">
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/edit_text_start_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:drawableLeft="@drawable/ic_search_24px"
-        android:drawablePadding="8dp"
-        android:drawableStart="@drawable/ic_search_24px"/>
+        android:drawablePadding="8dp"/>
   </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
