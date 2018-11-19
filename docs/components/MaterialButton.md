@@ -178,7 +178,7 @@ Description                                                  | Relevant attribut
 Button padding                                               | `android:padding`<br/>`android:paddingLeft`<br/>`android:paddingRight`<br/>`android:paddingStart`<br/>`android:paddingEnd`<br/>`android:paddingTop`<br/>`android:paddingBottom`
 Button inset                                                 | `android:insetLeft`<br/>`android:insetRight`<br/>`android:insetTop`<br/>`android:insetBottom`
 Background color                                             | `app:backgroundTint`<br/>`app:backgroundTintMode`
-Icon drawable                                                | `app:icon`
+Icon drawable                                                | `app:icon`<br/>`app:iconSize`
 Padding between icon and button text                         | `app:iconPadding`
 Icon color                                                   | `app:iconTint`<br/>`app:iconTintMode`
 Stroke                                                       | `app:strokeColor`<br/>`app:strokeWidth`
