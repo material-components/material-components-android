@@ -38,6 +38,7 @@
 
   <dimen name="mtrl_snackbar_background_corner_radius">4dp</dimen>
   <dimen name="mtrl_snackbar_margin">8dp</dimen>
+  <item name="mtrl_snackbar_background_overlay_color_alpha" format="float" type="dimen">0.8</item>
   <item name="mtrl_snackbar_action_text_color_alpha" format="float" type="dimen">0.5</item>
 
 </resources>

@@ -348,7 +348,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private Drawable createThemedBackground() {
     int backgroundColor =
-        MaterialColors.layer(view, R.attr.colorSurface, R.attr.colorOnSurface, 0.8f);
+        MaterialColors.layer(
+            view,
+            R.attr.colorSurface,
+            R.attr.colorOnSurface,
+            view.getBackgroundOverlayColorAlpha());
     float cornerRadius =
         view.getResources().getDimension(R.dimen.mtrl_snackbar_background_corner_radius);
 
@@ -908,6 +912,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     private BaseTransientBottomBar.OnLayoutChangeListener onLayoutChangeListener;
     private BaseTransientBottomBar.OnAttachStateChangeListener onAttachStateChangeListener;
     @AnimationMode private int animationMode;
+    private final float backgroundOverlayColorAlpha;
     private final float actionTextColorAlpha;
 
     protected SnackbarBaseLayout(Context context) {
@@ -922,6 +927,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
             this, a.getDimensionPixelSize(R.styleable.SnackbarLayout_elevation, 0));
       }
       animationMode = a.getInt(R.styleable.SnackbarLayout_animationMode, ANIMATION_MODE_SLIDE);
+      backgroundOverlayColorAlpha =
+          a.getFloat(R.styleable.SnackbarLayout_backgroundOverlayColorAlpha, 1);
       actionTextColorAlpha = a.getFloat(R.styleable.SnackbarLayout_actionTextColorAlpha, 1);
       a.recycle();
 
@@ -979,6 +986,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
     void setAnimationMode(@AnimationMode int animationMode) {
       this.animationMode = animationMode;
+    }
+
+    float getBackgroundOverlayColorAlpha() {
+      return backgroundOverlayColorAlpha;
     }
 
     float getActionTextColorAlpha() {
