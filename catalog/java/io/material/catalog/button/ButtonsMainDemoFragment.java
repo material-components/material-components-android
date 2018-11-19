@@ -24,10 +24,13 @@ import android.support.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
+import android.support.v4.math.MathUtils;
+import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.GridLayout;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -42,8 +45,12 @@ public class ButtonsMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(getButtonsContent(), viewGroup, false /* attachToRoot */);
 
     List<MaterialButton> buttons = DemoUtils.findViewsWithType(view, MaterialButton.class);
+    int maxMeasuredWidth = 0;
+    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
 
     for (MaterialButton button : buttons) {
+      button.measure(displayMetrics.widthPixels, displayMetrics.heightPixels);
+      maxMeasuredWidth = Math.max(maxMeasuredWidth, button.getMeasuredWidth());
       button.setOnClickListener(
           v -> {
             // Show a Snackbar with an action button, which should also have a MaterialButton style
@@ -59,11 +66,41 @@ public class ButtonsMainDemoFragment extends DemoFragment {
           });
     }
 
+    // If GridLayout should be collapsed to one column, re-generate it
+    GridLayout gridLayout = view.findViewById(R.id.grid);
+    int columnCount = calculateGridColumnCount(maxMeasuredWidth);
+
+    if (columnCount == 1) {
+      List<View> allChildViews = DemoUtils.findViewsWithType(gridLayout, View.class);
+      allChildViews.remove(0); // Remove root view found by DemoUtils.findViewsWithType
+
+      gridLayout.removeAllViews();
+      ((ViewGroup) view).removeView(gridLayout);
+
+      gridLayout = new GridLayout(getContext());
+      gridLayout.setAlignmentMode(GridLayout.ALIGN_BOUNDS);
+      gridLayout.setColumnCount(columnCount);
+      gridLayout.setRowCount(allChildViews.size());
+
+      for (View childView : allChildViews) {
+        gridLayout.addView(childView);
+      }
+
+      ((ViewGroup) view).addView(gridLayout);
+    }
+
     return view;
   }
 
   @LayoutRes
   protected int getButtonsContent() {
     return R.layout.cat_buttons_fragment;
+  }
+
+  private int calculateGridColumnCount(int itemSize) {
+    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+    int displayWidth = displayMetrics.widthPixels;
+    int gridColumnCount = displayWidth / itemSize;
+    return MathUtils.clamp(gridColumnCount, 1, 2);
   }
 }
