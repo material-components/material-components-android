@@ -22,6 +22,7 @@ import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 import static com.google.android.material.animation.AnimationUtils.LINEAR_INTERPOLATOR;
 import static com.google.android.material.animation.AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.animation.Animator;
@@ -920,7 +921,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
 
     protected SnackbarBaseLayout(Context context, AttributeSet attrs) {
-      super(context, attrs);
+      super(createThemedContext(context, attrs, 0, 0), attrs);
+      // Ensure we are using the correctly themed context rather than the context that was passed
+      // in.
+      context = getContext();
       TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);
       if (a.hasValue(R.styleable.SnackbarLayout_elevation)) {
         ViewCompat.setElevation(
