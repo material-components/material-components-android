@@ -30,7 +30,15 @@ public class MaterialShapeUtils {
       case CornerFamily.CUT:
         return new CutCornerTreatment(cornerSize);
       default:
-        return new CornerTreatment();
+        return createDefaultCornerTreatment();
     }
+  }
+
+  static CornerTreatment createDefaultCornerTreatment() {
+    return new RoundedCornerTreatment(0);
+  }
+
+  static EdgeTreatment createDefaultEdgeTreatment() {
+    return new EdgeTreatment();
   }
 }

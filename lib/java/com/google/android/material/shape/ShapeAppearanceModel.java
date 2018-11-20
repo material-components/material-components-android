@@ -48,14 +48,15 @@ public class ShapeAppearanceModel {
 
   /** Constructs a default path generator with default edge and corner treatments. */
   public ShapeAppearanceModel() {
-    setTopLeftCorner(getDefaultCornerTreatment());
-    setTopRightCorner(getDefaultCornerTreatment());
-    setBottomRightCorner(getDefaultCornerTreatment());
-    setBottomLeftCorner(getDefaultCornerTreatment());
-    setTopEdge(getDefaultEdgeTreatment());
-    setRightEdge(getDefaultEdgeTreatment());
-    setBottomEdge(getDefaultEdgeTreatment());
-    setLeftEdge(getDefaultEdgeTreatment());
+    setTopLeftCorner(MaterialShapeUtils.createDefaultCornerTreatment());
+    setTopRightCorner(MaterialShapeUtils.createDefaultCornerTreatment());
+    setBottomRightCorner(MaterialShapeUtils.createDefaultCornerTreatment());
+    setBottomLeftCorner(MaterialShapeUtils.createDefaultCornerTreatment());
+
+    setTopEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
+    setRightEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
+    setBottomEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
+    setLeftEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
   }
 
   public ShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
@@ -123,10 +124,11 @@ public class ShapeAppearanceModel {
     setTopRightCorner(cornerFamilyTopRight, cornerSizeTopRight);
     setBottomRightCorner(cornerFamilyBottomRight, cornerSizeBottomRight);
     setBottomLeftCorner(cornerFamilyBottomLeft, cornerSizeBottomLeft);
-    setTopEdge(getDefaultEdgeTreatment());
-    setRightEdge(getDefaultEdgeTreatment());
-    setBottomEdge(getDefaultEdgeTreatment());
-    setLeftEdge(getDefaultEdgeTreatment());
+
+    setTopEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
+    setRightEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
+    setBottomEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
+    setLeftEdge(MaterialShapeUtils.createDefaultEdgeTreatment());
 
     a.recycle();
   }
@@ -413,13 +415,5 @@ public class ShapeAppearanceModel {
             && bottomLeftCorner instanceof RoundedCornerTreatment;
 
     return hasDefaultEdges && cornersHaveSameSize && hasRoundedCorners;
-  }
-
-  private static CornerTreatment getDefaultCornerTreatment() {
-    return new RoundedCornerTreatment(0);
-  }
-
-  private static EdgeTreatment getDefaultEdgeTreatment() {
-    return new EdgeTreatment();
   }
 }
