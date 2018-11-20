@@ -22,7 +22,6 @@ import android.os.Bundle;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import com.google.android.material.chip.Chip;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.view.LayoutInflater;
@@ -49,8 +48,15 @@ public class ChipMainDemoFragment extends DemoFragment {
     for (Chip chip : chips) {
       chip.setOnCloseIconClickListener(
           v -> {
-            Snackbar.make(view, "Clicked close icon.", BaseTransientBottomBar.LENGTH_SHORT).show();
+            Snackbar.make(view, "Clicked close icon.", Snackbar.LENGTH_SHORT).show();
           });
+      if (chip.isEnabled() && !chip.isCheckable()) {
+        chip.setOnClickListener(
+            v -> {
+              Snackbar.make(view, "Activated chip.", Snackbar.LENGTH_SHORT)
+                  .show();
+            });
+      }
     }
     SwitchMaterial longTextSwitch = view.findViewById(R.id.cat_chip_text_length_switch);
     longTextSwitch.setOnCheckedChangeListener(
