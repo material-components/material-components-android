@@ -1892,23 +1892,35 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
-   * Sets the visibility mode for the Labels in this Tab. The valid input options are:
-   *
-   * <ul>
-   *   <li>{@link #TAB_LABEL_VISIBILITY_UNLABELED}: Tabs will appear without labels regardless of
-   *        whether text is set.
-   *   <li>{@link #TAB_LABEL_VISIBILITY_LABELED}: Tabs will appear labeled if text is set.
-   * </ul>
-   *
-   * @param mode one of {@link #TAB_LABEL_VISIBILITY_UNLABELED}
-   * or {@link #TAB_LABEL_VISIBILITY_LABELED}.
-   * @return The current instance for call chaining.
-   */
-  public Tab setTabLabelVisibility(@LabelVisibility int mode) {
-    this.labelVisibilityMode = mode;
-    this.updateView();
-    return this;
-  }
+     * Sets the visibility mode for the Labels in this Tab. The valid input options are:
+     *
+     * <ul>
+     *   <li>{@link #TAB_LABEL_VISIBILITY_UNLABELED}: Tabs will appear without labels regardless of
+     *       whether text is set.
+     *   <li>{@link #TAB_LABEL_VISIBILITY_LABELED}: Tabs will appear labeled if text is set.
+     * </ul>
+     *
+     * @param mode one of {@link #TAB_LABEL_VISIBILITY_UNLABELED}
+     * or {@link #TAB_LABEL_VISIBILITY_LABELED}.
+     * @return The current instance for call chaining.
+     */
+    public Tab setTabLabelVisibility(@LabelVisibility int mode) {
+      this.labelVisibilityMode = mode;
+      this.updateView();
+      return this;
+    }
+
+    /**
+     * Gets the visibility mode for the Labels in this Tab.
+     *
+     * @return the label visibility mode, one of {@link #TAB_LABEL_VISIBILITY_UNLABELED} or
+     * {@link #TAB_LABEL_VISIBILITY_LABELED}.
+     * @see #setTabLabelVisibility()
+     */
+    @LabelVisibility
+    public int getTabLabelVisibility() {
+      return this.labelVisibilityMode;
+    }
 
     /** Select this tab. Only valid if the tab has been added to the action bar. */
     public void select() {
