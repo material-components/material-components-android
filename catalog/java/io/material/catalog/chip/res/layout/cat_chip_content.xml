@@ -149,7 +149,7 @@
       android:text="@string/cat_chip_text"
       app:chipIcon="@drawable/ic_placeholder_circle_24"/>
 
-  <Switch
+  <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/cat_chip_text_length_switch"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
