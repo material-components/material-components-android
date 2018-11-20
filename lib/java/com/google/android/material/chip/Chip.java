@@ -157,7 +157,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private boolean closeIconHovered;
   private boolean closeIconFocused;
   private boolean ensureMinTouchTargetSize;
-  private int touchTargetDelegateResId;
 
   @Dimension(unit = Dimension.PX)
   private int minTouchTargetSize;
@@ -266,7 +265,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   }
 
   private boolean shouldEnsureMinTouchTargetSize() {
-    return (ensureMinTouchTargetSize || touchTargetDelegateResId > 0);
+    return ensureMinTouchTargetSize;
   }
 
   private void initMinTouchTarget(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -281,7 +280,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             R.styleable.Chip,
             defStyleAttr,
             R.style.Widget_MaterialComponents_Chip_Action);
-    touchTargetDelegateResId = a.getResourceId(R.styleable.Chip_chipTouchTargetDelegate, -1);
     ensureMinTouchTargetSize = a.getBoolean(R.styleable.Chip_ensureMinTouchTargetSize, false);
 
     float defaultMinTouchTargetSize = (float) Math.ceil(dpToPx(MIN_TOUCH_TARGET_DP, getContext()));
