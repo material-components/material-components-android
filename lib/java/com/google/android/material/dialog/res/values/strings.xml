@@ -16,5 +16,5 @@
   -->
 
 <resources>
-  <string name="icon_content_description">Dialog Icon</string>
+  <string name="icon_content_description" description="Content description for an icon that appears in the title area of a dialog">Dialog Icon</string>
 </resources>
