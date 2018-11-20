@@ -20,7 +20,7 @@ import com.google.android.material.internal.Experimental;
 
 /** A corner treatment which cuts or clips the original corner of a shape with a straight line. */
 @Experimental("The shapes API is currently experimental and subject to change")
-public class CutCornerTreatment extends CornerTreatment {
+public class CutCornerTreatment extends CornerTreatment implements Cloneable {
 
   /**
    * Instantiates a cut corner treatment of a given size. A cut corner treatment introduces two new

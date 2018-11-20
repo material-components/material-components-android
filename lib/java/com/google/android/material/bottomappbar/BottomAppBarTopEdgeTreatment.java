@@ -33,7 +33,7 @@ import com.google.android.material.shape.ShapePath;
  * less than 180 degrees that does not start or finish with a vertical path. This vertical offset
  * must be positive.
  */
-public class BottomAppBarTopEdgeTreatment extends EdgeTreatment {
+public class BottomAppBarTopEdgeTreatment extends EdgeTreatment implements Cloneable {
 
   private static final int ARC_QUARTER = 90;
   private static final int ARC_HALF = 180;

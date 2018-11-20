@@ -60,15 +60,15 @@ public class ShapeAppearanceModel {
   }
 
   public ShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
-    topLeftCorner = shapeAppearanceModel.getTopLeftCorner();
-    topRightCorner = shapeAppearanceModel.getTopRightCorner();
-    bottomRightCorner = shapeAppearanceModel.getBottomRightCorner();
-    bottomLeftCorner = shapeAppearanceModel.getBottomLeftCorner();
+    topLeftCorner = shapeAppearanceModel.getTopLeftCorner().clone();
+    topRightCorner = shapeAppearanceModel.getTopRightCorner().clone();
+    bottomRightCorner = shapeAppearanceModel.getBottomRightCorner().clone();
+    bottomLeftCorner = shapeAppearanceModel.getBottomLeftCorner().clone();
 
-    topEdge = shapeAppearanceModel.getTopEdge();
-    rightEdge = shapeAppearanceModel.getRightEdge();
-    leftEdge = shapeAppearanceModel.getLeftEdge();
-    bottomEdge = shapeAppearanceModel.getBottomEdge();
+    topEdge = shapeAppearanceModel.getTopEdge().clone();
+    rightEdge = shapeAppearanceModel.getRightEdge().clone();
+    leftEdge = shapeAppearanceModel.getLeftEdge().clone();
+    bottomEdge = shapeAppearanceModel.getBottomEdge().clone();
   }
 
   public ShapeAppearanceModel(

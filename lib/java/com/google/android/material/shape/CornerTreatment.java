@@ -27,7 +27,7 @@ import com.google.android.material.internal.Experimental;
  * is any padding on the parent that could intersect the shadow.
  */
 @Experimental("The shapes API is currently experimental and subject to change")
-public class CornerTreatment {
+public class CornerTreatment implements Cloneable {
 
   protected float cornerSize;
 
@@ -65,5 +65,15 @@ public class CornerTreatment {
 
   public void setCornerSize(float cornerSize) {
     this.cornerSize = cornerSize;
+  }
+
+  @Override
+  public CornerTreatment clone() {
+    try {
+      return (CornerTreatment) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e); // This should never happen, because CornerTreatment handles the
+      // cloning, so all subclasses of CornerTreatment will support cloning.
+    }
   }
 }

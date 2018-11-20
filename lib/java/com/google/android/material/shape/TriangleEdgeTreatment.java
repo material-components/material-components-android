@@ -23,7 +23,7 @@ import com.google.android.material.internal.Experimental;
  * shape.
  */
 @Experimental("The shapes API is currently experimental and subject to change")
-public class TriangleEdgeTreatment extends EdgeTreatment {
+public class TriangleEdgeTreatment extends EdgeTreatment implements Cloneable {
 
   private final float size;
   private final boolean inside;

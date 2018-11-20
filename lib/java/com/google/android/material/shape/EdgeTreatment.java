@@ -27,7 +27,7 @@ import com.google.android.material.internal.Experimental;
  * is any padding on the parent that could intersect the shadow.
  */
 @Experimental("The shapes API is currently experimental and subject to change")
-public class EdgeTreatment {
+public class EdgeTreatment implements Cloneable {
 
   /**
    * Generates a {@link ShapePath} for this edge treatment.
@@ -51,5 +51,15 @@ public class EdgeTreatment {
    */
   public void getEdgePath(float length, float center, float interpolation, ShapePath shapePath) {
     shapePath.lineTo(length, 0);
+  }
+
+  @Override
+  public EdgeTreatment clone() {
+    try {
+      return (EdgeTreatment) super.clone();
+    } catch (CloneNotSupportedException e) {
+      throw new AssertionError(e); // This should never happen, because EdgeTreatment handles the
+      // cloning, so all subclasses of EdgeTreatment will support cloning.
+    }
   }
 }
