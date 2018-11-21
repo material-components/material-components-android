@@ -30,14 +30,6 @@
     <!-- Width of the stroke path of the card. Default is 0. Attribute type definition is in
          resources package. -->
     <attr name="strokeWidth"/>
-
-    <!-- Shape appearance style reference for MaterialCardView. Attribute declaration is in the
-         shape package. -->
-    <attr name="shapeAppearance"/>
-    <!-- Shape appearance overlay style reference for MaterialCardView. To be used to augment
-         attributes declared in the shapeAppearance. Attribute declaration is in the shape package.
-         -->
-    <attr name="shapeAppearanceOverlay"/>
   </declare-styleable>
 
 </resources>

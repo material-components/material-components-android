@@ -19,11 +19,10 @@
 
   <!-- Defines the base Material card style. -->
   <style name="Widget.MaterialComponents.CardView" parent="CardView">
-    <item name="enforceMaterialTheme">true</item>
     <item name="cardElevation">@dimen/mtrl_card_elevation</item>
     <item name="cardBackgroundColor">?attr/colorSurface</item>
-    <item name="cardCornerRadius">@null</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="cardCornerRadius">@dimen/mtrl_card_corner_radius</item>
+    <item name="enforceMaterialTheme">true</item>
   </style>
 
 </resources>

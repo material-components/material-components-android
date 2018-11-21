@@ -90,7 +90,7 @@ public class MaterialCardView extends CardView {
             context, attrs, R.styleable.MaterialCardView, defStyleAttr, DEF_STYLE_RES);
 
     // Loads and sets background drawable attributes.
-    cardViewHelper = new MaterialCardViewHelper(this, attrs, defStyleAttr, DEF_STYLE_RES);
+    cardViewHelper = new MaterialCardViewHelper(this);
     // Get the card background color that CardView read from the attributes.
     cardViewHelper.setCardBackgroundColor(super.getCardBackgroundColor());
     cardViewHelper.loadFromAttributes(attributes);
@@ -143,57 +143,8 @@ public class MaterialCardView extends CardView {
   @Override
   public void setRadius(float radius) {
     super.setRadius(radius);
-    cardViewHelper.setCornerRadius(radius);
+    cardViewHelper.updateCornerRadius();
     updateContentLayout();
-  }
-
-  @Override
-  public float getRadius() {
-    return cardViewHelper.getCornerRadius();
-  }
-
-  float getCardViewRadius() {
-    return MaterialCardView.super.getRadius();
-  }
-
-  @Override
-  public void setContentPadding(int left, int top, int right, int bottom) {
-    cardViewHelper.setUserContentPadding(left, top, right, bottom);
-  }
-
-  @Override
-  public int getContentPaddingLeft() {
-    return cardViewHelper.getUserContentPadding().left;
-  }
-
-  @Override
-  public int getContentPaddingTop() {
-    return cardViewHelper.getUserContentPadding().top;
-  }
-
-  @Override
-  public int getContentPaddingRight() {
-    return cardViewHelper.getUserContentPadding().right;
-  }
-
-  @Override
-  public int getContentPaddingBottom() {
-    return cardViewHelper.getUserContentPadding().bottom;
-  }
-
-  @Override
-  public void setCardBackgroundColor(@ColorInt int color) {
-    cardViewHelper.setCardBackgroundColor(ColorStateList.valueOf(color));
-  }
-
-  @Override
-  public void setCardBackgroundColor(@Nullable ColorStateList color) {
-    cardViewHelper.setCardBackgroundColor(color);
-  }
-
-  @Override
-  public ColorStateList getCardBackgroundColor() {
-    return cardViewHelper.getCardBackgroundColor();
   }
 
   @Override
@@ -213,6 +164,21 @@ public class MaterialCardView extends CardView {
   }
 
   @Override
+  public void setCardBackgroundColor(@ColorInt int color) {
+    cardViewHelper.setCardBackgroundColor(ColorStateList.valueOf(color));
+  }
+
+  @Override
+  public void setCardBackgroundColor(@Nullable ColorStateList color) {
+    cardViewHelper.setCardBackgroundColor(color);;
+  }
+
+  @Override
+  public ColorStateList getCardBackgroundColor() {
+    return cardViewHelper.getCardBackgroundColor();
+  }
+
+  @Override
   public void setCardElevation(float elevation) {
     super.setCardElevation(elevation);
     cardViewHelper.updateElevation();
@@ -228,14 +194,12 @@ public class MaterialCardView extends CardView {
   public void setUseCompatPadding(boolean useCompatPadding) {
     super.setUseCompatPadding(useCompatPadding);
     cardViewHelper.updateInsets();
-    cardViewHelper.updateContentPadding();
   }
 
   @Override
   public void setPreventCornerOverlap(boolean preventCornerOverlap) {
     super.setPreventCornerOverlap(preventCornerOverlap);
     cardViewHelper.updateInsets();
-    cardViewHelper.updateContentPadding();
   }
 
   @Override
@@ -293,10 +257,6 @@ public class MaterialCardView extends CardView {
   /** Allows {@link MaterialCardViewHelper} to set the background. */
   void setBackgroundInternal(Drawable drawable) {
     super.setBackgroundDrawable(drawable);
-  }
-
-  void setContentPaddingInternal(int left, int top, int right, int bottom) {
-    super.setContentPadding(left, top, right, bottom);
   }
 
 }
