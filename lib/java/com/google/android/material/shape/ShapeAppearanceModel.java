@@ -18,6 +18,8 @@ package com.google.android.material.shape;
 
 import com.google.android.material.R;
 
+import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
@@ -25,6 +27,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.support.annotation.AttrRes;
 import android.support.annotation.Dimension;
+import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -393,8 +396,11 @@ public class ShapeAppearanceModel {
   /**
    * Checks Corner and Edge treatments to see if we can use {@link Canvas#drawRoundRect(RectF,float,
    * float, Paint)} "} to draw this model.
+   *
+   * @hide
    */
-  boolean isRoundRect() {
+  @RestrictTo(LIBRARY_GROUP)
+  public boolean isRoundRect() {
     boolean hasDefaultEdges =
         leftEdge.getClass().equals(EdgeTreatment.class)
             && rightEdge.getClass().equals(EdgeTreatment.class)
