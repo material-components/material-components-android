@@ -149,6 +149,16 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @FabAnimationMode private int fabAnimationMode;
   private boolean hideOnScroll;
 
+  /** Keeps track of the number of currently running animations. */
+  private int animatingModeChangeCounter = 0;
+  private ArrayList<AnimationListener> animationListeners;
+
+  /** Callback to be invoked when the BottomAppBar is animating. */
+  interface AnimationListener {
+    void onAnimationStart(BottomAppBar bar);
+    void onAnimationEnd(BottomAppBar bar);
+  }
+
   /**
    * If the {@link FloatingActionButton} is actually cradled in the {@link BottomAppBar} or if the
    * {@link FloatingActionButton} is detached which will happen when the {@link
@@ -177,15 +187,23 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         @Override
         public void onScaleChanged(FloatingActionButton fab) {
           materialShapeDrawable.setInterpolation(
-              fab.getVisibility() != View.GONE ? fab.getScaleY() : 0);
+              fab.getVisibility() == View.VISIBLE ? fab.getScaleY() : 0);
         }
 
         @Override
         public void onTranslationChanged(FloatingActionButton fab) {
-          getTopEdgeTreatment().setHorizontalOffset(fab.getTranslationX());
-          getTopEdgeTreatment().setCradleVerticalOffset(-fab.getTranslationY());
+          float horizontalOffset = fab.getTranslationX();
+          if (getTopEdgeTreatment().getHorizontalOffset() != horizontalOffset) {
+            getTopEdgeTreatment().setHorizontalOffset(horizontalOffset);
+            materialShapeDrawable.invalidateSelf();
+          }
+          float verticalOffset = -fab.getTranslationY();
+          if (getTopEdgeTreatment().getCradleVerticalOffset() != verticalOffset) {
+            getTopEdgeTreatment().setCradleVerticalOffset(verticalOffset);
+            materialShapeDrawable.invalidateSelf();
+          }
           materialShapeDrawable.setInterpolation(
-              fab.getVisibility() != View.GONE ? fab.getScaleY() : 0);
+              fab.getVisibility() == View.VISIBLE ? fab.getScaleY() : 0);
         }
       };
 
@@ -375,6 +393,39 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     inflateMenu(newMenu);
   }
 
+  /** Add a listener to watch for animation changes to the BottomAppBar and FAB */
+  void addAnimationListener(@NonNull AnimationListener listener) {
+    if (animationListeners == null) {
+      animationListeners = new ArrayList<>();
+    }
+    animationListeners.add(listener);
+  }
+
+  void removeAnimationListener(@NonNull AnimationListener listener) {
+    if (animationListeners == null) {
+      return;
+    }
+    animationListeners.remove(listener);
+  }
+
+  private void dispatchAnimationStart() {
+    if (animatingModeChangeCounter++ == 0 && animationListeners != null) {
+      // Only dispatch the starting event if there are 0 running animations before this one starts.
+      for (AnimationListener listener : animationListeners) {
+        listener.onAnimationStart(this);
+      }
+    }
+  }
+
+  private void dispatchAnimationEnd() {
+    if (--animatingModeChangeCounter == 0 && animationListeners != null) {
+      // Only dispatch the ending event if there are 0 running animations after this one ends.
+      for (AnimationListener listener : animationListeners) {
+        listener.onAnimationEnd(this);
+      }
+    }
+  }
+
   /**
    * Sets the fab diameter. This will be called automatically by the {@link BottomAppBar.Behavior}
    * if the fab is anchored to this {@link BottomAppBar}.
@@ -409,8 +460,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     modeAnimator.addListener(
         new AnimatorListenerAdapter() {
           @Override
+          public void onAnimationStart(Animator animation) {
+            dispatchAnimationStart();
+          }
+
+          @Override
           public void onAnimationEnd(Animator animation) {
-            modeAnimator = null;
+            dispatchAnimationEnd();
           }
         });
     modeAnimator.start();
@@ -453,12 +509,19 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       return;
     }
 
+    dispatchAnimationStart();
+
     fab.hide(
         new OnVisibilityChangedListener() {
           @Override
           public void onHidden(FloatingActionButton fab) {
             fab.setTranslationX(getFabTranslationX(targetMode));
-            fab.show();
+            fab.show(new OnVisibilityChangedListener() {
+              @Override
+              public void onShown(FloatingActionButton fab) {
+                dispatchAnimationEnd();
+              }
+            });
           }
         });
   }
@@ -496,7 +559,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     menuAnimator.addListener(
         new AnimatorListenerAdapter() {
           @Override
+          public void onAnimationStart(Animator animation) {
+            dispatchAnimationStart();
+          }
+
+          @Override
           public void onAnimationEnd(Animator animation) {
+            dispatchAnimationEnd();
             menuAnimator = null;
           }
         });
