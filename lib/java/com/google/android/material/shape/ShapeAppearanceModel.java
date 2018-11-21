@@ -136,13 +136,13 @@ public class ShapeAppearanceModel {
   /**
    * Sets all corner treatments.
    *
-   * @param cornerTreatment the corner treatment to use in all four corners.
+   * @param cornerTreatment the corner treatment to use for all four corners.
    */
   public void setAllCorners(CornerTreatment cornerTreatment) {
-    topLeftCorner = cornerTreatment;
-    topRightCorner = cornerTreatment;
-    bottomRightCorner = cornerTreatment;
-    bottomLeftCorner = cornerTreatment;
+    topLeftCorner = cornerTreatment.clone();
+    topRightCorner = cornerTreatment.clone();
+    bottomRightCorner = cornerTreatment.clone();
+    bottomLeftCorner = cornerTreatment.clone();
   }
 
   public void setAllCorners(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
@@ -162,10 +162,10 @@ public class ShapeAppearanceModel {
    * @param edgeTreatment the edge treatment to use for all four edges.
    */
   public void setAllEdges(EdgeTreatment edgeTreatment) {
-    leftEdge = edgeTreatment;
-    topEdge = edgeTreatment;
-    rightEdge = edgeTreatment;
-    bottomEdge = edgeTreatment;
+    leftEdge = edgeTreatment.clone();
+    topEdge = edgeTreatment.clone();
+    rightEdge = edgeTreatment.clone();
+    bottomEdge = edgeTreatment.clone();
   }
 
   /**
