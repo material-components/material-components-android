@@ -221,7 +221,7 @@ public class TabLayout extends HorizontalScrollView {
    * the text will be saved and utilized for the content description, but no visible labels will be
    * created.
    *
-   * @see #setTabLabelVisibility
+   * @see #setTabLabelVisibility(int)
    */
   public static final int TAB_LABEL_VISIBILITY_UNLABELED = 0;
 
@@ -229,7 +229,7 @@ public class TabLayout extends HorizontalScrollView {
    * This mode is set by default. If a tab is instantiated with {@link
    * TabLayout#setText(CharSequence)}, a visible label will be created.
    *
-   * @see #setTabLabelVisibility
+   * @see #setTabLabelVisibility(int)
    */
   public static final int TAB_LABEL_VISIBILITY_LABELED = 1;
 
@@ -1915,7 +1915,7 @@ public class TabLayout extends HorizontalScrollView {
      *
      * @return the label visibility mode, one of {@link #TAB_LABEL_VISIBILITY_UNLABELED} or
      * {@link #TAB_LABEL_VISIBILITY_LABELED}.
-     * @see #setTabLabelVisibility()
+     * @see #setTabLabelVisibility(int)
      */
     @LabelVisibility
     public int getTabLabelVisibility() {
