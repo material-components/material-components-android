@@ -19,5 +19,7 @@
   <style name="Widget.MaterialComponents.CompoundButton.CheckBox" parent="Widget.AppCompat.CompoundButton.CheckBox">
     <item name="enforceMaterialTheme">true</item>
     <item name="useMaterialThemeColors">true</item>
+    <item name="android:minWidth">?attr/minTouchTargetSize</item>
+    <item name="android:minHeight">?attr/minTouchTargetSize</item>
   </style>
 </resources>

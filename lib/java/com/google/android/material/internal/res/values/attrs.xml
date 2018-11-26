@@ -16,7 +16,7 @@
 -->
 <resources>
 
-  <attr name="materialThemeOverlay" format="reference" />
+  <attr name="materialThemeOverlay" format="reference"/>
 
   <declare-styleable name="ThemeEnforcement">
     <!-- Internal flag used to denote that a style uses new attributes defined by
@@ -51,4 +51,5 @@
     <!-- Vertical Spacing between two lines of items being laid out. -->
     <attr name="lineSpacing" format="dimension"/>
   </declare-styleable>
+
 </resources>

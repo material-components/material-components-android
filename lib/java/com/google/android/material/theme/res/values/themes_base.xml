@@ -32,6 +32,7 @@
     <item name="colorError">@color/design_dark_default_color_error</item>
 
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+    <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
 
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
@@ -84,6 +85,7 @@
     <item name="colorError">@color/design_default_color_error</item>
 
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+    <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
 
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>

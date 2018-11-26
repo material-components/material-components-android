@@ -67,6 +67,7 @@
     <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_dark_on_surface_emphasis_medium</item>
 
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+    <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
 
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
@@ -151,6 +152,7 @@
     <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_on_surface_emphasis_medium</item>
 
     <item name="actionBarSize">@dimen/mtrl_toolbar_default_height</item>
+    <item name="minTouchTargetSize">@dimen/mtrl_min_touch_target_size</item>
 
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
