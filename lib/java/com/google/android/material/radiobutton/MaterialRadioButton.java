@@ -41,14 +41,14 @@ public class MaterialRadioButton extends AppCompatRadioButton {
 
   private static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_CompoundButton_RadioButton;
-
-  private final int[][] enabledCheckedStates =
+  private static final int[][] ENABLED_CHECKED_STATES =
       new int[][] {
         new int[] {android.R.attr.state_enabled, android.R.attr.state_checked}, // [0]
         new int[] {android.R.attr.state_enabled, -android.R.attr.state_checked}, // [1]
         new int[] {-android.R.attr.state_enabled, android.R.attr.state_checked}, // [2]
         new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [3]
       };
+  @Nullable private ColorStateList materialThemeColorsTintList;
 
   public MaterialRadioButton(Context context) {
     this(context, null);
@@ -73,25 +73,51 @@ public class MaterialRadioButton extends AppCompatRadioButton {
     attributes.recycle();
 
     if (useMaterialThemeColors && CompoundButtonCompat.getButtonTintList(this) == null) {
-      setColorThemedButtonTintList();
+      setUseMaterialThemeColors(true);
     }
   }
 
-  private void setColorThemedButtonTintList() {
-    int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
-    int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
-    int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
+  /**
+   * Forces the {@link MaterialRadioButton} to use colors from a Material Theme. Overrides any
+   * specified ButtonTintList. If set to false, sets the tints to null. Use {@link
+   * MaterialRadioButton#setSupportButtonTintList} to change button tints.
+   */
+  public void setUseMaterialThemeColors(boolean useMaterialThemeColors) {
+    if (useMaterialThemeColors) {
+      CompoundButtonCompat.setButtonTintList(this, getMaterialThemeColorsTintList());
+    } else {
+      CompoundButtonCompat.setButtonTintList(this, null);
+    }
+  }
 
-    int[] radioButtonColorList = new int[enabledCheckedStates.length];
-    radioButtonColorList[0] =
-        MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
-    radioButtonColorList[1] =
-        MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_MEDIUM);
-    radioButtonColorList[2] =
-        MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
-    radioButtonColorList[3] =
-        MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
-    CompoundButtonCompat.setButtonTintList(
-        this, new ColorStateList(enabledCheckedStates, radioButtonColorList));
+  /**
+   * Returns true if the colors of this {@link MaterialRadioButton} are from a Material Theme.
+   *
+   * @return True if the colors of this {@link MaterialRadioButton} are from a Material Theme.
+   */
+  public boolean isUseMaterialThemeColors() {
+    return materialThemeColorsTintList != null
+        && materialThemeColorsTintList.equals(CompoundButtonCompat.getButtonTintList(this));
+  }
+
+  private ColorStateList getMaterialThemeColorsTintList() {
+    if (materialThemeColorsTintList == null) {
+      int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
+      int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
+      int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
+
+      int[] radioButtonColorList = new int[ENABLED_CHECKED_STATES.length];
+      radioButtonColorList[0] =
+          MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
+      radioButtonColorList[1] =
+          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_MEDIUM);
+      radioButtonColorList[2] =
+          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
+      radioButtonColorList[3] =
+          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
+      materialThemeColorsTintList =
+          new ColorStateList(ENABLED_CHECKED_STATES, radioButtonColorList);
+    }
+    return materialThemeColorsTintList;
   }
 }

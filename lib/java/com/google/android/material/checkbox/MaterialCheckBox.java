@@ -41,14 +41,14 @@ public class MaterialCheckBox extends AppCompatCheckBox {
 
   private static final int DEF_STYLE_RES =
       R.style.Widget_MaterialComponents_CompoundButton_CheckBox;
-
-  private final int[][] enabledCheckedStates =
+  private static final int[][] ENABLED_CHECKED_STATES =
       new int[][] {
         new int[] {android.R.attr.state_enabled, android.R.attr.state_checked}, // [0]
         new int[] {android.R.attr.state_enabled, -android.R.attr.state_checked}, // [1]
         new int[] {-android.R.attr.state_enabled, android.R.attr.state_checked}, // [2]
         new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [3]
       };
+  @Nullable private ColorStateList materialThemeColorsTintList;
 
   public MaterialCheckBox(Context context) {
     this(context, null);
@@ -73,26 +73,51 @@ public class MaterialCheckBox extends AppCompatCheckBox {
     attributes.recycle();
 
     if (useMaterialThemeColors && CompoundButtonCompat.getButtonTintList(this) == null) {
-      setColorThemedButtonTintList();
+      setUseMaterialThemeColors(true);
     }
   }
 
-  private void setColorThemedButtonTintList() {
-    int[] checkBoxColorsList = new int[enabledCheckedStates.length];
-    int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
-    int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
-    int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
+  /**
+   * Forces the {@link MaterialCheckBox} to use colors from a Material Theme. Overrides any
+   * specified ButtonTintList. If set to false, sets the tints to null. Use {@link
+   * MaterialCheckBox#setSupportButtonTintList} to change button tints.
+   */
+  public void setUseMaterialThemeColors(boolean useMaterialThemeColors) {
+    if (useMaterialThemeColors) {
+      CompoundButtonCompat.setButtonTintList(this, getMaterialThemeColorsTintList());
+    } else {
+      CompoundButtonCompat.setButtonTintList(this, null);
+    }
+  }
 
-    checkBoxColorsList[0] =
-        MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
-    checkBoxColorsList[1] =
-        MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_MEDIUM);
-    checkBoxColorsList[2] =
-        MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
-    checkBoxColorsList[3] =
-        MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
+  /**
+   * Returns true if the colors of this {@link MaterialCheckBox} are from a Material Theme.
+   *
+   * @return True if the colors of this {@link MaterialCheckBox} are from a Material Theme.
+   */
+  public boolean isUseMaterialThemeColors() {
+    return materialThemeColorsTintList != null
+        && materialThemeColorsTintList.equals(CompoundButtonCompat.getButtonTintList(this));
+  }
 
-    CompoundButtonCompat.setButtonTintList(
-        this, new ColorStateList(enabledCheckedStates, checkBoxColorsList));
+  private ColorStateList getMaterialThemeColorsTintList() {
+    if (materialThemeColorsTintList == null) {
+      int[] checkBoxColorsList = new int[ENABLED_CHECKED_STATES.length];
+      int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
+      int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
+      int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
+
+      checkBoxColorsList[0] =
+          MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
+      checkBoxColorsList[1] =
+          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_MEDIUM);
+      checkBoxColorsList[2] =
+          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
+      checkBoxColorsList[3] =
+          MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED);
+
+      materialThemeColorsTintList = new ColorStateList(ENABLED_CHECKED_STATES, checkBoxColorsList);
+    }
+    return materialThemeColorsTintList;
   }
 }
