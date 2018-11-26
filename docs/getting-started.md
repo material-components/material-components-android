@@ -34,9 +34,9 @@ To use it:
       }
     ```
 
-If your app currently depends on the original Design Support Library, you
-can make use of the [`Refactor to
-AndroidX…`](https://developer.android.com/studio/preview/features/#androidx_refactoring)
+If your app currently depends on the original Design Support Library, you can
+make use of the
+[`Refactor to AndroidX…`](https://developer.android.com/jetpack/androidx/migrate)
 option provided by Android Studio. Doing so will update your app's dependencies
 and code to use the newly packaged `androidx` and `com.google.android.material`
 libraries.
