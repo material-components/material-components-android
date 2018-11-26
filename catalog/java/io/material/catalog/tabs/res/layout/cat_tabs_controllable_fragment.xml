@@ -49,7 +49,7 @@
         android:labelFor="@+id/toggle_icons_switch"
         android:text="@string/cat_tabs_icon_switch_label"/>
 
-    <android.support.v7.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@id/toggle_icons_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -63,7 +63,7 @@
         android:labelFor="@+id/toggle_labels_switch"
         android:text="@string/cat_tabs_labels_switch_label"/>
 
-    <android.support.v7.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@id/toggle_labels_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -102,7 +102,7 @@
         android:labelFor="@+id/toggle_inline_switch"
         android:text="@string/cat_tabs_inline_switch_label"/>
 
-    <android.support.v7.widget.SwitchCompat
+    <com.google.android.material.switchmaterial.SwitchMaterial
         android:id="@id/toggle_inline_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -119,7 +119,7 @@
     <Spinner
         android:id="@id/selector_spinner"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"/>
+        android:layout_height="48dp"/>
 
   </GridLayout>
 
