@@ -116,8 +116,8 @@
   <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputEditText"/>
 
   <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
-    <item name="android:paddingTop">12dp</item>
-    <item name="android:paddingBottom">12dp</item>
+    <item name="android:paddingTop">13dp</item>
+    <item name="android:paddingBottom">13dp</item>
   </style>
 
   <!-- Set of ThemeOverlays to be used internally in the TextInputLayout styles to automatically apply the correct TextInputEditText style to the TextInputEditText. -->
