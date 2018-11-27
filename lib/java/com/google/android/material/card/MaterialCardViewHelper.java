@@ -39,10 +39,15 @@ import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
 import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
+import android.support.annotation.StyleRes;
 import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shape.CornerTreatment;
+import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.RoundedCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.v7.widget.CardView;
+import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -84,19 +89,18 @@ class MaterialCardViewHelper {
   @ColorInt private int strokeColor;
   @ColorInt private int rippleColor;
   @Dimension private int strokeWidth;
+  private final Rect userContentPadding = new Rect();
 
   private final ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
   private final MaterialShapeDrawable bgDrawable; // Will always wrapped in an InsetDrawable
   private final MaterialShapeDrawable strokeDrawable; // Will always wrapped in an InsetDrawable
-  /** Either a {@link RippleDrawable} when using framework ripple or a {@link StateListDrawable}. */
   @Nullable private Drawable rippleDrawable;
-  /** Layers stroke and ripple drawables. */
   @Nullable private LayerDrawable clickableForegroundDrawable;
-  /**
-   * When not using framework drawable, this is used for the {@link StateListDrawable} stored in
-   * {@link #rippleDrawable}.
-   */
   @Nullable private MaterialShapeDrawable compatRippleDrawable;
+
+  private final ShapeAppearanceModel shapeAppearanceModelInsetByStroke;
+  private final MaterialShapeDrawable drawableInsetByStroke;
+  private final Rect temporaryBounds = new Rect();
 
   // If card is clickable, this is the clickableForegroundDrawable otherwise it is the
   // strokeDrawable
@@ -104,24 +108,37 @@ class MaterialCardViewHelper {
 
   private boolean isBackgroundOverwritten = false;
 
-  public MaterialCardViewHelper(MaterialCardView card) {
+  public MaterialCardViewHelper(
+      MaterialCardView card, AttributeSet attrs, int defStyleAttr, @StyleRes int defStyleRes) {
     materialCardView = card;
-    shapeAppearanceModel = new ShapeAppearanceModel();
-    bgDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    bgDrawable = new MaterialShapeDrawable(card.getContext(), attrs, defStyleAttr, defStyleRes);
+    shapeAppearanceModel = bgDrawable.getShapeAppearanceModel();
     bgDrawable.setShadowColor(Color.DKGRAY);
     strokeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
     strokeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
     fgDrawable = materialCardView.isClickable() ? getClickableForeground() : strokeDrawable;
+
+    TypedArray cardViewAttributes =
+        card.getContext()
+            .obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr, R.style.CardView);
+    if (cardViewAttributes.hasValue(R.styleable.CardView_cardCornerRadius)) {
+      shapeAppearanceModel.setCornerRadius(
+          cardViewAttributes.getDimension(R.styleable.CardView_cardCornerRadius, 0));
+    }
+
+    shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
+    drawableInsetByStroke = new MaterialShapeDrawable(shapeAppearanceModelInsetByStroke);
   }
 
   public void loadFromAttributes(TypedArray attributes) {
+    // If cardCornerRadius is set, let it override the shape appearance.
     strokeColor =
         attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
+    adjustShapeAppearanceModelInsetByStroke();
     rippleColor = getRippleColor();
     updateRippleColor();
 
-    updateCornerRadius();
     updateElevation();
     updateStroke();
 
@@ -157,9 +174,10 @@ class MaterialCardViewHelper {
     if (strokeWidth == this.strokeWidth) {
       return;
     }
-
     int strokeWidthDelta = strokeWidth - this.strokeWidth;
+
     this.strokeWidth = strokeWidth;
+    adjustShapeAppearanceModelInsetByStroke();
     updateStroke();
     adjustContentPadding(strokeWidthDelta);
   }
@@ -177,6 +195,15 @@ class MaterialCardViewHelper {
     return bgDrawable.getFillColor();
   }
 
+  void setUserContentPadding(int left, int top, int right, int bottom) {
+    userContentPadding.set(left, top, right, bottom);
+    updateContentPadding();
+  }
+
+  Rect getUserContentPadding() {
+    return userContentPadding;
+  }
+
   void updateClickable() {
     Drawable previousFgDrawable = fgDrawable;
     fgDrawable = materialCardView.isClickable() ? getClickableForeground() : strokeDrawable;
@@ -185,10 +212,22 @@ class MaterialCardViewHelper {
     }
   }
 
-  void updateCornerRadius() {
-    shapeAppearanceModel.setCornerRadius(materialCardView.getRadius());
+  void setCornerRadius(float cornerRadius) {
+    shapeAppearanceModel.setCornerRadius(cornerRadius);
+    shapeAppearanceModelInsetByStroke.setCornerRadius(cornerRadius - strokeWidth);
     bgDrawable.invalidateSelf();
     fgDrawable.invalidateSelf();
+    if (shouldAddCornerPaddingOutsideCardBackground()
+        || shouldAddCornerPaddingInsideCardBackground()) {
+      updateContentPadding();
+    }
+    if (shouldAddCornerPaddingOutsideCardBackground()) {
+      updateInsets();
+    }
+  }
+
+  float getCornerRadius() {
+    return shapeAppearanceModel.getTopLeftCorner().getCornerSize();
   }
 
   void updateElevation() {
@@ -227,20 +266,36 @@ class MaterialCardViewHelper {
     // To draw the stroke outside the outline, call {@link View#setClipToOutline} on the child
     // rather than on the card view.
     materialCardView.setClipToOutline(false);
-    contentView.setClipToOutline(true);
-    contentView.setOutlineProvider(
-        // TODO: Derive outline from ShapeAppearanceModel
-        new ViewOutlineProvider() {
-          @Override
-          public void getOutline(View view, Outline outline) {
-            outline.setRoundRect(
-                0,
-                0,
-                view.getWidth(),
-                view.getHeight(),
-                materialCardView.getRadius() - strokeWidth);
-          }
-        });
+    if (canClipToOutline()) {
+      contentView.setClipToOutline(true);
+      contentView.setOutlineProvider(
+          new ViewOutlineProvider() {
+            @Override
+            public void getOutline(View view, Outline outline) {
+              temporaryBounds.set(0, 0, view.getWidth(), view.getHeight());
+              drawableInsetByStroke.setBounds(temporaryBounds);
+              drawableInsetByStroke.getOutline(outline);
+            }
+          });
+    } else {
+      contentView.setClipToOutline(false);
+      contentView.setOutlineProvider(null);
+    }
+  }
+
+  private void adjustShapeAppearanceModelInsetByStroke() {
+    shapeAppearanceModelInsetByStroke
+        .getTopLeftCorner()
+        .setCornerSize(shapeAppearanceModel.getTopLeftCorner().getCornerSize() - strokeWidth);
+    shapeAppearanceModelInsetByStroke
+        .getTopRightCorner()
+        .setCornerSize(shapeAppearanceModel.getTopRightCorner().getCornerSize() - strokeWidth);
+    shapeAppearanceModelInsetByStroke
+        .getBottomRightCorner()
+        .setCornerSize(shapeAppearanceModel.getBottomRightCorner().getCornerSize() - strokeWidth);
+    shapeAppearanceModelInsetByStroke
+        .getBottomLeftCorner()
+        .setCornerSize(shapeAppearanceModel.getBottomLeftCorner().getCornerSize() - strokeWidth);
   }
 
   /**
@@ -273,21 +328,8 @@ class MaterialCardViewHelper {
     boolean isPreLollipop = Build.VERSION.SDK_INT < VERSION_CODES.LOLLIPOP;
     if (isPreLollipop || materialCardView.getUseCompatPadding()) {
       // Calculate the shadow padding used by CardView
-      boolean addInsetForCorners = materialCardView.getPreventCornerOverlap() && !isPreLollipop;
-      insetVertical =
-          (int)
-              Math.ceil(
-                  calculateVerticalPadding(
-                      materialCardView.getMaxCardElevation(),
-                      materialCardView.getRadius(),
-                      addInsetForCorners));
-      insetHorizontal =
-          (int)
-              Math.ceil(
-                  calculateHorizontalPadding(
-                      materialCardView.getMaxCardElevation(),
-                      materialCardView.getRadius(),
-                      addInsetForCorners));
+      insetVertical = (int) Math.ceil(calculateVerticalBackgroundPadding());
+      insetHorizontal = (int) Math.ceil(calculateHorizontalBackgroundPadding());
     }
     return new InsetDrawable(
         originalDrawable, insetHorizontal, insetVertical, insetHorizontal, insetVertical) {
@@ -300,24 +342,73 @@ class MaterialCardViewHelper {
     };
   }
 
-  /** Copied from {@link CardView} implementation. */
-  static float calculateVerticalPadding(
-      float maxShadowSize, float cornerRadius, boolean addPaddingForCorners) {
-    if (addPaddingForCorners) {
-      return (float) (maxShadowSize * CARD_VIEW_SHADOW_MULTIPLIER + (1 - COS_45) * cornerRadius);
-    } else {
-      return maxShadowSize * CARD_VIEW_SHADOW_MULTIPLIER;
-    }
+  /**
+   * Calculates the amount of padding that should be added above and below the background shape.
+   * This should only be called pre-lollipop or when using compat padding. This accounts for shadow
+   * and corner padding when they are added outside the background.
+   */
+  private float calculateVerticalBackgroundPadding() {
+    return materialCardView.getMaxCardElevation() * CARD_VIEW_SHADOW_MULTIPLIER
+        + (shouldAddCornerPaddingOutsideCardBackground() ? calculateActualCornerPadding() : 0);
   }
 
-  /** Copied from {@link CardView} implementation. */
-  static float calculateHorizontalPadding(
-      float maxShadowSize, float cornerRadius, boolean addPaddingForCorners) {
-    if (addPaddingForCorners) {
-      return (float) (maxShadowSize + (1 - COS_45) * cornerRadius);
-    } else {
-      return maxShadowSize;
+  /**
+   * Calculates the amount of padding that should be added to the left and right of the background
+   * shape. This should only be called pre-lollipop or when using compat padding. This accounts for
+   * shadow and corner padding when they are added outside the background.
+   */
+  private float calculateHorizontalBackgroundPadding() {
+    return materialCardView.getMaxCardElevation()
+        + (shouldAddCornerPaddingOutsideCardBackground() ? calculateActualCornerPadding() : 0);
+  }
+
+  private boolean canClipToOutline() {
+    return VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP && shapeAppearanceModel.isRoundRect();
+  }
+
+  private float getParentCardViewCalculatedCornerPadding() {
+    if (materialCardView.getPreventCornerOverlap()
+        && (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || materialCardView.getUseCompatPadding())) {
+      return (float) ((1 - COS_45) * materialCardView.getCardViewRadius());
     }
+    return 0f;
+  }
+
+  private boolean shouldAddCornerPaddingInsideCardBackground() {
+    return materialCardView.getPreventCornerOverlap() && !canClipToOutline();
+  }
+
+  private boolean shouldAddCornerPaddingOutsideCardBackground() {
+    return materialCardView.getPreventCornerOverlap()
+        && canClipToOutline()
+        && materialCardView.getUseCompatPadding();
+  }
+
+  /**
+   * Calculates the amount of padding required between the card background shape and the card
+   * content such that the entire content is within the bounds of the card background shape.
+   *
+   * <p>This should only be called when either {@link
+   * #shouldAddCornerPaddingOutsideCardBackground()} or {@link
+   * #shouldAddCornerPaddingInsideCardBackground()} returns true.
+   */
+  private float calculateActualCornerPadding() {
+    return Math.max(
+        Math.max(
+            calculateCornerPaddingForCornerTreatment(shapeAppearanceModel.getTopLeftCorner()),
+            calculateCornerPaddingForCornerTreatment(shapeAppearanceModel.getTopRightCorner())),
+        Math.max(
+            calculateCornerPaddingForCornerTreatment(shapeAppearanceModel.getBottomRightCorner()),
+            calculateCornerPaddingForCornerTreatment(shapeAppearanceModel.getBottomLeftCorner())));
+  }
+
+  private float calculateCornerPaddingForCornerTreatment(CornerTreatment treatment) {
+    if (treatment instanceof RoundedCornerTreatment) {
+      return (float) ((1 - COS_45) * treatment.getCornerSize());
+    } else if (treatment instanceof CutCornerTreatment) {
+      return treatment.getCornerSize() / 2;
+    }
+    return 0;
   }
 
   private Drawable getClickableForeground() {
@@ -340,6 +431,27 @@ class MaterialCardViewHelper {
     int contentPaddingBottom = materialCardView.getContentPaddingBottom() + strokeWidthDelta;
     materialCardView.setContentPadding(
         contentPaddingLeft, contentPaddingTop, contentPaddingRight, contentPaddingBottom);
+  }
+
+  /**
+   * Guarantee at least enough content padding to account for the stroke width and support
+   * preventing corner overlap for shaped backgrounds.
+   */
+  void updateContentPadding() {
+    boolean includeCornerPadding =
+        shouldAddCornerPaddingInsideCardBackground()
+            || shouldAddCornerPaddingOutsideCardBackground();
+    // The amount with which to adjust the user provided content padding to account for stroke and
+    // shape corners.
+    int contentPaddingOffset =
+        (int)
+            ((includeCornerPadding ? calculateActualCornerPadding() : 0)
+                - getParentCardViewCalculatedCornerPadding());
+    materialCardView.setContentPaddingInternal(
+        userContentPadding.left + contentPaddingOffset,
+        userContentPadding.top + contentPaddingOffset,
+        userContentPadding.right + contentPaddingOffset,
+        userContentPadding.bottom + contentPaddingOffset);
   }
 
   private int getRippleColor() {
