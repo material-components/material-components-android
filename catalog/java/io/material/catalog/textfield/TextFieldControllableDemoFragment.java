@@ -25,6 +25,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 
 /** A base class for controllable text field demos in the Catalog app. */
@@ -112,9 +113,12 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
   }
 
   private void setAllTextFieldsError(String error) {
+    ViewGroup parent = (ViewGroup) textfields.get(0).getParent();
     for (TextInputLayout textfield : textfields) {
       textfield.setError(error);
     }
+    // Request focus on the first text field to show an error.
+    parent.getChildAt(0).requestFocus();
   }
 
   private void setAllTextFieldsHelperText(String helperText) {
