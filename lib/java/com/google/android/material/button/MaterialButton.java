@@ -19,6 +19,7 @@ package com.google.android.material.button;
 import com.google.android.material.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -113,6 +114,8 @@ public class MaterialButton extends AppCompatButton {
 
   private static final String LOG_TAG = "MaterialButton";
 
+  private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
+
   @Nullable private final MaterialButtonHelper materialButtonHelper;
 
   @Px private int iconPadding;
@@ -133,15 +136,13 @@ public class MaterialButton extends AppCompatButton {
   }
 
   public MaterialButton(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.MaterialButton,
-            defStyleAttr,
-            R.style.Widget_MaterialComponents_Button);
+            context, attrs, R.styleable.MaterialButton, defStyleAttr, DEF_STYLE_RES);
 
     iconPadding = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconPadding, 0);
     iconTintMode =
