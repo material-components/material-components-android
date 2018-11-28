@@ -24,21 +24,27 @@
     tap. This navigational element resides at the bottom of the screen, and provides direct access
     for three to five destinations within an app.
   </string>
+  <string name="cat_bottom_nav_legacy_title">Legacy Bottom Nav</string>
+  <string name="cat_bottom_nav_default_colored_title">Default Colored Bottom Nav</string>
+  <string name="cat_bottom_nav_colored_title">Colored Bottom Nav</string>
+
   <string name="cat_bottom_nav_item_name">Item %1$d</string>
   <string name="cat_bottom_nav_page_1_name">Page 1</string>
   <string name="cat_bottom_nav_page_2_name">Page 2</string>
   <string name="cat_bottom_nav_page_3_name">Page 3</string>
   <string name="cat_bottom_nav_page_4_name">Page 4</string>
   <string name="cat_bottom_nav_page_5_name">Page 5</string>
+
   <string name="cat_bottom_nav_add_nav_item">Add nav item</string>
   <string name="cat_bottom_nav_remove_nav_item">Remove nav item</string>
   <string name="cat_bottom_nav_icon_size_slider_title">Icon size: </string>
   <string name="cat_bottom_nav_label_visibility_mode_title">Label visibility mode:</string>
+
   <string name="cat_bottom_nav_label_visibility_mode_auto">Auto</string>
   <string name="cat_bottom_nav_label_visibility_mode_selected">Selected</string>
   <string name="cat_bottom_nav_label_visibility_mode_labeled">Labeled</string>
   <string name="cat_bottom_nav_label_visibility_mode_unlabeled">Unlabeled</string>
-  <string name="cat_bottom_nav_legacy_title">Legacy Bottom Nav</string>
-  <string name="cat_bottom_nav_default_colored_title">Default Colored Bottom Nav</string>
-  <string name="cat_bottom_nav_colored_title">Colored Bottom Nav</string>
+
+  <string name="cat_bottom_nav_slider_max">48dp</string>
+  <string name="cat_bottom_nav_slider_min">0dp</string>
 </resources>

@@ -50,13 +50,13 @@
       android:layout_height="wrap_content"
       android:layout_gravity="start"
       android:padding="@dimen/cat_bottom_nav_standard_spacing"
-      android:text="0dp"/>
+      android:text="@string/cat_bottom_nav_slider_min"/>
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="end"
       android:padding="@dimen/cat_bottom_nav_standard_spacing"
-      android:text="48dp"/>
+      android:text="@string/cat_bottom_nav_slider_max"/>
 
   <TextView
       android:layout_width="wrap_content"
