@@ -15,55 +15,59 @@
   ~ limitations under the License.
   -->
 
-<GridLayout
+<LinearLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
+    android:id="@+id/cat_bottom_navs_label_visibility_controls_group"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="@dimen/cat_bottom_nav_standard_spacing"
-    android:layout_marginBottom="@dimen/cat_bottom_nav_standard_spacing"
-    android:layout_marginLeft="@dimen/cat_bottom_nav_standard_spacing"
-    android:layout_marginRight="@dimen/cat_bottom_nav_standard_spacing"
-    android:columnCount="2">
-
+    android:layout_gravity="center_horizontal"
+    android:gravity="center_horizontal"
+    android:orientation="vertical">
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="end"
       android:padding="2dp"
       android:text="@string/cat_bottom_nav_icon_size_slider_title"/>
   <TextView
       android:id="@+id/icon_size_text_view"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_gravity="start"
       android:padding="2dp"
       android:text="24dp"/>
   <SeekBar
       android:id="@+id/icon_size_slider"
-      android:layout_width="300dp"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_columnSpan="2"
+      android:paddingLeft="@dimen/cat_bottom_nav_standard_spacing"
+      android:paddingRight="@dimen/cat_bottom_nav_standard_spacing"
       android:max="48"
+      android:maxWidth="300dp"
       android:progress="24"/>
-  <TextView
-      android:layout_width="wrap_content"
+  <RelativeLayout
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="start"
-      android:padding="@dimen/cat_bottom_nav_standard_spacing"
-      android:text="@string/cat_bottom_nav_slider_min"/>
+      android:orientation="horizontal">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentLeft="true"
+        android:padding="@dimen/cat_bottom_nav_standard_spacing"
+        android:text="@string/cat_bottom_nav_slider_min"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:padding="@dimen/cat_bottom_nav_standard_spacing"
+        android:text="@string/cat_bottom_nav_slider_max"/>
+  </RelativeLayout>
   <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_gravity="end"
-      android:padding="@dimen/cat_bottom_nav_standard_spacing"
-      android:text="@string/cat_bottom_nav_slider_max"/>
-
-  <TextView
+      android:id="@+id/cat_radio_group_label"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:padding="@dimen/cat_bottom_nav_standard_spacing"
       android:text="@string/cat_bottom_nav_label_visibility_mode_title"/>
   <RadioGroup
+      android:id="@+id/cat_radio_group"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:padding="@dimen/cat_bottom_nav_standard_spacing"
@@ -90,4 +94,4 @@
         android:layout_height="wrap_content"
         android:text="@string/cat_bottom_nav_label_visibility_mode_unlabeled"/>
   </RadioGroup>
-</GridLayout>
+</LinearLayout>
