@@ -19,12 +19,6 @@
 
   <style name="AlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
     <item name="android:layout">@layout/material_alert_dialog</item>
-    <item name="backgroundInsetStart">@dimen/mtrl_alert_dialog_background_inset_start</item>
-    <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_background_inset_top</item>
-    <item name="backgroundInsetEnd">@dimen/mtrl_alert_dialog_background_inset_end</item>
-    <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_background_inset_bottom</item>
-    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.AlertDialog</item>
   </style>
 
   <style name="Base.AlertDialog.MaterialComponents.Title.Panel" parent="android:Widget">
@@ -83,11 +77,6 @@
       parent="Base.AlertDialog.MaterialComponents.Title.Text">
     <item name="android:layout_gravity">center</item>
     <item name="android:textAlignment" tools:ignore="NewApi">center</item>
-  </style>
-
-  <style name="ShapeAppearanceOverlay.MaterialComponents.AlertDialog" parent="">
-    <item name="cornerSize">4dp</item>
-    <item name="cornerFamily">rounded</item>
   </style>
 
 </resources>

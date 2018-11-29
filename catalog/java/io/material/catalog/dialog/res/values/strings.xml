@@ -19,7 +19,6 @@
   <string name="cat_dialog_title">Dialogs</string>
   <string name="cat_dialog_description">Dialogs create modals that users must interact with before performing any other actions. Dialogs should only be used for user input and notices that cannot be delayed.</string>
   <string name="message_2_actions">Message, 2 Actions</string>
-  <string name="long_message_2_actions">Long Message, 2 Actions</string>
   <string name="title_2_actions">Title, 2 Actions</string>
   <string name="title_message_3_actions">Title, Message, 3 Actions</string>
   <string name="title_message_3_long_actions">Title, Message, 3 Long Actions</string>
@@ -37,7 +36,6 @@
   <string name="negative">Decline</string>
   <string name="neutral">Cancel</string>
   <string name="title">Title</string>
-  <string name="long_message">Lorem ipsum dolor sit amet, consectetur adipiscing elit. In justo tortor, volutpat sit amet congue eu, accumsan quis nisl. Mauris accumsan lectus ipsum, a suscipit risus dictum ac. Suspendisse nec est lorem. Ut tortor est, elementum in massa id, scelerisque condimentum nibh. Ut et fermentum dolor. Suspendisse potenti. Sed dictum vestibulum metus, ut interdum ipsum. Vestibulum scelerisque ipsum commodo malesuada suscipit. Quisque pulvinar fermentum vulputate. Duis euismod, massa sed auctor egestas, ligula enim luctus orci, ac tincidunt sem massa ac enim. In non neque finibus, posuere quam eget, venenatis enim. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Cras ut eros imperdiet, fringilla felis eget, porttitor est. Interdum et malesuada fames ac ante ipsum primis in faucibus. Aliquam luctus ac nulla nec elementum. Nunc sit amet nisl hendrerit, volutpat enim ut, posuere nulla. Ut porttitor magna nisi, lacinia iaculis ex tempor et. Pellentesque rhoncus augue quis pretium aliquam. Integer ut augue vitae lectus suscipit gravida. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Nulla bibendum ex a nunc porta, vitae maximus nisl viverra. Vivamus sit amet risus varius, fringilla turpis nec, maximus elit. Cras id massa pharetra, viverra urna ac.</string>
   <string name="message">Message</string>
   <string name="short_text_1">1</string>
   <string name="short_text_2">2</string>
