@@ -23,7 +23,7 @@
     android:gravity="center_horizontal"
     android:orientation="vertical">
 
-  <Switch
+  <com.google.android.material.switchmaterial.SwitchMaterial
       android:id="@+id/single_selection"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
