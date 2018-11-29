@@ -34,12 +34,15 @@ import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.view.WindowInsetsCompat;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat;
+import android.support.v4.view.accessibility.AccessibilityNodeInfoCompat.CollectionInfoCompat;
 import android.support.v7.view.menu.MenuBuilder;
 import android.support.v7.view.menu.MenuItemImpl;
 import android.support.v7.view.menu.MenuPresenter;
 import android.support.v7.view.menu.MenuView;
 import android.support.v7.view.menu.SubMenuBuilder;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerViewAccessibilityDelegate;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.SubMenu;
@@ -100,6 +103,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
     if (menuView == null) {
       menuView =
           (NavigationMenuView) layoutInflater.inflate(R.layout.design_navigation_menu, root, false);
+      menuView.setAccessibilityDelegateCompat(
+          new NavigationMenuViewAccessibilityDelegate(menuView));
       if (adapter == null) {
         adapter = new NavigationMenuAdapter();
       }
@@ -656,6 +661,17 @@ public class NavigationMenuPresenter implements MenuPresenter {
     public void setUpdateSuspended(boolean updateSuspended) {
       this.updateSuspended = updateSuspended;
     }
+
+    /** Returns the number of rows that will be used for accessibility. */
+    int getRowCount() {
+      int itemCount = headerLayout.getChildCount() == 0 ? 0 : 1;
+      for (int i = 0; i < adapter.getItemCount(); i++) {
+        if (adapter.getItemViewType(i) == VIEW_TYPE_NORMAL) {
+          itemCount++;
+        }
+      }
+      return itemCount;
+    }
   }
 
   /** Unified data model for all sorts of navigation menu items. */
@@ -702,5 +718,18 @@ public class NavigationMenuPresenter implements MenuPresenter {
   private static class NavigationMenuHeaderItem implements NavigationMenuItem {
     NavigationMenuHeaderItem() {}
     // The actual content is hold by NavigationMenuPresenter#mHeaderLayout.
+  }
+
+  private class NavigationMenuViewAccessibilityDelegate extends RecyclerViewAccessibilityDelegate {
+
+    NavigationMenuViewAccessibilityDelegate(@NonNull RecyclerView recyclerView) {
+      super(recyclerView);
+    }
+
+    @Override
+    public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+      super.onInitializeAccessibilityNodeInfo(host, info);
+      info.setCollectionInfo(CollectionInfoCompat.obtain(adapter.getRowCount(), 0, false));
+    }
   }
 }
