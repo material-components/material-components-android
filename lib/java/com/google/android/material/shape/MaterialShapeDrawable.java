@@ -40,7 +40,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Region;
 import android.graphics.Region.Op;
-import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
@@ -669,16 +668,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public void setPaintFlags(int flags) {
     fillPaint.setFlags(flags);
     strokePaint.setFlags(flags);
-    invalidateSelf();
-  }
-
-  /**
-   * Set the shader used by the shape's border paint.
-   *
-   * @param shader the new shader to be installed in the paint
-   */
-  public void setStrokePaintShader(Shader shader) {
-    strokePaint.setShader(shader);
     invalidateSelf();
   }
 
