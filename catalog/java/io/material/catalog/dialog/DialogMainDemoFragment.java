@@ -21,6 +21,7 @@ import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.annotation.StringRes;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import android.support.v7.app.AlertDialog;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -48,13 +49,23 @@ public class DialogMainDemoFragment extends DemoFragment {
     String neutralText = getResources().getString(R.string.neutral);
     String title = getResources().getString(R.string.title);
     String message = getResources().getString(R.string.message);
+    String longMessage = getResources().getString(R.string.long_message);
 
     // message, 2 actions
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.message_2_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setMessage(message)
+            .setPositiveButton(positiveText, null)
+            .setNegativeButton(negativeText, null));
+
+    // long message, 2 actions
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.long_message_2_actions,
+        new MaterialAlertDialogBuilder(getContext())
+            .setMessage(longMessage)
             .setPositiveButton(positiveText, null)
             .setNegativeButton(negativeText, null));
 
@@ -62,7 +73,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_2_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setPositiveButton(positiveText, null)
             .setNeutralButton(neutralText, null));
@@ -71,7 +82,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_message_3_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveText, null)
@@ -82,7 +93,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_message_3_long_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(getResources().getString(R.string.long_positive), null)
@@ -93,7 +104,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.long_title_message_too_long_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(getResources().getString(R.string.long_title))
             .setMessage(message)
             .setPositiveButton(getResources().getString(R.string.too_long_positive), null)
@@ -104,7 +115,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.icon_title_message_2_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setMessage(message)
             .setPositiveButton(positiveText, null)
@@ -115,7 +126,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_choices_as_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setNeutralButton(neutralText, null)
             .setItems(choices, null));
@@ -124,7 +135,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_checkboxes_2_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setPositiveButton(positiveText, null)
             .setNeutralButton(neutralText, null)
@@ -134,7 +145,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_radiobuttons_2_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setPositiveButton(positiveText, null)
             .setNeutralButton(neutralText, null)
@@ -144,7 +155,7 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_slider_2_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setPositiveButton(positiveText, null)
             .setNeutralButton(neutralText, null)
@@ -154,24 +165,23 @@ public class DialogMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_scrolling_2_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setMessage(multiLineMessage.toString())
             .setPositiveButton(positiveText, null)
             .setNeutralButton(neutralText, null));
 
-    //scrolling view
+    // scrolling view
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_scrolling,
-        new AlertDialog.Builder(getContext())
-            .setMessage(multiLineMessage.toString()));
+        new MaterialAlertDialogBuilder(getContext()).setMessage(multiLineMessage.toString()));
 
     // title, short buttons
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.title_2_short_actions,
-        new AlertDialog.Builder(getContext())
+        new MaterialAlertDialogBuilder(getContext())
             .setTitle(title)
             .setPositiveButton(R.string.short_text_1, null)
             .setNeutralButton(R.string.short_text_2, null));
