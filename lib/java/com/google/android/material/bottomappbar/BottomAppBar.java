@@ -666,7 +666,13 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
         getActionMenuViewTranslationX(actionMenuView, fabAlignmentMode, fabAttached));
   }
 
-  private int getActionMenuViewTranslationX(
+  /**
+   * Returns the X translation to position the {@link ActionMenuView}. When {@code fabAlignmentMode}
+   *    is equal to {@link #FAB_ALIGNMENT_MODE_END} and {@code fabAttached} is true, the {@link
+   * ActionMenuView} will be aligned to the end of the navigation icon, otherwise the {@link
+   * ActionMenuView} is not moved.
+   */
+  protected int getActionMenuViewTranslationX(
       ActionMenuView actionMenuView, @FabAlignmentMode int fabAlignmentMode, boolean fabAttached) {
     int toolbarLeftContentEnd = 0;
     boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
