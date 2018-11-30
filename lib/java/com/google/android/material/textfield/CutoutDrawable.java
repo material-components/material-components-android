@@ -23,29 +23,23 @@ import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffXfermode;
 import android.graphics.RectF;
+import android.graphics.drawable.GradientDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
 import android.view.View;
 
 /**
- * A {@link MaterialShapeDrawable} that can draw a cutout for the label in {@link TextInputLayout}'s
+ * A {@link GradientDrawable} that can draw a cutout for the label in {@link TextInputLayout}'s
  * outline mode.
  */
-class CutoutDrawable extends MaterialShapeDrawable {
+class CutoutDrawable extends GradientDrawable {
   private final Paint cutoutPaint;
   private final RectF cutoutBounds;
   private int savedLayer;
 
   CutoutDrawable() {
-    this(null);
-  }
-
-  CutoutDrawable(@Nullable ShapeAppearanceModel shapeAppearanceModel) {
-    super(shapeAppearanceModel != null ? shapeAppearanceModel : new ShapeAppearanceModel());
+    super();
     cutoutPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
     setPaintStyles();
     cutoutBounds = new RectF();
