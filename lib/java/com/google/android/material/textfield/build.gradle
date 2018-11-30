@@ -10,6 +10,7 @@ dependencies {
   implementation project(fromPath("lib/java/com/google/android/material/animation"))
   implementation project(fromPath("lib/java/com/google/android/material/internal"))
   implementation project(fromPath("lib/java/com/google/android/material/math"))
+  implementation project(fromPath("lib/java/com/google/android/material/shape"))
 }
 
 android {
