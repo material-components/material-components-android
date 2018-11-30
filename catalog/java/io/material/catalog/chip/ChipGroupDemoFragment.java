@@ -23,24 +23,22 @@ import android.support.annotation.LayoutRes;
 import android.support.annotation.Nullable;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Switch;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the ChipGroup demos for the Catalog app. */
 public class ChipGroupDemoFragment extends DemoFragment {
 
-  private Switch singleSelectionSwitch;
+  private SwitchMaterial singleSelectionSwitch;
 
   @Nullable
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(getChipGroupContent(), viewGroup, false /* attachToRoot */);
-
-    ViewGroup content = view.findViewById(R.id.content);
 
     singleSelectionSwitch = view.findViewById(R.id.single_selection);
     ChipGroup reflowGroup = view.findViewById(R.id.reflow_group);
