@@ -92,6 +92,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Retention(RetentionPolicy.SOURCE)
   public @interface CompatibilityShadowMode {}
 
+  private static final Paint clearPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
+
   private MaterialShapeDrawableState drawableState;
 
   // Inter-method state.
@@ -116,7 +118,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private final Paint clearPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
   private final ShadowRenderer shadowRenderer = new ShadowRenderer();
 
@@ -151,6 +152,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       edgeTransforms[i] = new Matrix();
       cornerPaths[i] = new ShapePath();
     }
+    updateTintFilter();
+    updateColorsForState(getState(), false);
   }
 
   @Nullable
@@ -354,7 +357,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @return the stroke's current width.
    */
   public float getStrokeWidth() {
-    return strokePaint.getStrokeWidth();
+    return drawableState.strokeWidth;
   }
 
   /**
@@ -363,7 +366,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * @param strokeWidth desired stroke width.
    */
   public void setStrokeWidth(float strokeWidth) {
-    strokePaint.setStrokeWidth(strokeWidth);
+    drawableState.strokeWidth = strokeWidth;
     invalidateSelf();
   }
 
@@ -384,8 +387,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Override
   public void setColorFilter(@Nullable ColorFilter colorFilter) {
-    fillPaint.setColorFilter(colorFilter);
-    strokePaint.setColorFilter(colorFilter);
+    drawableState.colorFilter = colorFilter;
     invalidateSelf();
   }
 
@@ -652,26 +654,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   /**
-   * Get the current flags used by the shape's fill paint.
-   *
-   * @return current paint flags.
-   */
-  public int getPaintFlags() {
-    return fillPaint.getFlags();
-  }
-
-  /**
-   * Sets the flags used by the shape's paint.
-   *
-   * @param flags the desired flags.
-   */
-  public void setPaintFlags(int flags) {
-    fillPaint.setFlags(flags);
-    strokePaint.setFlags(flags);
-    invalidateSelf();
-  }
-
-  /**
    * Get the current style used by the shape's paint.
    *
    * @return current used paint style.
@@ -717,6 +699,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     fillPaint.setAlpha(modulateAlpha(prevAlpha, drawableState.alpha));
 
     strokePaint.setColorFilter(strokeTintFilter);
+    strokePaint.setStrokeWidth(drawableState.strokeWidth);
+
     final int prevStrokeAlpha = strokePaint.getAlpha();
     strokePaint.setAlpha(modulateAlpha(prevStrokeAlpha, drawableState.alpha));
 
@@ -1151,6 +1135,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     @NonNull public ShapeAppearanceModel shapeAppearanceModel;
 
+    public ColorFilter colorFilter;
     public ColorStateList fillColor = null;
     public ColorStateList strokeColor = null;
     public ColorStateList strokeTintList = null;
@@ -1159,6 +1144,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     public float scale = 1f;
     public float interpolation = 1f;
+    public float strokeWidth;
 
     public int alpha = 255;
     public int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
@@ -1177,6 +1163,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     public MaterialShapeDrawableState(MaterialShapeDrawableState orig) {
       shapeAppearanceModel = new ShapeAppearanceModel(orig.shapeAppearanceModel);
+      strokeWidth = orig.strokeWidth;
+      colorFilter = orig.colorFilter;
       fillColor = orig.fillColor;
       strokeColor = orig.strokeColor;
       tintMode = orig.tintMode;
