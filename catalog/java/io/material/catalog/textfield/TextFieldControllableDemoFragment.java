@@ -114,11 +114,15 @@ public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFra
 
   private void setAllTextFieldsError(String error) {
     ViewGroup parent = (ViewGroup) textfields.get(0).getParent();
+    boolean textfieldWithErrorHasFocus = false;
     for (TextInputLayout textfield : textfields) {
       textfield.setError(error);
+      textfieldWithErrorHasFocus |= textfield.hasFocus();
     }
-    // Request focus on the first text field to show an error.
-    parent.getChildAt(0).requestFocus();
+    if (!textfieldWithErrorHasFocus) {
+      // Request accessibility focus on the first text field to show an error.
+      parent.getChildAt(0).requestFocus();
+    }
   }
 
   private void setAllTextFieldsHelperText(String helperText) {
