@@ -26,6 +26,7 @@
   </string>
   <string name="cat_button_label_enabled">Enabled</string>
   <string name="cat_button_label_disabled">Disabled</string>
+  <string name="cat_button_icon_btn_text">Icon only button</string>
   <string name="cat_btn_text">Material button</string>
   <string name="cat_unelevated_btn_text">Unelevated button</string>
   <string name="cat_text_btn_text">Text button</string>

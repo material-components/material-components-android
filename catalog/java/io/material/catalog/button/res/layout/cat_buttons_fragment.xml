@@ -201,7 +201,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_button_label_enabled"
+        android:contentDescription="@string/cat_button_icon_btn_text"
         app:icon="@drawable/ic_dialogs_24px"
         app:iconGravity="textStart"
         app:iconPadding="0dp"/>
@@ -210,7 +210,7 @@
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_button_label_disabled"
+        android:contentDescription="@string/cat_button_icon_btn_text"
         android:layout_marginStart="16dp"
         android:enabled="false"
         app:icon="@drawable/ic_dialogs_24px"
