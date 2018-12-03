@@ -119,6 +119,14 @@
     <attr name="boxBackgroundColor" format="color"/>
     <!-- The value to use for the box's stroke when in outline box mode. -->
     <attr name="boxStrokeWidth" format="dimension"/>
+
+    <!-- Shape appearance style reference for TextInputLayout. Attribute declaration is in the Shape
+        package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for TextInputLayout. To be used to augment
+         attributes declared in the shapeAppearance. Attribute declaration is in the Shape
+         package. -->
+    <attr name="shapeAppearanceOverlay"/>
   </declare-styleable>
 
 </resources>

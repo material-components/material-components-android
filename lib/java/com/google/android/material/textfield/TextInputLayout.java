@@ -32,7 +32,6 @@ import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
@@ -55,6 +54,8 @@ import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.AbsSavedState;
@@ -177,15 +178,14 @@ public class TextInputLayout extends LinearLayout {
    */
   private boolean isProvidingHint;
 
-  private GradientDrawable boxBackground;
+  private MaterialShapeDrawable boxBackground;
+  private final ShapeAppearanceModel shapeAppearanceModel;
+  private final ShapeAppearanceModel cornerAdjustedShapeAppearanceModel;
+
   private final int boxBottomOffsetPx;
   private final int boxLabelCutoutPaddingPx;
   @BoxBackgroundMode private int boxBackgroundMode;
   private final int boxCollapsedPaddingTopPx;
-  private float boxCornerRadiusTopStart;
-  private float boxCornerRadiusTopEnd;
-  private float boxCornerRadiusBottomEnd;
-  private float boxCornerRadiusBottomStart;
   private int boxStrokeWidthPx;
   private final int boxStrokeWidthDefaultPx;
   private final int boxStrokeWidthFocusedPx;
@@ -290,22 +290,51 @@ public class TextInputLayout extends LinearLayout {
     setHint(a.getText(R.styleable.TextInputLayout_android_hint));
     hintAnimationEnabled = a.getBoolean(R.styleable.TextInputLayout_hintAnimationEnabled, true);
 
+    shapeAppearanceModel = new ShapeAppearanceModel(context, attrs, defStyleAttr, DEF_STYLE_RES);
+    cornerAdjustedShapeAppearanceModel = new ShapeAppearanceModel(shapeAppearanceModel);
+    setBoxBackgroundMode(
+        a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
+
     boxBottomOffsetPx =
         context.getResources().getDimensionPixelOffset(R.dimen.mtrl_textinput_box_bottom_offset);
     boxLabelCutoutPaddingPx =
         context
             .getResources()
             .getDimensionPixelOffset(R.dimen.mtrl_textinput_box_label_cutout_padding);
-
     boxCollapsedPaddingTopPx =
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingTop, 0);
-    boxCornerRadiusTopStart =
-        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopStart, 0f);
-    boxCornerRadiusTopEnd = a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopEnd, 0f);
-    boxCornerRadiusBottomEnd =
-        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomEnd, 0f);
-    boxCornerRadiusBottomStart =
-        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomStart, 0f);
+
+    boxStrokeWidthDefaultPx =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_default);
+    boxStrokeWidthFocusedPx =
+        context
+            .getResources()
+            .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_focused);
+    boxStrokeWidthPx = boxStrokeWidthDefaultPx;
+
+    float boxCornerRadiusTopStart =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopStart, -1f);
+    float boxCornerRadiusTopEnd =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusTopEnd, -1f);
+    float boxCornerRadiusBottomEnd =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomEnd, -1f);
+    float boxCornerRadiusBottomStart =
+        a.getDimension(R.styleable.TextInputLayout_boxCornerRadiusBottomStart, -1f);
+    if (boxCornerRadiusTopStart >= 0) {
+      shapeAppearanceModel.getTopLeftCorner().setCornerSize(boxCornerRadiusTopStart);
+    }
+    if (boxCornerRadiusTopEnd >= 0) {
+      shapeAppearanceModel.getTopRightCorner().setCornerSize(boxCornerRadiusTopEnd);
+    }
+    if (boxCornerRadiusBottomEnd >= 0) {
+      shapeAppearanceModel.getBottomRightCorner().setCornerSize(boxCornerRadiusBottomEnd);
+    }
+    if (boxCornerRadiusBottomStart >= 0) {
+      shapeAppearanceModel.getBottomLeftCorner().setCornerSize(boxCornerRadiusBottomStart);
+    }
+    adjustCornerSizeForStrokeWidth();
 
     ColorStateList filledBackgroundColorStateList =
         MaterialResources.getColorStateList(
@@ -337,20 +366,6 @@ public class TextInputLayout extends LinearLayout {
       hoveredFilledBackgroundColor = Color.TRANSPARENT;
     }
 
-    boxStrokeWidthDefaultPx =
-        context
-            .getResources()
-            .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_default);
-    boxStrokeWidthFocusedPx =
-        context
-            .getResources()
-            .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_focused);
-    boxStrokeWidthPx = boxStrokeWidthDefaultPx;
-
-    @BoxBackgroundMode
-    final int boxBackgroundMode =
-        a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE);
-    setBoxBackgroundMode(boxBackgroundMode);
     if (a.hasValue(R.styleable.TextInputLayout_android_textColorHint)) {
       defaultHintTextColor =
           focusedTextColor = a.getColorStateList(R.styleable.TextInputLayout_android_textColorHint);
@@ -509,10 +524,10 @@ public class TextInputLayout extends LinearLayout {
         && !(boxBackground instanceof CutoutDrawable)) {
       // Make boxBackground a CutoutDrawable if in outline mode, there is a hint, and
       // boxBackground isn't already a CutoutDrawable.
-      boxBackground = new CutoutDrawable();
+      boxBackground = new CutoutDrawable(shapeAppearanceModel);
     } else if (boxBackground == null) {
-      // Otherwise, make boxBackground a GradientDrawable if it hasn't yet been initialized.
-      boxBackground = new GradientDrawable();
+      // Otherwise, make boxBackground a MaterialShapeDrawable if it hasn't yet been initialized.
+      boxBackground = new MaterialShapeDrawable(shapeAppearanceModel);
     }
   }
 
@@ -612,14 +627,15 @@ public class TextInputLayout extends LinearLayout {
       float boxCornerRadiusTopEnd,
       float boxCornerRadiusBottomStart,
       float boxCornerRadiusBottomEnd) {
-    if (this.boxCornerRadiusTopStart != boxCornerRadiusTopStart
-        || this.boxCornerRadiusTopEnd != boxCornerRadiusTopEnd
-        || this.boxCornerRadiusBottomEnd != boxCornerRadiusBottomEnd
-        || this.boxCornerRadiusBottomStart != boxCornerRadiusBottomStart) {
-      this.boxCornerRadiusTopStart = boxCornerRadiusTopStart;
-      this.boxCornerRadiusTopEnd = boxCornerRadiusTopEnd;
-      this.boxCornerRadiusBottomEnd = boxCornerRadiusBottomEnd;
-      this.boxCornerRadiusBottomStart = boxCornerRadiusBottomStart;
+    if (shapeAppearanceModel.getTopLeftCorner().getCornerSize() != boxCornerRadiusTopStart
+        || shapeAppearanceModel.getTopRightCorner().getCornerSize() != boxCornerRadiusTopEnd
+        || shapeAppearanceModel.getBottomRightCorner().getCornerSize() != boxCornerRadiusBottomEnd
+        || shapeAppearanceModel.getBottomLeftCorner().getCornerSize()
+            != boxCornerRadiusBottomStart) {
+      shapeAppearanceModel.getTopLeftCorner().setCornerSize(boxCornerRadiusTopStart);
+      shapeAppearanceModel.getTopRightCorner().setCornerSize(boxCornerRadiusTopEnd);
+      shapeAppearanceModel.getBottomRightCorner().setCornerSize(boxCornerRadiusBottomEnd);
+      shapeAppearanceModel.getBottomLeftCorner().setCornerSize(boxCornerRadiusBottomStart);
       applyBoxAttributes();
     }
   }
@@ -631,7 +647,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusTopStart() {
-    return boxCornerRadiusTopStart;
+    return shapeAppearanceModel.getTopLeftCorner().getCornerSize();
   }
 
   /**
@@ -641,7 +657,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusTopEnd() {
-    return boxCornerRadiusTopEnd;
+    return shapeAppearanceModel.getTopRightCorner().getCornerSize();
   }
 
   /**
@@ -651,7 +667,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusBottomEnd() {
-    return boxCornerRadiusBottomEnd;
+    return shapeAppearanceModel.getBottomLeftCorner().getCornerSize();
   }
 
   /**
@@ -661,32 +677,51 @@ public class TextInputLayout extends LinearLayout {
    * @see #setBoxCornerRadii(float, float, float, float)
    */
   public float getBoxCornerRadiusBottomStart() {
-    return boxCornerRadiusBottomStart;
+    return shapeAppearanceModel.getBottomRightCorner().getCornerSize();
   }
 
-  private float[] getCornerRadiiAsArray() {
-    if (!ViewUtils.isLayoutRtl(this)) {
-      return new float[] {
-        boxCornerRadiusTopStart,
-        boxCornerRadiusTopStart,
-        boxCornerRadiusTopEnd,
-        boxCornerRadiusTopEnd,
-        boxCornerRadiusBottomEnd,
-        boxCornerRadiusBottomEnd,
-        boxCornerRadiusBottomStart,
-        boxCornerRadiusBottomStart,
-      };
-    } else {
-      return new float[] {
-        boxCornerRadiusTopEnd,
-        boxCornerRadiusTopEnd,
-        boxCornerRadiusTopStart,
-        boxCornerRadiusTopStart,
-        boxCornerRadiusBottomStart,
-        boxCornerRadiusBottomStart,
-        boxCornerRadiusBottomEnd,
-        boxCornerRadiusBottomEnd
-      };
+  /**
+   * Adjust the corner size based on the stroke width to maintain GradientDrawable's behavior.
+   * MaterialShapeDrawable internally adjusts the corner size so that the corner size does not
+   * depend on the stroke width. GradientDrawable does not account for stroke width, so this causes
+   * a visual diff when migrating from GradientDrawable to MaterialShapeDrawable. This method
+   * reverts the corner size adjustment in MaterialShapeDrawable to maintain the visual behavior
+   * from GradientDrawable for now.
+   */
+  private void adjustCornerSizeForStrokeWidth() {
+    float strokeInset = boxBackgroundMode == BOX_BACKGROUND_OUTLINE ? boxStrokeWidthPx / 2f : 0;
+    if (strokeInset <= 0f) {
+      return; // Only adjust the corner size if there's a stroke inset.
+    }
+
+    float cornerRadiusTopLeft = shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+    cornerAdjustedShapeAppearanceModel
+        .getTopLeftCorner()
+        .setCornerSize(cornerRadiusTopLeft + strokeInset);
+
+    float cornerRadiusTopRight = shapeAppearanceModel.getTopRightCorner().getCornerSize();
+    cornerAdjustedShapeAppearanceModel
+        .getTopRightCorner()
+        .setCornerSize(cornerRadiusTopRight + strokeInset);
+
+    float cornerRadiusBottomRight = shapeAppearanceModel.getBottomRightCorner().getCornerSize();
+    cornerAdjustedShapeAppearanceModel
+        .getBottomRightCorner()
+        .setCornerSize(cornerRadiusBottomRight + strokeInset);
+
+    float cornerRadiusBottomLeft = shapeAppearanceModel.getBottomLeftCorner().getCornerSize();
+    cornerAdjustedShapeAppearanceModel
+        .getBottomLeftCorner()
+        .setCornerSize(cornerRadiusBottomLeft + strokeInset);
+
+    ensureCornerAdjustedShapeAppearanceModel();
+  }
+
+  private void ensureCornerAdjustedShapeAppearanceModel() {
+    if (boxBackgroundMode != BOX_BACKGROUND_NONE
+        && getBoxBackground() instanceof MaterialShapeDrawable) {
+      ((MaterialShapeDrawable) getBoxBackground())
+          .setShapeAppearanceModel(cornerAdjustedShapeAppearanceModel);
     }
   }
 
@@ -1635,9 +1670,7 @@ public class TextInputLayout extends LinearLayout {
     if (boxStrokeWidthPx > -1 && boxStrokeColor != Color.TRANSPARENT) {
       boxBackground.setStroke(boxStrokeWidthPx, boxStrokeColor);
     }
-
-    boxBackground.setCornerRadii(getCornerRadiiAsArray());
-    boxBackground.setColor(calculateBoxBackgroundColor());
+    boxBackground.setFillColor(ColorStateList.valueOf(calculateBoxBackgroundColor()));
     invalidate();
   }
 
@@ -2242,8 +2275,10 @@ public class TextInputLayout extends LinearLayout {
 
       if ((isHovered || hasFocus) && isEnabled()) {
         boxStrokeWidthPx = boxStrokeWidthFocusedPx;
+        adjustCornerSizeForStrokeWidth();
       } else {
         boxStrokeWidthPx = boxStrokeWidthDefaultPx;
+        adjustCornerSizeForStrokeWidth();
       }
     } else if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
       if (!isEnabled()) {
