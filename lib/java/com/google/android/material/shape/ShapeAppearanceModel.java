@@ -30,7 +30,6 @@ import android.support.annotation.Dimension;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
-import com.google.android.material.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 
@@ -86,8 +85,7 @@ public class ShapeAppearanceModel {
       @StyleRes int defStyleRes,
       int defaultCornerSize) {
     TypedArray a =
-        ThemeEnforcement.obtainStyledAttributes(
-            context, attrs, R.styleable.MaterialShape, defStyleAttr, defStyleRes);
+        context.obtainStyledAttributes(attrs, R.styleable.MaterialShape, defStyleAttr, defStyleRes);
 
     int shapeAppearanceResId = a.getResourceId(R.styleable.MaterialShape_shapeAppearance, 0);
     int shapeAppearanceOverlayResId =
