@@ -157,6 +157,17 @@ public class ShapeAppearanceModel {
     bottomLeftCorner.setCornerSize(cornerRadius);
   }
 
+  public void setCornerRadii(
+      float topLeftCornerRadius,
+      float topRightCornerRadius,
+      float bottomRightCornerRadius,
+      float bottomLeftCornerRadius) {
+    topLeftCorner.setCornerSize(topLeftCornerRadius);
+    topRightCorner.setCornerSize(topRightCornerRadius);
+    bottomRightCorner.setCornerSize(bottomRightCornerRadius);
+    bottomLeftCorner.setCornerSize(bottomLeftCornerRadius);
+  }
+
   /**
    * Sets all edge treatments.
    *
