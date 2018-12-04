@@ -15,11 +15,18 @@
     limitations under the License.
 -->
 <resources>
-  <!-- A group of styles to control the appearance of the top panel of Alert Dialogs.
-       For default configurations of all 3 styles, set alertDialogTheme in your App Theme to
+  <!-- A group of attributes to control the appearance of Alert Dialogs.
+       For default configurations of all attributes, set alertDialogTheme in your App Theme to
        ThemeOverlay.MaterialComponents.Dialog.Alert or
        ThemeOverlay.MaterialComponents.Dialog.Alert.Centered. -->
   <attr name="alertDialogTitlePanelStyle" format="reference"/>
   <attr name="alertDialogTitleIconStyle" format="reference"/>
   <attr name="alertDialogTitleTextStyle" format="reference"/>
+
+  <declare-styleable name="MaterialAlertDialog">
+    <attr name="backgroundInsetStart" format="dimension"/>
+    <attr name="backgroundInsetTop" format="dimension"/>
+    <attr name="backgroundInsetEnd" format="dimension"/>
+    <attr name="backgroundInsetBottom" format="dimension"/>
+  </declare-styleable>
 </resources>
