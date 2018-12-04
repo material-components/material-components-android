@@ -42,6 +42,7 @@ import android.view.View;
 import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
+import android.view.accessibility.AccessibilityEvent;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -687,17 +688,28 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
     this.state = state;
+
+    if (viewRef == null) {
+      return;
+    }
+
+    View bottomSheet = viewRef.get();
+    if (bottomSheet == null) {
+      return;
+    }
+
     if (state == STATE_HALF_EXPANDED || state == STATE_EXPANDED) {
       updateImportantForAccessibility(true);
     } else if (state == STATE_HIDDEN || state == STATE_COLLAPSED) {
       updateImportantForAccessibility(false);
     }
 
-    if (viewRef != null) {
-      View bottomSheet = viewRef.get();
-      if (bottomSheet != null && callback != null) {
-        callback.onStateChanged(bottomSheet, state);
-      }
+    ViewCompat.setImportantForAccessibility(
+        bottomSheet, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
+    bottomSheet.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
+
+    if (callback != null) {
+      callback.onStateChanged(bottomSheet, state);
     }
   }
 
