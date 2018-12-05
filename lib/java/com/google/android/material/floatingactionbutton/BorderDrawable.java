@@ -1,5 +1,5 @@
 /*
- * Copyright (C) 2015 The Android Open Source Project
+ * Copyright (C) 2018 The Android Open Source Project
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -14,32 +14,40 @@
  * limitations under the License.
  */
 
-package com.google.android.material.internal;
+package com.google.android.material.floatingactionbutton;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.graphics.Canvas;
 import android.graphics.ColorFilter;
 import android.graphics.LinearGradient;
+import android.graphics.Outline;
 import android.graphics.Paint;
+import android.graphics.Path;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION_CODES;
 import android.support.annotation.ColorInt;
 import android.support.annotation.Dimension;
-import android.support.annotation.FloatRange;
 import android.support.annotation.IntRange;
 import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.ShapeAppearancePathProvider;
 import android.support.v4.graphics.ColorUtils;
 
-/** A drawable which draws an oval 'border'. */
+/**
+ * A Drawable that draws borders for {@link FloatingActionButton}
+ *
+ * @hide
+ * */
 @RestrictTo(LIBRARY_GROUP)
-public class CircularBorderDrawable extends Drawable {
+class BorderDrawable extends Drawable {
 
   /**
    * We actually draw the stroke wider than the border size given. This is to reduce any potential
@@ -47,50 +55,30 @@ public class CircularBorderDrawable extends Drawable {
    * multiplier used to determine to draw stroke width.
    */
   private static final float DRAW_STROKE_WIDTH_MULTIPLE = 1.3333f;
+  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
 
-  final Paint paint;
-  final Rect rect = new Rect();
-  final RectF rectF = new RectF();
-  final CircularBorderState state = new CircularBorderState();
+  private final Paint paint;
+  private final Path shapePath = new Path();
+  private final Rect rect = new Rect();
+  private final RectF rectF = new RectF();
 
   @Dimension float borderWidth;
-
   @ColorInt private int topOuterStrokeColor;
   @ColorInt private int topInnerStrokeColor;
   @ColorInt private int bottomOuterStrokeColor;
   @ColorInt private int bottomInnerStrokeColor;
-
-  private ColorStateList borderTint;
   @ColorInt private int currentBorderTintColor;
 
   private boolean invalidateShader = true;
+  private ColorStateList borderTint;
+  private ShapeAppearanceModel shapeAppearanceModel;
 
-  @FloatRange(from = 0, to = 360)
-  private float rotation;
-
-  public CircularBorderDrawable() {
+  BorderDrawable(ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
     paint = new Paint(Paint.ANTI_ALIAS_FLAG);
     paint.setStyle(Paint.Style.STROKE);
   }
 
-  @Nullable
-  @Override
-  public ConstantState getConstantState() {
-    return state;
-  }
-
-  public void setGradientColors(
-      @ColorInt int topOuterStrokeColor,
-      @ColorInt int topInnerStrokeColor,
-      @ColorInt int bottomOuterStrokeColor,
-      @ColorInt int bottomInnerStrokeColor) {
-    this.topOuterStrokeColor = topOuterStrokeColor;
-    this.topInnerStrokeColor = topInnerStrokeColor;
-    this.bottomOuterStrokeColor = bottomOuterStrokeColor;
-    this.bottomInnerStrokeColor = bottomInnerStrokeColor;
-  }
-
-  /** Set the border width */
   public void setBorderWidth(@Dimension float width) {
     if (borderWidth != width) {
       borderWidth = width;
@@ -100,46 +88,7 @@ public class CircularBorderDrawable extends Drawable {
     }
   }
 
-  @Override
-  public void draw(Canvas canvas) {
-    if (invalidateShader) {
-      paint.setShader(createGradientShader());
-      invalidateShader = false;
-    }
-
-    final float halfBorderWidth = paint.getStrokeWidth() / 2f;
-    final RectF rectF = this.rectF;
-
-    // We need to inset the oval bounds by half the border width. This is because stroke draws
-    // the center of the border on the dimension. Whereas we want the stroke on the inside.
-    copyBounds(rect);
-    rectF.set(rect);
-    rectF.left += halfBorderWidth;
-    rectF.top += halfBorderWidth;
-    rectF.right -= halfBorderWidth;
-    rectF.bottom -= halfBorderWidth;
-
-    canvas.save();
-    canvas.rotate(rotation, rectF.centerX(), rectF.centerY());
-    // Draw the oval
-    canvas.drawOval(rectF, paint);
-    canvas.restore();
-  }
-
-  @Override
-  public boolean getPadding(Rect padding) {
-    final int borderWidth = Math.round(this.borderWidth);
-    padding.set(borderWidth, borderWidth, borderWidth, borderWidth);
-    return true;
-  }
-
-  @Override
-  public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
-    paint.setAlpha(alpha);
-    invalidateSelf();
-  }
-
-  public void setBorderTint(ColorStateList tint) {
+  void setBorderTint(ColorStateList tint) {
     if (tint != null) {
       currentBorderTintColor = tint.getColorForState(getState(), currentBorderTintColor);
     }
@@ -154,16 +103,84 @@ public class CircularBorderDrawable extends Drawable {
     invalidateSelf();
   }
 
+  void setGradientColors(
+      @ColorInt int topOuterStrokeColor,
+      @ColorInt int topInnerStrokeColor,
+      @ColorInt int bottomOuterStrokeColor,
+      @ColorInt int bottomInnerStrokeColor) {
+    this.topOuterStrokeColor = topOuterStrokeColor;
+    this.topInnerStrokeColor = topInnerStrokeColor;
+    this.bottomOuterStrokeColor = bottomOuterStrokeColor;
+    this.bottomInnerStrokeColor = bottomInnerStrokeColor;
+  }
+
+  @Override
+  public void draw(Canvas canvas) {
+    if (invalidateShader) {
+      paint.setShader(createGradientShader());
+      invalidateShader = false;
+    }
+
+    final float halfBorderWidth = paint.getStrokeWidth() / 2f;
+    copyBounds(rect);
+    rectF.set(rect);
+
+    // We need to inset the oval bounds by half the border width. This is because stroke draws
+    // the center of the border on the dimension. Whereas we want the stroke on the inside.
+    if (shapeAppearanceModel.isRoundRect()) {
+      rectF.inset(halfBorderWidth, halfBorderWidth);
+      canvas.drawRoundRect(rectF, rectF.width() / 2f, rectF.height() / 2f, paint);
+      return;
+    }
+
+    pathProvider.calculatePath(shapeAppearanceModel, 1f, rectF, shapePath);
+    canvas.drawPath(shapePath, paint);
+  }
+
+  @TargetApi(VERSION_CODES.LOLLIPOP)
+  @Override
+  public void getOutline(@NonNull Outline outline) {
+    if (shapeAppearanceModel.isRoundRect()) {
+      float radius = shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+      outline.setRoundRect(getBounds(), radius);
+      return;
+    }
+
+    copyBounds(rect);
+    rectF.set(rect);
+    pathProvider.calculatePath(shapeAppearanceModel, 1f, rectF, shapePath);
+    if (shapePath.isConvex()) {
+      outline.setConvexPath(shapePath);
+    }
+  }
+
+  @Override
+  public boolean getPadding(Rect padding) {
+    if (shapeAppearanceModel.isRoundRect()) {
+      final int borderWidth = Math.round(this.borderWidth);
+      padding.set(borderWidth, borderWidth, borderWidth, borderWidth);
+    }
+    return true;
+  }
+
+  public ShapeAppearanceModel getShapeAppearanceModel() {
+    return shapeAppearanceModel;
+  }
+
+  public void setShapeAppearanceModel(
+      ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
+  }
+
+  @Override
+  public void setAlpha(@IntRange(from = 0, to = 255) int alpha) {
+    paint.setAlpha(alpha);
+    invalidateSelf();
+  }
+
   @Override
   public int getOpacity() {
     return borderWidth > 0 ? PixelFormat.TRANSLUCENT : PixelFormat.TRANSPARENT;
-  }
-
-  public final void setRotation(float rotation) {
-    if (rotation != this.rotation) {
-      this.rotation = rotation;
-      invalidateSelf();
-    }
   }
 
   @Override
@@ -191,11 +208,6 @@ public class CircularBorderDrawable extends Drawable {
     return invalidateShader;
   }
 
-  /**
-   * Creates a vertical {@link LinearGradient}
-   *
-   * @return
-   */
   private Shader createGradientShader() {
     final Rect rect = this.rect;
     copyBounds(rect);
@@ -224,23 +236,5 @@ public class CircularBorderDrawable extends Drawable {
 
     return new LinearGradient(
         0, rect.top, 0, rect.bottom, colors, positions, Shader.TileMode.CLAMP);
-  }
-
-  /**
-   * Dummy implementation of constant state. This drawable doesn't have shared state. Implementing
-   * so that calls to getConstantState().newDrawable() don't crash on L and M.
-   */
-  private class CircularBorderState extends ConstantState {
-
-    @NonNull
-    @Override
-    public Drawable newDrawable() {
-      return CircularBorderDrawable.this;
-    }
-
-    @Override
-    public int getChangingConfigurations() {
-      return 0;
-    }
   }
 }

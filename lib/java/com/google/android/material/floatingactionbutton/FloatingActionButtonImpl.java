@@ -43,7 +43,6 @@ import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.ImageMatrixProperty;
 import com.google.android.material.animation.MatrixEvaluator;
 import com.google.android.material.animation.MotionSpec;
-import com.google.android.material.internal.CircularBorderDrawable;
 import com.google.android.material.internal.StateListAnimator;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
@@ -92,7 +91,7 @@ class FloatingActionButtonImpl {
 
   MaterialShapeDrawable shapeDrawable;
   Drawable rippleDrawable;
-  CircularBorderDrawable borderDrawable;
+  BorderDrawable borderDrawable;
   Drawable contentBackground;
 
   float elevation;
@@ -308,6 +307,10 @@ class FloatingActionButtonImpl {
 
     if (rippleDrawable instanceof MaterialShapeDrawable) {
       ((MaterialShapeDrawable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
+    }
+
+    if (borderDrawable != null) {
+      borderDrawable.setShapeAppearanceModel(shapeAppearance);
     }
   }
 
@@ -811,9 +814,6 @@ class FloatingActionButtonImpl {
     // Offset any View rotation
     if (shapeDrawable != null) {
       shapeDrawable.setShadowCompatRotation((int) rotation);
-    }
-    if (borderDrawable != null) {
-      borderDrawable.setRotation(-rotation);
     }
   }
 }

@@ -33,8 +33,6 @@ import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
-import com.google.android.material.internal.CircularBorderDrawable;
-import com.google.android.material.internal.CircularBorderDrawableLollipop;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -208,9 +206,9 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     return false;
   }
 
-  CircularBorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
+  BorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
     final Context context = view.getContext();
-    CircularBorderDrawable borderDrawable =  new CircularBorderDrawableLollipop();
+    BorderDrawable borderDrawable =  new BorderDrawable(shapeAppearance);
     borderDrawable.setGradientColors(
         ContextCompat.getColor(context, R.color.design_fab_stroke_top_outer_color),
         ContextCompat.getColor(context, R.color.design_fab_stroke_top_inner_color),
