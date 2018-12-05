@@ -31,7 +31,6 @@ import android.graphics.Paint;
 import android.graphics.Paint.Style;
 import android.graphics.Path;
 import android.graphics.PixelFormat;
-import android.graphics.PointF;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
 import android.graphics.PorterDuffColorFilter;
@@ -53,6 +52,7 @@ import android.support.annotation.RestrictTo;
 import android.support.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
 import com.google.android.material.shadow.ShadowRenderer;
+import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
 import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import android.support.v4.graphics.drawable.TintAwareDrawable;
 import android.util.AttributeSet;
@@ -97,9 +97,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private MaterialShapeDrawableState drawableState;
 
   // Inter-method state.
-  private final Matrix[] cornerTransforms = new Matrix[4];
-  private final Matrix[] edgeTransforms = new Matrix[4];
-  private final ShapePath[] cornerPaths = new ShapePath[4];
   private final ShadowCompatOperation[] cornerShadowOperation = new ShadowCompatOperation[4];
   private final ShadowCompatOperation[] edgeShadowOperation = new ShadowCompatOperation[4];
   private boolean pathDirty;
@@ -108,20 +105,18 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   private final Matrix matrix = new Matrix();
   private final Path path = new Path();
   private final Path pathInsetByStroke = new Path();
-  private final PointF pointF = new PointF();
   private final RectF rectF = new RectF();
   private final RectF insetRectF = new RectF();
-  private final ShapePath shapePath = new ShapePath();
   private final Region transparentRegion = new Region();
   private final Region scratchRegion = new Region();
-  private final float[] scratch = new float[2];
-  private final float[] scratch2 = new float[2];
   private ShapeAppearanceModel strokeShapeAppearance;
 
   private final Paint fillPaint = new Paint(Paint.ANTI_ALIAS_FLAG);
   private final Paint strokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
 
   private final ShadowRenderer shadowRenderer = new ShadowRenderer();
+  private final PathListener pathShadowListener;
+  private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
@@ -149,13 +144,21 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     fillPaint.setStyle(Style.FILL);
     clearPaint.setColor(Color.WHITE);
     clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
-    for (int i = 0; i < 4; i++) {
-      cornerTransforms[i] = new Matrix();
-      edgeTransforms[i] = new Matrix();
-      cornerPaths[i] = new ShapePath();
-    }
     updateTintFilter();
     updateColorsForState(getState(), false);
+    // Listens to additions of corners and edges, to create the shadow operations.
+    pathShadowListener =
+        new PathListener() {
+          @Override
+          public void onCornerPathCreated(ShapePath cornerPath, Matrix transform, int count) {
+            cornerShadowOperation[count] = cornerPath.createShadowCompatOperation(transform);
+          }
+
+          @Override
+          public void onEdgePathCreated(ShapePath edgePath, Matrix transform, int count) {
+            edgeShadowOperation[count] = edgePath.createShadowCompatOperation(transform);
+          }
+        };
   }
 
   @Nullable
@@ -846,10 +849,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     // Draw the fake shadow for each of the corners and edges.
     for (int index = 0; index < 4; index++) {
-      cornerShadowOperation[index].draw(
-          cornerTransforms[index], shadowRenderer, drawableState.shadowCompatRadius, canvas);
-      edgeShadowOperation[index].draw(
-          edgeTransforms[index], shadowRenderer, drawableState.shadowCompatRadius, canvas);
+      cornerShadowOperation[index].draw(shadowRenderer, drawableState.shadowCompatRadius, canvas);
+      edgeShadowOperation[index].draw(shadowRenderer, drawableState.shadowCompatRadius, canvas);
     }
 
     int shadowOffsetX =
@@ -871,34 +872,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     calculatePathForSize(new RectF(bounds), path);
   }
 
-  /**
-   * Writes to the given {@link Path} for the current edge and corner treatments at the specified
-   * size.
-   *
-   * @param bounds bounds of target path.
-   * @param path the returned path out-var.
-   * @return the generated path.
-   */
   private void calculatePathForSize(RectF bounds, Path path) {
-    path.rewind();
-
-    // Calculate the transformations (rotations and translations) necessary for each edge and
-    // corner treatment.
-    for (int index = 0; index < 4; index++) {
-      setCornerPathAndTransform(index, bounds);
-      setEdgePathAndTransform(index);
-    }
-
-    // Apply corners and edges to the path in clockwise interleaving sequence: top-right corner,
-    // right edge, bottom-right corner, bottom edge, bottom-left corner etc. We start from the top
-    // right corner rather than the top left to work around a bug in API level 21 and 22 in which
-    // rounding error causes the path to incorrectly be marked as concave.
-    for (int index = 0; index < 4; index++) {
-      appendCornerPath(index, path);
-      appendEdgePath(index, path);
-    }
-
-    path.close();
+    pathProvider.calculatePath(
+        drawableState.shapeAppearanceModel,
+        drawableState.interpolation,
+        bounds,
+        pathShadowListener,
+        path);
   }
 
   /** Calculates the path that can be used to draw the stroke entirely inside the shape */
@@ -917,13 +897,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         adjustCornerSizeForStrokeSize(cornerSizeBottomRight),
         adjustCornerSizeForStrokeSize(cornerSizeBottomLeft));
 
-    //TODO: Clean up this logic when the ShapeAppearanceModel can calculate the path.
-    ShapeAppearanceModel tmp = drawableState.shapeAppearanceModel;
-    drawableState.shapeAppearanceModel = strokeShapeAppearance;
-
-    calculatePath(getBoundsInsetByStroke(), pathInsetByStroke);
-
-    drawableState.shapeAppearanceModel = tmp;
+    pathProvider.calculatePath(
+        strokeShapeAppearance,
+        drawableState.interpolation,
+        getBoundsInsetByStroke(),
+        pathInsetByStroke);
   }
 
   private float adjustCornerSizeForStrokeSize(float cornerSize) {
@@ -951,124 +929,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     if (path.isConvex()) {
       outline.setConvexPath(path);
     }
-  }
-
-  private void setCornerPathAndTransform(int index, RectF bounds) {
-    getCornerTreatmentForIndex(index)
-        .getCornerPath(90, drawableState.interpolation, cornerPaths[index]);
-
-    float edgeAngle = angleOfEdge(index);
-    cornerTransforms[index].reset();
-    getCoordinatesOfCorner(index, bounds, pointF);
-    cornerTransforms[index].setTranslate(pointF.x, pointF.y);
-    cornerTransforms[index].preRotate(edgeAngle);
-  }
-
-  private void setEdgePathAndTransform(int index) {
-    scratch[0] = cornerPaths[index].endX;
-    scratch[1] = cornerPaths[index].endY;
-    cornerTransforms[index].mapPoints(scratch);
-    float edgeAngle = angleOfEdge(index);
-    edgeTransforms[index].reset();
-    edgeTransforms[index].setTranslate(scratch[0], scratch[1]);
-    edgeTransforms[index].preRotate(edgeAngle);
-  }
-
-  private void appendCornerPath(int index, Path path) {
-    scratch[0] = cornerPaths[index].startX;
-    scratch[1] = cornerPaths[index].startY;
-    cornerTransforms[index].mapPoints(scratch);
-    if (index == 0) {
-      path.moveTo(scratch[0], scratch[1]);
-    } else {
-      path.lineTo(scratch[0], scratch[1]);
-    }
-    cornerPaths[index].applyToPath(cornerTransforms[index], path);
-    cornerShadowOperation[index] = cornerPaths[index].createShadowCompatOperation();
-  }
-
-  private void appendEdgePath(int index, Path path) {
-    int nextIndex = (index + 1) % 4;
-    scratch[0] = cornerPaths[index].endX;
-    scratch[1] = cornerPaths[index].endY;
-    cornerTransforms[index].mapPoints(scratch);
-
-    scratch2[0] = cornerPaths[nextIndex].startX;
-    scratch2[1] = cornerPaths[nextIndex].startY;
-    cornerTransforms[nextIndex].mapPoints(scratch2);
-
-    float edgeLength = (float) Math.hypot(scratch[0] - scratch2[0], scratch[1] - scratch2[1]);
-    float center = getEdgeCenterForIndex(index);
-    shapePath.reset(0, 0);
-    getEdgeTreatmentForIndex(index)
-        .getEdgePath(edgeLength, center, drawableState.interpolation, shapePath);
-    shapePath.applyToPath(edgeTransforms[index], path);
-    edgeShadowOperation[index] = shapePath.createShadowCompatOperation();
-  }
-
-  private float getEdgeCenterForIndex(int index) {
-    scratch[0] = cornerPaths[index].endX;
-    scratch[1] = cornerPaths[index].endY;
-    cornerTransforms[index].mapPoints(scratch);
-    switch (index) {
-      case 1:
-      case 3:
-        return Math.abs(getBoundsAsRectF().centerX() - scratch[0]);
-      case 2:
-      case 0:
-      default:
-        return Math.abs(getBoundsAsRectF().centerY() - scratch[1]);
-    }
-  }
-
-  private CornerTreatment getCornerTreatmentForIndex(int index) {
-    switch (index) {
-      case 1:
-        return drawableState.shapeAppearanceModel.getBottomRightCorner();
-      case 2:
-        return drawableState.shapeAppearanceModel.getBottomLeftCorner();
-      case 3:
-        return drawableState.shapeAppearanceModel.getTopLeftCorner();
-      case 0:
-      default:
-        return drawableState.shapeAppearanceModel.getTopRightCorner();
-    }
-  }
-
-  private EdgeTreatment getEdgeTreatmentForIndex(int index) {
-    switch (index) {
-      case 1:
-        return drawableState.shapeAppearanceModel.getBottomEdge();
-      case 2:
-        return drawableState.shapeAppearanceModel.getLeftEdge();
-      case 3:
-        return drawableState.shapeAppearanceModel.getTopEdge();
-      case 0:
-      default:
-        return drawableState.shapeAppearanceModel.getRightEdge();
-    }
-  }
-
-  private void getCoordinatesOfCorner(int index, RectF bounds, PointF pointF) {
-    switch (index) {
-      case 1: // bottom-right
-        pointF.set(bounds.right, bounds.bottom);
-        break;
-      case 2: // bottom-left
-        pointF.set(bounds.left, bounds.bottom);
-        break;
-      case 3: // top-left
-        pointF.set(bounds.left, bounds.top);
-        break;
-      case 0: // top-right
-      default:
-        pointF.set(bounds.right, bounds.top);
-        break;
-    }
-  }
-
-  private float angleOfEdge(int index) {
-    return 90 * (index + 1 % 4);
   }
 
   private void calculatePath(RectF bounds, Path path) {

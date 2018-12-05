@@ -164,14 +164,14 @@ public class ShapePath {
    * Creates a ShadowCompatOperation to draw compatibility shadow under the matrix transform for the
    * whole path defined by this ShapePath.
    */
-  ShadowCompatOperation createShadowCompatOperation() {
+  ShadowCompatOperation createShadowCompatOperation(final Matrix transform) {
     // If the shadowCompatOperations don't end on the desired endShadowAngle, add an arc to do so.
     addConnectingShadowIfNecessary(endShadowAngle);
     final List<ShadowCompatOperation> operations = new ArrayList<>(shadowCompatOperations);
     return new ShadowCompatOperation() {
       @Override
       public void draw(
-          Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
+          Matrix matrix, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
         for (ShadowCompatOperation op : operations) {
           op.draw(transform, shadowRenderer, shadowElevation, canvas);
         }
@@ -216,6 +216,13 @@ public class ShapePath {
    * can't be rendered.
    */
   abstract static class ShadowCompatOperation {
+
+    static final Matrix IDENTITY_MATRIX = new Matrix();
+
+    /** Draws the operation on the canvas */
+    public final void draw(ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
+      draw(IDENTITY_MATRIX, shadowRenderer, shadowElevation, canvas);
+    }
 
     /** Draws the operation with the matrix transform on the canvas */
     public abstract void draw(
