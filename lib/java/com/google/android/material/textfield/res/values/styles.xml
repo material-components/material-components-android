@@ -63,11 +63,14 @@
     <item name="helperTextTextAppearance">?attr/textAppearanceCaption</item>
     <item name="hintTextAppearance">?attr/textAppearanceCaption</item>
 
-    <item name="counterTextColor">@null</item>
+    <item name="counterTextColor">@color/mtrl_indicator_text_color</item>
     <item name="counterOverflowTextColor">@color/mtrl_error</item>
     <item name="errorTextColor">@color/mtrl_error</item>
-    <item name="helperTextTextColor">@null</item>
+    <item name="helperTextTextColor">@color/mtrl_indicator_text_color</item>
+    <!-- The color of the label when it is collapsed and the text field is active -->
     <item name="hintTextColor">?attr/colorPrimary</item>
+    <!-- The color of the label in all other text field states (such as resting and disabled) -->
+    <item name="android:textColorHint">@color/mtrl_indicator_text_color</item>
 
     <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
     <item name="shapeAppearanceOverlay">@null</item>
