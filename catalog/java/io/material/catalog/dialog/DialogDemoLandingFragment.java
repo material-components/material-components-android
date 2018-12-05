@@ -62,7 +62,7 @@ public class DialogDemoLandingFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_dialog_title, R.drawable.ic_dialogs_24px) {
+      return new FeatureDemo(R.string.cat_dialog_title, R.drawable.ic_dialog) {
         @Override
         public Fragment createFragment() {
           return new DialogDemoLandingFragment();
