@@ -669,19 +669,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     invalidateSelfIgnoreShape();
   }
 
-  @Deprecated
-  public int getPaintFlags() {
-    return 0;
-  }
-
-
-  @Deprecated
-  public void setPaintFlags(int flags) {
-    fillPaint.setFlags(flags);
-    strokePaint.setFlags(flags);
-    invalidateSelfIgnoreShape();
-  }
-
   /**
    * Get the current style used by the shape's paint.
    *
