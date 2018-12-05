@@ -187,7 +187,7 @@ subprojects {
             def versionFileName = mdcLibraryPackage + '_' + getArchivesBaseName(project.name) + '.version'
 
             new File(versionFileDir).mkdirs()
-            new File(versionFileDir + '/' + versionFileName).text = mdcLibraryVersion
+            new File(versionFileDir + '/' + versionFileName).text = mdcLibraryVersion + "\n"
           }
 
           libraryVariants.all {
