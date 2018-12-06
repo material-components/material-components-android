@@ -21,14 +21,19 @@ import com.google.android.material.R;
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.IntDef;
 import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
 import android.support.annotation.RestrictTo;
 import android.support.annotation.VisibleForTesting;
+import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.math.MathUtils;
 import android.support.v4.view.AbsSavedState;
@@ -138,6 +143,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /** The last peek height calculated in onLayoutChild. */
   private int lastPeekHeight;
 
+  /** True if Behavior has a non-null value for the shapeAppearance attribute */
+  private boolean shapeThemingEnabled;
+
+  private MaterialShapeDrawable materialShapeDrawable;
+
+  /** Default Shape Appearance to be used in bottomsheet */
+  private ShapeAppearanceModel shapeAppearanceModelDefault;
+
   int fitToContentsOffset;
 
   int halfExpandedOffset;
@@ -181,6 +194,16 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   public BottomSheetBehavior(Context context, AttributeSet attrs) {
     super(context, attrs);
     TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.BottomSheetBehavior_Layout);
+    this.shapeThemingEnabled = a.hasValue(R.styleable.BottomSheetBehavior_Layout_shapeAppearance);
+    boolean hasBackgroundTint = a.hasValue(R.styleable.BottomSheetBehavior_Layout_backgroundTint);
+    if (hasBackgroundTint) {
+      ColorStateList bottomSheetColor =
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.BottomSheetBehavior_Layout_backgroundTint);
+      createMaterialShapeDrawable(context, attrs, hasBackgroundTint, bottomSheetColor);
+    } else {
+      createMaterialShapeDrawable(context, attrs, hasBackgroundTint, null);
+    }
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
     if (value != null && value.data == PEEK_HEIGHT_AUTO) {
       setPeekHeight(value.data);
@@ -221,6 +244,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (ViewCompat.getFitsSystemWindows(parent) && !ViewCompat.getFitsSystemWindows(child)) {
       child.setFitsSystemWindows(true);
     }
+    // Only set MaterialShapeDrawable as background if shapeTheming is enabled, otherwise will
+    // default to android:background declared in styles or layout.
+    if (shapeThemingEnabled && materialShapeDrawable != null) {
+      ViewCompat.setBackground(child, materialShapeDrawable);
+    }
+
     int savedTop = child.getTop();
     // First let the parent lay it out
     parent.onLayoutChild(child, layoutDirection);
@@ -708,8 +737,24 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         bottomSheet, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
     bottomSheet.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
 
+    updateDrawableOnStateChange(state);
     if (callback != null) {
       callback.onStateChanged(bottomSheet, state);
+    }
+  }
+
+  private void updateDrawableOnStateChange(@State int state) {
+    if (materialShapeDrawable != null) {
+      if (state == STATE_EXPANDED && (parentHeight <= viewRef.get().getHeight())) {
+        // If the bottomsheet is fully expanded, change ShapeAppearance to sharp corners to
+        // indicate the bottomsheet has no more content to scroll.
+        // Overriding of this style may be performed in the bottomsheet callback.
+        materialShapeDrawable.getShapeAppearanceModel().setCornerRadius(0);
+        materialShapeDrawable.invalidateSelf();
+      }
+      if (state == STATE_COLLAPSED || state == STATE_DRAGGING) {
+        materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModelDefault);
+      }
     }
   }
 
@@ -756,6 +801,32 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       }
     }
     return null;
+  }
+
+  private void createMaterialShapeDrawable(
+      Context context,
+      AttributeSet attrs,
+      boolean hasBackgroundTint,
+      @Nullable ColorStateList bottomSheetColor) {
+    if (this.shapeThemingEnabled) {
+      this.shapeAppearanceModelDefault = new ShapeAppearanceModel(
+          context,
+          attrs,
+          R.styleable.BottomSheetBehavior_Layout_shapeAppearance,
+          R.styleable.BottomSheetBehavior_Layout_shapeAppearanceOverlay);
+
+      this.materialShapeDrawable =
+          new MaterialShapeDrawable(shapeAppearanceModelDefault);
+
+      if (hasBackgroundTint && bottomSheetColor != null) {
+        materialShapeDrawable.setFillColor(bottomSheetColor);
+      } else {
+        // If the tint isn't set, use the theme default background color.
+        TypedValue defaultColor = new TypedValue();
+        context.getTheme().resolveAttribute(android.R.attr.colorBackground, defaultColor, true);
+        materialShapeDrawable.setTint(defaultColor.data);
+      }
+    }
   }
 
   private float getYVelocity() {

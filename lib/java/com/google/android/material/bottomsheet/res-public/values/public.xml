@@ -22,6 +22,7 @@
   <public name="bottomSheetDialogTheme" type="attr"/>
   <public name="bottomSheetStyle" type="attr"/>
   <public name="behavior_peekHeight" type="attr"/>
+  <public name="backgroundTint" type="attr"/>
   <public name="behavior_fitToContents" type="attr"/>
   <public name="Animation.Design.BottomSheetDialog" type="style"/>
   <public name="Widget.Design.BottomSheet.Modal" type="style"/>
