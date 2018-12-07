@@ -33,16 +33,6 @@
     <attr name="behavior_skipCollapsed" format="boolean"/>
     <!-- Whether height of expanded sheet wraps content or not -->
     <attr name="behavior_fitToContents" format="boolean"/>
-    <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
-         package. -->
-     <attr name="shapeAppearance"/>
-    <!-- Shape appearance overlay style reference for BottomSheet. To be used to augment attributes
-         declared in the shapeAppearance. Attribute declaration is in the shape package. -->
-    <attr name="shapeAppearanceOverlay"/>
-    <!-- Background color used by the BottomSheetBehavior background drawable when shape theming is
-         enabled. Accepts a ColorStateList or ColorInt. If shape theming is not enabled,
-         android:background should instead be utilized to set the background resource. -->
-    <attr name="backgroundTint"/>
   </declare-styleable>
 
 </resources>

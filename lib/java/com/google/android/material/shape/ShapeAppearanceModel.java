@@ -87,8 +87,7 @@ public class ShapeAppearanceModel {
     TypedArray a =
         context.obtainStyledAttributes(attrs, R.styleable.MaterialShape, defStyleAttr, defStyleRes);
 
-    int shapeAppearanceResId =
-        a.getResourceId(R.styleable.MaterialShape_shapeAppearance, 0);
+    int shapeAppearanceResId = a.getResourceId(R.styleable.MaterialShape_shapeAppearance, 0);
     int shapeAppearanceOverlayResId =
         a.getResourceId(R.styleable.MaterialShape_shapeAppearanceOverlay, 0);
     a.recycle();
