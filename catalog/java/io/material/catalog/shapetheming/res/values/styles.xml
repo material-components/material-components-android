@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<resources>
+
+  <style name="ThemeOverlay.Baseline" parent=""/>
+
+  <!-- Shrine -->
+  <style name="ThemeOverlay.Shrine" parent="">
+    <item name="colorPrimary">#FEDBD0</item>
+    <item name="colorPrimaryVariant">#FBB8AC</item>
+    <item name="colorSecondary">#FEEAE6</item>
+    <item name="colorSurface">#FFFBFA</item>
+    <item name="android:colorBackground">#FFFFFF</item>
+    <item name="colorError">#C5032B</item>
+    <item name="colorOnPrimary">#442B2D</item>
+    <item name="colorOnSecondary">#442B2D</item>
+    <item name="colorOnSurface">#442B2D</item>
+    <item name="colorOnError">#FFFBFA</item>
+    <item name="colorOnBackground">#442B2D</item>
+
+    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Shrine.SmallComponent</item>
+    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Shrine.MediumComponent</item>
+    <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Shrine.LargeComponent</item>
+
+    <item name="chipStyle">@style/Widget.Shrine.Chip</item>
+    <item name="floatingActionButtonStyle">@style/Widget.Shrine.FloatingActionButton</item>
+    <item name="textInputStyle">@style/Widget.Shrine.TextInputLayout</item>
+  </style>
+
+  <style name="ShapeAppearance.Shrine.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">4dp</item>
+  </style>
+
+  <style name="ShapeAppearance.Shrine.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">8dp</item>
+  </style>
+
+  <style name="ShapeAppearance.Shrine.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">24dp</item>
+  </style>
+
+  <style name="Widget.Shrine.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+    <item name="shapeAppearanceOverlay">@null</item>
+    <!-- Currently there is a bug with the border when it's used in combination with a non-circular
+         shape -->
+    <item name="borderWidth">0dp</item>
+  </style>
+
+  <style name="Widget.Shrine.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+    <item name="chipCornerRadius">@null</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Shrine.Chip</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.Shrine.Chip" parent="">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">4dp</item>
+  </style>
+
+  <style name="Widget.Shrine.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+
+  <!-- Fortnightly -->
+  <style name="ThemeOverlay.Fortnightly" parent="">
+    <item name="colorPrimary">#ffffff</item>
+    <item name="colorSecondary">#6b3f8b</item>
+
+    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Fortnightly.SmallComponent</item>
+    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Fortnightly.MediumComponent</item>
+    <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Fortnightly.LargeComponent</item>
+
+    <item name="chipStyle">@style/Widget.Fortnightly.Chip</item>
+    <item name="floatingActionButtonStyle">@style/Widget.Fortnightly.FloatingActionButton</item>
+    <item name="textInputStyle">@style/Widget.Fortnightly.TextInputLayout</item>
+  </style>
+
+  <style name="ShapeAppearance.Fortnightly.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">0dp</item>
+  </style>
+
+  <style name="ShapeAppearance.Fortnightly.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">0dp</item>
+  </style>
+
+  <style name="ShapeAppearance.Fortnightly.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <item name="cornerFamily">cut</item>
+    <item name="cornerSize">0dp</item>
+  </style>
+
+  <style name="Widget.Fortnightly.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Fortnightly.FloatingActionButton</item>
+    <!-- Currently there is a bug with the border when it's used in combination with a non-circular
+         shape -->
+    <item name="borderWidth">0dp</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.Fortnightly.FloatingActionButton" parent="">
+    <item name="cornerSize">@null</item>
+  </style>
+
+  <style name="Widget.Fortnightly.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+    <item name="shapeAppearanceOverlay">@null</item>
+    <item name="chipCornerRadius">@null</item>
+  </style>
+
+  <style name="Widget.Fortnightly.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+
+  <!-- Crane -->
+
+  <style name="ThemeOverlay.Crane" parent="">
+    <item name="colorPrimary">#5d1049</item>
+    <item name="colorSecondary">#e30425</item>
+
+    <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Crane.SmallComponent</item>
+    <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Crane.MediumComponent</item>
+    <item name="shapeAppearanceLargeComponent">@style/ShapeAppearance.Crane.LargeComponent</item>
+
+    <item name="chipStyle">@style/Widget.Crane.Chip</item>
+    <item name="textInputStyle">@style/Widget.Crane.TextInputLayout</item>
+  </style>
+
+  <style name="ShapeAppearance.Crane.SmallComponent" parent="ShapeAppearance.MaterialComponents.SmallComponent">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">4dp</item>
+  </style>
+
+  <style name="ShapeAppearance.Crane.MediumComponent" parent="ShapeAppearance.MaterialComponents.MediumComponent">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">16dp</item>
+  </style>
+
+  <style name="ShapeAppearance.Crane.LargeComponent" parent="ShapeAppearance.MaterialComponents.LargeComponent">
+    <item name="cornerFamily">rounded</item>
+    <item name="cornerSize">20dp</item>
+  </style>
+
+  <style name="Widget.Crane.Chip" parent="Widget.MaterialComponents.Chip.Choice">
+    <item name="shapeAppearanceOverlay">@null</item>
+    <item name="chipCornerRadius">@null</item>
+  </style>
+
+  <style name="Widget.Crane.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
+
+</resources>

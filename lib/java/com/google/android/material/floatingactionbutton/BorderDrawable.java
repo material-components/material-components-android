@@ -170,6 +170,7 @@ class BorderDrawable extends Drawable {
   public void setShapeAppearanceModel(
       ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
+    invalidateSelf();
   }
 
   @Override

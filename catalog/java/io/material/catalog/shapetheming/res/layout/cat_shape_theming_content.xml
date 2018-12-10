@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:padding="8dp"
+    android:background="?android:attr/colorBackground"
+    android:orientation="vertical">
+
+  <!-- Components that support shape theming should be added here. -->
+
+  <!-- Chips -->
+
+  <com.google.android.material.chip.Chip
+      android:id="@+id/cat_chip_entry_chip"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:layout_gravity="center_vertical|start"
+      android:ellipsize="end"
+      android:text="@string/cat_shape_theming_chip_text"
+      app:chipIcon="@drawable/ic_placeholder_circle_24"/>
+
+  <!-- FABs -->
+
+  <com.google.android.material.widget.FloatingActionButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:layout_gravity="center"
+      app:srcCompat="@drawable/ic_add_24px"/>
+
+  <com.google.android.material.widget.FloatingActionButton
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:layout_gravity="center"
+      app:fabSize="mini"
+      app:srcCompat="@drawable/ic_add_24px"/>
+
+  <!-- Cards -->
+
+  <com.google.android.material.card.MaterialCardView
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="16dp"
+      android:layout_gravity="center"
+      android:minHeight="@dimen/cat_shape_theming_card_min_height">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/cat_shape_theming_card_text"/>
+  </com.google.android.material.card.MaterialCardView>
+
+  <!-- Text fields -->
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="8dp"
+      android:hint="@string/cat_shape_theming_textfield_hint_outlined">
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+</LinearLayout>
