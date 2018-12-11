@@ -37,15 +37,22 @@
     <!-- Specifies how the icon should be positioned on the X axis. -->
     <attr name="iconGravity">
       <!-- Push icon to the start of the button. -->
-      <flag name="start" value="0x1" />
+      <flag name="start" value="0x1"/>
       <!-- Push the icon to the start of the text keeping a distance equal to
            {@link R.attr#iconPadding} from the text. -->
-      <flag name="textStart" value="0x2" />
+      <flag name="textStart" value="0x2"/>
     </attr>
     <!-- Tint for icon drawable to display. -->
     <attr name="iconTint" format="color"/>
     <!-- Tint mode for icon drawable to display. -->
     <attr name="iconTintMode"/>
+    <!-- Shape appearance style reference for MaterialButton. Attribute declaration is in the Shape
+     package. -->
+    <attr name="shapeAppearance"/>
+    <!-- Shape appearance overlay style reference for MaterialButton. To be used to augment
+         attributes declared in the shapeAppearance. Attribute declaration is in the Shape package.
+    -->
+    <attr name="shapeAppearanceOverlay"/>
     <!-- Specifies the color used to draw the path outline of the button. Attribute type definition
          is in resources package. -->
     <attr name="strokeColor"/>

@@ -20,18 +20,11 @@ import com.google.android.material.R;
 
 import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
-import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.Paint.Style;
 import android.graphics.PorterDuff.Mode;
-import android.graphics.Rect;
-import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -42,6 +35,8 @@ import android.support.annotation.RestrictTo;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 
@@ -49,20 +44,15 @@ import android.support.v4.view.ViewCompat;
 @RestrictTo(LIBRARY_GROUP)
 class MaterialButtonHelper {
 
-  // This is a workaround. Currently on certain devices/versions,
-  // LayerDrawable will draw a black background underneath any layer with a non-opaque color,
-  // unless we set the shape to be something that's not a perfect rectangle.
   private static final float CORNER_RADIUS_ADJUSTMENT = 0.00001F;
-  private static final int DEFAULT_BACKGROUND_COLOR = Color.WHITE;
   private static final boolean IS_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
-
   private final MaterialButton materialButton;
+  private final ShapeAppearanceModel shapeAppearanceModel;
 
   private int insetLeft;
   private int insetRight;
   private int insetTop;
   private int insetBottom;
-
   private int cornerRadius;
   private int strokeWidth;
 
@@ -71,26 +61,17 @@ class MaterialButtonHelper {
   @Nullable private ColorStateList strokeColor;
   @Nullable private ColorStateList rippleColor;
 
-  private final Paint buttonStrokePaint = new Paint(Paint.ANTI_ALIAS_FLAG);
-  private final Rect bounds = new Rect();
-  private final RectF rectF = new RectF();
-
-  @Nullable private GradientDrawable colorableBackgroundDrawableCompat;
-  @Nullable private Drawable tintableBackgroundDrawableCompat;
-  @Nullable private GradientDrawable rippleDrawableCompat;
-  @Nullable private Drawable tintableRippleDrawableCompat;
-
-  @Nullable private GradientDrawable backgroundDrawableLollipop;
-  @Nullable private GradientDrawable strokeDrawableLollipop;
-  @Nullable private GradientDrawable maskDrawableLollipop;
-
+  @Nullable private MaterialShapeDrawable maskDrawable;
   private boolean backgroundOverwritten = false;
+  private boolean cornerRadiusSet = false;
+  private LayerDrawable rippleDrawable;
 
-  public MaterialButtonHelper(MaterialButton button) {
+  MaterialButtonHelper(MaterialButton button, ShapeAppearanceModel shapeAppearanceModel) {
     materialButton = button;
+    this.shapeAppearanceModel = shapeAppearanceModel;
   }
 
-  public void loadFromAttributes(TypedArray attributes) {
+  void loadFromAttributes(TypedArray attributes) {
     insetLeft = attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetLeft, 0);
     insetRight =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetRight, 0);
@@ -98,7 +79,15 @@ class MaterialButtonHelper {
     insetBottom =
         attributes.getDimensionPixelOffset(R.styleable.MaterialButton_android_insetBottom, 0);
 
-    cornerRadius = attributes.getDimensionPixelSize(R.styleable.MaterialButton_cornerRadius, 0);
+    // cornerRadius should override whatever corner radius is set in shapeAppearanceModel
+    if (attributes.hasValue(R.styleable.MaterialButton_cornerRadius)) {
+      cornerRadius = attributes.getDimensionPixelSize(R.styleable.MaterialButton_cornerRadius, -1);
+      shapeAppearanceModel.setCornerRadius(cornerRadius);
+      cornerRadiusSet = true;
+    }
+
+    adjustShapeAppearanceModelCornerRadius(shapeAppearanceModel, CORNER_RADIUS_ADJUSTMENT);
+
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialButton_strokeWidth, 0);
 
     backgroundTintMode =
@@ -114,13 +103,6 @@ class MaterialButtonHelper {
         MaterialResources.getColorStateList(
             materialButton.getContext(), attributes, R.styleable.MaterialButton_rippleColor);
 
-    buttonStrokePaint.setStyle(Style.STROKE);
-    buttonStrokePaint.setStrokeWidth(strokeWidth);
-    buttonStrokePaint.setColor(
-        strokeColor != null
-            ? strokeColor.getColorForState(materialButton.getDrawableState(), Color.TRANSPARENT)
-            : Color.TRANSPARENT);
-
     // Store padding before setting background, since background overwrites padding values
     int paddingStart = ViewCompat.getPaddingStart(materialButton);
     int paddingTop = materialButton.getPaddingTop();
@@ -128,8 +110,7 @@ class MaterialButtonHelper {
     int paddingBottom = materialButton.getPaddingBottom();
 
     // Update materialButton's background without triggering setBackgroundOverwritten()
-    materialButton.setInternalBackground(
-        IS_LOLLIPOP ? createBackgroundLollipop() : createBackgroundCompat());
+    materialButton.setInternalBackground(createBackground());
 
     // Set the stored padding values
     ViewCompat.setPaddingRelative(
@@ -141,10 +122,9 @@ class MaterialButtonHelper {
   }
 
   /**
-   * Method that is triggered when our initial background, created by {@link
-   * #createBackgroundCompat()} or {@link #createBackgroundLollipop()}, has been overwritten with a
-   * new background. Sets the {@link #backgroundOverwritten} flag, which disables some of the
-   * functionality tied to our custom background.
+   * Method that is triggered when our initial background, created by {@link #createBackground()},
+   * has been overwritten with a new background. Sets the {@link #backgroundOverwritten} flag, which
+   * disables some of the functionality tied to our custom background.
    */
   void setBackgroundOverwritten() {
     backgroundOverwritten = true;
@@ -158,51 +138,6 @@ class MaterialButtonHelper {
     return backgroundOverwritten;
   }
 
-  /** Manually draw stroke on top of background for Kit Kat (API 19) and earlier versions */
-  void drawStroke(@Nullable Canvas canvas) {
-    if (canvas != null && strokeColor != null && strokeWidth > 0) {
-      bounds.set(materialButton.getBackground().getBounds());
-      rectF.set(
-          bounds.left + (strokeWidth / 2f) + insetLeft,
-          bounds.top + (strokeWidth / 2f) + insetTop,
-          bounds.right - (strokeWidth / 2f) - insetRight,
-          bounds.bottom - (strokeWidth / 2f) - insetBottom);
-      // We need to adjust stroke's corner radius so that the corners of the background are not
-      // drawn outside stroke
-      float strokeCornerRadius = cornerRadius - strokeWidth / 2f;
-      canvas.drawRoundRect(rectF, strokeCornerRadius, strokeCornerRadius, buttonStrokePaint);
-    }
-  }
-
-  /**
-   * Create background for KitKat (API 19) and earlier API versions
-   *
-   * @return Drawable representing background for this button.
-   */
-  private Drawable createBackgroundCompat() {
-    colorableBackgroundDrawableCompat = new GradientDrawable();
-    colorableBackgroundDrawableCompat.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-    colorableBackgroundDrawableCompat.setColor(DEFAULT_BACKGROUND_COLOR);
-
-    tintableBackgroundDrawableCompat = DrawableCompat.wrap(colorableBackgroundDrawableCompat);
-    DrawableCompat.setTintList(tintableBackgroundDrawableCompat, backgroundTint);
-    if (backgroundTintMode != null) {
-      DrawableCompat.setTintMode(tintableBackgroundDrawableCompat, backgroundTintMode);
-    }
-
-    rippleDrawableCompat = new GradientDrawable();
-    rippleDrawableCompat.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-    rippleDrawableCompat.setColor(Color.WHITE);
-
-    tintableRippleDrawableCompat = DrawableCompat.wrap(rippleDrawableCompat);
-    DrawableCompat.setTintList(
-        tintableRippleDrawableCompat, RippleUtils.convertToRippleDrawableColor(rippleColor));
-
-    return wrapDrawableWithInset(
-        new LayerDrawable(
-            new Drawable[] {tintableBackgroundDrawableCompat, tintableRippleDrawableCompat}));
-  }
-
   private InsetDrawable wrapDrawableWithInset(Drawable drawable) {
     return new InsetDrawable(drawable, insetLeft, insetTop, insetRight, insetBottom);
   }
@@ -210,10 +145,8 @@ class MaterialButtonHelper {
   void setSupportBackgroundTintList(@Nullable ColorStateList tintList) {
     if (backgroundTint != tintList) {
       backgroundTint = tintList;
-      if (IS_LOLLIPOP) {
-        updateTintAndTintModeLollipop();
-      } else if (tintableBackgroundDrawableCompat != null) {
-        DrawableCompat.setTintList(tintableBackgroundDrawableCompat, backgroundTint);
+      if (getMaterialShapeDrawable() != null) {
+        DrawableCompat.setTintList(getMaterialShapeDrawable(), backgroundTint);
       }
     }
   }
@@ -225,10 +158,8 @@ class MaterialButtonHelper {
   void setSupportBackgroundTintMode(@Nullable Mode mode) {
     if (backgroundTintMode != mode) {
       backgroundTintMode = mode;
-      if (IS_LOLLIPOP) {
-        updateTintAndTintModeLollipop();
-      } else if (tintableBackgroundDrawableCompat != null && backgroundTintMode != null) {
-        DrawableCompat.setTintMode(tintableBackgroundDrawableCompat, backgroundTintMode);
+      if (getMaterialShapeDrawable() != null && backgroundTintMode != null) {
+        DrawableCompat.setTintMode(getMaterialShapeDrawable(), backgroundTintMode);
       }
     }
   }
@@ -237,59 +168,54 @@ class MaterialButtonHelper {
     return backgroundTintMode;
   }
 
-  private void updateTintAndTintModeLollipop() {
-    if (backgroundDrawableLollipop != null) {
-      DrawableCompat.setTintList(backgroundDrawableLollipop, backgroundTint);
-      if (backgroundTintMode != null) {
-        DrawableCompat.setTintMode(backgroundDrawableLollipop, backgroundTintMode);
-      }
-    }
-  }
-
   /**
    * Create RippleDrawable background for Lollipop (API 21) and later API versions
    *
    * @return Drawable representing background for this button.
    */
-  @TargetApi(VERSION_CODES.LOLLIPOP)
-  private Drawable createBackgroundLollipop() {
-    backgroundDrawableLollipop = new GradientDrawable();
-    backgroundDrawableLollipop.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-    backgroundDrawableLollipop.setColor(DEFAULT_BACKGROUND_COLOR);
+  private Drawable createBackground() {
+    MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    DrawableCompat.setTintList(backgroundDrawable, backgroundTint);
+    if (backgroundTintMode != null) {
+      DrawableCompat.setTintMode(backgroundDrawable, backgroundTintMode);
+    }
+    backgroundDrawable.setStroke(strokeWidth, strokeColor);
+    maskDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
 
-    updateTintAndTintModeLollipop();
+    if (IS_LOLLIPOP) {
+      if (strokeWidth > 0) {
+        ShapeAppearanceModel temporaryAdjustedShapeAppearanceModel =
+            new ShapeAppearanceModel(shapeAppearanceModel);
+        adjustShapeAppearanceModelCornerRadius(
+            temporaryAdjustedShapeAppearanceModel, strokeWidth / 2f);
+        backgroundDrawable.setShapeAppearanceModel(temporaryAdjustedShapeAppearanceModel);
+        maskDrawable.setShapeAppearanceModel(temporaryAdjustedShapeAppearanceModel);
+      }
 
-    strokeDrawableLollipop = new GradientDrawable();
-    strokeDrawableLollipop.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-    strokeDrawableLollipop.setColor(Color.TRANSPARENT);
-    strokeDrawableLollipop.setStroke(strokeWidth, strokeColor);
-
-    LayerDrawable layerDrawable =
-        new LayerDrawable(new Drawable[] {backgroundDrawableLollipop, strokeDrawableLollipop});
-
-    InsetDrawable bgInsetDrawable = wrapDrawableWithInset(layerDrawable);
-
-    maskDrawableLollipop = new GradientDrawable();
-    maskDrawableLollipop.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-    maskDrawableLollipop.setColor(Color.WHITE);
-
-    return new MaterialButtonBackgroundDrawable(
-        RippleUtils.convertToRippleDrawableColor(rippleColor),
-        bgInsetDrawable,
-        maskDrawableLollipop);
+      DrawableCompat.setTint(maskDrawable, Color.WHITE);
+      rippleDrawable =
+          new RippleDrawable(
+              RippleUtils.convertToRippleDrawableColor(rippleColor),
+              wrapDrawableWithInset(backgroundDrawable),
+              maskDrawable);
+      return rippleDrawable;
+    } else {
+      DrawableCompat.setTintList(
+          maskDrawable, RippleUtils.convertToRippleDrawableColor(rippleColor));
+      rippleDrawable = new LayerDrawable(new Drawable[] {backgroundDrawable, maskDrawable});
+      return wrapDrawableWithInset(rippleDrawable);
+    }
   }
 
   void updateMaskBounds(int height, int width) {
-    if (maskDrawableLollipop != null) {
-      maskDrawableLollipop.setBounds(insetLeft, insetTop, width - insetRight, height - insetBottom);
+    if (maskDrawable != null) {
+      maskDrawable.setBounds(insetLeft, insetTop, width - insetRight, height - insetBottom);
     }
   }
 
   void setBackgroundColor(int color) {
-    if (IS_LOLLIPOP && backgroundDrawableLollipop != null) {
-      backgroundDrawableLollipop.setColor(color);
-    } else if (!IS_LOLLIPOP && colorableBackgroundDrawableCompat != null) {
-      colorableBackgroundDrawableCompat.setColor(color);
+    if (getMaterialShapeDrawable() != null) {
+      getMaterialShapeDrawable().setTint(color);
     }
   }
 
@@ -299,9 +225,9 @@ class MaterialButtonHelper {
       if (IS_LOLLIPOP && materialButton.getBackground() instanceof RippleDrawable) {
         ((RippleDrawable) materialButton.getBackground())
             .setColor(RippleUtils.convertToRippleDrawableColor(rippleColor));
-      } else if (!IS_LOLLIPOP && tintableRippleDrawableCompat != null) {
+      } else if (!IS_LOLLIPOP && getMaskDrawable() != null) {
         DrawableCompat.setTintList(
-            tintableRippleDrawableCompat, RippleUtils.convertToRippleDrawableColor(rippleColor));
+            getMaskDrawable(), RippleUtils.convertToRippleDrawableColor(rippleColor));
       }
     }
   }
@@ -314,10 +240,6 @@ class MaterialButtonHelper {
   void setStrokeColor(@Nullable ColorStateList strokeColor) {
     if (this.strokeColor != strokeColor) {
       this.strokeColor = strokeColor;
-      buttonStrokePaint.setColor(
-          strokeColor != null
-              ? strokeColor.getColorForState(materialButton.getDrawableState(), Color.TRANSPARENT)
-              : Color.TRANSPARENT);
       updateStroke();
     }
   }
@@ -330,7 +252,6 @@ class MaterialButtonHelper {
   void setStrokeWidth(int strokeWidth) {
     if (this.strokeWidth != strokeWidth) {
       this.strokeWidth = strokeWidth;
-      buttonStrokePaint.setStrokeWidth(strokeWidth);
       updateStroke();
     }
   }
@@ -340,38 +261,24 @@ class MaterialButtonHelper {
   }
 
   private void updateStroke() {
-    if (IS_LOLLIPOP && strokeDrawableLollipop != null) {
-      // TODO: Stroke on API 21 results in strange width, even after unwrapping stroke drawable
-      // TODO: Changing stroke width on strokeDrawableLollipop results in stroke being clipped
-      materialButton.setInternalBackground(createBackgroundLollipop());
-    } else if (!IS_LOLLIPOP) {
-      // Force redraw of stroke
-      materialButton.invalidate();
-    }
+    // TODO: Stroke on API 21 results in strange width, even after unwrapping background drawable
+    // TODO: Changing stroke width on background shape drawable results in stroke being clipped
+    materialButton.setInternalBackground(createBackground());
   }
 
   void setCornerRadius(int cornerRadius) {
-    if (this.cornerRadius != cornerRadius) {
+    // If cornerRadius wasn't set in the style, it would have a default value of -1. Therefore, for
+    // setCornerRadius(-1) to take effect, we need this cornerRadiusSet flag.
+    if (!cornerRadiusSet || this.cornerRadius != cornerRadius) {
       this.cornerRadius = cornerRadius;
-      if (IS_LOLLIPOP
-          && backgroundDrawableLollipop != null
-          && strokeDrawableLollipop != null
-          && maskDrawableLollipop != null) {
-        // TODO: Setting corner radius on API 21 does not work without unwrapping drawables
-        if (VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
-          unwrapBackgroundDrawable().setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-          unwrapStrokeDrawable().setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-        }
-        backgroundDrawableLollipop.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-        strokeDrawableLollipop.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-        maskDrawableLollipop.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-      } else if (!IS_LOLLIPOP
-          && colorableBackgroundDrawableCompat != null
-          && rippleDrawableCompat != null) {
-        colorableBackgroundDrawableCompat.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-        rippleDrawableCompat.setCornerRadius(cornerRadius + CORNER_RADIUS_ADJUSTMENT);
-        // Force redraw of stroke
-        materialButton.invalidate();
+      cornerRadiusSet = true;
+      shapeAppearanceModel.setCornerRadius(
+          cornerRadius + CORNER_RADIUS_ADJUSTMENT + (strokeWidth / 2f));
+      if (getMaterialShapeDrawable() != null) {
+        getMaterialShapeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+      }
+      if (getMaskDrawable() != null) {
+        getMaskDrawable().setShapeAppearanceModel(shapeAppearanceModel);
       }
     }
   }
@@ -380,27 +287,53 @@ class MaterialButtonHelper {
     return cornerRadius;
   }
 
-  @Nullable
-  private GradientDrawable unwrapStrokeDrawable() {
-    if (IS_LOLLIPOP && materialButton.getBackground() != null) {
-      RippleDrawable background = (RippleDrawable) materialButton.getBackground();
-      InsetDrawable insetDrawable = (InsetDrawable) background.getDrawable(0);
-      LayerDrawable layerDrawable = (LayerDrawable) insetDrawable.getDrawable();
-      return (GradientDrawable) layerDrawable.getDrawable(1);
-    } else {
-      return null;
-    }
+  private void adjustShapeAppearanceModelCornerRadius(
+      ShapeAppearanceModel shapeAppearanceModel, float cornerRadiusAdjustment) {
+    shapeAppearanceModel
+        .getTopLeftCorner()
+        .setCornerSize(
+            shapeAppearanceModel.getTopLeftCorner().getCornerSize() + cornerRadiusAdjustment);
+    shapeAppearanceModel
+        .getTopRightCorner()
+        .setCornerSize(
+            shapeAppearanceModel.getTopRightCorner().getCornerSize() + cornerRadiusAdjustment);
+    shapeAppearanceModel
+        .getBottomRightCorner()
+        .setCornerSize(
+            shapeAppearanceModel.getBottomRightCorner().getCornerSize() + cornerRadiusAdjustment);
+    shapeAppearanceModel
+        .getBottomLeftCorner()
+        .setCornerSize(
+            shapeAppearanceModel.getBottomLeftCorner().getCornerSize() + cornerRadiusAdjustment);
   }
 
   @Nullable
-  private GradientDrawable unwrapBackgroundDrawable() {
-    if (IS_LOLLIPOP && materialButton.getBackground() != null) {
-      RippleDrawable background = (RippleDrawable) materialButton.getBackground();
-      InsetDrawable insetDrawable = (InsetDrawable) background.getDrawable(0);
-      LayerDrawable layerDrawable = (LayerDrawable) insetDrawable.getDrawable();
-      return (GradientDrawable) layerDrawable.getDrawable(0);
-    } else {
-      return null;
+  private MaterialShapeDrawable getMaterialShapeDrawable() {
+    Drawable result = null;
+    if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 0) {
+      result = rippleDrawable.getDrawable(0);
     }
+
+    if (result instanceof MaterialShapeDrawable) {
+      return (MaterialShapeDrawable) result;
+    }
+
+    if (result instanceof InsetDrawable) {
+      InsetDrawable insetDrawable = (InsetDrawable) result;
+      if (IS_LOLLIPOP) {
+        return (MaterialShapeDrawable) insetDrawable.getDrawable();
+      }
+    }
+
+    return null;
+  }
+
+  @Nullable
+  public MaterialShapeDrawable getMaskDrawable() {
+    if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 1) {
+      return (MaterialShapeDrawable) rippleDrawable.getDrawable(1);
+    }
+
+    return null;
   }
 }

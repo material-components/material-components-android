@@ -24,7 +24,6 @@ import static com.google.android.material.internal.ThemeEnforcement.createThemed
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.PorterDuff.Mode;
@@ -42,6 +41,7 @@ import android.support.annotation.RestrictTo;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.TextViewCompat;
@@ -156,24 +156,17 @@ public class MaterialButton extends AppCompatButton {
     iconGravity = attributes.getInteger(R.styleable.MaterialButton_iconGravity, ICON_GRAVITY_START);
 
     iconSize = attributes.getDimensionPixelSize(R.styleable.MaterialButton_iconSize, 0);
+    ShapeAppearanceModel shapeAppearanceModel =
+        new ShapeAppearanceModel(context, attrs, defStyleAttr, DEF_STYLE_RES);
 
     // Loads and sets background drawable attributes
-    materialButtonHelper = new MaterialButtonHelper(this);
+    materialButtonHelper = new MaterialButtonHelper(this, shapeAppearanceModel);
     materialButtonHelper.loadFromAttributes(attributes);
 
     attributes.recycle();
 
     setCompoundDrawablePadding(iconPadding);
     updateIcon();
-  }
-
-  @Override
-  protected void onDraw(Canvas canvas) {
-    super.onDraw(canvas);
-    // Manually draw stroke on top of background for Kit Kat (API 19) and earlier versions
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP && isUsingOriginalBackground()) {
-      materialButtonHelper.drawStroke(canvas);
-    }
   }
 
   /**
@@ -187,7 +180,7 @@ public class MaterialButton extends AppCompatButton {
   public void setSupportBackgroundTintList(@Nullable ColorStateList tint) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setSupportBackgroundTintList(tint);
-    } else if (materialButtonHelper != null) {
+    } else {
       // If default MaterialButton background has been overwritten, we will let AppCompatButton
       // handle the tinting
       super.setSupportBackgroundTintList(tint);
@@ -225,7 +218,7 @@ public class MaterialButton extends AppCompatButton {
   public void setSupportBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setSupportBackgroundTintMode(tintMode);
-    } else if (materialButtonHelper != null) {
+    } else {
       // If default MaterialButton background has been overwritten, we will let AppCompatButton
       // handle the tint Mode
       super.setSupportBackgroundTintMode(tintMode);
