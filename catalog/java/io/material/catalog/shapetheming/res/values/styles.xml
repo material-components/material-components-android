@@ -77,8 +77,17 @@
 
   <!-- Fortnightly -->
   <style name="ThemeOverlay.Fortnightly" parent="">
-    <item name="colorPrimary">#ffffff</item>
-    <item name="colorSecondary">#6b3f8b</item>
+    <item name="colorPrimary">#000000</item>
+    <item name="colorPrimaryVariant">#4E0D3A</item>
+    <item name="colorSecondary">#6B38FB</item>
+    <item name="colorSurface">#FFFFFF</item>
+    <item name="android:colorBackground">#FFFFFF</item>
+    <item name="colorError">#C5032B</item>
+    <item name="colorOnPrimary">#292929</item>
+    <item name="colorOnSecondary">#FFFFFF</item>
+    <item name="colorOnSurface">#442B2D</item>
+    <item name="colorOnError">#FFFBFA</item>
+    <item name="colorOnBackground">#442B2D</item>
 
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Fortnightly.SmallComponent</item>
     <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Fortnightly.MediumComponent</item>
@@ -125,8 +134,17 @@
   <!-- Crane -->
 
   <style name="ThemeOverlay.Crane" parent="">
-    <item name="colorPrimary">#5d1049</item>
-    <item name="colorSecondary">#e30425</item>
+    <item name="colorPrimary">#5D1049</item>
+    <item name="colorPrimaryVariant">#4E0D3A</item>
+    <item name="colorSecondary">#E30425</item>
+    <item name="colorSurface">#FFFBFA</item>
+    <item name="android:colorBackground">#FFFFFF</item>
+    <item name="colorError">#EF9A43</item>
+    <item name="colorOnPrimary">#442B2D</item>
+    <item name="colorOnSecondary">#FFFFFF</item>
+    <item name="colorOnSurface">#442B2D</item>
+    <item name="colorOnError">#FFFBFA</item>
+    <item name="colorOnBackground">#442B2D</item>
 
     <item name="shapeAppearanceSmallComponent">@style/ShapeAppearance.Crane.SmallComponent</item>
     <item name="shapeAppearanceMediumComponent">@style/ShapeAppearance.Crane.MediumComponent</item>

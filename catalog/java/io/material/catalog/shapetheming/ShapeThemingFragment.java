@@ -18,8 +18,6 @@ package io.material.catalog.shapetheming;
 
 import io.material.catalog.R;
 
-import static io.material.catalog.feature.FeatureDemo.STATUS_WIP;
-
 import android.support.v4.app.Fragment;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -94,7 +92,7 @@ public class ShapeThemingFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_shape_theming_title, R.drawable.ic_shape, STATUS_WIP) {
+      return new FeatureDemo(R.string.cat_shape_theming_title, R.drawable.ic_shape) {
         @Override
         public Fragment createFragment() {
           return new ShapeThemingFragment();
