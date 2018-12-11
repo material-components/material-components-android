@@ -747,12 +747,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private void updateDrawableOnStateChange(@State int state) {
     if (materialShapeDrawable != null) {
-      if (state == STATE_EXPANDED && (parentHeight <= viewRef.get().getHeight())) {
+      if (state == STATE_EXPANDED) {
         // If the bottomsheet is fully expanded, change ShapeAppearance to sharp corners to
         // indicate the bottomsheet has no more content to scroll.
         // Overriding of this style may be performed in the bottomsheet callback.
-        materialShapeDrawable.getShapeAppearanceModel().setCornerRadius(0);
-        materialShapeDrawable.invalidateSelf();
+        ShapeAppearanceModel shapeAppearanceModelExpanded =
+            new ShapeAppearanceModel(shapeAppearanceModelDefault);
+        shapeAppearanceModelExpanded.setCornerRadius(0);
+        materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModelExpanded);
       }
       if (state == STATE_COLLAPSED || state == STATE_DRAGGING) {
         materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModelDefault);
