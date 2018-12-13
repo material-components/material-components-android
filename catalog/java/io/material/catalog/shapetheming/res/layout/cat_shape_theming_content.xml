@@ -86,4 +86,13 @@
         android:layout_height="wrap_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 
+  <!-- Buttons -->
+
+  <Button
+      android:id="@+id/material_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:text="@string/cat_shape_theming_button_text"/>
+
 </LinearLayout>

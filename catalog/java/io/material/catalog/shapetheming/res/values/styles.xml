@@ -80,7 +80,7 @@
     <item name="colorSurface">#FFFFFF</item>
     <item name="android:colorBackground">#FFFFFF</item>
     <item name="colorError">#C5032B</item>
-    <item name="colorOnPrimary">#292929</item>
+    <item name="colorOnPrimary">#FFFFFF</item>
     <item name="colorOnSecondary">#FFFFFF</item>
     <item name="colorOnSurface">#442B2D</item>
     <item name="colorOnError">#FFFBFA</item>
@@ -134,7 +134,7 @@
     <item name="colorSurface">#FFFBFA</item>
     <item name="android:colorBackground">#FFFFFF</item>
     <item name="colorError">#EF9A43</item>
-    <item name="colorOnPrimary">#442B2D</item>
+    <item name="colorOnPrimary">#FFFFFF</item>
     <item name="colorOnSecondary">#FFFFFF</item>
     <item name="colorOnSurface">#442B2D</item>
     <item name="colorOnError">#FFFBFA</item>

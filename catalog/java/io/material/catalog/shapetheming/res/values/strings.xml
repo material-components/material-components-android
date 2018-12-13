@@ -32,7 +32,7 @@
 
   <string name="cat_shape_theming_chip_text">Shaped Chip</string>
   <string name="cat_shape_theming_card_text">This is a shaped card.</string>
-
+  <string name="cat_shape_theming_button_text">Shaped Button</string>
 
   <string name="cat_shape_theming_textfield_hint_outlined">Shaped outlined text field</string>
   <string name="cat_shape_theming_textfield_hint_outlined_dense">Shaped dense outlined text field</string>
