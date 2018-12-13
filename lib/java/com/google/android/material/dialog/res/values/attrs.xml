@@ -16,15 +16,12 @@
 -->
 <resources>
   <!-- A group of attributes to control the appearance of Alert Dialogs.
-       For default configurations of all attributes, set materialAlertDialogTheme
-       in your App Theme to ThemeOverlay.MaterialComponents.Dialog.Alert or
+       For default configurations of all attributes, set alertDialogTheme in your App Theme to
+       ThemeOverlay.MaterialComponents.Dialog.Alert or
        ThemeOverlay.MaterialComponents.Dialog.Alert.Centered. -->
-  <declare-styleable name="MaterialAlertDialogTheme">
-    <attr name="alertDialogTitlePanelStyle" format="reference"/>
-    <attr name="alertDialogTitleIconStyle" format="reference"/>
-    <attr name="alertDialogTitleTextStyle" format="reference"/>
-    <attr name="materialAlertDialogTheme" format="reference"/>
-  </declare-styleable>
+  <attr name="alertDialogTitlePanelStyle" format="reference"/>
+  <attr name="alertDialogTitleIconStyle" format="reference"/>
+  <attr name="alertDialogTitleTextStyle" format="reference"/>
 
   <declare-styleable name="MaterialAlertDialog">
     <attr name="backgroundInsetStart" format="dimension"/>
