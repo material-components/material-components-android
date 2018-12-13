@@ -60,12 +60,18 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
-      android:layout_gravity="center"
-      android:minHeight="@dimen/cat_shape_theming_card_min_height">
-    <TextView
-        android:layout_width="wrap_content"
+      android:layout_gravity="center">
+    <FrameLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/cat_shape_theming_card_text"/>
+        android:minHeight="@dimen/cat_shape_theming_card_min_height">
+      <TextView
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center"
+          android:text="@string/cat_shape_theming_card_text"
+          android:textAppearance="?attr/textAppearanceBody1"/>
+    </FrameLayout>
   </com.google.android.material.card.MaterialCardView>
 
   <!-- Text fields -->
