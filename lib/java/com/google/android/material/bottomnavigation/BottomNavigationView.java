@@ -34,8 +34,11 @@ import android.support.annotation.Nullable;
 import android.support.annotation.StyleRes;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.v4.content.ContextCompat;
+import android.support.v4.graphics.drawable.DrawableCompat;
 import android.support.v4.view.AbsSavedState;
 import android.support.v4.view.ViewCompat;
 import android.support.v7.view.SupportMenuInflater;
@@ -172,6 +175,15 @@ public class BottomNavigationView extends FrameLayout {
       ViewCompat.setElevation(
           this, a.getDimensionPixelSize(R.styleable.BottomNavigationView_elevation, 0));
     }
+    // Add a drawable as background that supports tinting in every API level.
+    if (getBackground() == null) {
+      ViewCompat.setBackground(this, new MaterialShapeDrawable());
+    }
+
+    ColorStateList backgroundTint =
+        MaterialResources.getColorStateList(
+            context, a, R.styleable.BottomNavigationView_backgroundTint);
+    DrawableCompat.setTintList(getBackground(), backgroundTint);
 
     setLabelVisibilityMode(
         a.getInteger(

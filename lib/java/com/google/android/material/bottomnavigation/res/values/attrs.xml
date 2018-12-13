@@ -20,6 +20,8 @@
   <attr name="bottomNavigationStyle" format="reference"/>
 
   <declare-styleable name="BottomNavigationView">
+    <!-- Background tint for the BottomNavigationView. -->
+    <attr name="backgroundTint"/>
     <!-- The menu resource to inflate and populate items from. Attribute type definition is in
          navigation package. -->
     <attr name="menu"/>
