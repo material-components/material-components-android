@@ -51,14 +51,15 @@
     The default theme overlay used by MaterialComponents for alert dialogs, via the
     alertDialogTheme attribute.
   -->
-  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert">
+  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
     <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel</item>
     <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon</item>
     <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text</item>
   </style>
 
   <!-- A theme overlay for Alert Dialog panels with a center aligned title text and icon. -->
-  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert.Centered" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert">
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
     <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel.CenterStacked</item>
     <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon.CenterStacked</item>
     <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text.CenterStacked</item>

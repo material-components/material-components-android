@@ -17,7 +17,7 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="AlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
+  <style name="MaterialAlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
     <item name="android:layout">@layout/material_alert_dialog</item>
     <item name="backgroundInsetStart">@dimen/mtrl_alert_dialog_background_inset_start</item>
     <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_background_inset_top</item>
