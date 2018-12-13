@@ -58,9 +58,6 @@
 
   <style name="Widget.Shrine.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
     <item name="shapeAppearanceOverlay">@null</item>
-    <!-- Currently there is a bug with the border when it's used in combination with a non-circular
-         shape -->
-    <item name="borderWidth">0dp</item>
   </style>
 
   <style name="Widget.Shrine.Chip" parent="Widget.MaterialComponents.Chip.Choice">
@@ -115,9 +112,6 @@
 
   <style name="Widget.Fortnightly.FloatingActionButton" parent="Widget.MaterialComponents.FloatingActionButton">
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.Fortnightly.FloatingActionButton</item>
-    <!-- Currently there is a bug with the border when it's used in combination with a non-circular
-         shape -->
-    <item name="borderWidth">0dp</item>
   </style>
 
   <style name="ShapeAppearanceOverlay.Fortnightly.FloatingActionButton" parent="">
