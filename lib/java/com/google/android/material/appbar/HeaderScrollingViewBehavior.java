@@ -18,12 +18,12 @@ package com.google.android.material.appbar;
 
 import android.content.Context;
 import android.graphics.Rect;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.CoordinatorLayout.Behavior;
-import android.support.v4.math.MathUtils;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import androidx.core.math.MathUtils;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;

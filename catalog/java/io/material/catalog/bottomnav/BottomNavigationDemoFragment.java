@@ -19,9 +19,9 @@ package io.material.catalog.bottomnav;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.view.LayoutInflater;

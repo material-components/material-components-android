@@ -18,7 +18,7 @@ package io.material.catalog.shapetheming;
 
 import io.material.catalog.R;
 
-import android.support.annotation.StyleRes;
+import androidx.annotation.StyleRes;
 
 /** A fragment that displays a Shape Theming demo using the Crane theme. */
 public class ShapeThemingCraneDemoFragment extends ShapeThemingDemoFragment {

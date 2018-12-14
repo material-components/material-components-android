@@ -84,10 +84,10 @@ Assuming your Activity's content is in a CoordinatorLayout you may have somethin
 this:
 
 ```xml
-<android.support.v4.widget.DrawerLayout>
-  <android.support.design.widget.CoordinatorLayout>
+<androidx.drawerlayout.widget.DrawerLayout>
+  <androidx.coordinatorlayout.widget.CoordinatorLayout>
     <!-- Your content goes here -->
-  </android.support.design.widget.CoordinatorLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
   <com.google.android.material.navigation.NavigationView
     android:id="@+id/navigation"
@@ -96,7 +96,7 @@ this:
     android:layout_gravity="start|left"
     app:headerLayout="@layout/navigation_header"
     app:menu="@menu/my_navigation_items" />
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
 ```
 
 ## Related Concepts

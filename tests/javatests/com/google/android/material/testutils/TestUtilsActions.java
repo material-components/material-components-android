@@ -16,30 +16,30 @@
 
 package com.google.android.material.testutils;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayed;
-import static android.support.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayed;
+import static androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static org.hamcrest.Matchers.any;
 
 import android.graphics.drawable.Drawable;
 import android.os.Parcelable;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.MenuRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.MenuRes;
+import androidx.annotation.Nullable;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
 import com.google.android.material.expandable.ExpandableWidget;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.TextViewCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
 import org.hamcrest.Matcher;
 
 public class TestUtilsActions {

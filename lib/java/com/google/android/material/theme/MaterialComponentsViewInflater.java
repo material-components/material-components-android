@@ -19,15 +19,15 @@ package com.google.android.material.theme;
 import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.Keep;
-import android.support.annotation.NonNull;
+import androidx.annotation.Keep;
+import androidx.annotation.NonNull;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
-import android.support.v7.app.AppCompatViewInflater;
-import android.support.v7.widget.AppCompatButton;
-import android.support.v7.widget.AppCompatCheckBox;
-import android.support.v7.widget.AppCompatRadioButton;
+import androidx.appcompat.app.AppCompatViewInflater;
+import androidx.appcompat.widget.AppCompatButton;
+import androidx.appcompat.widget.AppCompatCheckBox;
+import androidx.appcompat.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 
 /**

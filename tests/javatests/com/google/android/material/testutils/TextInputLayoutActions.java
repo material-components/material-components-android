@@ -16,17 +16,17 @@
 
 package com.google.android.material.testutils;
 
-import static android.support.test.espresso.matcher.ViewMatchers.isAssignableFrom;
+import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
 import android.graphics.Typeface;
-import android.support.annotation.ColorInt;
-import android.support.annotation.DimenRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.DimenRes;
 import com.google.android.material.R;
 import com.google.android.material.textfield.TextInputLayout;
 import android.view.View;
-import android.support.test.espresso.UiController;
-import android.support.test.espresso.ViewAction;
-import android.support.test.espresso.matcher.ViewMatchers;
+import androidx.test.espresso.UiController;
+import androidx.test.espresso.ViewAction;
+import androidx.test.espresso.matcher.ViewMatchers;
 import org.hamcrest.Matcher;
 
 public class TextInputLayoutActions {

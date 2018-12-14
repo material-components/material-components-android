@@ -17,9 +17,9 @@
 package com.google.android.material.resources;
 
 import android.graphics.Typeface;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
-import android.support.v4.content.res.ResourcesCompat.FontCallback;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
+import androidx.core.content.res.ResourcesCompat.FontCallback;
 
 /** {@link FontCallback} font fetch, in case a different font is set / requested in the meantime. */
 @RestrictTo(Scope.LIBRARY_GROUP)

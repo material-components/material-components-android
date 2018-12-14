@@ -16,7 +16,7 @@
 
 package com.google.android.material.shadow;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -28,8 +28,8 @@ import android.graphics.RadialGradient;
 import android.graphics.RectF;
 import android.graphics.Region.Op;
 import android.graphics.Shader;
-import android.support.annotation.RestrictTo;
-import android.support.v4.graphics.ColorUtils;
+import androidx.annotation.RestrictTo;
+import androidx.core.graphics.ColorUtils;
 
 /**
  * A helper class to draw linear or radial shadows using gradient shaders.

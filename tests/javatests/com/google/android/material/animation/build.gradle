@@ -17,26 +17,21 @@
 apply plugin: 'com.android.test'
 
 dependencies {
-  implementation ("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
-    exclude module: 'support-annotations'
-  }
-  implementation ("com.android.support.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}") {
-    exclude module: 'support-annotations'
-  }
-  implementation ("com.android.support.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}") {
-    exclude group: 'com.android.support'
-  }
+  implementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
+  implementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
+  implementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
+  implementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
   implementation 'org.mockito:mockito-core:1.9.5'
   implementation 'com.google.dexmaker:dexmaker:1.2'
   implementation 'com.google.dexmaker:dexmaker-mockito:1.2'
-
-  implementation project(fromPath("lib"))
 }
 
 android {
   defaultConfig {
     testApplicationId "com.google.android.material.tests"
-    testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+    minSdkVersion 14
+    targetSdkVersion 27
   }
 
   targetProjectPath getTransformedProjectPath('testing/java/com/google/android/material/testapp/animation')

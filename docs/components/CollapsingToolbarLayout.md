@@ -48,7 +48,7 @@ scrolling and features.
 A layout with a collapsing toolbar might look something like this:
 
 ```xml
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -65,13 +65,13 @@ A layout with a collapsing toolbar might look something like this:
         app:expandedTitleGravity="top"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
-      <android.support.v7.widget.Toolbar
+      <androidx.appcompat.widget.Toolbar
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
           app:layout_collapseMode="pin"/>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
 A common collapsing toolbar pattern is the parallax image scroll, in which
@@ -100,7 +100,7 @@ A toolbar with a collapsing image might look something like this:
       app:layout_collapseMode="parallax"
       app:layout_collapseParallaxMultiplier="0.5"/>
 
-  <android.support.v7.widget.Toolbar
+  <androidx.appcompat.widget.Toolbar
       android:id="@+id/AppBar"
       android:layout_width="match_parent"
       android:layout_height="@dimen/shrine_toolbar_collapsed_height"

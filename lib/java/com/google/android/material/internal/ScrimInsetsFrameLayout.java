@@ -18,17 +18,17 @@ package com.google.android.material.internal;
 
 import com.google.android.material.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.FrameLayout;
@@ -67,7 +67,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
 
     ViewCompat.setOnApplyWindowInsetsListener(
         this,
-        new android.support.v4.view.OnApplyWindowInsetsListener() {
+        new androidx.core.view.OnApplyWindowInsetsListener() {
           @Override
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
             if (null == ScrimInsetsFrameLayout.this.insets) {

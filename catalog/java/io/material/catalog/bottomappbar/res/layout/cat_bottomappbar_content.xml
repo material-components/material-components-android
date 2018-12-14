@@ -21,14 +21,14 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content">
 
-    <android.support.v7.widget.Toolbar
+    <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         style="?attr/catalogToolbarWithCloseButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"/>
   </com.google.android.material.appbar.AppBarLayout>
 
-  <android.support.v4.widget.NestedScrollView
+  <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       app:layout_behavior="@string/appbar_scrolling_view_behavior">
@@ -84,5 +84,5 @@
           android:text="@string/cat_bottomappbar_lorem_ipsum"/>
     </LinearLayout>
 
-  </android.support.v4.widget.NestedScrollView>
+  </androidx.core.widget.NestedScrollView>
 </merge>

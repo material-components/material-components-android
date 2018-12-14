@@ -23,11 +23,11 @@ import static com.google.android.material.internal.ThemeEnforcement.createThemed
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ThemeEnforcement;
-import android.support.v4.widget.CompoundButtonCompat;
-import android.support.v7.widget.AppCompatCheckBox;
+import androidx.core.widget.CompoundButtonCompat;
+import androidx.appcompat.widget.AppCompatCheckBox;
 import android.util.AttributeSet;
 
 /**

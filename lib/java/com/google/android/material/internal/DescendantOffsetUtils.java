@@ -16,12 +16,12 @@
 
 package com.google.android.material.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.graphics.Matrix;
 import android.graphics.Rect;
 import android.graphics.RectF;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;

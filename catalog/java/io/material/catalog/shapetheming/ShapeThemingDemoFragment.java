@@ -19,9 +19,9 @@ package io.material.catalog.shapetheming;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.annotation.StyleRes;
-import android.support.v7.view.ContextThemeWrapper;
+import androidx.annotation.Nullable;
+import androidx.annotation.StyleRes;
+import androidx.appcompat.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

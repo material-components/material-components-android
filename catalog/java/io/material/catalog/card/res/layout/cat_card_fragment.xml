@@ -71,7 +71,7 @@
         android:text="@string/cat_card_m1_section_title"
         android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="@dimen/mtrl_card_spacing"
@@ -82,9 +82,9 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cat_card_m1_desc"/>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <android.support.v7.widget.CardView
+    <androidx.cardview.widget.CardView
         style="@style/Widget.MaterialComponents.CardView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -96,12 +96,12 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cat_card_style_only_desc"/>
-    </android.support.v7.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <!-- Guarantee space for the shadow on the last card. Depending on non-demo (real-world) uses
         of CardView, this may not be necessary. This quick-fix is for purposes of this simple
         demo only. -->
-    <android.support.v4.widget.Space
+    <androidx.legacy.widget.Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/mtrl_card_spacing"/>
 

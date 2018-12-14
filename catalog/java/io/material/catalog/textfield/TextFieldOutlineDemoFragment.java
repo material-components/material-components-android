@@ -20,12 +20,12 @@ import io.material.catalog.R;
 
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v7.content.res.AppCompatResources;
+import androidx.core.widget.TextViewCompat;
+import androidx.appcompat.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

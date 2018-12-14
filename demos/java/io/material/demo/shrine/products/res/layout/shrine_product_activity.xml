@@ -24,12 +24,12 @@
   xmlns:tools="http://schemas.android.com/tools"
   android:layout_width="match_parent"
   android:layout_height="match_parent">
-  <android.support.design.widget.CoordinatorLayout
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
     android:id="@+id/CoordinatorLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="@dimen/shrine_bottom_nav_view_height">
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/ProductGrid"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -80,7 +80,7 @@
             android:text="@string/shrine_product_description"
             android:textAppearance="@style/TextAppearance.AppCompat.Subhead"/>
         </LinearLayout>
-        <android.support.v7.widget.Toolbar
+        <androidx.appcompat.widget.Toolbar
           android:id="@+id/AppBar"
           android:layout_width="match_parent"
           android:layout_height="@dimen/shrine_toolbar_collapsed_height"
@@ -88,7 +88,7 @@
           app:layout_collapseMode="pin"/>
       </com.google.android.material.appbar.CollapsingToolbarLayout>
     </com.google.android.material.appbar.AppBarLayout>
-  </android.support.design.widget.CoordinatorLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
   <com.google.android.material.bottomnavigation.BottomNavigationView
     android:id="@+id/BottomNavView"
     style="@style/Shrine.BottomNavView"

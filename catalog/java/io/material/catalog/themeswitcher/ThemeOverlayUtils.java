@@ -17,7 +17,7 @@
 package io.material.catalog.themeswitcher;
 
 import android.app.Activity;
-import android.support.annotation.StyleRes;
+import androidx.annotation.StyleRes;
 import java.util.Arrays;
 
 /** Utils for theme overlays. */

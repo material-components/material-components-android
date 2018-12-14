@@ -16,8 +16,8 @@
 
 package com.google.android.material.shape;
 
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 
 /** Utility methods for {@link MaterialShapeDrawable} and related classes. */
 @RestrictTo(Scope.LIBRARY_GROUP)

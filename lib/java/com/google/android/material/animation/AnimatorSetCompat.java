@@ -18,8 +18,8 @@ package com.google.android.material.animation;
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import java.util.List;
 
 /**

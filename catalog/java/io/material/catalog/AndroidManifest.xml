@@ -20,10 +20,6 @@
   android:versionCode="1"
   android:versionName="1.0">
 
-  <uses-sdk
-    android:minSdkVersion="14"
-    android:targetSdkVersion="27"/>
-
   <application
     android:allowBackup="true"
     android:icon="@mipmap/ic_launcher"

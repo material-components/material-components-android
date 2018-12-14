@@ -18,7 +18,7 @@ package io.material.catalog.shapetheming;
 
 import io.material.catalog.R;
 
-import android.support.annotation.StyleRes;
+import androidx.annotation.StyleRes;
 
 /** A fragment that displays a Shape Theming demo using the Fortnightly theme. */
 public class ShapeThemingFortnightlyDemoFragment extends ShapeThemingDemoFragment {

@@ -18,4 +18,8 @@ android {
       manifest.srcFile 'AndroidManifest.xml'
     }
   }
+  defaultConfig {
+    minSdkVersion 14
+    targetSdkVersion 27
+  }
 }

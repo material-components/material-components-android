@@ -19,8 +19,8 @@ package io.material.catalog.chip;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import com.google.android.material.chip.Chip;
 import com.google.android.material.chip.ChipGroup;
 import com.google.android.material.switchmaterial.SwitchMaterial;

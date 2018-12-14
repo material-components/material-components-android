@@ -77,7 +77,7 @@ tabs.setupWithViewPager(pager);
 Alternatively, you can add a `TabLayout` to a ViewPager in XML:
 
 ```xml
-<android.support.v4.view.ViewPager
+<androidx.viewpager.widget.ViewPager
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -86,7 +86,7 @@ Alternatively, you can add a `TabLayout` to a ViewPager in XML:
       android:layout_height="wrap_content"
       android:layout_gravity="top" />
 
-</android.support.v4.view.ViewPager>
+</androidx.viewpager.widget.ViewPager>
 ```
 
 ### Material Styles

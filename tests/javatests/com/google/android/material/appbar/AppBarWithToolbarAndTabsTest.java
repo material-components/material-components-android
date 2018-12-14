@@ -17,19 +17,19 @@
 package com.google.android.material.appbar;
 
 import static com.google.android.material.testutils.TestUtilsActions.addTabs;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 import android.os.SystemClock;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.StringRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.StringRes;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.Cheeses;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.test.filters.LargeTest;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.filters.LargeTest;
+import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

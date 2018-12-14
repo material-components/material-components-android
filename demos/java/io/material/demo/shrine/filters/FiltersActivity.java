@@ -17,8 +17,8 @@
 package io.material.demo.shrine.filters;
 
 import android.os.Bundle;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 
 /**
  * Activity that displays a list of filters the user can set to refine the list of products.

@@ -19,7 +19,7 @@ package io.material.catalog.main;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import android.support.v4.app.Fragment;
+import androidx.fragment.app.Fragment;
 import android.view.MenuItem;
 import dagger.android.ContributesAndroidInjector;
 import dagger.android.support.DaggerAppCompatActivity;

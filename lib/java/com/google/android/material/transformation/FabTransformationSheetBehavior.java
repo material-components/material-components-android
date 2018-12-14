@@ -19,13 +19,13 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.os.Build;
-import android.support.annotation.AnimatorRes;
-import android.support.annotation.CallSuper;
+import androidx.annotation.AnimatorRes;
+import androidx.annotation.CallSuper;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.Positioning;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.view.ViewCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;

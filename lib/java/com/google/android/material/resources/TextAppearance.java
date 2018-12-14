@@ -24,16 +24,16 @@ import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Typeface;
-import android.support.annotation.FontRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.RestrictTo.Scope;
-import android.support.annotation.StyleRes;
-import android.support.annotation.VisibleForTesting;
-import android.support.v4.content.res.ResourcesCompat;
-import android.support.v4.content.res.ResourcesCompat.FontCallback;
-import android.support.v4.provider.FontsContractCompat.FontRequestCallback;
+import androidx.annotation.FontRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.StyleRes;
+import androidx.annotation.VisibleForTesting;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.core.content.res.ResourcesCompat.FontCallback;
+import androidx.core.provider.FontsContractCompat.FontRequestCallback;
 import android.text.TextPaint;
 import android.util.Log;
 
@@ -107,7 +107,7 @@ public class TextAppearance {
   /**
    * Synchronously resolves the font Typeface using the fontFamily, style, and typeface.
    *
-   * @see android.support.v7.widget.AppCompatTextHelper
+   * @see androidx.appcompat.widget.AppCompatTextHelper
    */
   @VisibleForTesting
   @NonNull
@@ -148,7 +148,7 @@ public class TextAppearance {
    *
    * @param context the {@link Context}.
    * @param callback callback to notify when font is loaded.
-   * @see android.support.v7.widget.AppCompatTextHelper
+   * @see androidx.appcompat.widget.AppCompatTextHelper
    */
   public void getFontAsync(Context context, @NonNull final TextAppearanceFontCallback callback) {
     if (TextAppearanceConfig.shouldLoadFontSynchronously()) {

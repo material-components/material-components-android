@@ -18,7 +18,7 @@ package io.material.catalog.tableofcontents;
 
 import io.material.catalog.R;
 
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 
 /** A helper class that facilitates overriding of certain resources in the Catalog app. */
 public class TocResourceProvider {

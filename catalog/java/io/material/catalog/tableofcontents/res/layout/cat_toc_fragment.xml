@@ -16,7 +16,7 @@
   -->
 <!-- Specifying an id for the CoordinatorLayout allows the expanded/collapsed state of the
      CollapsingToolbarLayout to be saved and restored by the Android system. -->
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cat_toc_coordinator_layout"
@@ -41,7 +41,7 @@
           android:layout_gravity="center"
           app:layout_collapseMode="parallax"/>
 
-      <android.support.v7.widget.Toolbar
+      <androidx.appcompat.widget.Toolbar
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
-  <android.support.v7.widget.RecyclerView
+  <androidx.recyclerview.widget.RecyclerView
       android:id="@+id/cat_toc_grid"
       android:layout_width="match_parent"
       android:layout_height="match_parent"
@@ -61,4 +61,4 @@
       android:layout_height="@dimen/cat_toc_grid_divider_size"
       android:background="@color/cat_toc_grid_divider_color"
       app:layout_behavior="@string/appbar_scrolling_view_behavior"/>
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

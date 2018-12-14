@@ -18,24 +18,24 @@ package com.google.android.material.bottomnavigation;
 
 import com.google.android.material.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.PointerIconCompat;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.widget.TextViewCompat;
-import android.support.v7.view.menu.MenuItemImpl;
-import android.support.v7.view.menu.MenuView;
-import android.support.v7.widget.TooltipCompat;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
+import androidx.core.content.ContextCompat;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.PointerIconCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.widget.TextViewCompat;
+import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.view.menu.MenuView;
+import androidx.appcompat.widget.TooltipCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.Gravity;

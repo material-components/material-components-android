@@ -18,7 +18,7 @@ package com.google.android.material.testapp;
 
 import android.os.Bundle;
 import com.google.android.material.testapp.base.BaseTestActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
 /** Activity with an AppBar that contains horizontally-scrolling content. */
 public class AppBarHorizontalScrollingActivity extends BaseTestActivity {

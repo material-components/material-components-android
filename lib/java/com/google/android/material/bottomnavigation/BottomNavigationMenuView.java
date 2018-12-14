@@ -18,27 +18,27 @@ package com.google.android.material.bottomnavigation;
 
 import com.google.android.material.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.support.annotation.Dimension;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
 import com.google.android.material.internal.TextScale;
-import android.support.transition.AutoTransition;
-import android.support.transition.TransitionManager;
-import android.support.transition.TransitionSet;
-import android.support.v4.util.Pools;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.animation.FastOutSlowInInterpolator;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuItemImpl;
-import android.support.v7.view.menu.MenuView;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
+import androidx.core.util.Pools;
+import androidx.core.view.ViewCompat;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.MenuItem;
@@ -467,7 +467,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     ColorStateList baseColor = AppCompatResources.getColorStateList(getContext(), value.resourceId);
     if (!getContext()
         .getTheme()
-        .resolveAttribute(android.support.v7.appcompat.R.attr.colorPrimary, value, true)) {
+        .resolveAttribute(androidx.appcompat.R.attr.colorPrimary, value, true)) {
       return null;
     }
     int colorPrimary = value.data;

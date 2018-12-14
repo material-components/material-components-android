@@ -24,7 +24,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-  <android.support.design.widget.CoordinatorLayout
+  <androidx.coordinatorlayout.widget.CoordinatorLayout
       android:layout_width="match_parent"
       android:layout_height="match_parent"
       android:layout_marginBottom="@dimen/shrine_bottom_nav_view_height">
@@ -33,7 +33,7 @@
         android:layout_height="match_parent"
         android:background="@color/colorPrimary"
         android:orientation="vertical">
-      <android.support.v7.widget.Toolbar
+      <androidx.appcompat.widget.Toolbar
           android:id="@+id/AppBar"
           style="@style/Widget.Shrine.Toolbar.Logo.Product"
           tools:ignore="UnusedAttribute"/>
@@ -108,7 +108,7 @@
         app:backgroundTint="@color/colorAccentSecondary"
         app:fabSize="normal"
         app:srcCompat="@drawable/ic_add_shopping_cart_vd_theme_24"/>
-  </android.support.design.widget.CoordinatorLayout>
+  </androidx.coordinatorlayout.widget.CoordinatorLayout>
   <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/BottomNavView"
       style="@style/Shrine.BottomNavView"

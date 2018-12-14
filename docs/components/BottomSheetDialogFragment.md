@@ -41,7 +41,7 @@ Note: To implement non-modal **Persistent bottom sheets** use
 2.  Override
     [`onCreateView`](https://developer.android.com/reference/android/app/Fragment.html#onCreateView(android.view.LayoutInflater,%20android.view.ViewGroup,%20android.os.Bundle)).
 3.  Use one of the two versions of
-    [`show`](https://developer.android.com/reference/android/support/v4/app/DialogFragment.html#show(android.support.v4.app.FragmentManager,%20java.lang.String))
+    [`show`](https://developer.android.com/reference/android/support/v4/app/DialogFragment.html#show(androidx.fragment.app.FragmentManager,%20java.lang.String))
     to display the dialog. *Notice `BottomSheetDialogFragment `is a subclass of
     AppCompatFragment, which means you need to use
     `Activity.getSupportFragmentManager()`.*

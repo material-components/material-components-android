@@ -16,7 +16,7 @@
 
 package com.google.android.material.floatingactionbutton;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
@@ -32,14 +32,14 @@ import android.graphics.RectF;
 import android.graphics.Shader;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.IntRange;
-import android.support.annotation.NonNull;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.IntRange;
+import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
-import android.support.v4.graphics.ColorUtils;
+import androidx.core.graphics.ColorUtils;
 
 /**
  * A Drawable that draws borders for {@link FloatingActionButton}

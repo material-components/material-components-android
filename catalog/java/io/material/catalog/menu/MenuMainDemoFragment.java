@@ -19,12 +19,12 @@ package io.material.catalog.menu;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import android.support.annotation.MenuRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.MenuRes;
+import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.widget.PopupMenu;
-import android.support.v7.widget.PopupMenu.OnMenuItemClickListener;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.PopupMenu;
+import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;

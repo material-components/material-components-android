@@ -16,7 +16,7 @@
 
 package com.google.android.material.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.TimeInterpolator;
 import android.content.res.ColorStateList;
@@ -28,18 +28,18 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.resources.CancelableFontCallback;
 import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
 import com.google.android.material.resources.TextAppearance;
-import android.support.v4.math.MathUtils;
-import android.support.v4.text.TextDirectionHeuristicsCompat;
-import android.support.v4.view.GravityCompat;
-import android.support.v4.view.ViewCompat;
+import androidx.core.math.MathUtils;
+import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.Gravity;

@@ -16,8 +16,8 @@
 
 package io.material.catalog.tableofcontents;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView.Adapter;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView.Adapter;
 import android.view.ViewGroup;
 import io.material.catalog.feature.FeatureDemo;
 import java.util.List;

@@ -18,7 +18,7 @@ package com.google.android.material.card;
 
 import com.google.android.material.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -35,18 +35,18 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.ColorInt;
-import android.support.annotation.Dimension;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
+import androidx.annotation.ColorInt;
+import androidx.annotation.Dimension;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.RoundedCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import android.support.v7.widget.CardView;
+import androidx.cardview.widget.CardView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.View;

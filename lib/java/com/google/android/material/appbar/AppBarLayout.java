@@ -18,7 +18,7 @@ package com.google.android.material.appbar;
 
 import com.google.android.material.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.ValueAnimator;
 import android.app.Activity;
@@ -28,24 +28,24 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.IdRes;
-import android.support.annotation.IntDef;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RequiresApi;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.VisibleForTesting;
+import androidx.annotation.IdRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.internal.ThemeEnforcement;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.math.MathUtils;
-import android.support.v4.util.ObjectsCompat;
-import android.support.v4.view.AbsSavedState;
-import android.support.v4.view.NestedScrollingChild;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewCompat.NestedScrollType;
-import android.support.v4.view.WindowInsetsCompat;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.math.MathUtils;
+import androidx.core.util.ObjectsCompat;
+import androidx.customview.view.AbsSavedState;
+import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewCompat.NestedScrollType;
+import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -77,26 +77,26 @@ import java.util.List;
  * resource containing the full class name is available.
  *
  * <pre>
- * &lt;android.support.design.widget.CoordinatorLayout
+ * &lt;androidx.coordinatorlayout.widget.CoordinatorLayout
  *         xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;
  *         xmlns:app=&quot;http://schemas.android.com/apk/res-auto&quot;
  *         android:layout_width=&quot;match_parent&quot;
  *         android:layout_height=&quot;match_parent&quot;&gt;
  *
- *     &lt;android.support.v4.widget.NestedScrollView
+ *     &lt;androidx.core.widget.NestedScrollView
  *             android:layout_width=&quot;match_parent&quot;
  *             android:layout_height=&quot;match_parent&quot;
  *             app:layout_behavior=&quot;@string/appbar_scrolling_view_behavior&quot;&gt;
  *
  *         &lt;!-- Your scrolling content --&gt;
  *
- *     &lt;/android.support.v4.widget.NestedScrollView&gt;
+ *     &lt;/androidx.core.widget.NestedScrollView&gt;
  *
  *     &lt;com.google.android.material.appbar.AppBarLayout
  *             android:layout_height=&quot;wrap_content&quot;
  *             android:layout_width=&quot;match_parent&quot;&gt;
  *
- *         &lt;android.support.v7.widget.Toolbar
+ *         &lt;androidx.appcompat.widget.Toolbar
  *                 ...
  *                 app:layout_scrollFlags=&quot;scroll|enterAlways&quot;/&gt;
  *
@@ -106,7 +106,7 @@ import java.util.List;
  *
  *     &lt;/com.google.android.material.appbar.AppBarLayout&gt;
  *
- * &lt;/android.support.design.widget.CoordinatorLayout&gt;
+ * &lt;/androidx.coordinatorlayout.widget.CoordinatorLayout&gt;
  * </pre>
  *
  * @see <a href="http://www.google.com/design/spec/layout/structure.html#structure-app-bar">
@@ -232,7 +232,7 @@ public class AppBarLayout extends LinearLayout {
 
     ViewCompat.setOnApplyWindowInsetsListener(
         this,
-        new android.support.v4.view.OnApplyWindowInsetsListener() {
+        new androidx.core.view.OnApplyWindowInsetsListener() {
           @Override
           public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
             return onWindowInsetChanged(insets);

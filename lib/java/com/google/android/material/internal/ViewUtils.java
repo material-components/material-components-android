@@ -16,11 +16,11 @@
 
 package com.google.android.material.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.graphics.PorterDuff;
-import android.support.annotation.RestrictTo;
-import android.support.v4.view.ViewCompat;
+import androidx.annotation.RestrictTo;
+import androidx.core.view.ViewCompat;
 import android.view.View;
 
 /**

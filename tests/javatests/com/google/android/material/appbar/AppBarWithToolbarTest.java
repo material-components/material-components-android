@@ -16,18 +16,18 @@
 
 package com.google.android.material.appbar;
 
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
 import android.graphics.Rect;
 import com.google.android.material.testapp.R;
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewGroup;
-import android.support.test.InstrumentationRegistry;
-import android.support.test.filters.MediumTest;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.InstrumentationRegistry;
+import androidx.test.filters.MediumTest;
+import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

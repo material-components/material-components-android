@@ -16,11 +16,11 @@
 
 package com.google.android.material.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 import android.util.Log;
 import java.lang.reflect.Method;
 

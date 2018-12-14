@@ -17,7 +17,7 @@ package com.google.android.material.testapp.custom;
 
 import android.content.Context;
 import com.google.android.material.snackbar.Snackbar;
-import android.support.design.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.TextView;

@@ -17,7 +17,7 @@
 package io.material.catalog.application.legacymultidex;
 
 import android.content.Context;
-import android.support.multidex.MultiDex;
+import androidx.multidex.MultiDex;
 import io.material.catalog.application.CatalogApplication;
 
 /**

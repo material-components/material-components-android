@@ -19,10 +19,10 @@ package io.material.catalog.elevation;
 import io.material.catalog.R;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.Nullable;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.Nullable;
 import com.google.android.material.card.MaterialCardView;
-import android.support.v4.view.ViewCompat;
+import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;

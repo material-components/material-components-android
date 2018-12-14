@@ -18,4 +18,8 @@ android {
     main.java.includes = [ '*.java' ]
     main.res.srcDirs = [ 'res' ]
   }
+  defaultConfig {
+    minSdkVersion 14
+    targetSdkVersion 27
+  }
 }

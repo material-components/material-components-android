@@ -18,7 +18,5 @@
           xmlns:tools="http://schemas.android.com/tools"
     package="com.google.android.material.chip">
 
-  <uses-sdk android:minSdkVersion="14"/>
-
   <application/>
 </manifest>

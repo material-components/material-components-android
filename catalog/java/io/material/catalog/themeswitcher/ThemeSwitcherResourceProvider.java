@@ -18,7 +18,7 @@ package io.material.catalog.themeswitcher;
 
 import io.material.catalog.R;
 
-import android.support.annotation.ArrayRes;
+import androidx.annotation.ArrayRes;
 
 /** A helper class that facilitates overriding of theme switcher resources in the Catalog app. */
 public class ThemeSwitcherResourceProvider {

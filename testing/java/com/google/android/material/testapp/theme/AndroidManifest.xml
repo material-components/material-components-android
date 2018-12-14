@@ -19,12 +19,10 @@
   package="com.google.android.material.testapp.theme">
 
   <uses-sdk
-    android:minSdkVersion="14"
-    android:targetSdkVersion="27"
-    tools:overrideLibrary="android.support.test, android.app, android.support.test.rule, android.support.test.espresso, android.support.test.espresso.idling"/>
+    tools:overrideLibrary="androidx.test, android.app, androidx.test.rule, androidx.test.espresso, androidx.test.espresso.idling"/>
 
   <application
-    android:name="android.support.multidex.MultiDexApplication"
+    android:name="androidx.multidex.MultiDexApplication"
     android:supportsRtl="true"
     android:theme="@style/Theme.MaterialComponents.ViewInflaterTest">
 
