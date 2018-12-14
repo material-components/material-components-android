@@ -18,8 +18,8 @@ package io.material.catalog.tableofcontents;
 
 import io.material.catalog.R;
 
-import android.support.v4.app.FragmentActivity;
-import android.support.v7.widget.RecyclerView.ViewHolder;
+import androidx.fragment.app.FragmentActivity;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;

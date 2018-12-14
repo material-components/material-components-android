@@ -16,14 +16,14 @@
 
 package com.google.android.material.canvas;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import android.support.annotation.RestrictTo;
+import androidx.annotation.RestrictTo;
 
 /** Compat methods for Canvas. */
 @RestrictTo(LIBRARY_GROUP)

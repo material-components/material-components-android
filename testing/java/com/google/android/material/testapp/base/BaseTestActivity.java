@@ -17,7 +17,7 @@
 package com.google.android.material.testapp.base;
 
 import android.os.Bundle;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 import android.view.WindowManager;
 
 /** Base activity type for all Material Components test fixtures. */

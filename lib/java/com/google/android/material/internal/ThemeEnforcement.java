@@ -18,16 +18,16 @@ package com.google.android.material.internal;
 
 import com.google.android.material.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.AttrRes;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
-import android.support.annotation.StyleableRes;
-import android.support.v7.view.ContextThemeWrapper;
-import android.support.v7.widget.TintTypedArray;
+import androidx.annotation.AttrRes;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
+import androidx.annotation.StyleableRes;
+import androidx.appcompat.view.ContextThemeWrapper;
+import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 
@@ -86,7 +86,7 @@ public final class ThemeEnforcement {
 
   /**
    * Safely retrieve styled attribute information in this Context's theme using {@link
-   * android.support.v7.widget.TintTypedArray}, after checking whether the theme is compatible with
+   * androidx.appcompat.widget.TintTypedArray}, after checking whether the theme is compatible with
    * the component's given style.
    *
    * <p>Set a component's {@link R.attr#enforceMaterialTheme enforceMaterialTheme} attribute to
@@ -97,7 +97,7 @@ public final class ThemeEnforcement {
    *
    * <p>New components should prefer to use {@link #obtainStyledAttributes(Context, AttributeSet,
    * int[], int, int, int...)}, and use {@link com.google.android.material.resources.MaterialResources}
-   * as a replacement for the functionality in {@link android.support.v7.widget.TintTypedArray}.
+   * as a replacement for the functionality in {@link androidx.appcompat.widget.TintTypedArray}.
    *
    * <p>If {@link R.attr#enforceTextAppearance} attribute is set to <code>true</code> and
    * textAppearanceResIndices parameter is specified and has non-negative values, this will also

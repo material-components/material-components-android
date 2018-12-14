@@ -16,15 +16,15 @@
 package com.google.android.material.testutils;
 
 import static com.google.android.material.testutils.TestUtilsActions.waitUntilIdle;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import android.support.test.espresso.Espresso;
-import android.support.test.espresso.IdlingResource;
+import androidx.test.espresso.Espresso;
+import androidx.test.espresso.IdlingResource;
 
 public class SnackbarUtils {
   public interface TransientBottomBarAction {

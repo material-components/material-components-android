@@ -34,4 +34,8 @@ android {
     // Only include things in this directory, not subdirectories
     main.java.includes = [ '*.java' ]
   }
+  defaultConfig {
+    minSdkVersion 14
+    targetSdkVersion 27
+  }
 }

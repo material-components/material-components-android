@@ -17,7 +17,7 @@
 package com.google.android.material.testutils;
 
 import android.graphics.drawable.GradientDrawable;
-import android.support.annotation.ColorInt;
+import androidx.annotation.ColorInt;
 
 /**
  * Custom drawable class that provides a reliable way for testing various tinting scenarios across a

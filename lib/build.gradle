@@ -15,9 +15,7 @@ dependencies {
   api compatibility("v7/cardview")
   api compatibility("v7/recyclerview")
 
-  testImplementation("com.android.support.test:runner:${project.rootProject.ext.testRunnerVersion}") {
-    exclude module: 'support-annotations'
-  }
+  testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "junit:junit:4.12"
   testImplementation "com.google.truth:truth:0.35"
   testImplementation "org.mockito:mockito-core:1.9.5"

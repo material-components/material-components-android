@@ -20,7 +20,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:orientation="vertical">
-  <android.support.v7.widget.Toolbar
+  <androidx.appcompat.widget.Toolbar
     android:id="@+id/AppBar"
     style="@style/Widget.Shrine.Toolbar.Filter"
     tools:ignore="UnusedAttribute"/>
@@ -62,7 +62,7 @@
           <TextView
             style="@style/Widget.Shrine.TextView"
             android:text="@string/shrine_international_shipping"/>
-          <android.support.v7.widget.SwitchCompat
+          <androidx.appcompat.widget.SwitchCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"/>
@@ -73,7 +73,7 @@
           <TextView
             style="@style/Widget.Shrine.TextView"
             android:text="@string/shrine_personalized_feeds"/>
-          <android.support.v7.widget.SwitchCompat
+          <androidx.appcompat.widget.SwitchCompat
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end"/>

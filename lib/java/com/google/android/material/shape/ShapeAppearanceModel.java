@@ -18,17 +18,17 @@ package com.google.android.material.shape;
 
 import com.google.android.material.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Paint;
 import android.graphics.RectF;
-import android.support.annotation.AttrRes;
-import android.support.annotation.Dimension;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
+import androidx.annotation.AttrRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
 import com.google.android.material.internal.Experimental;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;

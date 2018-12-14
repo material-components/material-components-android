@@ -16,7 +16,7 @@
 package com.google.android.material.testapp;
 
 import com.google.android.material.testapp.base.BaseTestActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.widget.Toolbar;
 
 public class TabLayoutWithViewPagerActivity extends BaseTestActivity {
   @Override

@@ -14,7 +14,7 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<android.support.v7.widget.AlertDialogLayout
+<androidx.appcompat.widget.AlertDialogLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/parentPanel"
     android:layout_width="match_parent"
@@ -37,7 +37,7 @@
         android:background="?attr/colorControlHighlight"
         android:visibility="gone"/>
 
-    <android.support.v4.widget.NestedScrollView
+    <androidx.core.widget.NestedScrollView
         android:id="@+id/scrollView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -68,7 +68,7 @@
             android:layout_height="@dimen/abc_dialog_padding_top_material"
             android:visibility="gone"/>
       </LinearLayout>
-    </android.support.v4.widget.NestedScrollView>
+    </androidx.core.widget.NestedScrollView>
 
     <View android:id="@+id/scrollIndicatorDown"
         android:layout_width="match_parent"
@@ -95,4 +95,4 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>
 
-</android.support.v7.widget.AlertDialogLayout>
+</androidx.appcompat.widget.AlertDialogLayout>

@@ -33,7 +33,7 @@
         tools:ignore="ContentDescription"
         style="?attr/alertDialogTitleIconStyle"/>
 
-    <android.support.v7.widget.DialogTitle
+    <androidx.appcompat.widget.DialogTitle
         android:id="@+id/alertTitle"
         style="?attr/alertDialogTitleTextStyle"/>
   </LinearLayout>

@@ -16,10 +16,10 @@
 
 package com.google.android.material.textfield;
 
-import static android.support.test.InstrumentationRegistry.getTargetContext;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.action.ViewActions.typeText;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.InstrumentationRegistry.getTargetContext;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 
 import android.annotation.TargetApi;
 import android.content.Context;
@@ -27,10 +27,10 @@ import android.content.res.Configuration;
 import android.content.res.Resources;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testapp.TextInputLayoutActivity;
-import android.support.test.filters.MediumTest;
-import android.support.test.filters.SdkSuppress;
-import android.support.test.rule.ActivityTestRule;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.filters.MediumTest;
+import androidx.test.filters.SdkSuppress;
+import androidx.test.rule.ActivityTestRule;
+import androidx.test.runner.AndroidJUnit4;
 import java.util.Locale;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;

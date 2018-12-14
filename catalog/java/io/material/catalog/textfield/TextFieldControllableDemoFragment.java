@@ -19,7 +19,7 @@ package io.material.catalog.textfield;
 import io.material.catalog.R;
 
 import android.graphics.Color;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.LayoutRes;
 import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;

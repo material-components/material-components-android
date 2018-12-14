@@ -16,7 +16,7 @@
 package com.google.android.material.testapp.custom;
 
 import com.google.android.material.snackbar.BaseTransientBottomBar;
-import android.support.design.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 import android.widget.TextView;
 

@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<android.support.v4.widget.DrawerLayout
+<androidx.drawerlayout.widget.DrawerLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/drawer_layout"
@@ -50,5 +50,5 @@
         app:itemBackground="@color/sand_default"
         app:itemTextAppearance="@style/TextMediumStyle" />
 
-</android.support.v4.widget.DrawerLayout>
+</androidx.drawerlayout.widget.DrawerLayout>
 

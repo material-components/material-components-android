@@ -20,7 +20,7 @@ import android.graphics.Matrix;
 
 /**
  * Type evaluator for {@link Matrix} interpolation. Copied from
- * android.support.transition.TransitionUtils.MatrixEvaluator.
+ * androidx.transition.TransitionUtils.MatrixEvaluator.
  */
 public class MatrixEvaluator implements TypeEvaluator<Matrix> {
   private final float[] tempStartValues = new float[9];

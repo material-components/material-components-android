@@ -18,7 +18,7 @@ package io.material.catalog.shapetheming;
 
 import io.material.catalog.R;
 
-import android.support.annotation.StyleRes;
+import androidx.annotation.StyleRes;
 
 /** A fragment that displays a Shape Theming demo using the baseline theme. */
 public class ShapeThemingMainDemoFragment extends ShapeThemingDemoFragment {

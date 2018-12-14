@@ -1,14 +1,14 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api 'com.google.dagger:dagger:2.15'
-  annotationProcessor 'com.google.dagger:dagger-compiler:2.15'
+  api 'com.google.dagger:dagger:2.16'
+  annotationProcessor 'com.google.dagger:dagger-compiler:2.16'
 
-  api 'com.google.dagger:dagger-android:2.15'
-  api 'com.google.dagger:dagger-android-support:2.15'
-  annotationProcessor 'com.google.dagger:dagger-android-processor:2.15'
+  api 'com.google.dagger:dagger-android:2.16'
+  api 'com.google.dagger:dagger-android-support:2.16'
+  annotationProcessor 'com.google.dagger:dagger-android-processor:2.16'
 
-  api 'com.android.support:multidex:1.0.3'
+  api 'androidx.multidex:multidex:2.0.0'
 
   api project(':lib')
 }
@@ -51,6 +51,8 @@ android {
       application_theme            : 'Catalog',
       catalog_application_component: 'io.material.catalog.application.DaggerCatalogApplicationComponent'
     ]
+    minSdkVersion 14
+    targetSdkVersion 27
   }
 
   sourceSets {

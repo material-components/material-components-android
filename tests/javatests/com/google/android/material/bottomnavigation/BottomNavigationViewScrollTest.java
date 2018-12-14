@@ -19,20 +19,20 @@ package com.google.android.material.bottomnavigation;
 import static com.google.android.material.testutils.SwipeUtils.swipeDown;
 import static com.google.android.material.testutils.SwipeUtils.swipeUp;
 import static com.google.android.material.testutils.TestUtilsActions.setText;
-import static android.support.test.espresso.Espresso.onView;
-import static android.support.test.espresso.matcher.ViewMatchers.withId;
+import static androidx.test.espresso.Espresso.onView;
+import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.junit.Assert.assertEquals;
 
-import android.support.annotation.CallSuper;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
+import androidx.annotation.CallSuper;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
 import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.Shakespeare;
 import android.text.TextUtils;
 import android.widget.TextView;
-import android.support.test.filters.MediumTest;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.test.filters.MediumTest;
+import androidx.test.runner.AndroidJUnit4;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

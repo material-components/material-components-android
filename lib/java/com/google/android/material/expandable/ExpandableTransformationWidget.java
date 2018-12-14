@@ -15,7 +15,7 @@
  */
 package com.google.android.material.expandable;
 
-import android.support.annotation.IdRes;
+import androidx.annotation.IdRes;
 
 /** An ExpandableWidget that visually transforms into another component when expanded. */
 public interface ExpandableTransformationWidget extends ExpandableWidget {

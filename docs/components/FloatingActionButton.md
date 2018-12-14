@@ -42,7 +42,7 @@ Design's floating action button component. Here's how to include the widget in
 your layout:
 
 ```xml
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -58,7 +58,7 @@ your layout:
       android:layout_margin="16dp"
       app:srcCompat="@drawable/ic_plus_24"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
 Note: If the `FloatingActionButton` is a child of a `CoordinatorLayout`, you get

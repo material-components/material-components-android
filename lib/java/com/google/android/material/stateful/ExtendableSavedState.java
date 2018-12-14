@@ -19,8 +19,8 @@ package com.google.android.material.stateful;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.v4.util.SimpleArrayMap;
-import android.support.v4.view.AbsSavedState;
+import androidx.collection.SimpleArrayMap;
+import androidx.customview.view.AbsSavedState;
 
 /**
  * SavedState for widgets that want to save and restore their own state in {@link

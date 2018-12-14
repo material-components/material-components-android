@@ -18,7 +18,7 @@ package io.material.catalog.shapetheming;
 
 import io.material.catalog.R;
 
-import android.support.annotation.StyleRes;
+import androidx.annotation.StyleRes;
 
 /** A fragment that displays a Shape Theming demo using the Shrine theme. */
 public class ShapeThemingShrineDemoFragment extends ShapeThemingDemoFragment {

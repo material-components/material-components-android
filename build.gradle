@@ -4,8 +4,8 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.1.3'
-    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.0'
+    classpath 'com.android.tools.build:gradle:3.2.1'
+    classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
   }
 }
 
@@ -21,10 +21,10 @@ ext {
   compileSdkVersion = 28
   minSdkVersion = 14
   targetSdkVersion = 27
-  supportVersion = '28.0.0'
+  supportVersion = '1.0.0'
 
-  testRunnerVersion = '1.0.0'
-  espressoVersion = '3.0.0'
+  testRunnerVersion = '1.1.0'
+  espressoVersion = '3.1.0'
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
@@ -74,31 +74,31 @@ def compatibility(name) {
 
   switch (name) {
     case "annotations":
-      lib = "com.android.support:support-annotations"
+      lib = "androidx.annotation:annotation"
       break
     case "compat":
-      lib = "com.android.support:support-compat"
+      lib = "androidx.core:core"
       break
     case "core_ui":
-      lib = "com.android.support:support-core-ui"
+      lib = "androidx.legacy:legacy-support-core-ui"
       break
     case "core_utils":
-      lib = "com.android.support:support-core-utils"
+      lib = "androidx.legacy:legacy-support-core-utils"
       break
     case "fragment":
-      lib = "com.android.support:support-fragment"
+      lib = "androidx.fragment:fragment"
       break
     case "transition":
-      lib = "com.android.support:transition"
+      lib = "androidx.transition:transition"
       break
     case "v7/appcompat":
-      lib = "com.android.support:appcompat-v7"
+      lib = "androidx.appcompat:appcompat"
       break
     case "v7/cardview":
-      lib = "com.android.support:cardview-v7"
+      lib = "androidx.cardview:cardview"
       break
     case "v7/recyclerview":
-      lib = "com.android.support:recyclerview-v7"
+      lib = "androidx.recyclerview:recyclerview"
       break
     default:
       throw new IllegalArgumentException("No mapping exists for name: $name.")

@@ -23,7 +23,7 @@ import android.animation.ObjectAnimator;
 import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 import com.google.android.material.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.View;

@@ -18,7 +18,7 @@ package com.google.android.material.navigation;
 
 import com.google.android.material.R;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -26,28 +26,28 @@ import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.DimenRes;
-import android.support.annotation.Dimension;
-import android.support.annotation.DrawableRes;
-import android.support.annotation.IdRes;
-import android.support.annotation.LayoutRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.RestrictTo;
-import android.support.annotation.StyleRes;
+import androidx.annotation.DimenRes;
+import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
+import androidx.annotation.IdRes;
+import androidx.annotation.LayoutRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.StyleRes;
 import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.internal.ThemeEnforcement;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.AbsSavedState;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.WindowInsetsCompat;
-import android.support.v7.content.res.AppCompatResources;
-import android.support.v7.view.SupportMenuInflater;
-import android.support.v7.view.menu.MenuBuilder;
-import android.support.v7.view.menu.MenuItemImpl;
-import android.support.v7.widget.TintTypedArray;
+import androidx.core.content.ContextCompat;
+import androidx.customview.view.AbsSavedState;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.content.res.AppCompatResources;
+import androidx.appcompat.view.SupportMenuInflater;
+import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.view.menu.MenuItemImpl;
+import androidx.appcompat.widget.TintTypedArray;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Menu;
@@ -59,10 +59,10 @@ import android.view.View;
  * Represents a standard navigation menu for application. The menu contents can be populated by a
  * menu resource file.
  *
- * <p>NavigationView is typically placed inside a {@link android.support.v4.widget.DrawerLayout}.
+ * <p>NavigationView is typically placed inside a {@link androidx.drawerlayout.widget.DrawerLayout}.
  *
  * <pre>
- * &lt;android.support.v4.widget.DrawerLayout
+ * &lt;androidx.drawerlayout.widget.DrawerLayout
  *     xmlns:android="http://schemas.android.com/apk/res/android"
  *     xmlns:app="http://schemas.android.com/apk/res-auto"
  *     android:id="@+id/drawer_layout"
@@ -78,7 +78,7 @@ import android.view.View;
  *         android:layout_height="match_parent"
  *         android:layout_gravity="start"
  *         app:menu="@menu/my_navigation_items" /&gt;
- * &lt;/android.support.v4.widget.DrawerLayout&gt;
+ * &lt;/androidx.drawerlayout.widget.DrawerLayout&gt;
  * </pre>
  */
 public class NavigationView extends ScrimInsetsFrameLayout {
@@ -527,7 +527,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     ColorStateList baseColor = AppCompatResources.getColorStateList(getContext(), value.resourceId);
     if (!getContext()
         .getTheme()
-        .resolveAttribute(android.support.v7.appcompat.R.attr.colorPrimary, value, true)) {
+        .resolveAttribute(androidx.appcompat.R.attr.colorPrimary, value, true)) {
       return null;
     }
     int colorPrimary = value.data;

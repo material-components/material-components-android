@@ -32,12 +32,12 @@ import android.graphics.Paint.Style;
 import android.graphics.Rect;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.support.annotation.Dimension;
-import android.support.annotation.IntDef;
-import android.support.annotation.MenuRes;
-import android.support.annotation.NonNull;
-import android.support.annotation.Nullable;
-import android.support.annotation.Px;
+import androidx.annotation.Dimension;
+import androidx.annotation.IntDef;
+import androidx.annotation.MenuRes;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.TransformationListener;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
@@ -48,15 +48,15 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.CoordinatorLayout.AttachedBehavior;
-import android.support.v4.graphics.drawable.DrawableCompat;
-import android.support.v4.view.AbsSavedState;
-import android.support.v4.view.ViewCompat;
-import android.support.v4.view.ViewCompat.NestedScrollType;
-import android.support.v4.view.ViewCompat.ScrollAxis;
-import android.support.v7.widget.ActionMenuView;
-import android.support.v7.widget.Toolbar;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.customview.view.AbsSavedState;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewCompat.NestedScrollType;
+import androidx.core.view.ViewCompat.ScrollAxis;
+import androidx.appcompat.widget.ActionMenuView;
+import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
@@ -360,7 +360,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   /**
    * Returns true if the {@link BottomAppBar} should hide when a {@link
-   * android.support.v4.view.NestedScrollingChild} is scrolled. This is handled by {@link
+   * androidx.core.view.NestedScrollingChild} is scrolled. This is handled by {@link
    * BottomAppBar.Behavior}.
    */
   public boolean getHideOnScroll() {
@@ -369,7 +369,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   /**
    * Sets if the {@link BottomAppBar} should hide when a {@link
-   * android.support.v4.view.NestedScrollingChild} is scrolled. This is handled by {@link
+   * androidx.core.view.NestedScrollingChild} is scrolled. This is handled by {@link
    * BottomAppBar.Behavior}.
    */
   public void setHideOnScroll(boolean hide) {

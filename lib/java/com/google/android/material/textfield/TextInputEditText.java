@@ -19,8 +19,8 @@ package com.google.android.material.textfield;
 import com.google.android.material.R;
 
 import android.content.Context;
-import android.support.annotation.Nullable;
-import android.support.v7.widget.AppCompatEditText;
+import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;

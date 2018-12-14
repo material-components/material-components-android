@@ -16,9 +16,9 @@
 package io.material.catalog.draggable;
 
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v4.widget.ViewDragHelper;
-import android.support.v4.widget.ViewDragHelper.Callback;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.customview.widget.ViewDragHelper;
+import androidx.customview.widget.ViewDragHelper.Callback;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;

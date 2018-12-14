@@ -18,9 +18,9 @@ package com.google.android.material.expandable;
 
 /**
  * A widget that has expanded/collapsed state. When the expanded state changes, {@link
- * android.support.design.widget.CoordinatorLayout#dispatchDependentViewsChanged an event is
+ * androidx.coordinatorlayout.widget.CoordinatorLayout#dispatchDependentViewsChanged an event is
  * dispatched} so that other widgets may react via a {@link
- * android.support.design.widget.CoordinatorLayout.Behavior}.
+ * androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior}.
  *
  * <p>Implementations of this interface should create an instance of {@link ExpandableWidgetHelper}
  * and forward all calls to it.

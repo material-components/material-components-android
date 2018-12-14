@@ -31,7 +31,7 @@ focus on features, increases engagement, and visually anchors the UI.
 Here's an example of how to include the widget in your layout:
 
 ```xml
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
@@ -52,7 +52,7 @@ Here's an example of how to include the widget in your layout:
       android:layout_height="wrap_content"
       app:layout_anchor="@id/bar"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>
 ```
 
 The `FloatingActionButton` can be anchored to the `BottomAppBar` by setting

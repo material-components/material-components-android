@@ -19,9 +19,9 @@ package io.material.catalog.tabs;
 import io.material.catalog.R;
 
 import android.content.Context;
-import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentPagerAdapter;
 
 /** Pager adapter to control displaying of tab item pages in tabs demo for the Catalog app. */
 public class TabsPagerAdapter extends FragmentPagerAdapter {

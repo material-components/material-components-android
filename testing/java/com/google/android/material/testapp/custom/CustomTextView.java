@@ -16,8 +16,8 @@
 package com.google.android.material.testapp.custom;
 
 import android.content.Context;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.v7.widget.AppCompatTextView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 
 @CoordinatorLayout.DefaultBehavior(TestFloatingBehavior.class)

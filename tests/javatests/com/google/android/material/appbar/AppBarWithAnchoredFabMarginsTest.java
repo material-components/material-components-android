@@ -20,9 +20,9 @@ import static org.junit.Assert.assertEquals;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.testapp.R;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.test.filters.SmallTest;
-import android.support.test.runner.AndroidJUnit4;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.test.filters.SmallTest;
+import androidx.test.runner.AndroidJUnit4;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;

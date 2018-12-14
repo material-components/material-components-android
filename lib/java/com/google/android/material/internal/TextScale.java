@@ -16,13 +16,13 @@
 
 package com.google.android.material.internal;
 
-import static android.support.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
-import android.support.annotation.RestrictTo;
-import android.support.transition.Transition;
-import android.support.transition.TransitionValues;
+import androidx.annotation.RestrictTo;
+import androidx.transition.Transition;
+import androidx.transition.TransitionValues;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.util.Map;

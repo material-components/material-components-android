@@ -20,7 +20,7 @@ import com.google.android.material.R;
 
 import android.app.Activity;
 import android.content.ContextWrapper;
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;

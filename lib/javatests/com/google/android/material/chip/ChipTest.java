@@ -18,7 +18,7 @@ package com.google.android.material.chip;
 import com.google.android.material.R;
 
 
-import android.support.v7.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
 import org.junit.Before;

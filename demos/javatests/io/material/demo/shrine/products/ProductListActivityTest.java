@@ -18,7 +18,7 @@ package io.material.demo.shrine.products;
 
 import static com.google.common.truth.Truth.assertThat;
 
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView;
 import org.junit.Before;
 import org.junit.Ignore;
 import org.junit.Test;

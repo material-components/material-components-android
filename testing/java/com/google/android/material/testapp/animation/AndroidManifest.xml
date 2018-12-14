@@ -17,15 +17,11 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
   package="com.google.android.material.testapp.animation">
 
-  <uses-sdk
-    android:minSdkVersion="14"
-    android:targetSdkVersion="27"/>
-
   <application
-    android:name="android.support.multidex.MultiDexApplication"
+    android:name="androidx.multidex.MultiDexApplication"
     android:supportsRtl="true"
     android:theme="@style/Theme.Design">
 
-    <activity android:name="android.support.v7.app.AppCompatActivity"/>
+    <activity android:name="androidx.appcompat.app.AppCompatActivity"/>
   </application>
 </manifest>

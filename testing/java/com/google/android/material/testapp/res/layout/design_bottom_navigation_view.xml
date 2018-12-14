@@ -14,7 +14,7 @@
      limitations under the License.
 -->
 
-<android.support.design.widget.CoordinatorLayout
+<androidx.coordinatorlayout.widget.CoordinatorLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator_layout"
@@ -22,7 +22,7 @@
     android:layout_height="match_parent"
     android:fitsSystemWindows="true">
 
-  <android.support.v4.widget.NestedScrollView
+  <androidx.core.widget.NestedScrollView
       xmlns:android="http://schemas.android.com/apk/res/android"
       android:id="@+id/scrolling_content"
       android:layout_width="match_parent"
@@ -55,7 +55,7 @@
 
     </LinearLayout>
 
-  </android.support.v4.widget.NestedScrollView>
+  </androidx.core.widget.NestedScrollView>
 
   <com.google.android.material.bottomnavigation.BottomNavigationView
       android:id="@+id/bottom_navigation"
@@ -68,4 +68,4 @@
       app:layout_behavior="@string/hide_bottom_view_on_scroll_behavior"
       app:menu="@menu/bottom_navigation_view_content"/>
 
-</android.support.design.widget.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

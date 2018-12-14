@@ -8,12 +8,14 @@ dependencies {
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
   api project(fromPath("testing/java/com/google/android/material/testapp/custom"))
 
-  api 'com.android.support:multidex:1.0.3'
+  api 'androidx.multidex:multidex:2.0.0'
 }
 
 android {
   defaultConfig {
     multiDexEnabled true
+    minSdkVersion 14
+    targetSdkVersion 27
   }
 
   sourceSets {
