@@ -19,6 +19,7 @@ package com.google.android.material.floatingactionbutton;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.animation.Animator.AnimatorListener;
 import android.content.Context;
@@ -98,7 +99,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   private static final String LOG_TAG = "FloatingActionButton";
   private static final String EXPANDABLE_WIDGET_HELPER_KEY = "expandableWidgetHelper";
-  private static final int DEFAULT_STYLE_RES = R.style.Widget_Design_FloatingActionButton;
+  private static final int DEF_STYLE_RES = R.style.Widget_Design_FloatingActionButton;
 
   /** Callback to be invoked when the visibility of a FloatingActionButton changes. */
   public abstract static class OnVisibilityChangedListener {
@@ -193,15 +194,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
-            context,
-            attrs,
-            R.styleable.FloatingActionButton,
-            defStyleAttr,
-            DEFAULT_STYLE_RES);
+            context, attrs, R.styleable.FloatingActionButton, defStyleAttr, DEF_STYLE_RES);
+
     backgroundTint =
         MaterialResources.getColorStateList(
             context, a, R.styleable.FloatingActionButton_backgroundTint);
@@ -221,8 +221,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     final float pressedTranslationZ =
         a.getDimension(R.styleable.FloatingActionButton_pressedTranslationZ, 0f);
     compatPadding = a.getBoolean(R.styleable.FloatingActionButton_useCompatPadding, false);
-    int minTouchTargetSize = getResources()
-        .getDimensionPixelSize(R.dimen.mtrl_fab_min_touch_target);
+    int minTouchTargetSize =
+        getResources().getDimensionPixelSize(R.dimen.mtrl_fab_min_touch_target);
     maxImageSize = a.getDimensionPixelSize(R.styleable.FloatingActionButton_maxImageSize, 0);
 
     MotionSpec showMotionSpec =
@@ -230,7 +230,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     MotionSpec hideMotionSpec =
         MotionSpec.createFromAttribute(context, a, R.styleable.FloatingActionButton_hideMotionSpec);
     ShapeAppearanceModel shapeAppearance =
-        new ShapeAppearanceModel(context, attrs, defStyleAttr, DEFAULT_STYLE_RES, -1);
+        new ShapeAppearanceModel(context, attrs, defStyleAttr, DEF_STYLE_RES, -1);
 
     boolean usingDefaultCorner = isUsingDefaultCorner(shapeAppearance);
     a.recycle();
@@ -501,9 +501,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
   }
 
-  /**
-   * Set the FloatingActionButton shape appearance.
-   */
+  /** Set the FloatingActionButton shape appearance. */
   public void setShapeAppearance(ShapeAppearanceModel shapeAppearance) {
     getImpl().setShapeAppearance(shapeAppearance, isUsingDefaultCorner(shapeAppearance));
   }
