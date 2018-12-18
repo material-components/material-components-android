@@ -21,6 +21,7 @@
   <!-- Shrine -->
   <style name="ThemeOverlay.Shrine" parent="">
     <item name="colorPrimary">#FEDBD0</item>
+    <item name="colorPrimaryDark">#FFC2AF</item>
     <item name="colorPrimaryVariant">#FBB8AC</item>
     <item name="colorSecondary">#FEEAE6</item>
     <item name="colorSurface">#FFFBFA</item>
@@ -75,6 +76,7 @@
   <!-- Fortnightly -->
   <style name="ThemeOverlay.Fortnightly" parent="">
     <item name="colorPrimary">#000000</item>
+    <item name="colorPrimaryDark">#000000</item>
     <item name="colorPrimaryVariant">#4E0D3A</item>
     <item name="colorSecondary">#6B38FB</item>
     <item name="colorSurface">#FFFFFF</item>
@@ -129,6 +131,7 @@
 
   <style name="ThemeOverlay.Crane" parent="">
     <item name="colorPrimary">#5D1049</item>
+    <item name="colorPrimaryDark">#490D3A</item>
     <item name="colorPrimaryVariant">#4E0D3A</item>
     <item name="colorSecondary">#E30425</item>
     <item name="colorSurface">#FFFBFA</item>
