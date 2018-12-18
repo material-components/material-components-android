@@ -21,6 +21,7 @@ import dagger.android.ContributesAndroidInjector;
 import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.bottomappbar.BottomAppBarFragment;
 import io.material.catalog.bottomnav.BottomNavigationFragment;
+import io.material.catalog.bottomsheet.BottomSheetFragment;
 import io.material.catalog.button.ButtonsFragment;
 import io.material.catalog.card.CardFragment;
 import io.material.catalog.checkbox.CheckBoxFragment;
@@ -48,6 +49,7 @@ import io.material.catalog.transformation.TransformationFragment;
       BottomAppBarFragment.Module.class,
       ButtonsFragment.Module.class,
       BottomNavigationFragment.Module.class,
+      BottomSheetFragment.Module.class,
       CardFragment.Module.class,
       CheckBoxFragment.Module.class,
       ChipFragment.Module.class,

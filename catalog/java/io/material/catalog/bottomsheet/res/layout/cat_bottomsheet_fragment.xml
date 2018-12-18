@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2018 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cat_bottomsheet_coordinator_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+  <RelativeLayout
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+    <Button
+        android:id="@+id/bottomsheet_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:gravity="center_horizontal"
+        android:text="@string/cat_bottomsheet_button_text"/>
+      <Switch
+          android:id="@+id/cat_fullscreen_switch"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:layout_below="@id/bottomsheet_button"
+          android:layout_centerHorizontal="true"
+          android:padding="16dp"
+          android:textSize="14sp"
+          android:textAllCaps="true"
+          android:switchMinWidth="56dp"
+          android:text="@string/cat_bottomsheet_switch_text"/>
+
+  </RelativeLayout>
+  <RelativeLayout
+      android:id="@+id/bottom_drawer"
+      style="@style/Widget.MaterialComponents.BottomSheet.Modal"
+      android:layout_width="match_parent"
+      android:layout_height="400dp"
+      android:elevation="16dp"
+      app:behavior_hideable="false"
+      app:backgroundTint="?attr/colorSecondary"
+      app:behavior_peekHeight="200dp"
+      app:layout_behavior="@string/bottom_sheet_behavior">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_centerHorizontal="true"
+        android:text="@string/cat_bottomsheet_persistent"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="18sp"/>
+
+    <TextView
+        android:id="@+id/cat_persistent_bottomsheet_state"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_below="@id/textView"
+        android:layout_centerHorizontal="true"
+        android:text="@string/cat_bottomsheet_state_collapsed"
+        android:textColor="?attr/colorOnSecondary"
+        android:textSize="18sp"/>
+
+  </RelativeLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

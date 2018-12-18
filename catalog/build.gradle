@@ -22,6 +22,7 @@ def srcDirs = [
   'assets',
   'bottomappbar',
   'bottomnav',
+  'bottomsheet',
   'button',
   'card',
   'checkbox',
