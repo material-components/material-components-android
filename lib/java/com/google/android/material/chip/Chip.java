@@ -169,7 +169,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
         @Override
         public void onFontRetrieved(@NonNull Typeface typeface, boolean fontResolvedSynchronously) {
           // Set text to re-trigger internal ellipsize width calculation.
-          setText(getText());
+          setText(chipDrawable.shouldDrawText() ? chipDrawable.getText() : getText());
           requestLayout();
           invalidate();
         }
@@ -232,7 +232,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     updateTextPaintDrawState();
 
     // Chip text should not extend to more than 1 line.
-    setSingleLine();
+    if (!chipDrawable.shouldDrawText()) {
+      setSingleLine();
+    }
     // Chip text should be vertically center aligned and start aligned.
     // Final horizontal text origin is set during the onDraw call via canvas translation.
     setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
