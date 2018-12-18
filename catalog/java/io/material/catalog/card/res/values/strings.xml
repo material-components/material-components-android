@@ -18,6 +18,8 @@
 <resources>
 
   <string name="cat_card_title">Cards</string>
+  <string name="cat_card_draggable_card">Draggable Card</string>
+  <string name="cat_card_draggable_card_content">This is a draggable Card.</string>
   <string name="cat_card_m1_section_title">Material 1 CardView</string>
   <string name="cat_card_description">
     Cards represent entry points into deeper levels of detail or navigation, such as an album in

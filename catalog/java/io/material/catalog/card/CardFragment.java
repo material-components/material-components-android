@@ -18,6 +18,7 @@ package io.material.catalog.card;
 
 import io.material.catalog.R;
 
+import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -27,6 +28,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.Collections;
+import java.util.List;
 
 /** A landing fragment that links to card demos for the Catalog app. */
 public class CardFragment extends DemoLandingFragment {
@@ -49,6 +52,17 @@ public class CardFragment extends DemoLandingFragment {
         return new CardMainDemoFragment();
       }
     };
+  }
+
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    return Collections.singletonList(new Demo(R.string.cat_card_draggable_card) {
+      @Nullable
+      @Override
+      public Fragment createFragment() {
+        return new DraggableCardFragment();
+      }
+    });
   }
 
   /** The Dagger module for {@link CardFragment} dependencies. */
