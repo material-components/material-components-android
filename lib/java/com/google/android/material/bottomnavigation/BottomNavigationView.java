@@ -183,7 +183,7 @@ public class BottomNavigationView extends FrameLayout {
     ColorStateList backgroundTint =
         MaterialResources.getColorStateList(
             context, a, R.styleable.BottomNavigationView_backgroundTint);
-    DrawableCompat.setTintList(getBackground(), backgroundTint);
+    DrawableCompat.setTintList(getBackground().mutate(), backgroundTint);
 
     setLabelVisibilityMode(
         a.getInteger(
