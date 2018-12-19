@@ -22,10 +22,13 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import io.material.catalog.feature.DemoFragment;
@@ -73,6 +76,20 @@ public abstract class ShapeThemingDemoFragment extends DemoFragment {
             R.layout.cat_shape_theming_container, viewGroup, false /* attachToRoot */);
     ViewGroup container = view.findViewById(R.id.container);
     layoutInflater.inflate(R.layout.cat_shape_theming_content, container, true  /* attachToRoot */);
+
+    MaterialButton materialButton = container.findViewById(R.id.material_button);
+    MaterialAlertDialogBuilder materialAlertDialogBuilder =
+        new MaterialAlertDialogBuilder(getContext(), getShapeTheme())
+            .setTitle(R.string.cat_shape_theming_dialog_title)
+            .setMessage(R.string.cat_shape_theming_dialog_message)
+            .setPositiveButton(R.string.cat_shape_theming_dialog_ok, null);
+    materialButton.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            materialAlertDialogBuilder.show();
+          }
+        });
     return view;
   }
 

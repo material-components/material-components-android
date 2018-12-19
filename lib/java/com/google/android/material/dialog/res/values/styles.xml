@@ -24,7 +24,6 @@
     <item name="backgroundInsetEnd">@dimen/mtrl_alert_dialog_background_inset_end</item>
     <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_background_inset_bottom</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialAlertDialog</item>
   </style>
 
   <style name="Base.MaterialAlertDialog.MaterialComponents.Title.Panel" parent="android:Widget">
@@ -83,11 +82,6 @@
       parent="Base.MaterialAlertDialog.MaterialComponents.Title.Text">
     <item name="android:layout_gravity">center</item>
     <item name="android:textAlignment" tools:ignore="NewApi">center</item>
-  </style>
-
-  <style name="ShapeAppearanceOverlay.MaterialComponents.MaterialAlertDialog" parent="">
-    <item name="cornerSize">4dp</item>
-    <item name="cornerFamily">rounded</item>
   </style>
 
 </resources>

@@ -25,6 +25,10 @@
     shapes throughout an app.
   </string>
 
+  <string name="cat_shape_theming_dialog_title">Title</string>
+  <string name="cat_shape_theming_dialog_message">Message</string>
+  <string name="cat_shape_theming_dialog_ok">OK</string>
+
   <string name="cat_shape_theming_crane_demo_title">Crane Demo</string>
   <string name="cat_shape_theming_fortnightly_demo_title">Fortnightly Demo</string>
   <string name="cat_shape_theming_shrine_demo_title">Shrine Demo</string>
