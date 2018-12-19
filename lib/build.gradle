@@ -15,6 +15,7 @@ dependencies {
   api compatibility("v7/cardview")
   api compatibility("v7/recyclerview")
 
+  testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "junit:junit:4.12"
   testImplementation "com.google.truth:truth:0.35"

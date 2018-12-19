@@ -23,12 +23,12 @@ import static org.junit.Assert.assertTrue;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link com.google.android.material.chip.ChipGroup}. */
@@ -41,7 +41,7 @@ public class ChipGroupTest {
 
   @Before
   public void themeApplicationContext() {
-    RuntimeEnvironment.application.setTheme(
+    ApplicationProvider.getApplicationContext().setTheme(
         R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     View inflated = activity.getLayoutInflater().inflate(R.layout.test_reflow_chipgroup, null);

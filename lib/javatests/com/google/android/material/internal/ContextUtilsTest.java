@@ -21,12 +21,12 @@ import com.google.android.material.R;
 import android.app.Activity;
 import android.content.ContextWrapper;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link ContextUtils}. */
@@ -36,13 +36,13 @@ public class ContextUtilsTest {
 
   @Test
   public void testWithApplicationContext() {
-    Activity activity = ContextUtils.getActivity(RuntimeEnvironment.application);
+    Activity activity = ContextUtils.getActivity(ApplicationProvider.getApplicationContext());
     Assert.assertNull(activity);
   }
 
   @Test
   public void testWithContextWrapper() {
-    RuntimeEnvironment.application.setTheme(R.style.Theme_AppCompat);
+    ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_AppCompat);
     AppCompatActivity appCompatActivity = Robolectric.setupActivity(AppCompatActivity.class);
     ContextWrapper contextWrapper = new ContextWrapper(appCompatActivity);
     Activity activity = ContextUtils.getActivity(contextWrapper);

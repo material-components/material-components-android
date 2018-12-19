@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
+import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -28,7 +29,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.RuntimeEnvironment;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link com.google.android.material.chip.Chip}. */
@@ -43,7 +43,7 @@ public class ChipTest {
 
   @Before
   public void themeApplicationContext() {
-    RuntimeEnvironment.application.setTheme(
+    ApplicationProvider.getApplicationContext().setTheme(
         R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     View inflated = activity.getLayoutInflater().inflate(R.layout.test_action_chip, null);
