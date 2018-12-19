@@ -38,14 +38,17 @@ import android.util.AttributeSet;
 public class MaterialComponentsViewInflater extends AppCompatViewInflater {
 
   // Cached background resource ID used for workaround to not inflate MaterialButton in
-  // API 23 FloatingToolbar. Technically 0 is the only invalid resource ID, but we are assuming
+  // API 23-25 FloatingToolbar. Technically 0 is the only invalid resource ID, but we are assuming
   // it's safe to use -1 as a sentinel here.
   private static int floatingToolbarItemBackgroundResId = -1;
 
   @NonNull
   @Override
   protected AppCompatButton createButton(Context context, AttributeSet attrs) {
-    if (VERSION.SDK_INT == VERSION_CODES.M && isFloatingToolbarItemButton(context, attrs)) {
+    if ((VERSION.SDK_INT == VERSION_CODES.M
+            || VERSION.SDK_INT == VERSION_CODES.N
+            || VERSION.SDK_INT == VERSION_CODES.N_MR1)
+        && isFloatingToolbarItemButton(context, attrs)) {
       return new AppCompatButton(context, attrs);
     }
 
@@ -53,7 +56,7 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
   }
 
   private boolean isFloatingToolbarItemButton(Context context, AttributeSet attrs) {
-    // Workaround for FloatingToolbar inflating floating_popup_menu_button.xml on API 23, which
+    // Workaround for FloatingToolbar inflating floating_popup_menu_button.xml on API 23-25, which
     // should not have MaterialButton styling.
     if (floatingToolbarItemBackgroundResId == -1) {
       floatingToolbarItemBackgroundResId =
