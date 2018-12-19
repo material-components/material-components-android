@@ -42,6 +42,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AlertDialog;
+import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.Window;
@@ -62,7 +63,11 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
 
   private static final float DEFAULT_DIM_AMOUNT = 0.32f;
   @AttrRes private static final int DEF_STYLE_ATTR = R.attr.alertDialogStyle;
-  @StyleRes private static final int DEF_STYLE_RES = R.style.AlertDialog_MaterialComponents;
+  @StyleRes private static final int DEF_STYLE_RES = R.style.MaterialAlertDialog_MaterialComponents;
+
+  @AttrRes
+  private static final int MATERIAL_ALERT_DIALOG_THEME_OVERLAY =
+      R.attr.materialAlertDialogTheme;
 
   private Drawable background;
   @Px private int backgroundInsetStart;
@@ -70,12 +75,20 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   @Px private int backgroundInsetEnd;
   @Px private int backgroundInsetBottom;
 
+  private static Context createMaterialAlertDialogThemedContext(Context context) {
+    TypedValue outValue = new TypedValue();
+    context.getTheme().resolveAttribute(MATERIAL_ALERT_DIALOG_THEME_OVERLAY, outValue, true);
+    int themeOverlayId = outValue.resourceId;
+    return new ContextThemeWrapper(
+        createThemedContext(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES), themeOverlayId);
+  }
+
   public MaterialAlertDialogBuilder(Context context) {
     this(context, 0);
   }
 
   public MaterialAlertDialogBuilder(Context context, int themeResId) {
-    super(createThemedContext(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES), themeResId);
+    super(createMaterialAlertDialogThemedContext(context), themeResId);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
 
@@ -148,8 +161,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
             backgroundInsetBottom);
     window.setBackgroundDrawable(insetDrawable);
     decorView.setOnTouchListener(
-        new InsetDialogOnTouchListener(
-            alertDialog, backgroundInsetLeft, backgroundInsetTop));
+        new InsetDialogOnTouchListener(alertDialog, backgroundInsetLeft, backgroundInsetTop));
     return alertDialog;
   }
 

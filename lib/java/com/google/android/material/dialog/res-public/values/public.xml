@@ -25,16 +25,16 @@
   <public name="ThemeOverlay.MaterialComponents.Dialog.Alert" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dialog.Alert.Centered" type="style"/>
 
-  <public name="alertDialogTitlePanelStyle" type="attr"/>
-  <public name="alertDialogTitleIconStyle" type="attr"/>
-  <public name="alertDialogTitleTextStyle" type="attr"/>
+  <public name="materialAlertDialogTitlePanelStyle" type="attr"/>
+  <public name="materialAlertDialogTitleIconStyle" type="attr"/>
+  <public name="materialAlertDialogTitleTextStyle" type="attr"/>
 
-  <public name="AlertDialog.MaterialComponents.Title.Panel" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Icon" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Text" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Panel.CenterStacked" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Icon.CenterStacked" type="style"/>
-  <public name="AlertDialog.MaterialComponents.Title.Text.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Panel" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Icon" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Text" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked" type="style"/>
+  <public name="MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked" type="style"/>
 
 </resources>
 

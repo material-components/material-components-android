@@ -94,10 +94,7 @@
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
-    <item name="alertDialogStyle">@style/AlertDialog.MaterialComponents</item>
-    <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel</item>
-    <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon</item>
-    <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
 
     <!-- Type styles -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
@@ -179,10 +176,7 @@
     <item name="toolbarStyle">@style/Widget.MaterialComponents.Toolbar</item>
 
     <item name="alertDialogTheme">@style/ThemeOverlay.MaterialComponents.Dialog.Alert</item>
-    <item name="alertDialogStyle">@style/AlertDialog.MaterialComponents</item>
-    <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel</item>
-    <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon</item>
-    <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text</item>
+    <item name="materialAlertDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog</item>
 
     <!-- Type styles -->
     <item name="textAppearanceLargePopupMenu">?attr/textAppearanceSubtitle1</item>
@@ -209,6 +203,11 @@
 
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
     <!-- Widget styles -->
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+  </style>
+  <style name="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
+    <!-- Widget styles -->
+    <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
   </style>
 
@@ -260,5 +259,6 @@
 
   <style name="Base.ThemeOverlay.MaterialComponents.Dialog" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog"/>
   <style name="Base.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
+  <style name="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
 
 </resources>

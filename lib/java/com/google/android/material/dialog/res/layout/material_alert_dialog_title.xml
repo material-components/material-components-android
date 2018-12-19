@@ -26,16 +26,16 @@
 
   <LinearLayout
       android:id="@+id/title_template"
-      style="?attr/alertDialogTitlePanelStyle">
+      style="?attr/materialAlertDialogTitlePanelStyle">
 
     <ImageView
         android:id="@android:id/icon"
         tools:ignore="ContentDescription"
-        style="?attr/alertDialogTitleIconStyle"/>
+        style="?attr/materialAlertDialogTitleIconStyle"/>
 
     <androidx.appcompat.widget.DialogTitle
         android:id="@+id/alertTitle"
-        style="?attr/alertDialogTitleTextStyle"/>
+        style="?attr/materialAlertDialogTitleTextStyle"/>
   </LinearLayout>
 
   <android.widget.Space

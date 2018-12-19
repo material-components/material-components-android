@@ -51,17 +51,23 @@
     The default theme overlay used by MaterialComponents for alert dialogs, via the
     alertDialogTheme attribute.
   -->
-  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert">
-    <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel</item>
-    <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon</item>
-    <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text</item>
+  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert"/>
+
+  <!--
+    The default theme overlay used by MaterialComponents for AlertDialogs built with the MaterialAlertDialogBuilder, via the
+    materialAlertDialogTheme attribute.
+  -->
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text</item>
   </style>
 
   <!-- A theme overlay for Alert Dialog panels with a center aligned title text and icon. -->
-  <style name="ThemeOverlay.MaterialComponents.Dialog.Alert.Centered" parent="Base.ThemeOverlay.MaterialComponents.Dialog.Alert">
-    <item name="alertDialogTitlePanelStyle">@style/AlertDialog.MaterialComponents.Title.Panel.CenterStacked</item>
-    <item name="alertDialogTitleIconStyle">@style/AlertDialog.MaterialComponents.Title.Icon.CenterStacked</item>
-    <item name="alertDialogTitleTextStyle">@style/AlertDialog.MaterialComponents.Title.Text.CenterStacked</item>
+  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered" parent="Base.ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+    <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel.CenterStacked</item>
+    <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon.CenterStacked</item>
+    <item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text.CenterStacked</item>
   </style>
 
 </resources>
