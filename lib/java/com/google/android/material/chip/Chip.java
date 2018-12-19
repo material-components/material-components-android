@@ -57,7 +57,6 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.resources.TextAppearanceFontCallback;
 import com.google.android.material.ripple.RippleUtils;
-import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -311,11 +310,9 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             (chipDrawable.getChipStartPadding()
                 + chipDrawable.getTextStartPadding()
                 + chipDrawable.calculateChipIconWidth());
-    if (ViewCompat.getPaddingEnd(this) != paddingEnd
-        || ViewCompat.getPaddingStart(this) != paddingStart) {
-      ViewCompat.setPaddingRelative(
-          this, paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
-    }
+
+    ViewCompat.setPaddingRelative(
+        this, paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
@@ -1334,7 +1331,6 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     } else {
       ViewCompat.setLayoutDirection(this, layoutDirection);
     }
-    DrawableCompat.setLayoutDirection(chipDrawable, layoutDirection);
   }
 
   @Override
