@@ -309,24 +309,24 @@ public class ChipGroup extends FlowLayout {
     }
   }
 
-  /** Sets the horizontal and vertical spacing between chips in this group. */
+  /** Sets the horizontal and vertical spacing between visible chips in this group. */
   public void setChipSpacing(@Dimension int chipSpacing) {
     setChipSpacingHorizontal(chipSpacing);
     setChipSpacingVertical(chipSpacing);
   }
 
-  /** Sets the horizontal and vertical spacing between chips in this group. */
+  /** Sets the horizontal and vertical spacing between visible chips in this group. */
   public void setChipSpacingResource(@DimenRes int id) {
     setChipSpacing(getResources().getDimensionPixelOffset(id));
   }
 
-  /** Returns the horizontal spacing between chips in this group. */
+  /** Returns the horizontal spacing between visible chips in this group. */
   @Dimension
   public int getChipSpacingHorizontal() {
     return chipSpacingHorizontal;
   }
 
-  /** Sets the horizontal spacing between chips in this group. */
+  /** Sets the horizontal spacing between visible chips in this group. */
   public void setChipSpacingHorizontal(@Dimension int chipSpacingHorizontal) {
     if (this.chipSpacingHorizontal != chipSpacingHorizontal) {
       this.chipSpacingHorizontal = chipSpacingHorizontal;
@@ -335,18 +335,18 @@ public class ChipGroup extends FlowLayout {
     }
   }
 
-  /** Sets the horizontal spacing between chips in this group. */
+  /** Sets the horizontal spacing between visible chips in this group. */
   public void setChipSpacingHorizontalResource(@DimenRes int id) {
     setChipSpacingHorizontal(getResources().getDimensionPixelOffset(id));
   }
 
-  /** Returns the vertical spacing between chips in this group. */
+  /** Returns the vertical spacing between visible chips in this group. */
   @Dimension
   public int getChipSpacingVertical() {
     return chipSpacingVertical;
   }
 
-  /** Sets the vertical spacing between chips in this group. */
+  /** Sets the vertical spacing between visible chips in this group. */
   public void setChipSpacingVertical(@Dimension int chipSpacingVertical) {
     if (this.chipSpacingVertical != chipSpacingVertical) {
       this.chipSpacingVertical = chipSpacingVertical;
@@ -355,7 +355,7 @@ public class ChipGroup extends FlowLayout {
     }
   }
 
-  /** Sets the vertical spacing between chips in this group. */
+  /** Sets the vertical spacing between visible chips in this group. */
   public void setChipSpacingVerticalResource(@DimenRes int id) {
     setChipSpacingVertical(getResources().getDimensionPixelOffset(id));
   }

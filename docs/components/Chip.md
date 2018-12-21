@@ -265,6 +265,12 @@ A `ChipGroup` can also constrain its chips to a single horizontal line using the
 </HorizontalScrollView>
 ```
 
+#### Chip Spacing
+A `ChipGroup` can insert spacing between chips in a row or between rows of chips
+using the `app:chipSpacing` attribute. Different horizontal and vertical spacing
+can be set using the `app:chipSpacingHorizontal` and `app:chipSpacingVertical`
+attributes.
+
 #### Multiple Exclusion Scope
 
 A `ChipGroup` can be configured to only allow a single chip to be checked at a
@@ -300,6 +306,13 @@ chipGroup.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 
 Or, call `getCheckedChipId()` at any time to get the checked chip. The return
 value is only valid in single selection mode.
+
+### ChipGroup Attributes
+Feature         | Relevant Attributes
+----------------| -----------------------------
+Layout          |`app:singleLine`
+Selection       | `app:singleSelection`
+Spacing         |`app:chipSpacing` <br> `app:chipSpacingHorizontal` <br> `chipSpacingVertical`
 
 ### Standalone ChipDrawable
 
