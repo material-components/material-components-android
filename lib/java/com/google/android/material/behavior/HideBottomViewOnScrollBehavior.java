@@ -52,7 +52,8 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
 
   @Override
   public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
-    height = child.getMeasuredHeight();
+    ViewGroup.MarginLayoutParams paramsCompat =  (ViewGroup.MarginLayoutParams)child.getLayoutParams();
+    height = child.getMeasuredHeight() + paramsCompat.bottomMargin;
     return super.onLayoutChild(parent, child, layoutDirection);
   }
 
