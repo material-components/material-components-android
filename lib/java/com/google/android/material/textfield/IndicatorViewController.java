@@ -237,6 +237,10 @@ final class IndicatorViewController {
                   errorView.setText(null);
                 }
               }
+              if (captionViewToShow != null) {
+                captionViewToShow.setTranslationY(0);
+                captionViewToShow.setAlpha(1);
+              }
             }
 
             @Override
