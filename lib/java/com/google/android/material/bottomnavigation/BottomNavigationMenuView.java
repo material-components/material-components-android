@@ -41,6 +41,7 @@ import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuView;
 import android.util.AttributeSet;
 import android.util.TypedValue;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -523,6 +524,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       child.initialize((MenuItemImpl) menu.getItem(i), 0);
       child.setItemPosition(i);
       child.setOnClickListener(onClickListener);
+      if (selectedItemId != Menu.NONE && menu.getItem(i).getItemId() == selectedItemId) {
+        selectedItemPosition = i;
+      }
       addView(child);
     }
     selectedItemPosition = Math.min(menu.size() - 1, selectedItemPosition);
