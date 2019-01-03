@@ -19,7 +19,13 @@
 
   <string name="cat_card_title">Cards</string>
   <string name="cat_card_draggable_card">Draggable Card</string>
+  <string name="cat_card_states">Card States</string>
   <string name="cat_card_draggable_card_content">This is a draggable Card.</string>
+  <string name="cat_card_states_card_content">This demo shows the different states on a card.</string>
+  <string name="cat_card_state_hovered">Hovered</string>
+  <string name="cat_card_state_pressed">Pressed</string>
+  <string name="cat_card_state_none">None</string>
+  <string name="cat_card_checkable_card">This is a checkable Card</string>
   <string name="cat_card_m1_section_title">Material 1 CardView</string>
   <string name="cat_card_description">
     Cards represent entry points into deeper levels of detail or navigation, such as an album in
@@ -44,4 +50,5 @@
     use MaterialCardView in your layout, or apply a style tag to a CardView. We recommend using
     the MaterialCardView class for the latest Material designs and maximum flexibility in your UI.
   </string>
+  <string name="cat_card_select">Select a state</string>
 </resources>

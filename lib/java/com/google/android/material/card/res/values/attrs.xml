@@ -24,6 +24,12 @@
   <attr name="materialCardViewStyle" format="reference"/>
 
   <declare-styleable name="MaterialCardView">
+    <!-- Whether the card can be checked. -->
+    <attr name="android:checkable"/>
+    <!-- Background color for CardView. -->
+    <attr name="cardBackgroundColor"/>
+    <!-- Ripple color for the Card. -->
+    <attr name="rippleColor"/>
     <!-- Specifies the color used to draw the path outline of the card. Attribute type definition is
          in resources package. -->
     <attr name="strokeColor"/>

@@ -21,7 +21,6 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;
-import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Color;
@@ -40,14 +39,16 @@ import androidx.annotation.Dimension;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.RoundedCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import androidx.core.graphics.ColorUtils;
 import android.util.AttributeSet;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import androidx.cardview.widget.CardView;
@@ -56,6 +57,7 @@ import androidx.cardview.widget.CardView;
 @RestrictTo(LIBRARY_GROUP)
 class MaterialCardViewHelper {
 
+  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int DEFAULT_STROKE_VALUE = -1;
 
   // used to calculate content padding
@@ -82,12 +84,14 @@ class MaterialCardViewHelper {
   private static final float CARD_VIEW_SHADOW_MULTIPLIER = 1.5f;
 
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
+
   private static final float SHADOW_OFFSET_MULTIPLIER = .25f;
 
   private final MaterialCardView materialCardView;
 
+  private ColorStateList rippleColor;
+
   @ColorInt private int strokeColor;
-  @ColorInt private int rippleColor;
   @Dimension private int strokeWidth;
   private final Rect userContentPadding = new Rect();
 
@@ -107,6 +111,7 @@ class MaterialCardViewHelper {
   private Drawable fgDrawable;
 
   private boolean isBackgroundOverwritten = false;
+  private boolean checkable;
 
   public MaterialCardViewHelper(
       MaterialCardView card, AttributeSet attrs, int defStyleAttr, @StyleRes int defStyleRes) {
@@ -116,8 +121,6 @@ class MaterialCardViewHelper {
     bgDrawable.setShadowColor(Color.DKGRAY);
     strokeDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
     strokeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
-    fgDrawable = materialCardView.isClickable() ? getClickableForeground() : strokeDrawable;
-
     TypedArray cardViewAttributes =
         card.getContext()
             .obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr, R.style.CardView);
@@ -135,17 +138,44 @@ class MaterialCardViewHelper {
     strokeColor =
         attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
+    checkable = attributes.getBoolean(R.styleable.MaterialCardView_android_checkable, false);
+    rippleColor =
+        MaterialResources.getColorStateList(
+            materialCardView.getContext(), attributes, R.styleable.MaterialCardView_rippleColor);
     adjustShapeAppearanceModelInsetByStroke();
-    rippleColor = getRippleColor();
+
+    ColorStateList backgroundColor =
+        MaterialResources.getColorStateList(
+            materialCardView.getContext(),
+            attributes,
+            R.styleable.MaterialCardView_cardBackgroundColor);
+    if (backgroundColor == null) {
+      backgroundColor = createBackgroundColor();
+    }
+    setCardBackgroundColor(backgroundColor);
     updateRippleColor();
 
     updateElevation();
     updateStroke();
 
     materialCardView.setBackgroundInternal(insetDrawable(bgDrawable));
+    fgDrawable = materialCardView.isClickable() ? getClickableForeground() : strokeDrawable;
     materialCardView.setForeground(insetDrawable(fgDrawable));
 
     adjustContentPadding(strokeWidth);
+  }
+
+  private ColorStateList createBackgroundColor() {
+    int surfaceLayerColor =
+        MaterialColors.getColor(materialCardView, R.attr.colorSurface, Color.TRANSPARENT);
+    int primaryColor =
+        MaterialColors.getColor(materialCardView, R.attr.colorPrimary, Color.TRANSPARENT);
+    // Set alpha to 8%;
+    primaryColor = ColorUtils.setAlphaComponent(primaryColor, 255 * 8 / 100);
+    primaryColor = MaterialColors.layer(surfaceLayerColor, primaryColor);
+
+    return new ColorStateList(
+        new int[][] {CHECKED_STATE_SET, new int[] {}}, new int[] {primaryColor, surfaceLayerColor});
   }
 
   boolean isBackgroundOverwritten() {
@@ -454,18 +484,27 @@ class MaterialCardViewHelper {
         userContentPadding.bottom + contentPaddingOffset);
   }
 
-  private int getRippleColor() {
-    Context context = materialCardView.getContext();
-    TypedValue value = new TypedValue();
-    context.getTheme().resolveAttribute(R.attr.colorControlHighlight, value, true);
-    return value.data;
+  void setCheckable(boolean checkable) {
+    this.checkable = checkable;
+  }
+
+  boolean isCheckable() {
+    return checkable;
+  }
+
+  void setRippleColor(ColorStateList rippleColor) {
+    this.rippleColor = rippleColor;
+  }
+
+  @Nullable
+  ColorStateList getRippleColor() {
+    return rippleColor;
   }
 
   private Drawable createForegroundRippleDrawable() {
     if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
       //noinspection NewApi
-      return new RippleDrawable(
-          ColorStateList.valueOf(rippleColor), null, createForegroundShapeDrawable());
+      return new RippleDrawable(rippleColor, null, createForegroundShapeDrawable());
     }
 
     return createCompatRippleDrawable();
@@ -474,7 +513,7 @@ class MaterialCardViewHelper {
   private Drawable createCompatRippleDrawable() {
     StateListDrawable rippleDrawable = new StateListDrawable();
     compatRippleDrawable = createForegroundShapeDrawable();
-    compatRippleDrawable.setFillColor(ColorStateList.valueOf(rippleColor));
+    compatRippleDrawable.setFillColor(rippleColor);
     rippleDrawable.addState(new int[] {android.R.attr.state_pressed}, compatRippleDrawable);
     return rippleDrawable;
   }
@@ -482,9 +521,9 @@ class MaterialCardViewHelper {
   private void updateRippleColor() {
     //noinspection NewApi
     if (RippleUtils.USE_FRAMEWORK_RIPPLE && rippleDrawable != null) {
-      ((RippleDrawable) rippleDrawable).setColor(ColorStateList.valueOf(rippleColor));
+      ((RippleDrawable) rippleDrawable).setColor(rippleColor);
     } else if (compatRippleDrawable != null) {
-      compatRippleDrawable.setFillColor(ColorStateList.valueOf(rippleColor));
+      compatRippleDrawable.setFillColor(rippleColor);
     }
   }
 
