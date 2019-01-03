@@ -28,17 +28,13 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
-import androidx.annotation.ColorRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.ThemeEnforcement;
-import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.accessibility.AccessibilityNodeInfo;
-import android.widget.Checkable;
 import android.widget.FrameLayout;
 import androidx.cardview.widget.CardView;
 
@@ -52,31 +48,17 @@ import androidx.cardview.widget.CardView;
  * the {@code strokeColor} attribute. Without a {@code strokeColor}, the card will not render a
  * stroked border, regardless of the {@code strokeWidth} value.
  *
- * <p><strong>Note:</strong> Avoid setting {@link View#setClipToOutline} to true. There is an
+ * * <p><strong>Note:</strong> Avoid setting {@link View#setClipToOutline} to true. There is an
  * intermediate view to clip the content, setting this will have negative performance consequences.
  *
  * <p><strong>Note:</strong> The actual view hierarchy present under MaterialCardView is
  * <strong>NOT</strong> guaranteed to match the view hierarchy as written in XML. As a result, calls
  * to getParent() on children of the MaterialCardView, will not return the MaterialCardView itself,
- * but rather an intermediate View. If you need to access a MaterialCardView directly, set an {@code
- * android:id} and use {@link View#findViewById(int)}.
+ * but rather an intermediate View. If you need to access a MaterialCardView directly,
+ * set an {@code android:id} and use {@link View#findViewById(int)}.
  */
-public class MaterialCardView extends CardView implements Checkable {
+public class MaterialCardView extends CardView {
 
-  /**
-   * Interface definition for a callback to be invoked when the card checked state changes.
-   */
-  public interface OnCheckedChangeListener {
-    /**
-     * Called when the checked state of a compound button has changed.
-     *
-     * @param card The Material Card View whose state has changed.
-     * @param isChecked The new checked state of MaterialCardView.
-     */
-    void onCheckedChanged(MaterialCardView card, boolean isChecked);
-  }
-
-  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
   private static final String LOG_TAG = "MaterialCardView";
 
@@ -88,9 +70,6 @@ public class MaterialCardView extends CardView implements Checkable {
    * {@link Drawable} that it passes to {@link #setBackground(Drawable)}.
    */
   private final boolean isParentCardViewDoneInitializing;
-
-  private boolean checked = false;
-  private OnCheckedChangeListener onCheckedChangeListener;
 
   public MaterialCardView(Context context) {
     this(context, null /* attrs */);
@@ -112,6 +91,8 @@ public class MaterialCardView extends CardView implements Checkable {
 
     // Loads and sets background drawable attributes.
     cardViewHelper = new MaterialCardViewHelper(this, attrs, defStyleAttr, DEF_STYLE_RES);
+    // Get the card background color and content padding that CardView read from the attributes.
+    cardViewHelper.setCardBackgroundColor(super.getCardBackgroundColor());
     cardViewHelper.setUserContentPadding(
         super.getContentPaddingLeft(),
         super.getContentPaddingTop(),
@@ -125,14 +106,6 @@ public class MaterialCardView extends CardView implements Checkable {
     updateContentLayout();
 
     attributes.recycle();
-  }
-
-  @Override
-  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
-    super.onInitializeAccessibilityNodeInfo(info);
-    info.setClassName(MaterialCardView.class.getName());
-    info.setCheckable(isCheckable());
-    info.setClickable(isClickable());
   }
 
   private void updateContentLayout() {
@@ -331,107 +304,4 @@ public class MaterialCardView extends CardView implements Checkable {
     super.setContentPadding(left, top, right, bottom);
   }
 
-  @Override
-  public boolean isChecked() {
-    return checked;
-  }
-
-  @Override
-  public void setChecked(boolean checked) {
-    if (this.checked != checked) {
-      toggle();
-    }
-  }
-
-  /**
-   * Returns whether this Card is checkable.
-   *
-   * @see #setCheckable(boolean)
-   * @attr ref com.google.android.material.R.styleable#MaterialCardView_android_checkable
-   */
-  public boolean isCheckable() {
-    return cardViewHelper.isCheckable();
-  }
-
-  /**
-   * Sets whether this Card is checkable.
-   *
-   * @param checkable Whether this chip is checkable.
-   * @attr ref com.google.android.material.R.styleable#MaterialCardView_android_checkable
-   */
-  public void setCheckable(boolean checkable) {
-    cardViewHelper.setCheckable(checkable);
-  }
-
-  @Override
-  public void toggle() {
-    if (isCheckable()) {
-      checked = !checked;
-      refreshDrawableState();
-      if (onCheckedChangeListener != null) {
-        onCheckedChangeListener.onCheckedChanged(this, checked);
-      }
-    }
-  }
-
-  @Override
-  public boolean performClick() {
-    toggle();
-    return super.performClick();
-  }
-
-  @Override
-  protected int[] onCreateDrawableState(int extraSpace) {
-    final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
-    if (isChecked()) {
-      mergeDrawableStates(drawableState, CHECKED_STATE_SET);
-    }
-    return drawableState;
-  }
-
-  /**
-   * Register a callback to be invoked when the checked state of this Card changes.
-   *
-   * @param listener the callback to call on checked state change
-   */
-  public void setOnCheckedChangeListener(@Nullable OnCheckedChangeListener listener) {
-    onCheckedChangeListener = listener;
-  }
-
-  /**
-   * Sets the ripple color for this card.
-   *
-   * @param rippleColor Color to use for the ripple.
-   * @attr ref com.google.android.material.R.styleable#MaterialCardView_rippleColor
-   * @see #setRippleColorResource(int)
-   * @see #getRippleColor()
-   */
-  public void setRippleColor(@Nullable ColorStateList rippleColor) {
-    cardViewHelper.setRippleColor(rippleColor);
-  }
-
-  /**
-   * Sets the ripple color resource for this card.
-   *
-   * @param rippleColorResourceId Color resource to use for the ripple.
-   * @attr ref com.google.android.material.R.styleable#MaterialCardView_rippleColor
-   * @see #setRippleColor(ColorStateList)
-   * @see #getRippleColor()
-   */
-  public void setRippleColorResource(@ColorRes int rippleColorResourceId) {
-    cardViewHelper.setRippleColor(
-        AppCompatResources.getColorStateList(getContext(), rippleColorResourceId));
-  }
-
-  /**
-   * Gets the ripple color for this card.
-   *
-   * @return The color used for the ripple.
-   * @attr ref com.google.android.material.R.styleable#MaterialCardView_rippleColor
-   * @see #setRippleColor(ColorStateList)
-   * @see #setRippleColorResource(int)
-   */
-  public ColorStateList getRippleColor() {
-    return cardViewHelper.getRippleColor();
-  }
 }
