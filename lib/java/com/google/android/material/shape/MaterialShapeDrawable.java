@@ -779,6 +779,19 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     strokePaint.setAlpha(prevStrokeAlpha);
   }
 
+  /**
+   * Draw the path or try to draw a round rect if possible.
+   *
+   * <p>This method is a protected version of the private method used internally. It is made
+   * available to allow subclasses within the library to draw the shape directly.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  protected void drawShape(Canvas canvas, Paint paint, Path path, RectF bounds) {
+    drawShape(canvas, paint, path, drawableState.shapeAppearanceModel, bounds);
+  }
+
   /** Draw the path or try to draw a round rect if possible. */
   private void drawShape(
       Canvas canvas,
@@ -792,10 +805,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     } else {
       canvas.drawPath(path, paint);
     }
-  }
-
-  protected void drawShape(Canvas canvas, Paint paint, Path path, RectF bounds) {
-    drawShape(canvas, paint, path, drawableState.shapeAppearanceModel, bounds);
   }
 
   private void drawFillShape(Canvas canvas) {
