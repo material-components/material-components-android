@@ -30,6 +30,15 @@ import com.google.android.material.internal.Experimental;
 public class EdgeTreatment implements Cloneable {
 
   /**
+   * @deprecated Does not support interpolation. Use {@link #getEdgePath(float, float, float,
+   *     ShapePath)} instead.
+   */
+  @Deprecated
+  public void getEdgePath(float length, float center, ShapePath shapePath) {
+    getEdgePath(length, center, 1f /* interpolation */, shapePath);
+  }
+
+  /**
    * Generates a {@link ShapePath} for this edge treatment.
    *
    * <p>EdgeTreatments have an origin of (0, 0) and a destination of (0, length) (i.e. they
