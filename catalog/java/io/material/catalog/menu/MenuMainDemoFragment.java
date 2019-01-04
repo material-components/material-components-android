@@ -18,6 +18,7 @@ package io.material.catalog.menu;
 
 import io.material.catalog.R;
 
+import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
@@ -25,6 +26,7 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -37,6 +39,8 @@ import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main menu demo for the Catalog app. */
 public class MenuMainDemoFragment extends DemoFragment {
+
+  public static final int ICON_MARGIN = 8;
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
@@ -80,6 +84,13 @@ public class MenuMainDemoFragment extends DemoFragment {
       MenuBuilder menuBuilder = (MenuBuilder) popup.getMenu();
       //noinspection RestrictedApi
       menuBuilder.setOptionalIconsVisible(true);
+      for (MenuItem item : menuBuilder.getVisibleItems()) {
+        int iconMarginPx =
+            (int)
+                TypedValue.applyDimension(
+                    TypedValue.COMPLEX_UNIT_DIP, ICON_MARGIN, getResources().getDisplayMetrics());
+        item.setIcon(new InsetDrawable(item.getIcon(), iconMarginPx, 0, iconMarginPx, 0));
+      }
     }
     popup.setOnMenuItemClickListener(
         new OnMenuItemClickListener() {
