@@ -876,6 +876,17 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     canvas.translate(shadowOffsetX, shadowOffsetY);
   }
 
+  /**
+   * @deprecated see {@link ShapeAppearancePathProvider}
+   */
+  @Deprecated
+  public void getPathForSize(int width, int height, Path path) {
+    calculatePathForSize(new RectF(0, 0, width, height), path);
+  }
+
+  /**
+   * @deprecated see {@link ShapeAppearancePathProvider}
+   */
   @Deprecated
   public void getPathForSize(Rect bounds, Path path) {
     calculatePathForSize(new RectF(bounds), path);
