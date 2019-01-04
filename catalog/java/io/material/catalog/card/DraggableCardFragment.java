@@ -47,7 +47,7 @@ public class DraggableCardFragment extends DemoFragment {
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =
         layoutInflater.inflate(
-            R.layout.cat_card_draggable_demo, viewGroup, false /* attachToRoot */);
+            R.layout.cat_card_draggable_fragment, viewGroup, false /* attachToRoot */);
     DraggableCoordinatorLayout container = (DraggableCoordinatorLayout) view;
     final MaterialCardView card = view.findViewById(R.id.draggable_card);
     container.addDraggableChild(card);
