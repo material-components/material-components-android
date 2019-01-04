@@ -797,8 +797,8 @@ public class AppBarLayout extends LinearLayout {
 
     /**
      * Upon a scroll ending, if the view is only partially visible then it will be snapped and
-     * scrolled to it's closest edge. For example, if the view only has it's bottom 25% displayed,
-     * it will be scrolled off screen completely. Conversely, if it's bottom 75% is visible then it
+     * scrolled to its closest edge. For example, if the view only has its bottom 25% displayed, it
+     * will be scrolled off screen completely. Conversely, if its bottom 75% is visible then it
      * will be scrolled fully into view.
      */
     public static final int SCROLL_FLAG_SNAP = 0x10;
