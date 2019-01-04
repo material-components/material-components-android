@@ -1875,11 +1875,17 @@ public class TextInputLayout extends LinearLayout {
             });
       }
 
-      if (editText != null && ViewCompat.getMinimumHeight(editText) <= 0) {
-        // We should make sure that the EditText has the same min-height as the password toggle
-        // view. This ensures focus works properly, and there is no visual jump if the password
-        // toggle is enabled/disabled.
-        editText.setMinimumHeight(ViewCompat.getMinimumHeight(passwordToggleView));
+      if (editText.getMeasuredHeight() < passwordToggleView.getMeasuredHeight()) {
+        // We need to make sure that the EditText's height is at least the same as the password
+        // toggle's height. This ensures focus works properly, and there is no visual jump if the
+        // password toggle is enabled/disabled.
+        editText.setMinimumHeight(passwordToggleView.getMeasuredHeight());
+        editText.post(new Runnable() {
+          @Override
+          public void run() {
+            editText.requestLayout();
+          }
+        });
       }
 
       passwordToggleView.setVisibility(VISIBLE);
