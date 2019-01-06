@@ -94,7 +94,7 @@
 
   <style name="TextAppearance.MaterialComponents.Subtitle2" parent="Base.TextAppearance.MaterialComponents.Subtitle2"/>
 
-  <style name="TextAppearance.MaterialComponents.Body1" parent="TextAppearance.AppCompat.Body2">
+  <style name="TextAppearance.MaterialComponents.Body1" parent="TextAppearance.AppCompat.Body1">
     <item name="fontFamily">sans-serif</item>
     <item name="android:fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
@@ -103,7 +103,7 @@
     <item name="android:letterSpacing">0.03125</item>
   </style>
 
-  <style name="TextAppearance.MaterialComponents.Body2" parent="TextAppearance.AppCompat.Body1">
+  <style name="TextAppearance.MaterialComponents.Body2" parent="TextAppearance.AppCompat.Body2">
     <item name="fontFamily">sans-serif</item>
     <item name="android:fontFamily">sans-serif</item>
     <item name="android:textStyle">normal</item>
