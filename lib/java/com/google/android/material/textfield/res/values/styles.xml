@@ -111,6 +111,7 @@
     <item name="android:paddingRight">12dp</item>
     <item name="android:paddingTop">16dp</item>
     <item name="android:paddingBottom">16dp</item>
+    <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Base.Widget.MaterialComponents.TextInputEditText">
