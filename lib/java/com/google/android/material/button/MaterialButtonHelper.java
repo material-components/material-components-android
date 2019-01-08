@@ -261,24 +261,9 @@ class MaterialButtonHelper {
   }
 
   private void updateStroke() {
-    MaterialShapeDrawable materialShapeDrawable = getMaterialShapeDrawable();
-    if (materialShapeDrawable != null) {
-      materialShapeDrawable.setStroke(strokeWidth, strokeColor);
-      if (IS_LOLLIPOP) {
-        ShapeAppearanceModel temporaryShapeAppearance =
-            new ShapeAppearanceModel(shapeAppearanceModel);
-        adjustShapeAppearanceModelCornerRadius(temporaryShapeAppearance, strokeWidth / 2f);
-        materialShapeDrawable.setShapeAppearanceModel(temporaryShapeAppearance);
-
-        if (getMaskDrawable() != null) {
-          getMaskDrawable().setShapeAppearanceModel(temporaryShapeAppearance);
-        }
-        // Some APIs don't unwrap the drawable correctly.
-        if (maskDrawable != null) {
-          maskDrawable.setShapeAppearanceModel(temporaryShapeAppearance);
-        }
-      }
-    }
+    // TODO: Stroke on API 21 results in strange width, even after unwrapping background drawable
+    // TODO: Changing stroke width on background shape drawable results in stroke being clipped
+    materialButton.setInternalBackground(createBackground());
   }
 
   void setCornerRadius(int cornerRadius) {
