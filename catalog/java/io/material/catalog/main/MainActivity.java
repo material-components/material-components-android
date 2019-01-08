@@ -20,16 +20,22 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.fragment.app.Fragment;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
+import com.google.common.base.Optional;
+import dagger.BindsOptionalOf;
 import dagger.android.ContributesAndroidInjector;
 import dagger.android.support.DaggerAppCompatActivity;
 import io.material.catalog.application.scope.ActivityScope;
 import io.material.catalog.feature.FeatureDemoUtils;
 import io.material.catalog.feature.OnBackPressedHandler;
+import io.material.catalog.internal.InternalOptionsMenuPresenter;
 import io.material.catalog.tableofcontents.TocFragment;
 import io.material.catalog.tableofcontents.TocModule;
 import io.material.catalog.themeswitcher.ThemeOverlayUtils;
 import io.material.catalog.themeswitcher.ThemeSwitcherHelper.ThemeSwitcherActivity;
+import javax.inject.Inject;
 
 /**
  * The main launcher activity for the Catalog, capable of displaying a number of different screens
@@ -37,6 +43,7 @@ import io.material.catalog.themeswitcher.ThemeSwitcherHelper.ThemeSwitcherActivi
  */
 public class MainActivity extends DaggerAppCompatActivity implements ThemeSwitcherActivity {
 
+  @Inject Optional<InternalOptionsMenuPresenter> internalOptionsMenu;
   TocFragment tocFragment;
 
   @Override
@@ -53,6 +60,16 @@ public class MainActivity extends DaggerAppCompatActivity implements ThemeSwitch
   }
 
   @Override
+  public boolean onCreateOptionsMenu(Menu menu) {
+    super.onCreateOptionsMenu(menu);
+    if (internalOptionsMenu.isPresent()) {
+      MenuInflater inflater = getMenuInflater();
+      internalOptionsMenu.get().onCreateOptionsMenu(menu, inflater);
+    }
+    return true;
+  }
+
+  @Override
   public boolean onOptionsItemSelected(MenuItem item) {
     // Let the fragment handle options first
     Fragment currentFragment = FeatureDemoUtils.getCurrentFragment(this);
@@ -64,6 +81,11 @@ public class MainActivity extends DaggerAppCompatActivity implements ThemeSwitch
       onBackPressed();
       return true;
     }
+
+    if (internalOptionsMenu.isPresent()) {
+      internalOptionsMenu.get().onOptionsItemSelected(item);
+    }
+
     return super.onOptionsItemSelected(item);
   }
 
@@ -87,5 +109,8 @@ public class MainActivity extends DaggerAppCompatActivity implements ThemeSwitch
     @ActivityScope
     @ContributesAndroidInjector(modules = {TocModule.class})
     abstract MainActivity contributeMainActivity();
+
+    @BindsOptionalOf
+    abstract InternalOptionsMenuPresenter optionalInternalOptionsMenu();
   }
 }

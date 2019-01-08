@@ -21,8 +21,10 @@ import dagger.BindsInstance;
 import dagger.android.AndroidInjectionModule;
 import io.material.catalog.application.scope.ApplicationScope;
 import io.material.catalog.main.MainActivity;
+import javax.inject.Singleton;
 
 /** The Application's root component. */
+@Singleton
 @ApplicationScope
 @dagger.Component(
     modules = {

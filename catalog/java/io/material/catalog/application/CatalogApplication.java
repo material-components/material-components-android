@@ -77,7 +77,7 @@ public class CatalogApplication extends Application implements HasActivityInject
       Object component = builderClass.getMethod("build").invoke(builderObject);
       component
           .getClass()
-          .getMethod("inject", CatalogApplication.class)
+          .getMethod("inject", getCatalogApplicationClass())
           .invoke(component, catalogApplication);
       return true;
     } catch (PackageManager.NameNotFoundException
@@ -88,6 +88,10 @@ public class CatalogApplication extends Application implements HasActivityInject
       Log.e(TAG, "Component override failed with exception:", e);
     }
     return false;
+  }
+
+  protected Class<? extends CatalogApplication> getCatalogApplicationClass() {
+    return CatalogApplication.class;
   }
 
   @Override
