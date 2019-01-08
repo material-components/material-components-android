@@ -89,7 +89,10 @@ public class MenuMainDemoFragment extends DemoFragment {
             (int)
                 TypedValue.applyDimension(
                     TypedValue.COMPLEX_UNIT_DIP, ICON_MARGIN, getResources().getDisplayMetrics());
-        item.setIcon(new InsetDrawable(item.getIcon(), iconMarginPx, 0, iconMarginPx, 0));
+
+        if (item.getIcon() != null) {
+          item.setIcon(new InsetDrawable(item.getIcon(), iconMarginPx, 0, iconMarginPx, 0));
+        }
       }
     }
     popup.setOnMenuItemClickListener(
