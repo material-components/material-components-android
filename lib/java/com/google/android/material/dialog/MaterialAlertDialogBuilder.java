@@ -27,10 +27,13 @@ import android.content.DialogInterface.OnDismissListener;
 import android.content.DialogInterface.OnKeyListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.res.ColorStateList;
+import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
+import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.AttrRes;
 import androidx.annotation.DrawableRes;
@@ -66,8 +69,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   @StyleRes private static final int DEF_STYLE_RES = R.style.MaterialAlertDialog_MaterialComponents;
 
   @AttrRes
-  private static final int MATERIAL_ALERT_DIALOG_THEME_OVERLAY =
-      R.attr.materialAlertDialogTheme;
+  private static final int MATERIAL_ALERT_DIALOG_THEME_OVERLAY = R.attr.materialAlertDialogTheme;
 
   private Drawable background;
   @Px private int backgroundInsetStart;
@@ -124,13 +126,24 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
 
     attributes.recycle();
 
-    TypedValue typedValue = new TypedValue();
-    context.getTheme().resolveAttribute(R.attr.colorSurface, typedValue, true);
-    int surfaceColor = typedValue.data;
-
+    TypedValue colorSurfaceValue = new TypedValue();
+    Theme theme = context.getTheme();
+    theme.resolveAttribute(R.attr.colorSurface, colorSurfaceValue, true);
+    int surfaceColor = colorSurfaceValue.data;
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
     materialShapeDrawable.setFillColor(ColorStateList.valueOf(surfaceColor));
+
+    // dialogCornerRadius first appeared in Android Pie
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.P) {
+      TypedValue dialogCornerRadiusValue = new TypedValue();
+      theme.resolveAttribute(android.R.attr.dialogCornerRadius, dialogCornerRadiusValue, true);
+      float dialogCornerRadius =
+          dialogCornerRadiusValue.getDimension(getContext().getResources().getDisplayMetrics());
+      if (dialogCornerRadiusValue.type == TypedValue.TYPE_DIMENSION && dialogCornerRadius >= 0) {
+        materialShapeDrawable.setCornerRadius(dialogCornerRadius);
+      }
+    }
     background = materialShapeDrawable;
   }
 

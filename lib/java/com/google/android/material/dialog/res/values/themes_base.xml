@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <!--
       Theme in the "Platform.MaterialComponents" family are designed to be aliases for the default
@@ -208,6 +208,7 @@
   <style name="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
     <!-- Widget styles -->
     <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
+    <item name="android:dialogCornerRadius" tools:ignore="newApi">@null</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
   </style>
 
