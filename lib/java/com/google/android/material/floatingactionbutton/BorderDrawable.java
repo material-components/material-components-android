@@ -127,14 +127,12 @@ class BorderDrawable extends Drawable {
 
     // We need to inset the oval bounds by half the border width. This is because stroke draws
     // the center of the border on the dimension. Whereas we want the stroke on the inside.
+    float cornerSize = shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+    float radius = Math.min(cornerSize, rectF.width() / 2f);
     if (shapeAppearanceModel.isRoundRect()) {
       rectF.inset(halfBorderWidth, halfBorderWidth);
-      canvas.drawRoundRect(rectF, rectF.width() / 2f, rectF.height() / 2f, paint);
-      return;
+      canvas.drawRoundRect(rectF, radius, radius, paint);
     }
-
-    pathProvider.calculatePath(shapeAppearanceModel, 1f, rectF, shapePath);
-    canvas.drawPath(shapePath, paint);
   }
 
   @TargetApi(VERSION_CODES.LOLLIPOP)
