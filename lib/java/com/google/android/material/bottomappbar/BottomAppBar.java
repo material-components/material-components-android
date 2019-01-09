@@ -378,7 +378,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   @Override
   public void setElevation(float elevation) {
-    materialShapeDrawable.setShadowElevation((int) elevation);
+    materialShapeDrawable.setElevation(elevation);
   }
 
   /**

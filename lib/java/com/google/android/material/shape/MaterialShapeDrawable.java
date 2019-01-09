@@ -510,8 +510,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * This value is the same as the native elevation that would be used to render shadows on API 21
    * and up.
    */
-  public int getShadowElevation() {
-    return drawableState.shadowCompatElevation;
+  public float getElevation() {
+    return drawableState.elevation;
   }
 
   /**
@@ -519,16 +519,36 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * value is the same as the native elevation that would be used to render shadows on API 21 and
    * up.
    *
-   * <p>TODO: The shadow radius should be the actual radius drawn, shadowElevation
-   * should be the height of the closest equivalent native elevation which produces a similar
-   * shadow.
+   * <p>TODO: The shadow radius should be the actual radius drawn, elevation should be
+   * the height of the closest equivalent native elevation which produces a similar shadow.
    */
-  public void setShadowElevation(int shadowElevation) {
-    if (drawableState.shadowCompatElevation != shadowElevation) {
-      drawableState.shadowCompatRadius = shadowElevation;
-      drawableState.shadowCompatElevation = shadowElevation;
+  public void setElevation(float elevation) {
+    if (drawableState.elevation != elevation) {
+      drawableState.shadowCompatRadius = Math.round(elevation);
+      drawableState.elevation = elevation;
       invalidateSelfIgnoreShape();
     }
+  }
+
+  /**
+   * Get the shadow elevation rendered by the path.
+   *
+   * @deprecated use {@link #getElevation()} instead.
+   */
+  @Deprecated
+  public int getShadowElevation() {
+    return (int) getElevation();
+  }
+
+  /**
+   * Set the shadow elevation rendered by the path.
+   *
+   * @param shadowElevation the desired elevation.
+   * @deprecated use {@link #setElevation(float)} instead.
+   */
+  @Deprecated
+  public void setShadowElevation(int shadowElevation) {
+    setElevation(shadowElevation);
   }
 
   /**
@@ -582,7 +602,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Get the shadow radius rendered by the path.
    *
    * @return the shadow radius rendered by the path.
-   * @deprecated use {@link #getShadowElevation()} instead.
+   * @deprecated use {@link #getElevation()} instead.
    */
   @Deprecated
   public int getShadowRadius() {
@@ -593,7 +613,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Set the shadow radius rendered by the path.
    *
    * @param shadowRadius the desired shadow radius.
-   * @deprecated use {@link #setShadowElevation(int)} instead.
+   * @deprecated use {@link #setElevation(float)} instead.
    */
   @Deprecated
   public void setShadowRadius(int shadowRadius) {
@@ -876,17 +896,13 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     canvas.translate(shadowOffsetX, shadowOffsetY);
   }
 
-  /**
-   * @deprecated see {@link ShapeAppearancePathProvider}
-   */
+  /** @deprecated see {@link ShapeAppearancePathProvider} */
   @Deprecated
   public void getPathForSize(int width, int height, Path path) {
     calculatePathForSize(new RectF(0, 0, width, height), path);
   }
 
-  /**
-   * @deprecated see {@link ShapeAppearancePathProvider}
-   */
+  /** @deprecated see {@link ShapeAppearancePathProvider} */
   @Deprecated
   public void getPathForSize(Rect bounds, Path path) {
     calculatePathForSize(new RectF(bounds), path);
@@ -1054,8 +1070,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     public float strokeWidth;
 
     public int alpha = 255;
+    public float elevation = 0;
     public int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
-    public int shadowCompatElevation = 0;
     public int shadowCompatRadius = 0;
     public int shadowCompatOffset = 0;
     public int shadowCompatRotation = 0;
@@ -1082,7 +1098,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       shadowCompatMode = orig.shadowCompatMode;
       useTintColorForShadow = orig.useTintColorForShadow;
       interpolation = orig.interpolation;
-      shadowCompatElevation = orig.shadowCompatElevation;
+      elevation = orig.elevation;
       shadowCompatRadius = orig.shadowCompatRadius;
       shadowCompatRotation = orig.shadowCompatRotation;
       strokeTintList = orig.strokeTintList;

@@ -254,8 +254,8 @@ class MaterialCardViewHelper {
 
   void updateElevation() {
     if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      bgDrawable.setShadowElevation((int) materialCardView.getCardElevation());
-      // TODO: Remove once radius and offset are changed by setShadowElevation.
+      bgDrawable.setElevation(materialCardView.getCardElevation());
+      // TODO: Remove once radius and offset are changed by setElevation.
       bgDrawable.setShadowRadius(
           (int) Math.ceil(materialCardView.getCardElevation() * SHADOW_RADIUS_MULTIPLIER));
       bgDrawable.setShadowVerticalOffset(

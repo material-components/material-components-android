@@ -344,7 +344,7 @@ class FloatingActionButtonImpl {
 
   private void updateShadow(float elevation) {
     // TODO material shape drawable should handle this calculations.
-    shapeDrawable.setShadowElevation((int) Math.ceil((elevation * ELEVATION_MULTIPLIER)));
+    shapeDrawable.setElevation((float) Math.ceil((elevation * ELEVATION_MULTIPLIER)));
     shapeDrawable.setShadowVerticalOffset((int) Math.ceil((elevation * OFFSET_MULTIPLIER)));
   }
 
@@ -736,14 +736,15 @@ class FloatingActionButtonImpl {
     @Override
     public void onAnimationUpdate(ValueAnimator animator) {
       if (!validValues) {
-        shadowSizeStart = shapeDrawable.getShadowElevation();
+        shadowSizeStart = shapeDrawable.getElevation();
         shadowSizeEnd = getTargetShadowSize();
         validValues = true;
       }
 
-      updateShadow((int)
-          (shadowSizeStart
-              + ((shadowSizeEnd - shadowSizeStart) * animator.getAnimatedFraction())));
+      updateShadow(
+          (int)
+              (shadowSizeStart
+                  + ((shadowSizeEnd - shadowSizeStart) * animator.getAnimatedFraction())));
     }
 
     @Override
