@@ -31,7 +31,6 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
-        android:gravity="center_horizontal"
         android:text="@string/cat_bottomsheet_button_text"/>
       <Switch
           android:id="@+id/cat_fullscreen_switch"
