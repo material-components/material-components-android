@@ -68,6 +68,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private MenuItemImpl itemData;
 
   private ColorStateList iconTint;
+  private Drawable originalIconDrawable;
+  private Drawable wrappedIconDrawable;
 
   public BottomNavigationItemView(@NonNull Context context) {
     this(context, null);
@@ -276,11 +278,18 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
   @Override
   public void setIcon(Drawable iconDrawable) {
+    if (iconDrawable == originalIconDrawable) {
+      return;
+    }
+
+    // Save the original icon to check if it has changed in future calls of this method.
+    originalIconDrawable = iconDrawable;
     if (iconDrawable != null) {
       Drawable.ConstantState state = iconDrawable.getConstantState();
       iconDrawable =
           DrawableCompat.wrap(state == null ? iconDrawable : state.newDrawable()).mutate();
-      DrawableCompat.setTintList(iconDrawable, iconTint);
+      wrappedIconDrawable = iconDrawable;
+      DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
     }
     this.icon.setImageDrawable(iconDrawable);
   }
@@ -297,9 +306,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
 
   public void setIconTintList(ColorStateList tint) {
     iconTint = tint;
-    if (itemData != null) {
-      // Update the icon so that the tint takes effect
-      setIcon(itemData.getIcon());
+    if (itemData != null && wrappedIconDrawable != null) {
+      DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+      wrappedIconDrawable.invalidateSelf();
     }
   }
 
