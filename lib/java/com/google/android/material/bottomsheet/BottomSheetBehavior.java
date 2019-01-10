@@ -20,6 +20,8 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -127,6 +129,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final float HIDE_FRICTION = 0.1f;
 
+  private static final int CORNER_ANIMATION_DURATION = 500;
+
   private boolean fitToContents = true;
 
   private float maximumVelocity;
@@ -150,6 +154,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   /** Default Shape Appearance to be used in bottomsheet */
   private ShapeAppearanceModel shapeAppearanceModelDefault;
+
+  @Nullable private ValueAnimator interpolatorAnimator;
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_BottomSheet_Modal;
 
@@ -206,6 +212,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else {
       createMaterialShapeDrawable(context, attrs, hasBackgroundTint);
     }
+    createShapeValueAnimator();
+
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
     if (value != null && value.data == PEEK_HEIGHT_AUTO) {
       setPeekHeight(value.data);
@@ -715,6 +723,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   void setStateInternal(@State int state) {
+    int previousState = this.state;
+
     if (this.state == state) {
       return;
     }
@@ -739,13 +749,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         bottomSheet, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES);
     bottomSheet.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_STATE_CHANGED);
 
-    updateDrawableOnStateChange(state);
+    updateDrawableOnStateChange(state, previousState);
     if (callback != null) {
       callback.onStateChanged(bottomSheet, state);
     }
   }
 
-  private void updateDrawableOnStateChange(@State int state) {
+  private void updateDrawableOnStateChange(@State int state, @State int previousState) {
     if (materialShapeDrawable != null) {
       if (state == STATE_EXPANDED && (parentHeight <= viewRef.get().getHeight())) {
         // If the bottomsheet is fully expanded, change ShapeAppearance to sharp corners to
@@ -754,8 +764,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         materialShapeDrawable.getShapeAppearanceModel().setCornerRadius(0);
         materialShapeDrawable.invalidateSelf();
       }
-      if (state == STATE_COLLAPSED || state == STATE_DRAGGING) {
-        materialShapeDrawable.setShapeAppearanceModel(shapeAppearanceModelDefault);
+      if (state == STATE_DRAGGING && previousState == STATE_EXPANDED) {
+        interpolatorAnimator.start();
       }
     }
   }
@@ -830,6 +840,21 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         materialShapeDrawable.setTint(defaultColor.data);
       }
     }
+  }
+
+  private void createShapeValueAnimator() {
+    interpolatorAnimator = ValueAnimator.ofFloat(0f, 1f);
+    interpolatorAnimator.setDuration(CORNER_ANIMATION_DURATION);
+    interpolatorAnimator.addUpdateListener(
+        new AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animation) {
+            float value = (float) animation.getAnimatedValue();
+            if (materialShapeDrawable != null) {
+              materialShapeDrawable.setInterpolation(value);
+            }
+          }
+        });
   }
 
   private float getYVelocity() {
@@ -968,9 +993,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           }
           if (viewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
             setStateInternal(STATE_SETTLING);
+            if (targetState == STATE_EXPANDED) {
+              interpolatorAnimator.reverse();
+            }
             ViewCompat.postOnAnimation(
                 releasedChild, new SettleRunnable(releasedChild, targetState));
           } else {
+            if (targetState == STATE_EXPANDED) {
+              interpolatorAnimator.reverse();
+            }
             setStateInternal(targetState);
           }
         }
