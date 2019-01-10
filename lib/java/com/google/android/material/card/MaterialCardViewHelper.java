@@ -22,6 +22,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Color;
 import android.graphics.Outline;
@@ -36,6 +37,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
@@ -47,6 +49,8 @@ import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.RoundedCornerTreatment;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
@@ -55,6 +59,8 @@ import androidx.cardview.widget.CardView;
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
 class MaterialCardViewHelper {
+
+  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
   private static final int DEFAULT_STROKE_VALUE = -1;
 
@@ -84,6 +90,7 @@ class MaterialCardViewHelper {
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
   private static final float SHADOW_OFFSET_MULTIPLIER = .25f;
+  public static final int CHECKED_ICON_LAYER_INDEX = 2;
 
   private final MaterialCardView materialCardView;
 
@@ -111,6 +118,8 @@ class MaterialCardViewHelper {
   private boolean isBackgroundOverwritten = false;
   private boolean checkable;
 
+  private Drawable checkedIcon;
+
   public MaterialCardViewHelper(
       MaterialCardView card, AttributeSet attrs, int defStyleAttr, @StyleRes int defStyleRes) {
     materialCardView = card;
@@ -137,6 +146,10 @@ class MaterialCardViewHelper {
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
     checkable = attributes.getBoolean(R.styleable.MaterialCardView_android_checkable, false);
     materialCardView.setLongClickable(checkable);
+    setCheckedIcon(
+        MaterialResources.getDrawable(
+            materialCardView.getContext(), attributes, R.styleable.MaterialCardView_checkedIcon));
+
     rippleColor =
         MaterialResources.getColorStateList(
             materialCardView.getContext(), attributes, R.styleable.MaterialCardView_rippleColor);
@@ -305,6 +318,85 @@ class MaterialCardViewHelper {
     }
   }
 
+  /**
+   * Guarantee at least enough content padding to account for the stroke width and support
+   * preventing corner overlap for shaped backgrounds.
+   */
+  void updateContentPadding() {
+    boolean includeCornerPadding =
+        shouldAddCornerPaddingInsideCardBackground()
+            || shouldAddCornerPaddingOutsideCardBackground();
+    // The amount with which to adjust the user provided content padding to account for stroke and
+    // shape corners.
+    int contentPaddingOffset =
+        (int)
+            ((includeCornerPadding ? calculateActualCornerPadding() : 0)
+                - getParentCardViewCalculatedCornerPadding());
+    materialCardView.setContentPaddingInternal(
+        userContentPadding.left + contentPaddingOffset,
+        userContentPadding.top + contentPaddingOffset,
+        userContentPadding.right + contentPaddingOffset,
+        userContentPadding.bottom + contentPaddingOffset);
+  }
+
+  void setCheckable(boolean checkable) {
+    this.checkable = checkable;
+  }
+
+  boolean isCheckable() {
+    return checkable;
+  }
+
+  void setRippleColor(ColorStateList rippleColor) {
+    this.rippleColor = rippleColor;
+  }
+
+  @Nullable
+  ColorStateList getRippleColor() {
+    return rippleColor;
+  }
+
+  Drawable getCheckedIcon() {
+    return checkedIcon;
+  }
+
+  void setCheckedIcon(@Nullable Drawable checkedIcon) {
+    this.checkedIcon = checkedIcon;
+    if (checkedIcon != null) {
+      this.checkedIcon = DrawableCompat.wrap(checkedIcon.mutate());
+      // TODO: support custom color
+      DrawableCompat.setTint(
+          this.checkedIcon, MaterialColors.getColor(materialCardView, R.attr.colorPrimary));
+    }
+
+    if (clickableForegroundDrawable != null) {
+      Drawable checkedLayer = createCheckedIconLayer();
+      clickableForegroundDrawable.setDrawableByLayerId(
+          R.id.mtrl_card_checked_layer_id, checkedLayer);
+    }
+  }
+
+  void onMeasure(int measuredWidth, int measuredHeight) {
+    if (materialCardView.isCheckable() && clickableForegroundDrawable != null) {
+      Resources resources = materialCardView.getResources();
+      // TODO: support custom sizing
+      int margin = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin);
+      int size = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_size);
+      int left = measuredWidth - margin - size;
+      int bottom = measuredHeight - margin - size;
+      int right = margin;
+      if (ViewCompat.getLayoutDirection(materialCardView) == View.LAYOUT_DIRECTION_RTL) {
+        // swap left and right
+        int tmp = right;
+        right = left;
+        left = tmp;
+      }
+
+      clickableForegroundDrawable.setLayerInset(
+          CHECKED_ICON_LAYER_INDEX, left, margin /* top */, right, bottom);
+    }
+  }
+
   private void adjustShapeAppearanceModelInsetByStroke() {
     shapeAppearanceModelInsetByStroke
         .getTopLeftCorner()
@@ -439,9 +531,13 @@ class MaterialCardViewHelper {
     }
 
     if (clickableForegroundDrawable == null) {
+      Drawable checkedLayer = createCheckedIconLayer();
       clickableForegroundDrawable =
-          new LayerDrawable(new Drawable[] {rippleDrawable, foregroundContentDrawable});
+          new LayerDrawable(
+              new Drawable[] {rippleDrawable, foregroundContentDrawable, checkedLayer});
+      clickableForegroundDrawable.setId(CHECKED_ICON_LAYER_INDEX, R.id.mtrl_card_checked_layer_id);
     }
+
     return clickableForegroundDrawable;
   }
 
@@ -453,45 +549,6 @@ class MaterialCardViewHelper {
     int contentPaddingBottom = materialCardView.getContentPaddingBottom() + strokeWidthDelta;
     materialCardView.setContentPadding(
         contentPaddingLeft, contentPaddingTop, contentPaddingRight, contentPaddingBottom);
-  }
-
-  /**
-   * Guarantee at least enough content padding to account for the stroke width and support
-   * preventing corner overlap for shaped backgrounds.
-   */
-  void updateContentPadding() {
-    boolean includeCornerPadding =
-        shouldAddCornerPaddingInsideCardBackground()
-            || shouldAddCornerPaddingOutsideCardBackground();
-    // The amount with which to adjust the user provided content padding to account for stroke and
-    // shape corners.
-    int contentPaddingOffset =
-        (int)
-            ((includeCornerPadding ? calculateActualCornerPadding() : 0)
-                - getParentCardViewCalculatedCornerPadding());
-    materialCardView.setContentPaddingInternal(
-        userContentPadding.left + contentPaddingOffset,
-        userContentPadding.top + contentPaddingOffset,
-        userContentPadding.right + contentPaddingOffset,
-        userContentPadding.bottom + contentPaddingOffset);
-  }
-
-  void setCheckable(boolean checkable) {
-    this.checkable = checkable;
-    materialCardView.setCheckable(checkable);
-  }
-
-  boolean isCheckable() {
-    return checkable;
-  }
-
-  void setRippleColor(ColorStateList rippleColor) {
-    this.rippleColor = rippleColor;
-  }
-
-  @Nullable
-  ColorStateList getRippleColor() {
-    return rippleColor;
   }
 
   private Drawable createForegroundRippleDrawable() {
@@ -518,6 +575,15 @@ class MaterialCardViewHelper {
     } else if (compatRippleDrawable != null) {
       compatRippleDrawable.setFillColor(rippleColor);
     }
+  }
+
+  @NonNull
+  private Drawable createCheckedIconLayer() {
+    StateListDrawable checkedLayer = new StateListDrawable();
+    if (checkedIcon != null) {
+      checkedLayer.addState(CHECKED_STATE_SET, checkedIcon);
+    }
+    return checkedLayer;
   }
 
   private MaterialShapeDrawable createForegroundShapeDrawable() {

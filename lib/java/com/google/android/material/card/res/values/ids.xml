@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  ~ Copyright (C) 2018 The Android Open Source Project
+  ~ Copyright 2019 The Android Open Source Project
   ~
   ~ Licensed under the Apache License, Version 2.0 (the "License");
   ~ you may not use this file except in compliance with the License.
@@ -13,11 +13,8 @@
   ~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
--->
+  -->
+
 <resources>
-  <!-- Type definitions for common attributes used across component packages. -->
-  <attr name="checkedIcon" format="reference" />
-  <attr name="strokeColor" format="color"/>
-  <attr name="strokeWidth" format="dimension"/>
-  <attr name="minTouchTargetSize" format="dimension"/>
+  <item type="id" name="mtrl_card_checked_layer_id" />
 </resources>

@@ -28,6 +28,8 @@
     <attr name="android:checkable"/>
     <!-- Foreground color for CardView. -->
     <attr name="cardForegroundColor" format="color"/>
+    <!-- Check icon drawable. -->
+    <attr name="checkedIcon"/>
     <!-- Ripple color for the Card. -->
     <attr name="rippleColor"/>
     <!-- Specifies the color used to draw the path outline of the card. Attribute type definition is

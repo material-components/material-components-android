@@ -30,6 +30,7 @@ import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.Dimension;
+import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.ThemeEnforcement;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -142,6 +143,12 @@ public class MaterialCardView extends CardView implements Checkable {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       cardViewHelper.createOutlineProvider(contentLayout);
     }
+  }
+
+  @Override
+  protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
+    super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    cardViewHelper.onMeasure(getMeasuredWidth(), getMeasuredHeight());
   }
 
   /**
@@ -436,5 +443,36 @@ public class MaterialCardView extends CardView implements Checkable {
    */
   public ColorStateList getRippleColor() {
     return cardViewHelper.getRippleColor();
+  }
+
+  /**
+   * Returns this cards's checked icon.
+   *
+   * @see #setCheckedIcon(Drawable)
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIcon
+   */
+  @Nullable
+  public Drawable getCheckedIcon() {
+    return cardViewHelper.getCheckedIcon();
+  }
+
+  /**
+   * Sets this card's checked icon using a resource id.
+   *
+   * @param id The resource id of this Card's checked icon.
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIcon
+   */
+  public void setCheckedIconResource(@DrawableRes int id) {
+    cardViewHelper.setCheckedIcon(AppCompatResources.getDrawable(getContext(), id));
+  }
+
+  /**
+   * Sets this card's checked icon.
+   *
+   * @param checkedIcon This card's checked icon.
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIcon
+   */
+  public void setCheckedIcon(@Nullable Drawable checkedIcon) {
+    cardViewHelper.setCheckedIcon(checkedIcon);
   }
 }
