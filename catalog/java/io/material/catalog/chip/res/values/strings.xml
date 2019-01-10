@@ -59,4 +59,6 @@
     <item>San Francisco</item>
   </string-array>
 
+  <string name="cat_chip_group_refresh_content_description">Refresh chip groups</string>
+
 </resources>
