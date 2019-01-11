@@ -586,12 +586,25 @@ public class TabLayout extends HorizontalScrollView {
    * @param position current scroll position
    * @param positionOffset Value from [0, 1) indicating the offset from {@code position}.
    * @param updateSelectedText Whether to update the text's selected state.
+   * @see #setScrollPosition(int, float, boolean, boolean)
    */
   public void setScrollPosition(int position, float positionOffset, boolean updateSelectedText) {
     setScrollPosition(position, positionOffset, updateSelectedText, true);
   }
 
-  void setScrollPosition(
+  /**
+   * Set the scroll position of the tabs. This is useful for when the tabs are being displayed as
+   * part of a scrolling container such as {@link androidx.viewpager.widget.ViewPager}.
+   *
+   * <p>Calling this method does not update the selected tab, it is only used for drawing purposes.
+   *
+   * @param position current scroll position
+   * @param positionOffset Value from [0, 1) indicating the offset from {@code position}.
+   * @param updateSelectedText Whether to update the text's selected state.
+   * @param updateIndicatorPosition Whether to set the indicator to the given position and offset.
+   * @see #setScrollPosition(int, float, boolean)
+   */
+  public void setScrollPosition(
       int position,
       float positionOffset,
       boolean updateSelectedText,
@@ -1687,11 +1700,25 @@ public class TabLayout extends HorizontalScrollView {
     }
   }
 
-  void selectTab(Tab tab) {
+  /**
+   * Selects the given tab.
+   *
+   * @param tab The tab to select, or {@code null} to select none.
+   * @see #selectTab(Tab, boolean)
+   */
+  public void selectTab(@Nullable Tab tab) {
     selectTab(tab, true);
   }
 
-  void selectTab(final Tab tab, boolean updateIndicator) {
+  /**
+   * Selects the given tab. Will always animate to the selected tab if the current tab is
+   * reselected, regardless of the value of {@code updateIndicator}.
+   *
+   * @param tab The tab to select, or {@code null} to select none.
+   * @param updateIndicator Whether to animate to the selected tab.
+   * @see #selectTab(Tab)
+   */
+  public void selectTab(@Nullable final Tab tab, boolean updateIndicator) {
     final Tab currentTab = selectedTab;
 
     if (currentTab == tab) {
