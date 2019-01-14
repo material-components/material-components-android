@@ -21,7 +21,19 @@ ext {
   compileSdkVersion = 28
   minSdkVersion = 14
   targetSdkVersion = 27
-  supportVersion = '1.0.0'
+
+  androidXVersions = [
+    annotation            : '1.0.1',
+    appCompat             : '1.1.0-alpha01',
+    cardView              : '1.0.0',
+    core                  : '1.1.0-alpha03',
+    fragment              : '1.0.0',
+    legacySupportCoreUi   : '1.0.0',
+    legacySupportCoreUtils: '1.0.0',
+    recyclerView          : '1.1.0-alpha01',
+    transition            : '1.0.1',
+    vectorDrawable        : '1.1.0-alpha01',
+  ]
 
   testRunnerVersion = '1.1.0'
   espressoVersion = '3.1.0'
@@ -70,41 +82,30 @@ private def getTransformedProjectPath(projectPath) {
  *
  */
 def compatibility(name) {
-  def lib
-
   switch (name) {
     case "annotations":
-      lib = "androidx.annotation:annotation"
-      break
+      return "androidx.annotation:annotation:${androidXVersions.annotation}"
     case "compat":
-      lib = "androidx.core:core"
-      break
+      return "androidx.core:core:${androidXVersions.core}"
     case "core_ui":
-      lib = "androidx.legacy:legacy-support-core-ui"
-      break
+      return "androidx.legacy:legacy-support-core-ui:${androidXVersions.legacySupportCoreUi}"
     case "core_utils":
-      lib = "androidx.legacy:legacy-support-core-utils"
-      break
+      return "androidx.legacy:legacy-support-core-utils:${androidXVersions.legacySupportCoreUtils}"
     case "fragment":
-      lib = "androidx.fragment:fragment"
-      break
+      return "androidx.fragment:fragment:${androidXVersions.fragment}"
     case "transition":
-      lib = "androidx.transition:transition"
-      break
+      return "androidx.transition:transition:${androidXVersions.transition}"
     case "v7/appcompat":
-      lib = "androidx.appcompat:appcompat"
-      break
+      return "androidx.appcompat:appcompat:${androidXVersions.appCompat}"
     case "v7/cardview":
-      lib = "androidx.cardview:cardview"
-      break
+      return "androidx.cardview:cardview:${androidXVersions.cardView}"
     case "v7/recyclerview":
-      lib = "androidx.recyclerview:recyclerview"
-      break
+      return "androidx.recyclerview:recyclerview:${androidXVersions.recyclerView}"
+    case "vectordrawable":
+      return "androidx.vectordrawable:vectordrawable:${androidXVersions.vectorDrawable}"
     default:
       throw new IllegalArgumentException("No mapping exists for name: $name.")
   }
-
-  return "$lib:${project.rootProject.ext.supportVersion}"
 }
 
 /**
@@ -136,7 +137,7 @@ def getArchivesBaseName(name) {
 }
 
 subprojects {
-  version = rootProject.ext.supportVersion
+  version = rootProject.ext.mdcLibraryVersion
   group = 'com.google.android.material'
 
   project.plugins.whenPluginAdded { plugin ->

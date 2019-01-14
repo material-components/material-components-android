@@ -14,6 +14,7 @@ dependencies {
   api compatibility("v7/appcompat")
   api compatibility("v7/cardview")
   api compatibility("v7/recyclerview")
+  api compatibility("vectordrawable")
 
   testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
