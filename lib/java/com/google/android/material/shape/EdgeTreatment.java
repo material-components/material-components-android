@@ -34,8 +34,10 @@ public class EdgeTreatment implements Cloneable {
    *     ShapePath)} instead.
    */
   @Deprecated
-  public void getEdgePath(float length, float center, ShapePath shapePath) {
-    getEdgePath(length, center, 1f /* interpolation */, shapePath);
+  public void getEdgePath(float length, float interpolation, ShapePath shapePath) {
+    // Best guess at center since it could be offset by corners of different size.
+    float center = length / 2f;
+    getEdgePath(length, center,  interpolation, shapePath);
   }
 
   /**
