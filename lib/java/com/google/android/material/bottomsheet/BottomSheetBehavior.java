@@ -768,7 +768,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         materialShapeDrawable.getShapeAppearanceModel().setCornerRadius(0);
         materialShapeDrawable.invalidateSelf();
       }
-      if (state == STATE_DRAGGING && previousState == STATE_EXPANDED) {
+      if (state == STATE_DRAGGING
+           && previousState == STATE_EXPANDED && interpolatorAnimator != null) {
         interpolatorAnimator.start();
       }
     }
@@ -997,13 +998,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           }
           if (viewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
             setStateInternal(STATE_SETTLING);
-            if (targetState == STATE_EXPANDED) {
+            if (targetState == STATE_EXPANDED && interpolatorAnimator != null) {
               interpolatorAnimator.reverse();
             }
             ViewCompat.postOnAnimation(
                 releasedChild, new SettleRunnable(releasedChild, targetState));
           } else {
-            if (targetState == STATE_EXPANDED) {
+            if (targetState == STATE_EXPANDED && interpolatorAnimator != null) {
               interpolatorAnimator.reverse();
             }
             setStateInternal(targetState);
