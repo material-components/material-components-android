@@ -50,7 +50,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.internal.Experimental;
 import com.google.android.material.shadow.ShadowRenderer;
 import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
 import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
@@ -63,7 +62,6 @@ import java.lang.annotation.RetentionPolicy;
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
  * generated path.
  */
-@Experimental("The shapes API is currently experimental and subject to change")
 public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable {
 
   /**

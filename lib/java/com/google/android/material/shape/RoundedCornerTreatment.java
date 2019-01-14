@@ -16,10 +16,7 @@
 
 package com.google.android.material.shape;
 
-import com.google.android.material.internal.Experimental;
-
 /** A corner treatment which rounds a corner of a shape. */
-@Experimental("The shapes API is currently experimental and subject to change")
 public class RoundedCornerTreatment extends CornerTreatment implements Cloneable {
 
   /**

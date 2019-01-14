@@ -16,14 +16,11 @@
 
 package com.google.android.material.shape;
 
-import com.google.android.material.internal.Experimental;
-
 /**
  * This class models the edges and corners of a shape, which are used by {@link
  * MaterialShapeDrawable} to generate and render the shape for a view's background.
  *
  * @deprecated Use {@link ShapeAppearanceModel} instead.
  */
-@Experimental("The shapes API is currently experimental and subject to change")
 @Deprecated
 public class ShapePathModel extends ShapeAppearanceModel {}

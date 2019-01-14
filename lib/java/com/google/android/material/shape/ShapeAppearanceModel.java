@@ -29,7 +29,6 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.internal.Experimental;
 import android.util.AttributeSet;
 import android.view.ContextThemeWrapper;
 
@@ -37,7 +36,6 @@ import android.view.ContextThemeWrapper;
  * This class models the edges and corners of a shape, which are used by {@link
  * MaterialShapeDrawable} to generate and render the shape for a view's background.
  */
-@Experimental("The shapes API is currently experimental and subject to change")
 public class ShapeAppearanceModel {
   private CornerTreatment topLeftCorner;
   private CornerTreatment topRightCorner;

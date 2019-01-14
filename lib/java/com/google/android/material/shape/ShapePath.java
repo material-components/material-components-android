@@ -20,7 +20,6 @@ import android.graphics.Canvas;
 import android.graphics.Matrix;
 import android.graphics.Path;
 import android.graphics.RectF;
-import com.google.android.material.internal.Experimental;
 import com.google.android.material.shadow.ShadowRenderer;
 import java.util.ArrayList;
 import java.util.List;
@@ -30,7 +29,6 @@ import java.util.List;
  * transformations can be applied to them when the {@link android.graphics.Path} is produced by the
  * {@link MaterialShapeDrawable}.
  */
-@Experimental("The shapes API is currently experimental and subject to change")
 public class ShapePath {
 
   private static final float ANGLE_UP = 270;

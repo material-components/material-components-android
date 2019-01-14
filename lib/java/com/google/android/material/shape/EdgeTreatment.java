@@ -16,8 +16,6 @@
 
 package com.google.android.material.shape;
 
-import com.google.android.material.internal.Experimental;
-
 /**
  * A basic edge treatment (a single straight line). Sub-classed for custom edge treatments.
  *
@@ -26,7 +24,6 @@ import com.google.android.material.internal.Experimental;
  * setting `android:clipChildren="false"` in xml. `clipToPadding` may also need to be false if there
  * is any padding on the parent that could intersect the shadow.
  */
-@Experimental("The shapes API is currently experimental and subject to change")
 public class EdgeTreatment implements Cloneable {
 
   /**
