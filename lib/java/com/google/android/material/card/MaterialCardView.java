@@ -375,9 +375,12 @@ public class MaterialCardView extends CardView implements Checkable {
 
   @Override
   public void toggle() {
-    if (isCheckable()) {
+    if (isCheckable() && isEnabled()) {
       checked = !checked;
       refreshDrawableState();
+      if (VERSION.SDK_INT > VERSION_CODES.O) {
+        cardViewHelper.forceRippleRedraw();
+      }
       if (onCheckedChangeListener != null) {
         onCheckedChangeListener.onCheckedChanged(this, checked);
       }

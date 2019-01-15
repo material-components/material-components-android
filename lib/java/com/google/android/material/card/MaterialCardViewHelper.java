@@ -39,6 +39,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import com.google.android.material.color.MaterialColors;
@@ -394,6 +395,18 @@ class MaterialCardViewHelper {
 
       clickableForegroundDrawable.setLayerInset(
           CHECKED_ICON_LAYER_INDEX, left, margin /* top */, right, bottom);
+    }
+  }
+
+  @RequiresApi(api = VERSION_CODES.M)
+  void forceRippleRedraw() {
+    if (rippleDrawable != null) {
+      Rect bounds = rippleDrawable.getBounds();
+      // Change the bounds slightly to force the layer to change color, then change the layer again.
+      // In API 28 the color for the Ripple is snapshot at the beginning of the animation,
+      // it doesn't update when the drawable changes to android:state_checked.
+      rippleDrawable.setBounds(bounds.left, bounds.top, bounds.right, bounds.bottom - 1);
+      rippleDrawable.setBounds(bounds);
     }
   }
 
