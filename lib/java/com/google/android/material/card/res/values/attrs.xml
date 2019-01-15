@@ -30,6 +30,8 @@
     <attr name="cardForegroundColor" format="color"/>
     <!-- Check icon drawable. -->
     <attr name="checkedIcon"/>
+    <!-- Tint color for the checked icon. -->
+    <attr name="checkedIconTint" format="color"/>
     <!-- Ripple color for the Card. -->
     <attr name="rippleColor"/>
     <!-- Specifies the color used to draw the path outline of the card. Attribute type definition is

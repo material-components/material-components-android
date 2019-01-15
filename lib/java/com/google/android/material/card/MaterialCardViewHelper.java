@@ -91,11 +91,12 @@ class MaterialCardViewHelper {
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
   private static final float SHADOW_OFFSET_MULTIPLIER = .25f;
-  public static final int CHECKED_ICON_LAYER_INDEX = 2;
+  private static final int CHECKED_ICON_LAYER_INDEX = 2;
 
   private final MaterialCardView materialCardView;
 
   private ColorStateList rippleColor;
+  private ColorStateList checkedIconTint;
 
   @ColorInt private int strokeColor;
   @Dimension private int strokeWidth;
@@ -140,13 +141,15 @@ class MaterialCardViewHelper {
     drawableInsetByStroke = new MaterialShapeDrawable(shapeAppearanceModelInsetByStroke);
   }
 
-  public void loadFromAttributes(TypedArray attributes) {
+  void loadFromAttributes(TypedArray attributes) {
     // If cardCornerRadius is set, let it override the shape appearance.
     strokeColor =
         attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
     checkable = attributes.getBoolean(R.styleable.MaterialCardView_android_checkable, false);
     materialCardView.setLongClickable(checkable);
+    checkedIconTint = MaterialResources.getColorStateList(
+        materialCardView.getContext(), attributes, R.styleable.MaterialCardView_checkedIconTint);
     setCheckedIcon(
         MaterialResources.getDrawable(
             materialCardView.getContext(), attributes, R.styleable.MaterialCardView_checkedIcon));
@@ -348,8 +351,20 @@ class MaterialCardViewHelper {
     return checkable;
   }
 
-  void setRippleColor(ColorStateList rippleColor) {
+  void setRippleColor(@Nullable ColorStateList rippleColor) {
     this.rippleColor = rippleColor;
+  }
+
+  void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
+    this.checkedIconTint = checkedIconTint;
+    if (checkedIcon != null) {
+      DrawableCompat.setTintList(checkedIcon, checkedIconTint);
+    }
+  }
+
+  @Nullable
+  ColorStateList getCheckedIconTint() {
+    return checkedIconTint;
   }
 
   @Nullable
@@ -357,6 +372,7 @@ class MaterialCardViewHelper {
     return rippleColor;
   }
 
+  @Nullable
   Drawable getCheckedIcon() {
     return checkedIcon;
   }
@@ -365,9 +381,7 @@ class MaterialCardViewHelper {
     this.checkedIcon = checkedIcon;
     if (checkedIcon != null) {
       this.checkedIcon = DrawableCompat.wrap(checkedIcon.mutate());
-      // TODO: support custom color
-      DrawableCompat.setTint(
-          this.checkedIcon, MaterialColors.getColor(materialCardView, R.attr.colorPrimary));
+      DrawableCompat.setTintList(this.checkedIcon, checkedIconTint);
     }
 
     if (clickableForegroundDrawable != null) {
@@ -538,6 +552,7 @@ class MaterialCardViewHelper {
     return 0;
   }
 
+  @NonNull
   private Drawable getClickableForeground() {
     if (rippleDrawable == null) {
       rippleDrawable = createForegroundRippleDrawable();

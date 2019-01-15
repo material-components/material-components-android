@@ -478,4 +478,26 @@ public class MaterialCardView extends CardView implements Checkable {
   public void setCheckedIcon(@Nullable Drawable checkedIcon) {
     cardViewHelper.setCheckedIcon(checkedIcon);
   }
+
+  /**
+   * Returns the {@link android.content.res.ColorStateList} used to tint the checked icon.
+   *
+   * @see #setCheckedIconTint(ColorStateList)
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconTint
+   */
+  @Nullable
+  public ColorStateList getCheckedIconTint() {
+    return cardViewHelper.getCheckedIconTint();
+  }
+
+  /**
+   * Sets this checked icon color tint using the specified {@link
+   * android.content.res.ColorStateList}.
+   *
+   * @param checkedIconTint The tint color of this chip's icon.
+   * @attr ref com.google.android.material.R.styleable#MaterialCardView_checkedIconTint
+   */
+  public void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
+    cardViewHelper.setCheckedIconTint(checkedIconTint);
+  }
 }

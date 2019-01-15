@@ -33,6 +33,7 @@
     <item name="android:checkable">true</item>
     <item name="android:clickable">true</item>
     <item name="checkedIcon">@drawable/ic_mtrl_checked_circle</item>
+    <item name="checkedIconTint">?attr/colorPrimary</item>
   </style>
 
 </resources>
