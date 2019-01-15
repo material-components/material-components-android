@@ -83,9 +83,13 @@ private def getTransformedProjectPath(projectPath) {
  */
 def compatibility(name) {
   switch (name) {
-    case "annotations":
+    case "annotation":
       return "androidx.annotation:annotation:${androidXVersions.annotation}"
-    case "compat":
+    case "appcompat":
+      return "androidx.appcompat:appcompat:${androidXVersions.appCompat}"
+    case "cardview":
+      return "androidx.cardview:cardview:${androidXVersions.cardView}"
+    case "core":
       return "androidx.core:core:${androidXVersions.core}"
     case "core_ui":
       return "androidx.legacy:legacy-support-core-ui:${androidXVersions.legacySupportCoreUi}"
@@ -93,14 +97,10 @@ def compatibility(name) {
       return "androidx.legacy:legacy-support-core-utils:${androidXVersions.legacySupportCoreUtils}"
     case "fragment":
       return "androidx.fragment:fragment:${androidXVersions.fragment}"
+    case "recyclerview":
+      return "androidx.recyclerview:recyclerview:${androidXVersions.recyclerView}"
     case "transition":
       return "androidx.transition:transition:${androidXVersions.transition}"
-    case "v7/appcompat":
-      return "androidx.appcompat:appcompat:${androidXVersions.appCompat}"
-    case "v7/cardview":
-      return "androidx.cardview:cardview:${androidXVersions.cardView}"
-    case "v7/recyclerview":
-      return "androidx.recyclerview:recyclerview:${androidXVersions.recyclerView}"
     case "vectordrawable":
       return "androidx.vectordrawable:vectordrawable:${androidXVersions.vectorDrawable}"
     default:

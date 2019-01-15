@@ -5,15 +5,15 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
-  api compatibility("annotations")
-  api compatibility("compat")
+  api compatibility("annotation")
+  api compatibility("appcompat")
+  api compatibility("cardview")
+  api compatibility("core")
   api compatibility("core_ui")
   api compatibility("core_utils")
   api compatibility("fragment")
+  api compatibility("recyclerview")
   api compatibility("transition")
-  api compatibility("v7/appcompat")
-  api compatibility("v7/cardview")
-  api compatibility("v7/recyclerview")
   api compatibility("vectordrawable")
 
   testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"

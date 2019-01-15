@@ -17,8 +17,8 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api compatibility("compat")
-  api compatibility("v7/appcompat")
+  api compatibility("appcompat")
+  api compatibility("core")
 
  /* api project(fromPath("lib/java/com/google/android/material/theme"))
   api project(fromPath("lib/java/com/google/android/material/button"))

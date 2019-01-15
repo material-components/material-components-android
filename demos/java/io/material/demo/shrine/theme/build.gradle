@@ -1,7 +1,7 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  api compatibility("v7/appcompat")
+  api compatibility("appcompat")
 }
 
 android {

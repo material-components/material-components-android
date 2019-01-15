@@ -25,9 +25,9 @@ dependencies {
   implementation 'com.google.dexmaker:dexmaker:1.2'
   implementation 'com.google.dexmaker:dexmaker-mockito:1.2'
 
-  implementation compatibility("annotations")
-  implementation compatibility("compat")
-  implementation compatibility("v7/appcompat")
+  implementation compatibility("annotation")
+  implementation compatibility("appcompat")
+  implementation compatibility("core")
 }
 
 android {

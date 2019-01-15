@@ -17,11 +17,11 @@
 apply plugin: 'com.android.library'
 
 dependencies {
-  api compatibility("compat")
+  api compatibility("appcompat")
+  api compatibility("core")
   api compatibility("core_ui")
   api compatibility("core_utils")
   api compatibility("fragment")
-  api compatibility("v7/appcompat")
 }
 
 android {

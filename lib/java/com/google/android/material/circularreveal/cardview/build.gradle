@@ -5,8 +5,8 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
-  api compatibility("annotations")
-  api compatibility("v7/cardview")
+  api compatibility("annotation")
+  api compatibility("cardview")
 
   api project(fromPath("lib/java/com/google/android/material/circularreveal"))
 }

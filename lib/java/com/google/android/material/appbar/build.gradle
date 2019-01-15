@@ -5,10 +5,10 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
-  api compatibility("annotations")
-  api compatibility("compat")
+  api compatibility("annotation")
+  api compatibility("appcompat")
+  api compatibility("core")
   api compatibility("core_ui")
-  api compatibility("v7/appcompat")
 
   implementation project(fromPath("lib/java/com/google/android/material/animation"))
   implementation project(fromPath("lib/java/com/google/android/material/internal"))

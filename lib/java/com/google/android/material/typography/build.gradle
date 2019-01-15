@@ -5,7 +5,7 @@ archivesBaseName = getArchivesBaseName(project.name)
 version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
-  implementation compatibility("v7/appcompat")
+  implementation compatibility("appcompat")
 }
 
 android {

@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 dependencies {
-  api compatibility("annotations")
-  api compatibility("v7/appcompat")
+  api compatibility("annotation")
+  api compatibility("appcompat")
 
   api project(fromPath("lib"))
   api project(fromPath("testing/java/com/google/android/material/testapp/base"))
