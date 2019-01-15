@@ -111,8 +111,7 @@ The following additional attributes can be changed for a `MaterialCardView`:
 
 Feature | Relevant attributes
 :------ | :------------------
-Border  | `app:strokeColor`
-        | `app:strokeWidth`
+Border  | `app:strokeColor`<br/>`app:strokeWidth`
 
 ### Theme Attribute Mapping
 
