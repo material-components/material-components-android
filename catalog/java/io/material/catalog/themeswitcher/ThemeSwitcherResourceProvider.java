@@ -42,4 +42,12 @@ public class ThemeSwitcherResourceProvider {
   public int getSecondaryColorsContentDescription() {
     return R.array.mtrl_palettes_content_description;
   }
+
+  public int getShapes() {
+    return R.array.mtrl_shape_overlays;
+  }
+
+  public int getShapesContentDescription() {
+    return R.array.mtrl_shapes_content_description;
+  }
 }

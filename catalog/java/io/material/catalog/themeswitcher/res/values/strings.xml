@@ -31,4 +31,9 @@
   <string name="mtrl_brown">Brown</string>
   <string name="mtrl_grey">Grey</string>
   <string name="mtrl_blue_grey">Blue grey</string>
+  <string name="mtrl_rounded">Rounded</string>
+  <string name="mtrl_cut">Cut</string>
+  <string name="mtrl_rounded_content_description">Rounded corners</string>
+  <string name="mtrl_cut_content_description">Cut corners</string>
+  <string name="mtrl_shapes_corner_family">Shapes corner family</string>
 </resources>

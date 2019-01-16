@@ -47,7 +47,43 @@
         android:id="@+id/secondary_colors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginBottom="16dp"
         android:orientation="horizontal"/>
   </HorizontalScrollView>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/mtrl_shapes_corner_family"/>
+
+  <RadioGroup
+      android:id="@+id/shape_families"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/rounded_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:layout_marginEnd="16dp"
+        android:layout_marginRight="16dp"
+        android:checked="true"
+        android:drawableEnd="@drawable/ic_rounded_corners_24px"
+        android:drawablePadding="16dp"
+        android:drawableRight="@drawable/ic_rounded_corners_24px"
+        android:text="@string/mtrl_rounded"/>
+
+    <RadioButton
+        android:id="@+id/cut_button"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:drawableEnd="@drawable/ic_cut_corners_24px"
+        android:drawablePadding="16dp"
+        android:drawableRight="@drawable/ic_cut_corners_24px"
+        android:text="@string/mtrl_cut"/>
+  </RadioGroup>
 
 </LinearLayout>
