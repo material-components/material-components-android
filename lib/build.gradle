@@ -48,6 +48,7 @@ def srcDirs = [
   'com/google/android/material/math',
   'com/google/android/material/menu',
   'com/google/android/material/navigation',
+  'com/google/android/material/picker',
   'com/google/android/material/radiobutton',
   'com/google/android/material/resources',
   'com/google/android/material/ripple',

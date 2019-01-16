@@ -11,7 +11,7 @@ dependencies {
   api 'androidx.multidex:multidex:2.0.0'
 
   api 'com.google.guava:guava:27.0.1-android'
-  
+
   api project(':lib')
 }
 
@@ -37,6 +37,7 @@ def srcDirs = [
   'internal',
   'main',
   'menu',
+  'picker',
   'radiobutton',
   'shapetheming',
   'switchmaterial',
