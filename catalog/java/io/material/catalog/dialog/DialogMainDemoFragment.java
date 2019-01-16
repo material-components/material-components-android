@@ -122,6 +122,16 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setNegativeButton(negativeText, null)
             .setIcon(R.drawable.ic_dialogs_24px));
 
+    // edit text
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.edit_text,
+        new MaterialAlertDialogBuilder(getContext())
+            .setTitle(title)
+            .setView(R.layout.edit_text)
+            .setPositiveButton(positiveText, null)
+            .setNegativeButton(negativeText, null));
+
     // title, auto-action choice dialog
     addDialogLauncher(
         dialogLaunchersLayout,

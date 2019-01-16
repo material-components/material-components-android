@@ -25,6 +25,8 @@
   <string name="title_message_3_long_actions">Title, Message, 3 Long Actions</string>
   <string name="long_title_message_too_long_actions">Long Title, Message, Over-length Buttons</string>
   <string name="icon_title_message_2_actions">Icon, Title, Message, 2 Actions</string>
+  <!-- Denotes what parts of an AlertDialog this button will display. [CHAR LIMIT=60] -->
+  <string name="edit_text">Edit Text</string>
   <string name="title_choices_as_actions">Selection triggers action</string>
   <string name="title_checkboxes_2_actions">Multi-select</string>
   <string name="title_radiobuttons_2_actions">Single select</string>
