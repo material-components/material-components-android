@@ -38,7 +38,9 @@ public class CardStatesFragment extends DemoFragment {
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    View view = layoutInflater.inflate(getLayoutResourceID(), viewGroup, false /* attachToRoot */);
+    View view =
+        layoutInflater.inflate(
+            R.layout.cat_card_states_fragment, viewGroup, false /* attachToRoot */);
     RadioGroup radioGroup = view.findViewById(R.id.cat_card_radio_group);
     final MaterialCardView card = view.findViewById(R.id.card);
     final MaterialCardView checkableCard = view.findViewById(R.id.checkable_card);
@@ -55,9 +57,5 @@ public class CardStatesFragment extends DemoFragment {
         });
 
     return view;
-  }
-
-  protected int getLayoutResourceID() {
-    return R.layout.cat_card_states_fragment;
   }
 }
