@@ -31,6 +31,7 @@ import androidx.fragment.app.Fragment;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.MenuItemCompat;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -54,12 +55,6 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     setHasOptionsMenu(true);
-    TypedArray a =
-        getContext()
-            .getTheme()
-            .obtainStyledAttributes(new int[] {R.attr.colorControlNormal, R.attr.colorSecondary});
-    colorControlNormal = a.getColor(0, 0);
-    colorSecondary = a.getColor(1, 0);
   }
 
   @Nullable
@@ -70,10 +65,20 @@ public abstract class DemoLandingFragment extends DaggerFragment {
         layoutInflater.inflate(
             R.layout.cat_demo_landing_fragment, viewGroup, false /* attachToRoot */);
 
+    Toolbar toolbar = view.findViewById(R.id.toolbar);
+
     AppCompatActivity activity = (AppCompatActivity) getActivity();
-    activity.setSupportActionBar(view.findViewById(R.id.toolbar));
+    activity.setSupportActionBar(toolbar);
     activity.getSupportActionBar().setTitle(getTitleResId());
     activity.getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+    TypedArray a =
+        toolbar
+            .getContext()
+            .getTheme()
+            .obtainStyledAttributes(new int[] {R.attr.colorControlNormal, R.attr.colorSecondary});
+    colorControlNormal = a.getColor(0, 0);
+    colorSecondary = a.getColor(1, 0);
 
     TextView descriptionTextView = view.findViewById(R.id.cat_demo_landing_description);
     ViewGroup mainDemoContainer = view.findViewById(R.id.cat_demo_landing_main_demo_container);
@@ -185,8 +190,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
   @Override
   public void onPrepareOptionsMenu(Menu menu) {
     MenuItem item = menu.findItem(R.id.favorite_toggle);
-    boolean isChecked =
-        FeatureDemoUtils.getDefaultDemo(getContext()).equals(getClass().getName());
+    boolean isChecked = FeatureDemoUtils.getDefaultDemo(getContext()).equals(getClass().getName());
     item.setChecked(isChecked);
     MenuItemCompat.setIconTintList(
         item, ColorStateList.valueOf(isChecked ? colorSecondary : colorControlNormal));
