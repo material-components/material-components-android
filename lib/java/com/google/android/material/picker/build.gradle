@@ -1,5 +1,3 @@
-package com.google.android.material.picker
-
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
