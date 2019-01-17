@@ -122,6 +122,11 @@ public class BottomSheetDialog extends AppCompatDialog {
     canceledOnTouchOutsideSet = true;
   }
 
+  @NonNull
+  public BottomSheetBehavior<FrameLayout> getBehavior() {
+    return behavior;
+  }
+
   private View wrapInBottomSheet(int layoutResId, View view, ViewGroup.LayoutParams params) {
     FrameLayout container =
         (FrameLayout) View.inflate(getContext(), R.layout.design_bottom_sheet_dialog, null);
