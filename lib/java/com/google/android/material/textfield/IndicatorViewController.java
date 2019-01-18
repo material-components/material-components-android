@@ -238,8 +238,8 @@ final class IndicatorViewController {
                 }
               }
               if (captionViewToShow != null) {
-                captionViewToShow.setTranslationY(0);
-                captionViewToShow.setAlpha(1);
+                captionViewToShow.setTranslationY(0f);
+                captionViewToShow.setAlpha(1f);
               }
             }
 
