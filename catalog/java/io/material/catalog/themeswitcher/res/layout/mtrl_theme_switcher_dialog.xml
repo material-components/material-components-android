@@ -27,12 +27,12 @@
       android:text="\?attr/colorPrimary"/>
   <HorizontalScrollView
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp">
     <RadioGroup
         android:id="@+id/primary_colors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:orientation="horizontal"/>
   </HorizontalScrollView>
 
@@ -42,12 +42,12 @@
       android:text="\?attr/colorSecondary"/>
   <HorizontalScrollView
       android:layout_width="wrap_content"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp">
     <RadioGroup
         android:id="@+id/secondary_colors"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="16dp"
         android:orientation="horizontal"/>
   </HorizontalScrollView>
 
@@ -67,12 +67,10 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:layout_marginEnd="16dp"
-        android:layout_marginRight="16dp"
         android:checked="true"
-        android:drawableEnd="@drawable/ic_rounded_corners_24px"
-        android:drawablePadding="16dp"
-        android:drawableRight="@drawable/ic_rounded_corners_24px"
+        android:drawableLeft="@drawable/ic_rounded_corners_24px"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_rounded_corners_24px"
         android:text="@string/mtrl_rounded"/>
 
     <RadioButton
@@ -80,9 +78,9 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
-        android:drawableEnd="@drawable/ic_cut_corners_24px"
-        android:drawablePadding="16dp"
-        android:drawableRight="@drawable/ic_cut_corners_24px"
+        android:drawableLeft="@drawable/ic_cut_corners_24px"
+        android:drawablePadding="8dp"
+        android:drawableStart="@drawable/ic_cut_corners_24px"
         android:text="@string/mtrl_cut"/>
   </RadioGroup>
 

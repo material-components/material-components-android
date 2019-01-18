@@ -24,7 +24,7 @@
     tools:ignore="NewApi">
 
   <path
-      android:fillColor="#000000"
+      android:fillColor="?attr/colorOnSurface"
       android:pathData="M19,19 L21,19 L21,21 L19,21 L19,19 Z M19,17 L21,17 L21,15 L19,15 L19,17 Z M3,13 L5,13 L5,11 L3,11 L3,13 Z M3,17 L5,17 L5,15 L3,15 L3,17 Z M3,9 L5,9 L5,7 L3,7 L3,9 Z M3,5 L5,5 L5,3 L3,3 L3,5 Z M7,5 L9,5 L9,3 L7,3 L7,5 Z M15,21 L17,21 L17,19 L15,19 L15,21 Z M11,21 L13,21 L13,19 L11,19 L11,21 Z M15,21 L17,21 L17,19 L15,19 L15,21 Z M7,21 L9,21 L9,19 L7,19 L7,21 Z M3,21 L5,21 L5,19 L3,19 L3,21 Z M21,13 L11,3 L11,5 L19,13 L21,13 Z" />
   <path
       android:pathData="M0,0 L24,0 L24,24 L0,24 Z" />
