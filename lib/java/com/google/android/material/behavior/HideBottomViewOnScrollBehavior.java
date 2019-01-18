@@ -26,6 +26,7 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
 
 /**
@@ -52,7 +53,9 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
 
   @Override
   public boolean onLayoutChild(CoordinatorLayout parent, V child, int layoutDirection) {
-    height = child.getMeasuredHeight();
+    ViewGroup.MarginLayoutParams paramsCompat =
+        (ViewGroup.MarginLayoutParams) child.getLayoutParams();
+    height = child.getMeasuredHeight() + paramsCompat.bottomMargin;
     return super.onLayoutChild(parent, child, layoutDirection);
   }
 
