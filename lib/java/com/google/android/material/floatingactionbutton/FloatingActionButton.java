@@ -501,9 +501,14 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
   }
 
-  /** Set the FloatingActionButton shape appearance. */
+  /** Sets the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
   public void setShapeAppearance(ShapeAppearanceModel shapeAppearance) {
     getImpl().setShapeAppearance(shapeAppearance, isUsingDefaultCorner(shapeAppearance));
+  }
+
+  /** Returns the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
+  public ShapeAppearanceModel getShapeAppearance() {
+    return getImpl().getShapeAppearance();
   }
 
   @Override

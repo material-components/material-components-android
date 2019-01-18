@@ -315,6 +315,11 @@ class FloatingActionButtonImpl {
   }
 
   @Nullable
+  final ShapeAppearanceModel getShapeAppearance() {
+    return shapeAppearance;
+  }
+
+  @Nullable
   final MotionSpec getShowMotionSpec() {
     return showMotionSpec;
   }

@@ -49,7 +49,6 @@
   </style>
 
   <style name="ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton" parent="">
-    <item name="cornerFamily">rounded</item>
     <!-- use @null to change to 50% programmatically. -->
     <item name="cornerSize">@null</item>
   </style>
