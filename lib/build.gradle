@@ -8,6 +8,7 @@ dependencies {
   api compatibility("annotation")
   api compatibility("appcompat")
   api compatibility("cardview")
+  api compatibility("coordinatorlayout")
   api compatibility("core")
   api compatibility("core_ui")
   api compatibility("core_utils")

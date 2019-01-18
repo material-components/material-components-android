@@ -26,6 +26,7 @@ ext {
     annotation            : '1.0.1',
     appCompat             : '1.1.0-alpha01',
     cardView              : '1.0.0',
+    coordinatorlayout     : '1.1.0-alpha01',
     core                  : '1.1.0-alpha03',
     fragment              : '1.0.0',
     legacySupportCoreUi   : '1.0.0',
@@ -89,6 +90,8 @@ def compatibility(name) {
       return "androidx.appcompat:appcompat:${androidXVersions.appCompat}"
     case "cardview":
       return "androidx.cardview:cardview:${androidXVersions.cardView}"
+    case "coordinatorlayout":
+      return "androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
     case "core":
       return "androidx.core:core:${androidXVersions.core}"
     case "core_ui":

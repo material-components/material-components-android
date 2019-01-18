@@ -798,8 +798,8 @@ public class AppBarLayout extends LinearLayout {
     /**
      * Upon a scroll ending, if the view is only partially visible then it will be snapped and
      * scrolled to its closest edge. For example, if the view only has its bottom 25% displayed, it
-     * will be scrolled off screen completely. Conversely, if its bottom 75% is visible then it
-     * will be scrolled fully into view.
+     * will be scrolled off screen completely. Conversely, if its bottom 75% is visible then it will
+     * be scrolled fully into view.
      */
     public static final int SCROLL_FLAG_SNAP = 0x10;
 
@@ -1032,7 +1032,6 @@ public class AppBarLayout extends LinearLayout {
         }
         if (min != max) {
           consumed[1] = scroll(coordinatorLayout, child, dy, min, max);
-          stopNestedScrollIfNeeded(dy, child, target, type);
         }
       }
       if (child.isLiftOnScroll()) {
@@ -1049,22 +1048,13 @@ public class AppBarLayout extends LinearLayout {
         int dyConsumed,
         int dxUnconsumed,
         int dyUnconsumed,
-        int type) {
+        int type,
+        int[] consumed) {
       if (dyUnconsumed < 0) {
         // If the scrolling view is scrolling down but not consuming, it's probably be at
         // the top of it's content
-        scroll(coordinatorLayout, child, dyUnconsumed, -child.getDownNestedScrollRange(), 0);
-        stopNestedScrollIfNeeded(dyUnconsumed, child, target, type);
-      }
-    }
-
-    private void stopNestedScrollIfNeeded(int dy, T child, View target, int type) {
-      if (type == ViewCompat.TYPE_NON_TOUCH) {
-        final int curOffset = getTopBottomOffsetForScrollingSibling();
-        if ((dy < 0 && curOffset == 0)
-            || (dy > 0 && curOffset == -child.getDownNestedScrollRange())) {
-          ViewCompat.stopNestedScroll(target, ViewCompat.TYPE_NON_TOUCH);
-        }
+        consumed[1] =
+            scroll(coordinatorLayout, child, dyUnconsumed, -child.getDownNestedScrollRange(), 0);
       }
     }
 
