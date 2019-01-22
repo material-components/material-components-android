@@ -236,6 +236,11 @@ final class IndicatorViewController {
                 if (captionToHide == CAPTION_STATE_ERROR && errorView != null) {
                   errorView.setText(null);
                 }
+
+                if (captionViewToShow != null) {
+                  captionViewToShow.setTranslationY(0f);
+                  captionViewToShow.setAlpha(1f);
+                }
               }
             }
 
