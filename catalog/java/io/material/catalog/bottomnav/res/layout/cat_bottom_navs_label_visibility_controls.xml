@@ -23,26 +23,34 @@
     android:layout_gravity="center_horizontal"
     android:gravity="center_horizontal"
     android:orientation="vertical">
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="2dp"
-      android:text="@string/cat_bottom_nav_icon_size_slider_title"/>
-  <TextView
-      android:id="@+id/icon_size_text_view"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:padding="2dp"
-      android:text="24dp"/>
-  <SeekBar
-      android:id="@+id/icon_size_slider"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:paddingLeft="@dimen/cat_bottom_nav_standard_spacing"
-      android:paddingRight="@dimen/cat_bottom_nav_standard_spacing"
-      android:max="48"
-      android:maxWidth="300dp"
-      android:progress="24"/>
+      android:orientation="horizontal"
+      android:gravity="center"
+      android:paddingTop="@dimen/cat_bottom_nav_standard_spacing"
+      android:paddingBottom="@dimen/cat_bottom_nav_standard_spacing">
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="@string/cat_bottom_nav_icon_size_slider_title"/>
+    <TextView
+        android:id="@+id/icon_size_text_view"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:padding="2dp"
+        android:text="24dp"/>
+  </LinearLayout>
+    <SeekBar
+        android:id="@+id/icon_size_slider"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:paddingLeft="@dimen/cat_bottom_nav_standard_spacing"
+        android:paddingRight="@dimen/cat_bottom_nav_standard_spacing"
+        android:max="48"
+        android:maxWidth="300dp"
+        android:progress="24"/>
   <RelativeLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
