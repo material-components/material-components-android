@@ -28,20 +28,20 @@ import android.content.DialogInterface.OnKeyListener;
 import android.content.DialogInterface.OnMultiChoiceClickListener;
 import android.content.res.ColorStateList;
 import android.content.res.Resources.Theme;
-import android.content.res.TypedArray;
 import android.database.Cursor;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.InsetDrawable;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ArrayRes;
 import androidx.annotation.AttrRes;
+import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
-import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AlertDialog;
@@ -72,10 +72,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   private static final int MATERIAL_ALERT_DIALOG_THEME_OVERLAY = R.attr.materialAlertDialogTheme;
 
   private Drawable background;
-  @Px private int backgroundInsetStart;
-  @Px private int backgroundInsetTop;
-  @Px private int backgroundInsetEnd;
-  @Px private int backgroundInsetBottom;
+  @Dimension private final Rect backgroundInsets;
 
   private static Context createMaterialAlertDialogThemedContext(Context context) {
     TypedValue outValue = new TypedValue();
@@ -93,42 +90,14 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
     super(createMaterialAlertDialogThemedContext(context), themeResId);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
-
-    TypedArray attributes =
-        ThemeEnforcement.obtainStyledAttributes(
-            context, null, R.styleable.MaterialAlertDialog, DEF_STYLE_ATTR, DEF_STYLE_RES);
-
-    backgroundInsetStart =
-        attributes.getDimensionPixelSize(
-            R.styleable.MaterialAlertDialog_backgroundInsetStart,
-            context
-                .getResources()
-                .getDimensionPixelSize(R.dimen.mtrl_alert_dialog_background_inset_start));
-    backgroundInsetTop =
-        attributes.getDimensionPixelSize(
-            R.styleable.MaterialAlertDialog_backgroundInsetTop,
-            context
-                .getResources()
-                .getDimensionPixelSize(R.dimen.mtrl_alert_dialog_background_inset_top));
-
-    backgroundInsetEnd =
-        attributes.getDimensionPixelSize(
-            R.styleable.MaterialAlertDialog_backgroundInsetEnd,
-            context
-                .getResources()
-                .getDimensionPixelSize(R.dimen.mtrl_alert_dialog_background_inset_end));
-    backgroundInsetBottom =
-        attributes.getDimensionPixelSize(
-            R.styleable.MaterialAlertDialog_backgroundInsetBottom,
-            context
-                .getResources()
-                .getDimensionPixelSize(R.dimen.mtrl_alert_dialog_background_inset_bottom));
-
-    attributes.recycle();
-
-    TypedValue colorSurfaceValue = new TypedValue();
     Theme theme = context.getTheme();
-    theme.resolveAttribute(R.attr.colorSurface, colorSurfaceValue, true);
+
+    backgroundInsets =
+        MaterialDialogs.getDialogBackgroundInsets(context, DEF_STYLE_ATTR, DEF_STYLE_RES);
+
+    TypedValue colorSurfaceValue =
+        MaterialAttributes.resolveAttributeOrThrow(
+            context, R.attr.colorSurface, getClass().getCanonicalName());
     int surfaceColor = colorSurfaceValue.data;
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
@@ -156,25 +125,9 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
     View decorView = window.getDecorView();
     window.setDimAmount(DEFAULT_DIM_AMOUNT);
 
-    int backgroundInsetLeft;
-    int backgroundInsetRight;
-    if (ViewCompat.getLayoutDirection(decorView) == ViewCompat.LAYOUT_DIRECTION_LTR) {
-      backgroundInsetLeft = backgroundInsetStart;
-      backgroundInsetRight = backgroundInsetEnd;
-    } else {
-      backgroundInsetLeft = backgroundInsetEnd;
-      backgroundInsetRight = backgroundInsetStart;
-    }
-    Drawable insetDrawable =
-        new InsetDrawable(
-            background,
-            backgroundInsetLeft,
-            backgroundInsetTop,
-            backgroundInsetRight,
-            backgroundInsetBottom);
+    Drawable insetDrawable = MaterialDialogs.insetDrawable(background, backgroundInsets);
     window.setBackgroundDrawable(insetDrawable);
-    decorView.setOnTouchListener(
-        new InsetDialogOnTouchListener(alertDialog, backgroundInsetLeft, backgroundInsetTop));
+    decorView.setOnTouchListener(new InsetDialogOnTouchListener(alertDialog, backgroundInsets));
     return alertDialog;
   }
 
@@ -188,22 +141,34 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   }
 
   public MaterialAlertDialogBuilder setBackgroundInsetStart(@Px int backgroundInsetStart) {
-    this.backgroundInsetStart = backgroundInsetStart;
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1
+        && getContext().getResources().getConfiguration().getLayoutDirection()
+            == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      backgroundInsets.right = backgroundInsetStart;
+    } else {
+      backgroundInsets.left = backgroundInsetStart;
+    }
     return this;
   }
 
   public MaterialAlertDialogBuilder setBackgroundInsetTop(@Px int backgroundInsetTop) {
-    this.backgroundInsetTop = backgroundInsetTop;
+    backgroundInsets.top = backgroundInsetTop;
     return this;
   }
 
   public MaterialAlertDialogBuilder setBackgroundInsetEnd(@Px int backgroundInsetEnd) {
-    this.backgroundInsetEnd = backgroundInsetEnd;
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1
+        && getContext().getResources().getConfiguration().getLayoutDirection()
+            == ViewCompat.LAYOUT_DIRECTION_RTL) {
+      backgroundInsets.left = backgroundInsetEnd;
+    } else {
+      backgroundInsets.right = backgroundInsetEnd;
+    }
     return this;
   }
 
   public MaterialAlertDialogBuilder setBackgroundInsetBottom(@Px int backgroundInsetBottom) {
-    this.backgroundInsetBottom = backgroundInsetBottom;
+    backgroundInsets.bottom = backgroundInsetBottom;
     return this;
   }
 

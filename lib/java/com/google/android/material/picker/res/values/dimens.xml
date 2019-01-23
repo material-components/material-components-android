@@ -16,8 +16,5 @@
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date" parent="ThemeOverlay.MaterialComponents.MaterialAlertDialog"/>
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Spinner"/>
-  <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Calendar"/>
+  <dimen name="mtrl_alert_dialog_picker_background_inset">24dp</dimen>
 </resources>

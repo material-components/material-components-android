@@ -15,12 +15,13 @@
  */
 package com.google.android.material.dialog;
 
-import com.google.android.material.R;
-
+import android.app.Dialog;
+import android.graphics.Rect;
 import android.graphics.RectF;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.Px;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.appcompat.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
@@ -29,22 +30,33 @@ import android.view.View.OnTouchListener;
 /**
  * Ensures that touches within the transparent region of the inset drawable used for Dialogs
  * are processed as touches outside the Dialog.
+ *
+ * @hide
+ *
  */
-class InsetDialogOnTouchListener implements OnTouchListener {
+@RestrictTo(Scope.LIBRARY_GROUP)
+public class InsetDialogOnTouchListener implements OnTouchListener {
 
-  private final AlertDialog dialog;
+  private final Dialog dialog;
   private final int leftInset;
   private final int topInset;
 
-  InsetDialogOnTouchListener(AlertDialog dialog, @Px int leftInset, @Px int topInset) {
+  public InsetDialogOnTouchListener(AlertDialog dialog, Rect insets) {
     this.dialog = dialog;
-    this.leftInset = leftInset;
-    this.topInset = topInset;
+    this.leftInset = insets.left;
+    this.topInset = insets.top;
+  }
+
+  public InsetDialogOnTouchListener(android.app.AlertDialog dialog, Rect insets) {
+    this.dialog = dialog;
+    this.leftInset = insets.left;
+    this.topInset = insets.top;
   }
 
   @Override
   public boolean onTouch(View view, MotionEvent event) {
-    View insetView = view.findViewById(R.id.parentPanel);
+    View insetView = view.findViewById(android.R.id.content);
+
     int insetLeft = leftInset + insetView.getLeft();
     int insetRight = insetLeft + insetView.getWidth();
     int insetTop = topInset + insetView.getTop();

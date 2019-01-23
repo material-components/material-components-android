@@ -17,6 +17,15 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
-  <style name="MaterialAlertDialog.MaterialComponents.Picker.Date.Spinner" parent="android:Widget.DatePicker"/>
-  <style name="MaterialAlertDialog.MaterialComponents.Picker.Date.Calendar" parent="android:Widget.DatePicker"/>
+  <style name="MaterialAlertDialog.MaterialComponents.Picker.Date.Spinner" parent="android:Widget.DeviceDefault.DatePicker">
+    <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_picker_background_inset</item>
+    <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_picker_background_inset</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+  </style>
+
+  <style name="MaterialAlertDialog.MaterialComponents.Picker.Date.Calendar" parent="android:Widget.DeviceDefault.DatePicker">
+    <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_picker_background_inset</item>
+    <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_picker_background_inset</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+  </style>
 </resources>

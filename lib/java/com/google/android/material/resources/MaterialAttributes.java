@@ -34,17 +34,22 @@ public class MaterialAttributes {
 
   public static TypedValue resolveAttributeOrThrow(
       View componentView, @AttrRes int attributeResId) {
-    Context context = componentView.getContext();
+    return resolveAttributeOrThrow(
+        componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
+  }
+
+  public static TypedValue resolveAttributeOrThrow(
+      Context context, @AttrRes int attributeResId, String errorMessageComponent) {
     TypedValue typedValue = resolveAttribute(context, attributeResId);
     if (typedValue == null) {
       String errorMessage =
-          "The %1$s view requires a value for the %2$s attribute to be set in your app theme. "
+          "%1$s requires a value for the %2$s attribute to be set in your app theme. "
               + "You can either set the attribute in your theme or "
               + "update your theme to inherit from Theme.MaterialComponents (or a descendant).";
       throw new IllegalArgumentException(
           String.format(
               errorMessage,
-              componentView.getClass().getCanonicalName(),
+              errorMessageComponent,
               context.getResources().getResourceName(attributeResId)));
     }
     return typedValue;
