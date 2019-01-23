@@ -43,6 +43,14 @@ public class CardStatesFragment extends DemoFragment {
     final MaterialCardView card = view.findViewById(R.id.card);
     final MaterialCardView checkableCard = view.findViewById(R.id.checkable_card);
 
+    checkableCard.setOnLongClickListener(new View.OnLongClickListener() {
+      @Override
+      public boolean onLongClick(View v) {
+        checkableCard.setChecked(!checkableCard.isChecked());
+        return true;
+      }
+    });
+
     radioGroup.setOnCheckedChangeListener(
         new RadioGroup.OnCheckedChangeListener() {
           @Override

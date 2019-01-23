@@ -388,12 +388,6 @@ public class MaterialCardView extends CardView implements Checkable {
   }
 
   @Override
-  public boolean performLongClick() {
-    toggle();
-    return super.performLongClick();
-  }
-
-  @Override
   protected int[] onCreateDrawableState(int extraSpace) {
     final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
     if (isChecked()) {
