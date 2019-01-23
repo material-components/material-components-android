@@ -31,7 +31,6 @@ import android.os.Build;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import androidx.annotation.VisibleForTesting;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.resources.CancelableFontCallback;
 import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
@@ -460,7 +459,6 @@ public final class CollapsingTextHelper {
   }
 
   @ColorInt
-  @VisibleForTesting
   public int getCurrentCollapsedTextColor() {
     return getCurrentColor(collapsedTextColor);
   }
