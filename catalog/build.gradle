@@ -51,6 +51,7 @@ def srcDirs = [
 
 android {
   defaultConfig {
+    vectorDrawables.useSupportLibrary = true
     manifestPlaceholders = [
       application_name             : 'CatalogApplication',
       application_theme            : 'Catalog',
