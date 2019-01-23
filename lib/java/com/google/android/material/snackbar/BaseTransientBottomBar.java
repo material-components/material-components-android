@@ -366,8 +366,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   private void updateBottomMargin() {
     MarginLayoutParams layoutParams = (MarginLayoutParams) view.getLayoutParams();
-    layoutParams.bottomMargin =
-        originalBottomMargin + extraBottomMarginInsets + extraBottomMarginAnchorView;
+    layoutParams.bottomMargin = originalBottomMargin;
+    if (anchorView != null) {
+      layoutParams.bottomMargin += extraBottomMarginAnchorView;
+    } else {
+      layoutParams.bottomMargin += extraBottomMarginInsets;
+    }
     view.setLayoutParams(layoutParams);
   }
 
