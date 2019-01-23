@@ -135,6 +135,10 @@ import java.lang.annotation.RetentionPolicy;
  * TextInputLayout#setHint(CharSequence)} and {@link TextInputLayout#getHint()} on TextInputLayout,
  * instead of on EditText.
  *
+ * <p>If the {@link EditText} child is not a {@link TextInputEditText}, make sure to set the {@link
+ * EditText}'s {@code android:background} to {@code null} when using an outlined text field. This
+ * allows {@link TextInputLayout} to set the {@link EditText}'s background to an outline.
+ *
  * <p><strong>Note:</strong> The actual view hierarchy present under TextInputLayout is
  * <strong>NOT</strong> guaranteed to match the view hierarchy as written in XML. As a result, calls
  * to getParent() on children of the TextInputLayout -- such as a TextInputEditText -- may not
@@ -191,7 +195,7 @@ public class TextInputLayout extends LinearLayout {
   private final int boxStrokeWidthFocusedPx;
   @ColorInt private int boxStrokeColor;
   @ColorInt private int boxBackgroundColor;
-  private Drawable editTextOriginalDrawable;
+  private boolean useEditTextBackgroundForBoxBackground;
 
   /**
    * Values for box background mode. There is either a filled background, an outline background, or
@@ -496,16 +500,38 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Set the mode for the box's background (filled, outline, or none).
+   * Set the box background mode (filled, outline, or none).
    *
-   * @param boxBackgroundMode the box's background mode.
+   * <p>May be one of {@link #BOX_BACKGROUND_NONE}, {@link #BOX_BACKGROUND_FILLED}, or {@link
+   * #BOX_BACKGROUND_OUTLINE}.
+   *
+   * <p>Note: This method defines TextInputLayout's internal behavior (for example, it allows the
+   * hint to be displayed inline with the stroke in a cutout), but doesn't set all attributes that
+   * are set in the styles provided for the box background modes. To achieve the look of an outlined
+   * or filled text field, supplement this method with other methods that modify the box, such as
+   * {@link #setBoxStrokeColor(int)} and {@link #setBoxBackgroundColor(int)}.
+   *
+   * @param boxBackgroundMode box's background mode
    */
   public void setBoxBackgroundMode(@BoxBackgroundMode int boxBackgroundMode) {
     if (boxBackgroundMode == this.boxBackgroundMode) {
       return;
     }
     this.boxBackgroundMode = boxBackgroundMode;
-    onApplyBoxBackgroundMode();
+    if (editText != null) {
+      onApplyBoxBackgroundMode();
+    }
+  }
+
+  /**
+   * Get the box background mode (filled, outline, or none).
+   *
+   * <p>May be one of {@link #BOX_BACKGROUND_NONE}, {@link #BOX_BACKGROUND_FILLED}, or {@link
+   * #BOX_BACKGROUND_OUTLINE}.
+   */
+  @BoxBackgroundMode
+  public int getBoxBackgroundMode() {
+    return boxBackgroundMode;
   }
 
   private void onApplyBoxBackgroundMode() {
@@ -513,7 +539,25 @@ public class TextInputLayout extends LinearLayout {
     if (boxBackgroundMode != BOX_BACKGROUND_NONE) {
       updateInputLayoutMargins();
     }
+    setEditTextBoxBackground();
     updateTextInputBoxBounds();
+  }
+
+  private void setEditTextBoxBackground() {
+    // Set the EditText background to boxBackground if we should use that as the box background.
+    if (shouldUseEditTextBackgroundForBoxBackground()) {
+      ViewCompat.setBackground(editText, boxBackground);
+      useEditTextBackgroundForBoxBackground = true;
+    }
+  }
+
+  private boolean shouldUseEditTextBackgroundForBoxBackground() {
+    // When the outline text field's EditText's background is null, use the EditText's background
+    // for the boxBackground.
+    return editText != null
+        && boxBackground != null
+        && editText.getBackground() == null
+        && boxBackgroundMode == BOX_BACKGROUND_OUTLINE;
   }
 
   private void assignBoxBackgroundByMode() {
@@ -525,8 +569,8 @@ public class TextInputLayout extends LinearLayout {
       // Make boxBackground a CutoutDrawable if in outline mode, there is a hint, and
       // boxBackground isn't already a CutoutDrawable.
       boxBackground = new CutoutDrawable(shapeAppearanceModel);
-    } else if (boxBackground == null) {
-      // Otherwise, make boxBackground a MaterialShapeDrawable if it hasn't yet been initialized.
+    } else {
+      // Otherwise, make boxBackground a MaterialShapeDrawable.
       boxBackground = new MaterialShapeDrawable(shapeAppearanceModel);
     }
   }
@@ -1490,7 +1534,8 @@ public class TextInputLayout extends LinearLayout {
     if (boxBackgroundMode == BOX_BACKGROUND_NONE
         || boxBackground == null
         || editText == null
-        || getRight() == 0) {
+        || getRight() == 0
+        || useEditTextBackgroundForBoxBackground) {
       return;
     }
 
@@ -1498,15 +1543,6 @@ public class TextInputLayout extends LinearLayout {
     int top = calculateBoxBackgroundTop();
     int right = editText.getRight();
     int bottom = editText.getBottom() + boxBottomOffsetPx;
-
-    // Create space for the wider stroke width to ensure that the outline box's stroke is not cut
-    // off.
-    if (boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
-      left += boxStrokeWidthFocusedPx / 2;
-      top -= boxStrokeWidthFocusedPx / 2;
-      right -= boxStrokeWidthFocusedPx / 2;
-      bottom += boxStrokeWidthFocusedPx / 2;
-    }
 
     boxBackground.setBounds(left, top, right, bottom);
     applyBoxAttributes();
@@ -1554,7 +1590,7 @@ public class TextInputLayout extends LinearLayout {
     switch (boxBackgroundMode) {
       case BOX_BACKGROUND_OUTLINE:
         bounds.left = rect.left + editText.getPaddingLeft();
-        bounds.top = getBoxBackground().getBounds().top - calculateLabelMarginTop();
+        bounds.top = rect.top - calculateLabelMarginTop();
         bounds.right = rect.right - editText.getPaddingRight();
         return bounds;
       case BOX_BACKGROUND_FILLED:
@@ -1589,7 +1625,7 @@ public class TextInputLayout extends LinearLayout {
       return;
     }
     Drawable editTextBackground = editText.getBackground();
-    if (editTextBackground == null) {
+    if (editTextBackground == null || boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
       return;
     }
 
@@ -1651,21 +1687,6 @@ public class TextInputLayout extends LinearLayout {
     }
 
     setBoxAttributes();
-
-    if (editText != null && boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
-      // Store the EditText's background drawable, in case it needs to be restored later.
-      if (editText.getBackground() != null) {
-        editTextOriginalDrawable = editText.getBackground();
-      }
-      ViewCompat.setBackground(editText, null);
-    }
-
-    if (editText != null
-        && boxBackgroundMode == BOX_BACKGROUND_FILLED
-        && editTextOriginalDrawable != null) {
-      // Restore the EditText drawable.
-      ViewCompat.setBackground(editText, editTextOriginalDrawable);
-    }
 
     if (boxStrokeWidthPx > -1 && boxStrokeColor != Color.TRANSPARENT) {
       boxBackground.setStroke(boxStrokeWidthPx, boxStrokeColor);
@@ -1835,7 +1856,7 @@ public class TextInputLayout extends LinearLayout {
 
   @Override
   public void draw(Canvas canvas) {
-    if (boxBackground != null) {
+    if (boxBackground != null && boxBackgroundMode == BOX_BACKGROUND_FILLED) {
       boxBackground.draw(canvas);
     }
     super.draw(canvas);
@@ -1880,12 +1901,13 @@ public class TextInputLayout extends LinearLayout {
         // toggle's height. This ensures focus works properly, and there is no visual jump if the
         // password toggle is enabled/disabled.
         editText.setMinimumHeight(passwordToggleView.getMeasuredHeight());
-        editText.post(new Runnable() {
-          @Override
-          public void run() {
-            editText.requestLayout();
-          }
-        });
+        editText.post(
+            new Runnable() {
+              @Override
+              public void run() {
+                editText.requestLayout();
+              }
+            });
       }
 
       passwordToggleView.setVisibility(VISIBLE);
@@ -2154,16 +2176,14 @@ public class TextInputLayout extends LinearLayout {
   protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
     super.onLayout(changed, left, top, right, bottom);
 
-    if (boxBackground != null) {
-      updateTextInputBoxBounds();
-    }
+    updateTextInputBoxBounds();
 
     if (hintEnabled && editText != null) {
       Rect rect = tmpRect;
       DescendantOffsetUtils.getDescendantRect(this, editText, rect);
 
-      collapsingTextHelper.setExpandedBounds(calculateExpandedTextBounds(rect));
       collapsingTextHelper.setCollapsedBounds(calculateCollapsedTextBounds(rect));
+      collapsingTextHelper.setExpandedBounds(calculateExpandedTextBounds(rect));
       collapsingTextHelper.recalculate();
 
       // If the label should be collapsed, set the cutout bounds on the CutoutDrawable to make sure
@@ -2200,6 +2220,9 @@ public class TextInputLayout extends LinearLayout {
     final RectF cutoutBounds = tmpRectF;
     collapsingTextHelper.getCollapsedTextActualBounds(cutoutBounds);
     applyCutoutPadding(cutoutBounds);
+    // Offset the cutout bounds by the TextInputLayout's left padding to ensure that the cutout is
+    // inset relative to the TextInputLayout's bounds.
+    cutoutBounds.offset(-getPaddingLeft(), 0);
     ((CutoutDrawable) boxBackground).setCutout(cutoutBounds);
   }
 
@@ -2240,10 +2263,6 @@ public class TextInputLayout extends LinearLayout {
     // Drawable state has changed so see if we need to update the label
     updateLabelState(ViewCompat.isLaidOut(this) && isEnabled());
 
-    updateEditTextBackground();
-    updateTextInputBoxBounds();
-    updateTextInputBoxState();
-
     if (collapsingTextHelper != null) {
       changed |= collapsingTextHelper.setState(state);
     }
@@ -2251,6 +2270,10 @@ public class TextInputLayout extends LinearLayout {
     if (changed) {
       invalidate();
     }
+
+    updateEditTextBackground();
+    updateTextInputBoxBounds();
+    updateTextInputBoxState();
 
     inDrawableStateChanged = false;
   }

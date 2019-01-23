@@ -75,10 +75,10 @@ style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
 To change the background color of a filled text field, you can set the
 `boxBackgroundColor` attribute on your `TextInputLayout`.
 
-#### Outline Box
+#### Outlined Box
 
-Outline text fields have a stroked border and are less emphasized. To use an
-outline text field, apply the following style to your `TextInputLayout`:
+Outlined text fields have a stroked border and are less emphasized. To use an
+outlined text field, apply the following style to your `TextInputLayout`:
 
 ```xml
 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
@@ -87,6 +87,11 @@ style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
 To change the stroke color and width for an outline text field, you can set the
 `boxStrokeColor` and `boxStrokeWidth` attributes on your `TextInputLayout`,
 respectively.
+
+When using an outlined text field with an `EditText` child that is not a
+`TextInputEditText`, make sure to set the `EditText`'s `android:background` to
+`@null`. This allows `TextInputLayout` to set an outline background on the
+`EditText`.
 
 #### Height Variations
 

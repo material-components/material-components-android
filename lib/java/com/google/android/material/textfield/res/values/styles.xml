@@ -126,7 +126,9 @@
     <item name="android:paddingBottom">16dp</item>
   </style>
 
-  <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputEditText"/>
+  <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputEditText">
+    <item name="android:background">@null</item>
+  </style>
 
   <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
     <item name="android:paddingTop">13dp</item>

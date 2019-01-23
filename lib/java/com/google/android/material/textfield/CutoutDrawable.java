@@ -98,7 +98,10 @@ class CutoutDrawable extends MaterialShapeDrawable {
 
     if (useHardwareLayer(callback)) {
       View viewCallback = (View) callback;
-      viewCallback.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+      // Make sure we're using a hardware layer.
+      if (viewCallback.getLayerType() != View.LAYER_TYPE_HARDWARE) {
+        viewCallback.setLayerType(View.LAYER_TYPE_HARDWARE, null);
+      }
     } else {
       // If we're not using a hardware layer, save the canvas layer.
       saveCanvasLayer(canvas);
