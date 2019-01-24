@@ -289,12 +289,7 @@ class MaterialCardViewHelper {
   }
 
   void updateStroke() {
-    // In order to set a stroke, a size and color both need to be set. We default to a zero-width
-    // width size, but won't set a default color. This prevents drawing a stroke that blends in with
-    // the card but that could affect card spacing.
-    if (strokeColor != DEFAULT_STROKE_VALUE) {
-      foregroundContentDrawable.setStroke(strokeWidth, strokeColor);
-    }
+    foregroundContentDrawable.setStroke(strokeWidth, strokeColor);
   }
 
   @TargetApi(VERSION_CODES.LOLLIPOP)
