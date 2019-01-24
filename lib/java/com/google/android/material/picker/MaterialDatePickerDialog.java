@@ -36,7 +36,6 @@ import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import android.util.TypedValue;
-import java.util.Calendar;
 
 /** A Material version of {@link android.app.DatePickerDialog} * */
 public class MaterialDatePickerDialog extends DatePickerDialog {
@@ -50,35 +49,14 @@ public class MaterialDatePickerDialog extends DatePickerDialog {
   private final Drawable background;
   private final Rect backgroundInsets;
 
-  /**
-   * Creates a new date picker dialog for the current date.
-   *
-   * @param context the parent context
-   */
   public MaterialDatePickerDialog(@NonNull Context context) {
     this(context, 0);
   }
 
-  /**
-   * Creates a new date picker dialog for the current date.
-   *
-   * @param context the parent context
-   * @param themeResId the resource ID of the theme against which to inflate this dialog, or {@code
-   *     0} to use the parent {@code context}'s default alert dialog theme
-   */
   public MaterialDatePickerDialog(@NonNull Context context, int themeResId) {
     this(context, themeResId, null, -1, -1, -1);
   }
 
-  /**
-   * Creates a new date picker dialog for the specified date.
-   *
-   * @param context the parent context
-   * @param listener the listener to call when the user sets the date
-   * @param year the initially selected year
-   * @param month the initially selected month (0-11 for compatibility with {@link Calendar#MONTH})
-   * @param dayOfMonth the initially selected day of month (1-31, depending
-   */
   public MaterialDatePickerDialog(
       @NonNull Context context,
       @Nullable OnDateSetListener listener,
@@ -87,19 +65,7 @@ public class MaterialDatePickerDialog extends DatePickerDialog {
       int dayOfMonth) {
     this(context, 0, listener, year, month, dayOfMonth);
   }
-
-  /**
-   * Creates a new date picker dialog for the specified date.
-   *
-   * @param context the parent context
-   * @param themeResId the resource ID of the theme against which to inflate this dialog, or {@code
-   *     0} to use the parent {@code context}'s default alert dialog theme
-   * @param listener the listener to call when the user sets the date
-   * @param year the initially selected year
-   * @param monthOfYear the initially selected month of the year (0-11 for compatibility with {@link
-   *     Calendar#MONTH})
-   * @param dayOfMonth the initially selected day of month (1-31, depending
-   */
+  
   public MaterialDatePickerDialog(
       @NonNull Context context,
       int themeResId,
