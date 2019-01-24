@@ -211,11 +211,11 @@ style="@style/Widget.MaterialComponents.Button.UnelevatedButton.Icon"
 ```
 
 Component Attribute      | Default Theme Attribute Value
------------------------- | -----------------------------
+------------------------ | -----------------------------------------
 `android:textAppearance` | `textAppearanceButton`
 `android:textColor`      | `colorOnPrimary`
 `iconTint`               | `colorOnPrimary`
-`rippleColor`            | `colorOnPrimary`
+`rippleColor`            | `colorOnPrimary` at 32% opacity (pressed)
 `backgroundTint`         | `colorPrimary`
 
 ### Outlined button
@@ -226,12 +226,12 @@ style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"
 ```
 
 Component Attribute      | Default Theme Attribute Value
------------------------- | -----------------------------
+------------------------ | ---------------------------------------
 `android:textAppearance` | `textAppearanceButton`
 `android:textColor`      | `colorPrimary`
 `iconTint`               | `colorPrimary`
-`rippleColor`            | `colorPrimary`
-`strokeColor`            | `colorOnSurface`
+`rippleColor`            | `colorPrimary` at 16% opacity (pressed)
+`strokeColor`            | `colorOnSurface` at 12% opacity
 `backgroundTint`         | Transparent
 
 ### Text button
@@ -242,11 +242,11 @@ style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
 ```
 
 Component Attribute      | Default Theme Attribute Value
------------------------- | -----------------------------
+------------------------ | ---------------------------------------
 `android:textAppearance` | `textAppearanceButton`
 `android:textColor`      | `colorPrimary`
 `iconTint`               | `colorPrimary`
-`rippleColor`            | `colorPrimary`
+`rippleColor`            | `colorPrimary` at 12% opacity (pressed)
 `backgroundTint`         | Transparent
 
 ## Related Concepts
