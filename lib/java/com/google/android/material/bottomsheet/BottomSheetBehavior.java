@@ -678,6 +678,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *     or {@link #STATE_HALF_EXPANDED}.
    */
   public final void setState(@State int state) {
+    @State int previousState = this.state;
     if (state == this.state) {
       return;
     }
@@ -692,6 +693,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       return;
     }
     startSettlingAnimationPendingLayout(state);
+    updateDrawableOnStateChange(state, previousState);
   }
 
   private void startSettlingAnimationPendingLayout(@State int state) {
@@ -761,12 +763,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private void updateDrawableOnStateChange(@State int state, @State int previousState) {
     if (materialShapeDrawable != null) {
-      if (state == STATE_EXPANDED && (parentHeight <= viewRef.get().getHeight())) {
-        // If the bottomsheet is fully expanded, change ShapeAppearance to sharp corners to
-        // indicate the bottomsheet has no more content to scroll.
-        // Overriding of this style may be performed in the bottomsheet callback.
-        materialShapeDrawable.getShapeAppearanceModel().setCornerRadius(0);
-        materialShapeDrawable.invalidateSelf();
+      // If the BottomSheetBehavior's state is set directly to STATE_EXPANDED from
+      // STATE_HIDDEN or STATE_COLLAPSED, bypassing  STATE_DRAGGING, the corner transition animation
+      // will not be triggered automatically, so we will trigger it here.
+      if (state == STATE_EXPANDED
+          && (previousState == STATE_HIDDEN || previousState == STATE_COLLAPSED)
+          && interpolatorAnimator != null
+          && interpolatorAnimator.getAnimatedFraction() == 1) {
+        interpolatorAnimator.reverse();
       }
       if (state == STATE_DRAGGING
            && previousState == STATE_EXPANDED && interpolatorAnimator != null) {
