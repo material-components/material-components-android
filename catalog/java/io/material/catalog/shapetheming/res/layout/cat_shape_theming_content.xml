@@ -95,4 +95,11 @@
       android:layout_marginStart="16dp"
       android:text="@string/cat_shape_theming_button_text"/>
 
+  <Button
+      android:id="@+id/material_button_2"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginStart="16dp"
+      android:text="@string/cat_shape_theming_button_text"/>
+
 </LinearLayout>

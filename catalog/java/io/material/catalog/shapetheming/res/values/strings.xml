@@ -42,5 +42,6 @@
   <string name="cat_shape_theming_textfield_hint_outlined_dense">Shaped dense outlined text field</string>
   <string name="cat_shape_theming_textfield_hint_filled">Shaped filled text field</string>
   <string name="cat_shape_theming_textfield_hint_filled_dense">Shaped dense filled text field</string>
+  <string name="cat_shape_theming_bottomsheet_title">This is a shaped bottomsheet.</string>
 
 </resources>

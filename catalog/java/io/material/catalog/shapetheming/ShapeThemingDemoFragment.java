@@ -22,6 +22,8 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.view.ContextThemeWrapper;
@@ -37,12 +39,13 @@ import io.material.catalog.feature.DemoFragment;
 public abstract class ShapeThemingDemoFragment extends DemoFragment {
 
   private int statusBarColor;
+  private ContextThemeWrapper wrappedContext;
 
   @Nullable
   @Override
   public View onCreateView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
-    ContextThemeWrapper wrappedContext = new ContextThemeWrapper(getContext(), getShapeTheme());
+    this.wrappedContext = new ContextThemeWrapper(getContext(), getShapeTheme());
     LayoutInflater layoutInflaterWithThemedContext =
         layoutInflater.cloneInContext(wrappedContext);
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
@@ -90,6 +93,18 @@ public abstract class ShapeThemingDemoFragment extends DemoFragment {
             materialAlertDialogBuilder.show();
           }
         });
+    BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(wrappedContext);
+    bottomSheetDialog.setContentView(R.layout.cat_shape_theming_bottomsheet_content);
+    View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
+    BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(300);
+    MaterialButton button = container.findViewById(R.id.material_button_2);
+    button.setOnClickListener(new OnClickListener() {
+      @Override
+      public void onClick(View v) {
+        bottomSheetDialog.show();
+      }
+    });
+
     return view;
   }
 
