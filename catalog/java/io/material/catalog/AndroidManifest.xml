@@ -40,13 +40,19 @@
       </intent-filter>
     </activity>
     <activity
+      android:exported="false"
       android:name=".topappbar.TopAppBarActionBarDemoActivity"
       android:label="@string/cat_topappbar_action_bar_title"
       android:theme="@style/Theme.MaterialComponents.Light"/>
     <activity
+      android:exported="false"
       android:name=".topappbar.TopAppBarDarkActionBarDemoActivity"
       android:label="@string/cat_topappbar_dark_action_bar_title"
       android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
+    <activity
+      android:exported="false"
+      android:name=".card.CardSelectionModeActivity"/>
+
   </application>
 
 </manifest>

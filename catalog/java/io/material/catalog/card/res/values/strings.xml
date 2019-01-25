@@ -19,6 +19,8 @@
 
   <string name="cat_card_title">Cards</string>
   <string name="cat_card_draggable_card">Draggable Card</string>
+  <string name="cat_card_selection_mode">Selectable Cards</string>
+  <string name="cat_card_selectable_item_title">Message</string>
   <string name="cat_card_states">Card States</string>
   <string name="cat_card_draggable_card_content">This is a draggable Card.</string>
   <string name="cat_card_states_card_content">This demo shows the different states on a card.</string>
@@ -51,4 +53,8 @@
     the MaterialCardView class for the latest Material designs and maximum flexibility in your UI.
   </string>
   <string name="cat_card_select">Select a state</string>
+  <string name="cat_card_selectable_content">
+    Lorem ipsum dolor sit amet, nec no nominavi scaevola. Per et sint sapientem, nobis perpetua salutandi mei te. Quo tamquam probatus reprehendunt in. Eos esse purto eruditi ea. Enim tation persius ut sea, eos ad consul populo.
+    Ne eum solet altera. Cibo eligendi et est, electram theophrastus te vel eu.
+  </string>
 </resources>

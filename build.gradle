@@ -32,6 +32,7 @@ ext {
     legacySupportCoreUi   : '1.0.0',
     legacySupportCoreUtils: '1.0.0',
     recyclerView          : '1.1.0-alpha01',
+    recyclerViewSelection : '1.1.0-alpha01',
     transition            : '1.0.1',
     vectorDrawable        : '1.1.0-alpha01',
   ]
@@ -106,6 +107,8 @@ def compatibility(name) {
       return "androidx.transition:transition:${androidXVersions.transition}"
     case "vectordrawable":
       return "androidx.vectordrawable:vectordrawable:${androidXVersions.vectorDrawable}"
+    case "recyclerViewSelection":
+      return "androidx.recyclerview:recyclerview-selection:${androidXVersions.recyclerViewSelection}"
     default:
       throw new IllegalArgumentException("No mapping exists for name: $name.")
   }

@@ -18,6 +18,7 @@ package io.material.catalog.card;
 
 import io.material.catalog.R;
 
+import android.content.Intent;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import dagger.Provides;
@@ -57,6 +58,12 @@ public class CardFragment extends DemoLandingFragment {
   @Override
   public List<Demo> getAdditionalDemos() {
     return Arrays.asList(
+        new Demo(R.string.cat_card_selection_mode) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), CardSelectionModeActivity.class);
+          }
+        },
         new Demo(R.string.cat_card_draggable_card) {
           @Nullable
           @Override

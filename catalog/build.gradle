@@ -13,6 +13,8 @@ dependencies {
   api 'com.google.guava:guava:27.0.1-android'
 
   api project(':lib')
+
+  api compatibility("recyclerViewSelection")
 }
 
 def srcDirs = [
