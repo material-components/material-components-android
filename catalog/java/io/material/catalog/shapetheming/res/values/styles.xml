@@ -73,7 +73,7 @@
 
   <style name="Widget.Shrine.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
 
-   <style name="Theme.Shrine.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+   <style name="Theme.Shrine.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Shrine.BottomSheet.Modal</item>
   </style>
 
@@ -144,7 +144,7 @@
 
   <style name="Widget.Fortnightly.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
 
-  <style name="Theme.Fortnightly.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+  <style name="Theme.Fortnightly.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Fortnightly.BottomSheet.Modal</item>
   </style>
 
@@ -208,7 +208,7 @@
 
   <style name="Widget.Crane.TextInputLayout" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox"/>
 
-  <style name="Theme.Crane.BottomSheetDialog" parent="Theme.MaterialComponents.BottomSheetDialog">
+  <style name="Theme.Crane.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.BottomSheetDialog">
     <item name="bottomSheetStyle">@style/Widget.Crane.BottomSheet.Modal</item>
   </style>
 

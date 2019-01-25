@@ -29,6 +29,7 @@
         android:id="@+id/bottomsheet_state"
         android:layout_width="match_parent"
         android:layout_height="100dp"
+        android:textColor="?attr/colorOnPrimary"
         android:gravity="center"
         android:textSize="20sp"
         android:text="@string/cat_shape_theming_bottomsheet_title"/>
