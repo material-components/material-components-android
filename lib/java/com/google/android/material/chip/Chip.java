@@ -156,6 +156,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
   private boolean closeIconHovered;
   private boolean closeIconFocused;
   private boolean ensureMinTouchTargetSize;
+  private int lastLayoutDirection;
 
   @Dimension(unit = Dimension.PX)
   private int minTouchTargetSize;
@@ -242,6 +243,7 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (shouldEnsureMinTouchTargetSize()) {
       setMinHeight(minTouchTargetSize);
     }
+    lastLayoutDirection = ViewCompat.getLayoutDirection(this);
   }
 
   @Override
@@ -313,6 +315,19 @@ public class Chip extends AppCompatCheckBox implements Delegate {
 
     ViewCompat.setPaddingRelative(
         this, paddingStart, getPaddingTop(), paddingEnd, getPaddingBottom());
+  }
+
+  @Override
+  @TargetApi(Build.VERSION_CODES.JELLY_BEAN_MR1)
+  public void onRtlPropertiesChanged(int layoutDirection) {
+    super.onRtlPropertiesChanged(layoutDirection);
+
+    // Layout direction can be updated via a parent (or ancestor) View, causing this property change
+    // method to be called. Update text padding whenever a layout direction change is detected.
+    if (lastLayoutDirection != layoutDirection) {
+      lastLayoutDirection = layoutDirection;
+      updatePaddingInternal();
+    }
   }
 
   private void validateAttributes(@Nullable AttributeSet attributeSet) {
