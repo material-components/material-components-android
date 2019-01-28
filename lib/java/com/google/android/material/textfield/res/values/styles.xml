@@ -56,7 +56,7 @@
     <item name="boxCornerRadiusTopEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
-    <item name="boxStrokeColor">@color/mtrl_box_stroke_color</item>
+    <item name="boxStrokeColor">@color/mtrl_outlined_stroke_color</item>
 
     <item name="counterTextAppearance">?attr/textAppearanceCaption</item>
     <item name="counterOverflowTextAppearance">?attr/textAppearanceCaption</item>
@@ -78,23 +78,31 @@
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox</item>
+    <item name="materialThemeOverlay">
+      @style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox
+    </item>
     <item name="boxBackgroundMode">filled</item>
     <item name="boxBackgroundColor">@color/mtrl_filled_background_color</item>
     <item name="passwordToggleTint">@color/mtrl_tint_filled_end_icon</item>
     <item name="boxCollapsedPaddingTop">12dp</item>
     <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_small</item>
     <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_small</item>
-    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.TextInputLayout.FilledBox</item>
+    <item name="boxStrokeColor">@color/mtrl_filled_stroke_color</item>
+    <item name="shapeAppearanceOverlay">
+      @style/ShapeAppearanceOverlay.MaterialComponents.TextInputLayout.FilledBox
+    </item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense</item>
+    <item name="materialThemeOverlay">
+      @style/ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox.Dense
+    </item>
     <item name="boxCollapsedPaddingTop">8dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputLayout">
-    <item name="materialThemeOverlay">@style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox
+    <item name="materialThemeOverlay">
+      @style/ThemeOverlay.MaterialComponents.TextInputEditText.OutlinedBox
     </item>
     <item name="boxCollapsedPaddingTop">0dp</item>
   </style>
@@ -107,6 +115,7 @@
 
   <!-- Base style for TextInputEditText. You should use one of the sub-styles instead. -->
   <style name="Base.Widget.MaterialComponents.TextInputEditText" parent="Widget.AppCompat.EditText">
+    <item name="android:background">@null</item>
     <item name="android:paddingStart" tools:ignore="NewApi">12dp</item>
     <item name="android:paddingEnd" tools:ignore="NewApi">12dp</item>
     <item name="android:paddingLeft">12dp</item>
@@ -117,18 +126,16 @@
   </style>
 
   <style name="Widget.MaterialComponents.TextInputEditText.FilledBox" parent="Base.Widget.MaterialComponents.TextInputEditText">
-    <item name="android:paddingTop">20dp</item>
-    <item name="android:paddingBottom">16dp</item>
+    <item name="android:paddingTop">28dp</item>
+    <item name="android:paddingBottom">12dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.TextInputEditText.FilledBox.Dense">
-    <item name="android:paddingTop">16dp</item>
-    <item name="android:paddingBottom">16dp</item>
+    <item name="android:paddingTop">24dp</item>
+    <item name="android:paddingBottom">8dp</item>
   </style>
 
-  <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputEditText">
-    <item name="android:background">@null</item>
-  </style>
+  <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox" parent="Base.Widget.MaterialComponents.TextInputEditText"/>
 
   <style name="Widget.MaterialComponents.TextInputEditText.OutlinedBox.Dense">
     <item name="android:paddingTop">13dp</item>
