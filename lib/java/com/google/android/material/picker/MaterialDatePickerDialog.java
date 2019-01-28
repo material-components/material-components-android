@@ -30,6 +30,8 @@ import android.os.Bundle;
 import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.dialog.MaterialDialogs;
@@ -37,7 +39,12 @@ import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import android.util.TypedValue;
 
-/** A Material version of {@link android.app.DatePickerDialog} * */
+/**
+ * A Material version of {@link android.app.DatePickerDialog}
+ *
+ * @hide
+ */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public class MaterialDatePickerDialog extends DatePickerDialog {
 
   @AttrRes private static final int DEF_STYLE_ATTR = android.R.attr.datePickerStyle;
@@ -65,7 +72,7 @@ public class MaterialDatePickerDialog extends DatePickerDialog {
       int dayOfMonth) {
     this(context, 0, listener, year, month, dayOfMonth);
   }
-  
+
   public MaterialDatePickerDialog(
       @NonNull Context context,
       int themeResId,

@@ -87,7 +87,8 @@ public class PickerMainDemoFragment extends DemoFragment {
     return new DatePickerDialog(getContext(), themeResId, null, year, month, day);
   }
 
-  protected MaterialDatePickerDialog materialTodayDatePicker(int themeResId) {
+  @SuppressWarnings("RestrictTo")
+  protected DatePickerDialog materialTodayDatePicker(int themeResId) {
     Calendar calendar = Calendar.getInstance();
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
