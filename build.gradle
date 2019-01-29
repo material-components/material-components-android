@@ -254,12 +254,12 @@ subprojects {
                 }
               }
               // Adds a <type> tag for each dependency. This assumes that all dependencies except
-              // for support-annotations are aars, but it can break if in the future we depend on
-              // anything else that's not an aar.
+              // for "annotation" are aars, but it can break if in the future the artifactId
+              // changes or we depend on anything else that's not an aar.
               // TODO: Remove this once Gradle automatically determines dependency types.
               whenConfigured { pom ->
                 pom.dependencies.findAll { dependency ->
-                  if (dependency.artifactId != 'support-annotations') {
+                  if (dependency.artifactId != 'annotation') {
                     dependency.type = 'aar'
                   }
                 }
