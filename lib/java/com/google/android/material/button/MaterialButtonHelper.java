@@ -323,7 +323,7 @@ class MaterialButtonHelper {
   }
 
   @Nullable
-  private MaterialShapeDrawable getMaterialShapeDrawable() {
+  MaterialShapeDrawable getMaterialShapeDrawable() {
     Drawable result = null;
     if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 0) {
       result = rippleDrawable.getDrawable(0);
