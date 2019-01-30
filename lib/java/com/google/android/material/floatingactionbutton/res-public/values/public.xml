@@ -22,7 +22,11 @@
   <public name="useCompatPadding" type="attr"/>
   <public name="maxImageSize" type="attr"/>
   <public name="behavior_autoHide" type="attr"/>
+  <public name="behavior_autoShrink" type="attr"/>
   <public name="floatingActionButtonStyle" type="attr"/>
+  <public name="extendedFloatingActionButtonStyle" type="attr"/>
   <public name="Widget.Design.FloatingActionButton" type="style"/>
   <public name="Widget.MaterialComponents.FloatingActionButton" type="style"/>
+  <public name="Widget.MaterialComponents.ExtendedFloatingActionButton" type="style"/>
+  <public name="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon" type="style"/>
 </resources>

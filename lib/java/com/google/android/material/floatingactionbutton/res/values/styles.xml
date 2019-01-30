@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
 -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.Design.FloatingActionButton" parent="android:Widget">
     <item name="android:background">@drawable/design_fab_background</item>
@@ -51,6 +51,49 @@
   <style name="ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton" parent="">
     <!-- use @null to change to 50% programmatically. -->
     <item name="cornerSize">@null</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.ExtendedFloatingActionButton" parent="Widget.MaterialComponents.Button">
+    <item name="android:insetTop">0dp</item>
+    <item name="android:insetBottom">0dp</item>
+    <item name="android:maxLines">1</item>
+    <item name="android:minHeight">@dimen/mtrl_extended_fab_min_height</item>
+    <item name="android:minWidth">@dimen/mtrl_extended_fab_min_width</item>
+    <item name="android:paddingTop">@dimen/mtrl_extended_fab_top_padding</item>
+    <item name="android:paddingBottom">@dimen/mtrl_extended_fab_bottom_padding</item>
+    <item name="android:paddingStart" tools:ignore="NewApi">
+      @dimen/mtrl_extended_fab_start_padding
+    </item>
+    <item name="android:paddingEnd" tools:ignore="NewApi">
+      @dimen/mtrl_extended_fab_end_padding
+    </item>
+    <item name="android:paddingLeft">@dimen/mtrl_extended_fab_start_padding</item>
+    <item name="android:paddingRight">@dimen/mtrl_extended_fab_end_padding</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/mtrl_extended_fab_state_list_animator
+    </item>
+    <item name="android:textColor">@color/mtrl_extended_fab_text_color_selector</item>
+    <item name="backgroundTint">@color/mtrl_extended_fab_bg_color_selector</item>
+    <item name="elevation">@dimen/mtrl_extended_fab_elevation</item>
+    <item name="iconPadding">@dimen/mtrl_extended_fab_icon_text_spacing</item>
+    <item name="iconSize">@dimen/mtrl_extended_fab_icon_size</item>
+    <item name="iconTint">@color/mtrl_extended_fab_text_color_selector</item>
+    <item name="rippleColor">@color/mtrl_extended_fab_ripple_color</item>
+    <item name="shapeAppearanceOverlay">
+      @style/ShapeAppearanceOverlay.MaterialComponents.FloatingActionButton
+    </item>
+  </style>
+
+  <style name="Widget.MaterialComponents.ExtendedFloatingActionButton.Icon" parent="Widget.MaterialComponents.ExtendedFloatingActionButton">
+    <item name="android:gravity">start|center_vertical</item>
+    <item name="android:paddingStart" tools:ignore="NewApi">
+      @dimen/mtrl_extended_fab_start_padding_icon
+    </item>
+    <item name="android:paddingEnd" tools:ignore="NewApi">
+      @dimen/mtrl_extended_fab_end_padding_icon
+    </item>
+    <item name="android:paddingLeft">@dimen/mtrl_extended_fab_start_padding_icon</item>
+    <item name="android:paddingRight">@dimen/mtrl_extended_fab_end_padding_icon</item>
   </style>
 
 </resources>

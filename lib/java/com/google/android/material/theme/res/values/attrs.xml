@@ -83,6 +83,8 @@
     <attr name="chipStandaloneStyle"/>
     <!-- Style to use for TextInputEditTexts in this theme. -->
     <attr name="editTextStyle"/>
+    <!-- Style to use for ExtendedFloatingActionButtons in this theme. -->
+    <attr name="extendedFloatingActionButtonStyle"/>
     <!-- Style to use for FloatingActionButtons in this theme. -->
     <attr name="floatingActionButtonStyle"/>
     <!-- Style to use for MaterialCardView in this theme. -->
