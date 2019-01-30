@@ -626,7 +626,13 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_hideable
    */
   public void setHideable(boolean hideable) {
-    this.hideable = hideable;
+    if (this.hideable != hideable) {
+      this.hideable = hideable;
+      if (!hideable && state == STATE_HIDDEN) {
+        // Lift up to collapsed state
+        setState(STATE_COLLAPSED);
+      }
+    }
   }
 
   /**
