@@ -835,13 +835,8 @@ public class TextInputLayout extends LinearLayout {
     onApplyBoxBackgroundMode();
     setTextInputAccessibilityDelegate(new AccessibilityDelegate(this));
 
-    final boolean hasPasswordTransformation = hasPasswordTransformation();
-
     // Use the EditText's typeface, and its text size for our expanded text.
-    if (!hasPasswordTransformation) {
-      // We don't want a monospace font just because we have a password field
-      collapsingTextHelper.setTypefaces(this.editText.getTypeface());
-    }
+    collapsingTextHelper.setTypefaces(this.editText.getTypeface());
     collapsingTextHelper.setExpandedTextSize(this.editText.getTextSize());
 
     final int editTextGravity = this.editText.getGravity();
