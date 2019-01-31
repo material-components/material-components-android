@@ -182,8 +182,6 @@ class MaterialCardViewHelper {
     fgDrawable =
         materialCardView.isClickable() ? getClickableForeground() : foregroundContentDrawable;
     materialCardView.setForeground(insetDrawable(fgDrawable));
-
-    adjustContentPadding(strokeWidth);
   }
 
   boolean isBackgroundOverwritten() {
@@ -212,12 +210,9 @@ class MaterialCardViewHelper {
     if (strokeWidth == this.strokeWidth) {
       return;
     }
-    int strokeWidthDelta = strokeWidth - this.strokeWidth;
-
     this.strokeWidth = strokeWidth;
     adjustShapeAppearanceModelInsetByStroke();
     updateStroke();
-    adjustContentPadding(strokeWidthDelta);
   }
 
   @Dimension
@@ -562,16 +557,6 @@ class MaterialCardViewHelper {
     }
 
     return clickableForegroundDrawable;
-  }
-
-  /** Guarantee at least enough content padding to account for the stroke width. */
-  private void adjustContentPadding(int strokeWidthDelta) {
-    int contentPaddingLeft = materialCardView.getContentPaddingLeft() + strokeWidthDelta;
-    int contentPaddingTop = materialCardView.getContentPaddingTop() + strokeWidthDelta;
-    int contentPaddingRight = materialCardView.getContentPaddingRight() + strokeWidthDelta;
-    int contentPaddingBottom = materialCardView.getContentPaddingBottom() + strokeWidthDelta;
-    materialCardView.setContentPadding(
-        contentPaddingLeft, contentPaddingTop, contentPaddingRight, contentPaddingBottom);
   }
 
   private Drawable createForegroundRippleDrawable() {
