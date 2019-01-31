@@ -14,16 +14,10 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
-
-  <dimen name="design_textinput_caption_translate_y">5dp</dimen>
-
-  <dimen name="mtrl_textinput_outline_box_expanded_padding">16dp</dimen>
-  <dimen name="mtrl_textinput_box_padding_end">12dp</dimen>
-
-  <dimen name="mtrl_textinput_box_corner_radius_small">0dp</dimen>
-  <dimen name="mtrl_textinput_box_corner_radius_medium">4dp</dimen>
-  <dimen name="mtrl_textinput_box_stroke_width_default">1dp</dimen>
-  <dimen name="mtrl_textinput_box_stroke_width_focused">2dp</dimen>
-  <dimen name="mtrl_textinput_box_label_cutout_padding">4dp</dimen>
-</resources>
+<selector xmlns:android="http://schemas.android.com/apk/res/android">
+  <item android:color="?attr/colorPrimary" android:state_focused="true"/>
+  <!-- 4% overlay over 42% colorOnSurface -->
+  <item android:alpha="0.46" android:color="?attr/colorOnSurface" android:state_hovered="true"/>
+  <item android:alpha="0.38" android:color="?attr/colorOnSurface" android:state_enabled="false"/>
+  <item android:alpha="0.42" android:color="?attr/colorOnSurface"/>
+</selector>
