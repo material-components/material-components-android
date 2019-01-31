@@ -20,10 +20,11 @@
        in your App Theme to ThemeOverlay.MaterialComponents.MaterialAlertDialog or
        ThemeOverlay.MaterialComponents.MaterialAlertDialog.Centered. -->
   <declare-styleable name="MaterialAlertDialogTheme">
+    <attr name="materialAlertDialogTheme" format="reference"/>
     <attr name="materialAlertDialogTitlePanelStyle" format="reference"/>
     <attr name="materialAlertDialogTitleIconStyle" format="reference"/>
     <attr name="materialAlertDialogTitleTextStyle" format="reference"/>
-    <attr name="materialAlertDialogTheme" format="reference"/>
+    <attr name="materialAlertDialogBodyTextStyle" format="reference"/>
   </declare-styleable>
 
   <declare-styleable name="MaterialAlertDialog">

@@ -75,7 +75,7 @@
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
-    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
@@ -158,7 +158,7 @@
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
-    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
     <item name="chipGroupStyle">@style/Widget.MaterialComponents.ChipGroup</item>
@@ -200,18 +200,24 @@
 
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog">
     <!-- Widget styles -->
-    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
   </style>
 
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
     <!-- Widget styles -->
-    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
   </style>
   <style name="Base.V14.ThemeOverlay.MaterialComponents.MaterialAlertDialog" parent="ThemeOverlay.AppCompat.Dialog.Alert">
     <!-- Widget styles -->
     <item name="alertDialogStyle">@style/MaterialAlertDialog.MaterialComponents</item>
+    <item name="android:checkedTextViewStyle" tools:ignore="NewApi">@style/Widget.MaterialComponents.CheckedTextView</item>
     <item name="android:dialogCornerRadius" tools:ignore="newApi">@null</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNeutralButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+    <item name="android:backgroundDimAmount">0.32</item>
+    <item name="materialAlertDialogBodyTextStyle">@style/MaterialAlertDialog.MaterialComponents.Body.Text</item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform

@@ -51,6 +51,17 @@ public class DialogMainDemoFragment extends DemoFragment {
     String message = getResources().getString(R.string.message);
     String longMessage = getResources().getString(R.string.long_message);
 
+    // AppCompat title, message, 3 actions
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.app_compat_alert_dialog,
+        new AlertDialog.Builder(getContext())
+            .setTitle(title)
+            .setMessage(message)
+            .setPositiveButton(positiveText, null)
+            .setNegativeButton(negativeText, null)
+            .setNeutralButton(neutralText, null));
+
     // message, 2 actions
     addDialogLauncher(
         dialogLaunchersLayout,

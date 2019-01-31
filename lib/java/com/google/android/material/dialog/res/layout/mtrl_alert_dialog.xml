@@ -22,7 +22,7 @@
     android:gravity="start|left|top"
     android:orientation="vertical">
 
-  <include layout="@layout/material_alert_dialog_title"/>
+  <include layout="@layout/mtrl_alert_dialog_title"/>
 
   <FrameLayout
       android:id="@+id/contentPanel"
@@ -56,7 +56,7 @@
 
         <TextView
             android:id="@android:id/message"
-            android:textAppearance="?attr/textAppearanceBody1"
+            style="?attr/materialAlertDialogBodyTextStyle"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:paddingLeft="?attr/dialogPreferredPadding"
@@ -91,7 +91,7 @@
         android:layout_height="wrap_content"/>
   </FrameLayout>
 
-  <include layout="@layout/abc_alert_dialog_button_bar_material"
+  <include layout="@layout/mtrl_alert_dialog_actions"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>
 

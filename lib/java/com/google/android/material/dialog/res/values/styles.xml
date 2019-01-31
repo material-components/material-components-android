@@ -17,8 +17,19 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <style name="Base.Widget.MaterialComponents.CheckedTextView" parent="android:Widget"/>
+
+  <style name="Widget.MaterialComponents.CheckedTextView" parent="Base.Widget.MaterialComponents.CheckedTextView">
+    <item name="android:textAppearance">?attr/textAppearanceBody1</item>
+    <item name="android:textColor">?attr/colorOnSurfaceEmphasisMedium</item>
+  </style>
+
   <style name="MaterialAlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
-    <item name="android:layout">@layout/material_alert_dialog</item>
+    <item name="android:layout">@layout/mtrl_alert_dialog</item>
+    <item name="listItemLayout">@layout/mtrl_alert_select_dialog_item</item>
+    <item name="multiChoiceItemLayout">@layout/mtrl_alert_select_dialog_multichoice</item>
+    <item name="singleChoiceItemLayout">@layout/mtrl_alert_select_dialog_singlechoice</item>
+
     <item name="backgroundInsetStart">@dimen/mtrl_alert_dialog_background_inset_start</item>
     <item name="backgroundInsetTop">@dimen/mtrl_alert_dialog_background_inset_top</item>
     <item name="backgroundInsetEnd">@dimen/mtrl_alert_dialog_background_inset_end</item>
@@ -43,11 +54,17 @@
   </style>
 
   <style name="Base.MaterialAlertDialog.MaterialComponents.Title.Text" parent="RtlOverlay.DialogWindowTitle.AppCompat">
-    <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
+    <item name="android:textColor">?attr/colorOnSurfaceEmphasisHighType</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">end</item>
     <item name="android:singleLine">true</item>
+  </style>
+
+  <style name="MaterialAlertDialog.MaterialComponents.Body.Text" parent="TextAppearance.MaterialComponents.Body2">
+    <item name="android:textAppearance">?attr/textAppearanceBody2</item>
+    <item name="android:textColor">?attr/colorOnSurfaceEmphasisMedium</item>
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents.Title.Panel"

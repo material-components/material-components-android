@@ -87,6 +87,13 @@
     <item name="android:lines">1</item>
     <item name="android:ellipsize">end</item>
     <item name="android:singleLine">true</item>
+    <item name="android:layout_marginStart">@dimen/mtrl_btn_text_btn_padding_left</item>
+    <item name="android:layout_marginLeft">@dimen/mtrl_btn_text_btn_padding_left</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.Button.TextButton.Dialog.Flush">
+    <item name="android:layout_marginStart">0dp</item>
+    <item name="android:layout_marginLeft">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.TextButton.Dialog.Icon">

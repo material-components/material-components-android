@@ -29,5 +29,6 @@
   <public name="Widget.MaterialComponents.Button.TextButton" type="style"/>
   <public name="Widget.MaterialComponents.Button.OutlinedButton" type="style"/>
   <public name="Widget.MaterialComponents.Button.TextButton.Dialog" type="style"/>
+  <public name="Widget.MaterialComponents.Button.TextButton.Dialog.Flush" type="style"/>
 </resources>
 

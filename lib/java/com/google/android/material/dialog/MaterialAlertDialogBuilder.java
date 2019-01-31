@@ -64,7 +64,6 @@ import android.widget.ListAdapter;
  */
 public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
 
-  private static final float DEFAULT_DIM_AMOUNT = 0.32f;
   @AttrRes private static final int DEF_STYLE_ATTR = R.attr.alertDialogStyle;
   @StyleRes private static final int DEF_STYLE_RES = R.style.MaterialAlertDialog_MaterialComponents;
 
@@ -123,7 +122,6 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
     /* {@link Window#getDecorView()} should be called before any changes are made to the Window
      * as it locks in attributes and affects layout. */
     View decorView = window.getDecorView();
-    window.setDimAmount(DEFAULT_DIM_AMOUNT);
 
     Drawable insetDrawable = MaterialDialogs.insetDrawable(background, backgroundInsets);
     window.setBackgroundDrawable(insetDrawable);
