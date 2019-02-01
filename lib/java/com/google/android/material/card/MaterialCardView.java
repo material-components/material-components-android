@@ -78,6 +78,8 @@ public class MaterialCardView extends CardView implements Checkable {
   }
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
+  private static final int[] DRAGGED_STATE_SET = {R.attr.state_dragged};
+
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_CardView;
   private static final String LOG_TAG = "MaterialCardView";
 
@@ -91,6 +93,7 @@ public class MaterialCardView extends CardView implements Checkable {
   private final boolean isParentCardViewDoneInitializing;
 
   private boolean checked = false;
+  private boolean dragged = false;
   private OnCheckedChangeListener onCheckedChangeListener;
 
   public MaterialCardView(Context context) {
@@ -354,6 +357,22 @@ public class MaterialCardView extends CardView implements Checkable {
   }
 
   /**
+   * Call this when the Card is being dragged to apply the right color and elevation changes.
+   * @param dragged whether the card is currently being dragged or at rest.
+   */
+  public void setDragged(boolean dragged) {
+    if (this.dragged != dragged) {
+      this.dragged = dragged;
+      refreshDrawableState();
+      invalidate();
+    }
+  }
+
+  public boolean isDragged() {
+    return dragged;
+  }
+
+  /**
    * Returns whether this Card is checkable.
    *
    * @see #setCheckable(boolean)
@@ -389,10 +408,15 @@ public class MaterialCardView extends CardView implements Checkable {
 
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
-    final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+    final int[] drawableState = super.onCreateDrawableState(extraSpace + 2);
     if (isChecked()) {
       mergeDrawableStates(drawableState, CHECKED_STATE_SET);
     }
+
+    if (isDragged()) {
+      mergeDrawableStates(drawableState, DRAGGED_STATE_SET);
+    }
+
     return drawableState;
   }
 

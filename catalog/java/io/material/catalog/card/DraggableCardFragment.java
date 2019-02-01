@@ -18,14 +18,10 @@ package io.material.catalog.card;
 
 import io.material.catalog.R;
 
-import android.animation.ObjectAnimator;
-import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.card.MaterialCardView;
-import android.util.DisplayMetrics;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,8 +30,6 @@ import io.material.catalog.feature.DemoFragment;
 
 /** A fragment with a draggable MaterialCardView */
 public class DraggableCardFragment extends DemoFragment {
-
-  private static final int RECOMMENDED_DRAG_ELEVATION = 8;
 
   @Override
   public int getDemoTitleResId() {
@@ -56,32 +50,19 @@ public class DraggableCardFragment extends DemoFragment {
       return view;
     }
 
-    // Add animations
-    final ObjectAnimator dragAnimation =
-        ObjectAnimator.ofFloat(
-            card,
-            View.TRANSLATION_Z,
-            dpToPx(RECOMMENDED_DRAG_ELEVATION, getContext()) - card.getCardElevation());
-
     container.setViewDragListener(
         new DraggableCoordinatorLayout.ViewDragListener() {
           @Override
           public void onViewCaptured(@NonNull View view, int i) {
-            dragAnimation.start();
+            card.setDragged(true);
           }
 
           @Override
           public void onViewReleased(@NonNull View view, float v, float v1) {
-            dragAnimation.reverse();
+            card.setDragged(false);
           }
         });
 
     return view;
-  }
-
-  /** Returns the value given in dp converted to pixels. */
-  private static int dpToPx(float dp, Context context) {
-    DisplayMetrics metrics = context.getResources().getDisplayMetrics();
-    return (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, metrics);
   }
 }

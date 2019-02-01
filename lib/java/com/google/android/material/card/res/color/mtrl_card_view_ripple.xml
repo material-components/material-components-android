@@ -15,7 +15,11 @@
     limitations under the License.
 -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android">
+<selector xmlns:android="http://schemas.android.com/apk/res/android"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
   <item android:alpha="0.20" android:color="?attr/colorPrimary" android:state_checked="true"/>
+  <!-- Ripple has an animation to disappear since we have a different state on the foreground
+    remove the ripple to avoid overlap while it transitions out -->
+  <item android:color="@android:color/transparent" app:state_dragged="true"/>
   <item android:alpha="0.20" android:color="?attr/colorOnSurface" android:state_checked="false"/>
 </selector>

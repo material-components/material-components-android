@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-    Copyright 2018 The Android Open Source Project
+    Copyright 2019 The Android Open Source Project
 
     Licensed under the Apache License, Version 2.0 (the "License");
     you may not use this file except in compliance with the License.
@@ -15,9 +15,9 @@
     limitations under the License.
 -->
 
-<selector xmlns:android="http://schemas.android.com/apk/res/android"
-  xmlns:app="http://schemas.android.com/apk/res-auto">
-  <item android:alpha="0.08" android:color="?attr/colorPrimary" android:state_checked="true"/>
-  <item android:alpha="0.20" android:color="?attr/colorOnSurface" app:state_dragged="true"/>
-  <item android:color="@android:color/transparent" android:state_checked="false" app:state_dragged="false"/>
-</selector>
+<resources>
+
+  <integer name="mtrl_card_anim_duration_ms">120</integer>
+  <integer name="mtrl_card_anim_delay_ms">75</integer>
+
+</resources>

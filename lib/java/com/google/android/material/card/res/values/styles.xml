@@ -15,7 +15,7 @@
     limitations under the License.
 -->
 
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
 
   <!-- Defines the base Material card style. -->
   <style name="Widget.MaterialComponents.CardView" parent="CardView">
@@ -26,6 +26,9 @@
     <item name="cardCornerRadius">@null</item>
     <item name="rippleColor">@color/mtrl_card_view_ripple</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
+    <item name="android:stateListAnimator" tools:ignore="NewApi">
+      @animator/mtrl_card_state_list_anim
+    </item>
   </style>
 
   <!-- Defines the base Material card style. -->
