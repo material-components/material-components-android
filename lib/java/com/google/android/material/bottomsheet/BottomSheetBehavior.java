@@ -144,6 +144,9 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /** Minimum peek height permitted. */
   private int peekHeightMin;
 
+  /** The last peek height calculated in onLayoutChild. */
+  private int lastPeekHeight;
+
   /** True if Behavior has a non-null value for the @shapeAppearance attribute */
   private boolean shapeThemingEnabled;
 
@@ -176,7 +179,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private boolean nestedScrolled;
 
-  int parentWidth;
   int parentHeight;
 
   WeakReference<V> viewRef;
@@ -228,8 +230,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
-    peekHeightMin =
-        context.getResources().getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
   }
 
   @Override
@@ -264,8 +264,18 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     // First let the parent lay it out
     parent.onLayoutChild(child, layoutDirection);
     // Offset the bottom sheet
-    parentWidth = parent.getWidth();
     parentHeight = parent.getHeight();
+    if (peekHeightAuto) {
+      if (peekHeightMin == 0) {
+        peekHeightMin =
+            parent
+                .getResources()
+                .getDimensionPixelSize(R.dimen.design_bottom_sheet_peek_height_min);
+      }
+      lastPeekHeight = Math.max(peekHeightMin, parentHeight - parent.getWidth() * 9 / 16);
+    } else {
+      lastPeekHeight = peekHeight;
+    }
     fitToContentsOffset = Math.max(0, parentHeight - child.getHeight());
     halfExpandedOffset = parentHeight / 2;
     calculateCollapsedOffset();
@@ -583,20 +593,16 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else if (peekHeightAuto || this.peekHeight != peekHeight) {
       peekHeightAuto = false;
       this.peekHeight = Math.max(0, peekHeight);
+      collapsedOffset = parentHeight - peekHeight;
       layout = true;
     }
-    // If sheet is already laid out, recalculate the collapsed offset based on new setting.
-    // Otherwise, let onLayoutChild handle this later.
-    if (layout && viewRef != null) {
-      calculateCollapsedOffset();
-      if (state == STATE_COLLAPSED) {
-        V view = viewRef.get();
-        if (view != null) {
-          if (animate) {
-            startSettlingAnimationPendingLayout(state);
-          } else {
-            view.requestLayout();
-          }
+    if (layout && state == STATE_COLLAPSED && viewRef != null) {
+      V view = viewRef.get();
+      if (view != null) {
+        if (animate) {
+          startSettlingAnimationPendingLayout(state);
+        } else {
+          view.requestLayout();
         }
       }
     }
@@ -780,17 +786,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void calculateCollapsedOffset() {
-    int peek;
-    if (peekHeightAuto) {
-      peek = Math.max(peekHeightMin, parentHeight - parentWidth * 9 / 16);
-    } else {
-      peek = peekHeight;
-    }
-
     if (fitToContents) {
-      collapsedOffset = Math.max(parentHeight - peek, fitToContentsOffset);
+      collapsedOffset = Math.max(parentHeight - lastPeekHeight, fitToContentsOffset);
     } else {
-      collapsedOffset = parentHeight - peek;
+      collapsedOffset = parentHeight - lastPeekHeight;
     }
   }
 
