@@ -125,6 +125,41 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    */
   public static final int PEEK_HEIGHT_AUTO = -1;
 
+  /**
+   * This flag will preserve the peekHeight int value on configuration change.
+   */
+  public static final int SAVE_PEEK_HEIGHT = 0x1;
+
+  /**
+   * This flag will preserve the fitToContents boolean value on configuration change.
+   */
+  public static final int SAVE_FIT_TO_CONTENTS = 0x2;
+
+  /**
+   * This flag will preserve the hideable boolean value on configuration change.
+   */
+  public static final int SAVE_HIDEABLE = 0x4;
+
+  /**
+   * This flag will preserve the skipCollapsed boolean value on configuration change.
+   */
+  public static final int SAVE_SKIP_COLLAPSED = 0x8;
+
+  /**
+   * This flag will preserve all aforementioned values on configuration change.
+   */
+  public static final int SAVE_ALL = -1;
+
+ /**
+   * This flag will not preserve the aforementioned values set at runtime if the view is
+   * destroyed and recreated. The only value preserved will be the positional state, 
+   * e.g. collapsed, hidden, expanded, etc. This is the default behavior. 
+   */
+  public static final int SAVE_NONE = 0;
+
+  private int saveFlags = SAVE_NONE;
+
+
   private static final float HIDE_THRESHOLD = 0.5f;
 
   private static final float HIDE_FRICTION = 0.1f;
@@ -227,6 +262,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_fitToContents, true));
     setSkipCollapsed(
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
+    setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
@@ -234,13 +270,15 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   @Override
   public Parcelable onSaveInstanceState(CoordinatorLayout parent, V child) {
-    return new SavedState(super.onSaveInstanceState(parent, child), state);
+    return new SavedState(super.onSaveInstanceState(parent, child), this);
   }
 
   @Override
   public void onRestoreInstanceState(CoordinatorLayout parent, V child, Parcelable state) {
     SavedState ss = (SavedState) state;
     super.onRestoreInstanceState(parent, child, ss.getSuperState());
+    // Restore Optional State values designated by saveFlags
+    restoreOptionalState(ss);
     // Intermediate states are restored as collapsed state
     if (ss.state == STATE_DRAGGING || ss.state == STATE_SETTLING) {
       this.state = STATE_COLLAPSED;
@@ -668,6 +706,28 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
+   * Sets save flags to be preserved in bottomsheet on configuration change.
+   *
+   * @param flags bitwise int of {@link #SAVE_PEEK_HEIGHT}, {@link #SAVE_FIT_TO_CONTENTS},
+   *     {@link #SAVE_HIDEABLE}, {@link #SAVE_SKIP_COLLAPSED}, {@link #SAVE_ALL} and
+   *     {@link #SAVE_NONE}.
+   * @see #getSaveFlags()
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_saveFlags
+   */
+  public void setSaveFlags(int flags) {
+    this.saveFlags = flags;
+  }
+  /**
+   * Returns the save flags.
+   *
+   * @see #setSaveFlags(int)
+   * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_saveFlags
+   */
+   public int getSaveFlags() {
+    return this.saveFlags;
+  }
+
+  /**
    * Sets a callback to be notified of bottom sheet events.
    *
    * @param callback The callback to notify when bottom sheet events occur.
@@ -798,6 +858,26 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (velocityTracker != null) {
       velocityTracker.recycle();
       velocityTracker = null;
+    }
+  }
+
+  private void restoreOptionalState(SavedState ss) {
+    if (this.saveFlags == SAVE_NONE) {
+      return;
+    }
+    if (this.saveFlags == SAVE_ALL || (this.saveFlags & SAVE_PEEK_HEIGHT) == SAVE_PEEK_HEIGHT) {
+      this.peekHeight = ss.peekHeight;
+    }
+    if (this.saveFlags == SAVE_ALL
+        || (this.saveFlags & SAVE_FIT_TO_CONTENTS) == SAVE_FIT_TO_CONTENTS) {
+      this.fitToContents = ss.fitToContents;
+    }
+    if (this.saveFlags == SAVE_ALL || (this.saveFlags & SAVE_HIDEABLE) == SAVE_HIDEABLE) {
+      this.hideable = ss.hideable;
+    }
+    if (this.saveFlags == SAVE_ALL
+        || (this.saveFlags & SAVE_SKIP_COLLAPSED) == SAVE_SKIP_COLLAPSED) {
+      this.skipCollapsed = ss.skipCollapsed;
     }
   }
 
@@ -1086,6 +1166,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /** State persisted across instances */
   protected static class SavedState extends AbsSavedState {
     @State final int state;
+    int peekHeight;
+    boolean fitToContents;
+    boolean hideable;
+    boolean skipCollapsed;
 
     public SavedState(Parcel source) {
       this(source, null);
@@ -1095,17 +1179,29 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       super(source, loader);
       //noinspection ResourceType
       state = source.readInt();
+      peekHeight = source.readInt();
+      fitToContents = source.readInt() == 1;
+      hideable = source.readInt() == 1;
+      skipCollapsed = source.readInt() == 1;
     }
 
-    public SavedState(Parcelable superState, @State int state) {
+    public SavedState(Parcelable superState, BottomSheetBehavior behavior) {
       super(superState);
-      this.state = state;
+      this.state = behavior.state;
+      this.peekHeight = behavior.peekHeight;
+      this.fitToContents = behavior.fitToContents;
+      this.hideable = behavior.hideable;
+      this.skipCollapsed = behavior.skipCollapsed;
     }
 
     @Override
     public void writeToParcel(Parcel out, int flags) {
       super.writeToParcel(out, flags);
       out.writeInt(state);
+      out.writeInt(peekHeight);
+      out.writeInt(fitToContents ? 1 : 0);
+      out.writeInt(hideable ? 1 : 0);
+      out.writeInt(skipCollapsed ? 1 : 0);
     }
 
     public static final Creator<SavedState> CREATOR =

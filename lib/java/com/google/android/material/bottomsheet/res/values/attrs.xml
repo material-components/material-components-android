@@ -43,6 +43,25 @@
          enabled. Accepts a ColorStateList or ColorInt. If shape theming is not enabled,
          android:background should instead be utilized to set the background resource. -->
     <attr name="backgroundTint"/>
+    <!-- Behavior properties will be saved and restored by evaluating each flag.
+          usage: app:behavior_saveFlags=”hideable|skipCollapsed” -->
+    <attr name="behavior_saveFlags">
+      <!-- This flag will preserve the peekHeight on configuration change. -->
+      <flag name="peekHeight" value="0x1"/>
+      <!-- This flag will preserve the fitToContents boolean value on configuration change. -->
+      <flag name="fitToContents" value="0x2"/>
+      <!-- This flag will preserve the hideable boolean value on configuration change. -->
+      <flag name="hideable" value="0x4"/>
+      <!-- This flag will preserve the skipCollapsed boolean value on configuration change. -->
+      <flag name="skipCollapsed" value="0x8"/>
+      <!-- This flag will preserve the all the aforementioned values on configuration change. -->
+      <flag name="all" value="-1"/>
+      <!-- This flag will not preserve the aforementioned values on configuration change. The only
+           value preserved will be the positional state, e.g. collapsed, hidden, expanded, etc.
+           This is the default behavior. -->
+      <flag name="none" value="0"/>
+    </attr>
+
   </declare-styleable>
 
 </resources>

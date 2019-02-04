@@ -60,6 +60,7 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
           }
         });
     Switch fullScreenSwitch = view.findViewById(R.id.cat_fullscreen_switch);
+
     fullScreenSwitch.setOnCheckedChangeListener(
         new OnCheckedChangeListener() {
           @Override
