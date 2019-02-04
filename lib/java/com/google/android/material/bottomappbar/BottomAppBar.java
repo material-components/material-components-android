@@ -41,6 +41,7 @@ import androidx.annotation.Px;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.TransformationListener;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -71,6 +72,11 @@ import java.util.List;
  * attached {@link FloatingActionButton}. A FAB is anchored to {@link BottomAppBar} by calling
  * {@link CoordinatorLayout.LayoutParams#setAnchorId(int)}, or by setting {@code app:layout_anchor}
  * on the FAB in xml.
+ *
+ * <p>Note: The Material Design Guidelines caution against using an {@link
+ * ExtendedFloatingActionButton} with a {@link BottomAppBar}, so there is limited support for that
+ * use case. {@link ExtendedFloatingActionButton} can be anchored to the {@link BottomAppBar}, but
+ * currently animations and the cutout are not supported.
  *
  * <p>There are two modes which determine where the FAB is shown relative to the {@link
  * BottomAppBar}. {@link #FAB_ALIGNMENT_MODE_CENTER} mode is the primary mode with the FAB is
@@ -472,6 +478,12 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   @Nullable
   private FloatingActionButton findDependentFab() {
+    View view = findDependentView();
+    return view instanceof FloatingActionButton ? (FloatingActionButton) view : null;
+  }
+
+  @Nullable
+  private View findDependentView() {
     if (!(getParent() instanceof CoordinatorLayout)) {
       // If we aren't in a CoordinatorLayout we won't have a dependent FAB.
       return null;
@@ -479,8 +491,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     List<View> dependents = ((CoordinatorLayout) getParent()).getDependents(this);
     for (View v : dependents) {
-      if (v instanceof FloatingActionButton) {
-        return (FloatingActionButton) v;
+      if (v instanceof FloatingActionButton || v instanceof ExtendedFloatingActionButton) {
+        return v;
       }
     }
 
@@ -666,7 +678,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   /**
    * Returns the X translation to position the {@link ActionMenuView}. When {@code fabAlignmentMode}
-   *    is equal to {@link #FAB_ALIGNMENT_MODE_END} and {@code fabAttached} is true, the {@link
+   * is equal to {@link #FAB_ALIGNMENT_MODE_END} and {@code fabAttached} is true, the {@link
    * ActionMenuView} will be aligned to the end of the navigation icon, otherwise the {@link
    * ActionMenuView} is not moved.
    */
@@ -727,7 +739,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private void setCutoutState() {
     // Layout all elements related to the positioning of the fab.
     getTopEdgeTreatment().setHorizontalOffset(getFabTranslationX());
-    FloatingActionButton fab = findDependentFab();
+    View fab = findDependentView();
     materialShapeDrawable.setInterpolation(fabAttached && isFabVisibleOrWillBeShown() ? 1 : 0);
     if (fab != null) {
       fab.setTranslationY(getFabTranslationY());
@@ -818,20 +830,23 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     @Override
     public boolean onLayoutChild(
         CoordinatorLayout parent, BottomAppBar child, int layoutDirection) {
-      FloatingActionButton fab = child.findDependentFab();
-      if (fab != null && !ViewCompat.isLaidOut(fab)) {
+      View dependentView = child.findDependentView();
+      if (dependentView != null && !ViewCompat.isLaidOut(dependentView)) {
         // Set the initial position of the FloatingActionButton with the BottomAppBar vertical
         // offset.
         CoordinatorLayout.LayoutParams fabLayoutParams =
-            (CoordinatorLayout.LayoutParams) fab.getLayoutParams();
+            (CoordinatorLayout.LayoutParams) dependentView.getLayoutParams();
         fabLayoutParams.anchorGravity = Gravity.CENTER | Gravity.TOP;
 
-        // Ensure the FAB is correctly linked to this BAB so the animations can run correctly
-        child.addFabAnimationListeners(fab);
+        if (dependentView instanceof FloatingActionButton) {
+          FloatingActionButton fab = ((FloatingActionButton) dependentView);
+          // Ensure the FAB is correctly linked to this BAB so the animations can run correctly
+          child.addFabAnimationListeners(fab);
 
-        // Set the correct cutout diameter
-        fab.getMeasuredContentRect(fabContentRect);
-        child.setFabDiameter(fabContentRect.height());
+          // Set the correct cutout diameter
+          fab.getMeasuredContentRect(fabContentRect);
+          child.setFabDiameter(fabContentRect.height());
+        }
 
         // Move the fab to the correct position
         child.setCutoutState();
