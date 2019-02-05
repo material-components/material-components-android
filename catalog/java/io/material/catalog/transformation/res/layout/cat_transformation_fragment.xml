@@ -78,8 +78,8 @@
           android:background="?selectableItemBackgroundBorderless"
           android:contentDescription="@string/close_sheet"
           android:scaleType="fitCenter"
-          android:src="@drawable/ic_close_vd_theme_24px"
-          android:tint="?attr/colorOnSurface"/>
+          android:tint="?attr/colorOnSurface"
+          app:srcCompat="@drawable/ic_close_vd_theme_24px"/>
 
       <TextView
           android:layout_width="wrap_content"
