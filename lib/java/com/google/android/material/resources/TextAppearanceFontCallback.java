@@ -21,7 +21,11 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.content.res.ResourcesCompat.FontCallback;
 
-/** {@link FontCallback} font fetch, in case a different font is set / requested in the meantime. */
+/**
+ * {@link FontCallback} font fetch, in case a different font is set / requested in the meantime.
+ *
+ * @hide
+ */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public abstract class TextAppearanceFontCallback {
   /**

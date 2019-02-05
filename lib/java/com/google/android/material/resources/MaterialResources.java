@@ -30,7 +30,11 @@ import androidx.annotation.StyleableRes;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.TintTypedArray;
 
-/** Utility methods to resolve resources for components. */
+/**
+ * Utility methods to resolve resources for components.
+ *
+ * @hide
+ */
 @RestrictTo(LIBRARY_GROUP)
 public class MaterialResources {
 
