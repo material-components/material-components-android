@@ -28,6 +28,8 @@
     <!-- Background for the MaterialButton -->
     <attr name="backgroundTint"/>
     <attr name="backgroundTintMode"/>
+    <!-- Elevation for the MaterialButton. -->
+    <attr name="elevation"/>
     <!-- Icon drawable to display at the start of this view. -->
     <attr name="icon" format="reference"/>
     <!-- Specifies the width and height to use for the icon drawable. -->

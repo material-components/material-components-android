@@ -33,6 +33,7 @@
     <item name="android:insetBottom">@dimen/mtrl_btn_inset</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_state_list_anim</item>
     <item name="cornerRadius">@null</item>
+    <item name="elevation">@dimen/mtrl_btn_elevation</item>
     <item name="iconPadding">@dimen/mtrl_btn_icon_padding</item>
     <item name="iconTint">@color/mtrl_btn_text_color_selector</item>
     <item name="rippleColor">@color/mtrl_btn_ripple_color</item>
@@ -46,6 +47,7 @@
 
   <style name="Widget.MaterialComponents.Button.UnelevatedButton">
     <item name="android:stateListAnimator" tools:ignore="NewApi">@animator/mtrl_btn_unelevated_state_list_anim</item>
+    <item name="elevation">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.Button.UnelevatedButton.Icon">

@@ -41,7 +41,6 @@ import androidx.annotation.RestrictTo;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
@@ -751,16 +750,6 @@ public class MaterialButton extends AppCompatButton {
    */
   public void setIconGravity(@IconGravity int iconGravity) {
     this.iconGravity = iconGravity;
-  }
-
-  @RestrictTo(LIBRARY_GROUP)
-  @Nullable
-  protected MaterialShapeDrawable getBackgroundShapeDrawable() {
-    if (materialButtonHelper == null) {
-      return null;
-    }
-
-    return materialButtonHelper.getMaterialShapeDrawable();
   }
 
   private boolean isUsingOriginalBackground() {

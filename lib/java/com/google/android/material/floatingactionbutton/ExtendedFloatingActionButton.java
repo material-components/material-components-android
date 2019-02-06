@@ -37,8 +37,6 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.internal.DescendantOffsetUtils;
-import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
@@ -77,8 +75,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   private static final long SHOW_ANIMATION_DURATION_MS = 150L;
   private static final long HIDE_ANIMATION_DURATION_MS = 75L;
   private static final long COLLAPSE_RESIZE_ANIMATION_DURATION_MS = 200L;
-  private static final int DEF_STYLE_RES =
-      R.style.Widget_MaterialComponents_ExtendedFloatingActionButton_Icon;
 
   private final Rect shadowPadding = new Rect();
   private int animState = ANIM_STATE_NONE;
@@ -146,18 +142,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     super(context, attrs, defStyleAttr);
     behavior = new ExtendedFloatingActionButtonBehavior<>(context, attrs);
     userSetVisibility = getVisibility();
-
-    TypedArray a =
-        ThemeEnforcement.obtainStyledAttributes(
-            context, attrs, R.styleable.ExtendedFloatingActionButton, defStyleAttr, DEF_STYLE_RES);
-
-    int elevation = a.getDimensionPixelSize(R.styleable.ExtendedFloatingActionButton_elevation, 0);
-    a.recycle();
-
-    MaterialShapeDrawable materialShapeDrawable = getBackgroundShapeDrawable();
-    if (materialShapeDrawable != null) {
-      materialShapeDrawable.setElevation(elevation);
-    }
 
     // Eliminates the word wrapping when the FAB extended state change is animating.
     setHorizontallyScrolling(true);

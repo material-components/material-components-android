@@ -103,6 +103,8 @@ class MaterialButtonHelper {
         MaterialResources.getColorStateList(
             materialButton.getContext(), attributes, R.styleable.MaterialButton_rippleColor);
 
+    int elevation = attributes.getDimensionPixelSize(R.styleable.MaterialButton_elevation, 0);
+
     // Store padding before setting background, since background overwrites padding values
     int paddingStart = ViewCompat.getPaddingStart(materialButton);
     int paddingTop = materialButton.getPaddingTop();
@@ -111,6 +113,11 @@ class MaterialButtonHelper {
 
     // Update materialButton's background without triggering setBackgroundOverwritten()
     materialButton.setInternalBackground(createBackground());
+
+    MaterialShapeDrawable materialShapeDrawable = getMaterialShapeDrawable();
+    if (materialShapeDrawable != null) {
+      materialShapeDrawable.setElevation(elevation);
+    }
 
     // Set the stored padding values
     ViewCompat.setPaddingRelative(
@@ -323,7 +330,7 @@ class MaterialButtonHelper {
   }
 
   @Nullable
-  MaterialShapeDrawable getMaterialShapeDrawable() {
+  private MaterialShapeDrawable getMaterialShapeDrawable() {
     Drawable result = null;
     if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 0) {
       result = rippleDrawable.getDrawable(0);
