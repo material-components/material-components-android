@@ -124,6 +124,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       ViewCompat.setElevation(
           this, a.getDimensionPixelSize(R.styleable.NavigationView_elevation, 0));
     }
+    ViewCompat.setFitsSystemWindows(
+        this, a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
 
     maxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
 
@@ -194,7 +196,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     if (a.hasValue(R.styleable.NavigationView_headerLayout)) {
       inflateHeaderView(a.getResourceId(R.styleable.NavigationView_headerLayout, 0));
     }
-    
+
     a.recycle();
   }
 

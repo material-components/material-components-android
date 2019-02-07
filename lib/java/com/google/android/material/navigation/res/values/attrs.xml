@@ -19,6 +19,7 @@
 
   <declare-styleable name="NavigationView">
     <attr name="android:background"/>
+    <attr name="android:fitsSystemWindows"/>
     <attr name="android:maxWidth"/>
     <attr name="elevation"/>
     <!-- The menu resource to inflate and populate items from. -->
