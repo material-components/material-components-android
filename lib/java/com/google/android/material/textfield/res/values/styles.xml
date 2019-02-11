@@ -147,6 +147,7 @@
 
   <style name="ThemeOverlay.MaterialComponents.TextInputEditText" parent="ThemeOverlay.Design.TextInputEditText">
     <item name="colorControlActivated">?attr/colorPrimary</item>
+    <item name="editTextBackground">@null</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.TextInputEditText.FilledBox">
