@@ -17,7 +17,7 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
 
   <style name="Widget.MaterialComponents.ChipGroup" parent="android:Widget">
-    <item name="chipSpacingHorizontal">4dp</item>
+    <item name="chipSpacingHorizontal">8dp</item>
     <item name="singleLine">false</item>
     <item name="singleSelection">false</item>
   </style>
