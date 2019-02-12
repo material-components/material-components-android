@@ -20,15 +20,15 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
-import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.circularreveal.CircularRevealHelper;
 import com.google.android.material.circularreveal.CircularRevealWidget;
 import android.util.AttributeSet;
+import androidx.cardview.widget.CardView;
 
 /**
- * A CircularRevealWidget wrapper for {@link MaterialCardView}.
+ * A CircularRevealWidget wrapper for {@link CardView}.
  */
-public class CircularRevealCardView extends MaterialCardView implements CircularRevealWidget {
+public class CircularRevealCardView extends CardView implements CircularRevealWidget {
 
   private final CircularRevealHelper helper;
 
