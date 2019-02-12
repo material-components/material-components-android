@@ -2409,6 +2409,11 @@ public class TextInputLayout extends LinearLayout {
   private void initializeEndIcon() {
     if (editText != null && endIconView != null) {
       if (endIconView.getParent() == null) {
+        endIconView.setPadding(
+            editText.getPaddingLeft(),
+            editText.getPaddingTop(),
+            editText.getPaddingRight(),
+            editText.getPaddingBottom());
         inputFrame.addView(endIconView);
         dispatchOnEndIconInitialized();
       }
