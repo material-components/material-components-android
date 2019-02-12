@@ -68,16 +68,21 @@
          If set, this takes precedence over counterOverflowTextAppearance. -->
     <attr name="counterOverflowTextColor" format="reference"/>
 
-    <!-- Whether the view will display a toggle when the EditText has a password. -->
-    <attr name="passwordToggleEnabled" format="boolean"/>
-    <!-- Drawable to use as the password input visibility toggle icon. -->
-    <attr name="passwordToggleDrawable" format="reference"/>
-    <!-- Text to set as the content description for the password input visibility toggle. -->
-    <attr name="passwordToggleContentDescription" format="string"/>
-    <!-- Icon to use for the password input visibility toggle -->
-    <attr name="passwordToggleTint" format="color"/>
+    <!-- Whether the view will display a password toggle end icon, or no end icon. -->
+    <attr name="endIconMode">
+      <!-- No end icon. -->
+      <enum name="none" value="0"/>
+      <!-- The view will display a toggle when the EditText has a password. -->
+      <enum name="password_toggle" value="1"/>
+    </attr>
+    <!-- Drawable to use for the end icon. -->
+    <attr name="endIconDrawable" format="reference"/>
+    <!-- Text to set as the content description for the end icon. -->
+    <attr name="endIconContentDescription" format="string"/>
+    <!-- Tint color to use for the end icon. -->
+    <attr name="endIconTint" format="color"/>
     <!-- Blending mode used to apply the background tint. -->
-    <attr name="passwordToggleTintMode">
+    <attr name="endIconTintMode">
       <!-- The tint is drawn on top of the drawable.
            [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
       <enum name="src_over" value="3"/>
@@ -127,6 +132,37 @@
          attributes declared in the shapeAppearance. Attribute declaration is in the Shape
          package. -->
     <attr name="shapeAppearanceOverlay"/>
+
+    <!-- Whether the view will display a toggle when the EditText has a password.
+         Deprecated. The view's end icon should be specified via endIconMode instead. -->
+    <attr name="passwordToggleEnabled" format="boolean"/>
+    <!-- Drawable to use as the password input visibility toggle icon.
+         Deprecated. Use endIconDrawable instead. -->
+    <attr name="passwordToggleDrawable" format="reference"/>
+    <!-- Text to set as the content description for the password input visibility toggle.
+         Deprecated. Use endIconContentDescription instead. -->
+    <attr name="passwordToggleContentDescription" format="string"/>
+    <!-- Icon to use for the password input visibility toggle
+         Deprecated. Use endIconTint instead. -->
+    <attr name="passwordToggleTint" format="color"/>
+    <!-- Blending mode used to apply the background tint.
+         Deprecated. Use endIconTintMode instead. -->
+    <attr name="passwordToggleTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3"/>
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5"/>
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9"/>
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14"/>
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15"/>
+    </attr>
   </declare-styleable>
 
 </resources>

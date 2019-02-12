@@ -21,9 +21,12 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import android.graphics.Typeface;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
-import com.google.android.material.R;
+import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
+import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.widget.EditText;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -171,7 +174,27 @@ public class TextInputLayoutActions {
     };
   }
 
-  public static ViewAction setPasswordVisibilityToggleEnabled(final boolean enabled) {
+  public static ViewAction setInputTypeToPasswordTransformationMethod() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(EditText.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set the input type of the EditText to be of password type";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        EditText edittext = (EditText) view;
+        edittext.setTransformationMethod(PasswordTransformationMethod.getInstance());
+      }
+    };
+  }
+
+  public static ViewAction setEndIconMode(final int endIconMode) {
     return new ViewAction() {
       @Override
       public Matcher<View> getConstraints() {
@@ -180,13 +203,13 @@ public class TextInputLayoutActions {
 
       @Override
       public String getDescription() {
-        return "Sets the error";
+        return "Set end icon mode";
       }
 
       @Override
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
-        layout.setPasswordVisibilityToggleEnabled(enabled);
+        layout.setEndIconMode(endIconMode);
       }
     };
   }
@@ -367,8 +390,8 @@ public class TextInputLayoutActions {
     };
   }
 
-  /** Toggles password. */
-  public static ViewAction clickPasswordToggle() {
+  /** Clicks end icon. */
+  public static ViewAction clickEndIcon() {
     return new ViewAction() {
 
       @Override
@@ -378,16 +401,16 @@ public class TextInputLayoutActions {
 
       @Override
       public String getDescription() {
-        return "Clicks the password toggle";
+        return "Clicks the end icon";
       }
 
       @Override
       public void perform(UiController uiController, View view) {
-        TextInputLayout textInputLayout = (TextInputLayout) view;
-        // Reach in and find the password toggle since we don't have a public API
-        // to get a reference to it
-        View passwordToggle = textInputLayout.findViewById(R.id.text_input_password_toggle);
-        passwordToggle.performClick();
+        TextInputLayout item = (TextInputLayout) view;
+        // Reach in and find the end icon view since we don't have a public API to get a reference
+        // to it
+        CheckableImageButton endIconView = item.findViewById(R.id.text_input_end_icon);
+        endIconView.performClick();
       }
     };
   }

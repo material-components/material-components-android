@@ -53,10 +53,20 @@
   <public name="hintEnabled" type="attr"/>
   <public name="hintTextAppearance" type="attr"/>
   <public name="hintTextColor" type="attr"/>
+  <public name="endIconMode" type="attr"/>
+  <public name="endIconDrawable" type="attr"/>
+  <public name="endIconContentDescription" type="attr"/>
+  <public name="endIconTint" type="attr"/>
+  <public name="endIconTintMode" type="attr"/>
+  <!-- Deprecated. Use endIconMode instead. -->
   <public name="passwordToggleEnabled" type="attr"/>
+  <!--Deprecated. Use endIconDrawable instead. -->
   <public name="passwordToggleDrawable" type="attr"/>
+  <!--Deprecated. Use endIconContentDescription instead. -->
   <public name="passwordToggleContentDescription" type="attr"/>
+  <!--Deprecated. Use endIconTint instead. -->
   <public name="passwordToggleTint" type="attr"/>
+  <!--Deprecated. Use endIconTintMode instead. -->
   <public name="passwordToggleTintMode" type="attr"/>
 
   <public name="Widget.Design.TextInputLayout" type="style"/>

@@ -87,6 +87,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.LinkedHashSet;
 
 /**
  * Layout which wraps a {@link TextInputEditText}, {@link android.widget.EditText}, or descendant to
@@ -100,12 +101,11 @@ import java.lang.annotation.RetentionPolicy;
  *       #setHelperText(CharSequence)}
  *   <li>Showing a character counter via {@link #setCounterEnabled(boolean)} and {@link
  *       #setCounterMaxLength(int)}
- *   <li>Password visibility toggling via the {@link #setPasswordVisibilityToggleEnabled(boolean)}
- *       API and related attribute. If enabled, a button is displayed to toggle between the password
- *       being displayed as plain-text or disguised, when your EditText is set to display a
- *       password.
+ *   <li>Password visibility toggling via {@link #setEndIconMode(int)} API and related attribute. If
+ *       set, a button is displayed to toggle between the password being displayed as plain-text or
+ *       disguised, when your EditText is set to display a password.
  *       <p><strong>Note:</strong> When using the password toggle functionality, the 'end' compound
- *       drawable of the EditText will be overridden while the toggle is enabled. To ensure that any
+ *       drawable of the EditText will be overridden while the toggle is visible. To ensure that any
  *       existing drawables are restored correctly, you should set those compound drawables
  *       relatively (start/end), as opposed to absolutely (left/right).
  * </ul>
@@ -214,18 +214,84 @@ public class TextInputLayout extends LinearLayout {
   private final RectF tmpRectF = new RectF();
   private Typeface typeface;
 
-  private boolean passwordToggleEnabled;
-  private Drawable passwordToggleDrawable;
-  private CharSequence passwordToggleContentDesc;
-  private CheckableImageButton passwordToggleView;
-  private boolean passwordToggledVisible;
-  private Drawable passwordToggleDummyDrawable;
+  /** Values for the end icon mode. There is either the password toggle icon or no end icon. */
+  @IntDef({END_ICON_NONE, END_ICON_PASSWORD_TOGGLE})
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface EndIconMode {}
+
+  /**
+   * Default for the TextInputLayout. It will not display an end icon.
+   *
+   * @see #setEndIconMode(int)
+   * @see #getEndIconMode()
+   */
+  public static final int END_ICON_NONE = 0;
+
+  /**
+   * The TextInputLayout will show a password toggle button if its EditText displays a password.
+   * When this end icon is clicked, the password is shown as plain-text if it was disguised, or
+   * vice-versa.
+   *
+   * @see #setEndIconMode(int)
+   * @see #getEndIconMode()
+   */
+  public static final int END_ICON_PASSWORD_TOGGLE = 1;
+
+  /** Callback interface invoked when the end icon is initialized. */
+  public interface OnEndIconInitializedListener {
+
+    /** Called when the end icon is initialized. */
+    void onEndIconInitialized();
+  }
+
+  /**
+   * Callback interface invoked when the view's end icon changes.
+   *
+   * @see #setEndIconMode(int)
+   */
+  public interface OnEndIconChangedListener {
+
+    /**
+     * Called when the end icon changes.
+     *
+     * @param previousIcon the {@link EndIconMode} the view previously had set
+     */
+    void onEndIconChanged(@EndIconMode int previousIcon);
+  }
+
+  @EndIconMode private int endIconMode = END_ICON_NONE;
+  private Drawable endIconDrawable;
+  private CharSequence endIconContentDesc;
+  private CheckableImageButton endIconView;
+  private final LinkedHashSet<OnEndIconInitializedListener> onEndIconInitializedListeners =
+      new LinkedHashSet<>();
+  private final LinkedHashSet<OnEndIconChangedListener> endIconChangedListeners =
+      new LinkedHashSet<>();
+  private ColorStateList endIconTintList;
+  private boolean hasEndIconTintList;
+  private PorterDuff.Mode endIconTintMode;
+  private boolean hasEndIconTintMode;
+  private Drawable endIconDummyDrawable;
   private Drawable originalEditTextEndDrawable;
 
-  private ColorStateList passwordToggleTintList;
-  private boolean hasPasswordToggleTintList;
-  private PorterDuff.Mode passwordToggleTintMode;
-  private boolean hasPasswordToggleTintMode;
+  private final OnEndIconInitializedListener passwordToggleEndIconInitializedListener =
+      new OnEndIconInitializedListener() {
+        @Override
+        public void onEndIconInitialized() {
+          setEndIconVisible(hasPasswordTransformation());
+        }
+      };
+  private final OnEndIconChangedListener passwordToggleEndIconChangedListener =
+      new OnEndIconChangedListener() {
+        @Override
+        public void onEndIconChanged(int previousIcon) {
+          if (editText != null && previousIcon == END_ICON_PASSWORD_TOGGLE) {
+            // If the end icon was the password toggle add it back the PasswordTransformation
+            // in case it might have been removed to make the password visible,
+            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+          }
+        }
+      };
 
   private ColorStateList defaultHintTextColor;
   private ColorStateList focusedTextColor;
@@ -414,21 +480,49 @@ public class TextInputLayout extends LinearLayout {
     counterOverflowTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
 
-    passwordToggleEnabled = a.getBoolean(R.styleable.TextInputLayout_passwordToggleEnabled, false);
-    passwordToggleDrawable = a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable);
-    passwordToggleContentDesc =
-        a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription);
-    if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
-      hasPasswordToggleTintList = true;
-      passwordToggleTintList =
-          AppCompatResources.getColorStateList(
-              context, a.getResourceId(R.styleable.TextInputLayout_passwordToggleTint, -1));
+    // Set up the end icon if any.
+    if (a.hasValue(R.styleable.TextInputLayout_endIconMode)) {
+      // Specific defaults depending on which end icon mode is set
+      setEndIconMode(a.getInt(R.styleable.TextInputLayout_endIconMode, END_ICON_NONE));
+      // Overwrite default values if user specified any different ones
+      if (a.hasValue(R.styleable.TextInputLayout_endIconDrawable)) {
+        setEndIconDrawable(a.getDrawable(R.styleable.TextInputLayout_endIconDrawable));
+      }
+      if (a.hasValue(R.styleable.TextInputLayout_endIconContentDescription)) {
+        setEndIconContentDescription(
+            a.getText(R.styleable.TextInputLayout_endIconContentDescription));
+      }
+    } else if (a.hasValue(R.styleable.TextInputLayout_passwordToggleEnabled)) {
+      // Support for deprecated attributes related to the password toggle end icon
+      setEndIconMode(END_ICON_PASSWORD_TOGGLE);
+      setEndIconDrawable(a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable));
+      setEndIconContentDescription(
+          a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription));
     }
-    if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
-      hasPasswordToggleTintMode = true;
-      passwordToggleTintMode =
+
+    // Default tint for any end icon or value specified by user
+    if (a.hasValue(R.styleable.TextInputLayout_endIconTint)) {
+      setEndIconTintList(
+          AppCompatResources.getColorStateList(
+              context, a.getResourceId(R.styleable.TextInputLayout_endIconTint, -1)));
+    }
+    // Default tint mode for any end icon or value specified by user
+    if (a.hasValue(R.styleable.TextInputLayout_endIconTintMode)) {
+      setEndIconTintMode(
           ViewUtils.parseTintMode(
-              a.getInt(R.styleable.TextInputLayout_passwordToggleTintMode, -1), null);
+              a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
+    }
+    // Support for deprecated password toggle tint attribute
+    if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
+      setEndIconTintList(
+          AppCompatResources.getColorStateList(
+              context, a.getResourceId(R.styleable.TextInputLayout_passwordToggleTint, -1)));
+    }
+    // Support for deprecated password toggle tint mode attribute
+    if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
+      setEndIconTintMode(
+          ViewUtils.parseTintMode(
+              a.getInt(R.styleable.TextInputLayout_passwordToggleTintMode, -1), null));
     }
 
     setHelperTextEnabled(helperTextEnabled);
@@ -460,8 +554,6 @@ public class TextInputLayout extends LinearLayout {
     setBoxBackgroundMode(
         a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
     a.recycle();
-
-    applyPasswordToggleTint();
 
     // For accessibility, consider TextInputLayout itself to be a simple container for an EditText,
     // and do not expose it to accessibility services.
@@ -893,7 +985,7 @@ public class TextInputLayout extends LinearLayout {
 
     indicatorViewController.adjustIndicatorPadding();
 
-    updatePasswordToggleView();
+    initializeEndIcon();
 
     // Update the label visibility with no animation, but force a state change
     updateLabelState(false, true);
@@ -1676,7 +1768,7 @@ public class TextInputLayout extends LinearLayout {
 
   static class SavedState extends AbsSavedState {
     CharSequence error;
-    boolean isPasswordToggledVisible;
+    boolean isEndIconChecked;
 
     SavedState(Parcelable superState) {
       super(superState);
@@ -1685,14 +1777,14 @@ public class TextInputLayout extends LinearLayout {
     SavedState(Parcel source, ClassLoader loader) {
       super(source, loader);
       error = TextUtils.CHAR_SEQUENCE_CREATOR.createFromParcel(source);
-      isPasswordToggledVisible = (source.readInt() == 1);
+      isEndIconChecked = (source.readInt() == 1);
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
       super.writeToParcel(dest, flags);
       TextUtils.writeToParcel(error, dest, flags);
-      dest.writeInt(isPasswordToggledVisible ? 1 : 0);
+      dest.writeInt(isEndIconChecked ? 1 : 0);
     }
 
     @Override
@@ -1730,7 +1822,7 @@ public class TextInputLayout extends LinearLayout {
     if (indicatorViewController.errorShouldBeShown()) {
       ss.error = getError();
     }
-    ss.isPasswordToggledVisible = passwordToggledVisible;
+    ss.isEndIconChecked = hasEndIcon() && endIconView.isChecked();
     return ss;
   }
 
@@ -1743,8 +1835,10 @@ public class TextInputLayout extends LinearLayout {
     SavedState ss = (SavedState) state;
     super.onRestoreInstanceState(ss.getSuperState());
     setError(ss.error);
-    if (ss.isPasswordToggledVisible) {
-      passwordVisibilityToggleRequested(true /* shouldSkipAnimations */);
+    if (ss.isEndIconChecked) {
+      endIconView.performClick();
+      // Skip animation
+      endIconView.jumpDrawablesToCurrentState();
     }
     requestLayout();
   }
@@ -1804,88 +1898,314 @@ public class TextInputLayout extends LinearLayout {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    updatePasswordToggleView();
+    setEditTextHeightAndDummyDrawable();
   }
 
-  private void updatePasswordToggleView() {
-    if (editText == null) {
-      // If there is no EditText, there is nothing to update
-      return;
+  private void setEditTextHeightAndDummyDrawable() {
+    // We need to make sure that the EditText's height is at least the same as the end icon's
+    // height. This ensures focus works properly, and there is no visual jump if the icon is
+    // enabled/disabled.
+    if (editText != null
+        && hasEndIcon()
+        && editText.getMeasuredHeight() < endIconView.getMeasuredHeight()) {
+      editText.setMinimumHeight(endIconView.getMeasuredHeight());
+      editText.post(
+          new Runnable() {
+            @Override
+            public void run() {
+              editText.requestLayout();
+            }
+          });
     }
 
-    if (shouldShowPasswordIcon()) {
-      if (passwordToggleView == null) {
-        passwordToggleView =
-            (CheckableImageButton)
-                LayoutInflater.from(getContext())
-                    .inflate(R.layout.design_text_input_password_icon, inputFrame, false);
-        passwordToggleView.setImageDrawable(passwordToggleDrawable);
-        passwordToggleView.setContentDescription(passwordToggleContentDesc);
-        inputFrame.addView(passwordToggleView);
+    // Update dummy drawable as needed.
+    if (hasEndIcon() && isEndIconVisible()) {
+      addEndIconDummyDrawable();
+    } else if (endIconDummyDrawable != null) {
+      removeEndIconDummyDrawable();
+    }
+  }
 
-        passwordToggleView.setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                passwordVisibilityToggleRequested(false /* shouldSkipAnimations */);
-              }
-            });
-      }
+  /**
+   * Set up the {@link EndIconMode}. When set, a button is placed at the end of the EditText which
+   * enables the user to perform the specific icon's functionality.
+   *
+   * @param endIconMode the {@link EndIconMode} to be set, or END_ICON_NONE to clear the current
+   *     icon if any
+   * @attr com.google.android.material.R.styleable#TextInputLayout_endIconMode
+   */
+  public void setEndIconMode(@EndIconMode int endIconMode) {
+    int previousEndIconMode = this.endIconMode;
+    this.endIconMode = endIconMode;
+    if (endIconView == null) {
+      endIconView =
+          (CheckableImageButton)
+              LayoutInflater.from(getContext())
+                  .inflate(R.layout.design_text_input_end_icon, inputFrame, false);
+    }
+    switch (endIconMode) {
+      case END_ICON_PASSWORD_TOGGLE:
+        // Set defaults for password toggle end icon
+        setEndIconPasswordToggleDefaults();
+        break;
+      default:
+        // Removes any current end icon
+        setEndIconVisible(false);
+        setEndIconOnClickListener(null);
+        setEndIconDrawable(null);
+        setEndIconContentDescription(null);
+        endIconView = null;
+        break;
+    }
+    applyEndIconTint();
+    initializeEndIcon();
+    dispatchOnEndIconChanged(previousEndIconMode);
+  }
 
-      if (editText.getMeasuredHeight() < passwordToggleView.getMeasuredHeight()) {
-        // We need to make sure that the EditText's height is at least the same as the password
-        // toggle's height. This ensures focus works properly, and there is no visual jump if the
-        // password toggle is enabled/disabled.
-        editText.setMinimumHeight(passwordToggleView.getMeasuredHeight());
-        editText.post(
-            new Runnable() {
-              @Override
-              public void run() {
-                editText.requestLayout();
-              }
-            });
-      }
+  /**
+   * Returns the current {@link EndIconMode}.
+   *
+   * @return the end icon mode enum
+   * @see #setEndIconMode(int)
+   * @attr com.google.android.material.R.styleable#TextInputLayout_endIconMode
+   */
+  @EndIconMode
+  public int getEndIconMode() {
+    return endIconMode;
+  }
 
-      passwordToggleView.setVisibility(VISIBLE);
-      passwordToggleView.setChecked(passwordToggledVisible);
+  /**
+   * Sets the end icon's functionality that is performed when the icon is clicked.
+   *
+   * @param onClickListener the {@link android.view.View.OnClickListener} the end icon view will
+   *     have
+   */
+  public void setEndIconOnClickListener(@Nullable OnClickListener onClickListener) {
+    if (endIconView != null) {
+      endIconView.setOnClickListener(onClickListener);
+    }
+  }
 
-      // We need to add a dummy drawable as the end compound drawable so that the text is
-      // indented and doesn't display below the toggle view
-      if (passwordToggleDummyDrawable == null) {
-        passwordToggleDummyDrawable = new ColorDrawable();
-      }
-      passwordToggleDummyDrawable.setBounds(0, 0, passwordToggleView.getMeasuredWidth(), 1);
-
-      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-      // Store the user defined end compound drawable so that we can restore it later
-      if (compounds[2] != passwordToggleDummyDrawable) {
-        originalEditTextEndDrawable = compounds[2];
-      }
-      TextViewCompat.setCompoundDrawablesRelative(
-          editText, compounds[0], compounds[1], passwordToggleDummyDrawable, compounds[3]);
-
-      // Copy over the EditText's padding so that we match
-      passwordToggleView.setPadding(
-          editText.getPaddingLeft(),
-          editText.getPaddingTop(),
-          editText.getPaddingRight(),
-          editText.getPaddingBottom());
-    } else {
-      if (passwordToggleView != null && passwordToggleView.getVisibility() == VISIBLE) {
-        passwordToggleView.setVisibility(View.GONE);
-      }
-
-      if (passwordToggleDummyDrawable != null) {
-        // Make sure that we remove the dummy end compound drawable if it exists, and then
-        // clear it
-        final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-        if (compounds[2] == passwordToggleDummyDrawable) {
-          TextViewCompat.setCompoundDrawablesRelative(
-              editText, compounds[0], compounds[1], originalEditTextEndDrawable, compounds[3]);
-          passwordToggleDummyDrawable = null;
-        }
+  /**
+   * Sets the current end icon's visibility.
+   *
+   * @param visible whether the icon should be set to visible
+   */
+  public void setEndIconVisible(boolean visible) {
+    if (endIconView != null && isEndIconVisible() != visible) {
+      if (visible) {
+        endIconView.setVisibility(View.VISIBLE);
+        addEndIconDummyDrawable();
+      } else {
+        endIconView.setVisibility(View.INVISIBLE);
+        removeEndIconDummyDrawable();
       }
     }
+  }
+
+  /**
+   * Returns whether the current end icon is visible.
+   *
+   * @see #setEndIconVisible(boolean)
+   */
+  public boolean isEndIconVisible() {
+    return endIconView != null && endIconView.getVisibility() == View.VISIBLE;
+  }
+
+  /**
+   * Set the icon to use for the end icon.
+   *
+   * <p>If you use an icon you should also set a description for its action using {@link
+   * #setEndIconContentDescription(CharSequence)}. This is used for accessibility.
+   *
+   * @param resId resource id of the drawable to set, or 0 to clear the icon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconDrawable
+   */
+  public void setEndIconDrawable(@DrawableRes int resId) {
+    setEndIconDrawable(resId != 0 ? AppCompatResources.getDrawable(getContext(), resId) : null);
+  }
+
+  /**
+   * Set the icon to use for the end icon.
+   *
+   * <p>If you use an icon you should also set a description for its action using {@link
+   * #setEndIconContentDescription(CharSequence)}. This is used for accessibility.
+   *
+   * @param icon Drawable to set, may be null to clear the icon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconDrawable
+   */
+  public void setEndIconDrawable(@Nullable Drawable icon) {
+    endIconDrawable = icon;
+    if (endIconView != null) {
+      endIconView.setImageDrawable(icon);
+    }
+  }
+
+  /**
+   * Returns the drawable currently used for the end icon.
+   *
+   * @see #setEndIconDrawable(Drawable)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconDrawable
+   */
+  @Nullable
+  public Drawable getEndIconDrawable() {
+    return endIconDrawable;
+  }
+
+  /**
+   * Set a content description for the end icon.
+   *
+   * <p>The content description will be read via screen readers or other accessibility systems to
+   * explain the action of the icon.
+   *
+   * @param resId Resource ID of a content description string to set, or 0 to clear the description
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconContentDescription
+   */
+  public void setEndIconContentDescription(@StringRes int resId) {
+    setEndIconContentDescription(resId != 0 ? getResources().getText(resId) : null);
+  }
+
+  /**
+   * Set a content description for the end icon.
+   *
+   * <p>The content description will be read via screen readers or other accessibility systems to
+   * explain the action of the icon.
+   *
+   * @param description Content description to set, or null to clear the content description
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconContentDescription
+   */
+  public void setEndIconContentDescription(@Nullable CharSequence description) {
+    endIconContentDesc = description;
+    if (endIconView != null) {
+      endIconView.setContentDescription(description);
+    }
+  }
+
+  /**
+   * Returns the currently configured content description for the end icon.
+   *
+   * <p>This will be used to describe the navigation action to users through mechanisms such as
+   * screen readers.
+   */
+  @Nullable
+  public CharSequence getEndIconContentDescription() {
+    return endIconContentDesc;
+  }
+
+  /**
+   * Applies a tint to the end icon drawable. Does not modify the current tint mode, which is {@link
+   * PorterDuff.Mode#SRC_IN} by default.
+   *
+   * <p>Subsequent calls to {@link #setEndIconDrawable(Drawable)} will automatically mutate the
+   * drawable and apply the specified tint and tint mode using {@link
+   * DrawableCompat#setTintList(Drawable, ColorStateList)}.
+   *
+   * @param tintList the tint to apply, may be null to clear tint
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconTint
+   */
+  public void setEndIconTintList(@Nullable ColorStateList tintList) {
+    endIconTintList = tintList;
+    hasEndIconTintList = true;
+    applyEndIconTint();
+  }
+
+  /**
+   * Specifies the blending mode used to apply the tint specified by {@link
+   * #setEndIconTintList(ColorStateList)} to the end icon drawable. The default mode is {@link
+   * PorterDuff.Mode#SRC_IN}.
+   *
+   * @param mode the blending mode used to apply the tint, may be null to clear tint
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconTintMode
+   */
+  public void setEndIconTintMode(@Nullable PorterDuff.Mode mode) {
+    endIconTintMode = mode;
+    hasEndIconTintMode = true;
+    applyEndIconTint();
+  }
+
+  /**
+   * Add a {@link TextInputLayout.OnEndIconChangedListener} that will be invoked when the end icon
+   * gets changed.
+   *
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnEndIconChangedListener(OnEndIconChangedListener)}.
+   *
+   * @param listener listener to add
+   */
+  public void addOnEndIconChangedListener(OnEndIconChangedListener listener) {
+    endIconChangedListeners.add(listener);
+  }
+
+  /**
+   * Remove the given {@link TextInputLayout.OnEndIconChangedListener} that was previously added via
+   * {@link #addOnEndIconChangedListener(OnEndIconChangedListener)}.
+   *
+   * @param listener listener to remove
+   */
+  public void removeOnEndIconChangedListener(OnEndIconChangedListener listener) {
+    endIconChangedListeners.remove(listener);
+  }
+
+  /** Remove all previously added {@link TextInputLayout.OnEndIconChangedListener}s. */
+  public void clearOnEndIconChangedListeners() {
+    endIconChangedListeners.clear();
+  }
+
+  /**
+   * Add a {@link OnEndIconInitializedListener} that will be invoked when the end icon is
+   * initialized.
+   *
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnEndIconInitializedListener(OnEndIconInitializedListener)}.
+   *
+   * @param listener listener to add
+   */
+  public void addOnEndIconInitializedListener(OnEndIconInitializedListener listener) {
+    onEndIconInitializedListeners.add(listener);
+  }
+
+  /**
+   * Remove the given {@link OnEndIconInitializedListener} that was previously added via {@link
+   * #addOnEndIconInitializedListener(OnEndIconInitializedListener)}.
+   *
+   * @param listener listener to remove
+   */
+  public void removeOnEndIconInitializedListener(OnEndIconInitializedListener listener) {
+    onEndIconInitializedListeners.remove(listener);
+  }
+
+  /** Remove all previously added {@link OnEndIconInitializedListener}s. */
+  public void clearOnEndIconInitializedListeners() {
+    onEndIconInitializedListeners.clear();
+  }
+
+  private void setEndIconPasswordToggleDefaults() {
+    setEndIconDrawable(
+        AppCompatResources.getDrawable(getContext(), R.drawable.design_password_eye));
+    setEndIconContentDescription(
+        getResources().getText(R.string.password_toggle_content_description));
+    setEndIconOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            if (editText == null) {
+              return;
+            }
+            // Store the current cursor position
+            final int selection = editText.getSelectionEnd();
+            if (hasPasswordTransformation()) {
+              editText.setTransformationMethod(null);
+              endIconView.setChecked(true);
+            } else {
+              editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+              endIconView.setChecked(false);
+            }
+            // And restore the cursor position
+            editText.setSelection(selection);
+          }
+        });
+    addOnEndIconInitializedListener(passwordToggleEndIconInitializedListener);
+    addOnEndIconChangedListener(passwordToggleEndIconChangedListener);
   }
 
   /**
@@ -1896,7 +2216,9 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param resId resource id of the drawable to set, or 0 to clear the icon
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_passwordToggleDrawable
+   * @deprecated Use {@link #setEndIconDrawable(int)} instead.
    */
+  @Deprecated
   public void setPasswordVisibilityToggleDrawable(@DrawableRes int resId) {
     setPasswordVisibilityToggleDrawable(
         resId != 0 ? AppCompatResources.getDrawable(getContext(), resId) : null);
@@ -1910,11 +2232,13 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param icon Drawable to set, may be null to clear the icon
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_passwordToggleDrawable
+   * @deprecated Use {@link #setEndIconDrawable(Drawable)} instead.
    */
+  @Deprecated
   public void setPasswordVisibilityToggleDrawable(@Nullable Drawable icon) {
-    passwordToggleDrawable = icon;
-    if (passwordToggleView != null) {
-      passwordToggleView.setImageDrawable(icon);
+    endIconDrawable = icon;
+    if (endIconView != null) {
+      endIconView.setImageDrawable(icon);
     }
   }
 
@@ -1926,7 +2250,9 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param resId Resource ID of a content description string to set, or 0 to clear the description
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_passwordToggleContentDescription
+   * @deprecated Use {@link #setEndIconContentDescription(int)} instead.
    */
+  @Deprecated
   public void setPasswordVisibilityToggleContentDescription(@StringRes int resId) {
     setPasswordVisibilityToggleContentDescription(
         resId != 0 ? getResources().getText(resId) : null);
@@ -1940,11 +2266,13 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param description Content description to set, or null to clear the content description
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_passwordToggleContentDescription
+   * @deprecated Use {@link #setEndIconContentDescription(CharSequence)} instead.
    */
+  @Deprecated
   public void setPasswordVisibilityToggleContentDescription(@Nullable CharSequence description) {
-    passwordToggleContentDesc = description;
-    if (passwordToggleView != null) {
-      passwordToggleView.setContentDescription(description);
+    endIconContentDesc = description;
+    if (endIconView != null) {
+      endIconView.setContentDescription(description);
     }
   }
 
@@ -1953,10 +2281,12 @@ public class TextInputLayout extends LinearLayout {
    *
    * @see #setPasswordVisibilityToggleDrawable(Drawable)
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_passwordToggleDrawable
+   * @deprecated Use {@link #getEndIconDrawable()} instead.
    */
   @Nullable
+  @Deprecated
   public Drawable getPasswordVisibilityToggleDrawable() {
-    return passwordToggleDrawable;
+    return endIconDrawable;
   }
 
   /**
@@ -1964,44 +2294,44 @@ public class TextInputLayout extends LinearLayout {
    *
    * <p>This will be used to describe the navigation action to users through mechanisms such as
    * screen readers.
+   *
+   * @deprecated Use {@link #getEndIconContentDescription()} instead.
    */
   @Nullable
+  @Deprecated
   public CharSequence getPasswordVisibilityToggleContentDescription() {
-    return passwordToggleContentDesc;
+    return endIconContentDesc;
   }
 
   /**
    * Returns whether the password visibility toggle functionality is currently enabled.
    *
    * @see #setPasswordVisibilityToggleEnabled(boolean)
+   * @deprecated Use {@link #getEndIconMode()} instead.
    */
+  @Deprecated
   public boolean isPasswordVisibilityToggleEnabled() {
-    return passwordToggleEnabled;
+    return endIconMode == END_ICON_PASSWORD_TOGGLE;
   }
 
   /**
-   * Returns whether the password visibility toggle functionality is enabled or not.
+   * Enables or disable the password visibility toggle functionality.
    *
    * <p>When enabled, a button is placed at the end of the EditText which enables the user to switch
    * between the field's input being visibly disguised or not.
    *
    * @param enabled true to enable the functionality
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_passwordToggleEnabled
+   * @deprecated Use {@link #setEndIconMode(int)} instead.
    */
+  @Deprecated
   public void setPasswordVisibilityToggleEnabled(final boolean enabled) {
-    if (passwordToggleEnabled != enabled) {
-      passwordToggleEnabled = enabled;
-
-      if (!enabled && passwordToggledVisible && editText != null) {
-        // If the toggle is no longer enabled, but we remove the PasswordTransformation
-        // to make the password visible, add it back
-        editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-      }
-
-      // Reset the visibility tracking flag
-      passwordToggledVisible = false;
-
-      updatePasswordToggleView();
+    if (enabled && endIconMode != END_ICON_PASSWORD_TOGGLE) {
+      // Set password toggle end icon if it's not already set
+      setEndIconMode(END_ICON_PASSWORD_TOGGLE);
+    } else if (!enabled) {
+      // Set end icon to null
+      setEndIconMode(END_ICON_NONE);
     }
   }
 
@@ -2015,11 +2345,13 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param tintList the tint to apply, may be null to clear tint
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_passwordToggleTint
+   * @deprecated Use {@link #setEndIconTintList(ColorStateList)} instead.
    */
+  @Deprecated
   public void setPasswordVisibilityToggleTintList(@Nullable ColorStateList tintList) {
-    passwordToggleTintList = tintList;
-    hasPasswordToggleTintList = true;
-    applyPasswordToggleTint();
+    endIconTintList = tintList;
+    hasEndIconTintList = true;
+    applyEndIconTint();
   }
 
   /**
@@ -2029,11 +2361,13 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param mode the blending mode used to apply the tint, may be null to clear tint
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_passwordToggleTintMode
+   * @deprecated Use {@link #setEndIconTintMode(PorterDuff.Mode)} instead.
    */
+  @Deprecated
   public void setPasswordVisibilityToggleTintMode(@Nullable PorterDuff.Mode mode) {
-    passwordToggleTintMode = mode;
-    hasPasswordToggleTintMode = true;
-    applyPasswordToggleTint();
+    endIconTintMode = mode;
+    hasEndIconTintMode = true;
+    applyEndIconTint();
   }
 
   /**
@@ -2043,27 +2377,15 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param shouldSkipAnimations true if the password toggle indicator icon should not animate
    *     changes
+   * @deprecated Use {@link #setEndIconOnClickListener(OnClickListener)} instead.
    */
+  @Deprecated
   public void passwordVisibilityToggleRequested(boolean shouldSkipAnimations) {
-    if (passwordToggleEnabled) {
-      // Store the current cursor position
-      final int selection = editText.getSelectionEnd();
-
-      if (hasPasswordTransformation()) {
-        editText.setTransformationMethod(null);
-        passwordToggledVisible = true;
-      } else {
-        editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-        passwordToggledVisible = false;
-      }
-
-      passwordToggleView.setChecked(passwordToggledVisible);
+    if (endIconMode == END_ICON_PASSWORD_TOGGLE) {
+      endIconView.performClick();
       if (shouldSkipAnimations) {
-        passwordToggleView.jumpDrawablesToCurrentState();
+        endIconView.jumpDrawablesToCurrentState();
       }
-
-      // And restore the cursor position
-      editText.setSelection(selection);
     }
   }
 
@@ -2080,32 +2402,79 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  private boolean hasEndIcon() {
+    return endIconMode != END_ICON_NONE;
+  }
+
+  private void initializeEndIcon() {
+    if (editText != null && endIconView != null) {
+      if (endIconView.getParent() == null) {
+        inputFrame.addView(endIconView);
+        dispatchOnEndIconInitialized();
+      }
+    }
+  }
+
+  private void dispatchOnEndIconChanged(@EndIconMode int previousIcon) {
+    for (OnEndIconChangedListener listener : endIconChangedListeners) {
+      listener.onEndIconChanged(previousIcon);
+    }
+  }
+
+  private void dispatchOnEndIconInitialized() {
+    for (OnEndIconInitializedListener listener : onEndIconInitializedListeners) {
+      listener.onEndIconInitialized();
+    }
+  }
+
+  /*
+   * We need to add a dummy drawable as the end compound drawable so that the text is indented and
+   * doesn't display below the end icon view.
+   */
+  private void addEndIconDummyDrawable() {
+    endIconDummyDrawable = new ColorDrawable();
+    endIconDummyDrawable.setBounds(0, 0, endIconView.getMeasuredWidth(), 1);
+    final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+    // Store the user defined end compound drawable so that we can restore it later
+    if (compounds[2] != endIconDummyDrawable) {
+      originalEditTextEndDrawable = compounds[2];
+    }
+    TextViewCompat.setCompoundDrawablesRelative(
+        editText, compounds[0], compounds[1], endIconDummyDrawable, compounds[3]);
+  }
+
+  /* Remove the dummy end compound drawable if it exists and clear it. */
+  private void removeEndIconDummyDrawable() {
+    if (endIconDummyDrawable != null) {
+      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+      if (compounds[2] == endIconDummyDrawable) {
+        TextViewCompat.setCompoundDrawablesRelative(
+            editText, compounds[0], compounds[1], originalEditTextEndDrawable, compounds[3]);
+      }
+      endIconDummyDrawable = null;
+    }
+  }
+
+  private void applyEndIconTint() {
+    if (endIconDrawable != null && (hasEndIconTintList || hasEndIconTintMode)) {
+      endIconDrawable = DrawableCompat.wrap(endIconDrawable).mutate();
+
+      if (hasEndIconTintList) {
+        DrawableCompat.setTintList(endIconDrawable, endIconTintList);
+      }
+      if (hasEndIconTintMode) {
+        DrawableCompat.setTintMode(endIconDrawable, endIconTintMode);
+      }
+
+      if (endIconView != null && endIconView.getDrawable() != endIconDrawable) {
+        endIconView.setImageDrawable(endIconDrawable);
+      }
+    }
+  }
+
   private boolean hasPasswordTransformation() {
     return editText != null
         && editText.getTransformationMethod() instanceof PasswordTransformationMethod;
-  }
-
-  private boolean shouldShowPasswordIcon() {
-    return passwordToggleEnabled && (hasPasswordTransformation() || passwordToggledVisible);
-  }
-
-  private void applyPasswordToggleTint() {
-    if (passwordToggleDrawable != null
-        && (hasPasswordToggleTintList || hasPasswordToggleTintMode)) {
-      passwordToggleDrawable = DrawableCompat.wrap(passwordToggleDrawable).mutate();
-
-      if (hasPasswordToggleTintList) {
-        DrawableCompat.setTintList(passwordToggleDrawable, passwordToggleTintList);
-      }
-      if (hasPasswordToggleTintMode) {
-        DrawableCompat.setTintMode(passwordToggleDrawable, passwordToggleTintMode);
-      }
-
-      if (passwordToggleView != null
-          && passwordToggleView.getDrawable() != passwordToggleDrawable) {
-        passwordToggleView.setImageDrawable(passwordToggleDrawable);
-      }
-    }
   }
 
   @Override
