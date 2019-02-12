@@ -119,7 +119,7 @@ public class TocFragment extends DaggerFragment {
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
-    if (!defaultDemo.isEmpty()) {
+    if (!defaultDemo.isEmpty() && bundle == null) {
       for (FeatureDemo demo : featureDemos) {
         Fragment fragment = demo.createFragment();
         String key = fragment.getClass().getName();
