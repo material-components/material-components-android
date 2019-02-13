@@ -66,9 +66,6 @@
          The background can either be a color or a bitmap drawable with tileMode set to repeat. -->
     <attr name="scrimBackground"/>
 
-    <!-- Default color of background imagery for floating components, ex. dialogs, popups, and cards. -->
-    <attr name="colorBackgroundFloating"/>
-
     <!-- Theme to use for modal bottom sheet dialogs spawned from this theme. -->
     <attr name="bottomSheetDialogTheme"/>
     <!-- Style to use for modal bottom sheets in this theme. -->
