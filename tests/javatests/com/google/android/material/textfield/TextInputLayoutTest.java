@@ -433,7 +433,7 @@ public class TextInputLayoutTest {
     final EditorInfo info = new EditorInfo();
     editText.onCreateInputConnection(info);
 
-    assertEquals(INPUT_TEXT, info.hintText);
+    assertEquals(INPUT_TEXT, info.hintText.toString());
   }
 
   @UiThreadTest
@@ -452,10 +452,10 @@ public class TextInputLayoutTest {
     // Asserts the structure.
     final ViewStructureImpl childStructure = structure.getChildAt(0);
     assertEquals(EditText.class.getName(), childStructure.getClassName());
-    assertEquals("Hint to the user", childStructure.getHint());
+    assertEquals("Hint to the user", childStructure.getHint().toString());
 
     // Make sure the widget's hint was restored.
-    assertEquals("Hint to the user", layout.getHint());
+    assertEquals("Hint to the user", layout.getHint().toString());
     final EditText editText = activity.findViewById(R.id.textinput_edittext);
     assertNull(editText.getHint());
   }
