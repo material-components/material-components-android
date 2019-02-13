@@ -38,7 +38,6 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
-import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.TransformationListener;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
@@ -846,6 +845,19 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
           // Set the correct cutout diameter
           fab.getMeasuredContentRect(fabContentRect);
           child.setFabDiameter(fabContentRect.height());
+
+          // Set the bottomMargin of the fab if it is 0dp. This adds space below the fab if the
+          // BottomAppBar is hidden.
+          if (fabLayoutParams.bottomMargin == 0) {
+            // Extra padding is added for the fake shadow on API < 21. Ensure we don't add too much
+            // space by removing that extra padding.
+            int bottomShadowPadding = (fab.getMeasuredHeight() - fabContentRect.height()) / 2;
+            int bottomMargin =
+                child
+                    .getResources()
+                    .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
+            fabLayoutParams.bottomMargin = Math.max(0, bottomMargin - bottomShadowPadding);
+          }
         }
 
         // Move the fab to the correct position
@@ -869,35 +881,6 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       return child.getHideOnScroll()
           && super.onStartNestedScroll(
               coordinatorLayout, child, directTargetChild, target, axes, type);
-    }
-
-    @Override
-    public void slideUp(BottomAppBar child) {
-      super.slideUp(child);
-      FloatingActionButton fab = child.findDependentFab();
-      if (fab != null) {
-        fab.clearAnimation();
-        fab.animate()
-            .translationY(child.getFabTranslationY())
-            .setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR)
-            .setDuration(ENTER_ANIMATION_DURATION);
-      }
-    }
-
-    @Override
-    public void slideDown(BottomAppBar child) {
-      super.slideDown(child);
-      FloatingActionButton fab = child.findDependentFab();
-      if (fab != null) {
-        fab.getContentRect(fabContentRect);
-        float fabShadowPadding = fab.getMeasuredHeight() - fabContentRect.height();
-
-        fab.clearAnimation();
-        fab.animate()
-            .translationY(-fab.getPaddingBottom() + fabShadowPadding)
-            .setInterpolator(AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR)
-            .setDuration(EXIT_ANIMATION_DURATION);
-      }
     }
   }
 
