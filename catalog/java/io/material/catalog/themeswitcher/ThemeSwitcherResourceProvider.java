@@ -50,4 +50,12 @@ public class ThemeSwitcherResourceProvider {
   public int getShapesContentDescription() {
     return R.array.mtrl_shapes_content_description;
   }
+
+  public int getShapeSizes() {
+    return R.array.mtrl_shape_size_overlays;
+  }
+
+  public int getShapeSizesContentDescription() {
+    return R.array.mtrl_shape_size_content_description;
+  }
 }

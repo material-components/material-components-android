@@ -35,5 +35,11 @@
   <string name="mtrl_cut">Cut</string>
   <string name="mtrl_rounded_content_description">Rounded corners</string>
   <string name="mtrl_cut_content_description">Cut corners</string>
-  <string name="mtrl_shapes_corner_family">Shapes corner family</string>
+  <string name="mtrl_small_shape_content_description">Small</string>
+  <string name="mtrl_medium_shape_content_description">Medium</string>
+  <string name="mtrl_large_shape_content_description">Large</string>
+  <string name="mtrl_shape_corner_family">Shape corner family</string>
+  <string name="mtrl_shape_corner_size">Shape corner size</string>
+  <string name="mtrl_apply">Apply</string>
+  <string name="mtrl_clear">Clear</string>
 </resources>

@@ -48,6 +48,7 @@
       @style/Animation.MaterialComponents.BottomSheetDialog
     </item>
     <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.Light.BottomSheetDialog" parent="ThemeOverlay.MaterialComponents.Dialog">
@@ -57,5 +58,6 @@
       @style/Animation.MaterialComponents.BottomSheetDialog
     </item>
     <item name="bottomSheetStyle">@style/Widget.MaterialComponents.BottomSheet.Modal</item>
+    <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button</item>
   </style>
 </resources>

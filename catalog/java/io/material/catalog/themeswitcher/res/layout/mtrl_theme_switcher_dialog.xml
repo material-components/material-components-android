@@ -54,19 +54,21 @@
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:text="@string/mtrl_shapes_corner_family"/>
+      android:text="@string/mtrl_shape_corner_family"/>
 
   <RadioGroup
       android:id="@+id/shape_families"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:layout_gravity="center_horizontal"
+      android:gravity="center"
       android:orientation="horizontal">
 
     <RadioButton
         android:id="@+id/rounded_button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:checked="true"
         android:drawableLeft="@drawable/ic_rounded_corners_24px"
         android:drawablePadding="8dp"
@@ -75,13 +77,42 @@
 
     <RadioButton
         android:id="@+id/cut_button"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
         android:drawableLeft="@drawable/ic_cut_corners_24px"
         android:drawablePadding="8dp"
+        android:layout_marginLeft="16dp"
         android:drawableStart="@drawable/ic_cut_corners_24px"
-        android:text="@string/mtrl_cut"/>
+        android:text="@string/mtrl_cut"
+        android:layout_marginStart="16dp"/>
   </RadioGroup>
+
+  <TextView
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:text="@string/mtrl_shape_corner_size"/>
+
+  <RadioGroup
+      android:id="@+id/shape_corner_sizes"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:layout_gravity="center_horizontal"
+      android:gravity="center"
+      android:orientation="horizontal"/>
+
+  <Button
+      android:id="@+id/apply_button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="8dp"
+      android:text="@string/mtrl_apply"/>
+
+  <Button
+      android:id="@+id/clear_button"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_marginBottom="16dp"
+      android:text="@string/mtrl_clear"/>
 
 </LinearLayout>

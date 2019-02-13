@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Copyright 2019 The Android Open Source Project
+  Copyright 2018 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -16,13 +16,5 @@
   -->
 
 <resources>
-  <style name="ThemeOverlay.Shapes.Rounded" parent="">
-    <item name="cornerFamily">rounded</item>
-  </style>
-
-  <style name="ThemeOverlay.Shapes.Cut" parent="">
-    <item name="cornerFamily">cut</item>
-  </style>
-
+  <dimen name="theme_switcher_radio_spacing">16dp</dimen>
 </resources>
-
