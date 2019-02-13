@@ -44,7 +44,6 @@ import androidx.core.view.ViewCompat;
 @RestrictTo(LIBRARY_GROUP)
 class MaterialButtonHelper {
 
-  private static final float CORNER_RADIUS_ADJUSTMENT = 0.00001F;
   private static final boolean IS_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
   private final MaterialButton materialButton;
   private final ShapeAppearanceModel shapeAppearanceModel;
@@ -85,8 +84,6 @@ class MaterialButtonHelper {
       shapeAppearanceModel.setCornerRadius(cornerRadius);
       cornerRadiusSet = true;
     }
-
-    adjustShapeAppearanceModelCornerRadius(shapeAppearanceModel, CORNER_RADIUS_ADJUSTMENT);
 
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialButton_strokeWidth, 0);
 
@@ -295,7 +292,7 @@ class MaterialButtonHelper {
       this.cornerRadius = cornerRadius;
       cornerRadiusSet = true;
       shapeAppearanceModel.setCornerRadius(
-          cornerRadius + CORNER_RADIUS_ADJUSTMENT + (strokeWidth / 2f));
+          cornerRadius + (strokeWidth / 2f));
       if (getMaterialShapeDrawable() != null) {
         getMaterialShapeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
       }
