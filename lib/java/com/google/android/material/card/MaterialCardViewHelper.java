@@ -409,8 +409,9 @@ class MaterialCardViewHelper {
       // Change the bounds slightly to force the layer to change color, then change the layer again.
       // In API 28 the color for the Ripple is snapshot at the beginning of the animation,
       // it doesn't update when the drawable changes to android:state_checked.
-      rippleDrawable.setBounds(bounds.left, bounds.top, bounds.right, bounds.bottom - 1);
-      rippleDrawable.setBounds(bounds);
+      int bottom = bounds.bottom;
+      rippleDrawable.setBounds(bounds.left, bounds.top, bounds.right, bottom - 1);
+      rippleDrawable.setBounds(bounds.left, bounds.top, bounds.right, bottom);
     }
   }
 

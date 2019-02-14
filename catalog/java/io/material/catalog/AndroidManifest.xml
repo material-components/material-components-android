@@ -50,7 +50,7 @@
       android:label="@string/cat_topappbar_dark_action_bar_title"
       android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
     <activity
-      android:exported="false"
+      android:exported="true"
       android:name=".card.CardSelectionModeActivity"/>
 
   </application>
