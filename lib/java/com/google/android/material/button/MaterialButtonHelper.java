@@ -32,6 +32,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
@@ -61,6 +62,7 @@ class MaterialButtonHelper {
   @Nullable private ColorStateList rippleColor;
 
   @Nullable private MaterialShapeDrawable maskDrawable;
+  private boolean shouldDrawSurfaceColorStroke = false;
   private boolean backgroundOverwritten = false;
   private boolean cornerRadiusSet = false;
   private LayerDrawable rippleDrawable;
@@ -172,6 +174,11 @@ class MaterialButtonHelper {
     return backgroundTintMode;
   }
 
+  void setShouldDrawSurfaceColorStroke(boolean shouldDrawSurfaceColorStroke) {
+    this.shouldDrawSurfaceColorStroke = shouldDrawSurfaceColorStroke;
+    updateStroke();
+  }
+
   /**
    * Create RippleDrawable background for Lollipop (API 21) and later API versions
    *
@@ -184,6 +191,16 @@ class MaterialButtonHelper {
       DrawableCompat.setTintMode(backgroundDrawable, backgroundTintMode);
     }
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
+
+    MaterialShapeDrawable surfaceColorStrokeDrawable =
+        new MaterialShapeDrawable(shapeAppearanceModel);
+    surfaceColorStrokeDrawable.setTint(Color.TRANSPARENT);
+    surfaceColorStrokeDrawable.setStroke(
+        strokeWidth,
+        shouldDrawSurfaceColorStroke
+            ? MaterialColors.getColor(materialButton, R.attr.colorSurface)
+            : Color.TRANSPARENT);
+
     maskDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
 
     if (IS_LOLLIPOP) {
@@ -193,6 +210,7 @@ class MaterialButtonHelper {
         adjustShapeAppearanceModelCornerRadius(
             temporaryAdjustedShapeAppearanceModel, strokeWidth / 2f);
         backgroundDrawable.setShapeAppearanceModel(temporaryAdjustedShapeAppearanceModel);
+        surfaceColorStrokeDrawable.setShapeAppearanceModel(temporaryAdjustedShapeAppearanceModel);
         maskDrawable.setShapeAppearanceModel(temporaryAdjustedShapeAppearanceModel);
       }
 
@@ -200,13 +218,17 @@ class MaterialButtonHelper {
       rippleDrawable =
           new RippleDrawable(
               RippleUtils.convertToRippleDrawableColor(rippleColor),
-              wrapDrawableWithInset(backgroundDrawable),
+              wrapDrawableWithInset(
+                  new LayerDrawable(
+                      new Drawable[] {surfaceColorStrokeDrawable, backgroundDrawable})),
               maskDrawable);
       return rippleDrawable;
     } else {
       DrawableCompat.setTintList(
           maskDrawable, RippleUtils.convertToRippleDrawableColor(rippleColor));
-      rippleDrawable = new LayerDrawable(new Drawable[] {backgroundDrawable, maskDrawable});
+      rippleDrawable =
+          new LayerDrawable(
+              new Drawable[] {surfaceColorStrokeDrawable, backgroundDrawable, maskDrawable});
       return wrapDrawableWithInset(rippleDrawable);
     }
   }
@@ -266,13 +288,24 @@ class MaterialButtonHelper {
 
   private void updateStroke() {
     MaterialShapeDrawable materialShapeDrawable = getMaterialShapeDrawable();
+    MaterialShapeDrawable surfaceColorStrokeDrawable = getSurfaceColorStrokeDrawable();
     if (materialShapeDrawable != null) {
       materialShapeDrawable.setStroke(strokeWidth, strokeColor);
+      if (surfaceColorStrokeDrawable != null) {
+        surfaceColorStrokeDrawable.setStroke(
+            strokeWidth,
+            shouldDrawSurfaceColorStroke
+                ? MaterialColors.getColor(materialButton, R.attr.colorSurface)
+                : Color.TRANSPARENT);
+      }
       if (IS_LOLLIPOP) {
         ShapeAppearanceModel temporaryShapeAppearance =
             new ShapeAppearanceModel(shapeAppearanceModel);
         adjustShapeAppearanceModelCornerRadius(temporaryShapeAppearance, strokeWidth / 2f);
         materialShapeDrawable.setShapeAppearanceModel(temporaryShapeAppearance);
+        if (surfaceColorStrokeDrawable != null) {
+          surfaceColorStrokeDrawable.setShapeAppearanceModel(temporaryShapeAppearance);
+        }
 
         if (getMaskDrawable() != null) {
           getMaskDrawable().setShapeAppearanceModel(temporaryShapeAppearance);
@@ -295,6 +328,9 @@ class MaterialButtonHelper {
           cornerRadius + (strokeWidth / 2f));
       if (getMaterialShapeDrawable() != null) {
         getMaterialShapeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+      }
+      if (getSurfaceColorStrokeDrawable() != null) {
+        getSurfaceColorStrokeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
       }
       if (getMaskDrawable() != null) {
         getMaskDrawable().setShapeAppearanceModel(shapeAppearanceModel);
@@ -327,20 +363,16 @@ class MaterialButtonHelper {
   }
 
   @Nullable
-  private MaterialShapeDrawable getMaterialShapeDrawable() {
-    Drawable result = null;
+  private MaterialShapeDrawable getMaterialShapeDrawable(boolean getSurfaceColorStrokeDrawable) {
     if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 0) {
-      result = rippleDrawable.getDrawable(0);
-    }
-
-    if (result instanceof MaterialShapeDrawable) {
-      return (MaterialShapeDrawable) result;
-    }
-
-    if (result instanceof InsetDrawable) {
-      InsetDrawable insetDrawable = (InsetDrawable) result;
       if (IS_LOLLIPOP) {
-        return (MaterialShapeDrawable) insetDrawable.getDrawable();
+        InsetDrawable insetDrawable = (InsetDrawable) rippleDrawable.getDrawable(0);
+        LayerDrawable layerDrawable = (LayerDrawable) insetDrawable.getDrawable();
+        return (MaterialShapeDrawable)
+            layerDrawable.getDrawable(getSurfaceColorStrokeDrawable ? 0 : 1);
+      } else {
+        return (MaterialShapeDrawable)
+            rippleDrawable.getDrawable(getSurfaceColorStrokeDrawable ? 0 : 1);
       }
     }
 
@@ -348,8 +380,23 @@ class MaterialButtonHelper {
   }
 
   @Nullable
+  MaterialShapeDrawable getMaterialShapeDrawable() {
+    return getMaterialShapeDrawable(false);
+  }
+
+  @Nullable
+  private MaterialShapeDrawable getSurfaceColorStrokeDrawable() {
+    return getMaterialShapeDrawable(true);
+  }
+
+  @Nullable
   public MaterialShapeDrawable getMaskDrawable() {
     if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 1) {
+      if (rippleDrawable.getNumberOfLayers() > 2) {
+        // This is a LayerDrawable with 3 layers, so return the mask layer
+        return (MaterialShapeDrawable) rippleDrawable.getDrawable(2);
+      }
+      // This is a RippleDrawable, so return the mask layer
       return (MaterialShapeDrawable) rippleDrawable.getDrawable(1);
     }
 

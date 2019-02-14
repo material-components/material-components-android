@@ -106,7 +106,6 @@ public class MaterialButton extends AppCompatButton {
    */
   public static final int ICON_GRAVITY_TEXT_START = 0x2;
 
-
   /** Positions the icon can be set to. */
   @IntDef({ICON_GRAVITY_START, ICON_GRAVITY_TEXT_START})
   @Retention(RetentionPolicy.SOURCE)
@@ -343,8 +342,7 @@ public class MaterialButton extends AppCompatButton {
       buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
     }
 
-    int textWidth =
-       Math.min((int) textPaint.measureText(buttonText), getLayout().getWidth());
+    int textWidth = Math.min((int) textPaint.measureText(buttonText), getLayout().getWidth());
 
     int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
     int newIconLeft =
@@ -369,7 +367,6 @@ public class MaterialButton extends AppCompatButton {
   private boolean isLayoutRTL() {
     return ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
   }
-
 
   /**
    * Update the button's background without changing the background state in {@link
@@ -754,5 +751,11 @@ public class MaterialButton extends AppCompatButton {
 
   private boolean isUsingOriginalBackground() {
     return materialButtonHelper != null && !materialButtonHelper.isBackgroundOverwritten();
+  }
+
+  void setShouldDrawSurfaceColorStroke(boolean shouldDrawSurfaceColorStroke) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setShouldDrawSurfaceColorStroke(shouldDrawSurfaceColorStroke);
+    }
   }
 }
