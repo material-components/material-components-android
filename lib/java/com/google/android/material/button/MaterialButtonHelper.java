@@ -65,6 +65,7 @@ class MaterialButtonHelper {
   private boolean shouldDrawSurfaceColorStroke = false;
   private boolean backgroundOverwritten = false;
   private boolean cornerRadiusSet = false;
+  private boolean checkable;
   private LayerDrawable rippleDrawable;
 
   MaterialButtonHelper(MaterialButton button, ShapeAppearanceModel shapeAppearanceModel) {
@@ -102,6 +103,7 @@ class MaterialButtonHelper {
         MaterialResources.getColorStateList(
             materialButton.getContext(), attributes, R.styleable.MaterialButton_rippleColor);
 
+    checkable = attributes.getBoolean(R.styleable.MaterialButton_android_checkable, false);
     int elevation = attributes.getDimensionPixelSize(R.styleable.MaterialButton_elevation, 0);
 
     // Store padding before setting background, since background overwrites padding values
@@ -382,6 +384,14 @@ class MaterialButtonHelper {
   @Nullable
   MaterialShapeDrawable getMaterialShapeDrawable() {
     return getMaterialShapeDrawable(false);
+  }
+
+  void setCheckable(boolean checkable) {
+    this.checkable = checkable;
+  }
+
+  boolean isCheckable() {
+    return checkable;
   }
 
   @Nullable

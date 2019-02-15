@@ -49,6 +49,8 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Checkable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -88,7 +90,20 @@ import java.lang.annotation.RetentionPolicy;
  * <p>Specify the radius of all four corners of the button using the {@link R.attr#cornerRadius
  * app:cornerRadius} attribute.
  */
-public class MaterialButton extends AppCompatButton {
+public class MaterialButton extends AppCompatButton implements Checkable {
+
+  /** Interface definition for a callback to be invoked when the button checked state changes. */
+  public interface OnCheckedChangeListener {
+    /**
+     * Called when the checked state of a MaterialButton has changed.
+     *
+     * @param button The MaterialButton whose state has changed.
+     * @param isChecked The new checked state of MaterialButton.
+     */
+    void onCheckedChanged(MaterialButton button, boolean isChecked);
+  }
+
+  private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
   /**
    * Gravity used to position the icon at the start of the view.
@@ -123,6 +138,9 @@ public class MaterialButton extends AppCompatButton {
   private Drawable icon;
   @Px private int iconSize;
   @Px private int iconLeft;
+  private boolean checked = false;
+  private boolean broadcasting = false;
+  @Nullable private OnCheckedChangeListener onCheckedChangeListener;
 
   @IconGravity private int iconGravity;
 
@@ -166,6 +184,14 @@ public class MaterialButton extends AppCompatButton {
 
     setCompoundDrawablePadding(iconPadding);
     updateIcon();
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    info.setClassName(MaterialButton.class.getName());
+    info.setCheckable(isCheckable());
+    info.setClickable(isClickable());
   }
 
   /**
@@ -747,6 +773,84 @@ public class MaterialButton extends AppCompatButton {
    */
   public void setIconGravity(@IconGravity int iconGravity) {
     this.iconGravity = iconGravity;
+  }
+  
+  @Override
+  protected int[] onCreateDrawableState(int extraSpace) {
+    final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+    if (isChecked()) {
+      mergeDrawableStates(drawableState, CHECKED_STATE_SET);
+    }
+
+    return drawableState;
+  }
+
+  /**
+   * Register a callback to be invoked when the checked state of this MaterialButton changes.
+   *
+   * @param listener the callback to call on checked state change
+   */
+  public void setOnCheckedChangeListener(@Nullable OnCheckedChangeListener listener) {
+    onCheckedChangeListener = listener;
+  }
+
+  @Override
+  public void setChecked(boolean checked) {
+    if (isCheckable() && isEnabled() && this.checked != checked) {
+      this.checked = checked;
+      refreshDrawableState();
+
+      // Avoid infinite recursions if setChecked() is called from a listener
+      if (broadcasting) {
+        return;
+      }
+
+      broadcasting = true;
+      if (onCheckedChangeListener != null) {
+        onCheckedChangeListener.onCheckedChanged(this, this.checked);
+      }
+
+      broadcasting = false;
+    }
+  }
+
+  @Override
+  public boolean isChecked() {
+    return checked;
+  }
+
+  @Override
+  public void toggle() {
+    setChecked(!checked);
+  }
+
+  @Override
+  public boolean performClick() {
+    toggle();
+
+    return super.performClick();
+  }
+
+  /**
+   * Returns whether this MaterialButton is checkable.
+   *
+   * @see #setCheckable(boolean)
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_checkable
+   */
+  public boolean isCheckable() {
+    return materialButtonHelper != null && materialButtonHelper.isCheckable();
+  }
+
+  /**
+   * Sets whether this MaterialButton is checkable.
+   *
+   * @param checkable Whether this button is checkable.
+   * @attr ref com.google.android.material.R.styleable#MaterialButton_android_checkable
+   */
+  public void setCheckable(boolean checkable) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setCheckable(checkable);
+    }
   }
 
   private boolean isUsingOriginalBackground() {
