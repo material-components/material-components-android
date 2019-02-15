@@ -19,8 +19,10 @@ package io.material.catalog.transformation;
 import io.material.catalog.R;
 
 import android.os.Bundle;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
+import com.google.android.material.transformation.TransformationChildCard;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
@@ -45,7 +47,7 @@ public class TransformationMainDemoFragment extends DemoFragment implements OnBa
     Toolbar toolbar = view.findViewById(R.id.toolbar);
     fab = view.findViewById(R.id.fab);
     View closeButton = view.findViewById(R.id.close_button);
-    View sheet = view.findViewById(R.id.sheet);
+    TransformationChildCard sheet = view.findViewById(R.id.sheet);
     View scrim = view.findViewById(R.id.scrim);
 
     ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
@@ -55,6 +57,18 @@ public class TransformationMainDemoFragment extends DemoFragment implements OnBa
     scrim.setOnClickListener(v -> fab.setExpanded(false));
 
     DraggableCoordinatorLayout container = (DraggableCoordinatorLayout) view;
+    container.setViewDragListener(new DraggableCoordinatorLayout.ViewDragListener() {
+      @Override
+      public void onViewCaptured(@NonNull View view, int i) {
+        sheet.setDragged(true);
+      }
+
+      @Override
+      public void onViewReleased(@NonNull View view, float v, float v1) {
+        sheet.setDragged(false);
+      }
+    });
+    
     container.addDraggableChild(fab);
     container.addDraggableChild(sheet);
 

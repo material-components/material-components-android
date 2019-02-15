@@ -61,25 +61,25 @@
       android:layout_gravity="bottom|right"
       android:visibility="invisible"
       app:cardElevation="2dp"
-      app:contentPadding="20dp"
       app:layout_behavior="@string/fab_transformation_sheet_behavior">
+
+    <ImageButton
+        android:id="@+id/close_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|end"
+        android:padding="12dp"
+        android:background="?selectableItemBackgroundBorderless"
+        android:contentDescription="@string/close_sheet"
+        android:scaleType="fitCenter"
+        android:tint="?attr/colorOnSurface"
+        app:srcCompat="@drawable/ic_close_vd_theme_24px"/>
 
     <!-- TransformationChildCard can contain arbitrary content provided by the app. -->
     <FrameLayout
+        android:padding="20dp"
         android:layout_width="200dp"
         android:layout_height="300dp">
-
-      <ImageButton
-          android:id="@+id/close_button"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="top|end"
-          android:padding="12dp"
-          android:background="?selectableItemBackgroundBorderless"
-          android:contentDescription="@string/close_sheet"
-          android:scaleType="fitCenter"
-          android:tint="?attr/colorOnSurface"
-          app:srcCompat="@drawable/ic_close_vd_theme_24px"/>
 
       <TextView
           android:layout_width="wrap_content"
