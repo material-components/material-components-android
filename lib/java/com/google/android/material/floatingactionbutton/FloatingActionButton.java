@@ -1277,10 +1277,17 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
   }
 
+  /**
+   * Add a {@link TransformationListener} which can watch for changes to this view.
+   */
   public void addTransformationListener(TransformationListener<FloatingActionButton> listener) {
     getImpl().addTransformationListener(new TransformationListenerWrapper(listener));
   }
 
+  /**
+   * Remove the {@link TransformationListener} from this view. It will no longer receive updates
+   * when this view is transformed.
+   */
   public void removeTransformationListener(TransformationListener<FloatingActionButton> listener) {
     getImpl().removeTransformationListener(new TransformationListenerWrapper(listener));
   }
