@@ -20,6 +20,9 @@
   <!-- Style to use for MaterialButtons in this theme. -->
   <attr name="materialButtonStyle" format="reference"/>
 
+  <!-- Style to use for Material Outlined Buttons in this theme. -->
+  <attr name="materialButtonOutlinedStyle" format="reference"/>
+
   <declare-styleable name="MaterialButton">
     <attr name="android:insetLeft"/>
     <attr name="android:insetRight"/>

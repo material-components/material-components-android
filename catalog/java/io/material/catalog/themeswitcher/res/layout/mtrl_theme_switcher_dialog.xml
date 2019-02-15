@@ -109,6 +109,7 @@
       android:text="@string/mtrl_apply"/>
 
   <Button
+      style="?attr/materialButtonOutlinedStyle"
       android:id="@+id/clear_button"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
