@@ -68,12 +68,15 @@
          If set, this takes precedence over counterOverflowTextAppearance. -->
     <attr name="counterOverflowTextColor" format="reference"/>
 
-    <!-- Whether the view will display a password toggle end icon, or no end icon. -->
+    <!-- The end icon mode of the TextInputLayout. It will display one of the end icons detailed
+         below, or no end icon. -->
     <attr name="endIconMode">
       <!-- No end icon. -->
       <enum name="none" value="0"/>
       <!-- The view will display a toggle when the EditText has a password. -->
       <enum name="password_toggle" value="1"/>
+      <!-- The view will display a clear text button while the EditText contains input. -->
+      <enum name="clear_text" value="2"/>
     </attr>
     <!-- Drawable to use for the end icon. -->
     <attr name="endIconDrawable" format="reference"/>

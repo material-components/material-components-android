@@ -104,10 +104,12 @@ import java.util.LinkedHashSet;
  *   <li>Password visibility toggling via {@link #setEndIconMode(int)} API and related attribute. If
  *       set, a button is displayed to toggle between the password being displayed as plain-text or
  *       disguised, when your EditText is set to display a password.
- *       <p><strong>Note:</strong> When using the password toggle functionality, the 'end' compound
- *       drawable of the EditText will be overridden while the toggle is visible. To ensure that any
- *       existing drawables are restored correctly, you should set those compound drawables
- *       relatively (start/end), as opposed to absolutely (left/right).
+ *   <li>Clearing text functionality via {@link #setEndIconMode(int)} API and related attribute. If
+ *       set, a button is displayed when text is present and clicking it clears the EditText field.
+ *       <p><strong>Note:</strong> When using an end icon, the 'end' compound drawable of the
+ *       EditText will be overridden while the end icon view is visible. To ensure that any existing
+ *       drawables are restored correctly, you should set those compound drawables relatively
+ *       (start/end), as opposed to absolutely (left/right).
  * </ul>
  *
  * <p>The {@link TextInputEditText} class is provided to be used as the input text child of this
@@ -214,8 +216,8 @@ public class TextInputLayout extends LinearLayout {
   private final RectF tmpRectF = new RectF();
   private Typeface typeface;
 
-  /** Values for the end icon mode. There is either the password toggle icon or no end icon. */
-  @IntDef({END_ICON_NONE, END_ICON_PASSWORD_TOGGLE})
+  /** Values for the end icon mode. */
+  @IntDef({END_ICON_NONE, END_ICON_PASSWORD_TOGGLE, END_ICON_CLEAR_TEXT})
   @Retention(RetentionPolicy.SOURCE)
   public @interface EndIconMode {}
 
@@ -236,6 +238,15 @@ public class TextInputLayout extends LinearLayout {
    * @see #getEndIconMode()
    */
   public static final int END_ICON_PASSWORD_TOGGLE = 1;
+
+  /**
+   * The TextInputLayout will show a clear text button while there is input in the EditText.
+   * Clicking it will clear out the text and hide the icon.
+   *
+   * @see #setEndIconMode(int)
+   * @see #getEndIconMode()
+   */
+  public static final int END_ICON_CLEAR_TEXT = 2;
 
   /** Callback interface invoked when the end icon is initialized. */
   public interface OnEndIconInitializedListener {
@@ -290,6 +301,29 @@ public class TextInputLayout extends LinearLayout {
             // in case it might have been removed to make the password visible,
             editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
           }
+        }
+      };
+  private final OnEndIconInitializedListener clearTextEndIconInitializedListener =
+      new OnEndIconInitializedListener() {
+        @Override
+        public void onEndIconInitialized() {
+          if (editText == null) {
+            return;
+          }
+          setEndIconVisible(!TextUtils.isEmpty(editText.getText()));
+          editText.addTextChangedListener(
+              new TextWatcher() {
+                @Override
+                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+                @Override
+                public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+                @Override
+                public void afterTextChanged(Editable s) {
+                  setEndIconVisible(s.length() > 0);
+                }
+              });
         }
       };
 
@@ -1945,8 +1979,12 @@ public class TextInputLayout extends LinearLayout {
     }
     switch (endIconMode) {
       case END_ICON_PASSWORD_TOGGLE:
-        // Set defaults for password toggle end icon
+        // Set defaults for the password toggle end icon
         setEndIconPasswordToggleDefaults();
+        break;
+      case END_ICON_CLEAR_TEXT:
+        // Set defaults for the clear text end icon
+        setEndIconClearTextDefaults();
         break;
       default:
         // Removes any current end icon
@@ -2208,6 +2246,21 @@ public class TextInputLayout extends LinearLayout {
     addOnEndIconChangedListener(passwordToggleEndIconChangedListener);
   }
 
+  private void setEndIconClearTextDefaults() {
+    setEndIconDrawable(
+          AppCompatResources.getDrawable(getContext(), R.drawable.mtrl_clear_text_button));
+    setEndIconContentDescription(
+          getResources().getText(R.string.clear_text_end_icon_content_description));
+    setEndIconOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            editText.setText(null);
+          }
+        });
+    addOnEndIconInitializedListener(clearTextEndIconInitializedListener);
+  }
+
   /**
    * Set the icon to use for the password visibility toggle button.
    *
@@ -2415,8 +2468,8 @@ public class TextInputLayout extends LinearLayout {
             editText.getPaddingRight(),
             editText.getPaddingBottom());
         inputFrame.addView(endIconView);
-        dispatchOnEndIconInitialized();
       }
+      dispatchOnEndIconInitialized();
     }
   }
 

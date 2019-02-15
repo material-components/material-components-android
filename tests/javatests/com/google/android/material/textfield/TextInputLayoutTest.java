@@ -39,6 +39,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.setIn
 import static com.google.android.material.testutils.TextInputLayoutActions.setTypeface;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowEndIcon;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.showsEndIcon;
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
@@ -347,7 +348,117 @@ public class TextInputLayoutTest {
   }
 
   @Test
-  public void testPasswordToggleMaintainsCompoundDrawables() {
+  public void testPasswordToggleIsHiddenAfterReenable() {
+    final Activity activity = activityTestRule.getActivity();
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
+
+    // Type some text on the EditText and then click the toggle button
+    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
+    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+
+    // Set end icon to none, and then set it to be the password toggle
+    onView(withId(R.id.textinput_password))
+        .perform(setEndIconMode(TextInputLayout.END_ICON_NONE))
+        .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
+
+    // Check that the password is disguised and the toggle button reflects the same state
+    assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
+    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+  }
+
+  @Test
+  public void testSetClearTextEndIconProgrammatically() {
+    // Set end icon as the clear button
+    onView(withId(R.id.textinput)).perform(setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT));
+
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput);
+
+    // Assert the end icon is the clear button icon
+    assertEquals(TextInputLayout.END_ICON_CLEAR_TEXT, textInputLayout.getEndIconMode());
+  }
+
+  @Test
+  public void testClearTextEndIconClick() {
+    // Type some text on the EditText
+    onView(withId(R.id.textinput_edittext_clear)).perform(typeText(INPUT_TEXT));
+    final Activity activity = activityTestRule.getActivity();
+    final EditText textInput = activity.findViewById(R.id.textinput_edittext_clear);
+
+    // Click clear button
+    onView(withId(R.id.textinput_clear)).perform(clickEndIcon());
+
+    // Assert EditText was cleared
+    assertEquals(0, textInput.getLayout().getText().length());
+    // Check that the clear button view is not visible
+    onView(withId(R.id.textinput_clear)).check(matches(doesNotShowEndIcon()));
+  }
+
+  @Test
+  public void testClearTextEndIconAppears() {
+    // Check that the clear button view is not visible
+    onView(withId(R.id.textinput_clear)).check(matches(doesNotShowEndIcon()));
+
+    // Type some text on the EditText
+    onView(withId(R.id.textinput_edittext_clear)).perform(typeText(INPUT_TEXT));
+
+    // Check that the clear button is visible
+    onView(withId(R.id.textinput_clear)).check(matches(showsEndIcon()));
+  }
+
+  @Test
+  public void testClearTextEndIconDisappears() {
+    // Type some text on the EditText
+    onView(withId(R.id.textinput_edittext_clear)).perform(typeText(INPUT_TEXT));
+
+    // Delete text
+    onView(withId(R.id.textinput_edittext_clear)).perform(clearText());
+
+    // Check that the clear button view is not visible
+    onView(withId(R.id.textinput_clear)).check(matches(doesNotShowEndIcon()));
+  }
+
+  @Test
+  public void testClearTextEndIconHasDefaultContentDescription() {
+    // Check that the TextInputLayout says that it has a content description and that the
+    // underlying toggle has content description as well
+    onView(withId(R.id.textinput_clear)).check(matches(endIconHasContentDescription()));
+  }
+
+  @Test
+  public void testClearTextEndIconIsAccessible() {
+    onView(allOf(withId(R.id.text_input_end_icon), isDescendantOfA(withId(R.id.textinput_clear))))
+        .check(accessibilityAssertion());
+  }
+
+  @Test
+  public void testSwitchEndIconFromPasswordToggleToClearText() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayoutPassword = activity.findViewById(R.id.textinput_password);
+    final TextInputLayout textInputLayoutClear = activity.findViewById(R.id.textinput_clear);
+    String clearTextContentDesc = textInputLayoutClear.getEndIconContentDescription().toString();
+
+    // Set end icon as the clear button on the text field that has the password toggle set
+    onView(withId(R.id.textinput_password))
+        .perform(setEndIconMode(TextInputLayout.END_ICON_CLEAR_TEXT));
+
+    // Assert the end icon mode is the clear button icon
+    assertEquals(TextInputLayout.END_ICON_CLEAR_TEXT, textInputLayoutPassword.getEndIconMode());
+    assertEquals(
+        clearTextContentDesc, textInputLayoutPassword.getEndIconContentDescription().toString());
+    // Assert the clear button is not displayed as there was no text
+    onView(withId(R.id.textinput_password)).check(matches(doesNotShowEndIcon()));
+    // Type some text on the EditText
+    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
+    // Assert icon is now showing
+    onView(withId(R.id.textinput_password)).check(matches(showsEndIcon()));
+    // Assert icon works as expected
+    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+    assertEquals(0, textInputLayoutPassword.getEditText().getText().length());
+  }
+
+  @Test
+  public void testEndIconMaintainsCompoundDrawables() {
     // Set a known set of test compound drawables on the EditText
     final Drawable start = new ColorDrawable(Color.RED);
     final Drawable top = new ColorDrawable(Color.GREEN);
@@ -374,25 +485,6 @@ public class TextInputLayoutTest {
         .check(matches(withCompoundDrawable(1, top)))
         .check(matches(withCompoundDrawable(2, end)))
         .check(matches(withCompoundDrawable(3, bottom)));
-  }
-
-  @Test
-  public void testPasswordToggleIsHiddenAfterReenable() {
-    final Activity activity = activityTestRule.getActivity();
-    final EditText textInput = activity.findViewById(R.id.textinput_edittext_pwd);
-
-    // Type some text on the EditText and then click the toggle button
-    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
-    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
-
-    // Set end icon to none, and then set it to be the password toggle
-    onView(withId(R.id.textinput_password))
-        .perform(setEndIconMode(TextInputLayout.END_ICON_NONE))
-        .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
-
-    // Check that the password is disguised and the toggle button reflects the same state
-    assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
-    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
   }
 
   @Test

@@ -54,6 +54,20 @@
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_clear"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:endIconMode="clear_text">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_clear"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textinput_hint"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/textinput_noedittext"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"/>

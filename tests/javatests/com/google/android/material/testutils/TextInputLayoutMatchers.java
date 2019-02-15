@@ -49,7 +49,7 @@ public class TextInputLayoutMatchers {
     };
   }
 
-  /** Returns a matcher that matches TextInputLayouts with non-displayed end icons */
+  /** Returns a matcher that matches TextInputLayouts with non-displayed end icons. */
   public static Matcher<View> doesNotShowEndIcon() {
     return new TypeSafeMatcher<View>(TextInputLayout.class) {
       @Override
@@ -63,6 +63,24 @@ public class TextInputLayoutMatchers {
         // to get a reference to it
         View endIcon = item.findViewById(R.id.text_input_end_icon);
         return endIcon.getVisibility() != View.VISIBLE;
+      }
+    };
+  }
+
+  /** Returns a matcher that matches TextInputLayouts with displayed end icons. */
+  public static Matcher<View> showsEndIcon() {
+    return new TypeSafeMatcher<View>(TextInputLayout.class) {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("TextInputLayout shows end icon.");
+      }
+
+      @Override
+      protected boolean matchesSafely(View item) {
+        // Reach in and find the end icon since we don't have a public API
+        // to get a reference to it
+        View endIcon = item.findViewById(R.id.text_input_end_icon);
+        return endIcon.getVisibility() == View.VISIBLE;
       }
     };
   }

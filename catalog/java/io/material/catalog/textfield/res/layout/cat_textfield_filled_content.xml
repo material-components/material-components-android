@@ -70,6 +70,22 @@
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/text_input_demo_box_filled_clear_button"
+      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="4dp"
+      android:hint="@string/cat_textfield_label"
+      app:errorEnabled="true"
+      app:helperText="@string/cat_textfield_filled_clear_button_helper_text"
+      app:helperTextEnabled="true"
+      app:endIconMode="clear_text">
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
       android:id="@+id/text_input_demo_box_filled_start_icon"
       style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
       android:layout_width="match_parent"
