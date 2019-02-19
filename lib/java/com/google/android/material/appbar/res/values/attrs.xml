@@ -54,6 +54,10 @@
 
   <declare-styleable name="AppBarLayout_Layout">
     <attr name="layout_scrollFlags">
+      <!-- Disable scrolling on the view. This flag should not be combined with any of the other
+           scroll flags. -->
+      <flag name="noScroll" value="0x0"/>
+
       <!-- The view will be scroll in direct relation to scroll events. This flag needs to be
            set for any of the other flags to take effect. If any sibling views
            before this one do not have this flag, then this value has no effect. -->

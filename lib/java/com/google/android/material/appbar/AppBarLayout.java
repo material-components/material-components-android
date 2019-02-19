@@ -751,6 +751,7 @@ public class AppBarLayout extends LinearLayout {
     @IntDef(
         flag = true,
         value = {
+          SCROLL_FLAG_NO_SCROLL,
           SCROLL_FLAG_SCROLL,
           SCROLL_FLAG_EXIT_UNTIL_COLLAPSED,
           SCROLL_FLAG_ENTER_ALWAYS,
@@ -760,6 +761,12 @@ public class AppBarLayout extends LinearLayout {
         })
     @Retention(RetentionPolicy.SOURCE)
     public @interface ScrollFlags {}
+
+    /**
+     * Disable scrolling on the view. This flag should not be combined with any of the other scroll
+     * flags.
+     */
+    public static final int SCROLL_FLAG_NO_SCROLL = 0x0;
 
     /**
      * The view will be scroll in direct relation to scroll events. This flag needs to be set for
@@ -866,7 +873,8 @@ public class AppBarLayout extends LinearLayout {
      * @param flags bitwise int of {@link #SCROLL_FLAG_SCROLL}, {@link
      *     #SCROLL_FLAG_EXIT_UNTIL_COLLAPSED}, {@link #SCROLL_FLAG_ENTER_ALWAYS}, {@link
      *     #SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED}, {@link #SCROLL_FLAG_SNAP}, and {@link
-     *     #SCROLL_FLAG_SNAP_MARGINS}.
+     *     #SCROLL_FLAG_SNAP_MARGINS}. Otherwise, use {@link #SCROLL_FLAG_NO_SCROLL} to disable
+     *     scrolling.
      * @see #getScrollFlags()
      * @attr ref com.google.android.material.R.styleable#AppBarLayout_Layout_layout_scrollFlags
      */
