@@ -1341,10 +1341,8 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable == null) {
       return;
     }
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.KITKAT) {
+    if (Build.VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN_MR1) {
       super.setLayoutDirection(layoutDirection);
-    } else {
-      ViewCompat.setLayoutDirection(this, layoutDirection);
     }
   }
 
