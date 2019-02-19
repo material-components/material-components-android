@@ -71,6 +71,8 @@
     <!-- The end icon mode of the TextInputLayout. It will display one of the end icons detailed
          below, or no end icon. -->
     <attr name="endIconMode">
+      <!-- The view will display a custom icon specified by the user. -->
+      <enum name="custom" value="-1"/>
       <!-- No end icon. -->
       <enum name="none" value="0"/>
       <!-- The view will display a toggle when the EditText has a password. -->

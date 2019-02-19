@@ -106,6 +106,10 @@ import java.util.LinkedHashSet;
  *       disguised, when your EditText is set to display a password.
  *   <li>Clearing text functionality via {@link #setEndIconMode(int)} API and related attribute. If
  *       set, a button is displayed when text is present and clicking it clears the EditText field.
+ *   <li>Showing a custom icon specified by the user via {@link #setEndIconMode(int)} API and
+ *       related attribute. The user should specify a drawable and content description for the icon.
+ *       Optionally, the user can also specify an {@link android.view.View.OnClickListener}, an
+ *       {@link OnEndIconInitializedListener} and an {@link OnEndIconChangedListener}.
  *       <p><strong>Note:</strong> When using an end icon, the 'end' compound drawable of the
  *       EditText will be overridden while the end icon view is visible. To ensure that any existing
  *       drawables are restored correctly, you should set those compound drawables relatively
@@ -217,9 +221,22 @@ public class TextInputLayout extends LinearLayout {
   private Typeface typeface;
 
   /** Values for the end icon mode. */
-  @IntDef({END_ICON_NONE, END_ICON_PASSWORD_TOGGLE, END_ICON_CLEAR_TEXT})
+  @IntDef({END_ICON_CUSTOM, END_ICON_NONE, END_ICON_PASSWORD_TOGGLE, END_ICON_CLEAR_TEXT})
   @Retention(RetentionPolicy.SOURCE)
   public @interface EndIconMode {}
+
+  /**
+   * The TextInputLayout will show a custom icon specified by the user.
+   *
+   * @see #setEndIconMode(int)
+   * @see #getEndIconMode()
+   * @see #setEndIconDrawable(Drawable)
+   * @see #setEndIconContentDescription(CharSequence)
+   * @see #setEndIconOnClickListener(OnClickListener) (optionally)
+   * @see #addOnEndIconInitializedListener(OnEndIconInitializedListener) (optionally)
+   * @see #addOnEndIconChangedListener(OnEndIconChangedListener) (optionally)
+   */
+  public static final int END_ICON_CUSTOM = -1;
 
   /**
    * Default for the TextInputLayout. It will not display an end icon.
@@ -1978,6 +1995,10 @@ public class TextInputLayout extends LinearLayout {
                   .inflate(R.layout.design_text_input_end_icon, inputFrame, false);
     }
     switch (endIconMode) {
+      case END_ICON_CUSTOM:
+        setEndIconOnClickListener(null);
+        setEndIconVisible(true);
+        break;
       case END_ICON_PASSWORD_TOGGLE:
         // Set defaults for the password toggle end icon
         setEndIconPasswordToggleDefaults();
@@ -2021,6 +2042,8 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconOnClickListener(@Nullable OnClickListener onClickListener) {
     if (endIconView != null) {
       endIconView.setOnClickListener(onClickListener);
+      endIconView.setFocusable(onClickListener != null);
+      endIconView.setClickable(onClickListener != null);
     }
   }
 
