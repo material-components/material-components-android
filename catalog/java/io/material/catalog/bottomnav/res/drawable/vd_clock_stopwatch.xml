@@ -1,0 +1,71 @@
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<vector
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:width="24dp"
+  android:height="24dp"
+  android:tint="?attr/colorControlNormal"
+  android:viewportHeight="24"
+  android:viewportWidth="24">
+  <group
+    android:name="timer"
+    android:translateX="12"
+    android:translateY="12">
+    <group
+      android:name="timer_pivot"
+      android:translateX="-12"
+      android:translateY="-12">
+      <group android:name="timer_body">
+        <path
+          android:name="timer_interior_path"
+          android:fillAlpha="1"
+          android:fillColor="@android:color/white"
+          android:pathData="M 19.0269927979,7.40730285645 c 0,0 1.42401123047,-1.42399597168 1.42401123047,-1.42399597168 c -0.428009033203,-0.513000488281 -0.902008056641,-0.98600769043 -1.41500854492,-1.41400146484 c 0,0 -1.4229888916,1.42399597168 -1.4229888916,1.42399597168 c -1.54000854492,-1.23199462891 -3.49101257324,-1.97300720215 -5.61801147461,-1.97300720215 c -4.97399902344,0 -8.99499511719,4.0299987793 -8.99499511719,9.0 c 0,4.9700012207 4.02099609375,9 8.99499511719,9 c 4.97399902344,0 9.00500488281,-4.0299987793 9.00500488281,-9 c 0,-2.125 -0.740997314453,-4.07398986816 -1.97300720215,-5.61299133301 Z M 12,20.0202941895 c -3.86700439453,0 -7,-3.13398742676 -7,-7 c 0,-3.86599731445 3.13299560547,-7 7,-7 c 3.86700439453,0 7,3.13400268555 7,7 c 0,3.86601257324 -3.13299560547,7 -7,7 Z"/>
+      </group>
+    </group>
+  </group>
+  <group
+    android:name="hand"
+    android:translateX="11.96875"
+    android:translateY="13.17188">
+    <group
+      android:name="hand_pivot"
+      android:translateX="-12"
+      android:translateY="-13.17188">
+      <path
+        android:name="hand_path"
+        android:fillAlpha="1"
+        android:fillColor="@android:color/white"
+        android:pathData="M 11,14.0200042725 c 0,0 2,0 2,0 c 0,0 0,-6 0,-6 c 0,0 -2,0 -2,0 c 0,0 0,6 0,6 Z"/>
+    </group>
+  </group>
+  <group
+    android:name="button"
+    android:translateX="12"
+    android:translateY="12">
+    <group
+      android:name="button_pivot"
+      android:translateX="-12"
+      android:translateY="-12">
+      <path
+        android:name="button_path"
+        android:fillAlpha="1"
+        android:fillColor="@android:color/white"
+        android:pathData="M 15,1.02000427246 c 0,0 -6,0 -6,0 c 0,0 0,2 0,2 c 0,0 6,0 6,0 c 0,0 0,-2 0,-2 Z"/>
+    </group>
+  </group>
+</vector>

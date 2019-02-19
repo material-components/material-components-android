@@ -1,0 +1,87 @@
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<vector
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:name="ic_clock"
+  android:width="24dp"
+  android:height="24dp"
+  android:tint="?attr/colorControlNormal"
+  android:viewportHeight="240"
+  android:viewportWidth="240">
+  <group
+    android:name="clock_frame"
+    android:scaleX="9.91"
+    android:scaleY="9.91"
+    android:translateX="120"
+    android:translateY="120">
+    <group
+      android:name="clock_frame_pivot"
+      android:translateX="-12"
+      android:translateY="-12">
+      <group
+        android:name="clock_frame_0"
+        android:translateX="12"
+        android:translateY="12">
+        <path
+          android:name="clock_ouline_path_merged"
+          android:fillColor="@android:color/white"
+          android:pathData="M -0.0050048828125,-10 c -5.52699279785,0 -9.99499511719,4.47700500488 -9.99499511719,10 c 0,5.52299499512 4.46800231934,10 9.99499511719,10 c 5.52600097656,0 10.0050048828,-4.47700500488 10.0050048828,-10 c 0,-5.52299499512 -4.47900390625,-10 -10.0050048828,-10 Z M 0,8.0 c -4.41999816895,0 -8.0,-3.58200073242 -8.0,-8.0 c 0,-4.41799926758 3.58000183105,-8.0 8.0,-8.0 c 4.41999816895,0 8.0,3.58200073242 8.0,8.0 c 0,4.41799926758 -3.58000183105,8.0 -8.0,8.0 Z"/>
+      </group>
+    </group>
+  </group>
+  <group
+    android:name="hour_hand"
+    android:scaleX="0.91922"
+    android:scaleY="3.67245"
+    android:translateX="117.75"
+    android:translateY="128.25">
+    <group
+      android:name="hour_hand_pivot"
+      android:translateY="-7.69241">
+      <group
+        android:name="hour_hand_0"
+        android:translateX="-0.25"
+        android:translateY="-0.125">
+        <path
+          android:name="hour_hand_path"
+          android:fillColor="@android:color/white"
+          android:pathData="M -7.986815,-7.986815 l 15.97363,0 c 0,0 0,0 0,0 l 0,15.97363 c 0,0 0,0 0,0 l -15.97363,0 c 0,0 0,0 0,0 l 0,-15.97363 c 0,0 0,0 0,0 Z"/>
+      </group>
+    </group>
+  </group>
+  <group
+    android:name="minute_hand"
+    android:rotation="121"
+    android:scaleX="0.91922"
+    android:scaleY="3.67245"
+    android:translateX="114.25"
+    android:translateY="124">
+    <group
+      android:name="minute_hand_pivot"
+      android:translateY="-7.69241">
+      <group
+        android:name="minute_hand_0"
+        android:translateX="-0.25"
+        android:translateY="-0.125">
+        <path
+          android:name="minute_hand_path"
+          android:fillColor="@android:color/white"
+          android:pathData="M -7.986815,-7.986815 l 15.97363,0 c 0,0 0,0 0,0 l 0,15.97363 c 0,0 0,0 0,0 l -15.97363,0 c 0,0 0,0 0,0 l 0,-15.97363 c 0,0 0,0 0,0 Z"/>
+      </group>
+    </group>
+  </group>
+</vector>

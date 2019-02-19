@@ -62,6 +62,10 @@ android {
     targetSdkVersion 27
   }
 
+  aaptOptions {
+    additionalParameters "--no-version-vectors"
+  }
+
   sourceSets {
     main {
       manifest.srcFile 'java/io/material/catalog/AndroidManifest.xml'

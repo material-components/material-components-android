@@ -19,6 +19,7 @@
   <string name="cat_bottom_nav_title">Bottom Navigation</string>
   <string name="cat_bottom_nav_label_visibility_demo_title">Label Visibility Demo</string>
   <string name="cat_bottom_nav_color_styles_demo_title">Color Styles Demo</string>
+  <string name="cat_bottom_nav_animated_demo_title">Animated Demo</string>
   <string name="cat_bottom_nav_description">
     Bottom navigation bars make it easy to explore and switch between top-level views in a single
     tap. This navigational element resides at the bottom of the screen, and provides direct access
@@ -47,4 +48,11 @@
 
   <string name="cat_bottom_nav_slider_max">48dp</string>
   <string name="cat_bottom_nav_slider_min">0dp</string>
+
+  <string name="cat_bottom_nav_alarm">Alarm</string>
+  <string name="cat_bottom_nav_clock">Clock</string>
+  <string name="cat_bottom_nav_timer">Timer</string>
+  <string name="cat_bottom_nav_stopwatch">Stopwatch</string>
 </resources>
+
+
