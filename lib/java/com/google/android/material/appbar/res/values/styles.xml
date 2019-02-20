@@ -119,6 +119,8 @@
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
     <!-- Counteracts the effect of setting textColorPrimary for popup menus. -->
     <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    <!-- Used to tint the ActionMode background and preserve the underline. -->
+    <item name="android:colorBackground">?attr/colorPrimary</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.ActionBar.Surface" parent="">
@@ -128,6 +130,8 @@
     <item name="colorControlNormal">?attr/colorOnSurfaceEmphasisMedium</item>
     <!-- Counteracts the effect of setting textColorPrimary for popup menus. -->
     <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    <!-- Used to tint the ActionMode background and preserve the underline. -->
+    <item name="android:colorBackground">?attr/colorSurface</item>
   </style>
 
 </resources>
