@@ -16,11 +16,4 @@
   -->
 <resources>
   <color name="cat_title_text_color">#FFFFFF</color>
-
-  <color name="cat_color_primary">#30E57E</color>
-  <color name="cat_color_primary_dark">#00B250</color>
-  <color name="cat_color_on_primary">#000000</color>
-
-  <color name="cat_color_secondary">#212121</color>
-  <color name="cat_color_on_secondary">#FFFFFF</color>
 </resources>
