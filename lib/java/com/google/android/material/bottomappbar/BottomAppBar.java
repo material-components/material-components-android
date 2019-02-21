@@ -728,6 +728,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
       setCutoutState();
     }
+
+    // Always ensure the MenuView is in the correct position after a layout.
+    setActionMenuViewPosition();
   }
 
   private BottomAppBarTopEdgeTreatment getTopEdgeTreatment() {
@@ -744,6 +747,9 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       fab.setTranslationY(getFabTranslationY());
       fab.setTranslationX(getFabTranslationX());
     }
+  }
+
+  private void setActionMenuViewPosition() {
     ActionMenuView actionMenuView = getActionMenuView();
     if (actionMenuView != null) {
       actionMenuView.setAlpha(1.0f);
