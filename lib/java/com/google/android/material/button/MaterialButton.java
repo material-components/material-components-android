@@ -49,6 +49,7 @@ import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.widget.AppCompatButton;
 import android.util.AttributeSet;
 import android.util.Log;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import java.lang.annotation.Retention;
@@ -191,7 +192,15 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     super.onInitializeAccessibilityNodeInfo(info);
     info.setClassName(MaterialButton.class.getName());
     info.setCheckable(isCheckable());
+    info.setChecked(isChecked());
     info.setClickable(isClickable());
+  }
+
+  @Override
+  public void onInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+    super.onInitializeAccessibilityEvent(accessibilityEvent);
+    accessibilityEvent.setClassName(MaterialButton.class.getName());
+    accessibilityEvent.setChecked(isChecked());
   }
 
   /**
