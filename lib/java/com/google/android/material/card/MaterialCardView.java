@@ -53,6 +53,14 @@ import androidx.cardview.widget.CardView;
  * the {@code strokeColor} attribute. Without a {@code strokeColor}, the card will not render a
  * stroked border, regardless of the {@code strokeWidth} value.
  *
+ * <p>Cards implement {@link Checkable}, a default way to switch to {@code android:checked_state}
+ * is not provided. Clients have to call {@link #setChecked(boolean)}. This shows the
+ * {@link R.attr#checkedIcon app:checkedIcon} and changes the overlay color.
+ *
+ * <p>Cards also have a custom state meant to be used when a card is draggable
+ * {@code app:dragged_state}. It's used by calling {@link #setDragged(boolean)}.
+ * This changes the overlay color and elevates the card to convey motion.
+ *
  * <p><strong>Note:</strong> Avoid setting {@link View#setClipToOutline} to true. There is an
  * intermediate view to clip the content, setting this will have negative performance consequences.
  *
