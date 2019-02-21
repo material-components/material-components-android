@@ -35,7 +35,8 @@ import android.util.AttributeSet;
  *
  * <p>This class uses attributes from the Material Theme to style a RadioButton. Excepting color
  * changes, it behaves identically to {@link AppCompatRadioButton}. Your theme's {@code
- * ?attr/colorSecondary}, {@code ?attr/colorSurface}, and {@code ?attr/colorOnSurface} must be set.
+ * ?attr/colorControlActivated}, {@code ?attr/colorSurface}, and {@code ?attr/colorOnSurface} must
+ * be set.
  */
 public class MaterialRadioButton extends AppCompatRadioButton {
 
@@ -102,13 +103,13 @@ public class MaterialRadioButton extends AppCompatRadioButton {
 
   private ColorStateList getMaterialThemeColorsTintList() {
     if (materialThemeColorsTintList == null) {
-      int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
+      int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
       int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
 
       int[] radioButtonColorList = new int[ENABLED_CHECKED_STATES.length];
       radioButtonColorList[0] =
-          MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
+          MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_FULL);
       radioButtonColorList[1] =
           MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_MEDIUM);
       radioButtonColorList[2] =

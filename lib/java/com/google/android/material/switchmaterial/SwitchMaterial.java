@@ -33,10 +33,10 @@ import android.util.AttributeSet;
  * A class that creates a Material Themed Switch.
  *
  * <p>This class uses attributes from the Material Theme to style a Switch. Excepting color changes,
- * it behaves identically to {@link SwitchCompat}. Your theme's {@code ?attr/colorSecondary}, {@code
- * ?attr/colorSurface}, and {@code ?attr/colorOnSurface} must be set. Because {@link SwitchCompat}
- * does not extend {@link android.widget.Switch}, you must explicitly declare {@link SwitchMaterial}
- * in your layout XML.
+ * it behaves identically to {@link SwitchCompat}. Your theme's {@code ?attr/colorControlActivated},
+ * {@code ?attr/colorSurface}, and {@code ?attr/colorOnSurface} must be set. Because {@link
+ * SwitchCompat} does not extend {@link android.widget.Switch}, you must explicitly declare {@link
+ * SwitchMaterial} in your layout XML.
  */
 public class SwitchMaterial extends SwitchCompat {
 
@@ -113,15 +113,15 @@ public class SwitchMaterial extends SwitchCompat {
   private ColorStateList getMaterialThemeColorsThumbTintList() {
     if (materialThemeColorsThumbTintList == null) {
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
-      int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
+      int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
 
       int[] switchThumbColorsList = new int[ENABLED_CHECKED_STATES.length];
       switchThumbColorsList[0] =
-          MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
+          MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_FULL);
       switchThumbColorsList[1] =
           MaterialColors.layer(colorSurface, colorSurface, MaterialColors.ALPHA_FULL);
       switchThumbColorsList[2] =
-          MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_DISABLED);
+          MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_DISABLED);
       switchThumbColorsList[3] =
           MaterialColors.layer(colorSurface, colorSurface, MaterialColors.ALPHA_FULL);
       materialThemeColorsThumbTintList =
@@ -134,14 +134,15 @@ public class SwitchMaterial extends SwitchCompat {
     if (materialThemeColorsTrackTintList == null) {
       int[] switchTrackColorsList = new int[ENABLED_CHECKED_STATES.length];
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
-      int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
+      int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
       int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
       switchTrackColorsList[0] =
-          MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_MEDIUM);
+          MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_MEDIUM);
       switchTrackColorsList[1] =
           MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_LOW);
       switchTrackColorsList[2] =
-          MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_DISABLED_LOW);
+          MaterialColors.layer(
+              colorSurface, colorControlActivated, MaterialColors.ALPHA_DISABLED_LOW);
       switchTrackColorsList[3] =
           MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_DISABLED_LOW);
       materialThemeColorsTrackTintList =
