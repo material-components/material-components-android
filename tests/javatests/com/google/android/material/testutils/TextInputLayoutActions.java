@@ -18,7 +18,9 @@ package com.google.android.material.testutils;
 
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
+import android.graphics.Color;
 import android.graphics.Typeface;
+import android.graphics.drawable.ColorDrawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import com.google.android.material.internal.CheckableImageButton;
@@ -26,6 +28,7 @@ import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.widget.EditText;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
@@ -194,6 +197,26 @@ public class TextInputLayoutActions {
     };
   }
 
+  public static ViewAction setEndIconOnClickListener(final OnClickListener onClickListener) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set end icon OnClickListener";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setEndIconOnClickListener(onClickListener);
+      }
+    };
+  }
+
   public static ViewAction setEndIconMode(final int endIconMode) {
     return new ViewAction() {
       @Override
@@ -210,6 +233,27 @@ public class TextInputLayoutActions {
       public void perform(UiController uiController, View view) {
         TextInputLayout layout = (TextInputLayout) view;
         layout.setEndIconMode(endIconMode);
+      }
+    };
+  }
+
+  public static ViewAction setCustomEndIconContent() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set custom end icon content";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout layout = (TextInputLayout) view;
+        layout.setEndIconDrawable(new ColorDrawable(Color.BLUE));
+        layout.setEndIconContentDescription(R.string.textinput_custom_end_icon);
       }
     };
   }

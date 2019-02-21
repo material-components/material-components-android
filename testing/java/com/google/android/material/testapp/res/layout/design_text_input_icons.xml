@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-     Copyright (C) 2016 The Android Open Source Project
+     Copyright (C) 2019 The Android Open Source Project
 
      Licensed under the Apache License, Version 2.0 (the "License");
      you may not use this file except in compliance with the License.
@@ -17,19 +17,18 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:padding="16dp"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textinput"
+      android:id="@+id/textinput_no_icon"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       app:errorEnabled="true">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textinput_edittext"
+        android:id="@+id/textinput_edittext_no_icon"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/textinput_hint"
@@ -38,67 +37,48 @@
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textinput_noedittext"
+      android:id="@+id/textinput_password"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
-
-  <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textinput_with_text"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      app:endIconMode="password_toggle">
 
     <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_pwd"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/textinput_hint"
         android:imeOptions="flagNoExtractUi"
-        android:text="@string/snackbar_text"/>
+        android:inputType="textPassword"/>
 
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textinput_box_filled"
-      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+      android:id="@+id/textinput_clear"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:helperText="@string/textinput_helper_not_enabled">
+      app:endIconMode="clear_text">
 
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textinput_edittext_filled"
+        android:id="@+id/textinput_edittext_clear"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/textinput_hint"
-        android:imeOptions="flagNoExtractUi"/>
+        android:hint="@string/textinput_hint"/>
 
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textinput_box_outline"
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+      android:id="@+id/textinput_custom"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      app:helperText="@string/textinput_helper"
-      app:helperTextEnabled="true">
+      app:endIconMode="custom"
+      app:endIconDrawable="@drawable/test_background_green"
+      app:endIconContentDescription="@string/textinput_custom_end_icon">
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textinput_edittext_outline"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/textinput_hint"
-        android:imeOptions="flagNoExtractUi"/>
-
-  </com.google.android.material.textfield.TextInputLayout>
-
-  <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/textinput_box_outline_no_hint"
-      style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+  <com.google.android.material.textfield.TextInputEditText
+      android:id="@+id/textinput_edittext_custom"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content">
+      android:layout_height="wrap_content"
+      android:hint="@string/textinput_hint"/>
 
-    <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/textinput_edittext_outline_no_hint"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:imeOptions="flagNoExtractUi"/>
   </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>
