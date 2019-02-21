@@ -35,8 +35,7 @@ import android.util.AttributeSet;
  *
  * <p>This class uses attributes from the Material Theme to style a CheckBox. Excepting color
  * changes, it behaves identically to {@link AppCompatCheckBox}. Your theme's {@code
- * ?attr/colorControlActivated}, {@code ?attr/colorSurface}, and {@code ?attr/colorOnSurface} must
- * be set.
+ * ?attr/colorSecondary}, {@code ?attr/colorSurface}, and {@code ?attr/colorOnSurface} must be set.
  */
 public class MaterialCheckBox extends AppCompatCheckBox {
 
@@ -104,12 +103,12 @@ public class MaterialCheckBox extends AppCompatCheckBox {
   private ColorStateList getMaterialThemeColorsTintList() {
     if (materialThemeColorsTintList == null) {
       int[] checkBoxColorsList = new int[ENABLED_CHECKED_STATES.length];
-      int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
+      int colorSecondary = MaterialColors.getColor(this, R.attr.colorSecondary);
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
       int colorOnSurface = MaterialColors.getColor(this, R.attr.colorOnSurface);
 
       checkBoxColorsList[0] =
-          MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_FULL);
+          MaterialColors.layer(colorSurface, colorSecondary, MaterialColors.ALPHA_FULL);
       checkBoxColorsList[1] =
           MaterialColors.layer(colorSurface, colorOnSurface, MaterialColors.ALPHA_MEDIUM);
       checkBoxColorsList[2] =
