@@ -58,6 +58,43 @@ be listed in the layout of the card and cannot be included in a `style` tag.
 </com.google.android.material.card.MaterialCardView>
 ```
 
+### Checkable Cards
+
+Cards implement `Checkable` interface. In the default style,
+`@style/Widget.MaterialComponents.CardView`, the checked state shows a checked
+icon and changes the overlay color. A default way of switching to checked state
+is not provided, clients have to call `setChecked(boolean)` on the card. Setter
+for an `OnCheckedChangeListener` is also provided.
+
+### Draggable Cards
+
+Cards have a `dragged_state`. In the default style,
+`@style/Widget.MaterialComponents.CardView`, the dragged state has foreground
+and elevation changes to convey motion.
+The recommended way of using dragged state is via
+`androidx.customview.widget.ViewDragHelper`.
+
+```java
+ private class ViewDragHelperCallback extends ViewDragHelper.Callback {
+
+   /..../
+
+    @Override
+    public void onViewCaptured(@NonNull View capturedChild, int activePointerId) {
+      if (capturedChild instanceof MaterialCardView) {
+        ((MaterialCardView)view).setDragged(true);
+      }
+    }
+
+    @Override
+    public void onViewReleased(@NonNull View releaseChild, float xVel, float yVel) {
+      if (releaseChild instanceof MaterialCardView) {
+        ((MaterialCardView)view).setDragged(false);
+      }
+    }
+  }
+```
+
 ### Material Styles
 
 Using `MaterialCardView` with an updated Material theme
@@ -109,9 +146,13 @@ for a
 [`CardView`](https://developer.android.com/reference/android/support/v7/widget/CardView.html).
 The following additional attributes can be changed for a `MaterialCardView`:
 
-Feature | Relevant attributes
-:------ | :------------------
-Border  | `app:strokeColor`<br/>`app:strokeWidth`
+Feature          | Relevant attributes
+:--------------- | :--------------------------------------------
+Border           | `app:strokeColor`<br/>`app:strokeWidth`
+Checkable        | `android:checkable`
+Checked Icon     | `app:checkedIcon` <br/> `app:checkedIconTint`
+Foreground Color | `app:cardForegroundColor`
+Ripple Color     | `app:rippleColor`
 
 ### Theme Attribute Mapping
 
@@ -121,9 +162,13 @@ Border  | `app:strokeColor`<br/>`app:strokeWidth`
 style="@style/Widget.MaterialComponents.CardView"
 ```
 
+The updated material style includes ripple when the card is clickable, checked
+state when the card is checkable, and stateListAnimator for dragged state.
+
 Component Attribute   | Default Theme Attribute Value
---------------------- | -----------------------------
+--------------------- | --------------------------------
 `cardBackgroundColor` | `colorSurface`
+`shapeAppearance`     | `shapeAppearanceMediumComponent`
 `strokeColor`         | None
 
 #### Legacy Material Style
