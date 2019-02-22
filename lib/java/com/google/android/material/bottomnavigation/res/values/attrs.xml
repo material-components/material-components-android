@@ -42,6 +42,10 @@
     <!-- The background for the navigation items. Attribute type definition is in navigation
          package. -->
     <attr name="itemBackground"/>
+    <!-- The ColorStateList to use for a ripple background. This only exists because creating
+         ripples in drawable xml based on theme colors is not supported pre-23. This will be ignored
+         if itemBackground is set.-->
+    <attr name="itemRippleColor" format="color"/>
     <!-- The size to provide for the navigation item icons. -->
     <attr name="itemIconSize"/>
     <!-- The tint to apply to the navigation item icons. Attribute type definition is in navigation

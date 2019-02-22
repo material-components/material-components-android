@@ -21,7 +21,11 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -35,6 +39,7 @@ import androidx.annotation.StyleRes;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
@@ -104,6 +109,7 @@ public class BottomNavigationView extends FrameLayout {
   private final MenuBuilder menu;
   private final BottomNavigationMenuView menuView;
   private final BottomNavigationPresenter presenter = new BottomNavigationPresenter();
+  private ColorStateList itemRippleColor;
   private MenuInflater menuInflater;
 
   private OnNavigationItemSelectedListener selectedListener;
@@ -193,7 +199,14 @@ public class BottomNavigationView extends FrameLayout {
         a.getBoolean(R.styleable.BottomNavigationView_itemHorizontalTranslationEnabled, true));
 
     int itemBackground = a.getResourceId(R.styleable.BottomNavigationView_itemBackground, 0);
-    menuView.setItemBackgroundRes(itemBackground);
+    if (itemBackground != 0) {
+      menuView.setItemBackgroundRes(itemBackground);
+    } else {
+      ColorStateList itemRippleColor =
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.BottomNavigationView_itemRippleColor);
+      setItemRippleColor(itemRippleColor);
+    }
 
     if (a.hasValue(R.styleable.BottomNavigationView_menu)) {
       inflateMenu(a.getResourceId(R.styleable.BottomNavigationView_menu, 0));
@@ -367,11 +380,14 @@ public class BottomNavigationView extends FrameLayout {
   /**
    * Set the background of our menu items to the given resource.
    *
+   * <p>This will remove any ripple backgrounds created by {@link setItemRippleColor()}.
+   *
    * @param resId The identifier of the resource.
    * @attr ref R.styleable#BottomNavigationView_itemBackground
    */
   public void setItemBackgroundResource(@DrawableRes int resId) {
     menuView.setItemBackgroundRes(resId);
+    itemRippleColor = null;
   }
 
   /**
@@ -388,11 +404,63 @@ public class BottomNavigationView extends FrameLayout {
   /**
    * Set the background of our menu items to the given drawable.
    *
+   * <p>This will remove any ripple backgrounds created by {@link setItemRippleColor()}.
+   *
    * @param background The drawable for the background.
    * @attr ref R.styleable#BottomNavigationView_itemBackground
    */
   public void setItemBackground(@Nullable Drawable background) {
     menuView.setItemBackground(background);
+    itemRippleColor = null;
+  }
+
+  /**
+   * Returns the color used to create a ripple as the background drawable of the menu items. If a
+   * background is set using {@link #setItemBackground()}, this will return null.
+   *
+   * @see #setItemBackground(Drawable)
+   * @attr ref R.styleable#BottomNavigationView_itemRippleColor
+   */
+  public ColorStateList getItemRippleColor() {
+    return itemRippleColor;
+  }
+
+  /**
+   * Set the background of our menu items to be a ripple with the given colors.
+   *
+   * @param itemRippleColor The {@link ColorStateList} for the ripple. This will create a ripple
+   *     background for menu items, replacing any background previously set by {@link
+   *     #setItemBackground()}.
+   * @attr ref R.styleable#BottomNavigationView_itemRippleColor
+   */
+  public void setItemRippleColor(ColorStateList itemRippleColor) {
+    if (this.itemRippleColor == itemRippleColor) {
+      // Clear the item background when setItemRippleColor(null) is called for consistency.
+      if (itemRippleColor == null && menuView.getItemBackground() != null) {
+        menuView.setItemBackground(null);
+      }
+      return;
+    }
+
+    this.itemRippleColor = itemRippleColor;
+    if (itemRippleColor == null) {
+      menuView.setItemBackground(null);
+    } else {
+      ColorStateList rippleDrawableColor =
+          RippleUtils.convertToRippleDrawableColor(itemRippleColor);
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        menuView.setItemBackground(new RippleDrawable(rippleDrawableColor, null, null));
+      } else {
+        GradientDrawable rippleDrawable = new GradientDrawable();
+        // TODO: Find a workaround for this. Currently on certain devices/versions, LayerDrawable
+        // will draw a black background underneath any layer with a non-opaque color,
+        // (e.g. ripple) unless we set the shape to be something that's not a perfect rectangle.
+        rippleDrawable.setCornerRadius(0.00001F);
+        Drawable rippleDrawableCompat = DrawableCompat.wrap(rippleDrawable);
+        DrawableCompat.setTintList(rippleDrawableCompat, rippleDrawableColor);
+        menuView.setItemBackground(rippleDrawableCompat);
+      }
+    }
   }
 
   /**
