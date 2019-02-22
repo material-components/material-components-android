@@ -65,8 +65,9 @@ public class BadgeDrawable extends MaterialShapeDrawable {
    * @attr ref com.google.android.material.R.styleable#Badge_backgroundColor
    */
   public void setBackgroundColor(@ColorInt int backgroundColor) {
-    if (filledPaint.getColor() != backgroundColor) {
-      setFillColor(ColorStateList.valueOf(backgroundColor));
+    ColorStateList backgroundColorStateList = ColorStateList.valueOf(backgroundColor);
+    if (getFillColor() != backgroundColorStateList) {
+      setFillColor(backgroundColorStateList);
       invalidateSelf();
     }
   }
