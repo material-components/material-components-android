@@ -2485,7 +2485,8 @@ public class TextInputLayout extends LinearLayout {
   private void initializeEndIcon() {
     if (editText != null && endIconView != null) {
       if (endIconView.getParent() == null) {
-        endIconView.setPadding(
+        ViewCompat.setPaddingRelative(
+            endIconView,
             editText.getPaddingLeft(),
             editText.getPaddingTop(),
             editText.getPaddingRight(),
@@ -2514,7 +2515,8 @@ public class TextInputLayout extends LinearLayout {
    */
   private void addEndIconDummyDrawable() {
     endIconDummyDrawable = new ColorDrawable();
-    endIconDummyDrawable.setBounds(0, 0, endIconView.getMeasuredWidth(), 1);
+    endIconDummyDrawable.setBounds(
+        0, 0, endIconView.getMeasuredWidth() - endIconView.getPaddingLeft(), 1);
     final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
     // Store the user defined end compound drawable so that we can restore it later
     if (compounds[2] != endIconDummyDrawable) {
