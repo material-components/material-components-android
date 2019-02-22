@@ -22,7 +22,6 @@ import android.annotation.SuppressLint;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.Outline;
 import android.graphics.PorterDuff.Mode;
@@ -67,7 +66,6 @@ import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
 import android.util.Log;
-import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.MotionEvent;
@@ -285,7 +283,8 @@ public class Chip extends AppCompatCheckBox implements Delegate {
             R.style.Widget_MaterialComponents_Chip_Action);
     ensureMinTouchTargetSize = a.getBoolean(R.styleable.Chip_ensureMinTouchTargetSize, false);
 
-    float defaultMinTouchTargetSize = (float) Math.ceil(dpToPx(MIN_TOUCH_TARGET_DP, getContext()));
+    float defaultMinTouchTargetSize =
+        (float) Math.ceil(ViewUtils.dpToPx(getContext(), MIN_TOUCH_TARGET_DP));
     minTouchTargetSize =
         (int)
             Math.ceil(
@@ -2300,10 +2299,5 @@ public class Chip extends AppCompatCheckBox implements Delegate {
       int insetLeft, int insetTop, int insetRight, int insetBottom) {
     insetBackgroundDrawable =
         new InsetDrawable(chipDrawable, insetLeft, insetTop, insetRight, insetBottom);
-  }
-
-  private static float dpToPx(@Dimension(unit = Dimension.DP) int dp, Context context) {
-    Resources r = context.getResources();
-    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
   }
 }

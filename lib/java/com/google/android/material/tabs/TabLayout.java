@@ -1545,11 +1545,6 @@ public class TabLayout extends HorizontalScrollView {
     }
   }
 
-  @Dimension(unit = Dimension.PX)
-  int dpToPx(@Dimension(unit = Dimension.DP) int dps) {
-    return Math.round(getResources().getDisplayMetrics().density * dps);
-  }
-
   @Override
   protected void onDraw(Canvas canvas) {
     // Draw tab background layer for each tab item
@@ -1567,7 +1562,11 @@ public class TabLayout extends HorizontalScrollView {
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     // If we have a MeasureSpec which allows us to decide our height, try and use the default
     // height
-    final int idealHeight = dpToPx(getDefaultHeight()) + getPaddingTop() + getPaddingBottom();
+    final int idealHeight =
+        (int)
+            (ViewUtils.dpToPx(getContext(), getDefaultHeight())
+                + getPaddingTop()
+                + getPaddingBottom());
     switch (MeasureSpec.getMode(heightMeasureSpec)) {
       case MeasureSpec.AT_MOST:
         heightMeasureSpec =
@@ -1588,7 +1587,7 @@ public class TabLayout extends HorizontalScrollView {
       tabMaxWidth =
           requestedTabMaxWidth > 0
               ? requestedTabMaxWidth
-              : specWidth - dpToPx(TAB_MIN_WIDTH_MARGIN);
+              : (int) (specWidth - ViewUtils.dpToPx(getContext(), TAB_MIN_WIDTH_MARGIN));
     }
 
     // Now super measure itself using the (possibly) modified height spec
@@ -2495,7 +2494,7 @@ public class TabLayout extends HorizontalScrollView {
         int iconMargin = 0;
         if (hasText && iconView.getVisibility() == VISIBLE) {
           // If we're showing both text and icon, add some margin bottom to the icon
-          iconMargin = dpToPx(DEFAULT_GAP_TEXT_ICON);
+          iconMargin = (int) ViewUtils.dpToPx(getContext(), DEFAULT_GAP_TEXT_ICON);
         }
         if (inlineLabel) {
           if (iconMargin != MarginLayoutParamsCompat.getMarginEnd(lp)) {
@@ -2653,7 +2652,7 @@ public class TabLayout extends HorizontalScrollView {
           return;
         }
 
-        final int gutter = dpToPx(FIXED_WRAP_GUTTER_MIN);
+        final int gutter = (int) ViewUtils.dpToPx(getContext(), FIXED_WRAP_GUTTER_MIN);
         boolean remeasure = false;
 
         if (largestTabWidth * count <= getMeasuredWidth() - gutter * 2) {
@@ -2815,9 +2814,10 @@ public class TabLayout extends HorizontalScrollView {
      */
     private void calculateTabViewContentBounds(TabView tabView, RectF contentBounds) {
       int tabViewContentWidth = tabView.getContentWidth();
+      int minIndicatorWidth = (int) ViewUtils.dpToPx(getContext(), MIN_INDICATOR_WIDTH);
 
-      if (tabViewContentWidth < dpToPx(MIN_INDICATOR_WIDTH)) {
-        tabViewContentWidth = dpToPx(MIN_INDICATOR_WIDTH);
+      if (tabViewContentWidth < minIndicatorWidth) {
+        tabViewContentWidth = minIndicatorWidth;
       }
 
       int tabViewCenter = (tabView.getLeft() + tabView.getRight()) / 2;

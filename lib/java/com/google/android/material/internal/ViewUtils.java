@@ -18,9 +18,13 @@ package com.google.android.material.internal;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.PorterDuff;
+import androidx.annotation.Dimension;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
+import android.util.TypedValue;
 import android.view.View;
 
 /**
@@ -51,5 +55,10 @@ public class ViewUtils {
 
   public static boolean isLayoutRtl(View view) {
     return ViewCompat.getLayoutDirection(view) == ViewCompat.LAYOUT_DIRECTION_RTL;
+  }
+
+  public static float dpToPx(Context context, @Dimension(unit = Dimension.DP) int dp) {
+    Resources r = context.getResources();
+    return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
   }
 }
