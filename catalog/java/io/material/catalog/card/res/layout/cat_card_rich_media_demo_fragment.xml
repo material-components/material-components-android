@@ -1,0 +1,363 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      http://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+
+<ScrollView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+  <LinearLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:paddingBottom="@dimen/cat_card_single_spacing"
+      android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/cat_card_double_spacing"
+        android:text="@string/cat_card_rich_media_sample_1"
+        android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/mtrl_card_spacing"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="@dimen/cat_card_rich_media_demo_min_height">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/cat_card_double_spacing"
+            android:paddingBottom="@dimen/cat_card_single_spacing">
+
+          <LinearLayout
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_weight="1.0"
+              android:layout_marginRight="@dimen/cat_card_single_spacing"
+              android:paddingTop="@dimen/cat_card_single_spacing"
+              android:orientation="vertical">
+            <TextView
+                style="?attr/textAppearanceHeadline5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/cat_card_rich_media_title_view_description"
+                android:text="@string/cat_card_rich_media_view_title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cat_card_single_spacing"
+                android:ellipsize="end"
+                android:maxLines="2"
+                android:text="@string/cat_card_rich_media_view_secondary_line_text"/>
+          </LinearLayout>
+
+          <androidx.appcompat.widget.AppCompatImageView
+              android:layout_width="80dp"
+              android:layout_height="80dp"
+              android:layout_marginLeft="@dimen/cat_card_single_spacing"
+              android:background="@android:color/transparent"
+              android:contentDescription="@string/cat_card_rich_media_image_view_description"
+              app:backgroundTint="?attr/colorOnSurfaceEmphasisMedium"
+              app:backgroundTintMode="add"
+              app:srcCompat="@drawable/ic_components_24px"/>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/cat_card_single_spacing"
+            android:orientation="horizontal"
+            android:paddingHorizontal="@dimen/cat_card_single_spacing">
+
+          <com.google.android.material.button.MaterialButton
+              style="?attr/borderlessButtonStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="@dimen/cat_card_single_spacing"
+              android:layout_marginRight="@dimen/cat_card_single_spacing"
+              android:text="@string/cat_card_rich_media_action_1"/>
+
+          <com.google.android.material.button.MaterialButton
+              style="?attr/borderlessButtonStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="@dimen/cat_card_single_spacing"
+              android:layout_marginRight="@dimen/cat_card_single_spacing"
+              android:text="@string/cat_card_rich_media_action_2"/>
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/cat_card_rich_media_sample_2"
+        android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/mtrl_card_spacing"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="@dimen/cat_card_rich_media_demo_min_height">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/cat_card_double_spacing"
+            android:paddingBottom="@dimen/cat_card_single_spacing">
+
+          <androidx.appcompat.widget.AppCompatImageView
+              android:layout_width="50dp"
+              android:layout_height="50dp"
+              android:layout_marginEnd="@dimen/cat_card_single_spacing"
+              android:layout_marginRight="@dimen/cat_card_single_spacing"
+              android:contentDescription="@string/cat_card_rich_media_logo_view_description"
+              app:srcCompat="@drawable/ic_components_24px"/>
+
+          <LinearLayout
+              android:layout_width="0dp"
+              android:layout_height="wrap_content"
+              android:layout_weight="1.0"
+              android:layout_marginStart="@dimen/cat_card_single_spacing"
+              android:layout_marginLeft="@dimen/cat_card_single_spacing"
+              android:orientation="vertical">
+            <TextView
+                style="?attr/textAppearanceHeadline6"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/cat_card_rich_media_title_view_description"
+                android:text="@string/cat_card_rich_media_view_title"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/cat_card_single_spacing"
+                android:ellipsize="end"
+                android:maxLines="1"
+                android:text="@string/cat_card_rich_media_view_secondary_line_text"/>
+          </LinearLayout>
+        </LinearLayout>
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cat_card_rich_media_image_view_description"
+            app:backgroundTint="?attr/colorOnSurfaceEmphasisMedium"
+            app:backgroundTintMode="add"
+            app:srcCompat="@drawable/ic_components_24px"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/cat_card_double_spacing"
+            android:maxLines="2"
+            android:text="@string/cat_card_selectable_content"/>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/cat_card_single_spacing"
+            android:orientation="horizontal">
+
+          <com.google.android.material.button.MaterialButton
+              style="?attr/borderlessButtonStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="@dimen/cat_card_single_spacing"
+              android:layout_marginRight="@dimen/cat_card_single_spacing"
+              android:text="@string/cat_card_rich_media_action_1"/>
+
+          <com.google.android.material.button.MaterialButton
+              style="?attr/borderlessButtonStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="@dimen/cat_card_single_spacing"
+              android:layout_marginRight="@dimen/cat_card_single_spacing"
+              android:text="@string/cat_card_rich_media_action_2"/>
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="16dp"
+        android:text="@string/cat_card_rich_media_sample_3"
+        android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+
+    <com.google.android.material.card.MaterialCardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="@dimen/mtrl_card_spacing"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="@dimen/cat_card_rich_media_demo_min_height">
+
+      <LinearLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:orientation="vertical">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="194dp"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/cat_card_rich_media_image_view_description"
+            app:backgroundTint="?attr/colorOnSurfaceEmphasisMedium"
+            app:backgroundTintMode="add"
+            app:srcCompat="@drawable/ic_components_24px"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="@dimen/cat_card_double_spacing"
+            android:paddingBottom="@dimen/cat_card_single_spacing"
+            android:orientation="vertical">
+
+          <TextView
+              style="?attr/textAppearanceHeadline5"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginBottom="@dimen/cat_card_single_spacing"
+              android:contentDescription="@string/cat_card_rich_media_title_view_description"
+              android:text="@string/cat_card_rich_media_view_title"/>
+
+          <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+            <RatingBar
+                style="?android:attr/ratingBarStyleSmall"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:contentDescription="@string/cat_card_rich_media_rating_view_description"
+                android:isIndicator="true"
+                android:numStars="5"
+                android:rating="4.5"
+
+                android:stepSize="0.5"/>
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cat_card_rich_media_rating_text"/>
+          </LinearLayout>
+
+          <TextView
+              style="?attr/textAppearanceSubtitle1"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/cat_card_double_spacing"
+              android:singleLine="true"
+              android:text="@string/cat_card_rich_media_view_secondary_line_text"/>
+
+          <TextView
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/cat_card_single_spacing"
+              android:maxLines="2"
+              android:text="@string/cat_card_selectable_content"/>
+
+          <View
+              android:layout_width="match_parent"
+              android:layout_height="1dp"
+              android:layout_marginTop="@dimen/cat_card_triple_spacing"
+              android:layout_marginBottom="@dimen/cat_card_single_spacing"
+              android:background="?attr/dividerHorizontal"/>
+
+          <TextView
+              style="?attr/textAppearanceHeadline6"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginTop="@dimen/cat_card_double_spacing"
+              android:layout_marginBottom="@dimen/cat_card_single_spacing"
+              android:contentDescription="@string/cat_card_rich_media_title_view_description"
+              android:text="@string/cat_card_rich_media_view_subtitle"/>
+          <com.google.android.material.chip.ChipGroup
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content">
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cat_card_rich_media_chip_title_1"/>
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cat_card_rich_media_chip_title_2"/>
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cat_card_rich_media_chip_title_3"/>
+            <com.google.android.material.chip.Chip
+                style="@style/Widget.MaterialComponents.Chip.Action"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/cat_card_rich_media_chip_title_4"/>
+          </com.google.android.material.chip.ChipGroup>
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingBottom="@dimen/cat_card_single_spacing"
+            android:paddingLeft="@dimen/cat_card_single_spacing"
+            android:paddingRight="@dimen/cat_card_single_spacing"
+            android:orientation="horizontal">
+
+          <com.google.android.material.button.MaterialButton
+              style="?attr/borderlessButtonStyle"
+              android:layout_width="wrap_content"
+              android:layout_height="wrap_content"
+              android:layout_marginEnd="@dimen/cat_card_single_spacing"
+              android:layout_marginRight="@dimen/cat_card_single_spacing"
+              android:text="@string/cat_card_rich_media_action_1"/>
+
+        </LinearLayout>
+
+      </LinearLayout>
+
+    </com.google.android.material.card.MaterialCardView>
+  </LinearLayout>
+</ScrollView>

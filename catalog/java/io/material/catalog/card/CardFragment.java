@@ -77,6 +77,13 @@ public class CardFragment extends DemoLandingFragment {
           public Fragment createFragment() {
             return new CardStatesFragment();
           }
+        },
+        new Demo(R.string.cat_card_rich_media_demo) {
+          @Nullable
+          @Override
+          public Fragment createFragment() {
+            return new CardRichMediaDemoFragment();
+          }
         });
   }
 

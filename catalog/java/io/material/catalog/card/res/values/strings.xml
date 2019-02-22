@@ -57,4 +57,26 @@
     Lorem ipsum dolor sit amet, nec no nominavi scaevola. Per et sint sapientem, nobis perpetua salutandi mei te. Quo tamquam probatus reprehendunt in. Eos esse purto eruditi ea. Enim tation persius ut sea, eos ad consul populo.
     Ne eum solet altera. Cibo eligendi et est, electram theophrastus te vel eu.
   </string>
+
+  <!-- Rich Media Demo Strings -->
+  <string name="cat_card_rich_media_demo">Rich Media Cards</string>
+  <string name="cat_card_rich_media_sample_1">Sample #1</string>
+  <string name="cat_card_rich_media_sample_2">Sample #2</string>
+  <string name="cat_card_rich_media_sample_3">Sample #3</string>
+  <string name="cat_card_rich_media_view_overline">Title goes here</string>
+  <string name="cat_card_rich_media_view_title">Title goes here</string>
+  <string name="cat_card_rich_media_title_view_description">Card Title</string>
+  <string name="cat_card_rich_media_view_subtitle">Subtitle goes here</string>
+  <string name="cat_card_rich_media_subtitle_view_description">Card Subtitle</string>
+  <string name="cat_card_rich_media_view_secondary_line_text">Secondary line text Lorem ipsum dolor sit amet, nec no nominavi scaevola. Per et sint sapientem, nobis perpetua salutandi mei te.</string>
+  <string name="cat_card_rich_media_logo_view_description">Card Logo</string>
+  <string name="cat_card_rich_media_image_view_description">Card Image</string>
+  <string name="cat_card_rich_media_rating_text">4.5 (413)</string>
+  <string name="cat_card_rich_media_rating_view_description">Card Rating</string>
+  <string name="cat_card_rich_media_chip_title_1">Item 1</string>
+  <string name="cat_card_rich_media_chip_title_2">Item 2</string>
+  <string name="cat_card_rich_media_chip_title_3">Item 3</string>
+  <string name="cat_card_rich_media_chip_title_4">Item 4</string>
+  <string name="cat_card_rich_media_action_1">Action 1</string>
+  <string name="cat_card_rich_media_action_2">Action 2</string>
 </resources>

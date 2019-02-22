@@ -18,4 +18,9 @@
 <resources>
   <dimen name="cat_card_demo_min_height">200dp</dimen>
   <dimen name="content_padding_top">16dp</dimen>
+  <!-- Rich Media Demo Dimensions -->
+  <dimen name="cat_card_rich_media_demo_min_height">148dp</dimen>
+  <dimen name="cat_card_single_spacing">8dp</dimen>
+  <dimen name="cat_card_double_spacing">16dp</dimen>
+  <dimen name="cat_card_triple_spacing">24dp</dimen>
 </resources>
