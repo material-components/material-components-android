@@ -110,15 +110,8 @@ components, e.g. `tabStyle`, `chipStyle`, `textInputStyle`, and so on.
 
 ## Theme Attribute Mapping
 
-The following components have been updated to use the theme attributes described
-above:
-
-*   [BottomNavigationView](../components/BottomNavigationView.md)
-*   [Chip](../components/Chip.md)
-*   [FloatingActionButton](../components/FloatingActionButton.md)
-*   [MaterialButton](../components/MaterialButton.md)
-*   [MaterialCardView](../components/MaterialCardView.md)
-*   [TabLayout](../components/TabLayout.md)
+All MDC-Android components have been updated to use the theme attributes
+described above, when applicable.
 
 To understand how the high-level theme attributes map to specific parts of each
 component, please refer directly to the component's documentation.
