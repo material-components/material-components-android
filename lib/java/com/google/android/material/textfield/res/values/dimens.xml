@@ -26,4 +26,7 @@
   <dimen name="mtrl_textinput_box_stroke_width_default">1dp</dimen>
   <dimen name="mtrl_textinput_box_stroke_width_focused">2dp</dimen>
   <dimen name="mtrl_textinput_box_label_cutout_padding">4dp</dimen>
+
+  <dimen name="mtrl_textinput_end_icon_padding_start">16dp</dimen>
+  <dimen name="mtrl_textinput_end_icon_padding_end">12dp</dimen>
 </resources>

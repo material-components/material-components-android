@@ -109,7 +109,7 @@ import java.util.LinkedHashSet;
  *   <li>Showing a custom icon specified by the user via {@link #setEndIconMode(int)} API and
  *       related attribute. The user should specify a drawable and content description for the icon.
  *       Optionally, the user can also specify an {@link android.view.View.OnClickListener}, an
- *       {@link OnEndIconInitializedListener} and an {@link OnEndIconChangedListener}.
+ *       {@link OnEditTextAttachedListener} and an {@link OnEndIconChangedListener}.
  *       <p><strong>Note:</strong> When using an end icon, the 'end' compound drawable of the
  *       EditText will be overridden while the end icon view is visible. To ensure that any existing
  *       drawables are restored correctly, you should set those compound drawables relatively
@@ -233,7 +233,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setEndIconDrawable(Drawable)
    * @see #setEndIconContentDescription(CharSequence)
    * @see #setEndIconOnClickListener(OnClickListener) (optionally)
-   * @see #addOnEndIconInitializedListener(OnEndIconInitializedListener) (optionally)
+   * @see #addOnEditTextAttachedListener(OnEditTextAttachedListener) (optionally)
    * @see #addOnEndIconChangedListener(OnEndIconChangedListener) (optionally)
    */
   public static final int END_ICON_CUSTOM = -1;
@@ -265,11 +265,21 @@ public class TextInputLayout extends LinearLayout {
    */
   public static final int END_ICON_CLEAR_TEXT = 2;
 
-  /** Callback interface invoked when the end icon is initialized. */
-  public interface OnEndIconInitializedListener {
+  /**
+   * Callback interface invoked when the view's {@link EditText} is attached, or from {@link
+   * #addOnEditTextAttachedListener(OnEditTextAttachedListener)} if the edit text is already
+   * present.
+   *
+   * @see #addOnEditTextAttachedListener(OnEditTextAttachedListener)
+   */
+  public interface OnEditTextAttachedListener {
 
-    /** Called when the end icon is initialized. */
-    void onEndIconInitialized();
+    /**
+     * Called when the {@link EditText} is attached, or from {@link
+     * #addOnEditTextAttachedListener(OnEditTextAttachedListener)} if the edit text is already
+     * present.
+     */
+    void onEditTextAttached();
   }
 
   /**
@@ -287,12 +297,11 @@ public class TextInputLayout extends LinearLayout {
     void onEndIconChanged(@EndIconMode int previousIcon);
   }
 
-  @EndIconMode private int endIconMode = END_ICON_NONE;
-  private Drawable endIconDrawable;
-  private CharSequence endIconContentDesc;
-  private CheckableImageButton endIconView;
-  private final LinkedHashSet<OnEndIconInitializedListener> onEndIconInitializedListeners =
+  private final LinkedHashSet<OnEditTextAttachedListener> editTextAttachedListeners =
       new LinkedHashSet<>();
+
+  @EndIconMode private int endIconMode = END_ICON_NONE;
+  private CheckableImageButton endIconView;
   private final LinkedHashSet<OnEndIconChangedListener> endIconChangedListeners =
       new LinkedHashSet<>();
   private ColorStateList endIconTintList;
@@ -302,10 +311,10 @@ public class TextInputLayout extends LinearLayout {
   private Drawable endIconDummyDrawable;
   private Drawable originalEditTextEndDrawable;
 
-  private final OnEndIconInitializedListener passwordToggleEndIconInitializedListener =
-      new OnEndIconInitializedListener() {
+  private final OnEditTextAttachedListener passwordToggleOnEditTextAttachedListener =
+      new OnEditTextAttachedListener() {
         @Override
-        public void onEndIconInitialized() {
+        public void onEditTextAttached() {
           setEndIconVisible(hasPasswordTransformation());
         }
       };
@@ -320,27 +329,29 @@ public class TextInputLayout extends LinearLayout {
           }
         }
       };
-  private final OnEndIconInitializedListener clearTextEndIconInitializedListener =
-      new OnEndIconInitializedListener() {
+
+  private final TextWatcher clearTextEndIconTextWatcher =
+      new TextWatcher() {
         @Override
-        public void onEndIconInitialized() {
-          if (editText == null) {
-            return;
-          }
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {
+          setEndIconVisible(s.length() > 0);
+        }
+      };
+
+  private final OnEditTextAttachedListener clearTextOnEditTextAttachedListener =
+      new OnEditTextAttachedListener() {
+        @Override
+        public void onEditTextAttached() {
           setEndIconVisible(!TextUtils.isEmpty(editText.getText()));
-          editText.addTextChangedListener(
-              new TextWatcher() {
-                @Override
-                public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-                @Override
-                public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-                @Override
-                public void afterTextChanged(Editable s) {
-                  setEndIconVisible(s.length() > 0);
-                }
-              });
+          // Make sure there's always only one clear text text watcher added
+          editText.removeTextChangedListener(clearTextEndIconTextWatcher);
+          editText.addTextChangedListener(clearTextEndIconTextWatcher);
         }
       };
 
@@ -531,6 +542,12 @@ public class TextInputLayout extends LinearLayout {
     counterOverflowTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
 
+    endIconView =
+        (CheckableImageButton)
+            LayoutInflater.from(getContext())
+                .inflate(R.layout.design_text_input_end_icon, inputFrame, false);
+    inputFrame.addView(endIconView);
+    endIconView.setVisibility(GONE);
     // Set up the end icon if any.
     if (a.hasValue(R.styleable.TextInputLayout_endIconMode)) {
       // Specific defaults depending on which end icon mode is set
@@ -560,8 +577,7 @@ public class TextInputLayout extends LinearLayout {
     // Default tint mode for any end icon or value specified by user
     if (a.hasValue(R.styleable.TextInputLayout_endIconTintMode)) {
       setEndIconTintMode(
-          ViewUtils.parseTintMode(
-              a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
+          ViewUtils.parseTintMode(a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
     }
     // Support for deprecated password toggle tint attribute
     if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
@@ -1036,7 +1052,15 @@ public class TextInputLayout extends LinearLayout {
 
     indicatorViewController.adjustIndicatorPadding();
 
-    initializeEndIcon();
+    ViewCompat.setPaddingRelative(
+        endIconView,
+        getResources().getDimensionPixelSize(R.dimen.mtrl_textinput_end_icon_padding_start),
+        /*TODO: Set to 0 once label is centered*/ this.editText.getPaddingTop(),
+        getResources().getDimensionPixelSize(R.dimen.mtrl_textinput_end_icon_padding_end),
+        /*TODO: Set to 0 once label is centered*/ this.editText.getPaddingBottom());
+    endIconView.bringToFront();
+
+    dispatchOnEditTextAttached();
 
     // Update the label visibility with no animation, but force a state change
     updateLabelState(false, true);
@@ -1988,16 +2012,10 @@ public class TextInputLayout extends LinearLayout {
   public void setEndIconMode(@EndIconMode int endIconMode) {
     int previousEndIconMode = this.endIconMode;
     this.endIconMode = endIconMode;
-    if (endIconView == null) {
-      endIconView =
-          (CheckableImageButton)
-              LayoutInflater.from(getContext())
-                  .inflate(R.layout.design_text_input_end_icon, inputFrame, false);
-    }
+    setEndIconVisible(endIconMode != END_ICON_NONE);
     switch (endIconMode) {
       case END_ICON_CUSTOM:
         setEndIconOnClickListener(null);
-        setEndIconVisible(true);
         break;
       case END_ICON_PASSWORD_TOGGLE:
         // Set defaults for the password toggle end icon
@@ -2009,15 +2027,12 @@ public class TextInputLayout extends LinearLayout {
         break;
       default:
         // Removes any current end icon
-        setEndIconVisible(false);
         setEndIconOnClickListener(null);
         setEndIconDrawable(null);
         setEndIconContentDescription(null);
-        endIconView = null;
         break;
     }
     applyEndIconTint();
-    initializeEndIcon();
     dispatchOnEndIconChanged(previousEndIconMode);
   }
 
@@ -2040,11 +2055,9 @@ public class TextInputLayout extends LinearLayout {
    *     have
    */
   public void setEndIconOnClickListener(@Nullable OnClickListener onClickListener) {
-    if (endIconView != null) {
-      endIconView.setOnClickListener(onClickListener);
-      endIconView.setFocusable(onClickListener != null);
-      endIconView.setClickable(onClickListener != null);
-    }
+    endIconView.setOnClickListener(onClickListener);
+    endIconView.setFocusable(onClickListener != null);
+    endIconView.setClickable(onClickListener != null);
   }
 
   /**
@@ -2053,7 +2066,7 @@ public class TextInputLayout extends LinearLayout {
    * @param visible whether the icon should be set to visible
    */
   public void setEndIconVisible(boolean visible) {
-    if (endIconView != null && isEndIconVisible() != visible) {
+    if (isEndIconVisible() != visible) {
       if (visible) {
         endIconView.setVisibility(View.VISIBLE);
         addEndIconDummyDrawable();
@@ -2070,7 +2083,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setEndIconVisible(boolean)
    */
   public boolean isEndIconVisible() {
-    return endIconView != null && endIconView.getVisibility() == View.VISIBLE;
+    return endIconView.getVisibility() == View.VISIBLE;
   }
 
   /**
@@ -2096,10 +2109,7 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconDrawable
    */
   public void setEndIconDrawable(@Nullable Drawable icon) {
-    endIconDrawable = icon;
-    if (endIconView != null) {
-      endIconView.setImageDrawable(icon);
-    }
+    endIconView.setImageDrawable(icon);
   }
 
   /**
@@ -2110,7 +2120,7 @@ public class TextInputLayout extends LinearLayout {
    */
   @Nullable
   public Drawable getEndIconDrawable() {
-    return endIconDrawable;
+    return endIconView.getDrawable();
   }
 
   /**
@@ -2136,10 +2146,7 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconContentDescription
    */
   public void setEndIconContentDescription(@Nullable CharSequence description) {
-    endIconContentDesc = description;
-    if (endIconView != null) {
-      endIconView.setContentDescription(description);
-    }
+    endIconView.setContentDescription(description);
   }
 
   /**
@@ -2150,7 +2157,7 @@ public class TextInputLayout extends LinearLayout {
    */
   @Nullable
   public CharSequence getEndIconContentDescription() {
-    return endIconContentDesc;
+    return endIconView.getContentDescription();
   }
 
   /**
@@ -2213,31 +2220,34 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Add a {@link OnEndIconInitializedListener} that will be invoked when the end icon is
-   * initialized.
+   * Add a {@link OnEditTextAttachedListener} that will be invoked when the edit text is attached,
+   * or from this method if the EditText is already present.
    *
    * <p>Components that add a listener should take care to remove it when finished via {@link
-   * #removeOnEndIconInitializedListener(OnEndIconInitializedListener)}.
+   * #removeOnEditTextAttachedListener(OnEditTextAttachedListener)}.
    *
    * @param listener listener to add
    */
-  public void addOnEndIconInitializedListener(OnEndIconInitializedListener listener) {
-    onEndIconInitializedListeners.add(listener);
+  public void addOnEditTextAttachedListener(OnEditTextAttachedListener listener) {
+    editTextAttachedListeners.add(listener);
+    if (editText != null) {
+      listener.onEditTextAttached();
+    }
   }
 
   /**
-   * Remove the given {@link OnEndIconInitializedListener} that was previously added via {@link
-   * #addOnEndIconInitializedListener(OnEndIconInitializedListener)}.
+   * Remove the given {@link OnEditTextAttachedListener} that was previously added via {@link
+   * #addOnEditTextAttachedListener(OnEditTextAttachedListener)}.
    *
    * @param listener listener to remove
    */
-  public void removeOnEndIconInitializedListener(OnEndIconInitializedListener listener) {
-    onEndIconInitializedListeners.remove(listener);
+  public void removeOnEditTextAttachedListener(OnEditTextAttachedListener listener) {
+    editTextAttachedListeners.remove(listener);
   }
 
-  /** Remove all previously added {@link OnEndIconInitializedListener}s. */
-  public void clearOnEndIconInitializedListeners() {
-    onEndIconInitializedListeners.clear();
+  /** Remove all previously added {@link OnEditTextAttachedListener}s. */
+  public void clearOnEditTextAttachedListeners() {
+    editTextAttachedListeners.clear();
   }
 
   private void setEndIconPasswordToggleDefaults() {
@@ -2265,15 +2275,15 @@ public class TextInputLayout extends LinearLayout {
             editText.setSelection(selection);
           }
         });
-    addOnEndIconInitializedListener(passwordToggleEndIconInitializedListener);
+    addOnEditTextAttachedListener(passwordToggleOnEditTextAttachedListener);
     addOnEndIconChangedListener(passwordToggleEndIconChangedListener);
   }
 
   private void setEndIconClearTextDefaults() {
     setEndIconDrawable(
-          AppCompatResources.getDrawable(getContext(), R.drawable.mtrl_clear_text_button));
+        AppCompatResources.getDrawable(getContext(), R.drawable.mtrl_clear_text_button));
     setEndIconContentDescription(
-          getResources().getText(R.string.clear_text_end_icon_content_description));
+        getResources().getText(R.string.clear_text_end_icon_content_description));
     setEndIconOnClickListener(
         new OnClickListener() {
           @Override
@@ -2281,7 +2291,7 @@ public class TextInputLayout extends LinearLayout {
             editText.setText(null);
           }
         });
-    addOnEndIconInitializedListener(clearTextEndIconInitializedListener);
+    addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
   }
 
   /**
@@ -2312,10 +2322,7 @@ public class TextInputLayout extends LinearLayout {
    */
   @Deprecated
   public void setPasswordVisibilityToggleDrawable(@Nullable Drawable icon) {
-    endIconDrawable = icon;
-    if (endIconView != null) {
-      endIconView.setImageDrawable(icon);
-    }
+    endIconView.setImageDrawable(icon);
   }
 
   /**
@@ -2346,10 +2353,7 @@ public class TextInputLayout extends LinearLayout {
    */
   @Deprecated
   public void setPasswordVisibilityToggleContentDescription(@Nullable CharSequence description) {
-    endIconContentDesc = description;
-    if (endIconView != null) {
-      endIconView.setContentDescription(description);
-    }
+    endIconView.setContentDescription(description);
   }
 
   /**
@@ -2362,7 +2366,7 @@ public class TextInputLayout extends LinearLayout {
   @Nullable
   @Deprecated
   public Drawable getPasswordVisibilityToggleDrawable() {
-    return endIconDrawable;
+    return endIconView.getDrawable();
   }
 
   /**
@@ -2376,7 +2380,7 @@ public class TextInputLayout extends LinearLayout {
   @Nullable
   @Deprecated
   public CharSequence getPasswordVisibilityToggleContentDescription() {
-    return endIconContentDesc;
+    return endIconView.getContentDescription();
   }
 
   /**
@@ -2482,30 +2486,15 @@ public class TextInputLayout extends LinearLayout {
     return endIconMode != END_ICON_NONE;
   }
 
-  private void initializeEndIcon() {
-    if (editText != null && endIconView != null) {
-      if (endIconView.getParent() == null) {
-        ViewCompat.setPaddingRelative(
-            endIconView,
-            editText.getPaddingLeft(),
-            editText.getPaddingTop(),
-            editText.getPaddingRight(),
-            editText.getPaddingBottom());
-        inputFrame.addView(endIconView);
-      }
-      dispatchOnEndIconInitialized();
-    }
-  }
-
   private void dispatchOnEndIconChanged(@EndIconMode int previousIcon) {
     for (OnEndIconChangedListener listener : endIconChangedListeners) {
       listener.onEndIconChanged(previousIcon);
     }
   }
 
-  private void dispatchOnEndIconInitialized() {
-    for (OnEndIconInitializedListener listener : onEndIconInitializedListeners) {
-      listener.onEndIconInitialized();
+  private void dispatchOnEditTextAttached() {
+    for (OnEditTextAttachedListener listener : editTextAttachedListeners) {
+      listener.onEditTextAttached();
     }
   }
 
@@ -2514,6 +2503,9 @@ public class TextInputLayout extends LinearLayout {
    * doesn't display below the end icon view.
    */
   private void addEndIconDummyDrawable() {
+    if (editText == null) {
+      return;
+    }
     endIconDummyDrawable = new ColorDrawable();
     endIconDummyDrawable.setBounds(
         0, 0, endIconView.getMeasuredWidth() - endIconView.getPaddingLeft(), 1);
@@ -2539,6 +2531,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void applyEndIconTint() {
+    Drawable endIconDrawable = endIconView.getDrawable();
     if (endIconDrawable != null && (hasEndIconTintList || hasEndIconTintMode)) {
       endIconDrawable = DrawableCompat.wrap(endIconDrawable).mutate();
 
@@ -2549,7 +2542,7 @@ public class TextInputLayout extends LinearLayout {
         DrawableCompat.setTintMode(endIconDrawable, endIconTintMode);
       }
 
-      if (endIconView != null && endIconView.getDrawable() != endIconDrawable) {
+      if (endIconView.getDrawable() != endIconDrawable) {
         endIconView.setImageDrawable(endIconDrawable);
       }
     }
