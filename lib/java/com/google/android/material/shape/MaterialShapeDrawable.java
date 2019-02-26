@@ -623,7 +623,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * 21 or when the shape is concave.
    */
   private boolean requiresCompatShadow() {
-    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP || !path.isConvex();
+    return VERSION.SDK_INT < VERSION_CODES.LOLLIPOP
+        || (!drawableState.shapeAppearanceModel.isRoundRect() && !path.isConvex());
   }
 
   /**
