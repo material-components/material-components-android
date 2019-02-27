@@ -58,6 +58,7 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.XmlRes;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.canvas.CanvasCompat;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
@@ -163,6 +164,14 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   private static final boolean DEBUG = false;
   private static final int[] DEFAULT_STATE = new int[] {android.R.attr.state_enabled};
   private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
+  private static final int[][] states =
+      new int[][] {
+        new int[] {
+          android.R.attr.state_enabled, android.R.attr.state_selected
+        }, // enabled and selected
+        new int[] {android.R.attr.state_enabled}, // enabled
+        new int[] {} // default
+        };
 
   // Visuals
   @Nullable private ColorStateList chipSurfaceColor;
@@ -628,14 +637,11 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   }
 
   private void drawChipSurface(@NonNull Canvas canvas, Rect bounds) {
-    chipPaint.setColor(currentChipSurfaceColor);
-    chipPaint.setStyle(Style.FILL);
-    rectF.set(bounds);
     if (!isShapeThemingEnabled) {
+      chipPaint.setColor(currentChipSurfaceColor);
+      chipPaint.setStyle(Style.FILL);
+      rectF.set(bounds);
       canvas.drawRoundRect(rectF, getChipCornerRadius(), getChipCornerRadius(), chipPaint);
-    } else {
-      getPathForSize(bounds, shapePath);
-      super.drawShape(canvas, chipPaint, shapePath, getBoundsAsRectF());
     }
   }
 
@@ -1307,6 +1313,9 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
   private void setChipSurfaceColor(@Nullable ColorStateList chipSurfaceColor) {
     if (this.chipSurfaceColor != chipSurfaceColor) {
       this.chipSurfaceColor = chipSurfaceColor;
+      if (chipSurfaceColor != null && chipBackgroundColor != null) {
+        setFillColor(compositeSurfaceBackgroundColor());
+      }
       onStateChange(getState());
     }
   }
@@ -1365,10 +1374,32 @@ public class ChipDrawable extends MaterialShapeDrawable implements TintAwareDraw
     if (this.chipBackgroundColor != chipBackgroundColor) {
       this.chipBackgroundColor = chipBackgroundColor;
       if (isShapeThemingEnabled) {
-        setFillColor(chipBackgroundColor);
+        if (chipSurfaceColor != null && chipBackgroundColor != null) {
+          setFillColor(compositeSurfaceBackgroundColor());
+        }
       }
       onStateChange(getState());
     }
+  }
+
+  private ColorStateList compositeSurfaceBackgroundColor() {
+    if (chipSurfaceColor == null || chipBackgroundColor == null) {
+      return null;
+    }
+    int[] colors =
+        new int[] {
+          MaterialColors.layer(
+              chipSurfaceColor.getColorForState(states[0], currentChipSurfaceColor),
+              chipBackgroundColor.getColorForState(states[0], currentChipBackgroundColor)),
+          MaterialColors.layer(
+              chipSurfaceColor.getColorForState(states[1], currentChipSurfaceColor),
+              chipBackgroundColor.getColorForState(states[1], currentChipBackgroundColor)),
+          MaterialColors.layer(
+              chipSurfaceColor.getColorForState(states[2], currentChipSurfaceColor),
+              chipBackgroundColor.getColorForState(states[2], currentChipBackgroundColor)),
+        };
+
+    return new ColorStateList(states, colors);
   }
 
   /**
