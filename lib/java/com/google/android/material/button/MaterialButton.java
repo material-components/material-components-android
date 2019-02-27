@@ -104,6 +104,7 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     void onCheckedChanged(MaterialButton button, boolean isChecked);
   }
 
+  private static final int[] CHECKABLE_STATE_SET = {android.R.attr.state_checkable};
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
   /**
@@ -786,7 +787,12 @@ public class MaterialButton extends AppCompatButton implements Checkable {
   
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
-    final int[] drawableState = super.onCreateDrawableState(extraSpace + 1);
+    final int[] drawableState = super.onCreateDrawableState(extraSpace + 2);
+
+    if (isCheckable()) {
+      mergeDrawableStates(drawableState, CHECKABLE_STATE_SET);
+    }
+
     if (isChecked()) {
       mergeDrawableStates(drawableState, CHECKED_STATE_SET);
     }
