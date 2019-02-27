@@ -105,8 +105,7 @@ more even spacing when an icon is present.
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:contentDescription="@string/extended_fab_content_desc"
-      android:text="@string/extended_fab_label"
-      app:icon="@drawable/ic_plus_24px"/>
+      android:text="@string/extended_fab_label"/>
 ```
 
 The `Widget.MaterialComponents.ExtendedFloatingActionButton`, with no `Icon`
