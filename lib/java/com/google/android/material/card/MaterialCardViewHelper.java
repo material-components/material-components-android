@@ -301,7 +301,11 @@ class MaterialCardViewHelper {
           new ViewOutlineProvider() {
             @Override
             public void getOutline(View view, Outline outline) {
-              temporaryBounds.set(0, 0, view.getWidth(), view.getHeight());
+              temporaryBounds.set(
+                  strokeWidth,
+                  strokeWidth,
+                  view.getWidth() - strokeWidth,
+                  view.getHeight() - strokeWidth);
               drawableInsetByStroke.setBounds(temporaryBounds);
               drawableInsetByStroke.getOutline(outline);
             }
