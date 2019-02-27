@@ -36,12 +36,12 @@
         style="?attr/catalogToolbarStyle"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:collapsedTitleTextAppearance="@style/TextAppearance.AppCompat.Title"
+        app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
         app:contentScrim="?attr/colorPrimary"
         app:expandedTitleGravity="bottom"
         app:expandedTitleMarginBottom="24dp"
         app:expandedTitleMarginStart="16dp"
-        app:expandedTitleTextAppearance="@style/TextAppearance.AppCompat.Headline"
+        app:expandedTitleTextAppearance="?attr/textAppearanceHeadline5"
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap">
 
       <androidx.appcompat.widget.Toolbar

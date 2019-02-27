@@ -69,7 +69,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/cat_card_m1_section_title"
-        android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"

@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="@dimen/cat_card_double_spacing"
         android:text="@string/cat_card_rich_media_sample_1"
-        android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -120,7 +120,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/cat_card_rich_media_sample_2"
-        android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"
@@ -223,7 +223,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="16dp"
         android:text="@string/cat_card_rich_media_sample_3"
-        android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+        android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
     <com.google.android.material.card.MaterialCardView
         android:layout_width="match_parent"

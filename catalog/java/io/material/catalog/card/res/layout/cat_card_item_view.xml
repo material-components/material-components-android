@@ -42,12 +42,12 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginBottom="4dp"
-        android:textAppearance="@style/TextAppearance.Catalog.ListTitle"/>
+        android:textAppearance="?attr/textAppearanceBody2"/>
 
     <TextView
         android:id="@+id/cat_card_subtitle"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="@style/TextAppearance.Catalog.ListSubtitle"/>
+        android:textAppearance="?attr/textAppearanceCaption"/>
   </LinearLayout>
 </com.google.android.material.card.MaterialCardView>

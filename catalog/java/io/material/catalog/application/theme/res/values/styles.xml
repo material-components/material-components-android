@@ -23,12 +23,4 @@
     <item name="navigationIcon">@drawable/ic_close_vd_theme_24px</item>
   </style>
 
-  <style name="TextAppearance.Catalog.SectionTitle" parent="TextAppearance.AppCompat.Subhead"/>
-
-  <style name="TextAppearance.Catalog.Body" parent="TextAppearance.AppCompat.Body1"/>
-
-  <style name="TextAppearance.Catalog.ListTitle" parent="TextAppearance.AppCompat.Body1"/>
-
-  <style name="TextAppearance.Catalog.ListSubtitle" parent="TextAppearance.AppCompat.Caption"/>
-
 </resources>

@@ -33,7 +33,7 @@
       android:layout_height="wrap_content"
       android:layout_margin="16dp"
       android:text="@string/cat_demo_landing_links_header"
-      android:textAppearance="@style/TextAppearance.Catalog.SectionTitle"/>
+      android:textAppearance="?attr/textAppearanceSubtitle1"/>
 
   <LinearLayout
       android:id="@+id/cat_demo_landing_links_container"

@@ -42,7 +42,7 @@
       android:layout_marginLeft="@dimen/cat_list_text_margin_from_icon"
       android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
       android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
-      android:textAppearance="@style/TextAppearance.Catalog.ListTitle"
+      android:textAppearance="?attr/textAppearanceBody2"
       tools:text="Demo"/>
 
   <TextView
@@ -54,7 +54,7 @@
       android:layout_below="@+id/cat_demo_landing_row_title"
       android:layout_toEndOf="@+id/cat_demo_landing_row_icon"
       android:layout_toRightOf="@+id/cat_demo_landing_row_icon"
-      android:textAppearance="@style/TextAppearance.Catalog.ListSubtitle"
+      android:textAppearance="?attr/textAppearanceCaption"
       tools:text="MainDemoFragment"/>
 
 </RelativeLayout>
