@@ -85,6 +85,7 @@ public class MaterialCardView extends CardView implements Checkable {
     void onCheckedChanged(MaterialCardView card, boolean isChecked);
   }
 
+  private static final int[] CHECKABLE_STATE_SET = {android.R.attr.state_checkable};
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DRAGGED_STATE_SET = {R.attr.state_dragged};
 
@@ -387,7 +388,7 @@ public class MaterialCardView extends CardView implements Checkable {
    * @attr ref com.google.android.material.R.styleable#MaterialCardView_android_checkable
    */
   public boolean isCheckable() {
-    return cardViewHelper.isCheckable();
+    return cardViewHelper != null && cardViewHelper.isCheckable();
   }
 
   /**
@@ -416,7 +417,11 @@ public class MaterialCardView extends CardView implements Checkable {
 
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
-    final int[] drawableState = super.onCreateDrawableState(extraSpace + 2);
+    final int[] drawableState = super.onCreateDrawableState(extraSpace + 3);
+    if (isCheckable()) {
+      mergeDrawableStates(drawableState, CHECKABLE_STATE_SET);
+    }
+
     if (isChecked()) {
       mergeDrawableStates(drawableState, CHECKED_STATE_SET);
     }
