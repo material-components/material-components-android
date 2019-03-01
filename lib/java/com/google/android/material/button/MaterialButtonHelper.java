@@ -47,7 +47,7 @@ class MaterialButtonHelper {
 
   private static final boolean IS_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
   private final MaterialButton materialButton;
-  private final ShapeAppearanceModel shapeAppearanceModel;
+  private ShapeAppearanceModel shapeAppearanceModel;
 
   private int insetLeft;
   private int insetRight;
@@ -304,14 +304,7 @@ class MaterialButtonHelper {
         ShapeAppearanceModel temporaryShapeAppearance =
             new ShapeAppearanceModel(shapeAppearanceModel);
         adjustShapeAppearanceModelCornerRadius(temporaryShapeAppearance, strokeWidth / 2f);
-        materialShapeDrawable.setShapeAppearanceModel(temporaryShapeAppearance);
-        if (surfaceColorStrokeDrawable != null) {
-          surfaceColorStrokeDrawable.setShapeAppearanceModel(temporaryShapeAppearance);
-        }
-
-        if (getMaskDrawable() != null) {
-          getMaskDrawable().setShapeAppearanceModel(temporaryShapeAppearance);
-        }
+        updateButtonShape(temporaryShapeAppearance);
         // Some APIs don't unwrap the drawable correctly.
         if (maskDrawable != null) {
           maskDrawable.setShapeAppearanceModel(temporaryShapeAppearance);
@@ -326,17 +319,8 @@ class MaterialButtonHelper {
     if (!cornerRadiusSet || this.cornerRadius != cornerRadius) {
       this.cornerRadius = cornerRadius;
       cornerRadiusSet = true;
-      shapeAppearanceModel.setCornerRadius(
-          cornerRadius + (strokeWidth / 2f));
-      if (getMaterialShapeDrawable() != null) {
-        getMaterialShapeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
-      }
-      if (getSurfaceColorStrokeDrawable() != null) {
-        getSurfaceColorStrokeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
-      }
-      if (getMaskDrawable() != null) {
-        getMaskDrawable().setShapeAppearanceModel(shapeAppearanceModel);
-      }
+      shapeAppearanceModel.setCornerRadius(cornerRadius + (strokeWidth / 2f));
+      updateButtonShape(shapeAppearanceModel);
     }
   }
 
@@ -399,6 +383,18 @@ class MaterialButtonHelper {
     return getMaterialShapeDrawable(true);
   }
 
+  private void updateButtonShape(ShapeAppearanceModel shapeAppearanceModel) {
+    if (getMaterialShapeDrawable() != null) {
+      getMaterialShapeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+    }
+    if (getSurfaceColorStrokeDrawable() != null) {
+      getSurfaceColorStrokeDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+    }
+    if (getMaskDrawable() != null) {
+      getMaskDrawable().setShapeAppearanceModel(shapeAppearanceModel);
+    }
+  }
+
   @Nullable
   public MaterialShapeDrawable getMaskDrawable() {
     if (rippleDrawable != null && rippleDrawable.getNumberOfLayers() > 1) {
@@ -411,5 +407,14 @@ class MaterialButtonHelper {
     }
 
     return null;
+  }
+
+  void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
+    updateButtonShape(shapeAppearanceModel);
+  }
+
+  ShapeAppearanceModel getShapeAppearanceModel() {
+    return this.shapeAppearanceModel;
   }
 }

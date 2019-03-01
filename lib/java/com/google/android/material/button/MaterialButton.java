@@ -784,7 +784,7 @@ public class MaterialButton extends AppCompatButton implements Checkable {
   public void setIconGravity(@IconGravity int iconGravity) {
     this.iconGravity = iconGravity;
   }
-  
+
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
     final int[] drawableState = super.onCreateDrawableState(extraSpace + 2);
@@ -866,6 +866,21 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setCheckable(checkable);
     }
+  }
+
+  void setShapeAppearanceModel(@Nullable ShapeAppearanceModel shapeAppearanceModel) {
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.setShapeAppearanceModel(shapeAppearanceModel);
+    }
+  }
+
+  @Nullable
+  ShapeAppearanceModel getShapeAppearanceModel() {
+    if (isUsingOriginalBackground()) {
+      return materialButtonHelper.getShapeAppearanceModel();
+    }
+
+    return null;
   }
 
   private boolean isUsingOriginalBackground() {
