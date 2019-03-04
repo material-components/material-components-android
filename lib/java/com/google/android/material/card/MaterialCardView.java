@@ -123,6 +123,10 @@ public class MaterialCardView extends CardView implements Checkable {
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.MaterialCardView, defStyleAttr, DEF_STYLE_RES);
 
+    // Add a content view to allow the border to be drawn outside the outline.
+    contentLayout = new FrameLayout(context);
+    super.addView(contentLayout, -1, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
+
     // Loads and sets background drawable attributes.
     cardViewHelper = new MaterialCardViewHelper(this, attrs, defStyleAttr, DEF_STYLE_RES);
     // Get the card background color and content padding that CardView read from the attributes.
@@ -132,11 +136,10 @@ public class MaterialCardView extends CardView implements Checkable {
         super.getContentPaddingTop(),
         super.getContentPaddingRight(),
         super.getContentPaddingBottom());
+    // Zero out the AppCompat CardView's content padding, the padding will be added to the internal
+    // contentLayout.
+    super.setContentPadding(0, 0, 0, 0);
     cardViewHelper.loadFromAttributes(attributes);
-
-    // Add a content view to allow the border to be drawn outside the outline.
-    contentLayout = new FrameLayout(context);
-    super.addView(contentLayout, -1, new LayoutParams(MATCH_PARENT, MATCH_PARENT));
     updateContentLayout();
 
     attributes.recycle();
@@ -349,8 +352,8 @@ public class MaterialCardView extends CardView implements Checkable {
     super.setBackgroundDrawable(drawable);
   }
 
-  void setContentPaddingInternal(int left, int top, int right, int bottom) {
-    super.setContentPadding(left, top, right, bottom);
+  void setContentLayoutPadding(int left, int top, int right, int bottom) {
+    contentLayout.setPadding(left, top, right, bottom);
   }
 
   @Override

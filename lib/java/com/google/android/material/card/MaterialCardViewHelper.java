@@ -317,8 +317,11 @@ class MaterialCardViewHelper {
   }
 
   /**
-   * Guarantee at least enough content padding to account for the stroke width and support
-   * preventing corner overlap for shaped backgrounds.
+   * Apply content padding to the intermediate contentLayout. Padding includes the user-specified
+   * content padding as well as any padding ot prevent corner overlap. The padding is applied to the
+   * intermediate contentLayout so that the bounds of the contentLayout match the bounds of the
+   * stroke (or card bounds if there is no stroke). This ensures that clipping is applied properly
+   * to the inside of the stroke, not around the content.
    */
   void updateContentPadding() {
     boolean includeCornerPadding =
@@ -330,7 +333,7 @@ class MaterialCardViewHelper {
         (int)
             ((includeCornerPadding ? calculateActualCornerPadding() : 0)
                 - getParentCardViewCalculatedCornerPadding());
-    materialCardView.setContentPaddingInternal(
+    materialCardView.setContentLayoutPadding(
         userContentPadding.left + contentPaddingOffset,
         userContentPadding.top + contentPaddingOffset,
         userContentPadding.right + contentPaddingOffset,
