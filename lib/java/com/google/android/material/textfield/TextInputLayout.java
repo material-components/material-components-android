@@ -566,30 +566,31 @@ public class TextInputLayout extends LinearLayout {
       setEndIconDrawable(a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable));
       setEndIconContentDescription(
           a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription));
+      if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
+        setEndIconTintList(
+            AppCompatResources.getColorStateList(
+                context, a.getResourceId(R.styleable.TextInputLayout_passwordToggleTint, -1)));
+      }
+      if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
+        setEndIconTintMode(
+            ViewUtils.parseTintMode(
+                a.getInt(R.styleable.TextInputLayout_passwordToggleTintMode, -1), null));
+      }
     }
 
-    // Default tint for any end icon or value specified by user
-    if (a.hasValue(R.styleable.TextInputLayout_endIconTint)) {
-      setEndIconTintList(
-          AppCompatResources.getColorStateList(
-              context, a.getResourceId(R.styleable.TextInputLayout_endIconTint, -1)));
-    }
-    // Default tint mode for any end icon or value specified by user
-    if (a.hasValue(R.styleable.TextInputLayout_endIconTintMode)) {
-      setEndIconTintMode(
-          ViewUtils.parseTintMode(a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
-    }
-    // Support for deprecated password toggle tint attribute
-    if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
-      setEndIconTintList(
-          AppCompatResources.getColorStateList(
-              context, a.getResourceId(R.styleable.TextInputLayout_passwordToggleTint, -1)));
-    }
-    // Support for deprecated password toggle tint mode attribute
-    if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
-      setEndIconTintMode(
-          ViewUtils.parseTintMode(
-              a.getInt(R.styleable.TextInputLayout_passwordToggleTintMode, -1), null));
+    if (!a.hasValue(R.styleable.TextInputLayout_passwordToggleEnabled)) {
+      // Default tint for any end icon or value specified by user
+      if (a.hasValue(R.styleable.TextInputLayout_endIconTint)) {
+        setEndIconTintList(
+            AppCompatResources.getColorStateList(
+                context, a.getResourceId(R.styleable.TextInputLayout_endIconTint, -1)));
+      }
+      // Default tint mode for any end icon or value specified by user
+      if (a.hasValue(R.styleable.TextInputLayout_endIconTintMode)) {
+        setEndIconTintMode(
+            ViewUtils
+                .parseTintMode(a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
+      }
     }
 
     setHelperTextEnabled(helperTextEnabled);
