@@ -88,6 +88,11 @@
     <attr name="extendedFloatingActionButtonStyle"/>
     <!-- Style to use for FloatingActionButtons in this theme. -->
     <attr name="floatingActionButtonStyle"/>
+    <!-- Style to use for MaterialCalendarView in this theme. -->
+    <attr name="materialDatePickerStyle"/>
+    <attr name="materialDateRangePickerStyle"/>
+    <attr name="materialDatePickerDialogTheme"/>
+    <attr name="materialDateRangePickerDialogTheme"/>
     <!-- Style to use for MaterialCardView in this theme. -->
     <attr name="materialCardViewStyle"/>
     <!-- Style to use for NavigationView in this theme. -->
