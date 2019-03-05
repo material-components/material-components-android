@@ -88,9 +88,6 @@ class MaterialCardViewHelper {
    */
   private static final float CARD_VIEW_SHADOW_MULTIPLIER = 1.5f;
 
-  private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
-
-  private static final float SHADOW_OFFSET_MULTIPLIER = .25f;
   private static final int CHECKED_ICON_LAYER_INDEX = 2;
 
   private final MaterialCardView materialCardView;
@@ -267,11 +264,6 @@ class MaterialCardViewHelper {
   void updateElevation() {
     if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
       bgDrawable.setElevation(materialCardView.getCardElevation());
-      // TODO: Remove once radius and offset are changed by setElevation.
-      bgDrawable.setShadowRadius(
-          (int) Math.ceil(materialCardView.getCardElevation() * SHADOW_RADIUS_MULTIPLIER));
-      bgDrawable.setShadowVerticalOffset(
-          (int) Math.ceil(materialCardView.getCardElevation() * SHADOW_OFFSET_MULTIPLIER));
     }
   }
 

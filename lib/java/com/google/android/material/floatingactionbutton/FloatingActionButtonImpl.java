@@ -72,8 +72,6 @@ class FloatingActionButtonImpl {
   private static final float SHOW_OPACITY = 1f;
   private static final float SHOW_SCALE = 1f;
   private static final float SHOW_ICON_SCALE = 1f;
-  private static final float ELEVATION_MULTIPLIER = .75f;
-  private static final float OFFSET_MULTIPLIER = .25f;
 
   int animState = ANIM_STATE_NONE;
   @Nullable Animator currentAnimator;
@@ -344,13 +342,11 @@ class FloatingActionButtonImpl {
   void onElevationsChanged(
       float elevation, float hoveredFocusedTranslationZ, float pressedTranslationZ) {
     updatePadding();
-    updateShadow(elevation);
+    updateShapeElevation(elevation);
   }
 
-  private void updateShadow(float elevation) {
-    // TODO material shape drawable should handle this calculations.
-    shapeDrawable.setElevation((float) Math.ceil((elevation * ELEVATION_MULTIPLIER)));
-    shapeDrawable.setShadowVerticalOffset((int) Math.ceil((elevation * OFFSET_MULTIPLIER)));
+  private void updateShapeElevation(float elevation) {
+    shapeDrawable.setElevation(elevation);
   }
 
   void onDrawableStateChanged(int[] state) {
@@ -746,7 +742,7 @@ class FloatingActionButtonImpl {
         validValues = true;
       }
 
-      updateShadow(
+      updateShapeElevation(
           (int)
               (shadowSizeStart
                   + ((shadowSizeEnd - shadowSizeStart) * animator.getAnimatedFraction())));
@@ -754,7 +750,7 @@ class FloatingActionButtonImpl {
 
     @Override
     public void onAnimationEnd(Animator animator) {
-      updateShadow((int) shadowSizeEnd);
+      updateShapeElevation((int) shadowSizeEnd);
       validValues = false;
     }
 

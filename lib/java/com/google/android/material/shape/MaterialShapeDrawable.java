@@ -64,6 +64,10 @@ import java.lang.annotation.RetentionPolicy;
  */
 public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable {
 
+  private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
+
+  private static final float SHADOW_OFFSET_MULTIPLIER = .25f;
+
   /**
    * Try to draw native elevation shadows if possible, otherwise use fake shadows. This is best for
    * paths which will always be convex. If the path might change to be concave, you should consider
@@ -516,13 +520,11 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    * Sets the elevation used to render shadows when {@link #requiresCompatShadow()} is true. This
    * value is the same as the native elevation that would be used to render shadows on API 21 and
    * up.
-   *
-   * <p>TODO: The shadow radius should be the actual radius drawn, elevation should be
-   * the height of the closest equivalent native elevation which produces a similar shadow.
    */
   public void setElevation(float elevation) {
     if (drawableState.elevation != elevation) {
-      drawableState.shadowCompatRadius = Math.round(elevation);
+      drawableState.shadowCompatRadius = (int) Math.ceil(elevation * SHADOW_RADIUS_MULTIPLIER);
+      drawableState.shadowCompatOffset = (int) Math.ceil(elevation * SHADOW_OFFSET_MULTIPLIER);
       drawableState.elevation = elevation;
       invalidateSelfIgnoreShape();
     }
@@ -547,30 +549,6 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Deprecated
   public void setShadowElevation(int shadowElevation) {
     setElevation(shadowElevation);
-  }
-
-  /**
-   * Returns the shadow vertical offset rendered for shadows when {@link #requiresCompatShadow()} is
-   * true.
-   */
-  @RestrictTo(LIBRARY_GROUP)
-  public int getShadowVerticalOffset() {
-    return drawableState.shadowCompatOffset;
-  }
-
-  /**
-   * Sets the shadow offset rendered by the fake shadow when {@link #requiresCompatShadow()} is
-   * true. This can make the shadow appear more on the bottom or top of the view to make a more
-   * realistic looking shadow depending on the placement of the view on the screen. Normally, if the
-   * View is positioned further down on the screen, less shadow appears above the View, and more
-   * shadow appears below it.
-   */
-  @RestrictTo(LIBRARY_GROUP)
-  public void setShadowVerticalOffset(int shadowOffset) {
-    if (drawableState.shadowCompatOffset != shadowOffset) {
-      drawableState.shadowCompatOffset = shadowOffset;
-      invalidateSelfIgnoreShape();
-    }
   }
 
   /**
@@ -854,7 +832,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       // be clipped and not visible.
       Rect canvasClipBounds = canvas.getClipBounds();
       canvasClipBounds.inset(-drawableState.shadowCompatRadius, -drawableState.shadowCompatRadius);
-      canvasClipBounds.offset(-Math.abs(shadowOffsetX), -Math.abs(shadowOffsetY));
+      canvasClipBounds.offset(shadowOffsetX, shadowOffsetY);
       canvas.clipRect(canvasClipBounds, Region.Op.REPLACE);
     }
 
