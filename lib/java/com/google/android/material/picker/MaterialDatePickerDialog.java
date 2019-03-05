@@ -18,97 +18,45 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
-import android.app.DatePickerDialog;
+import android.app.Dialog;
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.graphics.Rect;
-import android.graphics.drawable.Drawable;
-import android.os.Build;
-import android.os.Build.VERSION_CODES;
-import android.os.Bundle;
-import androidx.annotation.AttrRes;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.annotation.StyleRes;
-import com.google.android.material.dialog.InsetDialogOnTouchListener;
-import com.google.android.material.dialog.MaterialDialogs;
-import com.google.android.material.resources.MaterialAttributes;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import android.util.TypedValue;
+import java.util.Calendar;
 
 /**
- * A Material version of {@link android.app.DatePickerDialog}
+ * A {@link Dialog} with a header, {@link MaterialDatePickerView}, and set of actions.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class MaterialDatePickerDialog extends DatePickerDialog {
+public class MaterialDatePickerDialog extends MaterialPickerDialog<Calendar> {
 
-  @AttrRes private static final int DEF_STYLE_ATTR = android.R.attr.datePickerStyle;
+  private final MaterialDatePickerView materialDatePicker;
 
-  @StyleRes
-  private static final int DEF_STYLE_RES =
-      R.style.MaterialAlertDialog_MaterialComponents_Picker_Date_Spinner;
-
-  private final Drawable background;
-  private final Rect backgroundInsets;
-
-  public MaterialDatePickerDialog(@NonNull Context context) {
+  public MaterialDatePickerDialog(Context context) {
     this(context, 0);
   }
 
-  public MaterialDatePickerDialog(@NonNull Context context, int themeResId) {
-    this(context, themeResId, null, -1, -1, -1);
-  }
-
-  public MaterialDatePickerDialog(
-      @NonNull Context context,
-      @Nullable OnDateSetListener listener,
-      int year,
-      int month,
-      int dayOfMonth) {
-    this(context, 0, listener, year, month, dayOfMonth);
-  }
-
-  public MaterialDatePickerDialog(
-      @NonNull Context context,
-      int themeResId,
-      @Nullable OnDateSetListener listener,
-      int year,
-      int monthOfYear,
-      int dayOfMonth) {
-
-    super(context, themeResId, listener, year, monthOfYear, dayOfMonth);
+  public MaterialDatePickerDialog(Context context, int themeResId) {
+    super(context, getThemeResource(context, R.attr.materialDatePickerDialogTheme, themeResId));
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
-
-    TypedValue colorSurfaceValue =
-        MaterialAttributes.resolveAttributeOrThrow(
-            getContext(), R.attr.colorSurface, getClass().getCanonicalName());
-    int surfaceColor = colorSurfaceValue.data;
-
-    MaterialShapeDrawable materialShapeDrawable =
-        new MaterialShapeDrawable(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
-    // Pre-L, windowBackground is a second background behind the Picker Dialog.
-    if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      materialShapeDrawable.setFillColor(ColorStateList.valueOf(surfaceColor));
-    } else {
-      materialShapeDrawable.setFillColor(ColorStateList.valueOf(Color.TRANSPARENT));
-    }
-
-    backgroundInsets =
-        MaterialDialogs.getDialogBackgroundInsets(context, DEF_STYLE_ATTR, DEF_STYLE_RES);
-    background = MaterialDialogs.insetDrawable(materialShapeDrawable, backgroundInsets);
+    materialDatePicker = new MaterialDatePickerView(context);
   }
 
   @Override
-  protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    getWindow().setBackgroundDrawable(background);
-    getWindow()
-        .getDecorView()
-        .setOnTouchListener(new InsetDialogOnTouchListener(this, backgroundInsets));
+  protected MaterialCalendarView<Calendar> getMaterialCalendarView() {
+    return materialDatePicker;
+  }
+
+  @Override
+  protected String getHeaderText() {
+    Calendar selectedDate = materialDatePicker.getSelection();
+    if (selectedDate == null) {
+      return getContext().getResources().getString(R.string.header_prompt);
+    }
+    String startString = getSimpleDateFormat().format(selectedDate.getTime());
+    return getContext().getResources().getString(R.string.header_selected, startString);
   }
 }
