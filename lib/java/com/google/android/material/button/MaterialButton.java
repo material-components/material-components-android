@@ -35,6 +35,7 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
@@ -54,6 +55,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
+import java.util.LinkedHashSet;
 
 /**
  * A convenience class for creating a new Material button.
@@ -104,6 +106,11 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     void onCheckedChanged(MaterialButton button, boolean isChecked);
   }
 
+  /** Interface to listen for press state changes on this button. Internal use only. */
+  interface OnPressedChangeListener {
+    void onPressedChanged(MaterialButton button, boolean isPressed);
+  }
+
   private static final int[] CHECKABLE_STATE_SET = {android.R.attr.state_checkable};
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
 
@@ -142,7 +149,10 @@ public class MaterialButton extends AppCompatButton implements Checkable {
   @Px private int iconLeft;
   private boolean checked = false;
   private boolean broadcasting = false;
-  @Nullable private OnCheckedChangeListener onCheckedChangeListener;
+
+  private final LinkedHashSet<OnCheckedChangeListener> onCheckedChangeListeners =
+      new LinkedHashSet<>();
+  @Nullable private OnPressedChangeListener onPressedChangeListenerInternal;
 
   @IconGravity private int iconGravity;
 
@@ -801,12 +811,31 @@ public class MaterialButton extends AppCompatButton implements Checkable {
   }
 
   /**
-   * Register a callback to be invoked when the checked state of this MaterialButton changes.
+   * Add a listener that will be invoked when the checked state of this MaterialButton changes. See
+   * {@link OnCheckedChangeListener}.
    *
-   * @param listener the callback to call on checked state change
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnCheckedChangeListener(OnCheckedChangeListener)}.
+   *
+   * @param listener listener to add
    */
-  public void setOnCheckedChangeListener(@Nullable OnCheckedChangeListener listener) {
-    onCheckedChangeListener = listener;
+  public void addOnCheckedChangeListener(@NonNull OnCheckedChangeListener listener) {
+    onCheckedChangeListeners.add(listener);
+  }
+
+  /**
+   * Remove a listener that was previously added via {@link
+   * #addOnCheckedChangeListener(OnCheckedChangeListener)}.
+   *
+   * @param listener listener to remove
+   */
+  public void removeOnCheckedChangeListener(@NonNull OnCheckedChangeListener listener) {
+    onCheckedChangeListeners.remove(listener);
+  }
+
+  /** Remove all previously added {@link OnCheckedChangeListener}s. */
+  public void clearOnCheckedChangeListeners() {
+    onCheckedChangeListeners.clear();
   }
 
   @Override
@@ -821,10 +850,9 @@ public class MaterialButton extends AppCompatButton implements Checkable {
       }
 
       broadcasting = true;
-      if (onCheckedChangeListener != null) {
-        onCheckedChangeListener.onCheckedChanged(this, this.checked);
+      for (OnCheckedChangeListener listener : onCheckedChangeListeners) {
+        listener.onCheckedChanged(this, this.checked);
       }
-
       broadcasting = false;
     }
   }
@@ -881,6 +909,22 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     }
 
     return null;
+  }
+
+  /**
+   * Register a callback to be invoked when the pressed state of this button changes. This callback
+   * is used for internal purpose only.
+   */
+  void setOnPressedChangeListenerInternal(@Nullable OnPressedChangeListener listener) {
+    onPressedChangeListenerInternal = listener;
+  }
+
+  @Override
+  public void setPressed(boolean pressed) {
+    if (onPressedChangeListenerInternal != null) {
+      onPressedChangeListenerInternal.onPressedChanged(this, pressed);
+    }
+    super.setPressed(pressed);
   }
 
   private boolean isUsingOriginalBackground() {

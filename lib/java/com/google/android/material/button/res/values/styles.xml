@@ -17,6 +17,10 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <style name="Widget.MaterialComponents.MaterialButtonToggleGroup" parent="android:Widget">
+    <item name="singleSelection">false</item>
+  </style>
+
   <!-- Defines the base Material button style. -->
   <style name="Widget.MaterialComponents.Button" parent="Widget.AppCompat.Button">
     <item name="enforceMaterialTheme">true</item>

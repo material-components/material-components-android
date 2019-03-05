@@ -74,6 +74,8 @@
     <attr name="materialButtonStyle"/>
     <!-- Style to use for Material Outlined Buttons in this theme. -->
     <attr name="materialButtonOutlinedStyle"/>
+    <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
+    <attr name="materialButtonToggleGroupStyle"/>
     <!-- Style to use for ChipGroups in this theme. -->
     <attr name="chipGroupStyle"/>
     <!-- Style to use for Chips in this theme, usually to be used as a view. -->

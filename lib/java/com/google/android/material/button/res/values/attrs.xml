@@ -19,6 +19,8 @@
 
   <!-- Style to use for MaterialButtons in this theme. -->
   <attr name="materialButtonStyle" format="reference"/>
+  <!-- Style to use for MaterialButtonToggleGroups in this theme. -->
+  <attr name="materialButtonToggleGroupStyle" format="reference"/>
 
   <!-- Style to use for Material Outlined Buttons in this theme. -->
   <attr name="materialButtonOutlinedStyle" format="reference"/>
@@ -73,6 +75,15 @@
     <!-- Ripple color for the button. This may be a color state list, if the desired ripple color
          should be stateful. Attribute type definition is in resources package. -->
     <attr name="rippleColor"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialButtonToggleGroup">
+    <!-- Whether only a single button in this group is allowed to be checked at any time. By
+         default, this is false and multiple buttons in this group are allowed to be checked at
+         once. -->
+    <attr name="singleSelection" format="boolean"/>
+    <!-- The id of the child button that should be checked by default within this button group. -->
+    <attr name="checkedButton" format="reference"/>
   </declare-styleable>
 
 </resources>
