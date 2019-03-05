@@ -28,8 +28,4 @@
     <item name="backgroundInsetBottom">@dimen/mtrl_alert_dialog_picker_background_inset</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
   </style>
-
-  <style name="Widget.MaterialComponents.MaterialCalendarView" parent="android:Widget"/>
-  <style name="Widget.MaterialComponents.DateRangePicker" parent ="Widget.MaterialComponents.MaterialCalendarView"/>
-  <style name="Widget.MaterialComponents.DatePicker" parent ="Widget.MaterialComponents.MaterialCalendarView"/>
 </resources>
