@@ -142,8 +142,8 @@ Text field element                     | Relevant attributes/methods
 Label (also called a “Floating Label”) | [`android:hint`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_android_hint)<br/>[`app:hintEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_hintEnabled)
 Error message                          | [`app:errorEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_errorEnabled)<br/>[`#setError(CharSequence)`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#setError(java.lang.CharSequence))
 Helper text                            | [`app:helperTextEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_helperTextEnabled)<br/>[`app:helperText`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_helperText)
-Password redaction                     | [`app:passwordToggleEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_passwordToggleEnabled)<br/>[`app:passwordToggleDrawable`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_passwordToggleDrawable)
 Character counter                      | [`app:counterEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_counterEnabled)<br/>[`app:counterMaxLength`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_counterMaxLength)
+End icon mode <ul><li>Password redaction</li><li>Text clearing</li><li>Custom mode</li></ul>    | [`app:endIconMode`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_endIconMode)
 
 ## Notes about setting the hint
 
@@ -164,6 +164,118 @@ you should use `TextInputLayout's` context to create the view. This will allow
 ```java
 TextInputEditText editText = new TextInputEditText(textInputLayout.getContext());
 ```
+## End Icon Modes
+
+The `TextInputLayout` provides certain pre-packaged `EndIconMode`s that come
+with specific behaviors. However, their appearance and behaviors can be
+customized via the end icon API and its attributes. The `TextInputLayout` also
+provides support for a custom end icon, with custom appearance and behaviors.
+
+Note: You should opt to use the `EndIconMode` API instead of setting an
+end/right compound drawable on the `EditText`.
+
+### Pre-packaged `EndIconMode`s
+#### Password redaction
+If set, a button is displayed to toggle between the password being displayed as
+plain-text or disguised when the `EditText` is set to display a password.
+
+```xml
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/hint_text"
+    app:endIconMode="password_toggle">
+
+  <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:inputType="textPassword"/>
+
+</com.google.android.material.textfield.TextInputLayout>
+```
+
+#### Text clearing
+If set, a button is displayed when text is present and clicking it clears the
+`EditText` field.
+
+```xml
+<com.google.android.material.textfield.TextInputLayout
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/hint_text"
+    app:endIconMode="clear_text">
+
+  <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+
+</com.google.android.material.textfield.TextInputLayout>
+```
+
+### Custom `EndIconMode`
+
+It is possible to set a custom drawable or button as the `EditText`'s end icon
+via `app:endIconMode="custom"`. You should specify a drawable and content
+description for the icon, and, optionally, specify custom behaviors.
+
+```xml
+<com.google.android.material.textfield.TextInputLayout
+    android:id="@+id/custom_end_icon"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:hint="@string/hint_text"
+    app:endIconMode="custom"
+    app:endIconDrawable="@drawable/custom_icon"
+    app:endIconContentDescription="@string/custom_content_desc">
+
+  <com.google.android.material.textfield.TextInputEditText
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+
+</com.google.android.material.textfield.TextInputLayout>
+```
+
+Optionally, in code (more info on the section below):
+
+```java
+TextInputLayout textInputCustomEndIcon = view.findViewById(R.id.custom_end_icon);
+
+// If the icon should work as button, set an OnClickListener to it
+textInputCustomEndIcon
+    .setEndIconOnClickListener(/* custom OnClickListener */);
+
+// If any specific changes should be done when the EditText is attached (and
+// thus when the end icon is added to it), set an OnEditTextAttachedListener
+textInputCustomEndIcon
+    .addOnEditTextAttachedListener(/* custom OnEditTextAttachedListener */);
+
+// If any specific changes should be done if/when the endIconMode gets changed,
+// set an OnEndIconChangedListener
+textInputCustomEndIcon
+    .addOnEndIconChangedListener(/* custom OnEndIconChangedListener */);
+```
+
+### Customizing the end icon
+The following elements can be customized.
+
+End icon element                       | Relevant attributes/methods
+:------------------------------------- | :--------------------------
+Drawable                               | [`app:endIconDrawable`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_endIconDrawable)
+Content description                    | [`app:endIconContentDescription`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_endIconContentDescription)
+Tint                                   | [`app:endIconTint`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_endIconTint)
+Tint mode                              | [`app:endIconTintMode`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_endIconTintMode)
+Functionality                          | [`#setEndIconOnClickListener(OnClickListener)`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#setEndIconOnClickListener(View.OnClickListener))
+Behavior that depends on the EditText* | [`#addOnEditTextAttachedListener(OnEditTextAttachedListener)`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#addOnEditTextAttachedListener(OnEditTextAttachedListener))
+Behavior if EndIconMode changes**      | [`#addOnEndIconChangedListener(OnEndIconChangedListener)`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#addOnEndIconChangedListener(OnEndIconChangedListener))
+
+\* Example: The clear text end icon's visibility behavior depends on whether the
+`EditText` has input present. Therefore, an `OnEditTextAttachedListener` is set
+so things like `editText.getText()` can be called.
+
+** Example: If the password toggle end icon is set and a different `EndIconMode`
+gets set, the `TextInputLayout` has to make sure that the `EditText`'s `TransformationMethod`
+is still `PasswordTransformationMethod`. Because of that, an `OnEndIconChangedListener`
+is used.
 
 ## Related concepts
 
