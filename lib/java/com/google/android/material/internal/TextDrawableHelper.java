@@ -143,6 +143,10 @@ public class TextDrawableHelper {
     }
   }
 
+  public void updateTextPaintDrawState(Context context) {
+    textAppearance.updateDrawState(context, textPaint, fontCallback);
+  }
+
   /** Delegate interface to be implemented by Drawables that own a TextDrawableHelper. */
   public interface TextDrawableDelegate {
     // See Drawable#getState()
