@@ -72,8 +72,8 @@
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
 
     <!-- Picker styles and themes. -->
-    <item name="materialDatePickerStyle">@style/Widget.MaterialComponents.DatePicker</item>
-    <item name="materialDateRangePickerStyle">@style/Widget.MaterialComponents.DateRangePicker</item>
+    <item name="materialDatePickerStyle">@style/Widget.MaterialComponents.DatePickerView</item>
+    <item name="materialDateRangePickerStyle">@style/Widget.MaterialComponents.DateRangePickerView</item>
     <item name="materialDatePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.DatePicker</item>
     <item name="materialDateRangePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.DateRangePicker</item>
   </style>
@@ -131,8 +131,8 @@
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
 
     <!-- Picker styles and themes. -->
-    <item name="materialDatePickerStyle">@style/Widget.MaterialComponents.DatePicker</item>
-    <item name="materialDateRangePickerStyle">@style/Widget.MaterialComponents.DateRangePicker</item>
+    <item name="materialDatePickerStyle">@style/Widget.MaterialComponents.DatePickerView</item>
+    <item name="materialDateRangePickerStyle">@style/Widget.MaterialComponents.DateRangePickerView</item>
     <item name="materialDatePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.DatePicker</item>
     <item name="materialDateRangePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.DateRangePicker</item>
   </style>
