@@ -126,25 +126,7 @@ public class CustomSnackbarTest {
   @LargeTest
   public void testBasicContent() throws Throwable {
     // Verify different combinations of snackbar content (title / subtitle and action)
-    // and duration
-
-    // Short duration
-    verifySnackbarContent(
-        makeCustomSnackbar()
-            .setTitle(TITLE_TEXT)
-            .setSubtitle(SUBTITLE_TEXT)
-            .setDuration(Snackbar.LENGTH_SHORT),
-        TITLE_TEXT,
-        SUBTITLE_TEXT);
-
-    // Long duration
-    verifySnackbarContent(
-        makeCustomSnackbar()
-            .setTitle(TITLE_TEXT)
-            .setSubtitle(SUBTITLE_TEXT)
-            .setDuration(Snackbar.LENGTH_LONG),
-        TITLE_TEXT,
-        SUBTITLE_TEXT);
+    // We can't test duration here because timing can be flaky when run in the emulator.
 
     // Indefinite duration
     verifySnackbarContent(
@@ -217,7 +199,7 @@ public class CustomSnackbarTest {
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         swipeRight(),
         null,
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_SWIPE);
   }
 
@@ -232,7 +214,7 @@ public class CustomSnackbarTest {
           onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
           swipeLeft(),
           null,
-          Snackbar.LENGTH_LONG,
+          Snackbar.LENGTH_INDEFINITE,
           Snackbar.Callback.DISMISS_EVENT_SWIPE);
     }
   }
@@ -249,7 +231,7 @@ public class CustomSnackbarTest {
             snackbar.dismiss();
           }
         },
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_MANUAL);
   }
 
@@ -284,7 +266,7 @@ public class CustomSnackbarTest {
             anotherSnackbar.show();
           }
         },
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
 
     // And dismiss the second snackbar to get back to clean state

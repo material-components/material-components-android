@@ -121,11 +121,15 @@ public class SnackbarTest {
 
     // String message and no action
     verifySnackbarContent(
-        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT), MESSAGE_TEXT, null);
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE),
+        MESSAGE_TEXT,
+        null);
 
     // Resource message and no action
     verifySnackbarContent(
-        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG), resolvedMessage, null);
+        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_INDEFINITE),
+        resolvedMessage,
+        null);
 
     // String message and string action
     verifySnackbarContent(
@@ -136,14 +140,14 @@ public class SnackbarTest {
 
     // String message and resource action
     verifySnackbarContent(
-        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_ID, mock(View.OnClickListener.class)),
         MESSAGE_TEXT,
         resolvedAction);
 
     // Resource message and resource action
     verifySnackbarContent(
-        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_LONG)
+        Snackbar.make(coordinatorLayout, MESSAGE_ID, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_ID, mock(View.OnClickListener.class)),
         resolvedMessage,
         resolvedAction);
@@ -207,7 +211,7 @@ public class SnackbarTest {
         onView(withId(R.id.snackbar_action)),
         click(),
         null,
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_ACTION);
   }
 
@@ -217,7 +221,7 @@ public class SnackbarTest {
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         swipeRight(),
         null,
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_SWIPE);
   }
 
@@ -231,7 +235,7 @@ public class SnackbarTest {
           onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
           swipeLeft(),
           null,
-          Snackbar.LENGTH_LONG,
+          Snackbar.LENGTH_INDEFINITE,
           Snackbar.Callback.DISMISS_EVENT_SWIPE);
     }
   }
@@ -247,7 +251,7 @@ public class SnackbarTest {
             snackbar.dismiss();
           }
         },
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_MANUAL);
   }
 
@@ -307,7 +311,7 @@ public class SnackbarTest {
             anotherSnackbar.show();
           }
         },
-        Snackbar.LENGTH_LONG,
+        Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
 
     // And dismiss the second snackbar to get back to clean state
@@ -318,7 +322,7 @@ public class SnackbarTest {
   public void testActionClickListener() {
     final View.OnClickListener mockClickListener = mock(View.OnClickListener.class);
     final Snackbar snackbar =
-        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_SHORT)
+        Snackbar.make(coordinatorLayout, MESSAGE_TEXT, Snackbar.LENGTH_INDEFINITE)
             .setAction(ACTION_TEXT, mockClickListener);
 
     // Show the snackbar
