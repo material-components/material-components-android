@@ -34,7 +34,6 @@ import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 import androidx.core.util.Pools;
 import androidx.core.view.ViewCompat;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.appcompat.content.res.AppCompatResources;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
@@ -45,6 +44,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
