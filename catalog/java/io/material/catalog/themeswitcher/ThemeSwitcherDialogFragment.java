@@ -78,12 +78,6 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
     }
   }
 
-  @StyleableRes
-  private static final int[] PRIMARY_THEME_OVERLAY_ATTRS = {
-    R.attr.colorPrimary, R.attr.colorPrimaryDark
-  };
-
-  @StyleableRes private static final int[] SECONDARY_THEME_OVERLAY_ATTRS = {R.attr.colorSecondary};
 
   @Inject ThemeSwitcherResourceProvider resourceProvider;
   private RadioGroup primaryColorGroup;
@@ -109,7 +103,7 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
         primaryColorGroup,
         resourceProvider.getPrimaryColors(),
         resourceProvider.getPrimaryColorsContentDescription(),
-        PRIMARY_THEME_OVERLAY_ATTRS,
+        resourceProvider.getPrimaryThemeOverlayAttrs(),
         currentThemeOverlays[PRIMARY_COLOR_INDEX],
         ThemingType.COLOR);
 
@@ -118,7 +112,7 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
         secondaryColorGroup,
         resourceProvider.getSecondaryColors(),
         resourceProvider.getSecondaryColorsContentDescription(),
-        SECONDARY_THEME_OVERLAY_ATTRS,
+        resourceProvider.getSecondaryThemeOverlayAttrs(),
         currentThemeOverlays[SECONDARY_COLOR_INDEX],
         ThemingType.COLOR);
 
