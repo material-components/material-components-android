@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
-<resources>
-  <integer name="mtrl_badge_max_character_count">4</integer>
+<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
+    xmlns:tools="http://schemas.android.com/tools">
+<string name="mtrl_exceed_max_badge_number_suffix" translatable="false"><xliff:g id="maximum number" example="999">%1$s</xliff:g><xliff:g id="suffix" example="+">%2$s</xliff:g></string>
 </resources>

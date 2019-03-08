@@ -14,7 +14,14 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-
 <resources>
-  <integer name="mtrl_badge_max_character_count">4</integer>
+
+  <dimen name="mtrl_badge_icon_only_radius">4dp</dimen>
+  <dimen name="mtrl_badge_with_text_radius">8dp</dimen>
+  <!-- Vertically center badge 4dp from top edge of anchor. -->
+  <dimen name="mtrl_badge_vertical_offset">4dp</dimen>
+  <!-- Leading and trailing text padding when a badge is displaying text that is too long to fit in
+       a circular badge, i.e. if badge number is greater than 99. -->
+  <dimen name="mtrl_badge_long_text_horizontal_padding">4dp</dimen>
+  <dimen name="mtrl_badge_text_size">10sp</dimen>
 </resources>
