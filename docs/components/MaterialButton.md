@@ -73,6 +73,30 @@ color of the component, and the text color is `colorOnPrimary`. For unfilled
 buttons, your theme's `colorPrimary` provides the default text color of the
 component, and the background color is transparent by default.
 
+Note: Elevated MaterialButtons have a shadow which extends outside the bounds of
+the button. For this reason, the wrapping parent element should set
+`android:clipToPadding="false"` in cases where the button shadow could be
+clipped by the parent bounds.
+
+```xml
+  <GridLayout
+      android:id="@+id/grid"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="center"
+      android:clipToPadding="false"
+      android:columnCount="2">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/material_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/button_label_enabled"/>
+
+    <Space/>
+  </GridLayout>
+```
+
 ## Styles
 
 We provide several styles for the `MaterialButton` component.
