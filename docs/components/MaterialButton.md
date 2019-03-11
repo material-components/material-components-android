@@ -84,6 +84,7 @@ clipped by the parent bounds.
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="center"
+      android:padding="16dp"
       android:clipToPadding="false"
       android:columnCount="2">
 
