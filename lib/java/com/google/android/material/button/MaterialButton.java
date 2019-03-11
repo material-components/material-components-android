@@ -388,7 +388,8 @@ public class MaterialButton extends AppCompatButton implements Checkable {
       buttonText = getTransformationMethod().getTransformation(buttonText, this).toString();
     }
 
-    int textWidth = Math.min((int) textPaint.measureText(buttonText), getLayout().getWidth());
+    int textWidth =
+        Math.min((int) textPaint.measureText(buttonText), getLayout().getEllipsizedWidth());
 
     int localIconSize = iconSize == 0 ? icon.getIntrinsicWidth() : iconSize;
     int newIconLeft =
