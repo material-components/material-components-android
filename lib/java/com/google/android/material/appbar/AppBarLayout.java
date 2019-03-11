@@ -16,8 +16,6 @@
 
 package com.google.android.material.appbar;
 
-import com.google.android.material.R;
-
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.ValueAnimator;
@@ -28,24 +26,6 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.IdRes;
-import androidx.annotation.IntDef;
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.annotation.RequiresApi;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.VisibleForTesting;
-import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.internal.ContextUtils;
-import com.google.android.material.internal.ThemeEnforcement;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.math.MathUtils;
-import androidx.core.util.ObjectsCompat;
-import androidx.customview.view.AbsSavedState;
-import androidx.core.view.NestedScrollingChild;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.ViewCompat.NestedScrollType;
-import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
@@ -53,6 +33,25 @@ import android.view.animation.Interpolator;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ScrollView;
+import androidx.annotation.IdRes;
+import androidx.annotation.IntDef;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.math.MathUtils;
+import androidx.core.util.ObjectsCompat;
+import androidx.core.view.NestedScrollingChild;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.ViewCompat.NestedScrollType;
+import androidx.core.view.WindowInsetsCompat;
+import androidx.customview.view.AbsSavedState;
+import com.google.android.material.R;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.internal.ContextUtils;
+import com.google.android.material.internal.ThemeEnforcement;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -238,6 +237,7 @@ public class AppBarLayout extends LinearLayout {
             return onWindowInsetChanged(insets);
           }
         });
+    ViewCompat.requestApplyInsets(this);
   }
 
   /**
@@ -283,12 +283,36 @@ public class AppBarLayout extends LinearLayout {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+    if (heightMode != MeasureSpec.EXACTLY && needToInsetFirstChild()) {
+      int newHeight = getMeasuredHeight();
+      switch (heightMode) {
+        case MeasureSpec.AT_MOST:
+          newHeight = MathUtils.clamp(getMeasuredHeight() + getTopInset(),
+              0, MeasureSpec.getSize(heightMeasureSpec));
+          break;
+        case MeasureSpec.UNSPECIFIED:
+          newHeight = getMeasuredHeight() + getTopInset();
+          break;
+      }
+      setMeasuredDimension(getMeasuredWidth(), newHeight);
+    }
+
     invalidateScrollRanges();
   }
 
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
     super.onLayout(changed, l, t, r, b);
+
+    if (needToInsetFirstChild()) {
+      // If we need to inset the first child, we need to offset all of them to make space
+      for (int z = getChildCount() - 1; z >= 0; z--) {
+        ViewCompat.offsetTopAndBottom(getChildAt(z), getTopInset());
+      }
+    }
+
     invalidateScrollRanges();
 
     haveChildWithInterpolator = false;
@@ -429,6 +453,11 @@ public class AppBarLayout extends LinearLayout {
         // We're set to scroll so add the child's height
         range += childHeight + lp.topMargin + lp.bottomMargin;
 
+        if (i == 0 && ViewCompat.getFitsSystemWindows(child)) {
+          // If this is the first child and it wants to handle system windows, we need to make
+          // sure we don't scroll it past the inset
+          range -= getTopInset();
+        }
         if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
           // For a collapsing scroll, we to take the collapsed height into account.
           // We also break straight away since later views can't scroll beneath
@@ -442,7 +471,7 @@ public class AppBarLayout extends LinearLayout {
         break;
       }
     }
-    return totalScrollRange = Math.max(0, range - getTopInset());
+    return totalScrollRange = Math.max(0, range);
   }
 
   boolean hasScrollableChildren() {
@@ -479,8 +508,8 @@ public class AppBarLayout extends LinearLayout {
           // Only enter by the amount of the collapsed height
           range += childHeight - ViewCompat.getMinimumHeight(child);
         } else {
-          // Else use the full height (minus the top inset)
-          range += childHeight - getTopInset();
+          // Else use the full height
+          range += childHeight;
         }
       } else if (range > 0) {
         // If we've hit an non-quick return scrollable view, and we've already hit a
@@ -515,7 +544,7 @@ public class AppBarLayout extends LinearLayout {
           // For a collapsing exit scroll, we to take the collapsed height into account.
           // We also break the range straight away since later views can't scroll
           // beneath us
-          range -= ViewCompat.getMinimumHeight(child) + getTopInset();
+          range -= ViewCompat.getMinimumHeight(child);
           break;
         }
       } else {
@@ -726,6 +755,14 @@ public class AppBarLayout extends LinearLayout {
     return lastInsets != null ? lastInsets.getSystemWindowInsetTop() : 0;
   }
 
+  private boolean needToInsetFirstChild() {
+    if (getChildCount() > 0) {
+      final View firstChild = getChildAt(0);
+      return firstChild.getVisibility() != GONE && !ViewCompat.getFitsSystemWindows(firstChild);
+    }
+    return false;
+  }
+
   WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
     WindowInsetsCompat newInsets = null;
 
@@ -737,7 +774,7 @@ public class AppBarLayout extends LinearLayout {
     // If our insets have changed, keep them and invalidate the scroll ranges...
     if (!ObjectsCompat.equals(lastInsets, newInsets)) {
       lastInsets = newInsets;
-      invalidateScrollRanges();
+      requestLayout();
     }
 
     return insets;
