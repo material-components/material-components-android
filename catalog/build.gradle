@@ -33,6 +33,7 @@ def srcDirs = [
   'chip',
   'dialog',
   'draggable',
+  'elevation',
   'fab',
   'feature',
   'font',

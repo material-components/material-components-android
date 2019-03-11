@@ -79,6 +79,10 @@ public abstract class DemoActivity extends AppCompatActivity
     return true;
   }
 
+  protected boolean shouldShowDefaultDemoActionBarCloseButton() {
+    return true;
+  }
+
   @Override
   public AndroidInjector<Fragment> supportFragmentInjector() {
     return supportFragmentInjector;
@@ -101,6 +105,11 @@ public abstract class DemoActivity extends AppCompatActivity
     if (shouldShowDefaultDemoActionBar()) {
       setSupportActionBar(toolbar);
       setDemoActionBarTitle(getSupportActionBar());
+
+      if (shouldShowDefaultDemoActionBarCloseButton()) {
+        getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_close_vd_theme_24px);
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+      }
     } else {
       toolbar.setVisibility(View.GONE);
     }

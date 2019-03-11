@@ -27,6 +27,7 @@ import io.material.catalog.card.CardFragment;
 import io.material.catalog.checkbox.CheckBoxFragment;
 import io.material.catalog.chip.ChipFragment;
 import io.material.catalog.dialog.DialogDemoLandingFragment;
+import io.material.catalog.elevation.ElevationFragment;
 import io.material.catalog.fab.FabFragment;
 import io.material.catalog.font.FontFragment;
 import io.material.catalog.menu.MenuFragment;
@@ -55,6 +56,7 @@ import io.material.catalog.transformation.TransformationFragment;
       CheckBoxFragment.Module.class,
       ChipFragment.Module.class,
       DialogDemoLandingFragment.Module.class,
+      ElevationFragment.Module.class,
       FabFragment.Module.class,
       FontFragment.Module.class,
       MenuFragment.Module.class,

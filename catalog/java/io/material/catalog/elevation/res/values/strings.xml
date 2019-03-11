@@ -23,6 +23,7 @@
     depicted (by default) using shadows. This demo illustrates the proper rendering of shadows at
     different elevations.
     </string>
+  <string name="cat_elevation_overlays_title" translatable="false">Elevation Overlays Demo</string>
   <string name="cat_increase_elevation">Increase Elevation</string>
   <string name="cat_decrease_elevation">Decrease Elevation</string>
   <string name="cat_elevation_fragment_level">"Elevation Spec: %1$d dp."</string>

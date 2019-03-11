@@ -38,6 +38,11 @@ public class MaterialAttributes {
         componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
   }
 
+  public static boolean resolveBooleanAttributeOrThrow(
+      Context context, @AttrRes int attributeResId, String errorMessageComponent) {
+    return resolveAttributeOrThrow(context, attributeResId, errorMessageComponent).data != 0;
+  }
+
   public static TypedValue resolveAttributeOrThrow(
       Context context, @AttrRes int attributeResId, String errorMessageComponent) {
     TypedValue typedValue = resolveAttribute(context, attributeResId);

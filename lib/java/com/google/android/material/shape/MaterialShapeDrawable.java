@@ -50,6 +50,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
 import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
 import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
@@ -137,7 +138,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    *     rendered in this drawable.
    */
   public MaterialShapeDrawable(ShapeAppearanceModel shapeAppearanceModel) {
-    this(new MaterialShapeDrawableState(shapeAppearanceModel));
+    this(new MaterialShapeDrawableState(shapeAppearanceModel, null));
   }
 
   private MaterialShapeDrawable(MaterialShapeDrawableState drawableState) {
@@ -483,6 +484,25 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
         shadowEnabled ? SHADOW_COMPAT_MODE_DEFAULT : SHADOW_COMPAT_MODE_NEVER);
   }
 
+  public void initializeElevationOverlay(Context context) {
+    drawableState.elevationOverlayProvider = new ElevationOverlayProvider(context);
+    updateElevationOverlayTint();
+    invalidateSelfIgnoreShape();
+  }
+
+  private void updateElevationOverlayTint() {
+    // Recalculate fillPaint tint filter based on elevation, elevationOverlayEnabled, etc.
+    updateTintFilter();
+  }
+
+  @ColorInt
+  private int layerElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
+    return drawableState.elevationOverlayProvider != null
+        ? drawableState.elevationOverlayProvider.layerOverlayIfNeeded(
+            backgroundColor, drawableState.elevation)
+        : backgroundColor;
+  }
+
   /**
    * Get the interpolation of the path, between 0 and 1. Ranges between 0 (none) and 1 (fully)
    * interpolated.
@@ -526,6 +546,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       drawableState.shadowCompatRadius = (int) Math.ceil(elevation * SHADOW_RADIUS_MULTIPLIER);
       drawableState.shadowCompatOffset = (int) Math.ceil(elevation * SHADOW_OFFSET_MULTIPLIER);
       drawableState.elevation = elevation;
+      updateElevationOverlayTint();
       invalidateSelfIgnoreShape();
     }
   }
@@ -956,8 +977,18 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   private void updateTintFilter() {
-    tintFilter = calculateTintFilter(drawableState.tintList, drawableState.tintMode);
-    strokeTintFilter = calculateTintFilter(drawableState.strokeTintList, drawableState.tintMode);
+    tintFilter =
+        calculateTintFilter(
+            drawableState.tintList,
+            drawableState.tintMode,
+            fillPaint,
+            /* requiresElevationOverlays= */ true);
+    strokeTintFilter =
+        calculateTintFilter(
+            drawableState.strokeTintList,
+            drawableState.tintMode,
+            strokePaint,
+            /* requiresElevationOverlays= */ false);
     if (drawableState.useTintColorForShadow) {
       shadowRenderer.setShadowColor(
           drawableState.tintList.getColorForState(getState(), Color.TRANSPARENT));
@@ -966,12 +997,35 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Nullable
   private PorterDuffColorFilter calculateTintFilter(
-      ColorStateList tintList, PorterDuff.Mode tintMode) {
-    if (tintList == null || tintMode == null) {
-      return null;
+      ColorStateList tintList,
+      PorterDuff.Mode tintMode,
+      Paint paint,
+      boolean requiresElevationOverlays) {
+    return tintList == null || tintMode == null
+        ? calculatePaintColorTintFilter(paint, requiresElevationOverlays)
+        : calculateTintColorTintFilter(tintList, tintMode, requiresElevationOverlays);
+  }
+
+  @Nullable
+  private PorterDuffColorFilter calculatePaintColorTintFilter(
+      Paint paint, boolean requiresElevationOverlays) {
+    if (requiresElevationOverlays) {
+      int paintColor = paint.getColor();
+      int tintColor = layerElevationOverlayIfNeeded(paintColor);
+      if (tintColor != paintColor) {
+        return new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
+      }
     }
-    return new PorterDuffColorFilter(
-        tintList.getColorForState(getState(), Color.TRANSPARENT), tintMode);
+    return null;
+  }
+
+  private PorterDuffColorFilter calculateTintColorTintFilter(
+      ColorStateList tintList, PorterDuff.Mode tintMode, boolean requiresElevationOverlays) {
+    int tintColor = tintList.getColorForState(getState(), Color.TRANSPARENT);
+    if (requiresElevationOverlays) {
+      tintColor = layerElevationOverlayIfNeeded(tintColor);
+    }
+    return new PorterDuffColorFilter(tintColor, tintMode);
   }
 
   @Override
@@ -1034,6 +1088,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   static final class MaterialShapeDrawableState extends ConstantState {
 
     @NonNull public ShapeAppearanceModel shapeAppearanceModel;
+    @Nullable public ElevationOverlayProvider elevationOverlayProvider;
 
     public ColorFilter colorFilter;
     public ColorStateList fillColor = null;
@@ -1057,12 +1112,16 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
     public Style paintStyle = Style.FILL_AND_STROKE;
 
-    public MaterialShapeDrawableState(ShapeAppearanceModel shapeAppearanceModel) {
+    public MaterialShapeDrawableState(
+        ShapeAppearanceModel shapeAppearanceModel,
+        ElevationOverlayProvider elevationOverlayProvider) {
       this.shapeAppearanceModel = shapeAppearanceModel;
+      this.elevationOverlayProvider = elevationOverlayProvider;
     }
 
     public MaterialShapeDrawableState(MaterialShapeDrawableState orig) {
       shapeAppearanceModel = new ShapeAppearanceModel(orig.shapeAppearanceModel);
+      elevationOverlayProvider = orig.elevationOverlayProvider;
       strokeWidth = orig.strokeWidth;
       colorFilter = orig.colorFilter;
       fillColor = orig.fillColor;

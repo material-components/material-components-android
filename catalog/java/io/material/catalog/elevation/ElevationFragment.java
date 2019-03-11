@@ -18,6 +18,7 @@ package io.material.catalog.elevation;
 
 import io.material.catalog.R;
 
+import android.content.Intent;
 import androidx.fragment.app.Fragment;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -27,6 +28,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.Collections;
+import java.util.List;
 
 /** A landing fragment that links to Elevation demos for the Catalog app. */
 public class ElevationFragment extends DemoLandingFragment {
@@ -49,6 +52,17 @@ public class ElevationFragment extends DemoLandingFragment {
         return new ElevationMainDemoFragment();
       }
     };
+  }
+
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    return Collections.singletonList(
+        new Demo(R.string.cat_elevation_overlays_title) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), ElevationOverlaysDemoActivity.class);
+          }
+        });
   }
 
   /** The Dagger module for {@link ElevationFragment} dependencies. */

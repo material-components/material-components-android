@@ -43,6 +43,7 @@ def srcDirs = [
   'com/google/android/material/color',
   'com/google/android/material/dialog',
   'com/google/android/material/drawable',
+  'com/google/android/material/elevation',
   'com/google/android/material/expandable',
   'com/google/android/material/floatingactionbutton',
   'com/google/android/material/internal',

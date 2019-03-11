@@ -78,6 +78,11 @@
     <item name="shapeAppearanceLargeComponent">
       @style/ShapeAppearance.MaterialComponents.LargeComponent
     </item>
+
+    <!-- Elevation Overlays -->
+    <!-- TODO: Enable once more components support elevation overlays. -->
+    <item name="elevationOverlaysEnabled">false</item>
+    <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Bridge" parent="Platform.MaterialComponents.Light">
@@ -126,6 +131,10 @@
     <item name="shapeAppearanceLargeComponent">
       @style/ShapeAppearance.MaterialComponents.LargeComponent
     </item>
+
+    <!-- Elevation Overlays -->
+    <item name="elevationOverlaysEnabled">false</item>
+    <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.DarkActionBar.Bridge" parent="Theme.AppCompat.Light.DarkActionBar">
@@ -176,6 +185,11 @@
     <item name="shapeAppearanceLargeComponent">
       @style/ShapeAppearance.MaterialComponents.LargeComponent
     </item>
+
+    <!-- Elevation Overlays -->
+    <!-- TODO: Enable once more components support elevation overlays. -->
+    <item name="elevationOverlaysEnabled">false</item>
+    <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform

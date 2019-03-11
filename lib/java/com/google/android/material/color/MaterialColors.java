@@ -17,6 +17,7 @@ package com.google.android.material.color;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
@@ -42,12 +43,27 @@ public class MaterialColors {
   public static final float ALPHA_DISABLED_LOW = 0.12F;
 
   /**
-   * Returns the color int for the provided theme color attribute, or throws an {@link
-   * IllegalArgumentException} if the attribute is not set in the current theme.
+   * Returns the color int for the provided theme color attribute, using the {@link Context} of the
+   * provided {@code view}.
+   *
+   * @throws IllegalArgumentException if the attribute is not set in the current theme.
    */
   @ColorInt
   public static int getColor(View view, @AttrRes int colorAttributeResId) {
     return MaterialAttributes.resolveAttributeOrThrow(view, colorAttributeResId).data;
+  }
+
+  /**
+   * Returns the color int for the provided theme color attribute.
+   *
+   * @throws IllegalArgumentException if the attribute is not set in the current theme.
+   */
+  @ColorInt
+  public static int getColor(
+      Context context, @AttrRes int colorAttributeResId, String errorMessageComponent) {
+    return MaterialAttributes.resolveAttributeOrThrow(
+            context, colorAttributeResId, errorMessageComponent)
+        .data;
   }
 
   /**
