@@ -139,6 +139,12 @@ public class MaterialButton extends AppCompatButton implements Checkable {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
+  // Accessibility class names so that Talkback can recognize this as a button.
+  // These must be kept as literals so that they're not affected by proguard / appreduce.
+  private static final String A11Y_CLASS_NAME = "android.widget.Button";
+
+  private static final String A11Y_CLASS_NAME_WHEN_CHECKABLE = "android.widget.CompoundButton";
+
   @Nullable private final MaterialButtonHelper materialButtonHelper;
 
   @Px private int iconPadding;
@@ -198,10 +204,14 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     updateIcon();
   }
 
+  private String getA11yClassName() {
+    return isCheckable() ? A11Y_CLASS_NAME_WHEN_CHECKABLE : A11Y_CLASS_NAME;
+  }
+
   @Override
   public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
     super.onInitializeAccessibilityNodeInfo(info);
-    info.setClassName(MaterialButton.class.getName());
+    info.setClassName(getA11yClassName());
     info.setCheckable(isCheckable());
     info.setChecked(isChecked());
     info.setClickable(isClickable());
@@ -210,7 +220,7 @@ public class MaterialButton extends AppCompatButton implements Checkable {
   @Override
   public void onInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
     super.onInitializeAccessibilityEvent(accessibilityEvent);
-    accessibilityEvent.setClassName(MaterialButton.class.getName());
+    accessibilityEvent.setClassName(getA11yClassName());
     accessibilityEvent.setChecked(isChecked());
   }
 
