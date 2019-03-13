@@ -32,6 +32,7 @@ import android.graphics.ColorFilter;
 import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
+import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.AttrRes;
@@ -60,9 +61,9 @@ import android.view.ViewGroup;
 // TODO: Add information and example about how to use BadgeDrawable (specifically pre-18
 // vs later).
 @RestrictTo(Scope.LIBRARY)
-public class BadgeDrawable extends MaterialShapeDrawable implements TextDrawableDelegate {
-
+public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private final Context context;
+  private final MaterialShapeDrawable shapeDrawable;
   private final TextDrawableHelper textDrawableHelper;
   private final Rect badgeBounds;
   private final float iconOnlyRadius;
@@ -70,6 +71,7 @@ public class BadgeDrawable extends MaterialShapeDrawable implements TextDrawable
   private final float badgeWidePadding;
   private final float badgeCenterX;
   private final float badgeCenterY;
+  private final Rect tmpRect;
 
   private int number = ICON_ONLY_BADGE_NUMBER;
   private int maxCharacterCount;
@@ -125,15 +127,14 @@ public class BadgeDrawable extends MaterialShapeDrawable implements TextDrawable
   private BadgeDrawable(@NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
     this.context = anchorView.getContext();
     Resources res = context.getResources();
+    tmpRect = new Rect();
 
+    shapeDrawable = new MaterialShapeDrawable();
     Rect anchorRect = new Rect();
     // Returns the visible bounds of the anchor view.
     anchorView.getDrawingRect(anchorRect);
     anchorRect.top += (int) res.getDimension(R.dimen.mtrl_badge_vertical_offset);
     if (customBadgeParent != null || VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
-      // TODO: Support displaying badgeDrawable in pre API-18.
-      // Add a delegate to update BadgeDrawable owner whenever this drawable's bounds changes.
-
       // Calculates coordinates relative to the parent.
       ViewGroup viewGroup =
           customBadgeParent == null ? (ViewGroup) anchorView.getParent() : customBadgeParent;
@@ -164,7 +165,7 @@ public class BadgeDrawable extends MaterialShapeDrawable implements TextDrawable
    */
   @ColorInt
   public int getBackgroundColor() {
-    return getFillColor().getDefaultColor();
+    return shapeDrawable.getFillColor().getDefaultColor();
   }
 
   /**
@@ -175,8 +176,8 @@ public class BadgeDrawable extends MaterialShapeDrawable implements TextDrawable
    */
   public void setBackgroundColor(@ColorInt int backgroundColor) {
     ColorStateList backgroundColorStateList = ColorStateList.valueOf(backgroundColor);
-    if (getFillColor() != backgroundColorStateList) {
-      setFillColor(backgroundColorStateList);
+    if (shapeDrawable.getFillColor() != backgroundColorStateList) {
+      shapeDrawable.setFillColor(backgroundColorStateList);
       invalidateSelf();
     }
   }
@@ -309,7 +310,7 @@ public class BadgeDrawable extends MaterialShapeDrawable implements TextDrawable
     if (bounds.isEmpty() || getAlpha() == 0 || !isVisible()) {
       return;
     }
-    super.draw(canvas);
+    shapeDrawable.draw(canvas);
     if (number >= 0) {
       drawText(canvas);
     }
@@ -340,6 +341,7 @@ public class BadgeDrawable extends MaterialShapeDrawable implements TextDrawable
 
   private void updateBounds() {
     float cornerRadius;
+    tmpRect.set(badgeBounds);
     if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
       cornerRadius = (getNumber() == ICON_ONLY_BADGE_NUMBER) ? iconOnlyRadius : badgeWithTextRadius;
 
@@ -350,8 +352,10 @@ public class BadgeDrawable extends MaterialShapeDrawable implements TextDrawable
           textDrawableHelper.getTextWidth(getBadgeText()) / 2f + badgeWidePadding;
       updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, halfBadgeWidth, cornerRadius);
     }
-    setCornerRadius(cornerRadius);
-    setBounds(badgeBounds);
+    shapeDrawable.setCornerRadius(cornerRadius);
+    if (!tmpRect.equals(badgeBounds)) {
+      shapeDrawable.setBounds(badgeBounds);
+    }
   }
 
   private void drawText(Canvas canvas) {
