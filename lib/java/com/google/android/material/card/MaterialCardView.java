@@ -172,13 +172,31 @@ public class MaterialCardView extends CardView implements Checkable {
    * @param strokeColor The color of the stroke.
    */
   public void setStrokeColor(@ColorInt int strokeColor) {
+    cardViewHelper.setStrokeColor(ColorStateList.valueOf(strokeColor));
+  }
+
+  /**
+   * Sets the stroke color of this card view.
+   *
+   * @param strokeColor The ColorStateList of the stroke.
+   */
+  public void setStrokeColor(ColorStateList strokeColor) {
     cardViewHelper.setStrokeColor(strokeColor);
   }
 
-  /** Returns the stroke color of this card view. */
+  /**
+   * @deprecated use {@link #getStrokeColorStateList()}
+   */
   @ColorInt
+  @Deprecated
   public int getStrokeColor() {
     return cardViewHelper.getStrokeColor();
+  }
+
+  /** Returns the stroke ColorStateList of this card view. */
+  @Nullable
+  public ColorStateList getStrokeColorStateList() {
+    return cardViewHelper.getStrokeColorStateList();
   }
 
   /**

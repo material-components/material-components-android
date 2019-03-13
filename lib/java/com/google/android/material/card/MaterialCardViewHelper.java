@@ -91,21 +91,11 @@ class MaterialCardViewHelper {
   private static final int CHECKED_ICON_LAYER_INDEX = 2;
 
   private final MaterialCardView materialCardView;
-
-  private ColorStateList rippleColor;
-  private ColorStateList checkedIconTint;
-
-  @ColorInt private int strokeColor;
-  @Dimension private int strokeWidth;
   private final Rect userContentPadding = new Rect();
-
   private final ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
   private final MaterialShapeDrawable bgDrawable; // Will always wrapped in an InsetDrawable
   private final MaterialShapeDrawable
       foregroundContentDrawable; // Will always wrapped in an InsetDrawable
-  @Nullable private Drawable rippleDrawable;
-  @Nullable private LayerDrawable clickableForegroundDrawable;
-  @Nullable private MaterialShapeDrawable compatRippleDrawable;
 
   private final ShapeAppearanceModel shapeAppearanceModelInsetByStroke;
   private final MaterialShapeDrawable drawableInsetByStroke;
@@ -113,11 +103,20 @@ class MaterialCardViewHelper {
 
   // If card is clickable, this is the clickableForegroundDrawable otherwise it draws the stroke.
   private Drawable fgDrawable;
+  private Drawable checkedIcon;
+  private ColorStateList rippleColor;
+  private ColorStateList checkedIconTint;
+
+  @Nullable private ColorStateList strokeColor;
+  @Nullable private Drawable rippleDrawable;
+  @Nullable private LayerDrawable clickableForegroundDrawable;
+  @Nullable private MaterialShapeDrawable compatRippleDrawable;
+
+  @Dimension private int strokeWidth;
 
   private boolean isBackgroundOverwritten = false;
   private boolean checkable;
 
-  private Drawable checkedIcon;
 
   public MaterialCardViewHelper(
       MaterialCardView card, AttributeSet attrs, int defStyleAttr, @StyleRes int defStyleRes) {
@@ -140,8 +139,13 @@ class MaterialCardViewHelper {
 
   void loadFromAttributes(TypedArray attributes) {
     // If cardCornerRadius is set, let it override the shape appearance.
-    strokeColor =
-        attributes.getColor(R.styleable.MaterialCardView_strokeColor, DEFAULT_STROKE_VALUE);
+    strokeColor = MaterialResources.getColorStateList(
+        materialCardView.getContext(),
+        attributes,
+        R.styleable.MaterialCardView_strokeColor);
+    if (strokeColor == null) {
+      strokeColor = ColorStateList.valueOf(DEFAULT_STROKE_VALUE);
+    }
     strokeWidth = attributes.getDimensionPixelSize(R.styleable.MaterialCardView_strokeWidth, 0);
     checkable = attributes.getBoolean(R.styleable.MaterialCardView_android_checkable, false);
     materialCardView.setLongClickable(checkable);
@@ -189,7 +193,7 @@ class MaterialCardViewHelper {
     this.isBackgroundOverwritten = isBackgroundOverwritten;
   }
 
-  void setStrokeColor(@ColorInt int strokeColor) {
+  void setStrokeColor(ColorStateList strokeColor) {
     if (this.strokeColor == strokeColor) {
       return;
     }
@@ -200,6 +204,11 @@ class MaterialCardViewHelper {
 
   @ColorInt
   int getStrokeColor() {
+    return strokeColor == null ? DEFAULT_STROKE_VALUE : strokeColor.getDefaultColor();
+  }
+
+  @Nullable
+  ColorStateList getStrokeColorStateList() {
     return strokeColor;
   }
 
