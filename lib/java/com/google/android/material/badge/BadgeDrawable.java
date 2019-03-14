@@ -133,7 +133,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     Rect anchorRect = new Rect();
     // Returns the visible bounds of the anchor view.
     anchorView.getDrawingRect(anchorRect);
-    anchorRect.top += (int) res.getDimension(R.dimen.mtrl_badge_vertical_offset);
+    anchorRect.top += res.getDimensionPixelSize(R.dimen.mtrl_badge_vertical_offset);
     if (customBadgeParent != null || VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
       // Calculates coordinates relative to the parent.
       ViewGroup viewGroup =
@@ -147,9 +147,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
             : anchorRect.left;
     badgeCenterY = anchorRect.top;
 
-    iconOnlyRadius = res.getDimension(R.dimen.mtrl_badge_icon_only_radius);
-    badgeWidePadding = res.getDimension(R.dimen.mtrl_badge_long_text_horizontal_padding);
-    badgeWithTextRadius = res.getDimension(R.dimen.mtrl_badge_with_text_radius);
+    iconOnlyRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_icon_only_radius);
+    badgeWidePadding = res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding);
+    badgeWithTextRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_with_text_radius);
 
     badgeBounds = new Rect();
 
