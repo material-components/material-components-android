@@ -55,6 +55,7 @@ import com.google.android.material.shadow.ShadowRenderer;
 import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
 import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import androidx.core.graphics.drawable.TintAwareDrawable;
+import androidx.core.util.ObjectsCompat;
 import android.util.AttributeSet;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -148,7 +149,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     clearPaint.setColor(Color.WHITE);
     clearPaint.setXfermode(new PorterDuffXfermode(Mode.DST_OUT));
     updateTintFilter();
-    updateColorsForState(getState(), false);
+    updateColorsForState(getState());
     // Listens to additions of corners and edges, to create the shadow operations.
     pathShadowListener =
         new PathListener() {
@@ -976,7 +977,9 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     path.transform(matrix);
   }
 
-  private void updateTintFilter() {
+  private boolean updateTintFilter() {
+    PorterDuffColorFilter originalTintFilter = tintFilter;
+    PorterDuffColorFilter originalStrokeTintFilter = strokeTintFilter;
     tintFilter =
         calculateTintFilter(
             drawableState.tintList,
@@ -993,6 +996,8 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
       shadowRenderer.setShadowColor(
           drawableState.tintList.getColorForState(getState(), Color.TRANSPARENT));
     }
+    return !ObjectsCompat.equals(originalTintFilter, tintFilter)
+        || !ObjectsCompat.equals(originalStrokeTintFilter, strokeTintFilter);
   }
 
   @Nullable
@@ -1039,15 +1044,18 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
 
   @Override
   protected boolean onStateChange(int[] state) {
-    boolean invalidateSelf = super.onStateChange(state);
-
-    updateColorsForState(state, invalidateSelf);
-    updateTintFilter();
-
+    boolean paintColorChanged = updateColorsForState(state);
+    boolean tintFilterChanged = updateTintFilter();
+    boolean invalidateSelf = paintColorChanged || tintFilterChanged;
+    if (invalidateSelf) {
+      invalidateSelf();
+    }
     return invalidateSelf;
   }
 
-  private boolean updateColorsForState(int[] state, boolean invalidateSelf) {
+  private boolean updateColorsForState(int[] state) {
+    boolean invalidateSelf = false;
+
     if (drawableState.fillColor != null) {
       final int previousFillColor = fillPaint.getColor();
       final int newFillColor = drawableState.fillColor.getColorForState(state, previousFillColor);
