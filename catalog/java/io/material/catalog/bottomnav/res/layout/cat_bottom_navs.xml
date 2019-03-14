@@ -32,7 +32,6 @@
       style="@style/Widget.Design.BottomNavigationView"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:background="?attr/selectableItemBackground"
       app:menu="@menu/bottom_nav_menu"/>
   <Space
       android:layout_width="match_parent"
