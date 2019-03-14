@@ -25,6 +25,7 @@ import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import androidx.annotation.Nullable;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.ThemeEnforcement;
 import androidx.appcompat.widget.SwitchCompat;
 import android.util.AttributeSet;
@@ -48,6 +49,9 @@ public class SwitchMaterial extends SwitchCompat {
         new int[] {-android.R.attr.state_enabled, android.R.attr.state_checked}, // [2]
         new int[] {-android.R.attr.state_enabled, -android.R.attr.state_checked} // [3]
       };
+
+  private final ElevationOverlayProvider elevationOverlayProvider;
+
   @Nullable private ColorStateList materialThemeColorsThumbTintList;
   @Nullable private ColorStateList materialThemeColorsTrackTintList;
 
@@ -63,6 +67,8 @@ public class SwitchMaterial extends SwitchCompat {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
+
+    elevationOverlayProvider = new ElevationOverlayProvider(context);
 
     TypedArray attributes =
         ThemeEnforcement.obtainStyledAttributes(
@@ -114,16 +120,18 @@ public class SwitchMaterial extends SwitchCompat {
     if (materialThemeColorsThumbTintList == null) {
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
       int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
+      int thumbElevation =
+          getResources().getDimensionPixelSize(R.dimen.mtrl_switch_thumb_elevation);
+      int colorThumbOff =
+          elevationOverlayProvider.layerOverlayIfNeeded(colorSurface, thumbElevation);
 
       int[] switchThumbColorsList = new int[ENABLED_CHECKED_STATES.length];
       switchThumbColorsList[0] =
           MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_FULL);
-      switchThumbColorsList[1] =
-          MaterialColors.layer(colorSurface, colorSurface, MaterialColors.ALPHA_FULL);
+      switchThumbColorsList[1] = colorThumbOff;
       switchThumbColorsList[2] =
           MaterialColors.layer(colorSurface, colorControlActivated, MaterialColors.ALPHA_DISABLED);
-      switchThumbColorsList[3] =
-          MaterialColors.layer(colorSurface, colorSurface, MaterialColors.ALPHA_FULL);
+      switchThumbColorsList[3] = colorThumbOff;
       materialThemeColorsThumbTintList =
           new ColorStateList(ENABLED_CHECKED_STATES, switchThumbColorsList);
     }
