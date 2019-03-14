@@ -18,7 +18,22 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
+
+  <com.google.android.material.appbar.AppBarLayout
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:fitsSystemWindows="true">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="?attr/catalogToolbarWithCloseButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_scrollFlags="scroll|enterAlways|snap"
+        app:title="@string/cat_topappbar_scrolling_demo_toolbar_title" />
+  </com.google.android.material.appbar.AppBarLayout>
 
   <androidx.core.widget.NestedScrollView
       android:layout_width="match_parent"
@@ -28,16 +43,4 @@
     <include layout="@layout/cat_topappbar_filler_text_view"/>
   </androidx.core.widget.NestedScrollView>
 
-  <com.google.android.material.appbar.AppBarLayout
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content">
-
-    <androidx.appcompat.widget.Toolbar
-        android:id="@+id/toolbar"
-        style="?attr/catalogToolbarWithCloseButtonStyle"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:layout_scrollFlags="scroll|enterAlways|snap"
-        app:title="@string/cat_topappbar_scrolling_demo_toolbar_title"/>
-  </com.google.android.material.appbar.AppBarLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

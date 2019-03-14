@@ -283,12 +283,45 @@ public class AppBarLayout extends LinearLayout {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+
+    // If we're set to handle system windows but our first child is not, we need to add some
+    // height to ourselves to pad the first child down below the status bar
+    final int heightMode = MeasureSpec.getMode(heightMeasureSpec);
+    if (heightMode != MeasureSpec.EXACTLY
+        && ViewCompat.getFitsSystemWindows(this)
+        && shouldOffsetFirstChild()) {
+      int newHeight = getMeasuredHeight();
+      switch (heightMode) {
+        case MeasureSpec.AT_MOST:
+          // For AT_MOST, we need to clamp our desired height with the max height
+          newHeight =
+              MathUtils.clamp(
+                  getMeasuredHeight() + getTopInset(), 0, MeasureSpec.getSize(heightMeasureSpec));
+          break;
+        case MeasureSpec.UNSPECIFIED:
+          // For UNSPECIFIED we can use any height so just add the top inset
+          newHeight += getTopInset();
+          break;
+        default: // fall out
+      }
+      setMeasuredDimension(getMeasuredWidth(), newHeight);
+    }
+
     invalidateScrollRanges();
   }
 
   @Override
   protected void onLayout(boolean changed, int l, int t, int r, int b) {
     super.onLayout(changed, l, t, r, b);
+
+    if (ViewCompat.getFitsSystemWindows(this) && shouldOffsetFirstChild()) {
+      // If we need to offset the first child, we need to offset all of them to make space
+      final int topInset = getTopInset();
+      for (int z = getChildCount() - 1; z >= 0; z--) {
+        ViewCompat.offsetTopAndBottom(getChildAt(z), topInset);
+      }
+    }
+
     invalidateScrollRanges();
 
     haveChildWithInterpolator = false;
@@ -429,6 +462,11 @@ public class AppBarLayout extends LinearLayout {
         // We're set to scroll so add the child's height
         range += childHeight + lp.topMargin + lp.bottomMargin;
 
+        if (i == 0 && ViewCompat.getFitsSystemWindows(child)) {
+          // If this is the first child and it wants to handle system windows, we need to make
+          // sure we don't scroll it past the inset
+          range -= getTopInset();
+        }
         if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
           // For a collapsing scroll, we to take the collapsed height into account.
           // We also break straight away since later views can't scroll beneath
@@ -442,7 +480,7 @@ public class AppBarLayout extends LinearLayout {
         break;
       }
     }
-    return totalScrollRange = Math.max(0, range - getTopInset());
+    return totalScrollRange = Math.max(0, range);
   }
 
   boolean hasScrollableChildren() {
@@ -470,18 +508,24 @@ public class AppBarLayout extends LinearLayout {
 
       if ((flags & LayoutParams.FLAG_QUICK_RETURN) == LayoutParams.FLAG_QUICK_RETURN) {
         // First take the margin into account
-        range += lp.topMargin + lp.bottomMargin;
+        int childRange = lp.topMargin + lp.bottomMargin;
         // The view has the quick return flag combination...
         if ((flags & LayoutParams.SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED) != 0) {
           // If they're set to enter collapsed, use the minimum height
-          range += ViewCompat.getMinimumHeight(child);
+          childRange += ViewCompat.getMinimumHeight(child);
         } else if ((flags & LayoutParams.SCROLL_FLAG_EXIT_UNTIL_COLLAPSED) != 0) {
           // Only enter by the amount of the collapsed height
-          range += childHeight - ViewCompat.getMinimumHeight(child);
+          childRange += childHeight - ViewCompat.getMinimumHeight(child);
         } else {
-          // Else use the full height (minus the top inset)
-          range += childHeight - getTopInset();
+          // Else use the full height
+          childRange += childHeight;
         }
+        if (i == 0 && ViewCompat.getFitsSystemWindows(child)) {
+          // If this is the first child and it wants to handle system windows, we need to make
+          // sure we don't scroll past the inset
+          childRange = Math.min(childRange, childHeight - getTopInset());
+        }
+        range += childRange;
       } else if (range > 0) {
         // If we've hit an non-quick return scrollable view, and we've already hit a
         // quick return view, return now
@@ -515,7 +559,7 @@ public class AppBarLayout extends LinearLayout {
           // For a collapsing exit scroll, we to take the collapsed height into account.
           // We also break the range straight away since later views can't scroll
           // beneath us
-          range -= ViewCompat.getMinimumHeight(child) + getTopInset();
+          range -= ViewCompat.getMinimumHeight(child);
           break;
         }
       } else {
@@ -726,6 +770,18 @@ public class AppBarLayout extends LinearLayout {
     return lastInsets != null ? lastInsets.getSystemWindowInsetTop() : 0;
   }
 
+  /**
+   * Whether the first child needs to be offset because it does not want to handle the top window
+   * inset
+   */
+  private boolean shouldOffsetFirstChild() {
+    if (getChildCount() > 0) {
+      final View firstChild = getChildAt(0);
+      return firstChild.getVisibility() != GONE && !ViewCompat.getFitsSystemWindows(firstChild);
+    }
+    return false;
+  }
+
   WindowInsetsCompat onWindowInsetChanged(final WindowInsetsCompat insets) {
     WindowInsetsCompat newInsets = null;
 
@@ -734,10 +790,10 @@ public class AppBarLayout extends LinearLayout {
       newInsets = insets;
     }
 
-    // If our insets have changed, keep them and invalidate the scroll ranges...
+    // If our insets have changed, keep them and trigger a layout...
     if (!ObjectsCompat.equals(lastInsets, newInsets)) {
       lastInsets = newInsets;
-      invalidateScrollRanges();
+      requestLayout();
     }
 
     return insets;

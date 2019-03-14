@@ -65,20 +65,16 @@ abstract class HeaderScrollingViewBehavior extends ViewOffsetBehavior<View> {
       final List<View> dependencies = parent.getDependencies(child);
       final View header = findFirstDependency(dependencies);
       if (header != null) {
-        if (ViewCompat.getFitsSystemWindows(header) && !ViewCompat.getFitsSystemWindows(child)) {
-          // If the header is fitting system windows then we need to also,
-          // otherwise we'll get CoL's compatible measuring
-          ViewCompat.setFitsSystemWindows(child, true);
-
-          if (ViewCompat.getFitsSystemWindows(child)) {
-            // If the set succeeded, trigger a new layout and return true
-            child.requestLayout();
-            return true;
-          }
-        }
-
         int availableHeight = View.MeasureSpec.getSize(parentHeightMeasureSpec);
-        if (availableHeight == 0) {
+        if (availableHeight > 0) {
+          if (ViewCompat.getFitsSystemWindows(header)) {
+            final WindowInsetsCompat parentInsets = parent.getLastWindowInsets();
+            if (parentInsets != null) {
+              availableHeight += parentInsets.getSystemWindowInsetTop()
+                  + parentInsets.getSystemWindowInsetBottom();
+            }
+          }
+        } else {
           // If the measure spec doesn't specify a size, use the current height
           availableHeight = parent.getHeight();
         }

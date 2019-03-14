@@ -35,7 +35,9 @@ import org.junit.runner.RunWith;
 @RunWith(AndroidJUnit4.class)
 public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
-  /** Tests a Toolbar with fitSystemWindows = undefined, with a fitSystemWindows = true parent */
+  /**
+   * Tests a AppBarLayout with fitSystemWindows = undefined, with a fitSystemWindows = true parent
+   */
   @Test
   public void testScrollToolbarWithFitSystemWindowsParent() throws Throwable {
     configureContent(
@@ -73,6 +75,60 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
     mAppBar.getLocationOnScreen(appbarOnScreenXY);
     assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
     assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + appbarHeight, 1);
+  }
+
+  /** Tests a AppBarLayout with fitSystemWindows = true, with a fitSystemWindows = true parent */
+  @Test
+  public void testScrollAppBarLayoutWithFitSystemWindows() throws Throwable {
+    configureContent(
+        R.layout.design_appbar_toolbar_scroll_fitsystemwindows,
+        R.string.design_appbar_toolbar_scroll_tabs_pin);
+
+    final int[] appbarOnScreenXY = new int[2];
+    mAppBar.getLocationOnScreen(appbarOnScreenXY);
+
+    final int[] toolbarOnScreenXY = new int[2];
+    mToolbar.getLocationOnScreen(toolbarOnScreenXY);
+
+    final int[] coordinatorLayoutOnScreenXY = new int[2];
+    mCoordinatorLayout.getLocationOnScreen(coordinatorLayoutOnScreenXY);
+
+    final int originalAppbarTop = appbarOnScreenXY[1];
+    final int originalAppbarBottom = originalAppbarTop + mAppBar.getHeight();
+    final int centerX = appbarOnScreenXY[0] + mAppBar.getWidth() / 2;
+
+    final int longSwipeAmount = 3 * mAppBar.getHeight() / 2;
+
+    final int originalToolbarTop = toolbarOnScreenXY[1];
+    final int originalToolbarBottom = originalToolbarTop + mToolbar.getHeight();
+
+    // Ensure that the Toolbar is positioned at the bottom of the AppBarLayout, and below
+    // the status bar
+    assertEquals(coordinatorLayoutOnScreenXY[1], originalAppbarTop);
+    assertEquals(originalAppbarTop + mAppBar.getTopInset(), originalToolbarTop);
+    assertEquals(originalAppbarBottom, originalToolbarBottom);
+
+    // Perform a swipe-up gesture across the horizontal center of the screen.
+    performVerticalSwipeUpGesture(
+        R.id.coordinator_layout,
+        centerX,
+        originalAppbarBottom + 3 * longSwipeAmount / 2,
+        longSwipeAmount);
+
+    // At this point the app bar should be visually snapped below the system status bar.
+    // Allow for off-by-a-pixel margin of error.
+    mAppBar.getLocationOnScreen(appbarOnScreenXY);
+    assertEquals(originalToolbarTop, appbarOnScreenXY[1] + mAppBar.getHeight(), 1);
+
+    // Perform yet another swipe-down gesture across the horizontal center of the screen.
+    performVerticalSwipeDownGesture(
+        R.id.coordinator_layout, centerX, originalAppbarBottom, longSwipeAmount);
+
+    // At this point the app bar should still be in its original position.
+    // Allow for off-by-a-pixel margin of error.
+    mAppBar.getLocationOnScreen(appbarOnScreenXY);
+    assertEquals(originalAppbarTop, appbarOnScreenXY[1], 1);
+    assertEquals(originalAppbarBottom, appbarOnScreenXY[1] + mAppBar.getHeight(), 1);
   }
 
   /**
