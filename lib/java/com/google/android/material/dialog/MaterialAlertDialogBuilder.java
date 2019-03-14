@@ -124,9 +124,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
      * as it locks in attributes and affects layout. */
     View decorView = window.getDecorView();
     if (background instanceof MaterialShapeDrawable) {
-      if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-        ((MaterialShapeDrawable) background).setElevation(decorView.getElevation());
-      }
+      ((MaterialShapeDrawable) background).setElevation(ViewCompat.getElevation(decorView));
     }
 
     Drawable insetDrawable = MaterialDialogs.insetDrawable(background, backgroundInsets);
