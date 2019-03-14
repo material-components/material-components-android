@@ -122,6 +122,7 @@ class MaterialCardViewHelper {
       MaterialCardView card, AttributeSet attrs, int defStyleAttr, @StyleRes int defStyleRes) {
     materialCardView = card;
     bgDrawable = new MaterialShapeDrawable(card.getContext(), attrs, defStyleAttr, defStyleRes);
+    bgDrawable.initializeElevationOverlay(card.getContext());
     shapeAppearanceModel = bgDrawable.getShapeAppearanceModel();
     bgDrawable.setShadowColor(Color.DKGRAY);
     foregroundContentDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
@@ -271,9 +272,7 @@ class MaterialCardViewHelper {
   }
 
   void updateElevation() {
-    if (VERSION.SDK_INT < VERSION_CODES.LOLLIPOP) {
-      bgDrawable.setElevation(materialCardView.getCardElevation());
-    }
+    bgDrawable.setElevation(materialCardView.getCardElevation());
   }
 
   void updateInsets() {
