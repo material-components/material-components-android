@@ -188,6 +188,7 @@ class MaterialButtonHelper {
    */
   private Drawable createBackground() {
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable(shapeAppearanceModel);
+    backgroundDrawable.initializeElevationOverlay(materialButton.getContext());
     DrawableCompat.setTintList(backgroundDrawable, backgroundTint);
     if (backgroundTintMode != null) {
       DrawableCompat.setTintMode(backgroundDrawable, backgroundTintMode);

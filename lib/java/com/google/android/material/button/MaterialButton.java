@@ -385,6 +385,14 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     updateIconPosition();
   }
 
+  @Override
+  public void setElevation(float elevation) {
+    super.setElevation(elevation);
+    if (isUsingOriginalBackground()) {
+      materialButtonHelper.getMaterialShapeDrawable().setElevation(elevation);
+    }
+  }
+
   private void updateIconPosition() {
     if (icon == null || iconGravity != ICON_GRAVITY_TEXT_START || getLayout() == null) {
       return;
