@@ -100,6 +100,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
     int surfaceColor = colorSurfaceValue.data;
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
+    materialShapeDrawable.initializeElevationOverlay(context);
     materialShapeDrawable.setFillColor(ColorStateList.valueOf(surfaceColor));
 
     // dialogCornerRadius first appeared in Android Pie
@@ -122,6 +123,11 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
     /* {@link Window#getDecorView()} should be called before any changes are made to the Window
      * as it locks in attributes and affects layout. */
     View decorView = window.getDecorView();
+    if (background instanceof MaterialShapeDrawable) {
+      if (Build.VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+        ((MaterialShapeDrawable) background).setElevation(decorView.getElevation());
+      }
+    }
 
     Drawable insetDrawable = MaterialDialogs.insetDrawable(background, backgroundInsets);
     window.setBackgroundDrawable(insetDrawable);
