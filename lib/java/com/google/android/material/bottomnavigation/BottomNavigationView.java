@@ -177,13 +177,14 @@ public class BottomNavigationView extends FrameLayout {
       setItemTextColor(a.getColorStateList(R.styleable.BottomNavigationView_itemTextColor));
     }
 
+    if (getBackground() == null) {
+      // Add a MaterialShapeDrawable as background that supports tinting in every API level.
+      ViewCompat.setBackground(this, createMaterialShapeDrawableBackground(context));
+    }
+
     if (a.hasValue(R.styleable.BottomNavigationView_elevation)) {
       ViewCompat.setElevation(
           this, a.getDimensionPixelSize(R.styleable.BottomNavigationView_elevation, 0));
-    }
-    // Add a drawable as background that supports tinting in every API level.
-    if (getBackground() == null) {
-      ViewCompat.setBackground(this, new MaterialShapeDrawable());
     }
 
     ColorStateList backgroundTint =
@@ -232,6 +233,26 @@ public class BottomNavigationView extends FrameLayout {
           @Override
           public void onMenuModeChange(MenuBuilder menu) {}
         });
+  }
+
+  private MaterialShapeDrawable createMaterialShapeDrawableBackground(Context context) {
+    MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+    materialShapeDrawable.initializeElevationOverlay(context);
+    return materialShapeDrawable;
+  }
+
+  /**
+   * Sets the base elevation of this view, in pixels.
+   *
+   * @attr ref android.R.styleable#View_elevation
+   */
+  @Override
+  public void setElevation(float elevation) {
+    super.setElevation(elevation);
+    Drawable background = getBackground();
+    if (background instanceof MaterialShapeDrawable) {
+      ((MaterialShapeDrawable) background).setElevation(elevation);
+    }
   }
 
   /**

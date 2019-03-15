@@ -30,9 +30,9 @@
        Use the default style to get the default bottom navigation bar with a colorSurface background and
        colorPrimary for the icon and text colors. -->
   <style name="Widget.MaterialComponents.BottomNavigationView" parent="Widget.Design.BottomNavigationView">
-    <item name="android:background">?attr/colorSurface</item>
     <item name="enforceTextAppearance">true</item>
     <item name="enforceMaterialTheme">true</item>
+    <item name="android:background">?attr/colorSurface</item>
     <item name="itemBackground">@null</item>
     <item name="itemHorizontalTranslationEnabled">false</item>
     <item name="itemIconTint">@color/mtrl_bottom_nav_item_tint</item>
@@ -46,9 +46,9 @@
        Use the colored style to get a bottom navigation bar with a colorPrimary background and
        percentages of colorOnPrimary for the icon and text colors. -->
   <style name="Widget.MaterialComponents.BottomNavigationView.Colored">
-    <item name="android:background">?attr/colorPrimary</item>
     <item name="enforceTextAppearance">true</item>
     <item name="enforceMaterialTheme">true</item>
+    <item name="android:background">?attr/colorPrimary</item>
     <item name="itemIconTint">@color/mtrl_bottom_nav_colored_item_tint</item>
     <item name="itemRippleColor">@color/mtrl_bottom_nav_colored_ripple_color</item>
     <item name="itemTextAppearanceInactive">?attr/textAppearanceCaption</item>
