@@ -567,6 +567,20 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   @Override
+  public void onNestedScroll(
+      @NonNull CoordinatorLayout coordinatorLayout,
+      @NonNull V child,
+      @NonNull View target,
+      int dxConsumed,
+      int dyConsumed,
+      int dxUnconsumed,
+      int dyUnconsumed,
+      int type,
+      @NonNull int[] consumed) {
+     // Overridden to prevent the default consumption of the entire scroll distance.
+  }
+
+  @Override
   public boolean onNestedPreFling(
       @NonNull CoordinatorLayout coordinatorLayout,
       @NonNull V child,
