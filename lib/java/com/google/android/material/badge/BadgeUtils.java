@@ -17,8 +17,12 @@
 package com.google.android.material.badge;
 
 import android.graphics.Rect;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import android.view.View;
+import android.widget.FrameLayout;
 
 /**
  * Utility class for {@link BadgeDrawable}.
@@ -66,5 +70,27 @@ public class BadgeUtils {
         (int) (centerY - halfHeight),
         (int) (centerX + halfWidth),
         (int) (centerY + halfHeight));
+  }
+
+  /*
+   * Attaches a BadgeDrawable to its associated anchor.
+   * For API 18+, the BadgeDrawable will be added as a view overlay.
+   * For pre-API 18, the BadgeDrawable will be set as the foreground of a FrameLayout that is an
+   * ancestor of the anchor.
+   */
+  public static void attachBadgeDrawable(
+      BadgeDrawable badgeDrawable, View anchor, FrameLayout preAPI18BadgeParent) {
+    Rect badgeBounds = new Rect();
+    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
+      preAPI18BadgeParent.getDrawingRect(badgeBounds);
+    } else {
+      anchor.getDrawingRect(badgeBounds);
+    }
+    badgeDrawable.setBounds(badgeBounds);
+    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
+      preAPI18BadgeParent.setForeground(badgeDrawable);
+    } else {
+      anchor.getOverlay().add(badgeDrawable);
+    }
   }
 }
