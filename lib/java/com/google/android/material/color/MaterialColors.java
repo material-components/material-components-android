@@ -68,13 +68,22 @@ public class MaterialColors {
 
   /**
    * Returns the color int for the provided theme color attribute, or the default value if the
-   * attribute is not set in the current theme.
+   * attribute is not set in the current theme, using the {@code view}'s {@link Context}.
    */
   @ColorInt
   public static int getColor(
       View view, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
-    TypedValue typedValue =
-        MaterialAttributes.resolveAttribute(view.getContext(), colorAttributeResId);
+    return getColor(view.getContext(), colorAttributeResId, defaultValue);
+  }
+
+  /**
+   * Returns the color int for the provided theme color attribute, or the default value if the
+   * attribute is not set in the current theme.
+   */
+  @ColorInt
+  public static int getColor(
+      Context context, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
+    TypedValue typedValue = MaterialAttributes.resolveAttribute(context, colorAttributeResId);
     if (typedValue != null) {
       return typedValue.data;
     } else {

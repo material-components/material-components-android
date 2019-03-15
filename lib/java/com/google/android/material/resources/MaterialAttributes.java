@@ -32,17 +32,42 @@ import android.view.View;
 @RestrictTo(LIBRARY_GROUP)
 public class MaterialAttributes {
 
+  /**
+   * Returns the {@link TypedValue} for the provided {@code attributeResId}, using the context of
+   * the provided {@code componentView}.
+   *
+   * @throws IllegalArgumentException if the attribute is not present in the current theme.
+   */
   public static TypedValue resolveAttributeOrThrow(
       View componentView, @AttrRes int attributeResId) {
     return resolveAttributeOrThrow(
         componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
   }
 
+  /**
+   * Returns the boolean value for the provided {@code attributeResId}.
+   *
+   * @throws IllegalArgumentException if the attribute is not present in the current theme.
+   */
   public static boolean resolveBooleanAttributeOrThrow(
       Context context, @AttrRes int attributeResId, String errorMessageComponent) {
     return resolveAttributeOrThrow(context, attributeResId, errorMessageComponent).data != 0;
   }
 
+  /**
+   * Returns the boolean value for the provided {@code attributeResId}, or false if the attribute is
+   * not present in the current theme.
+   */
+  public static boolean resolveBooleanAttribute(Context context, @AttrRes int attributeResId) {
+    TypedValue typedValue = resolveAttribute(context, attributeResId);
+    return typedValue != null && typedValue.data != 0;
+  }
+
+  /**
+   * Returns the {@link TypedValue} for the provided {@code attributeResId}.
+   *
+   * @throws IllegalArgumentException if the attribute is not present in the current theme.
+   */
   public static TypedValue resolveAttributeOrThrow(
       Context context, @AttrRes int attributeResId, String errorMessageComponent) {
     TypedValue typedValue = resolveAttribute(context, attributeResId);
@@ -60,6 +85,7 @@ public class MaterialAttributes {
     return typedValue;
   }
 
+  /** Returns the {@link TypedValue} for the provided {@code attributeResId}. */
   @Nullable
   public static TypedValue resolveAttribute(Context context, @AttrRes int attributeResId) {
     TypedValue typedValue = new TypedValue();

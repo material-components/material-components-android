@@ -19,6 +19,7 @@ package com.google.android.material.elevation;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.graphics.Color;
 import androidx.annotation.ColorInt;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialAttributes;
@@ -35,14 +36,11 @@ public class ElevationOverlayProvider {
   private final float displayDensity;
 
   public ElevationOverlayProvider(Context context) {
-    String errorMessageComponent = MaterialColors.class.getSimpleName();
     this.elevationOverlaysEnabled =
-        MaterialAttributes.resolveBooleanAttributeOrThrow(
-            context, R.attr.elevationOverlaysEnabled, errorMessageComponent);
+        MaterialAttributes.resolveBooleanAttribute(context, R.attr.elevationOverlaysEnabled);
     this.elevationOverlaysColor =
-        MaterialColors.getColor(context, R.attr.elevationOverlaysColor, errorMessageComponent);
-    this.colorSurface =
-        MaterialColors.getColor(context, R.attr.colorSurface, errorMessageComponent);
+        MaterialColors.getColor(context, R.attr.elevationOverlaysColor, Color.TRANSPARENT);
+    this.colorSurface = MaterialColors.getColor(context, R.attr.colorSurface, Color.TRANSPARENT);
     this.displayDensity = context.getResources().getDisplayMetrics().density;
   }
 
