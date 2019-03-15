@@ -56,6 +56,8 @@ import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.resources.TextAppearanceFontCallback;
 import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
@@ -123,7 +125,7 @@ import java.util.List;
  *
  * @see ChipDrawable
  */
-public class Chip extends AppCompatCheckBox implements Delegate {
+public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   private static final String TAG = "Chip";
 
@@ -1202,6 +1204,17 @@ public class Chip extends AppCompatCheckBox implements Delegate {
     if (chipDrawable != null) {
       chipDrawable.setChipCornerRadiusResource(id);
     }
+  }
+
+  @Override
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    chipDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+  }
+
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getShapeAppearanceModel() {
+    return chipDrawable.getShapeAppearanceModel();
   }
 
   /**

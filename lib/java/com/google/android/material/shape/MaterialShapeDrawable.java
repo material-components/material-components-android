@@ -64,7 +64,8 @@ import java.lang.annotation.RetentionPolicy;
  * Base drawable class for Material Shapes that handles shadows, elevation, scale and color for a
  * generated path.
  */
-public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable {
+public class MaterialShapeDrawable extends Drawable
+    implements TintAwareDrawable, ShapeAppearanceModel.OnChangedListener {
 
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
@@ -163,6 +164,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
             edgeShadowOperation[count] = edgePath.createShadowCompatOperation(transform);
           }
         };
+
+    // Listens for modifications made in the ShapeAppearanceModel, and requests a redraw if the
+    // ShapeAppearanceModel has changed.
+    drawableState.shapeAppearanceModel.addOnChangedListener(this);
   }
 
   @Nullable
@@ -190,8 +195,10 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    *
    * @param shapeAppearanceModel the desired model.
    */
-  public void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    drawableState.shapeAppearanceModel.removeOnChangedListener(this);
     drawableState.shapeAppearanceModel = shapeAppearanceModel;
+    shapeAppearanceModel.addOnChangedListener(this);
     invalidateSelf();
   }
 
@@ -201,6 +208,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
    *
    * @return the current model.
    */
+  @NonNull
   public ShapeAppearanceModel getShapeAppearanceModel() {
     return drawableState.shapeAppearanceModel;
   }
@@ -524,6 +532,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   public void setInterpolation(float interpolation) {
     if (drawableState.interpolation != interpolation) {
       drawableState.interpolation = interpolation;
+      pathDirty = true;
       invalidateSelf();
     }
   }
@@ -571,6 +580,30 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   @Deprecated
   public void setShadowElevation(int shadowElevation) {
     setElevation(shadowElevation);
+  }
+
+  /**
+   * Returns the shadow vertical offset rendered for shadows when {@link #requiresCompatShadow()} is
+   * true.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public int getShadowVerticalOffset() {
+    return drawableState.shadowCompatOffset;
+  }
+
+  /**
+   * Sets the shadow offset rendered by the fake shadow when {@link #requiresCompatShadow()} is
+   * true. This can make the shadow appear more on the bottom or top of the view to make a more
+   * realistic looking shadow depending on the placement of the view on the screen. Normally, if the
+   * View is positioned further down on the screen, less shadow appears above the View, and more
+   * shadow appears below it.
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  public void setShadowVerticalOffset(int shadowOffset) {
+    if (drawableState.shadowCompatOffset != shadowOffset) {
+      drawableState.shadowCompatOffset = shadowOffset;
+      invalidateSelfIgnoreShape();
+    }
   }
 
   /**
@@ -649,9 +682,14 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
   }
 
   @Override
+  public void onShapeAppearanceModelChanged() {
+    invalidateSelf();
+  }
+
+  @Override
   public void invalidateSelf() {
     pathDirty = true;
-    invalidateSelfIgnoreShape();
+    super.invalidateSelf();
   }
 
   /**
@@ -1128,7 +1166,7 @@ public class MaterialShapeDrawable extends Drawable implements TintAwareDrawable
     }
 
     public MaterialShapeDrawableState(MaterialShapeDrawableState orig) {
-      shapeAppearanceModel = new ShapeAppearanceModel(orig.shapeAppearanceModel);
+      shapeAppearanceModel = orig.shapeAppearanceModel;
       elevationOverlayProvider = orig.elevationOverlayProvider;
       strokeWidth = orig.strokeWidth;
       colorFilter = orig.colorFilter;
