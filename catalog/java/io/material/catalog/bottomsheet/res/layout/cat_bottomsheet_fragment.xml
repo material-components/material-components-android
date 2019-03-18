@@ -52,7 +52,7 @@
       android:layout_height="400dp"
       android:elevation="16dp"
       app:behavior_hideable="false"
-      app:backgroundTint="?attr/colorSecondary"
+      app:backgroundTint="?attr/colorSurface"
       app:behavior_peekHeight="200dp"
       app:layout_behavior="@string/bottom_sheet_behavior">
 
@@ -63,7 +63,7 @@
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
         android:text="@string/cat_bottomsheet_persistent"
-        android:textColor="?attr/colorOnSecondary"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"/>
 
     <TextView
@@ -74,7 +74,7 @@
         android:layout_below="@id/textView"
         android:layout_centerHorizontal="true"
         android:text="@string/cat_bottomsheet_state_collapsed"
-        android:textColor="?attr/colorOnSecondary"
+        android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"/>
 
   </RelativeLayout>

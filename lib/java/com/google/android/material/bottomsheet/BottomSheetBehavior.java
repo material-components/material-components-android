@@ -312,6 +312,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     if (shapeThemingEnabled && materialShapeDrawable != null) {
       ViewCompat.setBackground(child, materialShapeDrawable);
     }
+    // Set elevation on MaterialShapeDrawable
+    float elevation = ViewCompat.getElevation(child);
+    if (materialShapeDrawable != null) {
+      materialShapeDrawable.setElevation(elevation);
+    }
 
     if (viewRef == null) {
       // First layout with this behavior.
@@ -962,6 +967,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
           new ShapeAppearanceModel(context, attrs, R.attr.bottomSheetStyle, DEF_STYLE_RES);
 
       this.materialShapeDrawable = new MaterialShapeDrawable(shapeAppearanceModelDefault);
+      this.materialShapeDrawable.initializeElevationOverlay(context);
 
       if (hasBackgroundTint && bottomSheetColor != null) {
         materialShapeDrawable.setFillColor(bottomSheetColor);
