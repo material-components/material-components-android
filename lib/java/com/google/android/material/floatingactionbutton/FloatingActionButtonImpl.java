@@ -18,6 +18,8 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.R;
 
+import static androidx.core.util.Preconditions.checkNotNull;
+
 import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
@@ -56,6 +58,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 class FloatingActionButtonImpl {
+
   static final TimeInterpolator ELEVATION_ANIM_INTERPOLATOR =
       AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR;
   static final long ELEVATION_ANIM_DURATION = 100;
@@ -73,38 +76,37 @@ class FloatingActionButtonImpl {
   private static final float SHOW_SCALE = 1f;
   private static final float SHOW_ICON_SCALE = 1f;
 
-  int animState = ANIM_STATE_NONE;
-  @Nullable Animator currentAnimator;
-  @Nullable MotionSpec showMotionSpec;
-  @Nullable MotionSpec hideMotionSpec;
   @Nullable ShapeAppearanceModel shapeAppearance;
+  @Nullable MaterialShapeDrawable shapeDrawable;
+  @Nullable Drawable rippleDrawable;
+  @Nullable BorderDrawable borderDrawable;
+  @Nullable Drawable contentBackground;
+
   boolean usingDefaultCorner;
-
-  @Nullable private MotionSpec defaultShowMotionSpec;
-  @Nullable private MotionSpec defaultHideMotionSpec;
-
-  private final StateListAnimator stateListAnimator;
-  private float rotation;
-  private InsetDrawable insetDrawable;
-
-  MaterialShapeDrawable shapeDrawable;
-  Drawable rippleDrawable;
-  BorderDrawable borderDrawable;
-  Drawable contentBackground;
-
   float elevation;
   float hoveredFocusedTranslationZ;
   float pressedTranslationZ;
   int minTouchTargetSize;
 
-  int maxImageSize;
-  float imageMatrixScale = 1f;
+  private final StateListAnimator stateListAnimator;
+
+  @Nullable private MotionSpec defaultShowMotionSpec;
+  @Nullable private MotionSpec defaultHideMotionSpec;
+  @Nullable private Animator currentAnimator;
+  @Nullable private MotionSpec showMotionSpec;
+  @Nullable private MotionSpec hideMotionSpec;
+
+  private float rotation;
+  private float imageMatrixScale = 1f;
+  private int maxImageSize;
+  private int animState = ANIM_STATE_NONE;
 
   private ArrayList<AnimatorListener> showListeners;
   private ArrayList<AnimatorListener> hideListeners;
   private ArrayList<InternalTransformationListener> transformationListeners;
 
   interface InternalTransformationListener {
+
     void onTranslationChanged();
 
     void onScaleChanged();
@@ -117,16 +119,16 @@ class FloatingActionButtonImpl {
   }
 
   static final int[] PRESSED_ENABLED_STATE_SET = {
-    android.R.attr.state_pressed, android.R.attr.state_enabled
+      android.R.attr.state_pressed, android.R.attr.state_enabled
   };
   static final int[] HOVERED_FOCUSED_ENABLED_STATE_SET = {
-    android.R.attr.state_hovered, android.R.attr.state_focused, android.R.attr.state_enabled
+      android.R.attr.state_hovered, android.R.attr.state_focused, android.R.attr.state_enabled
   };
   static final int[] FOCUSED_ENABLED_STATE_SET = {
-    android.R.attr.state_focused, android.R.attr.state_enabled
+      android.R.attr.state_focused, android.R.attr.state_enabled
   };
   static final int[] HOVERED_ENABLED_STATE_SET = {
-    android.R.attr.state_hovered, android.R.attr.state_enabled
+      android.R.attr.state_hovered, android.R.attr.state_enabled
   };
   static final int[] ENABLED_STATE_SET = {android.R.attr.state_enabled};
   static final int[] EMPTY_STATE_SET = new int[0];
@@ -139,8 +141,10 @@ class FloatingActionButtonImpl {
   private final RectF tmpRectF2 = new RectF();
   private final Matrix tmpMatrix = new Matrix();
 
+  @Nullable
   private ViewTreeObserver.OnPreDrawListener preDrawListener;
 
+  @SuppressWarnings("initialization")
   FloatingActionButtonImpl(FloatingActionButton view, ShadowViewDelegate shadowViewDelegate) {
     this.view = view;
     this.shadowViewDelegate = shadowViewDelegate;
@@ -190,12 +194,14 @@ class FloatingActionButtonImpl {
     touchFeedbackShape.setTintList(RippleUtils.convertToRippleDrawableColor(rippleColor));
     rippleDrawable = touchFeedbackShape;
 
-    final Drawable[] layers = new Drawable[] {shapeDrawable, rippleDrawable};
+    final Drawable[] layers = new Drawable[]{
+        checkNotNull(shapeDrawable),
+        touchFeedbackShape};
     contentBackground = new LayerDrawable(layers);
     shadowViewDelegate.setBackgroundDrawable(contentBackground);
   }
 
-  void setBackgroundTintList(ColorStateList tint) {
+  void setBackgroundTintList(@Nullable ColorStateList tint) {
     if (shapeDrawable != null) {
       shapeDrawable.setTintList(tint);
     }
@@ -204,9 +210,9 @@ class FloatingActionButtonImpl {
     }
   }
 
-  void setBackgroundTintMode(PorterDuff.Mode tintMode) {
+  void setBackgroundTintMode(@Nullable PorterDuff.Mode tintMode) {
     if (shapeDrawable != null) {
-      DrawableCompat.setTintMode(shapeDrawable, tintMode);
+      shapeDrawable.setTintMode(tintMode);
     }
   }
 
@@ -214,7 +220,7 @@ class FloatingActionButtonImpl {
     this.minTouchTargetSize = minTouchTargetSize;
   }
 
-  void setRippleColor(ColorStateList rippleColor) {
+  void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (rippleDrawable != null) {
       DrawableCompat.setTintList(
           rippleDrawable, RippleUtils.convertToRippleDrawableColor(rippleColor));
@@ -346,7 +352,9 @@ class FloatingActionButtonImpl {
   }
 
   private void updateShapeElevation(float elevation) {
-    shapeDrawable.setElevation(elevation);
+    if (shapeDrawable != null) {
+      shapeDrawable.setElevation(elevation);
+    }
   }
 
   void onDrawableStateChanged(int[] state) {
@@ -520,7 +528,8 @@ class FloatingActionButtonImpl {
       defaultShowMotionSpec =
           MotionSpec.createFromResource(view.getContext(), R.animator.design_fab_show_motion_spec);
     }
-    return defaultShowMotionSpec;
+
+    return checkNotNull(defaultShowMotionSpec);
   }
 
   private MotionSpec getDefaultHideMotionSpec() {
@@ -528,7 +537,8 @@ class FloatingActionButtonImpl {
       defaultHideMotionSpec =
           MotionSpec.createFromResource(view.getContext(), R.animator.design_fab_hide_motion_spec);
     }
-    return defaultHideMotionSpec;
+
+    return checkNotNull(defaultHideMotionSpec);
   }
 
   @NonNull
@@ -604,6 +614,7 @@ class FloatingActionButtonImpl {
     }
   }
 
+  @Nullable
   final Drawable getContentBackground() {
     return contentBackground;
   }
@@ -613,13 +624,13 @@ class FloatingActionButtonImpl {
   }
 
   void updateSize() {
-    if (!usingDefaultCorner) {
+    if (!usingDefaultCorner || shapeDrawable == null) {
       // Leave shape appearance as is.
       return;
     }
 
     ShapeAppearanceModel shapeAppearanceModel = shapeDrawable.getShapeAppearanceModel();
-    shapeAppearanceModel.setCornerRadius(view.getSizeDimension() / 2);
+    shapeAppearanceModel.setCornerRadius(view.getSizeDimension() / 2f);
   }
 
   final void updatePadding() {
@@ -639,9 +650,8 @@ class FloatingActionButtonImpl {
 
   void onPaddingUpdated(Rect padding) {
     if (shouldAddPadding()) {
-      insetDrawable =
-          new InsetDrawable(
-              contentBackground, padding.left, padding.top, padding.right, padding.bottom);
+      InsetDrawable insetDrawable = new InsetDrawable(
+          contentBackground, padding.left, padding.top, padding.right, padding.bottom);
       shadowViewDelegate.setBackgroundDrawable(insetDrawable);
     } else {
       shadowViewDelegate.setBackgroundDrawable(contentBackground);
@@ -654,14 +664,14 @@ class FloatingActionButtonImpl {
 
   void onAttachedToWindow() {
     if (requirePreDrawListener()) {
-      ensurePreDrawListener();
-      view.getViewTreeObserver().addOnPreDrawListener(preDrawListener);
+      view.getViewTreeObserver().addOnPreDrawListener(getOrCreatePreDrawListener());
     }
   }
 
   void onDetachedFromWindow() {
+    ViewTreeObserver viewTreeObserver = view.getViewTreeObserver();
     if (preDrawListener != null) {
-      view.getViewTreeObserver().removeOnPreDrawListener(preDrawListener);
+      viewTreeObserver.removeOnPreDrawListener(preDrawListener);
       preDrawListener = null;
     }
   }
@@ -678,7 +688,7 @@ class FloatingActionButtonImpl {
     }
   }
 
-  private void ensurePreDrawListener() {
+  private ViewTreeObserver.OnPreDrawListener getOrCreatePreDrawListener() {
     if (preDrawListener == null) {
       preDrawListener =
           new ViewTreeObserver.OnPreDrawListener() {
@@ -689,11 +699,14 @@ class FloatingActionButtonImpl {
             }
           };
     }
+
+    return preDrawListener;
   }
 
   MaterialShapeDrawable createShapeDrawable() {
+    ShapeAppearanceModel shapeAppearance = checkNotNull(this.shapeAppearance);
     if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
+      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2f);
     }
     return new MaterialShapeDrawable(shapeAppearance);
   }
@@ -730,6 +743,7 @@ class FloatingActionButtonImpl {
 
   private abstract class ShadowAnimatorImpl extends AnimatorListenerAdapter
       implements ValueAnimator.AnimatorUpdateListener {
+
     private boolean validValues;
     private float shadowSizeStart;
     private float shadowSizeEnd;
@@ -737,7 +751,7 @@ class FloatingActionButtonImpl {
     @Override
     public void onAnimationUpdate(ValueAnimator animator) {
       if (!validValues) {
-        shadowSizeStart = shapeDrawable.getElevation();
+        shadowSizeStart = shapeDrawable == null ? 0 : shapeDrawable.getElevation();
         shadowSizeEnd = getTargetShadowSize();
         validValues = true;
       }
@@ -754,7 +768,7 @@ class FloatingActionButtonImpl {
       validValues = false;
     }
 
-    /** @return the shadow size we want to animate to. */
+    /** Returns the shadow size we want to animate to. */
     protected abstract float getTargetShadowSize();
   }
 

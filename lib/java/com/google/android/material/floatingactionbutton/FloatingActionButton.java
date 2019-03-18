@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
+import static androidx.core.util.Preconditions.checkNotNull;
 
 import android.animation.Animator.AnimatorListener;
 import android.content.Context;
@@ -32,6 +33,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.ColorInt;
@@ -164,13 +166,13 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @IntDef({SIZE_MINI, SIZE_NORMAL, SIZE_AUTO})
   public @interface Size {}
 
-  private ColorStateList backgroundTint;
-  private PorterDuff.Mode backgroundTintMode;
+  @Nullable private ColorStateList backgroundTint;
+  @Nullable private PorterDuff.Mode backgroundTintMode;
   @Nullable private ColorStateList imageTint;
   @Nullable private PorterDuff.Mode imageMode;
+  @Nullable private ColorStateList rippleColor;
 
   private int borderWidth;
-  private ColorStateList rippleColor;
   private int size;
   private int customSize;
   private int imagePadding;
@@ -189,11 +191,12 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     this(context, null);
   }
 
-  public FloatingActionButton(Context context, AttributeSet attrs) {
+  public FloatingActionButton(Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.floatingActionButtonStyle);
   }
 
-  public FloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
+  @SuppressWarnings("initialization")
+  public FloatingActionButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
@@ -508,7 +511,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
   /** Returns the {@link ShapeAppearanceModel} for this {@link FloatingActionButton}. */
   public ShapeAppearanceModel getShapeAppearance() {
-    return getImpl().getShapeAppearance();
+    return checkNotNull(getImpl().getShapeAppearance());
   }
 
   @Override
@@ -536,7 +539,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     show(listener, true);
   }
 
-  void show(OnVisibilityChangedListener listener, boolean fromUser) {
+  void show(@Nullable OnVisibilityChangedListener listener, boolean fromUser) {
     getImpl().show(wrapOnVisibilityChangedListener(listener), fromUser);
   }
 
@@ -780,8 +783,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   @Override
   protected Parcelable onSaveInstanceState() {
     Parcelable superState = super.onSaveInstanceState();
-    ExtendableSavedState state = new ExtendableSavedState(superState);
+    if (superState == null) {
+      superState = new Bundle();
+    }
 
+    ExtendableSavedState state = new ExtendableSavedState(superState);
     state.extendableStates.put(
         EXPANDABLE_WIDGET_HELPER_KEY, expandableWidgetHelper.onSaveInstanceState());
 
@@ -789,6 +795,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   @Override
+  @SuppressWarnings("argument.type.incompatible")
+  // onRestoreInstanceState should accept nullable
   protected void onRestoreInstanceState(Parcelable state) {
     if (!(state instanceof ExtendableSavedState)) {
       super.onRestoreInstanceState(state);
@@ -799,7 +807,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     super.onRestoreInstanceState(ess.getSuperState());
 
     expandableWidgetHelper.onRestoreInstanceState(
-        ess.extendableStates.get(EXPANDABLE_WIDGET_HELPER_KEY));
+        checkNotNull(ess.extendableStates.get(EXPANDABLE_WIDGET_HELPER_KEY)));
   }
 
   /**
@@ -838,7 +846,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /** Returns the FloatingActionButton's background, minus any compatible shadow implementation. */
-  @NonNull
+  @Nullable
   public Drawable getContentBackground() {
     return getImpl().getContentBackground();
   }
@@ -1232,6 +1240,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /** Returns the motion spec for the show animation. */
+  @Nullable
   public MotionSpec getShowMotionSpec() {
     return getImpl().getShowMotionSpec();
   }
@@ -1241,7 +1250,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    *
    * @attr ref com.google.android.material.R.styleable#FloatingActionButton_showMotionSpec
    */
-  public void setShowMotionSpec(MotionSpec spec) {
+  public void setShowMotionSpec(@Nullable MotionSpec spec) {
     getImpl().setShowMotionSpec(spec);
   }
 
@@ -1255,6 +1264,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   }
 
   /** Returns the motion spec for the hide animation. */
+  @Nullable
   public MotionSpec getHideMotionSpec() {
     return getImpl().getHideMotionSpec();
   }
@@ -1264,7 +1274,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    *
    * @attr ref com.google.android.material.R.styleable#FloatingActionButton_hideMotionSpec
    */
-  public void setHideMotionSpec(MotionSpec spec) {
+  public void setHideMotionSpec(@Nullable MotionSpec spec) {
     getImpl().setHideMotionSpec(spec);
   }
 
@@ -1280,7 +1290,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   /**
    * Add a {@link TransformationListener} which can watch for changes to this view.
    */
-  public void addTransformationListener(TransformationListener<FloatingActionButton> listener) {
+  public void addTransformationListener(
+      @NonNull TransformationListener<FloatingActionButton> listener) {
     getImpl().addTransformationListener(new TransformationListenerWrapper(listener));
   }
 
@@ -1288,7 +1299,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * Remove the {@link TransformationListener} from this view. It will no longer receive updates
    * when this view is transformed.
    */
-  public void removeTransformationListener(TransformationListener<FloatingActionButton> listener) {
+  public void removeTransformationListener(
+      @NonNull TransformationListener<FloatingActionButton> listener) {
     getImpl().removeTransformationListener(new TransformationListenerWrapper(listener));
   }
 
@@ -1315,7 +1327,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
 
     @Override
-    public boolean equals(Object obj) {
+    public boolean equals(@Nullable Object obj) {
       return obj instanceof TransformationListenerWrapper
           && ((TransformationListenerWrapper) obj).listener.equals(listener);
     }
@@ -1387,8 +1399,10 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     }
 
     @Override
-    public void setBackgroundDrawable(Drawable background) {
-      FloatingActionButton.super.setBackgroundDrawable(background);
+    public void setBackgroundDrawable(@Nullable Drawable background) {
+      if (background != null) {
+        FloatingActionButton.super.setBackgroundDrawable(background);
+      }
     }
 
     @Override

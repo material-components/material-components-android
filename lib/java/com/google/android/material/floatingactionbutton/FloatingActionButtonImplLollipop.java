@@ -18,6 +18,8 @@ package com.google.android.material.floatingactionbutton;
 
 import com.google.android.material.R;
 
+import static androidx.core.util.Preconditions.checkNotNull;
+
 import android.animation.Animator;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
@@ -32,6 +34,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.os.Build;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
@@ -66,7 +69,8 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     final Drawable rippleContent;
     if (borderWidth > 0) {
       borderDrawable = createBorderDrawable(borderWidth, backgroundTint);
-      rippleContent = new LayerDrawable(new Drawable[] {borderDrawable, shapeDrawable});
+      rippleContent = new LayerDrawable(
+          new Drawable[]{checkNotNull(borderDrawable), checkNotNull(shapeDrawable)});
     } else {
       borderDrawable = null;
       rippleContent = shapeDrawable;
@@ -81,7 +85,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void setRippleColor(ColorStateList rippleColor) {
+  void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (rippleDrawable instanceof RippleDrawable) {
       ((RippleDrawable) rippleDrawable)
           .setColor(RippleUtils.convertToRippleDrawableColor(rippleColor));
@@ -208,7 +212,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
   BorderDrawable createBorderDrawable(int borderWidth, ColorStateList backgroundTint) {
     final Context context = view.getContext();
-    BorderDrawable borderDrawable =  new BorderDrawable(shapeAppearance);
+    BorderDrawable borderDrawable =  new BorderDrawable(checkNotNull(shapeAppearance));
     borderDrawable.setGradientColors(
         ContextCompat.getColor(context, R.color.design_fab_stroke_top_outer_color),
         ContextCompat.getColor(context, R.color.design_fab_stroke_top_inner_color),
@@ -221,8 +225,9 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
   @Override
   MaterialShapeDrawable createShapeDrawable() {
+    ShapeAppearanceModel shapeAppearance = checkNotNull(this.shapeAppearance);
     if (usingDefaultCorner) {
-      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2);
+      shapeAppearance.setCornerRadius(view.getSizeDimension() / 2f);
     }
     return new AlwaysStatefulMaterialShapeDrawable(shapeAppearance);
   }

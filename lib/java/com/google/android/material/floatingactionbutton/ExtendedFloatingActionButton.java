@@ -134,11 +134,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     this(context, null);
   }
 
-  public ExtendedFloatingActionButton(Context context, AttributeSet attrs) {
+  public ExtendedFloatingActionButton(Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.extendedFloatingActionButtonStyle);
   }
 
-  public ExtendedFloatingActionButton(Context context, AttributeSet attrs, int defStyleAttr) {
+  @SuppressWarnings("initialization")
+  public ExtendedFloatingActionButton(
+      Context context,
+      @Nullable AttributeSet attrs,
+      int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     behavior = new ExtendedFloatingActionButtonBehavior<>(context, attrs);
     userSetVisibility = getVisibility();
@@ -791,7 +795,10 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
       autoShrinkEnabled = AUTO_SHRINK_DEFAULT;
     }
 
-    public ExtendedFloatingActionButtonBehavior(Context context, AttributeSet attrs) {
+    // Behavior attrs should be nullable in the framework
+    @SuppressWarnings("argument.type.incompatible")
+    public ExtendedFloatingActionButtonBehavior(Context context, @Nullable AttributeSet attrs) {
+
       super(context, attrs);
       TypedArray a =
           context.obtainStyledAttributes(

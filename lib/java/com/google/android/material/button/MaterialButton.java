@@ -166,11 +166,11 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     this(context, null /* attrs */);
   }
 
-  public MaterialButton(Context context, AttributeSet attrs) {
+  public MaterialButton(Context context, @Nullable AttributeSet attrs) {
     this(context, attrs, R.attr.materialButtonStyle);
   }
 
-  public MaterialButton(Context context, AttributeSet attrs, int defStyleAttr) {
+  public MaterialButton(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
     super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();

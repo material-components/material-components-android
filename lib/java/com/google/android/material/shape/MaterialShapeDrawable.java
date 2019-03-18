@@ -280,7 +280,7 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   @Override
-  public void setTintMode(PorterDuff.Mode tintMode) {
+  public void setTintMode(@Nullable PorterDuff.Mode tintMode) {
     if (drawableState.tintMode != tintMode) {
       drawableState.tintMode = tintMode;
       updateTintFilter();
@@ -289,7 +289,7 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   @Override
-  public void setTintList(ColorStateList tintList) {
+  public void setTintList(@Nullable ColorStateList tintList) {
     drawableState.tintList = tintList;
     updateTintFilter();
     invalidateSelfIgnoreShape();
@@ -1136,12 +1136,12 @@ public class MaterialShapeDrawable extends Drawable
     @NonNull public ShapeAppearanceModel shapeAppearanceModel;
     @Nullable public ElevationOverlayProvider elevationOverlayProvider;
 
-    public ColorFilter colorFilter;
-    public ColorStateList fillColor = null;
-    public ColorStateList strokeColor = null;
-    public ColorStateList strokeTintList = null;
-    public ColorStateList tintList = null;
-    public PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
+    @Nullable public ColorFilter colorFilter;
+    @Nullable public ColorStateList fillColor = null;
+    @Nullable public ColorStateList strokeColor = null;
+    @Nullable public ColorStateList strokeTintList = null;
+    @Nullable public ColorStateList tintList = null;
+    @Nullable public PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
 
     public float scale = 1f;
     public float interpolation = 1f;

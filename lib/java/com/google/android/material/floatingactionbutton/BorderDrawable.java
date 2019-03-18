@@ -36,6 +36,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.ShapeAppearancePathProvider;
@@ -70,8 +71,9 @@ class BorderDrawable extends Drawable {
   @ColorInt private int currentBorderTintColor;
 
   private boolean invalidateShader = true;
-  private ColorStateList borderTint;
   private ShapeAppearanceModel shapeAppearanceModel;
+
+  @Nullable private ColorStateList borderTint;
 
   BorderDrawable(ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
@@ -88,7 +90,7 @@ class BorderDrawable extends Drawable {
     }
   }
 
-  void setBorderTint(ColorStateList tint) {
+  void setBorderTint(@Nullable ColorStateList tint) {
     if (tint != null) {
       currentBorderTintColor = tint.getColorForState(getState(), currentBorderTintColor);
     }
@@ -98,7 +100,7 @@ class BorderDrawable extends Drawable {
   }
 
   @Override
-  public void setColorFilter(ColorFilter colorFilter) {
+  public void setColorFilter(@Nullable ColorFilter colorFilter) {
     paint.setColorFilter(colorFilter);
     invalidateSelf();
   }
