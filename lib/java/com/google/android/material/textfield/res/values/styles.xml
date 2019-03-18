@@ -151,6 +151,7 @@
 
   <style name="ThemeOverlay.MaterialComponents.TextInputEditText" parent="ThemeOverlay.Design.TextInputEditText">
     <item name="colorControlActivated">?attr/colorPrimary</item>
+    <item name="android:editTextBackground">@null</item>
     <item name="editTextBackground">@null</item>
   </style>
 
