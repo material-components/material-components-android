@@ -23,7 +23,7 @@
     android:orientation="vertical">
 
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/text_input_demo_box_outline"
+      android:id="@+id/text_input_demo_box_outlined"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -32,7 +32,7 @@
       app:counterEnabled="true"
       app:counterMaxLength="10"
       app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_outline_helper_text"
+      app:helperText="@string/cat_textfield_outlined_helper_text"
       app:helperTextEnabled="true">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
@@ -40,7 +40,7 @@
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/text_input_demo_box_outline_dense"
+      android:id="@+id/text_input_demo_box_outlined_dense"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -49,7 +49,7 @@
       app:counterEnabled="true"
       app:counterMaxLength="10"
       app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_outline_dense_helper_text"
+      app:helperText="@string/cat_textfield_outlined_dense_helper_text"
       app:helperTextEnabled="true">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"
@@ -57,14 +57,14 @@
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/text_input_demo_box_outline_clear_button"
+      android:id="@+id/text_input_demo_box_outlined_clear_button"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_margin="4dp"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_outline_clear_button_helper_text"
+      app:helperText="@string/cat_textfield_outlined_clear_button_helper_text"
       app:helperTextEnabled="true"
       app:endIconMode="clear_text">
     <com.google.android.material.textfield.TextInputEditText
@@ -79,7 +79,7 @@
       android:layout_margin="4dp"
       android:hint="@string/cat_textfield_label"
       app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_outline_custom_end_icon_helper_text"
+      app:helperText="@string/cat_textfield_outlined_custom_end_icon_helper_text"
       app:helperTextEnabled="true"
       app:endIconMode="custom"
       app:endIconDrawable="@drawable/ic_accelerator_24px"
@@ -90,7 +90,7 @@
   </com.google.android.material.textfield.TextInputLayout>
 
   <com.google.android.material.textfield.TextInputLayout
-      android:id="@+id/text_input_demo_box_outline_start_icon"
+      android:id="@+id/text_input_demo_box_outlined_start_icon"
       style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
       app:counterEnabled="true"
       app:counterMaxLength="10"
       app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_outline_start_icon_helper_text"
+      app:helperText="@string/cat_textfield_outlined_start_icon_helper_text"
       app:helperTextEnabled="true"
       app:startIconDrawable="@drawable/ic_search_24px"
       app:startIconContentDescription="@string/cat_textfield_custom_start_icon_content_description">
@@ -118,7 +118,7 @@
       app:counterEnabled="true"
       app:counterMaxLength="10"
       app:errorEnabled="true"
-      app:helperText="@string/cat_textfield_outline_start_end_icons_helper_text"
+      app:helperText="@string/cat_textfield_outlined_start_end_icons_helper_text"
       app:helperTextEnabled="true"
       app:startIconDrawable="@drawable/ic_search_24px"
       app:startIconContentDescription="@string/cat_textfield_custom_start_icon_content_description"

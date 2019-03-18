@@ -26,8 +26,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
-/** A fragment that displays the outline text field demos with controls for the Catalog app. */
-public class TextFieldOutlineDemoFragment extends TextFieldControllableDemoFragment {
+/** A fragment that displays the outlined text field demos with controls for the Catalog app. */
+public class TextFieldOutlinedDemoFragment extends TextFieldControllableDemoFragment {
 
   @Override
   public void onChangeTextFieldColors(TextInputLayout textfield, int color) {
@@ -37,7 +37,7 @@ public class TextFieldOutlineDemoFragment extends TextFieldControllableDemoFragm
   @Override
   @LayoutRes
   public int getTextFieldContent() {
-    return R.layout.cat_textfield_outline_content;
+    return R.layout.cat_textfield_outlined_content;
   }
 
   @Override

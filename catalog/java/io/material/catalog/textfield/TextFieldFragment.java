@@ -64,10 +64,10 @@ public class TextFieldFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
-        new Demo(R.string.cat_textfield_outline_demo_title) {
+        new Demo(R.string.cat_textfield_outlined_demo_title) {
           @Override
           public Fragment createFragment() {
-            return new TextFieldOutlineDemoFragment();
+            return new TextFieldOutlinedDemoFragment();
           }
         });
     additionalDemos.add(

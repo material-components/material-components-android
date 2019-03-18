@@ -25,12 +25,12 @@
       style="@style/Widget.Design.TextInputLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:hint="@string/cat_textfield_label"
-      app:errorEnabled="true"
       android:layout_margin="4dp"
+      android:hint="@string/cat_textfield_label"
       app:counterEnabled="true"
       app:counterMaxLength="10"
-      app:helperText="@string/cat_textfield_filled_helper_text"
+      app:errorEnabled="true"
+      app:helperText="@string/cat_textfield_legacy_helper_text"
       app:helperTextEnabled="true">
     <com.google.android.material.textfield.TextInputEditText
         android:layout_width="match_parent"

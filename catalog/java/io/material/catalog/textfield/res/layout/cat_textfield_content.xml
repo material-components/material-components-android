@@ -32,7 +32,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:hint="@string/cat_textfield_label"
-        app:helperText="@string/cat_textfield_outline_helper_text"
+        app:helperText="@string/cat_textfield_outlined_helper_text"
         app:helperTextEnabled="true">
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"
@@ -45,7 +45,7 @@
         android:layout_height="wrap_content"
         android:layout_margin="4dp"
         android:hint="@string/cat_textfield_label"
-        app:helperText="@string/cat_textfield_outline_dense_helper_text"
+        app:helperText="@string/cat_textfield_outlined_dense_helper_text"
         app:helperTextEnabled="true">
       <com.google.android.material.textfield.TextInputEditText
           android:layout_width="match_parent"

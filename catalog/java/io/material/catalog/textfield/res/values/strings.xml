@@ -16,52 +16,53 @@
   -->
 
 <resources>
-  <string name="cat_textfield_title">Text Field</string>
-  <string name="cat_textfield_filled_demo_title">Filled Text Field Demo</string>
-  <string name="cat_textfield_outline_demo_title">Outline Text Field Demo</string>
-  <string name="cat_textfield_legacy_demo_title">Legacy Text Field Demo</string>
-  <string name="cat_textfield_description">
+  <string name="cat_textfield_title" translatable="false">Text Field</string>
+  <string name="cat_textfield_filled_demo_title" translatable="false">Filled Text Field Demo</string>
+  <string name="cat_textfield_outlined_demo_title" translatable="false">Outlined Text Field Demo</string>
+  <string name="cat_textfield_legacy_demo_title" translatable="false">Legacy Text Field Demo</string>
+  <string name="cat_textfield_description" translatable="false">
     Text fields allow users to input, edit, and select text. Text fields typically reside in forms
     but can appear in other places, like dialog boxes and search.
   </string>
 
-  <string name="cat_textfield_filled_helper_text">Filled text field</string>
-  <string name="cat_textfield_filled_dense_helper_text">Dense filled text field</string>
-  <string name="cat_textfield_filled_dense_password_helper_text">
+  <string name="cat_textfield_filled_helper_text" translatable="false">Filled text field</string>
+  <string name="cat_textfield_filled_dense_helper_text" translatable="false">Dense filled text field</string>
+  <string name="cat_textfield_filled_dense_password_helper_text" translatable="false">
     Dense filled password text field
   </string>
-  <string name="cat_textfield_filled_start_icon_helper_text">Filled start icon text field</string>
-  <string name="cat_textfield_filled_start_end_icons_helper_text">Filled start and end icons text field</string>
-  <string name="cat_textfield_filled_clear_button_helper_text">Filled clear button text field</string>
-  <string name="cat_textfield_filled_custom_end_icon_helper_text">Filled custom end icon text field</string>
-  <string name="cat_textfield_outline_helper_text">Outline text field</string>
-  <string name="cat_textfield_outline_dense_helper_text">Dense outline text field</string>
-  <string name="cat_textfield_outline_start_icon_helper_text">Outline start icon text field</string>
-  <string name="cat_textfield_outline_start_end_icons_helper_text">Outline start and end icons text field</string>
-  <string name="cat_textfield_outline_clear_button_helper_text">Outline clear button text field</string>
-  <string name="cat_textfield_outline_custom_end_icon_helper_text">Outline custom end icon text field</string>
-  <string name="cat_textfield_custom_end_icon_content_description">Custom end icon</string>
-  <string name="cat_textfield_custom_start_icon_content_description">Custom start icon</string>
+  <string name="cat_textfield_filled_start_icon_helper_text" translatable="false">Filled start icon text field</string>
+  <string name="cat_textfield_filled_start_end_icons_helper_text" translatable="false">Filled start and end icons text field</string>
+  <string name="cat_textfield_filled_clear_button_helper_text" translatable="false">Filled clear button text field</string>
+  <string name="cat_textfield_filled_custom_end_icon_helper_text" translatable="false">Filled custom end icon text field</string>
+  <string name="cat_textfield_legacy_helper_text" translatable="false">Legacy text field</string>
+  <string name="cat_textfield_outlined_helper_text" translatable="false">Outlined text field</string>
+  <string name="cat_textfield_outlined_dense_helper_text" translatable="false">Dense outlined text field</string>
+  <string name="cat_textfield_outlined_start_icon_helper_text" translatable="false">Outlined start icon text field</string>
+  <string name="cat_textfield_outlined_start_end_icons_helper_text" translatable="false">Outlined start and end icons text field</string>
+  <string name="cat_textfield_outlined_clear_button_helper_text" translatable="false">Outlined clear button text field</string>
+  <string name="cat_textfield_outlined_custom_end_icon_helper_text" translatable="false">Outlined custom end icon text field</string>
+  <string name="cat_textfield_custom_end_icon_content_description" translatable="false">Custom end icon</string>
+  <string name="cat_textfield_custom_start_icon_content_description" translatable="false">Custom start icon</string>
 
-  <string name="cat_textfield_customize_section_title">Customize text fields</string>
-  <string name="cat_textfield_customize_section_description">
+  <string name="cat_textfield_customize_section_title" translatable="false">Customize text fields</string>
+  <string name="cat_textfield_customize_section_description" translatable="false">
     Enter values below to customize the text fields.
   </string>
-  <string name="cat_textfield_label">Label</string>
-  <string name="cat_textfield_password">Password</string>
-  <string name="cat_textfield_error">Error</string>
-  <string name="cat_textfield_customize_label_text">Label text</string>
-  <string name="cat_textfield_customize_error_text">Error text</string>
-  <string name="cat_textfield_customize_helper_text">Helper text</string>
-  <string name="cat_textfield_customize_color">Change color</string>
-  <string name="cat_textfield_customize_counter_text">Character counter max</string>
-  <string name="cat_textfield_update_label_text">Update label</string>
-  <string name="cat_textfield_update_error_text">Update error</string>
-  <string name="cat_textfield_update_helper_text">Update helper</string>
-  <string name="cat_textfield_update_counter_text">Update character counter</string>
-  <string name="cat_textfield_null_input_error_text">Enter a value</string>
-  <string name="cat_textfield_show_error_text">Show error</string>
-  <string name="cat_textfield_hide_error_text">Hide error</string>
-  <string name="cat_textfield_disable">Disable</string>
-  <string name="cat_textfield_enable">Enable</string>
+  <string name="cat_textfield_label" translatable="false">Label</string>
+  <string name="cat_textfield_password" translatable="false">Password</string>
+  <string name="cat_textfield_error" translatable="false">Error</string>
+  <string name="cat_textfield_customize_label_text" translatable="false">Label text</string>
+  <string name="cat_textfield_customize_error_text" translatable="false">Error text</string>
+  <string name="cat_textfield_customize_helper_text" translatable="false">Helper text</string>
+  <string name="cat_textfield_customize_color" translatable="false">Change color</string>
+  <string name="cat_textfield_customize_counter_text" translatable="false">Character counter max</string>
+  <string name="cat_textfield_update_label_text" translatable="false">Update label</string>
+  <string name="cat_textfield_update_error_text" translatable="false">Update error</string>
+  <string name="cat_textfield_update_helper_text" translatable="false">Update helper</string>
+  <string name="cat_textfield_update_counter_text" translatable="false">Update character counter</string>
+  <string name="cat_textfield_null_input_error_text" translatable="false">Enter a value</string>
+  <string name="cat_textfield_show_error_text" translatable="false">Show error</string>
+  <string name="cat_textfield_hide_error_text" translatable="false">Hide error</string>
+  <string name="cat_textfield_disable" translatable="false">Disable</string>
+  <string name="cat_textfield_enable" translatable="false">Enable</string>
 </resources>
