@@ -106,14 +106,20 @@ import java.util.LinkedHashSet;
  *       disguised, when your EditText is set to display a password.
  *   <li>Clearing text functionality via {@link #setEndIconMode(int)} API and related attribute. If
  *       set, a button is displayed when text is present and clicking it clears the EditText field.
- *   <li>Showing a custom icon specified by the user via {@link #setEndIconMode(int)} API and
- *       related attribute. The user should specify a drawable and content description for the icon.
- *       Optionally, the user can also specify an {@link android.view.View.OnClickListener}, an
- *       {@link OnEditTextAttachedListener} and an {@link OnEndIconChangedListener}.
+ *   <li>Showing a custom icon specified via {@link #setEndIconMode(int)} API and related attribute.
+ *       You should specify a drawable and content description for the icon. Optionally, you can
+ *       also specify an {@link android.view.View.OnClickListener}, an {@link
+ *       OnEditTextAttachedListener} and an {@link OnEndIconChangedListener}.
  *       <p><strong>Note:</strong> When using an end icon, the 'end' compound drawable of the
  *       EditText will be overridden while the end icon view is visible. To ensure that any existing
  *       drawables are restored correctly, you should set those compound drawables relatively
  *       (start/end), as opposed to absolutely (left/right).
+ *   <li>Showing a start icon via {@link #setStartIconDrawable(Drawable)} API and related attribute.
+ *       You should specify a content description for the icon. Optionally, you can also specify an
+ *       {@link android.view.View.OnClickListener} for it.
+ *       <p><strong>Note:</strong> Use the {@link #setStartIconDrawable(Drawable)} API in place of
+ *       setting a start/left compound drawable on the EditText. When using a start icon, the
+ *       'start/left' compound drawable of the EditText will be overridden.
  * </ul>
  *
  * <p>The {@link TextInputEditText} class is provided to be used as the input text child of this
@@ -220,6 +226,13 @@ public class TextInputLayout extends LinearLayout {
   private final RectF tmpRectF = new RectF();
   private Typeface typeface;
 
+  private final CheckableImageButton startIconView;
+  private ColorStateList startIconTintList;
+  private boolean hasStartIconTintList;
+  private PorterDuff.Mode startIconTintMode;
+  private boolean hasStartIconTintMode;
+  private Drawable startIconDummyDrawable;
+
   /** Values for the end icon mode. */
   @IntDef({END_ICON_CUSTOM, END_ICON_NONE, END_ICON_PASSWORD_TOGGLE, END_ICON_CLEAR_TEXT})
   @Retention(RetentionPolicy.SOURCE)
@@ -301,7 +314,7 @@ public class TextInputLayout extends LinearLayout {
       new LinkedHashSet<>();
 
   @EndIconMode private int endIconMode = END_ICON_NONE;
-  private CheckableImageButton endIconView;
+  private final CheckableImageButton endIconView;
   private final LinkedHashSet<OnEndIconChangedListener> endIconChangedListeners =
       new LinkedHashSet<>();
   private ColorStateList endIconTintList;
@@ -542,6 +555,36 @@ public class TextInputLayout extends LinearLayout {
     counterOverflowTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_counterOverflowTextAppearance, 0);
 
+    // Initialize start icon view.
+    startIconView =
+        (CheckableImageButton)
+            LayoutInflater.from(getContext())
+                .inflate(R.layout.design_text_input_start_icon, inputFrame, false);
+    inputFrame.addView(startIconView);
+    startIconView.setVisibility(GONE);
+    setStartIconOnClickListener(null);
+    // Set up start icon if any.
+    if (a.hasValue(R.styleable.TextInputLayout_startIconDrawable)) {
+      setStartIconDrawable(a.getDrawable(R.styleable.TextInputLayout_startIconDrawable));
+      if (a.hasValue(R.styleable.TextInputLayout_startIconContentDescription)) {
+        setStartIconContentDescription(
+            a.getText(R.styleable.TextInputLayout_startIconContentDescription));
+      }
+    }
+    // Default tint for a start icon or value specified by user.
+    if (a.hasValue(R.styleable.TextInputLayout_startIconTint)) {
+      setStartIconTintList(
+          AppCompatResources.getColorStateList(
+              context, a.getResourceId(R.styleable.TextInputLayout_startIconTint, -1)));
+    }
+    // Default tint mode for a start icon or value specified by user.
+    if (a.hasValue(R.styleable.TextInputLayout_startIconTintMode)) {
+      setStartIconTintMode(
+          ViewUtils.parseTintMode(
+              a.getInt(R.styleable.TextInputLayout_startIconTintMode, -1), null));
+    }
+
+    // Initialize end icon view.
     endIconView =
         (CheckableImageButton)
             LayoutInflater.from(getContext())
@@ -588,8 +631,8 @@ public class TextInputLayout extends LinearLayout {
       // Default tint mode for any end icon or value specified by user
       if (a.hasValue(R.styleable.TextInputLayout_endIconTintMode)) {
         setEndIconTintMode(
-            ViewUtils
-                .parseTintMode(a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
+            ViewUtils.parseTintMode(
+                a.getInt(R.styleable.TextInputLayout_endIconTintMode, -1), null));
       }
     }
 
@@ -1053,14 +1096,14 @@ public class TextInputLayout extends LinearLayout {
 
     indicatorViewController.adjustIndicatorPadding();
 
-    ViewCompat.setPaddingRelative(
+    updateIconViewOnEditTextAttached(
+        startIconView,
+        R.dimen.mtrl_textinput_start_icon_padding_start,
+        R.dimen.mtrl_textinput_start_icon_padding_end);
+    updateIconViewOnEditTextAttached(
         endIconView,
-        getResources().getDimensionPixelSize(R.dimen.mtrl_textinput_end_icon_padding_start),
-        /*TODO: Set to 0 once label is centered*/ this.editText.getPaddingTop(),
-        getResources().getDimensionPixelSize(R.dimen.mtrl_textinput_end_icon_padding_end),
-        /*TODO: Set to 0 once label is centered*/ this.editText.getPaddingBottom());
-    endIconView.bringToFront();
-
+        R.dimen.mtrl_textinput_end_icon_padding_start,
+        R.dimen.mtrl_textinput_end_icon_padding_end);
     dispatchOnEditTextAttached();
 
     // Update the label visibility with no animation, but force a state change
@@ -1974,17 +2017,21 @@ public class TextInputLayout extends LinearLayout {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    setEditTextHeightAndDummyDrawable();
+    setEditTextHeightAndDummyDrawables();
   }
 
-  private void setEditTextHeightAndDummyDrawable() {
-    // We need to make sure that the EditText's height is at least the same as the end icon's
-    // height. This ensures focus works properly, and there is no visual jump if the icon is
-    // enabled/disabled.
-    if (editText != null
-        && hasEndIcon()
-        && editText.getMeasuredHeight() < endIconView.getMeasuredHeight()) {
-      editText.setMinimumHeight(endIconView.getMeasuredHeight());
+  private void setEditTextHeightAndDummyDrawables() {
+    if (editText == null) {
+      return;
+    }
+
+    // We need to make sure that the EditText's height is at least the same as the end or start
+    // icon's height (whichever is bigger). This ensures focus works properly, and there is no
+    // visual jump if the icon is enabled/disabled.
+    int maxIconHeight =
+        Math.max(endIconView.getMeasuredHeight(), startIconView.getMeasuredHeight());
+    if (editText.getMeasuredHeight() < maxIconHeight) {
+      editText.setMinimumHeight(maxIconHeight);
       editText.post(
           new Runnable() {
             @Override
@@ -1994,11 +2041,159 @@ public class TextInputLayout extends LinearLayout {
           });
     }
 
-    // Update dummy drawable as needed.
-    if (hasEndIcon() && isEndIconVisible()) {
-      addEndIconDummyDrawable();
-    } else if (endIconDummyDrawable != null) {
-      removeEndIconDummyDrawable();
+    updateIconDummyDrawables();
+  }
+
+  /**
+   * Sets the start icon.
+   *
+   * <p>If you use an icon you should also set a description for its action using {@link
+   * #setStartIconContentDescription(CharSequence)}. This is used for accessibility.
+   *
+   * @param resId resource id of the drawable to set, or 0 to clear and remove the icon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconDrawable
+   */
+  public void setStartIconDrawable(@DrawableRes int resId) {
+    setStartIconDrawable(resId != 0 ? AppCompatResources.getDrawable(getContext(), resId) : null);
+  }
+
+  /**
+   * Sets the start icon.
+   *
+   * <p>If you use an icon you should also set a description for its action using {@link
+   * #setStartIconContentDescription(CharSequence)}. This is used for accessibility.
+   *
+   * @param startIconDrawable Drawable to set, may be null to clear and remove the icon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconDrawable
+   */
+  public void setStartIconDrawable(@Nullable Drawable startIconDrawable) {
+    startIconView.setImageDrawable(startIconDrawable);
+    if (startIconDrawable != null) {
+      setStartIconVisible(true);
+      applyStartIconTint();
+    } else {
+      setStartIconVisible(false);
+      setStartIconOnClickListener(null);
+      setStartIconContentDescription(null);
+    }
+  }
+
+  /**
+   * Returns the start icon.
+   *
+   * @see #setStartIconDrawable(Drawable)
+   * @return the drawable used for the start icon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconDrawable
+   */
+  @Nullable
+  public Drawable getStartIconDrawable() {
+    return startIconView.getDrawable();
+  }
+
+  /**
+   * Sets the start icon's functionality that is performed when the start icon is clicked. The icon
+   * will not be clickable if its listener is null.
+   *
+   * @param startIconOnClickListener the {@link android.view.View.OnClickListener} the start icon
+   *     view will have, or null to clear it.
+   */
+  public void setStartIconOnClickListener(OnClickListener startIconOnClickListener) {
+    setIconOnClickListener(startIconView, startIconOnClickListener);
+  }
+
+  /**
+   * Sets the start icon to be VISIBLE or GONE.
+   *
+   * @param visible whether the icon should be set to visible
+   */
+  public void setStartIconVisible(boolean visible) {
+    if (isStartIconVisible() != visible) {
+      startIconView.setVisibility(visible ? View.VISIBLE : View.GONE);
+      updateIconDummyDrawables();
+    }
+  }
+
+  /**
+   * Returns whether the current start icon is visible.
+   *
+   * @see #setStartIconVisible(boolean)
+   */
+  public boolean isStartIconVisible() {
+    return startIconView.getVisibility() == View.VISIBLE;
+  }
+
+  /**
+   * Set a content description for the start icon.
+   *
+   * <p>The content description will be read via screen readers or other accessibility systems to
+   * explain the purpose or action of the icon.
+   *
+   * @param resId Resource ID of a content description string to set, or 0 to clear the description
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconContentDescription
+   */
+  public void setStartIconContentDescription(@StringRes int resId) {
+    setStartIconContentDescription(resId != 0 ? getResources().getText(resId) : null);
+  }
+
+  /**
+   * Set a content description for the start icon.
+   *
+   * <p>The content description will be read via screen readers or other accessibility systems to
+   * explain the purpose or action of the icon.
+   *
+   * @param startIconContentDescription Content description to set, or null to clear the content
+   *     description
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconContentDescription
+   */
+  public void setStartIconContentDescription(@Nullable CharSequence startIconContentDescription) {
+    if (getStartIconContentDescription() != startIconContentDescription) {
+      startIconView.setContentDescription(startIconContentDescription);
+    }
+  }
+
+  /**
+   * Returns the currently configured content description for the start icon.
+   *
+   * <p>This will be used to describe the navigation action to users through mechanisms such as
+   * screen readers.
+   */
+  @Nullable
+  public CharSequence getStartIconContentDescription() {
+    return startIconView.getContentDescription();
+  }
+
+  /**
+   * Applies a tint to the start icon drawable. Does not modify the current tint mode, which is
+   * {@link PorterDuff.Mode#SRC_IN} by default.
+   *
+   * <p>Subsequent calls to {@link #setStartIconDrawable(Drawable)} will automatically mutate the
+   * drawable and apply the specified tint and tint mode using {@link
+   * DrawableCompat#setTintList(Drawable, ColorStateList)}.
+   *
+   * @param startIconTintList the tint to apply, may be null to clear tint
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconTint
+   */
+  public void setStartIconTintList(@Nullable ColorStateList startIconTintList) {
+    if (this.startIconTintList != startIconTintList) {
+      this.startIconTintList = startIconTintList;
+      hasStartIconTintList = true;
+      applyStartIconTint();
+    }
+  }
+
+  /**
+   * Specifies the blending mode used to apply the tint specified by {@link
+   * #setEndIconTintList(ColorStateList)} to the start icon drawable. The default mode is {@link
+   * PorterDuff.Mode#SRC_IN}.
+   *
+   * @param startIconTintMode the blending mode used to apply the tint, may be null to clear tint
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_startIconTintMode
+   */
+  public void setStartIconTintMode(@Nullable PorterDuff.Mode startIconTintMode) {
+    if (this.startIconTintMode != startIconTintMode) {
+      this.startIconTintMode = startIconTintMode;
+      hasStartIconTintMode = true;
+      applyStartIconTint();
     }
   }
 
@@ -2056,9 +2251,7 @@ public class TextInputLayout extends LinearLayout {
    *     have
    */
   public void setEndIconOnClickListener(@Nullable OnClickListener onClickListener) {
-    endIconView.setOnClickListener(onClickListener);
-    endIconView.setFocusable(onClickListener != null);
-    endIconView.setClickable(onClickListener != null);
+    setIconOnClickListener(endIconView, onClickListener);
   }
 
   /**
@@ -2068,13 +2261,8 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setEndIconVisible(boolean visible) {
     if (isEndIconVisible() != visible) {
-      if (visible) {
-        endIconView.setVisibility(View.VISIBLE);
-        addEndIconDummyDrawable();
-      } else {
-        endIconView.setVisibility(View.INVISIBLE);
-        removeEndIconDummyDrawable();
-      }
+      endIconView.setVisibility(visible ? View.VISIBLE : View.INVISIBLE);
+      updateIconDummyDrawables();
     }
   }
 
@@ -2483,6 +2671,25 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  private void dispatchOnEditTextAttached() {
+    for (OnEditTextAttachedListener listener : editTextAttachedListeners) {
+      listener.onEditTextAttached();
+    }
+  }
+
+  private boolean hasStartIcon() {
+    return getStartIconDrawable() != null;
+  }
+
+  private void applyStartIconTint() {
+    applyIconTint(
+        startIconView,
+        hasStartIconTintList,
+        startIconTintList,
+        hasStartIconTintMode,
+        startIconTintMode);
+  }
+
   private boolean hasEndIcon() {
     return endIconMode != END_ICON_NONE;
   }
@@ -2493,35 +2700,52 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void dispatchOnEditTextAttached() {
-    for (OnEditTextAttachedListener listener : editTextAttachedListeners) {
-      listener.onEditTextAttached();
-    }
+  private void applyEndIconTint() {
+    applyIconTint(
+        endIconView, hasEndIconTintList, endIconTintList, hasEndIconTintMode, endIconTintMode);
   }
 
   /*
-   * We need to add a dummy drawable as the end compound drawable so that the text is indented and
-   * doesn't display below the end icon view.
+   * We need to add a dummy drawable as the start and/or end compound drawables so that the text is
+   * indented and doesn't display below the icon views.
    */
-  private void addEndIconDummyDrawable() {
+  private void updateIconDummyDrawables() {
     if (editText == null) {
       return;
     }
-    endIconDummyDrawable = new ColorDrawable();
-    endIconDummyDrawable.setBounds(
-        0, 0, endIconView.getMeasuredWidth() - endIconView.getPaddingLeft(), 1);
-    final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-    // Store the user defined end compound drawable so that we can restore it later
-    if (compounds[2] != endIconDummyDrawable) {
-      originalEditTextEndDrawable = compounds[2];
-    }
-    TextViewCompat.setCompoundDrawablesRelative(
-        editText, compounds[0], compounds[1], endIconDummyDrawable, compounds[3]);
-  }
 
-  /* Remove the dummy end compound drawable if it exists and clear it. */
-  private void removeEndIconDummyDrawable() {
-    if (endIconDummyDrawable != null) {
+    // Update start icon drawable if needed.
+    if (hasStartIcon() && isStartIconVisible()) {
+      startIconDummyDrawable = new ColorDrawable();
+      startIconDummyDrawable.setBounds(
+          0, 0, startIconView.getMeasuredWidth() - startIconView.getPaddingRight(), 1);
+      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+      TextViewCompat.setCompoundDrawablesRelative(
+          editText, startIconDummyDrawable, compounds[1], compounds[2], compounds[3]);
+    } else if (startIconDummyDrawable != null) {
+      // Remove the dummy start compound drawable if it exists and clear it.
+      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+      TextViewCompat.setCompoundDrawablesRelative(
+          editText, null, compounds[1], compounds[2], compounds[3]);
+      startIconDummyDrawable = null;
+    }
+
+    // Update end icon drawable if needed.
+    if (hasEndIcon() && isEndIconVisible()) {
+      if (endIconDummyDrawable == null) {
+        endIconDummyDrawable = new ColorDrawable();
+        endIconDummyDrawable.setBounds(
+            0, 0, endIconView.getMeasuredWidth() - endIconView.getPaddingLeft(), 1);
+      }
+      final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
+      // Store the user defined end compound drawable so that we can restore it later.
+      if (compounds[2] != endIconDummyDrawable) {
+        originalEditTextEndDrawable = compounds[2];
+      }
+      TextViewCompat.setCompoundDrawablesRelative(
+          editText, compounds[0], compounds[1], endIconDummyDrawable, compounds[3]);
+    } else if (endIconDummyDrawable != null) {
+      // Remove the dummy end compound drawable if it exists and clear it.
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
       if (compounds[2] == endIconDummyDrawable) {
         TextViewCompat.setCompoundDrawablesRelative(
@@ -2531,22 +2755,44 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void applyEndIconTint() {
-    Drawable endIconDrawable = endIconView.getDrawable();
-    if (endIconDrawable != null && (hasEndIconTintList || hasEndIconTintMode)) {
-      endIconDrawable = DrawableCompat.wrap(endIconDrawable).mutate();
+  private void applyIconTint(
+      CheckableImageButton iconView,
+      boolean hasIconTintList,
+      ColorStateList iconTintList,
+      boolean hasIconTintMode,
+      PorterDuff.Mode iconTintMode) {
+    Drawable icon = iconView.getDrawable();
+    if (icon != null && (hasIconTintList || hasIconTintMode)) {
+      icon = DrawableCompat.wrap(icon).mutate();
 
-      if (hasEndIconTintList) {
-        DrawableCompat.setTintList(endIconDrawable, endIconTintList);
+      if (hasIconTintList) {
+        DrawableCompat.setTintList(icon, iconTintList);
       }
-      if (hasEndIconTintMode) {
-        DrawableCompat.setTintMode(endIconDrawable, endIconTintMode);
-      }
-
-      if (endIconView.getDrawable() != endIconDrawable) {
-        endIconView.setImageDrawable(endIconDrawable);
+      if (hasIconTintMode) {
+        DrawableCompat.setTintMode(icon, iconTintMode);
       }
     }
+
+    if (iconView.getDrawable() != icon) {
+      iconView.setImageDrawable(icon);
+    }
+  }
+
+  private void setIconOnClickListener(View iconView, OnClickListener onClickListener) {
+    iconView.setOnClickListener(onClickListener);
+    iconView.setFocusable(onClickListener != null);
+    iconView.setClickable(onClickListener != null);
+  }
+
+  private void updateIconViewOnEditTextAttached(
+      View iconView, @DimenRes int paddingStartResId, @DimenRes int paddingEndResId) {
+    ViewCompat.setPaddingRelative(
+        iconView,
+        getResources().getDimensionPixelSize(paddingStartResId),
+        /*TODO: Set to 0 once label is centered*/ editText.getPaddingTop(),
+        getResources().getDimensionPixelSize(paddingEndResId),
+        /*TODO: Set to 0 once label is centered*/ editText.getPaddingBottom());
+    iconView.bringToFront();
   }
 
   private boolean hasPasswordTransformation() {

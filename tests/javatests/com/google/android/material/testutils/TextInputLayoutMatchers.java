@@ -84,4 +84,22 @@ public class TextInputLayoutMatchers {
       }
     };
   }
+
+  /** Returns a matcher that matches TextInputLayouts with non-displayed start icons */
+  public static Matcher<View> doesNotShowStartIcon() {
+    return new TypeSafeMatcher<View>(TextInputLayout.class) {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("TextInputLayout doesn't show start icon.");
+      }
+
+      @Override
+      protected boolean matchesSafely(View item) {
+        // Reach in and find the start icon since we don't have a public API
+        // to get a reference to it
+        View startIcon = item.findViewById(R.id.text_input_start_icon);
+        return startIcon.getVisibility() != View.VISIBLE;
+      }
+    };
+  }
 }

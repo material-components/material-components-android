@@ -24,9 +24,10 @@
     <item name="boxBackgroundMode">none</item>
     <item name="boxStrokeColor">@color/design_box_stroke_color</item>
     <item name="passwordToggleDrawable">@drawable/design_password_eye</item>
-    <item name="passwordToggleTint">@color/design_end_icon_tint</item>
+    <item name="passwordToggleTint">@color/design_icon_tint</item>
     <item name="passwordToggleContentDescription">@string/password_toggle_content_description</item>
-    <item name="endIconTint">@color/design_end_icon_tint</item>
+    <item name="endIconTint">@color/design_icon_tint</item>
+    <item name="startIconTint">@color/design_icon_tint</item>
 
     <item name="counterTextAppearance">@style/TextAppearance.Design.Counter</item>
     <item name="counterOverflowTextAppearance">@style/TextAppearance.Design.Counter.Overflow</item>
@@ -51,7 +52,8 @@
 
     <item name="boxBackgroundMode">outline</item>
     <item name="boxBackgroundColor">@null</item>
-    <item name="endIconTint">@color/mtrl_outline_end_icon_tint</item>
+    <item name="endIconTint">@color/mtrl_outlined_icon_tint</item>
+    <item name="startIconTint">@color/mtrl_outlined_icon_tint</item>
     <item name="boxCollapsedPaddingTop">0dp</item>
     <item name="boxCornerRadiusTopStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxCornerRadiusTopEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
@@ -84,7 +86,8 @@
     </item>
     <item name="boxBackgroundMode">filled</item>
     <item name="boxBackgroundColor">@color/mtrl_filled_background_color</item>
-    <item name="endIconTint">@color/mtrl_filled_end_icon_tint</item>
+    <item name="endIconTint">@color/mtrl_filled_icon_tint</item>
+    <item name="startIconTint">@color/mtrl_filled_icon_tint</item>
     <item name="boxCollapsedPaddingTop">12dp</item>
     <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_small</item>
     <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_small</item>

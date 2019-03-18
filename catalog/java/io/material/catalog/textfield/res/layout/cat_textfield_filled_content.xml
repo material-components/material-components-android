@@ -113,11 +113,32 @@
       app:counterMaxLength="10"
       app:errorEnabled="true"
       app:helperText="@string/cat_textfield_filled_start_icon_helper_text"
-      app:helperTextEnabled="true">
+      app:helperTextEnabled="true"
+      app:startIconDrawable="@drawable/ic_search_24px"
+      app:startIconContentDescription="@string/cat_textfield_custom_start_icon_content_description">
     <com.google.android.material.textfield.TextInputEditText
-        android:id="@+id/edit_text_start_icon"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:drawablePadding="8dp"/>
+        android:layout_height="wrap_content"/>
+  </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_margin="4dp"
+      android:hint="@string/cat_textfield_label"
+      app:counterEnabled="true"
+      app:counterMaxLength="10"
+      app:errorEnabled="true"
+      app:helperText="@string/cat_textfield_filled_start_end_icons_helper_text"
+      app:helperTextEnabled="true"
+      app:startIconDrawable="@drawable/ic_search_24px"
+      app:startIconContentDescription="@string/cat_textfield_custom_start_icon_content_description"
+      app:endIconMode="custom"
+      app:endIconDrawable="@drawable/ic_accelerator_24px"
+      app:endIconContentDescription="@string/cat_textfield_custom_end_icon_content_description">
+    <com.google.android.material.textfield.TextInputEditText
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
   </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

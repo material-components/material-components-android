@@ -18,14 +18,10 @@ package io.material.catalog.textfield;
 
 import io.material.catalog.R;
 
-import android.graphics.drawable.Drawable;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import com.google.android.material.textfield.TextInputEditText;
 import com.google.android.material.textfield.TextInputLayout;
-import androidx.core.widget.TextViewCompat;
-import androidx.appcompat.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -48,11 +44,6 @@ public class TextFieldOutlineDemoFragment extends TextFieldControllableDemoFragm
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view = super.onCreateDemoView(layoutInflater, viewGroup, bundle);
-    TextInputEditText startIconEditText = view.findViewById(R.id.edit_text_start_icon);
-    Drawable startIcon =
-        AppCompatResources.getDrawable(view.getContext(), R.drawable.ic_search_24px);
-    TextViewCompat.setCompoundDrawablesRelativeWithIntrinsicBounds(
-        startIconEditText, startIcon, null, null, null);
     return view;
   }
 }

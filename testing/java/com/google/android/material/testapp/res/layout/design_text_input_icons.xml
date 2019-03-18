@@ -81,4 +81,19 @@
       android:hint="@string/textinput_hint"/>
 
   </com.google.android.material.textfield.TextInputLayout>
+
+  <com.google.android.material.textfield.TextInputLayout
+      android:id="@+id/textinput_starticon"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      app:startIconDrawable="@drawable/ic_lightbulb_outline_white_24dp">
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/textinput_edittext_starticon"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/textinput_hint"
+        android:imeOptions="flagNoExtractUi"/>
+
+  </com.google.android.material.textfield.TextInputLayout>
 </LinearLayout>

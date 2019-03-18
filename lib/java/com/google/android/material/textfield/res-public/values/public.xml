@@ -53,6 +53,10 @@
   <public name="hintEnabled" type="attr"/>
   <public name="hintTextAppearance" type="attr"/>
   <public name="hintTextColor" type="attr"/>
+  <public name="startIconDrawable" type="attr"/>
+  <public name="startIconContentDescription" type="attr"/>
+  <public name="startIconTint" type="attr"/>
+  <public name="startIconTintMode" type="attr"/>
   <public name="endIconMode" type="attr"/>
   <public name="endIconDrawable" type="attr"/>
   <public name="endIconContentDescription" type="attr"/>

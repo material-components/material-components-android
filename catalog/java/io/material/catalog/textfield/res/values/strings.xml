@@ -31,14 +31,17 @@
     Dense filled password text field
   </string>
   <string name="cat_textfield_filled_start_icon_helper_text">Filled start icon text field</string>
+  <string name="cat_textfield_filled_start_end_icons_helper_text">Filled start and end icons text field</string>
   <string name="cat_textfield_filled_clear_button_helper_text">Filled clear button text field</string>
   <string name="cat_textfield_filled_custom_end_icon_helper_text">Filled custom end icon text field</string>
   <string name="cat_textfield_outline_helper_text">Outline text field</string>
   <string name="cat_textfield_outline_dense_helper_text">Dense outline text field</string>
   <string name="cat_textfield_outline_start_icon_helper_text">Outline start icon text field</string>
+  <string name="cat_textfield_outline_start_end_icons_helper_text">Outline start and end icons text field</string>
   <string name="cat_textfield_outline_clear_button_helper_text">Outline clear button text field</string>
   <string name="cat_textfield_outline_custom_end_icon_helper_text">Outline custom end icon text field</string>
   <string name="cat_textfield_custom_end_icon_content_description">Custom end icon</string>
+  <string name="cat_textfield_custom_start_icon_content_description">Custom start icon</string>
 
   <string name="cat_textfield_customize_section_title">Customize text fields</string>
   <string name="cat_textfield_customize_section_description">

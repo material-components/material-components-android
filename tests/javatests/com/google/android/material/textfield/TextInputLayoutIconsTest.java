@@ -17,12 +17,17 @@ package com.google.android.material.textfield;
 
 import static com.google.android.material.testutils.TestUtilsActions.setCompoundDrawablesRelative;
 import static com.google.android.material.testutils.TestUtilsMatchers.withCompoundDrawable;
-import static com.google.android.material.testutils.TextInputLayoutActions.clickEndIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setInputTypeToPasswordTransformationMethod;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
+import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintList;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowEndIcon;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowStartIcon;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.showsEndIcon;
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
@@ -39,6 +44,7 @@ import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
@@ -106,7 +112,7 @@ public class TextInputLayoutIconsTest {
     assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
 
     // Now click the toggle button
-    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+    onView(withId(R.id.textinput_password)).perform(clickIcon(true));
 
     // And assert that the password is not disguised
     assertEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
@@ -148,7 +154,7 @@ public class TextInputLayoutIconsTest {
     assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
 
     // Now click the toggle button
-    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+    onView(withId(R.id.textinput_password)).perform(clickIcon(true));
     // Disable the password toggle
     onView(withId(R.id.textinput_password))
         .perform(setEndIconMode(TextInputLayout.END_ICON_NONE));
@@ -166,7 +172,7 @@ public class TextInputLayoutIconsTest {
     // Type some text on the EditText and then click the toggle button
     onView(withId(R.id.textinput_edittext_pwd))
         .perform(typeText(INPUT_TEXT));
-    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+    onView(withId(R.id.textinput_password)).perform(clickIcon(true));
 
     // Set end icon to none, and then set it to be the password toggle
     onView(withId(R.id.textinput_password))
@@ -175,7 +181,7 @@ public class TextInputLayoutIconsTest {
 
     // Check that the password is disguised and the toggle button reflects the same state
     assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
-    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+    onView(withId(R.id.textinput_password)).perform(clickIcon(true));
   }
 
   @Test
@@ -217,7 +223,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_password)).check(isPasswordToggledVisible(false));
 
     // Toggle password to be shown as plain text
-    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+    onView(withId(R.id.textinput_password)).perform(clickIcon(true));
     onView(withId(R.id.textinput_password)).check(isPasswordToggledVisible(true));
 
     RecreatableAppCompatActivity activity = activityTestRule.getActivity();
@@ -252,7 +258,7 @@ public class TextInputLayoutIconsTest {
         activity.findViewById(R.id.textinput_edittext_clear);
 
     // Click clear button
-    onView(withId(R.id.textinput_clear)).perform(clickEndIcon());
+    onView(withId(R.id.textinput_clear)).perform(clickIcon(true));
 
     // Assert EditText was cleared
     assertEquals(0, textInput.getLayout().getText().length());
@@ -335,7 +341,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_password))
         .check(matches(showsEndIcon()));
     // Assert icon works as expected
-    onView(withId(R.id.textinput_password)).perform(clickEndIcon());
+    onView(withId(R.id.textinput_password)).perform(clickIcon(true));
     assertEquals(0, textInputLayoutPassword.getEditText().getText().length());
   }
 
@@ -377,7 +383,7 @@ public class TextInputLayoutIconsTest {
                 }));
 
     // Click custom end icon
-    onView(withId(R.id.textinput_custom)).perform(clickEndIcon());
+    onView(withId(R.id.textinput_custom)).perform(clickIcon(true));
 
     // Assert onClickListener worked as expected
     assertEquals("Test custom icon.", textInputCustomEndIcon.getEditText().getText().toString());
@@ -414,7 +420,65 @@ public class TextInputLayoutIconsTest {
         .check(matches(withCompoundDrawable(3, bottom)));
   }
 
-  static ViewAssertion isPasswordToggledVisible(final boolean isToggledVisible) {
+  @Test
+  public void  testSetStartIconProgrammatically() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_no_icon);
+    Drawable drawable = new ColorDrawable(Color.BLACK);
+    String contentDesc = "Start icon";
+
+    // Set start icon
+    onView(withId(R.id.textinput_no_icon)).perform(setStartIcon(drawable));
+    onView(withId(R.id.textinput_no_icon)).perform(setStartIconContentDescription(contentDesc));
+    onView(withId(R.id.textinput_no_icon)).perform(setStartIconTintList(null));
+
+    // Assert the start icon is set
+    assertNotNull(textInputLayout.getStartIconDrawable());
+    assertEquals(contentDesc, textInputLayout.getStartIconContentDescription().toString());
+  }
+
+  @Test
+  public void testStartIconDisables() {
+    // Disable the start icon
+    onView(withId(R.id.textinput_starticon)).perform(setStartIcon(null));
+
+    // Check that the start icon view is not visible
+    onView(withId(R.id.textinput_starticon)).check(matches(doesNotShowStartIcon()));
+  }
+
+  @Test
+  public void testStartIconOnClickListener() {
+    final Activity activity = activityTestRule.getActivity();
+    final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_starticon);
+    // Set click listener on start icon
+    onView(withId(R.id.textinput_starticon)).perform(setStartIconOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            textInputLayout.getEditText().setText("Start icon on click");
+          }
+        }));
+
+    // Click start icon
+    onView(withId(R.id.textinput_starticon)).perform(clickIcon(false));
+
+    // Assert OnClickListener worked as expected
+    assertEquals("Start icon on click", textInputLayout.getEditText().getText().toString());
+  }
+
+  /**
+   * Simple test that uses AccessibilityChecks to check that the start icon is 'accessible'.
+   */
+  @Test
+  public void testStartIconToggleIsAccessible() {
+    onView(
+        allOf(
+            withId(R.id.text_input_start_icon),
+            isDescendantOfA(withId(R.id.textinput_starticon))))
+        .check(accessibilityAssertion());
+  }
+
+  private static ViewAssertion isPasswordToggledVisible(final boolean isToggledVisible) {
     return new ViewAssertion() {
       @Override
       public void check(View view, NoMatchingViewException noViewFoundException) {
