@@ -194,7 +194,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
             context, attrs, defStyleAttr, R.style.Widget_MaterialComponents_Chip_Action);
     initMinTouchTarget(context, attrs, defStyleAttr);
     setChipDrawable(drawable);
-
+    drawable.setElevation(ViewCompat.getElevation(this));
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context,
@@ -244,6 +244,14 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
       setMinHeight(minTouchTargetSize);
     }
     lastLayoutDirection = ViewCompat.getLayoutDirection(this);
+  }
+
+  @Override
+  public void setElevation(float elevation) {
+    super.setElevation(elevation);
+    if (chipDrawable != null) {
+      chipDrawable.setElevation(elevation);
+    }
   }
 
   @Override

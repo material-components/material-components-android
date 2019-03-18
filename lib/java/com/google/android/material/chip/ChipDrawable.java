@@ -324,6 +324,8 @@ public class ChipDrawable extends MaterialShapeDrawable
   private ChipDrawable(
       Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
     super(context, attrs, defStyleAttr, defStyleRes);
+    initializeElevationOverlay(context);
+
     this.context = context;
     textDrawableHelper = new TextDrawableHelper();
 
