@@ -37,6 +37,9 @@
   <string name="cat_textfield_legacy_helper_text" translatable="false">Legacy text field</string>
   <string name="cat_textfield_outlined_helper_text" translatable="false">Outlined text field</string>
   <string name="cat_textfield_outlined_dense_helper_text" translatable="false">Dense outlined text field</string>
+  <string name="cat_textfield_outlined_dense_password_helper_text" translatable="false">
+    Outlined filled password text field
+  </string>
   <string name="cat_textfield_outlined_start_icon_helper_text" translatable="false">Outlined start icon text field</string>
   <string name="cat_textfield_outlined_start_end_icons_helper_text" translatable="false">Outlined start and end icons text field</string>
   <string name="cat_textfield_outlined_clear_button_helper_text" translatable="false">Outlined clear button text field</string>
