@@ -35,6 +35,7 @@ ext {
     recyclerViewSelection : '1.1.0-alpha01',
     transition            : '1.0.1',
     vectorDrawable        : '1.1.0-alpha01',
+    viewpager2            : '1.0.0-alpha02',
   ]
 
   testRunnerVersion = '1.1.0'
@@ -109,6 +110,8 @@ def compatibility(name) {
       return "androidx.vectordrawable:vectordrawable:${androidXVersions.vectorDrawable}"
     case "recyclerViewSelection":
       return "androidx.recyclerview:recyclerview-selection:${androidXVersions.recyclerViewSelection}"
+    case "viewpager2":
+      return "androidx.viewpager2:viewpager2:${androidXVersions.viewpager2}"
     default:
       throw new IllegalArgumentException("No mapping exists for name: $name.")
   }
