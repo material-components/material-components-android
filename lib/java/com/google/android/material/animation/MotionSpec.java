@@ -19,6 +19,7 @@ import android.animation.Animator;
 import android.animation.AnimatorInflater;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.res.TypedArray;
 import androidx.annotation.AnimatorRes;
@@ -26,6 +27,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleableRes;
 import androidx.collection.SimpleArrayMap;
 import android.util.Log;
+import android.util.Property;
+import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -65,6 +68,8 @@ public class MotionSpec {
   private static final String TAG = "MotionSpec";
 
   private final SimpleArrayMap<String, MotionTiming> timings = new SimpleArrayMap<>();
+  private final SimpleArrayMap<String, PropertyValuesHolder[]> propertyValues =
+      new SimpleArrayMap<>();
 
   /** Returns whether this motion spec contains a MotionTiming with the given name. */
   public boolean hasTiming(String name) {
@@ -85,6 +90,39 @@ public class MotionSpec {
   /** Sets a MotionTiming with the given name. */
   public void setTiming(String name, @Nullable MotionTiming timing) {
     timings.put(name, timing);
+  }
+
+  /**
+   * Returns whether this motion spec contains a {@link PropertyValuesHolder[]} with the given name.
+   */
+  public boolean hasPropertyValues(String name) {
+    return propertyValues.get(name) != null;
+  }
+
+  public PropertyValuesHolder[] getPropertyValues(String name) {
+    if (!hasPropertyValues(name)) {
+      throw new IllegalArgumentException();
+    }
+    return clonePropertyValuesHolder(propertyValues.get(name));
+  }
+
+  public void setPropertyValues(String name, PropertyValuesHolder[] values) {
+    propertyValues.put(name, values);
+  }
+
+  private PropertyValuesHolder[] clonePropertyValuesHolder(PropertyValuesHolder[] values) {
+    PropertyValuesHolder[] ret = new PropertyValuesHolder[values.length];
+    for (int i = 0; i < values.length; i++) {
+      ret[i] = values[i].clone();
+    }
+    return ret;
+  }
+
+  public ObjectAnimator getAnimator(String name, View view, Property<View, Float> property) {
+    ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, getPropertyValues(name));
+    animator.setProperty(property);
+    getTiming(name).apply(animator);
+    return animator;
   }
 
   /**
@@ -140,14 +178,15 @@ public class MotionSpec {
   private static MotionSpec createSpecFromAnimators(List<Animator> animators) {
     MotionSpec spec = new MotionSpec();
     for (int i = 0, count = animators.size(); i < count; i++) {
-      addTimingFromAnimator(spec, animators.get(i));
+      addInfoFromAnimator(spec, animators.get(i));
     }
     return spec;
   }
 
-  private static void addTimingFromAnimator(MotionSpec spec, Animator animator) {
+  private static void addInfoFromAnimator(MotionSpec spec, Animator animator) {
     if (animator instanceof ObjectAnimator) {
       ObjectAnimator anim = (ObjectAnimator) animator;
+      spec.setPropertyValues(anim.getPropertyName(), anim.getValues());
       spec.setTiming(anim.getPropertyName(), MotionTiming.createFromAnimator(anim));
     } else {
       throw new IllegalArgumentException("Animator must be an ObjectAnimator: " + animator);

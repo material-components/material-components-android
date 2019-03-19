@@ -20,13 +20,18 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertThat;
+import static org.junit.Assert.assertTrue;
 
+import android.animation.Animator;
+import android.animation.ObjectAnimator;
+import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.res.TypedArray;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import com.google.android.material.testapp.animation.R;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
 import android.view.animation.PathInterpolator;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
@@ -56,12 +61,14 @@ public class MotionSpecTest {
   }
 
   @Test
-  public void setOfObjectAnimatorMotionSpecHasAlphaAndTranslationTimings() {
+  public void setOfObjectAnimatorMotionSpecHasAlphaAndTranslationTimingsAndValues() {
     MotionSpec spec =
         MotionSpec.createFromResource(
             activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
     assertNotNull(spec.getTiming("alpha"));
     assertNotNull(spec.getTiming("translation"));
+    assertEquals(1, spec.getPropertyValues("alpha").length);
+    assertEquals(1, spec.getPropertyValues("translation").length);
   }
 
   @Test
@@ -97,6 +104,17 @@ public class MotionSpecTest {
   }
 
   @Test
+  public void validateSetOfObjectAnimatorAlphaMotionValues() {
+    MotionSpec spec =
+        MotionSpec.createFromResource(
+            activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
+    View view = new View(activityTestRule.getActivity());
+    Animator alphaAnimator = spec.getAnimator("alpha", view, View.ALPHA);
+    PropertyValuesHolder propertyValuesHolder = ((ObjectAnimator) alphaAnimator).getValues()[0];
+    assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0.2", "0.8"));
+  }
+
+  @Test
   public void validateSetOfObjectAnimatorTranslationMotionTiming() {
     MotionSpec spec =
         MotionSpec.createFromResource(
@@ -114,6 +132,30 @@ public class MotionSpecTest {
     assertEquals(ValueAnimator.REVERSE, translation.getRepeatMode());
   }
 
+  @Test
+  public void validateSetOfObjectAnimatorTranslationMotionValues() {
+    MotionSpec spec =
+        MotionSpec.createFromResource(
+            activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
+    View view = new View(activityTestRule.getActivity());
+    Animator translationAnimator = spec.getAnimator("translation", view, View.TRANSLATION_X);
+    PropertyValuesHolder propertyValuesHolder =
+        ((ObjectAnimator) translationAnimator).getValues()[0];
+    assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0", "101"));
+  }
+
+  @Test
+  public void validateSetOfObjectAnimatorEmptyMotionValues() {
+    MotionSpec spec =
+        MotionSpec.createFromResource(
+            activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
+    View view = new View(activityTestRule.getActivity());
+    Animator translationAnimator = spec.getAnimator("foo", view, View.TRANSLATION_X);
+    PropertyValuesHolder propertyValuesHolder =
+        ((ObjectAnimator) translationAnimator).getValues()[0];
+    assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0.0", "0.0"));
+  }
+
   public void inflateInvalidSetOfSetMotionSpec() {
     assertNull(
         MotionSpec.createFromResource(
@@ -124,5 +166,20 @@ public class MotionSpecTest {
     assertNull(
         MotionSpec.createFromResource(
             activityTestRule.getActivity(), R.animator.invalid_set_of_value_animator_motion_spec));
+  }
+
+  @SuppressWarnings("StringSplitter")
+  private boolean fromAndToValuesMatch(
+      PropertyValuesHolder propertyValuesHolder, String fromValue, String toValue) {
+    String[] valueStringTokens = propertyValuesHolder.toString().split("\\s+");
+    int length = valueStringTokens.length;
+    if (length >= 2) {
+      if (valueStringTokens[length - 2].equals(fromValue)
+          && valueStringTokens[length - 1].equals(toValue)) {
+        return true;
+      }
+    }
+
+    return false;
   }
 }
