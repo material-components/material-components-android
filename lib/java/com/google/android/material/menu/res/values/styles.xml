@@ -30,4 +30,8 @@
 
   <style name="Widget.MaterialComponents.PopupMenu" parent="Base.Widget.MaterialComponents.PopupMenu"/>
 
+  <style name="Widget.MaterialComponents.PopupMenu.Dark"/>
+
+  <style name="Widget.MaterialComponents.PopupMenu.Overflow.Dark"/>
+
 </resources>

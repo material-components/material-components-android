@@ -35,7 +35,7 @@
 
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
-    <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
+    <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow.Dark</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
@@ -51,7 +51,7 @@
     <item name="materialButtonToggleGroupStyle">@style/Widget.MaterialComponents.MaterialButtonToggleGroup</item>
     <item name="materialCardViewStyle">@style/Widget.MaterialComponents.CardView</item>
     <item name="navigationViewStyle">@style/Widget.MaterialComponents.NavigationView</item>
-    <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu</item>
+    <item name="popupMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Dark</item>
     <item name="radioButtonStyle">@style/Widget.MaterialComponents.CompoundButton.RadioButton</item>
     <item name="snackbarStyle">@style/Widget.MaterialComponents.Snackbar</item>
     <item name="snackbarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Snackbar</item>
