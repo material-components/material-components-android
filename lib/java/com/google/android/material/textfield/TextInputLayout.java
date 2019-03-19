@@ -2247,15 +2247,15 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Sets the end icon's functionality that is performed when the icon is clicked.
    *
-   * @param onClickListener the {@link android.view.View.OnClickListener} the end icon view will
-   *     have
+   * @param endIconOnClickListener the {@link android.view.View.OnClickListener} the end icon view
+   *     will have
    */
-  public void setEndIconOnClickListener(@Nullable OnClickListener onClickListener) {
-    setIconOnClickListener(endIconView, onClickListener);
+  public void setEndIconOnClickListener(@Nullable OnClickListener endIconOnClickListener) {
+    setIconOnClickListener(endIconView, endIconOnClickListener);
   }
 
   /**
-   * Sets the current end icon's visibility.
+   * Sets the current end icon to be VISIBLE or INVISIBLE.
    *
    * @param visible whether the icon should be set to visible
    */
@@ -2294,11 +2294,11 @@ public class TextInputLayout extends LinearLayout {
    * <p>If you use an icon you should also set a description for its action using {@link
    * #setEndIconContentDescription(CharSequence)}. This is used for accessibility.
    *
-   * @param icon Drawable to set, may be null to clear the icon
+   * @param endIconDrawable Drawable to set, may be null to clear the icon
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconDrawable
    */
-  public void setEndIconDrawable(@Nullable Drawable icon) {
-    endIconView.setImageDrawable(icon);
+  public void setEndIconDrawable(@Nullable Drawable endIconDrawable) {
+    endIconView.setImageDrawable(endIconDrawable);
   }
 
   /**
@@ -2331,11 +2331,14 @@ public class TextInputLayout extends LinearLayout {
    * <p>The content description will be read via screen readers or other accessibility systems to
    * explain the action of the icon.
    *
-   * @param description Content description to set, or null to clear the content description
+   * @param endIconContentDescription Content description to set, or null to clear the content
+   *     description
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconContentDescription
    */
-  public void setEndIconContentDescription(@Nullable CharSequence description) {
-    endIconView.setContentDescription(description);
+  public void setEndIconContentDescription(@Nullable CharSequence endIconContentDescription) {
+    if (getEndIconContentDescription() != endIconContentDescription) {
+      endIconView.setContentDescription(endIconContentDescription);
+    }
   }
 
   /**
@@ -2357,13 +2360,15 @@ public class TextInputLayout extends LinearLayout {
    * drawable and apply the specified tint and tint mode using {@link
    * DrawableCompat#setTintList(Drawable, ColorStateList)}.
    *
-   * @param tintList the tint to apply, may be null to clear tint
+   * @param endIconTintList the tint to apply, may be null to clear tint
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconTint
    */
-  public void setEndIconTintList(@Nullable ColorStateList tintList) {
-    endIconTintList = tintList;
-    hasEndIconTintList = true;
-    applyEndIconTint();
+  public void setEndIconTintList(@Nullable ColorStateList endIconTintList) {
+    if (this.endIconTintList != endIconTintList) {
+      this.endIconTintList = endIconTintList;
+      hasEndIconTintList = true;
+      applyEndIconTint();
+    }
   }
 
   /**
@@ -2371,13 +2376,15 @@ public class TextInputLayout extends LinearLayout {
    * #setEndIconTintList(ColorStateList)} to the end icon drawable. The default mode is {@link
    * PorterDuff.Mode#SRC_IN}.
    *
-   * @param mode the blending mode used to apply the tint, may be null to clear tint
+   * @param endIconTintMode the blending mode used to apply the tint, may be null to clear tint
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_endIconTintMode
    */
-  public void setEndIconTintMode(@Nullable PorterDuff.Mode mode) {
-    endIconTintMode = mode;
-    hasEndIconTintMode = true;
-    applyEndIconTint();
+  public void setEndIconTintMode(@Nullable PorterDuff.Mode endIconTintMode) {
+    if (this.endIconTintMode != endIconTintMode) {
+      this.endIconTintMode = endIconTintMode;
+      hasEndIconTintMode = true;
+      applyEndIconTint();
+    }
   }
 
   /**
