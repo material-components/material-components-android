@@ -574,8 +574,8 @@ public class TextInputLayout extends LinearLayout {
     // Default tint for a start icon or value specified by user.
     if (a.hasValue(R.styleable.TextInputLayout_startIconTint)) {
       setStartIconTintList(
-          AppCompatResources.getColorStateList(
-              context, a.getResourceId(R.styleable.TextInputLayout_startIconTint, -1)));
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.TextInputLayout_startIconTint));
     }
     // Default tint mode for a start icon or value specified by user.
     if (a.hasValue(R.styleable.TextInputLayout_startIconTintMode)) {
@@ -611,8 +611,8 @@ public class TextInputLayout extends LinearLayout {
           a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription));
       if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTint)) {
         setEndIconTintList(
-            AppCompatResources.getColorStateList(
-                context, a.getResourceId(R.styleable.TextInputLayout_passwordToggleTint, -1)));
+            MaterialResources.getColorStateList(
+                context, a, R.styleable.TextInputLayout_passwordToggleTint));
       }
       if (a.hasValue(R.styleable.TextInputLayout_passwordToggleTintMode)) {
         setEndIconTintMode(
@@ -625,8 +625,8 @@ public class TextInputLayout extends LinearLayout {
       // Default tint for any end icon or value specified by user
       if (a.hasValue(R.styleable.TextInputLayout_endIconTint)) {
         setEndIconTintList(
-            AppCompatResources.getColorStateList(
-                context, a.getResourceId(R.styleable.TextInputLayout_endIconTint, -1)));
+            MaterialResources.getColorStateList(
+                context, a, R.styleable.TextInputLayout_endIconTint));
       }
       // Default tint mode for any end icon or value specified by user
       if (a.hasValue(R.styleable.TextInputLayout_endIconTintMode)) {
