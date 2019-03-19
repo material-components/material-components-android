@@ -16,7 +16,6 @@ dependencies {
   api compatibility("recyclerview")
   api compatibility("transition")
   api compatibility("vectordrawable")
-  api compatibility("viewpager2")
 
   testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
