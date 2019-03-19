@@ -55,10 +55,6 @@
     <item name="endIconTint">@color/mtrl_outlined_icon_tint</item>
     <item name="startIconTint">@color/mtrl_outlined_icon_tint</item>
     <item name="boxCollapsedPaddingTop">0dp</item>
-    <item name="boxCornerRadiusTopStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
-    <item name="boxCornerRadiusTopEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
-    <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_medium</item>
-    <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_medium</item>
     <item name="boxStrokeColor">@color/mtrl_outlined_stroke_color</item>
 
     <item name="counterTextAppearance">?attr/textAppearanceCaption</item>
@@ -89,8 +85,6 @@
     <item name="endIconTint">@color/mtrl_filled_icon_tint</item>
     <item name="startIconTint">@color/mtrl_filled_icon_tint</item>
     <item name="boxCollapsedPaddingTop">12dp</item>
-    <item name="boxCornerRadiusBottomStart">@dimen/mtrl_textinput_box_corner_radius_small</item>
-    <item name="boxCornerRadiusBottomEnd">@dimen/mtrl_textinput_box_corner_radius_small</item>
     <item name="boxStrokeColor">@color/mtrl_filled_stroke_color</item>
     <item name="shapeAppearanceOverlay">
       @style/ShapeAppearanceOverlay.MaterialComponents.TextInputLayout.FilledBox
