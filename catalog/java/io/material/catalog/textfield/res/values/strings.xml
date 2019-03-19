@@ -18,7 +18,9 @@
 <resources>
   <string name="cat_textfield_title" translatable="false">Text Field</string>
   <string name="cat_textfield_filled_demo_title" translatable="false">Filled Text Field Demo</string>
+  <string name="cat_textfield_filled_icons_demo_title" translatable="false">Filled Icons Text Field Demo</string>
   <string name="cat_textfield_outlined_demo_title" translatable="false">Outlined Text Field Demo</string>
+  <string name="cat_textfield_outlined_icons_demo_title" translatable="false">Outlined Icons Text Field Demo</string>
   <string name="cat_textfield_legacy_demo_title" translatable="false">Legacy Text Field Demo</string>
   <string name="cat_textfield_description" translatable="false">
     Text fields allow users to input, edit, and select text. Text fields typically reside in forms
