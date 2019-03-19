@@ -46,6 +46,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import com.google.android.material.animation.MotionSpec;
@@ -246,6 +247,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     lastLayoutDirection = ViewCompat.getLayoutDirection(this);
   }
 
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
