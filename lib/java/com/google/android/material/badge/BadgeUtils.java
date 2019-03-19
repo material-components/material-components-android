@@ -19,6 +19,7 @@ package com.google.android.material.badge;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import android.view.View;
@@ -91,6 +92,24 @@ public class BadgeUtils {
       preAPI18BadgeParent.setForeground(badgeDrawable);
     } else {
       anchor.getOverlay().add(badgeDrawable);
+    }
+  }
+
+  /*
+   * Detaches a BadgeDrawable to its associated anchor.
+   * For API 18+, the BadgeDrawable will be removed from its anchor's ViewOverlay.
+   * For pre-API 18, the BadgeDrawable will be removed from the foreground of a FrameLayout that is
+   * an ancestor of the anchor.
+   */
+  public static void detachBadgeDrawable(
+      @Nullable BadgeDrawable badgeDrawable, View anchor, FrameLayout preAPI18BadgeParent) {
+    if (badgeDrawable == null) {
+      return;
+    }
+    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
+      preAPI18BadgeParent.setForeground(null);
+    } else {
+      anchor.getOverlay().remove(badgeDrawable);
     }
   }
 }
