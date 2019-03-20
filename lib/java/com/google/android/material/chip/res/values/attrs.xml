@@ -41,7 +41,7 @@
     <!-- Minimum size of chip's touch target, by default, Android recommended 48dp. -->
     <attr name="chipMinTouchTargetSize" format="dimension"/>
     <!-- Whether to extend the bounds of chip to meet chipMinTouchTargetSize. -->
-    <attr name="ensureMinTouchTargetSize" format="boolean"/>
+    <attr name="ensureMinTouchTargetSize"/>
 
     <!-- Text to display on the chip. -->
     <attr name="android:text"/>

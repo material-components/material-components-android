@@ -21,4 +21,5 @@
   <attr name="singleSelection" format="boolean"/>
   <attr name="strokeColor" format="color"/>
   <attr name="strokeWidth" format="dimension"/>
+  <attr name="ensureMinTouchTargetSize" format="boolean"/>
 </resources>

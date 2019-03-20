@@ -35,6 +35,7 @@
   <style name="Widget.MaterialComponents.FloatingActionButton" parent="Widget.Design.FloatingActionButton">
     <item name="android:background">@null</item>
     <item name="enforceMaterialTheme">true</item>
+    <item name="ensureMinTouchTargetSize">true</item>
     <item name="elevation">@dimen/mtrl_fab_elevation</item>
     <item name="backgroundTint">?attr/colorSecondary</item>
     <item name="tint">?attr/colorOnSecondary</item>

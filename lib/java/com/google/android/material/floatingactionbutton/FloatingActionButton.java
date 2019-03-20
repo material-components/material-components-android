@@ -236,6 +236,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         new ShapeAppearanceModel(context, attrs, defStyleAttr, DEF_STYLE_RES, -1);
 
     boolean usingDefaultCorner = isUsingDefaultCorner(shapeAppearance);
+    boolean ensureMinTouchTargetSize = a
+        .getBoolean(R.styleable.FloatingActionButton_ensureMinTouchTargetSize, false);
+
     a.recycle();
 
     imageHelper = new AppCompatImageHelper(this);
@@ -252,6 +255,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().setMaxImageSize(maxImageSize);
     getImpl().setShowMotionSpec(showMotionSpec);
     getImpl().setHideMotionSpec(hideMotionSpec);
+    getImpl().setEnsureMinTouchTargetSize(ensureMinTouchTargetSize);
 
     setScaleType(ScaleType.MATRIX);
   }
@@ -513,6 +517,31 @@ public class FloatingActionButton extends VisibilityAwareImageButton
   public ShapeAppearanceModel getShapeAppearance() {
     return checkNotNull(getImpl().getShapeAppearance());
   }
+
+  /**
+   * Returns whether this fab will expand its bounds (if needed) to meet the minimum touch target
+   * size.
+   *
+   * @see #setEnsureMinTouchTargetSize(boolean)
+   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_ensureMinTouchTargetSize
+   */
+  public boolean shouldEnsureMinTouchTargetSize() {
+    return getImpl().getEnsureMinTouchTargetSize();
+  }
+
+  /**
+   * Sets whether this FloatingActionButton should expand its bounds (if needed) to meet the minimum
+   * touch target size.
+   *
+   * @attr ref com.google.android.material.R.styleable#FloatingActionButton_ensureMinTouchTargetSize
+   */
+  public void setEnsureMinTouchTargetSize(boolean flag) {
+    if (flag != getImpl().getEnsureMinTouchTargetSize()) {
+      getImpl().setEnsureMinTouchTargetSize(flag);
+      requestLayout();
+    }
+  }
+
 
   @Override
   public void setVisibility(int visibility) {

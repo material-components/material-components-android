@@ -277,10 +277,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     }
   }
 
-  private boolean shouldEnsureMinTouchTargetSize() {
-    return ensureMinTouchTargetSize;
-  }
-
   private void initMinTouchTarget(Context context, AttributeSet attrs, int defStyleAttr) {
     if (attrs == null) {
       return;
@@ -2257,7 +2253,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * @see #setEnsureMinTouchTargetSize(boolean)
    * @attr ref com.google.android.material.R.styleable#Chip_ensureMinTouchTargetSize
    */
-  public boolean getEnsureMinTouchTargetSize() {
+  public boolean shouldEnsureMinTouchTargetSize() {
     return ensureMinTouchTargetSize;
   }
 

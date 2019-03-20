@@ -83,6 +83,7 @@ class FloatingActionButtonImpl {
   @Nullable Drawable contentBackground;
 
   boolean usingDefaultCorner;
+  boolean ensureMinTouchTargetSize;
   float elevation;
   float hoveredFocusedTranslationZ;
   float pressedTranslationZ;
@@ -341,8 +342,16 @@ class FloatingActionButtonImpl {
     hideMotionSpec = spec;
   }
 
-  final boolean isAccessible() {
-    return view.getSizeDimension() >= minTouchTargetSize;
+  final boolean shouldExpandBoundsForA11y() {
+    return !ensureMinTouchTargetSize || view.getSizeDimension() >= minTouchTargetSize;
+  }
+
+  boolean getEnsureMinTouchTargetSize() {
+    return ensureMinTouchTargetSize;
+  }
+
+  void setEnsureMinTouchTargetSize(boolean flag) {
+    ensureMinTouchTargetSize = flag;
   }
 
   void onElevationsChanged(
@@ -641,7 +650,10 @@ class FloatingActionButtonImpl {
   }
 
   void getPadding(Rect rect) {
-    final int minPadding = (minTouchTargetSize - view.getSizeDimension()) / 2;
+    final int minPadding = ensureMinTouchTargetSize
+        ? (minTouchTargetSize - view.getSizeDimension()) / 2
+        : 0;
+
     final float maxShadowSize = (getElevation() + pressedTranslationZ);
     final int hPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize));
     final int vPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize * SHADOW_MULTIPLIER));

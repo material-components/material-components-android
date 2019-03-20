@@ -36,6 +36,9 @@
     <attr name="fabCustomSize" format="dimension"/>
     <!-- Elevation value for the FAB -->
     <attr name="elevation"/>
+    <!-- Whether to extend the bounds of the FloatingActionButton to meet
+        @dimen/mtrl_fab_min_touch_target. -->
+    <attr name="ensureMinTouchTargetSize"/>
     <!-- TranslationZ value for the FAB when hovered, focused, or hovered and focused. -->
     <attr name="hoveredFocusedTranslationZ" format="dimension"/>
     <!-- TranslationZ value for the FAB when pressed-->

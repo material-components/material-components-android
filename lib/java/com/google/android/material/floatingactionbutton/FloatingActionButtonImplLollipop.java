@@ -173,7 +173,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
   @Override
   boolean shouldAddPadding() {
-    return shadowViewDelegate.isCompatPaddingEnabled() || !isAccessible();
+    return shadowViewDelegate.isCompatPaddingEnabled() || !shouldExpandBoundsForA11y();
   }
 
   @Override
@@ -236,7 +236,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   void getPadding(Rect rect) {
     if (shadowViewDelegate.isCompatPaddingEnabled()) {
       super.getPadding(rect);
-    } else if (!isAccessible()) {
+    } else if (!shouldExpandBoundsForA11y()) {
       int minPadding = (minTouchTargetSize - view.getSizeDimension()) / 2;
       rect.set(minPadding, minPadding, minPadding, minPadding);
     } else {
