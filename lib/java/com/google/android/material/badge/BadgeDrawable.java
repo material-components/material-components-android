@@ -69,10 +69,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private final float iconOnlyRadius;
   private final float badgeWithTextRadius;
   private final float badgeWidePadding;
-  private final float badgeCenterX;
-  private final float badgeCenterY;
   private final Rect tmpRect;
 
+  private float badgeCenterX;
+  private float badgeCenterY;
   private int number = ICON_ONLY_BADGE_NUMBER;
   private int maxCharacterCount;
   private int alpha = 255;
@@ -128,33 +128,34 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     this.context = anchorView.getContext();
     Resources res = context.getResources();
     tmpRect = new Rect();
-
+    badgeBounds = new Rect();
     shapeDrawable = new MaterialShapeDrawable();
-    Rect anchorRect = new Rect();
-    // Returns the visible bounds of the anchor view.
-    anchorView.getDrawingRect(anchorRect);
-    anchorRect.top += res.getDimensionPixelSize(R.dimen.mtrl_badge_vertical_offset);
-    if (customBadgeParent != null || VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
-      // Calculates coordinates relative to the parent.
-      ViewGroup viewGroup =
-          customBadgeParent == null ? (ViewGroup) anchorView.getParent() : customBadgeParent;
-      viewGroup.offsetDescendantRectToMyCoords(anchorView, anchorRect);
-    }
-
-    badgeCenterX =
-        ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-            ? anchorRect.right
-            : anchorRect.left;
-    badgeCenterY = anchorRect.top;
 
     iconOnlyRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_icon_only_radius);
     badgeWidePadding = res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding);
     badgeWithTextRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_with_text_radius);
 
-    badgeBounds = new Rect();
-
     textDrawableHelper = new TextDrawableHelper();
     textDrawableHelper.getTextPaint().setTextAlign(Paint.Align.CENTER);
+
+    calculateBadgeCenterCoordinates(anchorView, customBadgeParent);
+  }
+
+  /**
+   * Calculates and updates this badge's center coordinates based on its anchor's bounds. Internally
+   * also updates this BadgeDrawable's bounds, because they are dependent on the center coordinates.
+   * For pre API-18, coordinates will be calculated relative to {@code customBadgeParent} because
+   * the BadgeDrawable will be set as the parent's foreground.
+   *
+   * @param anchorView This badge's anchor.
+   * @param customBadgeParent An optional parent view that will set this BadgeDrawable as its
+   *     foreground.
+   */
+  public void updateBadgeCoordinates(
+      @NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
+    calculateBadgeCenterCoordinates(anchorView, customBadgeParent);
+    updateBounds();
+    invalidateSelf();
   }
 
   /**
@@ -389,5 +390,26 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     maxBadgeNumber = (int) Math.pow(10.0d, (double) getMaxCharacterCount() - 1) - 1;
     maxBadgeNumberDirty = false;
     return maxBadgeNumber;
+  }
+
+  private void calculateBadgeCenterCoordinates(
+      @NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
+    Resources res = context.getResources();
+    Rect anchorRect = new Rect();
+    // Returns the visible bounds of the anchor view.
+    anchorView.getDrawingRect(anchorRect);
+    anchorRect.top += res.getDimensionPixelSize(R.dimen.mtrl_badge_vertical_offset);
+    if (customBadgeParent != null || VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
+      // Calculates coordinates relative to the parent.
+      ViewGroup viewGroup =
+          customBadgeParent == null ? (ViewGroup) anchorView.getParent() : customBadgeParent;
+      viewGroup.offsetDescendantRectToMyCoords(anchorView, anchorRect);
+    }
+
+    badgeCenterX =
+        ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+            ? anchorRect.right
+            : anchorRect.left;
+    badgeCenterY = anchorRect.top;
   }
 }
