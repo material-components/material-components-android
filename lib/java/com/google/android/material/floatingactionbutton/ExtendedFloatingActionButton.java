@@ -22,27 +22,29 @@ import android.animation.Animator;
 import android.animation.Animator.AnimatorListener;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
-import android.animation.ObjectAnimator;
-import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
+import android.animation.PropertyValuesHolder;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
+import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.internal.DescendantOffsetUtils;
+import com.google.android.material.internal.ThemeEnforcement;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
+import android.util.Property;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -71,15 +73,20 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   private static final int ANIM_STATE_NONE = 0;
   private static final int ANIM_STATE_HIDING = 1;
   private static final int ANIM_STATE_SHOWING = 2;
-  private static final float SHOW_ANIMATION_SCALE_FROM = 0.8F;
-  private static final long SHOW_ANIMATION_DURATION_MS = 150L;
-  private static final long HIDE_ANIMATION_DURATION_MS = 75L;
-  private static final long COLLAPSE_RESIZE_ANIMATION_DURATION_MS = 200L;
 
   private final Rect shadowPadding = new Rect();
   private int animState = ANIM_STATE_NONE;
   @Nullable private Animator currentShowHideAnimator;
   @Nullable private Animator currentCollapseExpandAnimator;
+
+  @Nullable private MotionSpec showMotionSpec;
+  @Nullable private MotionSpec hideMotionSpec;
+  @Nullable private MotionSpec extendMotionSpec;
+  @Nullable private MotionSpec shrinkMotionSpec;
+  @Nullable private MotionSpec defaultShowMotionSpec;
+  @Nullable private MotionSpec defaultHideMotionSpec;
+  @Nullable private MotionSpec defaultExtendMotionSpec;
+  @Nullable private MotionSpec defaultShrinkMotionSpec;
 
   private final Behavior<ExtendedFloatingActionButton> behavior;
   private int userSetVisibility;
@@ -147,6 +154,29 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     behavior = new ExtendedFloatingActionButtonBehavior<>(context, attrs);
     userSetVisibility = getVisibility();
 
+    TypedArray a =
+        ThemeEnforcement.obtainStyledAttributes(
+            context,
+            attrs,
+            R.styleable.ExtendedFloatingActionButton,
+            defStyleAttr,
+            R.style.Widget_MaterialComponents_ExtendedFloatingActionButton_Icon);
+
+    showMotionSpec =
+        MotionSpec.createFromAttribute(
+            context, a, R.styleable.ExtendedFloatingActionButton_showMotionSpec);
+    hideMotionSpec =
+        MotionSpec.createFromAttribute(
+            context, a, R.styleable.ExtendedFloatingActionButton_hideMotionSpec);
+    extendMotionSpec =
+        MotionSpec.createFromAttribute(
+            context, a, R.styleable.ExtendedFloatingActionButton_extendMotionSpec);
+    shrinkMotionSpec =
+        MotionSpec.createFromAttribute(
+            context, a, R.styleable.ExtendedFloatingActionButton_shrinkMotionSpec);
+
+    a.recycle();
+
     // Eliminates the word wrapping when the FAB extended state change is animating.
     setHorizontallyScrolling(true);
   }
@@ -164,6 +194,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
+    // TODO: This must be removed if we want cornerRadius values to be controlled by MotionSpec
     // Override any corner radius set by the user
     setCornerRadius(getAdjustedRadius(getMeasuredHeight()));
   }
@@ -295,7 +326,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     if (animate && shouldAnimateVisibilityChange()) {
-      Animator hideAnimation = createHideAnimation();
+      Animator hideAnimation = createAnimator(getCurrentHideMotionSpec());
       hideAnimation.addListener(
           new AnimatorListenerAdapter() {
             private boolean cancelled;
@@ -383,7 +414,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
 
     if (animate && shouldAnimateVisibilityChange()) {
-      Animator showAnimation = createShowAnimation();
+      Animator showAnimation = createAnimator(getCurrentShowMotionSpec());
       showAnimation.addListener(
           new AnimatorListenerAdapter() {
             @Override
@@ -491,6 +522,102 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     setExtended(false /* extended */, true /* animate */, listener);
   }
 
+  /** Returns the motion spec for the show animation. */
+  @Nullable
+  public MotionSpec getShowMotionSpec() {
+    return showMotionSpec;
+  }
+
+  /**
+   * Updates the motion spec for the show animation.
+   *
+   * @attr ref com.google.android.material.R.styleable#ExtendedFloatingActionButton_showMotionSpec
+   */
+  public void setShowMotionSpec(@Nullable MotionSpec spec) {
+    showMotionSpec = spec;
+  }
+
+  /**
+   * Updates the motion spec for the show animation.
+   *
+   * @attr ref com.google.android.material.R.styleable#ExtendedFloatingActionButton_showMotionSpec
+   */
+  public void setShowMotionSpecResource(@AnimatorRes int id) {
+    setShowMotionSpec(MotionSpec.createFromResource(getContext(), id));
+  }
+
+  /** Returns the motion spec for the hide animation. */
+  @Nullable
+  public MotionSpec getHideMotionSpec() {
+    return hideMotionSpec;
+  }
+
+  /**
+   * Updates the motion spec for the hide animation.
+   *
+   * @attr ref com.google.android.material.R.styleable#ExtendedFloatingActionButton_hideMotionSpec
+   */
+  public void setHideMotionSpec(@Nullable MotionSpec spec) {
+    hideMotionSpec = spec;
+  }
+
+  /**
+   * Updates the motion spec for the hide animation.
+   *
+   * @attr ref com.google.android.material.R.styleable#ExtendedFloatingActionButton_hideMotionSpec
+   */
+  public void setHideMotionSpecResource(@AnimatorRes int id) {
+    setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
+  }
+
+  /** Returns the motion spec for the extend animation. */
+  @Nullable
+  public MotionSpec getExtendMotionSpec() {
+    return extendMotionSpec;
+  }
+
+  /**
+   * Updates the motion spec for the extend animation.
+   *
+   * @attr ref com.google.android.material.R.styleable#ExtendedFloatingActionButton_extendMotionSpec
+   */
+  public void setExtendMotionSpec(@Nullable MotionSpec spec) {
+    extendMotionSpec = spec;
+  }
+
+  /**
+   * Updates the motion spec for the extend animation.
+   *
+   * @attr ref com.google.android.material.R.styleable#ExtendedFloatingActionButton_extendMotionSpec
+   */
+  public void setExtendMotionSpecResource(@AnimatorRes int id) {
+    setExtendMotionSpec(MotionSpec.createFromResource(getContext(), id));
+  }
+
+  /** Returns the motion spec for the shrink animation. */
+  @Nullable
+  public MotionSpec getShrinkMotionSpec() {
+    return shrinkMotionSpec;
+  }
+
+  /**
+   * Updates the motion spec for the shrink animation.
+   *
+   * @attr ref com.google.android.material.R.styleable#ExtendedFloatingActionButton_shrinkMotionSpec
+   */
+  public void setShrinkMotionSpec(@Nullable MotionSpec spec) {
+    shrinkMotionSpec = spec;
+  }
+
+  /**
+   * Updates the motion spec for the shrink animation.
+   *
+   * @attr ref com.google.android.material.R.styleable#ExtendedFloatingActionButton_shrinkMotionSpec
+   */
+  public void setShrinkMotionSpecResource(@AnimatorRes int id) {
+    setShrinkMotionSpec(MotionSpec.createFromResource(getContext(), id));
+  }
+
   /**
    * Sets the extended state of this FAB. When {@code true}, the FAB will show the icon and the
    * text, and when {@code false}, it will show just the icon.
@@ -516,7 +643,9 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     if (animate && shouldAnimateVisibilityChange()) {
       measure(MeasureSpec.UNSPECIFIED, MeasureSpec.UNSPECIFIED);
       Animator collapseExpandAnimator =
-          isExtended ? createExtendAnimation() : createShrinkAnimation();
+          createShrinkExtendAnimator(
+              isExtended ? getCurrentExtendMotionSpec() : getCurrentShrinkMotionSpec(),
+              !isExtended);
       collapseExpandAnimator.addListener(
           new AnimatorListenerAdapter() {
             private boolean cancelled;
@@ -568,151 +697,73 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     }
   }
 
-  /** Creates a new {@link Animator} which will be initiated when the FAB is shown. */
-  private Animator createShowAnimation() {
+  private AnimatorSet createAnimator(@NonNull MotionSpec spec) {
     List<Animator> animators = new ArrayList<>();
 
-    // Fade in.
-    Animator animator = ObjectAnimator.ofFloat(this, View.ALPHA, 1F);
-    animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    animators.add(animator);
+    if (spec.hasPropertyValues("opacity")) {
+      animators.add(spec.getAnimator("opacity", this, View.ALPHA));
+    }
 
-    // Scale X & Y from 80%.
-    animator = ObjectAnimator.ofFloat(this, View.SCALE_X, SHOW_ANIMATION_SCALE_FROM, 1F);
-    animator.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-    animators.add(animator);
+    if (spec.hasPropertyValues("scale")) {
+      animators.add(spec.getAnimator("scale", this, View.SCALE_Y));
+      animators.add(spec.getAnimator("scale", this, View.SCALE_X));
+    }
 
-    animator = ObjectAnimator.ofFloat(this, View.SCALE_Y, SHOW_ANIMATION_SCALE_FROM, 1F);
-    animator.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-    animators.add(animator);
+    if (spec.hasPropertyValues("width")) {
+      animators.add(spec.getAnimator("width", this, WIDTH));
+    }
+
+    if (spec.hasPropertyValues("height")) {
+      animators.add(spec.getAnimator("height", this, HEIGHT));
+    }
+
+    if (spec.hasPropertyValues("cornerRadius")) {
+      animators.add(spec.getAnimator("cornerRadius", this, CORNER_RADIUS));
+    }
 
     AnimatorSet set = new AnimatorSet();
-    set.setDuration(SHOW_ANIMATION_DURATION_MS);
     AnimatorSetCompat.playTogether(set, animators);
     return set;
   }
 
-  /** Creates a new {@link Animator} which will be initiated when the FAB is hidden. */
-  private Animator createHideAnimation() {
-    Animator animator = ObjectAnimator.ofFloat(this, View.ALPHA, 0F);
-    animator.setDuration(HIDE_ANIMATION_DURATION_MS);
-    animator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
-    return animator;
-  }
-
   /**
-   * Creates a new {@link Animator} which will be initiated when the FAB is shrunk from showing an
-   * icon and a text to showing just an icon.
+   * Since shrink and extend animations are based on dynamic values, e.g. padding and icon size, by
+   * default we should still be calculating these programmatically rather than from the MotionSpec.
    */
-  private Animator createShrinkAnimation() {
-    List<Animator> animators = new ArrayList<>();
-
+  private AnimatorSet createShrinkExtendAnimator(@NonNull MotionSpec spec, boolean shrinking) {
     int collapsedSize = ViewCompat.getPaddingStart(this) * 2 + getIconSize();
 
-    // Animates the width change.
-    ValueAnimator animator = ValueAnimator.ofInt(getMeasuredWidth(), collapsedSize);
-    animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    animator.setDuration(COLLAPSE_RESIZE_ANIMATION_DURATION_MS);
-    animator.addUpdateListener(
-        new AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            ExtendedFloatingActionButton.this.getLayoutParams().width =
-                (Integer) valueAnimator.getAnimatedValue();
-            ExtendedFloatingActionButton.this.requestLayout();
-          }
-        });
-    animators.add(animator);
+    if (spec.hasPropertyValues("width")) {
+      PropertyValuesHolder[] widthValues = spec.getPropertyValues("width");
+      if (shrinking) {
+        widthValues[0].setFloatValues(getMeasuredWidth(), collapsedSize);
+      } else {
+        widthValues[0].setFloatValues(getWidth(), getMeasuredWidth());
+      }
+      spec.setPropertyValues("width", widthValues);
+    }
 
-    // Animates the height change.
-    animator = ValueAnimator.ofInt(getMeasuredHeight(), collapsedSize);
-    animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    animator.setDuration(COLLAPSE_RESIZE_ANIMATION_DURATION_MS);
-    animator.addUpdateListener(
-        new AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            ExtendedFloatingActionButton.this.getLayoutParams().height =
-                (Integer) valueAnimator.getAnimatedValue();
-            ExtendedFloatingActionButton.this.requestLayout();
-          }
-        });
-    animators.add(animator);
+    if (spec.hasPropertyValues("height")) {
+      PropertyValuesHolder[] heightValues = spec.getPropertyValues("height");
+      if (shrinking) {
+        heightValues[0].setFloatValues(getMeasuredHeight(), collapsedSize);
+      } else {
+        heightValues[0].setFloatValues(getHeight(), getMeasuredHeight());
+      }
+      spec.setPropertyValues("height", heightValues);
+    }
 
-    // Animates the corner radius change.
-    animator = ValueAnimator.ofInt(getCornerRadius(), getAdjustedRadius(collapsedSize));
-    animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    animator.setDuration(COLLAPSE_RESIZE_ANIMATION_DURATION_MS);
-    animator.addUpdateListener(
-        new AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            ExtendedFloatingActionButton.this.setCornerRadius(
-                (Integer) valueAnimator.getAnimatedValue());
-          }
-        });
-    animators.add(animator);
+    if (spec.hasPropertyValues("cornerRadius")) {
+      PropertyValuesHolder[] cornerRadiusValues = spec.getPropertyValues("cornerRadius");
+      if (shrinking) {
+        cornerRadiusValues[0].setFloatValues(getCornerRadius(), getAdjustedRadius(collapsedSize));
+      } else {
+        cornerRadiusValues[0].setFloatValues(getCornerRadius(), getAdjustedRadius(getHeight()));
+      }
+      spec.setPropertyValues("cornerRadius", cornerRadiusValues);
+    }
 
-    AnimatorSet set = new AnimatorSet();
-    AnimatorSetCompat.playTogether(set, animators);
-    return set;
-  }
-
-  /**
-   * Creates a new {@link Animator} which will be initiated when the FAB is extended from showing an
-   * icon to showing an icon and a text .
-   */
-  private Animator createExtendAnimation() {
-    List<Animator> animators = new ArrayList<>();
-
-    // Animates the width change.
-    ValueAnimator animator = ValueAnimator.ofInt(getWidth(), getMeasuredWidth());
-    animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    animator.setDuration(COLLAPSE_RESIZE_ANIMATION_DURATION_MS);
-    animator.addUpdateListener(
-        new AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            ExtendedFloatingActionButton.this.getLayoutParams().width =
-                (Integer) valueAnimator.getAnimatedValue();
-            ExtendedFloatingActionButton.this.requestLayout();
-          }
-        });
-
-    animators.add(animator);
-
-    // Animates the height change.
-    animator = ValueAnimator.ofInt(getHeight(), getMeasuredHeight());
-    animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    animator.setDuration(COLLAPSE_RESIZE_ANIMATION_DURATION_MS);
-    animator.addUpdateListener(
-        new AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            ExtendedFloatingActionButton.this.getLayoutParams().height =
-                (Integer) valueAnimator.getAnimatedValue();
-            ExtendedFloatingActionButton.this.requestLayout();
-          }
-        });
-    animators.add(animator);
-
-    // Animates the corner radius change.
-    animator = ValueAnimator.ofInt(getCornerRadius(), getAdjustedRadius(getHeight()));
-    animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
-    animator.setDuration(COLLAPSE_RESIZE_ANIMATION_DURATION_MS);
-    animator.addUpdateListener(
-        new AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator valueAnimator) {
-            ExtendedFloatingActionButton.this.setCornerRadius(
-                (Integer) valueAnimator.getAnimatedValue());
-          }
-        });
-    animators.add(animator);
-
-    AnimatorSet set = new AnimatorSet();
-    AnimatorSetCompat.playTogether(set, animators);
-    return set;
+    return createAnimator(spec);
   }
 
   private boolean isOrWillBeShown() {
@@ -762,6 +813,112 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     layoutParams.height = getMeasuredHeight();
     requestLayout();
   }
+
+  private MotionSpec getCurrentShowMotionSpec() {
+    if (showMotionSpec != null) {
+      return showMotionSpec;
+    }
+
+    if (defaultShowMotionSpec == null) {
+      defaultShowMotionSpec =
+          MotionSpec.createFromResource(
+              getContext(), R.animator.mtrl_extended_fab_show_motion_spec);
+    }
+    return Preconditions.checkNotNull(defaultShowMotionSpec);
+  }
+
+  private MotionSpec getCurrentHideMotionSpec() {
+    if (hideMotionSpec != null) {
+      return hideMotionSpec;
+    }
+
+    if (defaultHideMotionSpec == null) {
+      defaultHideMotionSpec =
+          MotionSpec.createFromResource(
+              getContext(), R.animator.mtrl_extended_fab_hide_motion_spec);
+    }
+    return Preconditions.checkNotNull(defaultHideMotionSpec);
+  }
+
+  private MotionSpec getCurrentExtendMotionSpec() {
+    if (extendMotionSpec != null) {
+      return extendMotionSpec;
+    }
+
+    if (defaultExtendMotionSpec == null) {
+      defaultExtendMotionSpec =
+          MotionSpec.createFromResource(
+              getContext(), R.animator.mtrl_extended_fab_extend_motion_spec);
+    }
+    return Preconditions.checkNotNull(defaultExtendMotionSpec);
+  }
+
+  private MotionSpec getCurrentShrinkMotionSpec() {
+    if (shrinkMotionSpec != null) {
+      return shrinkMotionSpec;
+    }
+
+    if (defaultShrinkMotionSpec == null) {
+      defaultShrinkMotionSpec =
+          MotionSpec.createFromResource(
+              getContext(), R.animator.mtrl_extended_fab_shrink_motion_spec);
+    }
+    return Preconditions.checkNotNull(defaultShrinkMotionSpec);
+  }
+
+  /**
+   * A Property wrapper around the <code>width</code> functionality handled by the {@link
+   * LayoutParams#width} value.
+   */
+  private static final Property<View, Float> WIDTH =
+      new Property<View, Float>(Float.class, "width") {
+        @Override
+        public void set(View object, Float value) {
+          object.getLayoutParams().width = value.intValue();
+          object.requestLayout();
+        }
+
+        @Override
+        public Float get(View object) {
+          return (float) object.getLayoutParams().width;
+        }
+      };
+
+  /**
+   * A Property wrapper around the <code>height</code> functionality handled by the {@link
+   * LayoutParams#height} value.
+   */
+  private static final Property<View, Float> HEIGHT =
+      new Property<View, Float>(Float.class, "height") {
+        @Override
+        public void set(View object, Float value) {
+          object.getLayoutParams().height = value.intValue();
+          object.requestLayout();
+        }
+
+        @Override
+        public Float get(View object) {
+          return (float) object.getLayoutParams().height;
+        }
+      };
+
+  /**
+   * A Property wrapper around the <code>cornerRadius</code> functionality handled by the {@link
+   * ExtendedFloatingActionButton#setCornerRadius(int)} and {@link
+   * ExtendedFloatingActionButton#getCornerRadius()} methods.
+   */
+  private static final Property<View, Float> CORNER_RADIUS =
+      new Property<View, Float>(Float.class, "cornerRadius") {
+        @Override
+        public void set(View object, Float value) {
+          ((ExtendedFloatingActionButton) object).setCornerRadius(value.intValue());
+        }
+
+        @Override
+        public Float get(View object) {
+          return (float) ((ExtendedFloatingActionButton) object).getCornerRadius();
+        }
+      };
 
   /**
    * Returns an adjusted radius value that corrects any rounding errors.
