@@ -33,6 +33,7 @@ import android.graphics.PorterDuff.Mode;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.annotation.AnimatorRes;
@@ -44,6 +45,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.animation.MotionSpec;
@@ -1161,6 +1163,13 @@ public class FloatingActionButton extends VisibilityAwareImageButton
         }
       }
     }
+  }
+
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
+  @Override
+  public void setElevation(float elevation) {
+    super.setElevation(elevation);
+    getImpl().updateShapeElevation(elevation);
   }
 
   /**

@@ -189,6 +189,7 @@ class FloatingActionButtonImpl {
     }
 
     shapeDrawable.setShadowColor(Color.DKGRAY);
+    shapeDrawable.initializeElevationOverlay(view.getContext());
 
     // Now we created a mask Drawable which will be used for touch feedback.
     MaterialShapeDrawable touchFeedbackShape = createShapeDrawable();
@@ -360,7 +361,7 @@ class FloatingActionButtonImpl {
     updateShapeElevation(elevation);
   }
 
-  private void updateShapeElevation(float elevation) {
+  void updateShapeElevation(float elevation) {
     if (shapeDrawable != null) {
       shapeDrawable.setElevation(elevation);
     }

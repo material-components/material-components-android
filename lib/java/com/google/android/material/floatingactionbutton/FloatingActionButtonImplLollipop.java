@@ -65,6 +65,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
     if (backgroundTintMode != null) {
       shapeDrawable.setTintMode(backgroundTintMode);
     }
+    shapeDrawable.initializeElevationOverlay(view.getContext());
 
     final Drawable rippleContent;
     if (borderWidth > 0) {
@@ -99,6 +100,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
       final float elevation,
       final float hoveredFocusedTranslationZ,
       final float pressedTranslationZ) {
+
     if (Build.VERSION.SDK_INT == VERSION_CODES.LOLLIPOP) {
       // Animations produce NPE in version 21. Bluntly set the values instead in
       // #onDrawableStateChanged (matching the logic in the animations below).
