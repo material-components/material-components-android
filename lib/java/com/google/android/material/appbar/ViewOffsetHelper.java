@@ -41,16 +41,13 @@ class ViewOffsetHelper {
     this.view = view;
   }
 
-  public void onViewLayout() {
-    // Now grab the intended top
+  void onViewLayout() {
+    // Grab the original top and left
     layoutTop = view.getTop();
     layoutLeft = view.getLeft();
-
-    // And offset it as needed
-    updateOffsets();
   }
 
-  private void updateOffsets() {
+  void applyOffsets() {
     ViewCompat.offsetTopAndBottom(view, offsetTop - (view.getTop() - layoutTop));
     ViewCompat.offsetLeftAndRight(view, offsetLeft - (view.getLeft() - layoutLeft));
   }
@@ -64,7 +61,7 @@ class ViewOffsetHelper {
   public boolean setTopAndBottomOffset(int offset) {
     if (verticalOffsetEnabled && offsetTop != offset) {
       offsetTop = offset;
-      updateOffsets();
+      applyOffsets();
       return true;
     }
     return false;
@@ -79,7 +76,7 @@ class ViewOffsetHelper {
   public boolean setLeftAndRightOffset(int offset) {
     if (horizontalOffsetEnabled && offsetLeft != offset) {
       offsetLeft = offset;
-      updateOffsets();
+      applyOffsets();
       return true;
     }
     return false;

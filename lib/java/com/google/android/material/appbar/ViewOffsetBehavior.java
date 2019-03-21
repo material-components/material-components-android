@@ -44,6 +44,7 @@ class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {
       viewOffsetHelper = new ViewOffsetHelper(child);
     }
     viewOffsetHelper.onViewLayout();
+    viewOffsetHelper.applyOffsets();
 
     if (tempTopBottomOffset != 0) {
       viewOffsetHelper.setTopAndBottomOffset(tempTopBottomOffset);

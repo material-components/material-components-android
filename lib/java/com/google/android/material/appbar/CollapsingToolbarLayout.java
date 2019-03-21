@@ -449,6 +449,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
       }
     }
 
+    // Update our child view offset helpers so that they track the correct layout coordinates
+    for (int i = 0, z = getChildCount(); i < z; i++) {
+      getViewOffsetHelper(getChildAt(i)).onViewLayout();
+    }
+
     // Update the collapsed bounds by getting its transformed bounds
     if (collapsingTitleEnabled && dummyView != null) {
       // We only draw the title if the dummy view is being displayed (Toolbar removes
@@ -481,13 +486,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
       }
     }
 
-    // Update our child view offset helpers. This needs to be done after the title has been
-    // setup, so that any Toolbars are in their original position
-    for (int i = 0, z = getChildCount(); i < z; i++) {
-      getViewOffsetHelper(getChildAt(i)).onViewLayout();
-    }
-
-    // Finally, set our minimum height to enable proper AppBarLayout collapsing
+    // Set our minimum height to enable proper AppBarLayout collapsing
     if (toolbar != null) {
       if (collapsingTitleEnabled && TextUtils.isEmpty(collapsingTextHelper.getText())) {
         // If we do not currently have a title, try and grab it from the Toolbar
@@ -501,6 +500,11 @@ public class CollapsingToolbarLayout extends FrameLayout {
     }
 
     updateScrimVisibility();
+
+    // Apply any view offsets, this should be done at the very end of layout
+    for (int i = 0, z = getChildCount(); i < z; i++) {
+      getViewOffsetHelper(getChildAt(i)).applyOffsets();
+    }
   }
 
   private static int getHeightWithMargins(@NonNull final View view) {
