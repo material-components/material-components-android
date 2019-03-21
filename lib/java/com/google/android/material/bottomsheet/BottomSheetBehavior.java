@@ -195,6 +195,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   int halfExpandedOffset;
 
+  float halfExpandedRatio = 0.5f;
+
   int collapsedOffset;
 
   boolean hideable;
@@ -261,6 +263,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     setSkipCollapsed(
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
     setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
+    setHalfExpandedRatio(a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
@@ -335,7 +338,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     parentWidth = parent.getWidth();
     parentHeight = parent.getHeight();
     fitToContentsOffset = Math.max(0, parentHeight - child.getHeight());
-    halfExpandedOffset = parentHeight / 2;
+    calculateHalfExpandedOffset();
     calculateCollapsedOffset();
 
     if (state == STATE_EXPANDED) {
@@ -693,6 +696,32 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
+   * Determines the height of the BottomSheet in the {@link #STATE_HALF_EXPANDED} state. The
+   * material guidelines recommended a value of 0.5, which results in the sheet filling half of the
+   * parent. The height of the BottomSheet will be smaller as this ratio is decreased and taller as
+   * it is increased. The default value is 0.5.
+   *
+   * @param ratio a float between 0 and 1, representing the {@link #STATE_HALF_EXPANDED} ratio.
+   * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
+   */
+  public void setHalfExpandedRatio(float ratio) {
+
+    if ((ratio <= 0) || (ratio >= 1)) {
+      throw new IllegalArgumentException("ratio must be a float value between 0 and 1");
+    }
+    this.halfExpandedRatio = ratio;
+  }
+
+   /**
+   * Gets the ratio for the height of the BottomSheet in the {@link #STATE_HALF_EXPANDED} state.
+   *
+   * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
+   */
+  public float getHalfExpandedRatio() {
+    return halfExpandedRatio;
+  }
+
+  /**
    * Sets whether this bottom sheet can hide when it is swiped down.
    *
    * @param hideable {@code true} to make this bottom sheet hideable.
@@ -893,6 +922,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else {
       collapsedOffset = parentHeight - peek;
     }
+  }
+
+  private void calculateHalfExpandedOffset() {
+      this.halfExpandedOffset = (int) (parentHeight * halfExpandedRatio);
   }
 
   private void reset() {

@@ -33,6 +33,11 @@
     <attr name="behavior_skipCollapsed" format="boolean"/>
     <!-- Whether height of expanded sheet wraps content or not -->
     <attr name="behavior_fitToContents" format="boolean"/>
+    <!-- The ratio to be used to set the height of half-expanded state in proportion to parent, when
+         fitToContents is false. Defaults to true half, 0.5, if not explicitly set. Ratio must be a
+         float value between 0 and 1 and produce a half-expanded state height larger than the
+         peek height for the half-expanded state to be operational -->
+    <attr name="behavior_halfExpandedRatio" format="reference|float"/>
     <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
          package. -->
      <attr name="shapeAppearance"/>
