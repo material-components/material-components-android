@@ -29,9 +29,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import com.google.android.material.internal.TextScale;
-import androidx.transition.AutoTransition;
-import androidx.transition.TransitionManager;
-import androidx.transition.TransitionSet;
 import androidx.core.util.Pools;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -44,7 +41,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.transition.AutoTransition;
+import androidx.transition.TransitionManager;
+import androidx.transition.TransitionSet;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
+
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
