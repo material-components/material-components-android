@@ -351,7 +351,9 @@ public class MaterialButton extends AppCompatButton implements Checkable {
   public void setBackgroundDrawable(Drawable background) {
     if (isUsingOriginalBackground()) {
       if (background != this.getBackground()) {
-        Log.i(LOG_TAG, "Setting a custom background is not supported.");
+        Log.w(
+            LOG_TAG,
+            "Do not set the background; MaterialButton manages its own background drawable.");
         materialButtonHelper.setBackgroundOverwritten();
         super.setBackgroundDrawable(background);
       } else {
