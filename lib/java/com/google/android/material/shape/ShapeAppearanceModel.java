@@ -156,6 +156,15 @@ public class ShapeAppearanceModel {
     a.recycle();
   }
 
+  /**
+   * Sets all corner treatments to {@link CornerTreatment}s generated from a {@code cornerFamily}
+   * and {@code cornerSize}.
+   *
+   * @param cornerFamily The family to be used to create the {@link CornerTreatment}s for all four
+   *     corners. May be one of {@link CornerFamily#ROUNDED} or {@link CornerFamily#CUT}.
+   * @param cornerSize The size to be used to create the {@link CornerTreatment}s for all four
+   *     corners.
+   */
   public void setAllCorners(@CornerFamily int cornerFamily, @Dimension int cornerSize) {
     setAllCorners(MaterialShapeUtils.createCornerTreatment(cornerFamily, cornerSize));
   }
@@ -176,10 +185,27 @@ public class ShapeAppearanceModel {
     }
   }
 
+  /**
+   * Sets the corner size of all four corner treatments to {@code cornerRadius}. This is a 
+   * convenience method for {@link #setCornerRadii(float, float, float, float)})}.
+   *
+   * <p>Note: This method does not create new {@link CornerTreatment}s for all four corners.
+   * Instead, it directly modifies the corner size of each existing corner treatment.
+   *
+   * @see #setCornerRadii(float, float, float, float)
+   */
   public void setCornerRadius(float cornerRadius) {
     setCornerRadii(cornerRadius, cornerRadius, cornerRadius, cornerRadius);
   }
 
+  /**
+   * Sets the corner size of all four corner treatments using the {@code topLeftCornerRadius},
+   * {@code topRightCornerRadius}, {@code bottomRightCornerRadius}, and {@code
+   * bottomLeftCornerRadius}.
+   *
+   * <p>Note: This method does not create new {@link CornerTreatment}s for all four corners.
+   * Instead, it directly modifies the corner size of each existing corner treatment.
+   */
   public void setCornerRadii(
       float topLeftCornerRadius,
       float topRightCornerRadius,
@@ -250,10 +276,10 @@ public class ShapeAppearanceModel {
   /**
    * Sets corner treatments.
    *
-   * @param topLeftCorner the corner treatment to use in the top-left corner.
-   * @param topRightCorner the corner treatment to use in the top-right corner.
-   * @param bottomRightCorner the corner treatment to use in the bottom-right corner.
-   * @param bottomLeftCorner the corner treatment to use in the bottom-left corner.
+   * @param topLeftCorner the corner treatment to use in the top left corner.
+   * @param topRightCorner the corner treatment to use in the top right corner.
+   * @param bottomRightCorner the corner treatment to use in the bottom right corner.
+   * @param bottomLeftCorner the corner treatment to use in the bottom left corner.
    */
   public void setCornerTreatments(
       CornerTreatment topLeftCorner,
@@ -294,7 +320,7 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Sets the corner treatment for the top-left corner.
+   * Sets the corner treatment for the top left corner.
    *
    * @param cornerFamily the family to use to create the corner treatment
    * @param cornerSize the size to use to create the corner treatment
@@ -304,7 +330,7 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Sets the corner treatment for the top-left corner.
+   * Sets the corner treatment for the top left corner.
    *
    * @param topLeftCorner the desired treatment.
    */
@@ -324,16 +350,16 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Gets the corner treatment for the top-left corner.
+   * Gets the corner treatment for the top left corner.
    *
-   * @return the corner treatment for the top-left corner.
+   * @return the corner treatment for the top left corner.
    */
   public CornerTreatment getTopLeftCorner() {
     return topLeftCorner;
   }
 
   /**
-   * Sets the corner treatment for the top-right corner.
+   * Sets the corner treatment for the top right corner.
    *
    * @param cornerFamily the family to use to create the corner treatment
    * @param cornerSize the size to use to create the corner treatment
@@ -343,7 +369,7 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Sets the corner treatment for the top-right corner.
+   * Sets the corner treatment for the top right corner.
    *
    * @param topRightCorner the desired treatment.
    */
@@ -363,16 +389,16 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Gets the corner treatment for the top-right corner.
+   * Gets the corner treatment for the top right corner.
    *
-   * @return the corner treatment for the top-right corner.
+   * @return the corner treatment for the top right corner.
    */
   public CornerTreatment getTopRightCorner() {
     return topRightCorner;
   }
 
   /**
-   * Sets the corner treatment for the bottom-right corner.
+   * Sets the corner treatment for the bottom right corner.
    *
    * @param cornerFamily the family to use to create the corner treatment
    * @param cornerSize the size to use to create the corner treatment
@@ -382,7 +408,7 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Sets the corner treatment for the bottom-right corner.
+   * Sets the corner treatment for the bottom right corner.
    *
    * @param bottomRightCorner the desired treatment.
    */
@@ -402,16 +428,16 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Gets the corner treatment for the bottom-right corner.
+   * Gets the corner treatment for the bottom right corner.
    *
-   * @return the corner treatment for the bottom-right corner.
+   * @return the corner treatment for the bottom right corner.
    */
   public CornerTreatment getBottomRightCorner() {
     return bottomRightCorner;
   }
 
   /**
-   * Sets the corner treatment for the bottom-left corner.
+   * Sets the corner treatment for the bottom left corner.
    *
    * @param cornerFamily the family to use to create the corner treatment
    * @param cornerSize the size to use to create the corner treatment
@@ -421,7 +447,7 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Sets the corner treatment for the bottom-left corner.
+   * Sets the corner treatment for the bottom left corner.
    *
    * @param bottomLeftCorner the desired treatment.
    */
@@ -441,9 +467,9 @@ public class ShapeAppearanceModel {
   }
 
   /**
-   * Gets the corner treatment for the bottom-left corner.
+   * Gets the corner treatment for the bottom left corner.
    *
-   * @return the corner treatment for the bottom-left corner.
+   * @return the corner treatment for the bottom left corner.
    */
   public CornerTreatment getBottomLeftCorner() {
     return bottomLeftCorner;
