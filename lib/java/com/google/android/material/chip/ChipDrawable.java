@@ -167,9 +167,12 @@ public class ChipDrawable extends MaterialShapeDrawable
   private static final int[][] states =
       new int[][] {
         new int[] {
-          android.R.attr.state_enabled, android.R.attr.state_selected
-        }, // enabled and selected
-        new int[] {android.R.attr.state_enabled}, // enabled
+          android.R.attr.state_enabled, android.R.attr.state_selected,
+        },
+        new int[] {
+          android.R.attr.state_enabled, android.R.attr.state_checked,
+        },
+        new int[] {android.R.attr.state_enabled},
         new int[] {} // default
       };
 
@@ -1288,8 +1291,10 @@ public class ChipDrawable extends MaterialShapeDrawable
   private void setChipSurfaceColor(@Nullable ColorStateList chipSurfaceColor) {
     if (this.chipSurfaceColor != chipSurfaceColor) {
       this.chipSurfaceColor = chipSurfaceColor;
-      if (chipSurfaceColor != null && chipBackgroundColor != null) {
-        setFillColor(compositeSurfaceBackgroundColor());
+      if (isShapeThemingEnabled) {
+        if (chipSurfaceColor != null && chipBackgroundColor != null) {
+          setFillColor(compositeSurfaceBackgroundColor(chipBackgroundColor, chipSurfaceColor));
+        }
       }
       onStateChange(getState());
     }
@@ -1350,30 +1355,21 @@ public class ChipDrawable extends MaterialShapeDrawable
       this.chipBackgroundColor = chipBackgroundColor;
       if (isShapeThemingEnabled) {
         if (chipSurfaceColor != null && chipBackgroundColor != null) {
-          setFillColor(compositeSurfaceBackgroundColor());
+          setFillColor(compositeSurfaceBackgroundColor(chipBackgroundColor, chipSurfaceColor));
         }
       }
       onStateChange(getState());
     }
   }
 
-  private ColorStateList compositeSurfaceBackgroundColor() {
-    if (chipSurfaceColor == null || chipBackgroundColor == null) {
-      return null;
+  private ColorStateList compositeSurfaceBackgroundColor(
+      @NonNull ColorStateList backgroundColor, @NonNull ColorStateList surfaceColor) {
+    int[] colors = new int[states.length];
+    for (int i = 0; i < states.length; i++) {
+      colors[i] = MaterialColors.layer(
+          surfaceColor.getColorForState(states[i], currentChipSurfaceColor),
+          backgroundColor.getColorForState(states[i], currentChipBackgroundColor));
     }
-    int[] colors =
-        new int[] {
-          MaterialColors.layer(
-              chipSurfaceColor.getColorForState(states[0], currentChipSurfaceColor),
-              chipBackgroundColor.getColorForState(states[0], currentChipBackgroundColor)),
-          MaterialColors.layer(
-              chipSurfaceColor.getColorForState(states[1], currentChipSurfaceColor),
-              chipBackgroundColor.getColorForState(states[1], currentChipBackgroundColor)),
-          MaterialColors.layer(
-              chipSurfaceColor.getColorForState(states[2], currentChipSurfaceColor),
-              chipBackgroundColor.getColorForState(states[2], currentChipBackgroundColor)),
-        };
-
     return new ColorStateList(states, colors);
   }
 
