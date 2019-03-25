@@ -236,7 +236,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /** Resets any badge number so that only an icon badge will be displayed. */
-  public void clearBadgeValue() {
+  public void clearBadgeNumber() {
     number = ICON_ONLY_BADGE_NUMBER;
     invalidateSelf();
   }
