@@ -45,7 +45,7 @@
   <!-- Dark theme neutral colors. -->
   <color name="design_dark_default_color_background">#141414</color>
   <color name="design_dark_default_color_on_background">#FFFFFF</color>
-  <color name="design_dark_default_color_surface">#282828</color>
+  <color name="design_dark_default_color_surface">#141414</color>
   <color name="design_dark_default_color_on_surface">#FFFFFF</color>
   <color name="design_dark_default_color_error">#C26C7A</color>
   <color name="design_dark_default_color_on_error">#000000</color>

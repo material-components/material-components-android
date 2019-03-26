@@ -46,7 +46,7 @@ public class ElevationOverlayProviderTest {
 
   @Before
   public void initContextThemeWithElevationOverlays() {
-    context.setTheme(R.style.Test_Theme_MaterialComponents_ElevationOverlays);
+    context.setTheme(R.style.Theme_MaterialComponents_NoActionBar);
   }
 
   @Test

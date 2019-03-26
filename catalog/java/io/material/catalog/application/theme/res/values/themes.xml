@@ -26,9 +26,5 @@
     <item name="catalogToolbarStyle">@style/Widget.Catalog.Toolbar</item>
     <item name="catalogToolbarWithCloseButtonStyle">@style/Widget.Catalog.Toolbar.WithCloseButton</item>
     <item name="windowActionModeOverlay">true</item>
-
-    <!-- TODO: Remove the following overrides once they are moved into the library. -->
-    <item name="elevationOverlaysEnabled">true</item>
-    <item name="colorSurface">#141414</item>
   </style>
 </resources>

@@ -80,8 +80,7 @@
     </item>
 
     <!-- Elevation Overlays -->
-    <!-- TODO: Enable once more components support elevation overlays. -->
-    <item name="elevationOverlaysEnabled">false</item>
+    <item name="elevationOverlaysEnabled">true</item>
     <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
   </style>
 
@@ -187,8 +186,7 @@
     </item>
 
     <!-- Elevation Overlays -->
-    <!-- TODO: Enable once more components support elevation overlays. -->
-    <item name="elevationOverlaysEnabled">false</item>
+    <item name="elevationOverlaysEnabled">true</item>
     <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
   </style>
 
