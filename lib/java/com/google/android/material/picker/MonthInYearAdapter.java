@@ -15,14 +15,11 @@
  */
 package com.google.android.material.picker;
 
-import com.google.android.material.R;
-
 import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.resources.MaterialAttributes;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -48,14 +45,7 @@ public class MonthInYearAdapter extends BaseAdapter {
 
   MonthInYearAdapter(Context context, MonthInYear monthInYear) {
     this.monthInYear = monthInYear;
-    TypedValue minTouchTargetSizeValue =
-        MaterialAttributes.resolveAttribute(context, R.attr.minTouchTargetSize);
-    if (minTouchTargetSizeValue == null) {
-      textViewSize = (int) context.getResources().getDimension(R.dimen.mtrl_min_touch_target_size);
-    } else {
-      textViewSize =
-          (int) minTouchTargetSizeValue.getDimension(context.getResources().getDisplayMetrics());
-    }
+    textViewSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
   }
 
   /**
