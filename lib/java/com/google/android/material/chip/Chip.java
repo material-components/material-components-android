@@ -2279,6 +2279,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   public boolean ensureAccessibleTouchTarget(@Dimension int minTargetPx) {
     minTouchTargetSize = minTargetPx;
     if (!shouldEnsureMinTouchTargetSize()) {
+      removeBackgroundInset();
       return false;
     }
 
@@ -2286,7 +2287,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     int deltaWidth = Math.max(0, minTargetPx - chipDrawable.getIntrinsicWidth());
 
     if (deltaWidth <= 0 && deltaHeight <= 0) {
-      insetBackgroundDrawable = null;
+      removeBackgroundInset();
       return false;
     }
 
@@ -2307,11 +2308,24 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
       if (getMinHeight() != minTargetPx) {
         setMinHeight(minTargetPx);
       }
+      if (getMinWidth() != minTargetPx) {
+        setMinWidth(minTargetPx);
+      }
     } else {
       setMinHeight(minTargetPx);
+      setMinWidth(minTargetPx);
     }
     insetChipBackgroundDrawable(deltaX, deltaY, deltaX, deltaY);
     return true;
+  }
+
+  private void removeBackgroundInset() {
+    if (insetBackgroundDrawable != null) {
+      insetBackgroundDrawable = null;
+      setMinWidth(0);
+      setMinHeight((int) getChipMinHeight());
+      updateBackgroundDrawable();
+    }
   }
 
   private void insetChipBackgroundDrawable(
