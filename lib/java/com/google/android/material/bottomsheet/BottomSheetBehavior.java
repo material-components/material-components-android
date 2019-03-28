@@ -925,7 +925,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void calculateHalfExpandedOffset() {
-      this.halfExpandedOffset = (int) (parentHeight * halfExpandedRatio);
+      this.halfExpandedOffset = (int) (parentHeight * (1 - halfExpandedRatio));
   }
 
   private void reset() {
