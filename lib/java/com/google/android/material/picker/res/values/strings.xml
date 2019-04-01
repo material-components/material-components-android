@@ -21,4 +21,6 @@
   <string name="mtrl_picker_header_selected" description="A single date [CHAR_LIMIT=60]">%1$s</string>
   <string name="mtrl_picker_confirm" description="Button text to indicate that the widget will save the user's selection [CHAR_LIMIT=16]">Save</string>
   <string name="mtrl_picker_cancel" description="Button text to indicate that the widget will ignore the user's selection [CHAR_LIMIT=16]">Cancel</string>
+
+  <string name="mtrl_picker_date_format" translatable="false">MMM dd, yyyy</string>
 </resources>
