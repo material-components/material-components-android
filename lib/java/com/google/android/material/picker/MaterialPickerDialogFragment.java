@@ -29,19 +29,18 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.fragment.app.DialogFragment;
+import androidx.fragment.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.Button;
-import android.widget.FrameLayout;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialCalendarView}, and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions.
  *
  * @hide
  */
@@ -58,16 +57,16 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   protected abstract String getHeaderText();
 
   /**
-   * Creates a new instance of {@link MaterialCalendarView}
+   * Creates a new instance of {@link MaterialCalendar}
    *
-   * <p>The {@link MaterialCalendarView} is rebuilt in every call to onCreate.
+   * <p>The {@link MaterialCalendar} is rebuilt in every call to onCreate.
    */
-  protected abstract MaterialCalendarView<? extends S> createMaterialCalendarView();
+  protected abstract MaterialCalendar<? extends S> createMaterialCalendar();
 
   /** Returns an {@link @AttrRes} to apply as a theme overlay to the DialogFragment */
   protected abstract int getDefaultThemeAttr();
 
-  private MaterialCalendarView<? extends S> materialCalendarView;
+  private MaterialCalendar<? extends S> materialCalendar;
   private SimpleDateFormat simpleDateFormat;
 
   @AttrRes private int themeResId;
@@ -106,15 +105,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     themeResId =
         getThemeResource(
             getContext(), getDefaultThemeAttr(), getArguments().getInt(THEME_RESOURCE_ID_KEY));
-    materialCalendarView = createMaterialCalendarView();
-    materialCalendarView.setOnClickListener(
-        new OnClickListener() {
-
-          @Override
-          public void onClick(View view) {
-            updateHeader();
-          }
-        });
+    materialCalendar = createMaterialCalendar();
   }
 
   @Override
@@ -130,29 +121,49 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
       @Nullable Bundle bundle) {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_dialog, viewGroup);
     header = root.findViewById(R.id.date_picker_header_title);
-    FrameLayout calendarViewFrame = root.findViewById(R.id.date_picker_calendar_view_frame);
-    calendarViewFrame.addView(materialCalendarView);
-    Button confirmButton = root.findViewById(R.id.confirm_button);
-    Button cancelButton = root.findViewById(R.id.cancel_button);
 
-    confirmButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            selection = materialCalendarView.getSelection();
-            dismiss();
-          }
-        });
-    cancelButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            selection = null;
-            dismiss();
-          }
-        });
-    updateHeader();
+    root.findViewById(R.id.confirm_button)
+        .setOnClickListener(
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                selection = materialCalendar.getSelection();
+                dismiss();
+              }
+            });
+    root.findViewById(R.id.cancel_button)
+        .setOnClickListener(
+            new View.OnClickListener() {
+              @Override
+              public void onClick(View v) {
+                selection = null;
+                dismiss();
+              }
+            });
     return root;
+  }
+
+  @Override
+  public void onActivityCreated(@Nullable Bundle bundle) {
+    super.onActivityCreated(bundle);
+    FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
+    fragmentTransaction.add(R.id.calendar_frame, materialCalendar);
+    fragmentTransaction.commit();
+  }
+
+  @Override
+  public void onStart() {
+    super.onStart();
+    materialCalendar
+        .getView()
+        .setOnClickListener(
+            new OnClickListener() {
+              @Override
+              public void onClick(View view) {
+                updateHeader();
+              }
+            });
+    updateHeader();
   }
 
   @Override
@@ -188,14 +199,14 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   /**
-   * Returns the {@link MaterialCalendarView} from a previous call to {@link
-   * MaterialPickerDialogFragment#createMaterialCalendarView}
+   * Returns the {@link MaterialCalendar} from a previous call to {@link
+   * MaterialPickerDialogFragment#createMaterialCalendar}
    *
    * <p>Returns null until after {@link DialogFragment#onCreate}
    */
   @Nullable
-  public final MaterialCalendarView<? extends S> getMaterialCalendarView() {
-    return materialCalendarView;
+  public final MaterialCalendar<? extends S> getMaterialCalendar() {
+    return materialCalendar;
   }
 
   private void updateHeader() {

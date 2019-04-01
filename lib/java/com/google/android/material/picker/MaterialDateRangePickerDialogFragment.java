@@ -26,13 +26,13 @@ import android.util.Pair;
 import java.util.Calendar;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialDateRangePickerView}, and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialDateRangePicker}, and set of actions.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class MaterialDateRangePickerDialogFragment extends
-    MaterialPickerDialogFragment<Pair<Calendar, Calendar>> {
+public class MaterialDateRangePickerDialogFragment
+    extends MaterialPickerDialogFragment<Pair<Calendar, Calendar>> {
 
   public static MaterialDateRangePickerDialogFragment newInstance() {
     return newInstance(0);
@@ -53,13 +53,13 @@ public class MaterialDateRangePickerDialogFragment extends
   }
 
   @Override
-  protected MaterialCalendarView<Pair<Calendar, Calendar>> createMaterialCalendarView() {
-    return new MaterialDateRangePickerView(getContext());
+  protected MaterialCalendar<Pair<Calendar, Calendar>> createMaterialCalendar() {
+    return new MaterialDateRangePicker();
   }
 
   @Override
   protected String getHeaderText() {
-    Pair<Calendar, Calendar> startAndEnd = getMaterialCalendarView().getSelection();
+    Pair<Calendar, Calendar> startAndEnd = getMaterialCalendar().getSelection();
     if (startAndEnd == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_range_header_prompt);
     }

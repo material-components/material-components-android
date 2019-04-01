@@ -17,55 +17,51 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
-import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Bundle;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.appcompat.widget.LinearLayoutCompat;
-import android.util.AttributeSet;
+import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
-import android.widget.LinearLayout;
 import java.util.Calendar;
 
 /**
- * View for a days of week {@link Calendar} represented as a header row of days labels and {@link
- * GridView} of days backed by {@link MonthInYearAdapter}.
+ * Fragment for a days of week {@link Calendar} represented as a header row of days labels and
+ * {@link GridView} of days backed by {@link MonthInYearAdapter}.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public abstract class MaterialCalendarView<S> extends LinearLayoutCompat {
+public abstract class MaterialCalendar<S> extends Fragment {
 
-  private final MonthInYearAdapter monthInYearAdapter;
+  private MonthInYear monthInYear;
+  private MonthInYearAdapter monthInYearAdapter;
 
-  public MaterialCalendarView(Context context) {
-    this(context, null);
-  }
-
-  public MaterialCalendarView(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
-  }
-
-  public MaterialCalendarView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
-    setOrientation(LinearLayout.VERTICAL);
-
-    LayoutInflater layoutInflater = LayoutInflater.from(context);
-    layoutInflater.inflate(R.layout.mtrl_date_picker_calendar_days_header, this);
-    layoutInflater.inflate(R.layout.mtrl_date_picker_calendar_days, this);
-    GridView daysHeader = findViewById(R.id.date_picker_calendar_days_header);
-    GridView daysGrid = findViewById(R.id.date_picker_calendar_days);
-
+  @Override
+  public void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
     Calendar calendar = Calendar.getInstance();
-    MonthInYear monthInYear =
-        MonthInYear.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
-    monthInYearAdapter = new MonthInYearAdapter(context, monthInYear);
+    monthInYear = MonthInYear.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
+    monthInYearAdapter = new MonthInYearAdapter(getContext(), monthInYear);
+  }
+
+  @Nullable
+  @Override
+  public View onCreateView(
+      @NonNull LayoutInflater layoutInflater,
+      @Nullable ViewGroup viewGroup,
+      @Nullable Bundle bundle) {
+    final View root = layoutInflater.inflate(R.layout.mtrl_calendar, viewGroup, false);
+    GridView daysHeader = root.findViewById(R.id.calendar_days_header);
+    GridView daysGrid = root.findViewById(R.id.calendar_grid);
 
     daysHeader.setAdapter(new DaysHeaderAdapter());
     daysHeader.setNumColumns(monthInYear.daysInWeek);
@@ -78,14 +74,15 @@ public abstract class MaterialCalendarView<S> extends LinearLayoutCompat {
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             getOnItemClickListener().onItemClick(parent, view, position, id);
             drawSelection(parent);
-            // Allows users of MaterialCalendarView to set an OnClickListener
+            // Allows users of MaterialCalendar to set an OnClickListener
             if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-              callOnClick();
+              root.callOnClick();
             } else {
-              performClick();
+              root.performClick();
             }
           }
         });
+    return root;
   }
 
   protected final MonthInYearAdapter getMonthInYearAdapter() {

@@ -25,7 +25,7 @@ import androidx.annotation.RestrictTo.Scope;
 import java.util.Calendar;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialDatePickerView}, and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialDatePicker}, and set of actions.
  *
  * @hide
  */
@@ -51,13 +51,13 @@ public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragme
   }
 
   @Override
-  protected MaterialCalendarView<Calendar> createMaterialCalendarView() {
-    return new MaterialDatePickerView(getContext());
+  protected MaterialCalendar<Calendar> createMaterialCalendar() {
+    return new MaterialDatePicker();
   }
 
   @Override
   protected String getHeaderText() {
-    Calendar selectedDate = getMaterialCalendarView().getSelection();
+    Calendar selectedDate = getMaterialCalendar().getSelection();
     if (selectedDate == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_header_prompt);
     }

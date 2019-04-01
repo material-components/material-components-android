@@ -15,45 +15,36 @@
  */
 package com.google.android.material.picker;
 
-import com.google.android.material.R;
-
-import android.content.Context;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.view.ViewCompat;
-import android.util.AttributeSet;
+import android.util.Pair;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import java.util.Calendar;
 
 /**
- * A {@link MaterialCalendarView} that supports single date selection
+ * A {@link MaterialCalendar} that supports range selection.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class MaterialDatePickerView extends MaterialCalendarView<Calendar> {
+public class MaterialDateRangePicker extends MaterialCalendar<Pair<Calendar, Calendar>> {
 
-  private static final int DEF_STYLE_ATTR = R.attr.materialDatePickerStyle;
   private static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
-  private static final ColorDrawable selectedColor = new ColorDrawable(Color.RED);
+  private static final ColorDrawable startColor = new ColorDrawable(Color.RED);
+  private static final ColorDrawable endColor = new ColorDrawable(Color.GREEN);
+  private static final ColorDrawable rangeColor = new ColorDrawable(Color.YELLOW);
 
-  private int selectedPosition = -1;
   private final OnItemClickListener onItemClickListener;
+  private int selectedStartPosition = -1;
+  private int selectedEndPosition = -1;
 
-  public MaterialDatePickerView(Context context) {
-    this(context, null);
-  }
-
-  public MaterialDatePickerView(Context context, AttributeSet attrs) {
-    this(context, attrs, DEF_STYLE_ATTR);
-  }
-
-  public MaterialDatePickerView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+  public MaterialDateRangePicker() {
     onItemClickListener =
         new OnItemClickListener() {
 
@@ -62,7 +53,14 @@ public class MaterialDatePickerView extends MaterialCalendarView<Calendar> {
             if (!getMonthInYearAdapter().withinMonth(position)) {
               return;
             }
-            selectedPosition = position;
+            if (selectedStartPosition < 0) {
+              selectedStartPosition = position;
+            } else if (selectedEndPosition < 0 && position > selectedStartPosition) {
+              selectedEndPosition = position;
+            } else {
+              selectedEndPosition = -1;
+              selectedStartPosition = position;
+            }
           }
         };
   }
@@ -75,13 +73,36 @@ public class MaterialDatePickerView extends MaterialCalendarView<Calendar> {
   @Override
   protected void drawSelection(AdapterView<?> parent) {
     for (int i = 0; i < parent.getCount(); i++) {
-      ViewCompat.setBackground(
-          parent.getChildAt(i), i == selectedPosition ? selectedColor : emptyColor);
+      ColorDrawable setColor = emptyColor;
+      if (i == selectedStartPosition) {
+        setColor = startColor;
+      } else if (i == selectedEndPosition) {
+        setColor = endColor;
+      } else if (i > selectedStartPosition && i < selectedEndPosition) {
+        setColor = rangeColor;
+      }
+      ViewCompat.setBackground(parent.getChildAt(i), setColor);
     }
   }
 
   @Override
-  public Calendar getSelection() {
-    return getMonthInYearAdapter().getItem(selectedPosition);
+  @Nullable
+  public Pair<Calendar, Calendar> getSelection() {
+    Calendar start = getStart();
+    Calendar end = getEnd();
+    if (start == null || end == null) {
+      return null;
+    }
+    return new Pair<>(getStart(), getEnd());
+  }
+
+  @Nullable
+  public Calendar getStart() {
+    return getMonthInYearAdapter().getItem(selectedStartPosition);
+  }
+
+  @Nullable
+  public Calendar getEnd() {
+    return getMonthInYearAdapter().getItem(selectedEndPosition);
   }
 }
