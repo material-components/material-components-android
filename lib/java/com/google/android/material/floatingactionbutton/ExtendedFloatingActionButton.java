@@ -176,9 +176,6 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
             context, a, R.styleable.ExtendedFloatingActionButton_shrinkMotionSpec);
 
     a.recycle();
-
-    // Eliminates the word wrapping when the FAB extended state change is animating.
-    setHorizontallyScrolling(true);
   }
 
   @Override
@@ -652,6 +649,8 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
             @Override
             public void onAnimationStart(Animator animation) {
+              // Eliminates the word wrapping when the FAB is being extended or shrunk.
+              setHorizontallyScrolling(true);
               currentCollapseExpandAnimator = animation;
               cancelled = false;
             }
@@ -663,6 +662,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
 
             @Override
             public void onAnimationEnd(Animator animation) {
+              setHorizontallyScrolling(false);
               currentCollapseExpandAnimator = null;
               if (cancelled || listener == null) {
                 return;
