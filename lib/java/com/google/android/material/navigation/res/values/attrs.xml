@@ -26,8 +26,6 @@
     <attr name="menu" format="reference"/>
     <attr name="itemIconTint" format="color"/>
     <attr name="itemTextColor" format="color"/>
-    <!-- A background drawable to use for navigation items. If this is set, this overrides the
-         default background drawable for items and the itemShape* attributes will be ignored -->
     <attr name="itemBackground" format="reference"/>
     <attr name="itemTextAppearance" format="reference"/>
     <!-- Layout resource to inflate as the header -->
@@ -38,22 +36,5 @@
     <attr name="itemIconPadding" format="dimension"/>
     <!-- The size of the icon navigation items that display an icon  -->
     <attr name="itemIconSize" format="dimension"/>
-    <!-- Shape appearance style reference for item background. Used if itemBackground isn't set.
-         Attribute declaration is in the Shape package. -->
-    <attr name="itemShapeAppearance" format="reference"/>
-    <!-- Shape appearance overlay style reference for item background. Used if itemBackground isn't
-         set. To be used to augment attributes declared in the shapeAppearance. Attribute
-         declaration in the Shape package. -->
-    <attr name="itemShapeAppearanceOverlay" format="reference"/>
-    <!-- Inset left margin for the item background shape. Used if itemBackground isn't set. -->
-    <attr name="itemShapeInsetLeft" format="dimension"/>
-    <!-- Inset top margin for the item background shape. Used if itemBackground isn't set. -->
-    <attr name="itemShapeInsetTop" format="dimension"/>
-    <!-- Inset right margin for the item background shape. Used if itemBackground isn't set. -->
-    <attr name="itemShapeInsetRight" format="dimension"/>
-    <!-- Inset bottom margin for the item background shape. Used if itemBackground isn't set. -->
-    <attr name="itemShapeInsetBottom" format="dimension"/>
-    <!-- Fill color for the item background shape. Used if itemBackground isn't set. -->
-    <attr name="itemShapeFillColor" format="color"/>
   </declare-styleable>
 </resources>

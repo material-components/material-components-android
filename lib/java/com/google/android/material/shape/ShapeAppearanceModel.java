@@ -109,30 +109,14 @@ public class ShapeAppearanceModel {
     int shapeAppearanceOverlayResId =
         a.getResourceId(R.styleable.MaterialShape_shapeAppearanceOverlay, 0);
     a.recycle();
-    initFromShapeAppearanceStyle(
-        context, shapeAppearanceResId, shapeAppearanceOverlayResId, defaultCornerSize);
-  }
 
-  public ShapeAppearanceModel(
-      Context context,
-      @StyleRes int shapeAppearanceResId,
-      @StyleRes int shapeAppearanceOverlayResId) {
-    initFromShapeAppearanceStyle(context, shapeAppearanceResId, shapeAppearanceOverlayResId, 0);
-  }
-
-  private final void initFromShapeAppearanceStyle(
-      Context context,
-      @StyleRes int shapeAppearanceResId,
-      @StyleRes int shapeAppearanceOverlayResId,
-      int defaultCornerSize) {
     // The attributes in shapeAppearanceOverlay should be applied on top of shapeAppearance.
     if (shapeAppearanceOverlayResId != 0) {
       context = new ContextThemeWrapper(context, shapeAppearanceResId);
       shapeAppearanceResId = shapeAppearanceOverlayResId;
     }
 
-    TypedArray a =
-        context.obtainStyledAttributes(shapeAppearanceResId, R.styleable.ShapeAppearance);
+    a = context.obtainStyledAttributes(shapeAppearanceResId, R.styleable.ShapeAppearance);
 
     int cornerFamily = a.getInt(R.styleable.ShapeAppearance_cornerFamily, CornerFamily.ROUNDED);
     int cornerFamilyTopLeft =
