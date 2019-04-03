@@ -34,7 +34,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         app:collapsedTitleTextAppearance="?attr/textAppearanceHeadline6"
-        app:contentScrim="?attr/colorPrimary"
         app:expandedTitleGravity="bottom"
         app:expandedTitleMarginBottom="24dp"
         app:expandedTitleMarginStart="16dp"
@@ -46,6 +45,7 @@
           style="?attr/catalogToolbarWithCloseButtonStyle"
           android:layout_width="match_parent"
           android:layout_height="?attr/actionBarSize"
+          android:elevation="0dp"
           app:layout_collapseMode="pin"
           app:title="@string/cat_topappbar_collapsing_demo_toolbar_title"/>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
