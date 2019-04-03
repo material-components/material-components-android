@@ -15,6 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
+
   <style name="Widget.Design.NavigationView" parent="Widget.Design.ScrimInsetsFrameLayout">
     <item name="elevation">@dimen/design_navigation_elevation</item>
     <item name="itemIconPadding">@dimen/design_navigation_item_icon_padding</item>
@@ -26,8 +27,21 @@
 
   <style name="Widget.MaterialComponents.NavigationView" parent="Widget.Design.NavigationView">
     <item name="elevation">@dimen/mtrl_navigation_elevation</item>
+    <!-- itemBackground is set to @null to use that programmatic background, according to the the
+         itemShape* attributes below -->
+    <item name="itemBackground">@null</item>
     <item name="itemIconPadding">@dimen/mtrl_navigation_item_icon_padding</item>
+    <item name="itemIconTint">@color/mtrl_navigation_item_icon_tint</item>
+    <item name="itemIconSize">@dimen/mtrl_navigation_item_icon_size</item>
     <item name="itemHorizontalPadding">@dimen/mtrl_navigation_item_horizontal_padding</item>
+    <item name="itemShapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+    <item name="itemShapeFillColor">@color/mtrl_navigation_item_background_color</item>
+    <item name="itemShapeInsetLeft">@dimen/mtrl_navigation_item_shape_horizontal_margin</item>
+    <item name="itemShapeInsetTop">@dimen/mtrl_navigation_item_shape_vertical_margin</item>
+    <item name="itemShapeInsetRight">@dimen/mtrl_navigation_item_shape_horizontal_margin</item>
+    <item name="itemShapeInsetBottom">@dimen/mtrl_navigation_item_shape_vertical_margin</item>
+    <item name="itemTextColor">@color/mtrl_navigation_item_text_color</item>
+    <item name="itemTextAppearance">?attr/textAppearanceSubtitle2</item>
   </style>
 
 </resources>

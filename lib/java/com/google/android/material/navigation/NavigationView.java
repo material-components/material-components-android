@@ -23,6 +23,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -39,6 +40,9 @@ import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.content.ContextCompat;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.ViewCompat;
@@ -157,7 +161,11 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       itemTextColor = createDefaultColorStateList(android.R.attr.textColorPrimary);
     }
 
-    final Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
+    Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
+    if (itemBackground == null) {
+      itemBackground = createDefaultItemBackground(a);
+    }
+    setItemBackground(itemBackground);
 
     if (a.hasValue(R.styleable.NavigationView_itemHorizontalPadding)) {
       final int itemHorizontalPadding =
@@ -184,7 +192,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       presenter.setItemTextAppearance(textAppearance);
     }
     presenter.setItemTextColor(itemTextColor);
-    presenter.setItemBackground(itemBackground);
     presenter.setItemIconPadding(itemIconPadding);
     this.menu.addMenuPresenter(presenter);
     addView((View) presenter.getMenuView(this));
@@ -198,6 +205,31 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     a.recycle();
+  }
+
+  /**
+   * Creates a {@link MaterialShapeDrawable} to use as the {@code itemBackground} and wraps it in an
+   * {@link InsetDrawable} for margins.
+   *
+   * @param a The TintTypedArray containing the resolved NavigationView style attributes.
+   */
+  private final Drawable createDefaultItemBackground(TintTypedArray a) {
+    int shapeAppearanceResId = a.getResourceId(R.styleable.NavigationView_itemShapeAppearance, 0);
+    int shapeAppearanceOverlayResId =
+        a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
+    MaterialShapeDrawable materialShapeDrawable =
+        new MaterialShapeDrawable(
+            new ShapeAppearanceModel(
+                getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId));
+    materialShapeDrawable.setFillColor(
+        MaterialResources.getColorStateList(
+            getContext(), a, R.styleable.NavigationView_itemShapeFillColor));
+
+    int insetLeft = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetLeft, 0);
+    int insetTop = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetTop, 0);
+    int insetRight = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetRight, 0);
+    int insetBottom = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetBottom, 0);
+    return new InsetDrawable(materialShapeDrawable, insetLeft, insetTop, insetRight, insetBottom);
   }
 
   @Override
@@ -377,7 +409,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
-   * Set the background of our menu items to the given resource.
+   * Set the background of our menu items to the given resource. This overrides the default
+   * background set to items and it's styling.
    *
    * @param resId The identifier of the resource.
    * @attr ref R.styleable#NavigationView_itemBackground
@@ -485,9 +518,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
   }
 
-  /**
-   * @return Returns the currently checked item in this navigation menu.
-   */
+  /** Returns the currently checked item in this navigation menu. */
   @Nullable
   public MenuItem getCheckedItem() {
     return presenter.getCheckedItem();
@@ -503,8 +534,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
-   * Sets the size to be used for the menu item icons in pixels.
-   * If no icons are set, calling this method will do nothing.
+   * Sets the size to be used for the menu item icons in pixels. If no icons are set, calling this
+   * method will do nothing.
    *
    * @attr ref R.styleable#NavigationView_itemIconSize
    */
