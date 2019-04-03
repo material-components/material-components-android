@@ -1792,14 +1792,34 @@ public class TextInputLayout extends LinearLayout {
     if (editText == null) {
       throw new IllegalStateException();
     }
+
     Rect bounds = tmpBoundsRect;
 
+    float labelHeight = collapsingTextHelper.getExpandedTextHeight();
+
     bounds.left = rect.left + editText.getCompoundPaddingLeft();
-    bounds.top = rect.top + editText.getCompoundPaddingTop();
+    bounds.top = calculateExpandedLabelTop(rect, labelHeight);
     bounds.right = rect.right - editText.getCompoundPaddingRight();
-    bounds.bottom = rect.bottom - editText.getCompoundPaddingBottom();
+    bounds.bottom = calculateExpandedLabelBottom(rect, bounds, labelHeight);
 
     return bounds;
+  }
+
+  private int calculateExpandedLabelTop(Rect rect, float labelHeight) {
+    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+      return (int) (rect.centerY() - labelHeight / 2);
+    }
+    return rect.top + editText.getCompoundPaddingTop();
+  }
+
+  private int calculateExpandedLabelBottom(Rect rect, Rect bounds, float labelHeight) {
+    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+      // Add the label's height to the top of the bounds rather than calculating from the vertical
+      // center for both the top and bottom of the label. This prevents a potential fractional loss
+      // of label height caused by the float to int conversion.
+      return (int) (bounds.top + labelHeight);
+    }
+    return rect.bottom - editText.getCompoundPaddingBottom();
   }
 
   /*
@@ -2785,21 +2805,35 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
-  private void setIconOnClickListener(View iconView, OnClickListener onClickListener) {
+  private void setIconOnClickListener(@NonNull View iconView, OnClickListener onClickListener) {
     iconView.setOnClickListener(onClickListener);
     iconView.setFocusable(onClickListener != null);
     iconView.setClickable(onClickListener != null);
   }
 
   private void updateIconViewOnEditTextAttached(
-      View iconView, @DimenRes int paddingStartResId, @DimenRes int paddingEndResId) {
+      @NonNull View iconView, @DimenRes int paddingStartResId, @DimenRes int paddingEndResId) {
     ViewCompat.setPaddingRelative(
         iconView,
         getResources().getDimensionPixelSize(paddingStartResId),
-        /*TODO: Set to 0 once label is centered*/ editText.getPaddingTop(),
+        getIconViewPaddingTop(iconView),
         getResources().getDimensionPixelSize(paddingEndResId),
-        /*TODO: Set to 0 once label is centered*/ editText.getPaddingBottom());
+        getIconViewPaddingBottom(iconView));
     iconView.bringToFront();
+  }
+
+  private int getIconViewPaddingTop(@NonNull View iconView) {
+    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+      return iconView.getPaddingTop();
+    }
+    return editText != null ? editText.getPaddingTop() : 0;
+  }
+
+  private int getIconViewPaddingBottom(@NonNull View iconView) {
+    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+      return iconView.getPaddingBottom();
+    }
+    return editText != null ? editText.getPaddingBottom() : 0;
   }
 
   private boolean hasPasswordTransformation() {

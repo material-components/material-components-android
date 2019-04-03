@@ -196,20 +196,6 @@ public final class CollapsingTextHelper {
     setCollapsedBounds(bounds.left, bounds.top, bounds.right, bounds.bottom);
   }
 
-  public float calculateCollapsedTextWidth() {
-    if (text == null) {
-      return 0;
-    }
-    getTextPaintCollapsed(tmpPaint);
-    return tmpPaint.measureText(text, 0, text.length());
-  }
-
-  public float getCollapsedTextHeight() {
-    getTextPaintCollapsed(tmpPaint);
-    // Return collapsed height measured from the baseline.
-    return -tmpPaint.ascent();
-  }
-
   public void getCollapsedTextActualBounds(RectF bounds) {
     boolean isRtl = calculateIsRtl(text);
 
@@ -218,6 +204,31 @@ public final class CollapsingTextHelper {
     bounds.top = collapsedBounds.top;
     bounds.right = !isRtl ? bounds.left + calculateCollapsedTextWidth() : collapsedBounds.right;
     bounds.bottom = collapsedBounds.top + getCollapsedTextHeight();
+  }
+
+  public float calculateCollapsedTextWidth() {
+    if (text == null) {
+      return 0;
+    }
+    getTextPaintCollapsed(tmpPaint);
+    return tmpPaint.measureText(text, 0, text.length());
+  }
+
+  public float getExpandedTextHeight() {
+    getTextPaintExpanded(tmpPaint);
+    // Return expanded height measured from the baseline.
+    return -tmpPaint.ascent();
+  }
+
+  public float getCollapsedTextHeight() {
+    getTextPaintCollapsed(tmpPaint);
+    // Return collapsed height measured from the baseline.
+    return -tmpPaint.ascent();
+  }
+
+  private void getTextPaintExpanded(TextPaint textPaint) {
+    textPaint.setTextSize(expandedTextSize);
+    textPaint.setTypeface(expandedTypeface);
   }
 
   private void getTextPaintCollapsed(TextPaint textPaint) {
