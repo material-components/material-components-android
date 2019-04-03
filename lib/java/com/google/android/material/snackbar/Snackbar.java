@@ -58,7 +58,7 @@ import java.lang.annotation.RetentionPolicy;
  * <p>To be notified when a snackbar has been shown or dismissed, you can provide a {@link Callback}
  * via {@link BaseTransientBottomBar#addCallback(BaseCallback)}.
  */
-public final class Snackbar extends BaseTransientBottomBar<Snackbar> {
+public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
   private final AccessibilityManager accessibilityManager;
   private boolean hasAction;
