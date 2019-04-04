@@ -144,10 +144,10 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   @Override
-  public void onActivityCreated(@Nullable Bundle bundle) {
-    super.onActivityCreated(bundle);
+  public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
+    super.onViewCreated(view, bundle);
     FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-    fragmentTransaction.add(R.id.calendar_frame, materialCalendar);
+    fragmentTransaction.replace(R.id.calendar_frame, materialCalendar);
     fragmentTransaction.commit();
   }
 
