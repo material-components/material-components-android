@@ -44,11 +44,13 @@ public abstract class MaterialCalendar<S> extends Fragment {
 
   private MonthInYear monthInYear;
   private MonthInYearAdapter monthInYearAdapter;
+  private GridSelector<S> gridSelector;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     Calendar calendar = Calendar.getInstance();
+    gridSelector = createGridSelector();
     monthInYear = MonthInYear.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
     monthInYearAdapter = new MonthInYearAdapter(getContext(), monthInYear);
   }
@@ -72,8 +74,16 @@ public abstract class MaterialCalendar<S> extends Fragment {
 
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            getOnItemClickListener().onItemClick(parent, view, position, id);
-            drawSelection(parent);
+            // The onItemClick interface forces use of a wildcard AdapterView, but
+            // GridSelector#onItemClick needs a MonthInYearAdapter.
+            // The cast is verified by the instanceof on the Adapter backing the AdapterView.
+            if (parent.getAdapter() instanceof MonthInYearAdapter) {
+              @SuppressWarnings("unchecked")
+              AdapterView<MonthInYearAdapter> calendarGrid =
+                  (AdapterView<MonthInYearAdapter>) parent;
+              gridSelector.onItemClick(calendarGrid, view, position, id);
+              gridSelector.drawSelection(calendarGrid);
+            }
             // Allows users of MaterialCalendar to set an OnClickListener
             if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
               root.callOnClick();
@@ -85,14 +95,9 @@ public abstract class MaterialCalendar<S> extends Fragment {
     return root;
   }
 
-  protected final MonthInYearAdapter getMonthInYearAdapter() {
-    return monthInYearAdapter;
+  protected abstract GridSelector<S> createGridSelector();
+
+  public final S getSelection() {
+    return gridSelector.getSelection();
   }
-
-  @Nullable
-  protected abstract S getSelection();
-
-  protected abstract void drawSelection(AdapterView<?> parent);
-
-  protected abstract OnItemClickListener getOnItemClickListener();
 }

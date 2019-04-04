@@ -22,7 +22,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import android.util.Pair;
+import androidx.core.util.Pair;
 import java.util.Calendar;
 
 /**

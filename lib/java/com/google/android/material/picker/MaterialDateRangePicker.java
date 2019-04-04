@@ -15,16 +15,9 @@
  */
 package com.google.android.material.picker;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
-import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.core.view.ViewCompat;
-import android.util.Pair;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
+import androidx.core.util.Pair;
 import java.util.Calendar;
 
 /**
@@ -35,74 +28,8 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class MaterialDateRangePicker extends MaterialCalendar<Pair<Calendar, Calendar>> {
 
-  private static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
-  private static final ColorDrawable startColor = new ColorDrawable(Color.RED);
-  private static final ColorDrawable endColor = new ColorDrawable(Color.GREEN);
-  private static final ColorDrawable rangeColor = new ColorDrawable(Color.YELLOW);
-
-  private final OnItemClickListener onItemClickListener;
-  private int selectedStartPosition = -1;
-  private int selectedEndPosition = -1;
-
-  public MaterialDateRangePicker() {
-    onItemClickListener =
-        new OnItemClickListener() {
-
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (!getMonthInYearAdapter().withinMonth(position)) {
-              return;
-            }
-            if (selectedStartPosition < 0) {
-              selectedStartPosition = position;
-            } else if (selectedEndPosition < 0 && position > selectedStartPosition) {
-              selectedEndPosition = position;
-            } else {
-              selectedEndPosition = -1;
-              selectedStartPosition = position;
-            }
-          }
-        };
-  }
-
   @Override
-  protected OnItemClickListener getOnItemClickListener() {
-    return onItemClickListener;
-  }
-
-  @Override
-  protected void drawSelection(AdapterView<?> parent) {
-    for (int i = 0; i < parent.getCount(); i++) {
-      ColorDrawable setColor = emptyColor;
-      if (i == selectedStartPosition) {
-        setColor = startColor;
-      } else if (i == selectedEndPosition) {
-        setColor = endColor;
-      } else if (i > selectedStartPosition && i < selectedEndPosition) {
-        setColor = rangeColor;
-      }
-      ViewCompat.setBackground(parent.getChildAt(i), setColor);
-    }
-  }
-
-  @Override
-  @Nullable
-  public Pair<Calendar, Calendar> getSelection() {
-    Calendar start = getStart();
-    Calendar end = getEnd();
-    if (start == null || end == null) {
-      return null;
-    }
-    return new Pair<>(getStart(), getEnd());
-  }
-
-  @Nullable
-  public Calendar getStart() {
-    return getMonthInYearAdapter().getItem(selectedStartPosition);
-  }
-
-  @Nullable
-  public Calendar getEnd() {
-    return getMonthInYearAdapter().getItem(selectedEndPosition);
+  protected GridSelector<Pair<Calendar, Calendar>> createGridSelector() {
+    return new DateRangeGridSelector();
   }
 }

@@ -15,14 +15,8 @@
  */
 package com.google.android.material.picker;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.core.view.ViewCompat;
-import android.view.View;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import java.util.Calendar;
 
 /**
@@ -33,41 +27,8 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class MaterialDatePicker extends MaterialCalendar<Calendar> {
 
-  private static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
-  private static final ColorDrawable selectedColor = new ColorDrawable(Color.RED);
-
-  private int selectedPosition = -1;
-  private final OnItemClickListener onItemClickListener;
-
-  public MaterialDatePicker() {
-    onItemClickListener =
-        new OnItemClickListener() {
-
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (!getMonthInYearAdapter().withinMonth(position)) {
-              return;
-            }
-            selectedPosition = position;
-          }
-        };
-  }
-
   @Override
-  protected OnItemClickListener getOnItemClickListener() {
-    return onItemClickListener;
-  }
-
-  @Override
-  protected void drawSelection(AdapterView<?> parent) {
-    for (int i = 0; i < parent.getCount(); i++) {
-      ViewCompat.setBackground(
-          parent.getChildAt(i), i == selectedPosition ? selectedColor : emptyColor);
-    }
-  }
-
-  @Override
-  public Calendar getSelection() {
-    return getMonthInYearAdapter().getItem(selectedPosition);
+  protected GridSelector<Calendar> createGridSelector() {
+    return new DateGridSelector();
   }
 }

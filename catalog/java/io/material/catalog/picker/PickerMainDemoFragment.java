@@ -30,6 +30,7 @@ import com.google.android.material.picker.MaterialStyledDatePickerDialog;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import io.material.catalog.feature.DemoFragment;
@@ -46,32 +47,35 @@ public class PickerMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(R.layout.picker_main_demo, viewGroup, false);
     LinearLayout dialogLaunchersLayout = view.findViewById(R.id.picker_launcher_buttons_layout);
 
-    addDialogLauncher(dialogLaunchersLayout, R.string.cat_picker_base, frameworkTodayDatePicker(0));
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.cat_picker_base,
+        buildOnClickListener(frameworkTodayDatePicker(0)));
 
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_date_material_styled,
-        materialStyledTodayDatePicker(0));
+        buildOnClickListener(materialStyledTodayDatePicker(0)));
 
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_styled_date_spinner,
-        materialStyledTodayDatePicker(getSpinnerTheme()));
+        buildOnClickListener(materialStyledTodayDatePicker(getSpinnerTheme())));
 
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_styled_date_calendar,
-        materialStyledTodayDatePicker(getCalendarTheme()));
+        buildOnClickListener(materialStyledTodayDatePicker(getCalendarTheme())));
 
-    addDialogFragmentLauncher(
+    addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_date_calendar,
-        MaterialDatePickerDialogFragment.newInstance());
+        buildOnClickListener(MaterialDatePickerDialogFragment.newInstance()));
 
-    addDialogFragmentLauncher(
+    addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_date_range_calendar,
-        MaterialDateRangePickerDialogFragment.newInstance());
+        buildOnClickListener(MaterialDateRangePickerDialogFragment.newInstance()));
 
     return view;
   }
@@ -84,9 +88,18 @@ public class PickerMainDemoFragment extends DemoFragment {
     return R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Calendar;
   }
 
-  private void addDialogLauncher(ViewGroup viewGroup, @StringRes int stringResId, Dialog dialog) {
+  private OnClickListener buildOnClickListener(Dialog dialog) {
+    return v -> dialog.show();
+  }
+
+  private OnClickListener buildOnClickListener(DialogFragment dialogFragment) {
+    return v -> dialogFragment.show(getFragmentManager(), "Calendar Fragment");
+  }
+
+  private void addDialogLauncher(
+      ViewGroup viewGroup, @StringRes int stringResId, OnClickListener onClickListener) {
     MaterialButton dialogLauncherButton = new MaterialButton(viewGroup.getContext());
-    dialogLauncherButton.setOnClickListener(v -> dialog.show());
+    dialogLauncherButton.setOnClickListener(onClickListener);
     dialogLauncherButton.setText(stringResId);
     viewGroup.addView(dialogLauncherButton);
   }
@@ -107,15 +120,5 @@ public class PickerMainDemoFragment extends DemoFragment {
     int month = calendar.get(Calendar.MONTH);
     int day = calendar.get(Calendar.DAY_OF_MONTH);
     return new MaterialStyledDatePickerDialog(getContext(), themeResId, null, year, month, day);
-  }
-
-  private void addDialogFragmentLauncher(
-      ViewGroup viewGroup, @StringRes int stringResId, DialogFragment dialogFragment) {
-    String text = getString(stringResId);
-    MaterialButton dialogLauncherButton = new MaterialButton(getContext());
-    dialogLauncherButton.setOnClickListener(
-        v -> dialogFragment.show(getFragmentManager(), text));
-    dialogLauncherButton.setText(text);
-    viewGroup.addView(dialogLauncherButton);
   }
 }
