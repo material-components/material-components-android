@@ -1051,7 +1051,7 @@ public class TextInputLayout extends LinearLayout {
 
     final int editTextGravity = this.editText.getGravity();
     collapsingTextHelper.setCollapsedTextGravity(
-        Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
+        Gravity.TOP | (Gravity.START & ~Gravity.VERTICAL_GRAVITY_MASK));
     collapsingTextHelper.setExpandedTextGravity(editTextGravity);
 
     // Add a TextWatcher so that we know when the text input has changed.
