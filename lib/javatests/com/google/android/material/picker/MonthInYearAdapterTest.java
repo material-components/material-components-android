@@ -58,13 +58,15 @@ public class MonthInYearAdapterTest {
 
   private void setupLocalizedCalendars(Locale locale) {
     Locale.setDefault(locale);
-    monthInYearFeb2016 =
-        new MonthInYearAdapter(context, MonthInYear.create(2016, Calendar.FEBRUARY));
-    monthInYearJul2018 = new MonthInYearAdapter(context, MonthInYear.create(2018, Calendar.JULY));
-    monthInYearFeb2019 =
-        new MonthInYearAdapter(context, MonthInYear.create(2019, Calendar.FEBRUARY));
-    monthInYearMarch2019 =
-        new MonthInYearAdapter(context, MonthInYear.create(2019, Calendar.MARCH));
+    DateGridSelector dateGridSelector = new DateGridSelector();
+    MonthInYear feb2016 = MonthInYear.create(2016, Calendar.FEBRUARY);
+    monthInYearFeb2016 = new MonthInYearAdapter(context, feb2016, dateGridSelector);
+    MonthInYear july2018 = MonthInYear.create(2018, Calendar.JULY);
+    monthInYearJul2018 = new MonthInYearAdapter(context, july2018, dateGridSelector);
+    MonthInYear feb2019 = MonthInYear.create(2019, Calendar.FEBRUARY);
+    monthInYearFeb2019 = new MonthInYearAdapter(context, feb2019, dateGridSelector);
+    MonthInYear march2019 = MonthInYear.create(2019, Calendar.MARCH);
+    monthInYearMarch2019 = new MonthInYearAdapter(context, march2019, dateGridSelector);
   }
 
   @Test

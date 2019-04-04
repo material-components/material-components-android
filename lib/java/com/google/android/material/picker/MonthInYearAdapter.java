@@ -42,10 +42,12 @@ public class MonthInYearAdapter extends BaseAdapter {
 
   private final MonthInYear monthInYear;
   private final int textViewSize;
+  private final GridSelector<?> gridSelector;
 
-  MonthInYearAdapter(Context context, MonthInYear monthInYear) {
+  MonthInYearAdapter(Context context, MonthInYear monthInYear, GridSelector<?> gridSelector) {
     this.monthInYear = monthInYear;
     textViewSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
+    this.gridSelector = gridSelector;
   }
 
   /**
@@ -95,6 +97,10 @@ public class MonthInYearAdapter extends BaseAdapter {
     } else {
       day.setText(String.valueOf(offsetPosition + 1));
       day.setVisibility(View.VISIBLE);
+    }
+    Calendar item = getItem(position);
+    if (item != null) {
+      gridSelector.drawCell(day, item);
     }
     return day;
   }

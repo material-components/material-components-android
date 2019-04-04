@@ -52,7 +52,7 @@ public abstract class MaterialCalendar<S> extends Fragment {
     Calendar calendar = Calendar.getInstance();
     gridSelector = createGridSelector();
     monthInYear = MonthInYear.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
-    monthInYearAdapter = new MonthInYearAdapter(getContext(), monthInYear);
+    monthInYearAdapter = new MonthInYearAdapter(getContext(), monthInYear, gridSelector);
   }
 
   @Nullable

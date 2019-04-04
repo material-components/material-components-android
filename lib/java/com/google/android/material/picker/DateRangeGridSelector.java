@@ -20,6 +20,7 @@ import android.graphics.drawable.ColorDrawable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import android.view.View;
@@ -38,10 +39,14 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   private Calendar selectedStartItem = null;
   private Calendar selectedEndItem = null;
 
-  private static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
-  private static final ColorDrawable startColor = new ColorDrawable(Color.RED);
-  private static final ColorDrawable endColor = new ColorDrawable(Color.GREEN);
-  private static final ColorDrawable rangeColor = new ColorDrawable(Color.YELLOW);
+  @VisibleForTesting
+  static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
+  @VisibleForTesting
+  static final ColorDrawable startColor = new ColorDrawable(Color.RED);
+  @VisibleForTesting
+  static final ColorDrawable endColor = new ColorDrawable(Color.GREEN);
+  @VisibleForTesting
+  static final ColorDrawable rangeColor = new ColorDrawable(Color.YELLOW);
 
   @Override
   public void onItemClick(
@@ -68,19 +73,23 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
     for (int i = 0; i < parent.getCount(); i++) {
       Calendar item = adapter.getItem(i);
       View cell = parent.getChildAt(i);
-      if (item == null || cell == null) {
-        continue;
+      if (item != null && cell != null) {
+        drawCell(cell, item);
       }
-      ColorDrawable setColor = emptyColor;
-      if (item.equals(selectedStartItem)) {
-        setColor = startColor;
-      } else if (item.equals(selectedEndItem)) {
-        setColor = endColor;
-      } else if (item.after(selectedStartItem) && item.before(selectedEndItem)) {
-        setColor = rangeColor;
-      }
-      ViewCompat.setBackground(cell, setColor);
     }
+  }
+
+  @Override
+  public void drawCell(View cell, Calendar item) {
+    ColorDrawable setColor = emptyColor;
+    if (item.equals(selectedStartItem)) {
+      setColor = startColor;
+    } else if (item.equals(selectedEndItem)) {
+      setColor = endColor;
+    } else if (item.after(selectedStartItem) && item.before(selectedEndItem)) {
+      setColor = rangeColor;
+    }
+    ViewCompat.setBackground(cell, setColor);
   }
 
   @Override

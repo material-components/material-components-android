@@ -20,6 +20,7 @@ import android.graphics.drawable.ColorDrawable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,8 +35,10 @@ import java.util.Calendar;
 public class DateGridSelector implements GridSelector<Calendar> {
 
   private Calendar selectedItem = null;
-  private static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
-  private static final ColorDrawable selectedColor = new ColorDrawable(Color.RED);
+  @VisibleForTesting
+  static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
+  @VisibleForTesting
+  static final ColorDrawable selectedColor = new ColorDrawable(Color.RED);
 
   @Override
   public void onItemClick(
@@ -54,11 +57,15 @@ public class DateGridSelector implements GridSelector<Calendar> {
     for (int i = 0; i < parent.getCount(); i++) {
       Calendar item = adapter.getItem(i);
       View cell = parent.getChildAt(i);
-      if (item == null || cell == null) {
-        continue;
+      if (item != null && cell != null) {
+        drawCell(cell, item);
       }
-      ViewCompat.setBackground(cell, item.equals(selectedItem) ? selectedColor : emptyColor);
     }
+  }
+
+  @Override
+  public void drawCell(View cell, Calendar item) {
+    ViewCompat.setBackground(cell, item.equals(selectedItem) ? selectedColor : emptyColor);
   }
 
   @Override

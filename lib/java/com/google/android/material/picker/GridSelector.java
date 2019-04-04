@@ -20,6 +20,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import android.view.View;
 import android.widget.AdapterView;
+import java.util.Calendar;
 
 /**
  * Interface for users of {@link MaterialCalendar<S>} to control how the Calendar displays and
@@ -56,4 +57,6 @@ public interface GridSelector<S> {
    */
   void onItemClick(
       AdapterView<? extends MonthInYearAdapter> parent, View view, int position, long row);
+
+  void drawCell(View cell, Calendar item);
 }
