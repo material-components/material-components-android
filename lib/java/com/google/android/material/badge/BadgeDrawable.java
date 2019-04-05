@@ -42,6 +42,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
+import androidx.annotation.StyleableRes;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -91,6 +92,34 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     return badge;
   }
 
+  /** Returns BadgeDrawable's default background color from the given attributes. */
+  @ColorInt
+  public static int getDefaultBackgroundColor(
+      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    TypedArray a =
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.Badge, defStyleAttr, defStyleRes);
+    return readColorFromAttributes(context, a, R.styleable.Badge_backgroundColor);
+  }
+
+  /** Returns BadgeDrawable's default text color from the given attributes. */
+  @ColorInt
+  public static int getDefaultTextColor(
+      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+    TypedArray a =
+        ThemeEnforcement.obtainStyledAttributes(
+            context, attrs, R.styleable.Badge, defStyleAttr, defStyleRes);
+    if (a.hasValue(R.styleable.Badge_badgeTextColor)) {
+      return readColorFromAttributes(context, a, R.styleable.Badge_badgeTextColor);
+    } else {
+      // If the badge text color attribute was not explicitly set, use the text color specified in
+      // the TextAppearance.
+      TextAppearance textAppearance =
+          new TextAppearance(context, R.style.TextAppearance_MaterialComponents_Badge);
+      return textAppearance.textColor.getDefaultColor();
+    }
+  }
+
   private void loadFromAttributes(
       AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
     TypedArray a =
@@ -109,19 +138,20 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       setNumber(a.getInt(R.styleable.Badge_number, 0));
     }
 
-    setBackgroundColor(
-        MaterialResources.getColorStateList(context, a, R.styleable.Badge_backgroundColor)
-            .getDefaultColor());
+    setBackgroundColor(readColorFromAttributes(context, a, R.styleable.Badge_backgroundColor));
 
     // Only set the badge text color if this attribute has explicitly been set, otherwise use the
     // text color specified in the TextAppearance.
     if (a.hasValue(R.styleable.Badge_badgeTextColor)) {
-      setBadgeTextColor(
-          MaterialResources.getColorStateList(context, a, R.styleable.Badge_badgeTextColor)
-              .getDefaultColor());
+      setBadgeTextColor(readColorFromAttributes(context, a, R.styleable.Badge_badgeTextColor));
     }
 
     a.recycle();
+  }
+
+  private static int readColorFromAttributes(
+      Context context, TypedArray a, @StyleableRes int index) {
+    return MaterialResources.getColorStateList(context, a, index).getDefaultColor();
   }
 
   private BadgeDrawable(@NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
