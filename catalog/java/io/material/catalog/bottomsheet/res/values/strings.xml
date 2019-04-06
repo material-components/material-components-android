@@ -34,6 +34,9 @@
   <string name="cat_bottomsheet_state_expanded" translatable="false">
     STATE_EXPANDED
   </string>
+  <string name="cat_bottomsheet_state_half_expanded" translatable="false">
+    STATE_HALF_EXPANDED\nhalfExpandedRatio = %.2f
+  </string>
   <string name="cat_bottomsheet_persistent">
     Persistent Bottomsheet
   </string>
