@@ -572,6 +572,10 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
         return;
       }
 
+      if (singleSelection) {
+        checkedId = isChecked ? button.getId() : View.NO_ID;
+      }
+
       dispatchOnButtonChecked(button.getId(), isChecked);
 
       updateCheckedStates(button.getId(), isChecked);
