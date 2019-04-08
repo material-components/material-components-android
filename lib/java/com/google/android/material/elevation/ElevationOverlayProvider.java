@@ -28,7 +28,8 @@ import androidx.core.graphics.ColorUtils;
 /** Utility for calculating elevation overlay alpha values and colors. */
 public class ElevationOverlayProvider {
 
-  private static final float ELEVATION_OVERLAY_MULTIPLIER = 4.5f;
+  private static final float FORMULA_MULTIPLIER = 4.5f;
+  private static final float FORMULA_OFFSET = 2f;
 
   private final boolean elevationOverlaysEnabled;
   private final int elevationOverlaysColor;
@@ -89,7 +90,8 @@ public class ElevationOverlayProvider {
       return 0;
     }
     float elevationDp = elevation / displayDensity;
-    float alphaFraction = ELEVATION_OVERLAY_MULTIPLIER * (float) Math.log1p(elevationDp) / 100;
+    float alphaFraction =
+        (FORMULA_MULTIPLIER * (float) Math.log1p(elevationDp) + FORMULA_OFFSET) / 100;
     return Math.min(alphaFraction, 1);
   }
 

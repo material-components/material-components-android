@@ -36,9 +36,9 @@ public class ElevationOverlayProviderTest {
 
   private static final float ELEVATION_ZERO = 0;
   private static final float ELEVATION_NON_ZERO = 4;
-  private static final String EXPECTED_ELEVATION_NON_ZERO_COLOR_WITH_OVERLAY = "ff121212";
-  private static final float EXPECTED_ELEVATION_NON_ZERO_ALPHA_FRACTION = 0.07f;
-  private static final int EXPECTED_ELEVATION_NON_ZERO_ALPHA = 18;
+  private static final String EXPECTED_ELEVATION_NON_ZERO_COLOR_WITH_OVERLAY = "ff181818";
+  private static final float EXPECTED_ELEVATION_NON_ZERO_ALPHA_FRACTION = 0.09f;
+  private static final int EXPECTED_ELEVATION_NON_ZERO_ALPHA = 24;
 
   private final Context context = ApplicationProvider.getApplicationContext();
 
