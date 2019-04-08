@@ -22,6 +22,7 @@
   <string name="cat_card_selection_mode">Selectable Cards</string>
   <string name="cat_card_selectable_item_title">Message</string>
   <string name="cat_card_states">Card States</string>
+  <string name="cat_card_list" translatable="false">Card List With Drag-and-Drop</string>
   <string name="cat_card_draggable_card_content">This is a draggable Card.</string>
   <string name="cat_card_states_card_content">This demo shows the different states on a card.</string>
   <string name="cat_card_state_hovered">Hovered</string>

@@ -19,7 +19,6 @@ package io.material.catalog.card;
 import io.material.catalog.R;
 
 import android.content.Intent;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import dagger.Provides;
 import dagger.android.ContributesAndroidInjector;
@@ -65,24 +64,27 @@ public class CardFragment extends DemoLandingFragment {
           }
         },
         new Demo(R.string.cat_card_draggable_card) {
-          @Nullable
           @Override
           public Fragment createFragment() {
             return new DraggableCardFragment();
           }
         },
         new Demo(R.string.cat_card_states) {
-          @Nullable
           @Override
           public Fragment createFragment() {
             return new CardStatesFragment();
           }
         },
         new Demo(R.string.cat_card_rich_media_demo) {
-          @Nullable
           @Override
           public Fragment createFragment() {
             return new CardRichMediaDemoFragment();
+          }
+        },
+        new Demo(R.string.cat_card_list) {
+          @Override
+          public Fragment createFragment() {
+            return new CardListDemoFragment();
           }
         });
   }

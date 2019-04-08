@@ -53,13 +53,13 @@ import androidx.cardview.widget.CardView;
  * the {@code strokeColor} attribute. Without a {@code strokeColor}, the card will not render a
  * stroked border, regardless of the {@code strokeWidth} value.
  *
- * <p>Cards implement {@link Checkable}, a default way to switch to {@code android:checked_state}
- * is not provided. Clients have to call {@link #setChecked(boolean)}. This shows the
- * {@link R.attr#checkedIcon app:checkedIcon} and changes the overlay color.
+ * <p>Cards implement {@link Checkable}, a default way to switch to {@code android:checked_state} is
+ * not provided. Clients have to call {@link #setChecked(boolean)}. This shows the {@link
+ * R.attr#checkedIcon app:checkedIcon} and changes the overlay color.
  *
- * <p>Cards also have a custom state meant to be used when a card is draggable
- * {@code app:dragged_state}. It's used by calling {@link #setDragged(boolean)}.
- * This changes the overlay color and elevates the card to convey motion.
+ * <p>Cards also have a custom state meant to be used when a card is draggable {@code
+ * app:dragged_state}. It's used by calling {@link #setDragged(boolean)}. This changes the overlay
+ * color and elevates the card to convey motion.
  *
  * <p><strong>Note:</strong> Avoid setting {@link View#setClipToOutline} to true. There is an
  * intermediate view to clip the content, setting this will have negative performance consequences.
@@ -72,9 +72,7 @@ import androidx.cardview.widget.CardView;
  */
 public class MaterialCardView extends CardView implements Checkable {
 
-  /**
-   * Interface definition for a callback to be invoked when the card checked state changes.
-   */
+  /** Interface definition for a callback to be invoked when the card checked state changes. */
   public interface OnCheckedChangeListener {
     /**
      * Called when the checked state of a compound button has changed.
@@ -184,9 +182,7 @@ public class MaterialCardView extends CardView implements Checkable {
     cardViewHelper.setStrokeColor(strokeColor);
   }
 
-  /**
-   * @deprecated use {@link #getStrokeColorStateList()}
-   */
+  /** @deprecated use {@link #getStrokeColorStateList()} */
   @ColorInt
   @Deprecated
   public int getStrokeColor() {
@@ -388,12 +384,14 @@ public class MaterialCardView extends CardView implements Checkable {
 
   /**
    * Call this when the Card is being dragged to apply the right color and elevation changes.
+   *
    * @param dragged whether the card is currently being dragged or at rest.
    */
   public void setDragged(boolean dragged) {
     if (this.dragged != dragged) {
       this.dragged = dragged;
       refreshDrawableState();
+      forceRippleRedrawIfNeeded();
       invalidate();
     }
   }
@@ -427,9 +425,7 @@ public class MaterialCardView extends CardView implements Checkable {
     if (isCheckable() && isEnabled()) {
       checked = !checked;
       refreshDrawableState();
-      if (VERSION.SDK_INT > VERSION_CODES.O) {
-        cardViewHelper.forceRippleRedraw();
-      }
+      forceRippleRedrawIfNeeded();
       if (onCheckedChangeListener != null) {
         onCheckedChangeListener.onCheckedChanged(this, checked);
       }
@@ -551,5 +547,11 @@ public class MaterialCardView extends CardView implements Checkable {
    */
   public void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
     cardViewHelper.setCheckedIconTint(checkedIconTint);
+  }
+
+  private void forceRippleRedrawIfNeeded() {
+    if (VERSION.SDK_INT > VERSION_CODES.O) {
+      cardViewHelper.forceRippleRedraw();
+    }
   }
 }
