@@ -206,6 +206,17 @@ public final class CollapsingTextHelper {
     return tmpPaint.measureText(text, 0, text.length());
   }
 
+  public float getExpandedTextHeight() {
+    getTextPaintExpanded(tmpPaint);
+    // Return expanded height measured from the baseline.
+    return -tmpPaint.ascent();
+  }
+
+  private void getTextPaintExpanded(TextPaint textPaint) {
+    textPaint.setTextSize(expandedTextSize);
+    textPaint.setTypeface(expandedTypeface);
+  }
+
   public float getCollapsedTextHeight() {
     getTextPaintCollapsed(tmpPaint);
     // Return collapsed height measured from the baseline.

@@ -66,8 +66,6 @@
     <item name="closeIconEndPadding">2dp</item>
     <item name="chipEndPadding">6dp</item>
 
-    <item name="chipCornerRadius">16dp</item>
-
     <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
     <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.Chip</item>
   </style>

@@ -26,13 +26,13 @@
       android:layout_weight="0"/>
 
   <FrameLayout
-      android:id="@+id/date_picker_calendar_view_frame"
+      android:id="@+id/calendar_frame"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="1"/>
 
   <include
-      layout="@layout/mtrl_date_picker_actions"
+      layout="@layout/mtrl_picker_actions"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="0"/>

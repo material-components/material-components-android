@@ -16,6 +16,7 @@
 -->
 <resources xmlns:tools="http://schemas.android.com/tools">
 
+  <!-- AppBarLayout styles -->
   <style name="Widget.Design.AppBarLayout" parent="android:Widget">
     <item name="android:background">?attr/colorPrimary</item>
     <item name="android:stateListAnimator" tools:ignore="NewApi">
@@ -25,6 +26,13 @@
     <item name="android:touchscreenBlocksFocus" tools:ignore="NewApi">true</item>
   </style>
 
+  <style name="Widget.MaterialComponents.AppBarLayout.Primary" parent="Widget.Design.AppBarLayout"/>
+
+  <style name="Widget.MaterialComponents.AppBarLayout.Surface" parent="Widget.Design.AppBarLayout">
+    <item name="android:background">?attr/colorSurface</item>
+  </style>
+
+  <!-- CollapsingToolbarLayout styles -->
   <style name="Widget.Design.CollapsingToolbar" parent="android:Widget">
     <item name="expandedTitleMargin">32dp</item>
     <item name="statusBarScrim">?attr/colorPrimaryDark</item>
@@ -34,6 +42,7 @@
     <item name="android:textColor">?android:attr/textColorPrimary</item>
   </style>
 
+  <!-- Toolbar styles -->
   <style name="Widget.MaterialComponents.Toolbar" parent="Widget.AppCompat.Toolbar">
     <item name="titleTextAppearance">?attr/textAppearanceHeadline6</item>
     <item name="titleTextColor">?android:attr/textColorPrimary</item>
@@ -76,6 +85,17 @@
     <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Toolbar.Surface</item>
   </style>
 
+  <style name="ThemeOverlay.MaterialComponents.Toolbar.Primary" parent="">
+    <item name="colorControlNormal">?attr/colorOnPrimary</item>
+    <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="">
+    <item name="colorControlNormal">?attr/colorOnSurfaceEmphasisMedium</item>
+    <item name="actionMenuTextColor">?attr/colorOnSurfaceEmphasisMedium</item>
+  </style>
+
+  <!-- ActionBar styles -->
   <style name="Widget.MaterialComponents.ActionBar.Solid" parent="Widget.AppCompat.ActionBar.Solid">
     <item name="titleTextStyle">?attr/textAppearanceHeadline6</item>
     <item name="subtitleTextStyle">?attr/textAppearanceSubtitle1</item>
@@ -100,16 +120,6 @@
   <style name="Widget.MaterialComponents.ActionBar.Surface" parent="Widget.AppCompat.Light.ActionBar.Solid">
     <item name="background">?attr/colorSurface</item>
     <item name="elevation">0dp</item>
-  </style>
-
-  <style name="ThemeOverlay.MaterialComponents.Toolbar.Primary" parent="">
-    <item name="colorControlNormal">?attr/colorOnPrimary</item>
-    <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
-  </style>
-
-  <style name="ThemeOverlay.MaterialComponents.Toolbar.Surface" parent="">
-    <item name="colorControlNormal">?attr/colorOnSurfaceEmphasisMedium</item>
-    <item name="actionMenuTextColor">?attr/colorOnSurfaceEmphasisMedium</item>
   </style>
 
   <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="">

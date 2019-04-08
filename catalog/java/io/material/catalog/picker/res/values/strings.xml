@@ -23,7 +23,7 @@
   <!-- Launches a window with the default date picker used if the client makes no setting changes. [CHAR LIMIT=60] -->
   <string name="cat_picker_base">Default Date Picker</string>
   <!-- Launches a window with a Material date picker used if the client just changes the class. [CHAR LIMIT=60] -->
-  <string name="cat_picker_date_material">Material Styled Date Picker with no themeResId</string>
+  <string name="cat_picker_date_material_styled">Material Styled Date Picker with no themeResId</string>
   <!-- Launches a window with a styled android spinner based date picker. [CHAR LIMIT=60] -->
   <string name="cat_picker_styled_date_spinner">Material Styled Date Picker Spinner</string>
   <!-- Launches a window with a styled android calendar (days of the week) based layout. [CHAR LIMIT=60] -->

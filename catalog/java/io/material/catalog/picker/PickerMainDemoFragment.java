@@ -24,12 +24,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.picker.MaterialDatePickerDialog;
-import com.google.android.material.picker.MaterialDateRangePickerDialog;
-import com.google.android.material.picker.MaterialPickerDialog;
+import com.google.android.material.picker.MaterialDatePickerDialogFragment;
+import com.google.android.material.picker.MaterialDateRangePickerDialogFragment;
 import com.google.android.material.picker.MaterialStyledDatePickerDialog;
+import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import io.material.catalog.feature.DemoFragment;
@@ -38,6 +39,8 @@ import java.util.Calendar;
 /** A fragment that displays the main Picker demos for the Catalog app. */
 public class PickerMainDemoFragment extends DemoFragment {
 
+  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
+  @SuppressWarnings("RestrictTo")
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
@@ -47,28 +50,32 @@ public class PickerMainDemoFragment extends DemoFragment {
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_base,
-        frameworkTodayDatePicker(0));
+        buildOnClickListener(frameworkTodayDatePicker(0)));
 
     addDialogLauncher(
-        dialogLaunchersLayout, R.string.cat_picker_date_material, materialStyledTodayDatePicker(0));
+        dialogLaunchersLayout,
+        R.string.cat_picker_date_material_styled,
+        buildOnClickListener(materialStyledTodayDatePicker(0)));
 
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_styled_date_spinner,
-        materialStyledTodayDatePicker(getSpinnerTheme()));
+        buildOnClickListener(materialStyledTodayDatePicker(getSpinnerTheme())));
 
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_styled_date_calendar,
-        materialStyledTodayDatePicker(getCalendarTheme()));
+        buildOnClickListener(materialStyledTodayDatePicker(getCalendarTheme())));
 
     addDialogLauncher(
-        dialogLaunchersLayout, R.string.cat_picker_date_calendar, materialTodayDatePicker());
+        dialogLaunchersLayout,
+        R.string.cat_picker_date_calendar,
+        buildOnClickListener(MaterialDatePickerDialogFragment.newInstance()));
 
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_date_range_calendar,
-        materialTodayDateRangePicker());
+        buildOnClickListener(MaterialDateRangePickerDialogFragment.newInstance()));
 
     return view;
   }
@@ -81,15 +88,23 @@ public class PickerMainDemoFragment extends DemoFragment {
     return R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Calendar;
   }
 
-  protected void addDialogLauncher(
-      ViewGroup viewGroup, @StringRes int stringResId, Dialog dialog) {
+  private OnClickListener buildOnClickListener(Dialog dialog) {
+    return v -> dialog.show();
+  }
+
+  private OnClickListener buildOnClickListener(DialogFragment dialogFragment) {
+    return v -> dialogFragment.show(getFragmentManager(), "Calendar Fragment");
+  }
+
+  private void addDialogLauncher(
+      ViewGroup viewGroup, @StringRes int stringResId, OnClickListener onClickListener) {
     MaterialButton dialogLauncherButton = new MaterialButton(viewGroup.getContext());
-    dialogLauncherButton.setOnClickListener(v -> dialog.show());
+    dialogLauncherButton.setOnClickListener(onClickListener);
     dialogLauncherButton.setText(stringResId);
     viewGroup.addView(dialogLauncherButton);
   }
 
-  protected DatePickerDialog frameworkTodayDatePicker(@StyleRes int themeResId) {
+  private DatePickerDialog frameworkTodayDatePicker(@StyleRes int themeResId) {
     Calendar calendar = Calendar.getInstance();
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
@@ -99,24 +114,11 @@ public class PickerMainDemoFragment extends DemoFragment {
 
   // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
   @SuppressWarnings("RestrictTo")
-  protected DatePickerDialog materialStyledTodayDatePicker(@StyleRes int themeResId) {
+  private DatePickerDialog materialStyledTodayDatePicker(@StyleRes int themeResId) {
     Calendar calendar = Calendar.getInstance();
     int year = calendar.get(Calendar.YEAR);
     int month = calendar.get(Calendar.MONTH);
     int day = calendar.get(Calendar.DAY_OF_MONTH);
     return new MaterialStyledDatePickerDialog(getContext(), themeResId, null, year, month, day);
   }
-
-  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
-  @SuppressWarnings("RestrictTo")
-  protected MaterialPickerDialog<?> materialTodayDatePicker() {
-    return new MaterialDatePickerDialog(getContext());
-  }
-
-  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
-  @SuppressWarnings("RestrictTo")
-  protected MaterialPickerDialog<?> materialTodayDateRangePicker() {
-    return new MaterialDateRangePickerDialog(getContext());
-  }
-
 }

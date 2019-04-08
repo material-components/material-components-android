@@ -125,10 +125,10 @@ the `android:padding` attributes on the `TextInputEditText`.
 
 ##### Corner Radius
 
-* `boxCornerRadiusTopLeft`
-* `boxCornerRadiusTopRight`
-* `boxCornerRadiusBottomLeft`
-* `boxCornerRadiusBottomRight`
+* `boxCornerRadiusTopStart`
+* `boxCornerRadiusTopEnd`
+* `boxCornerRadiusBottomStart`
+* `boxCornerRadiusBottomEnd`
 
 ## Common features
 

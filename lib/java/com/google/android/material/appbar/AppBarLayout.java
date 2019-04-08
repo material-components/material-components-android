@@ -21,11 +21,15 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.app.Activity;
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.graphics.Rect;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.IdRes;
@@ -38,6 +42,7 @@ import androidx.annotation.VisibleForTesting;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.math.MathUtils;
 import androidx.core.util.ObjectsCompat;
@@ -169,6 +174,7 @@ public class AppBarLayout extends LinearLayout {
   private boolean liftOnScroll;
   @IdRes private int liftOnScrollTargetViewId;
   @Nullable private WeakReference<View> liftOnScrollTargetView;
+  @Nullable private ValueAnimator elevationOverlayAnimator;
 
   private int[] tmpStatesArray;
 
@@ -177,7 +183,7 @@ public class AppBarLayout extends LinearLayout {
   }
 
   public AppBarLayout(Context context, AttributeSet attrs) {
-    this(context, attrs, 0);
+    this(context, attrs, R.attr.appBarLayoutStyle);
   }
 
   public AppBarLayout(Context context, AttributeSet attrs, int defStyleAttr) {
@@ -202,17 +208,29 @@ public class AppBarLayout extends LinearLayout {
             R.styleable.AppBarLayout,
             defStyleAttr,
             R.style.Widget_Design_AppBarLayout);
+
     ViewCompat.setBackground(this, a.getDrawable(R.styleable.AppBarLayout_android_background));
+
+    if (getBackground() instanceof ColorDrawable) {
+      ColorDrawable background = (ColorDrawable) getBackground();
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+      materialShapeDrawable.setFillColor(ColorStateList.valueOf(background.getColor()));
+      materialShapeDrawable.initializeElevationOverlay(context);
+      ViewCompat.setBackground(this, materialShapeDrawable);
+    }
+
     if (a.hasValue(R.styleable.AppBarLayout_expanded)) {
       setExpanded(
           a.getBoolean(R.styleable.AppBarLayout_expanded, false),
           false, /* animate */
           false /* force */);
     }
+
     if (Build.VERSION.SDK_INT >= 21 && a.hasValue(R.styleable.AppBarLayout_elevation)) {
       ViewUtilsLollipop.setDefaultAppBarLayoutStateListAnimator(
           this, a.getDimensionPixelSize(R.styleable.AppBarLayout_elevation, 0));
     }
+
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
       // In O+, we have these values set in the style. Since there is no defStyleAttr for
       // AppBarLayout at the AppCompat level, check for these attributes here.
@@ -225,9 +243,11 @@ public class AppBarLayout extends LinearLayout {
             a.getBoolean(R.styleable.AppBarLayout_android_touchscreenBlocksFocus, false));
       }
     }
+
     liftOnScroll = a.getBoolean(R.styleable.AppBarLayout_liftOnScroll, false);
     liftOnScrollTargetViewId =
         a.getResourceId(R.styleable.AppBarLayout_liftOnScrollTargetViewId, View.NO_ID);
+
     a.recycle();
 
     ViewCompat.setOnApplyWindowInsetsListener(
@@ -365,6 +385,15 @@ public class AppBarLayout extends LinearLayout {
           "AppBarLayout is always vertical and does not support horizontal orientation");
     }
     super.setOrientation(orientation);
+  }
+
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
+  @Override
+  public void setElevation(float elevation) {
+    super.setElevation(elevation);
+    if (getBackground() instanceof MaterialShapeDrawable) {
+      ((MaterialShapeDrawable) getBackground()).setElevation(elevation);
+    }
   }
 
   /**
@@ -660,9 +689,36 @@ public class AppBarLayout extends LinearLayout {
     if (this.lifted != lifted) {
       this.lifted = lifted;
       refreshDrawableState();
+      if (liftOnScroll && getBackground() instanceof MaterialShapeDrawable) {
+        startLiftOnScrollElevationOverlayAnimation((MaterialShapeDrawable) getBackground(), lifted);
+      }
       return true;
     }
     return false;
+  }
+
+  private void startLiftOnScrollElevationOverlayAnimation(
+      final MaterialShapeDrawable background, boolean lifted) {
+    float appBarElevation = getResources().getDimension(R.dimen.design_appbar_elevation);
+    float fromElevation = lifted ? 0 : appBarElevation;
+    float toElevation = lifted ? appBarElevation : 0;
+
+    if (elevationOverlayAnimator != null) {
+      elevationOverlayAnimator.cancel();
+    }
+
+    elevationOverlayAnimator = ValueAnimator.ofFloat(fromElevation, toElevation);
+    elevationOverlayAnimator.setDuration(
+        getResources().getInteger(R.integer.app_bar_elevation_anim_duration));
+    elevationOverlayAnimator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
+    elevationOverlayAnimator.addUpdateListener(
+        new AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            background.setElevation((float) valueAnimator.getAnimatedValue());
+          }
+        });
+    elevationOverlayAnimator.start();
   }
 
   /**

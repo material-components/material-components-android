@@ -36,6 +36,7 @@
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.ActionBar.Solid</item>
     <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow.Dark</item>
+    <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Primary</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
@@ -86,6 +87,7 @@
     <!-- Widget styles -->
     <item name="actionBarStyle">@style/Widget.MaterialComponents.Light.ActionBar.Solid</item>
     <item name="actionOverflowMenuStyle">@style/Widget.MaterialComponents.PopupMenu.Overflow</item>
+    <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Primary</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
     <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>

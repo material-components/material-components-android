@@ -15,14 +15,11 @@
  */
 package com.google.android.material.picker;
 
-import com.google.android.material.R;
-
 import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.resources.MaterialAttributes;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -45,17 +42,12 @@ public class MonthInYearAdapter extends BaseAdapter {
 
   private final MonthInYear monthInYear;
   private final int textViewSize;
+  private final GridSelector<?> gridSelector;
 
-  MonthInYearAdapter(Context context, MonthInYear monthInYear) {
+  MonthInYearAdapter(Context context, MonthInYear monthInYear, GridSelector<?> gridSelector) {
     this.monthInYear = monthInYear;
-    TypedValue minTouchTargetSizeValue =
-        MaterialAttributes.resolveAttribute(context, R.attr.minTouchTargetSize);
-    if (minTouchTargetSizeValue == null) {
-      textViewSize = (int) context.getResources().getDimension(R.dimen.mtrl_min_touch_target_size);
-    } else {
-      textViewSize =
-          (int) minTouchTargetSizeValue.getDimension(context.getResources().getDisplayMetrics());
-    }
+    textViewSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
+    this.gridSelector = gridSelector;
   }
 
   /**
@@ -105,6 +97,10 @@ public class MonthInYearAdapter extends BaseAdapter {
     } else {
       day.setText(String.valueOf(offsetPosition + 1));
       day.setVisibility(View.VISIBLE);
+    }
+    Calendar item = getItem(position);
+    if (item != null) {
+      gridSelector.drawCell(day, item);
     }
     return day;
   }

@@ -19,42 +19,47 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.os.Bundle;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import android.util.Pair;
+import androidx.core.util.Pair;
 import java.util.Calendar;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialDateRangePickerView}, and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialDateRangePicker}, and set of actions.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class MaterialDateRangePickerDialog extends MaterialPickerDialog<Pair<Calendar, Calendar>> {
+public class MaterialDateRangePickerDialogFragment
+    extends MaterialPickerDialogFragment<Pair<Calendar, Calendar>> {
 
-  private final MaterialDateRangePickerView materialDateRangePicker;
-
-  public MaterialDateRangePickerDialog(Context context) {
-    this(context, 0);
+  public static MaterialDateRangePickerDialogFragment newInstance() {
+    return newInstance(0);
   }
 
-  public MaterialDateRangePickerDialog(Context context, int themeResId) {
-    super(
-        context, getThemeResource(context, R.attr.materialDateRangePickerDialogTheme, themeResId));
-    // Ensure we are using the correctly themed context rather than the context that was passed in.
-    context = getContext();
-    materialDateRangePicker = new MaterialDateRangePickerView(context);
+  public static MaterialDateRangePickerDialogFragment newInstance(int themeResId) {
+    MaterialDateRangePickerDialogFragment materialDateRangePickerDialogFragment =
+        new MaterialDateRangePickerDialogFragment();
+    Bundle args = new Bundle();
+    addThemeToBundle(args, themeResId);
+    materialDateRangePickerDialogFragment.setArguments(args);
+    return materialDateRangePickerDialogFragment;
   }
 
   @Override
-  protected MaterialCalendarView<Pair<Calendar, Calendar>> getMaterialCalendarView() {
-    return materialDateRangePicker;
+  protected int getDefaultThemeAttr() {
+    return R.attr.materialDateRangePickerDialogTheme;
+  }
+
+  @Override
+  protected MaterialCalendar<Pair<Calendar, Calendar>> createMaterialCalendar() {
+    return new MaterialDateRangePicker();
   }
 
   @Override
   protected String getHeaderText() {
-    Pair<Calendar, Calendar> startAndEnd = materialDateRangePicker.getSelection();
+    Pair<Calendar, Calendar> startAndEnd = getMaterialCalendar().getSelection();
     if (startAndEnd == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_range_header_prompt);
     }

@@ -14,11 +14,9 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
+<resources>
 
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/date_picker_calendar_days_header"
-    android:textAppearance="?attr/textAppearanceSubtitle1"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:columnWidth="?attr/minTouchTargetSize"
-    android:gravity="center"/>
+  <style name="Theme.MaterialComponents.Light.LargeTouch">
+    <item name="minTouchTargetSize">@dimen/mtrl_large_touch_target</item>
+  </style>
+</resources>

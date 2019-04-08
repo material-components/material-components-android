@@ -15,11 +15,14 @@
  */
 package com.google.android.material.resources;
 
+import com.google.android.material.R;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import androidx.annotation.AttrRes;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import android.util.TypedValue;
 import android.view.View;
@@ -93,5 +96,17 @@ public class MaterialAttributes {
       return typedValue;
     }
     return null;
+  }
+
+  /** Returns the minimum touch target size, acceptable for accessibility, in pixels. */
+  @Px
+  public static int resolveMinimumAccessibleTouchTarget(Context context) {
+    TypedValue minTouchTargetSizeValue =
+        MaterialAttributes.resolveAttribute(context, R.attr.minTouchTargetSize);
+    if (minTouchTargetSizeValue == null) {
+      return (int) context.getResources().getDimension(R.dimen.mtrl_min_touch_target_size);
+    } else {
+      return (int) minTouchTargetSizeValue.getDimension(context.getResources().getDisplayMetrics());
+    }
   }
 }

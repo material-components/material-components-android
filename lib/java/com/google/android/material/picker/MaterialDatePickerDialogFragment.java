@@ -19,40 +19,45 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import android.app.Dialog;
-import android.content.Context;
+import android.os.Bundle;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import java.util.Calendar;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialDatePickerView}, and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialDatePicker}, and set of actions.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class MaterialDatePickerDialog extends MaterialPickerDialog<Calendar> {
+public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragment<Calendar> {
 
-  private final MaterialDatePickerView materialDatePicker;
-
-  public MaterialDatePickerDialog(Context context) {
-    this(context, 0);
+  public static MaterialDatePickerDialogFragment newInstance() {
+    return newInstance(0);
   }
 
-  public MaterialDatePickerDialog(Context context, int themeResId) {
-    super(context, getThemeResource(context, R.attr.materialDatePickerDialogTheme, themeResId));
-    // Ensure we are using the correctly themed context rather than the context that was passed in.
-    context = getContext();
-    materialDatePicker = new MaterialDatePickerView(context);
+  public static MaterialDatePickerDialogFragment newInstance(int themeResId) {
+    MaterialDatePickerDialogFragment materialDatePickerDialogFragment =
+        new MaterialDatePickerDialogFragment();
+    Bundle args = new Bundle();
+    addThemeToBundle(args, themeResId);
+    materialDatePickerDialogFragment.setArguments(args);
+    return materialDatePickerDialogFragment;
   }
 
   @Override
-  protected MaterialCalendarView<Calendar> getMaterialCalendarView() {
-    return materialDatePicker;
+  protected int getDefaultThemeAttr() {
+    return R.attr.materialDatePickerDialogTheme;
+  }
+
+  @Override
+  protected MaterialCalendar<Calendar> createMaterialCalendar() {
+    return new MaterialDatePicker();
   }
 
   @Override
   protected String getHeaderText() {
-    Calendar selectedDate = materialDatePicker.getSelection();
+    Calendar selectedDate = getMaterialCalendar().getSelection();
     if (selectedDate == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_header_prompt);
     }

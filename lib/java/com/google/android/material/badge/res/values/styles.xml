@@ -14,7 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools" tools:ignore="NewApi">
 
   <style name="Widget.MaterialComponents.Badge" parent="android:Widget">
     <item name="backgroundColor">?attr/colorError</item>

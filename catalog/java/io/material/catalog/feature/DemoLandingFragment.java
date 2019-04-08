@@ -49,7 +49,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
 
   private static final String FRAGMENT_DEMO_CONTENT = "fragment_demo_content";
   @ColorInt private int colorControlNormal;
-  @ColorInt private int colorSecondary;
+  @ColorInt private int colorAccent;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
@@ -76,9 +76,9 @@ public abstract class DemoLandingFragment extends DaggerFragment {
         toolbar
             .getContext()
             .getTheme()
-            .obtainStyledAttributes(new int[] {R.attr.colorControlNormal, R.attr.colorSecondary});
+            .obtainStyledAttributes(new int[] {R.attr.colorControlNormal, R.attr.colorAccent});
     colorControlNormal = a.getColor(0, 0);
-    colorSecondary = a.getColor(1, 0);
+    colorAccent = a.getColor(1, 0);
 
     TextView descriptionTextView = view.findViewById(R.id.cat_demo_landing_description);
     ViewGroup mainDemoContainer = view.findViewById(R.id.cat_demo_landing_main_demo_container);
@@ -193,7 +193,7 @@ public abstract class DemoLandingFragment extends DaggerFragment {
     boolean isChecked = FeatureDemoUtils.getDefaultDemo(getContext()).equals(getClass().getName());
     item.setChecked(isChecked);
     MenuItemCompat.setIconTintList(
-        item, ColorStateList.valueOf(isChecked ? colorSecondary : colorControlNormal));
+        item, ColorStateList.valueOf(isChecked ? colorAccent : colorControlNormal));
   }
 
   @Override

@@ -18,9 +18,15 @@ package com.google.android.material.chip;
 import com.google.android.material.R;
 
 
+import static com.google.android.material.internal.ViewUtils.dpToPx;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
+import static org.junit.Assert.assertTrue;
+
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
+import android.view.View.MeasureSpec;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
 import org.junit.Rule;
@@ -39,6 +45,9 @@ public class ChipTest {
   @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private static final int CHIP_LINES = 2;
+  private static final double DELTA = 0.01;
+  private static final int MIN_SIZE_FOR_ALLY_DP = 48;
+
   private Chip chip;
 
   @Before
@@ -120,5 +129,49 @@ public class ChipTest {
   public void testSetMaxLinesMultiple_throwsException() {
     thrown.expect(UnsupportedOperationException.class);
     chip.setMaxLines(CHIP_LINES);
+  }
+
+  @Test
+  public void ensureMinTouchTarget_is48dp() {
+    setupAndMeasureChip(true);
+
+    assertEquals(
+        "Chip width: " + chip.getMeasuredWidth(),
+        getMinTouchTargetSize(),
+        chip.getMeasuredWidth(),
+        DELTA);
+
+    assertEquals(
+        "Chip height: " + chip.getMeasuredHeight(),
+        getMinTouchTargetSize(),
+        chip.getMeasuredHeight(),
+        DELTA);
+  }
+
+  @Test
+  public void ensureMinTouchTargetFalse_isLessThan48dp() {
+
+    setupAndMeasureChip(false);
+
+    assertNotEquals(chip.getMeasuredWidth(), getMinTouchTargetSize(), DELTA);
+
+    assertTrue(
+        "Chip width: " + chip.getMeasuredWidth(),
+        chip.getMeasuredWidth() < getMinTouchTargetSize());
+
+    assertTrue(
+        "Chip height: " + chip.getMeasuredHeight(),
+        chip.getMeasuredHeight() < getMinTouchTargetSize());
+  }
+
+  private static float getMinTouchTargetSize() {
+    return dpToPx(ApplicationProvider.getApplicationContext(), MIN_SIZE_FOR_ALLY_DP);
+  }
+
+  private void setupAndMeasureChip(boolean shouldEnsureMinTouchTargeSize) {
+    chip.setEnsureMinTouchTargetSize(shouldEnsureMinTouchTargeSize);
+    int measureSpec =
+        MeasureSpec.makeMeasureSpec((int) (getMinTouchTargetSize() * 2), MeasureSpec.AT_MOST);
+    chip.measure(measureSpec, measureSpec);
   }
 }
