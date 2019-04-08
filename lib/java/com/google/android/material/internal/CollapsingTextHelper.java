@@ -16,8 +16,6 @@
 
 package com.google.android.material.internal;
 
-import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-
 import android.animation.TimeInterpolator;
 import android.content.res.ColorStateList;
 import android.graphics.Bitmap;
@@ -28,21 +26,25 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.Typeface;
 import android.os.Build;
-import androidx.annotation.ColorInt;
-import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.resources.CancelableFontCallback;
-import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
-import com.google.android.material.resources.TextAppearance;
-import androidx.core.math.MathUtils;
-import androidx.core.text.TextDirectionHeuristicsCompat;
-import androidx.core.view.GravityCompat;
-import androidx.core.view.ViewCompat;
 import android.text.TextPaint;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
+
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.resources.CancelableFontCallback;
+import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
+import com.google.android.material.resources.TextAppearance;
+
+import androidx.annotation.ColorInt;
+import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
+import androidx.core.math.MathUtils;
+import androidx.core.text.TextDirectionHeuristicsCompat;
+import androidx.core.view.GravityCompat;
+import androidx.core.view.ViewCompat;
+
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 /** Helper class for rendering and animating collapsed text. */
 @RestrictTo(LIBRARY_GROUP)
@@ -210,14 +212,34 @@ public final class CollapsingTextHelper {
     return -tmpPaint.ascent();
   }
 
-  public void getCollapsedTextActualBounds(RectF bounds) {
-    boolean isRtl = calculateIsRtl(text);
-
-    bounds.left =
-        !isRtl ? collapsedBounds.left : collapsedBounds.right - calculateCollapsedTextWidth();
+  public void getCollapsedTextActualBounds(RectF bounds, int labelWidth, int textGravity) {
+    isRtl = calculateIsRtl(text);
+    bounds.left = getCollapsedTextLeftBound(labelWidth, textGravity);
     bounds.top = collapsedBounds.top;
-    bounds.right = !isRtl ? bounds.left + calculateCollapsedTextWidth() : collapsedBounds.right;
+    bounds.right = getCollapsedTextRightBound(bounds, labelWidth, textGravity);
     bounds.bottom = collapsedBounds.top + getCollapsedTextHeight();
+  }
+
+  private float getCollapsedTextLeftBound(int width, int gravity) {
+    if ((gravity & Gravity.START) == Gravity.START || (gravity & Gravity.LEFT) == Gravity.LEFT) {
+      return !isRtl ? collapsedBounds.left : collapsedBounds.right - calculateCollapsedTextWidth();
+    } else if ((gravity & Gravity.END) == Gravity.END|| (gravity & Gravity.RIGHT) == Gravity.RIGHT) {
+      return isRtl ? collapsedBounds.left : collapsedBounds.right - calculateCollapsedTextWidth();
+    } else if ((gravity & Gravity.CENTER) == Gravity.CENTER) {
+      return width / 2f - calculateCollapsedTextWidth() / 2;
+    }
+    return !isRtl ? collapsedBounds.left : collapsedBounds.right - calculateCollapsedTextWidth();
+  }
+
+  private float getCollapsedTextRightBound(RectF bounds, int width, int gravity) {
+    if ((gravity & Gravity.START) == Gravity.START|| (gravity & Gravity.LEFT) == Gravity.LEFT) {
+      return !isRtl ? bounds.left + calculateCollapsedTextWidth() : collapsedBounds.right;
+    } else if ((gravity & Gravity.END) == Gravity.END|| (gravity & Gravity.RIGHT) == Gravity.RIGHT) {
+      return isRtl ? bounds.left + calculateCollapsedTextWidth() : collapsedBounds.right;
+    } else if ((gravity & Gravity.CENTER) == Gravity.CENTER) {
+      return width / 2f + calculateCollapsedTextWidth() / 2;
+    }
+    return !isRtl ? bounds.left + calculateCollapsedTextWidth() : collapsedBounds.right;
   }
 
   private void getTextPaintCollapsed(TextPaint textPaint) {

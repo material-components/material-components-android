@@ -1051,7 +1051,7 @@ public class TextInputLayout extends LinearLayout {
 
     final int editTextGravity = this.editText.getGravity();
     collapsingTextHelper.setCollapsedTextGravity(
-        Gravity.TOP | (Gravity.START & ~Gravity.VERTICAL_GRAVITY_MASK));
+        Gravity.TOP | (editTextGravity & ~Gravity.VERTICAL_GRAVITY_MASK));
     collapsingTextHelper.setExpandedTextGravity(editTextGravity);
 
     // Add a TextWatcher so that we know when the text input has changed.
@@ -2883,7 +2883,7 @@ public class TextInputLayout extends LinearLayout {
       return;
     }
     final RectF cutoutBounds = tmpRectF;
-    collapsingTextHelper.getCollapsedTextActualBounds(cutoutBounds);
+    collapsingTextHelper.getCollapsedTextActualBounds(cutoutBounds, editText.getWidth(), editText.getGravity());
     applyCutoutPadding(cutoutBounds);
     // Offset the cutout bounds by the TextInputLayout's left padding to ensure that the cutout is
     // inset relative to the TextInputLayout's bounds.
