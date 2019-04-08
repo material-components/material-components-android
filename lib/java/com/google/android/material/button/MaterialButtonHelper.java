@@ -30,6 +30,7 @@ import android.graphics.drawable.LayerDrawable;
 import android.graphics.drawable.RippleDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.color.MaterialColors;
@@ -47,7 +48,7 @@ class MaterialButtonHelper {
 
   private static final boolean IS_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
   private final MaterialButton materialButton;
-  private ShapeAppearanceModel shapeAppearanceModel;
+  @NonNull private ShapeAppearanceModel shapeAppearanceModel;
 
   private int insetLeft;
   private int insetRight;
@@ -68,7 +69,7 @@ class MaterialButtonHelper {
   private boolean checkable;
   private LayerDrawable rippleDrawable;
 
-  MaterialButtonHelper(MaterialButton button, ShapeAppearanceModel shapeAppearanceModel) {
+  MaterialButtonHelper(MaterialButton button, @NonNull ShapeAppearanceModel shapeAppearanceModel) {
     materialButton = button;
     this.shapeAppearanceModel = shapeAppearanceModel;
   }
@@ -410,11 +411,12 @@ class MaterialButtonHelper {
     return null;
   }
 
-  void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
+  void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
     updateButtonShape(shapeAppearanceModel);
   }
 
+  @NonNull
   ShapeAppearanceModel getShapeAppearanceModel() {
     return this.shapeAppearanceModel;
   }

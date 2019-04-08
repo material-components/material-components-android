@@ -44,6 +44,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
@@ -94,7 +95,7 @@ import java.util.LinkedHashSet;
  * <p>Specify the radius of all four corners of the button using the {@link R.attr#cornerRadius
  * app:cornerRadius} attribute.
  */
-public class MaterialButton extends AppCompatButton implements Checkable {
+public class MaterialButton extends AppCompatButton implements Checkable, Shapeable {
 
   /** Interface definition for a callback to be invoked when the button checked state changes. */
   public interface OnCheckedChangeListener {
@@ -919,19 +920,35 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     }
   }
 
-  void setShapeAppearanceModel(@Nullable ShapeAppearanceModel shapeAppearanceModel) {
+  /** @throws IllegalStateException if the MaterialButton's background has been overwritten. */
+  @Override
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setShapeAppearanceModel(shapeAppearanceModel);
+    } else {
+      throw new IllegalStateException(
+          "Attempted to set ShapeAppearanceModel on a MaterialButton which has an overwritten"
+              + " background.");
     }
   }
 
-  @Nullable
-  ShapeAppearanceModel getShapeAppearanceModel() {
+  /**
+   * Returns the {@link ShapeAppearanceModel} used for this MaterialButton's shape definition.
+   *
+   * <p>This {@link ShapeAppearanceModel} can be modified to change the component's shape.
+   *
+   * @throws IllegalStateException if the MaterialButton's background has been overwritten.
+   */
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getShapeAppearanceModel() {
     if (isUsingOriginalBackground()) {
       return materialButtonHelper.getShapeAppearanceModel();
+    } else {
+      throw new IllegalStateException(
+          "Attempted to get ShapeAppearanceModel from a MaterialButton which has an overwritten"
+              + " background.");
     }
-
-    return null;
   }
 
   /**
