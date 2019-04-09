@@ -38,7 +38,7 @@ public final class BottomNavigationViewTest {
 
   @Before
   public void themeApplicationContext() {
-    context.setTheme(R.style.Theme_MaterialComponents_Light);
+    context.setTheme(R.style.Theme_AppCompat);
   }
 
   @Test

@@ -33,7 +33,6 @@ import android.text.TextUtils;
 import android.widget.TextView;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -51,11 +50,6 @@ public class BottomNavigationViewScrollTest extends BaseDynamicCoordinatorLayout
   protected static void performVerticalSwipeDownGesture(
       @IdRes int containerId, final int swipeX, final int swipeStartY, final int swipeAmountY) {
     onView(withId(containerId)).perform(swipeDown(swipeX, swipeStartY, swipeAmountY));
-  }
-
-  @Before
-  public void setUp() throws Exception {
-    activityTestRule.getActivity().setTheme(R.style.Theme_MaterialComponents_Light);
   }
 
   @CallSuper

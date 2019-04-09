@@ -28,7 +28,6 @@ dependencies {
 def srcDirs = [
   'com/google/android/material/animation',
   'com/google/android/material/appbar',
-  'com/google/android/material/badge',
   'com/google/android/material/behavior',
   'com/google/android/material/bottomappbar',
   'com/google/android/material/bottomnavigation',
