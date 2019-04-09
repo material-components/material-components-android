@@ -61,6 +61,7 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.GravityCompat;
+import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.core.widget.TextViewCompat;
@@ -1096,14 +1097,8 @@ public class TextInputLayout extends LinearLayout {
 
     indicatorViewController.adjustIndicatorPadding();
 
-    updateIconViewOnEditTextAttached(
-        startIconView,
-        R.dimen.mtrl_textinput_start_icon_padding_start,
-        R.dimen.mtrl_textinput_start_icon_padding_end);
-    updateIconViewOnEditTextAttached(
-        endIconView,
-        R.dimen.mtrl_textinput_end_icon_padding_start,
-        R.dimen.mtrl_textinput_end_icon_padding_end);
+    updateIconViewOnEditTextAttached(startIconView);
+    updateIconViewOnEditTextAttached(endIconView);
     dispatchOnEditTextAttached();
 
     // Update the label visibility with no animation, but force a state change
@@ -2744,8 +2739,12 @@ public class TextInputLayout extends LinearLayout {
     // Update start icon drawable if needed.
     if (hasStartIcon() && isStartIconVisible()) {
       startIconDummyDrawable = new ColorDrawable();
-      startIconDummyDrawable.setBounds(
-          0, 0, startIconView.getMeasuredWidth() - startIconView.getPaddingRight(), 1);
+      int right =
+          startIconView.getMeasuredWidth()
+              - editText.getPaddingLeft()
+              + MarginLayoutParamsCompat.getMarginEnd(
+                  ((MarginLayoutParams) startIconView.getLayoutParams()));
+      startIconDummyDrawable.setBounds(0, 0, right, 1);
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
       TextViewCompat.setCompoundDrawablesRelative(
           editText, startIconDummyDrawable, compounds[1], compounds[2], compounds[3]);
@@ -2761,8 +2760,12 @@ public class TextInputLayout extends LinearLayout {
     if (hasEndIcon() && isEndIconVisible()) {
       if (endIconDummyDrawable == null) {
         endIconDummyDrawable = new ColorDrawable();
-        endIconDummyDrawable.setBounds(
-            0, 0, endIconView.getMeasuredWidth() - endIconView.getPaddingLeft(), 1);
+        int right =
+            endIconView.getMeasuredWidth()
+                - editText.getPaddingRight()
+                + MarginLayoutParamsCompat.getMarginStart(
+                    ((MarginLayoutParams) endIconView.getLayoutParams()));
+        endIconDummyDrawable.setBounds(0, 0, right, 1);
       }
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
       // Store the user defined end compound drawable so that we can restore it later.
@@ -2811,14 +2814,9 @@ public class TextInputLayout extends LinearLayout {
     iconView.setClickable(onClickListener != null);
   }
 
-  private void updateIconViewOnEditTextAttached(
-      @NonNull View iconView, @DimenRes int paddingStartResId, @DimenRes int paddingEndResId) {
+  private void updateIconViewOnEditTextAttached(@NonNull View iconView) {
     ViewCompat.setPaddingRelative(
-        iconView,
-        getResources().getDimensionPixelSize(paddingStartResId),
-        getIconViewPaddingTop(iconView),
-        getResources().getDimensionPixelSize(paddingEndResId),
-        getIconViewPaddingBottom(iconView));
+        iconView, 0, getIconViewPaddingTop(iconView), 0, getIconViewPaddingBottom(iconView));
     iconView.bringToFront();
   }
 
