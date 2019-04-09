@@ -29,6 +29,7 @@
       android:layout_height="wrap_content"
       android:layout_gravity="bottom|center_horizontal"
       android:paddingBottom="10dp"
+      android:clipChildren="false"
       android:clipToPadding="false"
       android:duplicateParentState="true">
     <TextView

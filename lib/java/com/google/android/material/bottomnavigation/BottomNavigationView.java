@@ -29,6 +29,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
@@ -604,6 +605,118 @@ public class BottomNavigationView extends FrameLayout {
    */
   public boolean isItemHorizontalTranslationEnabled() {
     return menuView.isItemHorizontalTranslationEnabled();
+  }
+
+  /**
+   * Returns the background color of all child badges.
+   *
+   * @see #setBadgeBackgroundColor(int)
+   * @attr ref com.google.android.material.R.styleable#Badge_backgroundColor
+   */
+  @ColorInt
+  public int getBadgeBackgroundColor() {
+    return menuView.getBadgeBackgroundColor();
+  }
+
+  /**
+   * Sets the background color of all child badges.
+   *
+   * @param color This badge's background color.
+   * @attr ref com.google.android.material.R.styleable#Badge_backgroundColor
+   */
+  public void setBadgeBackgroundColor(@ColorInt int color) {
+    menuView.setBadgeBackgroundColor(color);
+  }
+
+  /**
+   * Returns the text color of all child badges.
+   *
+   * @see #setBadgeTextColor(int)
+   * @attr ref com.google.android.material.R.styleable#Badge_textColor
+   */
+  @ColorInt
+  public int getBadgeTextColor() {
+    return menuView.getBadgeBackgroundColor();
+  }
+
+  /**
+   * Sets the text color of all child badges.
+   *
+   * @param color This badge's background color.
+   * @attr ref com.google.android.material.R.styleable#Badge_textColor
+   */
+  public void setBadgeTextColor(@ColorInt int color) {
+    menuView.setBadgeTextColor(color);
+  }
+
+  /**
+   * Returns the visibility of the badge at {@code menuItemId}.
+   *
+   * @see #setBadgeVisible(boolean, int)
+   */
+  public boolean isBadgeVisible(int menuItemId) {
+    return menuView.isBadgeVisible(menuItemId);
+  }
+
+  /**
+   * Sets the visibility of the badge at {@code menuItemId}.
+   *
+   * @param visible Whether the badge is visible.
+   * @param menuItemId Id of the menu item.
+   */
+  public void setBadgeVisible(boolean visible, int menuItemId) {
+    menuView.setBadgeVisible(visible, menuItemId);
+  }
+
+  /**
+   * Returns the badge number at {@code menuItemId}.
+   *
+   * @see #showBadgeNumber(int, int)
+   */
+  public int getBadgeNumber(int menuItemId) {
+    return menuView.getBadgeNumber(menuItemId);
+  }
+
+  /**
+   * Sets the specified badge number at {@code menuItemId}. Only non-negative integer numbers are
+   * supported. If the number is negative, it will be clamped to 0. The specified value will be
+   * displayed, unless its number of digits exceeds {@code maxCharacterCount} in which case a
+   * truncated version will be shown.
+   *
+   * <p>Must also call #setBadgeVisible(boolean) to display badge number.
+   *
+   * @param badgeNumber The badge number.
+   * @attr ref com.google.android.material.R.styleable#Badge_badgeNumber
+   */
+  public void setBadgeNumber(int badgeNumber, int menuItemId) {
+    menuView.setBadgeNumber(badgeNumber, menuItemId);
+  }
+
+  /**
+   * Resets the badge number at {@code menuItemId}, an icon only badge will be displayed.
+   *
+   * @param menuItemId Id of the menu item on which to clear the badge number.
+   */
+  public void clearBadgeNumber(int menuItemId) {
+    menuView.clearBadgeNumber(menuItemId);
+  }
+
+  /**
+   * Returns the max character count of all child badges.
+   *
+   * @see #setBadgeMaxCharacterCount(int)
+   */
+  public int getBadgeMaxCharacterCount() {
+    return menuView.getBadgeMaxCharacterCount();
+  }
+
+  /**
+   * Sets the max character count of all child badges.
+   *
+   * @param maxCount A badge's max character count.
+   */
+  public void setBadgeMaxCharacterCount(int maxCount) {
+    menuView.setBadgeMaxCharacterCount(maxCount);
   }
 
   /** Listener for handling selection events on bottom navigation items. */

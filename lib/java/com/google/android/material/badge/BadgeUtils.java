@@ -112,4 +112,20 @@ public class BadgeUtils {
       anchor.getOverlay().remove(badgeDrawable);
     }
   }
+
+  /**
+   * Sets the bounds of a BadgeDrawable to match its associated anchor. For API 18+, the
+   * BadgeDrawable will match the bounds of its anchor. For pre-API 18, the BadgeDrawable will match
+   * the bounds of its anchor's FrameLayout ancestor.
+   */
+  public static void setBadgeDrawableBounds(
+      BadgeDrawable badgeDrawable, View anchor, FrameLayout preApi18BadgeParent) {
+    Rect badgeBounds = new Rect();
+    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
+      preApi18BadgeParent.getDrawingRect(badgeBounds);
+    } else {
+      anchor.getDrawingRect(badgeBounds);
+    }
+    badgeDrawable.setBounds(badgeBounds);
+  }
 }

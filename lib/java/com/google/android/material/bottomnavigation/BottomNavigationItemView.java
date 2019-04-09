@@ -24,10 +24,15 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
+import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.PointerIconCompat;
@@ -71,6 +76,13 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private Drawable originalIconDrawable;
   private Drawable wrappedIconDrawable;
 
+  private BadgeDrawable badgeDrawable;
+  private int badgeNumber = BadgeUtils.ICON_ONLY_BADGE_NUMBER;
+  private boolean isBadgeVisible;
+  private int badgeMaxCount = BadgeUtils.DEFAULT_MAX_BADGE_CHARACTER_COUNT;
+  @ColorInt private int badgeBackgroundColor;
+  @ColorInt private int badgeTextColor;
+
   public BottomNavigationItemView(@NonNull Context context) {
     this(context, null);
   }
@@ -82,6 +94,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     final Resources res = getResources();
+    // Avoid clipping a badge if it's displayed.
+    setClipChildren(false);
+    setClipToPadding(false);
 
     LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
     setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
@@ -96,6 +111,35 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     ViewCompat.setImportantForAccessibility(largeLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     setFocusable(true);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+
+    // TODO: Support displaying a badge on label-only bottom navigation views.
+    if (icon != null) {
+      icon.addOnLayoutChangeListener(
+          new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(
+                View v,
+                int left,
+                int top,
+                int right,
+                int bottom,
+                int oldLeft,
+                int oldTop,
+                int oldRight,
+                int oldBottom) {
+              if (icon.getVisibility() == VISIBLE) {
+                tryUpdateBadgeDrawableBounds(icon, getCustomParentForBadge(icon));
+              }
+            }
+          });
+    }
+
+    badgeBackgroundColor =
+        BadgeDrawable.getDefaultBackgroundColor(
+            context, attrs, /* defStyleAttr= */ 0, R.style.Widget_MaterialComponents_Badge);
+    badgeTextColor =
+        BadgeDrawable.getDefaultTextColor(
+            context, attrs, /* defStyleAttr= */ 0, R.style.Widget_MaterialComponents_Badge);
   }
 
   @Override
@@ -353,5 +397,142 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       background = background.getConstantState().newDrawable().mutate();
     }
     ViewCompat.setBackground(this, background);
+  }
+
+  // TODO: Add getter for badgeBackgroundColor, isBadgeVisible, badgeMaxCharacterCount.
+
+  void setBadgeBackgroundColor(@ColorInt int color) {
+    this.badgeBackgroundColor = color;
+    if (hasBadgeDrawable()) {
+      badgeDrawable.setBackgroundColor(color);
+    }
+  }
+
+  void setBadgeTextColor(@ColorInt int color) {
+    this.badgeTextColor = color;
+    if (hasBadgeDrawable()) {
+      badgeDrawable.setBadgeTextColor(color);
+    }
+  }
+
+  @ColorInt
+  int getBadgeTextColor() {
+    return badgeTextColor;
+  }
+
+  void setBadgeVisible(boolean isVisible) {
+    if (this.isBadgeVisible == isVisible) {
+      return;
+    }
+    this.isBadgeVisible = isVisible;
+    if (hasBadgeDrawable()) {
+      badgeDrawable.setVisible(isBadgeVisible, /* restart= */ false);
+      if (isBadgeVisible) {
+        tryAttachBadgeToAnchor(icon);
+      } else {
+        tryRemoveBadgeFromAnchor(icon);
+      }
+    } else if (isBadgeVisible) {
+      // Only create and populate a new instance of BadgeDrawable if isBadgeVisible == true.
+      initializeBadgeForIcon();
+    }
+  }
+
+  void setBadgeNumber(int number) {
+    badgeNumber = number;
+    if (hasBadgeDrawable()) {
+      badgeDrawable.setNumber(number);
+    }
+  }
+
+  void clearBadgeNumber() {
+    badgeNumber = BadgeUtils.ICON_ONLY_BADGE_NUMBER;
+    if (hasBadgeDrawable()) {
+      badgeDrawable.clearBadgeNumber();
+    }
+  }
+
+  int getBadgeNumber() {
+    // Don't return badgeNumber because it defaults to BadgeUtils.ICON_ONLY_BADGE_NUMBER == -1
+    return badgeDrawable == null ? 0 : badgeDrawable.getNumber();
+  }
+
+  void setBadgeMaxCharacterCount(int maxCount) {
+    badgeMaxCount = maxCount;
+    if (hasBadgeDrawable()) {
+      badgeDrawable.setMaxCharacterCount(maxCount);
+    }
+  }
+
+  private void initializeBadgeForIcon() {
+    createBadgeDrawable(icon, getCustomParentForBadge(icon), /* attrs= */ null);
+    tryAttachBadgeToAnchor(icon);
+    setupBadge();
+  }
+
+  private void setupBadge() {
+    if (!hasBadgeDrawable()) {
+      throw new IllegalArgumentException("Trying to setup a null instance of badgeDrawable.");
+    }
+
+    setBadgeVisible(isBadgeVisible);
+    setBadgeMaxCharacterCount(badgeMaxCount);
+    setBadgeBackgroundColor(badgeBackgroundColor);
+    setBadgeTextColor(badgeTextColor);
+    if (badgeNumber != BadgeUtils.ICON_ONLY_BADGE_NUMBER) {
+      setBadgeNumber(badgeNumber);
+    }
+  }
+
+  private boolean hasBadgeDrawable() {
+    return badgeDrawable != null;
+  }
+
+  private void tryUpdateBadgeDrawableBounds(View anchor, @Nullable FrameLayout customBadgeParent) {
+    if (hasBadgeDrawable()) {
+      BadgeUtils.setBadgeDrawableBounds(badgeDrawable, anchor, customBadgeParent);
+      badgeDrawable.updateBadgeCoordinates(anchor, customBadgeParent);
+    }
+  }
+
+  @Nullable
+  private FrameLayout getCustomParentForBadge(View anchor) {
+    if (anchor == icon) {
+      return (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2)
+          ? ((FrameLayout) icon.getParent())
+          : null;
+    }
+    // TODO: Support displaying a badge on label-only bottom navigation views.
+    return null;
+  }
+
+  private BadgeDrawable createBadgeDrawable(
+      View anchor, @Nullable FrameLayout customBadgeParent, AttributeSet attrs) {
+    return badgeDrawable =
+        BadgeDrawable.createFromAttributes(
+            anchor,
+            customBadgeParent,
+            attrs,
+            0 /* defStyleAttr */,
+            R.style.Widget_MaterialComponents_Badge);
+  }
+
+  private void tryAttachBadgeToAnchor(View anchorView) {
+    if (!hasBadgeDrawable()) {
+      return;
+    }
+    if (anchorView != null) {
+      BadgeUtils.attachBadgeDrawable(badgeDrawable, anchorView, getCustomParentForBadge(icon));
+    }
+  }
+
+  private void tryRemoveBadgeFromAnchor(View anchorView) {
+    if (!hasBadgeDrawable()) {
+      return;
+    }
+    if (anchorView != null) {
+      BadgeUtils.detachBadgeDrawable(
+          badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+    }
   }
 }

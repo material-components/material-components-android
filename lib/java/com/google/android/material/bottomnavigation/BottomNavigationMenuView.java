@@ -24,10 +24,13 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
+import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.internal.TextScale;
 import androidx.core.util.Pools;
 import androidx.core.view.ViewCompat;
@@ -36,21 +39,23 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuView;
 import android.util.AttributeSet;
+import android.util.SparseBooleanArray;
+import android.util.SparseIntArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
+  private static final int ITEM_POOL_SIZE = 5;
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
@@ -62,7 +67,10 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final int activeItemMinWidth;
   private final int itemHeight;
   private final OnClickListener onClickListener;
-  private final Pools.Pool<BottomNavigationItemView> itemPool = new Pools.SynchronizedPool<>(5);
+  private final Pools.Pool<BottomNavigationItemView> itemPool =
+      new Pools.SynchronizedPool<>(ITEM_POOL_SIZE);
+  private final SparseIntArray badgeNumbers = new SparseIntArray(ITEM_POOL_SIZE);
+  private final SparseBooleanArray isBadgeVisible = new SparseBooleanArray(ITEM_POOL_SIZE);
 
   private boolean itemHorizontalTranslationEnabled;
   @LabelVisibilityMode private int labelVisibilityMode;
@@ -70,6 +78,9 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private BottomNavigationItemView[] buttons;
   private int selectedItemId = 0;
   private int selectedItemPosition = 0;
+  private int badgeMaxCharacterCount = BadgeUtils.DEFAULT_MAX_BADGE_CHARACTER_COUNT;
+  @ColorInt private int badgeBackgroundColor;
+  @ColorInt private int badgeTextColor;
 
   private ColorStateList itemIconTint;
   @Dimension private int itemIconSize;
@@ -120,6 +131,13 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
           }
         };
     tempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];
+
+    badgeBackgroundColor =
+        BadgeDrawable.getDefaultBackgroundColor(
+            context, attrs, /* defStyleAttr= */ 0, R.style.Widget_MaterialComponents_Badge);
+    badgeTextColor =
+        BadgeDrawable.getDefaultTextColor(
+            context, attrs, /* defStyleAttr= */ 0, R.style.Widget_MaterialComponents_Badge);
   }
 
   @Override
@@ -528,6 +546,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       if (selectedItemId != Menu.NONE && menu.getItem(i).getItemId() == selectedItemId) {
         selectedItemPosition = i;
       }
+      initBadge(child);
       addView(child);
     }
     selectedItemPosition = Math.min(menu.size() - 1, selectedItemPosition);
@@ -598,6 +617,125 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         item.setChecked(true);
         break;
       }
+    }
+  }
+
+  void setBadgeBackgroundColor(@ColorInt int color) {
+    badgeBackgroundColor = color;
+    for (BottomNavigationItemView itemView : buttons) {
+      itemView.setBadgeBackgroundColor(color);
+    }
+  }
+
+  @ColorInt
+  int getBadgeBackgroundColor() {
+    return badgeBackgroundColor;
+  }
+
+  void setBadgeTextColor(@ColorInt int color) {
+    this.badgeTextColor = color;
+    for (BottomNavigationItemView itemView : buttons) {
+      itemView.setBadgeTextColor(color);
+    }
+  }
+
+  @ColorInt
+  int getBadgeTextColor() {
+    return badgeTextColor;
+  }
+
+  void setBadgeVisible(boolean visible, int menuItemId) {
+    validateMenuItemId(menuItemId);
+    if (visible) {
+      isBadgeVisible.put(menuItemId, visible);
+    } else {
+      isBadgeVisible.delete(menuItemId);
+    }
+    BottomNavigationItemView itemView = findItemView(menuItemId);
+    if (itemView != null) {
+      itemView.setBadgeVisible(visible);
+    }
+  }
+
+  boolean isBadgeVisible(int menuItemId) {
+    validateMenuItemId(menuItemId);
+    return isBadgeVisible.get(menuItemId);
+  }
+
+  void setBadgeNumber(int badgeNumber, int menuItemId) {
+    validateMenuItemId(menuItemId);
+    badgeNumbers.put(menuItemId, badgeNumber);
+    BottomNavigationItemView itemView = findItemView(menuItemId);
+    if (itemView != null) {
+      itemView.setBadgeNumber(badgeNumber);
+    }
+  }
+
+  void clearBadgeNumber(int menuItemId) {
+    validateMenuItemId(menuItemId);
+    badgeNumbers.delete(menuItemId);
+    BottomNavigationItemView itemView = findItemView(menuItemId);
+    if (itemView != null) {
+      itemView.clearBadgeNumber();
+    }
+  }
+
+  int getBadgeNumber(int menuItemId) {
+    validateMenuItemId(menuItemId);
+    Integer val = badgeNumbers.get(menuItemId);
+    return (val != null) ? val.intValue() : 0;
+  }
+
+  void setBadgeMaxCharacterCount(int maxCount) {
+    badgeMaxCharacterCount = maxCount;
+    for (BottomNavigationItemView itemView : buttons) {
+      itemView.setBadgeMaxCharacterCount(badgeMaxCharacterCount);
+    }
+  }
+
+  int getBadgeMaxCharacterCount() {
+    return badgeMaxCharacterCount;
+  }
+
+  private void initBadge(BottomNavigationItemView child) {
+    int childId = child.getId();
+    if (!isValidId(childId)) {
+      // There is no valid id, do not initialize badge.
+      // In case child has a badge initialized (because it was previously associated with a menu
+      // item with a valid id), hide it.
+      child.setBadgeVisible(false);
+      return;
+    }
+
+    child.setBadgeVisible(isBadgeVisible.get(childId));
+    child.setBadgeBackgroundColor(badgeBackgroundColor);
+    child.setBadgeTextColor(badgeTextColor);
+    if (badgeNumbers.indexOfKey(childId) >= 0) {
+      child.setBadgeNumber(badgeNumbers.get(childId));
+    }
+    if (badgeMaxCharacterCount > 0) {
+      child.setBadgeMaxCharacterCount(badgeMaxCharacterCount);
+    }
+  }
+
+  @Nullable
+  private BottomNavigationItemView findItemView(int menuItemId) {
+    validateMenuItemId(menuItemId);
+    for (BottomNavigationItemView itemView : buttons) {
+      if (itemView.getId() == menuItemId) {
+        return itemView;
+      }
+    }
+    return null;
+  }
+
+  private boolean isValidId(int viewId) {
+    return viewId != View.NO_ID;
+  }
+
+  private void validateMenuItemId(int viewId) {
+    if (!isValidId(viewId)) {
+      throw new IllegalArgumentException(viewId + " is not a valid view id");
     }
   }
 }
