@@ -110,7 +110,7 @@ import java.util.Iterator;
  * tabLayout.addTab(tabLayout.newTab().setText("Tab 3"));
  * </pre>
  *
- * You should set a listener via {@link #setOnTabSelectedListener(OnTabSelectedListener)} to be
+ * You should add a listener via {@link #addOnTabSelectedListener(OnTabSelectedListener)} to be
  * notified when any tab's selection state has been changed.
  *
  * <p>You can also add items to TabLayout in your layout through the use of {@link TabItem}. An
