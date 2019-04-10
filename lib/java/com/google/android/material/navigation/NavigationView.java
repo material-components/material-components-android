@@ -167,8 +167,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     final int itemIconPadding =
         a.getDimensionPixelSize(R.styleable.NavigationView_itemIconPadding, 0);
 
-    setItemMaxLines(a.getInt(R.styleable.NavigationView_itemMaxLines, 1));
-
     this.menu.setCallback(
         new MenuBuilder.Callback() {
           @Override
@@ -512,24 +510,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
    */
   public void setItemIconSize(@Dimension int iconSize) {
     presenter.setItemIconSize(iconSize);
-  }
-
-  /**
-   * Sets the android:maxLines attribute of the text view in the menu item.
-   *
-   * @attr ref R.styleable#NavigationView_itemMaxLines
-   */
-  public void setItemMaxLines(int itemMaxLines) {
-    presenter.setItemMaxLines(itemMaxLines);
-  }
-
-  /**
-   * Gets the android:maxLines attribute of the text view in the menu item.
-   *
-   * @attr ref R.styleable#NavigationView_itemMaxLines
-   */
-  public int getItemMaxLines() {
-    return presenter.getItemMaxLines();
   }
 
   private MenuInflater getMenuInflater() {

@@ -27,6 +27,5 @@
   <public name="headerLayout" type="attr"/>
   <public name="itemHorizontalPadding" type="attr"/>
   <public name="itemIconPadding" type="attr"/>
-  <public name="itemMaxLines" type="attr"/>
   <public name="Widget.Design.NavigationView" type="style"/>
 </resources>
