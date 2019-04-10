@@ -22,11 +22,14 @@ import android.app.Dialog;
 import android.os.Bundle;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.picker.selector.DateRangeGridSelector;
+import com.google.android.material.picker.selector.GridSelector;
 import androidx.core.util.Pair;
 import java.util.Calendar;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialDateRangePicker}, and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialCalendar<Pair<Calendar, Calendar>>},
+ * and set of actions.
  *
  * @hide
  */
@@ -52,9 +55,10 @@ public class MaterialDateRangePickerDialogFragment
     return R.attr.materialDateRangePickerDialogTheme;
   }
 
+
   @Override
-  protected MaterialCalendar<Pair<Calendar, Calendar>> createMaterialCalendar() {
-    return new MaterialDateRangePicker();
+  protected GridSelector<Pair<Calendar, Calendar>> createGridSelector() {
+    return new DateRangeGridSelector();
   }
 
   @Override

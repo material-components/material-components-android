@@ -13,12 +13,16 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.material.picker;
+package com.google.android.material.picker.selector;
 
+import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.picker.MaterialCalendar;
+import com.google.android.material.picker.MonthInYearAdapter;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.AdapterView;
 import java.util.Calendar;
 
@@ -26,12 +30,14 @@ import java.util.Calendar;
  * Interface for users of {@link MaterialCalendar<S>} to control how the Calendar displays and
  * returns selections.
  *
- * @param <S> The type of item available when cells are selected in the {@link AdapterView}
+ * <p>Implementors must implement {@link Parcelable} so that selection can be maintained through
+ * Lifecycle events (e.g., Fragment destruction).
  *
+ * @param <S> The type of item available when cells are selected in the {@link AdapterView}
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public interface GridSelector<S> {
+public interface GridSelector<S> extends Parcelable {
 
   /** Returns the current selection */
   @Nullable
@@ -58,5 +64,14 @@ public interface GridSelector<S> {
   void onItemClick(
       AdapterView<? extends MonthInYearAdapter> parent, View view, int position, long row);
 
+  /**
+   * Modifies the provided {@link View} to indicate its selection status.
+   *
+   * <p>Called from {@link GridSelector#drawSelection(AdapterView)} for each {@link View}.
+   *
+   * @param cell The {@link View} returned from {@link MonthInYearAdapter#getView(int, View,
+   *     ViewGroup)}
+   * @param item The {@link Calendar} returned from {@link MonthInYearAdapter#getItem(int)}.
+   */
   void drawCell(View cell, Calendar item);
 }

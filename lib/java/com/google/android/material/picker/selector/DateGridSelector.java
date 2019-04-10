@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.material.picker;
+package com.google.android.material.picker.selector;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
+import com.google.android.material.picker.MonthInYearAdapter;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.widget.AdapterView;
@@ -34,11 +37,10 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DateGridSelector implements GridSelector<Calendar> {
 
-  private Calendar selectedItem = null;
-  @VisibleForTesting
-  static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
-  @VisibleForTesting
-  static final ColorDrawable selectedColor = new ColorDrawable(Color.RED);
+  @VisibleForTesting static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
+  @VisibleForTesting static final ColorDrawable selectedColor = new ColorDrawable(Color.RED);
+
+  private Calendar selectedItem;
 
   @Override
   public void onItemClick(
@@ -72,5 +74,33 @@ public class DateGridSelector implements GridSelector<Calendar> {
   @Nullable
   public Calendar getSelection() {
     return selectedItem;
+  }
+
+  /* Parcelable interface */
+
+  /** {@link Parcelable.Creator} */
+  public static final Parcelable.Creator<DateGridSelector> CREATOR =
+      new Parcelable.Creator<DateGridSelector>() {
+        @Override
+        public DateGridSelector createFromParcel(Parcel source) {
+          DateGridSelector dateGridSelector = new DateGridSelector();
+          dateGridSelector.selectedItem = (Calendar) source.readSerializable();
+          return dateGridSelector;
+        }
+
+        @Override
+        public DateGridSelector[] newArray(int size) {
+          return new DateGridSelector[size];
+        }
+      };
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeSerializable(selectedItem);
   }
 }

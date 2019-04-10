@@ -19,6 +19,8 @@ import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.VisibleForTesting;
+import com.google.android.material.picker.selector.GridSelector;
 import com.google.android.material.resources.MaterialAttributes;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,7 +46,9 @@ public class MonthInYearAdapter extends BaseAdapter {
   private final int textViewSize;
   private final GridSelector<?> gridSelector;
 
-  MonthInYearAdapter(Context context, MonthInYear monthInYear, GridSelector<?> gridSelector) {
+  @VisibleForTesting
+  public MonthInYearAdapter(
+      Context context, MonthInYear monthInYear, GridSelector<?> gridSelector) {
     this.monthInYear = monthInYear;
     textViewSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
     this.gridSelector = gridSelector;

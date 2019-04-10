@@ -47,6 +47,7 @@ public class DaysHeaderAdapter extends BaseAdapter {
 
   public DaysHeaderAdapter() {
     calendar = Calendar.getInstance();
+    calendar.clear();
     daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
     firstDayOfWeek = calendar.getFirstDayOfWeek();
   }

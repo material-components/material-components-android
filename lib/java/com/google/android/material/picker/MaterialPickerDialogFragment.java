@@ -28,6 +28,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
+import com.google.android.material.picker.selector.GridSelector;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.util.TypedValue;
@@ -48,6 +49,7 @@ import java.util.Locale;
 public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
   private static final String THEME_RESOURCE_ID_KEY = "themeResId";
+  private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
 
   /**
    * Returns the text to display at the top of the {@link DialogFragment}
@@ -56,17 +58,17 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    */
   protected abstract String getHeaderText();
 
-  /**
-   * Creates a new instance of {@link MaterialCalendar}
-   *
-   * <p>The {@link MaterialCalendar} is rebuilt in every call to onCreate.
-   */
-  protected abstract MaterialCalendar<? extends S> createMaterialCalendar();
-
   /** Returns an {@link @AttrRes} to apply as a theme overlay to the DialogFragment */
   protected abstract int getDefaultThemeAttr();
 
+  /**
+   * Creates the {@link GridSelector} used for the {@link MaterialCalendar} in this {@link
+   * DialogFragment}.
+   */
+  protected abstract GridSelector<S> createGridSelector();
+
   private MaterialCalendar<? extends S> materialCalendar;
+  private GridSelector<S> gridSelector;
   private SimpleDateFormat simpleDateFormat;
 
   @AttrRes private int themeResId;
@@ -97,6 +99,12 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   @Override
+  public final void onSaveInstanceState(Bundle bundle) {
+    super.onSaveInstanceState(bundle);
+    bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+  }
+
+  @Override
   public final void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     simpleDateFormat =
@@ -105,7 +113,13 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     themeResId =
         getThemeResource(
             getContext(), getDefaultThemeAttr(), getArguments().getInt(THEME_RESOURCE_ID_KEY));
-    materialCalendar = createMaterialCalendar();
+    if (bundle != null) {
+      gridSelector = bundle.getParcelable(GRID_SELECTOR_KEY);
+    }
+    if (gridSelector == null) {
+      gridSelector = createGridSelector();
+    }
+    materialCalendar = MaterialCalendar.newInstance(gridSelector);
   }
 
   @Override
@@ -199,8 +213,8 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   /**
-   * Returns the {@link MaterialCalendar} from a previous call to {@link
-   * MaterialPickerDialogFragment#createMaterialCalendar}
+   * Returns the {@link MaterialCalendar} based on a previous call to {@link
+   * MaterialPickerDialogFragment#createGridSelector()}
    *
    * <p>Returns null until after {@link DialogFragment#onCreate}
    */

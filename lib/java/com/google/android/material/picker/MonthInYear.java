@@ -53,6 +53,7 @@ public class MonthInYear {
    */
   public static MonthInYear create(int year, int month) {
     Calendar calendar = Calendar.getInstance();
+    calendar.clear();
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month);
     return new MonthInYear(calendar);

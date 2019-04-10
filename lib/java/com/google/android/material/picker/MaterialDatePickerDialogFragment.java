@@ -22,10 +22,11 @@ import android.app.Dialog;
 import android.os.Bundle;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.picker.selector.DateGridSelector;
 import java.util.Calendar;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialDatePicker}, and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialCalendar<Calendar>}, and set of actions.
  *
  * @hide
  */
@@ -51,8 +52,8 @@ public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragme
   }
 
   @Override
-  protected MaterialCalendar<Calendar> createMaterialCalendar() {
-    return new MaterialDatePicker();
+  protected DateGridSelector createGridSelector() {
+    return new DateGridSelector();
   }
 
   @Override

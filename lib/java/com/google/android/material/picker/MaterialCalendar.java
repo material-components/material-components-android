@@ -24,6 +24,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.picker.selector.GridSelector;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -40,17 +41,44 @@ import java.util.Calendar;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public abstract class MaterialCalendar<S> extends Fragment {
+public final class MaterialCalendar<S> extends Fragment {
+
+  private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
 
   private MonthInYear monthInYear;
   private MonthInYearAdapter monthInYearAdapter;
   private GridSelector<S> gridSelector;
 
+  /**
+   * Creates a {@link MaterialCalendar} with {@link GridSelector#drawCell(View, Calendar)} applied
+   * to each cell.
+   *
+   * @param gridSelector Controls the highlight state of the {@link MaterialCalendar}
+   * @param <T> Type returned from selections in this {@link MaterialCalendar} by {@link
+   *     MaterialCalendar#getSelection()}
+   */
+  public static <T> MaterialCalendar<T> newInstance(GridSelector<T> gridSelector) {
+    MaterialCalendar<T> materialCalendar = new MaterialCalendar<>();
+    Bundle args = new Bundle();
+    args.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    materialCalendar.setArguments(args);
+    return materialCalendar;
+  }
+
+  @Override
+  public void onSaveInstanceState(@NonNull Bundle bundle) {
+    super.onSaveInstanceState(bundle);
+    bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+  }
+
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
+    if (bundle == null) {
+      bundle = getArguments();
+    }
+    gridSelector = bundle.getParcelable(GRID_SELECTOR_KEY);
     Calendar calendar = Calendar.getInstance();
-    gridSelector = createGridSelector();
     monthInYear = MonthInYear.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
     monthInYearAdapter = new MonthInYearAdapter(getContext(), monthInYear, gridSelector);
   }
@@ -94,8 +122,6 @@ public abstract class MaterialCalendar<S> extends Fragment {
         });
     return root;
   }
-
-  protected abstract GridSelector<S> createGridSelector();
 
   public final S getSelection() {
     return gridSelector.getSelection();

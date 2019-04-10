@@ -13,14 +13,17 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.material.picker;
+package com.google.android.material.picker.selector;
 
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
+import com.google.android.material.picker.MonthInYearAdapter;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import android.view.View;
@@ -36,17 +39,13 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calendar>> {
 
+  @VisibleForTesting static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
+  @VisibleForTesting static final ColorDrawable startColor = new ColorDrawable(Color.RED);
+  @VisibleForTesting static final ColorDrawable endColor = new ColorDrawable(Color.GREEN);
+  @VisibleForTesting static final ColorDrawable rangeColor = new ColorDrawable(Color.YELLOW);
+
   private Calendar selectedStartItem = null;
   private Calendar selectedEndItem = null;
-
-  @VisibleForTesting
-  static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
-  @VisibleForTesting
-  static final ColorDrawable startColor = new ColorDrawable(Color.RED);
-  @VisibleForTesting
-  static final ColorDrawable endColor = new ColorDrawable(Color.GREEN);
-  @VisibleForTesting
-  static final ColorDrawable rangeColor = new ColorDrawable(Color.YELLOW);
 
   @Override
   public void onItemClick(
@@ -113,5 +112,35 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   @Nullable
   public Calendar getEnd() {
     return selectedEndItem;
+  }
+
+  /* Parcelable interface */
+
+  /** {@link Parcelable.Creator} */
+  public static final Parcelable.Creator<DateRangeGridSelector> CREATOR =
+      new Parcelable.Creator<DateRangeGridSelector>() {
+        @Override
+        public DateRangeGridSelector createFromParcel(Parcel source) {
+          DateRangeGridSelector dateRangeGridSelector = new DateRangeGridSelector();
+          dateRangeGridSelector.selectedStartItem = (Calendar) source.readSerializable();
+          dateRangeGridSelector.selectedEndItem = (Calendar) source.readSerializable();
+          return dateRangeGridSelector;
+        }
+
+        @Override
+        public DateRangeGridSelector[] newArray(int size) {
+          return new DateRangeGridSelector[size];
+        }
+      };
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeSerializable(selectedStartItem);
+    dest.writeSerializable(selectedEndItem);
   }
 }
