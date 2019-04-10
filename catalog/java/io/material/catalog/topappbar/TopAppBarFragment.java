@@ -65,6 +65,13 @@ public class TopAppBarFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
+        new Demo(R.string.cat_topappbar_scrolling_transparent_title) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), TopAppBarScrollingTransparentStatusDemoActivity.class);
+          }
+        });
+    additionalDemos.add(
         new Demo(R.string.cat_topappbar_collapsing_title) {
           @Override
           public Fragment createFragment() {

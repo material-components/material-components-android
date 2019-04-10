@@ -55,6 +55,11 @@
       android:label="@string/cat_topappbar_dark_action_bar_title"
       android:theme="@style/Theme.MaterialComponents.Light.DarkActionBar"/>
     <activity
+      android:name=".topappbar.TopAppBarScrollingTransparentStatusDemoActivity"
+      android:exported="false"
+      android:label="@string/cat_topappbar_scrolling_transparent_title"
+      android:theme="@style/Theme.Catalog.TransparentStatus"/>
+    <activity
       android:name=".card.CardSelectionModeActivity"
       android:exported="true"/>
 

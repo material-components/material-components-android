@@ -19,6 +19,7 @@
   <string name="cat_topappbar_title">Top App Bar</string>
   <string name="cat_topappbar_description">The Top App Bar, formerly known as the action bar in Android, is a special kind of toolbar that’s used for branding, navigation, search, and actions.</string>
   <string name="cat_topappbar_scrolling_title">Scrolling Demo</string>
+  <string name="cat_topappbar_scrolling_transparent_title">Scrolling Demo (transparent status bar)</string>
   <string name="cat_topappbar_collapsing_title">Collapsing Demo</string>
   <string name="cat_topappbar_action_bar_title">Action Bar Demo</string>
   <string name="cat_topappbar_dark_action_bar_title">Dark Action Bar Demo</string>

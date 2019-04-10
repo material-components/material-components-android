@@ -789,7 +789,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
-   * Set the drawable to use for the content scrim from resources.
+   * Set the drawable to use for the status bar scrim from resources.
    *
    * @param resId drawable resource id
    * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim

@@ -26,6 +26,7 @@
   <public name="expandedTitleTextAppearance" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
   <public name="contentScrim" type="attr"/>
+  <public name="statusBarForeground" type="attr"/>
   <public name="statusBarScrim" type="attr"/>
   <public name="toolbarId" type="attr"/>
   <public name="Widget.Design.AppBarLayout" type="style"/>
