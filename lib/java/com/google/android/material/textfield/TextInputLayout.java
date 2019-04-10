@@ -814,6 +814,10 @@ public class TextInputLayout extends LinearLayout {
   /**
    * Set the resource used for the filled box's background color.
    *
+   * <p>Note: The background color is only supported for filled boxes. When used with box variants
+   * other than {@link BoxBackgroundMode#BOX_BACKGROUND_FILLED}, the box background color may not 
+   * work as intended.
+   *
    * @param boxBackgroundColorId the resource to use for the box's background color
    */
   public void setBoxBackgroundColorResource(@ColorRes int boxBackgroundColorId) {
@@ -822,6 +826,10 @@ public class TextInputLayout extends LinearLayout {
 
   /**
    * Set the filled box's background color.
+   *
+   * <p>Note: The background color is only supported for filled boxes. When used with box variants
+   * other than {@link BoxBackgroundMode#BOX_BACKGROUND_FILLED}, the box background color may not
+   * work as intended.
    *
    * @param boxBackgroundColor the color to use for the filled box's background
    * @see #getBoxBackgroundColor()
@@ -835,9 +843,9 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
-   * Returns the box's background color.
+   * Returns the filled box's background color.
    *
-   * @return the color used for the box's background
+   * @return the color used for the filled box's background
    * @see #setBoxBackgroundColor(int)
    */
   public int getBoxBackgroundColor() {
