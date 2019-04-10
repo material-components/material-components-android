@@ -44,20 +44,20 @@ public class MonthInYearTest {
   }
 
   @Test
-  public void testUsDaysInWeek() {
+  public void usDaysInWeek() {
     setupLocalizedCalendars(Locale.US);
     assertDaysInWeek();
   }
 
   @Test
-  public void testFrDaysInWeek() {
+  public void frDaysInWeek() {
     ;
     setupLocalizedCalendars(Locale.FRANCE);
     assertDaysInWeek();
   }
 
   @Test
-  public void testIlDaysInWeek() {
+  public void ilDaysInWeek() {
     setupLocalizedCalendars(ISRAEL);
     assertDaysInWeek();
   }
@@ -69,19 +69,19 @@ public class MonthInYearTest {
   }
 
   @Test
-  public void testUsDaysInMonth() {
+  public void usDaysInMonth() {
     setupLocalizedCalendars(Locale.US);
     assertDaysInMonth();
   }
 
   @Test
-  public void testFrDaysInMonth() {
+  public void frDaysInMonth() {
     setupLocalizedCalendars(Locale.FRANCE);
     assertDaysInMonth();
   }
 
   @Test
-  public void testIlDaysInMonth() {
+  public void ilDaysInMonth() {
     setupLocalizedCalendars(ISRAEL);
     assertDaysInMonth();
   }
@@ -93,7 +93,7 @@ public class MonthInYearTest {
   }
 
   @Test
-  public void testUsDaysFromStart() {
+  public void usDaysFromStart() {
     setupLocalizedCalendars(Locale.US);
     Map<MonthInYear, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
     localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2016, 1);
@@ -103,7 +103,7 @@ public class MonthInYearTest {
   }
 
   @Test
-  public void testFrDaysFromStart() {
+  public void frDaysFromStart() {
     setupLocalizedCalendars(Locale.FRANCE);
     Map<MonthInYear, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
     localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2016, 0);
@@ -113,7 +113,7 @@ public class MonthInYearTest {
   }
 
   @Test
-  public void testIlDaysFromStart() {
+  public void ilDaysFromStart() {
     setupLocalizedCalendars(ISRAEL);
     Map<MonthInYear, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
     localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2016, 1);

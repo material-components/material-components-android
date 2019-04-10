@@ -71,19 +71,19 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testUsLastPositionMatchesMonthLength() {
+  public void usLastPositionMatchesMonthLength() {
     setupLocalizedCalendars(Locale.US);
     assertLastPositionMatchesMonthLength();
   }
 
   @Test
-  public void testFrLastPositionMatchesMonthLength() {
+  public void frLastPositionMatchesMonthLength() {
     setupLocalizedCalendars(Locale.FRANCE);
     assertLastPositionMatchesMonthLength();
   }
 
   @Test
-  public void testIlLastPositionMatchesMonthLength() {
+  public void ilLastPositionMatchesMonthLength() {
     setupLocalizedCalendars(ISRAEL);
     assertLastPositionMatchesMonthLength();
   }
@@ -95,7 +95,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testUsMaxPosition() {
+  public void usMaxPosition() {
     setupLocalizedCalendars(Locale.US);
     Map<MonthInYearAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
     localizedMaxPositionInMonth.put(monthInYearFeb2016, 29);
@@ -105,7 +105,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testFrMaxPosition() {
+  public void frMaxPosition() {
     setupLocalizedCalendars(Locale.FRANCE);
     Map<MonthInYearAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
     localizedMaxPositionInMonth.put(monthInYearFeb2016, 28);
@@ -115,7 +115,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testIlMaxPosition() {
+  public void ilMaxPosition() {
     setupLocalizedCalendars(ISRAEL);
     Map<MonthInYearAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
     localizedMaxPositionInMonth.put(monthInYearFeb2016, 29);
@@ -137,7 +137,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testUsPositions() {
+  public void usPositions() {
     setupLocalizedCalendars(Locale.US);
     Map<MonthInYearAdapter, Integer> localizedPositionToDay =
         localizedPositionToDay = new HashMap<>();
@@ -148,7 +148,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testFrPositions() {
+  public void frPositions() {
     setupLocalizedCalendars(Locale.FRANCE);
     Map<MonthInYearAdapter, Integer> localizedPositionToDay =
         localizedPositionToDay = new HashMap<>();
@@ -159,7 +159,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testIlPositions() {
+  public void ilPositions() {
     setupLocalizedCalendars(ISRAEL);
     Map<MonthInYearAdapter, Integer> localizedPositionToDay =
         localizedPositionToDay = new HashMap<>();
@@ -179,19 +179,19 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testUsStableCount() {
+  public void usStableCount() {
     setupLocalizedCalendars(Locale.US);
     assertStableCount();
   }
 
   @Test
-  public void testFrStableCount() {
+  public void frStableCount() {
     setupLocalizedCalendars(Locale.FRANCE);
     assertStableCount();
   }
 
   @Test
-  public void testIlStableCount() {
+  public void ilStableCount() {
     setupLocalizedCalendars(ISRAEL);
     assertStableCount();
   }
@@ -203,7 +203,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testUsPositionsWithinMonthReturnAValidItem() {
+  public void usPositionsWithinMonthReturnAValidItem() {
     setupLocalizedCalendars(Locale.US);
     Collection<Integer> localizedNullPositionsInFebruary2019 = Arrays.asList(-5, 0, 4, 33, 100);
     Collection<Integer> localizedNonNullPositionsInFebruary2019 = Arrays.asList(5, 32);
@@ -212,7 +212,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testFrPositionsWithinMonthReturnAValidItem() {
+  public void frPositionsWithinMonthReturnAValidItem() {
     setupLocalizedCalendars(Locale.FRANCE);
     Collection<Integer> localizedNullPositionsInFebruary2019 = Arrays.asList(-5, 0, 3, 32, 100);
     Collection<Integer> localizedNonNullPositionsInFebruary2019 = Arrays.asList(4, 31);
@@ -221,7 +221,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testIlPositionsWithinMonthReturnAValidItem() {
+  public void ilPositionsWithinMonthReturnAValidItem() {
     setupLocalizedCalendars(ISRAEL);
     Collection<Integer> localizedNullPositionsInFebruary2019 = Arrays.asList(-5, 0, 4, 33, 100);
     Collection<Integer> localizedNonNullPositionsInFebruary2019 = Arrays.asList(5, 32);
@@ -241,7 +241,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testUsDaysOfPositions() {
+  public void usDaysOfPositions() {
     setupLocalizedCalendars(Locale.US);
     Map<Integer, Integer> localizedDaysOfPositionsInFebruary2019 = new HashMap<>();
     localizedDaysOfPositionsInFebruary2019.put(6, 2);
@@ -250,7 +250,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testFrDaysOfPositions() {
+  public void frDaysOfPositions() {
     setupLocalizedCalendars(Locale.FRANCE);
     Map<Integer, Integer> localizedDaysOfPositionsInFebruary2019 = new HashMap<>();
     localizedDaysOfPositionsInFebruary2019.put(6, 3);
@@ -259,7 +259,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testIlDaysOfPositions() {
+  public void ilDaysOfPositions() {
     setupLocalizedCalendars(ISRAEL);
     Map<Integer, Integer> localizedDaysOfPositionsInFebruary2019 = new HashMap<>();
     localizedDaysOfPositionsInFebruary2019.put(6, 2);
@@ -276,7 +276,7 @@ public class MonthInYearAdapterTest {
   }
 
   @Test
-  public void testRows() {
+  public void rowIds() {
     setupLocalizedCalendars(Locale.FRANCE);
     assertEquals(0, monthInYearFeb2019.getItemId(0));
     assertEquals(1, monthInYearFeb2019.getItemId(7));
