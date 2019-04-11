@@ -18,15 +18,21 @@ package com.google.android.material.color;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
+import android.content.res.ColorStateList;
 import android.graphics.Color;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.FloatRange;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.resources.MaterialAttributes;
 import androidx.core.graphics.ColorUtils;
+import android.util.StateSet;
 import android.util.TypedValue;
 import android.view.View;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
 
 /**
  * A utility class for common color variants used in Material themes.
@@ -139,5 +145,62 @@ public class MaterialColors {
   @ColorInt
   public static int layer(@ColorInt int backgroundColor, @ColorInt int overlayColor) {
     return ColorUtils.compositeColors(overlayColor, backgroundColor);
+  }
+
+  /**
+   * Calculates a color state list that represents the layering of the {@code overlayColor} on top
+   * of the {@code backgroundColor} for the given set of {@code states}.
+   */
+  public static ColorStateList layer(
+      ColorStateList backgroundColor,
+      @ColorInt int defaultBackgroundColor,
+      ColorStateList overlayColor,
+      @ColorInt int defaultOverlayColor,
+      int[][] states) {
+    List<Integer> uniqueColors = new ArrayList<>();
+    List<int[]> uniqueStateSet = new ArrayList<>();
+
+    // Iterate from least to most specific states.
+    for (int i = states.length - 1; i >= 0; i--) {
+      int[] curState = states[i];
+      int layeredStateColor =
+          MaterialColors.layer(
+              backgroundColor.getColorForState(curState, defaultBackgroundColor),
+              overlayColor.getColorForState(curState, defaultOverlayColor));
+
+      if (shouldAddColorForState(uniqueColors, layeredStateColor, uniqueStateSet, curState)) {
+        // Add to the front of the list in original CSL order.
+        uniqueColors.add(0, layeredStateColor);
+        uniqueStateSet.add(0, curState);
+      }
+    }
+
+    // Convert lists to arrays.
+    int numStates = uniqueColors.size();
+    int[] colors = new int[numStates];
+    int[][] colorStates = new int[numStates][];
+    for (int i = 0; i < numStates; i++) {
+      colors[i] = uniqueColors.get(i);
+      colorStates[i] = uniqueStateSet.get(i);
+    }
+    return new ColorStateList(colorStates, colors);
+  }
+
+  /**
+   * Returns whether the specified @{code color} should be added to a ColorStateList for the
+   * specified {@code state} or if the existing color set and state set already cover it.
+   */
+  private static boolean shouldAddColorForState(
+      List<Integer> colorSet, @ColorInt int color, List<int[]> stateSet, @Nullable int[] state) {
+    new HashSet<Integer>(colorSet);
+    if (!colorSet.contains(color)) {
+      return true;
+    }
+    for (int[] stateSetItem : stateSet) {
+      if (StateSet.stateSetMatches(stateSetItem, state)) {
+        return (colorSet.get(stateSet.indexOf(stateSetItem)) != color);
+      }
+    }
+    return true;
   }
 }

@@ -1364,13 +1364,8 @@ public class ChipDrawable extends MaterialShapeDrawable
 
   private ColorStateList compositeSurfaceBackgroundColor(
       @NonNull ColorStateList backgroundColor, @NonNull ColorStateList surfaceColor) {
-    int[] colors = new int[states.length];
-    for (int i = 0; i < states.length; i++) {
-      colors[i] = MaterialColors.layer(
-          surfaceColor.getColorForState(states[i], currentChipSurfaceColor),
-          backgroundColor.getColorForState(states[i], currentChipBackgroundColor));
-    }
-    return new ColorStateList(states, colors);
+    return MaterialColors.layer(
+        surfaceColor, currentChipSurfaceColor, backgroundColor, currentChipBackgroundColor, states);
   }
 
   /**
