@@ -34,6 +34,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
 import android.widget.CompoundButton.OnCheckedChangeListener;
+import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
 import io.material.catalog.feature.DemoFragment;
@@ -75,13 +76,21 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
 
             View bottomSheetChildView = view.findViewById(R.id.bottom_drawer);
             ViewGroup.LayoutParams params = bottomSheetChildView.getLayoutParams();
+            BottomSheetBehavior<View> bottomSheetBehavior =
+                BottomSheetBehavior.from(bottomSheetChildView);
             View modalBottomSheetChildView = bottomSheetDialog.findViewById(R.id.bottom_drawer_2);
             ViewGroup.LayoutParams layoutParams = modalBottomSheetChildView.getLayoutParams();
+            BottomSheetBehavior<FrameLayout> modalBottomSheetBehavior =
+                bottomSheetDialog.getBehavior();
+            boolean fitToContents = true;
+            float halfExpandedRatio = 0.5f;
 
             if (params != null && layoutParams != null) {
               if (isChecked) {
                 params.height = windowHeight;
                 layoutParams.height = windowHeight;
+                fitToContents = false;
+                halfExpandedRatio = 0.7f;
 
               } else {
                 params.height = (windowHeight * 3 / 5);
@@ -89,6 +98,10 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
               }
               bottomSheetChildView.setLayoutParams(params);
               modalBottomSheetChildView.setLayoutParams(layoutParams);
+              bottomSheetBehavior.setFitToContents(fitToContents);
+              modalBottomSheetBehavior.setFitToContents(fitToContents);
+              bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio);
+              modalBottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio);
             }
           }
         });
@@ -125,6 +138,14 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
                 break;
               case BottomSheetBehavior.STATE_COLLAPSED:
                 text.setText(R.string.cat_bottomsheet_state_collapsed);
+                break;
+              case BottomSheetBehavior.STATE_HALF_EXPANDED:
+                BottomSheetBehavior<View> bottomSheetBehavior =
+                    BottomSheetBehavior.from(bottomSheet);
+                text.setText(
+                    getString(
+                        R.string.cat_bottomsheet_state_half_expanded,
+                        bottomSheetBehavior.getHalfExpandedRatio()));
                 break;
               default:
                 break;
