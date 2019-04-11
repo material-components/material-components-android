@@ -37,6 +37,7 @@ import android.graphics.Color;
 import android.graphics.Paint;
 import android.graphics.PorterDuff;
 import android.graphics.RectF;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.LayerDrawable;
@@ -53,6 +54,7 @@ import androidx.annotation.IntDef;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import com.google.android.material.animation.AnimationUtils;
@@ -60,6 +62,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Pools;
 import androidx.core.view.GravityCompat;
@@ -465,6 +468,15 @@ public class TabLayout extends HorizontalScrollView {
             defStyleAttr,
             R.style.Widget_Design_TabLayout,
             R.styleable.TabLayout_tabTextAppearance);
+
+    if (getBackground() instanceof ColorDrawable) {
+      ColorDrawable background = (ColorDrawable) getBackground();
+      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+      materialShapeDrawable.setFillColor(ColorStateList.valueOf(background.getColor()));
+      materialShapeDrawable.initializeElevationOverlay(context);
+      materialShapeDrawable.setElevation(ViewCompat.getElevation(this));
+      ViewCompat.setBackground(this, materialShapeDrawable);
+    }
 
     slidingTabIndicator.setSelectedIndicatorHeight(
         a.getDimensionPixelSize(R.styleable.TabLayout_tabIndicatorHeight, -1));
@@ -1542,6 +1554,15 @@ public class TabLayout extends HorizontalScrollView {
     } else {
       lp.width = LinearLayout.LayoutParams.WRAP_CONTENT;
       lp.weight = 0;
+    }
+  }
+
+  @RequiresApi(VERSION_CODES.LOLLIPOP)
+  @Override
+  public void setElevation(float elevation) {
+    super.setElevation(elevation);
+    if (getBackground() instanceof MaterialShapeDrawable) {
+      ((MaterialShapeDrawable) getBackground()).setElevation(elevation);
     }
   }
 
