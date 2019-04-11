@@ -149,7 +149,65 @@ public class MaterialColors {
 
   /**
    * Calculates a color state list that represents the layering of the {@code overlayColor} on top
-   * of the {@code backgroundColor} for the given set of {@code states}.
+   * of the {@code backgroundColor} for the given set of {@code states}. CAUTION: More specific
+   * states that have the same color value as a more generic state may be dropped, see example
+   * below:
+   * <p>states:
+   * <pre>
+   *   {selected, enabled},
+   *   {checked, enabled},
+   *   {enabled},
+   *   default
+   * </pre>
+   * <p>Overlay CSL:
+   * <pre>
+   *   ""      TRANSPARENT
+   * </pre>
+   * <p>Scenario 1
+   * <p>Background CSL:
+   * <pre>
+   *   checked RED
+   *   ""      GREEN
+   * </pre>
+   *
+   * <p>Current result:
+   * <pre>
+   *   enabled, checked RED
+   *   enabled          GREEN
+   * </pre>
+   *
+   * <p>Color for state {enabled, checked, selected} --> returns RED # correct
+   *
+   * <p>Result if iterating top down through CSL to composite each state color:
+   * <pre>
+   *   enabled, selected GREEN
+   *   enabled, checked  RED
+   *   enabled           GREEN
+   * </pre>
+   *
+   * <p>Color for state {enabled, checked, selected} --> returns GREEN #incorrect
+   *
+   * <p>Scenario 2
+   * Background CSL:
+   * <pre>
+   *   selected GREEN
+   *   checked  RED
+   *   ""       GREEN
+   * </pre>
+   * <p>Current result:
+   * <pre>
+   *   enabled, checked RED
+   *   enabled          GREEN
+   * </pre>
+   * <p>Color for state {enabled, checked, selected} --> returns RED # incorrect
+   * 
+   * <p>Result if iterating top down through CSL to composite each state color:
+   * <pre>
+   *   enabled, selected GREEN
+   *   enabled, checked RED
+   *   enabled          GREEN
+   * </pre>
+   * <p>Color for state {enabled, checked, selected} --> returns GREEN # correct
    */
   public static ColorStateList layer(
       ColorStateList backgroundColor,
@@ -160,7 +218,7 @@ public class MaterialColors {
     List<Integer> uniqueColors = new ArrayList<>();
     List<int[]> uniqueStateSet = new ArrayList<>();
 
-    // Iterate from least to most specific states.
+    // Iterates bottom to top, from least to most specific states.
     for (int i = states.length - 1; i >= 0; i--) {
       int[] curState = states[i];
       int layeredStateColor =

@@ -71,9 +71,27 @@ public class MaterialColorsTest {
     List<int[][]> testStatesList = generateTestStatesList();
     for (int[][] testStates : testStatesList) {
       for (int[] state : testStates) {
-        compareLayeredColorsForStates(compositeColor, backgroundColor, overlayColor, state);
+        compareLayeredColorsForStates(compositeColor, backgroundColor, overlayColor, state, true);
       }
     }
+  }
+
+  @Test
+  public void testLayerColorStateLists_repeatedColors_unsupported() {
+    ColorStateList overlayColor =
+        AppCompatResources.getColorStateList(
+            context, R.color.test_background_state_unsupported_case);
+    ColorStateList backgroundColor =
+        AppCompatResources.getColorStateList(context, R.color.test_surface_state);
+    ColorStateList compositeColor =
+        MaterialColors.layer(backgroundColor, -1, overlayColor, 0, states);
+
+    int[] unsupportedTestState =
+        new int[] {
+          android.R.attr.state_enabled, android.R.attr.state_selected, android.R.attr.state_checked,
+        };
+    compareLayeredColorsForStates(
+        compositeColor, backgroundColor, overlayColor, unsupportedTestState, false);
   }
 
   private static List<int[][]> generateTestStatesList() {
@@ -110,15 +128,21 @@ public class MaterialColorsTest {
       ColorStateList compositeColor,
       ColorStateList backgroundColor,
       ColorStateList overlayColor,
-      int[] state) {
+      int[] state,
+      boolean expectedResult) {
     int composite = compositeColor.getColorForState(state, -1);
     int background = backgroundColor.getColorForState(state, -1);
     int overlay = overlayColor.getColorForState(state, -1);
     int expectedColor = MaterialColors.layer(background, overlay);
-    assertColorsAreEqual(expectedColor, composite);
+    assertColorsAreEqual(expectedColor, composite, expectedResult);
   }
 
-  private static void assertColorsAreEqual(@ColorInt int expectedColor, @ColorInt int color) {
-    Assert.assertEquals(expectedColor, color);
+  private static void assertColorsAreEqual(
+      @ColorInt int expectedColor, @ColorInt int color, boolean expectedResult) {
+    if (expectedResult) {
+      Assert.assertEquals(expectedColor, color);
+    } else {
+      Assert.assertNotEquals(expectedColor, color);
+    }
   }
 }
