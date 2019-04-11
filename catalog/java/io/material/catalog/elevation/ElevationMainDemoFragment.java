@@ -22,7 +22,7 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.card.MaterialCardView;
-import androidx.core.view.ViewCompat;
+import com.google.android.material.internal.ViewUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,6 +52,7 @@ public class ElevationMainDemoFragment extends DemoFragment {
     return R.layout.cat_elevation_shadows_fragment;
   }
 
+  @SuppressWarnings("RestrictTo") // It's safe to use restricted MDC code in MDC Catalog.
   protected void updateElevationLevel(View view, int newLevel) {
     List<MaterialCardView> elevationCards =
         DemoUtils.findViewsWithType(view, MaterialCardView.class);
@@ -62,11 +63,10 @@ public class ElevationMainDemoFragment extends DemoFragment {
       currentElevation = newLevel;
       elevationDP = elevationValues[currentElevation];
       for (MaterialCardView elevationCard : elevationCards) {
-        ViewCompat.setElevation(elevationCard, elevationDP);
+        elevationCard.setCardElevation(ViewUtils.dpToPx(view.getContext(), elevationDP));
       }
       levelText.setText(
-          getResources()
-              .getString(R.string.cat_elevation_fragment_level, elevationDP));
+          getResources().getString(R.string.cat_elevation_fragment_level, elevationDP));
     }
   }
 
