@@ -21,6 +21,7 @@
   <string name="cat_topappbar_scrolling_title">Scrolling Demo</string>
   <string name="cat_topappbar_scrolling_transparent_title">Scrolling Demo (transparent status bar)</string>
   <string name="cat_topappbar_collapsing_title">Collapsing Demo</string>
+  <string name="cat_topappbar_toolbar_title" translatable="false">Toolbar Demo</string>
   <string name="cat_topappbar_action_bar_title">Action Bar Demo</string>
   <string name="cat_topappbar_dark_action_bar_title">Dark Action Bar Demo</string>
 
