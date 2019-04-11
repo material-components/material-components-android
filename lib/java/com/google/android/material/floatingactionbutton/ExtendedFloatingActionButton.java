@@ -218,6 +218,10 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     return userSetVisibility;
   }
 
+  public final boolean isExtended() {
+    return isExtended;
+  }
+
   public void addOnShowAnimationListener(@NonNull AnimatorListener listener) {
     if (showListeners == null) {
       showListeners = new ArrayList<>();
