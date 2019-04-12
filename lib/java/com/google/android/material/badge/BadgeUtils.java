@@ -80,16 +80,10 @@ public class BadgeUtils {
    * ancestor of the anchor.
    */
   public static void attachBadgeDrawable(
-      BadgeDrawable badgeDrawable, View anchor, FrameLayout preAPI18BadgeParent) {
-    Rect badgeBounds = new Rect();
+      BadgeDrawable badgeDrawable, View anchor, FrameLayout preApi18BadgeParent) {
+    setBadgeDrawableBounds(badgeDrawable, anchor, preApi18BadgeParent);
     if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
-      preAPI18BadgeParent.getDrawingRect(badgeBounds);
-    } else {
-      anchor.getDrawingRect(badgeBounds);
-    }
-    badgeDrawable.setBounds(badgeBounds);
-    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
-      preAPI18BadgeParent.setForeground(badgeDrawable);
+      preApi18BadgeParent.setForeground(badgeDrawable);
     } else {
       anchor.getOverlay().add(badgeDrawable);
     }
@@ -102,14 +96,29 @@ public class BadgeUtils {
    * an ancestor of the anchor.
    */
   public static void detachBadgeDrawable(
-      @Nullable BadgeDrawable badgeDrawable, View anchor, FrameLayout preAPI18BadgeParent) {
+      @Nullable BadgeDrawable badgeDrawable, View anchor, FrameLayout preApi18BadgeParent) {
     if (badgeDrawable == null) {
       return;
     }
     if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
-      preAPI18BadgeParent.setForeground(null);
+      preApi18BadgeParent.setForeground(null);
     } else {
       anchor.getOverlay().remove(badgeDrawable);
     }
+  }
+
+  /**
+   * Sets the bounds of a BadgeDrawable to match the bounds of its anchor (for API 18+) or its
+   * anchor's FrameLayout ancestor (pre-API 18).
+   */
+  public static void setBadgeDrawableBounds(
+      BadgeDrawable badgeDrawable, View anchor, FrameLayout preApi18BadgeParent) {
+    Rect badgeBounds = new Rect();
+    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
+      preApi18BadgeParent.getDrawingRect(badgeBounds);
+    } else {
+      anchor.getDrawingRect(badgeBounds);
+    }
+    badgeDrawable.setBounds(badgeBounds);
   }
 }
