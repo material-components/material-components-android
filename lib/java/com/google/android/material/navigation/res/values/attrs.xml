@@ -36,5 +36,7 @@
     <attr name="itemIconPadding" format="dimension"/>
     <!-- The size of the icon navigation items that display an icon  -->
     <attr name="itemIconSize" format="dimension"/>
+    <!-- Makes the TextView of the item text be at most this many lines tall.  -->
+    <attr name="itemMaxLines" format="integer" min="1"/>
   </declare-styleable>
 </resources>

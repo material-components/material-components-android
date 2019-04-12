@@ -79,6 +79,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   int itemIconPadding;
   int itemIconSize;
   boolean hasCustomItemIconSize;
+  private int itemMaxLines;
 
   /**
    * Padding to be inserted at the top of the list to avoid the first menu item from being placed
@@ -292,6 +293,15 @@ public class NavigationMenuPresenter implements MenuPresenter {
     updateMenuView(false);
   }
 
+  public void setItemMaxLines(int itemMaxLines) {
+    this.itemMaxLines = itemMaxLines;
+    updateMenuView(false);
+  }
+
+  public int getItemMaxLines() {
+    return itemMaxLines;
+  }
+
   public void setItemIconSize(@Dimension int itemIconSize) {
     if (this.itemIconSize != itemIconSize) {
       this.itemIconSize = itemIconSize;
@@ -462,6 +472,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
             if (hasCustomItemIconSize) {
               itemView.setIconSize(itemIconSize);
             }
+            itemView.setMaxLines(itemMaxLines);
             itemView.initialize(item.getMenuItem(), 0);
             break;
           }
