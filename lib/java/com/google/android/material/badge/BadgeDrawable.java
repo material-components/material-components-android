@@ -57,10 +57,45 @@ import android.view.ViewGroup;
 /**
  * BadgeDrawable contains all the layout and draw logic for a badge.
  *
+ * <p>You can use {@code BadgeDrawable} to display dynamic information such as a number of pending
+ * requests in a {@link com.google.android.material.bottomnavigation.BottomNavigationView}. To create an
+ * instance of {@code BadgeDrawable}, use {@link #create(Context)} or {@link
+ * #createFromAttributes(Context, AttributeSet, int, int)}. How to add and display a {@code
+ * BadgeDrawable} on top of its anchor view depends on the API level:
+ *
+ * <p>For API 18+ (APIs supported by {@link android.view.ViewOverlay})
+ *
+ * <ul>
+ *   <li>Add {@code BadgeDrawable} as a {@link android.view.ViewOverlay} to the desired anchor view
+ *       using {@link BadgeUtils#attachBadgeDrawable(BadgeDrawable, View, FrameLayout)}.
+ *   <li>Update the {@code BadgeDrawable BadgeDrawable's} coordinates (center and bounds) based on
+ *       its anchor view using {@link #updateBadgeCoordinates(View, ViewGroup)}.
+ * </ul>
+ *
+ * <pre>
+ * BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
+ * BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, null);
+ * badgeDrawable.updateBadgeCoordinates(anchor, null);
+ * </pre>
+ *
+ * <p>For Pre API-18
+ *
+ * <ul>
+ *   <li>Set {@code BadgeDrawable} as the foreground of the anchor view's FrameLayout ancestor using
+ *       {@link BadgeUtils#attachBadgeDrawable(BadgeDrawable, View, FrameLayout)}.
+ *   <li>Update the {@code BadgeDrawable BadgeDrawable's} coordinates (center and bounds) based on
+ *       its anchor view (relative to its FrameLayout ancestor's coordinate space), using {@link
+ *       #updateBadgeCoordinates(View, ViewGroup)}.
+ * </ul>
+ *
+ * <pre>
+ * BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
+ * BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
+ * badgeDrawable.updateBadgeCoordinates(anchor, anchorFrameLayoutParent);
+ * </pre>
+ *
  * @hide
  */
-// TODO: Add information and example about how to use BadgeDrawable (specifically pre-18
-// vs later).
 @RestrictTo(Scope.LIBRARY)
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private final Context context;
