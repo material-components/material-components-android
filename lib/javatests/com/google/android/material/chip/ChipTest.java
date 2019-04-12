@@ -17,11 +17,11 @@ package com.google.android.material.chip;
 
 import com.google.android.material.R;
 
-
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
+import static org.robolectric.annotation.LooperMode.Mode.PAUSED;
 
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.TextUtils.TruncateAt;
@@ -35,9 +35,12 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.LooperMode;
+import org.robolectric.annotation.TextLayoutMode;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link com.google.android.material.chip.Chip}. */
+@TextLayoutMode(value = TextLayoutMode.Mode.LEGACY, issueId = "130377392")
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
 public class ChipTest {
