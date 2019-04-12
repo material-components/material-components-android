@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import com.google.android.material.R;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;
@@ -50,6 +52,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.shadow.ShadowRenderer;
 import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
@@ -125,6 +128,35 @@ public class MaterialShapeDrawable extends Drawable
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
+
+  /**
+   * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
+   * fill color of {@code colorSurface}, and an elevation of 0.
+   *
+   * <p>See {@link ElevationOverlayProvider#layerOverlayIfNeeded(int, float)} for information on
+   * when the overlay will be active.
+   */
+  public static MaterialShapeDrawable createWithElevationOverlay(Context context) {
+    return createWithElevationOverlay(context, 0);
+  }
+
+  /**
+   * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
+   * fill color of {@code colorSurface}, and an elevation of {@code elevation}.
+   *
+   * <p>See {@link ElevationOverlayProvider#layerOverlayIfNeeded(int, float)} for information on
+   * when the overlay will be active.
+   */
+  public static MaterialShapeDrawable createWithElevationOverlay(Context context, float elevation) {
+    int colorSurface =
+        MaterialColors.getColor(
+            context, R.attr.colorSurface, MaterialShapeDrawable.class.getSimpleName());
+    MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+    materialShapeDrawable.initializeElevationOverlay(context);
+    materialShapeDrawable.setFillColor(ColorStateList.valueOf(colorSurface));
+    materialShapeDrawable.setElevation(elevation);
+    return materialShapeDrawable;
+  }
 
   public MaterialShapeDrawable() {
     this(new ShapeAppearanceModel());
@@ -493,22 +525,26 @@ public class MaterialShapeDrawable extends Drawable
         shadowEnabled ? SHADOW_COMPAT_MODE_DEFAULT : SHADOW_COMPAT_MODE_NEVER);
   }
 
-  public void initializeElevationOverlay(Context context) {
-    drawableState.elevationOverlayProvider = new ElevationOverlayProvider(context);
-    updateElevationOverlayTint();
-    invalidateSelfIgnoreShape();
+  /** Returns whether the elevation overlay functionality has been initialized for this drawable. */
+  public boolean isElevationOverlayInitialized() {
+    return drawableState.elevationOverlayProvider != null;
   }
 
-  private void updateElevationOverlayTint() {
-    // Recalculate fillPaint tint filter based on elevation, elevationOverlayEnabled, etc.
-    updateTintFilter();
+  /**
+   * Initializes the elevation overlay functionality for this drawable.
+   *
+   * <p>See {@link ElevationOverlayProvider#layerOverlayIfNeeded(int, float)} for information on
+   * when the overlay will be active.
+   */
+  public void initializeElevationOverlay(Context context) {
+    drawableState.elevationOverlayProvider = new ElevationOverlayProvider(context);
+    updateZ();
   }
 
   @ColorInt
   private int layerElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
     return drawableState.elevationOverlayProvider != null
-        ? drawableState.elevationOverlayProvider.layerOverlayIfNeeded(
-            backgroundColor, drawableState.elevation)
+        ? drawableState.elevationOverlayProvider.layerOverlayIfNeeded(backgroundColor, getZ())
         : backgroundColor;
   }
 
@@ -538,27 +574,72 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   /**
-   * Returns the elevation used to render fake shadows when {@link #requiresCompatShadow()} is true.
-   * This value is the same as the native elevation that would be used to render shadows on API 21
-   * and up.
+   * Returns the elevation used to render both fake shadows when {@link #requiresCompatShadow()} is
+   * true and elevation overlays. This value is the same as the native elevation that would be used
+   * to render shadows on API 21 and up.
    */
   public float getElevation() {
     return drawableState.elevation;
   }
 
   /**
-   * Sets the elevation used to render shadows when {@link #requiresCompatShadow()} is true. This
-   * value is the same as the native elevation that would be used to render shadows on API 21 and
-   * up.
+   * Sets the elevation used to render both fake shadows when {@link #requiresCompatShadow()} is
+   * true and elevation overlays. This value is the same as the native elevation that would be used
+   * to render shadows on API 21 and up.
    */
   public void setElevation(float elevation) {
     if (drawableState.elevation != elevation) {
-      drawableState.shadowCompatRadius = (int) Math.ceil(elevation * SHADOW_RADIUS_MULTIPLIER);
-      drawableState.shadowCompatOffset = (int) Math.ceil(elevation * SHADOW_OFFSET_MULTIPLIER);
       drawableState.elevation = elevation;
-      updateElevationOverlayTint();
-      invalidateSelfIgnoreShape();
+      updateZ();
     }
+  }
+
+  /**
+   * Returns the translationZ used to render both fake shadows when {@link #requiresCompatShadow()}
+   * is true and elevation overlays. This value is the same as the native translationZ that would be
+   * used to render shadows on API 21 and up.
+   */
+  public float getTranslationZ() {
+    return drawableState.translationZ;
+  }
+
+  /**
+   * Sets the translationZ used to render both fake shadows when {@link #requiresCompatShadow()} is
+   * true and elevation overlays. This value is the same as the native translationZ that would be
+   * used to render shadows on API 21 and up.
+   */
+  public void setTranslationZ(float translationZ) {
+    if (drawableState.translationZ != translationZ) {
+      drawableState.translationZ = translationZ;
+      updateZ();
+    }
+  }
+
+  /**
+   * Returns the visual z position of this drawable, in pixels. This is equivalent to the {@link
+   * #getTranslationZ() translationZ} property plus the current {@link #getElevation() elevation}
+   * property.
+   */
+  public float getZ() {
+    return getElevation() + getTranslationZ();
+  }
+
+  /**
+   * Sets the visual z position of this view, in pixels. This is equivalent to setting the {@link
+   * #setTranslationZ(float) translationZ} property to be the difference between the z value passed
+   * in and the current {@link #getElevation() elevation} property.
+   */
+  public void setZ(float z) {
+    setTranslationZ(z - getElevation());
+  }
+
+  private void updateZ() {
+    float z = getZ();
+    drawableState.shadowCompatRadius = (int) Math.ceil(z * SHADOW_RADIUS_MULTIPLIER);
+    drawableState.shadowCompatOffset = (int) Math.ceil(z * SHADOW_OFFSET_MULTIPLIER);
+    // Recalculate fillPaint tint filter based on z, elevationOverlayProvider, etc.
+    updateTintFilter();
+    invalidateSelfIgnoreShape();
   }
 
   /**
@@ -1149,6 +1230,7 @@ public class MaterialShapeDrawable extends Drawable
 
     public int alpha = 255;
     public float elevation = 0;
+    public float translationZ = 0;
     public int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
     public int shadowCompatRadius = 0;
     public int shadowCompatOffset = 0;
@@ -1181,6 +1263,7 @@ public class MaterialShapeDrawable extends Drawable
       useTintColorForShadow = orig.useTintColorForShadow;
       interpolation = orig.interpolation;
       elevation = orig.elevation;
+      translationZ = orig.translationZ;
       shadowCompatRadius = orig.shadowCompatRadius;
       shadowCompatRotation = orig.shadowCompatRotation;
       strokeTintList = orig.strokeTintList;

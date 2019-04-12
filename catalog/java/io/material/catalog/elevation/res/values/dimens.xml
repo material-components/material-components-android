@@ -21,4 +21,5 @@
   <dimen name="cat_elevation_demo_card_bottom_padding">6dp</dimen>
   <dimen name="cat_elevation_demo_padding">8dp</dimen>
   <dimen name="cat_elevation_demo_bottom_padding">16dp</dimen>
+  <dimen name="cat_elevation_demo_max_translation_z">24dp</dimen>
 </resources>

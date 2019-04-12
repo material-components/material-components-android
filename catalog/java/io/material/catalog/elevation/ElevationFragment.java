@@ -28,7 +28,7 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
-import java.util.Collections;
+import java.util.Arrays;
 import java.util.List;
 
 /** A landing fragment that links to Elevation demos for the Catalog app. */
@@ -56,11 +56,17 @@ public class ElevationFragment extends DemoLandingFragment {
 
   @Override
   public List<Demo> getAdditionalDemos() {
-    return Collections.singletonList(
+    return Arrays.asList(
         new Demo(R.string.cat_elevation_overlays_title) {
           @Override
           public Intent createActivityIntent() {
             return new Intent(getContext(), ElevationOverlaysDemoActivity.class);
+          }
+        },
+        new Demo(R.string.cat_elevation_animation_title) {
+          @Override
+          public Fragment createFragment() {
+            return new ElevationAnimationDemoFragment();
           }
         });
   }
