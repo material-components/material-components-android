@@ -30,6 +30,6 @@
 
   <!-- A theme which sets the status bar color to transparent -->
   <style name="Theme.Catalog.TransparentStatus">
-    <item name="android:statusBarColor" tools:targetApi="lollipop">@android:color/transparent</item>
+    <item name="android:statusBarColor" tools:targetApi="21">@android:color/transparent</item>
   </style>
 </resources>
