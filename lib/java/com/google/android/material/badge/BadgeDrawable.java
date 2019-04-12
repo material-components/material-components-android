@@ -82,12 +82,11 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   /** Returns a BadgeDrawable from the given attributes. */
   public static BadgeDrawable createFromAttributes(
-      @NonNull View anchorView,
-      @Nullable ViewGroup customBadgeParent,
+      @NonNull Context context,
       AttributeSet attrs,
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
-    BadgeDrawable badge = new BadgeDrawable(anchorView, customBadgeParent);
+    BadgeDrawable badge = new BadgeDrawable(context);
     badge.loadFromAttributes(attrs, defStyleAttr, defStyleRes);
     return badge;
   }
@@ -154,8 +153,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     return MaterialResources.getColorStateList(context, a, index).getDefaultColor();
   }
 
-  private BadgeDrawable(@NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
-    this.context = anchorView.getContext();
+  private BadgeDrawable(Context context) {
+    this.context = context;
+    ThemeEnforcement.checkMaterialTheme(context);
     Resources res = context.getResources();
     tmpRect = new Rect();
     badgeBounds = new Rect();
@@ -167,8 +167,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
     textDrawableHelper = new TextDrawableHelper();
     textDrawableHelper.getTextPaint().setTextAlign(Paint.Align.CENTER);
-
-    calculateBadgeCenterCoordinates(anchorView, customBadgeParent);
   }
 
   /**
