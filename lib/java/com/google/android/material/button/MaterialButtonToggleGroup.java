@@ -51,7 +51,6 @@ import java.util.List;
  * <pre>
  * &lt;com.google.android.material.button.MaterialButtonToggleGroup
  *     xmlns:android="http://schemas.android.com/apk/res/android"
- *     xmlns:app="http://schema.android.com/apk/res/res-auto"
  *     android:id="@+id/toggle_button_group"
  *     android:layout_width="wrap_content"
  *     android:layout_height="wrap_content" /&gt;
