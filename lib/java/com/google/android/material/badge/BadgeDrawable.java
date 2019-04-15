@@ -132,34 +132,6 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     return badge;
   }
 
-  /** Returns BadgeDrawable's default background color from the given attributes. */
-  @ColorInt
-  public static int getDefaultBackgroundColor(
-      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    TypedArray a =
-        ThemeEnforcement.obtainStyledAttributes(
-            context, attrs, R.styleable.Badge, defStyleAttr, defStyleRes);
-    return readColorFromAttributes(context, a, R.styleable.Badge_backgroundColor);
-  }
-
-  /** Returns BadgeDrawable's default text color from the given attributes. */
-  @ColorInt
-  public static int getDefaultTextColor(
-      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
-    TypedArray a =
-        ThemeEnforcement.obtainStyledAttributes(
-            context, attrs, R.styleable.Badge, defStyleAttr, defStyleRes);
-    if (a.hasValue(R.styleable.Badge_badgeTextColor)) {
-      return readColorFromAttributes(context, a, R.styleable.Badge_badgeTextColor);
-    } else {
-      // If the badge text color attribute was not explicitly set, use the text color specified in
-      // the TextAppearance.
-      TextAppearance textAppearance =
-          new TextAppearance(context, R.style.TextAppearance_MaterialComponents_Badge);
-      return textAppearance.textColor.getDefaultColor();
-    }
-  }
-
   private void loadFromAttributes(
       AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
     TypedArray a =
