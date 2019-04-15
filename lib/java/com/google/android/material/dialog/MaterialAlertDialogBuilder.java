@@ -41,6 +41,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
+import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.view.ViewCompat;
@@ -73,20 +74,40 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   private Drawable background;
   @Dimension private final Rect backgroundInsets;
 
+  private static int getMaterialAlertDialogThemeOverlay(Context context) {
+    TypedValue materialAlertDialogThemeOverlay =
+        MaterialAttributes.resolveAttribute(context, MATERIAL_ALERT_DIALOG_THEME_OVERLAY);
+    if (materialAlertDialogThemeOverlay == null) {
+      return 0;
+    }
+    return materialAlertDialogThemeOverlay.data;
+  }
+
   private static Context createMaterialAlertDialogThemedContext(Context context) {
-    TypedValue outValue = new TypedValue();
-    context.getTheme().resolveAttribute(MATERIAL_ALERT_DIALOG_THEME_OVERLAY, outValue, true);
-    int themeOverlayId = outValue.resourceId;
-    return new ContextThemeWrapper(
-        createThemedContext(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES), themeOverlayId);
+    int themeOverlayId = getMaterialAlertDialogThemeOverlay(context);
+    Context themedContext = createThemedContext(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
+    if (themeOverlayId == 0) {
+      return themedContext;
+    }
+    return new ContextThemeWrapper(themedContext, themeOverlayId);
+  }
+
+  private static int getOverridingThemeResId(Context context, int overrideThemeResId) {
+    return overrideThemeResId == 0
+        ? getMaterialAlertDialogThemeOverlay(context)
+        : overrideThemeResId;
   }
 
   public MaterialAlertDialogBuilder(Context context) {
     this(context, 0);
   }
 
-  public MaterialAlertDialogBuilder(Context context, int themeResId) {
-    super(createMaterialAlertDialogThemedContext(context), themeResId);
+  public MaterialAlertDialogBuilder(Context context, int overrideThemeResId) {
+    // Only pass in 0 for themeResId if both overrideThemeResId and
+    // MATERIAL_ALERT_DIALOG_THEME_OVERLAY are 0 otherwise alertDialogTheme will override both.
+    super(
+        createMaterialAlertDialogThemedContext(context),
+        getOverridingThemeResId(context, overrideThemeResId));
     // Ensure we are using the correctly themed context rather than the context that was passed in.
     context = getContext();
     Theme theme = context.getTheme();
@@ -94,10 +115,8 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
     backgroundInsets =
         MaterialDialogs.getDialogBackgroundInsets(context, DEF_STYLE_ATTR, DEF_STYLE_RES);
 
-    TypedValue colorSurfaceValue =
-        MaterialAttributes.resolveAttributeOrThrow(
-            context, R.attr.colorSurface, getClass().getCanonicalName());
-    int surfaceColor = colorSurfaceValue.data;
+    int surfaceColor =
+        MaterialColors.getColor(context, R.attr.colorSurface, getClass().getCanonicalName());
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
     materialShapeDrawable.initializeElevationOverlay(context);

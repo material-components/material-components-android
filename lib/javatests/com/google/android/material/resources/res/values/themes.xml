@@ -19,4 +19,8 @@
   <style name="Theme.MaterialComponents.Light.LargeTouch">
     <item name="minTouchTargetSize">@dimen/mtrl_large_touch_target</item>
   </style>
+  <style name="Theme.MaterialComponents.Light.BarSize">
+    <item name="actionBarSize">@dimen/action_bar_size</item>
+  </style>
+  <style name="EmptyTheme"/>
 </resources>

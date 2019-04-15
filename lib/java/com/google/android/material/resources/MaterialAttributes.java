@@ -21,6 +21,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import androidx.annotation.AttrRes;
+import androidx.annotation.DimenRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
@@ -101,12 +102,21 @@ public class MaterialAttributes {
   /** Returns the minimum touch target size, acceptable for accessibility, in pixels. */
   @Px
   public static int resolveMinimumAccessibleTouchTarget(Context context) {
-    TypedValue minTouchTargetSizeValue =
-        MaterialAttributes.resolveAttribute(context, R.attr.minTouchTargetSize);
-    if (minTouchTargetSizeValue == null) {
-      return (int) context.getResources().getDimension(R.dimen.mtrl_min_touch_target_size);
+    return resolveDimension(context, R.attr.minTouchTargetSize, R.dimen.mtrl_min_touch_target_size);
+  }
+
+  /**
+   * Returns the pixel value of the dimension specified by {@code attributeResId}. Defaults to
+   * {@code defaultDimenResId} if {@code attr} cannot be found within the given {@code context}.
+   */
+  @Px
+  public static int resolveDimension(
+      Context context, @AttrRes int attributeResId, @DimenRes int defaultDimenResId) {
+    TypedValue dimensionValue = MaterialAttributes.resolveAttribute(context, attributeResId);
+    if (dimensionValue == null) {
+      return (int) context.getResources().getDimension(defaultDimenResId);
     } else {
-      return (int) minTouchTargetSizeValue.getDimension(context.getResources().getDisplayMetrics());
+      return (int) dimensionValue.getDimension(context.getResources().getDisplayMetrics());
     }
   }
 }
