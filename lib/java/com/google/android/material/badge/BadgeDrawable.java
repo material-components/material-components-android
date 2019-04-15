@@ -39,8 +39,6 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import com.google.android.material.internal.TextDrawableHelper;
@@ -93,10 +91,7 @@ import android.view.ViewGroup;
  * BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
  * badgeDrawable.updateBadgeCoordinates(anchor, anchorFrameLayoutParent);
  * </pre>
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY)
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private final Context context;
   private final MaterialShapeDrawable shapeDrawable;
@@ -249,12 +244,18 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /**
-   * Returns this badge's number.
+   * Returns this badge's number. Only non-negative integer numbers will be returned because the
+   * setter clamps negative values to 0.
    *
+   * <p> WARNING: Do not call this method if you are planning to compare to ICON_ONLY_BADGE_NUMBER
+   * 
    * @see #setNumber(int)
    * @attr ref com.google.android.material.R.styleable#Badge_number
    */
   public int getNumber() {
+    if (number == ICON_ONLY_BADGE_NUMBER) {
+      return 0;
+    }
     return number;
   }
 
@@ -353,7 +354,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       return;
     }
     shapeDrawable.draw(canvas);
-    if (number >= 0) {
+    if (number != ICON_ONLY_BADGE_NUMBER) {
       drawText(canvas);
     }
   }
@@ -385,8 +386,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     float cornerRadius;
     tmpRect.set(badgeBounds);
     if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
-      cornerRadius = (getNumber() == ICON_ONLY_BADGE_NUMBER) ? iconOnlyRadius : badgeWithTextRadius;
-
+      cornerRadius = (number == ICON_ONLY_BADGE_NUMBER) ? iconOnlyRadius : badgeWithTextRadius;
       updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, cornerRadius, cornerRadius);
     } else {
       cornerRadius = badgeWithTextRadius;
