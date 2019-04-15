@@ -53,6 +53,9 @@ public class ShapeAppearanceModel {
     void onShapeAppearanceModelChanged();
   }
 
+  // Constant corner radius value to indicate that shape should use 50% height corner radii
+  public static final int PILL = -1;
+
   private CornerTreatment topLeftCorner;
   private CornerTreatment topRightCorner;
   private CornerTreatment bottomRightCorner;
@@ -597,6 +600,14 @@ public class ShapeAppearanceModel {
 
   void removeOnChangedListener(@Nullable OnChangedListener onChangedListener) {
     onChangedListeners.remove(onChangedListener);
+  }
+
+  /** Checks if all four corners of this ShapeAppearanceModel are of size {@link #PILL}. */
+  public boolean isUsingPillCorner() {
+    return getTopRightCorner().getCornerSize() == PILL
+        && getTopLeftCorner().getCornerSize() == PILL
+        && getBottomLeftCorner().getCornerSize() == PILL
+        && getBottomRightCorner().getCornerSize() == PILL;
   }
 
   private void onShapeAppearanceModelChanged() {

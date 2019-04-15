@@ -26,9 +26,4 @@
       android:startOffset="0"
       android:duration="200"
       android:interpolator="@interpolator/mtrl_fast_out_slow_in"/>
-  <objectAnimator
-      android:propertyName="cornerRadius"
-      android:startOffset="0"
-      android:duration="200"
-      android:interpolator="@interpolator/mtrl_fast_out_slow_in"/>
 </set>
