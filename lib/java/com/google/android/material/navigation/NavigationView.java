@@ -487,9 +487,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
   }
 
-  /**
-   * @return Returns the currently checked item in this navigation menu.
-   */
+  /** Returns the currently checked item in this navigation menu. */
   @Nullable
   public MenuItem getCheckedItem() {
     return presenter.getCheckedItem();
@@ -505,8 +503,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
-   * Sets the size to be used for the menu item icons in pixels.
-   * If no icons are set, calling this method will do nothing.
+   * Sets the size to be used for the menu item icons in pixels. If no icons are set, calling this
+   * method will do nothing.
    *
    * @attr ref R.styleable#NavigationView_itemIconSize
    */
