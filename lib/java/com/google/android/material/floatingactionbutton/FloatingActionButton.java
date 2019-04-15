@@ -1325,11 +1325,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
   }
 
-  /**
-   * Add a {@link TransformationListener} which can watch for changes to this view.
-   */
+  /** Add a {@link TransformationListener} which can watch for changes to this view. */
   public void addTransformationListener(
-      @NonNull TransformationListener<FloatingActionButton> listener) {
+      @NonNull TransformationListener<? extends FloatingActionButton> listener) {
     getImpl().addTransformationListener(new TransformationListenerWrapper(listener));
   }
 
@@ -1338,7 +1336,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * when this view is transformed.
    */
   public void removeTransformationListener(
-      @NonNull TransformationListener<FloatingActionButton> listener) {
+      @NonNull TransformationListener<? extends FloatingActionButton> listener) {
     getImpl().removeTransformationListener(new TransformationListenerWrapper(listener));
   }
 
@@ -1346,22 +1344,23 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     return shapeAppearance.getTopRightCorner().getCornerSize() == -1;
   }
 
-  class TransformationListenerWrapper implements InternalTransformationListener {
+  class TransformationListenerWrapper<T extends FloatingActionButton>
+      implements InternalTransformationListener {
 
-    @NonNull private final TransformationListener<FloatingActionButton> listener;
+    @NonNull private final TransformationListener<T> listener;
 
-    TransformationListenerWrapper(@NonNull TransformationListener<FloatingActionButton> listener) {
+    TransformationListenerWrapper(@NonNull TransformationListener<T> listener) {
       this.listener = listener;
     }
 
     @Override
     public void onTranslationChanged() {
-      listener.onTranslationChanged(FloatingActionButton.this);
+      listener.onTranslationChanged((T) FloatingActionButton.this);
     }
 
     @Override
     public void onScaleChanged() {
-      listener.onScaleChanged(FloatingActionButton.this);
+      listener.onScaleChanged((T) FloatingActionButton.this);
     }
 
     @Override
