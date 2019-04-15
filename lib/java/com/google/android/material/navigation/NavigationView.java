@@ -124,8 +124,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       ViewCompat.setElevation(
           this, a.getDimensionPixelSize(R.styleable.NavigationView_elevation, 0));
     }
-    ViewCompat.setFitsSystemWindows(
-        this, a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
+    setFitsSystemWindows(a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
 
     maxWidth = a.getDimensionPixelSize(R.styleable.NavigationView_android_maxWidth, 0);
 
