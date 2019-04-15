@@ -29,7 +29,11 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.core.graphics.ColorUtils;
 import android.util.StateSet;
 
-/** Utils class for ripples. */
+/**
+ * Utils class for ripples.
+ *
+ * @hide
+ */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class RippleUtils {
 

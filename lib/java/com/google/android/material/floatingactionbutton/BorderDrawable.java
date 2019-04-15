@@ -46,7 +46,7 @@ import androidx.core.graphics.ColorUtils;
  * A Drawable that draws borders for {@link FloatingActionButton}
  *
  * @hide
- * */
+ */
 @RestrictTo(LIBRARY_GROUP)
 class BorderDrawable extends Drawable {
 
@@ -56,6 +56,7 @@ class BorderDrawable extends Drawable {
    * multiplier used to determine to draw stroke width.
    */
   private static final float DRAW_STROKE_WIDTH_MULTIPLE = 1.3333f;
+
   private final ShapeAppearancePathProvider pathProvider = new ShapeAppearancePathProvider();
 
   private final Paint paint;
@@ -167,8 +168,7 @@ class BorderDrawable extends Drawable {
     return shapeAppearanceModel;
   }
 
-  public void setShapeAppearanceModel(
-      ShapeAppearanceModel shapeAppearanceModel) {
+  public void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
     this.shapeAppearanceModel = shapeAppearanceModel;
     invalidateSelf();
   }

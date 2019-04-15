@@ -19,7 +19,11 @@ package com.google.android.material.shape;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 
-/** Utility methods for {@link MaterialShapeDrawable} and related classes. */
+/**
+ * Utility methods for {@link MaterialShapeDrawable} and related classes.
+ *
+ * @hide
+ */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class MaterialShapeUtils {
 

@@ -25,7 +25,11 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 
-/** Utils class for Drawables. */
+/**
+ * Utils class for Drawables.
+ *
+ * @hide
+ */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DrawableUtils {
 

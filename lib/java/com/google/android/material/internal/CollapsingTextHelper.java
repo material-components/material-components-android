@@ -44,7 +44,11 @@ import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.View;
 
-/** Helper class for rendering and animating collapsed text. */
+/**
+ * Helper class for rendering and animating collapsed text.
+ *
+ * @hide
+ */
 @RestrictTo(LIBRARY_GROUP)
 public final class CollapsingTextHelper {
 

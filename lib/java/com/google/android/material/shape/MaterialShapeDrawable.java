@@ -666,6 +666,8 @@ public class MaterialShapeDrawable extends Drawable
   /**
    * Returns the shadow vertical offset rendered for shadows when {@link #requiresCompatShadow()} is
    * true.
+   *
+   * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   public int getShadowVerticalOffset() {
@@ -678,6 +680,8 @@ public class MaterialShapeDrawable extends Drawable
    * realistic looking shadow depending on the placement of the view on the screen. Normally, if the
    * View is positioned further down on the screen, less shadow appears above the View, and more
    * shadow appears below it.
+   *
+   * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   public void setShadowVerticalOffset(int shadowOffset) {

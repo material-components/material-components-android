@@ -25,7 +25,11 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.RestrictTo;
 
-/** Compat methods for Canvas. */
+/**
+ * Compat methods for Canvas.
+ *
+ * @hide
+ */
 @RestrictTo(LIBRARY_GROUP)
 public class CanvasCompat {
 
