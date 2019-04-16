@@ -37,8 +37,15 @@
   <string name="cat_tabs_legacy_tabs_label">Legacy Tabs</string>
   <string name="cat_tabs_material_tabs_label">Material Tabs</string>
   <string name="cat_tabs_colored_tabs_label">Material Tabs (Colored)</string>
+  <string name="cat_tabs_add_tab_button_label">Add Tab</string>
+  <string name="cat_tabs_remove_tab_button_label">Remove Tab</string>
   <string name="cat_tabs_controllable_demo_title">Controllable Tabs Demo</string>
   <string name="cat_tabs_scrollable_demo_title">Scrollable Tabs Demo</string>
+  <string name="cat_tabs_auto_demo_title">Auto Tabs Demo</string>
+  <string name="cat_tabs_auto_scrollable_explanation">
+    Tabs in \"auto\" mode behave like fixed tabs with tabGravity = \"center\" when the tabs are less
+    wide than the screen, and behave like scrollable tabs when the tabs are wider than the screen.
+  </string>
 
   <!-- Selected indicator names -->
   <string name="cat_tabs_selected_indicator_line_bottom">Line (bottom)</string>

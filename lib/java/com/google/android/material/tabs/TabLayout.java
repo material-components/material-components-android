@@ -214,9 +214,20 @@ public class TabLayout extends HorizontalScrollView {
    */
   public static final int MODE_FIXED = 1;
 
+  /**
+   * Auto-sizing tabs behave like MODE_FIXED with GRAVITY_CENTER while the tabs fit within the
+   * TabLayout's content width. Fixed tabs have equal width, based on the widest tab label. Once the
+   * tabs outgrow the view's width, auto-sizing tabs behave like MODE_SCROLLABLE, allowing for a
+   * dynamic number of tabs without requiring additional layout logic.
+   *
+   * @see #setTabMode(int)
+   * @see #getTabMode()
+   */
+  public static final int MODE_AUTO = 2;
+
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
-  @IntDef(value = {MODE_SCROLLABLE, MODE_FIXED})
+  @IntDef(value = {MODE_SCROLLABLE, MODE_FIXED, MODE_AUTO})
   @Retention(RetentionPolicy.SOURCE)
   public @interface Mode {}
 
@@ -1621,6 +1632,7 @@ public class TabLayout extends HorizontalScrollView {
       boolean remeasure = false;
 
       switch (mode) {
+        case MODE_AUTO:
         case MODE_SCROLLABLE:
           // We only need to resize the child if it's smaller than us. This is similar
           // to fillViewport
@@ -1639,6 +1651,7 @@ public class TabLayout extends HorizontalScrollView {
                 heightMeasureSpec,
                 getPaddingTop() + getPaddingBottom(),
                 child.getLayoutParams().height);
+
         int childWidthMeasureSpec =
             MeasureSpec.makeMeasureSpec(getMeasuredWidth(), MeasureSpec.EXACTLY);
         child.measure(childWidthMeasureSpec, childHeightMeasureSpec);
@@ -1791,7 +1804,7 @@ public class TabLayout extends HorizontalScrollView {
   }
 
   private int calculateScrollXForTab(int position, float positionOffset) {
-    if (mode == MODE_SCROLLABLE) {
+    if (mode == MODE_SCROLLABLE || mode == MODE_AUTO) {
       final View selectedChild = slidingTabIndicator.getChildAt(position);
       final View nextChild =
           position + 1 < slidingTabIndicator.getChildCount()
@@ -1814,13 +1827,14 @@ public class TabLayout extends HorizontalScrollView {
 
   private void applyModeAndGravity() {
     int paddingStart = 0;
-    if (mode == MODE_SCROLLABLE) {
+    if (mode == MODE_SCROLLABLE || mode == MODE_AUTO) {
       // If we're scrollable, or fixed at start, inset using padding
       paddingStart = Math.max(0, contentInsetStart - tabPaddingStart);
     }
     ViewCompat.setPaddingRelative(slidingTabIndicator, paddingStart, 0, 0, 0);
 
     switch (mode) {
+      case MODE_AUTO:
       case MODE_FIXED:
         slidingTabIndicator.setGravity(Gravity.CENTER_HORIZONTAL);
         break;
@@ -2656,7 +2670,10 @@ public class TabLayout extends HorizontalScrollView {
         return;
       }
 
-      if (mode == MODE_FIXED && tabGravity == GRAVITY_CENTER) {
+      // GRAVITY_CENTER will make all tabs the same width as the largest tab, and center them in the
+      // SlidingTabIndicator's width (with a "gutter" of padding on either side). If the Tabs do not
+      // fit in the SlidingTabIndicator, then fall back to GRAVITY_FILL behavior.
+      if ((tabGravity == GRAVITY_CENTER) || mode == MODE_AUTO) {
         final int count = getChildCount();
 
         // First we'll find the widest tab
@@ -2689,7 +2706,8 @@ public class TabLayout extends HorizontalScrollView {
           }
         } else {
           // If the tabs will wrap to be larger than the width minus gutters, we need
-          // to switch to GRAVITY_FILL
+          // to switch to GRAVITY_FILL.
+          // TODO : This overrides the user TabGravity setting.
           tabGravity = GRAVITY_FILL;
           updateTabViews(false);
           remeasure = true;
@@ -2942,7 +2960,7 @@ public class TabLayout extends HorizontalScrollView {
       return requestedTabMinWidth;
     }
     // Else, we'll use the default value
-    return mode == MODE_SCROLLABLE ? scrollableTabMinWidth : 0;
+    return (mode == MODE_SCROLLABLE || mode == MODE_AUTO) ? scrollableTabMinWidth : 0;
   }
 
   @Override

@@ -424,4 +424,23 @@ public class TestUtilsActions {
       }
     };
   }
+
+  public static ViewAction setTabMode(final int tabMode) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TabLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "set tab mode";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        ((TabLayout) view).setTabMode(tabMode);
+      }
+    };
+  }
 }

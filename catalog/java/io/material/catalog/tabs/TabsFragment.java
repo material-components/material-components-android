@@ -70,6 +70,13 @@ public class TabsFragment extends DemoLandingFragment {
             return new TabsScrollableDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_tabs_auto_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TabsAutoDemoFragment();
+          }
+        });
     return additionalDemos;
   }
 

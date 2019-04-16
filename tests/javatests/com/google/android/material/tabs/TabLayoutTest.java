@@ -18,6 +18,7 @@ package com.google.android.material.tabs;
 
 import static com.google.android.material.testutils.TabLayoutActions.selectTab;
 import static com.google.android.material.testutils.TabLayoutActions.setScrollPosition;
+import static com.google.android.material.testutils.TabLayoutActions.setTabMode;
 import static com.google.android.material.testutils.TestUtilsActions.setLayoutDirection;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
@@ -36,6 +37,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.annotation.TargetApi;
 import android.os.Build;
+import com.google.android.material.tabs.TabLayout.Tab;
 import com.google.android.material.testapp.R;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.app.AppCompatActivity;
@@ -46,6 +48,7 @@ import android.view.PointerIcon;
 import android.view.View;
 import androidx.test.annotation.UiThreadTest;
 import androidx.test.espresso.Espresso;
+import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;
@@ -76,7 +79,9 @@ public class TabLayoutTest {
 
     // Tab 0 has text, but no icon or custom view
     TabLayout.Tab tab = tabLayout.getTabAt(0);
-    assertEquals(activityTestRule.getActivity().getString(R.string.tab_layout_text), tab.getText());
+    assertEquals(
+        activityTestRule.getActivity().getString(R.string.tab_layout_text),
+        tab.getText().toString());
     assertNull(tab.getIcon());
     assertNull(tab.getCustomView());
 
@@ -238,6 +243,67 @@ public class TabLayoutTest {
   @Test
   public void setScrollPositionRtl() throws Throwable {
     testSetScrollPosition(false);
+  }
+
+  @Test
+  public void testModeAuto() throws Throwable {
+    activityTestRule.runOnUiThread(
+        new Runnable() {
+          @Override
+          public void run() {
+            activityTestRule.getActivity().setContentView(R.layout.design_tabs_fixed_width);
+          }
+        });
+    final TabLayout tabs = activityTestRule.getActivity().findViewById(R.id.tabs);
+
+    final TabLayoutScrollIdlingResource idler = new TabLayoutScrollIdlingResource(tabs);
+    IdlingRegistry.getInstance().register(idler);
+
+    onView(withId(R.id.tabs)).perform(setTabMode(TabLayout.MODE_AUTO));
+
+    // Make sure tabs are scrolled all the way to the start
+    onView(withId(R.id.tabs)).perform(selectTab(0));
+
+    onView(withId(R.id.tabs))
+        .check(
+            new ViewAssertion() {
+              @Override
+              public void check(View view, NoMatchingViewException notFoundException) {
+                if (!(view instanceof TabLayout)) {
+                  throw notFoundException;
+                }
+
+                TabLayout tabs = (TabLayout) view;
+
+                assertEquals(TabLayout.MODE_AUTO, tabs.getTabMode());
+                int tabWidth = 0;
+                for (int i = 0; i < tabs.getTabCount(); i++) {
+                  Tab tab = tabs.getTabAt(i);
+                  tabWidth += tab.view.getMeasuredWidth();
+                }
+
+                // In MODE_AUTO, the total width of tabs can exceed the width of the parent
+                // TabLayout
+                assertTrue(tabWidth > tabs.getMeasuredWidth());
+              }
+            });
+
+    // Make sure tabs are scrolled all the way to the end
+    onView(withId(R.id.tabs))
+        .perform(selectTab(7))
+        .check(
+            new ViewAssertion() {
+              @Override
+              public void check(View view, NoMatchingViewException notFoundException) {
+                if (!(view instanceof TabLayout)) {
+                  throw notFoundException;
+                }
+
+                assertTrue(view.getScrollX() > view.getMeasuredWidth());
+              }
+            });
+
+    IdlingRegistry.getInstance().unregister(idler);
   }
 
   private void testSetScrollPosition(final boolean isLtr) throws Throwable {
