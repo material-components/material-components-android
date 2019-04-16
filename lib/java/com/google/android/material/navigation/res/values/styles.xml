@@ -25,7 +25,8 @@
   </style>
 
   <style name="Widget.MaterialComponents.NavigationView" parent="Widget.Design.NavigationView">
-    <item name="elevation">@dimen/mtrl_navigation_elevation</item>
+    <item name="enforceMaterialTheme">true</item>
+    <item name="android:background">?attr/colorSurface</item>
     <item name="itemIconPadding">@dimen/mtrl_navigation_item_icon_padding</item>
     <item name="itemHorizontalPadding">@dimen/mtrl_navigation_item_horizontal_padding</item>
   </style>
