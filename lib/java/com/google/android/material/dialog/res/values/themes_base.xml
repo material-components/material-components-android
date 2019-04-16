@@ -123,6 +123,7 @@
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog" parent="ThemeOverlay.AppCompat.Dialog">
     <!-- Widget styles -->
     <item name="materialButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
+    <item name="android:windowBackground">@drawable/mtrl_dialog_background</item>
   </style>
 
   <style name="Base.V14.ThemeOverlay.MaterialComponents.Dialog.Alert" parent="ThemeOverlay.AppCompat.Dialog.Alert">
