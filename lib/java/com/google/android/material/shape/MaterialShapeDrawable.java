@@ -129,6 +129,8 @@ public class MaterialShapeDrawable extends Drawable
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
 
+  @Nullable private Rect padding;
+
   /**
    * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
    * fill color of {@code colorSurface}, and an elevation of 0.
@@ -477,6 +479,34 @@ public class MaterialShapeDrawable extends Drawable
   @CompatibilityShadowMode
   public int getShadowCompatibilityMode() {
     return drawableState.shadowCompatMode;
+  }
+
+  @Override
+  public boolean getPadding(Rect padding) {
+    if (this.padding != null) {
+      padding.set(this.padding);
+      return true;
+    } else {
+      return super.getPadding(padding);
+    }
+  }
+
+  /**
+   * Configure the padding of the shape
+   * @param left Left padding of the shape
+   * @param top Top padding of the shape
+   * @param right Right padding of the shape
+   * @param bottom Bottom padding of the shape
+   *
+   */
+  public void setPadding(int left, int top, int right, int bottom) {
+    if (drawableState.padding == null) {
+      drawableState.padding = new Rect();
+    }
+
+    drawableState.padding.set(left, top, right, bottom);
+    padding = drawableState.padding;
+    invalidateSelf();
   }
 
   /**
@@ -1227,6 +1257,7 @@ public class MaterialShapeDrawable extends Drawable
     @Nullable public ColorStateList strokeTintList = null;
     @Nullable public ColorStateList tintList = null;
     @Nullable public PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
+    @Nullable public Rect padding = null;
 
     public float scale = 1f;
     public float interpolation = 1f;
@@ -1272,6 +1303,9 @@ public class MaterialShapeDrawable extends Drawable
       shadowCompatRotation = orig.shadowCompatRotation;
       strokeTintList = orig.strokeTintList;
       paintStyle = orig.paintStyle;
+      if (orig.padding != null) {
+        padding = new Rect(orig.padding);
+      }
     }
 
     @Override
