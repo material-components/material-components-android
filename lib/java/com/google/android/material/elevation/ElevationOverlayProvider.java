@@ -38,7 +38,7 @@ public class ElevationOverlayProvider {
 
   public ElevationOverlayProvider(Context context) {
     this.elevationOverlaysEnabled =
-        MaterialAttributes.resolveBooleanAttribute(context, R.attr.elevationOverlaysEnabled);
+        MaterialAttributes.resolveBoolean(context, R.attr.elevationOverlaysEnabled, false);
     this.elevationOverlaysColor =
         MaterialColors.getColor(context, R.attr.elevationOverlaysColor, Color.TRANSPARENT);
     this.colorSurface = MaterialColors.getColor(context, R.attr.colorSurface, Color.TRANSPARENT);

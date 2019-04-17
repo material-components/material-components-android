@@ -56,7 +56,7 @@ public class MaterialColors {
    */
   @ColorInt
   public static int getColor(View view, @AttrRes int colorAttributeResId) {
-    return MaterialAttributes.resolveAttributeOrThrow(view, colorAttributeResId).data;
+    return MaterialAttributes.resolveOrThrow(view, colorAttributeResId);
   }
 
   /**
@@ -67,9 +67,7 @@ public class MaterialColors {
   @ColorInt
   public static int getColor(
       Context context, @AttrRes int colorAttributeResId, String errorMessageComponent) {
-    return MaterialAttributes.resolveAttributeOrThrow(
-            context, colorAttributeResId, errorMessageComponent)
-        .data;
+    return MaterialAttributes.resolveOrThrow(context, colorAttributeResId, errorMessageComponent);
   }
 
   /**
@@ -89,7 +87,7 @@ public class MaterialColors {
   @ColorInt
   public static int getColor(
       Context context, @AttrRes int colorAttributeResId, @ColorInt int defaultValue) {
-    TypedValue typedValue = MaterialAttributes.resolveAttribute(context, colorAttributeResId);
+    TypedValue typedValue = MaterialAttributes.resolve(context, colorAttributeResId);
     if (typedValue != null) {
       return typedValue.data;
     } else {
@@ -200,7 +198,7 @@ public class MaterialColors {
    *   enabled          GREEN
    * </pre>
    * <p>Color for state {enabled, checked, selected} --> returns RED # incorrect
-   * 
+   *
    * <p>Result if iterating top down through CSL to composite each state color:
    * <pre>
    *   enabled, selected GREEN

@@ -76,7 +76,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
 
   private static int getMaterialAlertDialogThemeOverlay(Context context) {
     TypedValue materialAlertDialogThemeOverlay =
-        MaterialAttributes.resolveAttribute(context, MATERIAL_ALERT_DIALOG_THEME_OVERLAY);
+        MaterialAttributes.resolve(context, MATERIAL_ALERT_DIALOG_THEME_OVERLAY);
     if (materialAlertDialogThemeOverlay == null) {
       return 0;
     }

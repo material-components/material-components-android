@@ -37,7 +37,6 @@ import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.dialog.MaterialDialogs;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
-import android.util.TypedValue;
 
 /**
  * A Material version of {@link android.app.DatePickerDialog}
@@ -84,10 +83,9 @@ public class MaterialStyledDatePickerDialog extends DatePickerDialog {
     super(context, themeResId, listener, year, monthOfYear, dayOfMonth);
     context = getContext();
 
-    TypedValue colorSurfaceValue =
-        MaterialAttributes.resolveAttributeOrThrow(
+    int surfaceColor =
+        MaterialAttributes.resolveOrThrow(
             getContext(), R.attr.colorSurface, getClass().getCanonicalName());
-    int surfaceColor = colorSurfaceValue.data;
 
     MaterialShapeDrawable materialShapeDrawable =
         new MaterialShapeDrawable(context, null, DEF_STYLE_ATTR, DEF_STYLE_RES);
