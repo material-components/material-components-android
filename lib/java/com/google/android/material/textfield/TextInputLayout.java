@@ -72,7 +72,6 @@ import androidx.appcompat.widget.TintTypedArray;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.text.method.PasswordTransformationMethod;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.util.SparseArray;
@@ -315,6 +314,7 @@ public class TextInputLayout extends LinearLayout {
       new LinkedHashSet<>();
 
   @EndIconMode private int endIconMode = END_ICON_NONE;
+  private final SparseArray<EndIconDelegate> endIconDelegates = new SparseArray<>();
   private final CheckableImageButton endIconView;
   private final LinkedHashSet<OnEndIconChangedListener> endIconChangedListeners =
       new LinkedHashSet<>();
@@ -324,50 +324,6 @@ public class TextInputLayout extends LinearLayout {
   private boolean hasEndIconTintMode;
   private Drawable endIconDummyDrawable;
   private Drawable originalEditTextEndDrawable;
-
-  private final OnEditTextAttachedListener passwordToggleOnEditTextAttachedListener =
-      new OnEditTextAttachedListener() {
-        @Override
-        public void onEditTextAttached() {
-          setEndIconVisible(hasPasswordTransformation());
-        }
-      };
-  private final OnEndIconChangedListener passwordToggleEndIconChangedListener =
-      new OnEndIconChangedListener() {
-        @Override
-        public void onEndIconChanged(int previousIcon) {
-          if (editText != null && previousIcon == END_ICON_PASSWORD_TOGGLE) {
-            // If the end icon was the password toggle add it back the PasswordTransformation
-            // in case it might have been removed to make the password visible,
-            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-          }
-        }
-      };
-
-  private final TextWatcher clearTextEndIconTextWatcher =
-      new TextWatcher() {
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {}
-
-        @Override
-        public void afterTextChanged(Editable s) {
-          setEndIconVisible(s.length() > 0);
-        }
-      };
-
-  private final OnEditTextAttachedListener clearTextOnEditTextAttachedListener =
-      new OnEditTextAttachedListener() {
-        @Override
-        public void onEditTextAttached() {
-          setEndIconVisible(!TextUtils.isEmpty(editText.getText()));
-          // Make sure there's always only one clear text text watcher added
-          editText.removeTextChangedListener(clearTextEndIconTextWatcher);
-          editText.addTextChangedListener(clearTextEndIconTextWatcher);
-        }
-      };
 
   private ColorStateList defaultHintTextColor;
   private ColorStateList focusedTextColor;
@@ -592,6 +548,11 @@ public class TextInputLayout extends LinearLayout {
                 .inflate(R.layout.design_text_input_end_icon, inputFrame, false);
     inputFrame.addView(endIconView);
     endIconView.setVisibility(GONE);
+    endIconDelegates.append(END_ICON_CUSTOM, new CustomEndIconDelegate(this));
+    endIconDelegates.append(END_ICON_NONE, new NoEndIconDelegate(this));
+    endIconDelegates.append(
+        END_ICON_PASSWORD_TOGGLE, new PasswordToggleEndIconDelegate(this));
+    endIconDelegates.append(END_ICON_CLEAR_TEXT, new ClearTextEndIconDelegate(this));
     // Set up the end icon if any.
     if (a.hasValue(R.styleable.TextInputLayout_endIconMode)) {
       // Specific defaults depending on which end icon mode is set
@@ -2232,25 +2193,7 @@ public class TextInputLayout extends LinearLayout {
     int previousEndIconMode = this.endIconMode;
     this.endIconMode = endIconMode;
     setEndIconVisible(endIconMode != END_ICON_NONE);
-    switch (endIconMode) {
-      case END_ICON_CUSTOM:
-        setEndIconOnClickListener(null);
-        break;
-      case END_ICON_PASSWORD_TOGGLE:
-        // Set defaults for the password toggle end icon
-        setEndIconPasswordToggleDefaults();
-        break;
-      case END_ICON_CLEAR_TEXT:
-        // Set defaults for the clear text end icon
-        setEndIconClearTextDefaults();
-        break;
-      default:
-        // Removes any current end icon
-        setEndIconOnClickListener(null);
-        setEndIconDrawable(null);
-        setEndIconContentDescription(null);
-        break;
-    }
+    getEndIconDelegate().initialize();
     applyEndIconTint();
     dispatchOnEndIconChanged(previousEndIconMode);
   }
@@ -2469,50 +2412,6 @@ public class TextInputLayout extends LinearLayout {
     editTextAttachedListeners.clear();
   }
 
-  private void setEndIconPasswordToggleDefaults() {
-    setEndIconDrawable(
-        AppCompatResources.getDrawable(getContext(), R.drawable.design_password_eye));
-    setEndIconContentDescription(
-        getResources().getText(R.string.password_toggle_content_description));
-    setEndIconOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            if (editText == null) {
-              return;
-            }
-            // Store the current cursor position
-            final int selection = editText.getSelectionEnd();
-            if (hasPasswordTransformation()) {
-              editText.setTransformationMethod(null);
-              endIconView.setChecked(true);
-            } else {
-              editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-              endIconView.setChecked(false);
-            }
-            // And restore the cursor position
-            editText.setSelection(selection);
-          }
-        });
-    addOnEditTextAttachedListener(passwordToggleOnEditTextAttachedListener);
-    addOnEndIconChangedListener(passwordToggleEndIconChangedListener);
-  }
-
-  private void setEndIconClearTextDefaults() {
-    setEndIconDrawable(
-        AppCompatResources.getDrawable(getContext(), R.drawable.mtrl_clear_text_button));
-    setEndIconContentDescription(
-        getResources().getText(R.string.clear_text_end_icon_content_description));
-    setEndIconOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            editText.setText(null);
-          }
-        });
-    addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
-  }
-
   /**
    * Set the icon to use for the password visibility toggle button.
    *
@@ -2701,6 +2600,15 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  CheckableImageButton getEndIconView() {
+    return endIconView;
+  }
+
+  private EndIconDelegate getEndIconDelegate() {
+    EndIconDelegate endIconDelegate = endIconDelegates.get(endIconMode);
+    return endIconDelegate != null ? endIconDelegate : endIconDelegates.get(END_ICON_NONE);
+  }
+
   private void dispatchOnEditTextAttached() {
     for (OnEditTextAttachedListener listener : editTextAttachedListeners) {
       listener.onEditTextAttached();
@@ -2840,11 +2748,6 @@ public class TextInputLayout extends LinearLayout {
       return iconView.getPaddingBottom();
     }
     return editText != null ? editText.getPaddingBottom() : 0;
-  }
-
-  private boolean hasPasswordTransformation() {
-    return editText != null
-        && editText.getTransformationMethod() instanceof PasswordTransformationMethod;
   }
 
   @Override
