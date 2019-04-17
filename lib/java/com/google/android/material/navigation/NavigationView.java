@@ -22,10 +22,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -42,7 +39,6 @@ import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.content.ContextCompat;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.ViewCompat;
@@ -123,16 +119,10 @@ public class NavigationView extends ScrimInsetsFrameLayout {
             defStyleAttr,
             R.style.Widget_Design_NavigationView);
 
-    if (getBackground() instanceof ColorDrawable) {
-      ColorDrawable background = (ColorDrawable) getBackground();
-      MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
-      materialShapeDrawable.setFillColor(ColorStateList.valueOf(background.getColor()));
-      materialShapeDrawable.initializeElevationOverlay(context);
-      ViewCompat.setBackground(this, materialShapeDrawable);
-    }
-
+    ViewCompat.setBackground(this, a.getDrawable(R.styleable.NavigationView_android_background));
     if (a.hasValue(R.styleable.NavigationView_elevation)) {
-      setElevation(a.getDimensionPixelSize(R.styleable.NavigationView_elevation, 0));
+      ViewCompat.setElevation(
+          this, a.getDimensionPixelSize(R.styleable.NavigationView_elevation, 0));
     }
     setFitsSystemWindows(a.getBoolean(R.styleable.NavigationView_android_fitsSystemWindows, false));
 
@@ -209,17 +199,6 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     a.recycle();
-  }
-
-  @Override
-  public void setElevation(float elevation) {
-    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
-      super.setElevation(elevation);
-    }
-    Drawable background = getBackground();
-    if (background instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) background).setElevation(elevation);
-    }
   }
 
   @Override
