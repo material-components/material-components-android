@@ -28,8 +28,8 @@ import androidx.core.util.Pair;
 import java.util.Calendar;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialCalendar<Pair<Calendar, Calendar>>},
- * and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialCalendar<Pair<Calendar, Calendar>>}, and set of
+ * actions.
  *
  * @hide
  */
@@ -55,20 +55,18 @@ public class MaterialDateRangePickerDialogFragment
     return R.attr.materialDateRangePickerDialogTheme;
   }
 
-
   @Override
   protected GridSelector<Pair<Calendar, Calendar>> createGridSelector() {
     return new DateRangeGridSelector();
   }
 
   @Override
-  protected String getHeaderText() {
-    Pair<Calendar, Calendar> startAndEnd = getMaterialCalendar().getSelection();
-    if (startAndEnd == null) {
+  protected String getHeaderText(Pair<Calendar, Calendar> selection) {
+    if (selection == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_range_header_prompt);
     }
-    String startString = getSimpleDateFormat().format(startAndEnd.first.getTime());
-    String endString = getSimpleDateFormat().format(startAndEnd.second.getTime());
+    String startString = getSimpleDateFormat().format(selection.first.getTime());
+    String endString = getSimpleDateFormat().format(selection.second.getTime());
     return getContext()
         .getResources()
         .getString(R.string.mtrl_picker_range_header_selected, startString, endString);

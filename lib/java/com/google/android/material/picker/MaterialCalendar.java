@@ -17,8 +17,6 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -33,6 +31,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
 
 /**
  * Fragment for a days of week {@link Calendar} represented as a header row of days labels and
@@ -45,6 +44,8 @@ public final class MaterialCalendar<S> extends Fragment {
 
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
 
+  private final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
+      new LinkedHashSet<>();
   private MonthInYear monthInYear;
   private MonthInYearAdapter monthInYearAdapter;
   private GridSelector<S> gridSelector;
@@ -111,12 +112,10 @@ public final class MaterialCalendar<S> extends Fragment {
                   (AdapterView<MonthInYearAdapter>) parent;
               gridSelector.onItemClick(calendarGrid, view, position, id);
               gridSelector.drawSelection(calendarGrid);
-            }
-            // Allows users of MaterialCalendar to set an OnClickListener
-            if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
-              root.callOnClick();
-            } else {
-              root.performClick();
+              for (OnSelectionChangedListener<S> onSelectionChangedListener : 
+                  onSelectionChangedListeners) {
+                onSelectionChangedListener.onSelectionChanged(gridSelector.getSelection());
+              }
             }
           }
         });
@@ -125,5 +124,23 @@ public final class MaterialCalendar<S> extends Fragment {
 
   public final S getSelection() {
     return gridSelector.getSelection();
+  }
+
+  boolean addOnSelectionChangedListener(OnSelectionChangedListener<S> listener) {
+    return onSelectionChangedListeners.add(listener);
+  }
+
+  boolean removeOnSelectionChangedListener(OnSelectionChangedListener<S> listener) {
+    return onSelectionChangedListeners.remove(listener);
+  }
+
+  void clearOnSelectionChangedListeners() {
+    onSelectionChangedListeners.clear();
+  }
+
+  interface OnSelectionChangedListener<S> {
+
+    void onSelectionChanged(S selection);
+
   }
 }

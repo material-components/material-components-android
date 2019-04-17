@@ -28,13 +28,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
+import com.google.android.material.picker.MaterialCalendar.OnSelectionChangedListener;
 import com.google.android.material.picker.selector.GridSelector;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
@@ -55,8 +55,10 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    * Returns the text to display at the top of the {@link DialogFragment}
    *
    * <p>The text is updated when the Dialog launches and on user clicks.
+   *
+   * @param selection The current user selection
    */
-  protected abstract String getHeaderText();
+  protected abstract String getHeaderText(@Nullable S selection);
 
   /** Returns an {@link @AttrRes} to apply as a theme overlay to the DialogFragment */
   protected abstract int getDefaultThemeAttr();
@@ -67,7 +69,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    */
   protected abstract GridSelector<S> createGridSelector();
 
-  private MaterialCalendar<? extends S> materialCalendar;
+  private MaterialCalendar<S> materialCalendar;
   private GridSelector<S> gridSelector;
   private SimpleDateFormat simpleDateFormat;
 
@@ -168,16 +170,20 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   @Override
   public void onStart() {
     super.onStart();
-    materialCalendar
-        .getView()
-        .setOnClickListener(
-            new OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                updateHeader();
-              }
-            });
-    updateHeader();
+    updateHeader(materialCalendar.getSelection());
+    materialCalendar.addOnSelectionChangedListener(
+        new OnSelectionChangedListener<S>() {
+          @Override
+          public void onSelectionChanged(S selection) {
+            updateHeader(selection);
+          }
+        });
+  }
+
+  @Override
+  public void onStop() {
+    materialCalendar.clearOnSelectionChangedListeners();
+    super.onStop();
   }
 
   @Override
@@ -223,7 +229,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     return materialCalendar;
   }
 
-  private void updateHeader() {
-    header.setText(getHeaderText());
+  private void updateHeader(S selection) {
+    header.setText(getHeaderText(selection));
   }
 }

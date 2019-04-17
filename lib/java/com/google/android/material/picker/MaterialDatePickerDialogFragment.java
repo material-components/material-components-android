@@ -57,12 +57,11 @@ public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragme
   }
 
   @Override
-  protected String getHeaderText() {
-    Calendar selectedDate = getMaterialCalendar().getSelection();
-    if (selectedDate == null) {
+  protected String getHeaderText(Calendar selection) {
+    if (selection == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_header_prompt);
     }
-    String startString = getSimpleDateFormat().format(selectedDate.getTime());
+    String startString = getSimpleDateFormat().format(selection.getTime());
     return getContext().getResources().getString(R.string.mtrl_picker_header_selected, startString);
   }
 }
