@@ -82,6 +82,11 @@
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
           android:text="@string/cat_bottom_nav_remove_nav_item"/>
+       <Button
+          android:id="@+id/increment_badge_number_button"
+          android:layout_width="wrap_content"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_bottom_nav_increment_badge_number"/>
     </LinearLayout>
   </ScrollView>
   <FrameLayout

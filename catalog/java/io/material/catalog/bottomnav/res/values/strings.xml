@@ -38,6 +38,7 @@
 
   <string name="cat_bottom_nav_add_nav_item">Add nav item</string>
   <string name="cat_bottom_nav_remove_nav_item">Remove nav item</string>
+  <string name="cat_bottom_nav_increment_badge_number" description="The title of a button to increment the notification number. [CHAR_LIMIT=20]">+Badge number</string>
   <string name="cat_bottom_nav_icon_size_slider_title">Icon size: </string>
   <string name="cat_bottom_nav_label_visibility_mode_title">Label visibility mode:</string>
 

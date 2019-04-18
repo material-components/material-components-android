@@ -22,6 +22,7 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavigationItemSelectedListener;
 import android.view.LayoutInflater;
@@ -69,11 +70,51 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
             page3Text.setVisibility(itemId == R.id.action_page_3 ? View.VISIBLE : View.GONE);
             page4Text.setVisibility(itemId == R.id.action_page_4 ? View.VISIBLE : View.GONE);
             page5Text.setVisibility(itemId == R.id.action_page_5 ? View.VISIBLE : View.GONE);
+
+            clearAndHideBadge(item.getItemId());
             return false;
           }
         };
     setBottomNavListeners(navigationItemListener);
+
+    setupBadging();
     return view;
+  }
+
+  private void setupBadging() {
+    for (BottomNavigationView bn : bottomNavigationViews) {
+      int menuItemId = bn.getMenu().getItem(0).getItemId();
+      // An icon only badge will be displayed.
+      bn.showBadge(menuItemId);
+
+      menuItemId = bn.getMenu().getItem(1).getItemId();
+      bn.showBadge(menuItemId);
+      // A badge with the text "99" will be displayed.
+      bn.getBadge(menuItemId).setNumber(99);
+
+      menuItemId = bn.getMenu().getItem(2).getItemId();
+      bn.showBadge(menuItemId);
+      // A badge with the text "999+" will be displayed.
+      bn.getBadge(menuItemId).setNumber(9999);
+    }
+  }
+
+  private void updateBadgeNumber(int delta) {
+    for (BottomNavigationView bn : bottomNavigationViews) {
+      // Increase the badge number on the first menu item.
+      MenuItem menuItem = bn.getMenu().getItem(0);
+      int menuItemId = menuItem.getItemId();
+      BadgeDrawable badgeDrawable = bn.getBadge(menuItemId);
+      badgeDrawable.setVisible(true, /* restart= */ false);
+      badgeDrawable.setNumber(badgeDrawable.getNumber() + delta);
+    }
+  }
+
+  private void clearAndHideBadge(int menuItemId) {
+    for (BottomNavigationView bn : bottomNavigationViews) {
+      bn.getBadge(menuItemId).clearBadgeNumber();
+      bn.getBadge(menuItemId).setVisible(false, false);
+    }
   }
 
   private void handleAllBottomNavSelections(int itemId) {
@@ -89,6 +130,17 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
   protected void initBottomNavDemoControls(View view) {
     initAddNavItemButton(view.findViewById(R.id.add_button));
     initRemoveNavItemButton(view.findViewById(R.id.remove_button));
+    initAddIncreaseBadgeNumberButton(view.findViewById(R.id.increment_badge_number_button));
+  }
+
+  private void initAddIncreaseBadgeNumberButton(Button incrementBadgeNumberButton) {
+    incrementBadgeNumberButton.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            updateBadgeNumber(1);
+          }
+        });
   }
 
   private void initAddNavItemButton(Button addNavItemButton) {
