@@ -66,6 +66,7 @@
            This is the default behavior. -->
       <flag name="none" value="0"/>
     </attr>
+    <attr name="android:elevation"/>
 
   </declare-styleable>
 

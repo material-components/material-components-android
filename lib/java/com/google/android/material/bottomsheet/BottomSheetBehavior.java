@@ -199,6 +199,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   int collapsedOffset;
 
+  float elevation = -1;
+
   boolean hideable;
 
   private boolean skipCollapsed;
@@ -248,6 +250,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       createMaterialShapeDrawable(context, attrs, hasBackgroundTint);
     }
     createShapeValueAnimator();
+    this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
 
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
     if (value != null && value.data == PEEK_HEIGHT_AUTO) {
@@ -316,9 +319,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       ViewCompat.setBackground(child, materialShapeDrawable);
     }
     // Set elevation on MaterialShapeDrawable
-    float elevation = ViewCompat.getElevation(child);
     if (materialShapeDrawable != null) {
-      materialShapeDrawable.setElevation(elevation);
+      // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
+      materialShapeDrawable.setElevation(
+          elevation == -1 ? ViewCompat.getElevation(child) : elevation);
     }
 
     if (viewRef == null) {

@@ -17,6 +17,7 @@
 <resources>
 
   <dimen name="design_bottom_sheet_modal_elevation">16dp</dimen>
+  <dimen name="design_bottom_sheet_elevation">8dp</dimen>
   <dimen name="design_bottom_sheet_peek_height_min">64dp</dimen>
 
 </resources>

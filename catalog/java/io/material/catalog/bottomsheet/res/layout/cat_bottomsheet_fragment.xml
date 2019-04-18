@@ -47,10 +47,9 @@
   </RelativeLayout>
   <RelativeLayout
       android:id="@+id/bottom_drawer"
-      style="@style/Widget.MaterialComponents.BottomSheet.Modal"
+      style="@style/Widget.MaterialComponents.BottomSheet"
       android:layout_width="match_parent"
       android:layout_height="400dp"
-      android:elevation="16dp"
       app:behavior_hideable="false"
       app:backgroundTint="?attr/colorSurface"
       app:behavior_peekHeight="200dp"
