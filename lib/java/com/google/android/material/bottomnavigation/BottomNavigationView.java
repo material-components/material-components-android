@@ -37,6 +37,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
@@ -604,6 +605,42 @@ public class BottomNavigationView extends FrameLayout {
    */
   public boolean isItemHorizontalTranslationEnabled() {
     return menuView.isItemHorizontalTranslationEnabled();
+  }
+
+  /**
+   * Returns an instance of {@link BadgeDrawable} associated with {@code menuItemId}, null if none
+   * was initialized.
+   *
+   * @param menuItemId Id of the menu item.
+   * @return an instance of BadgeDrawable associated with {@code menuItemId} or null.
+   * @see #showBadge(int)
+   */
+  @Nullable
+  public BadgeDrawable getBadge(int menuItemId) {
+    return menuView.getBadge(menuItemId);
+  }
+
+  /**
+   * Initializes (if needed) and shows a {@link BadgeDrawable} associated with {@code menuItemId}.
+   * Creates an instance of BadgeDrawable if none are associated with {@code menuItemId}. For
+   * convenience, also returns the associated instance of BadgeDrawable.
+   *
+   * @param menuItemId Id of the menu item.
+   * @return an instance of BadgeDrawable associated with {@code menuItemId}.
+   */
+  public BadgeDrawable showBadge(int menuItemId) {
+    return menuView.showBadge(menuItemId);
+  }
+
+  /**
+   * Removes the {@link BadgeDrawable} associated with {@code menuItemId}. Do nothing if none
+   * exists. Consider changing the visibility of the {@link BadgeDrawable} if you only want to hide
+   * it temporarily.
+   *
+   * @param menuItemId Id of the menu item.
+   */
+  public void removeBadge(int menuItemId) {
+    menuView.removeBadge(menuItemId);
   }
 
   /** Listener for handling selection events on bottom navigation items. */

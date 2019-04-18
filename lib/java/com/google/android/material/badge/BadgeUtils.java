@@ -74,7 +74,8 @@ public class BadgeUtils {
   }
 
   /*
-   * Attaches a BadgeDrawable to its associated anchor.
+   * Attaches a BadgeDrawable to its associated anchor and update the BadgeDrawable's coordinates
+   * based on the anchor.
    * For API 18+, the BadgeDrawable will be added as a view overlay.
    * For pre-API 18, the BadgeDrawable will be set as the foreground of a FrameLayout that is an
    * ancestor of the anchor.
@@ -120,5 +121,6 @@ public class BadgeUtils {
       anchor.getDrawingRect(badgeBounds);
     }
     badgeDrawable.setBounds(badgeBounds);
+    badgeDrawable.updateBadgeCoordinates(anchor, preApi18BadgeParent);
   }
 }

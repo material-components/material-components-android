@@ -73,7 +73,6 @@ import android.view.ViewGroup;
  * <pre>
  * BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
  * BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, null);
- * badgeDrawable.updateBadgeCoordinates(anchor, null);
  * </pre>
  *
  * <p>For Pre API-18
@@ -89,7 +88,6 @@ import android.view.ViewGroup;
  * <pre>
  * BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
  * BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
- * badgeDrawable.updateBadgeCoordinates(anchor, anchorFrameLayoutParent);
  * </pre>
  */
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
