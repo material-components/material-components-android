@@ -17,19 +17,22 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.picker.selector.GridSelector;
+import com.google.android.material.resources.MaterialAttributes;
 import androidx.fragment.app.Fragment;
+import androidx.viewpager.widget.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.LinearLayout;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
 
@@ -46,8 +49,6 @@ public final class MaterialCalendar<S> extends Fragment {
 
   private final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
       new LinkedHashSet<>();
-  private Month month;
-  private MonthAdapter monthAdapter;
   private GridSelector<S> gridSelector;
 
   /**
@@ -79,46 +80,49 @@ public final class MaterialCalendar<S> extends Fragment {
       bundle = getArguments();
     }
     gridSelector = bundle.getParcelable(GRID_SELECTOR_KEY);
-    Calendar calendar = Calendar.getInstance();
-    month = Month.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
-    monthAdapter = new MonthAdapter(getContext(), month, gridSelector);
   }
 
-  @Nullable
+  @NonNull
   @Override
   public View onCreateView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
+
+    Month earliestMonth = Month.create(1900, Calendar.JANUARY);
+    Month latestMonth = Month.create(2100, Calendar.DECEMBER);
+    Calendar today = Calendar.getInstance();
+    Month startMonth = Month.create(today.get(Calendar.YEAR), today.get(Calendar.MONTH));
+
     final View root = layoutInflater.inflate(R.layout.mtrl_calendar, viewGroup, false);
     GridView daysHeader = root.findViewById(R.id.calendar_days_header);
-    GridView daysGrid = root.findViewById(R.id.calendar_grid);
-
     daysHeader.setAdapter(new DaysOfWeekAdapter());
-    daysHeader.setNumColumns(month.daysInWeek);
-    daysGrid.setAdapter(monthAdapter);
-    daysGrid.setNumColumns(month.daysInWeek);
-    daysGrid.setOnItemClickListener(
-        new OnItemClickListener() {
+    daysHeader.setNumColumns(startMonth.daysInWeek);
 
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            // The onItemClick interface forces use of a wildcard AdapterView, but
-            // GridSelector#changeSelection needs a MonthAdapter.
-            // The cast is verified by the instanceof on the Adapter backing the AdapterView.
-            if (parent.getAdapter() instanceof MonthAdapter) {
-              @SuppressWarnings("unchecked")
-              AdapterView<MonthAdapter> calendarGrid =
-                  (AdapterView<MonthAdapter>) parent;
-              gridSelector.changeSelection(calendarGrid, view, position, id);
-              gridSelector.drawSelection(calendarGrid);
-              for (OnSelectionChangedListener<S> onSelectionChangedListener : 
-                  onSelectionChangedListeners) {
-                onSelectionChangedListener.onSelectionChanged(gridSelector.getSelection());
+    ViewPager monthsPager = root.findViewById(R.id.month_pager);
+    monthsPager.setLayoutParams(
+        new LinearLayout.LayoutParams(
+            /* width= */ LinearLayout.LayoutParams.MATCH_PARENT,
+            /* height= */ MonthAdapter.MAXIMUM_WEEKS * getDayHeight(getContext())));
+    MonthsPagerAdapter monthsPagerAdapter =
+        new MonthsPagerAdapter(
+            getChildFragmentManager(),
+            gridSelector,
+            earliestMonth,
+            latestMonth,
+            startMonth,
+            new OnFragmentClickedListener() {
+
+              @Override
+              public void onFragmentClicked() {
+                for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
+                  listener.onSelectionChanged(gridSelector.getSelection());
+                }
               }
-            }
-          }
-        });
+            });
+    monthsPager.setAdapter(monthsPagerAdapter);
+    monthsPager.setCurrentItem(monthsPagerAdapter.getStartPosition());
+
     return root;
   }
 
@@ -141,6 +145,11 @@ public final class MaterialCalendar<S> extends Fragment {
   interface OnSelectionChangedListener<S> {
 
     void onSelectionChanged(S selection);
+  }
 
+  /** Returns the pixel height of each {@link android.view.View} representing a day. */
+  @Px
+  static int getDayHeight(Context context) {
+    return MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
   }
 }

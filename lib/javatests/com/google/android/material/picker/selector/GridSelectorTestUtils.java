@@ -19,8 +19,6 @@ import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import android.os.Parcel;
-import android.os.Parcelable;
 import com.google.android.material.picker.MonthAdapter;
 import android.view.View;
 import android.widget.TextView;
@@ -40,12 +38,5 @@ class GridSelectorTestUtils {
     View view = new TextView(context);
     gridSelector.drawCell(view, calendar);
     assertEquals(color, view.getBackground());
-  }
-
-  static <T> T parcelAndCreate(Parcelable parcelable, Parcelable.Creator<T> creator) {
-    Parcel parcel = Parcel.obtain();
-    parcelable.writeToParcel(parcel, /* flags= */ 0);
-    parcel.setDataPosition(0);
-    return creator.createFromParcel(parcel);
   }
 }

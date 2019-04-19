@@ -27,7 +27,6 @@ import com.google.android.material.picker.MonthAdapter;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import android.view.View;
-import android.widget.AdapterView;
 import java.util.Calendar;
 
 /**
@@ -48,9 +47,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   private Calendar selectedEndItem = null;
 
   @Override
-  public void changeSelection(
-      AdapterView<? extends MonthAdapter> parent, View view, int position, long row) {
-    MonthAdapter adapter = parent.getAdapter();
+  public void changeSelection(MonthAdapter adapter, View view, int position, long row) {
     Calendar selection = adapter.getItem(position);
     if (!adapter.withinMonth(position)) {
       return;
@@ -65,20 +62,6 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
     }
   }
 
-  @Override
-  public void drawSelection(AdapterView<? extends MonthAdapter> parent) {
-    MonthAdapter adapter = parent.getAdapter();
-
-    for (int i = 0; i < parent.getCount(); i++) {
-      Calendar item = adapter.getItem(i);
-      View cell = parent.getChildAt(i);
-      if (item != null && cell != null) {
-        drawCell(cell, item);
-      }
-    }
-  }
-
-  @Override
   public void drawCell(View cell, Calendar item) {
     ColorDrawable setColor = emptyColor;
     if (item.equals(selectedStartItem)) {

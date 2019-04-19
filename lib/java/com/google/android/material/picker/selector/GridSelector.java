@@ -44,30 +44,20 @@ public interface GridSelector<S> extends Parcelable {
   S getSelection();
 
   /**
-   * Modifies the {@link AdapterView} to represent its current selection state
+   * Allows this selection handler to respond to clicks within the {@link AdapterView}.
    *
-   * <p>This method is called when the {@link AdapterView} is first shown and when clicks change its
-   * state.
-   *
-   * @param parent The view that holds the selection (e.g., {@link android.widget.GridView})
-   */
-  void drawSelection(AdapterView<? extends MonthAdapter> parent);
-
-  /**
-   * Allows this selection handler to respond to clicks within the {@link AdapterView}
-   *
-   * @param parent The view that holds the selection (e.g., {@link android.widget.GridView})
+   * @param adapter The adapter backing this month of the calendar
    * @param view The view that was clicked
    * @param position The index of the item clicked in parent
    * @param row The row of the item clicked in parent
    */
-  void changeSelection(
-      AdapterView<? extends MonthAdapter> parent, View view, int position, long row);
+  void changeSelection(MonthAdapter adapter, View view, int position, long row);
 
   /**
    * Modifies the provided {@link View} to indicate its selection status.
    *
-   * <p>Called from {@link GridSelector#drawSelection(AdapterView)} for each {@link View}.
+   * <p>Called for each {@link View} as part of {@link MonthAdapter#getView(int, View,
+   * ViewGroup)}
    *
    * @param cell The {@link View} returned from {@link MonthAdapter#getView(int, View,
    *     ViewGroup)}

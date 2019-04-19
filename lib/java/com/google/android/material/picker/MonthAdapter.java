@@ -21,7 +21,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.picker.selector.GridSelector;
-import com.google.android.material.resources.MaterialAttributes;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -39,8 +38,10 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class MonthAdapter extends BaseAdapter {
 
-  private static final int MAXIMUM_WEEKS =
-      Calendar.getInstance().getMaximum(Calendar.WEEK_OF_MONTH);
+  /**
+   * The maximum number of weeks possible in any month. 6 for {@link java.util.GregorianCalendar}.
+   */
+  static final int MAXIMUM_WEEKS = Calendar.getInstance().getMaximum(Calendar.WEEK_OF_MONTH);
 
   private final Month month;
   private final int textViewSize;
@@ -50,7 +51,7 @@ public class MonthAdapter extends BaseAdapter {
   public MonthAdapter(
       Context context, Month month, GridSelector<?> gridSelector) {
     this.month = month;
-    textViewSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
+    textViewSize = MaterialCalendar.getDayHeight(context);
     this.gridSelector = gridSelector;
   }
 
@@ -59,7 +60,7 @@ public class MonthAdapter extends BaseAdapter {
    *
    * @param position Index for the item. 0 matches the {@link Calendar#getFirstDayOfWeek()} for the
    *     first week of the month represented by {@link Month}.
-   * @return An {@link Calendar} representing the Day at the position or null if the position does
+   * @return An {@link Calendar} representing the day at the position or null if the position does
    *     not represent a valid day in the month.
    */
   @Nullable
@@ -99,7 +100,9 @@ public class MonthAdapter extends BaseAdapter {
     if (offsetPosition < 0 || offsetPosition >= month.daysInMonth) {
       day.setVisibility(View.INVISIBLE);
     } else {
+      // The tag and text uniquely identify the view within the MaterialCalendar for testing
       day.setText(String.valueOf(offsetPosition + 1));
+      day.setTag(month);
       day.setVisibility(View.VISIBLE);
     }
     Calendar item = getItem(position);

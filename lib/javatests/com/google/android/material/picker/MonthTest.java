@@ -17,6 +17,7 @@ package com.google.android.material.picker;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.android.material.picker.selector.ParcelableTestUtils;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Locale;
@@ -120,6 +121,42 @@ public class MonthTest {
     localizedStartOfWeekToStartOfMonth.put(monthJul2018, 0);
     localizedStartOfWeekToStartOfMonth.put(monthFeb2019, 5);
     assertDaysFromStart(localizedStartOfWeekToStartOfMonth);
+  }
+
+  @Test
+  public void gregorianDifferenceOfMonthsCalculation() {
+    setupLocalizedCalendars(Locale.getDefault());
+    Month march2016 = Month.create(2016, Calendar.MARCH);
+
+    assertEquals(0, monthFeb2016.monthsUntil(monthFeb2016));
+    assertEquals(29, monthFeb2016.monthsUntil(monthJul2018));
+    assertEquals(-29, monthJul2018.monthsUntil(monthFeb2016));
+
+    assertEquals(1, monthFeb2016.monthsUntil(march2016));
+    assertEquals(-1, march2016.monthsUntil(monthFeb2016));
+  }
+
+  @Test
+  public void addingMonthsCalculation() {
+    setupLocalizedCalendars(Locale.getDefault());
+    Month calculatedSameMonth = monthFeb2016.monthsLater(0);
+    assertEquals(2016, calculatedSameMonth.year);
+    assertEquals(Calendar.FEBRUARY, calculatedSameMonth.month);
+
+    Month calculatedLaterMonth = monthFeb2016.monthsLater(24);
+    assertEquals(2018, calculatedLaterMonth.year);
+    assertEquals(Calendar.FEBRUARY, calculatedLaterMonth.month);
+
+    Month calculatedEarlierMonth = monthFeb2016.monthsLater(-2);
+    assertEquals(2015, calculatedEarlierMonth.year);
+    assertEquals(Calendar.DECEMBER, calculatedEarlierMonth.month);
+  }
+
+  @Test
+  public void equalAfterParceling() {
+    Month original = Month.create(2019, Calendar.JULY);
+    Month constructed = ParcelableTestUtils.parcelAndCreate(original, Month.CREATOR);
+    assertEquals(original, constructed);
   }
 
   private void assertDaysFromStart(Map<Month, Integer> localizedStartOfWeekToStartOfMonth) {

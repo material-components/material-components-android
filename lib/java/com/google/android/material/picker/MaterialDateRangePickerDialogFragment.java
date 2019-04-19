@@ -20,6 +20,7 @@ import com.google.android.material.R;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.picker.selector.DateRangeGridSelector;
@@ -70,5 +71,17 @@ public class MaterialDateRangePickerDialogFragment
     return getContext()
         .getResources()
         .getString(R.string.mtrl_picker_range_header_selected, startString, endString);
+  }
+
+  /** Returns the start date for the selection or null if the user has not yet confirmed. */
+  @Nullable
+  public Calendar getStart() {
+    return getSelection() == null ? null : getSelection().first;
+  }
+
+  /** Returns the end date for the selection or null if the user has not yet confirmed. */
+  @Nullable
+  public Calendar getEnd() {
+    return getSelection() == null ? null : getSelection().second;
   }
 }

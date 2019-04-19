@@ -15,10 +15,16 @@
  */
 package com.google.android.material.picker;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.VisibleForTesting;
+import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.GregorianCalendar;
+import java.util.Locale;
 
 /**
  * Contains convenience operations for a month within a specific year.
@@ -26,13 +32,17 @@ import java.util.Calendar;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class Month {
+@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
+public class Month implements Comparable<Month>, Parcelable {
 
   private final Calendar calendar;
-  public final int month;
-  public final int year;
-  public final int daysInWeek;
-  public final int daysInMonth;
+  private static final SimpleDateFormat longNameFormat =
+      new SimpleDateFormat("MMMM, yyyy", Locale.getDefault());
+  private final String longName;
+  final int month;
+  final int year;
+  final int daysInWeek;
+  final int daysInMonth;
 
   private Month(Calendar calendar) {
     this.calendar = calendar;
@@ -41,6 +51,7 @@ public class Month {
     year = calendar.get(Calendar.YEAR);
     daysInWeek = this.calendar.getMaximum(Calendar.DAY_OF_WEEK);
     daysInMonth = this.calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
+    longName = longNameFormat.format(this.calendar.getTime());
   }
 
   /**
@@ -51,6 +62,7 @@ public class Month {
    *     Calendar#JANUARY}
    * @return A Month object backed by a new {@link Calendar} instance
    */
+  @VisibleForTesting
   public static Month create(int year, int month) {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
@@ -59,7 +71,7 @@ public class Month {
     return new Month(calendar);
   }
 
-  public int daysFromStartOfWeekToFirstOfMonth() {
+  int daysFromStartOfWeekToFirstOfMonth() {
     int difference = calendar.get(Calendar.DAY_OF_WEEK) - calendar.getFirstDayOfWeek();
     if (difference < 0) {
       difference = difference + daysInWeek;
@@ -75,7 +87,7 @@ public class Month {
    * @param day The desired day within this month and year
    * @return A new {@link Calendar} instance for the given day within the specified month and year
    */
-  public Calendar getDay(int day) {
+  Calendar getDay(int day) {
     Calendar calendar = ((Calendar) this.calendar.clone());
     calendar.set(Calendar.DAY_OF_MONTH, day);
     return calendar;
@@ -97,5 +109,71 @@ public class Month {
   public int hashCode() {
     Object[] hashedFields = {month, year};
     return Arrays.hashCode(hashedFields);
+  }
+
+  @Override
+  public int compareTo(Month other) {
+    return calendar.compareTo(other.calendar);
+  }
+
+  /**
+   * Returns the number of months from this Month to the provided Month.
+   *
+   * <p>0 when {@code this.compareTo(other)} is 0. Negative when {@code this.compareTo(other)} is
+   * negative.
+   *
+   * @throws IllegalArgumentException when {@link Calendar#getInstance()} is not an instance of
+   *     {@link GregorianCalendar}
+   */
+  int monthsUntil(Month other) {
+    if (calendar instanceof GregorianCalendar) {
+      return (other.year - year) * 12 + (other.month - month);
+    } else {
+      throw new IllegalArgumentException("Only Gregorian calendars are supported.");
+    }
+  }
+
+  /**
+   * Returns a {@link com.google.android.material.picker.Month} {@code months} months after this
+   * instance.
+   */
+  Month monthsLater(int months) {
+    Calendar laterMonth = ((Calendar) calendar.clone());
+    laterMonth.add(Calendar.MONTH, months);
+    return new Month(laterMonth);
+  }
+
+  /** Returns a localized String representation of the month name and year. */
+  String getLongName() {
+    return longName;
+  }
+
+  /* Parcelable interface */
+
+  /** {@link Parcelable.Creator} */
+  public static final Parcelable.Creator<Month> CREATOR =
+      new Parcelable.Creator<Month>() {
+        @Override
+        public Month createFromParcel(Parcel source) {
+          int year = source.readInt();
+          int month = source.readInt();
+          return Month.create(year, month);
+        }
+
+        @Override
+        public Month[] newArray(int size) {
+          return new Month[size];
+        }
+      };
+
+  @Override
+  public int describeContents() {
+    return 0;
+  }
+
+  @Override
+  public void writeToParcel(Parcel dest, int flags) {
+    dest.writeInt(year);
+    dest.writeInt(month);
   }
 }

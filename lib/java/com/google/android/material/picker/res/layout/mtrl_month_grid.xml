@@ -16,7 +16,7 @@
 -->
 
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/calendar_grid"
+    android:id="@+id/month_grid"
     android:textAppearance="?attr/textAppearanceBody1"
     android:layout_width="match_parent"
     android:layout_height="match_parent"

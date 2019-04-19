@@ -26,7 +26,6 @@ import androidx.annotation.VisibleForTesting;
 import com.google.android.material.picker.MonthAdapter;
 import androidx.core.view.ViewCompat;
 import android.view.View;
-import android.widget.AdapterView;
 import java.util.Calendar;
 
 /**
@@ -43,26 +42,12 @@ public class DateGridSelector implements GridSelector<Calendar> {
   private Calendar selectedItem;
 
   @Override
-  public void changeSelection(
-      AdapterView<? extends MonthAdapter> parent, View view, int position, long row) {
-    MonthAdapter adapter = parent.getAdapter();
+  public void changeSelection(MonthAdapter adapter, View view, int position, long row) {
     Calendar selection = adapter.getItem(position);
     if (!adapter.withinMonth(position)) {
       return;
     }
     selectedItem = selection;
-  }
-
-  @Override
-  public void drawSelection(AdapterView<? extends MonthAdapter> parent) {
-    MonthAdapter adapter = parent.getAdapter();
-    for (int i = 0; i < parent.getCount(); i++) {
-      Calendar item = adapter.getItem(i);
-      View cell = parent.getChildAt(i);
-      if (item != null && cell != null) {
-        drawCell(cell, item);
-      }
-    }
   }
 
   @Override
