@@ -20,7 +20,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.picker.MaterialCalendar;
-import com.google.android.material.picker.MonthInYearAdapter;
+import com.google.android.material.picker.MonthAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -51,7 +51,7 @@ public interface GridSelector<S> extends Parcelable {
    *
    * @param parent The view that holds the selection (e.g., {@link android.widget.GridView})
    */
-  void drawSelection(AdapterView<? extends MonthInYearAdapter> parent);
+  void drawSelection(AdapterView<? extends MonthAdapter> parent);
 
   /**
    * Allows this selection handler to respond to clicks within the {@link AdapterView}
@@ -61,17 +61,17 @@ public interface GridSelector<S> extends Parcelable {
    * @param position The index of the item clicked in parent
    * @param row The row of the item clicked in parent
    */
-  void onItemClick(
-      AdapterView<? extends MonthInYearAdapter> parent, View view, int position, long row);
+  void changeSelection(
+      AdapterView<? extends MonthAdapter> parent, View view, int position, long row);
 
   /**
    * Modifies the provided {@link View} to indicate its selection status.
    *
    * <p>Called from {@link GridSelector#drawSelection(AdapterView)} for each {@link View}.
    *
-   * @param cell The {@link View} returned from {@link MonthInYearAdapter#getView(int, View,
+   * @param cell The {@link View} returned from {@link MonthAdapter#getView(int, View,
    *     ViewGroup)}
-   * @param item The {@link Calendar} returned from {@link MonthInYearAdapter#getItem(int)}.
+   * @param item The {@link Calendar} returned from {@link MonthAdapter#getItem(int)}.
    */
   void drawCell(View cell, Calendar item);
 }

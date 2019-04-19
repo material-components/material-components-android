@@ -21,7 +21,7 @@ import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Parcel;
 import android.os.Parcelable;
-import com.google.android.material.picker.MonthInYearAdapter;
+import com.google.android.material.picker.MonthAdapter;
 import android.view.View;
 import android.widget.TextView;
 import java.util.Calendar;
@@ -33,7 +33,7 @@ class GridSelectorTestUtils {
   static void assertCellColor(
       Context context,
       GridSelector<?> gridSelector,
-      MonthInYearAdapter adapter,
+      MonthAdapter adapter,
       int position,
       ColorDrawable color) {
     Calendar calendar = adapter.getItem(position);

@@ -37,19 +37,19 @@ import java.util.Calendar;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class MonthInYearAdapter extends BaseAdapter {
+public class MonthAdapter extends BaseAdapter {
 
   private static final int MAXIMUM_WEEKS =
       Calendar.getInstance().getMaximum(Calendar.WEEK_OF_MONTH);
 
-  private final MonthInYear monthInYear;
+  private final Month month;
   private final int textViewSize;
   private final GridSelector<?> gridSelector;
 
   @VisibleForTesting
-  public MonthInYearAdapter(
-      Context context, MonthInYear monthInYear, GridSelector<?> gridSelector) {
-    this.monthInYear = monthInYear;
+  public MonthAdapter(
+      Context context, Month month, GridSelector<?> gridSelector) {
+    this.month = month;
     textViewSize = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
     this.gridSelector = gridSelector;
   }
@@ -58,23 +58,23 @@ public class MonthInYearAdapter extends BaseAdapter {
    * Returns a {@link Calendar} object for the given grid position
    *
    * @param position Index for the item. 0 matches the {@link Calendar#getFirstDayOfWeek()} for the
-   *     first week of the month represented by {@link MonthInYear}.
+   *     first week of the month represented by {@link Month}.
    * @return An {@link Calendar} representing the Day at the position or null if the position does
    *     not represent a valid day in the month.
    */
   @Nullable
   @Override
   public Calendar getItem(int position) {
-    if (position < monthInYear.daysFromStartOfWeekToFirstOfMonth()
+    if (position < month.daysFromStartOfWeekToFirstOfMonth()
         || position > lastPositionInMonth()) {
       return null;
     }
-    return monthInYear.getDay(positionToDay(position));
+    return month.getDay(positionToDay(position));
   }
 
   @Override
   public long getItemId(int position) {
-    return position / monthInYear.daysInWeek;
+    return position / month.daysInWeek;
   }
 
   /**
@@ -85,7 +85,7 @@ public class MonthInYearAdapter extends BaseAdapter {
    */
   @Override
   public int getCount() {
-    return monthInYear.daysInWeek * MAXIMUM_WEEKS;
+    return month.daysInWeek * MAXIMUM_WEEKS;
   }
 
   @Override
@@ -96,7 +96,7 @@ public class MonthInYearAdapter extends BaseAdapter {
       day.setHeight(textViewSize);
     }
     int offsetPosition = position - firstPositionInMonth();
-    if (offsetPosition < 0 || offsetPosition >= monthInYear.daysInMonth) {
+    if (offsetPosition < 0 || offsetPosition >= month.daysInMonth) {
       day.setVisibility(View.INVISIBLE);
     } else {
       day.setText(String.valueOf(offsetPosition + 1));
@@ -117,7 +117,7 @@ public class MonthInYearAdapter extends BaseAdapter {
    * be greater than 0.
    */
   public int firstPositionInMonth() {
-    return monthInYear.daysFromStartOfWeekToFirstOfMonth();
+    return month.daysFromStartOfWeekToFirstOfMonth();
   }
 
   /**
@@ -128,7 +128,7 @@ public class MonthInYearAdapter extends BaseAdapter {
    * not match the number of days in the month.
    */
   public int lastPositionInMonth() {
-    return monthInYear.daysFromStartOfWeekToFirstOfMonth() + monthInYear.daysInMonth - 1;
+    return month.daysFromStartOfWeekToFirstOfMonth() + month.daysInMonth - 1;
   }
 
   /**
@@ -136,10 +136,10 @@ public class MonthInYearAdapter extends BaseAdapter {
    *
    * @param position The adapter index
    * @return The day corresponding to the adapter index. May be non-positive for position inputs
-   *     less than {@link MonthInYearAdapter#firstPositionInMonth()}.
+   *     less than {@link MonthAdapter#firstPositionInMonth()}.
    */
   public int positionToDay(int position) {
-    return position - monthInYear.daysFromStartOfWeekToFirstOfMonth() + 1;
+    return position - month.daysFromStartOfWeekToFirstOfMonth() + 1;
   }
 
   /** True when a provided adapter position is within the calendar month */

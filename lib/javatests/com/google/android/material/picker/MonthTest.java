@@ -28,19 +28,19 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
-public class MonthInYearTest {
+public class MonthTest {
 
   private static final Locale ISRAEL = new Locale("iw", "IL");
 
-  private MonthInYear monthInYearFeb2016;
-  private MonthInYear monthInYearJul2018;
-  private MonthInYear monthInYearFeb2019;
+  private Month monthFeb2016;
+  private Month monthJul2018;
+  private Month monthFeb2019;
 
   private void setupLocalizedCalendars(Locale locale) {
     Locale.setDefault(locale);
-    monthInYearFeb2016 = MonthInYear.create(2016, Calendar.FEBRUARY);
-    monthInYearJul2018 = MonthInYear.create(2018, Calendar.JULY);
-    monthInYearFeb2019 = MonthInYear.create(2019, Calendar.FEBRUARY);
+    monthFeb2016 = Month.create(2016, Calendar.FEBRUARY);
+    monthJul2018 = Month.create(2018, Calendar.JULY);
+    monthFeb2019 = Month.create(2019, Calendar.FEBRUARY);
   }
 
   @Test
@@ -63,9 +63,9 @@ public class MonthInYearTest {
   }
 
   private void assertDaysInWeek() {
-    assertEquals(7, monthInYearFeb2016.daysInWeek);
-    assertEquals(7, monthInYearJul2018.daysInWeek);
-    assertEquals(7, monthInYearFeb2019.daysInWeek);
+    assertEquals(7, monthFeb2016.daysInWeek);
+    assertEquals(7, monthJul2018.daysInWeek);
+    assertEquals(7, monthFeb2019.daysInWeek);
   }
 
   @Test
@@ -87,50 +87,50 @@ public class MonthInYearTest {
   }
 
   private void assertDaysInMonth() {
-    assertEquals(29, monthInYearFeb2016.daysInMonth);
-    assertEquals(31, monthInYearJul2018.daysInMonth);
-    assertEquals(28, monthInYearFeb2019.daysInMonth);
+    assertEquals(29, monthFeb2016.daysInMonth);
+    assertEquals(31, monthJul2018.daysInMonth);
+    assertEquals(28, monthFeb2019.daysInMonth);
   }
 
   @Test
   public void usDaysFromStart() {
     setupLocalizedCalendars(Locale.US);
-    Map<MonthInYear, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
-    localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2016, 1);
-    localizedStartOfWeekToStartOfMonth.put(monthInYearJul2018, 0);
-    localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2019, 5);
+    Map<Month, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
+    localizedStartOfWeekToStartOfMonth.put(monthFeb2016, 1);
+    localizedStartOfWeekToStartOfMonth.put(monthJul2018, 0);
+    localizedStartOfWeekToStartOfMonth.put(monthFeb2019, 5);
     assertDaysFromStart(localizedStartOfWeekToStartOfMonth);
   }
 
   @Test
   public void frDaysFromStart() {
     setupLocalizedCalendars(Locale.FRANCE);
-    Map<MonthInYear, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
-    localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2016, 0);
-    localizedStartOfWeekToStartOfMonth.put(monthInYearJul2018, 6);
-    localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2019, 4);
+    Map<Month, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
+    localizedStartOfWeekToStartOfMonth.put(monthFeb2016, 0);
+    localizedStartOfWeekToStartOfMonth.put(monthJul2018, 6);
+    localizedStartOfWeekToStartOfMonth.put(monthFeb2019, 4);
     assertDaysFromStart(localizedStartOfWeekToStartOfMonth);
   }
 
   @Test
   public void ilDaysFromStart() {
     setupLocalizedCalendars(ISRAEL);
-    Map<MonthInYear, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
-    localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2016, 1);
-    localizedStartOfWeekToStartOfMonth.put(monthInYearJul2018, 0);
-    localizedStartOfWeekToStartOfMonth.put(monthInYearFeb2019, 5);
+    Map<Month, Integer> localizedStartOfWeekToStartOfMonth = new HashMap<>();
+    localizedStartOfWeekToStartOfMonth.put(monthFeb2016, 1);
+    localizedStartOfWeekToStartOfMonth.put(monthJul2018, 0);
+    localizedStartOfWeekToStartOfMonth.put(monthFeb2019, 5);
     assertDaysFromStart(localizedStartOfWeekToStartOfMonth);
   }
 
-  private void assertDaysFromStart(Map<MonthInYear, Integer> localizedStartOfWeekToStartOfMonth) {
+  private void assertDaysFromStart(Map<Month, Integer> localizedStartOfWeekToStartOfMonth) {
     assertEquals(
-        (int) localizedStartOfWeekToStartOfMonth.get(monthInYearFeb2016),
-        monthInYearFeb2016.daysFromStartOfWeekToFirstOfMonth());
+        (int) localizedStartOfWeekToStartOfMonth.get(monthFeb2016),
+        monthFeb2016.daysFromStartOfWeekToFirstOfMonth());
     assertEquals(
-        (int) localizedStartOfWeekToStartOfMonth.get(monthInYearJul2018),
-        monthInYearJul2018.daysFromStartOfWeekToFirstOfMonth());
+        (int) localizedStartOfWeekToStartOfMonth.get(monthJul2018),
+        monthJul2018.daysFromStartOfWeekToFirstOfMonth());
     assertEquals(
-        (int) localizedStartOfWeekToStartOfMonth.get(monthInYearFeb2019),
-        monthInYearFeb2019.daysFromStartOfWeekToFirstOfMonth());
+        (int) localizedStartOfWeekToStartOfMonth.get(monthFeb2019),
+        monthFeb2019.daysFromStartOfWeekToFirstOfMonth());
   }
 }

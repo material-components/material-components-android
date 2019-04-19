@@ -40,18 +40,18 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
-public class MonthInYearAdapterTest {
+public class MonthAdapterTest {
 
   private static final Locale ISRAEL = new Locale("iw", "IL");
 
   private Context context;
-  private MonthInYearAdapter monthInYearFeb2019;
-  private MonthInYearAdapter monthInYearFeb2016;
-  private MonthInYearAdapter monthInYearJul2018;
-  private MonthInYearAdapter monthInYearMarch2019;
+  private MonthAdapter monthFeb2019;
+  private MonthAdapter monthFeb2016;
+  private MonthAdapter monthJuly2018;
+  private MonthAdapter monthMarch2019;
 
   @Before
-  public void setupMonthInYearAdapters() {
+  public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     context = activity.getApplicationContext();
@@ -60,14 +60,14 @@ public class MonthInYearAdapterTest {
   private void setupLocalizedCalendars(Locale locale) {
     Locale.setDefault(locale);
     DateGridSelector dateGridSelector = new DateGridSelector();
-    MonthInYear feb2016 = MonthInYear.create(2016, Calendar.FEBRUARY);
-    monthInYearFeb2016 = new MonthInYearAdapter(context, feb2016, dateGridSelector);
-    MonthInYear july2018 = MonthInYear.create(2018, Calendar.JULY);
-    monthInYearJul2018 = new MonthInYearAdapter(context, july2018, dateGridSelector);
-    MonthInYear feb2019 = MonthInYear.create(2019, Calendar.FEBRUARY);
-    monthInYearFeb2019 = new MonthInYearAdapter(context, feb2019, dateGridSelector);
-    MonthInYear march2019 = MonthInYear.create(2019, Calendar.MARCH);
-    monthInYearMarch2019 = new MonthInYearAdapter(context, march2019, dateGridSelector);
+    Month feb2016 = Month.create(2016, Calendar.FEBRUARY);
+    monthFeb2016 = new MonthAdapter(context, feb2016, dateGridSelector);
+    Month july2018 = Month.create(2018, Calendar.JULY);
+    monthJuly2018 = new MonthAdapter(context, july2018, dateGridSelector);
+    Month feb2019 = Month.create(2019, Calendar.FEBRUARY);
+    monthFeb2019 = new MonthAdapter(context, feb2019, dateGridSelector);
+    Month march2019 = Month.create(2019, Calendar.MARCH);
+    monthMarch2019 = new MonthAdapter(context, march2019, dateGridSelector);
   }
 
   @Test
@@ -89,93 +89,93 @@ public class MonthInYearAdapterTest {
   }
 
   private void assertLastPositionMatchesMonthLength() {
-    assertEquals(29, monthInYearFeb2016.positionToDay(monthInYearFeb2016.lastPositionInMonth()));
-    assertEquals(31, monthInYearJul2018.positionToDay(monthInYearJul2018.lastPositionInMonth()));
-    assertEquals(28, monthInYearFeb2019.positionToDay(monthInYearFeb2019.lastPositionInMonth()));
+    assertEquals(29, monthFeb2016.positionToDay(monthFeb2016.lastPositionInMonth()));
+    assertEquals(31, monthJuly2018.positionToDay(monthJuly2018.lastPositionInMonth()));
+    assertEquals(28, monthFeb2019.positionToDay(monthFeb2019.lastPositionInMonth()));
   }
 
   @Test
   public void usMaxPosition() {
     setupLocalizedCalendars(Locale.US);
-    Map<MonthInYearAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
-    localizedMaxPositionInMonth.put(monthInYearFeb2016, 29);
-    localizedMaxPositionInMonth.put(monthInYearJul2018, 30);
-    localizedMaxPositionInMonth.put(monthInYearFeb2019, 32);
+    Map<MonthAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
+    localizedMaxPositionInMonth.put(monthFeb2016, 29);
+    localizedMaxPositionInMonth.put(monthJuly2018, 30);
+    localizedMaxPositionInMonth.put(monthFeb2019, 32);
     assertMaxPosition(localizedMaxPositionInMonth);
   }
 
   @Test
   public void frMaxPosition() {
     setupLocalizedCalendars(Locale.FRANCE);
-    Map<MonthInYearAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
-    localizedMaxPositionInMonth.put(monthInYearFeb2016, 28);
-    localizedMaxPositionInMonth.put(monthInYearJul2018, 36);
-    localizedMaxPositionInMonth.put(monthInYearFeb2019, 31);
+    Map<MonthAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
+    localizedMaxPositionInMonth.put(monthFeb2016, 28);
+    localizedMaxPositionInMonth.put(monthJuly2018, 36);
+    localizedMaxPositionInMonth.put(monthFeb2019, 31);
     assertMaxPosition(localizedMaxPositionInMonth);
   }
 
   @Test
   public void ilMaxPosition() {
     setupLocalizedCalendars(ISRAEL);
-    Map<MonthInYearAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
-    localizedMaxPositionInMonth.put(monthInYearFeb2016, 29);
-    localizedMaxPositionInMonth.put(monthInYearJul2018, 30);
-    localizedMaxPositionInMonth.put(monthInYearFeb2019, 32);
+    Map<MonthAdapter, Integer> localizedMaxPositionInMonth = new HashMap<>();
+    localizedMaxPositionInMonth.put(monthFeb2016, 29);
+    localizedMaxPositionInMonth.put(monthJuly2018, 30);
+    localizedMaxPositionInMonth.put(monthFeb2019, 32);
     assertMaxPosition(localizedMaxPositionInMonth);
   }
 
-  private void assertMaxPosition(Map<MonthInYearAdapter, Integer> localizedMaxPositionInMonth) {
+  private void assertMaxPosition(Map<MonthAdapter, Integer> localizedMaxPositionInMonth) {
     assertEquals(
-        (int) localizedMaxPositionInMonth.get(monthInYearFeb2016),
-        monthInYearFeb2016.lastPositionInMonth());
+        (int) localizedMaxPositionInMonth.get(monthFeb2016),
+        monthFeb2016.lastPositionInMonth());
     assertEquals(
-        (int) localizedMaxPositionInMonth.get(monthInYearJul2018),
-        monthInYearJul2018.lastPositionInMonth());
+        (int) localizedMaxPositionInMonth.get(monthJuly2018),
+        monthJuly2018.lastPositionInMonth());
     assertEquals(
-        (int) localizedMaxPositionInMonth.get(monthInYearFeb2019),
-        monthInYearFeb2019.lastPositionInMonth());
+        (int) localizedMaxPositionInMonth.get(monthFeb2019),
+        monthFeb2019.lastPositionInMonth());
   }
 
   @Test
   public void usPositions() {
     setupLocalizedCalendars(Locale.US);
-    Map<MonthInYearAdapter, Integer> localizedPositionToDay =
+    Map<MonthAdapter, Integer> localizedPositionToDay =
         localizedPositionToDay = new HashMap<>();
-    localizedPositionToDay.put(monthInYearFeb2016, 1);
-    localizedPositionToDay.put(monthInYearJul2018, 7);
-    localizedPositionToDay.put(monthInYearFeb2019, 11);
+    localizedPositionToDay.put(monthFeb2016, 1);
+    localizedPositionToDay.put(monthJuly2018, 7);
+    localizedPositionToDay.put(monthFeb2019, 11);
     assertPositionsForDays(localizedPositionToDay);
   }
 
   @Test
   public void frPositions() {
     setupLocalizedCalendars(Locale.FRANCE);
-    Map<MonthInYearAdapter, Integer> localizedPositionToDay =
+    Map<MonthAdapter, Integer> localizedPositionToDay =
         localizedPositionToDay = new HashMap<>();
-    localizedPositionToDay.put(monthInYearFeb2016, 2);
-    localizedPositionToDay.put(monthInYearJul2018, 1);
-    localizedPositionToDay.put(monthInYearFeb2019, 12);
+    localizedPositionToDay.put(monthFeb2016, 2);
+    localizedPositionToDay.put(monthJuly2018, 1);
+    localizedPositionToDay.put(monthFeb2019, 12);
     assertPositionsForDays(localizedPositionToDay);
   }
 
   @Test
   public void ilPositions() {
     setupLocalizedCalendars(ISRAEL);
-    Map<MonthInYearAdapter, Integer> localizedPositionToDay =
+    Map<MonthAdapter, Integer> localizedPositionToDay =
         localizedPositionToDay = new HashMap<>();
-    localizedPositionToDay.put(monthInYearFeb2016, 1);
-    localizedPositionToDay.put(monthInYearJul2018, 7);
-    localizedPositionToDay.put(monthInYearFeb2019, 11);
+    localizedPositionToDay.put(monthFeb2016, 1);
+    localizedPositionToDay.put(monthJuly2018, 7);
+    localizedPositionToDay.put(monthFeb2019, 11);
     assertPositionsForDays(localizedPositionToDay);
   }
 
-  private void assertPositionsForDays(Map<MonthInYearAdapter, Integer> localizedPositionToDay) {
+  private void assertPositionsForDays(Map<MonthAdapter, Integer> localizedPositionToDay) {
     assertEquals(
-        (int) localizedPositionToDay.get(monthInYearFeb2016), monthInYearFeb2016.positionToDay(1));
+        (int) localizedPositionToDay.get(monthFeb2016), monthFeb2016.positionToDay(1));
     assertEquals(
-        (int) localizedPositionToDay.get(monthInYearJul2018), monthInYearJul2018.positionToDay(6));
+        (int) localizedPositionToDay.get(monthJuly2018), monthJuly2018.positionToDay(6));
     assertEquals(
-        (int) localizedPositionToDay.get(monthInYearFeb2019), monthInYearFeb2019.positionToDay(15));
+        (int) localizedPositionToDay.get(monthFeb2019), monthFeb2019.positionToDay(15));
   }
 
   @Test
@@ -197,9 +197,9 @@ public class MonthInYearAdapterTest {
   }
 
   private void assertStableCount() {
-    assertEquals(6 * 7, monthInYearFeb2016.getCount());
-    assertEquals(6 * 7, monthInYearJul2018.getCount());
-    assertEquals(6 * 7, monthInYearFeb2019.getCount());
+    assertEquals(6 * 7, monthFeb2016.getCount());
+    assertEquals(6 * 7, monthJuly2018.getCount());
+    assertEquals(6 * 7, monthFeb2019.getCount());
   }
 
   @Test
@@ -233,10 +233,10 @@ public class MonthInYearAdapterTest {
       Collection<Integer> localizedNullPositionsInFebruary2019,
       Collection<Integer> localizedNonNullPositionsInFebruary2019) {
     for (int position : localizedNullPositionsInFebruary2019) {
-      assertNull(monthInYearFeb2019.getItem(position));
+      assertNull(monthFeb2019.getItem(position));
     }
     for (int position : localizedNonNullPositionsInFebruary2019) {
-      assertNotNull(monthInYearFeb2019.getItem(position));
+      assertNotNull(monthFeb2019.getItem(position));
     }
   }
 
@@ -271,16 +271,16 @@ public class MonthInYearAdapterTest {
     for (int day : localizedDaysOfPositionsInFebruary2019.keySet()) {
       assertEquals(
           (int) localizedDaysOfPositionsInFebruary2019.get(day),
-          monthInYearFeb2019.getItem(day).get(Calendar.DAY_OF_MONTH));
+          monthFeb2019.getItem(day).get(Calendar.DAY_OF_MONTH));
     }
   }
 
   @Test
   public void rowIds() {
     setupLocalizedCalendars(Locale.FRANCE);
-    assertEquals(0, monthInYearFeb2019.getItemId(0));
-    assertEquals(1, monthInYearFeb2019.getItemId(7));
-    assertEquals(3, monthInYearFeb2019.getItemId(26));
-    assertEquals(5, monthInYearMarch2019.getItemId(35));
+    assertEquals(0, monthFeb2019.getItemId(0));
+    assertEquals(1, monthFeb2019.getItemId(7));
+    assertEquals(3, monthFeb2019.getItemId(26));
+    assertEquals(5, monthMarch2019.getItemId(35));
   }
 }

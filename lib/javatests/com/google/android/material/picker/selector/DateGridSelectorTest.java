@@ -22,8 +22,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
-import com.google.android.material.picker.MonthInYear;
-import com.google.android.material.picker.MonthInYearAdapter;
+import com.google.android.material.picker.Month;
+import com.google.android.material.picker.MonthAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -42,22 +42,22 @@ public class DateGridSelectorTest {
 
   private Context context;
   private DateGridSelector dateGridSelector;
-  private MonthInYearAdapter adapter;
-  private AdapterView<MonthInYearAdapter> adapterView;
+  private MonthAdapter adapter;
+  private AdapterView<MonthAdapter> adapterView;
 
   @Before
-  public void setupMonthInYearAdapters() {
+  public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
     dateGridSelector = new DateGridSelector();
     adapter =
-        new MonthInYearAdapter(
-            context, MonthInYear.create(2016, Calendar.FEBRUARY), dateGridSelector);
+        new MonthAdapter(
+            context, Month.create(2016, Calendar.FEBRUARY), dateGridSelector);
     gridView.setAdapter(adapter);
     @SuppressWarnings("unchecked")
-    AdapterView<MonthInYearAdapter> adapterView = (AdapterView) gridView;
+    AdapterView<MonthAdapter> adapterView = (AdapterView) gridView;
     this.adapterView = adapterView;
   }
 
@@ -65,7 +65,7 @@ public class DateGridSelectorTest {
   public void dateDrawCell() {
     int position = 8;
     assertTrue(adapter.withinMonth(position));
-    dateGridSelector.onItemClick(adapterView, /* view= */ null, position, /* row= */ 0);
+    dateGridSelector.changeSelection(adapterView, /* view= */ null, position, /* row= */ 0);
     GridSelectorTestUtils.assertCellColor(
         context, dateGridSelector, adapter, position, DateGridSelector.selectedColor);
     GridSelectorTestUtils.assertCellColor(
@@ -76,7 +76,7 @@ public class DateGridSelectorTest {
   public void dateGridSelectorMaintainsSelectionAfterParceling() {
     int position = 8;
     assertTrue(adapter.withinMonth(position));
-    dateGridSelector.onItemClick(adapterView, /* view= */ null, position, /* row= */ 0);
+    dateGridSelector.changeSelection(adapterView, /* view= */ null, position, /* row= */ 0);
     Calendar expected = adapter.getItem(position);
     DateGridSelector dateGridSelectorFromParcel =
         GridSelectorTestUtils.parcelAndCreate(dateGridSelector, DateGridSelector.CREATOR);

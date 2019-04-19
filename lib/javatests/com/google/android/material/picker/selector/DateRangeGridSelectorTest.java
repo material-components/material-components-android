@@ -22,8 +22,8 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
-import com.google.android.material.picker.MonthInYear;
-import com.google.android.material.picker.MonthInYearAdapter;
+import com.google.android.material.picker.Month;
+import com.google.android.material.picker.MonthAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.AdapterView;
 import android.widget.GridView;
@@ -42,22 +42,21 @@ public class DateRangeGridSelectorTest {
 
   private Context context;
   private DateRangeGridSelector dateRangeGridSelector;
-  private MonthInYearAdapter adapter;
-  private AdapterView<MonthInYearAdapter> adapterView;
+  private MonthAdapter adapter;
+  private AdapterView<MonthAdapter> adapterView;
 
   @Before
-  public void setupMonthInYearAdapters() {
+  public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
     dateRangeGridSelector = new DateRangeGridSelector();
     adapter =
-        new MonthInYearAdapter(
-            context, MonthInYear.create(2016, Calendar.FEBRUARY), dateRangeGridSelector);
+        new MonthAdapter(context, Month.create(2016, Calendar.FEBRUARY), dateRangeGridSelector);
     gridView.setAdapter(adapter);
     @SuppressWarnings("unchecked")
-    AdapterView<MonthInYearAdapter> adapterView = (AdapterView) gridView;
+    AdapterView<MonthAdapter> adapterView = (AdapterView) gridView;
     this.adapterView = adapterView;
   }
 
@@ -67,8 +66,9 @@ public class DateRangeGridSelectorTest {
     int endPosition = 15;
     assertTrue(adapter.withinMonth(startPosition));
     assertTrue(adapter.withinMonth(endPosition));
-    dateRangeGridSelector.onItemClick(adapterView, /* view= */ null, startPosition, /* row= */ 1);
-    dateRangeGridSelector.onItemClick(adapterView, /* view= */ null, endPosition, /* row= */ 2);
+    dateRangeGridSelector.changeSelection(
+        adapterView, /* view= */ null, startPosition, /* row= */ 1);
+    dateRangeGridSelector.changeSelection(adapterView, /* view= */ null, endPosition, /* row= */ 2);
 
     GridSelectorTestUtils.assertCellColor(
         context, dateRangeGridSelector, adapter, startPosition, DateRangeGridSelector.startColor);
@@ -95,8 +95,9 @@ public class DateRangeGridSelectorTest {
     Calendar expectedStart = adapter.getItem(startPosition);
     Calendar expectedEnd = adapter.getItem(endPosition);
 
-    dateRangeGridSelector.onItemClick(adapterView, /* view= */ null, startPosition, /* row= */ 1);
-    dateRangeGridSelector.onItemClick(adapterView, /* view= */ null, endPosition, /* row= */ 2);
+    dateRangeGridSelector.changeSelection(
+        adapterView, /* view= */ null, startPosition, /* row= */ 1);
+    dateRangeGridSelector.changeSelection(adapterView, /* view= */ null, endPosition, /* row= */ 2);
     DateRangeGridSelector dateRangeGridSelectorFromParcel =
         GridSelectorTestUtils.parcelAndCreate(dateRangeGridSelector, DateRangeGridSelector.CREATOR);
 

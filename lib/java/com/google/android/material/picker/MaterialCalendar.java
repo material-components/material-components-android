@@ -35,7 +35,7 @@ import java.util.LinkedHashSet;
 
 /**
  * Fragment for a days of week {@link Calendar} represented as a header row of days labels and
- * {@link GridView} of days backed by {@link MonthInYearAdapter}.
+ * {@link GridView} of days backed by {@link MonthAdapter}.
  *
  * @hide
  */
@@ -46,8 +46,8 @@ public final class MaterialCalendar<S> extends Fragment {
 
   private final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
       new LinkedHashSet<>();
-  private MonthInYear monthInYear;
-  private MonthInYearAdapter monthInYearAdapter;
+  private Month month;
+  private MonthAdapter monthAdapter;
   private GridSelector<S> gridSelector;
 
   /**
@@ -80,8 +80,8 @@ public final class MaterialCalendar<S> extends Fragment {
     }
     gridSelector = bundle.getParcelable(GRID_SELECTOR_KEY);
     Calendar calendar = Calendar.getInstance();
-    monthInYear = MonthInYear.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
-    monthInYearAdapter = new MonthInYearAdapter(getContext(), monthInYear, gridSelector);
+    month = Month.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
+    monthAdapter = new MonthAdapter(getContext(), month, gridSelector);
   }
 
   @Nullable
@@ -94,23 +94,23 @@ public final class MaterialCalendar<S> extends Fragment {
     GridView daysHeader = root.findViewById(R.id.calendar_days_header);
     GridView daysGrid = root.findViewById(R.id.calendar_grid);
 
-    daysHeader.setAdapter(new DaysHeaderAdapter());
-    daysHeader.setNumColumns(monthInYear.daysInWeek);
-    daysGrid.setAdapter(monthInYearAdapter);
-    daysGrid.setNumColumns(monthInYear.daysInWeek);
+    daysHeader.setAdapter(new DaysOfWeekAdapter());
+    daysHeader.setNumColumns(month.daysInWeek);
+    daysGrid.setAdapter(monthAdapter);
+    daysGrid.setNumColumns(month.daysInWeek);
     daysGrid.setOnItemClickListener(
         new OnItemClickListener() {
 
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
             // The onItemClick interface forces use of a wildcard AdapterView, but
-            // GridSelector#onItemClick needs a MonthInYearAdapter.
+            // GridSelector#changeSelection needs a MonthAdapter.
             // The cast is verified by the instanceof on the Adapter backing the AdapterView.
-            if (parent.getAdapter() instanceof MonthInYearAdapter) {
+            if (parent.getAdapter() instanceof MonthAdapter) {
               @SuppressWarnings("unchecked")
-              AdapterView<MonthInYearAdapter> calendarGrid =
-                  (AdapterView<MonthInYearAdapter>) parent;
-              gridSelector.onItemClick(calendarGrid, view, position, id);
+              AdapterView<MonthAdapter> calendarGrid =
+                  (AdapterView<MonthAdapter>) parent;
+              gridSelector.changeSelection(calendarGrid, view, position, id);
               gridSelector.drawSelection(calendarGrid);
               for (OnSelectionChangedListener<S> onSelectionChangedListener : 
                   onSelectionChangedListeners) {

@@ -26,41 +26,41 @@ import java.util.Calendar;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class MonthInYear {
+public class Month {
 
-  private final Calendar monthInYear;
+  private final Calendar calendar;
   public final int month;
   public final int year;
   public final int daysInWeek;
   public final int daysInMonth;
 
-  private MonthInYear(Calendar calendar) {
-    this.monthInYear = calendar;
-    monthInYear.set(Calendar.DAY_OF_MONTH, 1);
+  private Month(Calendar calendar) {
+    this.calendar = calendar;
+    this.calendar.set(Calendar.DAY_OF_MONTH, 1);
     month = calendar.get(Calendar.MONTH);
     year = calendar.get(Calendar.YEAR);
-    daysInWeek = monthInYear.getMaximum(Calendar.DAY_OF_WEEK);
-    daysInMonth = monthInYear.getActualMaximum(Calendar.DAY_OF_MONTH);
+    daysInWeek = this.calendar.getMaximum(Calendar.DAY_OF_WEEK);
+    daysInMonth = this.calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
   }
 
   /**
-   * Creates an instance of MonthInYear with the given parameters backed by a {@link Calendar}.
+   * Creates an instance of Month with the given parameters backed by a {@link Calendar}.
    *
    * @param year The year
    * @param month The 0-index based month. Use {@link Calendar} constants (e.g., {@link
    *     Calendar#JANUARY}
-   * @return A MonthInYear object backed by a new {@link Calendar} instance
+   * @return A Month object backed by a new {@link Calendar} instance
    */
-  public static MonthInYear create(int year, int month) {
+  public static Month create(int year, int month) {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month);
-    return new MonthInYear(calendar);
+    return new Month(calendar);
   }
 
   public int daysFromStartOfWeekToFirstOfMonth() {
-    int difference = monthInYear.get(Calendar.DAY_OF_WEEK) - monthInYear.getFirstDayOfWeek();
+    int difference = calendar.get(Calendar.DAY_OF_WEEK) - calendar.getFirstDayOfWeek();
     if (difference < 0) {
       difference = difference + daysInWeek;
     }
@@ -76,7 +76,7 @@ public class MonthInYear {
    * @return A new {@link Calendar} instance for the given day within the specified month and year
    */
   public Calendar getDay(int day) {
-    Calendar calendar = ((Calendar) monthInYear.clone());
+    Calendar calendar = ((Calendar) this.calendar.clone());
     calendar.set(Calendar.DAY_OF_MONTH, day);
     return calendar;
   }
@@ -86,10 +86,10 @@ public class MonthInYear {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof MonthInYear)) {
+    if (!(o instanceof Month)) {
       return false;
     }
-    MonthInYear that = (MonthInYear) o;
+    Month that = (Month) o;
     return month == that.month && year == that.year;
   }
 

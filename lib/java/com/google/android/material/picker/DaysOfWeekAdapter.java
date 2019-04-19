@@ -35,7 +35,7 @@ import java.util.Locale;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class DaysHeaderAdapter extends BaseAdapter {
+public class DaysOfWeekAdapter extends BaseAdapter {
 
   private final Calendar calendar;
   private final int daysInWeek;
@@ -45,7 +45,7 @@ public class DaysHeaderAdapter extends BaseAdapter {
   private static final int CALENDAR_DAY_STYLE =
       VERSION.SDK_INT >= VERSION_CODES.O ? NARROW_FORMAT : Calendar.SHORT;
 
-  public DaysHeaderAdapter() {
+  public DaysOfWeekAdapter() {
     calendar = Calendar.getInstance();
     calendar.clear();
     daysInWeek = calendar.getMaximum(Calendar.DAY_OF_WEEK);
