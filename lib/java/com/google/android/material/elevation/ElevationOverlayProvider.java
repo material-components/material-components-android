@@ -46,9 +46,9 @@ public class ElevationOverlayProvider {
   }
 
   /**
-   * Applies the calculated elevation overlay (@see #layerOverlay(Context, int, float)) only if the
-   * current theme's {@code R.attr.elevationOverlaysEnabled} is true and the {@code backgroundColor}
-   * matches the theme's surface color ({@code R.attr.colorSurface}); otherwise returns the {@code
+   * Applies the calculated elevation overlay (@see #layerOverlay(int, float)) only if the current
+   * theme's {@code R.attr.elevationOverlaysEnabled} is true and the {@code backgroundColor} matches
+   * the theme's surface color ({@code R.attr.colorSurface}); otherwise returns the {@code
    * backgroundColor}.
    */
   @ColorInt
@@ -108,8 +108,17 @@ public class ElevationOverlayProvider {
 
   /** Returns the current theme's color int value for {@code R.attr.colorSurface}. */
   @ColorInt
-  public int getColorSurface() {
+  public int getSurfaceColor() {
     return colorSurface;
+  }
+
+  /**
+   * Returns the current theme's color int value for {@code R.attr.colorSurface}, with an elevation
+   * overlay applied if needed (@see #layerOverlayIfNeeded(int, float)).
+   */
+  @ColorInt
+  public int getSurfaceColorWithOverlayIfNeeded(float elevation) {
+    return layerOverlayIfNeeded(colorSurface, elevation);
   }
 
   private boolean isSurfaceColor(@ColorInt int color) {

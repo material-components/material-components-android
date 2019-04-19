@@ -54,7 +54,7 @@ public class ElevationOverlayProviderTest {
       givenOverlaysEnabledAndSurfaceColorAndElevation_whenLayerOverlayIfNeeded_returnsColorWithOverlay() {
     provider = new ElevationOverlayProvider(context);
 
-    int backgroundColor = provider.getColorSurface();
+    int backgroundColor = provider.getSurfaceColor();
     assertThat(provider.layerOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
         .isEqualTo(provider.layerOverlay(backgroundColor, ELEVATION_NON_ZERO));
   }
@@ -74,7 +74,7 @@ public class ElevationOverlayProviderTest {
       givenOverlaysEnabledAndSurfaceColorAndNoElevation_whenLayerOverlayIfNeeded_returnsColorWithoutOverlay() {
     provider = new ElevationOverlayProvider(context);
 
-    int backgroundColor = provider.getColorSurface();
+    int backgroundColor = provider.getSurfaceColor();
     assertThat(provider.layerOverlayIfNeeded(backgroundColor, ELEVATION_ZERO))
         .isEqualTo(backgroundColor);
   }
@@ -85,7 +85,7 @@ public class ElevationOverlayProviderTest {
 
     provider = new ElevationOverlayProvider(context);
 
-    int backgroundColor = provider.getColorSurface();
+    int backgroundColor = provider.getSurfaceColor();
     assertThat(provider.layerOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
         .isEqualTo(backgroundColor);
   }

@@ -104,8 +104,7 @@ public class ElevationOverlaysDemoActivity extends DemoActivity {
       @SuppressWarnings("RestrictTo")
       private void bind(int elevationDp) {
         float elevation = ViewUtils.dpToPx(ElevationOverlaysDemoActivity.this, elevationDp);
-        int color =
-            overlayProvider.layerOverlayIfNeeded(overlayProvider.getColorSurface(), elevation);
+        int color = overlayProvider.getSurfaceColorWithOverlayIfNeeded(elevation);
         int alphaPercent =
             Math.round(overlayProvider.calculateOverlayAlphaFraction(elevation) * 100);
 
