@@ -132,8 +132,24 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    */
   public static final int ICON_GRAVITY_TEXT_START = 0x2;
 
+  /**
+   * Gravity used to position the icon at the end of the view.
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_END = 0x3;
+
+  /**
+   * Gravity used to position the icon in the center of the view at the end of the text
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_TEXT_END = 0x4;
+
   /** Positions the icon can be set to. */
-  @IntDef({ICON_GRAVITY_START, ICON_GRAVITY_TEXT_START})
+  @IntDef({ICON_GRAVITY_START, ICON_GRAVITY_TEXT_START, ICON_GRAVITY_END, ICON_GRAVITY_TEXT_END})
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
 
@@ -149,12 +165,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   @Nullable private final MaterialButtonHelper materialButtonHelper;
 
-  @Px private int iconPadding;
   private Mode iconTintMode;
   private ColorStateList iconTint;
   private Drawable icon;
   @Px private int iconSize;
   @Px private int iconLeft;
+  @Px private int iconPadding;
+
   private boolean checked = false;
   private boolean broadcasting = false;
 
@@ -399,7 +416,13 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private void updateIconPosition() {
-    if (icon == null || iconGravity != ICON_GRAVITY_TEXT_START || getLayout() == null) {
+    if (icon == null || getLayout() == null) {
+      return;
+    }
+
+    if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_END) {
+      iconLeft = 0;
+      updateIcon();
       return;
     }
 
@@ -424,7 +447,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
                 - ViewCompat.getPaddingStart(this))
             / 2;
 
-    if (isLayoutRTL()) {
+    // Only flip the bound value if either isLayoutRTL() or iconGravity is textEnd, but not both
+    if (isLayoutRTL() != (iconGravity == ICON_GRAVITY_TEXT_END)) {
       newIconLeft = -newIconLeft;
     }
 
@@ -627,7 +651,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
       icon.setBounds(iconLeft, 0, iconLeft + width, height);
     }
 
-    TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
+    if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START) {
+      TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
+    } else {
+      TextViewCompat.setCompoundDrawablesRelative(this, null, null, icon, null);
+    }
   }
 
   /**
@@ -816,7 +844,10 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    * @see #getIconGravity()
    */
   public void setIconGravity(@IconGravity int iconGravity) {
-    this.iconGravity = iconGravity;
+    if (this.iconGravity != iconGravity) {
+      this.iconGravity = iconGravity;
+      updateIconPosition();
+    }
   }
 
   @Override

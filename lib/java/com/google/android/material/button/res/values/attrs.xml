@@ -50,6 +50,11 @@
       <!-- Push the icon to the start of the text keeping a distance equal to
            {@link R.attr#iconPadding} from the text. -->
       <flag name="textStart" value="0x2"/>
+      <!-- Push icon to the end of the button. -->
+      <flag name="end" value="0x3"/>
+      <!-- Push the icon to the end of the text keeping a distance equal to
+           {@link R.attr#iconPadding} from the text. -->
+      <flag name="textEnd" value="0x4"/>
     </attr>
     <!-- Tint for icon drawable to display. -->
     <attr name="iconTint" format="color"/>

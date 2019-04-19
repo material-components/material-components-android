@@ -757,7 +757,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
    * default we should still be calculating these programmatically rather than from the MotionSpec.
    */
   private AnimatorSet createShrinkExtendAnimator(@NonNull MotionSpec spec, boolean shrinking) {
-    int collapsedSize = ViewCompat.getPaddingStart(this) * 2 + getIconSize();
+    int collapsedSize = getCollapsedSize();
 
     if (spec.hasPropertyValues("width")) {
       PropertyValuesHolder[] widthValues = spec.getPropertyValues("width");
@@ -812,7 +812,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     if (layoutParams == null) {
       return;
     }
-    int collapsedSize = ViewCompat.getPaddingStart(this) * 2 + getIconSize();
+    int collapsedSize = getCollapsedSize();
     layoutParams.width = collapsedSize;
     layoutParams.height = collapsedSize;
     requestLayout();
@@ -948,6 +948,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
    */
   private int getAdjustedRadius(int value) {
     return (value - 1) / 2;
+  }
+
+  /**
+   * Shrink to the smaller value between paddingStart and paddingEnd, such that when shrunk the icon
+   * will be centered.
+   */
+  private int getCollapsedSize() {
+    return Math.min(ViewCompat.getPaddingStart(this), ViewCompat.getPaddingEnd(this)) * 2
+        + getIconSize();
   }
 
   /**
