@@ -36,6 +36,7 @@ import java.util.Calendar;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
+@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
 public class MonthAdapter extends BaseAdapter {
 
   /**

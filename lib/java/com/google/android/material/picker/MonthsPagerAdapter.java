@@ -17,8 +17,6 @@ package com.google.android.material.picker;
 
 import android.database.DataSetObserver;
 import androidx.annotation.NonNull;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.picker.selector.GridSelector;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -31,8 +29,7 @@ import android.view.ViewGroup;
  *
  * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
-public class MonthsPagerAdapter extends FragmentStatePagerAdapter {
+class MonthsPagerAdapter extends FragmentStatePagerAdapter {
 
   private final Month firstPage;
   private final Month lastPage;

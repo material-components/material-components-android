@@ -17,8 +17,6 @@ package com.google.android.material.picker;
 
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -34,8 +32,7 @@ import java.util.Locale;
  *
  * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
-public class DaysOfWeekAdapter extends BaseAdapter {
+class DaysOfWeekAdapter extends BaseAdapter {
 
   private final Calendar calendar;
   private final int daysInWeek;
