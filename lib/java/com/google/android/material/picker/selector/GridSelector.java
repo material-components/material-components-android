@@ -46,21 +46,16 @@ public interface GridSelector<S> extends Parcelable {
   /**
    * Allows this selection handler to respond to clicks within the {@link AdapterView}.
    *
-   * @param adapter The adapter backing this month of the calendar
-   * @param view The view that was clicked
-   * @param position The index of the item clicked in parent
-   * @param row The row of the item clicked in parent
+   * @param selection The selected day
    */
-  void changeSelection(MonthAdapter adapter, View view, int position, long row);
+  void select(Calendar selection);
 
   /**
    * Modifies the provided {@link View} to indicate its selection status.
    *
-   * <p>Called for each {@link View} as part of {@link MonthAdapter#getView(int, View,
-   * ViewGroup)}
+   * <p>Called for each {@link View} as part of {@link MonthAdapter#getView(int, View, ViewGroup)}
    *
-   * @param cell The {@link View} returned from {@link MonthAdapter#getView(int, View,
-   *     ViewGroup)}
+   * @param cell The {@link View} returned from {@link MonthAdapter#getView(int, View, ViewGroup)}
    * @param item The {@link Calendar} returned from {@link MonthAdapter#getItem(int)}.
    */
   void drawCell(View cell, Calendar item);

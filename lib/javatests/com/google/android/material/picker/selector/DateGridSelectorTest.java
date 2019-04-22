@@ -58,7 +58,7 @@ public class DateGridSelectorTest {
   public void dateDrawCell() {
     int position = 8;
     assertTrue(adapter.withinMonth(position));
-    dateGridSelector.changeSelection(adapter, /* view= */ null, position, /* row= */ 0);
+    dateGridSelector.select(adapter.getItem(position));
     GridSelectorTestUtils.assertCellColor(
         context, dateGridSelector, adapter, position, DateGridSelector.selectedColor);
     GridSelectorTestUtils.assertCellColor(
@@ -69,7 +69,7 @@ public class DateGridSelectorTest {
   public void dateGridSelectorMaintainsSelectionAfterParceling() {
     int position = 8;
     assertTrue(adapter.withinMonth(position));
-    dateGridSelector.changeSelection(adapter, /* view= */ null, position, /* row= */ 0);
+    dateGridSelector.select(adapter.getItem(position));
     Calendar expected = adapter.getItem(position);
     DateGridSelector dateGridSelectorFromParcel =
         ParcelableTestUtils.parcelAndCreate(dateGridSelector, DateGridSelector.CREATOR);

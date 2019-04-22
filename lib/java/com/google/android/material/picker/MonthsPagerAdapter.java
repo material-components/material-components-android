@@ -17,6 +17,7 @@ package com.google.android.material.picker;
 
 import android.database.DataSetObserver;
 import androidx.annotation.NonNull;
+import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
 import com.google.android.material.picker.selector.GridSelector;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -36,7 +37,7 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
   private final int startIndex;
   private final GridSelector<?> gridSelector;
   private final SparseArray<DataSetObserver> observingFragments;
-  private final OnFragmentClickedListener listeningCalendar;
+  private final OnDayClickListener onDayClickListener;
 
   /**
    * Creates a new {@link FragmentStatePagerAdapter} that manages the instances of {@link
@@ -59,7 +60,7 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
       Month firstPage,
       Month lastPage,
       Month startPage,
-      OnFragmentClickedListener listeningCalendar) {
+      OnDayClickListener onDayClickListener) {
     super(fragmentManager);
     if (firstPage.compareTo(startPage) > 0) {
       throw new IllegalArgumentException("firstPage cannot be after startPage");
@@ -72,14 +73,7 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
     startIndex = firstPage.monthsUntil(startPage);
     this.gridSelector = gridSelector;
     observingFragments = new SparseArray<>();
-    this.listeningCalendar = listeningCalendar;
-  }
-
-  @Override
-  public void notifyDataSetChanged() {
-    // Notifies all registered DataSetObserver instances
-    super.notifyDataSetChanged();
-    listeningCalendar.onFragmentClicked();
+    this.onDayClickListener = onDayClickListener;
   }
 
   @Override
@@ -91,13 +85,7 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
   @Override
   public Fragment instantiateItem(@NonNull ViewGroup viewGroup, int position) {
     final MonthFragment monthFragment = (MonthFragment) super.instantiateItem(viewGroup, position);
-    monthFragment.setOnFragmentClickedListener(
-        new OnFragmentClickedListener() {
-          @Override
-          public void onFragmentClicked() {
-            notifyDataSetChanged();
-          }
-        });
+    monthFragment.setOnDayClickListener(onDayClickListener);
     return monthFragment;
   }
 
@@ -110,7 +98,7 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
         new DataSetObserver() {
           @Override
           public void onChanged() {
-            monthFragment.onPagerSelectionChanged();
+            monthFragment.notifyDataSetChanged();
           }
         };
     registerDataSetObserver(dataSetObserver);

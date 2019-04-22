@@ -58,7 +58,7 @@ public class MonthsPagerAdapterTest {
             /* firstPage= */ feb2016,
             /* lastPage= */ april2016,
             /* startPage= */ march2016,
-            /* listeningCalendar= */ null);
+            /* onDayClickListener= */ null);
     assertEquals(3, monthsAdapter.getCount());
     assertEquals(1, monthsAdapter.getStartPosition());
   }
@@ -72,7 +72,7 @@ public class MonthsPagerAdapterTest {
             /* firstPage= */ feb2016,
             /* lastPage= */ feb2016,
             /* startPage= */ feb2016,
-            /* listeningCalendar= */ null);
+            /* onDayClickListener= */ null);
     assertEquals(1, monthsAdapter.getCount());
     assertEquals(0, monthsAdapter.getStartPosition());
   }
@@ -88,7 +88,7 @@ public class MonthsPagerAdapterTest {
         /* firstPage= */ feb2016,
         /* lastPage= */ march2016,
         /* startPage= */ april2016,
-        /* listeningCalendar= */ null);
+        /* onDayClickListener= */ null);
   }
 
   @Test
@@ -100,7 +100,7 @@ public class MonthsPagerAdapterTest {
         /* firstPage= */ march2016,
         /* lastPage= */ feb2016,
         /* startPage= */ march2016,
-        /* listeningCalendar= */ null);
+        /* onDayClickListener= */ null);
   }
 
   @Test
@@ -112,7 +112,7 @@ public class MonthsPagerAdapterTest {
             /* firstPage= */ feb2016,
             /* lastPage= */ april2016,
             /* startPage= */ march2016,
-            /* listeningCalendar= */ null);
+            /* onDayClickListener= */ null);
     assertEquals(feb2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 0).toString());
     assertEquals(march2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 1).toString());
     assertEquals(april2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 2).toString());

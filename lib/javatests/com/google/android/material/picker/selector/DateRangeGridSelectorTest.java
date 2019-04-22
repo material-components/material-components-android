@@ -61,8 +61,8 @@ public class DateRangeGridSelectorTest {
     int endPosition = 15;
     assertTrue(adapter.withinMonth(startPosition));
     assertTrue(adapter.withinMonth(endPosition));
-    dateRangeGridSelector.changeSelection(adapter, /* view= */ null, startPosition, /* row= */ 1);
-    dateRangeGridSelector.changeSelection(adapter, /* view= */ null, endPosition, /* row= */ 2);
+    dateRangeGridSelector.select(adapter.getItem(startPosition));
+    dateRangeGridSelector.select(adapter.getItem(endPosition));
 
     GridSelectorTestUtils.assertCellColor(
         context, dateRangeGridSelector, adapter, startPosition, DateRangeGridSelector.startColor);
@@ -89,8 +89,8 @@ public class DateRangeGridSelectorTest {
     Calendar expectedStart = adapter.getItem(startPosition);
     Calendar expectedEnd = adapter.getItem(endPosition);
 
-    dateRangeGridSelector.changeSelection(adapter, /* view= */ null, startPosition, /* row= */ 1);
-    dateRangeGridSelector.changeSelection(adapter, /* view= */ null, endPosition, /* row= */ 2);
+    dateRangeGridSelector.select(adapter.getItem(startPosition));
+    dateRangeGridSelector.select(adapter.getItem(endPosition));
     DateRangeGridSelector dateRangeGridSelectorFromParcel =
         ParcelableTestUtils.parcelAndCreate(dateRangeGridSelector, DateRangeGridSelector.CREATOR);
 

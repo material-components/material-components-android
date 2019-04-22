@@ -18,8 +18,10 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import android.os.Bundle;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
 import com.google.android.material.picker.selector.GridSelector;
 import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
@@ -43,11 +45,10 @@ public class MonthFragment extends Fragment {
 
   private Month month;
   private MonthAdapter monthAdapter;
-  private GridSelector<?> gridSelector;
-  private OnFragmentClickedListener onFragmentClickedListener;
+  @Nullable private OnDayClickListener onDayClickListener;
 
-  public void setOnFragmentClickedListener(OnFragmentClickedListener onFragmentClickedListener) {
-    this.onFragmentClickedListener = onFragmentClickedListener;
+  public void setOnDayClickListener(@Nullable OnDayClickListener onDayClickListener) {
+    this.onDayClickListener = onDayClickListener;
   }
 
   /**
@@ -69,7 +70,7 @@ public class MonthFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     month = getArguments().getParcelable(MONTH_KEY);
-    gridSelector = getArguments().getParcelable(GRID_SELECTOR_KEY);
+    GridSelector<?> gridSelector = getArguments().getParcelable(GRID_SELECTOR_KEY);
     monthAdapter = new MonthAdapter(getContext(), month, gridSelector);
   }
 
@@ -80,24 +81,19 @@ public class MonthFragment extends Fragment {
     GridView gridview = view.findViewById(R.id.month_grid);
     gridview.setNumColumns(month.daysInWeek);
     gridview.setAdapter(monthAdapter);
-    gridview.setOnItemClickListener(createOnItemClickListener());
+    gridview.setOnItemClickListener(
+        new OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (onDayClickListener != null && monthAdapter.withinMonth(position)) {
+              onDayClickListener.onDayClick(monthAdapter.getItem(position));
+            }
+          }
+        });
     return gridview;
   }
 
-  void onPagerSelectionChanged() {
+  void notifyDataSetChanged() {
     monthAdapter.notifyDataSetChanged();
-  }
-
-  private OnItemClickListener createOnItemClickListener() {
-    return new OnItemClickListener() {
-
-      @Override
-      public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-        gridSelector.changeSelection(monthAdapter, view, position, id);
-        if (onFragmentClickedListener != null) {
-          onFragmentClickedListener.onFragmentClicked();
-        }
-      }
-    };
   }
 }

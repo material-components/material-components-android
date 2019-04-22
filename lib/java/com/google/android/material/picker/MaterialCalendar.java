@@ -50,6 +50,7 @@ public final class MaterialCalendar<S> extends Fragment {
   private final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
       new LinkedHashSet<>();
   private GridSelector<S> gridSelector;
+  private MonthsPagerAdapter monthsPagerAdapter;
 
   /**
    * Creates a {@link MaterialCalendar} with {@link GridSelector#drawCell(View, Calendar)} applied
@@ -104,17 +105,19 @@ public final class MaterialCalendar<S> extends Fragment {
         new LinearLayout.LayoutParams(
             /* width= */ LinearLayout.LayoutParams.MATCH_PARENT,
             /* height= */ MonthAdapter.MAXIMUM_WEEKS * getDayHeight(getContext())));
-    MonthsPagerAdapter monthsPagerAdapter =
+    monthsPagerAdapter =
         new MonthsPagerAdapter(
             getChildFragmentManager(),
             gridSelector,
             earliestMonth,
             latestMonth,
             startMonth,
-            new OnFragmentClickedListener() {
+            new OnDayClickListener() {
 
               @Override
-              public void onFragmentClicked() {
+              public void onDayClick(Calendar day) {
+                gridSelector.select(day);
+                monthsPagerAdapter.notifyDataSetChanged();
                 for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
                   listener.onSelectionChanged(gridSelector.getSelection());
                 }
@@ -145,6 +148,11 @@ public final class MaterialCalendar<S> extends Fragment {
   interface OnSelectionChangedListener<S> {
 
     void onSelectionChanged(S selection);
+  }
+
+  interface OnDayClickListener {
+
+    void onDayClick(Calendar day);
   }
 
   /** Returns the pixel height of each {@link android.view.View} representing a day. */

@@ -23,7 +23,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.picker.MonthAdapter;
 import androidx.core.util.Pair;
 import androidx.core.view.ViewCompat;
 import android.view.View;
@@ -31,7 +30,7 @@ import java.util.Calendar;
 
 /**
  * A {@link GridSelector} that uses a {@link Pair} of {@link Calendar} objects to represent a
- * selected range
+ * selected range.
  *
  * @hide
  */
@@ -47,11 +46,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   private Calendar selectedEndItem = null;
 
   @Override
-  public void changeSelection(MonthAdapter adapter, View view, int position, long row) {
-    Calendar selection = adapter.getItem(position);
-    if (!adapter.withinMonth(position)) {
-      return;
-    }
+  public void select(Calendar selection) {
     if (selectedStartItem == null) {
       selectedStartItem = selection;
     } else if (selectedEndItem == null && selection.after(selectedStartItem)) {
