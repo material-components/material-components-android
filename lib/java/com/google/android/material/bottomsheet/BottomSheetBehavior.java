@@ -26,6 +26,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.IntDef;
@@ -250,7 +252,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       createMaterialShapeDrawable(context, attrs, hasBackgroundTint);
     }
     createShapeValueAnimator();
-    this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
+
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
+    }
 
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
     if (value != null && value.data == PEEK_HEIGHT_AUTO) {
