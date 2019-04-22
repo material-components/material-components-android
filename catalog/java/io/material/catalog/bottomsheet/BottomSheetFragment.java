@@ -64,7 +64,7 @@ public class BottomSheetFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_bottomsheet_title, R.drawable.ic_placeholder) {
+      return new FeatureDemo(R.string.cat_bottomsheet_title, R.drawable.ic_bottomsheet) {
         @Override
         public Fragment createFragment() {
           return new BottomSheetFragment();

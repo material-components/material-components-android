@@ -83,7 +83,7 @@ public class ElevationFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_elevation_fragment_title, R.drawable.ic_card) {
+      return new FeatureDemo(R.string.cat_elevation_fragment_title, R.drawable.ic_elevation) {
         @Override
         public Fragment createFragment() {
           return new ElevationFragment();
