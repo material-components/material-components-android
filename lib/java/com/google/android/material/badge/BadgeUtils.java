@@ -33,24 +33,6 @@ import android.widget.FrameLayout;
 @RestrictTo(Scope.LIBRARY)
 public class BadgeUtils {
 
-  /**
-   * Maximum number of characters a badge supports displaying by default. It could be changed using
-   * BadgeDrawable#setMaxBadgeCount.
-   */
-  public static final int DEFAULT_MAX_BADGE_CHARACTER_COUNT = 4;
-
-  /** Value of -1 denotes an icon only badge. */
-  public static final int ICON_ONLY_BADGE_NUMBER = -1;
-
-  /** Maximum value of number that can be displayed in a circular badge. */
-  static final int MAX_CIRCULAR_BADGE_NUMBER_COUNT = 99;
-
-  /**
-   * If the badge number exceeds the maximum allowed number, append this suffix to the max badge
-   * number and display is as the badge text instead.
-   */
-  static final String DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX = "+";
-
   private BadgeUtils() {
     // Private constructor to prevent unwanted construction.
   }

@@ -18,9 +18,6 @@ package com.google.android.material.badge;
 
 import com.google.android.material.R;
 
-import static com.google.android.material.badge.BadgeUtils.DEFAULT_MAX_BADGE_CHARACTER_COUNT;
-import static com.google.android.material.badge.BadgeUtils.ICON_ONLY_BADGE_NUMBER;
-import static com.google.android.material.badge.BadgeUtils.MAX_CIRCULAR_BADGE_NUMBER_COUNT;
 import static com.google.android.material.badge.BadgeUtils.updateBadgeBounds;
 
 import android.content.Context;
@@ -35,6 +32,8 @@ import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.os.Parcel;
+import android.os.Parcelable;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
@@ -51,6 +50,7 @@ import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 
 /**
  * BadgeDrawable contains all the layout and draw logic for a badge.
@@ -91,22 +91,102 @@ import android.view.ViewGroup;
  * </pre>
  */
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
+  /**
+   * Maximum number of characters a badge supports displaying by default. It could be changed using
+   * BadgeDrawable#setMaxBadgeCount.
+   */
+  private static final int DEFAULT_MAX_BADGE_CHARACTER_COUNT = 4;
+
+  /** Value of -1 denotes a numberless badge. */
+  private static final int BADGE_NUMBER_NONE = -1;
+
+  /** Maximum value of number that can be displayed in a circular badge. */
+  private static final int MAX_CIRCULAR_BADGE_NUMBER_COUNT = 99;
+
+  /**
+   * If the badge number exceeds the maximum allowed number, append this suffix to the max badge
+   * number and display is as the badge text instead.
+   */
+  static final String DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX = "+";
+
   private final Context context;
   private final MaterialShapeDrawable shapeDrawable;
   private final TextDrawableHelper textDrawableHelper;
   private final Rect badgeBounds;
-  private final float iconOnlyRadius;
+  private final float badgeRadius;
   private final float badgeWithTextRadius;
   private final float badgeWidePadding;
   private final Rect tmpRect;
+  private final SavedState savedState;
 
   private float badgeCenterX;
   private float badgeCenterY;
-  private int number = ICON_ONLY_BADGE_NUMBER;
-  private int maxCharacterCount;
-  private int alpha = 255;
   private int maxBadgeNumber;
-  private boolean maxBadgeNumberDirty = true;
+
+  /** A {@link Parcelable} implementation used to ensure the state of BadgeDrawable is saved. */
+  public static final class SavedState implements Parcelable {
+
+    @ColorInt private int backgroundColor;
+    @ColorInt private int badgeTextColor;
+    private int alpha = 255;
+    private int number = BADGE_NUMBER_NONE;
+    private int maxCharacterCount;
+
+    public SavedState(Context context) {
+      // If the badge text color attribute was not explicitly set, use the text color specified in
+      // the TextAppearance.
+      TextAppearance textAppearance =
+          new TextAppearance(context, R.style.TextAppearance_MaterialComponents_Badge);
+      badgeTextColor = textAppearance.textColor.getDefaultColor();
+    }
+
+    protected SavedState(Parcel in) {
+      backgroundColor = in.readInt();
+      badgeTextColor = in.readInt();
+      alpha = in.readInt();
+      number = in.readInt();
+      maxCharacterCount = in.readInt();
+    }
+
+    public static final Creator<SavedState> CREATOR =
+        new Creator<SavedState>() {
+          @Override
+          public SavedState createFromParcel(Parcel in) {
+            return new SavedState(in);
+          }
+
+          @Override
+          public SavedState[] newArray(int size) {
+            return new SavedState[size];
+          }
+        };
+
+    @Override
+    public int describeContents() {
+      return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+      dest.writeInt(backgroundColor);
+      dest.writeInt(badgeTextColor);
+      dest.writeInt(alpha);
+      dest.writeInt(number);
+      dest.writeInt(maxCharacterCount);
+    }
+  }
+
+  public SavedState getSavedState() {
+    return savedState;
+  }
+
+  /** Creates an instance of BadgeDrawable with the provided {@link SavedState}. */
+  public static BadgeDrawable createFromSavedState(
+      Context context, @NonNull SavedState savedState) {
+    BadgeDrawable badge = new BadgeDrawable(context);
+    badge.restoreFromSavedState(savedState);
+    return badge;
+  }
 
   /** Creates an instance of BadgeDrawable with default values. */
   public static BadgeDrawable create(Context context) {
@@ -121,12 +201,29 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       @AttrRes int defStyleAttr,
       @StyleRes int defStyleRes) {
     BadgeDrawable badge = new BadgeDrawable(context);
-    badge.loadFromAttributes(attrs, defStyleAttr, defStyleRes);
+    badge.loadDefaultStateFromAttributes(context, attrs, defStyleAttr, defStyleRes);
     return badge;
   }
 
-  private void loadFromAttributes(
-      AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
+  private void restoreFromSavedState(SavedState savedState) {
+    setMaxCharacterCount(savedState.maxCharacterCount);
+
+    // Only set the badge number if it exists in the style.
+    // Defaulting it to 0 means the badge will incorrectly show text when the user may want a
+    // numberless badge.
+    if (savedState.number != BADGE_NUMBER_NONE) {
+      setNumber(savedState.number);
+    }
+
+    setBackgroundColor(savedState.backgroundColor);
+
+    // Only set the badge text color if this attribute has explicitly been set, otherwise use the
+    // text color specified in the TextAppearance.
+    setBadgeTextColor(savedState.badgeTextColor);
+  }
+
+  private void loadDefaultStateFromAttributes(
+      Context context, AttributeSet attrs, @AttrRes int defStyleAttr, @StyleRes int defStyleRes) {
     TypedArray a =
         ThemeEnforcement.obtainStyledAttributes(
             context, attrs, R.styleable.Badge, defStyleAttr, defStyleRes);
@@ -134,11 +231,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     setMaxCharacterCount(
         a.getInt(R.styleable.Badge_maxCharacterCount, DEFAULT_MAX_BADGE_CHARACTER_COUNT));
 
-    setTextAppearanceResource(R.style.TextAppearance_MaterialComponents_Badge);
-
     // Only set the badge number if it exists in the style.
-    // Defaulting it to 0 means the badge will incorrectly show text when the user may want an icon
-    // only badge.
+    // Defaulting it to 0 means the badge will incorrectly show text when the user may want a
+    // numberless badge.
     if (a.hasValue(R.styleable.Badge_number)) {
       setNumber(a.getInt(R.styleable.Badge_number, 0));
     }
@@ -167,12 +262,14 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     badgeBounds = new Rect();
     shapeDrawable = new MaterialShapeDrawable();
 
-    iconOnlyRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_icon_only_radius);
+    badgeRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_radius);
     badgeWidePadding = res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding);
     badgeWithTextRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_with_text_radius);
 
     textDrawableHelper = new TextDrawableHelper();
     textDrawableHelper.getTextPaint().setTextAlign(Paint.Align.CENTER);
+    this.savedState = new SavedState(context);
+    setTextAppearanceResource(R.style.TextAppearance_MaterialComponents_Badge);
   }
 
   /**
@@ -210,6 +307,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @attr ref com.google.android.material.R.styleable#Badge_backgroundColor
    */
   public void setBackgroundColor(@ColorInt int backgroundColor) {
+    savedState.backgroundColor = backgroundColor;
     ColorStateList backgroundColorStateList = ColorStateList.valueOf(backgroundColor);
     if (shapeDrawable.getFillColor() != backgroundColorStateList) {
       shapeDrawable.setFillColor(backgroundColorStateList);
@@ -235,26 +333,32 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @attr ref com.google.android.material.R.styleable#Badge_badgeTextColor
    */
   public void setBadgeTextColor(@ColorInt int badgeTextColor) {
+    savedState.badgeTextColor = badgeTextColor;
     if (textDrawableHelper.getTextPaint().getColor() != badgeTextColor) {
       textDrawableHelper.getTextPaint().setColor(badgeTextColor);
       invalidateSelf();
     }
   }
 
+  /** Returns whether this badge will display a number. */
+  public boolean hasNumber() {
+    return savedState.number != BADGE_NUMBER_NONE;
+  }
+
   /**
    * Returns this badge's number. Only non-negative integer numbers will be returned because the
    * setter clamps negative values to 0.
    *
-   * <p> WARNING: Do not call this method if you are planning to compare to ICON_ONLY_BADGE_NUMBER
-   * 
+   * <p>WARNING: Do not call this method if you are planning to compare to BADGE_NUMBER_NONE
+   *
    * @see #setNumber(int)
    * @attr ref com.google.android.material.R.styleable#Badge_number
    */
   public int getNumber() {
-    if (number == ICON_ONLY_BADGE_NUMBER) {
+    if (!hasNumber()) {
       return 0;
     }
-    return number;
+    return savedState.number;
   }
 
   /**
@@ -267,17 +371,17 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    */
   public void setNumber(int number) {
     number = Math.max(0, number);
-    if (this.number != number) {
-      this.number = number;
+    if (this.savedState.number != number) {
+      this.savedState.number = number;
       textDrawableHelper.setTextWidthDirty(true);
       updateBounds();
       invalidateSelf();
     }
   }
 
-  /** Resets any badge number so that only an icon badge will be displayed. */
+  /** Resets any badge number so that a numberless badge will be displayed. */
   public void clearBadgeNumber() {
-    number = ICON_ONLY_BADGE_NUMBER;
+    savedState.number = BADGE_NUMBER_NONE;
     invalidateSelf();
   }
 
@@ -288,7 +392,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @attr ref com.google.android.material.R.styleable#Badge_maxCharacterCount
    */
   public int getMaxCharacterCount() {
-    return maxCharacterCount;
+    return savedState.maxCharacterCount;
   }
 
   /**
@@ -298,8 +402,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    * @attr ref com.google.android.material.R.styleable#Badge_maxCharacterCount
    */
   public void setMaxCharacterCount(int maxCharacterCount) {
-    if (this.maxCharacterCount != maxCharacterCount) {
-      this.maxCharacterCount = maxCharacterCount;
+    if (this.savedState.maxCharacterCount != maxCharacterCount) {
+      this.savedState.maxCharacterCount = maxCharacterCount;
+      updateMaxBadgeNumber();
       textDrawableHelper.setTextWidthDirty(true);
       updateBounds();
       invalidateSelf();
@@ -318,12 +423,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   @Override
   public int getAlpha() {
-    return alpha;
+    return savedState.alpha;
   }
 
   @Override
   public void setAlpha(int alpha) {
-    this.alpha = alpha;
+    this.savedState.alpha = alpha;
     textDrawableHelper.getTextPaint().setAlpha(alpha);
     invalidateSelf();
   }
@@ -352,7 +457,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       return;
     }
     shapeDrawable.draw(canvas);
-    if (number != ICON_ONLY_BADGE_NUMBER) {
+    if (hasNumber()) {
       drawText(canvas);
     }
   }
@@ -384,7 +489,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     float cornerRadius;
     tmpRect.set(badgeBounds);
     if (getNumber() <= MAX_CIRCULAR_BADGE_NUMBER_COUNT) {
-      cornerRadius = (number == ICON_ONLY_BADGE_NUMBER) ? iconOnlyRadius : badgeWithTextRadius;
+      cornerRadius = !hasNumber() ? badgeRadius : badgeWithTextRadius;
+
       updateBadgeBounds(badgeBounds, badgeCenterX, badgeCenterY, cornerRadius, cornerRadius);
     } else {
       cornerRadius = badgeWithTextRadius;
@@ -411,24 +517,18 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   private String getBadgeText() {
     // If number exceeds max count, show badgeMaxCount+ instead of the number.
-    int maxBadgeNumber = getMaxBadgeNumber();
     if (getNumber() <= maxBadgeNumber) {
       return Integer.toString(getNumber());
     } else {
       return context.getString(
           R.string.mtrl_exceed_max_badge_number_suffix,
           maxBadgeNumber,
-          BadgeUtils.DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX);
+          DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX);
     }
   }
 
-  private int getMaxBadgeNumber() {
-    if (!maxBadgeNumberDirty) {
-      return maxBadgeNumber;
-    }
+  private void updateMaxBadgeNumber() {
     maxBadgeNumber = (int) Math.pow(10.0d, (double) getMaxCharacterCount() - 1) - 1;
-    maxBadgeNumberDirty = false;
-    return maxBadgeNumber;
   }
 
   private void calculateBadgeCenterCoordinates(
