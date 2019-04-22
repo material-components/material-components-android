@@ -18,8 +18,11 @@ package com.google.android.material.bottomnavigation;
 
 import com.google.android.material.R;
 
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
+
 import android.content.Context;
 import android.content.res.ColorStateList;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.GradientDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -106,6 +109,7 @@ import android.widget.FrameLayout;
  */
 public class BottomNavigationView extends FrameLayout {
 
+  private static final int DEF_STYLE_RES = R.style.Widget_Design_BottomNavigationView;
   private static final int MENU_PRESENTER_ID = 1;
 
   private final MenuBuilder menu;
@@ -126,7 +130,9 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   public BottomNavigationView(Context context, AttributeSet attrs, int defStyleAttr) {
-    super(context, attrs, defStyleAttr);
+    super(createThemedContext(context, attrs, defStyleAttr, DEF_STYLE_RES), attrs, defStyleAttr);
+    // Ensure we are using the correctly themed context rather than the context that was passed in.
+    context = getContext();
 
     // Create the menu
     this.menu = new BottomNavigationMenu(context);
@@ -179,7 +185,7 @@ public class BottomNavigationView extends FrameLayout {
       setItemTextColor(a.getColorStateList(R.styleable.BottomNavigationView_itemTextColor));
     }
 
-    if (getBackground() == null) {
+    if (getBackground() == null || getBackground() instanceof ColorDrawable) {
       // Add a MaterialShapeDrawable as background that supports tinting in every API level.
       ViewCompat.setBackground(this, createMaterialShapeDrawableBackground(context));
     }
@@ -239,6 +245,11 @@ public class BottomNavigationView extends FrameLayout {
 
   private MaterialShapeDrawable createMaterialShapeDrawableBackground(Context context) {
     MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+    Drawable originalBackground = getBackground();
+    if (originalBackground instanceof ColorDrawable) {
+      materialShapeDrawable.setFillColor(
+          ColorStateList.valueOf(((ColorDrawable) originalBackground).getColor()));
+    }
     materialShapeDrawable.initializeElevationOverlay(context);
     return materialShapeDrawable;
   }
