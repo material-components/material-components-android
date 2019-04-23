@@ -1225,6 +1225,12 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return peekHeightMin;
   }
 
+  @VisibleForTesting
+  void disableShapeAnimations() {
+    // Sets the shape value animator to null, prevents animations from occuring during testing.
+    interpolatorAnimator = null;
+  }
+
   private class SettleRunnable implements Runnable {
 
     private final View view;
