@@ -22,9 +22,16 @@
   <string name="show_popup">Show Popup</string>
   <string name="menu_with_icons">Popup menu with icons</string>
   <string name="popup_menu">Popup Menu</string>
+  <string name="context_menu" description="label for section where the context menu is featured [CHAR_LIMIT=20].">Context Menu</string>
   <string name="menu_demo_description">
     Menus within a Material theme will default to a text style of textAppearanceSubtitle1.
     \n\n The menu background adds top and bottom padding, rounded corners, and 8dp elevation.
-    \n\n You can try the popup menus or the overflow menu in this demo.
+    \n\n You can try the popup menus, context menu, or the overflow menu in this demo.
   </string>
+
+  <string name="menu_context_menu_description" description="Text explaining how to use context menus [CHAR_LIMIT=NONE].">
+    This TextView opens a context menu when long pressed.
+    \n\nIt provides actions that affect the selected content or context frame.
+  </string>
+  <string name="context_menu_highlight" description="text for a menu option to highlight text [CHAR_LIMIT=20].">Highlight</string>
 </resources>
