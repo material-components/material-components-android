@@ -36,18 +36,18 @@
   <!-- Dark theme brand colors. -->
   <color name="design_dark_default_color_primary">#BB86FC</color>
   <color name="design_dark_default_color_primary_dark">#8858C8</color>
-  <color name="design_dark_default_color_primary_variant">#4B01D0</color>
+  <color name="design_dark_default_color_primary_variant">#3700B3</color>
   <color name="design_dark_default_color_on_primary">#000000</color>
   <color name="design_dark_default_color_secondary">#03DAC6</color>
-  <color name="design_dark_default_color_secondary_variant">#018786</color>
+  <color name="design_dark_default_color_secondary_variant">#03DAC6</color>
   <color name="design_dark_default_color_on_secondary">#000000</color>
 
   <!-- Dark theme neutral colors. -->
-  <color name="design_dark_default_color_background">#141414</color>
+  <color name="design_dark_default_color_background">#121212</color>
   <color name="design_dark_default_color_on_background">#FFFFFF</color>
-  <color name="design_dark_default_color_surface">#141414</color>
+  <color name="design_dark_default_color_surface">#121212</color>
   <color name="design_dark_default_color_on_surface">#FFFFFF</color>
-  <color name="design_dark_default_color_error">#C26C7A</color>
+  <color name="design_dark_default_color_error">#CF6679</color>
   <color name="design_dark_default_color_on_error">#000000</color>
 
   <!-- 32% opacity black -->
