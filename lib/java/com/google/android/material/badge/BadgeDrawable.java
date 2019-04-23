@@ -38,6 +38,7 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import com.google.android.material.internal.TextDrawableHelper;
@@ -131,6 +132,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     private int alpha = 255;
     private int number = BADGE_NUMBER_NONE;
     private int maxCharacterCount;
+    private CharSequence contentDescriptionNumberless;
+    @StringRes private int contentDescriptionQuantityStrings;
 
     public SavedState(Context context) {
       // If the badge text color attribute was not explicitly set, use the text color specified in
@@ -138,6 +141,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       TextAppearance textAppearance =
           new TextAppearance(context, R.style.TextAppearance_MaterialComponents_Badge);
       badgeTextColor = textAppearance.textColor.getDefaultColor();
+      contentDescriptionNumberless =
+          context.getString(R.string.mtrl_badge_numberless_content_description);
+      contentDescriptionQuantityStrings = R.plurals.mtrl_badge_content_description;
     }
 
     protected SavedState(Parcel in) {
@@ -146,6 +152,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       alpha = in.readInt();
       number = in.readInt();
       maxCharacterCount = in.readInt();
+      contentDescriptionNumberless = in.readString();
+      contentDescriptionQuantityStrings = in.readInt();
     }
 
     public static final Creator<SavedState> CREATOR =
@@ -173,6 +181,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeInt(alpha);
       dest.writeInt(number);
       dest.writeInt(maxCharacterCount);
+      dest.writeString(contentDescriptionNumberless.toString());
+      dest.writeInt(contentDescriptionQuantityStrings);
     }
   }
 
@@ -471,6 +481,29 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   @Override
   public boolean onStateChange(int[] state) {
     return super.onStateChange(state);
+  }
+
+  public void setContentDescriptionNumberless(CharSequence charSequence) {
+    savedState.contentDescriptionNumberless = charSequence;
+  }
+
+  public void setContentDescriptionQuantityStringsResource(@StringRes int stringsResource) {
+    savedState.contentDescriptionQuantityStrings = stringsResource;
+  }
+
+  @Nullable
+  public CharSequence getContentDescription(Context context) {
+    if (!isVisible()) {
+      return null;
+    }
+    if (hasNumber()) {
+      return context
+          .getResources()
+          .getQuantityString(
+              savedState.contentDescriptionQuantityStrings, getNumber(), getNumber());
+    } else {
+      return savedState.contentDescriptionNumberless;
+    }
   }
 
   private void setTextAppearanceResource(@StyleRes int id) {

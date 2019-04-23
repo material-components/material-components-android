@@ -45,6 +45,7 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -127,6 +128,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
             }
           });
     }
+    ViewCompat.setAccessibilityDelegate(this, null);
   }
 
   @Override
@@ -265,6 +267,19 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     // Set the item as selected to send an AccessibilityEvent.TYPE_VIEW_SELECTED from View, so that
     // the item is read out as selected.
     setSelected(checked);
+  }
+
+  @Override
+  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    if (badgeDrawable != null && badgeDrawable.isVisible()) {
+      CharSequence customContentDescription = itemData.getTitle();
+      if (!TextUtils.isEmpty(itemData.getContentDescription())) {
+        customContentDescription = itemData.getContentDescription();
+      }
+      info.setContentDescription(
+          customContentDescription + ", " + badgeDrawable.getContentDescription(getContext()));
+    }
   }
 
   private void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {
