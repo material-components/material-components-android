@@ -26,7 +26,7 @@
     for three to five destinations within an app.
   </string>
   <string name="cat_bottom_nav_legacy_title">Legacy Bottom Nav</string>
-  <string name="cat_bottom_nav_default_colored_title">Default Colored Bottom Nav</string>
+  <string name="cat_bottom_nav_default_title" description="A label for the default Bottom Navigation widget. [CHAR_LIMIT=20]">Default Bottom Nav</string>
   <string name="cat_bottom_nav_colored_title">Colored Bottom Nav</string>
 
   <string name="cat_bottom_nav_item_name">Item %1$d</string>

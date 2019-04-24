@@ -40,7 +40,7 @@
     <item name="appBarLayoutStyle">@style/Widget.MaterialComponents.AppBarLayout.Surface</item>
     <item name="borderlessButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
     <item name="bottomAppBarStyle">@style/Widget.MaterialComponents.BottomAppBar</item>
-    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView.Colored</item>
+    <item name="bottomNavigationStyle">@style/Widget.MaterialComponents.BottomNavigationView</item>
     <item name="buttonBarButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog.Flush</item>
     <item name="checkboxStyle">@style/Widget.MaterialComponents.CompoundButton.CheckBox</item>
     <item name="chipStyle">@style/Widget.MaterialComponents.Chip.Action</item>
