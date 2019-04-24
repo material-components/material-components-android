@@ -29,7 +29,7 @@
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
   </style>
 
-  <style name="Widget.MaterialComponents.MaterialCalendarView" parent="android:Widget"/>
-  <style name="Widget.MaterialComponents.DateRangePickerView" parent ="Widget.MaterialComponents.MaterialCalendarView"/>
-  <style name="Widget.MaterialComponents.DatePickerView" parent ="Widget.MaterialComponents.MaterialCalendarView"/>
+  <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget"/>
+  <style name="Widget.MaterialComponents.MaterialCalendar.DateRangePicker"/>
+  <style name="Widget.MaterialComponents.MaterialCalendar.DatePicker"/>
 </resources>

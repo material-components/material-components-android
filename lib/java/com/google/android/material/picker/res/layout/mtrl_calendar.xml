@@ -20,6 +20,12 @@
     android:orientation="vertical">
 
   <include
+    layout="@layout/mtrl_calendar_month_bar"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_weight="0"/>
+
+  <include
       layout="@layout/mtrl_calendar_days_header"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"

@@ -74,10 +74,10 @@
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
 
     <!-- Picker styles and themes. -->
-    <item name="materialDatePickerStyle">@style/Widget.MaterialComponents.DatePickerView</item>
-    <item name="materialDateRangePickerStyle">@style/Widget.MaterialComponents.DateRangePickerView</item>
-    <item name="materialDatePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.DatePicker</item>
-    <item name="materialDateRangePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.DateRangePicker</item>
+    <item name="materialDatePickerStyle">@style/Widget.MaterialComponents.MaterialCalendar.DatePicker</item>
+    <item name="materialDateRangePickerStyle">@style/Widget.MaterialComponents.MaterialCalendar.DateRangePicker</item>
+    <item name="materialDatePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.DatePicker</item>
+    <item name="materialDateRangePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.DateRangePicker</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light" parent="Base.V14.Theme.MaterialComponents.Light.Bridge">
@@ -134,10 +134,10 @@
     <item name="textAppearanceSmallPopupMenu">?attr/textAppearanceSubtitle1</item>
 
     <!-- Picker styles and themes. -->
-    <item name="materialDatePickerStyle">@style/Widget.MaterialComponents.DatePickerView</item>
-    <item name="materialDateRangePickerStyle">@style/Widget.MaterialComponents.DateRangePickerView</item>
-    <item name="materialDatePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.DatePicker</item>
-    <item name="materialDateRangePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.DateRangePicker</item>
+    <item name="materialDatePickerStyle">@style/Widget.MaterialComponents.MaterialCalendar.DatePicker</item>
+    <item name="materialDateRangePickerStyle">@style/Widget.MaterialComponents.MaterialCalendar.DateRangePicker</item>
+    <item name="materialDatePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.DatePicker</item>
+    <item name="materialDateRangePickerDialogTheme">@style/ThemeOverlay.MaterialComponents.MaterialCalendar.DateRangePicker</item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform

@@ -24,14 +24,14 @@
     android:layout_height="match_parent">
 
   <Button
-      style="?attr/android:buttonBarNegativeButtonStyle"
+      style="?attr/materialPickerTextButtonStyle"
       android:id="@+id/cancel_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/mtrl_picker_cancel"/>
 
   <Button
-      style="?attr/android:buttonBarPositiveButtonStyle"
+      style="?attr/materialPickerTextButtonStyle"
       android:id="@+id/confirm_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

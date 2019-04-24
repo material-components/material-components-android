@@ -19,5 +19,7 @@
   <attr name="materialDateRangePickerStyle" format="reference"/>
   <attr name="materialDatePickerDialogTheme" format="reference"/>
   <attr name="materialDateRangePickerDialogTheme" format="reference"/>
+  <attr name="materialPickerIconButtonStyle" format="reference"/>
+  <attr name="materialPickerTextButtonStyle" format="reference"/>
 
 </resources>

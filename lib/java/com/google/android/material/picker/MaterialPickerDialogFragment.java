@@ -30,9 +30,9 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
 import com.google.android.material.picker.MaterialCalendar.OnSelectionChangedListener;
 import com.google.android.material.picker.selector.GridSelector;
+import com.google.android.material.resources.MaterialAttributes;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
-import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,9 +95,8 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     if (themeResId != 0) {
       return themeResId;
     }
-    TypedValue outValue = new TypedValue();
-    context.getTheme().resolveAttribute(defaultThemeAttr, outValue, true);
-    return outValue.resourceId;
+    return MaterialAttributes.resolveOrThrow(
+        context, defaultThemeAttr, MaterialPickerDialogFragment.class.getCanonicalName());
   }
 
   @Override
@@ -115,13 +114,14 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     themeResId =
         getThemeResource(
             getContext(), getDefaultThemeAttr(), getArguments().getInt(THEME_RESOURCE_ID_KEY));
+    setStyle(DialogFragment.STYLE_NO_FRAME, themeResId);
     if (bundle != null) {
       gridSelector = bundle.getParcelable(GRID_SELECTOR_KEY);
     }
     if (gridSelector == null) {
       gridSelector = createGridSelector();
     }
-    materialCalendar = MaterialCalendar.newInstance(gridSelector);
+    materialCalendar = MaterialCalendar.newInstance(gridSelector, themeResId);
   }
 
   @Override

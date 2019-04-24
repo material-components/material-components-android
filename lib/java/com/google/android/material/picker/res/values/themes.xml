@@ -21,7 +21,10 @@
   <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Spinner"/>
   <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Calendar"/>
 
-  <style name="ThemeOverlay.MaterialComponents.MaterialCalendarView" parent="ThemeOverlay.MaterialComponents.Dialog"/>
-  <style name="ThemeOverlay.MaterialComponents.DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendarView"/>
-  <style name="ThemeOverlay.MaterialComponents.DateRangePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendarView"/>
+  <style name="ThemeOverlay.MaterialComponents.MaterialCalendar" parent="ThemeOverlay.MaterialComponents.Dialog">
+    <item name="materialPickerTextButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
+    <item name="materialPickerIconButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Icon</item>
+  </style>
+  <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.DatePicker"/>
+  <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.DateRangePicker"/>
 </resources>

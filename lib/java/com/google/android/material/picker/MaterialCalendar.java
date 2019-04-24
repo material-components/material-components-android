@@ -24,12 +24,16 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.picker.selector.GridSelector;
 import com.google.android.material.resources.MaterialAttributes;
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener;
+import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout;
@@ -46,11 +50,13 @@ import java.util.LinkedHashSet;
 public final class MaterialCalendar<S> extends Fragment {
 
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
+  private static final String THEME_RES_ID_KEY = "THEME_RES_ID_KEY";
 
   private final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
       new LinkedHashSet<>();
   private GridSelector<S> gridSelector;
   private MonthsPagerAdapter monthsPagerAdapter;
+  private int themeResId;
 
   /**
    * Creates a {@link MaterialCalendar} with {@link GridSelector#drawCell(View, Calendar)} applied
@@ -60,10 +66,11 @@ public final class MaterialCalendar<S> extends Fragment {
    * @param <T> Type returned from selections in this {@link MaterialCalendar} by {@link
    *     MaterialCalendar#getSelection()}
    */
-  public static <T> MaterialCalendar<T> newInstance(GridSelector<T> gridSelector) {
+  public static <T> MaterialCalendar<T> newInstance(GridSelector<T> gridSelector, int themeResId) {
     MaterialCalendar<T> materialCalendar = new MaterialCalendar<>();
     Bundle args = new Bundle();
     args.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    args.putInt(THEME_RES_ID_KEY, themeResId);
     materialCalendar.setArguments(args);
     return materialCalendar;
   }
@@ -81,6 +88,7 @@ public final class MaterialCalendar<S> extends Fragment {
       bundle = getArguments();
     }
     gridSelector = bundle.getParcelable(GRID_SELECTOR_KEY);
+    themeResId = bundle.getInt(THEME_RES_ID_KEY);
   }
 
   @NonNull
@@ -89,13 +97,15 @@ public final class MaterialCalendar<S> extends Fragment {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
+    ContextThemeWrapper themedContext = new ContextThemeWrapper(getContext(), themeResId);
+    LayoutInflater themedInflater = layoutInflater.cloneInContext(themedContext);
 
     Month earliestMonth = Month.create(1900, Calendar.JANUARY);
     Month latestMonth = Month.create(2100, Calendar.DECEMBER);
     Calendar today = Calendar.getInstance();
     Month startMonth = Month.create(today.get(Calendar.YEAR), today.get(Calendar.MONTH));
 
-    final View root = layoutInflater.inflate(R.layout.mtrl_calendar, viewGroup, false);
+    final View root = themedInflater.inflate(R.layout.mtrl_calendar, viewGroup, false);
     GridView daysHeader = root.findViewById(R.id.calendar_days_header);
     daysHeader.setAdapter(new DaysOfWeekAdapter());
     daysHeader.setNumColumns(startMonth.daysInWeek);
@@ -125,7 +135,7 @@ public final class MaterialCalendar<S> extends Fragment {
             });
     monthsPager.setAdapter(monthsPagerAdapter);
     monthsPager.setCurrentItem(monthsPagerAdapter.getStartPosition());
-
+    addMonthChangeListeners(root);
     return root;
   }
 
@@ -159,5 +169,39 @@ public final class MaterialCalendar<S> extends Fragment {
   @Px
   static int getDayHeight(Context context) {
     return MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
+  }
+
+  private void addMonthChangeListeners(View root) {
+    final ViewPager monthPager = root.findViewById(R.id.month_pager);
+    final MaterialButton monthDropSelect = root.findViewById(R.id.month_drop_select);
+    monthDropSelect.setText(monthPager.getAdapter().getPageTitle(monthPager.getCurrentItem()));
+    final MaterialButton monthPrev = root.findViewById(R.id.month_previous);
+    final MaterialButton monthNext = root.findViewById(R.id.month_next);
+    monthPager.addOnPageChangeListener(
+        new SimpleOnPageChangeListener() {
+          @Override
+          public void onPageSelected(int position) {
+            monthDropSelect.setText(monthPager.getAdapter().getPageTitle(position));
+          }
+        });
+
+    monthNext.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            if (monthPager.getCurrentItem() + 1 < monthPager.getAdapter().getCount()) {
+              monthPager.setCurrentItem(monthPager.getCurrentItem() + 1);
+            }
+          }
+        });
+    monthPrev.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            if (monthPager.getCurrentItem() - 1 >= 0) {
+              monthPager.setCurrentItem(monthPager.getCurrentItem() - 1);
+            }
+          }
+        });
   }
 }
