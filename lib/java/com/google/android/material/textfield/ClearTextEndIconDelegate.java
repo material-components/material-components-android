@@ -65,7 +65,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
   @Override
   void initialize() {
     textInputLayout.setEndIconDrawable(
-        AppCompatResources.getDrawable(context, R.drawable.mtrl_clear_text_button));
+        AppCompatResources.getDrawable(context, R.drawable.mtrl_ic_cancel));
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
     textInputLayout.setEndIconOnClickListener(
