@@ -88,14 +88,13 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
       bn.showBadge(menuItemId);
 
       menuItemId = bn.getMenu().getItem(1).getItemId();
-      bn.showBadge(menuItemId);
       // A badge with the text "99" will be displayed.
-      bn.getBadge(menuItemId).setNumber(99);
+      bn.showBadge(menuItemId).setNumber(99);
+      ;
 
       menuItemId = bn.getMenu().getItem(2).getItemId();
-      bn.showBadge(menuItemId);
       // A badge with the text "999+" will be displayed.
-      bn.getBadge(menuItemId).setNumber(9999);
+      bn.showBadge(menuItemId).setNumber(9999);
     }
   }
 
@@ -104,16 +103,14 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
       // Increase the badge number on the first menu item.
       MenuItem menuItem = bn.getMenu().getItem(0);
       int menuItemId = menuItem.getItemId();
-      BadgeDrawable badgeDrawable = bn.getBadge(menuItemId);
-      badgeDrawable.setVisible(true, /* restart= */ false);
+      BadgeDrawable badgeDrawable = bn.showBadge(menuItemId);
       badgeDrawable.setNumber(badgeDrawable.getNumber() + delta);
     }
   }
 
   private void clearAndHideBadge(int menuItemId) {
     for (BottomNavigationView bn : bottomNavigationViews) {
-      bn.getBadge(menuItemId).clearBadgeNumber();
-      bn.getBadge(menuItemId).setVisible(false, false);
+      bn.removeBadge(menuItemId);
     }
   }
 
