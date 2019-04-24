@@ -27,4 +27,8 @@
     <item name="android:popupElevation">8dp</item>
   </style>
 
+  <style name="Base.Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Widget.AppCompat.PopupMenu">
+    <item name="android:overlapAnchor">true</item>
+  </style>
+
 </resources>

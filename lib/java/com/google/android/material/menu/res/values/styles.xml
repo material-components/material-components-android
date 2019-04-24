@@ -34,4 +34,11 @@
 
   <style name="Widget.MaterialComponents.PopupMenu.Overflow.Dark"/>
 
+
+  <style name="Base.Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Widget.AppCompat.PopupMenu"/>
+
+  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Base.Widget.MaterialComponents.PopupMenu.ContextMenu"/>
+
+  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu.Dark"/>
+
 </resources>

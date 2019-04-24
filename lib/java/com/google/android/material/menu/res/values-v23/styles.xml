@@ -25,4 +25,13 @@
     <item name="android:popupBackground">@drawable/mtrl_popupmenu_background_dark</item>
   </style>
 
+  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Base.Widget.MaterialComponents.PopupMenu.ContextMenu">
+    <item name="android:popupBackground">@drawable/mtrl_popupmenu_background</item>
+    <item name="android:popupElevation">8dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu.Dark">
+    <item name="android:popupBackground">@drawable/mtrl_popupmenu_background_dark</item>
+  </style>
+
 </resources>
