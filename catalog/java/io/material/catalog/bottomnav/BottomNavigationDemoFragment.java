@@ -90,7 +90,6 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
       menuItemId = bn.getMenu().getItem(1).getItemId();
       // A badge with the text "99" will be displayed.
       bn.showBadge(menuItemId).setNumber(99);
-      ;
 
       menuItemId = bn.getMenu().getItem(2).getItemId();
       // A badge with the text "999+" will be displayed.
