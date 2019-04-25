@@ -73,7 +73,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   private GridSelector<S> gridSelector;
   private SimpleDateFormat simpleDateFormat;
 
-  @AttrRes private int themeResId;
+  @StyleRes private int themeResId;
   private TextView header;
   private S selection;
 
