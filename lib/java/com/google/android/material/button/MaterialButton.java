@@ -77,9 +77,15 @@ import java.util.LinkedHashSet;
  * tint color and {@code ?attr/colorOnPrimary} for the text color. For unfilled buttons, this class
  * uses {@code ?attr/colorPrimary} for the text color and transparent for the background tint.
  *
- * <p>Add icons to the start or center of this button using the {@link R.attr#icon app:icon}, {@link
- * R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint}, {@link
+ * <p>Add icons to the start, center, or end of this button using the {@link R.attr#icon app:icon},
+ * {@link R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint}, {@link
  * R.attr#iconTintMode app:iconTintMode} and {@link R.attr#iconGravity app:iconGravity} attributes.
+ *
+ * <p>If a start-aligned icon is added to this button, please use a style like one of the ".Icon"
+ * styles specified in the default MaterialButton styles. The ".Icon" styles adjust padding slightly
+ * to achieve a better visual balance. This style should only be used with a start-aligned icon
+ * button. If your icon is end-aligned, you cannot use a ".Icon" style and must instead manually
+ * adjust your padding such that the visual adjustment is mirrored.
  *
  * <p>Specify background tint using the {@link R.attr#backgroundTint app:backgroundTint} and {@link
  * R.attr#backgroundTintMode app:backgroundTintMode} attributes, which accepts either a color or a

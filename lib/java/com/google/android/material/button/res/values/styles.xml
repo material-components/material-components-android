@@ -45,6 +45,10 @@
     <item name="shapeAppearance">?attr/shapeAppearanceSmallComponent</item>
   </style>
 
+  <!-- Defines the style for an elevated MaterialButton with a start-gravity icon. This adjusts
+       padding slightly to achieve a better visual balance. This style should only be used with a
+       start-gravity icon button. If your icon is end-gravity, mirror the padding such that this
+       adjustment happens to the other side. -->
   <style name="Widget.MaterialComponents.Button.Icon">
     <item name="android:paddingLeft">@dimen/mtrl_btn_icon_btn_padding_left</item>
   </style>
@@ -54,6 +58,10 @@
     <item name="elevation">0dp</item>
   </style>
 
+  <!-- Defines the style for an unelevated MaterialButton with a start-gravity icon. This adjusts
+       padding slightly to achieve a better visual balance. This style should only be used with a
+       start-gravity icon button. If your icon is end-gravity, mirror the padding such that this
+       adjustment happens to the other side. -->
   <style name="Widget.MaterialComponents.Button.UnelevatedButton.Icon">
     <item name="android:paddingLeft">@dimen/mtrl_btn_icon_btn_padding_left</item>
   </style>
@@ -84,6 +92,10 @@
     <item name="strokeWidth">@dimen/mtrl_btn_stroke_size</item>
   </style>
 
+  <!-- Defines the style for an outlined MaterialButton with a start-gravity icon. This adjusts
+       padding slightly to achieve a better visual balance. This style should only be used with a
+       start-gravity icon button. If your icon is end-gravity, mirror the padding such that this
+       adjustment happens to the other side. -->
   <style name="Widget.MaterialComponents.Button.OutlinedButton.Icon">
     <item name="android:paddingLeft">@dimen/mtrl_btn_icon_btn_padding_left</item>
   </style>

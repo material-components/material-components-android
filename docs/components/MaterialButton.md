@@ -166,9 +166,9 @@ options.
 ### Icon button
 
 Every style for Material Button has an additional `.Icon` style. This style is
-meant to be used when the `icon` attribute is set for the button. The icon
-button style has smaller start and end paddings to achieve visual balance in the
-button when an icon is present.
+meant to be used when the `icon` attribute is set for the button and the
+`iconGravity` is `start`. The `.Icon` style has a smaller start padding to
+achieve visual balance in the button when a start-gravity icon is present.
 
 The following shows a filled, elevated button with an icon:
 
@@ -194,21 +194,25 @@ The following shows a text button with an icon:
     app:icon="@drawable/icon_24px"/>
 ```
 
+Note: The `.Icon` style should only be used for start-gravity icon buttons. If
+your icon is end-gravity, you cannot use a `.Icon` style and must instead
+manually adjust your padding such that the visual adjustment is mirrored.
+
 ## Attributes
 
 The following attributes can be changed for Material Button:
 
-Description                                                  | Relevant attributes
------------------------------------------------------------- | -------------------
-Button padding                                               | `android:padding`<br/>`android:paddingLeft`<br/>`android:paddingRight`<br/>`android:paddingStart`<br/>`android:paddingEnd`<br/>`android:paddingTop`<br/>`android:paddingBottom`
-Button inset                                                 | `android:insetLeft`<br/>`android:insetRight`<br/>`android:insetTop`<br/>`android:insetBottom`
-Background color                                             | `app:backgroundTint`<br/>`app:backgroundTintMode`
-Icon drawable                                                | `app:icon`<br/>`app:iconSize`
-Padding between icon and button text                         | `app:iconPadding`
-Icon color                                                   | `app:iconTint`<br/>`app:iconTintMode`
-Stroke                                                       | `app:strokeColor`<br/>`app:strokeWidth`
-The radius of all four corners of the<br/>button             | `app:cornerRadius`
-Ripple                                                       | `app:rippleColor`
+Description                                      | Relevant attributes
+------------------------------------------------ | -------------------
+Button padding                                   | `android:padding`<br/>`android:paddingLeft`<br/>`android:paddingRight`<br/>`android:paddingStart`<br/>`android:paddingEnd`<br/>`android:paddingTop`<br/>`android:paddingBottom`
+Button inset                                     | `android:insetLeft`<br/>`android:insetRight`<br/>`android:insetTop`<br/>`android:insetBottom`
+Background color                                 | `app:backgroundTint`<br/>`app:backgroundTintMode`
+Icon drawable                                    | `app:icon`<br/>`app:iconSize`<br/>`app:iconGravity`
+Padding between icon and button text             | `app:iconPadding`
+Icon color                                       | `app:iconTint`<br/>`app:iconTintMode`
+Stroke                                           | `app:strokeColor`<br/>`app:strokeWidth`
+The radius of all four corners of the<br/>button | `app:cornerRadius`
+Ripple                                           | `app:rippleColor`
 
 The following shows an example of setting `icon` and `iconPadding` attributes on
 a button:
