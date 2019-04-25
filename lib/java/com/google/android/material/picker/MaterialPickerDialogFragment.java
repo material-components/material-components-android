@@ -28,6 +28,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StyleRes;
+import androidx.annotation.VisibleForTesting;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.picker.MaterialCalendar.OnSelectionChangedListener;
 import com.google.android.material.picker.selector.GridSelector;
 import com.google.android.material.resources.MaterialAttributes;
@@ -38,6 +40,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Locale;
 
 /**
@@ -48,8 +51,35 @@ import java.util.Locale;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
-  private static final String THEME_RESOURCE_ID_KEY = "themeResId";
+  /**
+   * The earliest selectable {@link Month} if {@link CalendarBounds} are not specified: January
+   * 1900.
+   */
+  public static final Month DEFAULT_START = Month.create(1900, Calendar.JANUARY);
+  /**
+   * The earliest selectable {@link Month} if {@link CalendarBounds} are not specified: December
+   * 2100.
+   */
+  public static final Month DEFAULT_END = Month.create(2100, Calendar.DECEMBER);
+
+  /**
+   * The default {@link CalendarBounds}: starting at {@code DEFAULT_START}, ending at {@code
+   * DEFAULT_END}, and opening on {@link Month#today()}
+   */
+  public static final CalendarBounds DEFAULT_BOUNDS =
+      CalendarBounds.create(DEFAULT_START, DEFAULT_END);
+
+  private static final String THEME_RES_ID_KEY = "THEME_RES_ID";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
+  private static final String CALENDAR_BOUNDS_KEY = "CALENDAR_BOUNDS_KEY";
+
+  @VisibleForTesting
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
+
+  @VisibleForTesting
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
 
   /**
    * Returns the text to display at the top of the {@link DialogFragment}
@@ -69,11 +99,13 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    */
   protected abstract GridSelector<S> createGridSelector();
 
-  private MaterialCalendar<S> materialCalendar;
-  private GridSelector<S> gridSelector;
   private SimpleDateFormat simpleDateFormat;
 
   @AttrRes private int themeResId;
+  private GridSelector<S> gridSelector;
+  private CalendarBounds calendarBounds;
+  private MaterialCalendar<S> materialCalendar;
+
   private TextView header;
   private S selection;
 
@@ -86,8 +118,10 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    * @param args The Bundle from the subclassing DialogFragment
    * @param themeResId 0 or a {@link StyleRes} representing a ThemeOverlay
    */
-  protected static void addThemeToBundle(Bundle args, int themeResId) {
-    args.putInt(THEME_RESOURCE_ID_KEY, themeResId);
+  protected static void addArgsToBundle(
+      Bundle args, int themeResId, CalendarBounds calendarBounds) {
+    args.putInt(THEME_RES_ID_KEY, themeResId);
+    args.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
   }
 
   @StyleRes
@@ -102,7 +136,9 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   @Override
   public final void onSaveInstanceState(Bundle bundle) {
     super.onSaveInstanceState(bundle);
+    bundle.putInt(THEME_RES_ID_KEY, themeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    bundle.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
   }
 
   @Override
@@ -111,17 +147,18 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     simpleDateFormat =
         new SimpleDateFormat(
             getResources().getString(R.string.mtrl_picker_date_format), Locale.getDefault());
+    Bundle activeBundle = bundle == null ? getArguments() : bundle;
     themeResId =
         getThemeResource(
-            getContext(), getDefaultThemeAttr(), getArguments().getInt(THEME_RESOURCE_ID_KEY));
+            getContext(), getDefaultThemeAttr(), activeBundle.getInt(THEME_RES_ID_KEY));
+    gridSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
+    calendarBounds = activeBundle.getParcelable(CALENDAR_BOUNDS_KEY);
+
     setStyle(DialogFragment.STYLE_NO_FRAME, themeResId);
-    if (bundle != null) {
-      gridSelector = bundle.getParcelable(GRID_SELECTOR_KEY);
-    }
     if (gridSelector == null) {
       gridSelector = createGridSelector();
     }
-    materialCalendar = MaterialCalendar.newInstance(gridSelector, themeResId);
+    materialCalendar = MaterialCalendar.newInstance(gridSelector, themeResId, calendarBounds);
   }
 
   @Override
@@ -138,24 +175,27 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_dialog, viewGroup);
     header = root.findViewById(R.id.date_picker_header_title);
 
-    root.findViewById(R.id.confirm_button)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                selection = materialCalendar.getSelection();
-                dismiss();
-              }
-            });
-    root.findViewById(R.id.cancel_button)
-        .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View v) {
-                selection = null;
-                dismiss();
-              }
-            });
+    MaterialButton confirmButton = root.findViewById(R.id.confirm_button);
+    confirmButton.setTag(CONFIRM_BUTTON_TAG);
+    confirmButton.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            selection = materialCalendar.getSelection();
+            dismiss();
+          }
+        });
+
+    MaterialButton cancelButton = root.findViewById(R.id.cancel_button);
+    cancelButton.setTag(CANCEL_BUTTON_TAG);
+    cancelButton.setOnClickListener(
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            selection = null;
+            dismiss();
+          }
+        });
     return root;
   }
 

@@ -43,10 +43,19 @@ public class MaterialDateRangePickerDialogFragment
   }
 
   public static MaterialDateRangePickerDialogFragment newInstance(int themeResId) {
+    return newInstance(themeResId, MaterialPickerDialogFragment.DEFAULT_BOUNDS);
+  }
+
+  public static MaterialDateRangePickerDialogFragment newInstance(CalendarBounds calendarBounds) {
+    return newInstance(0, calendarBounds);
+  }
+
+  public static MaterialDateRangePickerDialogFragment newInstance(
+      int themeResId, CalendarBounds calendarBounds) {
     MaterialDateRangePickerDialogFragment materialDateRangePickerDialogFragment =
         new MaterialDateRangePickerDialogFragment();
     Bundle args = new Bundle();
-    addThemeToBundle(args, themeResId);
+    addArgsToBundle(args, themeResId, calendarBounds);
     materialDateRangePickerDialogFragment.setArguments(args);
     return materialDateRangePickerDialogFragment;
   }

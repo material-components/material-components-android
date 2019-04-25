@@ -36,7 +36,7 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
   private final Month lastPage;
   private final int startIndex;
   private final GridSelector<?> gridSelector;
-  private final SparseArray<DataSetObserver> observingFragments;
+  private final SparseArray<DataSetObserver> observingFragments = new SparseArray<>();
   private final OnDayClickListener onDayClickListener;
 
   /**
@@ -72,7 +72,6 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
     this.lastPage = lastPage;
     startIndex = firstPage.monthsUntil(startPage);
     this.gridSelector = gridSelector;
-    observingFragments = new SparseArray<>();
     this.onDayClickListener = onDayClickListener;
   }
 
@@ -124,6 +123,11 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
   @Override
   @NonNull
   public CharSequence getPageTitle(int position) {
-    return firstPage.monthsLater(position).getLongName();
+    return getPageMonth(position).getLongName();
   }
+
+  Month getPageMonth(int position) {
+    return firstPage.monthsLater(position);
+  }
+
 }

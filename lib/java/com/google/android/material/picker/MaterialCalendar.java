@@ -24,6 +24,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.picker.selector.GridSelector;
 import com.google.android.material.resources.MaterialAttributes;
@@ -36,7 +37,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
 
@@ -49,14 +50,21 @@ import java.util.LinkedHashSet;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public final class MaterialCalendar<S> extends Fragment {
 
-  private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String THEME_RES_ID_KEY = "THEME_RES_ID_KEY";
+  private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
+  private static final String CALENDAR_BOUNDS_KEY = "CALENDAR_BOUNDS_KEY";
+
+  @VisibleForTesting
+  @RestrictTo(Scope.LIBRARY_GROUP)
+  public static final Object VIEW_PAGER_TAG = "VIEW_PAGER_TAG";
 
   private final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
       new LinkedHashSet<>();
-  private GridSelector<S> gridSelector;
-  private MonthsPagerAdapter monthsPagerAdapter;
+
   private int themeResId;
+  private GridSelector<S> gridSelector;
+  private CalendarBounds calendarBounds;
+  private MonthsPagerAdapter monthsPagerAdapter;
 
   /**
    * Creates a {@link MaterialCalendar} with {@link GridSelector#drawCell(View, Calendar)} applied
@@ -66,11 +74,13 @@ public final class MaterialCalendar<S> extends Fragment {
    * @param <T> Type returned from selections in this {@link MaterialCalendar} by {@link
    *     MaterialCalendar#getSelection()}
    */
-  public static <T> MaterialCalendar<T> newInstance(GridSelector<T> gridSelector, int themeResId) {
+  public static <T> MaterialCalendar<T> newInstance(
+      GridSelector<T> gridSelector, int themeResId, CalendarBounds calendarBounds) {
     MaterialCalendar<T> materialCalendar = new MaterialCalendar<>();
     Bundle args = new Bundle();
-    args.putParcelable(GRID_SELECTOR_KEY, gridSelector);
     args.putInt(THEME_RES_ID_KEY, themeResId);
+    args.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    args.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
     materialCalendar.setArguments(args);
     return materialCalendar;
   }
@@ -78,17 +88,18 @@ public final class MaterialCalendar<S> extends Fragment {
   @Override
   public void onSaveInstanceState(@NonNull Bundle bundle) {
     super.onSaveInstanceState(bundle);
+    bundle.putInt(THEME_RES_ID_KEY, themeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    bundle.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
   }
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
-    if (bundle == null) {
-      bundle = getArguments();
-    }
-    gridSelector = bundle.getParcelable(GRID_SELECTOR_KEY);
-    themeResId = bundle.getInt(THEME_RES_ID_KEY);
+    Bundle activeBundle = bundle == null ? getArguments() : bundle;
+    themeResId = activeBundle.getInt(THEME_RES_ID_KEY);
+    gridSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
+    calendarBounds = activeBundle.getParcelable(CALENDAR_BOUNDS_KEY);
   }
 
   @NonNull
@@ -100,20 +111,20 @@ public final class MaterialCalendar<S> extends Fragment {
     ContextThemeWrapper themedContext = new ContextThemeWrapper(getContext(), themeResId);
     LayoutInflater themedInflater = layoutInflater.cloneInContext(themedContext);
 
-    Month earliestMonth = Month.create(1900, Calendar.JANUARY);
-    Month latestMonth = Month.create(2100, Calendar.DECEMBER);
-    Calendar today = Calendar.getInstance();
-    Month startMonth = Month.create(today.get(Calendar.YEAR), today.get(Calendar.MONTH));
+    Month earliestMonth = calendarBounds.getStart();
+    Month latestMonth = calendarBounds.getEnd();
+    Month currentMonth = calendarBounds.getCurrent();
 
     final View root = themedInflater.inflate(R.layout.mtrl_calendar, viewGroup, false);
     GridView daysHeader = root.findViewById(R.id.calendar_days_header);
     daysHeader.setAdapter(new DaysOfWeekAdapter());
-    daysHeader.setNumColumns(startMonth.daysInWeek);
+    daysHeader.setNumColumns(earliestMonth.daysInWeek);
 
     ViewPager monthsPager = root.findViewById(R.id.month_pager);
+    monthsPager.setTag(VIEW_PAGER_TAG);
     monthsPager.setLayoutParams(
-        new LinearLayout.LayoutParams(
-            /* width= */ LinearLayout.LayoutParams.MATCH_PARENT,
+        new LayoutParams(
+            /* width= */ LayoutParams.MATCH_PARENT,
             /* height= */ MonthAdapter.MAXIMUM_WEEKS * getDayHeight(getContext())));
     monthsPagerAdapter =
         new MonthsPagerAdapter(
@@ -121,7 +132,7 @@ public final class MaterialCalendar<S> extends Fragment {
             gridSelector,
             earliestMonth,
             latestMonth,
-            startMonth,
+            currentMonth,
             new OnDayClickListener() {
 
               @Override
@@ -181,7 +192,12 @@ public final class MaterialCalendar<S> extends Fragment {
         new SimpleOnPageChangeListener() {
           @Override
           public void onPageSelected(int position) {
-            monthDropSelect.setText(monthPager.getAdapter().getPageTitle(position));
+            calendarBounds =
+                CalendarBounds.create(
+                    calendarBounds.getStart(),
+                    calendarBounds.getEnd(),
+                    monthsPagerAdapter.getPageMonth(position));
+            monthDropSelect.setText(monthsPagerAdapter.getPageTitle(position));
           }
         });
 

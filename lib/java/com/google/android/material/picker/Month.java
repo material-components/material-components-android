@@ -33,7 +33,7 @@ import java.util.Locale;
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 @VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-public class Month implements Comparable<Month>, Parcelable {
+public final class Month implements Comparable<Month>, Parcelable {
 
   private final Calendar calendar;
   private static final SimpleDateFormat longNameFormat =
@@ -69,6 +69,12 @@ public class Month implements Comparable<Month>, Parcelable {
     calendar.set(Calendar.YEAR, year);
     calendar.set(Calendar.MONTH, month);
     return new Month(calendar);
+  }
+
+  /** Returns the {@link Month} that contains today (as per {@link Calendar#getInstance()}. */
+  public static Month today() {
+    Calendar calendar = Calendar.getInstance();
+    return Month.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
   }
 
   int daysFromStartOfWeekToFirstOfMonth() {
