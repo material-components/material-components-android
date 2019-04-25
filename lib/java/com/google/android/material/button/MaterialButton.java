@@ -54,7 +54,9 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
 import android.widget.Checkable;
+import android.widget.CompoundButton;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
@@ -157,12 +159,6 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
-  // Accessibility class names so that Talkback can recognize this as a button.
-  // These must be kept as literals so that they're not affected by proguard / appreduce.
-  private static final String A11Y_CLASS_NAME = "android.widget.Button";
-
-  private static final String A11Y_CLASS_NAME_WHEN_CHECKABLE = "android.widget.CompoundButton";
-
   @Nullable private final MaterialButtonHelper materialButtonHelper;
 
   private Mode iconTintMode;
@@ -224,7 +220,8 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   }
 
   private String getA11yClassName() {
-    return isCheckable() ? A11Y_CLASS_NAME_WHEN_CHECKABLE : A11Y_CLASS_NAME;
+    // Use the platform widget classes so Talkback can recognize this as a button.
+    return (isCheckable() ? CompoundButton.class : Button.class).getName();
   }
 
   @Override
