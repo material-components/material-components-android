@@ -144,7 +144,6 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   public @interface FabAnimationMode {}
 
   private final int fabOffsetEndMode;
-  private final int fabVerticalOffset;
   private final MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
 
   @Nullable private Animator modeAnimator;
@@ -235,7 +234,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     float fabCradleMargin = a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleMargin, 0);
     float fabCornerRadius =
         a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleRoundedCornerRadius, 0);
-    fabVerticalOffset =
+    float fabVerticalOffset =
         a.getDimensionPixelOffset(R.styleable.BottomAppBar_fabCradleVerticalOffset, 0);
     fabAlignmentMode =
         a.getInt(R.styleable.BottomAppBar_fabAlignmentMode, FAB_ALIGNMENT_MODE_CENTER);
@@ -360,6 +359,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     if (verticalOffset != getCradleVerticalOffset()) {
       getTopEdgeTreatment().setCradleVerticalOffset(verticalOffset);
       materialShapeDrawable.invalidateSelf();
+      setCutoutState();
     }
   }
 
@@ -633,7 +633,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   }
 
   private float getFabTranslationY() {
-    return -fabVerticalOffset;
+    return -getTopEdgeTreatment().getCradleVerticalOffset();
   }
 
   private float getFabTranslationX(@FabAlignmentMode int fabAlignmentMode) {
