@@ -80,4 +80,15 @@
   <string name="cat_card_rich_media_chip_title_4">Item 4</string>
   <string name="cat_card_rich_media_action_1">Action 1</string>
   <string name="cat_card_rich_media_action_2">Action 2</string>
+
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the top left corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_top_left">Move to top left</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the top right corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_top_right">Move to top right</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the bottom left corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_bottom_left">Move to bottom left</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the bottom right corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_bottom_right">Move to bottom right</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the center of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_center">Move to center</string>
 </resources>
