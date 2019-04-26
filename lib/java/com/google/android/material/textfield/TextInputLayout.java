@@ -1262,8 +1262,11 @@ public class TextInputLayout extends LinearLayout {
    * @attr ref com.google.android.material.R.styleable#TextInputLayout_hintTextColor
    */
   public void setHintTextColor(@Nullable ColorStateList hintTextColor) {
-    if (collapsingTextHelper.getCollapsedTextColor() != hintTextColor) {
-      collapsingTextHelper.setCollapsedTextColor(hintTextColor);
+    if (focusedTextColor != hintTextColor) {
+      if (defaultHintTextColor == null) {
+        collapsingTextHelper.setCollapsedTextColor(hintTextColor);
+      }
+
       focusedTextColor = hintTextColor;
 
       if (editText != null) {
@@ -1279,7 +1282,7 @@ public class TextInputLayout extends LinearLayout {
    */
   @Nullable
   public ColorStateList getHintTextColor() {
-    return collapsingTextHelper.getCollapsedTextColor();
+    return focusedTextColor;
   }
 
   /** Sets the text color used by the hint in both the collapsed and expanded states. */
