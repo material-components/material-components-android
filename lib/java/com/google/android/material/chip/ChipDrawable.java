@@ -330,7 +330,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     initializeElevationOverlay(context);
 
     this.context = context;
-    textDrawableHelper = new TextDrawableHelper();
+    textDrawableHelper = new TextDrawableHelper(/* delegate= */ this);
 
     text = "";
 

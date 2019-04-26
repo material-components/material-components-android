@@ -276,7 +276,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     badgeWidePadding = res.getDimensionPixelSize(R.dimen.mtrl_badge_long_text_horizontal_padding);
     badgeWithTextRadius = res.getDimensionPixelSize(R.dimen.mtrl_badge_with_text_radius);
 
-    textDrawableHelper = new TextDrawableHelper();
+    textDrawableHelper = new TextDrawableHelper(/* delegate= */ this);
     textDrawableHelper.getTextPaint().setTextAlign(Paint.Align.CENTER);
     this.savedState = new SavedState(context);
     setTextAppearanceResource(R.style.TextAppearance_MaterialComponents_Badge);

@@ -70,6 +70,13 @@ public class TextDrawableHelper {
   private WeakReference<TextDrawableDelegate> delegate = new WeakReference<>(null);
   @Nullable private TextAppearance textAppearance;
 
+  /**
+   * Please provide a delegate if your text font may load asynchronously.
+   */
+  public TextDrawableHelper(@Nullable TextDrawableDelegate delegate) {
+    setDelegate(delegate);
+  }
+
   /** Sets the delegate that owns this TextDrawableHelper. */
   public void setDelegate(@Nullable TextDrawableDelegate delegate) {
     this.delegate = new WeakReference<>(delegate);
