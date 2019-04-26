@@ -73,6 +73,28 @@ public class BottomNavigationViewActions {
     };
   }
 
+  /** Sets and show badge number for the menu item of the navigation view. */
+  public static ViewAction showBadgeNumberForMenuItem(
+      @IdRes final int menuItemId, final int badgeNumber) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isDisplayed();
+      }
+
+      @Override
+      public String getDescription() {
+        return "Set menu item badge number";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        BottomNavigationView navigationView = (BottomNavigationView) view;
+        navigationView.showBadge(menuItemId).setNumber(badgeNumber);
+      }
+    };
+  }
+
   /** Add a navigation item to the bottom navigation view. */
   public static ViewAction addMenuItem(final String title) {
     return new ViewAction() {

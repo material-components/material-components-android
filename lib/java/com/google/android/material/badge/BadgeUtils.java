@@ -16,12 +16,17 @@
 
 package com.google.android.material.badge;
 
+import android.content.Context;
 import android.graphics.Rect;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.badge.BadgeDrawable.SavedState;
+import com.google.android.material.internal.ParcelableSparseArray;
+import android.util.SparseArray;
 import android.view.View;
 import android.widget.FrameLayout;
 
@@ -104,5 +109,53 @@ public class BadgeUtils {
     }
     badgeDrawable.setBounds(badgeBounds);
     badgeDrawable.updateBadgeCoordinates(anchor, preApi18BadgeParent);
+  }
+
+  /**
+   * Given a map of int keys to {@code BadgeDrawable BadgeDrawables}, creates a parcelable map of
+   * unique int keys to {@code BadgeDrawable.SavedState SavedStates}. Useful for state restoration.
+   *
+   * @param badgeDrawables A {@link SparseArray} that contains a map of int keys (e.g. menuItemId)
+   *     to {@code BadgeDrawable BadgeDrawables}.
+   * @return A parcelable {@link SparseArray} that contains a map of int keys (e.g. menuItemId) to
+   *     {@code BadgeDrawable.SavedState SavedStates}.
+   */
+  public static ParcelableSparseArray createParcelableBadgeStates(
+      SparseArray<BadgeDrawable> badgeDrawables) {
+    ParcelableSparseArray badgeStates = new ParcelableSparseArray();
+    for (int i = 0; i < badgeDrawables.size(); i++) {
+      int key = badgeDrawables.keyAt(i);
+      BadgeDrawable badgeDrawable = badgeDrawables.valueAt(i);
+      if (badgeDrawable == null) {
+        throw new IllegalArgumentException("badgeDrawable cannot be null");
+      }
+      badgeStates.put(key, badgeDrawable.getSavedState());
+    }
+    return badgeStates;
+  }
+
+  /**
+   * Given a map of int keys to {@link BadgeDrawable.SavedState SavedStates}, creates a parcelable
+   * map of int keys to {@link BadgeDrawable BadgeDrawbles}. Useful for state restoration.
+   *
+   * @param context Current context
+   * @param badgeStates A parcelable {@link SparseArray} that contains a map of int keys (e.g.
+   *     menuItemId) to {@link BadgeDrawable.SavedState states}.
+   * @return A {@link SparseArray} that contains a map of int keys (e.g. menuItemId) to {@code
+   *     BadgeDrawable BadgeDrawbles}.
+   */
+  public static SparseArray<BadgeDrawable> createBadgeDrawablesFromSavedStates(
+      Context context, @NonNull ParcelableSparseArray badgeStates) {
+    SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(badgeStates.size());
+    for (int i = 0; i < badgeStates.size(); i++) {
+      int key = badgeStates.keyAt(i);
+      BadgeDrawable.SavedState savedState = (SavedState) badgeStates.valueAt(i);
+      if (savedState == null) {
+        throw new IllegalArgumentException("BadgeDrawable's savedState cannot be null");
+      }
+      BadgeDrawable badgeDrawable = BadgeDrawable.createFromSavedState(context, savedState);
+      badgeDrawables.put(key, badgeDrawable);
+    }
+    return badgeDrawables;
   }
 }

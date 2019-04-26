@@ -23,11 +23,15 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
 import androidx.annotation.RestrictTo;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
+import com.google.android.material.internal.ParcelableSparseArray;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuPresenter;
 import androidx.appcompat.view.menu.MenuView;
 import androidx.appcompat.view.menu.SubMenuBuilder;
+import android.util.SparseArray;
 import android.view.ViewGroup;
 
 /** @hide */
@@ -104,6 +108,8 @@ public class BottomNavigationPresenter implements MenuPresenter {
   public Parcelable onSaveInstanceState() {
     SavedState savedState = new SavedState();
     savedState.selectedItemId = menuView.getSelectedItemId();
+    savedState.badgeSavedStates =
+        BadgeUtils.createParcelableBadgeStates(menuView.getBadgeDrawables());
     return savedState;
   }
 
@@ -111,6 +117,10 @@ public class BottomNavigationPresenter implements MenuPresenter {
   public void onRestoreInstanceState(Parcelable state) {
     if (state instanceof SavedState) {
       menuView.tryRestoreSelectedItemId(((SavedState) state).selectedItemId);
+      SparseArray<BadgeDrawable> badgeDrawables =
+          BadgeUtils.createBadgeDrawablesFromSavedStates(
+              menuView.getContext(), ((SavedState) state).badgeSavedStates);
+      menuView.setBadgeDrawables(badgeDrawables);
     }
   }
 
@@ -120,11 +130,13 @@ public class BottomNavigationPresenter implements MenuPresenter {
 
   static class SavedState implements Parcelable {
     int selectedItemId;
+    ParcelableSparseArray badgeSavedStates;
 
     SavedState() {}
 
     SavedState(Parcel in) {
       selectedItemId = in.readInt();
+      badgeSavedStates = in.readParcelable(getClass().getClassLoader());
     }
 
     @Override
@@ -135,6 +147,7 @@ public class BottomNavigationPresenter implements MenuPresenter {
     @Override
     public void writeToParcel(@NonNull Parcel out, int flags) {
       out.writeInt(selectedItemId);
+      out.writeParcelable(badgeSavedStates, /* parcelableFlags= */ 0);
     }
 
     public static final Creator<SavedState> CREATOR =

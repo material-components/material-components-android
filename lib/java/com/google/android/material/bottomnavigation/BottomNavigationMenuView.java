@@ -25,6 +25,7 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
@@ -67,7 +68,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final OnClickListener onClickListener;
   private final Pools.Pool<BottomNavigationItemView> itemPool =
       new Pools.SynchronizedPool<>(ITEM_POOL_SIZE);
-  private final SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(ITEM_POOL_SIZE);
 
   private boolean itemHorizontalTranslationEnabled;
   @LabelVisibilityMode private int labelVisibilityMode;
@@ -85,6 +85,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private Drawable itemBackground;
   private int itemBackgroundRes;
   private int[] tempChildWidths;
+  @NonNull private SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(ITEM_POOL_SIZE);
 
   private BottomNavigationPresenter presenter;
   private MenuBuilder menu;
@@ -609,6 +610,14 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         break;
       }
     }
+  }
+
+  SparseArray<BadgeDrawable> getBadgeDrawables() {
+    return badgeDrawables;
+  }
+
+  void setBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
+    this.badgeDrawables = badgeDrawables;
   }
 
   @Nullable

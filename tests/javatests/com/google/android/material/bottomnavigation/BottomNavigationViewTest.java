@@ -20,6 +20,7 @@ import static com.google.android.material.testutils.BottomNavigationViewActions.
 import static com.google.android.material.testutils.BottomNavigationViewActions.setIconSize;
 import static com.google.android.material.testutils.BottomNavigationViewActions.setItemIconTintList;
 import static com.google.android.material.testutils.BottomNavigationViewActions.setLabelVisibilityMode;
+import static com.google.android.material.testutils.BottomNavigationViewActions.showBadgeNumberForMenuItem;
 import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
@@ -87,6 +88,7 @@ public class BottomNavigationViewTest {
   @Before
   public void setUp() throws Exception {
     final BottomNavigationViewActivity activity = activityTestRule.getActivity();
+    activity.setTheme(R.style.Theme_MaterialComponents_Light);
     bottomNavigation = activity.findViewById(R.id.bottom_navigation);
 
     final Resources res = activity.getResources();
@@ -629,6 +631,9 @@ public class BottomNavigationViewTest {
                 isDescendantOfA(withId(R.id.bottom_navigation)),
                 isDisplayed()))
         .perform(click());
+    // Show badge number on the first bottom navigation item view.
+    onView(withId(R.id.bottom_navigation))
+        .perform(showBadgeNumberForMenuItem(R.id.destination_home, 75));
     assertTrue(bottomNavigation.getMenu().findItem(R.id.destination_profile).isChecked());
     // Save the state
     final Parcelable state = bottomNavigation.onSaveInstanceState();
@@ -643,6 +648,9 @@ public class BottomNavigationViewTest {
             testView.inflateMenu(R.menu.bottom_navigation_view_content);
             testView.onRestoreInstanceState(state);
             assertTrue(testView.getMenu().findItem(R.id.destination_profile).isChecked());
+            assertTrue(testView.getBadge(R.id.destination_home).isVisible());
+            assertEquals(75, testView.getBadge(R.id.destination_home).getNumber());
+            assertEquals(4, testView.getBadge(R.id.destination_home).getMaxCharacterCount());
           }
         });
   }
