@@ -1,20 +1,14 @@
 language: android
 jdk: oraclejdk8
 
-# Choosing faster environment since it's a full VM.
-# https://docs.travis-ci.com/user/reference/overview/
-sudo: required
-dist: trusty
-
 env:
   matrix:
-    # Notice matrix environment variables are not available during the install phase for android >
-    # components.
-    # These CANNOT BE USED in the android > components section, only in before_script and script.
-    - TEST_TYPE=unit
-    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=16 ABI=armeabi-v7a
-    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=19 ABI=armeabi-v7a
-    - TEST_TYPE=instrumentation EMULATOR_TAG=android EMULATOR_API=21 ABI=armeabi-v7a
+    - EMULATOR_API=16
+    - EMULATOR_API=19
+    - EMULATOR_API=21
+  global:
+  - ANDROID_BUILD_TOOLS_VERSION=28.0.3
+  - AVD_NAME="test-android-device"
 
 before_cache:
   - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
@@ -28,20 +22,42 @@ cache:
 
 android:
   components:
-    # https://github.com/travis-ci/travis-ci/issues/6040#issuecomment-219367943
     - tools
-    - tools
+    - platform-tools
+    - build-tools-$ANDROID_BUILD_TOOLS_VERSION
+    - android-$EMULATOR_API
+    - extra-google-google_play_services
+    - extra-google-m2repository
+    - extra-android-m2repository
+    - addon-google_apis-google-$ANDROID_API_LEVEL
+    - sys-img-armeabi-v7a-google_apis-$EMULATOR_API
+  licenses:
+    - 'android-sdk-preview-license-.+'
+    - 'android-sdk-license-.+'
+    - 'google-gdk-license-.+'
+
+before_script:
+  # Launch emulator before the execution
+  - echo no | android create avd --force -n $AVD_NAME --package "system-images;android-$EMULATOR_API;google_apis;armeabi-v7a"
+  - echo Created Android Virtual Device with the name $AVD_NAME and API level $EMULATOR_API
+  - cd $ANDROID_HOME/tools
+  - emulator -avd $AVD_NAME -no-audio -no-window &
+  - android-wait-for-emulator
+  - echo Android Virtual Device ($AVD_NAME) ready
+  - cd /home/travis/build/material-components/material-components-android
+  - adb shell input keyevent 82 &
+
 
 before_install:
   - mkdir "$ANDROID_HOME/licenses" || true
   - echo -e "\n8933bad161af4178b1185d1a37fbf41ea5269c55\nd56f5187479451eabf01fb78af6dfcb131a6481e" > "$ANDROID_HOME/licenses/android-sdk-license"
   - echo -e "\n84831b9409646a918e30573bab4c9c91346d8abd\n504667f4c0de7af1a06de9f4b1727b84351f2910" > "$ANDROID_HOME/licenses/android-sdk-preview-license"
-
-before_script:
-  - ./travis_before_script.sh
+  - yes | sdkmanager --update
+  - yes | sdkmanager --licenses
+  - ./gradlew dependencies || true
+  - echo Done resolving all need dependencies
 
 script:
+  - ./gradlew build check
   - ./gradlew assemble -PdisablePreDex;
-  - ./travis_run_unit_tests.sh
-  - travis_wait ./travis_set_up_emulator.sh
-  - travis_wait 60 ./travis_run_instrumentation_tests.sh
+  - ./gradlew connectedCheck -PdisablePreDex;
