@@ -541,7 +541,7 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
    * @see #setIconResource(int)
    * @see #getIcon()
    */
-  public void setIcon(Drawable icon) {
+  public void setIcon(@Nullable Drawable icon) {
     if (this.icon != icon) {
       this.icon = icon;
       updateIcon();
