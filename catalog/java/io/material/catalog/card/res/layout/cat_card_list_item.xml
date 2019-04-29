@@ -17,6 +17,7 @@
 
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/cat_card_list_item_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -42,5 +43,5 @@
       android:layout_height="wrap_content"
       android:layout_gravity="end"
       android:padding="16dp"
-      android:src="@drawable/ic_drag_handle_vd_theme_24px"/>
+      app:srcCompat="@drawable/ic_drag_handle_vd_theme_24px"/>
 </com.google.android.material.card.MaterialCardView>
