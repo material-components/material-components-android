@@ -26,7 +26,8 @@
       android:id="@+id/appbarlayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:fitsSystemWindows="true">
+      android:fitsSystemWindows="true"
+      app:statusBarForeground="?attr/colorPrimary">
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
