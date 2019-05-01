@@ -38,6 +38,7 @@ import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.PluralsRes;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
@@ -133,7 +134,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     private int number = BADGE_NUMBER_NONE;
     private int maxCharacterCount;
     private CharSequence contentDescriptionNumberless;
-    @StringRes private int contentDescriptionQuantityStrings;
+    @PluralsRes private int contentDescriptionQuantityStrings;
 
     public SavedState(Context context) {
       // If the badge text color attribute was not explicitly set, use the text color specified in
@@ -497,10 +498,14 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       return null;
     }
     if (hasNumber()) {
-      return context
-          .getResources()
-          .getQuantityString(
-              savedState.contentDescriptionQuantityStrings, getNumber(), getNumber());
+      if (savedState.contentDescriptionQuantityStrings > 0) {
+        return context
+            .getResources()
+            .getQuantityString(
+                savedState.contentDescriptionQuantityStrings, getNumber(), getNumber());
+      } else {
+        return null;
+      }
     } else {
       return savedState.contentDescriptionNumberless;
     }
