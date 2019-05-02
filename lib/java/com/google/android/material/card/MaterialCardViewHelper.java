@@ -350,6 +350,7 @@ class MaterialCardViewHelper {
 
   void setRippleColor(@Nullable ColorStateList rippleColor) {
     this.rippleColor = rippleColor;
+    updateRippleColor();
   }
 
   void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
