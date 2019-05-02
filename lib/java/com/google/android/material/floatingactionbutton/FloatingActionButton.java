@@ -249,7 +249,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
     getImpl().setShapeAppearance(shapeAppearance, usingDefaultCorner);
-    getImpl().setBackgroundDrawable(backgroundTint, backgroundTintMode, rippleColor, borderWidth);
+    getImpl()
+        .initializeBackgroundDrawable(backgroundTint, backgroundTintMode, rippleColor, borderWidth);
     getImpl().setMinTouchTargetSize(minTouchTargetSize);
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);

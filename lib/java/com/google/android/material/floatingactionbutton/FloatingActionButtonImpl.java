@@ -51,6 +51,7 @@ import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewTreeObserver;
@@ -175,7 +176,7 @@ class FloatingActionButtonImpl {
     rotation = this.view.getRotation();
   }
 
-  void setBackgroundDrawable(
+  void initializeBackgroundDrawable(
       ColorStateList backgroundTint,
       PorterDuff.Mode backgroundTintMode,
       ColorStateList rippleColor,
@@ -200,7 +201,6 @@ class FloatingActionButtonImpl {
         checkNotNull(shapeDrawable),
         touchFeedbackShape};
     contentBackground = new LayerDrawable(layers);
-    shadowViewDelegate.setBackgroundDrawable(contentBackground);
   }
 
   void setBackgroundTintList(@Nullable ColorStateList tint) {
@@ -662,6 +662,7 @@ class FloatingActionButtonImpl {
   }
 
   void onPaddingUpdated(Rect padding) {
+    Preconditions.checkNotNull(contentBackground, "Didn't initialize content background");
     if (shouldAddPadding()) {
       InsetDrawable insetDrawable = new InsetDrawable(
           contentBackground, padding.left, padding.top, padding.right, padding.bottom);

@@ -54,7 +54,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void setBackgroundDrawable(
+  void initializeBackgroundDrawable(
       ColorStateList backgroundTint,
       PorterDuff.Mode backgroundTintMode,
       ColorStateList rippleColor,
@@ -82,7 +82,6 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
             RippleUtils.convertToRippleDrawableColor(rippleColor), rippleContent, null);
 
     contentBackground = rippleDrawable;
-    shadowViewDelegate.setBackgroundDrawable(contentBackground);
   }
 
   @Override
