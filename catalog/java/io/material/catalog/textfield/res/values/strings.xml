@@ -19,6 +19,7 @@
   <string name="cat_textfield_title" translatable="false">Text Field</string>
   <string name="cat_textfield_filled_demo_title" translatable="false">Filled Text Field Demo</string>
   <string name="cat_textfield_filled_icons_demo_title" translatable="false">Filled Icons Text Field Demo</string>
+  <string name="cat_textfield_exposed_dropdown_menu_demo_title" translatable="false">Exposed Dropdown Menu Demo</string>
   <string name="cat_textfield_outlined_demo_title" translatable="false">Outlined Text Field Demo</string>
   <string name="cat_textfield_outlined_icons_demo_title" translatable="false">Outlined Icons Text Field Demo</string>
   <string name="cat_textfield_legacy_demo_title" translatable="false">Legacy Text Field Demo</string>
@@ -36,6 +37,8 @@
   <string name="cat_textfield_filled_start_end_icons_helper_text" translatable="false">Filled start and end icons text field</string>
   <string name="cat_textfield_filled_clear_button_helper_text" translatable="false">Filled clear button text field</string>
   <string name="cat_textfield_filled_custom_end_icon_helper_text" translatable="false">Filled custom end icon text field</string>
+  <string name="cat_textfield_filled_exposed_dropdown_helper_text" translatable="false">Filled exposed dropdown menu</string>
+  <string name="cat_textfield_filled_editable_exposed_dropdown_helper_text" translatable="false">Filled editable exposed dropdown menu</string>
   <string name="cat_textfield_legacy_helper_text" translatable="false">Legacy text field</string>
   <string name="cat_textfield_outlined_helper_text" translatable="false">Outlined text field</string>
   <string name="cat_textfield_outlined_dense_helper_text" translatable="false">Dense outlined text field</string>
@@ -48,6 +51,8 @@
   <string name="cat_textfield_outlined_custom_end_icon_helper_text" translatable="false">Outlined custom end icon text field</string>
   <string name="cat_textfield_custom_end_icon_content_description" translatable="false">Custom end icon</string>
   <string name="cat_textfield_custom_start_icon_content_description" translatable="false">Custom start icon</string>
+  <string name="cat_textfield_outlined_exposed_dropdown_helper_text" translatable="false">Outlined exposed dropdown menu</string>
+  <string name="cat_textfield_outlined_editable_exposed_dropdown_helper_text" translatable="false">Outlined editable exposed dropdown menu</string>
 
   <string name="cat_textfield_customize_section_title" translatable="false">Customize text fields</string>
   <string name="cat_textfield_customize_section_description" translatable="false">
@@ -70,4 +75,11 @@
   <string name="cat_textfield_hide_error_text" translatable="false">Hide error</string>
   <string name="cat_textfield_disable" translatable="false">Disable</string>
   <string name="cat_textfield_enable" translatable="false">Enable</string>
+
+  <string-array name="cat_textfield_exposed_dropdown_content" translatable="false">
+    <item>Item 1</item>
+    <item>Item 2</item>
+    <item>Item 3</item>
+    <item>Item 4</item>
+  </string-array>
 </resources>

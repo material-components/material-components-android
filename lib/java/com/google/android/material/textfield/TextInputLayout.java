@@ -81,6 +81,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewStructure;
 import android.view.accessibility.AccessibilityEvent;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.LinearLayout;
@@ -120,6 +121,13 @@ import java.util.LinkedHashSet;
  *       <p><strong>Note:</strong> Use the {@link #setStartIconDrawable(Drawable)} API in place of
  *       setting a start/left compound drawable on the EditText. When using a start icon, the
  *       'start/left' compound drawable of the EditText will be overridden.
+ *   <li>Showing a button that when clicked displays a dropdown menu. The selected option is
+ *       displayed above the dropdown. You need to use an {@link AutoCompleteTextView} instead of a
+ *       {@link TextInputEditText} as the input text child, and a
+ *       Widget.MaterialComponents.TextInputLayout.(...).ExposedDropdownMenu style.
+ *       <p>To disable user input you should set
+ *       <pre>android:editable=&quot;false&quot;</pre>
+ *       on the {@link AutoCompleteTextView}.
  * </ul>
  *
  * <p>The {@link TextInputEditText} class is provided to be used as the input text child of this
@@ -234,7 +242,13 @@ public class TextInputLayout extends LinearLayout {
   private Drawable startIconDummyDrawable;
 
   /** Values for the end icon mode. */
-  @IntDef({END_ICON_CUSTOM, END_ICON_NONE, END_ICON_PASSWORD_TOGGLE, END_ICON_CLEAR_TEXT})
+  @IntDef({
+    END_ICON_CUSTOM,
+    END_ICON_NONE,
+    END_ICON_PASSWORD_TOGGLE,
+    END_ICON_CLEAR_TEXT,
+    END_ICON_DROPDOWN_MENU
+  })
   @Retention(RetentionPolicy.SOURCE)
   public @interface EndIconMode {}
 
@@ -277,6 +291,16 @@ public class TextInputLayout extends LinearLayout {
    * @see #getEndIconMode()
    */
   public static final int END_ICON_CLEAR_TEXT = 2;
+
+  /**
+   * The TextInputLayout will show a dropdown button if the EditText is an {@link
+   * AutoCompleteTextView} and a {@code
+   * Widget.MaterialComponents.TextInputLayout.(...).ExposedDropdownMenu} style is being used.
+   *
+   * <p>Clicking the button will display a popup with a list of options. The current selected option
+   * is displayed on the EditText.
+   */
+  public static final int END_ICON_DROPDOWN_MENU = 3;
 
   /**
    * Callback interface invoked when the view's {@link EditText} is attached, or from {@link
@@ -541,6 +565,35 @@ public class TextInputLayout extends LinearLayout {
               a.getInt(R.styleable.TextInputLayout_startIconTintMode, -1), null));
     }
 
+    setHelperTextEnabled(helperTextEnabled);
+    setHelperText(helperText);
+    setHelperTextTextAppearance(helperTextTextAppearance);
+    setErrorEnabled(errorEnabled);
+    setErrorTextAppearance(errorTextAppearance);
+    setCounterTextAppearance(counterTextAppearance);
+    setCounterOverflowTextAppearance(counterOverflowTextAppearance);
+
+    if (a.hasValue(R.styleable.TextInputLayout_errorTextColor)) {
+      setErrorTextColor(a.getColorStateList(R.styleable.TextInputLayout_errorTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_helperTextTextColor)) {
+      setHelperTextColor(a.getColorStateList(R.styleable.TextInputLayout_helperTextTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_hintTextColor)) {
+      setHintTextColor(a.getColorStateList(R.styleable.TextInputLayout_hintTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_counterTextColor)) {
+      setCounterTextColor(a.getColorStateList(R.styleable.TextInputLayout_counterTextColor));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_counterOverflowTextColor)) {
+      setCounterOverflowTextColor(
+          a.getColorStateList(R.styleable.TextInputLayout_counterOverflowTextColor));
+    }
+    setCounterEnabled(counterEnabled);
+
+    setBoxBackgroundMode(
+        a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
+
     // Initialize end icon view.
     endIconView =
         (CheckableImageButton)
@@ -550,9 +603,9 @@ public class TextInputLayout extends LinearLayout {
     endIconView.setVisibility(GONE);
     endIconDelegates.append(END_ICON_CUSTOM, new CustomEndIconDelegate(this));
     endIconDelegates.append(END_ICON_NONE, new NoEndIconDelegate(this));
-    endIconDelegates.append(
-        END_ICON_PASSWORD_TOGGLE, new PasswordToggleEndIconDelegate(this));
+    endIconDelegates.append(END_ICON_PASSWORD_TOGGLE, new PasswordToggleEndIconDelegate(this));
     endIconDelegates.append(END_ICON_CLEAR_TEXT, new ClearTextEndIconDelegate(this));
+    endIconDelegates.append(END_ICON_DROPDOWN_MENU, new DropdownMenuEndIconDelegate(this));
     // Set up the end icon if any.
     if (a.hasValue(R.styleable.TextInputLayout_endIconMode)) {
       // Specific defaults depending on which end icon mode is set
@@ -598,34 +651,6 @@ public class TextInputLayout extends LinearLayout {
       }
     }
 
-    setHelperTextEnabled(helperTextEnabled);
-    setHelperText(helperText);
-    setHelperTextTextAppearance(helperTextTextAppearance);
-    setErrorEnabled(errorEnabled);
-    setErrorTextAppearance(errorTextAppearance);
-    setCounterTextAppearance(counterTextAppearance);
-    setCounterOverflowTextAppearance(counterOverflowTextAppearance);
-
-    if (a.hasValue(R.styleable.TextInputLayout_errorTextColor)) {
-      setErrorTextColor(a.getColorStateList(R.styleable.TextInputLayout_errorTextColor));
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_helperTextTextColor)) {
-      setHelperTextColor(a.getColorStateList(R.styleable.TextInputLayout_helperTextTextColor));
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_hintTextColor)) {
-      setHintTextColor(a.getColorStateList(R.styleable.TextInputLayout_hintTextColor));
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_counterTextColor)) {
-      setCounterTextColor(a.getColorStateList(R.styleable.TextInputLayout_counterTextColor));
-    }
-    if (a.hasValue(R.styleable.TextInputLayout_counterOverflowTextColor)) {
-      setCounterOverflowTextColor(
-          a.getColorStateList(R.styleable.TextInputLayout_counterOverflowTextColor));
-    }
-    setCounterEnabled(counterEnabled);
-
-    setBoxBackgroundMode(
-        a.getInt(R.styleable.TextInputLayout_boxBackgroundMode, BOX_BACKGROUND_NONE));
     a.recycle();
 
     // For accessibility, consider TextInputLayout itself to be a simple container for an EditText,
@@ -655,7 +680,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   @NonNull
-  private Drawable getBoxBackground() {
+  MaterialShapeDrawable getBoxBackground() {
     if (boxBackgroundMode == BOX_BACKGROUND_FILLED || boxBackgroundMode == BOX_BACKGROUND_OUTLINE) {
       return boxBackground;
     }
@@ -776,7 +801,7 @@ public class TextInputLayout extends LinearLayout {
    * Set the resource used for the filled box's background color.
    *
    * <p>Note: The background color is only supported for filled boxes. When used with box variants
-   * other than {@link BoxBackgroundMode#BOX_BACKGROUND_FILLED}, the box background color may not 
+   * other than {@link BoxBackgroundMode#BOX_BACKGROUND_FILLED}, the box background color may not
    * work as intended.
    *
    * @param boxBackgroundColorId the resource to use for the box's background color
@@ -942,10 +967,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void ensureCornerAdjustedShapeAppearanceModel() {
-    if (boxBackgroundMode != BOX_BACKGROUND_NONE
-        && getBoxBackground() instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) getBoxBackground())
-          .setShapeAppearanceModel(cornerAdjustedShapeAppearanceModel);
+    if (boxBackgroundMode != BOX_BACKGROUND_NONE) {
+      getBoxBackground().setShapeAppearanceModel(cornerAdjustedShapeAppearanceModel);
     }
   }
 
@@ -1004,7 +1027,7 @@ public class TextInputLayout extends LinearLayout {
       throw new IllegalArgumentException("We already have an EditText, can only have one");
     }
 
-    if (!(editText instanceof TextInputEditText)) {
+    if (endIconMode != END_ICON_DROPDOWN_MENU && !(editText instanceof TextInputEditText)) {
       Log.i(
           LOG_TAG,
           "EditText added is not a TextInputEditText. Please switch to using that"
@@ -1813,7 +1836,12 @@ public class TextInputLayout extends LinearLayout {
       boxBackground.setStroke(boxStrokeWidthPx, boxStrokeColor);
     }
 
-    boxBackground.setFillColor(ColorStateList.valueOf(calculateBoxBackgroundColor()));
+    boxBackgroundColor = calculateBoxBackgroundColor();
+    boxBackground.setFillColor(ColorStateList.valueOf(boxBackgroundColor));
+    if (endIconMode == END_ICON_DROPDOWN_MENU) {
+      // Makes sure the exposed dropdown menu gets updated properly.
+      editText.getBackground().invalidateSelf();
+    }
     applyBoxUnderlineAttributes();
     invalidate();
   }
@@ -2196,7 +2224,15 @@ public class TextInputLayout extends LinearLayout {
     int previousEndIconMode = this.endIconMode;
     this.endIconMode = endIconMode;
     setEndIconVisible(endIconMode != END_ICON_NONE);
-    getEndIconDelegate().initialize();
+    if (getEndIconDelegate().isBoxBackgroundModeSupported(boxBackgroundMode)) {
+      getEndIconDelegate().initialize();
+    } else {
+      throw new IllegalStateException(
+          "The current box background mode "
+              + boxBackgroundMode
+              + " is not supported by the end icon mode "
+              + endIconMode);
+    }
     applyEndIconTint();
     dispatchOnEndIconChanged(previousEndIconMode);
   }
@@ -2242,6 +2278,15 @@ public class TextInputLayout extends LinearLayout {
    */
   public boolean isEndIconVisible() {
     return endIconView.getVisibility() == View.VISIBLE;
+  }
+
+  /**
+   * Sets the current end icon's state to be activated or not.
+   *
+   * @param endIconActivated whether the icon should be activated
+   */
+  public void setEndIconActivated(boolean endIconActivated) {
+    endIconView.setActivated(endIconActivated);
   }
 
   /**
@@ -2641,6 +2686,19 @@ public class TextInputLayout extends LinearLayout {
     }
   }
 
+  private void tintEndIconOnError(boolean tintEndIconOnError) {
+    if (tintEndIconOnError && getEndIconDrawable() != null) {
+      // Setting the tint here instead of calling setEndIconTintList() in order to preserve and
+      // restore the icon's original tint.
+      Drawable endIconDrawable = DrawableCompat.wrap(getEndIconDrawable()).mutate();
+      DrawableCompat.setTint(
+          endIconDrawable, indicatorViewController.getErrorViewCurrentTextColor());
+      endIconView.setImageDrawable(endIconDrawable);
+    } else {
+      applyEndIconTint();
+    }
+  }
+
   private void applyEndIconTint() {
     applyIconTint(
         endIconView, hasEndIconTintList, endIconTintList, hasEndIconTintMode, endIconTintMode);
@@ -2909,6 +2967,10 @@ public class TextInputLayout extends LinearLayout {
     } else {
       boxStrokeColor = defaultStrokeColor;
     }
+
+    tintEndIconOnError(
+        indicatorViewController.errorShouldBeShown()
+            && getEndIconDelegate().shouldTintIconOnError());
 
     // Update the text box's stroke width based on the current state.
     if ((isHovered || hasFocus) && isEnabled()) {

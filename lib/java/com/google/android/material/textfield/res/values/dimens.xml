@@ -30,4 +30,8 @@
        to have the appropriate spacing before and after each icon. -->
   <dimen name="mtrl_textinput_end_icon_margin_start">4dp</dimen>
   <dimen name="mtrl_textinput_start_icon_margin_end">4dp</dimen>
+
+  <dimen name="mtrl_exposed_dropdown_menu_popup_elevation">8dp</dimen>
+  <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_padding">8dp</dimen>
+  <dimen name="mtrl_exposed_dropdown_menu_popup_vertical_offset">-8dp</dimen>
 </resources>

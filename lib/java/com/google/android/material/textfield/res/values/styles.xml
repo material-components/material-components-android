@@ -111,6 +111,35 @@
     </item>
   </style>
 
+  <!-- Styles to be used for the exposed dropdown menu. -->
+  <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu">
+    <item name="materialThemeOverlay">
+      @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox
+    </item>
+    <item name="endIconMode">dropdown_menu</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TextInputLayout.FilledBox.Dense.ExposedDropdownMenu">
+    <item name="materialThemeOverlay">
+      @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox.Dense
+    </item>
+    <item name="endIconMode">dropdown_menu</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.ExposedDropdownMenu">
+    <item name="materialThemeOverlay">
+      @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.OutlinedBox
+    </item>
+    <item name="endIconMode">dropdown_menu</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense.ExposedDropdownMenu">
+    <item name="materialThemeOverlay">
+      @style/ThemeOverlay.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense
+    </item>
+    <item name="endIconMode">dropdown_menu</item>
+  </style>
+
   <!-- Base style for TextInputEditText. You should use one of the sub-styles instead. -->
   <style name="Base.Widget.MaterialComponents.TextInputEditText" parent="Widget.AppCompat.EditText">
     <item name="android:background">@null</item>
@@ -140,7 +169,40 @@
     <item name="android:paddingBottom">13dp</item>
   </style>
 
-  <!-- Set of ThemeOverlays to be used internally in the TextInputLayout styles to automatically apply the correct TextInputEditText style to the TextInputEditText. -->
+  <!-- Base style for AutoCompleteTextView. You should use one of the sub-styles instead. -->
+  <style name="Base.Widget.MaterialComponents.AutoCompleteTextView" parent="Widget.AppCompat.AutoCompleteTextView">
+    <item name="android:background">@null</item>
+    <item name="android:paddingStart" tools:ignore="NewApi">12dp</item>
+    <item name="android:paddingEnd" tools:ignore="NewApi">12dp</item>
+    <item name="android:paddingLeft">12dp</item>
+    <item name="android:paddingRight">12dp</item>
+    <item name="android:paddingTop">16dp</item>
+    <item name="android:paddingBottom">16dp</item>
+    <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
+    <item name="android:dropDownVerticalOffset">@dimen/mtrl_exposed_dropdown_menu_popup_vertical_offset</item>
+    <item name="android:popupElevation" tools:ignore="NewApi">@dimen/mtrl_exposed_dropdown_menu_popup_elevation</item>
+  </style>
+
+  <!-- Styles for the AutocompleteTextView to be used if an ExposedDropdownMenu style is being used. -->
+  <style name="Widget.MaterialComponents.AutoCompleteTextView.FilledBox" parent="Base.Widget.MaterialComponents.AutoCompleteTextView">
+    <item name="android:paddingTop">28dp</item>
+    <item name="android:paddingBottom">12dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.AutoCompleteTextView.FilledBox.Dense">
+    <item name="android:paddingTop">24dp</item>
+    <item name="android:paddingBottom">8dp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox" parent="Base.Widget.MaterialComponents.AutoCompleteTextView"/>
+
+  <style name="Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense">
+    <item name="android:paddingTop">13dp</item>
+    <item name="android:paddingBottom">13dp</item>
+  </style>
+
+  <!-- Set of ThemeOverlays to be used internally in the TextInputLayout styles to automatically
+       apply the correct TextInputEditText style to the TextInputEditText. -->
   <style name="ThemeOverlay.Design.TextInputEditText" parent=""/>
 
   <style name="ThemeOverlay.MaterialComponents.TextInputEditText" parent="ThemeOverlay.Design.TextInputEditText">
@@ -167,6 +229,37 @@
     </item>
   </style>
 
+  <!-- Set of Theme Overlays to be used internally in the TextInputLayout styles to automatically
+       apply the correct AutoCompleteTextView style to the AutoCompleteTextView. -->
+  <style name="ThemeOverlay.MaterialComponents.AutoCompleteTextView" parent="">
+    <item name="colorControlActivated">?attr/colorPrimary</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox">
+    <item name="autoCompleteTextViewStyle">
+      @style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox
+    </item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.AutoCompleteTextView.FilledBox.Dense">
+    <item name="autoCompleteTextViewStyle">
+      @style/Widget.MaterialComponents.AutoCompleteTextView.FilledBox.Dense
+    </item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.AutoCompleteTextView.OutlinedBox">
+    <item name="autoCompleteTextViewStyle">
+      @style/Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox
+    </item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense">
+    <item name="autoCompleteTextViewStyle">
+      @style/Widget.MaterialComponents.AutoCompleteTextView.OutlinedBox.Dense
+    </item>
+  </style>
+
+  <!-- Text appearance styles. -->
   <style name="TextAppearance.Design.HelperText" parent="TextAppearance.AppCompat.Caption"/>
 
   <style name="TextAppearance.Design.Hint" parent="TextAppearance.AppCompat.Caption">
@@ -183,6 +276,7 @@
     <item name="android:textColor">@color/design_error</item>
   </style>
 
+  <!-- Shape appearance styles. -->
   <style name="ShapeAppearanceOverlay.MaterialComponents.TextInputLayout.FilledBox" parent="">
     <item name="cornerSizeBottomLeft">@dimen/mtrl_textinput_box_corner_radius_small</item>
     <item name="cornerSizeBottomRight">@dimen/mtrl_textinput_box_corner_radius_small</item>

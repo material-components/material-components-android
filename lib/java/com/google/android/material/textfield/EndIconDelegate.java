@@ -18,6 +18,7 @@ package com.google.android.material.textfield;
 
 import android.content.Context;
 import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
 
 /**
  * End icon delegate abstract class.
@@ -37,6 +38,25 @@ abstract class EndIconDelegate {
     endIconView = textInputLayout.getEndIconView();
   }
 
+  /**
+   * Default configurations for the specified end icon.
+   */
   abstract void initialize();
-}
 
+  /**
+   * Whether the end icon should be tinted with the error color when the {@link TextInputLayout} is
+   * in error mode.
+   */
+  boolean shouldTintIconOnError() {
+    return false;
+  }
+
+  /**
+   * Whether the {@link BoxBackgroundMode} of the {@link TextInputLayout} is supported.
+   *
+   * @param boxBackgroundMode the text input's box background mode
+   */
+  boolean isBoxBackgroundModeSupported(@BoxBackgroundMode int boxBackgroundMode) {
+    return true;
+  }
+}
