@@ -15,5 +15,7 @@
   limitations under the License.
   -->
 <resources>
-  <color name="cat_toc_title_text_color">@color/design_default_color_on_primary</color>
+
+  <item name="cat_toc_dark_theme_toggle" type="id"/>
+
 </resources>

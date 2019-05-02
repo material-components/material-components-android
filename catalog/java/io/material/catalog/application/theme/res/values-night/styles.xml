@@ -18,4 +18,9 @@
 
   <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar"/>
 
+  <style name="ThemeOverlay.Catalog.AppBarLayout" parent="">
+    <item name="android:textColorPrimary">?attr/colorOnSurface</item>
+    <item name="colorControlNormal">?attr/colorOnSurface</item>
+  </style>
+
 </resources>

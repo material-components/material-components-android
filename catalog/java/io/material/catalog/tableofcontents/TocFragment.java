@@ -28,6 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
@@ -35,6 +36,7 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import dagger.android.support.DaggerFragment;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
@@ -54,9 +56,30 @@ public class TocFragment extends DaggerFragment {
   @Inject Set<FeatureDemo> featureDemos;
   @Inject TocResourceProvider tocResourceProvider;
 
+  private DarkThemePreferencesRepository darkThemePreferencesRepository;
   private AppBarLayout appBarLayout;
   private View gridTopDivider;
   private RecyclerView recyclerView;
+  private ImageButton darkThemeToggle;
+
+  @Override
+  public void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
+
+    darkThemePreferencesRepository = new DarkThemePreferencesRepository(getContext());
+
+    String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
+    if (!defaultDemo.isEmpty() && bundle == null) {
+      for (FeatureDemo demo : featureDemos) {
+        Fragment fragment = demo.createFragment();
+        String key = fragment.getClass().getName();
+        if (key.equals(defaultDemo)) {
+          FeatureDemoUtils.startFragment(getActivity(), fragment, "fragment_content");
+          return;
+        }
+      }
+    }
+  }
 
   @Nullable
   @Override
@@ -76,6 +99,7 @@ public class TocFragment extends DaggerFragment {
     appBarLayout = view.findViewById(R.id.cat_toc_app_bar_layout);
     gridTopDivider = view.findViewById(R.id.cat_toc_grid_top_divider);
     recyclerView = view.findViewById(R.id.cat_toc_grid);
+    darkThemeToggle = view.findViewById(R.id.cat_toc_dark_theme_toggle);
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       addGridTopDividerVisibilityListener();
@@ -105,6 +129,8 @@ public class TocFragment extends DaggerFragment {
     TocAdapter tocAdapter = new TocAdapter(getActivity(), featureList);
     recyclerView.setAdapter(tocAdapter);
 
+    initDarkThemeToggle();
+
     return view;
   }
 
@@ -113,22 +139,6 @@ public class TocFragment extends DaggerFragment {
     super.onDestroyView();
 
     ((AppCompatActivity) getActivity()).setSupportActionBar(null);
-  }
-
-  @Override
-  public void onCreate(@Nullable Bundle bundle) {
-    super.onCreate(bundle);
-    String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
-    if (!defaultDemo.isEmpty() && bundle == null) {
-      for (FeatureDemo demo : featureDemos) {
-        Fragment fragment = demo.createFragment();
-        String key = fragment.getClass().getName();
-        if (key.equals(defaultDemo)) {
-          FeatureDemoUtils.startFragment(getActivity(), fragment, "fragment_content");
-          return;
-        }
-      }
-    }
   }
 
   private void addGridTopDividerVisibilityListener() {
@@ -153,5 +163,29 @@ public class TocFragment extends DaggerFragment {
     int itemSize = getResources().getDimensionPixelSize(R.dimen.cat_toc_item_size);
     int gridSpanCount = displayWidth / itemSize;
     return MathUtils.clamp(gridSpanCount, GRID_SPAN_COUNT_MIN, GRID_SPAN_COUNT_MAX);
+  }
+
+  private void initDarkThemeToggle() {
+    boolean darkThemeEnabled = darkThemePreferencesRepository.isDarkThemeEnabled();
+    darkThemeToggle.setImageResource(
+        darkThemeEnabled
+            ? R.drawable.ic_night_on_vd_theme_24px
+            : R.drawable.ic_night_off_vd_theme_24px);
+    ensureDefaultNightMode(
+        darkThemeEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+    darkThemeToggle.setOnClickListener(v -> toggleNightMode());
+  }
+
+  private void ensureDefaultNightMode(int mode) {
+    if (AppCompatDelegate.getDefaultNightMode() != mode) {
+      AppCompatDelegate.setDefaultNightMode(mode);
+    }
+  }
+
+  private void toggleNightMode() {
+    boolean newDarkThemeEnabled = !darkThemePreferencesRepository.isDarkThemeEnabled();
+    darkThemePreferencesRepository.saveDarkThemeEnabled(newDarkThemeEnabled);
+    AppCompatDelegate.setDefaultNightMode(
+        newDarkThemeEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
   }
 }

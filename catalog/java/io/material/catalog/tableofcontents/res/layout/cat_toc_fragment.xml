@@ -26,7 +26,8 @@
   <com.google.android.material.appbar.AppBarLayout
       android:id="@+id/cat_toc_app_bar_layout"
       android:layout_width="match_parent"
-      android:layout_height="@dimen/cat_toc_tall_toolbar_height">
+      android:layout_height="@dimen/cat_toc_tall_toolbar_height"
+      android:theme="@style/ThemeOverlay.Catalog.AppBarLayout">
 
     <com.google.android.material.appbar.CollapsingToolbarLayout
         android:layout_width="match_parent"
@@ -34,18 +35,18 @@
         app:layout_scrollFlags="scroll|exitUntilCollapsed|snap"
         app:titleEnabled="false">
 
-      <FrameLayout
-          android:id="@+id/content"
-          android:layout_width="wrap_content"
-          android:layout_height="wrap_content"
-          android:layout_gravity="center"
-          app:layout_collapseMode="parallax"/>
-
       <androidx.appcompat.widget.Toolbar
           android:id="@+id/toolbar"
           android:layout_width="match_parent"
           android:layout_height="wrap_content"
           app:layout_collapseMode="pin"/>
+
+      <FrameLayout
+          android:id="@+id/content"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:layout_gravity="center_vertical"
+          app:layout_collapseMode="parallax"/>
     </com.google.android.material.appbar.CollapsingToolbarLayout>
   </com.google.android.material.appbar.AppBarLayout>
 
