@@ -1964,7 +1964,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   /**
    * Returns this chip's show motion spec.
    *
-   * @see #setShowMotionSpec(Drawable)
+   * @see #setShowMotionSpec(MotionSpec)
    * @attr ref com.google.android.material.R.styleable#Chip_showMotionSpec
    */
   @Nullable
@@ -1995,7 +1995,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   /**
    * Returns this chip's hide motion spec.
    *
-   * @see #setHideMotionSpec(Drawable)
+   * @see #setHideMotionSpec(MotionSpec)
    * @attr ref com.google.android.material.R.styleable#Chip_hideMotionSpec
    */
   @Nullable
