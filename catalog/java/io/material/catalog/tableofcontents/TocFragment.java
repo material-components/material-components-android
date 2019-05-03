@@ -171,8 +171,7 @@ public class TocFragment extends DaggerFragment {
         darkThemeEnabled
             ? R.drawable.ic_night_on_vd_theme_24px
             : R.drawable.ic_night_off_vd_theme_24px);
-    ensureDefaultNightMode(
-        darkThemeEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+    ensureDefaultNightMode(convertToNightMode(darkThemeEnabled));
     darkThemeToggle.setOnClickListener(v -> toggleNightMode());
   }
 
@@ -185,7 +184,12 @@ public class TocFragment extends DaggerFragment {
   private void toggleNightMode() {
     boolean newDarkThemeEnabled = !darkThemePreferencesRepository.isDarkThemeEnabled();
     darkThemePreferencesRepository.saveDarkThemeEnabled(newDarkThemeEnabled);
-    AppCompatDelegate.setDefaultNightMode(
-        newDarkThemeEnabled ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+    AppCompatDelegate.setDefaultNightMode(convertToNightMode(newDarkThemeEnabled));
+  }
+
+  private int convertToNightMode(boolean darkThemeEnabled) {
+    return darkThemeEnabled
+        ? AppCompatDelegate.MODE_NIGHT_YES
+        : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
   }
 }
