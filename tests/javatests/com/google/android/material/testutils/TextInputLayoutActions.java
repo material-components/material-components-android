@@ -31,6 +31,7 @@ import com.google.android.material.textfield.TextInputLayout;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
@@ -537,6 +538,52 @@ public class TextInputLayoutActions {
         CheckableImageButton iconView =
             item.findViewById(isEndIcon ? R.id.text_input_end_icon : R.id.text_input_start_icon);
         iconView.performClick();
+      }
+    };
+  }
+
+  /** Skips any animations on the layout. */
+  public static ViewAction skipAnimations() {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Skips any animations.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        view.jumpDrawablesToCurrentState();
+      }
+    };
+  }
+
+  /** Shows the dropdown popup. */
+  public static ViewAction showDropdown() {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Shows the dropdown popup.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        TextInputLayout item = (TextInputLayout) view;
+        ((AutoCompleteTextView) item.getEditText()).showDropDown();
+        view.jumpDrawablesToCurrentState();
+        CheckableImageButton iconView = item.findViewById(R.id.text_input_end_icon);
+        iconView.setChecked(true);
       }
     };
   }

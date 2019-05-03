@@ -73,6 +73,11 @@
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
     <activity
+      android:name=".ExposedDropdownMenuActivity"
+      android:theme="@style/Theme.MaterialComponents.NoActionBar"
+      android:exported="false"/>
+
+    <activity
       android:name=".NavigationViewActivity"
       android:theme="@style/Theme.AppCompat.NoActionBar"/>
 
