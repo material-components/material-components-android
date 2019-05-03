@@ -1,0 +1,114 @@
+<!--
+~ Copyright (C) 2019 The Android Open Source Project
+~
+~ Licensed under the Apache License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~      http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+-->
+
+<resources>
+    <string name="app_name">Build a Material Theme</string>
+    <string name="theme_name_hint">Theme name...</string>
+
+    <string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</string>
+
+    <!--Main-->
+    <string name="tab_title_instructions">Instructions</string>
+    <string name="tab_title_components">Components</string>
+    <string name="tab_title_theme_summary">Theme summary</string>
+
+    <!--Instructions-->
+    <string name="instructions_how_to">Build your own custom Material Theme by remixing and styling these themeable components.\n\nModify the variables in your project\'s color.xml, type.xml and shape.xml files to see your custom styles cascade through Material Components for Android.</string>
+    <string name="instructions_how_to_title">How to use theme builder</string>
+    <string name="instructions_options_title">Theme builder options</string>
+    <string name="instructions_enable_dark_title">Enable dark theme</string>
+
+    <!--Component-->
+    <string name="text_headline_6">Headline 6</string>
+    <string name="text_body_2">Body 2</string>
+    <string name="text_button">Button</string>
+    <string name="text_overline">Overline</string>
+
+    <string name="button_label_title">Button</string>
+    <string name="button_left_button_label">Left</string>
+    <string name="button_center_button_label">Center</string>
+    <string name="button_right_button_label">Right</string>
+
+    <string name="fab_label_title">FAB</string>
+
+    <string name="card_label_title">Card</string>
+
+    <string name="chip_label_title">Chips</string>
+    <string name="chip_action_title">Action</string>
+    <string name="chip_filter_title">Filter</string>
+    <string name="chip_choice_title">Choice</string>
+    <string name="chip_entry_title">Entry</string>
+
+    <string name="top_app_bar_label_title">Top app bar</string>
+    <string name="app_bar_menu_share">Share</string>
+    <string name="app_bar_menu_search">Search</string>
+    <string name="app_bar_menu_bookmark">Bookmark</string>
+
+    <string name="drawer_label_title">Drawer</string>
+
+    <string name="text_field_label_title">Text filed</string>
+    <string name="text_field_hint_text">Label</string>
+
+    <string name="bottom_nav_label_title">Bottom navigation</string>
+    <string name="bottom_nav_favorites_title">Favorites</string>
+    <string name="bottom_nav_music_title">Music</string>
+    <string name="bottom_nav_places_title">Places</string>
+    <string name="bottom_nav_news_title">News</string>
+
+    <string name="switch_label_title">Switch</string>
+
+    <string name="radio_button_label_title">Radio button</string>
+
+    <string name="checkbox_label_title">Checkbox</string>
+
+    <string name="bottom_app_bar_label_title">Bottom app bar</string>
+
+    <string name="tabs_label_title">Tabs</string>
+
+    <string name="snackbar_label_title">Snackbar</string>
+    <string name="snackbar_message_text">Marked as favorite</string>
+    <string name="snackbar_action_text">Action</string>
+
+    <string name="dialog_label_title">Dialog</string>
+    <string name="dialog_button_label">Show dialog</string>
+
+    <string name="bottom_sheet_label_title">Bottom sheet</string>
+    <string name="bottom_sheet_button_label">Show bottom sheet</string>
+
+
+    <!--Theme Summary-->
+    <string name="label_color_scheme_title">Color scheme</string>
+
+    <string name="label_shape_system_title">Shape system</string>
+    <string name="shape_appearance_small_label">S</string>
+    <string name="shape_appearance_medium_label">M</string>
+    <string name="shape_appearance_large_label">L</string>
+
+    <string name="label_typography_scale_title">Typography scale</string>
+    <string name="text_appearance_h1_label">H1</string>
+    <string name="text_appearance_h2_label">H2</string>
+    <string name="text_appearance_h3_label">H3</string>
+    <string name="text_appearance_h4_label">H4</string>
+    <string name="text_appearance_h5_label">H5</string>
+    <string name="text_appearance_h6_label">H6</string>
+    <string name="text_appearance_subtitle_1_label">Subtitle 1</string>
+    <string name="text_appearance_subtitle_2_label">Subtitle 2</string>
+    <string name="text_appearance_body_1_label">Body 1</string>
+    <string name="text_appearance_body_2_label">Body 2</string>
+    <string name="text_appearance_button_label">Button</string>
+    <string name="text_appearance_caption_label">Caption</string>
+    <string name="text_appearance_overline_label">Overline</string>
+</resources>
