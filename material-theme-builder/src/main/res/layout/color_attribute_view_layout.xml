@@ -22,6 +22,7 @@
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:layout_gravity="start|center_vertical"
+      android:layout_marginEnd="26dp"
       android:textAppearance="?textAppearanceBody1"
       android:alpha="?alphaEmphasisMedium"
       android:text="\?colorPrimary" />

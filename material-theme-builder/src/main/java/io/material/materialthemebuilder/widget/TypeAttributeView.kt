@@ -19,8 +19,8 @@ package io.material.materialthemebuilder.widget
 import android.content.Context
 import android.util.AttributeSet
 import android.view.View
-import android.widget.FrameLayout
 import androidx.appcompat.widget.AppCompatTextView
+import android.widget.LinearLayout
 import io.material.materialthemebuilder.R
 
 /**
@@ -31,7 +31,7 @@ class TypeAttributeView @JvmOverloads constructor(
   attrs: AttributeSet? = null,
   defStyleAttr: Int = 0,
   defStyleRes: Int = 0
-) : FrameLayout(context, attrs, defStyleAttr, defStyleRes) {
+) : LinearLayout(context, attrs, defStyleAttr, defStyleRes) {
 
   private val typeAttributeTextView: AppCompatTextView
   private val typeAttributePreviewTextView: AppCompatTextView
@@ -61,6 +61,7 @@ class TypeAttributeView @JvmOverloads constructor(
     }
 
   init {
+    orientation = LinearLayout.HORIZONTAL
     val view = View.inflate(context, R.layout.type_attribute_view_layout, this)
     typeAttributeTextView = view.findViewById(R.id.type_attribute)
     typeAttributePreviewTextView = view.findViewById(R.id.type_attribute_preview)
