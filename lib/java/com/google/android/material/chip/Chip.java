@@ -42,7 +42,6 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
-import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
@@ -76,11 +75,8 @@ import android.view.PointerIcon;
 import android.view.SoundEffectConstants;
 import android.view.View;
 import android.view.ViewOutlineProvider;
-import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -130,7 +126,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   private static final String TAG = "Chip";
 
-  private static final int CLOSE_ICON_VIRTUAL_ID = 0;
+  private static final int CHIP_BODY_VIRTUAL_ID = 0;
+  private static final int CLOSE_ICON_VIRTUAL_ID = 1;
   private static final Rect EMPTY_BOUNDS = new Rect();
 
   private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
@@ -140,10 +137,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   /** Value taken from Android Accessibility Guide */
   private static final int MIN_TOUCH_TARGET_DP = 48;
 
-  @Retention(RetentionPolicy.SOURCE)
-  @IntDef({ExploreByTouchHelper.INVALID_ID, ExploreByTouchHelper.HOST_ID, CLOSE_ICON_VIRTUAL_ID})
-  private @interface VirtualId {}
-
   @Nullable private ChipDrawable chipDrawable;
   @Nullable private InsetDrawable insetBackgroundDrawable;
   //noinspection NewApi
@@ -152,7 +145,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   @Nullable private OnClickListener onCloseIconClickListener;
   @Nullable private OnCheckedChangeListener onCheckedChangeListenerInternal;
   private boolean deferredCheckedValue;
-  @VirtualId private int focusedVirtualView = ExploreByTouchHelper.INVALID_ID;
   private boolean closeIconPressed;
   private boolean closeIconHovered;
   private boolean closeIconFocused;
@@ -815,126 +807,33 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   @Override
   public boolean dispatchKeyEvent(KeyEvent event) {
-    return touchHelper.dispatchKeyEvent(event) || super.dispatchKeyEvent(event);
+    boolean handled = touchHelper.dispatchKeyEvent(event);
+    // If the key event moves focus one beyond the end of the virtual view hierarchy in the
+    // traversal direction (i.e. beyond the last virtual view while moving forward or before the
+    // first virtual view while traversing backward), ExploreByTouchHelper will erroneously report
+    // that it consumed the key event even though it does not move focus to the next or previous
+    // real view. In order to account for this, call through to super to move focus to the correct
+    // real view.
+    if (handled
+        && touchHelper.getKeyboardFocusedVirtualViewId() != ExploreByTouchHelper.INVALID_ID) {
+      return true;
+    }
+    return super.dispatchKeyEvent(event);
   }
 
   @Override
   protected void onFocusChanged(boolean focused, int direction, Rect previouslyFocusedRect) {
-    if (focused) {
-      // If we've gained focus from another view, always focus the chip first.
-      setFocusedVirtualView(ExploreByTouchHelper.HOST_ID);
-    } else {
-      setFocusedVirtualView(ExploreByTouchHelper.INVALID_ID);
-    }
-    invalidate();
-
     super.onFocusChanged(focused, direction, previouslyFocusedRect);
     touchHelper.onFocusChanged(focused, direction, previouslyFocusedRect);
   }
 
   @Override
-  public boolean onKeyDown(int keyCode, KeyEvent event) {
-    // We need to handle focus change within the Chip because we are simulating multiple Views. The
-    // left/right arrow keys will move between the chip and the close icon. Focus
-    // up/down/forward/back jumps out of the Chip to the next focusable View in the hierarchy.
-    boolean focusChanged = false;
-    switch (event.getKeyCode()) {
-      case KeyEvent.KEYCODE_DPAD_LEFT:
-        if (event.hasNoModifiers()) {
-          focusChanged = moveFocus(ViewUtils.isLayoutRtl(this));
-        }
-        break;
-      case KeyEvent.KEYCODE_DPAD_RIGHT:
-        if (event.hasNoModifiers()) {
-          focusChanged = moveFocus(!ViewUtils.isLayoutRtl(this));
-        }
-        break;
-      case KeyEvent.KEYCODE_DPAD_CENTER:
-      case KeyEvent.KEYCODE_ENTER:
-        switch (focusedVirtualView) {
-          case ExploreByTouchHelper.HOST_ID:
-            performClick();
-            return true;
-          case CLOSE_ICON_VIRTUAL_ID:
-            performCloseIconClick();
-            return true;
-          case ExploreByTouchHelper.INVALID_ID:
-          default:
-            break;
-        }
-        break;
-      case KeyEvent.KEYCODE_TAB:
-        int focusChangeDirection = 0;
-        if (event.hasNoModifiers()) {
-          focusChangeDirection = View.FOCUS_FORWARD;
-        } else if (event.hasModifiers(KeyEvent.META_SHIFT_ON)) {
-          focusChangeDirection = View.FOCUS_BACKWARD;
-        }
-        if (focusChangeDirection != 0) {
-          final ViewParent parent = getParent();
-          // Move focus out of this view.
-          View nextFocus = this;
-          do {
-            nextFocus = nextFocus.focusSearch(focusChangeDirection);
-          } while (nextFocus != null && nextFocus != this && nextFocus.getParent() == parent);
-          if (nextFocus != null) {
-            nextFocus.requestFocus();
-            return true;
-          }
-        }
-        break;
-      default:
-        break;
-    }
-    if (focusChanged) {
-      invalidate();
-      return true;
-    } else {
-      return super.onKeyDown(keyCode, event);
-    }
-  }
-
-  private boolean moveFocus(boolean positive) {
-    ensureFocus();
-    boolean focusChanged = false;
-    if (positive) {
-      if (focusedVirtualView == ExploreByTouchHelper.HOST_ID) {
-        setFocusedVirtualView(CLOSE_ICON_VIRTUAL_ID);
-        focusChanged = true;
-      }
-    } else {
-      if (focusedVirtualView == CLOSE_ICON_VIRTUAL_ID) {
-        setFocusedVirtualView(ExploreByTouchHelper.HOST_ID);
-        focusChanged = true;
-      }
-    }
-    return focusChanged;
-  }
-
-  private void ensureFocus() {
-    if (focusedVirtualView == ExploreByTouchHelper.INVALID_ID) {
-      setFocusedVirtualView(ExploreByTouchHelper.HOST_ID);
-    }
-  }
-
-  @Override
   public void getFocusedRect(Rect r) {
-    if (focusedVirtualView == CLOSE_ICON_VIRTUAL_ID) {
+    if (touchHelper.getKeyboardFocusedVirtualViewId() == CLOSE_ICON_VIRTUAL_ID
+        || touchHelper.getAccessibilityFocusedVirtualViewId() == CLOSE_ICON_VIRTUAL_ID) {
       r.set(getCloseIconTouchBoundsInt());
     } else {
       super.getFocusedRect(r);
-    }
-  }
-
-  private void setFocusedVirtualView(@VirtualId int virtualView) {
-    if (focusedVirtualView != virtualView) {
-      if (focusedVirtualView == CLOSE_ICON_VIRTUAL_ID) {
-        setCloseIconFocused(false);
-      }
-      focusedVirtualView = virtualView;
-      if (virtualView == CLOSE_ICON_VIRTUAL_ID) {
-        setCloseIconFocused(true);
-      }
     }
   }
 
@@ -948,13 +847,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   private void setCloseIconHovered(boolean hovered) {
     if (closeIconHovered != hovered) {
       closeIconHovered = hovered;
-      refreshDrawableState();
-    }
-  }
-
-  private void setCloseIconFocused(boolean focused) {
-    if (closeIconFocused != focused) {
-      closeIconFocused = focused;
       refreshDrawableState();
     }
   }
@@ -1059,20 +951,29 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     protected int getVirtualViewAt(float x, float y) {
       return (hasCloseIcon() && getCloseIconTouchBounds().contains(x, y))
           ? CLOSE_ICON_VIRTUAL_ID
-          : HOST_ID;
+          : CHIP_BODY_VIRTUAL_ID;
     }
 
     @Override
     protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
-      if (hasCloseIcon()) {
+      virtualViewIds.add(CHIP_BODY_VIRTUAL_ID);
+      if (hasCloseIcon() && isCloseIconVisible()) {
         virtualViewIds.add(CLOSE_ICON_VIRTUAL_ID);
+      }
+    }
+
+    @Override
+    protected void onVirtualViewKeyboardFocusChanged(int virtualViewId, boolean hasFocus) {
+      if (virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
+        closeIconFocused = hasFocus;
+        refreshDrawableState();
       }
     }
 
     @Override
     protected void onPopulateNodeForVirtualView(
         int virtualViewId, AccessibilityNodeInfoCompat node) {
-      if (hasCloseIcon()) {
+      if (virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
         CharSequence closeIconContentDescription = getCloseIconContentDescription();
         if (closeIconContentDescription != null) {
           node.setContentDescription(closeIconContentDescription);
@@ -1112,9 +1013,12 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     @Override
     protected boolean onPerformActionForVirtualView(
         int virtualViewId, int action, Bundle arguments) {
-      if (action == AccessibilityNodeInfoCompat.ACTION_CLICK
-          && virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
-        return performCloseIconClick();
+      if (action == AccessibilityNodeInfoCompat.ACTION_CLICK) {
+        if (virtualViewId == CHIP_BODY_VIRTUAL_ID) {
+          return performClick();
+        } else if (virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
+          return performCloseIconClick();
+        }
       }
       return false;
     }
