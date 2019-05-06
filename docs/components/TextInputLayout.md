@@ -18,6 +18,13 @@ fields](https://material.io/go/design-text-fields). Used in conjunction with a
 `TextInputLayout` makes it easy to include Material **text fields** in your
 layouts.
 
+`TextInputLayout` also provides an implementation for the
+[Exposed Dropdown Menu](https://material.io/design/components/menus.html#exposed-dropdown-menu)
+when used in conjuction with an
+[AutoCompleteTextView](https://developer.android.com/reference/android/widget/AutoCompleteTextView)
+and a `Widget.MaterialComponents.TextInputLayout.*.ExposedDropdownMenu` style.
+For information on the Exposed Dropdown Menu usage, see the [Menu documentation](Menu.md#exposed-dropdown-menus).
+
 ## Design & API Documentation
 
 -   [Material Design guidelines: Text
