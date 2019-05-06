@@ -16,6 +16,6 @@
   -->
 <resources>
 
-  <item name="cat_toc_dark_theme_toggle" type="id"/>
+  <item name="cat_toc_theme_button" type="id"/>
 
 </resources>

@@ -28,8 +28,9 @@ import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.app.AppCompatDelegate;
+import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -56,17 +57,17 @@ public class TocFragment extends DaggerFragment {
   @Inject Set<FeatureDemo> featureDemos;
   @Inject TocResourceProvider tocResourceProvider;
 
-  private DarkThemePreferencesRepository darkThemePreferencesRepository;
+  private ThemePreferencesRepository themePreferencesRepository;
   private AppBarLayout appBarLayout;
   private View gridTopDivider;
   private RecyclerView recyclerView;
-  private ImageButton darkThemeToggle;
+  private ImageButton themeButton;
 
   @Override
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
 
-    darkThemePreferencesRepository = new DarkThemePreferencesRepository(getContext());
+    themePreferencesRepository = new ThemePreferencesRepository(getContext());
 
     String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
     if (!defaultDemo.isEmpty() && bundle == null) {
@@ -99,7 +100,7 @@ public class TocFragment extends DaggerFragment {
     appBarLayout = view.findViewById(R.id.cat_toc_app_bar_layout);
     gridTopDivider = view.findViewById(R.id.cat_toc_grid_top_divider);
     recyclerView = view.findViewById(R.id.cat_toc_grid);
-    darkThemeToggle = view.findViewById(R.id.cat_toc_dark_theme_toggle);
+    themeButton = view.findViewById(R.id.cat_toc_theme_button);
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       addGridTopDividerVisibilityListener();
@@ -129,7 +130,7 @@ public class TocFragment extends DaggerFragment {
     TocAdapter tocAdapter = new TocAdapter(getActivity(), featureList);
     recyclerView.setAdapter(tocAdapter);
 
-    initDarkThemeToggle();
+    initThemeButton();
 
     return view;
   }
@@ -165,31 +166,23 @@ public class TocFragment extends DaggerFragment {
     return MathUtils.clamp(gridSpanCount, GRID_SPAN_COUNT_MIN, GRID_SPAN_COUNT_MAX);
   }
 
-  private void initDarkThemeToggle() {
-    boolean darkThemeEnabled = darkThemePreferencesRepository.isDarkThemeEnabled();
-    darkThemeToggle.setImageResource(
-        darkThemeEnabled
-            ? R.drawable.ic_night_on_vd_theme_24px
-            : R.drawable.ic_night_off_vd_theme_24px);
-    ensureDefaultNightMode(convertToNightMode(darkThemeEnabled));
-    darkThemeToggle.setOnClickListener(v -> toggleNightMode());
+  private void initThemeButton() {
+    themePreferencesRepository.applyTheme();
+    themeButton.setOnClickListener(v -> showThemePopup());
   }
 
-  private void ensureDefaultNightMode(int mode) {
-    if (AppCompatDelegate.getDefaultNightMode() != mode) {
-      AppCompatDelegate.setDefaultNightMode(mode);
+  @SuppressWarnings("RestrictTo")
+  private void showThemePopup() {
+    PopupMenu popupMenu = new PopupMenu(getContext(), themeButton);
+    popupMenu.inflate(R.menu.theme_menu);
+    if (popupMenu.getMenu() instanceof MenuBuilder) {
+      ((MenuBuilder) popupMenu.getMenu()).setOptionalIconsVisible(true);
     }
-  }
-
-  private void toggleNightMode() {
-    boolean newDarkThemeEnabled = !darkThemePreferencesRepository.isDarkThemeEnabled();
-    darkThemePreferencesRepository.saveDarkThemeEnabled(newDarkThemeEnabled);
-    AppCompatDelegate.setDefaultNightMode(convertToNightMode(newDarkThemeEnabled));
-  }
-
-  private int convertToNightMode(boolean darkThemeEnabled) {
-    return darkThemeEnabled
-        ? AppCompatDelegate.MODE_NIGHT_YES
-        : AppCompatDelegate.MODE_NIGHT_FOLLOW_SYSTEM;
+    popupMenu.setOnMenuItemClickListener(
+        item -> {
+          themePreferencesRepository.saveAndApplyTheme(item.getItemId());
+          return false;
+        });
+    popupMenu.show();
   }
 }

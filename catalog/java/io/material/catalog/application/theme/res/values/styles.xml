@@ -23,12 +23,13 @@
     <item name="navigationIcon">@drawable/ic_close_vd_theme_24px</item>
   </style>
 
-  <style name="Widget.Catalog.ImageButton.DarkThemeToggle" parent="Widget.AppCompat.ImageButton">
-    <item name="android:id">@id/cat_toc_dark_theme_toggle</item>
+  <style name="Widget.Catalog.ChooseThemeButton" parent="Widget.AppCompat.ImageButton">
+    <item name="android:id">@id/cat_toc_theme_button</item>
     <item name="android:layout_width">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:layout_height">@dimen/mtrl_min_touch_target_size</item>
     <item name="android:layout_gravity">center_vertical|end</item>
     <item name="android:background">?attr/actionBarItemBackground</item>
+    <item name="srcCompat">@drawable/abc_ic_menu_overflow_material</item>
   </style>
 
   <style name="ThemeOverlay.Catalog.AppBarLayout" parent="">

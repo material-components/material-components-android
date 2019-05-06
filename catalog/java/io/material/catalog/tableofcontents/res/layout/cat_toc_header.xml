@@ -42,5 +42,5 @@
   </LinearLayout>
 
   <ImageButton
-      style="@style/Widget.Catalog.ImageButton.DarkThemeToggle"/>
+      style="@style/Widget.Catalog.ChooseThemeButton"/>
 </FrameLayout>
