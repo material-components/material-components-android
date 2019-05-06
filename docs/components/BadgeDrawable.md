@@ -18,6 +18,10 @@ Badge                                   | Badge with number                     
 --------------------------------------- | ---------------------------------------------- | ------------------------------------
 ![badge_icon](assets/IconOnlyBadge.png) | ![badge_with_number_8](assets/BadgeNumber.png) | ![badge_with_999+](assets/BadgeNumberLongerThanMaxCharCount.png)
 
+NOTE: This component is still under development and may not support the full
+range of customization Material Android components generally support (e.g.
+themed attributes).
+
 A `BadgeDrawable` represents dynamic information such as a number of pending
 requests in a [`BottomNavigationView`](BottomNavigationView.md) or
 [`TabLayout`](TabLayout.md).

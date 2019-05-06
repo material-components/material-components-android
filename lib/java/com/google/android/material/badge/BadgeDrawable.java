@@ -91,6 +91,9 @@ import android.widget.FrameLayout;
  * BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
  * BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
  * </pre>
+ *
+ * Note: This is still under development and may not support the full range of customization
+ * Material Android components generally support (e.g. themed attributes).
  */
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   /**
