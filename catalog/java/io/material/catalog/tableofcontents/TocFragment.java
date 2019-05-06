@@ -185,6 +185,7 @@ public class TocFragment extends DaggerFragment {
     boolean newDarkThemeEnabled = !darkThemePreferencesRepository.isDarkThemeEnabled();
     darkThemePreferencesRepository.saveDarkThemeEnabled(newDarkThemeEnabled);
     AppCompatDelegate.setDefaultNightMode(convertToNightMode(newDarkThemeEnabled));
+    ((AppCompatActivity) getActivity()).getDelegate().setLocalNightMode(convertToNightMode(newDarkThemeEnabled));
   }
 
   private int convertToNightMode(boolean darkThemeEnabled) {
