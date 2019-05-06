@@ -26,10 +26,10 @@ ext {
 
   androidXVersions = [
     annotation            : '1.0.1',
-    appCompat             : '1.1.0-alpha01',
+    appCompat             : '1.1.0-alpha04',
     cardView              : '1.0.0',
     coordinatorlayout     : '1.1.0-alpha01',
-    core                  : '1.1.0-alpha03',
+    core                  : '1.1.0-alpha05',
     fragment              : '1.0.0',
     legacySupportCoreUi   : '1.0.0',
     legacySupportCoreUtils: '1.0.0',

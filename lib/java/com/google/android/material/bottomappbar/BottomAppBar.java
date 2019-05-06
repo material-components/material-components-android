@@ -85,19 +85,6 @@ import java.util.List;
  * because the BottomAppBar manages its background internally. Instead use {@code
  * app:backgroundTint}.
  *
- * <p>We are currently waiting for better attribute support in ColorStateLists to land in the
- * support library. https://android-review.googlesource.com/757091. Because we can't fully support
- * color theming on all API levels for the BottomAppBar, to use the default theme, we are requiring
- * you to opt in for now.
- *
- * <p>As a workaround to enable correct color theming in your app for API < 23, in addition to
- * setting the colorOnSurface attribute in your theme, redefine {@code
- * mtrl_on_surface_emphasis_medium} to match with the correct opacity. For example, if you set
- * {@code colorOnSurface} in your theme to red (#FF0000). You should redefine {@code
- * mtrl_on_surface_emphasis_medium} to be #99FF0000. This sets the color value to be the correct
- * color and opacity to match the correct color theming that will be applied on API level 23 and up.
- * When the bugs are fixed in the support library you can remove these color definitions.
- *
  * <p>To enable color theming for menu items you will also need to set the {@code
  * materialThemeOverlay} attribute to a ThemeOverlay which sets the {@code colorControlNormal}
  * attribute to the correct color. For example, if the background of the BottomAppBar is {@code
