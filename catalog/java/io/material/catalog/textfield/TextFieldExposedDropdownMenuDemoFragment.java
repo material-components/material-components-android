@@ -49,6 +49,11 @@ public class TextFieldExposedDropdownMenuDemoFragment extends TextFieldControlla
     return R.layout.cat_textfield_exposed_dropdown_menu_content;
   }
 
+  @LayoutRes
+  public int getAdapterItemLayout() {
+    return R.layout.cat_exposed_dropdown_popup_item;
+  }
+
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
@@ -57,7 +62,7 @@ public class TextFieldExposedDropdownMenuDemoFragment extends TextFieldControlla
     ArrayAdapter<CharSequence> adapter =
         new ArrayAdapter<>(
             getContext(),
-            R.layout.cat_exposed_dropdown_popup_item,
+            getAdapterItemLayout(),
             getResources().getStringArray(R.array.cat_textfield_exposed_dropdown_content));
 
     AutoCompleteTextView editTextFilledExposedDropdown =
