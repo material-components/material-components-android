@@ -163,7 +163,7 @@
     </item>
 
     <!-- Elevation Overlays -->
-    <item name="elevationOverlaysEnabled">true</item>
+    <item name="elevationOverlaysEnabled">false</item>
     <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
   </style>
 
