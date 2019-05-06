@@ -4,7 +4,7 @@ layout: detail
 section: components
 excerpt: "Badges can contain dynamic information, such as a number of pending requests."
 iconId: badge
-path: /catalog/bottom-navigation-view/
+path: /catalog/badging/
 -->
 
 # BadgeDrawable
