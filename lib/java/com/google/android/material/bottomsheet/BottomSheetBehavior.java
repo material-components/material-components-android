@@ -193,6 +193,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_BottomSheet_Modal;
 
+  int expandedOffset;
+
   int fitToContentsOffset;
 
   int halfExpandedOffset;
@@ -272,6 +274,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
     setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
     setHalfExpandedRatio(a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
+    setExpandedOffset(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset, 0));
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
@@ -554,7 +557,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       } else {
         if (currentTop < halfExpandedOffset) {
           if (currentTop < Math.abs(currentTop - collapsedOffset)) {
-            top = 0;
+            top = expandedOffset;
             targetState = STATE_EXPANDED;
           } else {
             top = halfExpandedOffset;
@@ -721,7 +724,23 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     this.halfExpandedRatio = ratio;
   }
 
-   /**
+  /**
+   * Determines the top offset of the BottomSheet in the {@link #STATE_EXPANDED} state when
+   * fitsToContent is false. The default value is 0, which results in the sheet matching the
+   * parent's top.
+   *
+   * @param offset an integer value greater than equal to 0, representing the {@link
+   *     #STATE_EXPANDED} offset. Value must not exceed the offset in the half expanded state.
+   * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_expandedOffset
+   */
+  public void setExpandedOffset(int offset) {
+    if (offset < 0) {
+      throw new IllegalArgumentException("offset must be greater than or equal to 0");
+    }
+    this.expandedOffset = offset;
+  }
+
+  /**
    * Gets the ratio for the height of the BottomSheet in the {@link #STATE_HALF_EXPANDED} state.
    *
    * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
@@ -1046,7 +1065,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private int getExpandedOffset() {
-    return fitToContents ? fitToContentsOffset : 0;
+    return fitToContents ? fitToContentsOffset : expandedOffset;
   }
 
   void startSettlingAnimation(View child, int state) {
@@ -1123,7 +1142,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 top = halfExpandedOffset;
                 targetState = STATE_HALF_EXPANDED;
               } else {
-                top = 0;
+                top = expandedOffset;
                 targetState = STATE_EXPANDED;
               }
             }
@@ -1150,7 +1169,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             } else {
               if (currentTop < halfExpandedOffset) {
                 if (currentTop < Math.abs(currentTop - collapsedOffset)) {
-                  top = 0;
+                  top = expandedOffset;
                   targetState = STATE_EXPANDED;
                 } else {
                   top = halfExpandedOffset;

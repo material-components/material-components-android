@@ -38,6 +38,9 @@
          float value between 0 and 1 and produce a half-expanded state height larger than the
          peek height for the half-expanded state to be operational -->
     <attr name="behavior_halfExpandedRatio" format="reference|float"/>
+    <!-- The top offset of the BottomSheet in the expanded-state when fitsToContent is false.
+         The default value is 0, which results in the sheet matching the parent's top. -->
+    <attr name="behavior_expandedOffset" format="reference|integer"/>
     <!-- Shape appearance style reference for BottomSheet. Attribute declaration is in the shape
          package. -->
      <attr name="shapeAppearance"/>
