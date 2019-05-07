@@ -9,30 +9,36 @@ path: /theming/dark/
 
 # Dark Theme
 
-The Material dark theme system can be used to create a beautiful and functional
-dark theme for your app, which generally consists of dark background colors and
-light foreground colors for elements such as text an iconography.
+The [Material dark theme system][dark-theme-mdc-spec] can be used to create a
+beautiful and functional dark theme for your app, which generally consists of
+dark background colors and light foreground colors for elements such as text and
+iconography.
 
 Some of the most common benefits of a dark theme include conserving battery
 power for devices with OLED screens, reducing eye strain, and facilitating use
 in low-light environments.
 
+Starting with [Android Q][dark-theme-dac-docs], users are now able to switch
+their device into dark theme via a new system setting, which applies to both the
+Android system UI and apps running on the device.
+
 ## Design & API Documentation
 
--   [AppCompat DayNight Documentation][appcompat-daynight-docs]
+-   [Material Design guidelines: Dark Theme][dark-theme-mdc-spec]
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+-   [Android Q Dark Theme Documentation][dark-theme-dac-docs]
+    <!--{: .icon-list-item.icon-list-item--spec }-->
+-   [AppCompat DayNight Documentation][daynight-appcompat-docs]
     <!--{: .icon-list-item.icon-list-item--spec }-->
 
 ### Setup
 
-Using the latest `1.1.0` alpha version of the Material Android library, update
-your app theme to inherit from either `Theme.MaterialComponents` or
-`Theme.MaterialComponents.DayNight` (or one of their descendants). E.g.:
+In order to support the dark theme functionality in Android Q, make sure you are
+depending on the [latest][maven-repo-mdc] `1.1.0` alpha version of the Material
+Android library, and update your app theme to inherit from
+`Theme.MaterialComponents.DayNight` (or one of its descendants). E.g.:
 
-```xml
-<style name="Theme.MyApp" parent="Theme.MaterialComponents">
-    <!-- ... -->
-</style>
-```
+##### res/values/themes.xml
 
 ```xml
 <style name="Theme.MyApp" parent="Theme.MaterialComponents.DayNight">
@@ -40,15 +46,41 @@ your app theme to inherit from either `Theme.MaterialComponents` or
 </style>
 ```
 
-The `Theme.MaterialComponents` theme is a static dark theme, whereas the
-`Theme.MaterialComponents.DayNight` theme will help facilitate easy switching
-between your app's `Light` and `Dark` theme.
+Alternatively, if you want to define separate `Light` and `Dark` themes for your
+app, you can inherit from `Theme.MaterialComponents.Light` in the `values`
+directory, and `Theme.MaterialComponents` in the `values-night` directory. E.g.:
+
+##### res/values/themes.xml
+
+```xml
+<style name="Theme.MyApp" parent="Theme.MaterialComponents.Light">
+    <!-- ... -->
+</style>
+```
+
+##### res/values-night/themes.xml
+
+```xml
+<style name="Theme.MyApp" parent="Theme.MaterialComponents">
+    <!-- ... -->
+</style>
+```
+
+The `Theme.MaterialComponents` theme is a static dark theme, whereas
+`Theme.MaterialComponents.DayNight` is a more dynamic theme which will help
+facilitate easy switching between your app's `Light` and `Dark` theme. If using
+a `DayNight` theme, you can define one app theme that references color
+resources, which can be overridden in the `values-night` directory if needed.
 
 ### Catalog
 
 To see how Material components adapt in a dark theme, build and run the
-[Catalog app](../catalog-app.md) on an Android 9 device. Then enable Night mode
-via `Settings > System > Developer options > Night mode`.
+[Catalog app](../catalog-app.md) and enable dark theme in one of the following
+ways:
+
+*   Any API Level: Overflow menu on Catalog home screen
+*   Android Q: `Settings > Display > Theme`
+*   Android P: `Settings > System > Developer options > Night mode`
 
 ### Color Palette
 
@@ -57,13 +89,14 @@ colors and light foreground colors. The Material `Dark` themes make use of the
 [Material Color System](Color.md), in order to provide default dark theme values
 for neutral palette colors such as `colorBackground` and `colorSurface`.
 
-The Material `Dark` theme baseline background and surface colors are dark gray
+The baseline Material `Dark` theme background and surface colors are dark gray
 instead of black, which increases visibility for shadows and also reduces eye
 strain for light text.
 
 The Material `Dark` themes also provide adjusted defaults for the baseline
-branded palette, including `colorPrimary` and `colorSecondary`. Guidance for how
-you can adjust your brand colors for dark theme will be provided soon.
+branded palette, including `colorPrimary` and `colorSecondary`. See the
+[Material Dark Theme spec][dark-theme-mdc-spec-ui-application] for guidance on
+how you can adjust your brand colors for dark theme.
 
 ### Elevation Overlays
 
@@ -92,16 +125,16 @@ surface's background, instead of drawing another layer to the canvas.
 The following is a list of Material components that support elevation overlays
 in dark theme, because they use `colorSurface` and can be elevated:
 
-*   Top App Bar
-*   Bottom App Bar
-*   Bottom Navigation
-*   Tabs
-*   Card
-*   Dialog
-*   Menu
-*   Bottom Sheet
-*   Navigation Drawer
-*   Switch
+*   [Top App Bar](../components/AppBarLayout.md)
+*   [Bottom App Bar](../components/BottomAppBar.md)
+*   [Bottom Navigation](../components/BottomNavigationView.md)
+*   [Tabs](../components/TabLayout.md)
+*   [Card](../components/MaterialCardView.md)
+*   [Dialog](../components/Dialog.md)
+*   [Menu](../components/Menu.md)
+*   [Bottom Sheet](../components/BottomSheetBehavior.md)
+*   [Navigation Drawer](../components/NavigationView.md)
+*   [Switch](../components/Switch.md)
 
 #### Theme Attributes
 
@@ -156,4 +189,8 @@ color, or get access to lower level values such as the overlay alpha
 percentages, take a look at the other `ElevationOverlayProvider` methods
 including `layerOverlayIfNeeded`, `layerOverlay`, and `calculateOverlayAlpha`.
 
-[appcompat-daynight-docs]: https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94
+[dark-theme-mdc-spec]: https://material.io/design/color/dark-theme.html
+[dark-theme-mdc-spec-ui-application]: https://material.io/design/color/dark-theme.html#ui-application
+[dark-theme-dac-docs]: https://developer.android.com/preview/features/darktheme
+[daynight-appcompat-docs]: https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94
+[maven-repo-mdc]: https://mvnrepository.com/artifact/com.google.android.material/material

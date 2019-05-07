@@ -22,7 +22,11 @@ following guides:
 *   [Color Theming](theming/Color.md)
 *   [Typography Theming](theming/Typography.md)
 *   [Shape Theming](theming/Shape.md)
-*   [Dark Theming](theming/Dark.md)
+
+Additionally, take a look at our [Dark Theme](theming/Dark.md) guide for
+information on how to apply the
+[Material dark theme system](https://material.io/design/color/dark-theme.html)
+to your app.
 
 ## Useful Links
 - [Getting Started](getting-started.md)
