@@ -58,20 +58,11 @@ application.
 Theme attributes are provided to be set at the theme level to change the shape
 values that components read in to set their shapes.
 
-| Attribute Name                   | Description            | Default Value |
-| -------------------------------- | ---------------------- | ------------- |
-| `shapeAppearanceSmallComponent`  | Style reference that   | 4dp rounded   |
-:                                  : contains shape values  :               :
-:                                  : that are used to style :               :
-:                                  : small components       :               :
-| `shapeAppearanceMediumComponent` | Style reference that   | 4dp rounded   |
-:                                  : contains shape values  :               :
-:                                  : that are used to style :               :
-:                                  : medium components      :               :
-| `shapeAppearanceLargeComponent`  | Style reference that   | 0dp rounded   |
-:                                  : contains shape values  :               :
-:                                  : that are used to style :               :
-:                                  : large components       :               :
+Attribute Name                   | Description            | Default Value
+-------------------------------- | ---------------------- | -------------
+`shapeAppearanceSmallComponent`  | Style reference that contains shape values that are used to style small components  | 4dp rounded
+`shapeAppearanceMediumComponent` | Style reference that contains shape values that are used to style medium components  | 4dp rounded
+`shapeAppearanceLargeComponent`  | Style reference that contains shape values that are used to style large components  | 0dp rounded
 
 Aside from defining these attributes in your theme, you likely will not need to
 reference these attributes at all; the widget styles are already mapped to the
@@ -88,42 +79,18 @@ that define aspects of the shape. `ShapeAppearanceModel` reads in the
 
 The following attributes can be used in a `shapeAppearance` style:
 
-| Attribute Name            | Format    | Description      | Supported Values |
-| ------------------------- | --------- | ---------------- | ---------------- |
-| `cornerFamily`            | enum      | corner family to | rounded, cut     |
-:                           :           : be used for all  :                  :
-:                           :           : four corners     :                  :
-| `cornerFamilyTopLeft`     | enum      | corner family to | rounded, cut     |
-:                           :           : be used for the  :                  :
-:                           :           : top left corner  :                  :
-| `cornerFamilyTopRight`    | enum      | corner family to | rounded, cut     |
-:                           :           : be used for the  :                  :
-:                           :           : top right corner :                  :
-| `cornerFamilyBottomRight` | enum      | corner family to | rounded, cut     |
-:                           :           : be used for the  :                  :
-:                           :           : bottom right     :                  :
-:                           :           : corner           :                  :
-| `cornerFamilyBottomLeft`  | enum      | corner family to | rounded, cut     |
-:                           :           : be used for the  :                  :
-:                           :           : bottom left      :                  :
-:                           :           : corner           :                  :
-| `cornerSize`              | dimension | corner size to   | `dp` values      |
-:                           :           : be used for all  :                  :
-:                           :           : four corners     :                  :
-| `cornerSizeTopLeft`       | dimension | corner size to   | `dp` values      |
-:                           :           : be used for the  :                  :
-:                           :           : top left corner  :                  :
-| `cornerSizeTopRight`      | dimension | corner size to   | `dp` values      |
-:                           :           : be used for the  :                  :
-:                           :           : top right corner :                  :
-| `cornerSizeBottomRight`   | dimension | corner size to   | `dp` values      |
-:                           :           : be used for the  :                  :
-:                           :           : bottom right     :                  :
-:                           :           : corner           :                  :
-| `cornerSizeBottomLeft`    | dimension | corner size to   | `dp` values      |
-:                           :           : be used for the  :                  :
-:                           :           : bottom left      :                  :
-:                           :           : corner           :                  :
+Attribute Name            | Format    | Description      | Supported Values
+------------------------- | --------- | ---------------- | ----------------
+`cornerFamily`            | enum      | corner family to be used for all four corners | rounded, cut
+`cornerFamilyTopLeft`     | enum      | corner family to be used for the top left corner | rounded, cut
+`cornerFamilyTopRight`    | enum      | corner family to be used for the top right corner | rounded, cut
+`cornerFamilyBottomRight` | enum      | corner family to be used for the bottom right corner | rounded, cut
+`cornerFamilyBottomLeft`  | enum      | corner family to be used for the bottom left corner | rounded, cut
+`cornerSize`              | dimension | corner size to be used for all four corners  | `dp` values
+`cornerSizeTopLeft`       | dimension | corner size to  be used for the top left corner | `dp` values
+`cornerSizeTopRight`      | dimension | corner size to  be used for the top right corner | `dp` values
+`cornerSizeBottomRight`   | dimension | corner size to  be used for the bottom right corner | `dp` values
+`cornerSizeBottomLeft`    | dimension | corner size to  be used for the bottom  left corner | `dp` values
 
 To build a `shapeAppearance`, you need at least a **`cornerSize`** and
 **`cornerFamily`** value specified for each corner.
@@ -133,21 +100,10 @@ To build a `shapeAppearance`, you need at least a **`cornerSize`** and
 Two attributes are provided to set a component's shape style, `shapeAppearance`
 and `shapeAppearanceOverlay`:
 
-| Attribute Name           | Description                            |
-| ------------------------ | -------------------------------------- |
-| `shapeAppearance`        | Style reference that contains shape    |
-:                          : values that are used to style the      :
-:                          : component. Should point to a theme     :
-:                          : attribute style reference such as      :
-:                          : `?attr/shapeAppearanceSmallComponent`. :
-| `shapeAppearanceOverlay` | Style reference that contains shape    |
-:                          : values that layer on top of a          :
-:                          : `shapeAppearance` style. This          :
-:                          : attribute is intended for overrides on :
-:                          : top of the themed shapeAppearance      :
-:                          : shape values, and should map to a      :
-:                          : custom style reference rather than a   :
-:                          : themed style reference.                :
+Attribute Name           | Description
+------------------------ | --------------------------------------
+`shapeAppearance`        | Style reference that contains shape values that are used to style the component. Should point to a theme attribute style reference such as `?attr/shapeAppearanceSmallComponent`.
+`shapeAppearanceOverlay` | Style reference that contains shape values that layer on top of a `shapeAppearance` style. This attribute is intended for overrides on top of the themed shapeAppearance shape values, and should map to a custom style reference rather than a themed style reference.
 
 The `shapeAppearanceOverlay` attribute is provided to override components on a
 case by case basis. This attribute stacks on top of the `shapeAppearance`
