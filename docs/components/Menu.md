@@ -1,3 +1,12 @@
+<!--docs:
+title: "Menus"
+layout: detail
+section: components
+excerpt: "Menus display a list of choices on temporary surfaces."
+iconId: menu
+path: /catalog/menu/
+-->
+
 # Menu
 
 ## Design & API Documentation
