@@ -355,7 +355,6 @@ public class BottomSheetBehaviorTest {
   @Test
   @MediumTest
   public void testSwipeDownToCollapseFullyExpanded() throws Throwable {
-    getBehavior().setFitToContents(false);
     testSwipeDownToCollapse();
   }
 

@@ -50,6 +50,7 @@
       style="@style/Widget.MaterialComponents.BottomSheet"
       android:layout_width="match_parent"
       android:layout_height="400dp"
+      app:behavior_fitToContents="false"
       app:behavior_hideable="false"
       app:backgroundTint="?attr/colorSurface"
       app:behavior_peekHeight="200dp"

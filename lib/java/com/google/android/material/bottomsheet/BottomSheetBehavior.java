@@ -574,8 +574,20 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
       }
     } else {
-      top = collapsedOffset;
-      targetState = STATE_COLLAPSED;
+      if (fitToContents) {
+        top = collapsedOffset;
+        targetState = STATE_COLLAPSED;
+      } else {
+        // Settle to nearest height.
+        int currentTop = child.getTop();
+        if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
+          top = halfExpandedOffset;
+          targetState = STATE_HALF_EXPANDED;
+        } else {
+          top = collapsedOffset;
+          targetState = STATE_COLLAPSED;
+        }
+      }
     }
     if (viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
       setStateInternal(STATE_SETTLING);
@@ -1186,9 +1198,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 }
               }
             }
-          } else {
-            top = collapsedOffset;
-            targetState = STATE_COLLAPSED;
+          } else { // Moving Down
+            if (fitToContents) {
+              top = collapsedOffset;
+              targetState = STATE_COLLAPSED;
+            } else {
+              // Settle to the nearest correct height.
+              int currentTop = releasedChild.getTop();
+              if (Math.abs(currentTop - halfExpandedOffset)
+                  < Math.abs(currentTop - collapsedOffset)) {
+                top = halfExpandedOffset;
+                targetState = STATE_HALF_EXPANDED;
+              } else {
+                top = collapsedOffset;
+                targetState = STATE_COLLAPSED;
+              }
+            }
           }
           if (viewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
             setStateInternal(STATE_SETTLING);
