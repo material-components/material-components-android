@@ -26,18 +26,18 @@ ext {
 
   androidXVersions = [
     annotation            : '1.0.1',
-    appCompat             : '1.1.0-alpha04',
+    appCompat             : '1.1.0-alpha05', // Needed for CSL + theme attr fixes
     cardView              : '1.0.0',
-    coordinatorlayout     : '1.1.0-alpha01',
-    core                  : '1.1.0-alpha05',
+    coordinatorlayout     : '1.1.0-alpha01', // Needed for NestedScrolling3 APIs
+    core                  : '1.1.0-beta01', // Needed for CSL + theme attr fixes
     fragment              : '1.0.0',
     legacySupportCoreUi   : '1.0.0',
     legacySupportCoreUtils: '1.0.0',
-    recyclerView          : '1.1.0-alpha01',
-    recyclerViewSelection : '1.1.0-alpha01',
+    recyclerView          : '1.0.0',
+    recyclerViewSelection : '1.0.0',
     transition            : '1.0.1',
-    vectorDrawable        : '1.1.0-alpha01',
-    viewpager2            : '1.0.0-alpha02',
+    vectorDrawable        : '1.1.0-beta01', // Needed for CSL + theme attr fixes
+    viewpager2            : '1.0.0-alpha04', // Needed for TabLayout integration
   ]
 
   testRunnerVersion = '1.1.0'
