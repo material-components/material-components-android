@@ -226,7 +226,6 @@ Then, set the card's `shapeAppearanceOverlay` attribute to the
 
 ```xml
 <com.google.android.material.card.MaterialCardView
-    style="@style/Widget.MyApp.MaterialCardView"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
