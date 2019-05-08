@@ -187,7 +187,7 @@ desired theme attributes:
 And define `ShapeAppearanceOverlay.MyApp.MaterialCardView` as follows:
 
 ```xml
-<style name="ShapeAppearanceOverlay.MyApp.MaterialCardView">
+<style name="ShapeAppearanceOverlay.MyApp.MaterialCardView" parent="">
   <item name="cornerFamily">rounded</item>
   <item name="cornerSize">16dp</item>
 </style>
@@ -221,7 +221,7 @@ to overlay on top of the existing `shapeAppearance`:
 </style>
 ```
 
-Then, set the card's `shapeAppearanceOverlay` attribute to the
+Then, set the card's `shapeAppearanceOverlay` attribute to that
 `ShapeAppearanceOverlay` style in your layout:
 
 ```xml
@@ -231,7 +231,7 @@ Then, set the card's `shapeAppearanceOverlay` attribute to the
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
     android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:layout_marginRight="@dimen/mtrl_card_spacing"
-    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView">
+    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView.Rounded">
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
