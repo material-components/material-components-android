@@ -18,12 +18,12 @@ package com.google.android.material.picker;
 import static org.junit.Assert.assertEquals;
 
 import androidx.fragment.app.FragmentManager;
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
+import androidx.viewpager.widget.ViewPager;
 import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Rule;

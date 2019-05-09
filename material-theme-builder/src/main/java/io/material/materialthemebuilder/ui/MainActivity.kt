@@ -19,8 +19,8 @@ package io.material.materialthemebuilder.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.lifecycle.Observer
-import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
+import androidx.viewpager.widget.ViewPager
 import io.material.materialthemebuilder.R
 import io.material.materialthemebuilder.App
 import io.material.materialthemebuilder.ui.instruction.InstructionsFragment

@@ -15,9 +15,9 @@
  */
 package com.google.android.material.picker;
 
+import androidx.test.espresso.IdlingResource;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener;
-import androidx.test.espresso.IdlingResource;
 
 public class ViewPagerIdlingResource implements IdlingResource {
 

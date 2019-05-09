@@ -29,8 +29,6 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.picker.selector.GridSelector;
 import com.google.android.material.resources.MaterialAttributes;
 import androidx.fragment.app.Fragment;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,6 +36,8 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout.LayoutParams;
+import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
 

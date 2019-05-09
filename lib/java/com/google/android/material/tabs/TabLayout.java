@@ -67,10 +67,8 @@ import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Pools;
 import androidx.core.view.GravityCompat;
 import androidx.core.view.MarginLayoutParamsCompat;
-import androidx.viewpager.widget.PagerAdapter;
 import androidx.core.view.PointerIconCompat;
 import androidx.core.view.ViewCompat;
-import androidx.viewpager.widget.ViewPager;
 import androidx.core.widget.TextViewCompat;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -91,6 +89,8 @@ import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import androidx.viewpager.widget.PagerAdapter;
+import androidx.viewpager.widget.ViewPager;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -135,8 +135,8 @@ import java.util.Iterator;
  *
  * <h3>ViewPager integration</h3>
  *
- * <p>If you're using a {@link androidx.viewpager.widget.ViewPager} together with this layout, you can
- * call {@link #setupWithViewPager(ViewPager)} to link the two together. This layout will be
+ * <p>If you're using a {@link androidx.viewpager.widget.ViewPager} together with this layout, you
+ * can call {@link #setupWithViewPager(ViewPager)} to link the two together. This layout will be
  * automatically populated from the {@link PagerAdapter}'s page titles.
  *
  * <p>This view also supports being used as part of a ViewPager's decor, and can be added directly
