@@ -14,22 +14,10 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
+<resources>
 
-<menu xmlns:android="http://schemas.android.com/apk/res/android">
+  <item type="id" name="theme_light" />
+  <item type="id" name="theme_dark" />
+  <item type="id" name="theme_default" />
 
-  <item
-      android:id="@+id/theme_light"
-      android:icon="@drawable/ic_theme_light_vd_theme_24px"
-      android:title="@string/cat_choose_theme_light"/>
-
-  <item
-      android:id="@+id/theme_dark"
-      android:icon="@drawable/ic_theme_dark_vd_theme_24px"
-      android:title="@string/cat_choose_theme_dark"/>
-
-  <item
-      android:id="@+id/theme_default"
-      android:icon="@drawable/ic_theme_default_vd_theme_24px"
-      android:title="@string/cat_choose_theme_default"/>
-
-</menu>
+</resources>

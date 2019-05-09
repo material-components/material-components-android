@@ -28,9 +28,7 @@ import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.appcompat.widget.PopupMenu;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.Toolbar;
 import android.util.DisplayMetrics;
@@ -41,6 +39,8 @@ import android.widget.ImageButton;
 import dagger.android.support.DaggerFragment;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
+import io.material.catalog.themeswitcher.ThemePreferencesManager;
+import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -56,8 +56,9 @@ public class TocFragment extends DaggerFragment {
 
   @Inject Set<FeatureDemo> featureDemos;
   @Inject TocResourceProvider tocResourceProvider;
+  @Inject ThemeSwitcherResourceProvider themeSwitcherResourceProvider;
 
-  private ThemePreferencesRepository themePreferencesRepository;
+  private ThemePreferencesManager themePreferencesManager;
   private AppBarLayout appBarLayout;
   private View gridTopDivider;
   private RecyclerView recyclerView;
@@ -67,7 +68,8 @@ public class TocFragment extends DaggerFragment {
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
 
-    themePreferencesRepository = new ThemePreferencesRepository(getContext());
+    themePreferencesManager =
+        new ThemePreferencesManager(getContext(), themeSwitcherResourceProvider);
 
     String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
     if (!defaultDemo.isEmpty() && bundle == null) {
@@ -167,22 +169,7 @@ public class TocFragment extends DaggerFragment {
   }
 
   private void initThemeButton() {
-    themePreferencesRepository.applyTheme();
-    themeButton.setOnClickListener(v -> showThemePopup());
-  }
-
-  @SuppressWarnings("RestrictTo")
-  private void showThemePopup() {
-    PopupMenu popupMenu = new PopupMenu(getContext(), themeButton);
-    popupMenu.inflate(R.menu.theme_menu);
-    if (popupMenu.getMenu() instanceof MenuBuilder) {
-      ((MenuBuilder) popupMenu.getMenu()).setOptionalIconsVisible(true);
-    }
-    popupMenu.setOnMenuItemClickListener(
-        item -> {
-          themePreferencesRepository.saveAndApplyTheme(item.getItemId());
-          return false;
-        });
-    popupMenu.show();
+    themePreferencesManager.applyTheme();
+    themeButton.setOnClickListener(v -> themePreferencesManager.showChooseThemePopup(themeButton));
   }
 }

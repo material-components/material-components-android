@@ -31,6 +31,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import androidx.fragment.app.Fragment;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.widget.CompoundButtonCompat;
@@ -38,6 +39,7 @@ import androidx.appcompat.widget.AppCompatRadioButton;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import dagger.android.AndroidInjector;
@@ -78,7 +80,6 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
     }
   }
 
-
   @Inject ThemeSwitcherResourceProvider resourceProvider;
   private RadioGroup primaryColorGroup;
   private RadioGroup secondaryColorGroup;
@@ -92,6 +93,8 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     View view = layoutInflater.inflate(R.layout.mtrl_theme_switcher_dialog, null);
+
+    initializeChooseThemeButtons(view);
 
     int[] currentThemeOverlays = ThemeOverlayUtils.getThemeOverlays();
     if (currentThemeOverlays.length == 0) {
@@ -153,6 +156,29 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
         });
 
     return view;
+  }
+
+  private void initializeChooseThemeButtons(View view) {
+    Context context = view.getContext();
+    ThemePreferencesManager themePreferencesManager =
+        new ThemePreferencesManager(context, resourceProvider);
+
+    MaterialButtonToggleGroup themeToggleGroup = view.findViewById(R.id.theme_toggle_group);
+    themeToggleGroup.check(themePreferencesManager.getCurrentThemeId());
+
+    for (int themeId : themePreferencesManager.getThemeIds()) {
+      Button themeButton = view.findViewById(themeId);
+      themeButton.setOnClickListener(
+          v -> {
+            int checkedButtonId = themeToggleGroup.getCheckedButtonId();
+            if (checkedButtonId == 0 || checkedButtonId == View.NO_ID) {
+              // Make sure one theme is always checked.
+              themeToggleGroup.check(themeId);
+            } else {
+              themePreferencesManager.saveAndApplyTheme(themeId);
+            }
+          });
+    }
   }
 
   private void applyThemeOverlays() {

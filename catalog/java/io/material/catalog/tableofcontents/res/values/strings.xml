@@ -18,7 +18,4 @@
 <resources>
   <string name="cat_toc_title">Material Components</string>
   <string name="cat_toc_status_wip">WIP</string>
-  <string name="cat_choose_theme_light">Light theme</string>
-  <string name="cat_choose_theme_dark">Dark theme</string>
-  <string name="cat_choose_theme_default">System default</string>
 </resources>
