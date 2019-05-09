@@ -24,6 +24,7 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
@@ -42,7 +43,9 @@ import com.google.android.material.internal.NavigationMenu;
 import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.content.ContextCompat;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.ViewCompat;
@@ -175,7 +178,12 @@ public class NavigationView extends ScrimInsetsFrameLayout {
       itemTextColor = createDefaultColorStateList(android.R.attr.textColorPrimary);
     }
 
-    final Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
+    Drawable itemBackground = a.getDrawable(R.styleable.NavigationView_itemBackground);
+    // Set a shaped itemBackground if itemBackground hasn't been set and there is a shape
+    // appearance.
+    if (itemBackground == null && hasShapeAppearance(a)) {
+      itemBackground = createDefaultItemBackground(a);
+    }
 
     if (a.hasValue(R.styleable.NavigationView_itemHorizontalPadding)) {
       final int itemHorizontalPadding =
@@ -220,6 +228,11 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     a.recycle();
   }
 
+  private boolean hasShapeAppearance(TintTypedArray a) {
+    return a.hasValue(R.styleable.NavigationView_itemShapeAppearance)
+        || a.hasValue(R.styleable.NavigationView_itemShapeAppearanceOverlay);
+  }
+
   @Override
   public void setElevation(float elevation) {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
@@ -229,6 +242,31 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     if (background instanceof MaterialShapeDrawable) {
       ((MaterialShapeDrawable) background).setElevation(elevation);
     }
+  }
+
+  /**
+   * Creates a {@link MaterialShapeDrawable} to use as the {@code itemBackground} and wraps it in an
+   * {@link InsetDrawable} for margins.
+   *
+   * @param a The TintTypedArray containing the resolved NavigationView style attributes.
+   */
+  private final Drawable createDefaultItemBackground(TintTypedArray a) {
+    int shapeAppearanceResId = a.getResourceId(R.styleable.NavigationView_itemShapeAppearance, 0);
+    int shapeAppearanceOverlayResId =
+        a.getResourceId(R.styleable.NavigationView_itemShapeAppearanceOverlay, 0);
+    MaterialShapeDrawable materialShapeDrawable =
+        new MaterialShapeDrawable(
+            new ShapeAppearanceModel(
+                getContext(), shapeAppearanceResId, shapeAppearanceOverlayResId));
+    materialShapeDrawable.setFillColor(
+        MaterialResources.getColorStateList(
+            getContext(), a, R.styleable.NavigationView_itemShapeFillColor));
+
+    int insetLeft = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetStart, 0);
+    int insetTop = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetTop, 0);
+    int insetRight = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetEnd, 0);
+    int insetBottom = a.getDimensionPixelSize(R.styleable.NavigationView_itemShapeInsetBottom, 0);
+    return new InsetDrawable(materialShapeDrawable, insetLeft, insetTop, insetRight, insetBottom);
   }
 
   @Override
@@ -408,7 +446,8 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   /**
-   * Set the background of our menu items to the given resource.
+   * Set the background of our menu items to the given resource. This overrides the default
+   * background set to items and it's styling.
    *
    * @param resId The identifier of the resource.
    * @attr ref R.styleable#NavigationView_itemBackground

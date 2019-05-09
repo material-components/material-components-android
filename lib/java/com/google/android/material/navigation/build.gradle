@@ -9,7 +9,9 @@ dependencies {
 
   implementation project(fromPath("lib/java/com/google/android/material/color"))
   implementation project(fromPath("lib/java/com/google/android/material/internal"))
+  implementation project(fromPath("lib/java/com/google/android/material/resources"))
   implementation project(fromPath("lib/java/com/google/android/material/shape"))
+  implementation project(fromPath("lib/java/com/google/android/material/typography"))
 }
 
 android {

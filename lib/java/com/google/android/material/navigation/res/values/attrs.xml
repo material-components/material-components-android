@@ -26,6 +26,8 @@
     <attr name="menu" format="reference"/>
     <attr name="itemIconTint" format="color"/>
     <attr name="itemTextColor" format="color"/>
+    <!-- A background drawable to use for navigation items. If this is set, this overrides the
+         default background drawable for items and the itemShape* attributes will be ignored -->
     <attr name="itemBackground" format="reference"/>
     <attr name="itemTextAppearance" format="reference"/>
     <!-- Layout resource to inflate as the header -->
@@ -38,5 +40,29 @@
     <attr name="itemIconSize" format="dimension"/>
     <!-- Makes the TextView of the item text be at most this many lines tall.  -->
     <attr name="itemMaxLines" format="integer" min="1"/>
+    <!-- Shape appearance style reference for the shaped item background. To use the shaped
+         item background, either itemShapeAppearance or itemShapeAppearanceOverlay must be set and
+         itemBackground must be null so that it can be set programmatically. -->
+    <attr name="itemShapeAppearance" format="reference"/>
+    <!-- Shape appearance overlay style reference for item background. To be used to augment
+         attributes declared in itemShapeAppearance. To use the shaped item background, either
+         itemShapeAppearance or itemShapeAppearanceOverlay must be set and itemBackground must be
+         null so that it can be set programmatically. -->
+    <attr name="itemShapeAppearanceOverlay" format="reference"/>
+    <!-- Inset start margin for the item background shape. Used if itemBackground isn't set and
+         there is an itemShapeAppearance or itemShapeAppearanceOverlay. -->
+    <attr name="itemShapeInsetStart" format="dimension"/>
+    <!-- Inset top margin for the item background shape. Used if itemBackground isn't set and there
+         is an itemShapeAppearance or itemShapeAppearanceOverlay. -->
+    <attr name="itemShapeInsetTop" format="dimension"/>
+    <!-- Inset end margin for the item background shape. Used if itemBackground isn't set and there
+         and there is an itemShapeAppearance or itemShapeAppearanceOverlay. -->
+    <attr name="itemShapeInsetEnd" format="dimension"/>
+    <!-- Inset bottom margin for the item background shape. Used if itemBackground isn't set and
+         there is an itemShapeAppearance or itemShapeAppearanceOverlay. -->
+    <attr name="itemShapeInsetBottom" format="dimension"/>
+    <!-- Fill color for the item background shape. Used if itemBackground isn't set and there is an
+         itemShapeAppearance or itemShapeAppearanceOverlay. -->
+    <attr name="itemShapeFillColor" format="color"/>
   </declare-styleable>
 </resources>
