@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
+import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewParent;
@@ -51,9 +52,10 @@ public class TextInputEditText extends AppCompatEditText {
   @Override
   public CharSequence getHint() {
     // Certain test frameworks expect the actionable element to expose its hint as a label. When
-    // TextInputLayout is providing our hint, retrieve it from the parent layout.
+    // TextInputLayout is providing our hint, retrieve it from the parent layout. Excepting for
+    // Meizu devices which doesn't handle this behaviour correctly and crash when getting focus.
     TextInputLayout layout = getTextInputLayout();
-    if ((layout != null) && layout.isProvidingHint()) {
+    if (layout != null && layout.isProvidingHint() && !Build.MANUFACTURER.equals("Meizu")) {
       return layout.getHint();
     }
     return super.getHint();
