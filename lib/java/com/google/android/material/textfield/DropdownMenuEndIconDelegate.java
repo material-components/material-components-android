@@ -63,9 +63,8 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
         @Override
         public void afterTextChanged(Editable s) {
-          checkAutocompleteTextView(textInputLayout.getEditText());
           final AutoCompleteTextView editText =
-              (AutoCompleteTextView) textInputLayout.getEditText();
+              castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
           editText.post(
               new Runnable() {
                 @Override
@@ -80,14 +79,13 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private final OnEditTextAttachedListener dropdownMenuOnEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
-        public void onEditTextAttached() {
-          checkAutocompleteTextView(textInputLayout.getEditText());
-          AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
+        public void onEditTextAttached(EditText editText) {
+          AutoCompleteTextView autoCompleteTextView = castAutoCompleteTextViewOrThrow(editText);
 
-          setPopupBackground(editText);
-          addRippleEffect(editText);
-          setUpDropdownShowHideBehavior(editText);
-          editText.setThreshold(0);
+          setPopupBackground(autoCompleteTextView);
+          addRippleEffect(autoCompleteTextView);
+          setUpDropdownShowHideBehavior(autoCompleteTextView);
+          autoCompleteTextView.setThreshold(0);
           editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
           editText.addTextChangedListener(exposedDropdownEndIconTextWatcher);
 
@@ -334,11 +332,13 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     return activeFor < 0 || activeFor > 300;
   }
 
-  private void checkAutocompleteTextView(EditText editText) {
+  private AutoCompleteTextView castAutoCompleteTextViewOrThrow(EditText editText) {
     if (!(editText instanceof AutoCompleteTextView)) {
       throw new RuntimeException(
           "EditText needs to be an AutoCompleteTextView if an Exposed Dropdown Menu is being"
               + " used.");
     }
+
+    return (AutoCompleteTextView) editText;
   }
 }

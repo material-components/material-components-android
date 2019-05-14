@@ -315,8 +315,10 @@ public class TextInputLayout extends LinearLayout {
      * Called when the {@link EditText} is attached, or from {@link
      * #addOnEditTextAttachedListener(OnEditTextAttachedListener)} if the edit text is already
      * present.
+     *
+     * @param editText the {@link EditText}
      */
-    void onEditTextAttached();
+    void onEditTextAttached(EditText editText);
   }
 
   /**
@@ -2441,7 +2443,7 @@ public class TextInputLayout extends LinearLayout {
   public void addOnEditTextAttachedListener(OnEditTextAttachedListener listener) {
     editTextAttachedListeners.add(listener);
     if (editText != null) {
-      listener.onEditTextAttached();
+      listener.onEditTextAttached(editText);
     }
   }
 
@@ -2661,7 +2663,7 @@ public class TextInputLayout extends LinearLayout {
 
   private void dispatchOnEditTextAttached() {
     for (OnEditTextAttachedListener listener : editTextAttachedListeners) {
-      listener.onEditTextAttached();
+      listener.onEditTextAttached(editText);
     }
   }
 

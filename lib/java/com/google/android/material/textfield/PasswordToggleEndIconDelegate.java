@@ -50,8 +50,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   private final OnEditTextAttachedListener onEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
-        public void onEditTextAttached() {
-          EditText editText = textInputLayout.getEditText();
+        public void onEditTextAttached(EditText editText) {
           textInputLayout.setEndIconVisible(true);
           endIconView.setChecked(!hasPasswordTransformation());
           // Make sure there's always only one password toggle text watcher added
