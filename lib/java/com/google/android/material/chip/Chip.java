@@ -2177,8 +2177,8 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * Extends the touch target of this chip using a {@link InsetDrawable} if chip's intrinsic width /
    * height is smaller than the {@code minTargetPx}.
    *
-   * @param minTargetPx minimum touch target size in pixel.
-   * @returns flag indicating whether the background was changed.
+   * @param minTargetPx minimum touch target size in pixel
+   * @return whether the background was changed
    */
   public boolean ensureAccessibleTouchTarget(@Dimension int minTargetPx) {
     minTouchTargetSize = minTargetPx;
