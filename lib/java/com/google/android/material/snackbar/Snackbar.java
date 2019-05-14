@@ -332,6 +332,30 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   }
 
   /**
+   * Sets the text color of the message specified in {@link #setText(CharSequence)}
+   * and {@link #setText(int)}.
+   */
+  @NonNull
+  public Snackbar setTextColor(ColorStateList colors) {
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
+    final TextView tv = contentLayout.getMessageView();
+    tv.setTextColor(colors);
+    return this;
+  }
+
+  /**
+   * Sets the text color of the message specified in {@link #setText(CharSequence)}
+   * and {@link #setText(int)}.
+   */
+  @NonNull
+  public Snackbar setTextColor(@ColorInt int color) {
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
+    final TextView tv = contentLayout.getMessageView();
+    tv.setTextColor(color);
+    return this;
+  }
+
+  /**
    * Sets the text color of the action specified in {@link #setAction(CharSequence,
    * View.OnClickListener)}.
    */
@@ -352,6 +376,15 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
     final TextView tv = contentLayout.getActionView();
     tv.setTextColor(color);
+    return this;
+  }
+
+  /**
+   * Sets the overlay color of the background Drawable.
+   */
+  @NonNull
+  public Snackbar setBackgroundOverlayColor(@ColorInt int color) {
+    updateThemedBackgroundOverlayColor(color);
     return this;
   }
 

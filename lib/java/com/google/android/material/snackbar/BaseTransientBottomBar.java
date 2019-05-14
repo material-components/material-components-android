@@ -40,6 +40,8 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
+
+import androidx.annotation.ColorInt;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
@@ -362,6 +364,21 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     background.setColor(backgroundColor);
     background.setCornerRadius(cornerRadius);
     return background;
+  }
+
+  void updateThemedBackgroundOverlayColor(@ColorInt int overlayColor) {
+    int backgroundColor = MaterialColors.getColor(view, R.attr.colorSurface);
+    updateThemedBackgroundColors(backgroundColor, overlayColor);
+  }
+
+  private void updateThemedBackgroundColors(@ColorInt int backgroundColor, @ColorInt int overlayColor) {
+    if (!(view.getBackground() instanceof GradientDrawable)) return;
+    int color =
+        MaterialColors.layer(
+            backgroundColor,
+            overlayColor,
+            view.getBackgroundOverlayColorAlpha());
+    ((GradientDrawable) view.getBackground()).setColor(color);
   }
 
   private void updateBottomMargin() {
