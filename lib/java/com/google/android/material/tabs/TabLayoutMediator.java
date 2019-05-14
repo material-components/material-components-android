@@ -64,14 +64,6 @@ public final class TabLayoutMediator {
     void onConfigureTab(@NonNull TabLayout.Tab tab, int position);
   }
 
-  /**
-   * Creates a TabLayoutMediator to synchronize a TabLayout and a ViewPager2 together. It will
-   * update the tabs automatically when the data set of the view pager's adapter changes. The link
-   * will be established after {@link #attach()} is called.
-   *
-   * @param tabLayout The tab bar to link
-   * @param viewPager The view pager to link
-   */
   public TabLayoutMediator(
       @NonNull TabLayout tabLayout,
       @NonNull ViewPager2 viewPager,
@@ -79,16 +71,6 @@ public final class TabLayoutMediator {
     this(tabLayout, viewPager, true, onConfigureTabCallback);
   }
 
-  /**
-   * Creates a TabLayoutMediator to synchronize a TabLayout and a ViewPager2 together. If {@code
-   * autoRefresh} is true, it will update the tabs automatically when the data set of the view
-   * pager's adapter changes. The link will be established after {@link #attach()} is called.
-   *
-   * @param tabLayout The tab bar to link
-   * @param viewPager The view pager to link
-   * @param autoRefresh If {@code true}, will recreate all tabs when the data set of the view
-   *     pager's adapter changes.
-   */
   public TabLayoutMediator(
       @NonNull TabLayout tabLayout,
       @NonNull ViewPager2 viewPager,
