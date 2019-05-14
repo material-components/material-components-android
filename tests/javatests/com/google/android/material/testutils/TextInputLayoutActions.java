@@ -28,11 +28,10 @@ import androidx.annotation.DimenRes;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
-import android.text.method.PasswordTransformationMethod;
+import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AutoCompleteTextView;
-import android.widget.EditText;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -180,22 +179,25 @@ public class TextInputLayoutActions {
     };
   }
 
-  public static ViewAction setInputTypeToPasswordTransformationMethod() {
+  /** Sets the transformation method. */
+  public static ViewAction setTransformationMethod(
+      final TransformationMethod transformationMethod) {
     return new ViewAction() {
+
       @Override
       public Matcher<View> getConstraints() {
-        return isAssignableFrom(EditText.class);
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
       }
 
       @Override
       public String getDescription() {
-        return "Set the input type of the EditText to be of password type";
+        return "Sets the transformation method";
       }
 
       @Override
       public void perform(UiController uiController, View view) {
-        EditText edittext = (EditText) view;
-        edittext.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        TextInputLayout item = (TextInputLayout) view;
+        item.getEditText().setTransformationMethod(transformationMethod);
       }
     };
   }

@@ -16,6 +16,7 @@
 
 package com.google.android.material.testutils;
 
+import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
@@ -99,6 +100,42 @@ public class TextInputLayoutMatchers {
         // to get a reference to it
         View startIcon = item.findViewById(R.id.text_input_start_icon);
         return startIcon.getVisibility() != View.VISIBLE;
+      }
+    };
+  }
+
+  /** Returns a matcher that matches TextInputLayouts with checked end icons. */
+  public static Matcher<View> endIconIsChecked() {
+    return new TypeSafeMatcher<View>(TextInputLayout.class) {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("TextInputLayout's end icon is checked.");
+      }
+
+      @Override
+      protected boolean matchesSafely(View item) {
+        // Reach in and find the start icon since we don't have a public API
+        // to get a reference to it
+        CheckableImageButton endIcon = item.findViewById(R.id.text_input_end_icon);
+        return endIcon.isChecked();
+      }
+    };
+  }
+
+  /** Returns a matcher that matches TextInputLayouts with non checked end icons. */
+  public static Matcher<View> endIconIsNotChecked() {
+    return new TypeSafeMatcher<View>(TextInputLayout.class) {
+      @Override
+      public void describeTo(Description description) {
+        description.appendText("TextInputLayout's end icon is not checked.");
+      }
+
+      @Override
+      protected boolean matchesSafely(View item) {
+        // Reach in and find the start icon since we don't have a public API
+        // to get a reference to it
+        CheckableImageButton endIcon = item.findViewById(R.id.text_input_end_icon);
+        return !endIcon.isChecked();
       }
     };
   }

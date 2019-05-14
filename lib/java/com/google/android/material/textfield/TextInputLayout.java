@@ -2623,7 +2623,9 @@ public class TextInputLayout extends LinearLayout {
    *
    * @param shouldSkipAnimations true if the password toggle indicator icon should not animate
    *     changes
-   * @deprecated Use {@link #setEndIconOnClickListener(OnClickListener)} instead.
+   * @deprecated The password toggle will show as checked or unchecked depending on whether the
+   *     {@link EditText}'s {@link android.text.method.TransformationMethod} is of type {@link
+   *     android.text.method.PasswordTransformationMethod}
    */
   @Deprecated
   public void passwordVisibilityToggleRequested(boolean shouldSkipAnimations) {

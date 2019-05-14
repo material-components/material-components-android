@@ -21,24 +21,45 @@ import com.google.android.material.R;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 import androidx.appcompat.content.res.AppCompatResources;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 
-/**
- * Default initialization of the password toggle end icon.
- */
+/** Default initialization of the password toggle end icon. */
 class PasswordToggleEndIconDelegate extends EndIconDelegate {
 
-  private final OnEditTextAttachedListener passwordToggleOnEditTextAttachedListener =
+  private final TextWatcher textWatcher =
+      new TextWatcher() {
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+          // Make sure the password toggle state always matches the EditText's transformation
+          // method.
+          endIconView.setChecked(!hasPasswordTransformation());
+        }
+
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {}
+
+        @Override
+        public void afterTextChanged(Editable s) {}
+      };
+
+  private final OnEditTextAttachedListener onEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
         public void onEditTextAttached() {
-          textInputLayout.setEndIconVisible(hasPasswordTransformation());
+          EditText editText = textInputLayout.getEditText();
+          textInputLayout.setEndIconVisible(true);
+          endIconView.setChecked(!hasPasswordTransformation());
+          // Make sure there's always only one password toggle text watcher added
+          editText.removeTextChangedListener(textWatcher);
+          editText.addTextChangedListener(textWatcher);
         }
       };
-  private final OnEndIconChangedListener passwordToggleEndIconChangedListener =
+  private final OnEndIconChangedListener onEndIconChangedListener =
       new OnEndIconChangedListener() {
         @Override
         public void onEndIconChanged(int previousIcon) {
@@ -73,17 +94,15 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
             final int selection = editText.getSelectionEnd();
             if (hasPasswordTransformation()) {
               editText.setTransformationMethod(null);
-              endIconView.setChecked(true);
             } else {
               editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-              endIconView.setChecked(false);
             }
             // And restore the cursor position
             editText.setSelection(selection);
           }
         });
-    textInputLayout.addOnEditTextAttachedListener(passwordToggleOnEditTextAttachedListener);
-    textInputLayout.addOnEndIconChangedListener(passwordToggleEndIconChangedListener);
+    textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);
+    textInputLayout.addOnEndIconChangedListener(onEndIconChangedListener);
   }
 
   private boolean hasPasswordTransformation() {

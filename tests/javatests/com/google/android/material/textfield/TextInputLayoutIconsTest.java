@@ -21,14 +21,16 @@ import static com.google.android.material.testutils.TextInputLayoutActions.click
 import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
-import static com.google.android.material.testutils.TextInputLayoutActions.setInputTypeToPasswordTransformationMethod;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconTintList;
+import static com.google.android.material.testutils.TextInputLayoutActions.setTransformationMethod;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowEndIcon;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.doesNotShowStartIcon;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsChecked;
+import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconIsNotChecked;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.showsEndIcon;
 import static androidx.test.InstrumentationRegistry.getInstrumentation;
 import static androidx.test.espresso.Espresso.onView;
@@ -84,8 +86,8 @@ public class TextInputLayoutIconsTest {
   @Test
   public void testSetPasswordToggleProgrammatically() {
     // Set edit text input type to be password
-    onView(withId(R.id.textinput_edittext_no_icon))
-        .perform(setInputTypeToPasswordTransformationMethod());
+    onView(withId(R.id.textinput_no_icon))
+        .perform(setTransformationMethod(PasswordTransformationMethod.getInstance()));
     // Set end icon as the password toggle
     onView(withId(R.id.textinput_no_icon))
         .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
@@ -182,6 +184,28 @@ public class TextInputLayoutIconsTest {
     // Check that the password is disguised and the toggle button reflects the same state
     assertNotEquals(INPUT_TEXT, textInput.getLayout().getText().toString());
     onView(withId(R.id.textinput_password)).perform(clickIcon(true));
+  }
+
+  @Test
+  public void testPasswordToggleChangesWithTransformationMethod() {
+    // Assert password toggle is not checked.
+    onView(withId(R.id.textinput_password)).check(matches(endIconIsNotChecked()));
+
+    // Change the edit text transformation method to null.
+    onView(withId(R.id.textinput_password)).perform(setTransformationMethod(null));
+
+    // Assert password toggle is now checked.
+    onView(withId(R.id.textinput_password)).check(matches(endIconIsChecked()));
+  }
+
+  @Test
+  public void testPasswordToggleIsCheckedIfTransformationMethodNotPassword() {
+    // Set end icon as the password toggle
+    onView(withId(R.id.textinput_no_icon))
+        .perform(setEndIconMode(TextInputLayout.END_ICON_PASSWORD_TOGGLE));
+
+    // Assert password toggle is not checked.
+    onView(withId(R.id.textinput_no_icon)).check(matches(endIconIsChecked()));
   }
 
   @Test
