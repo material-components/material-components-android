@@ -17,9 +17,16 @@ package com.google.android.material.picker;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.RestrictTo;
+import androidx.annotation.RestrictTo.Scope;
 import java.util.Arrays;
 
-/** Used to limit the display range of {@link MaterialCalendar} and set a starting {@link Month}. */
+/**
+ * Used to limit the display range of {@link MaterialCalendar} and set a starting {@link Month}.
+ *
+ * @hide
+ */
+@RestrictTo(Scope.LIBRARY_GROUP)
 public final class CalendarBounds implements Parcelable {
 
   private final Month start;
