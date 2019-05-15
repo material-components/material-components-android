@@ -244,6 +244,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     return isExtended;
   }
 
+  /**
+   * Add a listener that will be invoked when this ExtendedFloatingActionButton is shown. See {@link
+   * AnimatorListener}.
+   *
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnShowAnimationListener(AnimatorListener)}.
+   *
+   * @param listener listener to add
+   */
   public void addOnShowAnimationListener(@NonNull AnimatorListener listener) {
     if (showListeners == null) {
       showListeners = new ArrayList<>();
@@ -251,6 +260,12 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     showListeners.add(listener);
   }
 
+  /**
+   * Remove a listener that was previously added via {@link
+   * #addOnShowAnimationListener(AnimatorListener)}.
+   *
+   * @param listener listener to remove
+   */
   public void removeOnShowAnimationListener(@NonNull AnimatorListener listener) {
     if (showListeners == null) {
       // This can happen if this method is called before the first call to
@@ -260,6 +275,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     showListeners.remove(listener);
   }
 
+  /**
+   * Add a listener that will be invoked when this ExtendedFloatingActionButton is hidden. See
+   * {@link AnimatorListener}.
+   *
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnHideAnimationListener(AnimatorListener)}.
+   *
+   * @param listener listener to add
+   */
   public void addOnHideAnimationListener(@NonNull AnimatorListener listener) {
     if (hideListeners == null) {
       hideListeners = new ArrayList<>();
@@ -267,6 +291,12 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     hideListeners.add(listener);
   }
 
+  /**
+   * Remove a listener that was previously added via {@link
+   * #addOnHideAnimationListener(AnimatorListener)}.
+   *
+   * @param listener listener to remove
+   */
   public void removeOnHideAnimationListener(@NonNull AnimatorListener listener) {
     if (hideListeners == null) {
       // This can happen if this method is called before the first call to
@@ -276,6 +306,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     hideListeners.remove(listener);
   }
 
+  /**
+   * Add a listener that will be invoked when this ExtendedFloatingActionButton is shrunk. See
+   * {@link AnimatorListener}.
+   *
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnShrinkAnimationListener(AnimatorListener)}.
+   *
+   * @param listener listener to add
+   */
   public void addOnShrinkAnimationListener(@NonNull AnimatorListener listener) {
     if (shrinkListeners == null) {
       shrinkListeners = new ArrayList<>();
@@ -283,6 +322,12 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     shrinkListeners.add(listener);
   }
 
+  /**
+   * Remove a listener that was previously added via {@link
+   * #addOnShrinkAnimationListener(AnimatorListener)}.
+   *
+   * @param listener listener to remove
+   */
   public void removeOnShrinkAnimationListener(@NonNull AnimatorListener listener) {
     if (shrinkListeners == null) {
       // This can happen if this method is called before the first call to
@@ -292,6 +337,15 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     shrinkListeners.remove(listener);
   }
 
+  /**
+   * Add a listener that will be invoked when this ExtendedFloatingActionButton is extended. See
+   * {@link AnimatorListener}.
+   *
+   * <p>Components that add a listener should take care to remove it when finished via {@link
+   * #removeOnExtendAnimationListener(AnimatorListener)}.
+   *
+   * @param listener listener to add
+   */
   public void addOnExtendAnimationListener(@NonNull AnimatorListener listener) {
     if (extendListeners == null) {
       extendListeners = new ArrayList<>();
@@ -299,6 +353,12 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
     extendListeners.add(listener);
   }
 
+  /**
+   * Remove a listener that was previously added via {@link
+   * #addOnExtendAnimationListener(AnimatorListener)}.
+   *
+   * @param listener listener to remove
+   */
   public void removeOnExtendAnimationListener(@NonNull AnimatorListener listener) {
     if (extendListeners == null) {
       // This can happen if this method is called before the first call to
