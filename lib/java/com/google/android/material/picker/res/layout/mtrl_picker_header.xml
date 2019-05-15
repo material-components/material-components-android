@@ -15,17 +15,26 @@
      limitations under the License.
 -->
 
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/date_picker_header"
-    android:orientation="vertical"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/mtrl_picker_header"
+    style="?attr/materialCalendarHeaderLayout"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="@dimen/mtrl_calendar_header_height">
 
   <TextView
-      android:id="@+id/date_picker_header_title"
-      android:layout_width="wrap_content"
+      android:id="@+id/mtrl_picker_title_text"
+      style="?attr/materialCalendarHeaderTitle"
+      android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:textAppearance="?attr/textAppearanceHeadline6"/>
+      app:firstBaselineToTopHeight="28dp"/>
 
-</LinearLayout>
+  <TextView
+      android:id="@+id/mtrl_picker_header_text"
+      style="?attr/materialCalendarHeaderSelection"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:layout_gravity="bottom"
+      app:lastBaselineToBottomHeight="20dp"/>
+
+</FrameLayout>

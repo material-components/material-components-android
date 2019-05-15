@@ -20,13 +20,13 @@
     android:orientation="vertical">
 
   <include
-      layout="@layout/mtrl_date_picker_header"
+      layout="@layout/mtrl_picker_header"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="@dimen/mtrl_calendar_header_height"
       android:layout_weight="0"/>
 
   <FrameLayout
-      android:id="@+id/calendar_frame"
+      android:id="@+id/mtrl_calendar_frame"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_weight="1"/>

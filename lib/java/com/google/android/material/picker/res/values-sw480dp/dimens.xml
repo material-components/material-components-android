@@ -16,8 +16,5 @@
 -->
 
 <resources xmlns:tools="http://schemas.android.com/tools">
-  <dimen name="mtrl_alert_dialog_picker_background_inset">24dp</dimen>
-  <dimen name="mtrl_calendar_header_height">120dp</dimen>
-  <dimen name="mtrl_calendar_dialog_action_padding">12dp</dimen>
-  <dimen name="mtrl_calendar_day_size">20dp</dimen>
+  <dimen name="mtrl_calendar_day_size">48dp</dimen>
 </resources>

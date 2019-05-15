@@ -27,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
@@ -72,6 +73,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   private static final String THEME_RES_ID_KEY = "THEME_RES_ID";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String CALENDAR_BOUNDS_KEY = "CALENDAR_BOUNDS_KEY";
+  private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
 
   @VisibleForTesting
   @RestrictTo(Scope.LIBRARY_GROUP)
@@ -104,8 +106,9 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   @AttrRes private int themeResId;
   private GridSelector<S> gridSelector;
   private CalendarBounds calendarBounds;
-  private MaterialCalendar<S> materialCalendar;
+  @StringRes private int titleTextResId;
 
+  private MaterialCalendar<S> materialCalendar;
   private TextView header;
   private S selection;
 
@@ -119,9 +122,13 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    * @param themeResId 0 or a {@link StyleRes} representing a ThemeOverlay
    */
   protected static void addArgsToBundle(
-      Bundle args, int themeResId, CalendarBounds calendarBounds) {
+      Bundle args,
+      int themeResId,
+      CalendarBounds calendarBounds,
+      @StringRes int overlineTextResId) {
     args.putInt(THEME_RES_ID_KEY, themeResId);
     args.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
+    args.putInt(TITLE_TEXT_RES_ID_KEY, overlineTextResId);
   }
 
   @StyleRes
@@ -139,6 +146,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     bundle.putInt(THEME_RES_ID_KEY, themeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
     bundle.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
+    bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
   }
 
   @Override
@@ -153,8 +161,8 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
             getContext(), getDefaultThemeAttr(), activeBundle.getInt(THEME_RES_ID_KEY));
     gridSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
     calendarBounds = activeBundle.getParcelable(CALENDAR_BOUNDS_KEY);
+    titleTextResId = activeBundle.getInt(TITLE_TEXT_RES_ID_KEY);
 
-    setStyle(DialogFragment.STYLE_NO_FRAME, themeResId);
     if (gridSelector == null) {
       gridSelector = createGridSelector();
     }
@@ -173,7 +181,8 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_dialog, viewGroup);
-    header = root.findViewById(R.id.date_picker_header_title);
+    header = root.findViewById(R.id.mtrl_picker_header_text);
+    ((TextView) root.findViewById(R.id.mtrl_picker_title_text)).setText(titleTextResId);
 
     MaterialButton confirmButton = root.findViewById(R.id.confirm_button);
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
@@ -203,7 +212,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   public void onViewCreated(@NonNull View view, @Nullable Bundle bundle) {
     super.onViewCreated(view, bundle);
     FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
-    fragmentTransaction.replace(R.id.calendar_frame, materialCalendar);
+    fragmentTransaction.replace(R.id.mtrl_calendar_frame, materialCalendar);
     fragmentTransaction.commit();
   }
 

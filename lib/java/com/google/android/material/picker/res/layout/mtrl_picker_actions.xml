@@ -21,17 +21,19 @@
     android:gravity="end"
     android:orientation="horizontal"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="wrap_content"
+    android:paddingEnd="@dimen/mtrl_calendar_dialog_action_padding"
+    android:paddingRight="@dimen/mtrl_calendar_dialog_action_padding">
 
   <Button
-      style="?attr/materialPickerTextButtonStyle"
+      style="?attr/buttonBarNegativeButtonStyle"
       android:id="@+id/cancel_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
       android:text="@string/mtrl_picker_cancel"/>
 
   <Button
-      style="?attr/materialPickerTextButtonStyle"
+      style="?attr/buttonBarPositiveButtonStyle"
       android:id="@+id/confirm_button"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"

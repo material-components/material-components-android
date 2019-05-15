@@ -27,7 +27,6 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.picker.selector.GridSelector;
-import com.google.android.material.resources.MaterialAttributes;
 import androidx.fragment.app.Fragment;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -179,7 +178,7 @@ public final class MaterialCalendar<S> extends Fragment {
   /** Returns the pixel height of each {@link android.view.View} representing a day. */
   @Px
   static int getDayHeight(Context context) {
-    return MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
+    return (int) context.getResources().getDimension(R.dimen.mtrl_calendar_day_size);
   }
 
   private void addMonthChangeListeners(View root) {

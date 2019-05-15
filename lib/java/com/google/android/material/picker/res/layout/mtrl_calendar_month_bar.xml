@@ -25,7 +25,6 @@
 
   <com.google.android.material.button.MaterialButton
       android:id="@+id/month_drop_select"
-      style="?attr/materialPickerIconButtonStyle"
       app:icon="@drawable/ic_menu_arrow_down_black_24dp"
       android:layout_width="0dp"
       android:layout_height="@dimen/mtrl_min_touch_target_size"
@@ -35,7 +34,6 @@
 
   <com.google.android.material.button.MaterialButton
       android:id="@+id/month_previous"
-      style="?attr/materialPickerIconButtonStyle"
       app:icon="@drawable/ic_keyboard_arrow_left_black_24dp"
       android:layout_width="@dimen/mtrl_min_touch_target_size"
       android:layout_height="@dimen/mtrl_min_touch_target_size"
@@ -45,7 +43,6 @@
 
   <com.google.android.material.button.MaterialButton
       android:id="@+id/month_next"
-      style="?attr/materialPickerIconButtonStyle"
       app:icon="@drawable/ic_keyboard_arrow_right_black_24dp"
       android:layout_width="@dimen/mtrl_min_touch_target_size"
       android:layout_height="@dimen/mtrl_min_touch_target_size"

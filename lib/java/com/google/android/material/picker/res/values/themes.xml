@@ -22,9 +22,16 @@
   <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Calendar"/>
 
   <style name="ThemeOverlay.MaterialComponents.MaterialCalendar" parent="ThemeOverlay.MaterialComponents.Dialog">
-    <item name="materialPickerTextButtonStyle">@style/Widget.MaterialComponents.Button.TextButton</item>
-    <item name="materialPickerIconButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Icon</item>
+    <!-- Header Styles -->
+    <item name="materialCalendarHeaderLayout">@style/Widget.MaterialComponents.MaterialCalendar.HeaderLayout</item>
+    <item name="materialCalendarHeaderTitle">@style/Widget.MaterialComponents.MaterialCalendar.HeaderTitle</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection</item>
+
+    <!-- Action Styles -->
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
   </style>
+
   <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.DatePicker"/>
   <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.DateRangePicker"/>
 </resources>

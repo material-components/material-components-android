@@ -55,7 +55,7 @@ public class MaterialDateRangePickerDialogFragment
     MaterialDateRangePickerDialogFragment materialDateRangePickerDialogFragment =
         new MaterialDateRangePickerDialogFragment();
     Bundle args = new Bundle();
-    addArgsToBundle(args, themeResId, calendarBounds);
+    addArgsToBundle(args, themeResId, calendarBounds, R.string.mtrl_picker_range_header_title);
     materialDateRangePickerDialogFragment.setArguments(args);
     return materialDateRangePickerDialogFragment;
   }
@@ -73,7 +73,7 @@ public class MaterialDateRangePickerDialogFragment
   @Override
   protected String getHeaderText(Pair<Calendar, Calendar> selection) {
     if (selection == null) {
-      return getContext().getResources().getString(R.string.mtrl_picker_range_header_prompt);
+      return getContext().getResources().getString(R.string.mtrl_picker_range_header_unselected);
     }
     String startString = getSimpleDateFormat().format(selection.first.getTime());
     String endString = getSimpleDateFormat().format(selection.second.getTime());
