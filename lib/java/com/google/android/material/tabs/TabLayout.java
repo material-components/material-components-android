@@ -1997,6 +1997,9 @@ public class TabLayout extends HorizontalScrollView {
     @NonNull
     public Tab setIcon(@Nullable Drawable icon) {
       this.icon = icon;
+      if ((parent.tabGravity == GRAVITY_CENTER) || parent.mode == MODE_AUTO) {
+        parent.updateTabViews(true);
+      }
       updateView();
       return this;
     }
@@ -2065,6 +2068,9 @@ public class TabLayout extends HorizontalScrollView {
      */
     public Tab setTabLabelVisibility(@LabelVisibility int mode) {
       this.labelVisibilityMode = mode;
+      if ((parent.tabGravity == GRAVITY_CENTER) || parent.mode == MODE_AUTO) {
+        parent.updateTabViews(true);
+      }
       this.updateView();
       return this;
     }
