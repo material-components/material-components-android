@@ -31,6 +31,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
+
+import android.graphics.PorterDuff;
+import android.os.Build;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -380,11 +384,19 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   }
 
   /**
-   * Sets the overlay color of the background Drawable.
+   * Sets the tint color of the background Drawable.
    */
   @NonNull
-  public Snackbar setBackgroundOverlayColor(@ColorInt int color) {
-    updateThemedBackgroundOverlayColor(color);
+  public Snackbar setBackgroundTintColor(@ColorInt int color) {
+    if (view.getBackground() != null) {
+      // Drawable doesn't implement setTint in API 21 and Snackbar does not yet use
+      // MaterialShapeDrawable as its background (i.e. TintAwareDrawable)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        DrawableCompat.setTint(view.getBackground(), color);
+      } else {
+        view.getBackground().setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      }
+    }
     return this;
   }
 
