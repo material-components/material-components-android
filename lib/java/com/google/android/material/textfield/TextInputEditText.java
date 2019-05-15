@@ -21,7 +21,6 @@ import com.google.android.material.R;
 import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
-import android.graphics.Canvas;
 import android.os.Build;
 import android.util.AttributeSet;
 import android.view.View;
@@ -51,7 +50,7 @@ public class TextInputEditText extends AppCompatEditText {
   }
 
   @Override
-  protected void onDraw(Canvas canvas) {
+  protected void onAttachedToWindow() {
     // Meizu devices expect a hintLayout if the hint is not null. In order to avoid crashing,
     // we force the creation of the hintLayout by setting an empty non null hint.
     TextInputLayout layout = getTextInputLayout();
@@ -61,7 +60,7 @@ public class TextInputEditText extends AppCompatEditText {
         && Build.MANUFACTURER.equals("Meizu")) {
       setHint("");
     }
-    super.onDraw(canvas);
+    super.onAttachedToWindow();
   }
 
   @Override
