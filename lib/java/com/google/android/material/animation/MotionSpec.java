@@ -99,6 +99,12 @@ public class MotionSpec {
     return propertyValues.get(name) != null;
   }
 
+  /**
+   * Get values for a property in this MotionSpec.
+   *
+   * @param name Name of the property to get values for, e.g. "width" or "opacity".
+   * @return Array of {@link PropertyValuesHolder} values for the property.
+   */
   public PropertyValuesHolder[] getPropertyValues(String name) {
     if (!hasPropertyValues(name)) {
       throw new IllegalArgumentException();
@@ -106,6 +112,12 @@ public class MotionSpec {
     return clonePropertyValuesHolder(propertyValues.get(name));
   }
 
+  /**
+   * Set values for a property in this MotionSpec.
+   *
+   * @param name Name of the property to set values for, e.g. "width" or "opacity".
+   * @param values Array of {@link PropertyValuesHolder} values for the property.
+   */
   public void setPropertyValues(String name, PropertyValuesHolder[] values) {
     propertyValues.put(name, values);
   }
@@ -118,6 +130,16 @@ public class MotionSpec {
     return ret;
   }
 
+  /**
+   * Creates and returns an {@link ObjectAnimator} that animates the given property. This can be
+   * added to an {@link AnimatorSet} to play multiple synchronized animations.
+   *
+   * @param name Name of the property to be animated.
+   * @param view The target whose property is to be animated. See {@link
+   *     ObjectAnimator#ofPropertyValuesHolder(Object, PropertyValuesHolder...)} for more details.
+   * @param property The {@link Property} object being animated.
+   * @return An {@link ObjectAnimator} which animates the given property.
+   */
   public ObjectAnimator getAnimator(String name, View view, Property<View, Float> property) {
     ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, getPropertyValues(name));
     animator.setProperty(property);
