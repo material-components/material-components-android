@@ -41,9 +41,6 @@ import android.graphics.Rect;
 import android.graphics.RectF;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.Drawable.Callback;
-import android.graphics.drawable.RippleDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.OvalShape;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.AnimatorRes;
 import androidx.annotation.AttrRes;
@@ -178,7 +175,6 @@ public class ChipDrawable extends MaterialShapeDrawable
         new int[] {android.R.attr.state_enabled},
         new int[] {} // default
       };
-  private static final ShapeDrawable closeIconRippleMask = new ShapeDrawable(new OvalShape());
 
   // Visuals
   @Nullable private ColorStateList chipSurfaceColor;
@@ -201,7 +197,6 @@ public class ChipDrawable extends MaterialShapeDrawable
   // Close icon
   private boolean closeIconVisible;
   @Nullable private Drawable closeIcon;
-  @Nullable private RippleDrawable closeIconRipple;
   @Nullable private ColorStateList closeIconTint;
   private float closeIconSize;
   @Nullable private CharSequence closeIconContentDescription;
@@ -348,11 +343,6 @@ public class ChipDrawable extends MaterialShapeDrawable
     setState(DEFAULT_STATE);
     setCloseIconState(DEFAULT_STATE);
     shouldDrawText = true;
-
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-      //noinspection NewApi
-      closeIconRippleMask.setTint(Color.WHITE);
-    }
   }
 
   private void loadFromAttributes(
@@ -739,13 +729,7 @@ public class ChipDrawable extends MaterialShapeDrawable
       canvas.translate(tx, ty);
 
       closeIcon.setBounds(0, 0, (int) rectF.width(), (int) rectF.height());
-
-      if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-        closeIconRipple.setBounds(closeIcon.getBounds());
-        closeIconRipple.draw(canvas);
-      } else {
-        closeIcon.draw(canvas);
-      }
+      closeIcon.draw(canvas);
 
       canvas.translate(-tx, -ty);
     }
@@ -1081,10 +1065,6 @@ public class ChipDrawable extends MaterialShapeDrawable
     }
     if (isStateful(closeIcon)) {
       invalidate |= closeIcon.setState(closeIconState);
-    }
-    //noinspection NewApi
-    if (RippleUtils.USE_FRAMEWORK_RIPPLE && isStateful(closeIconRipple)) {
-      invalidate |= closeIconRipple.setState(closeIconState);
     }
 
     if (invalidate) {
@@ -1799,9 +1779,6 @@ public class ChipDrawable extends MaterialShapeDrawable
     if (oldCloseIcon != closeIcon) {
       float oldCloseIconWidth = calculateCloseIconWidth();
       this.closeIcon = closeIcon != null ? DrawableCompat.wrap(closeIcon).mutate() : null;
-      if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
-        updateFrameworkCloseIconRipple();
-      }
       float newCloseIconWidth = calculateCloseIconWidth();
 
       unapplyChildDrawable(oldCloseIcon);
@@ -1814,17 +1791,6 @@ public class ChipDrawable extends MaterialShapeDrawable
         onSizeChange();
       }
     }
-  }
-
-  private void updateFrameworkCloseIconRipple() {
-    //noinspection NewApi
-    closeIconRipple =
-        new RippleDrawable(
-            RippleUtils.convertToRippleDrawableColor(getRippleColor()),
-            closeIcon,
-            // A separate drawable with a solid background is needed for the mask because by
-            // default, the close icon has a transparent background.
-            closeIconRippleMask);
   }
 
   @Nullable
