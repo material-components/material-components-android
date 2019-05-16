@@ -387,7 +387,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * Sets the tint color of the background Drawable.
    */
   @NonNull
-  public Snackbar setBackgroundTintColor(@ColorInt int color) {
+  public Snackbar setBackgroundTint(@ColorInt int color) {
     if (view.getBackground() != null) {
       // Drawable doesn't implement setTint in API 21 and Snackbar does not yet use
       // MaterialShapeDrawable as its background (i.e. TintAwareDrawable)
