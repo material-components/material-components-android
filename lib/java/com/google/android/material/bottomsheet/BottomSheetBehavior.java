@@ -1269,6 +1269,11 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     return peekHeightMin;
   }
 
+  /**
+   * Disables the shaped corner {@link ShapeAppearanceModel} interpolation transition animations.
+   * Will have no effect unless the sheet utilizes a {@link MaterialShapeDrawable} with set shape
+   * theming properties. Only For use in UI testing.
+   */
   @VisibleForTesting
   public void disableShapeAnimations() {
     // Sets the shape value animator to null, prevents animations from occuring during testing.
