@@ -23,6 +23,9 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
+import android.graphics.PorterDuff;
+import android.graphics.drawable.Drawable;
+import android.os.Build;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
@@ -31,6 +34,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.core.graphics.drawable.DrawableCompat;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
@@ -332,6 +336,30 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   }
 
   /**
+   * Sets the text color of the message specified in {@link #setText(CharSequence)} and {@link
+   * #setText(int)}.
+   */
+  @NonNull
+  public Snackbar setTextColor(ColorStateList colors) {
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
+    final TextView tv = contentLayout.getMessageView();
+    tv.setTextColor(colors);
+    return this;
+  }
+
+  /**
+   * Sets the text color of the message specified in {@link #setText(CharSequence)} and {@link
+   * #setText(int)}.
+   */
+  @NonNull
+  public Snackbar setTextColor(@ColorInt int color) {
+    final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
+    final TextView tv = contentLayout.getMessageView();
+    tv.setTextColor(color);
+    return this;
+  }
+
+  /**
    * Sets the text color of the action specified in {@link #setAction(CharSequence,
    * View.OnClickListener)}.
    */
@@ -352,6 +380,22 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     final SnackbarContentLayout contentLayout = (SnackbarContentLayout) view.getChildAt(0);
     final TextView tv = contentLayout.getActionView();
     tv.setTextColor(color);
+    return this;
+  }
+
+  /** Sets the tint color of the background Drawable. */
+  @NonNull
+  public Snackbar setBackgroundTint(@ColorInt int color) {
+    Drawable background = view.getBackground();
+    if (background != null) {
+      // Drawable doesn't implement setTint in API 21 and Snackbar does not yet use
+      // MaterialShapeDrawable as its background (i.e. TintAwareDrawable)
+      if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+        DrawableCompat.setTint(background, color);
+      } else {
+        background.setColorFilter(color, PorterDuff.Mode.SRC_IN);
+      }
+    }
     return this;
   }
 
