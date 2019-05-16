@@ -20,7 +20,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.picker.selector.GridSelector;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;

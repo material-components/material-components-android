@@ -13,14 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.material.picker.selector;
+package com.google.android.material.picker;
 
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import com.google.android.material.picker.MaterialCalendar;
-import com.google.android.material.picker.MonthAdapter;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;

@@ -23,8 +23,6 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import com.google.android.material.picker.selector.DateRangeGridSelector;
-import com.google.android.material.picker.selector.GridSelector;
 import androidx.core.util.Pair;
 import java.util.Calendar;
 

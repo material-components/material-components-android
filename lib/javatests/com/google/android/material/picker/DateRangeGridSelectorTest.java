@@ -13,7 +13,7 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.material.picker.selector;
+package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
@@ -22,8 +22,6 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
-import com.google.android.material.picker.Month;
-import com.google.android.material.picker.MonthAdapter;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.GridView;
 import androidx.test.core.app.ApplicationProvider;

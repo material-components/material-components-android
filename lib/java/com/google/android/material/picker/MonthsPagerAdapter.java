@@ -18,7 +18,6 @@ package com.google.android.material.picker;
 import android.database.DataSetObserver;
 import androidx.annotation.NonNull;
 import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
-import com.google.android.material.picker.selector.GridSelector;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentStatePagerAdapter;

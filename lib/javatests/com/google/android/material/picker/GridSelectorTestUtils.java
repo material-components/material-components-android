@@ -13,13 +13,12 @@
  * See the License for the specific language governing permissions and
  * limitations under the License.
  */
-package com.google.android.material.picker.selector;
+package com.google.android.material.picker;
 
 import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
-import com.google.android.material.picker.MonthAdapter;
 import android.view.View;
 import android.widget.TextView;
 import java.util.Calendar;
