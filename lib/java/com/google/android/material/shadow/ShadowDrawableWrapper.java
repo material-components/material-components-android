@@ -35,7 +35,10 @@ import androidx.appcompat.graphics.drawable.DrawableWrapper;
 /**
  * A {@link android.graphics.drawable.Drawable} which wraps another drawable and draws a shadow
  * around it.
+ *
+ * @deprecated Use {@link com.google.android.material.shape.MaterialShapeDrawable} instead.
  */
+@Deprecated
 public class ShadowDrawableWrapper extends DrawableWrapper {
   // used to calculate content padding
   static final double COS_45 = Math.cos(Math.toRadians(45));
