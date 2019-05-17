@@ -78,7 +78,7 @@
       android:layout_marginTop="8dp"
       android:layout_marginBottom="16dp"
       android:background="@android:color/white"
-      android:backgroundTint="@color/mtrl_on_surface_disabled"/>
+      android:backgroundTint="?attr/colorControlHighlight"/>
 
   <TextView
       android:layout_width="wrap_content"
@@ -117,7 +117,7 @@
       android:layout_height="1dp"
       android:layout_marginBottom="16dp"
       android:background="@android:color/white"
-      android:backgroundTint="@color/mtrl_on_surface_disabled"/>
+      android:backgroundTint="?attr/colorControlHighlight"/>
 
   <TextView
       android:layout_width="wrap_content"
