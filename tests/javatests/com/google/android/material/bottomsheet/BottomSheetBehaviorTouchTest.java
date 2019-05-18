@@ -24,10 +24,10 @@ import static org.hamcrest.CoreMatchers.sameInstance;
 import static org.hamcrest.MatcherAssert.assertThat;
 
 import com.google.android.material.testapp.CoordinatorLayoutActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;

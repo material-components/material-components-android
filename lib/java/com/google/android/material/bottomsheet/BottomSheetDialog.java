@@ -25,7 +25,6 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.StyleRes;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -37,6 +36,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /** Base class for {@link android.app.Dialog}s styled as a bottom sheet. */
 public class BottomSheetDialog extends AppCompatDialog {

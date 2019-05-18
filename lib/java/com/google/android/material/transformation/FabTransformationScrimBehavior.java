@@ -26,10 +26,10 @@ import androidx.annotation.NonNull;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.MotionTiming;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.MotionEvent;
 import android.view.View;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import java.util.ArrayList;
 import java.util.List;
 

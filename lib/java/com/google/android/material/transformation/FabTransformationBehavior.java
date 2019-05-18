@@ -54,7 +54,6 @@ import com.google.android.material.circularreveal.CircularRevealWidget.CircularR
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.math.MathUtils;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.util.Pair;
@@ -63,6 +62,7 @@ import android.view.View;
 import android.view.ViewAnimationUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import java.util.ArrayList;
 import java.util.List;
 

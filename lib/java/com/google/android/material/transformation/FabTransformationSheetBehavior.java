@@ -24,12 +24,12 @@ import androidx.annotation.CallSuper;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.animation.Positioning;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.View;
 import android.view.ViewParent;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import java.util.HashMap;
 import java.util.Map;
 

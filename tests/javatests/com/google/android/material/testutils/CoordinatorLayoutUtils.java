@@ -16,8 +16,8 @@
 
 package com.google.android.material.testutils;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class CoordinatorLayoutUtils {
 

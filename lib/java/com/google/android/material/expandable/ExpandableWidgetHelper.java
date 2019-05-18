@@ -19,9 +19,9 @@ package com.google.android.material.expandable;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.annotation.IdRes;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
 import android.view.ViewParent;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /**
  * ExpandableWidgetHelper is a helper class for writing custom {@link ExpandableWidget}s and {@link

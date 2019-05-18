@@ -18,8 +18,8 @@ package com.google.android.material.testapp;
 
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.testapp.base.BaseTestActivity;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.widget.FrameLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 public class CoordinatorLayoutActivity extends BaseTestActivity {
 
