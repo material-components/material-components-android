@@ -23,10 +23,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import android.view.LayoutInflater;
 import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import io.material.catalog.feature.DemoActivity;
+import io.material.catalog.feature.DemoUtils;
 
 /** A base activity for the Top App Bar Action Bar demos for the Catalog app. */
 public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
@@ -53,6 +55,11 @@ public abstract class BaseTopAppBarActionBarDemoActivity extends DemoActivity {
   public boolean onCreateOptionsMenu(Menu menu) {
     getMenuInflater().inflate(R.menu.cat_topappbar_menu, menu);
     return true;
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    return DemoUtils.showSnackbar(this, item) || super.onOptionsItemSelected(item);
   }
 
   @Override

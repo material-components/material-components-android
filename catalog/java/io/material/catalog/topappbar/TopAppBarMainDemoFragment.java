@@ -25,9 +25,11 @@ import androidx.appcompat.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import io.material.catalog.feature.DemoFragment;
+import io.material.catalog.feature.DemoUtils;
 
 /** A fragment that displays the main Top App Bar demo for the Catalog app. */
 public class TopAppBarMainDemoFragment extends DemoFragment {
@@ -54,6 +56,11 @@ public class TopAppBarMainDemoFragment extends DemoFragment {
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
     menuInflater.inflate(R.menu.cat_topappbar_menu, menu);
     super.onCreateOptionsMenu(menu, menuInflater);
+  }
+
+  @Override
+  public boolean onOptionsItemSelected(MenuItem item) {
+    return DemoUtils.showSnackbar(getActivity(), item) || super.onOptionsItemSelected(item);
   }
 
   @Override
