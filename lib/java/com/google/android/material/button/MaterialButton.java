@@ -954,7 +954,11 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
     }
   }
 
-  /** @throws IllegalStateException if the MaterialButton's background has been overwritten. */
+  /**
+   * {@inheritDoc}
+   *
+   * @throws IllegalStateException if the MaterialButton's background has been overwritten.
+   */
   @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     if (isUsingOriginalBackground()) {
