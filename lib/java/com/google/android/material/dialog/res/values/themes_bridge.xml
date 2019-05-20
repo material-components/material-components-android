@@ -31,7 +31,7 @@
     <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
-  <style name="Base.Theme.MaterialComponents.Dialog.MinWidth.Brige" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
+  <style name="Base.Theme.MaterialComponents.Dialog.MinWidth.Bridge" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
     <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
     <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
