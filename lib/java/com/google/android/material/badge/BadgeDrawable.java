@@ -205,7 +205,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   /** Creates an instance of BadgeDrawable with default values. */
   public static BadgeDrawable create(Context context) {
     return createFromAttributes(
-        context, /* attrs= */ null, /* defStyleAttr= */ 0, R.style.Widget_MaterialComponents_Badge);
+        context, /* attrs= */ null, R.attr.badgeStyle, R.style.Widget_MaterialComponents_Badge);
   }
 
   /** Returns a BadgeDrawable from the given attributes. */
