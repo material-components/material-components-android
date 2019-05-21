@@ -18,7 +18,6 @@ package io.material.catalog.menu;
 
 import io.material.catalog.R;
 
-import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import dagger.Provides;
@@ -43,21 +42,13 @@ public class MenuFragment extends DemoLandingFragment {
     return R.string.cat_menus_description;
   }
 
-
-  @LayoutRes
-  public int getAdapterItemLayout() {
-    return R.layout.cat_popup_item;
-  }
-
   @Override
   public Demo getMainDemo() {
     return new Demo() {
       @Nullable
       @Override
       public Fragment createFragment() {
-        MenuMainDemoFragment menuMainDemoFragment = new MenuMainDemoFragment();
-        menuMainDemoFragment.setPopupItemLayoutRes(getAdapterItemLayout());
-        return menuMainDemoFragment;
+        return new MenuMainDemoFragment();
       }
     };
   }
