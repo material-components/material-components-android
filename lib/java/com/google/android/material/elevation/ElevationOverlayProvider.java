@@ -21,9 +21,9 @@ import com.google.android.material.R;
 import android.content.Context;
 import android.graphics.Color;
 import androidx.annotation.ColorInt;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialAttributes;
 import androidx.core.graphics.ColorUtils;
+import com.google.android.material.color.MaterialColors;
 
 /** Utility for calculating elevation overlay alpha values and colors. */
 public class ElevationOverlayProvider {

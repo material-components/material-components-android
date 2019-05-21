@@ -42,7 +42,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.CornerTreatment;
@@ -56,6 +55,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import androidx.cardview.widget.CardView;
+import com.google.android.material.color.MaterialColors;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)

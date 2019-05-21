@@ -22,7 +22,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.ColorStateList;
 import androidx.annotation.IdRes;
-import com.google.android.material.color.MaterialColors;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -33,6 +32,7 @@ import android.text.style.ForegroundColorSpan;
 import android.util.SparseIntArray;
 import android.view.MenuItem;
 import android.view.View;
+import com.google.android.material.color.MaterialColors;
 
 /** Helper that saves the current theme choice for the Catalog, which maps to a night mode. */
 public class ThemePreferencesManager {

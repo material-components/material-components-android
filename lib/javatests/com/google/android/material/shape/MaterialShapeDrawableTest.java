@@ -20,8 +20,8 @@ import com.google.android.material.R;
 import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
-import com.google.android.material.color.MaterialColors;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.color.MaterialColors;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
