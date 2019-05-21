@@ -30,6 +30,7 @@ import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.ListPopupWindow;
 import androidx.appcompat.widget.PopupMenu;
 import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.Spannable;
@@ -44,6 +45,9 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
 import io.material.catalog.feature.DemoFragment;
@@ -83,6 +87,16 @@ public class MenuMainDemoFragment extends DemoFragment {
 
     TextView contextMenuTextView = view.findViewById(R.id.context_menu_tv);
     registerForContextMenu(contextMenuTextView);
+
+    Button listPopupWindowButton = view.findViewById(R.id.list_popup_window);
+    ListPopupWindow listPopupWindow = initializeListPopupMenu(listPopupWindowButton);
+    listPopupWindowButton.setOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            listPopupWindow.show();
+          }
+        });
 
     return view;
   }
@@ -125,32 +139,57 @@ public class MenuMainDemoFragment extends DemoFragment {
     popup.show();
   }
 
-
   @Override
-  public void onCreateContextMenu(ContextMenu menu, View v,
-      ContextMenuInfo menuInfo) {
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
     TextView contextMenuTextView = (TextView) v;
     Context context = getContext();
-    menu.add(android.R.string.copy).setOnMenuItemClickListener(
-        new MenuItem.OnMenuItemClickListener() {
-          @Override
-          public boolean onMenuItemClick(MenuItem item) {
-            ClipboardManager clipboard = (ClipboardManager) context
-                .getSystemService(CLIPBOARD_SERVICE);
-            clipboard.setPrimaryClip(
-                ClipData.newPlainText(CLIP_DATA_LABEL, contextMenuTextView.getText()));
-            return true;
-          }
-        });
+    menu.add(android.R.string.copy)
+        .setOnMenuItemClickListener(
+            new MenuItem.OnMenuItemClickListener() {
+              @Override
+              public boolean onMenuItemClick(MenuItem item) {
+                ClipboardManager clipboard =
+                    (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+                clipboard.setPrimaryClip(
+                    ClipData.newPlainText(CLIP_DATA_LABEL, contextMenuTextView.getText()));
+                return true;
+              }
+            });
 
-    menu.add(R.string.context_menu_highlight).setOnMenuItemClickListener(
-        new MenuItem.OnMenuItemClickListener() {
+    menu.add(R.string.context_menu_highlight)
+        .setOnMenuItemClickListener(
+            new MenuItem.OnMenuItemClickListener() {
+              @Override
+              public boolean onMenuItemClick(MenuItem item) {
+                highlightText(contextMenuTextView);
+                return true;
+              }
+            });
+  }
+
+  private ListPopupWindow initializeListPopupMenu(View v) {
+    ListPopupWindow listPopupWindow =
+        new ListPopupWindow(getContext(), null, R.attr.listPopupWindowStyle);
+    ArrayAdapter<CharSequence> adapter =
+        new ArrayAdapter<>(
+            getContext(),
+            R.layout.cat_popup_item,
+            getResources().getStringArray(R.array.cat_list_popup_window_content));
+    listPopupWindow.setAdapter(adapter);
+    listPopupWindow.setAnchorView(v);
+    listPopupWindow.setOnItemClickListener(
+        new OnItemClickListener() {
           @Override
-          public boolean onMenuItemClick(MenuItem item) {
-            highlightText(contextMenuTextView);
-            return true;
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            Snackbar.make(
+                    getActivity().findViewById(android.R.id.content),
+                    adapter.getItem(position).toString(),
+                    Snackbar.LENGTH_LONG)
+                .show();
+            listPopupWindow.dismiss();
           }
         });
+    return listPopupWindow;
   }
 
   private void highlightText(TextView textView) {
@@ -160,10 +199,7 @@ public class MenuMainDemoFragment extends DemoFragment {
     context.getTheme().resolveAttribute(R.attr.colorPrimary, value, true);
     Spannable spanText = Spannable.Factory.getInstance().newSpannable(text);
     spanText.setSpan(
-        new BackgroundColorSpan(value.data),
-        0,
-        text.length(),
-        SPAN_EXCLUSIVE_EXCLUSIVE);
+        new BackgroundColorSpan(value.data), 0, text.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
     textView.setText(spanText);
   }
 }

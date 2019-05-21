@@ -31,4 +31,10 @@
     <item name="android:overlapAnchor">true</item>
   </style>
 
+  <style name="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow">
+    <item name="android:popupBackground">@drawable/mtrl_popupmenu_background</item>
+    <item name="android:popupElevation">8dp</item>
+    <item name="android:overlapAnchor">true</item>
+  </style>
+
 </resources>

@@ -15,72 +15,97 @@
   limitations under the License.
   -->
 
-<LinearLayout
+
+<ScrollView
     xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:layout_height="match_parent">
 
-  <TextView
+  <LinearLayout
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="16dp"
-      android:text="@string/menu_demo_description"/>
+      android:layout_height="match_parent"
+      android:orientation="vertical">
 
-  <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:paddingStart="16dp"
-      android:paddingLeft="16dp"
-      android:text="@string/popup_menu"
-      android:textSize="16sp"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/menu_demo_description"/>
 
-  <Button
-      android:id="@+id/menu_button"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:layout_marginLeft="24dp"
-      android:layout_marginRight="24dp"
-      android:text="@string/show_popup"/>
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:text="@string/popup_menu"
+        android:textSize="16sp"/>
 
-  <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:paddingStart="16dp"
-      android:paddingLeft="16dp"
-      android:text="@string/menu_with_icons"
-      android:textSize="16sp"/>
+    <Button
+        android:id="@+id/menu_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/show_popup"/>
 
-  <Button
-      android:id="@+id/menu_button_with_icons"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:layout_marginLeft="24dp"
-      android:layout_marginRight="24dp"
-      android:text="@string/show_popup"/>
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:text="@string/menu_with_icons"
+        android:textSize="16sp"/>
 
-  <TextView
-      android:textStyle="bold"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:paddingStart="16dp"
-      android:paddingLeft="16dp"
-      android:text="@string/context_menu"
-      android:textSize="16sp"/>
+    <Button
+        android:id="@+id/menu_button_with_icons"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/show_popup"/>
 
-  <TextView
-      android:id="@+id/context_menu_tv"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="16dp"
-      android:text="@string/menu_context_menu_description"/>
 
-</LinearLayout>
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:text="@string/list_popup_window"
+        android:textSize="16sp"/>
+
+    <Button
+        android:id="@+id/list_popup_window"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:text="@string/show_popup"/>
+
+    <TextView
+        android:textStyle="bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:paddingStart="16dp"
+        android:paddingLeft="16dp"
+        android:text="@string/context_menu"
+        android:textSize="16sp"/>
+
+    <TextView
+        android:id="@+id/context_menu_tv"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp"
+        android:text="@string/menu_context_menu_description"/>
+
+  </LinearLayout>
+</ScrollView>

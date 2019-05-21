@@ -41,4 +41,10 @@
 
   <style name="Widget.MaterialComponents.PopupMenu.ContextMenu.Dark"/>
 
+  <style name="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Widget.AppCompat.ListPopupWindow"/>
+
+  <style name="Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow"/>
+
+  <style name="Widget.MaterialComponents.PopupMenu.ListPopupWindow.Dark"/>
+
 </resources>
