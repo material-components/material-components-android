@@ -26,6 +26,7 @@ import android.content.ClipboardManager;
 import android.content.Context;
 import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
@@ -57,6 +58,7 @@ public class MenuMainDemoFragment extends DemoFragment {
 
   private static final int ICON_MARGIN = 8;
   private static final String CLIP_DATA_LABEL = "Sample text to copy";
+  @LayoutRes private int popupItemLayout;
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
@@ -167,13 +169,17 @@ public class MenuMainDemoFragment extends DemoFragment {
             });
   }
 
+  public void setPopupItemLayoutRes(@LayoutRes int popupItemRes) {
+    popupItemLayout = popupItemRes;
+  }
+
   private ListPopupWindow initializeListPopupMenu(View v) {
     ListPopupWindow listPopupWindow =
         new ListPopupWindow(getContext(), null, R.attr.listPopupWindowStyle);
     ArrayAdapter<CharSequence> adapter =
         new ArrayAdapter<>(
             getContext(),
-            R.layout.cat_popup_item,
+            popupItemLayout,
             getResources().getStringArray(R.array.cat_list_popup_window_content));
     listPopupWindow.setAdapter(adapter);
     listPopupWindow.setAnchorView(v);
