@@ -15,16 +15,18 @@
  */
 package com.google.android.material.picker;
 
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
+import com.google.android.material.R;
+
+import android.content.Context;
+import android.content.res.TypedArray;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.annotation.VisibleForTesting;
-import androidx.core.view.ViewCompat;
-import android.view.View;
+import com.google.android.material.resources.MaterialAttributes;
+import android.text.format.DateUtils;
+import android.widget.TextView;
 import java.util.Calendar;
 
 /**
@@ -35,9 +37,6 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DateGridSelector implements GridSelector<Calendar> {
 
-  @VisibleForTesting static final ColorDrawable emptyColor = new ColorDrawable(Color.TRANSPARENT);
-  @VisibleForTesting static final ColorDrawable selectedColor = new ColorDrawable(Color.RED);
-
   private Calendar selectedItem;
 
   @Override
@@ -46,8 +45,25 @@ public class DateGridSelector implements GridSelector<Calendar> {
   }
 
   @Override
-  public void drawCell(View cell, Calendar item) {
-    ViewCompat.setBackground(cell, item.equals(selectedItem) ? selectedColor : emptyColor);
+  public void drawCell(TextView cell, Calendar item) {
+    Context context = cell.getContext();
+    int calendarStyle =
+        MaterialAttributes.resolveOrThrow(
+            context, R.attr.materialDatePickerStyle, MaterialCalendar.class.getCanonicalName());
+
+    int style;
+    TypedArray stylesList =
+        context.obtainStyledAttributes(calendarStyle, R.styleable.MaterialCalendar);
+    if (item.equals(selectedItem)) {
+      style = stylesList.getResourceId(R.styleable.MaterialCalendar_daySelectedStyle, 0);
+    } else if (DateUtils.isToday(item.getTimeInMillis())) {
+      style = stylesList.getResourceId(R.styleable.MaterialCalendar_dayTodayStyle, 0);
+    } else {
+      style = stylesList.getResourceId(R.styleable.MaterialCalendar_dayStyle, 0);
+    }
+    stylesList.recycle();
+
+    CalendarGridSelectors.colorCell(cell, style);
   }
 
   @Override

@@ -22,6 +22,7 @@ import androidx.annotation.RestrictTo.Scope;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.TextView;
 import java.util.Calendar;
 
 /**
@@ -49,12 +50,14 @@ public interface GridSelector<S> extends Parcelable {
   void select(Calendar selection);
 
   /**
-   * Modifies the provided {@link View} to indicate its selection status.
+   * Modifies the provided {@link TextView} to indicate its selection status.
    *
-   * <p>Called for each {@link View} as part of {@link MonthAdapter#getView(int, View, ViewGroup)}
+   * <p>Called for each {@link TextView} as part of {@link MonthAdapter#getView(int, View,
+   * ViewGroup)}
    *
-   * @param cell The {@link View} returned from {@link MonthAdapter#getView(int, View, ViewGroup)}
+   * @param cell The {@link TextView} returned from {@link MonthAdapter#getView(int, View,
+   *     ViewGroup)}
    * @param item The {@link Calendar} returned from {@link MonthAdapter#getItem(int)}.
    */
-  void drawCell(View cell, Calendar item);
+  void drawCell(TextView cell, Calendar item);
 }

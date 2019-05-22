@@ -17,6 +17,7 @@ package com.google.android.material.picker;
 
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.view.Gravity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -70,14 +71,15 @@ class DaysOfWeekAdapter extends BaseAdapter {
 
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
-    TextView day = (TextView) convertView;
+    TextView dayOfWeek = (TextView) convertView;
     if (convertView == null) {
-      day = new TextView(parent.getContext());
+      dayOfWeek = new TextView(parent.getContext());
     }
     calendar.set(Calendar.DAY_OF_WEEK, positionToDayOfWeek(position));
-    day.setText(
+    dayOfWeek.setText(
         calendar.getDisplayName(Calendar.DAY_OF_WEEK, CALENDAR_DAY_STYLE, Locale.getDefault()));
-    return day;
+    dayOfWeek.setGravity(Gravity.CENTER);
+    return dayOfWeek;
   }
 
   private int positionToDayOfWeek(int position) {

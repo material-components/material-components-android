@@ -128,5 +128,4 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
   Month getPageMonth(int position) {
     return firstPage.monthsLater(position);
   }
-
 }

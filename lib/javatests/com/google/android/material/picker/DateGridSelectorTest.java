@@ -37,7 +37,6 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class DateGridSelectorTest {
 
-  private Context context;
   private DateGridSelector dateGridSelector;
   private MonthAdapter adapter;
 
@@ -45,22 +44,11 @@ public class DateGridSelectorTest {
   public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
-    context = activity.getApplicationContext();
+    Context context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
     dateGridSelector = new DateGridSelector();
     adapter = new MonthAdapter(context, Month.create(2016, Calendar.FEBRUARY), dateGridSelector);
     gridView.setAdapter(adapter);
-  }
-
-  @Test
-  public void dateDrawCell() {
-    int position = 8;
-    assertTrue(adapter.withinMonth(position));
-    dateGridSelector.select(adapter.getItem(position));
-    GridSelectorTestUtils.assertCellColor(
-        context, dateGridSelector, adapter, position, DateGridSelector.selectedColor);
-    GridSelectorTestUtils.assertCellColor(
-        context, dateGridSelector, adapter, /* position= */ 15, DateGridSelector.emptyColor);
   }
 
   @Test

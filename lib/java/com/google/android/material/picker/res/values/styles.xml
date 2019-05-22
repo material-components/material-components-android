@@ -29,7 +29,11 @@
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
   </style>
 
-  <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget"/>
+  <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget">
+    <item name="dayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
+    <item name="dayTodayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Today</item>
+  </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.DateRangePicker"/>
 
@@ -54,6 +58,34 @@
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="android:maxLines">1</item>
     <item name="android:ellipsize">end</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.DayTextView" parent="Widget.AppCompat.TextView">
+    <item name="android:textAppearance">?attr/textAppearanceCaption</item>
+    <item name="android:gravity">center</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Day" parent="">
+    <item name="itemFillColor">@android:color/transparent</item>
+    <item name="itemTextColor">@color/mtrl_on_surface_emphasis_high_type</item>
+    <item name="itemStrokeColor">@color/mtrl_on_surface_emphasis_high_type</item>
+    <item name="itemStrokeWidth">0dp</item>
+    <item name="itemShapeAppearance">?attr/shapeAppearanceSmallComponent</item>
+    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
+    <item name="itemFillColor">?attr/colorPrimary</item>
+    <item name="itemTextColor">?attr/colorOnPrimary</item>
+    <item name="itemStrokeColor">?attr/colorOnPrimary</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Day.Today">
+    <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar" parent="">
+    <item name="cornerSize">@dimen/mtrl_calendar_day_size_corner</item>
   </style>
 
 </resources>

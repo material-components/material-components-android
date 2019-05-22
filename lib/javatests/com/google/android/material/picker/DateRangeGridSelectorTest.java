@@ -37,7 +37,6 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class DateRangeGridSelectorTest {
 
-  private Context context;
   private DateRangeGridSelector dateRangeGridSelector;
   private MonthAdapter adapter;
 
@@ -45,39 +44,12 @@ public class DateRangeGridSelectorTest {
   public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
-    context = activity.getApplicationContext();
+    Context context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
     dateRangeGridSelector = new DateRangeGridSelector();
     adapter =
         new MonthAdapter(context, Month.create(2016, Calendar.FEBRUARY), dateRangeGridSelector);
     gridView.setAdapter(adapter);
-  }
-
-  @Test
-  public void dateRangeDrawCell() {
-    int startPosition = 8;
-    int endPosition = 15;
-    assertTrue(adapter.withinMonth(startPosition));
-    assertTrue(adapter.withinMonth(endPosition));
-    dateRangeGridSelector.select(adapter.getItem(startPosition));
-    dateRangeGridSelector.select(adapter.getItem(endPosition));
-
-    GridSelectorTestUtils.assertCellColor(
-        context, dateRangeGridSelector, adapter, startPosition, DateRangeGridSelector.startColor);
-    GridSelectorTestUtils.assertCellColor(
-        context,
-        dateRangeGridSelector,
-        adapter,
-        /* position= */ 12,
-        DateRangeGridSelector.rangeColor);
-    GridSelectorTestUtils.assertCellColor(
-        context, dateRangeGridSelector, adapter, endPosition, DateRangeGridSelector.endColor);
-    GridSelectorTestUtils.assertCellColor(
-        context,
-        dateRangeGridSelector,
-        adapter,
-        /* position= */ 16,
-        DateRangeGridSelector.emptyColor);
   }
 
   @Test

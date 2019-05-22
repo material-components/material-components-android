@@ -17,4 +17,5 @@
 
 <resources xmlns:tools="http://schemas.android.com/tools">
   <dimen name="mtrl_calendar_day_size">32dp</dimen>
+  <dimen name="mtrl_calendar_day_size_corner">16dp</dimen>
 </resources>

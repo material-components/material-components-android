@@ -120,10 +120,13 @@ public final class MaterialCalendar<S> extends Fragment {
 
     ViewPager monthsPager = root.findViewById(R.id.month_pager);
     monthsPager.setTag(VIEW_PAGER_TAG);
+    int verticalDaySpacing =
+        getResources().getDimensionPixelSize(R.dimen.mtrl_calendar_day_spacing_vertical);
     monthsPager.setLayoutParams(
         new LayoutParams(
             /* width= */ LayoutParams.MATCH_PARENT,
-            /* height= */ MonthAdapter.MAXIMUM_WEEKS * getDayHeight(getContext())));
+            /* height= */ MonthAdapter.MAXIMUM_WEEKS * getDayHeight(getContext())
+                + (MonthAdapter.MAXIMUM_WEEKS - 1) * verticalDaySpacing));
     monthsPagerAdapter =
         new MonthsPagerAdapter(
             getChildFragmentManager(),

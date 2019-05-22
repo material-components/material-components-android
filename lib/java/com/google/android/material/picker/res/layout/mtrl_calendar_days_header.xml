@@ -17,8 +17,5 @@
 
 <GridView xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/calendar_days_header"
-    android:textAppearance="?attr/textAppearanceSubtitle1"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:columnWidth="?attr/minTouchTargetSize"
-    android:gravity="center"/>
+    android:horizontalSpacing="@dimen/mtrl_calendar_day_spacing_horizontal"
+    android:listSelector="@android:color/transparent"/>

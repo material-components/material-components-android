@@ -15,11 +15,14 @@
  */
 package com.google.android.material.picker;
 
+import com.google.android.material.R;
+
 import android.content.Context;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
@@ -44,14 +47,11 @@ public class MonthAdapter extends BaseAdapter {
   static final int MAXIMUM_WEEKS = Calendar.getInstance().getMaximum(Calendar.WEEK_OF_MONTH);
 
   private final Month month;
-  private final int textViewSize;
   private final GridSelector<?> gridSelector;
 
   @VisibleForTesting
-  public MonthAdapter(
-      Context context, Month month, GridSelector<?> gridSelector) {
+  public MonthAdapter(Context context, Month month, GridSelector<?> gridSelector) {
     this.month = month;
-    textViewSize = MaterialCalendar.getDayHeight(context);
     this.gridSelector = gridSelector;
   }
 
@@ -66,8 +66,7 @@ public class MonthAdapter extends BaseAdapter {
   @Nullable
   @Override
   public Calendar getItem(int position) {
-    if (position < month.daysFromStartOfWeekToFirstOfMonth()
-        || position > lastPositionInMonth()) {
+    if (position < month.daysFromStartOfWeekToFirstOfMonth() || position > lastPositionInMonth()) {
       return null;
     }
     return month.getDay(positionToDay(position));
@@ -90,11 +89,11 @@ public class MonthAdapter extends BaseAdapter {
   }
 
   @Override
-  public View getView(int position, View convertView, ViewGroup parent) {
+  public TextView getView(int position, View convertView, ViewGroup parent) {
     TextView day = (TextView) convertView;
     if (convertView == null) {
-      day = new TextView(parent.getContext());
-      day.setHeight(textViewSize);
+      LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
+      day = (TextView) layoutInflater.inflate(R.layout.mtrl_calendar_day, parent, false);
     }
     int offsetPosition = position - firstPositionInMonth();
     if (offsetPosition < 0 || offsetPosition >= month.daysInMonth) {

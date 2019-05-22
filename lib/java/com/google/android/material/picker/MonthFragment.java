@@ -17,6 +17,7 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
+import android.content.Context;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -76,7 +77,9 @@ public class MonthFragment extends Fragment {
   @Override
   public GridView onCreateView(
       LayoutInflater layoutInflater, ViewGroup root, Bundle savedInstanceState) {
-    View view = layoutInflater.inflate(R.layout.mtrl_month_grid, root, false);
+    Context context = root.getContext();
+    LayoutInflater themedInflater = LayoutInflater.from(context);
+    View view = themedInflater.inflate(R.layout.mtrl_month_grid, root, false);
     GridView gridview = view.findViewById(R.id.month_grid);
     gridview.setNumColumns(month.daysInWeek);
     gridview.setAdapter(monthAdapter);
