@@ -221,8 +221,6 @@
   <style name="ShapeAppearanceOverlay.Crane.BottomSheet" parent="">
      <item name="cornerSizeTopRight">20dp</item>
      <item name="cornerSizeTopLeft">20dp</item>
-     <item name="cornerSizeBottomRight">0dp</item>
-     <item name="cornerSizeBottomLeft">0dp</item>
      <item name="cornerFamilyTopLeft">rounded</item>
      <item name="cornerFamilyTopRight">rounded</item>
    </style>
