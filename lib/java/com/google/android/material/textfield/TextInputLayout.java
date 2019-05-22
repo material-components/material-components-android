@@ -2752,9 +2752,9 @@ public class TextInputLayout extends LinearLayout {
       // Store the user defined end compound drawable so that we can restore it later.
       if (compounds[2] != endIconDummyDrawable) {
         originalEditTextEndDrawable = compounds[2];
+        TextViewCompat.setCompoundDrawablesRelative(
+            editText, compounds[0], compounds[1], endIconDummyDrawable, compounds[3]);
       }
-      TextViewCompat.setCompoundDrawablesRelative(
-          editText, compounds[0], compounds[1], endIconDummyDrawable, compounds[3]);
     } else if (endIconDummyDrawable != null) {
       // Remove the dummy end compound drawable if it exists and clear it.
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
