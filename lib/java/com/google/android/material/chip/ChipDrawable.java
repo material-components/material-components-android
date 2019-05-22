@@ -65,7 +65,6 @@ import com.google.android.material.internal.TextDrawableHelper.TextDrawableDeleg
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
-import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.graphics.ColorUtils;
@@ -80,6 +79,7 @@ import android.util.Xml;
 import android.view.View;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.drawable.DrawableUtils;
+import com.google.android.material.ripple.RippleUtils;
 import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;

@@ -35,12 +35,12 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.ripple.RippleUtils;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)

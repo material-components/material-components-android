@@ -46,7 +46,6 @@ import com.google.android.material.animation.ImageMatrixProperty;
 import com.google.android.material.animation.MatrixEvaluator;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.internal.StateListAnimator;
-import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -55,6 +54,7 @@ import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewTreeObserver;
+import com.google.android.material.ripple.RippleUtils;
 import java.util.ArrayList;
 import java.util.List;
 
