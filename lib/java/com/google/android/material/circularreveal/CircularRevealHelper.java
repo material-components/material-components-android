@@ -35,8 +35,8 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
-import com.google.android.material.math.MathUtils;
 import android.view.View;
+import com.google.android.material.math.MathUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
