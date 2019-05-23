@@ -11,7 +11,7 @@ path: /catalog/switch/
 
 A `Switch` represents a button with two states, on and off. Switches are most
 often used on mobile devices to enable and disable options in an options menu. A
-switch consists of a track and thumb; the thimb moves along the track to
+switch consists of a track and thumb; the thumb moves along the track to
 indicate its current state.
 
 ## Design & API Documentation
