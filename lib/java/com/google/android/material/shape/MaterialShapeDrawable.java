@@ -1310,7 +1310,10 @@ public class MaterialShapeDrawable extends Drawable
 
     @Override
     public Drawable newDrawable() {
-      return new MaterialShapeDrawable(this);
+      MaterialShapeDrawable msd = new MaterialShapeDrawable(this);
+      // Force the calculation of the path for the new drawable.
+      msd.pathDirty = true;
+      return msd;
     }
 
     @Override
