@@ -24,8 +24,6 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -453,9 +451,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   @Nullable
   private FrameLayout getCustomParentForBadge(View anchorView) {
     if (anchorView == icon) {
-      return (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2)
-          ? ((FrameLayout) icon.getParent())
-          : null;
+      return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) icon.getParent()) : null;
     }
     // TODO: Support displaying a badge on label-only bottom navigation views.
     return null;

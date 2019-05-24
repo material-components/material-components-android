@@ -30,8 +30,6 @@ import android.graphics.Paint;
 import android.graphics.PixelFormat;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
-import android.os.Build.VERSION;
-import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.AttrRes;
@@ -579,7 +577,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     // Returns the visible bounds of the anchor view.
     anchorView.getDrawingRect(anchorRect);
     anchorRect.top += res.getDimensionPixelSize(R.dimen.mtrl_badge_vertical_offset);
-    if (customBadgeParent != null || VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
+    if (customBadgeParent != null || BadgeUtils.USE_COMPAT_PARENT) {
       // Calculates coordinates relative to the parent.
       ViewGroup viewGroup =
           customBadgeParent == null ? (ViewGroup) anchorView.getParent() : customBadgeParent;

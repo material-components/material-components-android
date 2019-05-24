@@ -38,6 +38,8 @@ import android.widget.FrameLayout;
 @RestrictTo(Scope.LIBRARY)
 public class BadgeUtils {
 
+  public static final boolean USE_COMPAT_PARENT = VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2;
+
   private BadgeUtils() {
     // Private constructor to prevent unwanted construction.
   }
@@ -68,10 +70,10 @@ public class BadgeUtils {
    * ancestor of the anchor.
    */
   public static void attachBadgeDrawable(
-      BadgeDrawable badgeDrawable, View anchor, FrameLayout preApi18BadgeParent) {
-    setBadgeDrawableBounds(badgeDrawable, anchor, preApi18BadgeParent);
-    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
-      preApi18BadgeParent.setForeground(badgeDrawable);
+      BadgeDrawable badgeDrawable, View anchor, FrameLayout compatBadgeParent) {
+    setBadgeDrawableBounds(badgeDrawable, anchor, compatBadgeParent);
+    if (USE_COMPAT_PARENT) {
+      compatBadgeParent.setForeground(badgeDrawable);
     } else {
       anchor.getOverlay().add(badgeDrawable);
     }
@@ -84,12 +86,12 @@ public class BadgeUtils {
    * an ancestor of the anchor.
    */
   public static void detachBadgeDrawable(
-      @Nullable BadgeDrawable badgeDrawable, View anchor, FrameLayout preApi18BadgeParent) {
+      @Nullable BadgeDrawable badgeDrawable, View anchor, FrameLayout compatBadgeParent) {
     if (badgeDrawable == null) {
       return;
     }
-    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
-      preApi18BadgeParent.setForeground(null);
+    if (USE_COMPAT_PARENT) {
+      compatBadgeParent.setForeground(null);
     } else {
       anchor.getOverlay().remove(badgeDrawable);
     }
@@ -100,15 +102,12 @@ public class BadgeUtils {
    * anchor's FrameLayout ancestor (pre-API 18).
    */
   public static void setBadgeDrawableBounds(
-      BadgeDrawable badgeDrawable, View anchor, FrameLayout preApi18BadgeParent) {
+      BadgeDrawable badgeDrawable, View anchor, FrameLayout compatBadgeParent) {
     Rect badgeBounds = new Rect();
-    if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
-      preApi18BadgeParent.getDrawingRect(badgeBounds);
-    } else {
-      anchor.getDrawingRect(badgeBounds);
-    }
+    View badgeParent = USE_COMPAT_PARENT ? compatBadgeParent : anchor;
+    badgeParent.getDrawingRect(badgeBounds);
     badgeDrawable.setBounds(badgeBounds);
-    badgeDrawable.updateBadgeCoordinates(anchor, preApi18BadgeParent);
+    badgeDrawable.updateBadgeCoordinates(anchor, compatBadgeParent);
   }
 
   /**
