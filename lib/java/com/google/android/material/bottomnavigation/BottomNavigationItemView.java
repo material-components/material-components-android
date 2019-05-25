@@ -87,9 +87,6 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   public BottomNavigationItemView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
     final Resources res = getResources();
-    // Avoid clipping a badge if it's displayed.
-    setClipChildren(false);
-    setClipToPadding(false);
 
     LayoutInflater.from(context).inflate(R.layout.design_bottom_navigation_item, this, true);
     setBackgroundResource(R.drawable.design_bottom_navigation_item_background);
@@ -432,6 +429,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       return;
     }
     if (anchorView != null) {
+      // Avoid clipping a badge if it's displayed.
+      setClipChildren(false);
+      setClipToPadding(false);
+
       BadgeUtils.attachBadgeDrawable(
           badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
     }
@@ -442,6 +443,10 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       return;
     }
     if (anchorView != null) {
+      // Clip children / view to padding when no badge is displayed.
+      setClipChildren(true);
+      setClipToPadding(true);
+
       BadgeUtils.detachBadgeDrawable(
           badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
     }
