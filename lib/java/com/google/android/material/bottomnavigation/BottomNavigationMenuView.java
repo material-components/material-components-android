@@ -641,7 +641,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       badgeDrawable = BadgeDrawable.create(getContext());
       badgeDrawables.put(menuItemId, badgeDrawable);
     }
-    badgeDrawable.setVisible(true, /* restart= */ false);
+    badgeDrawable.setVisible(true);
     BottomNavigationItemView itemView = findItemView(menuItemId);
     if (itemView != null) {
       itemView.setBadge(badgeDrawable);

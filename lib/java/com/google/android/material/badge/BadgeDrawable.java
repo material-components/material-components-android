@@ -217,6 +217,14 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     return badge;
   }
 
+  /**
+   * Convenience wrapper method for {@link Drawable#setVisible(boolean, boolean)} with the {@code
+   * restart} parameter hardcoded to false.
+   */
+  public void setVisible(boolean visible) {
+    setVisible(visible, /* restart= */ false);
+  }
+
   private void restoreFromSavedState(SavedState savedState) {
     setMaxCharacterCount(savedState.maxCharacterCount);
 
