@@ -58,6 +58,8 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
@@ -84,6 +86,7 @@ import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -232,17 +235,16 @@ public class TabLayout extends HorizontalScrollView {
   public @interface Mode {}
 
   /**
-   * If a tab is instantiated with {@link Tab#setText(CharSequence)}, and this mode is set,
-   * the text will be saved and utilized for the content description, but no visible labels will be
-   * created.
+   * If a tab is instantiated with {@link Tab#setText(CharSequence)}, and this mode is set, the text
+   * will be saved and utilized for the content description, but no visible labels will be created.
    *
    * @see Tab#setTabLabelVisibility(int)
    */
   public static final int TAB_LABEL_VISIBILITY_UNLABELED = 0;
 
   /**
-   * This mode is set by default. If a tab is instantiated with {@link
-   * Tab#setText(CharSequence)}, a visible label will be created.
+   * This mode is set by default. If a tab is instantiated with {@link Tab#setText(CharSequence)}, a
+   * visible label will be created.
    *
    * @see Tab#setTabLabelVisibility(int)
    */
@@ -272,9 +274,8 @@ public class TabLayout extends HorizontalScrollView {
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef(
-    flag = true,
-    value = {GRAVITY_FILL, GRAVITY_CENTER}
-  )
+      flag = true,
+      value = {GRAVITY_FILL, GRAVITY_CENTER})
   @Retention(RetentionPolicy.SOURCE)
   public @interface TabGravity {}
 
@@ -331,13 +332,12 @@ public class TabLayout extends HorizontalScrollView {
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
   @IntDef(
-    value = {
-      INDICATOR_GRAVITY_BOTTOM,
-      INDICATOR_GRAVITY_CENTER,
-      INDICATOR_GRAVITY_TOP,
-      INDICATOR_GRAVITY_STRETCH
-    }
-  )
+      value = {
+        INDICATOR_GRAVITY_BOTTOM,
+        INDICATOR_GRAVITY_CENTER,
+        INDICATOR_GRAVITY_TOP,
+        INDICATOR_GRAVITY_STRETCH
+      })
   @Retention(RetentionPolicy.SOURCE)
   public @interface TabIndicatorGravity {}
 
@@ -2001,6 +2001,12 @@ public class TabLayout extends HorizontalScrollView {
         parent.updateTabViews(true);
       }
       updateView();
+      if (BadgeUtils.USE_COMPAT_PARENT
+          && view.hasBadgeDrawable()
+          && view.badgeDrawable.isVisible()) {
+        // Invalidate the TabView if icon visibility has changed and a badge is displayed.
+        view.invalidate();
+      }
       return this;
     }
 
@@ -2054,6 +2060,34 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
+     * Initializes (if needed) and shows a {@link BadgeDrawable}. Creates an instance of
+     * BadgeDrawable if none exists. For convenience, also returns the associated instance of
+     * BadgeDrawable.
+     *
+     * @return an instance of BadgeDrawable associated with {@code Tab}.
+     */
+    public BadgeDrawable showBadge() {
+      return view.showBadge();
+    }
+
+    /**
+     * Removes the {@link BadgeDrawable}. Do nothing if none exists. Consider changing the
+     * visibility of the {@link BadgeDrawable} if you only want to hide it temporarily.
+     */
+    public void removeBadge() {
+      view.removeBadge();
+    }
+
+    /**
+     * Returns an instance of {@link BadgeDrawable} associated with this tab, null if none was
+     * initialized.
+     */
+    @Nullable
+    public BadgeDrawable getBadge() {
+      return view.getBadge();
+    }
+
+    /**
      * Sets the visibility mode for the Labels in this Tab. The valid input options are:
      *
      * <ul>
@@ -2062,8 +2096,8 @@ public class TabLayout extends HorizontalScrollView {
      *   <li>{@link #TAB_LABEL_VISIBILITY_LABELED}: Tabs will appear labeled if text is set.
      * </ul>
      *
-     * @param mode one of {@link #TAB_LABEL_VISIBILITY_UNLABELED}
-     * or {@link #TAB_LABEL_VISIBILITY_LABELED}.
+     * @param mode one of {@link #TAB_LABEL_VISIBILITY_UNLABELED} or {@link
+     *     #TAB_LABEL_VISIBILITY_LABELED}.
      * @return The current instance for call chaining.
      */
     public Tab setTabLabelVisibility(@LabelVisibility int mode) {
@@ -2072,14 +2106,20 @@ public class TabLayout extends HorizontalScrollView {
         parent.updateTabViews(true);
       }
       this.updateView();
+      if (BadgeUtils.USE_COMPAT_PARENT
+          && view.hasBadgeDrawable()
+          && view.badgeDrawable.isVisible()) {
+        // Invalidate the TabView if label visibility has changed and a badge is displayed.
+        view.invalidate();
+      }
       return this;
     }
 
     /**
      * Gets the visibility mode for the Labels in this Tab.
      *
-     * @return the label visibility mode, one of {@link #TAB_LABEL_VISIBILITY_UNLABELED} or
-     * {@link #TAB_LABEL_VISIBILITY_LABELED}.
+     * @return the label visibility mode, one of {@link #TAB_LABEL_VISIBILITY_UNLABELED} or {@link
+     *     #TAB_LABEL_VISIBILITY_LABELED}.
      * @see #setTabLabelVisibility(int)
      */
     @LabelVisibility
@@ -2172,6 +2212,8 @@ public class TabLayout extends HorizontalScrollView {
     private Tab tab;
     private TextView textView;
     private ImageView iconView;
+    private View badgeAnchorView;
+    private BadgeDrawable badgeDrawable;
 
     private View customView;
     private TextView customTextView;
@@ -2438,12 +2480,7 @@ public class TabLayout extends HorizontalScrollView {
       if (customView == null) {
         // If there isn't a custom view, we'll us our own in-built layouts
         if (this.iconView == null) {
-          ImageView iconView =
-              (ImageView)
-                  LayoutInflater.from(getContext())
-                      .inflate(R.layout.design_layout_tab_icon, this, false);
-          addView(iconView, 0);
-          this.iconView = iconView;
+          inflateAndAddDefaultIconView();
         }
         final Drawable icon =
             (tab != null && tab.getIcon() != null)
@@ -2457,12 +2494,7 @@ public class TabLayout extends HorizontalScrollView {
         }
 
         if (this.textView == null) {
-          TextView textView =
-              (TextView)
-                  LayoutInflater.from(getContext())
-                      .inflate(R.layout.design_layout_tab_text, this, false);
-          addView(textView);
-          this.textView = textView;
+          inflateAndAddDefaultTextView();
           defaultMaxLines = TextViewCompat.getMaxLines(this.textView);
         }
         TextViewCompat.setTextAppearance(this.textView, tabTextAppearance);
@@ -2470,6 +2502,10 @@ public class TabLayout extends HorizontalScrollView {
           this.textView.setTextColor(tabTextColors);
         }
         updateTextAndIcon(this.textView, this.iconView);
+
+        tryUpdateBadgeAnchor();
+        addOnLayoutChangeListener(iconView);
+        addOnLayoutChangeListener(textView);
       } else {
         // Else, we'll see if there is a TextView or ImageView present and update them
         if (customTextView != null || customIconView != null) {
@@ -2484,6 +2520,153 @@ public class TabLayout extends HorizontalScrollView {
       }
       // Finally update our selected state
       setSelected(tab != null && tab.isSelected());
+    }
+
+    private void inflateAndAddDefaultIconView() {
+      ViewGroup iconViewParent = this;
+      if (BadgeUtils.USE_COMPAT_PARENT) {
+        iconViewParent = createPreApi18BadgeAnchorRoot();
+        addView(iconViewParent, 0);
+      }
+      this.iconView =
+          (ImageView)
+              LayoutInflater.from(getContext())
+                  .inflate(R.layout.design_layout_tab_icon, iconViewParent, false);
+      iconViewParent.addView(iconView, 0);
+    }
+
+    private void inflateAndAddDefaultTextView() {
+      ViewGroup textViewParent = this;
+      if (BadgeUtils.USE_COMPAT_PARENT) {
+        textViewParent = createPreApi18BadgeAnchorRoot();
+        addView(textViewParent);
+      }
+      this.textView =
+          (TextView)
+              LayoutInflater.from(getContext())
+                  .inflate(R.layout.design_layout_tab_text, textViewParent, false);
+      textViewParent.addView(textView);
+    }
+
+    private FrameLayout createPreApi18BadgeAnchorRoot() {
+      FrameLayout frameLayout = new FrameLayout(getContext());
+      FrameLayout.LayoutParams layoutparams =
+          new FrameLayout.LayoutParams(
+              ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      frameLayout.setLayoutParams(layoutparams);
+      return frameLayout;
+    }
+
+    /**
+     * Initializes and shows a {@link BadgeDrawable} associated with this view. Does not create a
+     * new instance of BadgeDrawable if an instance already exists. For convenience, also returns
+     * the associated instance of BadgeDrawable.
+     *
+     * @return an instance of BadgeDrawable associated with {@code Tab}.
+     */
+    private BadgeDrawable showBadge() {
+      // Creates a new instance if one is not already initialized for this TabView.
+      if (badgeDrawable == null) {
+        badgeDrawable = BadgeDrawable.create(getContext());
+      }
+      badgeDrawable.setVisible(true);
+      tryUpdateBadgeAnchor();
+      return badgeDrawable;
+    }
+
+    @Nullable
+    private BadgeDrawable getBadge() {
+      return badgeDrawable;
+    }
+
+    private void removeBadge() {
+      if (badgeAnchorView != null) {
+        tryRemoveBadgeFromAnchor();
+      }
+      badgeDrawable = null;
+    }
+
+    private void addOnLayoutChangeListener(final View view) {
+      if (view == null) {
+        return;
+      }
+      view.addOnLayoutChangeListener(
+          new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(
+                View v,
+                int left,
+                int top,
+                int right,
+                int bottom,
+                int oldLeft,
+                int oldTop,
+                int oldRight,
+                int oldBottom) {
+              if (view.getVisibility() == VISIBLE) {
+                tryUpdateBadgeDrawableBounds(view);
+              }
+            }
+          });
+    }
+
+    private void tryUpdateBadgeAnchor() {
+      if (!hasBadgeDrawable()) {
+        return;
+      }
+      if (customView != null) {
+        // TODO: Support badging on custom tab views.
+        tryRemoveBadgeFromAnchor();
+      } else {
+        if (iconView != null && tab.getIcon() != null) {
+          if (badgeAnchorView != iconView) {
+            tryRemoveBadgeFromAnchor();
+            // Anchor badge to icon.
+            tryAttachBadgeToAnchor(iconView);
+          } else {
+            tryUpdateBadgeDrawableBounds(iconView);
+          }
+        } else if (textView != null
+            && tab.getTabLabelVisibility() == TAB_LABEL_VISIBILITY_LABELED) {
+          if (badgeAnchorView != textView) {
+            tryRemoveBadgeFromAnchor();
+            // Anchor badge to label.
+            tryAttachBadgeToAnchor(textView);
+          } else {
+            tryUpdateBadgeDrawableBounds(textView);
+          }
+        } else {
+          tryRemoveBadgeFromAnchor();
+        }
+      }
+    }
+
+    private void tryAttachBadgeToAnchor(View anchorView) {
+      if (!hasBadgeDrawable()) {
+        return;
+      }
+      if (anchorView != null) {
+        // Avoid clipping a badge if it's displayed.
+        setClipChildren(false);
+        setClipToPadding(false);
+        BadgeUtils.attachBadgeDrawable(
+            badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+        badgeAnchorView = anchorView;
+      }
+    }
+
+    private void tryRemoveBadgeFromAnchor() {
+      if (!hasBadgeDrawable()) {
+        return;
+      }
+      if (badgeAnchorView != null) {
+        // Clip children / view to padding when no badge is displayed.
+        setClipChildren(true);
+        setClipToPadding(true);
+        BadgeUtils.detachBadgeDrawable(
+            badgeDrawable, badgeAnchorView, getCustomParentForBadge(badgeAnchorView));
+        badgeAnchorView = null;
+      }
     }
 
     final void updateOrientation() {
@@ -2558,6 +2741,25 @@ public class TabLayout extends HorizontalScrollView {
 
       final CharSequence contentDesc = tab != null ? tab.contentDesc : null;
       TooltipCompat.setTooltipText(this, hasText ? null : contentDesc);
+    }
+
+    private void tryUpdateBadgeDrawableBounds(View anchor) {
+      // Check that this view is the badge's current anchor view.
+      if (hasBadgeDrawable() && anchor == badgeAnchorView) {
+        BadgeUtils.setBadgeDrawableBounds(badgeDrawable, anchor, getCustomParentForBadge(anchor));
+      }
+    }
+
+    private boolean hasBadgeDrawable() {
+      return badgeDrawable != null;
+    }
+
+    @Nullable
+    private FrameLayout getCustomParentForBadge(View anchor) {
+      if (anchor != iconView && anchor != textView) {
+        return null;
+      }
+      return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) anchor.getParent()) : null;
     }
 
     /**

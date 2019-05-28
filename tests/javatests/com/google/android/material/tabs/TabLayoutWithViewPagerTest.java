@@ -23,16 +23,20 @@ import static androidx.test.espresso.matcher.ViewMatchers.hasDescendant;
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static androidx.test.espresso.matcher.ViewMatchers.withClassName;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static androidx.test.espresso.matcher.ViewMatchers.withParent;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
+import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 
 import android.content.res.Resources;
 import android.graphics.Color;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.DimenRes;
 import androidx.annotation.LayoutRes;
 import com.google.android.material.testapp.R;
@@ -44,6 +48,7 @@ import com.google.android.material.testutils.ViewPagerActions;
 import android.util.Pair;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.FrameLayout;
 import android.widget.HorizontalScrollView;
 import android.widget.TextView;
 import androidx.test.espresso.UiController;
@@ -575,6 +580,12 @@ public class TabLayoutWithViewPagerTest {
                 isDescendantOfA(withId(R.id.tabs)),
                 not(withParent(isAssignableFrom(HorizontalScrollView.class))),
                 hasDescendant(withText(tabTitle)));
+        if (VERSION.SDK_INT < VERSION_CODES.JELLY_BEAN_MR2) {
+          // Additional criteria is needed for Pre API-18 devices because an extra container
+          // FrameLayout was added for badging support.
+          tabMatcher = allOf(tabMatcher, not(withClassName(is(FrameLayout.class.getName()))));
+        }
+
         if (minTabWidth >= 0) {
           onView(tabMatcher).check(matches(TestUtilsMatchers.isNotNarrowerThan(minTabWidth)));
         }
