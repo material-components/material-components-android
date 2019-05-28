@@ -32,6 +32,7 @@
     <attr name="dayStyle" format="reference"/>
     <attr name="daySelectedStyle" format="reference"/>
     <attr name="dayTodayStyle" format="reference"/>
+    <attr name="rangeFillColor" format="color"/>
   </declare-styleable>
 
   <declare-styleable name="MaterialCalendarDay">

@@ -33,6 +33,7 @@
     <item name="dayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
     <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
     <item name="dayTodayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Today</item>
+    <item name="rangeFillColor">@color/mtrl_calendar_selected_range</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.DateRangePicker"/>

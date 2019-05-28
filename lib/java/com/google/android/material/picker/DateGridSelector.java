@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.Canvas;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
@@ -70,6 +71,11 @@ public class DateGridSelector implements GridSelector<Calendar> {
   @Nullable
   public Calendar getSelection() {
     return selectedItem;
+  }
+
+  @Override
+  public void onCalendarMonthDraw(Canvas canvas, MaterialCalendarGridView gridView) {
+    // do nothing
   }
 
   /* Parcelable interface */

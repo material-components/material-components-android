@@ -17,23 +17,14 @@ package com.google.android.material.picker;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
-import androidx.annotation.VisibleForTesting;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
-/**
- * Contains convenience operations for a month within a specific year.
- *
- * @hide
- */
-@RestrictTo(Scope.LIBRARY_GROUP)
-@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-public final class Month implements Comparable<Month>, Parcelable {
+/** Contains convenience operations for a month within a specific year. */
+final class Month implements Comparable<Month>, Parcelable {
 
   private final Calendar calendar;
   private static final SimpleDateFormat longNameFormat =
@@ -62,8 +53,7 @@ public final class Month implements Comparable<Month>, Parcelable {
    *     Calendar#JANUARY}
    * @return A Month object backed by a new {@link Calendar} instance
    */
-  @VisibleForTesting
-  public static Month create(int year, int month) {
+  static Month create(int year, int month) {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
     calendar.set(Calendar.YEAR, year);
@@ -72,7 +62,7 @@ public final class Month implements Comparable<Month>, Parcelable {
   }
 
   /** Returns the {@link Month} that contains today (as per {@link Calendar#getInstance()}. */
-  public static Month today() {
+  static Month today() {
     Calendar calendar = Calendar.getInstance();
     return Month.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
   }

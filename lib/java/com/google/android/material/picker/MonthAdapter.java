@@ -19,9 +19,6 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
-import androidx.annotation.VisibleForTesting;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -34,12 +31,8 @@ import java.util.Calendar;
  *
  * <p>The number of rows is always equal to the maximum number of weeks that can exist across all
  * months (e.g., 6 for the GregorianCalendar).
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
-@VisibleForTesting(otherwise = VisibleForTesting.PACKAGE_PRIVATE)
-public class MonthAdapter extends BaseAdapter {
+class MonthAdapter extends BaseAdapter {
 
   /**
    * The maximum number of weeks possible in any month. 6 for {@link java.util.GregorianCalendar}.
@@ -47,10 +40,12 @@ public class MonthAdapter extends BaseAdapter {
   static final int MAXIMUM_WEEKS = Calendar.getInstance().getMaximum(Calendar.WEEK_OF_MONTH);
 
   private final Month month;
-  private final GridSelector<?> gridSelector;
+  /**
+   * The {@link GridSelector} dictating the draw behavior of {@link #getView(int, View, ViewGroup)}.
+   */
+  final GridSelector<?> gridSelector;
 
-  @VisibleForTesting
-  public MonthAdapter(Context context, Month month, GridSelector<?> gridSelector) {
+  MonthAdapter(Context context, Month month, GridSelector<?> gridSelector) {
     this.month = month;
     this.gridSelector = gridSelector;
   }
@@ -118,7 +113,7 @@ public class MonthAdapter extends BaseAdapter {
    * represents a day which must be the first day of the week, the first position in the month may
    * be greater than 0.
    */
-  public int firstPositionInMonth() {
+  int firstPositionInMonth() {
     return month.daysFromStartOfWeekToFirstOfMonth();
   }
 
@@ -129,7 +124,7 @@ public class MonthAdapter extends BaseAdapter {
    * represents a day which must be the first day of the week, the last position in the month may
    * not match the number of days in the month.
    */
-  public int lastPositionInMonth() {
+  int lastPositionInMonth() {
     return month.daysFromStartOfWeekToFirstOfMonth() + month.daysInMonth - 1;
   }
 
@@ -140,12 +135,18 @@ public class MonthAdapter extends BaseAdapter {
    * @return The day corresponding to the adapter index. May be non-positive for position inputs
    *     less than {@link MonthAdapter#firstPositionInMonth()}.
    */
-  public int positionToDay(int position) {
+  int positionToDay(int position) {
     return position - month.daysFromStartOfWeekToFirstOfMonth() + 1;
   }
 
+  /** Returns the adapter index representing the provided day. */
+  int dayToPosition(int day) {
+    int offsetFromFirst = day - 1;
+    return firstPositionInMonth() + offsetFromFirst;
+  }
+
   /** True when a provided adapter position is within the calendar month */
-  public boolean withinMonth(int position) {
+  boolean withinMonth(int position) {
     return position >= firstPositionInMonth() && position <= lastPositionInMonth();
   }
 }

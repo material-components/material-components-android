@@ -15,6 +15,7 @@
  */
 package com.google.android.material.picker;
 
+import android.graphics.Canvas;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -60,4 +61,11 @@ public interface GridSelector<S> extends Parcelable {
    * @param item The {@link Calendar} returned from {@link MonthAdapter#getItem(int)}.
    */
   void drawCell(TextView cell, Calendar item);
+
+  /**
+   * Called after {@link
+   * com.google.android.material.picker.MaterialCalendarGridView#onDraw(android.graphics.Canvas)} for
+   * each month so selectors can draw on the canvas.
+   */
+  void onCalendarMonthDraw(Canvas canvas, MaterialCalendarGridView gridView);
 }

@@ -80,10 +80,10 @@ public class MonthFragment extends Fragment {
     Context context = root.getContext();
     LayoutInflater themedInflater = LayoutInflater.from(context);
     View view = themedInflater.inflate(R.layout.mtrl_month_grid, root, false);
-    GridView gridview = view.findViewById(R.id.month_grid);
-    gridview.setNumColumns(month.daysInWeek);
-    gridview.setAdapter(monthAdapter);
-    gridview.setOnItemClickListener(
+    MaterialCalendarGridView gridView = view.findViewById(R.id.month_grid);
+    gridView.setNumColumns(month.daysInWeek);
+    gridView.setAdapter(monthAdapter);
+    gridView.setOnItemClickListener(
         new OnItemClickListener() {
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -92,7 +92,7 @@ public class MonthFragment extends Fragment {
             }
           }
         });
-    return gridview;
+    return gridView;
   }
 
   void notifyDataSetChanged() {

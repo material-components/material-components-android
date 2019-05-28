@@ -48,6 +48,7 @@ class CalendarGridSelectors {
       return;
     }
     MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable();
+    MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
 
     TypedArray styleableArray =
         context.obtainStyledAttributes(style, R.styleable.MaterialCalendarDay);
@@ -62,12 +63,14 @@ class CalendarGridSelectors {
             context, styleableArray, R.styleable.MaterialCalendarDay_itemStrokeColor);
     int strokeWidth =
         styleableArray.getDimensionPixelSize(R.styleable.MaterialCalendarDay_itemStrokeWidth, 0);
-    backgroundDrawable.setShapeAppearanceModel(
+    ShapeAppearanceModel cellShape =
         new ShapeAppearanceModel(
             context,
             styleableArray.getResourceId(R.styleable.MaterialCalendarDay_itemShapeAppearance, 0),
             styleableArray.getResourceId(
-                R.styleable.MaterialCalendarDay_itemShapeAppearanceOverlay, 0)));
+                R.styleable.MaterialCalendarDay_itemShapeAppearanceOverlay, 0));
+    backgroundDrawable.setShapeAppearanceModel(cellShape);
+    shapeMask.setShapeAppearanceModel(cellShape);
     styleableArray.recycle();
 
     cell.setTextColor(textColor);
@@ -75,7 +78,7 @@ class CalendarGridSelectors {
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       ViewCompat.setBackground(
-          cell, new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, null));
+          cell, new RippleDrawable(textColor.withAlpha(30), backgroundDrawable, shapeMask));
     } else {
       ViewCompat.setBackground(cell, backgroundDrawable);
     }
