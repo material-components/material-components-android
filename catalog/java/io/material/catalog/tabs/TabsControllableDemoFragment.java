@@ -27,6 +27,8 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.LabelVisibility;
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
+import com.google.android.material.tabs.TabLayout.Tab;
 import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -74,6 +76,7 @@ public class TabsControllableDemoFragment extends DemoFragment {
     setupViewPager();
     setAllTabLayoutIcons(ICON_DRAWABLE_RES);
     setAllTabLayoutText(LABEL_STRING_RES);
+    setAllTabLayoutBadges();
 
     SwitchCompat iconsToggle = view.findViewById(R.id.toggle_icons_switch);
     iconsToggle.setOnCheckedChangeListener(
@@ -209,6 +212,33 @@ public class TabsControllableDemoFragment extends DemoFragment {
       // Convert tab index (zero-based) to readable tab label starting at 1.
       tabLayout.getTabAt(i).setText(getResources().getString(stringResId, i + 1));
     }
+  }
+
+  private void setAllTabLayoutBadges() {
+    for (TabLayout tabLayout : tabLayouts) {
+      setupBadging(tabLayout);
+      tabLayout.addOnTabSelectedListener(
+          new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+              tab.removeBadge();
+            }
+
+            @Override
+            public void onTabUnselected(Tab tab) {}
+
+            @Override
+            public void onTabReselected(Tab tab) {
+              tab.removeBadge();
+            }
+          });
+    }
+  }
+
+  private void setupBadging(TabLayout tabLayout) {
+    tabLayout.getTabAt(0).showBadge().setNumber(1);
+    tabLayout.getTabAt(1).showBadge().setNumber(88);
+    tabLayout.getTabAt(2).showBadge().setNumber(999);
   }
 
   private void setLabelVisibility(TabLayout tabLayout, @LabelVisibility int mode) {
