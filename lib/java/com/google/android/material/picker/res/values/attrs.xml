@@ -15,10 +15,8 @@
   ~ limitations under the License.
 -->
 <resources>
-  <attr name="materialDatePickerStyle" format="reference"/>
-  <attr name="materialDateRangePickerStyle" format="reference"/>
-  <attr name="materialDatePickerDialogTheme" format="reference"/>
-  <attr name="materialDateRangePickerDialogTheme" format="reference"/>
+  <attr name="materialCalendarStyle" format="reference"/>
+  <attr name="materialCalendarTheme" format="reference"/>
 
   <!-- Header Styles -->
   <attr name="materialCalendarHeaderLayout" format="reference"/>

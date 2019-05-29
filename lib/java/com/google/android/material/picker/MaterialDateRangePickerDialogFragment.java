@@ -60,7 +60,7 @@ public class MaterialDateRangePickerDialogFragment
 
   @Override
   protected int getDefaultThemeAttr() {
-    return R.attr.materialDateRangePickerDialogTheme;
+    return R.attr.materialCalendarTheme;
   }
 
   @Override

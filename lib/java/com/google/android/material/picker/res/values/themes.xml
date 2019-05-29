@@ -35,6 +35,4 @@
     <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
   </style>
 
-  <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.DatePicker"/>
-  <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.DateRangePicker"/>
 </resources>

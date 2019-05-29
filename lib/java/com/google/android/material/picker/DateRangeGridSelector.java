@@ -65,7 +65,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
     int rangeCalendarStyle =
         MaterialAttributes.resolveOrThrow(
             context,
-            R.attr.materialDateRangePickerStyle,
+            R.attr.materialCalendarStyle,
             MaterialCalendar.class.getCanonicalName());
 
     TypedArray calendarAttributes =

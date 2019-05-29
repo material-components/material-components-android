@@ -56,7 +56,7 @@ public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragme
 
   @Override
   protected int getDefaultThemeAttr() {
-    return R.attr.materialDatePickerDialogTheme;
+    return R.attr.materialCalendarTheme;
   }
 
   @Override

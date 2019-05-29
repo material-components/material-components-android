@@ -36,10 +36,6 @@
     <item name="rangeFillColor">@color/mtrl_calendar_selected_range</item>
   </style>
 
-  <style name="Widget.MaterialComponents.MaterialCalendar.DateRangePicker"/>
-
-  <style name="Widget.MaterialComponents.MaterialCalendar.DatePicker"/>
-
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderLayout" parent="android:Widget">
     <item name="android:orientation">vertical</item>
     <item name="android:background">?attr/colorPrimary</item>

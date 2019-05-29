@@ -50,7 +50,7 @@ public class DateGridSelector implements GridSelector<Calendar> {
     Context context = cell.getContext();
     int calendarStyle =
         MaterialAttributes.resolveOrThrow(
-            context, R.attr.materialDatePickerStyle, MaterialCalendar.class.getCanonicalName());
+            context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());
 
     int style;
     TypedArray stylesList =
