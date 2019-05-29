@@ -22,17 +22,16 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.appcompat.app.AlertDialog;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.View.OnTouchListener;
+import android.view.ViewConfiguration;
 
 /**
- * Ensures that touches within the transparent region of the inset drawable used for Dialogs
- * are processed as touches outside the Dialog.
+ * Ensures that touches within the transparent region of the inset drawable used for Dialogs are
+ * processed as touches outside the Dialog.
  *
  * @hide
- *
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class InsetDialogOnTouchListener implements OnTouchListener {
@@ -40,17 +39,13 @@ public class InsetDialogOnTouchListener implements OnTouchListener {
   private final Dialog dialog;
   private final int leftInset;
   private final int topInset;
+  private final int prePieSlop;
 
-  public InsetDialogOnTouchListener(AlertDialog dialog, Rect insets) {
+  public InsetDialogOnTouchListener(Dialog dialog, Rect insets) {
     this.dialog = dialog;
     this.leftInset = insets.left;
     this.topInset = insets.top;
-  }
-
-  public InsetDialogOnTouchListener(android.app.AlertDialog dialog, Rect insets) {
-    this.dialog = dialog;
-    this.leftInset = insets.left;
-    this.topInset = insets.top;
+    this.prePieSlop = ViewConfiguration.get(dialog.getContext()).getScaledWindowTouchSlop();
   }
 
   @Override
@@ -68,13 +63,13 @@ public class InsetDialogOnTouchListener implements OnTouchListener {
     }
     MotionEvent outsideEvent = MotionEvent.obtain(event);
     outsideEvent.setAction(MotionEvent.ACTION_OUTSIDE);
-    // Window.shouldCloseOnTouch does not respect MotionEvent.ACTION_OUTSIDE until Pie
-    view.performClick();
-    if (VERSION.SDK_INT >= VERSION_CODES.P) {
-      return dialog.onTouchEvent(outsideEvent);
-    } else {
-      dialog.onBackPressed();
-      return true;
+    // Window.shouldCloseOnTouch does not respect MotionEvent.ACTION_OUTSIDE until Pie, so we fix
+    // the coordinates outside the view and use MotionEvent.ACTION_DOWN
+    if (VERSION.SDK_INT < VERSION_CODES.P) {
+      outsideEvent.setAction(MotionEvent.ACTION_DOWN);
+      outsideEvent.setLocation(-prePieSlop - 1, -prePieSlop - 1);
     }
+    view.performClick();
+    return dialog.onTouchEvent(outsideEvent);
   }
 }
