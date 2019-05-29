@@ -739,7 +739,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       throw new IllegalArgumentException("Custom size must be non-negative");
     }
 
-    customSize = size;
+    if (size != customSize) {
+      customSize = size;
+      getImpl().updateSize();
+      requestLayout();
+    }
   }
 
   /**
