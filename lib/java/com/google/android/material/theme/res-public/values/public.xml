@@ -17,28 +17,35 @@
 <resources>
   <public name="Platform.MaterialComponents" type="style"/>
   <public name="Platform.MaterialComponents.Light" type="style"/>
+
   <public name="Theme.MaterialComponents" type="style"/>
-  <public name="Theme.MaterialComponents.NoActionBar" type="style"/>
-  <public name="Theme.MaterialComponents.DialogWhenLarge" type="style"/>
-  <public name="Theme.MaterialComponents.CompactMenu" type="style"/>
   <public name="Theme.MaterialComponents.Light" type="style"/>
-  <public name="Theme.MaterialComponents.Light.NoActionBar" type="style"/>
-  <public name="Theme.MaterialComponents.Light.DarkActionBar" type="style"/>
-  <public name="Theme.MaterialComponents.Light.DialogWhenLarge" type="style"/>
   <public name="Theme.MaterialComponents.DayNight" type="style"/>
+  <public name="Theme.MaterialComponents.NoActionBar" type="style"/>
+  <public name="Theme.MaterialComponents.Light.NoActionBar" type="style"/>
   <public name="Theme.MaterialComponents.DayNight.NoActionBar" type="style"/>
+  <public name="Theme.MaterialComponents.Light.DarkActionBar" type="style"/>
   <public name="Theme.MaterialComponents.DayNight.DarkActionBar" type="style"/>
+  <public name="Theme.MaterialComponents.DialogWhenLarge" type="style"/>
+  <public name="Theme.MaterialComponents.Light.DialogWhenLarge" type="style"/>
   <public name="Theme.MaterialComponents.DayNight.DialogWhenLarge" type="style"/>
+  <public name="Theme.MaterialComponents.CompactMenu" type="style"/>
+
   <public name="Theme.MaterialComponents.Bridge" type="style"/>
   <public name="Theme.MaterialComponents.Light.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.Bridge" type="style"/>
   <public name="Theme.MaterialComponents.NoActionBar.Bridge" type="style"/>
   <public name="Theme.MaterialComponents.Light.NoActionBar.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.NoActionBar.Bridge" type="style"/>
   <public name="Theme.MaterialComponents.Light.DarkActionBar.Bridge" type="style"/>
+  <public name="Theme.MaterialComponents.DayNight.DarkActionBar.Bridge" type="style"/>
+
   <public name="ThemeOverlay.MaterialComponents" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Light" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dark" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.ActionBar" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Dark.ActionBar" type="style"/>
+
   <public name="Theme.Design" type="style"/>
   <public name="Theme.Design.Light" type="style"/>
   <public name="Theme.Design.NoActionBar" type="style"/>

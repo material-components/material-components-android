@@ -45,6 +45,16 @@
 
   <style name="Theme.MaterialComponents.Light.Dialog.MinWidth" parent="Base.Theme.MaterialComponents.Light.Dialog.MinWidth"/>
 
+  <!--
+    Variant of Theme.MaterialComponents.Dialog that has a fixed size for a regular dialog.
+  -->
+  <style name="Theme.MaterialComponents.Dialog.FixedSize" parent="Base.Theme.MaterialComponents.Dialog.FixedSize"/>
+
+  <style name="Theme.MaterialComponents.Light.Dialog.FixedSize" parent="Base.Theme.MaterialComponents.Light.Dialog.FixedSize"/>
+
+  <!--
+    The default theme overlay used by MaterialComponents for regular dialogs.
+  -->
   <style name="ThemeOverlay.MaterialComponents.Dialog" parent="Base.ThemeOverlay.MaterialComponents.Dialog"/>
 
   <!--
