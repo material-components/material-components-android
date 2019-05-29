@@ -60,7 +60,9 @@ ext {
 }
 
 // lint every library
-task(lint) << {
+task lint {
+  doLast {
+  }
 }
 
 task clean(type: Delete) {

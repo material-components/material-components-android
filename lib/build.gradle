@@ -134,8 +134,10 @@ task generateJavadocs(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJava
   }
 }
 
-task getVersion << {
-  println version
+task getVersion {
+  doLast {
+    println version
+  }
 }
 
 task generateApiXml(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
