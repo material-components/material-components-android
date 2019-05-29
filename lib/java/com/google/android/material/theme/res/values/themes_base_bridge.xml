@@ -34,6 +34,7 @@
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_dark_default_color_primary_variant</item>
+    <item name="colorSecondary">@color/design_dark_default_color_secondary</item>
     <item name="colorSecondaryVariant">@color/design_dark_default_color_secondary_variant</item>
     <item name="colorSurface">@color/design_dark_default_color_surface</item>
     <item name="colorOnPrimary">@color/design_dark_default_color_on_primary</item>
@@ -79,6 +80,7 @@
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondary">@color/design_default_color_secondary</item>
     <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
     <item name="colorSurface">@color/design_default_color_surface</item>
     <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
@@ -124,6 +126,7 @@
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondary">@color/design_default_color_secondary</item>
     <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
     <item name="colorSurface">@color/design_default_color_surface</item>
     <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
@@ -131,8 +134,6 @@
     <item name="colorOnBackground">@color/design_default_color_on_background</item>
     <item name="colorOnError">@color/design_default_color_on_error</item>
     <item name="colorOnSurface">@color/design_default_color_on_surface</item>
-
-    <item name="colorSecondary">?attr/colorPrimary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
 
