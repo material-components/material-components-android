@@ -89,6 +89,34 @@ Alternatively, you can add a `TabLayout` to a ViewPager in XML:
 </androidx.viewpager.widget.ViewPager>
 ```
 
+### Badges
+
+![TabLayout with badges](assets/tablayout-badges.png)
+
+`TabLayout` supports displaying icon and number badges.
+
+Initializes and shows a BadgeDrawable associated with a tab. Subsequent calls to
+this method will reuse the existing BadgeDrawable.
+
+```java
+BadgeDrawable badge = tablayout.getTab(0).showBadge();
+// Optionally show a number.
+badge.setNumber(99);
+```
+
+NOTE: Don't forget to remove any BadgeDrawables that are no longer needed.
+
+```java
+tablayout.getTab(0).removeBadge();
+```
+
+Best Practice: If you only need to temporarily hide the badge(e.g. until the
+next notification is received), the recommended/lightweight alternative is to
+change the visibility of the BadgeDrawable instead.
+
+Please see [`BadgeDrawable`](BadgeDrawable.md) for details on how to update the
+badge content being displayed.
+
 ### Material Styles
 
 Using `TabLayout` with an updated Material theme (`Theme.MaterialComponents`)
