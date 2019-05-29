@@ -2232,6 +2232,7 @@ public class TabLayout extends HorizontalScrollView {
       setClickable(true);
       ViewCompat.setPointerIcon(
           this, PointerIconCompat.getSystemIcon(getContext(), PointerIconCompat.TYPE_HAND));
+      ViewCompat.setAccessibilityDelegate(this, null);
     }
 
     private void updateBackgroundDrawable(Context context) {
@@ -2363,6 +2364,11 @@ public class TabLayout extends HorizontalScrollView {
       super.onInitializeAccessibilityNodeInfo(info);
       // This view masquerades as an action bar tab.
       info.setClassName(ActionBar.Tab.class.getName());
+      if (badgeDrawable != null && badgeDrawable.isVisible()) {
+        CharSequence customContentDescription = getContentDescription();
+        info.setContentDescription(
+            customContentDescription + ", " + badgeDrawable.getContentDescription(getContext()));
+      }
     }
 
     @Override
