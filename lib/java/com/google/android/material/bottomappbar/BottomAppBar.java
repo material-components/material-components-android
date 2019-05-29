@@ -369,9 +369,23 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     hideOnScroll = hide;
   }
 
+  /** Animates the {@link BottomAppBar} so it hides off the screen. */
+  public void performHide() {
+    getBehavior().slideDown(this);
+  }
+
+  /** Animates the {@link BottomAppBar} so it is shown on the screen. */
+  public void performShow() {
+    getBehavior().slideUp(this);
+  }
+
   @Override
   public void setElevation(float elevation) {
     materialShapeDrawable.setElevation(elevation);
+    // Make sure the shadow isn't shown if this view slides down with hideOnScroll.
+    int topShadowHeight =
+        materialShapeDrawable.getShadowRadius() - materialShapeDrawable.getShadowOffsetY();
+    getBehavior().setAdditionalHiddenOffsetY(this, topShadowHeight);
   }
 
   /**
@@ -788,7 +802,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
   @NonNull
   @Override
-  public CoordinatorLayout.Behavior<BottomAppBar> getBehavior() {
+  public Behavior getBehavior() {
     if (behavior == null) {
       behavior = new Behavior();
     }

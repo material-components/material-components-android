@@ -745,12 +745,10 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   /**
-   * Get the shadow radius rendered by the path.
-   *
-   * @return the shadow radius rendered by the path.
-   * @deprecated use {@link #getElevation()} instead.
+   * Get the shadow radius rendered by the path in pixels. This method should be used only when the
+   * actual size of the shadow is required. Usually {@link getElevation()} should be used instead to
+   * get the actual elevation of this view as it might be different.
    */
-  @Deprecated
   public int getShadowRadius() {
     return drawableState.shadowCompatRadius;
   }
@@ -990,14 +988,8 @@ public class MaterialShapeDrawable extends Drawable
 
   private void prepareCanvasForShadow(Canvas canvas) {
     // Calculate the translation to offset the canvas for the given offset and rotation.
-    int shadowOffsetX =
-        (int)
-            (drawableState.shadowCompatOffset
-                * Math.sin(Math.toRadians(drawableState.shadowCompatRotation)));
-    int shadowOffsetY =
-        (int)
-            (drawableState.shadowCompatOffset
-                * Math.cos(Math.toRadians(drawableState.shadowCompatRotation)));
+    int shadowOffsetX = getShadowOffsetX();
+    int shadowOffsetY = getShadowOffsetY();
 
     // We only handle clipping as a convenience for older apis where we are trying to seamlessly
     // provide fake shadows. On newer versions of android, we require that the parent is set so that
@@ -1034,18 +1026,26 @@ public class MaterialShapeDrawable extends Drawable
       edgeShadowOperation[index].draw(shadowRenderer, drawableState.shadowCompatRadius, canvas);
     }
 
-    int shadowOffsetX =
-        (int)
-            (drawableState.shadowCompatOffset
-                * Math.sin(Math.toRadians(drawableState.shadowCompatRotation)));
-    int shadowOffsetY =
-        (int)
-            (drawableState.shadowCompatOffset
-                * Math.cos(Math.toRadians(drawableState.shadowCompatRotation)));
+    int shadowOffsetX = getShadowOffsetX();
+    int shadowOffsetY = getShadowOffsetY();
 
     canvas.translate(-shadowOffsetX, -shadowOffsetY);
     canvas.drawPath(path, clearPaint);
     canvas.translate(shadowOffsetX, shadowOffsetY);
+  }
+
+  /** Returns the X offset of the shadow from the bounds of the shape. */
+  public int getShadowOffsetX() {
+    return (int)
+        (drawableState.shadowCompatOffset
+            * Math.sin(Math.toRadians(drawableState.shadowCompatRotation)));
+  }
+
+  /** Returns the Y offset of the shadow from the bounds of the shape. */
+  public int getShadowOffsetY() {
+    return (int)
+        (drawableState.shadowCompatOffset
+            * Math.cos(Math.toRadians(drawableState.shadowCompatRotation)));
   }
 
   /** @deprecated see {@link ShapeAppearancePathProvider} */
