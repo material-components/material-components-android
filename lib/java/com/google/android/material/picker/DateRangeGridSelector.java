@@ -85,7 +85,8 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   public void select(Calendar selection) {
     if (selectedStartItem == null) {
       selectedStartItem = selection;
-    } else if (selectedEndItem == null && selection.after(selectedStartItem)) {
+    } else if (selectedEndItem == null
+        && (selection.after(selectedStartItem) || selection.equals(selectedStartItem))) {
       selectedEndItem = selection;
     } else {
       selectedEndItem = null;
