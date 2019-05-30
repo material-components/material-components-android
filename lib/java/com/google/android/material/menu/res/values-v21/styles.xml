@@ -27,13 +27,13 @@
     <item name="android:popupElevation">8dp</item>
   </style>
 
-  <style name="Base.Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Widget.AppCompat.PopupMenu">
-    <item name="android:overlapAnchor">true</item>
-  </style>
-
   <style name="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Widget.AppCompat.ListPopupWindow">
-    <item name="android:popupBackground">@drawable/mtrl_popupmenu_background</item>
-    <item name="android:popupElevation">8dp</item>
+      <item name="android:popupBackground">@drawable/mtrl_popupmenu_background</item>
+      <item name="android:popupElevation">8dp</item>
+      <item name="android:dropDownVerticalOffset">1dp</item>
+    </style>
+
+  <style name="Base.Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Widget.AppCompat.PopupMenu">
     <item name="android:overlapAnchor">true</item>
   </style>
 

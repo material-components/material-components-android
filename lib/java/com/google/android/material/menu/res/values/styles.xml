@@ -17,6 +17,7 @@
 
 <resources>
 
+  <!-- Popup Menus -->
   <style name="Base.Widget.MaterialComponents.PopupMenu.Overflow" parent="Widget.AppCompat.PopupMenu.Overflow">
     <item name="android:dropDownVerticalOffset">1px</item>
   </style>
@@ -34,17 +35,18 @@
 
   <style name="Widget.MaterialComponents.PopupMenu.Overflow.Dark"/>
 
-
-  <style name="Base.Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Widget.AppCompat.PopupMenu"/>
-
-  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Base.Widget.MaterialComponents.PopupMenu.ContextMenu"/>
-
-  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu.Dark"/>
-
+  <!-- List Popup Window Menus -->
   <style name="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Widget.AppCompat.ListPopupWindow"/>
 
   <style name="Widget.MaterialComponents.PopupMenu.ListPopupWindow" parent="Base.Widget.MaterialComponents.PopupMenu.ListPopupWindow"/>
 
   <style name="Widget.MaterialComponents.PopupMenu.ListPopupWindow.Dark"/>
+
+  <!-- Context Menus -->
+  <style name="Base.Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Widget.AppCompat.PopupMenu"/>
+
+  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu" parent="Base.Widget.MaterialComponents.PopupMenu.ContextMenu"/>
+
+  <style name="Widget.MaterialComponents.PopupMenu.ContextMenu.Dark"/>
 
 </resources>
