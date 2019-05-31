@@ -622,7 +622,9 @@ public class TextInputLayout extends LinearLayout {
       }
     } else if (a.hasValue(R.styleable.TextInputLayout_passwordToggleEnabled)) {
       // Support for deprecated attributes related to the password toggle end icon
-      setEndIconMode(END_ICON_PASSWORD_TOGGLE);
+      boolean passwordToggleEnabled =
+          a.getBoolean(R.styleable.TextInputLayout_passwordToggleEnabled, false);
+      setEndIconMode(passwordToggleEnabled ? END_ICON_PASSWORD_TOGGLE : END_ICON_NONE);
       setEndIconDrawable(a.getDrawable(R.styleable.TextInputLayout_passwordToggleDrawable));
       setEndIconContentDescription(
           a.getText(R.styleable.TextInputLayout_passwordToggleContentDescription));
