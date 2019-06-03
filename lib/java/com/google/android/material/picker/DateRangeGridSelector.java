@@ -91,7 +91,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
     if (selectedStartItem.before(firstOfMonth)) {
       firstHighlightPosition = monthAdapter.firstPositionInMonth();
       rangeHighlightStart =
-          firstHighlightPosition == 0
+          monthAdapter.isFirstInRow(firstHighlightPosition)
               ? 0
               : gridView.getChildAt(firstHighlightPosition - 1).getRight();
     } else {
@@ -105,7 +105,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
     if (selectedEndItem.after(lastOfMonth)) {
       lastHighlightPosition = monthAdapter.lastPositionInMonth();
       rangeHighlightEnd =
-          lastHighlightPosition == gridView.getCount() - 1
+          monthAdapter.isLastInRow(lastHighlightPosition)
               ? gridView.getWidth()
               : gridView.getChildAt(lastHighlightPosition + 1).getLeft();
     } else {

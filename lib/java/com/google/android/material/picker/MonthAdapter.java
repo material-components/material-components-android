@@ -149,4 +149,20 @@ class MonthAdapter extends BaseAdapter {
   boolean withinMonth(int position) {
     return position >= firstPositionInMonth() && position <= lastPositionInMonth();
   }
+
+  /**
+   * True when the provided adapter position is the smallest position for a value of {@link
+   * MonthAdapter#getItemId(int)}.
+   */
+  boolean isFirstInRow(int position) {
+    return position % month.daysInWeek == 0;
+  }
+
+  /**
+   * True when the provided adapter position is the largest position for a value of {@link
+   * MonthAdapter#getItemId(int)}.
+   */
+  boolean isLastInRow(int position) {
+    return (position + 1) % month.daysInWeek == 0;
+  }
 }
