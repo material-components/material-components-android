@@ -99,9 +99,9 @@ class MonthAdapter extends BaseAdapter {
       day.setTag(month);
       day.setVisibility(View.VISIBLE);
     }
-    Calendar item = getItem(position);
-    if (item != null) {
-      gridSelector.drawCell(day, item);
+    Calendar content = getItem(position);
+    if (content != null) {
+      gridSelector.drawItem(day, content);
     }
     return day;
   }

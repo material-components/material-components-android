@@ -15,17 +15,13 @@
  */
 package com.google.android.material.picker;
 
-import com.google.android.material.R;
-
 import android.content.Context;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import com.google.android.material.resources.MaterialAttributes;
 import android.text.format.DateUtils;
 import android.widget.TextView;
 import java.util.Calendar;
@@ -39,6 +35,15 @@ import java.util.Calendar;
 public class DateGridSelector implements GridSelector<Calendar> {
 
   private Calendar selectedItem;
+  private CalendarStyle calendarStyle;
+
+  // The context is not available on construction and parceling, so we lazily initialize styles.
+  private void initializeStyles(Context context) {
+    if (calendarStyle != null) {
+      return;
+    }
+    calendarStyle = new CalendarStyle(context);
+  }
 
   @Override
   public void select(Calendar selection) {
@@ -46,25 +51,17 @@ public class DateGridSelector implements GridSelector<Calendar> {
   }
 
   @Override
-  public void drawCell(TextView cell, Calendar item) {
-    Context context = cell.getContext();
-    int calendarStyle =
-        MaterialAttributes.resolveOrThrow(
-            context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());
-
-    int style;
-    TypedArray stylesList =
-        context.obtainStyledAttributes(calendarStyle, R.styleable.MaterialCalendar);
-    if (item.equals(selectedItem)) {
-      style = stylesList.getResourceId(R.styleable.MaterialCalendar_daySelectedStyle, 0);
-    } else if (DateUtils.isToday(item.getTimeInMillis())) {
-      style = stylesList.getResourceId(R.styleable.MaterialCalendar_dayTodayStyle, 0);
+  public void drawItem(TextView view, Calendar content) {
+    initializeStyles(view.getContext());
+    CalendarItemStyle style;
+    if (content.equals(selectedItem)) {
+      style = calendarStyle.selectedDay;
+    } else if (DateUtils.isToday(content.getTimeInMillis())) {
+      style = calendarStyle.today;
     } else {
-      style = stylesList.getResourceId(R.styleable.MaterialCalendar_dayStyle, 0);
+      style = calendarStyle.day;
     }
-    stylesList.recycle();
-
-    CalendarGridSelectors.colorCell(cell, style);
+    style.styleItem(view);
   }
 
   @Override

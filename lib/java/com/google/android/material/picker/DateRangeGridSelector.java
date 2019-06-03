@@ -15,22 +15,13 @@
  */
 package com.google.android.material.picker;
 
-import com.google.android.material.R;
-
 import android.content.Context;
-import android.content.res.ColorStateList;
-import android.content.res.TypedArray;
 import android.graphics.Canvas;
-import android.graphics.Paint;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import androidx.annotation.StyleRes;
-import com.google.android.material.resources.MaterialAttributes;
-import com.google.android.material.resources.MaterialResources;
 import androidx.core.util.Pair;
 import android.text.format.DateUtils;
 import android.view.View;
@@ -48,37 +39,14 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
 
   private Calendar selectedStartItem = null;
   private Calendar selectedEndItem = null;
-  private boolean stylesInitialized = false;
-  private Paint rangeFillPaint;
-  @ColorInt private int rangeFillColor;
-  @StyleRes private int dayStyle;
-  @StyleRes private int selectedStyle;
-  @StyleRes private int todayStyle;
+  private CalendarStyle calendarStyle;
 
-  // The context is not available on construction, so we lazily initialize styles.
+  // The context is not available on construction and parceling, so we lazily initialize styles.
   private void initializeStyles(Context context) {
-    if (stylesInitialized) {
+    if (calendarStyle != null) {
       return;
     }
-    stylesInitialized = true;
-
-    int rangeCalendarStyle =
-        MaterialAttributes.resolveOrThrow(
-            context,
-            R.attr.materialCalendarStyle,
-            MaterialCalendar.class.getCanonicalName());
-
-    TypedArray calendarAttributes =
-        context.obtainStyledAttributes(rangeCalendarStyle, R.styleable.MaterialCalendar);
-    ColorStateList rangeFillColorList =
-        MaterialResources.getColorStateList(
-            context, calendarAttributes, R.styleable.MaterialCalendar_rangeFillColor);
-    dayStyle = calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayStyle, 0);
-    selectedStyle =
-        calendarAttributes.getResourceId(R.styleable.MaterialCalendar_daySelectedStyle, 0);
-    todayStyle = calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayTodayStyle, 0);
-    rangeFillColor = rangeFillColorList.getDefaultColor();
-    calendarAttributes.recycle();
+    calendarStyle = new CalendarStyle(context);
   }
 
   @Override
@@ -95,27 +63,22 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   }
 
   @Override
-  public void drawCell(TextView cell, Calendar item) {
-    Context context = cell.getContext();
-    initializeStyles(context);
-    int style;
-    if (item.equals(selectedStartItem) || item.equals(selectedEndItem)) {
-      style = selectedStyle;
-    } else if (DateUtils.isToday(item.getTimeInMillis())) {
-      style = todayStyle;
+  public void drawItem(TextView view, Calendar content) {
+    initializeStyles(view.getContext());
+    CalendarItemStyle style;
+    if (content.equals(selectedStartItem) || content.equals(selectedEndItem)) {
+      style = calendarStyle.selectedDay;
+    } else if (DateUtils.isToday(content.getTimeInMillis())) {
+      style = calendarStyle.today;
     } else {
-      style = dayStyle;
+      style = calendarStyle.day;
     }
-    CalendarGridSelectors.colorCell(cell, style);
+    style.styleItem(view);
   }
 
   @Override
   public void onCalendarMonthDraw(Canvas canvas, MaterialCalendarGridView gridView) {
     initializeStyles(gridView.getContext());
-    if (rangeFillPaint == null) {
-      rangeFillPaint = new Paint();
-      rangeFillPaint.setColor(rangeFillColor);
-    }
     MonthAdapter monthAdapter = gridView.getAdapter();
     Calendar firstOfMonth = monthAdapter.getItem(monthAdapter.firstPositionInMonth());
     Calendar lastOfMonth = monthAdapter.getItem(monthAdapter.lastPositionInMonth());
@@ -162,7 +125,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
       int left = firstPositionInRow > firstHighlightPosition ? 0 : rangeHighlightStart;
       int right =
           lastHighlightPosition > lastPositionInRow ? gridView.getWidth() : rangeHighlightEnd;
-      canvas.drawRect(left, top, right, bottom, rangeFillPaint);
+      canvas.drawRect(left, top, right, bottom, calendarStyle.rangeFill);
     }
   }
 
@@ -215,11 +178,6 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
           DateRangeGridSelector dateRangeGridSelector = new DateRangeGridSelector();
           dateRangeGridSelector.selectedStartItem = (Calendar) source.readSerializable();
           dateRangeGridSelector.selectedEndItem = (Calendar) source.readSerializable();
-          dateRangeGridSelector.stylesInitialized = (Boolean) source.readValue(null);
-          dateRangeGridSelector.rangeFillColor = source.readInt();
-          dateRangeGridSelector.dayStyle = source.readInt();
-          dateRangeGridSelector.selectedStyle = source.readInt();
-          dateRangeGridSelector.todayStyle = source.readInt();
           return dateRangeGridSelector;
         }
 
@@ -238,10 +196,5 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeSerializable(selectedStartItem);
     dest.writeSerializable(selectedEndItem);
-    dest.writeValue(stylesInitialized);
-    dest.writeInt(rangeFillColor);
-    dest.writeInt(dayStyle);
-    dest.writeInt(selectedStyle);
-    dest.writeInt(todayStyle);
   }
 }

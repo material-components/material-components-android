@@ -56,11 +56,11 @@ public interface GridSelector<S> extends Parcelable {
    * <p>Called for each {@link TextView} as part of {@link MonthAdapter#getView(int, View,
    * ViewGroup)}
    *
-   * @param cell The {@link TextView} returned from {@link MonthAdapter#getView(int, View,
+   * @param view The {@link TextView} returned from {@link MonthAdapter#getView(int, View,
    *     ViewGroup)}
-   * @param item The {@link Calendar} returned from {@link MonthAdapter#getItem(int)}.
+   * @param content The {@link Calendar} returned from {@link MonthAdapter#getItem(int)}.
    */
-  void drawCell(TextView cell, Calendar item);
+  void drawItem(TextView view, Calendar content);
 
   /**
    * Called after {@link
