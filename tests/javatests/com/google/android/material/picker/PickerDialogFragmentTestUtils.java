@@ -53,7 +53,7 @@ public final class PickerDialogFragmentTestUtils {
 
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
-    Month current = Month.create(2019, Calendar.APRIL);
+    Month current = Month.create(2018, Calendar.APRIL);
     CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
 
     return showDatePicker(activityTestRule, calendarBounds);
@@ -76,7 +76,7 @@ public final class PickerDialogFragmentTestUtils {
       ActivityTestRule<? extends AppCompatActivity> activityTestRule) {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
-    Month current = Month.create(2019, Calendar.APRIL);
+    Month current = Month.create(2018, Calendar.APRIL);
     CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
     return showRangePicker(activityTestRule, calendarBounds);
   }

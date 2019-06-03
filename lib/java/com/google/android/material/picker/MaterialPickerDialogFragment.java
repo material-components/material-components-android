@@ -41,7 +41,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.Locale;
 
 /**
  * A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions.
@@ -100,7 +99,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    */
   protected abstract GridSelector<S> createGridSelector();
 
-  private SimpleDateFormat simpleDateFormat;
+  private SimpleDateFormat userDefinedSimpleDateFormat;
 
   @AttrRes private int themeResId;
   private GridSelector<S> gridSelector;
@@ -151,9 +150,6 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   @Override
   public final void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
-    simpleDateFormat =
-        new SimpleDateFormat(
-            getResources().getString(R.string.mtrl_picker_date_format), Locale.getDefault());
     Bundle activeBundle = bundle == null ? getArguments() : bundle;
     themeResId =
         getThemeResource(
@@ -253,17 +249,18 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   /**
-   * Sets a date formatter.
+   * Sets a user-defined date formatter.
    *
    * <p>Useful when the default localized date format is inadequate
    */
-  public final void setSimpleDateFormat(SimpleDateFormat simpleDateFormat) {
-    this.simpleDateFormat = simpleDateFormat;
+  public final void setSimpleDateFormat(@Nullable SimpleDateFormat simpleDateFormat) {
+    userDefinedSimpleDateFormat = simpleDateFormat;
   }
 
-  /** Returns a localized date formatter */
+  /** Returns the user-defined date formatter. */
+  @Nullable
   public final SimpleDateFormat getSimpleDateFormat() {
-    return simpleDateFormat;
+    return userDefinedSimpleDateFormat;
   }
 
   /**

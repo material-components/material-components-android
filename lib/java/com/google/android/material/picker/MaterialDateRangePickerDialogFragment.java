@@ -70,14 +70,27 @@ public class MaterialDateRangePickerDialogFragment
 
   @Override
   protected String getHeaderText(Pair<Calendar, Calendar> selection) {
-    if (selection == null) {
-      return getContext().getResources().getString(R.string.mtrl_picker_range_header_unselected);
+    Pair<String, String> dateRangeStrings = null;
+    if (selection != null) {
+      dateRangeStrings =
+          DateStrings.getDateRangeString(selection.first, selection.second, getSimpleDateFormat());
     }
-    String startString = getSimpleDateFormat().format(selection.first.getTime());
-    String endString = getSimpleDateFormat().format(selection.second.getTime());
-    return getContext()
-        .getResources()
-        .getString(R.string.mtrl_picker_range_header_selected, startString, endString);
+
+    if (dateRangeStrings == null
+        || (dateRangeStrings.first == null && dateRangeStrings.second == null)) {
+      return getContext().getResources().getString(R.string.mtrl_picker_range_header_unselected);
+    } else if (dateRangeStrings.second == null) {
+      return getContext()
+          .getResources()
+          .getString(R.string.mtrl_picker_range_header_only_start_selected, dateRangeStrings.first);
+    } else {
+      return getContext()
+          .getResources()
+          .getString(
+              R.string.mtrl_picker_range_header_selected,
+              dateRangeStrings.first,
+              dateRangeStrings.second);
+    }
   }
 
   /** Returns the start date for the selection or null if the user has not yet confirmed. */

@@ -23,6 +23,7 @@ import android.os.Bundle;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import java.util.Calendar;
+import java.util.Locale;
 
 /**
  * A {@link Dialog} with a header, {@link MaterialCalendar<Calendar>}, and set of actions.
@@ -69,7 +70,10 @@ public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragme
     if (selection == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_date_header_unselected);
     }
-    String startString = getSimpleDateFormat().format(selection.getTime());
+    String startString =
+        getSimpleDateFormat() == null
+            ? DateStrings.getYearMonthDay(selection.getTime(), Locale.getDefault())
+            : getSimpleDateFormat().format(selection.getTime());
     return getContext()
         .getResources()
         .getString(R.string.mtrl_picker_date_header_selected, startString);

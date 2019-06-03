@@ -132,7 +132,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   @Override
   @Nullable
   public Pair<Calendar, Calendar> getSelection() {
-    if (selectedStartItem == null || selectedEndItem == null) {
+    if (selectedStartItem == null) {
       return null;
     }
     return new Pair<>(selectedStartItem, selectedEndItem);
