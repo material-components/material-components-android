@@ -109,7 +109,19 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
 
   private void clearAndHideBadge(int menuItemId) {
     for (BottomNavigationView bn : bottomNavigationViews) {
-      bn.removeBadge(menuItemId);
+      MenuItem menuItem = bn.getMenu().getItem(0);
+      if (menuItem.getItemId() == menuItemId) {
+        // Hide instead of removing the badge associated with the first menu item because the user
+        // can trigger it to be displayed again.
+        BadgeDrawable badgeDrawable = bn.getBadge(menuItemId);
+        if (badgeDrawable != null) {
+          badgeDrawable.setVisible(false);
+          badgeDrawable.clearBadgeNumber();
+        }
+      } else {
+        // Remove the badge associated with this menu item because cannot be displayed again.
+        bn.removeBadge(menuItemId);
+      }
     }
   }
 

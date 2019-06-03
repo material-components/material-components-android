@@ -106,7 +106,17 @@ public class TabsMainDemoFragment extends DemoFragment {
 
   private void clearAndHideBadge(int tabPosition) {
     for (TabLayout tabLayout : tabLayouts) {
-      tabLayout.getTabAt(tabPosition).removeBadge();
+      if (tabPosition == 0) {
+        // Hide instead of removing the badge associated with the first menu item because the user
+        // can trigger it to be displayed again.
+        BadgeDrawable badgeDrawable = tabLayout.getTabAt(tabPosition).getBadge();
+        if (badgeDrawable != null) {
+          badgeDrawable.setVisible(false);
+          badgeDrawable.clearBadgeNumber();
+        }
+      } else {
+        tabLayout.getTabAt(tabPosition).removeBadge();
+      }
     }
   }
 }
