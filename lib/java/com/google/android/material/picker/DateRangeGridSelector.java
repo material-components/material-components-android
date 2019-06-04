@@ -15,18 +15,30 @@
  */
 package com.google.android.material.picker;
 
+import com.google.android.material.R;
+
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.textfield.TextInputLayout;
 import androidx.core.util.Pair;
 import android.text.format.DateUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.TextView;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
+import java.util.Locale;
 
 /**
  * A {@link GridSelector} that uses a {@link Pair} of {@link Calendar} objects to represent a
@@ -37,8 +49,12 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calendar>> {
 
-  private Calendar selectedStartItem = null;
-  private Calendar selectedEndItem = null;
+  private final LinkedHashSet<OnSelectionChangedListener<Pair<Calendar, Calendar>>>
+      onSelectionChangedListeners = new LinkedHashSet<>();
+
+  @Nullable private Calendar selectedStartItem = null;
+  @Nullable private Calendar selectedEndItem = null;
+
   private CalendarStyle calendarStyle;
 
   // The context is not available on construction and parceling, so we lazily initialize styles.
@@ -60,6 +76,24 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
       selectedEndItem = null;
       selectedStartItem = selection;
     }
+    GridSelectors.notifyListeners(this, onSelectionChangedListeners);
+  }
+
+  @Override
+  public boolean addOnSelectionChangedListener(
+      OnSelectionChangedListener<Pair<Calendar, Calendar>> listener) {
+    return onSelectionChangedListeners.add(listener);
+  }
+
+  @Override
+  public boolean removeOnSelectionChangedListener(
+      OnSelectionChangedListener<Pair<Calendar, Calendar>> listener) {
+    return onSelectionChangedListeners.remove(listener);
+  }
+
+  @Override
+  public void clearOnSelectionChangedListeners() {
+    onSelectionChangedListeners.clear();
   }
 
   @Override
@@ -127,6 +161,54 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
           lastHighlightPosition > lastPositionInRow ? gridView.getWidth() : rangeHighlightEnd;
       canvas.drawRect(left, top, right, bottom, calendarStyle.rangeFill);
     }
+  }
+
+  @Override
+  public View onCreateTextInputView(
+      @NonNull LayoutInflater layoutInflater,
+      @Nullable ViewGroup viewGroup,
+      @Nullable Bundle bundle) {
+    View root =
+        layoutInflater.inflate(R.layout.mtrl_picker_text_input_date_range, viewGroup, false);
+
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    EditText startEditText = startTextInput.getEditText();
+    EditText endEditText = endTextInput.getEditText();
+
+    SimpleDateFormat format =
+        new SimpleDateFormat(
+            root.getResources().getString(R.string.mtrl_picker_text_input_date_format),
+            Locale.getDefault());
+
+    if (selectedStartItem != null) {
+      startEditText.setText(format.format(selectedStartItem.getTime()));
+    }
+    if (selectedEndItem != null) {
+      endEditText.setText(format.format(selectedEndItem.getTime()));
+    }
+
+    // TODO: handle start/end behavior enforcement
+    startEditText.addTextChangedListener(
+        new DateFormatTextWatcher(format, startTextInput) {
+          @Override
+          void onDateChanged(@Nullable Calendar calendar) {
+            selectedStartItem = calendar;
+            GridSelectors.notifyListeners(DateRangeGridSelector.this, onSelectionChangedListeners);
+          }
+        });
+    endEditText.addTextChangedListener(
+        new DateFormatTextWatcher(format, endTextInput) {
+          @Override
+          void onDateChanged(@Nullable Calendar calendar) {
+            selectedEndItem = calendar;
+            GridSelectors.notifyListeners(DateRangeGridSelector.this, onSelectionChangedListeners);
+          }
+        });
+
+    ViewUtils.requestFocusAndShowKeyboard(startEditText);
+
+    return root;
   }
 
   @Override

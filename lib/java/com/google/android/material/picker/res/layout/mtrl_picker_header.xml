@@ -15,7 +15,7 @@
      limitations under the License.
 -->
 
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/mtrl_picker_header"
     style="?attr/materialCalendarHeaderLayout"
@@ -34,7 +34,18 @@
       style="?attr/materialCalendarHeaderSelection"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="bottom"
+      android:layout_alignParentBottom="true"
+      android:layout_toLeftOf="@+id/mtrl_picker_header_toggle"
+      android:layout_toStartOf="@+id/mtrl_picker_header_toggle"
       app:lastBaselineToBottomHeight="20dp"/>
 
-</FrameLayout>
+  <com.google.android.material.internal.CheckableImageButton
+      android:id="@+id/mtrl_picker_header_toggle"
+      style="?attr/materialCalendarHeaderToggleButton"
+      android:layout_width="@dimen/mtrl_min_touch_target_size"
+      android:layout_height="@dimen/mtrl_min_touch_target_size"
+      android:layout_marginBottom="6dp"
+      android:layout_alignParentBottom="true"
+      android:layout_alignParentEnd="true"/>
+
+</RelativeLayout>

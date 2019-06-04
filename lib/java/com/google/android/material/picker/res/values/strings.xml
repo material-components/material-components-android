@@ -24,6 +24,11 @@
   <string name="mtrl_picker_date_header_selected" description="A single date [CHAR_LIMIT=60]">%1$s</string>
   <string name="mtrl_picker_confirm" description="Button text to indicate that the widget will save the user's selection [CHAR_LIMIT=16]">@android:string/ok</string>
   <string name="mtrl_picker_cancel" description="Button text to indicate that the widget will ignore the user's selection [CHAR_LIMIT=16]" translatable="false">@android:string/cancel</string>
-  <string name="mtrl_picker_date_format" translatable="false">MMM dd, yyyy</string>
-  <string name="mtrl_picker_date_format_without_year" translatable="false">MMM dd</string>
+  <string name="mtrl_picker_text_input_date_hint" description="Label for a single date selected by the user [CHAR_LIMIT=60]">Date</string>
+  <string name="mtrl_picker_text_input_date_range_start_hint" description="Label for the start date in a range selected by the user [CHAR_LIMIT=60]">Start Date</string>
+  <string name="mtrl_picker_text_input_date_range_end_hint" description="Label for the end date in a range selected by the user [CHAR_LIMIT=60]">End Date</string>
+  <!-- TODO: internationalize date format strings -->
+  <string name="mtrl_picker_date_format" description="The format for how a date will be shown to the user, with the year included [CHAR_LIMIT=16]">MMM dd, yyyy</string>
+  <string name="mtrl_picker_date_format_without_year" description="The format for how a date will be shown to the user, without the year included [CHAR_LIMIT=16]">MMM dd</string>
+  <string name="mtrl_picker_text_input_date_format" description="The format for how the user should enter a date via text input [CHAR_LIMIT=16]">MM/dd/yyyy</string>
 </resources>

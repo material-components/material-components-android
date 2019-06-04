@@ -26,6 +26,7 @@ import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 /**
  * Utils class for custom views.
@@ -34,6 +35,9 @@ import android.view.View;
  */
 @RestrictTo(LIBRARY_GROUP)
 public class ViewUtils {
+
+  private ViewUtils() {}
+
   public static PorterDuff.Mode parseTintMode(int value, PorterDuff.Mode defaultMode) {
     switch (value) {
       case 3:
@@ -60,5 +64,19 @@ public class ViewUtils {
   public static float dpToPx(Context context, @Dimension(unit = Dimension.DP) int dp) {
     Resources r = context.getResources();
     return TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, dp, r.getDisplayMetrics());
+  }
+
+  public static void requestFocusAndShowKeyboard(final View view) {
+    view.requestFocus();
+    view.post(
+        new Runnable() {
+          @Override
+          public void run() {
+            InputMethodManager inputMethodManager =
+                (InputMethodManager)
+                    view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+            inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
+          }
+        });
   }
 }

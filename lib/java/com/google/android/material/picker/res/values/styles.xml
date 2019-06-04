@@ -39,8 +39,8 @@
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderLayout" parent="android:Widget">
     <item name="android:orientation">vertical</item>
     <item name="android:background">?attr/colorPrimary</item>
-    <item name="android:paddingStart">24dp</item>
-    <item name="android:paddingLeft">24dp</item>
+    <item name="android:paddingStart">@dimen/mtrl_calendar_dialog_padding_horizontal</item>
+    <item name="android:paddingLeft">@dimen/mtrl_calendar_dialog_padding_horizontal</item>
     <item name="android:paddingEnd">12dp</item>
     <item name="android:paddingRight">12dp</item>
   </style>
@@ -55,6 +55,11 @@
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="android:maxLines">1</item>
     <item name="android:ellipsize">end</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton" parent="Widget.AppCompat.ImageButton">
+    <item name="android:background">?attr/actionBarItemBackground</item>
+    <item name="android:tint">?attr/colorOnPrimary</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.DayTextView" parent="Widget.AppCompat.TextView">

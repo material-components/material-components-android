@@ -22,6 +22,7 @@
   <attr name="materialCalendarHeaderLayout" format="reference"/>
   <attr name="materialCalendarHeaderTitle" format="reference"/>
   <attr name="materialCalendarHeaderSelection" format="reference"/>
+  <attr name="materialCalendarHeaderToggleButton" format="reference"/>
 
   <!-- Grid Styles -->
   <attr name="materialCalendarDay" format="reference"/>

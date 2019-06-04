@@ -23,9 +23,14 @@ import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.Matchers.allOf;
+import static org.hamcrest.core.IsEqual.equalTo;
 
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.EditText;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import java.util.Calendar;
@@ -84,8 +89,7 @@ public final class PickerDialogFragmentTestUtils {
   static void clickDay(Month month, int day) {
     onView(
             allOf(
-                isDescendantOfA(
-                    withTagValue(IsEqual.<Object>equalTo(MaterialCalendar.VIEW_PAGER_TAG))),
+                isDescendantOfA(withTagValue(equalTo(MaterialCalendar.VIEW_PAGER_TAG))),
                 withTagValue(IsEqual.<Object>equalTo(month)),
                 withText(String.valueOf(day))))
         .perform(click());
@@ -93,24 +97,37 @@ public final class PickerDialogFragmentTestUtils {
   }
 
   static void clickOk() {
-    onView(withTagValue(IsEqual.<Object>equalTo(MaterialPickerDialogFragment.CONFIRM_BUTTON_TAG)))
-        .perform(click());
+    onView(withTagValue(equalTo(MaterialPickerDialogFragment.CONFIRM_BUTTON_TAG))).perform(click());
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
   static void clickCancel() {
-    onView(withTagValue(IsEqual.<Object>equalTo(MaterialPickerDialogFragment.CANCEL_BUTTON_TAG)))
-        .perform(click());
+    onView(withTagValue(equalTo(MaterialPickerDialogFragment.CANCEL_BUTTON_TAG))).perform(click());
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
   static void swipeEarlier() {
-    onView(withTagValue(IsEqual.<Object>equalTo(MaterialCalendar.VIEW_PAGER_TAG)))
-        .perform(swipeRight());
+    onView(withTagValue(equalTo(MaterialCalendar.VIEW_PAGER_TAG))).perform(swipeRight());
   }
 
   static void swipeLater() {
-    onView(withTagValue(IsEqual.<Object>equalTo(MaterialCalendar.VIEW_PAGER_TAG)))
-        .perform(swipeLeft());
+    onView(withTagValue(equalTo(MaterialCalendar.VIEW_PAGER_TAG))).perform(swipeLeft());
+  }
+
+  static void clickHeaderToggle(Fragment fragment) {
+    onView(withTagValue(equalTo(MaterialPickerDialogFragment.TOGGLE_BUTTON_TAG))).perform(click());
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+    hideAllEditTextCursors(fragment.getView());
+  }
+
+  static void hideAllEditTextCursors(View view) {
+    if (view instanceof EditText) {
+      ((EditText) view).setCursorVisible(false);
+    } else if (view instanceof ViewGroup) {
+      ViewGroup viewGroup = (ViewGroup) view;
+      for (int i = 0; i < viewGroup.getChildCount(); i++) {
+        hideAllEditTextCursors(viewGroup.getChildAt(i));
+      }
+    }
   }
 }

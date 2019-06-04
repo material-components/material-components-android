@@ -26,7 +26,6 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
-import androidx.fragment.app.Fragment;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -34,10 +33,10 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 import androidx.viewpager.widget.ViewPager;
 import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener;
 import java.util.Calendar;
-import java.util.LinkedHashSet;
 
 /**
  * Fragment for a days of week {@link Calendar} represented as a header row of days labels and
@@ -46,7 +45,7 @@ import java.util.LinkedHashSet;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public final class MaterialCalendar<S> extends Fragment {
+public final class MaterialCalendar<S> extends PickerFragment<S> {
 
   private static final String THEME_RES_ID_KEY = "THEME_RES_ID_KEY";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
@@ -56,21 +55,18 @@ public final class MaterialCalendar<S> extends Fragment {
   @RestrictTo(Scope.LIBRARY_GROUP)
   public static final Object VIEW_PAGER_TAG = "VIEW_PAGER_TAG";
 
-  private final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
-      new LinkedHashSet<>();
-
   private int themeResId;
   private GridSelector<S> gridSelector;
   private CalendarBounds calendarBounds;
   private MonthsPagerAdapter monthsPagerAdapter;
 
   /**
-   * Creates a {@link MaterialCalendar} with {@link GridSelector#drawCell(View, Calendar)} applied
-   * to each cell.
+   * Creates a {@link MaterialCalendar} with {@link GridSelector#drawItem(TextView, Calendar)}
+   * applied to each cell.
    *
    * @param gridSelector Controls the highlight state of the {@link MaterialCalendar}
-   * @param <T> Type returned from selections in this {@link MaterialCalendar} by {@link
-   *     MaterialCalendar#getSelection()}
+   * @param <T> Type of {@link GridSelector} returned from selections in this {@link
+   *     MaterialCalendar} by {@link MaterialCalendar#getGridSelector()}
    */
   public static <T> MaterialCalendar<T> newInstance(
       GridSelector<T> gridSelector, int themeResId, CalendarBounds calendarBounds) {
@@ -140,9 +136,6 @@ public final class MaterialCalendar<S> extends Fragment {
               public void onDayClick(Calendar day) {
                 gridSelector.select(day);
                 monthsPagerAdapter.notifyDataSetChanged();
-                for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
-                  listener.onSelectionChanged(gridSelector.getSelection());
-                }
               }
             });
     monthsPager.setAdapter(monthsPagerAdapter);
@@ -151,25 +144,9 @@ public final class MaterialCalendar<S> extends Fragment {
     return root;
   }
 
-  public final S getSelection() {
-    return gridSelector.getSelection();
-  }
-
-  boolean addOnSelectionChangedListener(OnSelectionChangedListener<S> listener) {
-    return onSelectionChangedListeners.add(listener);
-  }
-
-  boolean removeOnSelectionChangedListener(OnSelectionChangedListener<S> listener) {
-    return onSelectionChangedListeners.remove(listener);
-  }
-
-  void clearOnSelectionChangedListeners() {
-    onSelectionChangedListeners.clear();
-  }
-
-  interface OnSelectionChangedListener<S> {
-
-    void onSelectionChanged(S selection);
+  @Override
+  public GridSelector<S> getGridSelector() {
+    return gridSelector;
   }
 
   interface OnDayClickListener {
