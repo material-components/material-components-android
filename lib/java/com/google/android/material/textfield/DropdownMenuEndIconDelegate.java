@@ -18,6 +18,10 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
+import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
+import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
+
+import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -28,9 +32,11 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -39,9 +45,12 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.View.OnFocusChangeListener;
 import android.view.View.OnTouchListener;
+import android.view.accessibility.AccessibilityEvent;
+import android.view.accessibility.AccessibilityManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.AutoCompleteTextView.OnDismissListener;
 import android.widget.EditText;
+import android.widget.Spinner;
 import com.google.android.material.color.MaterialColors;
 
 /** Default initialization of the exposed dropdown menu {@link TextInputLayout.EndIconMode}. */
@@ -53,6 +62,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private long dropdownPopupActivatedAt = Long.MAX_VALUE;
   private StateListDrawable filledPopupBackground;
   private MaterialShapeDrawable outlinedPopupBackground;
+  private AccessibilityManager accessibilityManager;
   private final TextWatcher exposedDropdownEndIconTextWatcher =
       new TextWatcher() {
         @Override
@@ -76,6 +86,32 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
               });
         }
       };
+  private final TextInputLayout.AccessibilityDelegate accessibilityDelegate =
+      new AccessibilityDelegate(textInputLayout) {
+        @Override
+        public void onInitializeAccessibilityNodeInfo(View host, AccessibilityNodeInfoCompat info) {
+          super.onInitializeAccessibilityNodeInfo(host, info);
+          // The exposed dropdown menu behaves like a Spinner.
+          info.setClassName(Spinner.class.getName());
+          if (info.isShowingHintText()) {
+            // Set hint text to null so TalkBack doesn't announce the label twice when there is no
+            // item selected.
+            info.setHintText(null);
+          }
+        }
+
+        @Override
+        public void onPopulateAccessibilityEvent(View host, AccessibilityEvent event) {
+          super.onPopulateAccessibilityEvent(host, event);
+          AutoCompleteTextView editText =
+              castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
+
+          if (event.getEventType() == TYPE_VIEW_CLICKED
+              && accessibilityManager.isTouchExplorationEnabled()) {
+            showHideDropdown(editText);
+          }
+        }
+      };
   private final OnEditTextAttachedListener dropdownMenuOnEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
@@ -88,6 +124,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           autoCompleteTextView.setThreshold(0);
           editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
           editText.addTextChangedListener(exposedDropdownEndIconTextWatcher);
+          textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
 
           textInputLayout.setEndIconVisible(true);
         }
@@ -149,6 +186,9 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           }
         });
     textInputLayout.addOnEditTextAttachedListener(dropdownMenuOnEditTextAttachedListener);
+    ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
+    accessibilityManager =
+        (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
   }
 
   @Override
