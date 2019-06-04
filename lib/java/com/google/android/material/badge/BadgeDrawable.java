@@ -502,7 +502,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   @Nullable
-  public CharSequence getContentDescription(Context context) {
+  public CharSequence getContentDescription() {
     if (!isVisible()) {
       return null;
     }

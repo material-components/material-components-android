@@ -273,7 +273,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
         customContentDescription = itemData.getContentDescription();
       }
       info.setContentDescription(
-          customContentDescription + ", " + badgeDrawable.getContentDescription(getContext()));
+          customContentDescription + ", " + badgeDrawable.getContentDescription());
     }
   }
 

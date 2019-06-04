@@ -2367,7 +2367,7 @@ public class TabLayout extends HorizontalScrollView {
       if (badgeDrawable != null && badgeDrawable.isVisible()) {
         CharSequence customContentDescription = getContentDescription();
         info.setContentDescription(
-            customContentDescription + ", " + badgeDrawable.getContentDescription(getContext()));
+            customContentDescription + ", " + badgeDrawable.getContentDescription());
       }
     }
 
