@@ -116,7 +116,7 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
         BadgeDrawable badgeDrawable = bn.getBadge(menuItemId);
         if (badgeDrawable != null) {
           badgeDrawable.setVisible(false);
-          badgeDrawable.clearBadgeNumber();
+          badgeDrawable.clearNumber();
         }
       } else {
         // Remove the badge associated with this menu item because cannot be displayed again.

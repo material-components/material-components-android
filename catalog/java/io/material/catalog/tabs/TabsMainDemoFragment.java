@@ -112,7 +112,7 @@ public class TabsMainDemoFragment extends DemoFragment {
         BadgeDrawable badgeDrawable = tabLayout.getTabAt(tabPosition).getBadge();
         if (badgeDrawable != null) {
           badgeDrawable.setVisible(false);
-          badgeDrawable.clearBadgeNumber();
+          badgeDrawable.clearNumber();
         }
       } else {
         tabLayout.getTabAt(tabPosition).removeBadge();
