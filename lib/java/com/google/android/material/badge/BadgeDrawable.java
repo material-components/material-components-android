@@ -51,6 +51,7 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import java.lang.ref.WeakReference;
 
 /**
  * BadgeDrawable contains all the layout and draw logic for a badge.
@@ -112,7 +113,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
    */
   static final String DEFAULT_EXCEED_MAX_BADGE_NUMBER_SUFFIX = "+";
 
-  private final Context context;
+  private final WeakReference<Context> contextRef;
   private final MaterialShapeDrawable shapeDrawable;
   private final TextDrawableHelper textDrawableHelper;
   private final Rect badgeBounds;
@@ -275,7 +276,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private BadgeDrawable(Context context) {
-    this.context = context;
+    this.contextRef = new WeakReference<>(context);
     ThemeEnforcement.checkMaterialTheme(context);
     Resources res = context.getResources();
     tmpRect = new Rect();
@@ -508,6 +509,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
     if (hasNumber()) {
       if (savedState.contentDescriptionQuantityStrings > 0) {
+        Context context = contextRef.get();
+        if (context == null) {
+          return null;
+        }
         return context
             .getResources()
             .getQuantityString(
@@ -521,11 +526,19 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   private void setTextAppearanceResource(@StyleRes int id) {
+    Context context = contextRef.get();
+    if (context == null) {
+      return;
+    }
     setTextAppearance(new TextAppearance(context, id));
   }
 
   private void setTextAppearance(@Nullable TextAppearance textAppearance) {
     if (textDrawableHelper.getTextAppearance() == textAppearance) {
+      return;
+    }
+    Context context = contextRef.get();
+    if (context == null) {
       return;
     }
     textDrawableHelper.setTextAppearance(textAppearance, context);
@@ -567,6 +580,11 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     if (getNumber() <= maxBadgeNumber) {
       return Integer.toString(getNumber());
     } else {
+      Context context = contextRef.get();
+      if (context == null) {
+        return "";
+      }
+
       return context.getString(
           R.string.mtrl_exceed_max_badge_number_suffix,
           maxBadgeNumber,
@@ -580,6 +598,10 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   private void calculateBadgeCenterCoordinates(
       @NonNull View anchorView, @Nullable ViewGroup customBadgeParent) {
+    Context context = contextRef.get();
+    if (context == null) {
+      return;
+    }
     Resources res = context.getResources();
     Rect anchorRect = new Rect();
     // Returns the visible bounds of the anchor view.
