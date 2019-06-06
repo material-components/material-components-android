@@ -18,9 +18,6 @@ dependencies {
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
 
-  api compatibility("lifecycleRuntime")
-  annotationProcessor compatibility("lifecycleCompiler")
-
   testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "junit:junit:4.12"

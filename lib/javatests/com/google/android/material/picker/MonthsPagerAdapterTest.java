@@ -54,13 +54,12 @@ public class MonthsPagerAdapterTest {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
             activity.getSupportFragmentManager(),
-            activity.getLifecycle(),
             /* gridSelector= */ null,
             /* firstPage= */ feb2016,
             /* lastPage= */ april2016,
             /* startPage= */ march2016,
             /* onDayClickListener= */ null);
-    assertEquals(3, monthsAdapter.getItemCount());
+    assertEquals(3, monthsAdapter.getCount());
     assertEquals(1, monthsAdapter.getStartPosition());
   }
 
@@ -69,13 +68,12 @@ public class MonthsPagerAdapterTest {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
             activity.getSupportFragmentManager(),
-            activity.getLifecycle(),
             /* gridSelector= */ null,
             /* firstPage= */ feb2016,
             /* lastPage= */ feb2016,
             /* startPage= */ feb2016,
             /* onDayClickListener= */ null);
-    assertEquals(1, monthsAdapter.getItemCount());
+    assertEquals(1, monthsAdapter.getCount());
     assertEquals(0, monthsAdapter.getStartPosition());
   }
 
@@ -86,7 +84,6 @@ public class MonthsPagerAdapterTest {
     exceptionRule.expect(IllegalArgumentException.class);
     new MonthsPagerAdapter(
         activity.getSupportFragmentManager(),
-        activity.getLifecycle(),
         /* gridSelector= */ null,
         /* firstPage= */ feb2016,
         /* lastPage= */ march2016,
@@ -99,7 +96,6 @@ public class MonthsPagerAdapterTest {
     exceptionRule.expect(IllegalArgumentException.class);
     new MonthsPagerAdapter(
         activity.getSupportFragmentManager(),
-        activity.getLifecycle(),
         /* gridSelector= */ null,
         /* firstPage= */ march2016,
         /* lastPage= */ feb2016,
@@ -112,7 +108,6 @@ public class MonthsPagerAdapterTest {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
             activity.getSupportFragmentManager(),
-            activity.getLifecycle(),
             /* gridSelector= */ null,
             /* firstPage= */ feb2016,
             /* lastPage= */ april2016,

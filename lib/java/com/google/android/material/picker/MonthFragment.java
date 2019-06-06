@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
@@ -44,10 +45,9 @@ public class MonthFragment extends Fragment {
 
   private Month month;
   private MonthAdapter monthAdapter;
-  // Set as part of Lifecycle.Event#onCreate
-  private OnDayClickListener onDayClickListener;
+  @Nullable private OnDayClickListener onDayClickListener;
 
-  public void setOnDayClickListener(OnDayClickListener onDayClickListener) {
+  public void setOnDayClickListener(@Nullable OnDayClickListener onDayClickListener) {
     this.onDayClickListener = onDayClickListener;
   }
 
@@ -77,17 +77,17 @@ public class MonthFragment extends Fragment {
   @Override
   public GridView onCreateView(
       LayoutInflater layoutInflater, ViewGroup root, Bundle savedInstanceState) {
-    Context context = getParentFragment().getView().getContext();
+    Context context = root.getContext();
     LayoutInflater themedInflater = LayoutInflater.from(context);
-    MaterialCalendarGridView gridView =
-        (MaterialCalendarGridView) themedInflater.inflate(R.layout.mtrl_month_grid, root, false);
+    View view = themedInflater.inflate(R.layout.mtrl_month_grid, root, false);
+    MaterialCalendarGridView gridView = view.findViewById(R.id.month_grid);
     gridView.setNumColumns(month.daysInWeek);
     gridView.setAdapter(monthAdapter);
     gridView.setOnItemClickListener(
         new OnItemClickListener() {
           @Override
           public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            if (monthAdapter.withinMonth(position)) {
+            if (onDayClickListener != null && monthAdapter.withinMonth(position)) {
               onDayClickListener.onDayClick(monthAdapter.getItem(position));
             }
           }
