@@ -36,6 +36,12 @@ final class MaterialCalendarGridView extends GridView {
   }
 
   @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+    getAdapter().notifyDataSetChanged();
+  }
+
+  @Override
   public MonthAdapter getAdapter() {
     return (MonthAdapter) super.getAdapter();
   }

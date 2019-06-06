@@ -23,7 +23,7 @@ import androidx.test.espresso.IdlingRegistry;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
-import androidx.viewpager.widget.ViewPager;
+import androidx.viewpager2.widget.ViewPager2;
 import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Rule;
@@ -55,7 +55,7 @@ public class PickerDialogFragmentSwipeTest {
     IdlingRegistry.getInstance()
         .register(
             new ViewPagerIdlingResource(
-                (ViewPager)
+                (ViewPager2)
                     dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG)));
   }
 
@@ -66,7 +66,8 @@ public class PickerDialogFragmentSwipeTest {
     PickerDialogFragmentTestUtils.swipeEarlier();
     PickerDialogFragmentTestUtils.swipeEarlier();
 
-    ViewPager viewPager = dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
+    ViewPager2 viewPager =
+        dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
     MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) viewPager.getAdapter();
     assertEquals(start, monthsPagerAdapter.getPageMonth(viewPager.getCurrentItem()));
   }
@@ -78,14 +79,16 @@ public class PickerDialogFragmentSwipeTest {
     PickerDialogFragmentTestUtils.swipeLater();
     PickerDialogFragmentTestUtils.swipeLater();
 
-    ViewPager viewPager = dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
+    ViewPager2 viewPager =
+        dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
     MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) viewPager.getAdapter();
     assertEquals(end, monthsPagerAdapter.getPageMonth(viewPager.getCurrentItem()));
   }
 
   @Test
   public void calendarOpensOnCurrent() {
-    ViewPager viewPager = dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
+    ViewPager2 viewPager =
+        dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
     MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) viewPager.getAdapter();
     assertEquals(current, monthsPagerAdapter.getPageMonth(viewPager.getCurrentItem()));
   }
