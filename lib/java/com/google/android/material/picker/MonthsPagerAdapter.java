@@ -15,39 +15,43 @@
  */
 package com.google.android.material.picker;
 
-import android.database.DataSetObserver;
+import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.Lifecycle.Event;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.OnLifecycleEvent;
 import androidx.annotation.NonNull;
 import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentStatePagerAdapter;
+import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
 import android.util.SparseArray;
-import android.view.ViewGroup;
+import androidx.viewpager2.adapter.FragmentStateAdapter;
 
 /**
  * Manages the instances of {@link MonthFragment}, capping memory usage.
  *
  * @hide
  */
-class MonthsPagerAdapter extends FragmentStatePagerAdapter {
+class MonthsPagerAdapter extends FragmentStateAdapter {
 
   private final Month firstPage;
   private final Month lastPage;
   private final int startIndex;
   private final GridSelector<?> gridSelector;
-  private final SparseArray<DataSetObserver> observingFragments = new SparseArray<>();
+  private final SparseArray<AdapterDataObserver> observingFragments = new SparseArray<>();
   private final OnDayClickListener onDayClickListener;
 
   /**
-   * Creates a new {@link FragmentStatePagerAdapter} that manages the instances of {@link
-   * MonthFragment}.
+   * Creates a new {@link FragmentStateAdapter} that manages instances of {@link MonthFragment}.
    *
    * @param fragmentManager A {@link FragmentManager} for the {@link MonthFragment} objects. {@see
-   *     Fragment#getChildFragmentManager()}
+   *     Fragment#getChildFragmentManager()} and {@see
+   *     FragmentActivity#getSupportFragmentManager()}.
+   * @param lifecycle The {@link Lifecycle} to manage each {@link MonthFragment}. {@see
+   *     Fragment#getLifecycle()} and {@see FragmentActivity#getLifecycle()}.
    * @param gridSelector The {@link GridSelector} that controls selection and highlights for all
    *     {@link MonthFragment} objects.
    * @param firstPage The earliest accessible {@link Month}. This {@link Month} will be at position
-   *     0. {@link MonthsPagerAdapter#getItem}.
+   *     0. {@link MonthsPagerAdapter#createFragment(int)}.
    * @param lastPage The latest accessible {@link Month}. Must be chronologically after or the same
    *     as {@code firstPage}.
    * @param startPage The starting {@link Month} displayed. Must be chronologically between {@code
@@ -55,12 +59,13 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
    */
   MonthsPagerAdapter(
       FragmentManager fragmentManager,
+      Lifecycle lifecycle,
       GridSelector<?> gridSelector,
       Month firstPage,
       Month lastPage,
       Month startPage,
       OnDayClickListener onDayClickListener) {
-    super(fragmentManager);
+    super(fragmentManager, lifecycle);
     if (firstPage.compareTo(startPage) > 0) {
       throw new IllegalArgumentException("firstPage cannot be after startPage");
     }
@@ -75,43 +80,45 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
   }
 
   @Override
-  public int getCount() {
+  public int getItemCount() {
     return firstPage.monthsUntil(lastPage) + 1;
   }
 
-  @NonNull
   @Override
-  public Fragment instantiateItem(@NonNull ViewGroup viewGroup, int position) {
-    final MonthFragment monthFragment = (MonthFragment) super.instantiateItem(viewGroup, position);
-    monthFragment.setOnDayClickListener(onDayClickListener);
-    return monthFragment;
-  }
-
-  @Override
-  public MonthFragment getItem(int position) {
+  public MonthFragment createFragment(final int position) {
     final MonthFragment monthFragment =
         MonthFragment.newInstance(firstPage.monthsLater(position), gridSelector);
 
-    DataSetObserver dataSetObserver =
-        new DataSetObserver() {
-          @Override
-          public void onChanged() {
-            monthFragment.notifyDataSetChanged();
-          }
-        };
-    registerDataSetObserver(dataSetObserver);
-    observingFragments.put(position, dataSetObserver);
-    return monthFragment;
-  }
+    monthFragment
+        .getLifecycle()
+        .addObserver(
+            new LifecycleObserver() {
 
-  @Override
-  public void destroyItem(@NonNull ViewGroup viewGroup, int position, @NonNull Object o) {
-    DataSetObserver dataSetObserver = observingFragments.get(position);
-    if (dataSetObserver != null) {
-      observingFragments.remove(position);
-      unregisterDataSetObserver(dataSetObserver);
-    }
-    super.destroyItem(viewGroup, position, o);
+              @OnLifecycleEvent(Event.ON_CREATE)
+              void onCreated() {
+                monthFragment.setOnDayClickListener(onDayClickListener);
+                AdapterDataObserver dataSetObserver =
+                    new AdapterDataObserver() {
+                      @Override
+                      public void onChanged() {
+                        monthFragment.notifyDataSetChanged();
+                      }
+                    };
+                registerAdapterDataObserver(dataSetObserver);
+                observingFragments.put(position, dataSetObserver);
+              }
+
+              @OnLifecycleEvent(Event.ON_DESTROY)
+              void onDestroyed() {
+                AdapterDataObserver dataSetObserver = observingFragments.get(position);
+                if (dataSetObserver != null) {
+                  observingFragments.remove(position);
+                  unregisterAdapterDataObserver(dataSetObserver);
+                }
+              }
+            });
+
+    return monthFragment;
   }
 
   /** Returns the position index of the {@link Month} startPage provided on construction. */
@@ -119,9 +126,8 @@ class MonthsPagerAdapter extends FragmentStatePagerAdapter {
     return startIndex;
   }
 
-  @Override
   @NonNull
-  public CharSequence getPageTitle(int position) {
+  CharSequence getPageTitle(int position) {
     return getPageMonth(position).getLongName();
   }
 

@@ -16,23 +16,23 @@
 package com.google.android.material.picker;
 
 import androidx.test.espresso.IdlingResource;
-import androidx.viewpager.widget.ViewPager;
-import androidx.viewpager.widget.ViewPager.SimpleOnPageChangeListener;
+import androidx.viewpager2.widget.ViewPager2;
+import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;
 
 public class ViewPagerIdlingResource implements IdlingResource {
 
   private ResourceCallback resourceCallback;
   private boolean isIdle;
 
-  public ViewPagerIdlingResource(ViewPager viewPager) {
+  public ViewPagerIdlingResource(ViewPager2 viewPager) {
     isIdle = true;
-    viewPager.addOnPageChangeListener(
-        new SimpleOnPageChangeListener() {
+    viewPager.registerOnPageChangeCallback(
+        new OnPageChangeCallback() {
 
           @Override
           public void onPageScrollStateChanged(int state) {
             isIdle =
-                state == ViewPager.SCROLL_STATE_IDLE || state == ViewPager.SCROLL_STATE_DRAGGING;
+                state == ViewPager2.SCROLL_STATE_IDLE || state == ViewPager2.SCROLL_STATE_DRAGGING;
             if (isIdleNow() && resourceCallback != null) {
               resourceCallback.onTransitionToIdle();
             }
