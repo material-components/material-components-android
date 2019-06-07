@@ -27,19 +27,19 @@ ext {
   def lifecycle_version = "2.0.0"
   androidXVersions = [
     annotation            : '1.0.1',
-    appCompat             : '1.1.0-alpha05', // Needed for CSL + theme attr fixes
+    appCompat             : '1.1.0-beta01', // Needed for CSL + theme attr fixes
     cardView              : '1.0.0',
-    coordinatorlayout     : '1.1.0-alpha01', // Needed for NestedScrolling3 APIs
-    core                  : '1.1.0-beta01', // Needed for CSL + theme attr fixes
+    coordinatorlayout     : '1.1.0-beta01', // Needed for NestedScrolling3 APIs
+    core                  : '1.1.0-rc01', // Needed for CSL + theme attr fixes
     fragment              : '1.0.0',
     legacySupportCoreUi   : '1.0.0',
     legacySupportCoreUtils: '1.0.0',
-    lifecycleRuntime     : "${lifecycle_version}",
-    lifecycleCompiler    : "${lifecycle_version}",
+    lifecycleRuntime      : "${lifecycle_version}",
+    lifecycleCompiler     : "${lifecycle_version}",
     recyclerView          : '1.0.0',
     recyclerViewSelection : '1.0.0',
     transition            : '1.0.1',
-    vectorDrawable        : '1.1.0-beta01', // Needed for CSL + theme attr fixes
+    vectorDrawable        : '1.1.0-beta02', // Needed for CSL + theme attr fixes
     viewpager2            : '1.0.0-alpha05', // Needed for TabLayout and MaterialCalendar
   ]
 
