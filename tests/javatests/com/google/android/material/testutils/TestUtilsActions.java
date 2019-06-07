@@ -443,4 +443,24 @@ public class TestUtilsActions {
       }
     };
   }
+
+  /** Returns a {@link ViewAction} that requests focus on the {@link View}. */
+  public static ViewAction requestFocus() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return any(View.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "focus";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        view.requestFocus();
+      }
+    };
+  }
 }
