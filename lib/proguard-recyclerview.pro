@@ -12,5 +12,5 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-# MaterialComponentsViewInflater inflates Material Components rather than their AppCompat counterparts.
+# An inner class of RecyclerView is part of MaterialPickerDialogFragment.java 
 -keep class androidx.recyclerview.widget.RecyclerView { *; }
