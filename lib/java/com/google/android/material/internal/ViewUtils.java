@@ -24,8 +24,11 @@ import android.graphics.PorterDuff;
 import androidx.annotation.Dimension;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import android.util.TypedValue;
 import android.view.View;
+import android.view.View.OnAttachStateChangeListener;
+import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
 
 /**
@@ -78,5 +81,90 @@ public class ViewUtils {
             inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
           }
         });
+  }
+
+  /**
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} which also passes
+   * the initial padding set on the view. Used with {@link #doOnApplyWindowInsets(View,
+   * OnApplyWindowInsetsListener)}.
+   */
+  public interface OnApplyWindowInsetsListener {
+
+    /**
+     * When {@link View#setOnApplyWindowInsetsListener(View.OnApplyWindowInsetsListener) set} on a
+     * View, this listener method will be called instead of the view's own {@link
+     * View#onApplyWindowInsets(WindowInsets)} method. The {@code initialPadding} is the view's
+     * original padding which can be updated and will be applied to the view automatically. This
+     * method should return a new {@link WindowInsetsCompat} with any insets consumed.
+     */
+    WindowInsetsCompat onApplyWindowInsets(
+        View view, WindowInsetsCompat insets, RelativePadding initialPadding);
+  }
+
+  /** Simple data object to store the initial padding for a view. */
+  public static class RelativePadding {
+    public int start;
+    public int top;
+    public int end;
+    public int bottom;
+
+    public RelativePadding(int start, int top, int end, int bottom) {
+      this.start = start;
+      this.top = top;
+      this.end = end;
+      this.bottom = bottom;
+    }
+
+    /** Applies this relative padding to the view. */
+    public void applyToView(View view) {
+      ViewCompat.setPaddingRelative(view, start, top, end, bottom);
+    }
+  }
+
+  /**
+   * Wrapper around {@link androidx.core.view.OnApplyWindowInsetsListener} that records the
+   * initial padding of the view and requests that insets are applied when attached.
+   */
+  public static void doOnApplyWindowInsets(View view, final OnApplyWindowInsetsListener listener) {
+    // Create a snapshot of the view's padding state.
+    final RelativePadding initialPadding =
+        new RelativePadding(
+            ViewCompat.getPaddingStart(view),
+            view.getPaddingTop(),
+            ViewCompat.getPaddingEnd(view),
+            view.getPaddingBottom());
+    // Set an actual OnApplyWindowInsetsListener which proxies to the given callback, also passing
+    // in the original padding state.
+    ViewCompat.setOnApplyWindowInsetsListener(view,
+        new androidx.core.view.OnApplyWindowInsetsListener() {
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
+            return listener.onApplyWindowInsets(view, insets, initialPadding);
+          }
+        });
+    // Request some insets.
+    requestApplyInsetsWhenAttached(view);
+  }
+
+  /** Requests that insets should be applied to this view once it is attached. */
+  public static void requestApplyInsetsWhenAttached(View view) {
+    if (ViewCompat.isAttachedToWindow(view)) {
+      // We're already attached, just request as normal.
+      ViewCompat.requestApplyInsets(view);
+    } else {
+      // We're not attached to the hierarchy, add a listener to request when we are.
+      view.addOnAttachStateChangeListener(new OnAttachStateChangeListener() {
+        @Override
+        public void onViewAttachedToWindow(View v) {
+          v.removeOnAttachStateChangeListener(this);
+          ViewCompat.requestApplyInsets(v);
+        }
+
+        @Override
+        public void onViewDetachedFromWindow(View v) {
+
+        }
+      });
+    }
   }
 }
