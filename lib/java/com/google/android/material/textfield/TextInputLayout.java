@@ -2792,9 +2792,12 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void setIconOnClickListener(@NonNull View iconView, OnClickListener onClickListener) {
+    boolean clickable = onClickListener != null;
     iconView.setOnClickListener(onClickListener);
-    iconView.setFocusable(onClickListener != null);
-    iconView.setClickable(onClickListener != null);
+    iconView.setFocusable(clickable);
+    iconView.setClickable(clickable);
+    ViewCompat.setImportantForAccessibility(
+        iconView, clickable ? IMPORTANT_FOR_ACCESSIBILITY_YES : IMPORTANT_FOR_ACCESSIBILITY_NO);
   }
 
   private void updateIconViewOnEditTextAttached(@NonNull View iconView) {
