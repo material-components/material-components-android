@@ -18,6 +18,7 @@ package com.google.android.material.badge;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.badge.BadgeUtils.updateBadgeBounds;
 
 import android.content.Context;
@@ -37,6 +38,7 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
+import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
@@ -127,7 +129,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private float badgeCenterY;
   private int maxBadgeNumber;
 
-  /** A {@link Parcelable} implementation used to ensure the state of BadgeDrawable is saved. */
+  /**
+   * A {@link Parcelable} implementation used to ensure the state of BadgeDrawable is saved.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
   public static final class SavedState implements Parcelable {
 
     @ColorInt private int backgroundColor;
@@ -194,8 +201,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /** Creates an instance of BadgeDrawable with the provided {@link SavedState}. */
-  public static BadgeDrawable createFromSavedState(
-      Context context, @NonNull SavedState savedState) {
+  static BadgeDrawable createFromSavedState(Context context, @NonNull SavedState savedState) {
     BadgeDrawable badge = new BadgeDrawable(context);
     badge.restoreFromSavedState(savedState);
     return badge;
@@ -208,7 +214,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   }
 
   /** Returns a BadgeDrawable from the given attributes. */
-  public static BadgeDrawable createFromAttributes(
+  private static BadgeDrawable createFromAttributes(
       @NonNull Context context,
       AttributeSet attrs,
       @AttrRes int defStyleAttr,
@@ -483,7 +489,12 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     }
   }
 
-  // Implements the TextDrawableHelper.TextDrawableDelegate interface.
+  /**
+   * Implements the TextDrawableHelper.TextDrawableDelegate interface.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
   @Override
   public void onTextSizeChange() {
     invalidateSelf();
