@@ -27,10 +27,12 @@ import android.animation.ObjectAnimator;
 import android.animation.PropertyValuesHolder;
 import android.animation.ValueAnimator;
 import android.content.res.TypedArray;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import com.google.android.material.testapp.animation.R;
 import androidx.appcompat.app.AppCompatActivity;
+import android.util.Property;
 import android.view.View;
 import android.view.animation.PathInterpolator;
 import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
@@ -155,6 +157,30 @@ public class MotionSpecTest {
         ((ObjectAnimator) translationAnimator).getValues()[0];
     assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0.0", "0.0"));
   }
+
+  @Test
+  public void getAnimatorForNonViewTarget() {
+    MotionSpec spec =
+        MotionSpec.createFromResource(
+            activityTestRule.getActivity(), R.animator.valid_set_of_object_animator_motion_spec);
+    ColorDrawable drawable = new ColorDrawable();
+    Animator alphaAnimator = spec.getAnimator("alpha", drawable, ALPHA);
+    PropertyValuesHolder propertyValuesHolder = ((ObjectAnimator) alphaAnimator).getValues()[0];
+    assertTrue(fromAndToValuesMatch(propertyValuesHolder, "0.2", "0.8"));
+  }
+
+  private static final Property<Object, Integer> ALPHA =
+      new Property<Object, Integer>(Integer.class, "alpha") {
+        @Override
+        public void set(Object object, Integer value) {
+          ((ColorDrawable) object).setAlpha(value.intValue());
+        }
+
+        @Override
+        public Integer get(Object object) {
+          return ((ColorDrawable) object).getAlpha();
+        }
+      };
 
   public void inflateInvalidSetOfSetMotionSpec() {
     assertNull(

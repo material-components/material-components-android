@@ -28,7 +28,6 @@ import androidx.annotation.StyleableRes;
 import androidx.collection.SimpleArrayMap;
 import android.util.Log;
 import android.util.Property;
-import android.view.View;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -135,13 +134,14 @@ public class MotionSpec {
    * added to an {@link AnimatorSet} to play multiple synchronized animations.
    *
    * @param name Name of the property to be animated.
-   * @param view The target whose property is to be animated. See {@link
-   *     ObjectAnimator#ofPropertyValuesHolder(Object, PropertyValuesHolder...)} for more details.
+   * @param target The target whose property is to be animated. See {@link
+   *     ObjectAnimator#ofPropertyValuesHolder(T, PropertyValuesHolder...)} for more details.
    * @param property The {@link Property} object being animated.
    * @return An {@link ObjectAnimator} which animates the given property.
    */
-  public ObjectAnimator getAnimator(String name, View view, Property<View, Float> property) {
-    ObjectAnimator animator = ObjectAnimator.ofPropertyValuesHolder(view, getPropertyValues(name));
+  public <T> ObjectAnimator getAnimator(String name, T target, Property<T, ?> property) {
+    ObjectAnimator animator =
+        ObjectAnimator.ofPropertyValuesHolder(target, getPropertyValues(name));
     animator.setProperty(property);
     getTiming(name).apply(animator);
     return animator;
