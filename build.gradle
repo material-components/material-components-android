@@ -5,7 +5,7 @@ buildscript {
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.1'
+    classpath 'com.android.tools.build:gradle:3.3.2'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
     classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
   }
@@ -159,6 +159,17 @@ def getArchivesBaseName(name) {
 subprojects {
   version = rootProject.ext.mdcLibraryVersion
   group = 'com.google.android.material'
+
+  // Disable strict dependency resolution version constraints for test projects
+  if (project.name.contains("tests")) {
+    project.configurations.all {
+      dependencyConstraints.configureEach { dependencyConstraint ->
+        dependencyConstraint.version { versionConstraint ->
+          versionConstraint.strictly("")
+        }
+      }
+    }
+  }
 
   project.plugins.whenPluginAdded { plugin ->
     def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)
