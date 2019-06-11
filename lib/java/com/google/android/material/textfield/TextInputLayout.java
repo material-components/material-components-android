@@ -1800,7 +1800,7 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private int calculateExpandedLabelTop(Rect rect, float labelHeight) {
-    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
+    if (isSingleLineFilledTextField()) {
       return (int) (rect.centerY() - labelHeight / 2);
     }
     return rect.top + editText.getCompoundPaddingTop();
@@ -1814,6 +1814,11 @@ public class TextInputLayout extends LinearLayout {
       return (int) (bounds.top + labelHeight);
     }
     return rect.bottom - editText.getCompoundPaddingBottom();
+  }
+
+  private boolean isSingleLineFilledTextField() {
+    return boxBackgroundMode == BOX_BACKGROUND_FILLED
+        && (VERSION.SDK_INT < 16 || editText.getMinLines() <= 1);
   }
 
   /*
