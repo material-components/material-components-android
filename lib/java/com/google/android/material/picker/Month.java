@@ -27,8 +27,6 @@ import java.util.Locale;
 final class Month implements Comparable<Month>, Parcelable {
 
   private final Calendar calendar;
-  private static final SimpleDateFormat longNameFormat =
-      new SimpleDateFormat("MMMM, yyyy", Locale.getDefault());
   private final String longName;
   final int month;
   final int year;
@@ -42,7 +40,8 @@ final class Month implements Comparable<Month>, Parcelable {
     year = calendar.get(Calendar.YEAR);
     daysInWeek = this.calendar.getMaximum(Calendar.DAY_OF_WEEK);
     daysInMonth = this.calendar.getActualMaximum(Calendar.DAY_OF_MONTH);
-    longName = longNameFormat.format(this.calendar.getTime());
+    longName =
+        new SimpleDateFormat("MMMM, yyyy", Locale.getDefault()).format(this.calendar.getTime());
   }
 
   /**
