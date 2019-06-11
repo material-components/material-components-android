@@ -287,7 +287,9 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
    * selected button in this group. Upon empty selection, the returned value is {@link View#NO_ID}.
    * If not in single selection mode, the return value is {@link View#NO_ID}.
    *
-   * @return the unique id of the selected button in this group in single selection mode
+   * @return The unique id of the selected {@link MaterialButton} in this group in {@link
+   *     #isSingleSelection() single selection mode}. When not in {@link #isSingleSelection() single
+   *     selection mode}, returns {@link View#NO_ID}.
    * @see #check(int)
    * @see #clearChecked()
    * @see #getCheckedButtonIds()
@@ -302,7 +304,9 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
    * Returns the identifiers of the selected {@link MaterialButton}s in this group. Upon empty
    * selection, the returned value is an empty list.
    *
-   * @return The unique IDs of the selected {@link MaterialButton}s in this group.
+   * @return The unique IDs of the selected {@link MaterialButton}s in this group. When in {@link
+   *     #isSingleSelection() single selection mode}, returns a list with a single ID. When no
+   *     {@link MaterialButton}s are selected, returns an empty list.
    * @see #check(int)
    * @see #clearChecked()
    * @see #getCheckedButtonId()
