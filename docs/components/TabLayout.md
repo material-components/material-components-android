@@ -12,25 +12,23 @@ path: /catalog/tab-layout/
 `TabLayout` provides a horizontal layout to display tabs. The layout handles
 interactions for a group of tabs including:
 
-- scrolling behavior,
-- (swipe) gestures,
-- tab selection,
-- animations,
-- and alignment.
+-   scrolling behavior,
+-   (swipe) gestures,
+-   tab selection,
+-   animations,
+-   and alignment.
 
-The Android Developers site provides [detailed
-documentation](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
+The Android Developers site provides
+[detailed documentation](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
 on implementing `TabLayout`.
 
 ## Design & API Documentation
 
 -   [Material Design guidelines: Tabs](https://material.io/go/design-tabs)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/tabs/TabLayout.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
--   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
+-   [Class overview](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
@@ -63,7 +61,7 @@ are often held in a
 [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html).
 
 Use
-[setupWithViewPager(ViewPager)](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager(ViewPager))
+[setupWithViewPager(ViewPager)](https://developer.android.com/reference/com/google/android/material/tabs/TabLayout#setupWithViewPager\(ViewPager\))
 to link a `TabLayout` with a ViewPager. The individual tabs in the `TabLayout`
 will be automatically populated with the page titles from the PagerAdapter.
 
@@ -95,11 +93,12 @@ Alternatively, you can add a `TabLayout` to a ViewPager in XML:
 
 `TabLayout` supports displaying icon and number badges.
 
-Initializes and shows a BadgeDrawable associated with a tab. Subsequent calls to
-this method will reuse the existing BadgeDrawable.
-
 ```java
-BadgeDrawable badge = tablayout.getTab(0).showBadge();
+// Creates and initializes an instance of BadgeDrawable associated with a tab.
+// Subsequent calls to this method will reuse the existing BadgeDrawable.
+// This method does not guarantee that the badge is visible.
+BadgeDrawable badge = tablayout.getTab(0).getOrCreateBadge();
+badge.setVisible(true);
 // Optionally show a number.
 badge.setNumber(99);
 ```

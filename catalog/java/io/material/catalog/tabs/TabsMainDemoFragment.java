@@ -68,13 +68,18 @@ public class TabsMainDemoFragment extends DemoFragment {
   private void setupBadging() {
     for (TabLayout tabLayout : tabLayouts) {
       // An icon only badge will be displayed.
-      tabLayout.getTabAt(0).showBadge();
+      BadgeDrawable badgeDrawable = tabLayout.getTabAt(0).getOrCreateBadge();
+      badgeDrawable.setVisible(true);
 
       // A badge with the text "99" will be displayed.
-      tabLayout.getTabAt(1).showBadge().setNumber(99);
+      badgeDrawable = tabLayout.getTabAt(1).getOrCreateBadge();
+      badgeDrawable.setVisible(true);
+      badgeDrawable.setNumber(99);
 
       // A badge with the text "999+" will be displayed.
-      tabLayout.getTabAt(2).showBadge().setNumber(9999);
+      badgeDrawable = tabLayout.getTabAt(2).getOrCreateBadge();
+      badgeDrawable.setVisible(true);
+      badgeDrawable.setNumber(9999);
 
       tabLayout.addOnTabSelectedListener(
           new OnTabSelectedListener() {
@@ -97,9 +102,10 @@ public class TabsMainDemoFragment extends DemoFragment {
   private void incrementBadgeNumber() {
     for (TabLayout tabLayout : tabLayouts) {
       // Increase the badge number on the first tab position.
-      // In case the first tab has been selected and the badge was hidden, call #showBadge() instead
-      // of #getBadge() to ensure the badge is visible.
-      BadgeDrawable badgeDrawable = tabLayout.getTabAt(0).showBadge();
+      // In case the first tab has been selected and the badge was hidden, call
+      // BadgeDrawable#setVisible() to ensure the badge is visible.
+      BadgeDrawable badgeDrawable = tabLayout.getTabAt(0).getOrCreateBadge();
+      badgeDrawable.setVisible(true);
       badgeDrawable.setNumber(badgeDrawable.getNumber() + 1);
     }
   }

@@ -25,6 +25,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayout.LabelVisibility;
 import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
@@ -236,9 +237,17 @@ public class TabsControllableDemoFragment extends DemoFragment {
   }
 
   private void setupBadging(TabLayout tabLayout) {
-    tabLayout.getTabAt(0).showBadge().setNumber(1);
-    tabLayout.getTabAt(1).showBadge().setNumber(88);
-    tabLayout.getTabAt(2).showBadge().setNumber(999);
+    BadgeDrawable badgeDrawable = tabLayout.getTabAt(0).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(1);
+
+    badgeDrawable = tabLayout.getTabAt(1).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(88);
+
+    badgeDrawable = tabLayout.getTabAt(2).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(999);
   }
 
   private void setLabelVisibility(TabLayout tabLayout, @LabelVisibility int mode) {

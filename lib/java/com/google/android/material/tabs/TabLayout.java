@@ -2060,14 +2060,13 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
-     * Initializes (if needed) and shows a {@link BadgeDrawable}. Creates an instance of
-     * BadgeDrawable if none exists. For convenience, also returns the associated instance of
-     * BadgeDrawable.
+     * Creates an instance of {@link BadgeDrawable} if none exists. Initializes (if needed) and
+     * returns the associated instance of {@link BadgeDrawable}.
      *
      * @return an instance of BadgeDrawable associated with {@code Tab}.
      */
-    public BadgeDrawable showBadge() {
-      return view.showBadge();
+    public BadgeDrawable getOrCreateBadge() {
+      return view.getOrCreateBadge();
     }
 
     /**
@@ -2564,18 +2563,16 @@ public class TabLayout extends HorizontalScrollView {
     }
 
     /**
-     * Initializes and shows a {@link BadgeDrawable} associated with this view. Does not create a
-     * new instance of BadgeDrawable if an instance already exists. For convenience, also returns
-     * the associated instance of BadgeDrawable.
+     * Creates an instance of {@link BadgeDrawable} if none exists. Initializes (if needed) and
+     * returns the associated instance of {@link BadgeDrawable}.
      *
      * @return an instance of BadgeDrawable associated with {@code Tab}.
      */
-    private BadgeDrawable showBadge() {
+    private BadgeDrawable getOrCreateBadge() {
       // Creates a new instance if one is not already initialized for this TabView.
       if (badgeDrawable == null) {
         badgeDrawable = BadgeDrawable.create(getContext());
       }
-      badgeDrawable.setVisible(true);
       tryUpdateBadgeAnchor();
       return badgeDrawable;
     }
