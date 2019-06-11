@@ -18,11 +18,20 @@ package com.google.android.material.internal;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
+import android.content.Context;
+import android.content.res.Resources.NotFoundException;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.DrawableContainer;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.XmlRes;
+import android.text.TextUtils;
+import android.util.AttributeSet;
 import android.util.Log;
+import android.util.Xml;
+import java.io.IOException;
 import java.lang.reflect.Method;
+import org.xmlpull.v1.XmlPullParser;
+import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * Utility class for functionality relating to {@link Drawable}s.
@@ -67,5 +76,33 @@ public class DrawableUtils {
       }
     }
     return false;
+  }
+
+  public static AttributeSet parseDrawableXml(
+      final Context context, @XmlRes int id, CharSequence startTag) {
+    try {
+      XmlPullParser parser = context.getResources().getXml(id);
+
+      int type;
+      do {
+        type = parser.next();
+      } while (type != XmlPullParser.START_TAG && type != XmlPullParser.END_DOCUMENT);
+      if (type != XmlPullParser.START_TAG) {
+        throw new XmlPullParserException("No start tag found");
+      }
+
+      if (!TextUtils.equals(parser.getName(), startTag)) {
+        throw new XmlPullParserException("Must have a <" + startTag + "> start tag");
+      }
+
+      AttributeSet attrs = Xml.asAttributeSet(parser);
+
+      return attrs;
+    } catch (XmlPullParserException | IOException e) {
+      NotFoundException exception =
+          new NotFoundException("Can't load badge resource ID #0x" + Integer.toHexString(id));
+      exception.initCause(e);
+      throw exception;
+    }
   }
 }

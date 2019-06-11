@@ -21,8 +21,6 @@ import com.google.android.material.R;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
-import android.content.res.Resources.NotFoundException;
 import android.content.res.TypedArray;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -74,17 +72,13 @@ import androidx.appcompat.content.res.AppCompatResources;
 import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.util.AttributeSet;
-import android.util.Xml;
 import android.view.View;
 import com.google.android.material.canvas.CanvasCompat;
 import com.google.android.material.color.MaterialColors;
 import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.ripple.RippleUtils;
-import java.io.IOException;
 import java.lang.ref.WeakReference;
 import java.util.Arrays;
-import org.xmlpull.v1.XmlPullParser;
-import org.xmlpull.v1.XmlPullParserException;
 
 /**
  * ChipDrawable contains all the layout and draw logic for {@link Chip}.
@@ -299,34 +293,13 @@ public class ChipDrawable extends MaterialShapeDrawable
    * }</pre>
    */
   public static ChipDrawable createFromResource(Context context, @XmlRes int id) {
-    try {
-      XmlPullParser parser = context.getResources().getXml(id);
-
-      int type;
-      do {
-        type = parser.next();
-      } while (type != XmlPullParser.START_TAG && type != XmlPullParser.END_DOCUMENT);
-      if (type != XmlPullParser.START_TAG) {
-        throw new XmlPullParserException("No start tag found");
-      }
-
-      if (!TextUtils.equals(parser.getName(), "chip")) {
-        throw new XmlPullParserException("Must have a <chip> start tag");
-      }
-
-      AttributeSet attrs = Xml.asAttributeSet(parser);
-      @StyleRes int style = attrs.getStyleAttribute();
-      if (style == 0) {
-        style = R.style.Widget_MaterialComponents_Chip_Entry;
-      }
-
-      return createFromAttributes(context, attrs, R.attr.chipStandaloneStyle, style);
-    } catch (XmlPullParserException | IOException e) {
-      Resources.NotFoundException exception =
-          new NotFoundException("Can't load chip resource ID #0x" + Integer.toHexString(id));
-      exception.initCause(e);
-      throw exception;
+    AttributeSet attrs =
+        com.google.android.material.internal.DrawableUtils.parseDrawableXml(context, id, "chip");
+    @StyleRes int style = attrs.getStyleAttribute();
+    if (style == 0) {
+      style = R.style.Widget_MaterialComponents_Chip_Entry;
     }
+    return createFromAttributes(context, attrs, R.attr.chipStandaloneStyle, style);
   }
 
   private ChipDrawable(

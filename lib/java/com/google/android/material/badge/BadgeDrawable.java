@@ -42,6 +42,8 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
+import androidx.annotation.XmlRes;
+import com.google.android.material.internal.DrawableUtils;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -108,6 +110,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   /** Maximum value of number that can be displayed in a circular badge. */
   private static final int MAX_CIRCULAR_BADGE_NUMBER_COUNT = 99;
+
+  @StyleRes private static final int DEFAULT_STYLE = R.style.Widget_MaterialComponents_Badge;
+  @AttrRes private static final int DEFAULT_THEME_ATTR = R.attr.badgeStyle;
 
   /**
    * If the badge number exceeds the maximum allowed number, append this suffix to the max badge
@@ -209,8 +214,28 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
 
   /** Creates an instance of BadgeDrawable with default values. */
   public static BadgeDrawable create(Context context) {
-    return createFromAttributes(
-        context, /* attrs= */ null, R.attr.badgeStyle, R.style.Widget_MaterialComponents_Badge);
+    return createFromAttributes(context, /* attrs= */ null, DEFAULT_THEME_ATTR, DEFAULT_STYLE);
+  }
+
+  /**
+   * Returns a BadgeDrawable from the given XML resource. All attributes from {@link
+   * R.styleable#Badge} and a custom <code>style</code> attribute are supported. A badge resource
+   * may look like:
+   *
+   * <pre>{@code
+   * <badge
+   *     xmlns:app="http://schemas.android.com/apk/res-auto"
+   *     style="@style/Widget.MaterialComponents.Badge"
+   *     app:maxCharacterCount="2"/>
+   * }</pre>
+   */
+  public static BadgeDrawable createFromResource(Context context, @XmlRes int id) {
+    AttributeSet attrs = DrawableUtils.parseDrawableXml(context, id, "badge");
+    @StyleRes int style = attrs.getStyleAttribute();
+    if (style == 0) {
+      style = DEFAULT_STYLE;
+    }
+    return createFromAttributes(context, attrs, DEFAULT_THEME_ATTR, style);
   }
 
   /** Returns a BadgeDrawable from the given attributes. */
