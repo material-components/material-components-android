@@ -249,6 +249,7 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
    * retain their checked state.
    *
    * @param id View ID of {@link MaterialButton} to set checked
+   * @see #uncheck(int)
    * @see #clearChecked()
    * @see #getCheckedButtonIds()
    * @see #getCheckedButtonId()
@@ -262,10 +263,27 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
   }
 
   /**
+   * Sets the {@link MaterialButton} whose id is passed in to the unchecked state.
+   *
+   * @param id View ID of {@link MaterialButton} to set unchecked
+   * @see #check(int)
+   * @see #clearChecked()
+   * @see #getCheckedButtonIds()
+   * @see #getCheckedButtonId()
+   */
+  public void uncheck(@IdRes int id) {
+    setCheckedStateForView(id, false);
+    updateCheckedStates(id, false);
+    this.checkedId = View.NO_ID;
+    dispatchOnButtonChecked(id, false);
+  }
+
+  /**
    * Clears the selections. When the selections are cleared, no {@link MaterialButton} in this group
    * is checked and {@link #getCheckedButtonIds()} returns an empty list.
    *
    * @see #check(int)
+   * @see #uncheck(int)
    * @see #getCheckedButtonIds()
    * @see #getCheckedButtonId()
    */
@@ -291,6 +309,7 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
    *     #isSingleSelection() single selection mode}. When not in {@link #isSingleSelection() single
    *     selection mode}, returns {@link View#NO_ID}.
    * @see #check(int)
+   * @see #uncheck(int)
    * @see #clearChecked()
    * @see #getCheckedButtonIds()
    * @attr ref R.styleable#MaterialButtonToggleGroup_checkedButton
@@ -308,6 +327,7 @@ public class MaterialButtonToggleGroup extends RelativeLayout {
    *     #isSingleSelection() single selection mode}, returns a list with a single ID. When no
    *     {@link MaterialButton}s are selected, returns an empty list.
    * @see #check(int)
+   * @see #uncheck(int)
    * @see #clearChecked()
    * @see #getCheckedButtonId()
    */
