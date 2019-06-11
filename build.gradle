@@ -195,8 +195,8 @@ subprojects {
         // This disables the builds tools automatic vector -> PNG generation
         defaultConfig.generatedDensities = []
 
-        compileOptions.sourceCompatibility JavaVersion.VERSION_1_7
-        compileOptions.targetCompatibility JavaVersion.VERSION_1_7
+        compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
+        compileOptions.targetCompatibility JavaVersion.VERSION_1_8
 
         aaptOptions.additionalParameters "--no-version-vectors"
 
