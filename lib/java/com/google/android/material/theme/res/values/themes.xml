@@ -61,13 +61,27 @@
     Theme overlay that replaces colors with their light versions but preserves
     the value of colorAccent, colorPrimary and its variants.
   -->
-  <style name="ThemeOverlay.MaterialComponents.Light" parent="ThemeOverlay.AppCompat.Light"/>
+  <style name="ThemeOverlay.MaterialComponents.Light" parent="ThemeOverlay.AppCompat.Light">
+    <item name="android:colorBackground">@color/design_default_color_background</item>
+    <item name="colorOnBackground">@color/design_default_color_on_background</item>
+    <item name="colorSurface">@color/design_default_color_surface</item>
+    <item name="colorOnSurface">@color/design_default_color_on_surface</item>
+    <item name="colorError">@color/design_default_color_error</item>
+    <item name="colorOnError">@color/design_default_color_on_error</item>
+  </style>
 
   <!--
     Theme overlay that replaces colors with their dark versions but preserves
     the value of colorAccent, colorPrimary and its variants.
   -->
-  <style name="ThemeOverlay.MaterialComponents.Dark" parent="ThemeOverlay.AppCompat.Dark"/>
+  <style name="ThemeOverlay.MaterialComponents.Dark" parent="ThemeOverlay.AppCompat.Dark">
+    <item name="android:colorBackground">@color/design_dark_default_color_background</item>
+    <item name="colorOnBackground">@color/design_dark_default_color_on_background</item>
+    <item name="colorSurface">@color/design_dark_default_color_surface</item>
+    <item name="colorOnSurface">@color/design_dark_default_color_on_surface</item>
+    <item name="colorError">@color/design_dark_default_color_error</item>
+    <item name="colorOnError">@color/design_dark_default_color_on_error</item>
+  </style>
 
   <!--
     Theme overlay that replaces the normal control color, which by default is the same as the
