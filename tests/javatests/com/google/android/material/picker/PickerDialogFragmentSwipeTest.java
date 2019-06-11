@@ -47,7 +47,7 @@ public class PickerDialogFragmentSwipeTest {
   public void setupDatePickerDialogForSwiping() {
     CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
-    String tag = "Date Range DialogFragment";
+    String tag = "Date DialogFragment";
 
     dialogFragment = MaterialDatePickerDialogFragment.newInstance(calendarBounds);
     dialogFragment.show(fragmentManager, tag);
@@ -55,16 +55,15 @@ public class PickerDialogFragmentSwipeTest {
     IdlingRegistry.getInstance()
         .register(
             new ViewPagerIdlingResource(
-                (ViewPager2)
-                    dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG)));
+                dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG)));
   }
 
   @Test
   public void calendarSwipeCappedAtStart() {
-    PickerDialogFragmentTestUtils.swipeEarlier();
-    PickerDialogFragmentTestUtils.swipeEarlier();
-    PickerDialogFragmentTestUtils.swipeEarlier();
-    PickerDialogFragmentTestUtils.swipeEarlier();
+    PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
+    PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
+    PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
+    PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
 
     ViewPager2 viewPager =
         dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
@@ -74,10 +73,10 @@ public class PickerDialogFragmentSwipeTest {
 
   @Test
   public void calendarSwipeCappedAtEnd() {
-    PickerDialogFragmentTestUtils.swipeLater();
-    PickerDialogFragmentTestUtils.swipeLater();
-    PickerDialogFragmentTestUtils.swipeLater();
-    PickerDialogFragmentTestUtils.swipeLater();
+    PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
+    PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
+    PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
+    PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
 
     ViewPager2 viewPager =
         dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);

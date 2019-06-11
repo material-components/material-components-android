@@ -16,13 +16,14 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
     android:id="@+id/month_bar"
     android:orientation="horizontal">
 
   <com.google.android.material.button.MaterialButton
-      android:id="@+id/month_drop_select"
+      android:id="@+id/month_navigation_fragment_toggle"
       app:icon="@drawable/ic_menu_arrow_down_black_24dp"
       android:layout_width="0dp"
       android:layout_height="@dimen/mtrl_min_touch_target_size"
@@ -31,7 +32,7 @@
       android:gravity="start"/>
 
   <com.google.android.material.button.MaterialButton
-      android:id="@+id/month_previous"
+      android:id="@+id/month_navigation_previous"
       app:icon="@drawable/ic_keyboard_arrow_left_black_24dp"
       android:layout_width="@dimen/mtrl_min_touch_target_size"
       android:layout_height="@dimen/mtrl_min_touch_target_size"
@@ -40,7 +41,7 @@
       android:gravity="center"/>
 
   <com.google.android.material.button.MaterialButton
-      android:id="@+id/month_next"
+      android:id="@+id/month_navigation_next"
       app:icon="@drawable/ic_keyboard_arrow_right_black_24dp"
       android:layout_width="@dimen/mtrl_min_touch_target_size"
       android:layout_height="@dimen/mtrl_min_touch_target_size"

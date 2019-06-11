@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+     Copyright (C) 2019 The Android Open Source Project
+
+     Licensed under the Apache License, Version 2.0 (the "License");
+     you may not use this file except in compliance with the License.
+     You may obtain a copy of the License at
+
+          http://www.apache.org/licenses/LICENSE-2.0
+
+     Unless required by applicable law or agreed to in writing, software
+     distributed under the License is distributed on an "AS IS" BASIS,
+     WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+     See the License for the specific language governing permissions and
+     limitations under the License.
+-->
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/mtrl_calendar_header_height_fullscreen"
+    android:paddingStart="4dp"
+    android:paddingEnd="4dp"
+    android:paddingLeft="4dp"
+    android:paddingRight="4dp"
+    android:background="?attr/colorPrimary"
+    android:orientation="horizontal">
+
+  <com.google.android.material.button.MaterialButton
+      android:id="@+id/cancel_button"
+      style="@style/Widget.MaterialComponents.Button.TextButton"
+      android:layout_width="48dp"
+      android:layout_height="48dp"
+      android:layout_marginTop="4dp"
+      android:layout_gravity="start|top"
+      app:iconTint="?attr/colorOnPrimary"
+      app:icon="@drawable/ic_clear_black_24dp"/>
+
+  <include
+      layout="@layout/mtrl_picker_header_title_and_selection"
+      android:layout_width="160dp"
+      android:layout_height="@dimen/mtrl_calendar_header_height"
+      android:layout_weight="0"/>
+
+  <LinearLayout
+      android:layout_width="72dp"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/confirm_button"
+        style="@style/Widget.MaterialComponents.Button.TextButton"
+        android:layout_width="wrap_content"
+        android:layout_height="48dp"
+        android:layout_marginTop="12dp"
+        android:layout_gravity="end|top"
+        android:text="@string/mtrl_picker_save"
+        android:textColor="?attr/colorOnPrimary"/>
+
+    <include
+        layout="@layout/mtrl_picker_header_toggle"
+        android:layout_width="@dimen/mtrl_min_touch_target_size"
+        android:layout_height="@dimen/mtrl_min_touch_target_size"/>
+  </LinearLayout>
+</LinearLayout>

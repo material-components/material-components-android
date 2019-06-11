@@ -14,24 +14,24 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
+<!--TODO: Fix width dimensions based upon screen size -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:id="@+id/mtrl_picker_header"
+    style="?attr/materialCalendarHeaderLayout"
+    android:layout_width="200dp"
+    android:layout_height="@dimen/mtrl_calendar_header_height"
+    android:layout_gravity="start"
+    android:orientation="horizontal">
 
   <include
-      layout="@layout/mtrl_picker_header_dialog"
-      android:layout_width="match_parent"
+      layout="@layout/mtrl_picker_header_title_and_selection"
+      android:layout_width="152dp"
       android:layout_height="@dimen/mtrl_calendar_header_height"/>
 
-  <FrameLayout
-      android:id="@+id/mtrl_calendar_frame"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
-
   <include
-      layout="@layout/mtrl_picker_actions"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+      layout="@layout/mtrl_picker_header_toggle"
+      android:layout_width="@dimen/mtrl_min_touch_target_size"
+      android:layout_height="@dimen/mtrl_min_touch_target_size"
+      android:layout_gravity="end"/>
 
 </LinearLayout>

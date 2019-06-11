@@ -16,6 +16,7 @@
 -->
 <resources>
   <attr name="materialCalendarStyle" format="reference"/>
+  <attr name="materialCalendarFullscreenTheme" format="reference"/>
   <attr name="materialCalendarTheme" format="reference"/>
 
   <!-- Header Styles -->
@@ -28,6 +29,7 @@
   <attr name="materialCalendarDay" format="reference"/>
 
   <declare-styleable name="MaterialCalendar">
+    <attr name="android:windowFullscreen"/>
     <attr name="dayStyle" format="reference"/>
     <attr name="daySelectedStyle" format="reference"/>
     <attr name="dayTodayStyle" format="reference"/>

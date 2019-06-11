@@ -15,7 +15,21 @@
     limitations under the License.
 -->
 
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/calendar_days_header"
-    android:horizontalSpacing="@dimen/mtrl_calendar_day_spacing_horizontal"
-    android:listSelector="@android:color/transparent"/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+  <TextView
+      android:id="@+id/month_title"
+      android:gravity="bottom"
+      style="@style/TextAppearance.MaterialComponents.Subtitle2"
+      android:layout_width="match_parent"
+      android:layout_height="@dimen/mtrl_calendar_day_size"/>
+
+  <include
+      layout="@layout/mtrl_calendar_month"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"/>
+
+</LinearLayout>

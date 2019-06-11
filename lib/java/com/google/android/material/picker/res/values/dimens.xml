@@ -18,11 +18,13 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
   <dimen name="mtrl_alert_dialog_picker_background_inset">24dp</dimen>
   <dimen name="mtrl_calendar_header_height">120dp</dimen>
+  <dimen name="mtrl_calendar_header_height_fullscreen">128dp</dimen>
+  <dimen name="mtrl_calendar_width">420dp</dimen>
   <dimen name="mtrl_calendar_dialog_action_padding">12dp</dimen>
   <dimen name="mtrl_calendar_dialog_padding_horizontal">24dp</dimen>
   <dimen name="mtrl_calendar_day_size">20dp</dimen>
   <dimen name="mtrl_calendar_day_size_corner">10dp</dimen>
-  <dimen name="mtrl_calendar_day_spacing_horizontal">2dp</dimen>
   <dimen name="mtrl_calendar_day_spacing_vertical">2dp</dimen>
+  <dimen name="mtrl_calendar_day_spacing_horizontal">2dp</dimen>
   <dimen name="mtrl_calendar_day_today_stroke">1dp</dimen>
 </resources>

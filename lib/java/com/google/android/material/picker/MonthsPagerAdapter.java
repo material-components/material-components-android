@@ -15,16 +15,23 @@
  */
 package com.google.android.material.picker;
 
+import com.google.android.material.R;
+
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.Lifecycle.Event;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
+import android.content.Context;
 import androidx.annotation.NonNull;
 import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
 import androidx.fragment.app.FragmentManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
+import androidx.recyclerview.widget.RecyclerView.LayoutParams;
 import android.util.SparseArray;
 import androidx.viewpager2.adapter.FragmentStateAdapter;
+import androidx.viewpager2.adapter.FragmentViewHolder;
+import java.util.List;
 
 /**
  * Manages the instances of {@link MonthFragment}, capping memory usage.
@@ -39,10 +46,12 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
   private final GridSelector<?> gridSelector;
   private final SparseArray<AdapterDataObserver> observingFragments = new SparseArray<>();
   private final OnDayClickListener onDayClickListener;
+  private final int itemHeight;
 
   /**
    * Creates a new {@link FragmentStateAdapter} that manages instances of {@link MonthFragment}.
    *
+   * @param context The {@link Context} with the calendar theme and dimensions.
    * @param fragmentManager A {@link FragmentManager} for the {@link MonthFragment} objects. {@see
    *     Fragment#getChildFragmentManager()} and {@see
    *     FragmentActivity#getSupportFragmentManager()}.
@@ -58,6 +67,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
    *     firstPage} and {@code lastPage} inclusive.
    */
   MonthsPagerAdapter(
+      Context context,
       FragmentManager fragmentManager,
       Lifecycle lifecycle,
       GridSelector<?> gridSelector,
@@ -72,11 +82,38 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
     if (startPage.compareTo(lastPage) > 0) {
       throw new IllegalArgumentException("startPage cannot be after lastPage");
     }
+
+    int daysHeight = MonthAdapter.MAXIMUM_WEEKS * MaterialCalendar.getDayHeight(context);
+    int daySpacingHeight =
+        (MonthAdapter.MAXIMUM_WEEKS - 1)
+            * context
+                .getResources()
+                .getDimensionPixelSize(R.dimen.mtrl_calendar_day_spacing_vertical);
+    int labelHeight =
+        MaterialPickerDialogFragment.isFullScreen(context)
+            ? MaterialCalendar.getDayHeight(context)
+            : 0;
+
+    this.itemHeight = daysHeight + daySpacingHeight + labelHeight;
     this.firstPage = firstPage;
     this.lastPage = lastPage;
     startIndex = firstPage.monthsUntil(startPage);
     this.gridSelector = gridSelector;
     this.onDayClickListener = onDayClickListener;
+  }
+
+  @Override
+  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
+    super.onAttachedToRecyclerView(recyclerView);
+    // TODO: Remove ViewPager2 workaround
+    recyclerView.clearOnChildAttachStateChangeListeners();
+  }
+
+  @Override
+  public void onBindViewHolder(
+      @NonNull FragmentViewHolder holder, int position, @NonNull List<Object> payloads) {
+    super.onBindViewHolder(holder, position, payloads);
+    holder.itemView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, itemHeight));
   }
 
   @Override

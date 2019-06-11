@@ -21,6 +21,8 @@ import com.google.android.material.R;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.res.ColorStateList;
+import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
@@ -35,6 +37,7 @@ import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.resources.MaterialAttributes;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -42,6 +45,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -114,9 +118,11 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   private PickerFragment<S> pickerFragment;
   private CalendarBounds calendarBounds;
   @StringRes private int titleTextResId;
+  private boolean fullscreen;
 
-  private TextView header;
+  private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
+  private MaterialShapeDrawable fullscreenBackground;
 
   /**
    * Adds the super class required arguments to the Bundle.
@@ -173,7 +179,17 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
   @Override
   public final Dialog onCreateDialog(@Nullable Bundle bundle) {
-    return new Dialog(requireContext(), themeResId);
+    Dialog dialog = new Dialog(requireContext(), themeResId);
+    Context context = dialog.getContext();
+    fullscreen = isFullScreen(context);
+    int surfaceColor =
+        MaterialAttributes.resolveOrThrow(
+            getContext(),
+            R.attr.colorSurface,
+            MaterialPickerDialogFragment.class.getCanonicalName());
+    fullscreenBackground = new MaterialShapeDrawable();
+    fullscreenBackground.setFillColor(ColorStateList.valueOf(surfaceColor));
+    return dialog;
   }
 
   @NonNull
@@ -182,12 +198,13 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-    View root = layoutInflater.inflate(R.layout.mtrl_picker_dialog, viewGroup);
+
+    int layout = fullscreen ? R.layout.mtrl_picker_fullscreen : R.layout.mtrl_picker_dialog;
+    View root = layoutInflater.inflate(layout, viewGroup);
     Context context = root.getContext();
-    header = root.findViewById(R.id.mtrl_picker_header_text);
+    headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
     ((TextView) root.findViewById(R.id.mtrl_picker_title_text)).setText(titleTextResId);
-
     initHeaderToggle(context);
 
     MaterialButton confirmButton = root.findViewById(R.id.confirm_button);
@@ -215,6 +232,12 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   @Override
   public void onStart() {
     super.onStart();
+    if (fullscreen) {
+      Window window = getDialog().getWindow();
+      window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+      // Dialogs use a background with an InsetDrawable by default, so we have to replace it.
+      window.setBackgroundDrawable(fullscreenBackground);
+    }
     startPickerFragment();
   }
 
@@ -258,7 +281,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   private void updateHeader(S selection) {
-    header.setText(getHeaderText(selection));
+    headerSelectionText.setText(getHeaderText(selection));
   }
 
   private void startPickerFragment() {
@@ -305,5 +328,16 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     toggleDrawable.addState(
         new int[] {}, AppCompatResources.getDrawable(context, R.drawable.ic_edit_black_24dp));
     return toggleDrawable;
+  }
+
+  static boolean isFullScreen(Context context) {
+    int calendarStyle =
+        MaterialAttributes.resolveOrThrow(
+            context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());
+    int[] attrs = {android.R.attr.windowFullscreen};
+    TypedArray a = context.obtainStyledAttributes(calendarStyle, attrs);
+    boolean fullscreen = a.getBoolean(0, false);
+    a.recycle();
+    return fullscreen;
   }
 }

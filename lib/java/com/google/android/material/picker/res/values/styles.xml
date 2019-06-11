@@ -30,14 +30,18 @@
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget">
+    <item name="android:windowFullscreen">false</item>
     <item name="dayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
     <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
     <item name="dayTodayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Today</item>
     <item name="rangeFillColor">@color/mtrl_calendar_selected_range</item>
   </style>
 
+  <style name="Widget.MaterialComponents.MaterialCalendar.Fullscreen" parent="Widget.MaterialComponents.MaterialCalendar">
+    <item name="android:windowFullscreen">true</item>
+  </style>
+
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderLayout" parent="android:Widget">
-    <item name="android:orientation">vertical</item>
     <item name="android:background">?attr/colorPrimary</item>
     <item name="android:paddingStart">@dimen/mtrl_calendar_dialog_padding_horizontal</item>
     <item name="android:paddingLeft">@dimen/mtrl_calendar_dialog_padding_horizontal</item>

@@ -31,4 +31,5 @@
   <string name="mtrl_picker_date_format" description="The format for how a date will be shown to the user, with the year included [CHAR_LIMIT=16]">MMM dd, yyyy</string>
   <string name="mtrl_picker_date_format_without_year" description="The format for how a date will be shown to the user, without the year included [CHAR_LIMIT=16]">MMM dd</string>
   <string name="mtrl_picker_text_input_date_format" description="The format for how the user should enter a date via text input [CHAR_LIMIT=16]">MM/dd/yyyy</string>
+  <string name="mtrl_picker_save" description="Confirms the selection [CHAR_LIMIT=12]">Save</string>
 </resources>

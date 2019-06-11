@@ -109,23 +109,30 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     Month latestMonth = calendarBounds.getEnd();
     Month currentMonth = calendarBounds.getCurrent();
 
-    final View root = themedInflater.inflate(R.layout.mtrl_calendar, viewGroup, false);
-    GridView daysHeader = root.findViewById(R.id.calendar_days_header);
+    int layout;
+    int orientation;
+    if (MaterialPickerDialogFragment.isFullScreen(themedContext)) {
+      layout = R.layout.mtrl_calendar_vertical;
+      orientation = ViewPager2.ORIENTATION_VERTICAL;
+    } else {
+      layout = R.layout.mtrl_calendar_horizontal;
+      orientation = ViewPager2.ORIENTATION_HORIZONTAL;
+    }
+
+    View root = themedInflater.inflate(layout, viewGroup, false);
+    GridView daysHeader = root.findViewById(R.id.mtrl_calendar_days_of_week);
     daysHeader.setAdapter(new DaysOfWeekAdapter());
     daysHeader.setNumColumns(earliestMonth.daysInWeek);
 
-    ViewPager2 monthsPager = root.findViewById(R.id.month_pager);
-    monthsPager.setOffscreenPageLimit(1);
+    ViewPager2 monthsPager = root.findViewById(R.id.mtrl_calendar_viewpager);
+    monthsPager.setOrientation(orientation);
     monthsPager.setTag(VIEW_PAGER_TAG);
-    int verticalDaySpacing =
-        getResources().getDimensionPixelSize(R.dimen.mtrl_calendar_day_spacing_vertical);
     monthsPager.setLayoutParams(
-        new LayoutParams(
-            /* width= */ LayoutParams.MATCH_PARENT,
-            /* height= */ MonthAdapter.MAXIMUM_WEEKS * getDayHeight(getContext())
-                + (MonthAdapter.MAXIMUM_WEEKS - 1) * verticalDaySpacing));
+        new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
+
     monthsPagerAdapter =
         new MonthsPagerAdapter(
+            themedContext,
             getChildFragmentManager(),
             getLifecycle(),
             gridSelector,
@@ -142,8 +149,10 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             });
     monthsPager.setAdapter(monthsPagerAdapter);
     monthsPager.setCurrentItem(monthsPagerAdapter.getStartPosition(), false);
+    if (root.findViewById(R.id.month_navigation_fragment_toggle) != null) {
+      addActionsToMonthNavigation(root, monthsPagerAdapter);
+    }
 
-    addMonthChangeListeners(root, monthsPagerAdapter);
     return root;
   }
 
@@ -163,18 +172,17 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     return (int) context.getResources().getDimension(R.dimen.mtrl_calendar_day_size);
   }
 
-  private void addMonthChangeListeners(
+  private void addActionsToMonthNavigation(
       final View root, final MonthsPagerAdapter monthsPagerAdapter) {
-    final ViewPager2 monthPager = root.findViewById(R.id.month_pager);
-    final MaterialButton monthDropSelect = root.findViewById(R.id.month_drop_select);
+    final ViewPager2 monthPager = root.findViewById(R.id.mtrl_calendar_viewpager);
+    final MaterialButton monthDropSelect = root.findViewById(R.id.month_navigation_fragment_toggle);
     monthDropSelect.setText(monthsPagerAdapter.getPageTitle(monthPager.getCurrentItem()));
-    final MaterialButton monthPrev = root.findViewById(R.id.month_previous);
-    final MaterialButton monthNext = root.findViewById(R.id.month_next);
+    final MaterialButton monthPrev = root.findViewById(R.id.month_navigation_previous);
+    final MaterialButton monthNext = root.findViewById(R.id.month_navigation_next);
     monthPager.registerOnPageChangeCallback(
         new OnPageChangeCallback() {
           @Override
           public void onPageSelected(int position) {
-            super.onPageSelected(position);
             calendarBounds =
                 CalendarBounds.create(
                     calendarBounds.getStart(),

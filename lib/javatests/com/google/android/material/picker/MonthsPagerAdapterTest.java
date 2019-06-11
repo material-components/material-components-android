@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import static org.junit.Assert.assertEquals;
 
+import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.core.app.ApplicationProvider;
 import java.util.Calendar;
@@ -36,6 +37,7 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 public class MonthsPagerAdapterTest {
 
   private AppCompatActivity activity;
+  private Context context;
   private Month feb2016;
   private Month march2016;
   private Month april2016;
@@ -44,6 +46,7 @@ public class MonthsPagerAdapterTest {
   public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
+    context = activity.getApplicationContext();
     feb2016 = Month.create(2016, Calendar.FEBRUARY);
     march2016 = Month.create(2016, Calendar.MARCH);
     april2016 = Month.create(2016, Calendar.APRIL);
@@ -53,6 +56,7 @@ public class MonthsPagerAdapterTest {
   public void startingPageCalculated() {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
+            context,
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,
@@ -68,6 +72,7 @@ public class MonthsPagerAdapterTest {
   public void singleMonthConstructs() {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
+            context,
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,
@@ -85,6 +90,7 @@ public class MonthsPagerAdapterTest {
   public void illegalStartMonthFails() {
     exceptionRule.expect(IllegalArgumentException.class);
     new MonthsPagerAdapter(
+        context,
         activity.getSupportFragmentManager(),
         activity.getLifecycle(),
         /* gridSelector= */ null,
@@ -98,6 +104,7 @@ public class MonthsPagerAdapterTest {
   public void illegalLastMonthFails() {
     exceptionRule.expect(IllegalArgumentException.class);
     new MonthsPagerAdapter(
+        context,
         activity.getSupportFragmentManager(),
         activity.getLifecycle(),
         /* gridSelector= */ null,
@@ -111,6 +118,7 @@ public class MonthsPagerAdapterTest {
   public void pageTitles() {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
+            context,
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,

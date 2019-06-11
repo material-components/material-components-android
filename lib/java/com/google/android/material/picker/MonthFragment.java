@@ -29,6 +29,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
+import android.widget.TextView;
 
 /**
  * A {@link Fragment} representing the days of a single {@link Month} highlighted by a {@link
@@ -75,12 +76,24 @@ public class MonthFragment extends Fragment {
   }
 
   @Override
-  public GridView onCreateView(
+  public View onCreateView(
       LayoutInflater layoutInflater, ViewGroup root, Bundle savedInstanceState) {
     Context context = getParentFragment().getView().getContext();
     LayoutInflater themedInflater = LayoutInflater.from(context);
-    MaterialCalendarGridView gridView =
-        (MaterialCalendarGridView) themedInflater.inflate(R.layout.mtrl_month_grid, root, false);
+
+    final int layout;
+    if (MaterialPickerDialogFragment.isFullScreen(context)) {
+      layout = R.layout.mtrl_calendar_month_labeled;
+    } else {
+      layout = R.layout.mtrl_calendar_month;
+    }
+    View view = themedInflater.inflate(layout, root, false);
+    TextView monthTitle = view.findViewById(R.id.month_title);
+    if (monthTitle != null) {
+      monthTitle.setText(month.getLongName());
+    }
+
+    MaterialCalendarGridView gridView = view.findViewById(R.id.month_grid);
     gridView.setNumColumns(month.daysInWeek);
     gridView.setAdapter(monthAdapter);
     gridView.setOnItemClickListener(
@@ -92,7 +105,8 @@ public class MonthFragment extends Fragment {
             }
           }
         });
-    return gridView;
+
+    return view;
   }
 
   void notifyDataSetChanged() {
