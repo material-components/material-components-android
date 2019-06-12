@@ -104,7 +104,7 @@ gradle.projectsEvaluated {
   }
 }
 
-task generateJavadocs(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
+task generateJavadocs(type: Javadoc) {
   if (project.hasProperty("online")) {
     options.addStringOption("toroot", "/")
     options.addStringOption("hdf", "android.whichdoc online")
@@ -121,7 +121,6 @@ task generateJavadocs(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJava
 
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
-    include '**/com/google/android/material/**'
 
     title = null
     destinationDir = new File(outputPath)
@@ -142,14 +141,13 @@ task getVersion {
   }
 }
 
-task generateApiXml(type: Javadoc, dependsOn: ':lib:compileReleaseJavaWithJavac') {
+task generateApiXml(type: Javadoc) {
   if (project.hasProperty("apiName")) {
     def jdiff = project.property("jdiffJar")
     def apiName = project.property("apiName")
     source = android.sourceSets.main.java.source
     source = source.findAll { it.name.endsWith(".java") }
     classpath = files("${android.sdkDirectory}/platforms/${android.compileSdkVersion}/android.jar")
-    include '**/com/google/android/material/**'
     options.doclet = "jdiff.JDiff"
     options.addStringOption("subpackages", ".")
     options.addStringOption("apiname", apiName)
@@ -192,6 +190,9 @@ afterEvaluate {
 
 def addResources(tasks) {
   tasks.each {
+    it.dependsOn(':lib:processReleaseUnitTestResources')
+    it.source += "build/generated/not_namespaced_r_class_sources/releaseUnitTest/processReleaseUnitTestResources/r/com/google/android/material/R.java"
+
     def releaseVariant = android.libraryVariants.find { it.name == 'release' }
     it.classpath += files(android.libraryVariants.collect { variant ->
       variant.javaCompile.classpath.files
