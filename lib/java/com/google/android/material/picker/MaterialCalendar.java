@@ -111,7 +111,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
     int layout;
     int orientation;
-    if (MaterialPickerDialogFragment.isFullScreen(themedContext)) {
+    if (MaterialPickerDialogFragment.isFullscreen(themedContext)) {
       layout = R.layout.mtrl_calendar_vertical;
       orientation = ViewPager2.ORIENTATION_VERTICAL;
     } else {

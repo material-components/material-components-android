@@ -181,7 +181,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   public final Dialog onCreateDialog(@Nullable Bundle bundle) {
     Dialog dialog = new Dialog(requireContext(), themeResId);
     Context context = dialog.getContext();
-    fullscreen = isFullScreen(context);
+    fullscreen = isFullscreen(context);
     int surfaceColor =
         MaterialAttributes.resolveOrThrow(
             getContext(),
@@ -330,7 +330,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     return toggleDrawable;
   }
 
-  static boolean isFullScreen(Context context) {
+  static boolean isFullscreen(Context context) {
     int calendarStyle =
         MaterialAttributes.resolveOrThrow(
             context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());

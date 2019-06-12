@@ -82,7 +82,7 @@ public class MonthFragment extends Fragment {
     LayoutInflater themedInflater = LayoutInflater.from(context);
 
     final int layout;
-    if (MaterialPickerDialogFragment.isFullScreen(context)) {
+    if (MaterialPickerDialogFragment.isFullscreen(context)) {
       layout = R.layout.mtrl_calendar_month_labeled;
     } else {
       layout = R.layout.mtrl_calendar_month;

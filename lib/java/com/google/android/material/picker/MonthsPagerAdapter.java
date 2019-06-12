@@ -89,7 +89,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
                 .getResources()
                 .getDimensionPixelSize(R.dimen.mtrl_calendar_day_spacing_vertical);
     int labelHeight =
-        MaterialPickerDialogFragment.isFullScreen(context)
+        MaterialPickerDialogFragment.isFullscreen(context)
             ? MaterialCalendar.getDayHeight(context)
             : 0;
 
