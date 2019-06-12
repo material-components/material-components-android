@@ -216,8 +216,8 @@ Define a custom `shapeAppearanceOverlay` style with just the attribute you want
 to overlay on top of the existing `shapeAppearance`:
 
 ```xml
-<style name="ShapeAppearanceOverlay.MyApp.MaterialCardView.Rounded" parent="">
-  <item name="cornerFamily">rounded</item>
+<style name="ShapeAppearanceOverlay.MyApp.MaterialCardView.Cut">
+  <item name="cornerFamily">cut</item>
 </style>
 ```
 
@@ -231,7 +231,7 @@ Then, set the card's `shapeAppearanceOverlay` attribute to that
     android:layout_marginLeft="@dimen/mtrl_card_spacing"
     android:layout_marginTop="@dimen/mtrl_card_spacing"
     android:layout_marginRight="@dimen/mtrl_card_spacing"
-    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView.Rounded">
+    app:shapeAppearanceOverlay="@style/ShapeAppearanceOverlay.MyApp.MaterialCardView.Cut">
   <TextView
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
@@ -239,7 +239,7 @@ Then, set the card's `shapeAppearanceOverlay` attribute to that
 </com.google.android.material.card.MaterialCardView>
 ```
 
-The card should now have 16dp rounded corners.
+The card should now have 16dp cut corners.
 
 #### Supported Components
 
