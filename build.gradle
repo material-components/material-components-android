@@ -24,7 +24,6 @@ ext {
   minSdkVersion = 14
   targetSdkVersion = 27
 
-  def lifecycle_version = "2.0.0"
   androidXVersions = [
     annotation            : '1.0.1',
     appCompat             : '1.1.0-beta01', // Needed for CSL + theme attr fixes
@@ -34,8 +33,7 @@ ext {
     fragment              : '1.0.0',
     legacySupportCoreUi   : '1.0.0',
     legacySupportCoreUtils: '1.0.0',
-    lifecycleRuntime      : "${lifecycle_version}",
-    lifecycleCompiler     : "${lifecycle_version}",
+    lifecycle             : "2.0.0",
     recyclerView          : '1.0.0',
     recyclerViewSelection : '1.0.0',
     transition            : '1.0.1',
@@ -109,10 +107,10 @@ def compatibility(name) {
       return "androidx.legacy:legacy-support-core-utils:${androidXVersions.legacySupportCoreUtils}"
     case "fragment":
       return "androidx.fragment:fragment:${androidXVersions.fragment}"
+    case "lifecycleCommonJava8":
+      return "androidx.lifecycle:lifecycle-common-java8:${androidXVersions.lifecycle}"
     case "lifecycleRuntime":
-      return "androidx.lifecycle:lifecycle-runtime:${androidXVersions.lifecycleRuntime}"
-    case "lifecycleCompiler":
-      return "androidx.lifecycle:lifecycle-compiler:${androidXVersions.lifecycleCompiler}"
+      return "androidx.lifecycle:lifecycle-runtime:${androidXVersions.lifecycle}"
     case "recyclerview":
       return "androidx.recyclerview:recyclerview:${androidXVersions.recyclerView}"
     case "transition":

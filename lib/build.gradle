@@ -13,13 +13,12 @@ dependencies {
   api compatibility("core_ui")
   api compatibility("core_utils")
   api compatibility("fragment")
+  api compatibility("lifecycleCommonJava8")
+  api compatibility("lifecycleRuntime")
   api compatibility("recyclerview")
   api compatibility("transition")
   api compatibility("vectordrawable")
   api compatibility("viewpager2")
-
-  api compatibility("lifecycleRuntime")
-  annotationProcessor compatibility("lifecycleCompiler")
 
   testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
