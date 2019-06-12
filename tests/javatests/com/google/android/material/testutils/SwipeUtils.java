@@ -16,8 +16,6 @@
 
 package com.google.android.material.testutils;
 
-import android.view.View;
-import androidx.test.espresso.action.CoordinatesProvider;
 import androidx.test.espresso.action.GeneralSwipeAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Swipe;
@@ -29,18 +27,8 @@ public final class SwipeUtils {
       final int swipeX, final int swipeStartY, final int swipeAmountY) {
     return new GeneralSwipeAction(
         Swipe.SLOW,
-        new CoordinatesProvider() {
-          @Override
-          public float[] calculateCoordinates(View view) {
-            return new float[] {swipeX, swipeStartY};
-          }
-        },
-        new CoordinatesProvider() {
-          @Override
-          public float[] calculateCoordinates(View view) {
-            return new float[] {swipeX, swipeStartY - swipeAmountY};
-          }
-        },
+        view -> new float[] {swipeX, swipeStartY},
+        view -> new float[] {swipeX, swipeStartY - swipeAmountY},
         Press.FINGER);
   }
 
@@ -48,18 +36,8 @@ public final class SwipeUtils {
       final int swipeX, final int swipeStartY, final int swipeAmountY) {
     return new GeneralSwipeAction(
         Swipe.SLOW,
-        new CoordinatesProvider() {
-          @Override
-          public float[] calculateCoordinates(View view) {
-            return new float[] {swipeX, swipeStartY};
-          }
-        },
-        new CoordinatesProvider() {
-          @Override
-          public float[] calculateCoordinates(View view) {
-            return new float[] {swipeX, swipeStartY + swipeAmountY};
-          }
-        },
+        view -> new float[] {swipeX, swipeStartY},
+        view -> new float[] {swipeX, swipeStartY + swipeAmountY},
         Press.FINGER);
   }
 }

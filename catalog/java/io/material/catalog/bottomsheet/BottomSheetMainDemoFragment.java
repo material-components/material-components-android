@@ -30,10 +30,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialog;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -53,56 +50,47 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
     View button = view.findViewById(R.id.bottomsheet_button);
-    button.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            bottomSheetDialog.show();
-          }
-        });
+    button.setOnClickListener(v -> bottomSheetDialog.show());
     Switch fullScreenSwitch = view.findViewById(R.id.cat_fullscreen_switch);
 
     fullScreenSwitch.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            // Calculate window height for fullscreen use
-            DisplayMetrics displayMetrics = new DisplayMetrics();
-            ((Activity) getContext())
-                .getWindowManager()
-                .getDefaultDisplay()
-                .getMetrics(displayMetrics);
-            int windowHeight = displayMetrics.heightPixels;
+        (buttonView, isChecked) -> {
+          // Calculate window height for fullscreen use
+          DisplayMetrics displayMetrics = new DisplayMetrics();
+          ((Activity) getContext())
+              .getWindowManager()
+              .getDefaultDisplay()
+              .getMetrics(displayMetrics);
+          int windowHeight = displayMetrics.heightPixels;
 
-            View bottomSheetChildView = view.findViewById(R.id.bottom_drawer);
-            ViewGroup.LayoutParams params = bottomSheetChildView.getLayoutParams();
-            BottomSheetBehavior<View> bottomSheetBehavior =
-                BottomSheetBehavior.from(bottomSheetChildView);
-            View modalBottomSheetChildView = bottomSheetDialog.findViewById(R.id.bottom_drawer_2);
-            ViewGroup.LayoutParams layoutParams = modalBottomSheetChildView.getLayoutParams();
-            BottomSheetBehavior<FrameLayout> modalBottomSheetBehavior =
-                bottomSheetDialog.getBehavior();
-            boolean fitToContents = true;
-            float halfExpandedRatio = 0.5f;
+          View bottomSheetChildView = view.findViewById(R.id.bottom_drawer);
+          ViewGroup.LayoutParams params = bottomSheetChildView.getLayoutParams();
+          BottomSheetBehavior<View> bottomSheetBehavior =
+              BottomSheetBehavior.from(bottomSheetChildView);
+          View modalBottomSheetChildView = bottomSheetDialog.findViewById(R.id.bottom_drawer_2);
+          ViewGroup.LayoutParams layoutParams = modalBottomSheetChildView.getLayoutParams();
+          BottomSheetBehavior<FrameLayout> modalBottomSheetBehavior =
+              bottomSheetDialog.getBehavior();
+          boolean fitToContents = true;
+          float halfExpandedRatio = 0.5f;
 
-            if (params != null && layoutParams != null) {
-              if (isChecked) {
-                params.height = windowHeight;
-                layoutParams.height = windowHeight;
-                fitToContents = false;
-                halfExpandedRatio = 0.7f;
+          if (params != null && layoutParams != null) {
+            if (isChecked) {
+              params.height = windowHeight;
+              layoutParams.height = windowHeight;
+              fitToContents = false;
+              halfExpandedRatio = 0.7f;
 
-              } else {
-                params.height = (windowHeight * 3 / 5);
-                layoutParams.height = (windowHeight * 2 / 3);
-              }
-              bottomSheetChildView.setLayoutParams(params);
-              modalBottomSheetChildView.setLayoutParams(layoutParams);
-              bottomSheetBehavior.setFitToContents(fitToContents);
-              modalBottomSheetBehavior.setFitToContents(fitToContents);
-              bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio);
-              modalBottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio);
+            } else {
+              params.height = (windowHeight * 3 / 5);
+              layoutParams.height = (windowHeight * 2 / 3);
             }
+            bottomSheetChildView.setLayoutParams(params);
+            modalBottomSheetChildView.setLayoutParams(layoutParams);
+            bottomSheetBehavior.setFitToContents(fitToContents);
+            modalBottomSheetBehavior.setFitToContents(fitToContents);
+            bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio);
+            modalBottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio);
           }
         });
 

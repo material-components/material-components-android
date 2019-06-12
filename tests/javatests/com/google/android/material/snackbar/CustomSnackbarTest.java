@@ -168,20 +168,11 @@ public class CustomSnackbarTest {
     // Now perform the UI interaction
     SnackbarUtils.performActionAndWaitUntilFullyDismissed(
         snackbar,
-        new SnackbarUtils.TransientBottomBarAction() {
-          @Override
-          public void perform() throws Throwable {
-            if (action != null) {
-              interaction.perform(action);
-            } else if (dismissAction != null) {
-              activityTestRule.runOnUiThread(
-                  new Runnable() {
-                    @Override
-                    public void run() {
-                      dismissAction.dismiss(snackbar);
-                    }
-                  });
-            }
+        () -> {
+          if (action != null) {
+            interaction.perform(action);
+          } else if (dismissAction != null) {
+            activityTestRule.runOnUiThread(() -> dismissAction.dismiss(snackbar));
           }
         });
 
@@ -225,12 +216,7 @@ public class CustomSnackbarTest {
     verifyDismissCallback(
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         null,
-        new DismissAction() {
-          @Override
-          public void dismiss(CustomSnackbar snackbar) {
-            snackbar.dismiss();
-          }
-        },
+        BaseTransientBottomBar::dismiss,
         Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_MANUAL);
   }
@@ -260,12 +246,7 @@ public class CustomSnackbarTest {
     verifyDismissCallback(
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         null,
-        new DismissAction() {
-          @Override
-          public void dismiss(CustomSnackbar snackbar) {
-            anotherSnackbar.show();
-          }
-        },
+        snackbar -> anotherSnackbar.show(),
         Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
 

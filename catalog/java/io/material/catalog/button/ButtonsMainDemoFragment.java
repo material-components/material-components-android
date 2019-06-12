@@ -27,7 +27,6 @@ import androidx.core.math.MathUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridLayout;
 import io.material.catalog.feature.DemoFragment;
@@ -55,12 +54,7 @@ public class ButtonsMainDemoFragment extends DemoFragment {
             // Show a Snackbar with an action button, which should also have a MaterialButton style
             Snackbar snackbar =
                 Snackbar.make(v, R.string.cat_button_clicked, Snackbar.LENGTH_LONG);
-            snackbar.setAction(
-                R.string.cat_snackbar_action_button_text,
-                new OnClickListener() {
-                  @Override
-                  public void onClick(View v) {}
-                });
+            snackbar.setAction(R.string.cat_snackbar_action_button_text, v1 -> {});
             snackbar.show();
           });
     }

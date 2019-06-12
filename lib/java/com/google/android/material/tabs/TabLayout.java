@@ -1702,13 +1702,7 @@ public class TabLayout extends HorizontalScrollView {
       scrollAnimator = new ValueAnimator();
       scrollAnimator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
       scrollAnimator.setDuration(tabIndicatorAnimationDuration);
-      scrollAnimator.addUpdateListener(
-          new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-              scrollTo((int) animator.getAnimatedValue(), 0);
-            }
-          });
+      scrollAnimator.addUpdateListener(animator -> scrollTo((int) animator.getAnimatedValue(), 0));
     }
   }
 
@@ -2594,21 +2588,9 @@ public class TabLayout extends HorizontalScrollView {
         return;
       }
       view.addOnLayoutChangeListener(
-          new OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(
-                View v,
-                int left,
-                int top,
-                int right,
-                int bottom,
-                int oldLeft,
-                int oldTop,
-                int oldRight,
-                int oldBottom) {
-              if (view.getVisibility() == VISIBLE) {
-                tryUpdateBadgeDrawableBounds(view);
-              }
+          (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
+            if (view.getVisibility() == VISIBLE) {
+              tryUpdateBadgeDrawableBounds(view);
             }
           });
     }
@@ -3029,14 +3011,11 @@ public class TabLayout extends HorizontalScrollView {
         animator.setDuration(duration);
         animator.setFloatValues(0, 1);
         animator.addUpdateListener(
-            new ValueAnimator.AnimatorUpdateListener() {
-              @Override
-              public void onAnimationUpdate(ValueAnimator animator) {
-                final float fraction = animator.getAnimatedFraction();
-                setIndicatorPosition(
-                    AnimationUtils.lerp(startLeft, finalTargetLeft, fraction),
-                    AnimationUtils.lerp(startRight, finalTargetRight, fraction));
-              }
+            valueAnimator -> {
+              final float fraction = valueAnimator.getAnimatedFraction();
+              setIndicatorPosition(
+                  AnimationUtils.lerp(startLeft, finalTargetLeft, fraction),
+                  AnimationUtils.lerp(startRight, finalTargetRight, fraction));
             });
         animator.addListener(
             new AnimatorListenerAdapter() {

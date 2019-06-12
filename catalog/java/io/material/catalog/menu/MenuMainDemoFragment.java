@@ -33,7 +33,6 @@ import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.widget.ListPopupWindow;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
 import android.text.Spannable;
 import android.text.style.BackgroundColorSpan;
 import android.util.TypedValue;
@@ -44,10 +43,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.TextView;
@@ -72,33 +68,15 @@ public class MenuMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(R.layout.cat_menu_fragment, viewGroup, false);
     Button button = view.findViewById(R.id.menu_button);
     Button iconMenuButton = view.findViewById(R.id.menu_button_with_icons);
-    button.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            showMenu(v, R.menu.popup_menu);
-          }
-        });
-    iconMenuButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            showMenu(v, R.menu.menu_with_icons);
-          }
-        });
+    button.setOnClickListener(v -> showMenu(v, R.menu.popup_menu));
+    iconMenuButton.setOnClickListener(v -> showMenu(v, R.menu.menu_with_icons));
 
     TextView contextMenuTextView = view.findViewById(R.id.context_menu_tv);
     registerForContextMenu(contextMenuTextView);
 
     Button listPopupWindowButton = view.findViewById(R.id.list_popup_window);
     ListPopupWindow listPopupWindow = initializeListPopupMenu(listPopupWindowButton);
-    listPopupWindowButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            listPopupWindow.show();
-          }
-        });
+    listPopupWindowButton.setOnClickListener(v -> listPopupWindow.show());
 
     return view;
   }
@@ -127,16 +105,13 @@ public class MenuMainDemoFragment extends DemoFragment {
       }
     }
     popup.setOnMenuItemClickListener(
-        new OnMenuItemClickListener() {
-          @Override
-          public boolean onMenuItemClick(MenuItem menuItem) {
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    menuItem.getTitle(),
-                    Snackbar.LENGTH_LONG)
-                .show();
-            return true;
-          }
+        menuItem -> {
+          Snackbar.make(
+                  getActivity().findViewById(android.R.id.content),
+                  menuItem.getTitle(),
+                  Snackbar.LENGTH_LONG)
+              .show();
+          return true;
         });
     popup.show();
   }
@@ -147,25 +122,19 @@ public class MenuMainDemoFragment extends DemoFragment {
     Context context = getContext();
     menu.add(android.R.string.copy)
         .setOnMenuItemClickListener(
-            new MenuItem.OnMenuItemClickListener() {
-              @Override
-              public boolean onMenuItemClick(MenuItem item) {
-                ClipboardManager clipboard =
-                    (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
-                clipboard.setPrimaryClip(
-                    ClipData.newPlainText(CLIP_DATA_LABEL, contextMenuTextView.getText()));
-                return true;
-              }
+            item -> {
+              ClipboardManager clipboard =
+                  (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+              clipboard.setPrimaryClip(
+                  ClipData.newPlainText(CLIP_DATA_LABEL, contextMenuTextView.getText()));
+              return true;
             });
 
     menu.add(R.string.context_menu_highlight)
         .setOnMenuItemClickListener(
-            new MenuItem.OnMenuItemClickListener() {
-              @Override
-              public boolean onMenuItemClick(MenuItem item) {
-                highlightText(contextMenuTextView);
-                return true;
-              }
+            item -> {
+              highlightText(contextMenuTextView);
+              return true;
             });
   }
 
@@ -184,16 +153,13 @@ public class MenuMainDemoFragment extends DemoFragment {
     listPopupWindow.setAdapter(adapter);
     listPopupWindow.setAnchorView(v);
     listPopupWindow.setOnItemClickListener(
-        new OnItemClickListener() {
-          @Override
-          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    adapter.getItem(position).toString(),
-                    Snackbar.LENGTH_LONG)
-                .show();
-            listPopupWindow.dismiss();
-          }
+        (parent, view, position, id) -> {
+          Snackbar.make(
+                  getActivity().findViewById(android.R.id.content),
+                  adapter.getItem(position).toString(),
+                  Snackbar.LENGTH_LONG)
+              .show();
+          listPopupWindow.dismiss();
         });
     return listPopupWindow;
   }

@@ -78,20 +78,8 @@ public class ElevationMainDemoFragment extends DemoFragment {
 
     elevationDP = elevationValues[currentElevation];
 
-    increaseButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View button) {
-            updateElevationLevel(view, currentElevation + 1);
-          }
-        });
-    decreaseButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View button) {
-            updateElevationLevel(view, currentElevation - 1);
-          }
-        });
+    increaseButton.setOnClickListener(button -> updateElevationLevel(view, currentElevation + 1));
+    decreaseButton.setOnClickListener(button -> updateElevationLevel(view, currentElevation - 1));
     updateElevationLevel(view, 0);
   }
 

@@ -23,7 +23,6 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
@@ -146,16 +145,13 @@ public class TocFragment extends DaggerFragment {
 
   private void addGridTopDividerVisibilityListener() {
     appBarLayout.addOnOffsetChangedListener(
-        new OnOffsetChangedListener() {
-          @Override
-          public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-            if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-              // CTL is collapsed, hide top divider
-              gridTopDivider.setVisibility(View.GONE);
-            } else {
-              // CTL is expanded or expanding, show top divider
-              gridTopDivider.setVisibility(View.VISIBLE);
-            }
+        (appBarLayout, verticalOffset) -> {
+          if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+            // CTL is collapsed, hide top divider
+            gridTopDivider.setVisibility(View.GONE);
+          } else {
+            // CTL is expanded or expanding, show top divider
+            gridTopDivider.setVisibility(View.VISIBLE);
           }
         });
   }

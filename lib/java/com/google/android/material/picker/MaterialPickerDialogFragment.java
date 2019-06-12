@@ -43,7 +43,6 @@ import androidx.fragment.app.FragmentTransaction;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.TextView;
@@ -209,23 +208,11 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
     MaterialButton confirmButton = root.findViewById(R.id.confirm_button);
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
-    confirmButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            dismiss();
-          }
-        });
+    confirmButton.setOnClickListener(v -> dismiss());
 
     MaterialButton cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
-    cancelButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            dismiss();
-          }
-        });
+    cancelButton.setOnClickListener(v -> dismiss());
     return root;
   }
 
@@ -295,27 +282,16 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     fragmentTransaction.replace(R.id.mtrl_calendar_frame, pickerFragment);
     fragmentTransaction.commitNow();
 
-    pickerFragment
-        .getGridSelector()
-        .addOnSelectionChangedListener(
-            new OnSelectionChangedListener<S>() {
-              @Override
-              public void onSelectionChanged(S selection) {
-                updateHeader(selection);
-              }
-            });
+    pickerFragment.getGridSelector().addOnSelectionChangedListener(this::updateHeader);
   }
 
   private void initHeaderToggle(Context context) {
     headerToggleButton.setTag(TOGGLE_BUTTON_TAG);
     headerToggleButton.setImageDrawable(createHeaderToggleDrawable(context));
     headerToggleButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            headerToggleButton.toggle();
-            startPickerFragment();
-          }
+        v -> {
+          headerToggleButton.toggle();
+          startPickerFragment();
         });
   }
 

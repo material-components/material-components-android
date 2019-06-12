@@ -21,7 +21,6 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.ValueAnimator;
-import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -875,13 +874,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     ViewParent parent = child.getParent();
     if (parent != null && parent.isLayoutRequested() && ViewCompat.isAttachedToWindow(child)) {
       final int finalState = state;
-      child.post(
-          new Runnable() {
-            @Override
-            public void run() {
-              startSettlingAnimation(child, finalState);
-            }
-          });
+      child.post(() -> startSettlingAnimation(child, finalState));
     } else {
       startSettlingAnimation(child, state);
     }
@@ -1057,13 +1050,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     interpolatorAnimator = ValueAnimator.ofFloat(0f, 1f);
     interpolatorAnimator.setDuration(CORNER_ANIMATION_DURATION);
     interpolatorAnimator.addUpdateListener(
-        new AnimatorUpdateListener() {
-          @Override
-          public void onAnimationUpdate(ValueAnimator animation) {
-            float value = (float) animation.getAnimatedValue();
-            if (materialShapeDrawable != null) {
-              materialShapeDrawable.setInterpolation(value);
-            }
+        animation -> {
+          float value = (float) animation.getAnimatedValue();
+          if (materialShapeDrawable != null) {
+            materialShapeDrawable.setInterpolation(value);
           }
         });
   }

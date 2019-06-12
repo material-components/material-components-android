@@ -366,13 +366,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
     // that scales the FAB to 0/0 scales and interpolates its alpha to 0. Since that animation
     // starts running partway through our swipe gesture and may complete a bit later then
     // the swipe gesture, poll to catch the "final" state of the FAB.
-    PollingCheck.waitFor(
-        new PollingCheck.PollingCheckCondition() {
-          @Override
-          public boolean canProceed() {
-            return fab.getScaleX() == 0.0f;
-          }
-        });
+    PollingCheck.waitFor(() -> fab.getScaleX() == 0.0f);
 
     assertEquals(0.0f, fab.getScaleX(), 0.0f);
     assertEquals(0.0f, fab.getScaleY(), 0.0f);
@@ -383,13 +377,7 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         R.id.coordinator_layout, centerX, originalAppbarBottom, longSwipeAmount);
 
     // Same as for swipe-up gesture.
-    PollingCheck.waitFor(
-        new PollingCheck.PollingCheckCondition() {
-          @Override
-          public boolean canProceed() {
-            return fab.getScaleX() == 1.0f;
-          }
-        });
+    PollingCheck.waitFor(() -> fab.getScaleX() == 1.0f);
 
     // At this point the FAB should be scaled back to its original size and be at full opacity.
     assertEquals(1.0f, fab.getScaleX(), 0.0f);
@@ -482,12 +470,9 @@ public class AppBarWithCollapsingToolbarTest extends AppBarLayoutBaseTest {
         R.layout.design_appbar_toolbar_collapse_pin, R.string.design_appbar_collapsing_toolbar_pin);
 
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            ImageView view = new ImageView(mCollapsingToolbar.getContext());
-            mCollapsingToolbar.addView(view);
-          }
+        () -> {
+          ImageView view = new ImageView(mCollapsingToolbar.getContext());
+          mCollapsingToolbar.addView(view);
         });
   }
 

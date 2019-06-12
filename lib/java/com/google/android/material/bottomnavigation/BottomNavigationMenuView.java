@@ -115,14 +115,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
     set.addTransition(new TextScale());
 
     onClickListener =
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            final BottomNavigationItemView itemView = (BottomNavigationItemView) v;
-            MenuItem item = itemView.getItemData();
-            if (!menu.performItemAction(item, presenter, 0)) {
-              item.setChecked(true);
-            }
+        v -> {
+          final BottomNavigationItemView itemView = (BottomNavigationItemView) v;
+          MenuItem item = itemView.getItemData();
+          if (!menu.performItemAction(item, presenter, 0)) {
+            item.setChecked(true);
           }
         };
     tempChildWidths = new int[BottomNavigationMenu.MAX_ITEM_COUNT];

@@ -18,6 +18,7 @@ package com.google.android.material.bottomsheet;
 
 import com.google.android.material.R;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.os.Build;
@@ -30,7 +31,6 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.appcompat.app.AppCompatDialog;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
@@ -127,6 +127,7 @@ public class BottomSheetDialog extends AppCompatDialog {
     return behavior;
   }
 
+  @SuppressLint("ClickableViewAccessibility")
   private View wrapInBottomSheet(int layoutResId, View view, ViewGroup.LayoutParams params) {
     FrameLayout container =
         (FrameLayout) View.inflate(getContext(), R.layout.design_bottom_sheet_dialog, null);
@@ -147,12 +148,9 @@ public class BottomSheetDialog extends AppCompatDialog {
     coordinator
         .findViewById(R.id.touch_outside)
         .setOnClickListener(
-            new View.OnClickListener() {
-              @Override
-              public void onClick(View view) {
-                if (cancelable && isShowing() && shouldWindowCloseOnTouchOutside()) {
-                  cancel();
-                }
+            v -> {
+              if (cancelable && isShowing() && shouldWindowCloseOnTouchOutside()) {
+                cancel();
               }
             });
     // Handle accessibility events
@@ -181,12 +179,9 @@ public class BottomSheetDialog extends AppCompatDialog {
           }
         });
     bottomSheet.setOnTouchListener(
-        new View.OnTouchListener() {
-          @Override
-          public boolean onTouch(View view, MotionEvent event) {
-            // Consume the event and prevent it from falling through
-            return true;
-          }
+        (v, event) -> {
+          // Consume the event and prevent it from falling through
+          return true;
         });
     return container;
   }

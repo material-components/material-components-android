@@ -137,22 +137,16 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
 
     View applyButton = view.findViewById(R.id.apply_button);
     applyButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            applyThemeOverlays();
-            dismiss();
-          }
+        v -> {
+          applyThemeOverlays();
+          dismiss();
         });
 
     View clearButton = view.findViewById(R.id.clear_button);
     clearButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            ThemeOverlayUtils.setThemeOverlays(getActivity(), 0, 0, 0, 0);
-            dismiss();
-          }
+        v -> {
+          ThemeOverlayUtils.setThemeOverlays(getActivity(), 0, 0, 0, 0);
+          dismiss();
         });
 
     return view;

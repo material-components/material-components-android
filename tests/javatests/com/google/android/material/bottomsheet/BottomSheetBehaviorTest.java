@@ -41,10 +41,8 @@ import android.view.ViewGroup;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingResource;
-import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
-import androidx.test.espresso.ViewAssertion;
 import androidx.test.espresso.action.CoordinatesProvider;
 import androidx.test.espresso.action.GeneralLocation;
 import androidx.test.espresso.action.GeneralSwipeAction;
@@ -318,27 +316,21 @@ public class BottomSheetBehaviorTest {
                     Swipe.FAST,
                     // Manually calculate the starting coordinates to make sure that the touch
                     // actually falls onto the view on Gingerbread
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        int[] location = new int[2];
-                        view.getLocationInWindow(location);
-                        return new float[] {view.getWidth() / 2, location[1] + 1};
-                      }
+                    view -> {
+                      int[] location = new int[2];
+                      view.getLocationInWindow(location);
+                      return new float[] {view.getWidth() / 2, location[1] + 1};
                     },
                     // Manually calculate the ending coordinates to make sure that the bottom
                     // sheet is collapsed, not hidden
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        BottomSheetBehavior behavior = getBehavior();
-                        return new float[] {
-                          // x: center of the bottom sheet
-                          view.getWidth() / 2,
-                          // y: just above the peek height
-                          view.getHeight() - behavior.getPeekHeight()
-                        };
-                      }
+                    view -> {
+                      BottomSheetBehavior behavior = getBehavior();
+                      return new float[] {
+                        // x: center of the bottom sheet
+                        view.getWidth() / 2,
+                        // y: just above the peek height
+                        view.getHeight() - behavior.getPeekHeight()
+                      };
                     },
                     Press.FINGER),
                 ViewMatchers.isDisplayingAtLeast(5)));
@@ -394,27 +386,21 @@ public class BottomSheetBehaviorTest {
                     Swipe.FAST,
                     // Manually calculate the starting coordinates to make sure that the touch
                     // actually falls onto the view on Gingerbread
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        int[] location = new int[2];
-                        view.getLocationInWindow(location);
-                        return new float[] {view.getWidth() / 2, location[1] + 1};
-                      }
+                    view -> {
+                      int[] location = new int[2];
+                      view.getLocationInWindow(location);
+                      return new float[] {view.getWidth() / 2, location[1] + 1};
                     },
                     // Manually calculate the ending coordinates to make sure that the bottom
                     // sheet is collapsed, not hidden
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        BottomSheetBehavior behavior = getBehavior();
-                        return new float[] {
-                          // x: center of the bottom sheet
-                          view.getWidth() / 2,
-                          // y: just above the peek height
-                          view.getHeight() - behavior.getPeekHeight()
-                        };
-                      }
+                    view -> {
+                      BottomSheetBehavior behavior = getBehavior();
+                      return new float[] {
+                        // x: center of the bottom sheet
+                        view.getWidth() / 2,
+                        // y: just above the peek height
+                        view.getHeight() - behavior.getPeekHeight()
+                      };
                     },
                     Press.FINGER),
                 ViewMatchers.isDisplayingAtLeast(5)));
@@ -444,12 +430,7 @@ public class BottomSheetBehaviorTest {
                 new GeneralSwipeAction(
                     Swipe.FAST,
                     GeneralLocation.VISIBLE_CENTER,
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        return new float[] {view.getWidth() / 2, 0};
-                      }
-                    },
+                    view -> new float[] {view.getWidth() / 2, 0},
                     Press.FINGER),
                 ViewMatchers.isDisplayingAtLeast(5)));
     registerIdlingResourceCallback();
@@ -473,12 +454,7 @@ public class BottomSheetBehaviorTest {
                 new GeneralSwipeAction(
                     Swipe.FAST,
                     GeneralLocation.VISIBLE_CENTER,
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        return new float[] {view.getWidth() / 2, 0};
-                      }
-                    },
+                    view -> new float[] {view.getWidth() / 2, 0},
                     Press.FINGER),
                 ViewMatchers.isDisplayingAtLeast(5)));
     registerIdlingResourceCallback();
@@ -502,12 +478,7 @@ public class BottomSheetBehaviorTest {
                 new GeneralSwipeAction(
                     Swipe.FAST,
                     GeneralLocation.VISIBLE_CENTER,
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        return new float[] {view.getWidth() / 2, 0};
-                      }
-                    },
+                    view -> new float[] {view.getWidth() / 2, 0},
                     Press.FINGER),
                 ViewMatchers.isDisplayingAtLeast(5)));
     registerIdlingResourceCallback();
@@ -525,20 +496,9 @@ public class BottomSheetBehaviorTest {
   public void testSwitchFitSheetToContents() throws Throwable {
     getBehavior().setFitToContents(false);
     checkSetState(BottomSheetBehavior.STATE_HALF_EXPANDED, ViewMatchers.isDisplayed());
+    activityTestRule.runOnUiThread(() -> getBehavior().setFitToContents(true));
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            getBehavior().setFitToContents(true);
-          }
-        });
-    activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_EXPANDED));
-          }
-        });
+        () -> assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_EXPANDED)));
   }
 
   @Test
@@ -546,12 +506,9 @@ public class BottomSheetBehaviorTest {
   public void testInvisible() throws Throwable {
     // Make the bottomsheet invisible
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            getBottomSheet().setVisibility(View.INVISIBLE);
-            assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
-          }
+        () -> {
+          getBottomSheet().setVisibility(View.INVISIBLE);
+          assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
         });
     // Swipe up as if to expand it
     Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
@@ -560,48 +517,32 @@ public class BottomSheetBehaviorTest {
                 new GeneralSwipeAction(
                     Swipe.FAST,
                     GeneralLocation.VISIBLE_CENTER,
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        return new float[] {view.getWidth() / 2, 0};
-                      }
-                    },
+                    view -> new float[] {view.getWidth() / 2, 0},
                     Press.FINGER),
                 not(ViewMatchers.isDisplayed())));
     // Check that the bottom sheet stays the same collapsed state
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
-          }
-        });
+        () -> assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED)));
   }
 
   @Test
   @MediumTest
   public void testInvisibleThenVisible() throws Throwable {
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            // The bottom sheet is initially invisible
-            getBottomSheet().setVisibility(View.INVISIBLE);
-            // Then it becomes visible when the CoL is touched
-            getCoordinatorLayout()
-                .setOnTouchListener(
-                    new View.OnTouchListener() {
-                      @Override
-                      public boolean onTouch(View view, MotionEvent e) {
-                        if (e.getAction() == MotionEvent.ACTION_DOWN) {
-                          getBottomSheet().setVisibility(View.VISIBLE);
-                          return true;
-                        }
-                        return false;
-                      }
-                    });
-            assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
-          }
+        () -> {
+          // The bottom sheet is initially invisible
+          getBottomSheet().setVisibility(View.INVISIBLE);
+          // Then it becomes visible when the CoL is touched
+          getCoordinatorLayout()
+              .setOnTouchListener(
+                  (view, e) -> {
+                    if (e.getAction() == MotionEvent.ACTION_DOWN) {
+                      getBottomSheet().setVisibility(View.VISIBLE);
+                      return true;
+                    }
+                    return false;
+                  });
+          assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
         });
     // Drag over the CoL
     Espresso.onView(ViewMatchers.withId(R.id.coordinator))
@@ -609,13 +550,10 @@ public class BottomSheetBehaviorTest {
         .perform(
             new DragAction(GeneralLocation.BOTTOM_CENTER, GeneralLocation.TOP_CENTER, Press.FINGER))
         .check(
-            new ViewAssertion() {
-              @Override
-              public void check(View view, NoMatchingViewException e) {
-                // The bottom sheet should not react to the touch events
-                assertThat(getBottomSheet(), is(ViewMatchers.isDisplayed()));
-                assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
-              }
+            (view, e) -> {
+              // The bottom sheet should not react to the touch events
+              assertThat(getBottomSheet(), is(ViewMatchers.isDisplayed()));
+              assertThat(getBehavior().getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
             });
   }
 
@@ -627,22 +565,19 @@ public class BottomSheetBehaviorTest {
     final NestedScrollView scroll = new NestedScrollView(activityTestRule.getActivity());
     // Set up nested scrolling area
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            bottomSheet.addView(
-                scroll,
-                new ViewGroup.LayoutParams(
-                    ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
-            View view = new View(activityTestRule.getActivity());
-            // Make sure that the NestedScrollView is always scrollable
-            view.setMinimumHeight(bottomSheet.getHeight() + 1000);
-            scroll.addView(view);
+        () -> {
+          bottomSheet.addView(
+              scroll,
+              new ViewGroup.LayoutParams(
+                  ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT));
+          View view = new View(activityTestRule.getActivity());
+          // Make sure that the NestedScrollView is always scrollable
+          view.setMinimumHeight(bottomSheet.getHeight() + 1000);
+          scroll.addView(view);
 
-            assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
-            // The scroll offset is 0 at first
-            assertThat(scroll.getScrollY(), is(0));
-          }
+          assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
+          // The scroll offset is 0 at first
+          assertThat(scroll.getScrollY(), is(0));
         });
     // Swipe from the very bottom of the bottom sheet to the top edge of the screen so that the
     // scrolling content is also scrolled
@@ -650,32 +585,19 @@ public class BottomSheetBehaviorTest {
         .perform(
             new GeneralSwipeAction(
                 Swipe.SLOW,
-                new CoordinatesProvider() {
-                  @Override
-                  public float[] calculateCoordinates(View view) {
-                    return new float[] {view.getWidth() / 2, view.getHeight() - 1};
-                  }
-                },
-                new CoordinatesProvider() {
-                  @Override
-                  public float[] calculateCoordinates(View view) {
-                    return new float[] {view.getWidth() / 2, 1};
-                  }
-                },
+                view -> new float[] {view.getWidth() / 2, view.getHeight() - 1},
+                view -> new float[] {view.getWidth() / 2, 1},
                 Press.FINGER));
     registerIdlingResourceCallback();
     try {
       Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
           .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
       activityTestRule.runOnUiThread(
-          new Runnable() {
-            @Override
-            public void run() {
-              assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_EXPANDED));
-              // This confirms that the nested scrolling area was scrolled continuously after
-              // the bottom sheet is expanded.
-              assertThat(scroll.getScrollY(), is(not(0)));
-            }
+          () -> {
+            assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_EXPANDED));
+            // This confirms that the nested scrolling area was scrolled continuously after
+            // the bottom sheet is expanded.
+            assertThat(scroll.getScrollY(), is(not(0)));
           });
     } finally {
       unregisterIdlingResourceCallback();
@@ -692,21 +614,12 @@ public class BottomSheetBehaviorTest {
                 new GeneralSwipeAction(
                     Swipe.FAST,
                     // Just above the bottom sheet
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        return new float[] {
+                    view ->
+                        new float[] {
                           view.getWidth() / 2, view.getHeight() - getBehavior().getPeekHeight() - 9
-                        };
-                      }
-                    },
+                        },
                     // Top of the CoordinatorLayout
-                    new CoordinatesProvider() {
-                      @Override
-                      public float[] calculateCoordinates(View view) {
-                        return new float[] {view.getWidth() / 2, 1};
-                      }
-                    },
+                    view -> new float[] {view.getWidth() / 2, 1},
                     Press.FINGER),
                 ViewMatchers.isDisplayed()));
     registerIdlingResourceCallback();
@@ -730,26 +643,20 @@ public class BottomSheetBehaviorTest {
                 GeneralLocation.VISIBLE_CENTER, GeneralLocation.TOP_CENTER, Press.FINGER))
         // Check that the bottom sheet is in STATE_DRAGGING
         .check(
-            new ViewAssertion() {
-              @Override
-              public void check(View view, NoMatchingViewException e) {
-                assertThat(view, is(ViewMatchers.isDisplayed()));
-                BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
-                assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_DRAGGING));
-              }
+            (view, e) -> {
+              assertThat(view, is(ViewMatchers.isDisplayed()));
+              BottomSheetBehavior behavior = BottomSheetBehavior.from(view);
+              assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_DRAGGING));
             })
         // Add a new view
         .perform(new AddViewAction(R.layout.frame_layout))
         // Check that the newly added view is properly laid out
         .check(
-            new ViewAssertion() {
-              @Override
-              public void check(View view, NoMatchingViewException e) {
-                ViewGroup parent = (ViewGroup) view;
-                assertThat(parent.getChildCount(), is(1));
-                View child = parent.getChildAt(0);
-                assertThat(ViewCompat.isLaidOut(child), is(true));
-              }
+            (view, e) -> {
+              ViewGroup parent = (ViewGroup) view;
+              assertThat(parent.getChildCount(), is(1));
+              View child = parent.getChildAt(0);
+              assertThat(ViewCompat.isLaidOut(child), is(true));
             });
   }
 
@@ -758,26 +665,20 @@ public class BottomSheetBehaviorTest {
   public void testFabVisibility() {
     withFabVisibilityChange(
         false,
-        new Runnable() {
-          @Override
-          public void run() {
-            try {
-              checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
-            } catch (Throwable throwable) {
-              fail(throwable.getMessage());
-            }
+        () -> {
+          try {
+            checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
+          } catch (Throwable throwable) {
+            fail(throwable.getMessage());
           }
         });
     withFabVisibilityChange(
         true,
-        new Runnable() {
-          @Override
-          public void run() {
-            try {
-              checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
-            } catch (Throwable throwable) {
-              fail(throwable.getMessage());
-            }
+        () -> {
+          try {
+            checkSetState(BottomSheetBehavior.STATE_COLLAPSED, ViewMatchers.isDisplayed());
+          } catch (Throwable throwable) {
+            fail(throwable.getMessage());
           }
         });
   }
@@ -786,24 +687,16 @@ public class BottomSheetBehaviorTest {
   @MediumTest
   public void testAutoPeekHeight() throws Throwable {
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            getBehavior().setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
-          }
-        });
+        () -> getBehavior().setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO));
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            CoordinatorLayout col = getCoordinatorLayout();
-            assertThat(
-                getBottomSheet().getTop(),
-                is(
-                    Math.min(
-                        col.getWidth() * 9 / 16,
-                        col.getHeight() - getBehavior().getPeekHeightMin())));
-          }
+        () -> {
+          CoordinatorLayout col = getCoordinatorLayout();
+          assertThat(
+              getBottomSheet().getTop(),
+              is(
+                  Math.min(
+                      col.getWidth() * 9 / 16,
+                      col.getHeight() - getBehavior().getPeekHeightMin())));
         });
   }
 
@@ -811,13 +704,10 @@ public class BottomSheetBehaviorTest {
   @MediumTest
   public void testAutoPeekHeightHide() throws Throwable {
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            getBehavior().setHideable(true);
-            getBehavior().setPeekHeight(0);
-            getBehavior().setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
-          }
+        () -> {
+          getBehavior().setHideable(true);
+          getBehavior().setPeekHeight(0);
+          getBehavior().setPeekHeight(BottomSheetBehavior.PEEK_HEIGHT_AUTO);
         });
     checkSetState(BottomSheetBehavior.STATE_HIDDEN, not(ViewMatchers.isDisplayed()));
   }
@@ -828,23 +718,20 @@ public class BottomSheetBehaviorTest {
     registerIdlingResourceCallback();
     try {
       activityTestRule.runOnUiThread(
-          new Runnable() {
-            @Override
-            public void run() {
-              ViewGroup.LayoutParams params = getBottomSheet().getLayoutParams();
-              params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
-              getBottomSheet().setLayoutParams(params);
-              View view = new View(getBottomSheet().getContext());
-              int size = getBehavior().getPeekHeight() * 2;
-              getBottomSheet().addView(view, new ViewGroup.LayoutParams(size, size));
-              assertThat(getBottomSheet().getChildCount(), is(1));
-              // Shrink the content height.
-              ViewGroup.LayoutParams lp = view.getLayoutParams();
-              lp.height = (int) (size * 0.8);
-              view.setLayoutParams(lp);
-              // Immediately expand the bottom sheet.
-              getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
-            }
+          () -> {
+            ViewGroup.LayoutParams params = getBottomSheet().getLayoutParams();
+            params.height = ViewGroup.LayoutParams.WRAP_CONTENT;
+            getBottomSheet().setLayoutParams(params);
+            View view = new View(getBottomSheet().getContext());
+            int size = getBehavior().getPeekHeight() * 2;
+            getBottomSheet().addView(view, new ViewGroup.LayoutParams(size, size));
+            assertThat(getBottomSheet().getChildCount(), is(1));
+            // Shrink the content height.
+            ViewGroup.LayoutParams lp = view.getLayoutParams();
+            lp.height = (int) (size * 0.8);
+            view.setLayoutParams(lp);
+            // Immediately expand the bottom sheet.
+            getBehavior().setState(BottomSheetBehavior.STATE_EXPANDED);
           });
       Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
           .check(ViewAssertions.matches(ViewMatchers.isDisplayed()));
@@ -860,14 +747,11 @@ public class BottomSheetBehaviorTest {
   @MediumTest
   public void testExpandedPeekHeight() throws Throwable {
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            // Make the peek height as tall as the bottom sheet.
-            BottomSheetBehavior<?> behavior = getBehavior();
-            behavior.setPeekHeight(getBottomSheet().getHeight());
-            assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
-          }
+        () -> {
+          // Make the peek height as tall as the bottom sheet.
+          BottomSheetBehavior<?> behavior = getBehavior();
+          behavior.setPeekHeight(getBottomSheet().getHeight());
+          assertThat(behavior.getState(), is(BottomSheetBehavior.STATE_COLLAPSED));
         });
     // Both of these will not animate the sheet , but the state should be changed.
     checkSetState(BottomSheetBehavior.STATE_EXPANDED, ViewMatchers.isDisplayed());
@@ -891,13 +775,7 @@ public class BottomSheetBehaviorTest {
   private void checkSetState(final int state, Matcher<View> matcher) throws Throwable {
     registerIdlingResourceCallback();
     try {
-      activityTestRule.runOnUiThread(
-          new Runnable() {
-            @Override
-            public void run() {
-              getBehavior().setState(state);
-            }
-          });
+      activityTestRule.runOnUiThread(() -> getBehavior().setState(state));
       Espresso.onView(ViewMatchers.withId(R.id.bottom_sheet))
           .check(ViewAssertions.matches(matcher));
       assertThat(getBehavior().getState(), is(state));

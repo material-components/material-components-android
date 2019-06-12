@@ -23,7 +23,6 @@ import com.google.android.material.bottomnavigation.LabelVisibilityMode;
 import android.util.DisplayMetrics;
 import android.util.TypedValue;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
@@ -77,12 +76,7 @@ public class BottomNavigationLabelVisibilityDemoFragment extends BottomNavigatio
   private void initLabelVisibilityModeButton(
       Button labelVisibilityModeButton, @LabelVisibilityMode int labelVisibilityMode) {
     labelVisibilityModeButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            setAllBottomNavsLabelVisibilityMode(labelVisibilityMode);
-          }
-        });
+        v -> setAllBottomNavsLabelVisibilityMode(labelVisibilityMode));
   }
 
   private void initIconSlider(View view) {

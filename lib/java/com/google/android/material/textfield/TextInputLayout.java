@@ -2010,13 +2010,7 @@ public class TextInputLayout extends LinearLayout {
         Math.max(endIconView.getMeasuredHeight(), startIconView.getMeasuredHeight());
     if (editText.getMeasuredHeight() < maxIconHeight) {
       editText.setMinimumHeight(maxIconHeight);
-      editText.post(
-          new Runnable() {
-            @Override
-            public void run() {
-              editText.requestLayout();
-            }
-          });
+      editText.post(() -> editText.requestLayout());
     }
 
     updateIconDummyDrawables();
@@ -2989,12 +2983,8 @@ public class TextInputLayout extends LinearLayout {
       this.animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
       this.animator.setDuration(LABEL_SCALE_ANIMATION_DURATION);
       this.animator.addUpdateListener(
-          new ValueAnimator.AnimatorUpdateListener() {
-            @Override
-            public void onAnimationUpdate(ValueAnimator animator) {
-              collapsingTextHelper.setExpansionFraction((float) animator.getAnimatedValue());
-            }
-          });
+          animator ->
+              collapsingTextHelper.setExpansionFraction((float) animator.getAnimatedValue()));
     }
     this.animator.setFloatValues(collapsingTextHelper.getExpansionFraction(), target);
     this.animator.start();

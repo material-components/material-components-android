@@ -81,22 +81,10 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
     mToolbar = mAppBar.findViewById(R.id.toolbar);
 
     final AppCompatActivity activity = activityTestRule.getActivity();
-    activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            activity.setSupportActionBar(mToolbar);
-          }
-        });
+    activityTestRule.runOnUiThread(() -> activity.setSupportActionBar(mToolbar));
 
     final CharSequence activityTitle = activity.getString(titleResId);
-    activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            activity.setTitle(activityTitle);
-          }
-        });
+    activityTestRule.runOnUiThread(() -> activity.setTitle(activityTitle));
     getInstrumentation().waitForIdleSync();
 
     if (mCollapsingToolbar != null) {

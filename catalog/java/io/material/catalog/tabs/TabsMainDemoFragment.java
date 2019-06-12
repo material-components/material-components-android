@@ -28,7 +28,6 @@ import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
 import com.google.android.material.tabs.TabLayout.Tab;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
@@ -48,13 +47,7 @@ public class TabsMainDemoFragment extends DemoFragment {
     tabLayouts = DemoUtils.findViewsWithType(view, TabLayout.class);
     MaterialButton incrementBadgeNumberButton =
         view.findViewById(R.id.increment_badge_number_button);
-    incrementBadgeNumberButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            incrementBadgeNumber();
-          }
-        });
+    incrementBadgeNumberButton.setOnClickListener(v -> incrementBadgeNumber());
 
     setupBadging();
     return view;

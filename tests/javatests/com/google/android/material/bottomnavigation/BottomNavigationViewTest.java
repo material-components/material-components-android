@@ -640,18 +640,14 @@ public class BottomNavigationViewTest {
 
     // Restore the state into a fresh BottomNavigationView
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            BottomNavigationView testView =
-                new BottomNavigationView(activityTestRule.getActivity());
-            testView.inflateMenu(R.menu.bottom_navigation_view_content);
-            testView.onRestoreInstanceState(state);
-            assertTrue(testView.getMenu().findItem(R.id.destination_profile).isChecked());
-            assertTrue(testView.getBadge(R.id.destination_home).isVisible());
-            assertEquals(75, testView.getBadge(R.id.destination_home).getNumber());
-            assertEquals(4, testView.getBadge(R.id.destination_home).getMaxCharacterCount());
-          }
+        () -> {
+          BottomNavigationView testView = new BottomNavigationView(activityTestRule.getActivity());
+          testView.inflateMenu(R.menu.bottom_navigation_view_content);
+          testView.onRestoreInstanceState(state);
+          assertTrue(testView.getMenu().findItem(R.id.destination_profile).isChecked());
+          assertTrue(testView.getBadge(R.id.destination_home).isVisible());
+          assertEquals(75, testView.getBadge(R.id.destination_home).getNumber());
+          assertEquals(4, testView.getBadge(R.id.destination_home).getMaxCharacterCount());
         });
   }
 

@@ -61,10 +61,7 @@ import com.google.android.material.testutils.ActivityUtils;
 import android.text.method.PasswordTransformationMethod;
 import android.text.method.TransformationMethod;
 import android.view.KeyEvent;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
-import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.MediumTest;
@@ -399,12 +396,7 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_custom))
         .perform(
             setEndIconOnClickListener(
-                new OnClickListener() {
-                  @Override
-                  public void onClick(View v) {
-                    textInputCustomEndIcon.getEditText().setText("Test custom icon.");
-                  }
-                }));
+                v -> textInputCustomEndIcon.getEditText().setText("Test custom icon.")));
 
     // Click custom end icon
     onView(withId(R.id.textinput_custom)).perform(clickIcon(true));
@@ -475,13 +467,10 @@ public class TextInputLayoutIconsTest {
     final Activity activity = activityTestRule.getActivity();
     final TextInputLayout textInputLayout = activity.findViewById(R.id.textinput_starticon);
     // Set click listener on start icon
-    onView(withId(R.id.textinput_starticon)).perform(setStartIconOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            textInputLayout.getEditText().setText("Start icon on click");
-          }
-        }));
+    onView(withId(R.id.textinput_starticon))
+        .perform(
+            setStartIconOnClickListener(
+                v -> textInputLayout.getEditText().setText("Start icon on click")));
 
     // Click start icon
     onView(withId(R.id.textinput_starticon)).perform(clickIcon(false));
@@ -503,17 +492,14 @@ public class TextInputLayoutIconsTest {
   }
 
   private static ViewAssertion isPasswordToggledVisible(final boolean isToggledVisible) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        EditText editText = ((TextInputLayout) view).getEditText();
-        TransformationMethod transformationMethod = editText.getTransformationMethod();
-        if (isToggledVisible) {
-          assertNull(transformationMethod);
-        } else {
-          assertEquals(PasswordTransformationMethod.getInstance(), transformationMethod);
-        }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      EditText editText = ((TextInputLayout) view).getEditText();
+      TransformationMethod transformationMethod = editText.getTransformationMethod();
+      if (isToggledVisible) {
+        assertNull(transformationMethod);
+      } else {
+        assertEquals(PasswordTransformationMethod.getInstance(), transformationMethod);
       }
     };
   }

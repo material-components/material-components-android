@@ -49,15 +49,12 @@ public abstract class BaseDynamicCoordinatorLayoutTest {
   public void tearDown() {
     getInstrumentation()
         .runOnMainSync(
-            new Runnable() {
-              @Override
-              public void run() {
-                // Now that the test is done, replace the activity content view with ViewStub so
-                // that it's ready to be replaced for the next test.
-                final DynamicCoordinatorLayoutActivity activity = activityTestRule.getActivity();
-                activity.setContentView(R.layout.dynamic_coordinator_layout);
-                mCoordinatorLayout = null;
-              }
+            () -> {
+              // Now that the test is done, replace the activity content view with ViewStub so
+              // that it's ready to be replaced for the next test.
+              final DynamicCoordinatorLayoutActivity activity = activityTestRule.getActivity();
+              activity.setContentView(R.layout.dynamic_coordinator_layout);
+              mCoordinatorLayout = null;
             });
   }
 

@@ -24,7 +24,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.util.Log;
 import android.view.Menu;
-import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
@@ -96,12 +95,7 @@ public class ItemActivity extends AppCompatActivity {
   }
 
   private final OnClickListener clickListener =
-      new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          Snackbar.make(v, fabMessage, Snackbar.LENGTH_SHORT).show();
-        }
-      };
+      v -> Snackbar.make(v, fabMessage, Snackbar.LENGTH_SHORT).show();
 
   private void initSpinner() {
     Spinner spinner = (Spinner) findViewById(R.id.QuantitySpinner);

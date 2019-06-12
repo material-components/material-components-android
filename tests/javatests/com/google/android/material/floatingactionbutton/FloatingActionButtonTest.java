@@ -61,7 +61,6 @@ import com.google.android.material.testutils.TestUtils;
 import androidx.core.content.ContextCompat;
 import android.view.Gravity;
 import android.view.View;
-import androidx.test.espresso.action.CoordinatesProvider;
 import androidx.test.espresso.action.GeneralSwipeAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Swipe;
@@ -229,32 +228,26 @@ public class FloatingActionButtonTest {
         .perform(
             new GeneralSwipeAction(
                 Swipe.SLOW,
-                new CoordinatesProvider() {
-                  @Override
-                  public float[] calculateCoordinates(View view) {
-                    // Create coordinators that in the center of the FAB's content area
-                    final FloatingActionButton fab = (FloatingActionButton) view;
+                view -> {
+                  // Create coordinators that in the center of the FAB's content area
+                  final FloatingActionButton fab = (FloatingActionButton) view;
 
-                    final int[] xy = new int[2];
-                    fab.getLocationOnScreen(xy);
-                    final Rect rect = new Rect();
-                    fab.getContentRect(rect);
+                  final int[] xy = new int[2];
+                  fab.getLocationOnScreen(xy);
+                  final Rect rect = new Rect();
+                  fab.getContentRect(rect);
 
-                    return new float[] {xy[0] + rect.centerX(), xy[1] + rect.centerY()};
-                  }
+                  return new float[] {xy[0] + rect.centerX(), xy[1] + rect.centerY()};
                 },
-                new CoordinatesProvider() {
-                  @Override
-                  public float[] calculateCoordinates(View view) {
-                    // Create coordinators that in the center horizontally, but well
-                    // below the view vertically (by 50% of the height)
-                    final int[] xy = new int[2];
-                    view.getLocationOnScreen(xy);
+                view -> {
+                  // Create coordinators that in the center horizontally, but well
+                  // below the view vertically (by 50% of the height)
+                  final int[] xy = new int[2];
+                  view.getLocationOnScreen(xy);
 
-                    return new float[] {
-                      xy[0] + (view.getWidth() / 2f), xy[1] + (view.getHeight() * 1.5f)
-                    };
-                  }
+                  return new float[] {
+                    xy[0] + (view.getWidth() / 2f), xy[1] + (view.getHeight() * 1.5f)
+                  };
                 },
                 Press.FINGER))
         .check(matches(not(isPressed())));

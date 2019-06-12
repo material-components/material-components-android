@@ -29,7 +29,6 @@ import com.google.android.material.button.MaterialButton;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import android.widget.LinearLayout.LayoutParams;
@@ -139,13 +138,9 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             earliestMonth,
             latestMonth,
             currentMonth,
-            new OnDayClickListener() {
-
-              @Override
-              public void onDayClick(Calendar day) {
-                gridSelector.select(day);
-                monthsPagerAdapter.notifyDataSetChanged();
-              }
+            day -> {
+              gridSelector.select(day);
+              monthsPagerAdapter.notifyDataSetChanged();
             });
     monthsPager.setAdapter(monthsPagerAdapter);
     monthsPager.setCurrentItem(monthsPagerAdapter.getStartPosition(), false);
@@ -193,21 +188,15 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         });
 
     monthNext.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            if (monthPager.getCurrentItem() + 1 < monthPager.getAdapter().getItemCount()) {
-              monthPager.setCurrentItem(monthPager.getCurrentItem() + 1);
-            }
+        view -> {
+          if (monthPager.getCurrentItem() + 1 < monthPager.getAdapter().getItemCount()) {
+            monthPager.setCurrentItem(monthPager.getCurrentItem() + 1);
           }
         });
     monthPrev.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View view) {
-            if (monthPager.getCurrentItem() - 1 >= 0) {
-              monthPager.setCurrentItem(monthPager.getCurrentItem() - 1);
-            }
+        view -> {
+          if (monthPager.getCurrentItem() - 1 >= 0) {
+            monthPager.setCurrentItem(monthPager.getCurrentItem() - 1);
           }
         });
   }

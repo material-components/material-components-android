@@ -72,14 +72,10 @@ public class ViewUtils {
   public static void requestFocusAndShowKeyboard(final View view) {
     view.requestFocus();
     view.post(
-        new Runnable() {
-          @Override
-          public void run() {
-            InputMethodManager inputMethodManager =
-                (InputMethodManager)
-                    view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
-            inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
-          }
+        () -> {
+          InputMethodManager inputMethodManager =
+              (InputMethodManager) view.getContext().getSystemService(Context.INPUT_METHOD_SERVICE);
+          inputMethodManager.showSoftInput(view, InputMethodManager.SHOW_IMPLICIT);
         });
   }
 
@@ -135,13 +131,9 @@ public class ViewUtils {
             view.getPaddingBottom());
     // Set an actual OnApplyWindowInsetsListener which proxies to the given callback, also passing
     // in the original padding state.
-    ViewCompat.setOnApplyWindowInsetsListener(view,
-        new androidx.core.view.OnApplyWindowInsetsListener() {
-          @Override
-          public WindowInsetsCompat onApplyWindowInsets(View view, WindowInsetsCompat insets) {
-            return listener.onApplyWindowInsets(view, insets, initialPadding);
-          }
-        });
+    ViewCompat.setOnApplyWindowInsetsListener(
+        view,
+        (insetsView, insets) -> listener.onApplyWindowInsets(insetsView, insets, initialPadding));
     // Request some insets.
     requestApplyInsetsWhenAttached(view);
   }

@@ -24,8 +24,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.PasswordTransformationMethod;
-import android.view.View;
-import android.view.View.OnClickListener;
 import android.widget.EditText;
 
 /** Default initialization of the password toggle end icon. */
@@ -48,26 +46,20 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
       };
 
   private final OnEditTextAttachedListener onEditTextAttachedListener =
-      new OnEditTextAttachedListener() {
-        @Override
-        public void onEditTextAttached(EditText editText) {
-          textInputLayout.setEndIconVisible(true);
-          endIconView.setChecked(!hasPasswordTransformation());
-          // Make sure there's always only one password toggle text watcher added
-          editText.removeTextChangedListener(textWatcher);
-          editText.addTextChangedListener(textWatcher);
-        }
+      editText -> {
+        textInputLayout.setEndIconVisible(true);
+        endIconView.setChecked(!hasPasswordTransformation());
+        // Make sure there's always only one password toggle text watcher added
+        editText.removeTextChangedListener(textWatcher);
+        editText.addTextChangedListener(textWatcher);
       };
   private final OnEndIconChangedListener onEndIconChangedListener =
-      new OnEndIconChangedListener() {
-        @Override
-        public void onEndIconChanged(int previousIcon) {
-          EditText editText = textInputLayout.getEditText();
-          if (editText != null && previousIcon == TextInputLayout.END_ICON_PASSWORD_TOGGLE) {
-            // If the end icon was the password toggle add it back the PasswordTransformation
-            // in case it might have been removed to make the password visible,
-            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-          }
+      previousIcon -> {
+        EditText editText = textInputLayout.getEditText();
+        if (editText != null && previousIcon == TextInputLayout.END_ICON_PASSWORD_TOGGLE) {
+          // If the end icon was the password toggle add it back the PasswordTransformation
+          // in case it might have been removed to make the password visible,
+          editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
         }
       };
 
@@ -82,23 +74,20 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.password_toggle_content_description));
     textInputLayout.setEndIconOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            EditText editText = textInputLayout.getEditText();
-            if (editText == null) {
-              return;
-            }
-            // Store the current cursor position
-            final int selection = editText.getSelectionEnd();
-            if (hasPasswordTransformation()) {
-              editText.setTransformationMethod(null);
-            } else {
-              editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
-            }
-            // And restore the cursor position
-            editText.setSelection(selection);
+        v -> {
+          EditText editText = textInputLayout.getEditText();
+          if (editText == null) {
+            return;
           }
+          // Store the current cursor position
+          final int selection = editText.getSelectionEnd();
+          if (hasPasswordTransformation()) {
+            editText.setTransformationMethod(null);
+          } else {
+            editText.setTransformationMethod(PasswordTransformationMethod.getInstance());
+          }
+          // And restore the cursor position
+          editText.setSelection(selection);
         });
     textInputLayout.addOnEditTextAttachedListener(onEditTextAttachedListener);
     textInputLayout.addOnEndIconChangedListener(onEndIconChangedListener);

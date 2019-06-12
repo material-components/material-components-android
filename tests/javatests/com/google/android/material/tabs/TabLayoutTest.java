@@ -50,8 +50,6 @@ import androidx.test.annotation.UiThreadTest;
 import androidx.test.espresso.Espresso;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.espresso.IdlingResource;
-import androidx.test.espresso.NoMatchingViewException;
-import androidx.test.espresso.ViewAssertion;
 import androidx.test.filters.SdkSuppress;
 import androidx.test.filters.SmallTest;
 import androidx.test.rule.ActivityTestRule;
@@ -248,12 +246,7 @@ public class TabLayoutTest {
   @Test
   public void testModeAuto() throws Throwable {
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            activityTestRule.getActivity().setContentView(R.layout.design_tabs_fixed_width);
-          }
-        });
+        () -> activityTestRule.getActivity().setContentView(R.layout.design_tabs_fixed_width));
     final TabLayout tabs = activityTestRule.getActivity().findViewById(R.id.tabs);
 
     final TabLayoutScrollIdlingResource idler = new TabLayoutScrollIdlingResource(tabs);
@@ -266,41 +259,35 @@ public class TabLayoutTest {
 
     onView(withId(R.id.tabs))
         .check(
-            new ViewAssertion() {
-              @Override
-              public void check(View view, NoMatchingViewException notFoundException) {
-                if (!(view instanceof TabLayout)) {
-                  throw notFoundException;
-                }
-
-                TabLayout tabs = (TabLayout) view;
-
-                assertEquals(TabLayout.MODE_AUTO, tabs.getTabMode());
-                int tabWidth = 0;
-                for (int i = 0; i < tabs.getTabCount(); i++) {
-                  Tab tab = tabs.getTabAt(i);
-                  tabWidth += tab.view.getMeasuredWidth();
-                }
-
-                // In MODE_AUTO, the total width of tabs can exceed the width of the parent
-                // TabLayout
-                assertTrue(tabWidth > tabs.getMeasuredWidth());
+            (view, notFoundException) -> {
+              if (!(view instanceof TabLayout)) {
+                throw notFoundException;
               }
+
+              TabLayout tabs1 = (TabLayout) view;
+
+              assertEquals(TabLayout.MODE_AUTO, tabs1.getTabMode());
+              int tabWidth = 0;
+              for (int i = 0; i < tabs1.getTabCount(); i++) {
+                Tab tab = tabs1.getTabAt(i);
+                tabWidth += tab.view.getMeasuredWidth();
+              }
+
+              // In MODE_AUTO, the total width of tabs can exceed the width of the parent
+              // TabLayout
+              assertTrue(tabWidth > tabs1.getMeasuredWidth());
             });
 
     // Make sure tabs are scrolled all the way to the end
     onView(withId(R.id.tabs))
         .perform(selectTab(7))
         .check(
-            new ViewAssertion() {
-              @Override
-              public void check(View view, NoMatchingViewException notFoundException) {
-                if (!(view instanceof TabLayout)) {
-                  throw notFoundException;
-                }
-
-                assertTrue(view.getScrollX() > view.getMeasuredWidth());
+            (view, notFoundException) -> {
+              if (!(view instanceof TabLayout)) {
+                throw notFoundException;
               }
+
+              assertTrue(view.getScrollX() > view.getMeasuredWidth());
             });
 
     IdlingRegistry.getInstance().unregister(idler);
@@ -308,12 +295,7 @@ public class TabLayoutTest {
 
   private void testSetScrollPosition(final boolean isLtr) throws Throwable {
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            activityTestRule.getActivity().setContentView(R.layout.design_tabs_fixed_width);
-          }
-        });
+        () -> activityTestRule.getActivity().setContentView(R.layout.design_tabs_fixed_width));
     final TabLayout tabs = activityTestRule.getActivity().findViewById(R.id.tabs);
     assertEquals(TabLayout.MODE_SCROLLABLE, tabs.getTabMode());
 
@@ -341,17 +323,14 @@ public class TabLayoutTest {
       onView(withId(R.id.tabs))
           .perform(setScrollPosition(positions[i], positionOffsets[i]))
           .check(
-              new ViewAssertion() {
-                @Override
-                public void check(View view, NoMatchingViewException notFoundException) {
-                  if (view == null) {
-                    throw notFoundException;
-                  }
-                  // Verify increasing or decreasing scroll X values
-                  int sx = view.getScrollX();
-                  assertTrue(isLtr ? sx > lastScrollX.get() : sx < lastScrollX.get());
-                  lastScrollX.set(sx);
+              (view, notFoundException) -> {
+                if (view == null) {
+                  throw notFoundException;
                 }
+                // Verify increasing or decreasing scroll X values
+                int sx = view.getScrollX();
+                assertTrue(isLtr ? sx > lastScrollX.get() : sx < lastScrollX.get());
+                lastScrollX.set(sx);
               });
     }
 

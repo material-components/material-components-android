@@ -33,7 +33,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.resources.CancelableFontCallback;
-import com.google.android.material.resources.CancelableFontCallback.ApplyFont;
 import com.google.android.material.resources.TextAppearance;
 import androidx.core.math.MathUtils;
 import androidx.core.text.TextDirectionHeuristicsCompat;
@@ -291,14 +290,7 @@ public final class CollapsingTextHelper {
       collapsedFontCallback.cancel();
     }
     collapsedFontCallback =
-        new CancelableFontCallback(
-            new ApplyFont() {
-              @Override
-              public void apply(Typeface font) {
-                setCollapsedTypeface(font);
-              }
-            },
-            textAppearance.getFallbackFont());
+        new CancelableFontCallback(this::setCollapsedTypeface, textAppearance.getFallbackFont());
     textAppearance.getFontAsync(view.getContext(), collapsedFontCallback);
 
     recalculate();
@@ -324,14 +316,7 @@ public final class CollapsingTextHelper {
       expandedFontCallback.cancel();
     }
     expandedFontCallback =
-        new CancelableFontCallback(
-            new ApplyFont() {
-              @Override
-              public void apply(Typeface font) {
-                setExpandedTypeface(font);
-              }
-            },
-            textAppearance.getFallbackFont());
+        new CancelableFontCallback(this::setExpandedTypeface, textAppearance.getFallbackFont());
     textAppearance.getFontAsync(view.getContext(), expandedFontCallback);
 
     recalculate();

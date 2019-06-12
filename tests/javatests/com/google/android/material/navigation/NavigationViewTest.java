@@ -634,13 +634,7 @@ public class NavigationViewTest {
         checkedItemBackground);
 
     // Register a navigation listener that "marks" the selected item
-    navigationView.setNavigationItemSelectedListener(
-        new NavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(MenuItem item) {
-            return true;
-          }
-        });
+    navigationView.setNavigationItemSelectedListener(item -> true);
 
     // Click one of our items
     onView(
@@ -657,13 +651,7 @@ public class NavigationViewTest {
         checkedItemBackground);
 
     // Register a navigation listener that doesn't "mark" the selected item
-    navigationView.setNavigationItemSelectedListener(
-        new NavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(MenuItem item) {
-            return false;
-          }
-        });
+    navigationView.setNavigationItemSelectedListener(item -> false);
 
     // Click another items
     onView(

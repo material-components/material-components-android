@@ -23,9 +23,6 @@ import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.EditText;
 
 /**
  * Default initialization of the clear text end icon {@link TextInputLayout.EndIconMode}.
@@ -47,14 +44,11 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
       };
 
   private final OnEditTextAttachedListener clearTextOnEditTextAttachedListener =
-      new OnEditTextAttachedListener() {
-        @Override
-        public void onEditTextAttached(EditText editText) {
-          textInputLayout.setEndIconVisible(!TextUtils.isEmpty(editText.getText()));
-          // Make sure there's always only one clear text text watcher added
-          editText.removeTextChangedListener(clearTextEndIconTextWatcher);
-          editText.addTextChangedListener(clearTextEndIconTextWatcher);
-        }
+      editText -> {
+        textInputLayout.setEndIconVisible(!TextUtils.isEmpty(editText.getText()));
+        // Make sure there's always only one clear text text watcher added
+        editText.removeTextChangedListener(clearTextEndIconTextWatcher);
+        editText.addTextChangedListener(clearTextEndIconTextWatcher);
       };
 
   ClearTextEndIconDelegate(TextInputLayout textInputLayout) {
@@ -67,13 +61,7 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         AppCompatResources.getDrawable(context, R.drawable.mtrl_ic_cancel));
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
-    textInputLayout.setEndIconOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            textInputLayout.getEditText().setText(null);
-          }
-        });
+    textInputLayout.setEndIconOnClickListener(v -> textInputLayout.getEditText().setText(null));
     textInputLayout.addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
   }
 }

@@ -198,15 +198,12 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
     // Now request that the first child has its full rectangle displayed
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            final ViewGroup scrollingContentInner =
-                scrollingContent.findViewById(R.id.scrolling_content_inner);
-            View child = scrollingContentInner.getChildAt(0);
-            Rect rect = new Rect(0, 0, child.getWidth(), child.getHeight());
-            child.requestRectangleOnScreen(rect, true);
-          }
+        () -> {
+          final ViewGroup scrollingContentInner =
+              scrollingContent.findViewById(R.id.scrolling_content_inner);
+          View child = scrollingContentInner.getChildAt(0);
+          Rect rect = new Rect(0, 0, child.getWidth(), child.getHeight());
+          child.requestRectangleOnScreen(rect, true);
         });
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 
@@ -232,16 +229,12 @@ public class AppBarWithToolbarTest extends AppBarLayoutBaseTest {
 
     // Now request that the first child has its full rectangle displayed
     activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            final ViewGroup scrollingContentInner =
-                scrollingContent.findViewById(R.id.scrolling_content_inner);
-            View child =
-                scrollingContentInner.getChildAt(scrollingContentInner.getChildCount() - 1);
-            Rect rect = new Rect(0, 0, child.getWidth(), child.getHeight());
-            child.requestRectangleOnScreen(rect, true);
-          }
+        () -> {
+          final ViewGroup scrollingContentInner =
+              scrollingContent.findViewById(R.id.scrolling_content_inner);
+          View child = scrollingContentInner.getChildAt(scrollingContentInner.getChildCount() - 1);
+          Rect rect = new Rect(0, 0, child.getWidth(), child.getHeight());
+          child.requestRectangleOnScreen(rect, true);
         });
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
 

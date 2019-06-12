@@ -25,11 +25,7 @@ import java.util.concurrent.TimeUnit;
 
 /** Utility methods for testing activities. */
 public class ActivityUtils {
-  private static final Runnable DO_NOTHING =
-      new Runnable() {
-        @Override
-        public void run() {}
-      };
+  private static final Runnable DO_NOTHING = () -> {};
 
   public static void waitForExecution(
       final ActivityTestRule<? extends RecreatableAppCompatActivity> rule) {
@@ -69,14 +65,7 @@ public class ActivityUtils {
     // Now switch the orientation
     RecreatableAppCompatActivity.resumedLatch = new CountDownLatch(1);
     RecreatableAppCompatActivity.destroyedLatch = new CountDownLatch(1);
-    runOnUiThreadRethrow(
-        rule,
-        new Runnable() {
-          @Override
-          public void run() {
-            activity.recreate();
-          }
-        });
+    runOnUiThreadRethrow(rule, activity::recreate);
     assertTrue(RecreatableAppCompatActivity.resumedLatch.await(1, TimeUnit.SECONDS));
     assertTrue(RecreatableAppCompatActivity.destroyedLatch.await(1, TimeUnit.SECONDS));
     T newActivity = (T) RecreatableAppCompatActivity.activity;

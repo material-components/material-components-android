@@ -20,7 +20,6 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -28,7 +27,6 @@ import com.google.android.material.bottomnavigation.BottomNavigationView.OnNavig
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
@@ -53,27 +51,24 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
     initBottomNavDemoControls(view);
 
     OnNavigationItemSelectedListener navigationItemListener =
-        new OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-            handleAllBottomNavSelections(item.getItemId());
+        item -> {
+          handleAllBottomNavSelections(item.getItemId());
 
-            TextView page1Text = view.findViewById(R.id.page_1);
-            TextView page2Text = view.findViewById(R.id.page_2);
-            TextView page3Text = view.findViewById(R.id.page_3);
-            TextView page4Text = view.findViewById(R.id.page_4);
-            TextView page5Text = view.findViewById(R.id.page_5);
+          TextView page1Text = view.findViewById(R.id.page_1);
+          TextView page2Text = view.findViewById(R.id.page_2);
+          TextView page3Text = view.findViewById(R.id.page_3);
+          TextView page4Text = view.findViewById(R.id.page_4);
+          TextView page5Text = view.findViewById(R.id.page_5);
 
-            int itemId = item.getItemId();
-            page1Text.setVisibility(itemId == R.id.action_page_1 ? View.VISIBLE : View.GONE);
-            page2Text.setVisibility(itemId == R.id.action_page_2 ? View.VISIBLE : View.GONE);
-            page3Text.setVisibility(itemId == R.id.action_page_3 ? View.VISIBLE : View.GONE);
-            page4Text.setVisibility(itemId == R.id.action_page_4 ? View.VISIBLE : View.GONE);
-            page5Text.setVisibility(itemId == R.id.action_page_5 ? View.VISIBLE : View.GONE);
+          int itemId = item.getItemId();
+          page1Text.setVisibility(itemId == R.id.action_page_1 ? View.VISIBLE : View.GONE);
+          page2Text.setVisibility(itemId == R.id.action_page_2 ? View.VISIBLE : View.GONE);
+          page3Text.setVisibility(itemId == R.id.action_page_3 ? View.VISIBLE : View.GONE);
+          page4Text.setVisibility(itemId == R.id.action_page_4 ? View.VISIBLE : View.GONE);
+          page5Text.setVisibility(itemId == R.id.action_page_5 ? View.VISIBLE : View.GONE);
 
-            clearAndHideBadge(item.getItemId());
-            return false;
-          }
+          clearAndHideBadge(item.getItemId());
+          return false;
         };
     setBottomNavListeners(navigationItemListener);
 
@@ -142,37 +137,25 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
   }
 
   private void initAddIncreaseBadgeNumberButton(Button incrementBadgeNumberButton) {
-    incrementBadgeNumberButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            updateBadgeNumber(1);
-          }
-        });
+    incrementBadgeNumberButton.setOnClickListener(v -> updateBadgeNumber(1));
   }
 
   private void initAddNavItemButton(Button addNavItemButton) {
     addNavItemButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            if (numVisibleChildren < MAX_BOTTOM_NAV_CHILDREN) {
-              addNavItemsToBottomNavs();
-              numVisibleChildren++;
-            }
+        v -> {
+          if (numVisibleChildren < MAX_BOTTOM_NAV_CHILDREN) {
+            addNavItemsToBottomNavs();
+            numVisibleChildren++;
           }
         });
   }
 
   private void initRemoveNavItemButton(Button removeNavItemButton) {
     removeNavItemButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            if (numVisibleChildren > 0) {
-              numVisibleChildren--;
-              removeNavItemsFromBottomNavs();
-            }
+        v -> {
+          if (numVisibleChildren > 0) {
+            numVisibleChildren--;
+            removeNavItemsFromBottomNavs();
           }
         });
   }
