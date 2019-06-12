@@ -17,6 +17,9 @@ package com.google.android.material.picker;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import androidx.annotation.IntDef;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -26,9 +29,27 @@ import java.util.Locale;
 /** Contains convenience operations for a month within a specific year. */
 final class Month implements Comparable<Month>, Parcelable {
 
+  @Retention(RetentionPolicy.SOURCE)
+  @IntDef({
+      Calendar.JANUARY,
+      Calendar.FEBRUARY,
+      Calendar.MARCH,
+      Calendar.APRIL,
+      Calendar.MAY,
+      Calendar.JUNE,
+      Calendar.JULY,
+      Calendar.AUGUST,
+      Calendar.SEPTEMBER,
+      Calendar.OCTOBER,
+      Calendar.NOVEMBER,
+      Calendar.DECEMBER})
+  public @interface Months {
+
+  }
+
   private final Calendar calendar;
   private final String longName;
-  final int month;
+  @Months final int month;
   final int year;
   final int daysInWeek;
   final int daysInMonth;
@@ -52,7 +73,7 @@ final class Month implements Comparable<Month>, Parcelable {
    *     Calendar#JANUARY}
    * @return A Month object backed by a new {@link Calendar} instance
    */
-  static Month create(int year, int month) {
+  static Month create(int year, @Months int month) {
     Calendar calendar = Calendar.getInstance();
     calendar.clear();
     calendar.set(Calendar.YEAR, year);
