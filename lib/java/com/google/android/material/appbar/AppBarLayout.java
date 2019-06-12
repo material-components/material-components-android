@@ -1723,8 +1723,7 @@ public class AppBarLayout extends LinearLayout {
 
         final boolean changed = layout.setLiftedState(lifted);
 
-        if (Build.VERSION.SDK_INT >= 11
-            && (forceJump || (changed && shouldJumpElevationState(parent, layout)))) {
+        if (forceJump || (changed && shouldJumpElevationState(parent, layout))) {
           // If the collapsed state changed, we may need to
           // jump to the current state if we have an overlapping view
           layout.jumpDrawablesToCurrentState();

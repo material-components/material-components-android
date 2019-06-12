@@ -2755,8 +2755,11 @@ public class TextInputLayout extends LinearLayout {
     iconView.setOnClickListener(onClickListener);
     iconView.setFocusable(clickable);
     iconView.setClickable(clickable);
-    ViewCompat.setImportantForAccessibility(
-        iconView, clickable ? IMPORTANT_FOR_ACCESSIBILITY_YES : IMPORTANT_FOR_ACCESSIBILITY_NO);
+    int importantForAccessiblity = clickable
+        ? ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES
+        : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
+
+    ViewCompat.setImportantForAccessibility(iconView, importantForAccessiblity);
   }
 
   private void updateIconViewOnEditTextAttached(@NonNull View iconView) {

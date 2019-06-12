@@ -15,6 +15,7 @@
  */
 package com.google.android.material.picker;
 
+import android.annotation.SuppressLint;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.view.Gravity;
@@ -69,6 +70,7 @@ class DaysOfWeekAdapter extends BaseAdapter {
     return daysInWeek;
   }
 
+  @SuppressLint("WrongConstant")
   @Override
   public View getView(int position, View convertView, ViewGroup parent) {
     TextView dayOfWeek = (TextView) convertView;

@@ -59,6 +59,7 @@ android {
       application_theme            : 'Catalog',
       catalog_application_component: 'io.material.catalog.application.DaggerCatalogApplicationComponent'
     ]
+    vectorDrawables.useSupportLibrary = true
     minSdkVersion 14
     targetSdkVersion 27
   }

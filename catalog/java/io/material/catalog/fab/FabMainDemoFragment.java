@@ -22,7 +22,6 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
@@ -53,7 +52,7 @@ public class FabMainDemoFragment extends DemoFragment {
     for (FloatingActionButton fab : fabs) {
       fab.setOnClickListener(
           v -> {
-            Snackbar.make(v, R.string.cat_fab_clicked, BaseTransientBottomBar.LENGTH_SHORT).show();
+            Snackbar.make(v, R.string.cat_fab_clicked, Snackbar.LENGTH_SHORT).show();
           });
     }
 

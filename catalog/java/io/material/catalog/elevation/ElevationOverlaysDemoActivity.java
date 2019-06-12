@@ -46,7 +46,7 @@ public class ElevationOverlaysDemoActivity extends DemoActivity {
     RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
     recyclerView.setAdapter(new Adapter(getElevationDpValues()));
     recyclerView.setLayoutManager(
-        new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, /* reverseLayout= */ false));
+        new LinearLayoutManager(this, RecyclerView.VERTICAL, /* reverseLayout= */ false));
 
     return view;
   }

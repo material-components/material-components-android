@@ -398,7 +398,7 @@ class MaterialCardViewHelper {
       int left = measuredWidth - margin - size;
       int bottom = measuredHeight - margin - size;
       int right = margin;
-      if (ViewCompat.getLayoutDirection(materialCardView) == View.LAYOUT_DIRECTION_RTL) {
+      if (ViewCompat.getLayoutDirection(materialCardView) == ViewCompat.LAYOUT_DIRECTION_RTL) {
         // swap left and right
         int tmp = right;
         right = left;

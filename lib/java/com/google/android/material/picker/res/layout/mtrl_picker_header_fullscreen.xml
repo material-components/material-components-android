@@ -16,6 +16,7 @@
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/mtrl_calendar_header_height_fullscreen"
     android:paddingStart="4dp"
@@ -23,7 +24,8 @@
     android:paddingLeft="4dp"
     android:paddingRight="4dp"
     android:background="?attr/colorPrimary"
-    android:orientation="horizontal">
+    android:orientation="horizontal"
+    tools:ignore="Overdraw">
 
   <com.google.android.material.button.MaterialButton
       android:id="@+id/cancel_button"
@@ -38,8 +40,7 @@
   <include
       layout="@layout/mtrl_picker_header_title_and_selection"
       android:layout_width="160dp"
-      android:layout_height="@dimen/mtrl_calendar_header_height"
-      android:layout_weight="0"/>
+      android:layout_height="@dimen/mtrl_calendar_header_height"/>
 
   <LinearLayout
       android:layout_width="72dp"

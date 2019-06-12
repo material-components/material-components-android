@@ -1,0 +1,530 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<issues format="4" by="lint 3.2.1" client="gradle" variant="all" version="3.2.1">
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `firstBaselineToTopHeight` is only used in API level 28 and higher (current min is 23)"
+        errorLine1="              android:firstBaselineToTopHeight=&quot;40dp&quot;"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/component_cards.xml"
+            line="82"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `firstBaselineToTopHeight` is only used in API level 28 and higher (current min is 23)"
+        errorLine1="              android:firstBaselineToTopHeight=&quot;@dimen/keyline_5&quot;"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/component_cards.xml"
+            line="92"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `firstBaselineToTopHeight` is only used in API level 28 and higher (current min is 23)"
+        errorLine1="      android:firstBaselineToTopHeight=&quot;40dp&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_bottom_sheet.xml"
+            line="33"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `firstBaselineToTopHeight` is only used in API level 28 and higher (current min is 23)"
+        errorLine1="      android:firstBaselineToTopHeight=&quot;36dp&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/fragment_bottom_sheet.xml"
+            line="41"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="GradleDependency"
+        message="A newer version of androidx.appcompat:appcompat than 1.1.0-alpha04 is available: 1.1.0-beta01"
+        errorLine1="    implementation &apos;androidx.appcompat:appcompat:1.1.0-alpha04&apos;"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="31"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="AllowBackup"
+        message="On SDK version 23 and up, your app data will be automatically backed up and restored on app install. Consider adding the attribute `android:fullBackupContent` to specify an `@xml` resource which configures which files to backup. More info: https://developer.android.com/training/backup/autosyncapi.html"
+        errorLine1="    &lt;application"
+        errorLine2="     ~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="22"
+            column="6"/>
+    </issue>
+
+    <issue
+        id="VectorPath"
+        message="Very long vector path (937 characters), which is bad for performance. Considering reducing precision, removing minor details or rasterizing vector."
+        errorLine1="      android:pathData=&quot;M 23.8462 12 C 23.8462 5.46308 18.5369 0.153846 12 0.153846 C 5.46308 0.153846 0.153846 5.46308 0.153846 12 C 0.153846 18.5369 5.46308 23.8462 12 23.8462 C 18.5369 23.8462 23.8462 18.5369 23.8462 12 Z M 4.46154 18.0738 C 3.11538 16.4154 2.30769 14.3046 2.30769 12 C 2.30769 9.70615 3.12615 7.60615 4.46154 5.93692 L 4.46154 18.0738 Z M 18.0738 4.46154 L 5.92615 4.46154 C 7.58462 3.11538 9.69538 2.30769 12 2.30769 C 14.3046 2.30769 16.4154 3.11538 18.0738 4.46154 Z M 12 14.7246 L 7.95077 6.61538 L 16.06 6.61538 L 12 14.7246 Z M 17.3846 8.76923 L 17.3846 17.3846 L 13.0769 17.3846 L 17.3846 8.76923 Z M 10.9231 17.3846 L 6.61538 17.3846 L 6.61538 8.76923 L 10.9231 17.3846 Z M 18.0738 19.5385 C 16.4046 20.8846 14.2938 21.6923 12 21.6923 C 9.70615 21.6923 7.58462 20.8846 5.92615 19.5385 L 18.0738 19.5385 Z M 21.6923 12 C 21.6923 14.3046 20.8846 16.4154 19.5385 18.0738 L 19.5385 5.93692 C 20.8738 7.60615 21.6923 9.70615 21.6923 12 Z&quot;"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/drawable/ic_material_icon_24dp.xml"
+            line="26"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_launcher_background` appears to be unused"
+        errorLine1="&lt;vector"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable/ic_launcher_background.xml"
+            line="18"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.drawable.ic_launcher_foreground` appears to be unused"
+        errorLine1="&lt;vector xmlns:android=&quot;http://schemas.android.com/apk/res/android&quot;"
+        errorLine2="^">
+        <location
+            file="src/main/res/drawable-v24/ic_launcher_foreground.xml"
+            line="17"
+            column="1"/>
+    </issue>
+
+    <issue
+        id="TypographyEllipsis"
+        message="Replace &quot;...&quot; with ellipsis character (…, &amp;#8230;) ?"
+        errorLine1="    &lt;string name=&quot;theme_name_hint&quot;>Theme name...&lt;/string>"
+        errorLine2="                                   ^">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="19"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="IconLocation"
+        message="Found bitmap drawable `res/drawable/sample_image.png` in densityless folder">
+        <location
+            file="src/main/res/drawable/sample_image.png"/>
+    </issue>
+
+    <issue
+        id="IconDuplicates"
+        message="The following unrelated icon files have identical contents: ic_launcher.png, ic_launcher_round.png">
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher_round.png"/>
+        <location
+            file="src/main/res/mipmap-hdpi/ic_launcher.png"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorPrimary&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorPrimary&quot; />"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/color_attribute_view_layout.xml"
+            line="28"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?shapeAppearanceSmallComponent&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?shapeAppearanceSmallComponent&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/shape_attribute_view_layout.xml"
+            line="26"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorPrimary&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorPrimary&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="40"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorPrimaryVariant&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorPrimaryVariant&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="49"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorSecondary&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorSecondary&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="58"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorSecondaryVariant&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorSecondaryVariant&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="68"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorBackground&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorBackground&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="78"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorSurface&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorSurface&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="87"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorError&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorError&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="96"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorOnPrimary&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorOnPrimary&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="105"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorOnSecondary&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorOnSecondary&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="114"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorOnBackground&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorOnBackground&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="123"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorOnSurface&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorOnSurface&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="132"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?colorOnError&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?colorOnError&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_color.xml"
+            line="141"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?shapeAppearanceSmallComponent&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?shapeAppearanceSmallComponent&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_shape.xml"
+            line="40"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?shapeAppearanceMediumComponent&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?shapeAppearanceMediumComponent&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_shape.xml"
+            line="51"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?shapeAppearanceLargeComponent&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?shapeAppearanceLargeComponent&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_shape.xml"
+            line="62"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceHeadline1&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceHeadline1&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="40"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceHeadline2&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceHeadline2&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="50"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceHeadline3&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceHeadline3&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="60"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceHeadline4&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceHeadline4&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="70"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceHeadline5&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceHeadline5&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="80"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceHeadline6&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceHeadline6&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="90"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceSubtitle1&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceSubtitle1&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="100"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceSubtitle2&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceSubtitle2&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="110"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceBody1&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceBody1&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="120"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceBody2&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceBody2&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="130"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceButton&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceButton&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="140"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceCaption&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceCaption&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="150"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="HardcodedText"
+        message="Hardcoded string &quot;\?textAppearanceOverline&quot;, should use `@string` resource"
+        errorLine1="      android:text=&quot;\?textAppearanceOverline&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/subsystem_type.xml"
+            line="160"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`Gravity.START`&quot; instead of &quot;`Gravity.LEFT`&quot; to ensure correct behavior in right-to-left locales"
+        errorLine1="      drawerLayout.openDrawer(Gravity.LEFT)"
+        errorLine2="                                      ~~~~">
+        <location
+            file="src/main/java/io/material/materialthemebuilder/ui/component/ComponentViewHolder.kt"
+            line="96"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;@dimen/keyline_2&quot;` to better support right-to-left layouts"
+        errorLine1="                      android:layout_marginLeft=&quot;@dimen/keyline_2&quot;"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="64"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginRight` with `android:layout_marginEnd=&quot;@dimen/keyline_4&quot;` to better support right-to-left layouts"
+        errorLine1="                      android:layout_marginRight=&quot;@dimen/keyline_4&quot;"
+        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/activity_main.xml"
+            line="65"
+            column="23"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Consider replacing `android:layout_marginLeft` with `android:layout_marginStart=&quot;@dimen/keyline_4&quot;` to better support right-to-left layouts"
+        errorLine1="              android:layout_marginLeft=&quot;@dimen/keyline_4&quot;"
+        errorLine2="              ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/component_cards.xml"
+            line="81"
+            column="15"/>
+    </issue>
+
+    <issue
+        id="RtlHardcoded"
+        message="Use &quot;`start`&quot; instead of &quot;`left`&quot; to ensure correct behavior in right-to-left locales"
+        errorLine1="          android:layout_gravity=&quot;start|left&quot;"
+        errorLine2="                                  ~~~~~~~~~~">
+        <location
+            file="src/main/res/layout/component_drawer.xml"
+            line="54"
+            column="35"/>
+    </issue>
+
+</issues>

@@ -26,7 +26,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import com.google.android.material.resources.TextAppearance;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.widget.TextViewCompat;
 import androidx.recyclerview.widget.DividerItemDecoration;
@@ -160,7 +159,7 @@ public class FontMainDemoFragment extends DemoFragment {
               Snackbar.make(
                       view,
                       view.getContext().getString(R.string.cat_font_style_message, attributeName),
-                      BaseTransientBottomBar.LENGTH_LONG)
+                      Snackbar.LENGTH_LONG)
                   .show());
     }
 

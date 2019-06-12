@@ -22,7 +22,6 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.core.math.MathUtils;
 import android.util.DisplayMetrics;
@@ -55,7 +54,7 @@ public class ButtonsMainDemoFragment extends DemoFragment {
           v -> {
             // Show a Snackbar with an action button, which should also have a MaterialButton style
             Snackbar snackbar =
-                Snackbar.make(v, R.string.cat_button_clicked, BaseTransientBottomBar.LENGTH_LONG);
+                Snackbar.make(v, R.string.cat_button_clicked, Snackbar.LENGTH_LONG);
             snackbar.setAction(
                 R.string.cat_snackbar_action_button_text,
                 new OnClickListener() {

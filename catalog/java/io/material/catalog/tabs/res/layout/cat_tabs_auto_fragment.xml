@@ -43,6 +43,7 @@
         android:id="@+id/add_tab_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginRight="@dimen/cat_tabs_small_spacing"
         android:layout_marginEnd="@dimen/cat_tabs_small_spacing"
         android:text="@string/cat_tabs_add_tab_button_label"/>
     <Button

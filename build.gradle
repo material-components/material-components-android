@@ -184,13 +184,6 @@ subprojects {
 
     if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
       if (!isAndroidTest) {
-        // Enforce NewApi lint check as fatal.
-        project.android.lintOptions.check 'NewApi'
-        project.android.lintOptions.fatal 'NewApi'
-        // Output lint errors on stdout
-        project.android.lintOptions.textReport true
-        project.android.lintOptions.textOutput 'stdout'
-
         rootProject.lint.dependsOn project.lint
       }
 
@@ -208,6 +201,12 @@ subprojects {
         compileOptions.targetCompatibility JavaVersion.VERSION_1_8
 
         aaptOptions.additionalParameters "--no-version-vectors"
+
+        lintOptions {
+          baseline file("baseline.xml")
+          disable 'IconLauncherShape', 'IconDuplicates'
+          warningsAsErrors true
+        }
 
         if (isAndroidLibrary) {
           def JAVA_RESOURCES_TEMP_DIR = "$buildDir/javaResources"
