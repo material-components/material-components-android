@@ -19,28 +19,28 @@
   <item
       android:id="@+id/action_page_1"
       android:enabled="true"
-      android:icon="@drawable/ic_star_vd_theme_24"
+      android:icon="@drawable/ic_star_checkable_24"
       android:title="@string/cat_bottom_nav_page_1_name"/>
   <item
       android:id="@+id/action_page_2"
       android:enabled="true"
-      android:icon="@drawable/ic_star_vd_theme_24"
+      android:icon="@drawable/ic_star_checkable_24"
       android:title="@string/cat_bottom_nav_page_2_name"/>
   <item
       android:id="@+id/action_page_3"
       android:enabled="true"
-      android:icon="@drawable/ic_star_vd_theme_24"
+      android:icon="@drawable/ic_star_checkable_24"
       android:title="@string/cat_bottom_nav_page_3_name"/>
   <item
       android:id="@+id/action_page_4"
       android:enabled="true"
-      android:icon="@drawable/ic_star_vd_theme_24"
+      android:icon="@drawable/ic_star_checkable_24"
       android:title="@string/cat_bottom_nav_page_4_name"
       android:visible="false"/>
   <item
       android:id="@+id/action_page_5"
       android:enabled="true"
-      android:icon="@drawable/ic_star_vd_theme_24"
+      android:icon="@drawable/ic_star_checkable_24"
       android:title="@string/cat_bottom_nav_page_5_name"
       android:visible="false"/>
 </menu>
