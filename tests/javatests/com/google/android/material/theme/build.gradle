@@ -21,7 +21,7 @@ dependencies {
   implementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
   implementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
   implementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
-  implementation 'org.mockito:mockito-core:1.9.5'
+  implementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
   implementation 'com.google.dexmaker:dexmaker:1.2'
   implementation 'com.google.dexmaker:dexmaker-mockito:1.2'
 

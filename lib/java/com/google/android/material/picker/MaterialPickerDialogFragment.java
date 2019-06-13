@@ -26,7 +26,6 @@ import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
-import androidx.annotation.AttrRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -112,7 +111,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
   private SimpleDateFormat userDefinedSimpleDateFormat;
 
-  @AttrRes private int themeResId;
+  @StyleRes private int themeResId;
   private GridSelector<S> gridSelector;
   private PickerFragment<S> pickerFragment;
   private CalendarBounds calendarBounds;

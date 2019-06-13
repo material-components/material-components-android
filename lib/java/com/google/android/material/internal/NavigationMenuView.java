@@ -40,7 +40,7 @@ public class NavigationMenuView extends RecyclerView implements MenuView {
 
   public NavigationMenuView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
-    setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));
+    setLayoutManager(new LinearLayoutManager(context, RecyclerView.VERTICAL, false));
   }
 
   @Override

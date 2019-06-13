@@ -43,6 +43,8 @@ ext {
 
   testRunnerVersion = '1.1.0'
   espressoVersion = '3.1.0'
+  mockitoCoreVersion = '2.25.0'
+
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
@@ -204,7 +206,7 @@ subprojects {
 
         lintOptions {
           baseline file("baseline.xml")
-          disable 'IconLauncherShape', 'IconDuplicates'
+          disable 'IconLauncherShape', 'IconDuplicates', 'SwitchIntDef', 'PxUsage', 'PrivateResource'
           warningsAsErrors true
         }
 

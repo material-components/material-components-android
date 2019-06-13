@@ -136,6 +136,7 @@ class MaterialCardViewHelper {
 
     shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
     drawableInsetByStroke = new MaterialShapeDrawable(shapeAppearanceModelInsetByStroke);
+    cardViewAttributes.recycle();
   }
 
   void loadFromAttributes(TypedArray attributes) {

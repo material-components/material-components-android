@@ -17,28 +17,6 @@
 <issues format="4" by="lint 3.2.1" client="gradle" variant="all" version="3.2.1">
 
     <issue
-        id="ResourceType"
-        message="Expected resource of type style"
-        errorLine1="    themeResId ="
-        errorLine2="    ~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/picker/MaterialPickerDialogFragment.java"
-            line="162"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="ResourceType"
-        message="Expected resource of type style"
-        errorLine1="    return new Dialog(requireContext(), themeResId);"
-        errorLine2="                                        ~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/picker/MaterialPickerDialogFragment.java"
-            line="176"
-            column="41"/>
-    </issue>
-
-    <issue
         id="CustomViewStyleable"
         message="By convention, the custom view (`SnackbarBaseLayout`) and the declare-styleable (`SnackbarLayout`) should have the same name (various editor features rely on this convention)"
         errorLine1="      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);"
@@ -69,17 +47,6 @@
             file="java/com/google/android/material/tabs/TabLayout.java"
             line="519"
             column="32"/>
-    </issue>
-
-    <issue
-        id="InlinedApi"
-        message="Field requires API level 17 (current min is 14): `android.view.View#LAYOUT_DIRECTION_RTL`"
-        errorLine1="    boolean isRtl = ViewCompat.getLayoutDirection(this) == LAYOUT_DIRECTION_RTL;"
-        errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/internal/FlowLayout.java"
-            line="190"
-            column="60"/>
     </issue>
 
     <issue
@@ -204,28 +171,6 @@
     </issue>
 
     <issue
-        id="WrongConstant"
-        message="Must be one of: ViewCompat.LAYOUT_DIRECTION_LTR, ViewCompat.LAYOUT_DIRECTION_RTL"
-        errorLine1="    boolean isRtl = ViewCompat.getLayoutDirection(this) == LAYOUT_DIRECTION_RTL;"
-        errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/internal/FlowLayout.java"
-            line="190"
-            column="60"/>
-    </issue>
-
-    <issue
-        id="WrongConstant"
-        message="Must be one of: RecyclerView.HORIZONTAL, RecyclerView.VERTICAL"
-        errorLine1="    setLayoutManager(new LinearLayoutManager(context, LinearLayoutManager.VERTICAL, false));"
-        errorLine2="                                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/internal/NavigationMenuView.java"
-            line="43"
-            column="55"/>
-    </issue>
-
-    <issue
         id="VectorRaster"
         message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
         errorLine1="    android:fillColor=&quot;@android:color/white&quot;"
@@ -256,28 +201,6 @@
             file="java/com/google/android/material/textfield/res/drawable/mtrl_ic_cancel.xml"
             line="25"
             column="24"/>
-    </issue>
-
-    <issue
-        id="AppCompatCustomView"
-        message="This custom view should extend `androidx.appcompat.widget.AppCompatImageButton` instead"
-        errorLine1="public class VisibilityAwareImageButton extends ImageButton {"
-        errorLine2="                                                ~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/internal/VisibilityAwareImageButton.java"
-            line="32"
-            column="49"/>
-    </issue>
-
-    <issue
-        id="GradleDependency"
-        message="A newer version of org.mockito:mockito-core than 1.9.5 is available: 2.25.0"
-        errorLine1="  testImplementation &quot;org.mockito:mockito-core:1.9.5&quot;"
-        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="28"
-            column="3"/>
     </issue>
 
     <issue
@@ -919,160 +842,6 @@
     </issue>
 
     <issue
-        id="ShiftFlags"
-        message="Consider declaring this constant using 1 &lt;&lt; 1 instead"
-        errorLine1="    public static final int SCROLL_FLAG_EXIT_UNTIL_COLLAPSED = 0x2;"
-        errorLine2="                                                               ~~~">
-        <location
-            file="java/com/google/android/material/appbar/AppBarLayout.java"
-            line="1022"
-            column="64"/>
-    </issue>
-
-    <issue
-        id="ShiftFlags"
-        message="Consider declaring this constant using 1 &lt;&lt; 2 instead"
-        errorLine1="    public static final int SCROLL_FLAG_ENTER_ALWAYS = 0x4;"
-        errorLine2="                                                       ~~~">
-        <location
-            file="java/com/google/android/material/appbar/AppBarLayout.java"
-            line="1029"
-            column="56"/>
-    </issue>
-
-    <issue
-        id="ShiftFlags"
-        message="Consider declaring this constant using 1 &lt;&lt; 3 instead"
-        errorLine1="    public static final int SCROLL_FLAG_ENTER_ALWAYS_COLLAPSED = 0x8;"
-        errorLine2="                                                                 ~~~">
-        <location
-            file="java/com/google/android/material/appbar/AppBarLayout.java"
-            line="1040"
-            column="66"/>
-    </issue>
-
-    <issue
-        id="ShiftFlags"
-        message="Consider declaring this constant using 1 &lt;&lt; 4 instead"
-        errorLine1="    public static final int SCROLL_FLAG_SNAP = 0x10;"
-        errorLine2="                                               ~~~~">
-        <location
-            file="java/com/google/android/material/appbar/AppBarLayout.java"
-            line="1048"
-            column="48"/>
-    </issue>
-
-    <issue
-        id="ShiftFlags"
-        message="Consider declaring this constant using 1 &lt;&lt; 5 instead"
-        errorLine1="    public static final int SCROLL_FLAG_SNAP_MARGINS = 0x20;"
-        errorLine2="                                                       ~~~~">
-        <location
-            file="java/com/google/android/material/appbar/AppBarLayout.java"
-            line="1054"
-            column="56"/>
-    </issue>
-
-    <issue
-        id="SwitchIntDef"
-        message="Switch statement on an `int` with known associated constant missing case `MeasureSpec.EXACTLY`"
-        errorLine1="      switch (heightMode) {"
-        errorLine2="      ~~~~~~">
-        <location
-            file="java/com/google/android/material/appbar/AppBarLayout.java"
-            line="429"
-            column="7"/>
-    </issue>
-
-    <issue
-        id="SwitchIntDef"
-        message="Switch statement on an `int` with known associated constant missing case `CAPTION_STATE_NONE`"
-        errorLine1="    switch (captionDisplayState) {"
-        errorLine2="    ~~~~~~">
-        <location
-            file="java/com/google/android/material/textfield/IndicatorViewController.java"
-            line="339"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="SwitchIntDef"
-        message="Switch statement on an `int` with known associated constant missing case `MeasureSpec.EXACTLY`"
-        errorLine1="    switch (MeasureSpec.getMode(heightMeasureSpec)) {"
-        errorLine2="    ~~~~~~">
-        <location
-            file="java/com/google/android/material/tabs/TabLayout.java"
-            line="1602"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="SwitchIntDef"
-        message="Switch statement on an `int` with known associated constant missing case `BOX_BACKGROUND_NONE`"
-        errorLine1="    switch (boxBackgroundMode) {"
-        errorLine2="    ~~~~~~">
-        <location
-            file="java/com/google/android/material/textfield/TextInputLayout.java"
-            line="1766"
-            column="5"/>
-    </issue>
-
-    <issue
-        id="PxUsage"
-        message="Avoid using `&quot;px&quot;` as units; use `&quot;dp&quot;` instead"
-        errorLine1="    &lt;item name=&quot;cornerSize&quot;>20px&lt;/item>"
-        errorLine2="                            ^">
-        <location
-            file="javatests/com/google/android/material/shape/res/values/styles.xml"
-            line="35"
-            column="29"/>
-    </issue>
-
-    <issue
-        id="PxUsage"
-        message="Avoid using `&quot;px&quot;` as units; use `&quot;dp&quot;` instead"
-        errorLine1="    &lt;item name=&quot;cornerSizeTopRight&quot;>20px&lt;/item>"
-        errorLine2="                                    ^">
-        <location
-            file="javatests/com/google/android/material/shape/res/values/styles.xml"
-            line="39"
-            column="37"/>
-    </issue>
-
-    <issue
-        id="PxUsage"
-        message="Avoid using `&quot;px&quot;` as units; use `&quot;dp&quot;` instead"
-        errorLine1="    &lt;item name=&quot;cornerSizeBottomLeft&quot;>20px&lt;/item>"
-        errorLine2="                                      ^">
-        <location
-            file="javatests/com/google/android/material/shape/res/values/styles.xml"
-            line="43"
-            column="39"/>
-    </issue>
-
-    <issue
-        id="PxUsage"
-        message="Avoid using `&quot;px&quot;` as units; use `&quot;dp&quot;` instead"
-        errorLine1="    &lt;item name=&quot;cornerSize&quot;>10px&lt;/item>"
-        errorLine2="                            ^">
-        <location
-            file="javatests/com/google/android/material/shape/res/values/styles.xml"
-            line="48"
-            column="29"/>
-    </issue>
-
-    <issue
-        id="Recycle"
-        message="This `TypedArray` should be recycled after use with `#recycle()`"
-        errorLine1="            .obtainStyledAttributes(attrs, R.styleable.CardView, defStyleAttr, R.style.CardView);"
-        errorLine2="             ~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/card/MaterialCardViewHelper.java"
-            line="131"
-            column="14"/>
-    </issue>
-
-    <issue
         id="ClickableViewAccessibility"
         message="Custom view ``FrameLayout`` has `setOnTouchListener` called on it but does not override `performClick`"
         errorLine1="    bottomSheet.setOnTouchListener("
@@ -1114,17 +883,6 @@
             file="java/com/google/android/material/floatingactionbutton/FloatingActionButton.java"
             line="917"
             column="18"/>
-    </issue>
-
-    <issue
-        id="ConstantLocale"
-        message="Assigning `Locale.getDefault()` to a final static field is suspicious; this code will not work correctly if the user changes locale while the app is running"
-        errorLine1="      new SimpleDateFormat(&quot;MMMM, yyyy&quot;, Locale.getDefault());"
-        errorLine2="                                         ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/picker/Month.java"
-            line="31"
-            column="42"/>
     </issue>
 
 </issues>
