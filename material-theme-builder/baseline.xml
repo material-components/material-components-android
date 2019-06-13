@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <!--
   Copyright 2019 The Android Open Source Project
 
@@ -14,7 +14,18 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<issues format="4" by="lint 3.2.1" client="gradle" variant="all" version="3.2.1">
+<issues format="5" by="lint 3.3.2" client="gradle" variant="all" version="3.3.2">
+
+    <issue
+        id="OldTargetApi"
+        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
+        errorLine1="        targetSdkVersion 28"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="build.gradle"
+            line="10"
+            column="9"/>
+    </issue>
 
     <issue
         id="UnusedAttribute"
@@ -131,15 +142,6 @@
         message="Found bitmap drawable `res/drawable/sample_image.png` in densityless folder">
         <location
             file="src/main/res/drawable/sample_image.png"/>
-    </issue>
-
-    <issue
-        id="IconDuplicates"
-        message="The following unrelated icon files have identical contents: ic_launcher.png, ic_launcher_round.png">
-        <location
-            file="src/main/res/mipmap-hdpi/ic_launcher_round.png"/>
-        <location
-            file="src/main/res/mipmap-hdpi/ic_launcher.png"/>
     </issue>
 
     <issue
