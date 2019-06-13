@@ -33,6 +33,8 @@ the Design Library dependency as you would normally, using the version
 specified as `mdcLibraryVersion` in the library's top-level `build.gradle`
 file.
 
+**Note** Do not update Gradle beyond 4.10 as the [android-maven-gradle-plugin](https://github.com/dcendents/android-maven-gradle-plugin) dependency cannot be used for Gradle 5.x
+
 ## Useful Links
 - [Getting Started](getting-started.md)
 - [Contributing](contributing.md)
