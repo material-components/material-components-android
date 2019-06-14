@@ -126,8 +126,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   private static final String TAG = "Chip";
 
-  private static final int CHIP_BODY_VIRTUAL_ID = 0;
-  private static final int CLOSE_ICON_VIRTUAL_ID = 1;
+  private static final int CLOSE_ICON_VIRTUAL_ID = 0;
   private static final Rect EMPTY_BOUNDS = new Rect();
 
   private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
@@ -807,18 +806,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   @Override
   public boolean dispatchKeyEvent(KeyEvent event) {
-    boolean handled = touchHelper.dispatchKeyEvent(event);
-    // If the key event moves focus one beyond the end of the virtual view hierarchy in the
-    // traversal direction (i.e. beyond the last virtual view while moving forward or before the
-    // first virtual view while traversing backward), ExploreByTouchHelper will erroneously report
-    // that it consumed the key event even though it does not move focus to the next or previous
-    // real view. In order to account for this, call through to super to move focus to the correct
-    // real view.
-    if (handled
-        && touchHelper.getKeyboardFocusedVirtualViewId() != ExploreByTouchHelper.INVALID_ID) {
-      return true;
-    }
-    return super.dispatchKeyEvent(event);
+    return touchHelper.dispatchKeyEvent(event) || super.dispatchKeyEvent(event);
   }
 
   @Override
@@ -951,12 +939,12 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     protected int getVirtualViewAt(float x, float y) {
       return (hasCloseIcon() && getCloseIconTouchBounds().contains(x, y))
           ? CLOSE_ICON_VIRTUAL_ID
-          : CHIP_BODY_VIRTUAL_ID;
+          : HOST_ID;
     }
 
     @Override
     protected void getVisibleVirtualViews(List<Integer> virtualViewIds) {
-      virtualViewIds.add(CHIP_BODY_VIRTUAL_ID);
+      virtualViewIds.add(HOST_ID);
       if (hasCloseIcon() && isCloseIconVisible()) {
         virtualViewIds.add(CLOSE_ICON_VIRTUAL_ID);
       }
@@ -1013,12 +1001,9 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     @Override
     protected boolean onPerformActionForVirtualView(
         int virtualViewId, int action, Bundle arguments) {
-      if (action == AccessibilityNodeInfoCompat.ACTION_CLICK) {
-        if (virtualViewId == CHIP_BODY_VIRTUAL_ID) {
-          return performClick();
-        } else if (virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
-          return performCloseIconClick();
-        }
+      if (action == AccessibilityNodeInfoCompat.ACTION_CLICK
+          && virtualViewId == CLOSE_ICON_VIRTUAL_ID) {
+        return performCloseIconClick();
       }
       return false;
     }
