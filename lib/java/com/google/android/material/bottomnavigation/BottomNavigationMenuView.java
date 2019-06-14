@@ -623,14 +623,13 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   }
 
   /**
-   * Initializes (if needed) and shows a {@link BadgeDrawable} associated with {@code menuItemId}.
-   * Creates an instance of BadgeDrawable if none are associated with {@code menuItemId}. For
-   * convenience, also returns the associated instance of BadgeDrawable.
+   * Creates an instance of {@link BadgeDrawable} if none exists. Initializes (if needed) and
+   * returns the associated instance of {@link BadgeDrawable}.
    *
    * @param menuItemId Id of the menu item.
    * @return an instance of BadgeDrawable associated with {@code menuItemId}.
    */
-  BadgeDrawable showBadge(int menuItemId) {
+  BadgeDrawable getOrCreateBadge(int menuItemId) {
     validateMenuItemId(menuItemId);
     BadgeDrawable badgeDrawable = badgeDrawables.get(menuItemId);
     // Create an instance of BadgeDrawable if none were already initialized for this menu item.
@@ -638,7 +637,6 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       badgeDrawable = BadgeDrawable.create(getContext());
       badgeDrawables.put(menuItemId, badgeDrawable);
     }
-    badgeDrawable.setVisible(true);
     BottomNavigationItemView itemView = findItemView(menuItemId);
     if (itemView != null) {
       itemView.setBadge(badgeDrawable);

@@ -80,15 +80,20 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
     for (BottomNavigationView bn : bottomNavigationViews) {
       int menuItemId = bn.getMenu().getItem(0).getItemId();
       // An icon only badge will be displayed.
-      bn.showBadge(menuItemId);
+      BadgeDrawable badge = bn.getOrCreateBadge(menuItemId);
+      badge.setVisible(true);
 
       menuItemId = bn.getMenu().getItem(1).getItemId();
       // A badge with the text "99" will be displayed.
-      bn.showBadge(menuItemId).setNumber(99);
+      badge = bn.getOrCreateBadge(menuItemId);
+      badge.setVisible(true);
+      badge.setNumber(99);
 
       menuItemId = bn.getMenu().getItem(2).getItemId();
       // A badge with the text "999+" will be displayed.
-      bn.showBadge(menuItemId).setNumber(9999);
+      badge = bn.getOrCreateBadge(menuItemId);
+      badge.setVisible(true);
+      badge.setNumber(9999);
     }
   }
 
@@ -97,7 +102,7 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
       // Increase the badge number on the first menu item.
       MenuItem menuItem = bn.getMenu().getItem(0);
       int menuItemId = menuItem.getItemId();
-      BadgeDrawable badgeDrawable = bn.showBadge(menuItemId);
+      BadgeDrawable badgeDrawable = bn.getOrCreateBadge(menuItemId);
       badgeDrawable.setNumber(badgeDrawable.getNumber() + delta);
     }
   }

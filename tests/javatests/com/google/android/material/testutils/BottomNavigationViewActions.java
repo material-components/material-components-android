@@ -90,7 +90,7 @@ public class BottomNavigationViewActions {
       @Override
       public void perform(UiController uiController, View view) {
         BottomNavigationView navigationView = (BottomNavigationView) view;
-        navigationView.showBadge(menuItemId).setNumber(badgeNumber);
+        navigationView.getOrCreateBadge(menuItemId).setNumber(badgeNumber);
       }
     };
   }

@@ -624,7 +624,7 @@ public class BottomNavigationView extends FrameLayout {
    *
    * @param menuItemId Id of the menu item.
    * @return an instance of BadgeDrawable associated with {@code menuItemId} or null.
-   * @see #showBadge(int)
+   * @see #getOrCreateBadge(int)
    */
   @Nullable
   public BadgeDrawable getBadge(int menuItemId) {
@@ -632,15 +632,15 @@ public class BottomNavigationView extends FrameLayout {
   }
 
   /**
-   * Initializes (if needed) and shows a {@link BadgeDrawable} associated with {@code menuItemId}.
-   * Creates an instance of BadgeDrawable if none are associated with {@code menuItemId}. For
-   * convenience, also returns the associated instance of BadgeDrawable.
+   * Creates an instance of {@link BadgeDrawable} associated with {@code menuItemId} if none exists.
+   * Initializes (if needed) and returns the associated instance of {@link BadgeDrawable} associated
+   * with {@code menuItemId}.
    *
    * @param menuItemId Id of the menu item.
    * @return an instance of BadgeDrawable associated with {@code menuItemId}.
    */
-  public BadgeDrawable showBadge(int menuItemId) {
-    return menuView.showBadge(menuItemId);
+  public BadgeDrawable getOrCreateBadge(int menuItemId) {
+    return menuView.getOrCreateBadge(menuItemId);
   }
 
   /**
