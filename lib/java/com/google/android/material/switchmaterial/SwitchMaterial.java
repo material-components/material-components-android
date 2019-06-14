@@ -123,7 +123,7 @@ public class SwitchMaterial extends SwitchCompat {
       int thumbElevation =
           getResources().getDimensionPixelSize(R.dimen.mtrl_switch_thumb_elevation);
       int colorThumbOff =
-          elevationOverlayProvider.layerOverlayIfNeeded(colorSurface, thumbElevation);
+          elevationOverlayProvider.compositeOverlayIfNeeded(colorSurface, thumbElevation);
 
       int[] switchThumbColorsList = new int[ENABLED_CHECKED_STATES.length];
       switchThumbColorsList[0] =

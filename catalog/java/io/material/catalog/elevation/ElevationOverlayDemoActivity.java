@@ -33,15 +33,15 @@ import android.widget.TextView;
 import io.material.catalog.feature.DemoActivity;
 import java.util.Locale;
 
-/** A fragment that displays the Elevation Overlays demo for the Catalog app. */
-public class ElevationOverlaysDemoActivity extends DemoActivity {
+/** A fragment that displays the Elevation Overlay demo for the Catalog app. */
+public class ElevationOverlayDemoActivity extends DemoActivity {
 
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
     View view =
         layoutInflater.inflate(
-            R.layout.cat_elevation_overlays_activity, viewGroup, /* attachToRoot= */ false);
+            R.layout.cat_elevation_overlay_activity, viewGroup, /* attachToRoot= */ false);
 
     RecyclerView recyclerView = view.findViewById(R.id.recycler_view);
     recyclerView.setAdapter(new Adapter(getElevationDpValues()));
@@ -53,7 +53,7 @@ public class ElevationOverlaysDemoActivity extends DemoActivity {
 
   @Override
   public int getDemoTitleResId() {
-    return R.string.cat_elevation_overlays_title;
+    return R.string.cat_elevation_overlay_title;
   }
 
   protected int[] getElevationDpValues() {
@@ -73,7 +73,7 @@ public class ElevationOverlaysDemoActivity extends DemoActivity {
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
       LayoutInflater inflater = LayoutInflater.from(parent.getContext());
       View view =
-          inflater.inflate(R.layout.cat_elevation_overlays_item, parent, /* attachToRoot= */ false);
+          inflater.inflate(R.layout.cat_elevation_overlay_item, parent, /* attachToRoot= */ false);
       return new ItemViewHolder(view);
     }
 
@@ -103,8 +103,8 @@ public class ElevationOverlaysDemoActivity extends DemoActivity {
 
       @SuppressWarnings("RestrictTo")
       private void bind(int elevationDp) {
-        float elevation = ViewUtils.dpToPx(ElevationOverlaysDemoActivity.this, elevationDp);
-        int color = overlayProvider.getSurfaceColorWithOverlayIfNeeded(elevation);
+        float elevation = ViewUtils.dpToPx(ElevationOverlayDemoActivity.this, elevationDp);
+        int color = overlayProvider.compositeOverlayWithThemeSurfaceColorIfNeeded(elevation);
         int alphaPercent =
             Math.round(overlayProvider.calculateOverlayAlphaFraction(elevation) * 100);
 

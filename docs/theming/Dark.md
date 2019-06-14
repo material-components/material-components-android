@@ -143,8 +143,8 @@ the following theme attributes:
 
 Attribute Name               |Description                                                                          |Default Value
 -----------------------------|-------------------------------------------------------------------------------------|-------------
-`elevationOverlaysEnabled`   |Whether the elevation overlay functionality is enabled.                              |`false` in `Light` themes, `true` in `Dark` themes
-`elevationOverlaysColor`     |The color used for the elevation overlays, applied at an alpha based on elevation.   |`colorOnSurface`
+`elevationOverlayEnabled`   |Whether the elevation overlay functionality is enabled.                              |`false` in `Light` themes, `true` in `Dark` themes
+`elevationOverlayColor`     |The color used for the elevation overlays, applied at an alpha based on elevation.   |`colorOnSurface`
 
 Note: If inheriting from the `Theme.MaterialComponents` theme or a descendant,
 you most likely do not have to set these attributes yourself because the
@@ -178,16 +178,16 @@ to get the corresponding dark theme overlay color (perhaps to color an existing
 view), then you can use `ElevationOverlayProvider`.
 
 If elevation overlays are enabled at the theme level, the
-`ElevationOverlayProvider#getSurfaceColorWithOverlayIfNeeded` method will return
-`colorSurface` with the overlay color blended in at an alpha level based on the
-elevation passed in. Otherwise, it will simply return `colorSurface`, so that
-you can use the result of this method in both `Light` and `Dark` themes without
-needing any additional orchestration.
+`ElevationOverlayProvider#compositeOverlayWithThemeSurfaceColorIfNeeded` method
+will return `colorSurface` with the overlay color blended in at an alpha level
+based on the elevation passed in. Otherwise, it will simply return
+`colorSurface`, so that you can use the result of this method in both `Light`
+and `Dark` themes without needing any additional orchestration.
 
 If you need to blend the overlays with an arbitrary color or an adjusted surface
 color, or get access to lower level values such as the overlay alpha
 percentages, take a look at the other `ElevationOverlayProvider` methods
-including `layerOverlayIfNeeded`, `layerOverlay`, and `calculateOverlayAlpha`.
+including `compositeOverlayIfNeeded`, `compositeOverlay`, and `calculateOverlayAlpha`.
 
 [dark-theme-mdc-spec]: https://material.io/design/color/dark-theme.html
 [dark-theme-mdc-spec-ui-application]: https://material.io/design/color/dark-theme.html#ui-application

@@ -40,9 +40,9 @@
       </intent-filter>
     </activity>
     <activity
-      android:name=".elevation.ElevationOverlaysDemoActivity"
+      android:name=".elevation.ElevationOverlayDemoActivity"
       android:exported="false"
-      android:label="@string/cat_elevation_overlays_title"
+      android:label="@string/cat_elevation_overlay_title"
       android:theme="@style/Theme.Catalog.Dark"/>
     <activity
       android:name=".topappbar.TopAppBarActionBarDemoActivity"

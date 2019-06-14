@@ -72,8 +72,8 @@
     </item>
 
     <!-- Elevation Overlays -->
-    <item name="elevationOverlaysEnabled">true</item>
-    <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
+    <item name="elevationOverlayEnabled">true</item>
+    <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Dialog.Bridge" parent="Platform.MaterialComponents.Light.Dialog">
@@ -118,8 +118,8 @@
     </item>
 
     <!-- Elevation Overlays -->
-    <item name="elevationOverlaysEnabled">false</item>
-    <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
+    <item name="elevationOverlayEnabled">false</item>
+    <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform

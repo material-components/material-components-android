@@ -116,7 +116,7 @@ public class MaterialShapeDrawableTest {
 
   @Test
   public void
-      givenNoElevation_whenCreateWithElevationOverlay_returnsMaterialShapeDrawableWithOverlaysAndNoElevation() {
+      givenNoElevation_whenCreateWithElevationOverlay_returnsMaterialShapeDrawableWithOverlayAndNoElevation() {
     MaterialShapeDrawable drawable = MaterialShapeDrawable.createWithElevationOverlay(context);
 
     assertThat(drawable.getElevation()).isZero();
@@ -126,7 +126,7 @@ public class MaterialShapeDrawableTest {
 
   @Test
   public void
-      givenElevation_whenCreateWithElevationOverlay_returnsMaterialShapeDrawableWithOverlaysAndElevation() {
+      givenElevation_whenCreateWithElevationOverlay_returnsMaterialShapeDrawableWithOverlayAndElevation() {
     MaterialShapeDrawable drawable =
         MaterialShapeDrawable.createWithElevationOverlay(context, ELEVATION);
 

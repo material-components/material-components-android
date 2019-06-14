@@ -16,5 +16,5 @@
 -->
 
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-  <item android:alpha="0.11" android:color="?attr/elevationOverlaysColor"/>
+  <item android:alpha="0.11" android:color="?attr/elevationOverlayColor"/>
 </selector>

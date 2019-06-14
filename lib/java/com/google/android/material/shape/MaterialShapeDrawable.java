@@ -135,7 +135,7 @@ public class MaterialShapeDrawable extends Drawable
    * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
    * fill color of {@code colorSurface}, and an elevation of 0.
    *
-   * <p>See {@link ElevationOverlayProvider#layerOverlayIfNeeded(int, float)} for information on
+   * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
    * when the overlay will be active.
    */
   public static MaterialShapeDrawable createWithElevationOverlay(Context context) {
@@ -146,7 +146,7 @@ public class MaterialShapeDrawable extends Drawable
    * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
    * fill color of {@code colorSurface}, and an elevation of {@code elevation}.
    *
-   * <p>See {@link ElevationOverlayProvider#layerOverlayIfNeeded(int, float)} for information on
+   * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
    * when the overlay will be active.
    */
   public static MaterialShapeDrawable createWithElevationOverlay(Context context, float elevation) {
@@ -493,11 +493,11 @@ public class MaterialShapeDrawable extends Drawable
 
   /**
    * Configure the padding of the shape
+   *
    * @param left Left padding of the shape
    * @param top Top padding of the shape
    * @param right Right padding of the shape
    * @param bottom Bottom padding of the shape
-   *
    */
   public void setPadding(int left, int top, int right, int bottom) {
     if (drawableState.padding == null) {
@@ -563,7 +563,7 @@ public class MaterialShapeDrawable extends Drawable
   /**
    * Initializes the elevation overlay functionality for this drawable.
    *
-   * <p>See {@link ElevationOverlayProvider#layerOverlayIfNeeded(int, float)} for information on
+   * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
    * when the overlay will be active.
    */
   public void initializeElevationOverlay(Context context) {
@@ -574,7 +574,7 @@ public class MaterialShapeDrawable extends Drawable
   @ColorInt
   private int layerElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
     return drawableState.elevationOverlayProvider != null
-        ? drawableState.elevationOverlayProvider.layerOverlayIfNeeded(backgroundColor, getZ())
+        ? drawableState.elevationOverlayProvider.compositeOverlayIfNeeded(backgroundColor, getZ())
         : backgroundColor;
   }
 
@@ -1138,13 +1138,13 @@ public class MaterialShapeDrawable extends Drawable
             drawableState.tintList,
             drawableState.tintMode,
             fillPaint,
-            /* requiresElevationOverlays= */ true);
+            /* requiresElevationOverlay= */ true);
     strokeTintFilter =
         calculateTintFilter(
             drawableState.strokeTintList,
             drawableState.tintMode,
             strokePaint,
-            /* requiresElevationOverlays= */ false);
+            /* requiresElevationOverlay= */ false);
     if (drawableState.useTintColorForShadow) {
       shadowRenderer.setShadowColor(
           drawableState.tintList.getColorForState(getState(), Color.TRANSPARENT));
@@ -1158,16 +1158,16 @@ public class MaterialShapeDrawable extends Drawable
       ColorStateList tintList,
       PorterDuff.Mode tintMode,
       Paint paint,
-      boolean requiresElevationOverlays) {
+      boolean requiresElevationOverlay) {
     return tintList == null || tintMode == null
-        ? calculatePaintColorTintFilter(paint, requiresElevationOverlays)
-        : calculateTintColorTintFilter(tintList, tintMode, requiresElevationOverlays);
+        ? calculatePaintColorTintFilter(paint, requiresElevationOverlay)
+        : calculateTintColorTintFilter(tintList, tintMode, requiresElevationOverlay);
   }
 
   @Nullable
   private PorterDuffColorFilter calculatePaintColorTintFilter(
-      Paint paint, boolean requiresElevationOverlays) {
-    if (requiresElevationOverlays) {
+      Paint paint, boolean requiresElevationOverlay) {
+    if (requiresElevationOverlay) {
       int paintColor = paint.getColor();
       int tintColor = layerElevationOverlayIfNeeded(paintColor);
       if (tintColor != paintColor) {
@@ -1178,9 +1178,9 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   private PorterDuffColorFilter calculateTintColorTintFilter(
-      ColorStateList tintList, PorterDuff.Mode tintMode, boolean requiresElevationOverlays) {
+      ColorStateList tintList, PorterDuff.Mode tintMode, boolean requiresElevationOverlay) {
     int tintColor = tintList.getColorForState(getState(), Color.TRANSPARENT);
-    if (requiresElevationOverlays) {
+    if (requiresElevationOverlay) {
       tintColor = layerElevationOverlayIfNeeded(tintColor);
     }
     return new PorterDuffColorFilter(tintColor, tintMode);
