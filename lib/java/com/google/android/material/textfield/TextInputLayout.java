@@ -3057,16 +3057,5 @@ public class TextInputLayout extends LinearLayout {
         info.setContentInvalid(true);
       }
     }
-
-    @Override
-    public void onPopulateAccessibilityEvent(View host, AccessibilityEvent event) {
-      super.onPopulateAccessibilityEvent(host, event);
-      EditText editText = layout.getEditText();
-      CharSequence text = (editText != null) ? editText.getText() : null;
-      CharSequence eventText = TextUtils.isEmpty(text) ? layout.getHint() : text;
-      if (!TextUtils.isEmpty(eventText)) {
-        event.getText().add(eventText);
-      }
-    }
   }
 }
