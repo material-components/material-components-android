@@ -18,12 +18,14 @@ package com.google.android.material.chip;
 import com.google.android.material.R;
 
 import static com.google.android.material.internal.ViewUtils.dpToPx;
+import static com.google.common.truth.Truth.assertThat;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;
-import static org.robolectric.annotation.LooperMode.Mode.PAUSED;
 
+import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -35,7 +37,6 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
-import org.robolectric.annotation.LooperMode;
 import org.robolectric.annotation.TextLayoutMode;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
@@ -165,6 +166,18 @@ public class ChipTest {
     assertTrue(
         "Chip height: " + chip.getMeasuredHeight(),
         chip.getMeasuredHeight() < getMinTouchTargetSize());
+  }
+
+  @Test
+  public void testSetChipDrawableGetText() {
+    Context context = ApplicationProvider.getApplicationContext();
+    Chip resultChip = new Chip(context);
+    ChipDrawable chipDrawable =
+        ChipDrawable.createFromAttributes(
+            context, null, 0, R.style.Widget_MaterialComponents_Chip_Choice);
+    resultChip.setChipDrawable(chipDrawable);
+    resultChip.setText("foo");
+    assertThat(TextUtils.equals(resultChip.getText(), "foo")).isTrue();
   }
 
   private static float getMinTouchTargetSize() {

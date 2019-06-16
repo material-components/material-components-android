@@ -215,9 +215,6 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     }
     // Set deferred values
     setChecked(deferredCheckedValue);
-    // Defers to TextView to draw the text and ChipDrawable to render the
-    // rest (e.g. chip / check / close icons).
-    drawable.setShouldDrawText(false);
     setText(drawable.getText());
     setEllipsize(drawable.getEllipsize());
 
@@ -389,6 +386,9 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     if (chipDrawable != drawable) {
       unapplyChipDrawable(chipDrawable);
       chipDrawable = drawable;
+      // Defers to TextView to draw the text and ChipDrawable to render the
+      // rest (e.g. chip / check / close icons).
+      chipDrawable.setShouldDrawText(false);
       applyChipDrawable(chipDrawable);
       ensureAccessibleTouchTarget(minTouchTargetSize);
       updateBackgroundDrawable();
