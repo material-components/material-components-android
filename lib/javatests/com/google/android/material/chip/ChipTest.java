@@ -19,9 +19,6 @@ import com.google.android.material.R;
 
 import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static com.google.common.truth.Truth.assertThat;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
@@ -49,15 +46,15 @@ public class ChipTest {
   @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private static final int CHIP_LINES = 2;
-  private static final double DELTA = 0.01;
+  private static final float DELTA = 0.01f;
   private static final int MIN_SIZE_FOR_ALLY_DP = 48;
 
   private Chip chip;
 
   @Before
   public void themeApplicationContext() {
-    ApplicationProvider.getApplicationContext().setTheme(
-        R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
+    ApplicationProvider.getApplicationContext()
+        .setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     View inflated = activity.getLayoutInflater().inflate(R.layout.test_action_chip, null);
     chip = inflated.findViewById(R.id.chip);
@@ -139,17 +136,8 @@ public class ChipTest {
   public void ensureMinTouchTarget_is48dp() {
     setupAndMeasureChip(true);
 
-    assertEquals(
-        "Chip width: " + chip.getMeasuredWidth(),
-        getMinTouchTargetSize(),
-        chip.getMeasuredWidth(),
-        DELTA);
-
-    assertEquals(
-        "Chip height: " + chip.getMeasuredHeight(),
-        getMinTouchTargetSize(),
-        chip.getMeasuredHeight(),
-        DELTA);
+    assertThat(getMinTouchTargetSize()).isWithin(DELTA).of(chip.getMeasuredWidth());
+    assertThat(getMinTouchTargetSize()).isWithin(DELTA).of(chip.getMeasuredHeight());
   }
 
   @Test
@@ -157,15 +145,11 @@ public class ChipTest {
 
     setupAndMeasureChip(false);
 
-    assertNotEquals(chip.getMeasuredWidth(), getMinTouchTargetSize(), DELTA);
+    assertThat(getMinTouchTargetSize()).isNotWithin(DELTA).of(chip.getMeasuredWidth());
 
-    assertTrue(
-        "Chip width: " + chip.getMeasuredWidth(),
-        chip.getMeasuredWidth() < getMinTouchTargetSize());
+    assertThat(chip.getMeasuredWidth()).isLessThan((int) getMinTouchTargetSize());
 
-    assertTrue(
-        "Chip height: " + chip.getMeasuredHeight(),
-        chip.getMeasuredHeight() < getMinTouchTargetSize());
+    assertThat(chip.getMeasuredHeight()).isLessThan((int) getMinTouchTargetSize());
   }
 
   @Test
