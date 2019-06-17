@@ -17,8 +17,8 @@ package com.google.android.material.transformation;
 
 import android.content.Context;
 import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
-import com.google.android.material.expandable.ExpandableWidget;
 import android.util.AttributeSet;
+import com.google.android.material.expandable.ExpandableWidget;
 
 /**
  * CardView layout for views that can react to an {@link ExpandableWidget}'s {@link
