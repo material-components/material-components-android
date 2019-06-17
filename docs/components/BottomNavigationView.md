@@ -22,7 +22,7 @@ navigate to.
 
 -   [Material Design guidelines: Bottom Navigation](https://material.io/go/design-bottom-navigation)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/BottomNavigationView.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com.google.android.material.bottomnavigation/BottomNavigationView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
 -   [Class overview](https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView)
