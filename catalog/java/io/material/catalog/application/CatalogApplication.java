@@ -16,19 +16,18 @@
 
 package io.material.catalog.application;
 
-import android.app.Activity;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
 import android.util.Log;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasActivityInjector;
+import dagger.android.HasAndroidInjector;
 import java.lang.reflect.InvocationTargetException;
 import javax.inject.Inject;
 
 /** Catalog application class that provides support for using dispatching Dagger injectors. */
-public class CatalogApplication extends Application implements HasActivityInjector {
+public class CatalogApplication extends Application implements HasAndroidInjector {
 
   /** Logging tag */
   public static final String TAG = "CatalogApplication";
@@ -36,7 +35,7 @@ public class CatalogApplication extends Application implements HasActivityInject
   public static final String COMPONENT_OVERRIDE_KEY =
       "io.material.catalog.application.componentOverride";
 
-  @Inject DispatchingAndroidInjector<Activity> activityInjector;
+  @Inject DispatchingAndroidInjector<Object> androidInjector;
 
   @Override
   public void onCreate() {
@@ -95,7 +94,7 @@ public class CatalogApplication extends Application implements HasActivityInject
   }
 
   @Override
-  public AndroidInjector<Activity> activityInjector() {
-    return activityInjector;
+  public AndroidInjector<Object> androidInjector() {
+    return androidInjector;
   }
 }

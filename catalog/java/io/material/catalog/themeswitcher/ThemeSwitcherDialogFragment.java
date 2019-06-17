@@ -32,7 +32,6 @@ import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import androidx.fragment.app.Fragment;
 import androidx.core.view.MarginLayoutParamsCompat;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.appcompat.widget.AppCompatRadioButton;
@@ -44,8 +43,8 @@ import android.widget.LinearLayout;
 import android.widget.RadioGroup;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
+import dagger.android.HasAndroidInjector;
 import dagger.android.support.AndroidSupportInjection;
-import dagger.android.support.HasSupportFragmentInjector;
 import javax.inject.Inject;
 
 /**
@@ -54,7 +53,7 @@ import javax.inject.Inject;
  * overlays, overriding attributes in the base theme like shape appearances or color attributes.
  */
 public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
-    implements HasSupportFragmentInjector {
+    implements HasAndroidInjector {
 
   private static final int THEME_FEATURES_COUNT = 4;
 
@@ -321,7 +320,7 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
     }
   }
 
-  @Inject DispatchingAndroidInjector<Fragment> childFragmentInjector;
+  @Inject DispatchingAndroidInjector<Object> childFragmentInjector;
 
   @Override
   public void onAttach(Context context) {
@@ -330,7 +329,7 @@ public class ThemeSwitcherDialogFragment extends BottomSheetDialogFragment
   }
 
   @Override
-  public AndroidInjector<Fragment> supportFragmentInjector() {
+  public AndroidInjector<Object> androidInjector() {
     return childFragmentInjector;
   }
 }
