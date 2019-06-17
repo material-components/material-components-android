@@ -21,7 +21,6 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.ValueAnimator;
-import android.app.Activity;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -43,7 +42,6 @@ import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.internal.ContextUtils;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -870,7 +868,7 @@ public class AppBarLayout extends LinearLayout {
   }
 
   boolean shouldLift(@Nullable View defaultScrollingView) {
-    View scrollingView = findLiftOnScrollTargetView();
+    View scrollingView = findLiftOnScrollTargetView(defaultScrollingView);
     if (scrollingView == null) {
       scrollingView = defaultScrollingView;
     }
@@ -879,13 +877,15 @@ public class AppBarLayout extends LinearLayout {
   }
 
   @Nullable
-  private View findLiftOnScrollTargetView() {
+  private View findLiftOnScrollTargetView(@Nullable View defaultScrollingView) {
     if (liftOnScrollTargetView == null && liftOnScrollTargetViewId != View.NO_ID) {
       View targetView = null;
-      Activity activity = ContextUtils.getActivity(getContext());
-      if (activity != null) {
-        targetView = activity.findViewById(liftOnScrollTargetViewId);
-      } else if (getParent() instanceof ViewGroup) {
+      if (defaultScrollingView != null) {
+        targetView = defaultScrollingView.findViewById(liftOnScrollTargetViewId);
+      }
+      if (targetView == null && getParent() instanceof ViewGroup) {
+        // Assumes the scrolling view is a child of the AppBarLayout's parent,
+        // which should be true due to the CoordinatorLayout pattern.
         targetView = ((ViewGroup) getParent()).findViewById(liftOnScrollTargetViewId);
       }
       if (targetView != null) {
