@@ -1790,8 +1790,8 @@ public class ChipDrawable extends MaterialShapeDrawable
     }
   }
 
+  @TargetApi(VERSION_CODES.LOLLIPOP)
   private void updateFrameworkCloseIconRipple() {
-    //noinspection NewApi
     closeIconRipple =
         new RippleDrawable(
             RippleUtils.convertToRippleDrawableColor(getRippleColor()),
