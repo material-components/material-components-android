@@ -572,7 +572,7 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   @ColorInt
-  private int layerElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
+  private int compositeElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
     return drawableState.elevationOverlayProvider != null
         ? drawableState.elevationOverlayProvider.compositeOverlayIfNeeded(backgroundColor, getZ())
         : backgroundColor;
@@ -1169,7 +1169,7 @@ public class MaterialShapeDrawable extends Drawable
       Paint paint, boolean requiresElevationOverlay) {
     if (requiresElevationOverlay) {
       int paintColor = paint.getColor();
-      int tintColor = layerElevationOverlayIfNeeded(paintColor);
+      int tintColor = compositeElevationOverlayIfNeeded(paintColor);
       if (tintColor != paintColor) {
         return new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
       }
@@ -1181,7 +1181,7 @@ public class MaterialShapeDrawable extends Drawable
       ColorStateList tintList, PorterDuff.Mode tintMode, boolean requiresElevationOverlay) {
     int tintColor = tintList.getColorForState(getState(), Color.TRANSPARENT);
     if (requiresElevationOverlay) {
-      tintColor = layerElevationOverlayIfNeeded(tintColor);
+      tintColor = compositeElevationOverlayIfNeeded(tintColor);
     }
     return new PorterDuffColorFilter(tintColor, tintMode);
   }
