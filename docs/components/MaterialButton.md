@@ -109,7 +109,7 @@ should be used for important, final actions that complete a flow, like 'Save' or
 'Confirm'. If no style attribute is specified for a `MaterialButton`, this is
 the style that will be used.
 
-```
+```xml
 <com.google.android.material.button.MaterialButton
     android:id="@+id/material_button"
     style="@style/Widget.MaterialComponents.Button"
@@ -123,7 +123,7 @@ the style that will be used.
 The `UnelevatedButton` style represents an unelevated button with a colored
 background.
 
-```
+```xml
 <com.google.android.material.button.MaterialButton
     android:id="@+id/material_unelevated_button"
     style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
@@ -139,7 +139,7 @@ small stroke around the button. Outlined buttons are medium-emphasis buttons.
 They contain actions that are important, but aren’t the primary action in an
 app.
 
-```
+```xml
 <com.google.android.material.button.MaterialButton
     android:id="@+id/material_text_button"
     style="@style/Widget.MaterialComponents.Button.OutlinedButton"
@@ -154,7 +154,7 @@ The `TextButton` style has a transparent background with colored text. Text
 buttons are used for low-priority actions, especially when presenting multiple
 options.
 
-```
+```xml
 <com.google.android.material.button.MaterialButton
     android:id="@+id/material_text_button"
     style="@style/Widget.MaterialComponents.Button.TextButton"
