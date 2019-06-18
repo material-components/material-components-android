@@ -21,9 +21,9 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import android.os.Parcel;
-import com.google.android.material.badge.BadgeDrawable.SavedState;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.badge.BadgeDrawable.SavedState;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
