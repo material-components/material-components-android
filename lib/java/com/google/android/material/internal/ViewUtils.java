@@ -111,6 +111,13 @@ public class ViewUtils {
       this.bottom = bottom;
     }
 
+    public RelativePadding(RelativePadding other) {
+      this.start = other.start;
+      this.top = other.top;
+      this.end = other.end;
+      this.bottom = other.bottom;
+    }
+
     /** Applies this relative padding to the view. */
     public void applyToView(View view) {
       ViewCompat.setPaddingRelative(view, start, top, end, bottom);
@@ -133,7 +140,8 @@ public class ViewUtils {
     // in the original padding state.
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
-        (insetsView, insets) -> listener.onApplyWindowInsets(insetsView, insets, initialPadding));
+        (insetsView, insets) ->
+            listener.onApplyWindowInsets(insetsView, insets, new RelativePadding(initialPadding)));
     // Request some insets.
     requestApplyInsetsWhenAttached(view);
   }
@@ -145,18 +153,17 @@ public class ViewUtils {
       ViewCompat.requestApplyInsets(view);
     } else {
       // We're not attached to the hierarchy, add a listener to request when we are.
-      view.addOnAttachStateChangeListener(new OnAttachStateChangeListener() {
-        @Override
-        public void onViewAttachedToWindow(View v) {
-          v.removeOnAttachStateChangeListener(this);
-          ViewCompat.requestApplyInsets(v);
-        }
+      view.addOnAttachStateChangeListener(
+          new OnAttachStateChangeListener() {
+            @Override
+            public void onViewAttachedToWindow(View v) {
+              v.removeOnAttachStateChangeListener(this);
+              ViewCompat.requestApplyInsets(v);
+            }
 
-        @Override
-        public void onViewDetachedFromWindow(View v) {
-
-        }
-      });
+            @Override
+            public void onViewDetachedFromWindow(View v) {}
+          });
     }
   }
 }
