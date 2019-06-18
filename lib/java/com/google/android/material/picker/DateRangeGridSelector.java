@@ -154,8 +154,8 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
       int firstPositionInRow = row * gridView.getNumColumns();
       int lastPositionInRow = firstPositionInRow + gridView.getNumColumns() - 1;
       View firstView = gridView.getChildAt(firstPositionInRow);
-      int top = firstView.getTop();
-      int bottom = firstView.getBottom();
+      int top = firstView.getTop() + calendarStyle.day.verticalPadding;
+      int bottom = firstView.getBottom() - calendarStyle.day.verticalPadding;
       int left = firstPositionInRow > firstHighlightPosition ? 0 : rangeHighlightStart;
       int right =
           lastHighlightPosition > lastPositionInRow ? gridView.getWidth() : rangeHighlightEnd;

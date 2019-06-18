@@ -20,6 +20,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:gravity="center"
-    android:horizontalSpacing="@dimen/mtrl_calendar_day_spacing_horizontal"
+    android:horizontalSpacing="@dimen/mtrl_calendar_month_horizontal_padding"
     android:listSelector="@android:color/transparent"
-    android:verticalSpacing="@dimen/mtrl_calendar_day_spacing_vertical"/>
+    android:verticalSpacing="@dimen/mtrl_calendar_month_vertical_padding"/>

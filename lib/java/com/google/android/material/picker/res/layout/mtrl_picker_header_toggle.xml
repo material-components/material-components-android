@@ -21,4 +21,6 @@
     style="?attr/materialCalendarHeaderToggleButton"
     android:layout_width="@dimen/mtrl_min_touch_target_size"
     android:layout_height="@dimen/mtrl_min_touch_target_size"
-    android:layout_marginBottom="6dp"/>
+    android:layout_marginBottom="@dimen/mtrl_calendar_header_toggle_margin_bottom"
+    android:layout_marginTop="@dimen/mtrl_calendar_header_toggle_margin_top"
+    android:layout_gravity="bottom|end"/>

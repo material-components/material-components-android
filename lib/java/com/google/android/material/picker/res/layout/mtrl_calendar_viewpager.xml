@@ -15,5 +15,8 @@
      limitations under the License.
 -->
 
-<androidx.viewpager2.widget.ViewPager2 xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mtrl_calendar_viewpager"/>
+<androidx.viewpager2.widget.ViewPager2
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mtrl_calendar_viewpager"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"/>

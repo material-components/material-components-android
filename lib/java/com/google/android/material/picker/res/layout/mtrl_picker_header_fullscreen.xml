@@ -19,10 +19,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/mtrl_calendar_header_height_fullscreen"
-    android:paddingStart="4dp"
-    android:paddingEnd="4dp"
-    android:paddingLeft="4dp"
-    android:paddingRight="4dp"
+    android:paddingLeft="@dimen/mtrl_calendar_header_content_padding_fullscreen"
+    android:paddingRight="@dimen/mtrl_calendar_header_content_padding_fullscreen"
+    android:paddingStart="@dimen/mtrl_calendar_header_content_padding_fullscreen"
+    android:paddingEnd="@dimen/mtrl_calendar_header_content_padding_fullscreen"
+    android:paddingTop="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:background="?attr/colorPrimary"
     android:orientation="horizontal"
     tools:ignore="Overdraw">
@@ -30,36 +31,38 @@
   <com.google.android.material.button.MaterialButton
       android:id="@+id/cancel_button"
       style="@style/Widget.MaterialComponents.Button.TextButton"
-      android:layout_width="48dp"
-      android:layout_height="48dp"
-      android:layout_marginTop="4dp"
-      android:layout_gravity="start|top"
+      android:layout_width="@dimen/mtrl_min_touch_target_size"
+      android:layout_height="@dimen/mtrl_min_touch_target_size"
+      android:layout_gravity="top"
+      android:gravity="center"
+      app:icon="@drawable/ic_clear_black_24dp"
       app:iconTint="?attr/colorOnPrimary"
-      app:icon="@drawable/ic_clear_black_24dp"/>
+      app:rippleColor="?attr/colorOnPrimary"
+      android:padding="12dp"
+      android:insetTop="0dp"
+      android:insetBottom="0dp"/>
 
-  <include
-      layout="@layout/mtrl_picker_header_title_and_selection"
-      android:layout_width="160dp"
-      android:layout_height="@dimen/mtrl_calendar_header_height"/>
+  <include layout="@layout/mtrl_picker_header_title_and_selection_fullscreen"
+      android:layout_weight="1"
+      android:layout_height="match_parent"
+      android:layout_width="0dp"/>
 
   <LinearLayout
-      android:layout_width="72dp"
-      android:layout_height="match_parent"
-      android:orientation="vertical">
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:orientation="@integer/mtrl_calendar_header_orientation">
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/confirm_button"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
-        android:layout_height="48dp"
-        android:layout_marginTop="12dp"
+        android:layout_height="@dimen/mtrl_min_touch_target_size"
         android:layout_gravity="end|top"
+        android:gravity="center"
         android:text="@string/mtrl_picker_save"
-        android:textColor="?attr/colorOnPrimary"/>
+        android:textColor="?attr/colorOnPrimary"
+        app:rippleColor="?attr/colorOnPrimary"/>
 
-    <include
-        layout="@layout/mtrl_picker_header_toggle"
-        android:layout_width="@dimen/mtrl_min_touch_target_size"
-        android:layout_height="@dimen/mtrl_min_touch_target_size"/>
+    <include layout="@layout/mtrl_picker_header_toggle"/>
   </LinearLayout>
 </LinearLayout>

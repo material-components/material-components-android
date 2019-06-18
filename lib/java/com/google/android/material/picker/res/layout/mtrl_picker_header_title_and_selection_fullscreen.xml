@@ -29,7 +29,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_gravity="top|start"
-      app:firstBaselineToTopHeight="@dimen/mtrl_calendar_title_baseline_to_top"/>
+      app:firstBaselineToTopHeight="@dimen/mtrl_calendar_title_baseline_to_top_fullscreen"/> <!-- TODO: Can I do this in code -->
 
   <TextView
       android:id="@+id/mtrl_picker_header_selection_text"

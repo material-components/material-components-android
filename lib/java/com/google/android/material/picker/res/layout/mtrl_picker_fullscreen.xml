@@ -14,18 +14,23 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/mtrl_picker_fullscreen"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center_horizontal">
 
-  <include layout="@layout/mtrl_picker_header_fullscreen"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/mtrl_calendar_header_height_fullscreen"/>
+  <include layout="@layout/mtrl_picker_header_fullscreen"/>
 
   <FrameLayout
       android:id="@+id/mtrl_calendar_frame"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+      android:layout_height="wrap_content"
+      android:paddingStart="@dimen/mtrl_calendar_content_padding"
+      android:paddingEnd="@dimen/mtrl_calendar_content_padding"
+      android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+      android:paddingRight="@dimen/mtrl_calendar_content_padding"/>
 
 </LinearLayout>

@@ -16,14 +16,13 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/date_picker_actions"
     android:gravity="end"
     android:orientation="horizontal"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:paddingEnd="@dimen/mtrl_calendar_dialog_action_padding"
-    android:paddingRight="@dimen/mtrl_calendar_dialog_action_padding">
+    android:paddingEnd="@dimen/mtrl_calendar_action_padding"
+    android:paddingRight="@dimen/mtrl_calendar_action_padding">
 
   <Button
       style="?attr/buttonBarNegativeButtonStyle"

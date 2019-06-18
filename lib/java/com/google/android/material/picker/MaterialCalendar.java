@@ -164,7 +164,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   /** Returns the pixel height of each {@link android.view.View} representing a day. */
   @Px
   static int getDayHeight(Context context) {
-    return (int) context.getResources().getDimension(R.dimen.mtrl_calendar_day_size);
+    return context.getResources().getDimensionPixelSize(R.dimen.mtrl_calendar_day_height);
   }
 
   private void addActionsToMonthNavigation(

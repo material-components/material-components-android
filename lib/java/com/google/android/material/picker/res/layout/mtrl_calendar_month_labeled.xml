@@ -22,14 +22,11 @@
 
   <TextView
       android:id="@+id/month_title"
-      android:gravity="bottom"
+      android:gravity="center_vertical|start"
       style="@style/TextAppearance.MaterialComponents.Subtitle2"
       android:layout_width="match_parent"
-      android:layout_height="@dimen/mtrl_calendar_day_size"/>
+      android:layout_height="@dimen/mtrl_calendar_day_height"/>
 
-  <include
-      layout="@layout/mtrl_calendar_month"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+  <include layout="@layout/mtrl_calendar_month"/>
 
 </LinearLayout>

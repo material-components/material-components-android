@@ -14,8 +14,9 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-
-<resources xmlns:tools="http://schemas.android.com/tools">
-  <dimen name="mtrl_calendar_day_size">48dp</dimen>
-  <dimen name="mtrl_calendar_day_size_corner">24dp</dimen>
-</resources>
+<TextView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="@dimen/mtrl_calendar_day_width"
+    android:layout_height="@dimen/mtrl_calendar_days_of_week_height"
+    android:gravity="center"
+    android:textAppearance="?attr/textAppearanceBody2"/>

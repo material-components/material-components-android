@@ -22,8 +22,10 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.res.ColorStateList;
+import android.content.res.Resources;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
@@ -44,6 +46,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.Window;
+import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -200,6 +203,11 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     int layout = fullscreen ? R.layout.mtrl_picker_fullscreen : R.layout.mtrl_picker_dialog;
     View root = layoutInflater.inflate(layout, viewGroup);
     Context context = root.getContext();
+
+    View frame = root.findViewById(R.id.mtrl_calendar_frame);
+    frame.setLayoutParams(
+        new LayoutParams(getPaddedPickerWidth(context), LayoutParams.WRAP_CONTENT));
+
     headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
     ((TextView) root.findViewById(R.id.mtrl_picker_title_text)).setText(titleTextResId);
@@ -218,11 +226,16 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   @Override
   public void onStart() {
     super.onStart();
+    Window window = getDialog().getWindow();
+    // Dialogs use a background with an InsetDrawable by default, so we have to replace it.
     if (fullscreen) {
-      Window window = getDialog().getWindow();
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-      // Dialogs use a background with an InsetDrawable by default, so we have to replace it.
       window.setBackgroundDrawable(fullscreenBackground);
+    } else {
+      window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
+      int inset =
+          getResources().getDimensionPixelOffset(R.dimen.mtrl_calendar_dialog_background_inset);
+      window.setBackgroundDrawable(new InsetDrawable(fullscreenBackground, inset));
     }
     startPickerFragment();
   }
@@ -314,5 +327,15 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     boolean fullscreen = a.getBoolean(0, false);
     a.recycle();
     return fullscreen;
+  }
+
+  private static int getPaddedPickerWidth(Context context) {
+    Resources resources = context.getResources();
+    int padding = resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_content_padding);
+    int daysInWeek = Month.today().daysInWeek;
+    int dayWidth = resources.getDimensionPixelSize(R.dimen.mtrl_calendar_day_width);
+    int horizontalSpace =
+        resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_month_horizontal_padding);
+    return 2 * padding + daysInWeek * dayWidth + (daysInWeek - 1) * horizontalSpace;
   }
 }

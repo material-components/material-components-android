@@ -15,8 +15,6 @@
  */
 package com.google.android.material.picker;
 
-import com.google.android.material.R;
-
 import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleOwner;
@@ -83,17 +81,12 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
     }
 
     int daysHeight = MonthAdapter.MAXIMUM_WEEKS * MaterialCalendar.getDayHeight(context);
-    int daySpacingHeight =
-        (MonthAdapter.MAXIMUM_WEEKS - 1)
-            * context
-                .getResources()
-                .getDimensionPixelSize(R.dimen.mtrl_calendar_day_spacing_vertical);
     int labelHeight =
         MaterialPickerDialogFragment.isFullscreen(context)
             ? MaterialCalendar.getDayHeight(context)
             : 0;
 
-    this.itemHeight = daysHeight + daySpacingHeight + labelHeight;
+    this.itemHeight = daysHeight + labelHeight;
     this.firstPage = firstPage;
     this.lastPage = lastPage;
     startIndex = firstPage.monthsUntil(startPage);

@@ -16,5 +16,5 @@
 -->
 <TextView xmlns:android="http://schemas.android.com/apk/res/android"
     style="?attr/materialCalendarDay"
-    android:layout_width="@dimen/mtrl_calendar_day_size"
-    android:layout_height="@dimen/mtrl_calendar_day_size"/>
+    android:layout_width="@dimen/mtrl_calendar_day_width"
+    android:layout_height="@dimen/mtrl_calendar_day_height"/>

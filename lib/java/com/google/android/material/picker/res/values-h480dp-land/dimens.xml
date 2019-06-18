@@ -14,10 +14,13 @@
     See the License for the specific language governing permissions and
     limitations under the License.
 -->
-<GridView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/mtrl_calendar_days_of_week"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/mtrl_calendar_days_of_week_height"
-    android:horizontalSpacing="@dimen/mtrl_calendar_month_horizontal_padding"
-    android:listSelector="@android:color/transparent"
-    android:gravity="center_horizontal"/>
+
+<resources>
+  <dimen name="mtrl_calendar_bottom_padding">0dp</dimen>
+  <dimen name="mtrl_calendar_month_horizontal_padding">0dp</dimen>
+  <dimen name="mtrl_calendar_day_selection_corner">22dp</dimen>
+  <dimen name="mtrl_calendar_day_height">48dp</dimen>
+  <dimen name="mtrl_calendar_day_width">48dp</dimen>
+
+  <dimen name="mtrl_calendar_days_of_week_height">16dp</dimen>
+</resources>

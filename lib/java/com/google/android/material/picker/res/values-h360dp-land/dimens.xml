@@ -15,7 +15,12 @@
     limitations under the License.
 -->
 
-<resources xmlns:tools="http://schemas.android.com/tools">
-  <dimen name="mtrl_calendar_day_size">32dp</dimen>
-  <dimen name="mtrl_calendar_day_size_corner">16dp</dimen>
+<resources>
+  <dimen name="mtrl_calendar_bottom_padding">4dp</dimen>
+  <dimen name="mtrl_calendar_month_horizontal_padding">4dp</dimen>
+  <dimen name="mtrl_calendar_day_selection_corner">18dp</dimen>
+  <dimen name="mtrl_calendar_day_height">40dp</dimen>
+  <dimen name="mtrl_calendar_day_width">40dp</dimen>
+
+  <dimen name="mtrl_calendar_days_of_week_height">16dp</dimen>
 </resources>

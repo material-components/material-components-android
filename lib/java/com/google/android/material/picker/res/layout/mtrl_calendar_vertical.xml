@@ -17,21 +17,16 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center">
 
-  <include
-      layout="@layout/mtrl_calendar_days_of_week"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"/>
+  <include layout="@layout/mtrl_calendar_days_of_week"/>
 
   <View
       android:layout_width="match_parent"
       android:layout_height="1dp"
       android:background="?attr/colorOnSurface"/>
 
-  <include
-      layout="@layout/mtrl_calendar_viewpager"
-      android:layout_width="match_parent"
-      android:layout_height="match_parent"/>
+  <include layout="@layout/mtrl_calendar_viewpager"/>
 
 </LinearLayout>

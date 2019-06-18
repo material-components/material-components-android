@@ -19,8 +19,8 @@
     android:layout_height="wrap_content"
     android:paddingTop="16dp"
     android:paddingBottom="16dp"
-    android:paddingLeft="@dimen/mtrl_calendar_dialog_padding_horizontal"
-    android:paddingRight="@dimen/mtrl_calendar_dialog_padding_horizontal"
+    android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+    android:paddingRight="@dimen/mtrl_calendar_content_padding"
     android:orientation="horizontal">
 
   <com.google.android.material.textfield.TextInputLayout

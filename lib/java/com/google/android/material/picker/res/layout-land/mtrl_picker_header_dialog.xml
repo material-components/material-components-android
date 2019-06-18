@@ -15,21 +15,25 @@
      limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:baselineAligned="false"
     android:id="@+id/mtrl_picker_header"
     style="?attr/materialCalendarHeaderLayout"
-    android:layout_width="match_parent"
-    android:layout_height="@dimen/mtrl_calendar_header_height"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
     android:layout_gravity="start"
     android:paddingStart="@dimen/mtrl_calendar_header_content_padding"
     android:paddingEnd="@dimen/mtrl_calendar_header_content_padding"
     android:paddingLeft="@dimen/mtrl_calendar_header_content_padding"
     android:paddingRight="@dimen/mtrl_calendar_header_content_padding"
-    android:orientation="horizontal">
+    android:paddingBottom="@dimen/mtrl_calendar_header_content_padding"
+    android:orientation="vertical">
 
   <include layout="@layout/mtrl_picker_header_title_and_selection"
-      android:layout_width="0dp"
-      android:layout_height="match_parent"
+      android:layout_width="168dp"
+      android:layout_height="wrap_content"/>
+
+  <View
+      android:layout_width="match_parent"
+      android:layout_height="0dp"
       android:layout_weight="1"/>
 
   <include layout="@layout/mtrl_picker_header_toggle"/>
