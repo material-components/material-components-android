@@ -16,6 +16,7 @@
 package com.google.android.material.textfield;
 
 import static com.google.android.material.testutils.TestUtilsActions.setCompoundDrawablesRelative;
+import static com.google.android.material.testutils.TestUtilsActions.waitFor;
 import static com.google.android.material.testutils.TestUtilsMatchers.withCompoundDrawable;
 import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
@@ -41,6 +42,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.AccessibilityChecks.accessibilityAssertion;
 import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
+import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
@@ -281,6 +283,9 @@ public class TextInputLayoutIconsTest {
     // Click clear button
     onView(withId(R.id.textinput_clear)).perform(clickIcon(true));
 
+    // Wait for animation to finish
+    onView(isRoot()).perform(waitFor(200));
+
     // Assert EditText was cleared
     assertEquals(0, textInput.getLayout().getText().length());
     // Check that the clear button view is not visible
@@ -298,6 +303,9 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_edittext_clear))
         .perform(typeText(INPUT_TEXT));
 
+    // Wait for animation to finish
+    onView(isRoot()).perform(waitFor(200));
+
     // Check that the clear button is visible
     onView(withId(R.id.textinput_clear))
         .check(matches(showsEndIcon()));
@@ -312,6 +320,9 @@ public class TextInputLayoutIconsTest {
     // Delete text
     onView(withId(R.id.textinput_edittext_clear))
         .perform(clearText());
+
+    // Wait for animation to finish
+    onView(isRoot()).perform(waitFor(200));
 
     // Check that the clear button view is not visible
     onView(withId(R.id.textinput_clear))
