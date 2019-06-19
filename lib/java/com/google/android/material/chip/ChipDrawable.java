@@ -716,6 +716,7 @@ public class ChipDrawable extends MaterialShapeDrawable
 
       if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
         closeIconRipple.setBounds(closeIcon.getBounds());
+        closeIconRipple.jumpToCurrentState();
         closeIconRipple.draw(canvas);
       } else {
         closeIcon.draw(canvas);
