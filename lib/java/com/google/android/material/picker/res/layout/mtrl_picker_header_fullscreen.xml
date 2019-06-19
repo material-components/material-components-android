@@ -19,11 +19,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="@dimen/mtrl_calendar_header_height_fullscreen"
-    android:paddingLeft="@dimen/mtrl_calendar_header_content_padding_fullscreen"
-    android:paddingRight="@dimen/mtrl_calendar_header_content_padding_fullscreen"
+    android:paddingTop="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:paddingStart="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:paddingEnd="@dimen/mtrl_calendar_header_content_padding_fullscreen"
-    android:paddingTop="@dimen/mtrl_calendar_header_content_padding_fullscreen"
+    android:paddingLeft="@dimen/mtrl_calendar_header_content_padding_fullscreen"
+    android:paddingRight="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:background="?attr/colorPrimary"
     android:orientation="horizontal"
     tools:ignore="Overdraw">
@@ -34,18 +34,42 @@
       android:layout_width="@dimen/mtrl_min_touch_target_size"
       android:layout_height="@dimen/mtrl_min_touch_target_size"
       android:layout_gravity="top"
+      android:padding="12dp"
       android:gravity="center"
+      android:insetBottom="0dp"
+      android:insetTop="0dp"
       app:icon="@drawable/ic_clear_black_24dp"
       app:iconTint="?attr/colorOnPrimary"
-      app:rippleColor="?attr/colorOnPrimary"
-      android:padding="12dp"
-      android:insetTop="0dp"
-      android:insetBottom="0dp"/>
+      app:rippleColor="?attr/colorOnPrimary"/>
 
-  <include layout="@layout/mtrl_picker_header_title_and_selection_fullscreen"
-      android:layout_weight="1"
+  <FrameLayout
+      android:id="@+id/mtrl_picker_header_title_and_selection"
+      android:layout_width="0dp"
       android:layout_height="match_parent"
-      android:layout_width="0dp"/>
+      android:layout_weight="1"
+      android:paddingStart="@dimen/mtrl_calendar_header_text_padding"
+      android:paddingLeft="@dimen/mtrl_calendar_header_text_padding">
+
+    <TextView
+        android:id="@+id/mtrl_picker_title_text"
+        style="?attr/materialCalendarHeaderTitle"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:gravity="start|bottom"
+        app:firstBaselineToTopHeight="@dimen/mtrl_calendar_title_baseline_to_top_fullscreen"/>
+
+    <TextView
+        android:id="@+id/mtrl_picker_header_selection_text"
+        style="?attr/materialCalendarHeaderSelection"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top|start"
+        android:gravity="start|bottom"
+        app:firstBaselineToTopHeight="@dimen/mtrl_calendar_selection_baseline_to_top_fullscreen"
+        app:lineHeight="@dimen/mtrl_calendar_header_selection_line_height"
+        android:paddingBottom="@dimen/mtrl_calendar_pre_l_text_clip_padding"/>
+  </FrameLayout>
 
   <LinearLayout
       android:layout_width="wrap_content"

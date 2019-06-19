@@ -33,7 +33,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/mtrl_picker_text_input_date_range_start_hint"
-        android:inputType="date"/>
+        android:inputType="date"
+        android:imeOptions="flagNoExtractUi"/>
   </com.google.android.material.textfield.TextInputLayout>
 
   <Space
@@ -50,7 +51,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="@string/mtrl_picker_text_input_date_range_end_hint"
-        android:inputType="date"/>
+        android:inputType="date"
+        android:imeOptions="flagNoExtractUi"/>
   </com.google.android.material.textfield.TextInputLayout>
 
 </LinearLayout>

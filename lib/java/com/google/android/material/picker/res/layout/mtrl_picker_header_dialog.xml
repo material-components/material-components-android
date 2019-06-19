@@ -14,8 +14,8 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:baselineAligned="false"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/mtrl_picker_header"
     style="?attr/materialCalendarHeaderLayout"
     android:layout_width="match_parent"
@@ -25,12 +25,21 @@
     android:paddingEnd="@dimen/mtrl_calendar_header_content_padding"
     android:paddingLeft="@dimen/mtrl_calendar_header_content_padding"
     android:paddingRight="@dimen/mtrl_calendar_header_content_padding"
+    android:baselineAligned="false"
     android:orientation="horizontal">
 
-  <include layout="@layout/mtrl_picker_header_title_and_selection"
+  <FrameLayout
+      android:id="@+id/mtrl_picker_header_title_and_selection"
       android:layout_width="0dp"
       android:layout_height="match_parent"
-      android:layout_weight="1"/>
+      android:layout_weight="1"
+      android:paddingStart="@dimen/mtrl_calendar_header_text_padding"
+      android:paddingLeft="@dimen/mtrl_calendar_header_text_padding">
+
+    <include layout="@layout/mtrl_picker_header_title_text"/>
+    <include layout="@layout/mtrl_picker_header_selection_text"/>
+
+  </FrameLayout>
 
   <include layout="@layout/mtrl_picker_header_toggle"/>
 

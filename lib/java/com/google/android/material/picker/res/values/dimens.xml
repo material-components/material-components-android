@@ -18,8 +18,8 @@
 <resources>
   <dimen name="mtrl_alert_dialog_picker_background_inset">24dp</dimen>
 
-
   <dimen name="mtrl_calendar_dialog_background_inset">16dp</dimen>
+  <dimen name="mtrl_calendar_header_height">120dp</dimen>
   <dimen name="mtrl_calendar_header_text_padding">12dp</dimen>
   <dimen name="mtrl_calendar_day_today_stroke">1dp</dimen>
   <dimen name="mtrl_calendar_content_padding">12dp</dimen>
@@ -28,24 +28,28 @@
   <dimen name="mtrl_calendar_navigation_bottom_padding">4dp</dimen>
   <dimen name="mtrl_calendar_month_vertical_padding">0dp</dimen>
   <dimen name="mtrl_calendar_action_padding">8dp</dimen>
-  <dimen name="mtrl_calendar_selection_text_baseline_to_bottom">20dp</dimen>
   <dimen name="mtrl_calendar_header_content_padding_fullscreen">4dp</dimen>
-  <dimen name="mtrl_calendar_title_baseline_to_top_fullscreen">68dp</dimen>
+  <dimen name="mtrl_calendar_header_selection_line_height">32dp</dimen>
+  <!-- Prior to Lollipop, AppComaptTextView will clip font descenders when using
+  first_baseline_to_top_height to determine padding. This additional padding prevents clipping. -->
+  <dimen name="mtrl_calendar_pre_l_text_clip_padding">8dp</dimen>
 
   <!-- portrait -->
-  <dimen name="mtrl_calendar_header_content_padding">12dp</dimen>
-  <dimen name="mtrl_calendar_header_toggle_margin_bottom">8dp</dimen>
-  <dimen name="mtrl_calendar_header_toggle_margin_top">24dp</dimen>
+  <dimen name="mtrl_calendar_header_height_fullscreen">128dp</dimen>
+  <dimen name="mtrl_calendar_title_baseline_to_top_fullscreen">68dp</dimen>
+  <dimen name="mtrl_calendar_selection_baseline_to_top_fullscreen">104dp</dimen>
+  <dimen name="mtrl_calendar_selection_text_baseline_to_bottom_fullscreen">24dp</dimen>
   <dimen name="mtrl_calendar_title_baseline_to_top">28dp</dimen>
-  <dimen name="mtrl_calendar_selection_text_baseline_to_top">0dp</dimen>
+  <dimen name="mtrl_calendar_selection_text_baseline_to_top">100dp</dimen>
+  <dimen name="mtrl_calendar_selection_text_baseline_to_bottom">20dp</dimen>
+
+  <dimen name="mtrl_calendar_header_content_padding">12dp</dimen>
+  <dimen name="mtrl_calendar_header_toggle_margin_top">24dp</dimen>
+  <dimen name="mtrl_calendar_header_toggle_margin_bottom">8dp</dimen>
   <dimen name="mtrl_calendar_text_input_padding_top">16dp</dimen>
 
   <integer name="mtrl_calendar_selection_text_lines">1</integer>
   <integer name="mtrl_calendar_header_orientation">1</integer>
-
-
-  <dimen name="mtrl_calendar_header_height">120dp</dimen>
-  <dimen name="mtrl_calendar_header_height_fullscreen">128dp</dimen>
 
   <!-- screens with less than 360dp minimum dimension -->
   <dimen name="mtrl_calendar_bottom_padding">0dp</dimen>

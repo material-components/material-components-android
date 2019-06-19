@@ -32,7 +32,8 @@
   <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget">
     <item name="android:windowFullscreen">false</item>
     <item name="dayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
-    <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
+    <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected
+    </item>
     <item name="dayTodayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Today</item>
     <item name="rangeFillColor">@color/mtrl_calendar_selected_range</item>
   </style>
@@ -50,6 +51,9 @@
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="android:maxLines">1</item>
     <item name="android:ellipsize">end</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">10sp</item>
+    <item name="autoSizeMinTextSize">2sp</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection" parent="Widget.AppCompat.TextView">
@@ -57,7 +61,14 @@
     <item name="android:textColor">?attr/colorOnPrimary</item>
     <item name="android:maxLines">@integer/mtrl_calendar_selection_text_lines</item>
     <item name="android:ellipsize">end</item>
-    <item name="lineHeight">32dp</item>
+    <item name="autoSizeTextType">uniform</item>
+    <item name="autoSizeMaxTextSize">34sp</item>
+    <item name="autoSizeMinTextSize">2sp</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection.FullScreen">
+    <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    <item name="autoSizeMaxTextSize">20sp</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton" parent="Widget.AppCompat.ImageButton">
@@ -76,7 +87,9 @@
     <item name="itemStrokeColor">@color/mtrl_on_surface_emphasis_high_type</item>
     <item name="itemStrokeWidth">0dp</item>
     <item name="itemShapeAppearance">?attr/shapeAppearanceSmallComponent</item>
-    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar</item>
+    <item name="itemShapeAppearanceOverlay">
+      @style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar
+    </item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
