@@ -22,13 +22,13 @@ import android.os.Build.VERSION_CODES;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.radiobutton.MaterialRadioButton;
 import androidx.appcompat.app.AppCompatViewInflater;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 import com.google.android.material.checkbox.MaterialCheckBox;
+import com.google.android.material.radiobutton.MaterialRadioButton;
 
 /**
  * An extension of {@link AppCompatViewInflater} that replaces some framework widgets with Material
