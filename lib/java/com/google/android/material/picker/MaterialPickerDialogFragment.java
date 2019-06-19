@@ -24,6 +24,7 @@ import android.content.DialogInterface;
 import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.StateListDrawable;
@@ -36,6 +37,7 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -236,6 +238,10 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
       int inset =
           getResources().getDimensionPixelOffset(R.dimen.mtrl_calendar_dialog_background_inset);
       window.setBackgroundDrawable(new InsetDrawable(fullscreenBackground, inset));
+      Rect insets = new Rect(inset, inset, inset, inset);
+      window
+          .getDecorView()
+          .setOnTouchListener(new InsetDialogOnTouchListener(requireDialog(), insets));
     }
     startPickerFragment();
   }
