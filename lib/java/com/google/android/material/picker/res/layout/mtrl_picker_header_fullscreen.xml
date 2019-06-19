@@ -40,7 +40,7 @@
       android:insetTop="0dp"
       app:icon="@drawable/ic_clear_black_24dp"
       app:iconTint="?attr/colorOnPrimary"
-      app:rippleColor="?attr/colorOnPrimary"/>
+      app:rippleColor="@color/mtrl_btn_ripple_color"/>
 
   <FrameLayout
       android:id="@+id/mtrl_picker_header_title_and_selection"
@@ -85,7 +85,7 @@
         android:gravity="center"
         android:text="@string/mtrl_picker_save"
         android:textColor="?attr/colorOnPrimary"
-        app:rippleColor="?attr/colorOnPrimary"/>
+        app:rippleColor="@color/mtrl_btn_ripple_color"/>
 
     <include layout="@layout/mtrl_picker_header_toggle"/>
   </LinearLayout>
