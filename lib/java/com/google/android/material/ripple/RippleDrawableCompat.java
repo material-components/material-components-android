@@ -62,23 +62,7 @@ public class RippleDrawableCompat extends MaterialShapeDrawable {
   @Override
   protected boolean onStateChange(int[] stateSet) {
     final boolean changed = super.onStateChange(stateSet);
-    boolean enabled = false;
-    boolean pressed = false;
-    boolean focused = false;
-    boolean hovered = false;
-
-    for (int state : stateSet) {
-      if (state == android.R.attr.state_enabled) {
-        enabled = true;
-      } else if (state == android.R.attr.state_focused) {
-        focused = true;
-      } else if (state == android.R.attr.state_pressed) {
-        pressed = true;
-      } else if (state == android.R.attr.state_hovered) {
-        hovered = true;
-      }
-    }
-    shouldDrawRipple = enabled && (pressed || focused || hovered);
+    shouldDrawRipple = RippleUtils.shouldDrawRippleCompat(stateSet);
     return changed;
   }
 }

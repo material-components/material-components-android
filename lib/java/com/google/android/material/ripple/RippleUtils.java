@@ -172,6 +172,28 @@ public class RippleUtils {
     }
   }
 
+  /**
+   * Whether a compat ripple should be drawn. Compat ripples should be drawn when enabled and at
+   * least one of: focused, pressed, hovered.
+   */
+  public static boolean shouldDrawRippleCompat(int[] stateSet) {
+    boolean enabled = false;
+    boolean interactedState = false;
+
+    for (int state : stateSet) {
+      if (state == android.R.attr.state_enabled) {
+        enabled = true;
+      } else if (state == android.R.attr.state_focused) {
+        interactedState = true;
+      } else if (state == android.R.attr.state_pressed) {
+        interactedState = true;
+      } else if (state == android.R.attr.state_hovered) {
+        interactedState = true;
+      }
+    }
+    return enabled && interactedState;
+  }
+
   @ColorInt
   private static int getColorForState(@Nullable ColorStateList rippleColor, int[] state) {
     int color;
