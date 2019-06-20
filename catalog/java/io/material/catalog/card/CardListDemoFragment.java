@@ -22,9 +22,13 @@ import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.card.MaterialCardView;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat.AccessibilityActionCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import androidx.recyclerview.widget.RecyclerViewAccessibilityDelegate;
 import androidx.recyclerview.widget.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -34,7 +38,9 @@ import android.widget.TextView;
 import io.material.catalog.feature.DemoFragment;
 import java.util.Locale;
 
-/** A fragment showing a list of {@link MaterialCardView MaterialCardView's}. */
+/**
+ * A fragment showing a list of {@link MaterialCardView MaterialCardView's}.
+ */
 public class CardListDemoFragment extends DemoFragment {
 
   private static final int CARD_COUNT = 30;
@@ -58,9 +64,47 @@ public class CardListDemoFragment extends DemoFragment {
         new ItemTouchHelper(new CardItemTouchHelperCallback(cardAdapter));
     // Provide an ItemTouchHelper to the Adapter; can't use constructor due to circular dependency.
     cardAdapter.setItemTouchHelper(itemTouchHelper);
-
     recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
     recyclerView.setAdapter(cardAdapter);
+    recyclerView
+        .setAccessibilityDelegateCompat(new RecyclerViewAccessibilityDelegate(recyclerView) {
+          @NonNull
+          @Override
+          public AccessibilityDelegateCompat getItemDelegate() {
+            return new ItemDelegate(this) {
+
+              @Override
+              public void onInitializeAccessibilityNodeInfo(View host,
+                  AccessibilityNodeInfoCompat info) {
+                super.onInitializeAccessibilityNodeInfo(host, info);
+                int position = recyclerView.getChildLayoutPosition(host);
+                if (position != 0) {
+                  info.addAction(new AccessibilityActionCompat(R.id.move_card_up_action,
+                      host.getResources().getString(R.string.cat_card_action_move_up)));
+                }
+                if (position != (CARD_COUNT - 1)) {
+                  info.addAction(new AccessibilityActionCompat(
+                      R.id.move_card_down_action,
+                      host.getResources().getString(R.string.cat_card_action_move_down)));
+                }
+              }
+
+              @Override
+              public boolean performAccessibilityAction(View host, int action, Bundle args) {
+                int fromPosition = recyclerView.getChildLayoutPosition(host);
+                if (action == R.id.move_card_down_action) {
+                  swapCards(fromPosition, fromPosition + 1, cardAdapter);
+                  return true;
+                } else if (action == R.id.move_card_up_action) {
+                  swapCards(fromPosition, fromPosition - 1, cardAdapter);
+                  return true;
+                }
+
+                return super.performAccessibilityAction(host, action, args);
+              }
+            };
+          }
+        });
     itemTouchHelper.attachToRecyclerView(recyclerView);
 
     return view;
@@ -106,7 +150,7 @@ public class CardListDemoFragment extends DemoFragment {
       this.itemTouchHelper = itemTouchHelper;
     }
 
-    private static class CardViewHolder extends RecyclerView.ViewHolder {
+  private static class CardViewHolder extends RecyclerView.ViewHolder {
 
       private final TextView titleView;
       private final View dragHandleView;
@@ -157,10 +201,8 @@ public class CardListDemoFragment extends DemoFragment {
         @NonNull ViewHolder target) {
       int fromPosition = viewHolder.getAdapterPosition();
       int toPosition = target.getAdapterPosition();
-      int fromNumber = cardAdapter.cardNumbers[fromPosition];
-      cardAdapter.cardNumbers[fromPosition] = cardAdapter.cardNumbers[toPosition];
-      cardAdapter.cardNumbers[toPosition] = fromNumber;
-      cardAdapter.notifyItemMoved(fromPosition, toPosition);
+
+      swapCards(fromPosition, toPosition, cardAdapter);
       return true;
     }
 
@@ -179,5 +221,12 @@ public class CardListDemoFragment extends DemoFragment {
         dragCardView = null;
       }
     }
+  }
+
+  private static void swapCards(int fromPosition, int toPosition, CardAdapter cardAdapter) {
+    int fromNumber = cardAdapter.cardNumbers[fromPosition];
+    cardAdapter.cardNumbers[fromPosition] = cardAdapter.cardNumbers[toPosition];
+    cardAdapter.cardNumbers[toPosition] = fromNumber;
+    cardAdapter.notifyItemMoved(fromPosition, toPosition);
   }
 }

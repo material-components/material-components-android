@@ -18,22 +18,24 @@
 <com.google.android.material.card.MaterialCardView
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cat_card_list_item_card"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginTop="8dp"
-    android:layout_marginBottom="8dp"
     android:layout_marginLeft="16dp"
+    android:layout_marginTop="8dp"
     android:layout_marginRight="16dp"
+    android:layout_marginBottom="8dp"
     android:clickable="true"
+    android:focusable="true"
     android:minHeight="118dp">
 
   <TextView
       android:id="@+id/cat_card_list_item_title"
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginTop="8dp"
       android:layout_marginLeft="16dp"
+      android:layout_marginTop="8dp"
       android:layout_marginRight="16dp"
       android:textAppearance="?attr/textAppearanceHeadline6"/>
 
@@ -43,5 +45,6 @@
       android:layout_height="wrap_content"
       android:layout_gravity="end"
       android:padding="16dp"
-      app:srcCompat="@drawable/ic_drag_handle_vd_theme_24px"/>
+      app:srcCompat="@drawable/ic_drag_handle_vd_theme_24px"
+      tools:targetApi="jelly_bean"/>
 </com.google.android.material.card.MaterialCardView>
