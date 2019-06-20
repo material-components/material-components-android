@@ -33,4 +33,11 @@
   <!-- Launches a window with a calendar (days of the week) based layout for choosing a range of dates. [CHAR LIMIT=60] -->
   <string name="cat_picker_date_range_calendar">Material Date Range Picker Calendar</string>
 
+  <!-- Informs that the user clicked the cancel button [CHAR LIMIT=120]-->
+  <string name="cat_picker_user_clicked_cancel">The user clicked the cancel button.</string>
+  <!-- Informs that the picker was cancelled [CHAR LIMIT=120]-->
+  <string name="cat_picker_cancel">The picker was cancelled.</string>
+  <!-- Informs that the user action is being awaited [CHAR LIMIT=120] -->
+  <string name="cat_picker_no_action">Awaiting user action.</string>
+
 </resources>

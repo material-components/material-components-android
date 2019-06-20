@@ -66,7 +66,7 @@ public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragme
   }
 
   @Override
-  protected String getHeaderText(Calendar selection) {
+  public String getHeaderText(Calendar selection) {
     if (selection == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_date_header_unselected);
     }

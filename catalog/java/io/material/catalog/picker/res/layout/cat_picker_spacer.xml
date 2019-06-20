@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <!--
-  Copyright 2018 The Android Open Source Project
+  Copyright 2019 The Android Open Source Project
 
   Licensed under the Apache License, Version 2.0 (the "License");
   you may not use this file except in compliance with the License.
@@ -15,18 +15,12 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<ScrollView
+<View
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:fillViewport="true">
-  <LinearLayout
-      android:id="@+id/picker_launcher_buttons_layout"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:padding="@dimen/cat_picker_demo_padding"
-      android:orientation="vertical">
-
-  </LinearLayout>
-
-</ScrollView>
+    android:layout_height="2dp"
+    android:paddingTop="8dp"
+    android:paddingBottom="8dp"
+    android:background="?attr/colorOnSurface"
+    tools:ignore="Overdraw"/>

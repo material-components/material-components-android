@@ -52,6 +52,7 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.LinkedHashSet;
 
 /**
  * A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions.
@@ -115,6 +116,14 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   protected abstract GridSelector<S> createGridSelector();
 
   private SimpleDateFormat userDefinedSimpleDateFormat;
+  private final LinkedHashSet<MaterialPickerOnPositiveButtonClickListener<? super S>>
+      onPositiveButtonClickListeners = new LinkedHashSet<>();
+  private final LinkedHashSet<View.OnClickListener> onNegativeButtonClickListeners =
+      new LinkedHashSet<>();
+  private final LinkedHashSet<DialogInterface.OnCancelListener> onCancelListeners =
+      new LinkedHashSet<>();
+  private final LinkedHashSet<DialogInterface.OnDismissListener> onDismissListeners =
+      new LinkedHashSet<>();
 
   @StyleRes private int themeResId;
   private GridSelector<S> gridSelector;
@@ -217,18 +226,31 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
     MaterialButton confirmButton = root.findViewById(R.id.confirm_button);
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
-    confirmButton.setOnClickListener(v -> dismiss());
+    confirmButton.setOnClickListener(
+        v -> {
+          for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
+              onPositiveButtonClickListeners) {
+            listener.onPositiveButtonClick(getSelection());
+          }
+          dismiss();
+        });
 
     MaterialButton cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
-    cancelButton.setOnClickListener(v -> dismiss());
+    cancelButton.setOnClickListener(
+        v -> {
+          for (View.OnClickListener listener : onNegativeButtonClickListeners) {
+            listener.onClick(v);
+          }
+          dismiss();
+        });
     return root;
   }
 
   @Override
   public void onStart() {
     super.onStart();
-    Window window = getDialog().getWindow();
+    Window window = requireDialog().getWindow();
     // Dialogs use a background with an InsetDrawable by default, so we have to replace it.
     if (fullscreen) {
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
@@ -253,7 +275,18 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   @Override
+  public final void onCancel(@NonNull DialogInterface dialogInterface) {
+    for (DialogInterface.OnCancelListener listener : onCancelListeners) {
+      listener.onCancel(dialogInterface);
+    }
+    super.onCancel(dialogInterface);
+  }
+
+  @Override
   public final void onDismiss(@NonNull DialogInterface dialogInterface) {
+    for (DialogInterface.OnDismissListener listener : onDismissListeners) {
+      listener.onDismiss(dialogInterface);
+    }
     ViewGroup viewGroup = ((ViewGroup) getView());
     if (viewGroup != null) {
       viewGroup.removeAllViews();
@@ -343,5 +376,95 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     int horizontalSpace =
         resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_month_horizontal_padding);
     return 2 * padding + daysInWeek * dayWidth + (daysInWeek - 1) * horizontalSpace;
+  }
+
+  /** The supplied listener is called when the user confirms a valid selection. */
+  public boolean addOnPositiveButtonClickListener(
+      MaterialPickerOnPositiveButtonClickListener<? super S> onPositiveButtonClickListener) {
+    return onPositiveButtonClickListeners.add(onPositiveButtonClickListener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialPickerDialogFragment#addOnPositiveButtonClickListener}.
+   */
+  public boolean removeOnPositiveButtonClickListener(
+      MaterialPickerOnPositiveButtonClickListener<? super S> onPositiveButtonClickListener) {
+    return onPositiveButtonClickListeners.remove(onPositiveButtonClickListener);
+  }
+
+  /**
+   * Removes all listeners added via {@link
+   * MaterialPickerDialogFragment#addOnPositiveButtonClickListener}.
+   */
+  public void clearOnPositiveButtonClickListeners() {
+    onPositiveButtonClickListeners.clear();
+  }
+
+  /** The supplied listener is called when the user clicks the cancel button. */
+  public boolean addOnNegativeButtonClickListener(
+      View.OnClickListener onNegativeButtonClickListener) {
+    return onNegativeButtonClickListeners.add(onNegativeButtonClickListener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialPickerDialogFragment#addOnNegativeButtonClickListener}.
+   */
+  public boolean removeOnNegativeButtonClickListener(
+      View.OnClickListener onNegativeButtonClickListener) {
+    return onNegativeButtonClickListeners.remove(onNegativeButtonClickListener);
+  }
+
+  /**
+   * Removes all listeners added via {@link
+   * MaterialPickerDialogFragment#addOnNegativeButtonClickListener}.
+   */
+  public void clearOnNegativeButtonClickListeners() {
+    onNegativeButtonClickListeners.clear();
+  }
+
+  /**
+   * The supplied listener is called when the user cancels the picker via back button or a touch
+   * outside the view. It is not called when the user clicks the cancel button. To add a listener
+   * for use when the user clicks the cancel button, use {@link
+   * MaterialPickerDialogFragment#addOnNegativeButtonClickListener}.
+   */
+  public boolean addOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
+    return onCancelListeners.add(onCancelListener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialPickerDialogFragment#addOnCancelListener}.
+   */
+  public boolean removeOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
+    return onCancelListeners.remove(onCancelListener);
+  }
+
+  /** Removes all listeners added via {@link MaterialPickerDialogFragment#addOnCancelListener}. */
+  public void clearOnCancelListeners() {
+    onCancelListeners.clear();
+  }
+
+  /**
+   * The supplied listener is called whenever the DialogFragment is dismissed, no matter how it is
+   * dismissed.
+   */
+  public boolean addOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+    return onDismissListeners.add(onDismissListener);
+  }
+
+  /**
+   * Removes a listener previously added via {@link
+   * MaterialPickerDialogFragment#addOnDismissListener}.
+   */
+  public boolean removeOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
+    return onDismissListeners.remove(onDismissListener);
+  }
+
+  /** Removes all listeners added via {@link MaterialPickerDialogFragment#addOnDismissListener}. */
+  public void clearOnDismissListeners() {
+    onDismissListeners.clear();
   }
 }

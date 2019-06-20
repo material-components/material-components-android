@@ -27,6 +27,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.picker.MaterialDatePickerDialogFragment;
 import com.google.android.material.picker.MaterialDateRangePickerDialogFragment;
 import com.google.android.material.picker.MaterialStyledDatePickerDialog;
+import com.google.android.material.snackbar.Snackbar;
 import androidx.fragment.app.DialogFragment;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,6 +48,50 @@ public class PickerMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(R.layout.picker_main_demo, viewGroup, false);
     LinearLayout dialogLaunchersLayout = view.findViewById(R.id.picker_launcher_buttons_layout);
 
+    Snackbar snackbar =
+        Snackbar.make(viewGroup, R.string.cat_picker_no_action, Snackbar.LENGTH_LONG);
+
+    MaterialDatePickerDialogFragment datePicker = MaterialDatePickerDialogFragment.newInstance();
+    datePicker.addOnPositiveButtonClickListener(
+        selection -> {
+          snackbar.setText(datePicker.getHeaderText(selection));
+          snackbar.show();
+        });
+    datePicker.addOnNegativeButtonClickListener(
+        dialog -> {
+          snackbar.setText(R.string.cat_picker_user_clicked_cancel);
+          snackbar.show();
+        });
+    datePicker.addOnCancelListener(dialog -> {
+      snackbar.setText(R.string.cat_picker_cancel);
+      snackbar.show();
+    });
+    addDialogLauncher(
+        dialogLaunchersLayout, R.string.cat_picker_date_calendar, buildOnClickListener(datePicker));
+
+    MaterialDateRangePickerDialogFragment rangePicker =
+        MaterialDateRangePickerDialogFragment.newInstance();
+    rangePicker.addOnPositiveButtonClickListener(
+        selection -> {
+          snackbar.setText(rangePicker.getHeaderText(selection));
+          snackbar.show();
+        });
+    rangePicker.addOnNegativeButtonClickListener(
+        dialog -> {
+          snackbar.setText(R.string.cat_picker_user_clicked_cancel);
+          snackbar.show();
+        });
+    rangePicker.addOnCancelListener(dialog -> {
+      snackbar.setText(R.string.cat_picker_cancel);
+      snackbar.show();
+    });
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.cat_picker_date_range_calendar,
+        buildOnClickListener(rangePicker));
+
+    layoutInflater.inflate(R.layout.cat_picker_spacer, dialogLaunchersLayout, true);
+
     addDialogLauncher(
         dialogLaunchersLayout,
         R.string.cat_picker_base,
@@ -66,16 +111,6 @@ public class PickerMainDemoFragment extends DemoFragment {
         dialogLaunchersLayout,
         R.string.cat_picker_styled_date_calendar,
         buildOnClickListener(materialStyledTodayDatePicker(getCalendarTheme())));
-
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.cat_picker_date_calendar,
-        buildOnClickListener(MaterialDatePickerDialogFragment.newInstance()));
-
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.cat_picker_date_range_calendar,
-        buildOnClickListener(MaterialDateRangePickerDialogFragment.newInstance()));
 
     return view;
   }

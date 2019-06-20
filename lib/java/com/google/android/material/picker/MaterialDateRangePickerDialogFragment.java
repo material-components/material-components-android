@@ -69,7 +69,7 @@ public class MaterialDateRangePickerDialogFragment
   }
 
   @Override
-  protected String getHeaderText(Pair<Calendar, Calendar> selection) {
+  public String getHeaderText(Pair<Calendar, Calendar> selection) {
     Pair<String, String> dateRangeStrings = null;
     if (selection != null) {
       dateRangeStrings =
