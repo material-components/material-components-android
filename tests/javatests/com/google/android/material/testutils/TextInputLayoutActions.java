@@ -31,7 +31,6 @@ import com.google.android.material.textfield.TextInputLayout;
 import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.AutoCompleteTextView;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
@@ -561,31 +560,6 @@ public class TextInputLayoutActions {
       @Override
       public void perform(UiController uiController, View view) {
         view.jumpDrawablesToCurrentState();
-      }
-    };
-  }
-
-  /** Shows the dropdown popup. */
-  public static ViewAction showDropdown() {
-    return new ViewAction() {
-
-      @Override
-      public Matcher<View> getConstraints() {
-        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
-      }
-
-      @Override
-      public String getDescription() {
-        return "Shows the dropdown popup.";
-      }
-
-      @Override
-      public void perform(UiController uiController, View view) {
-        TextInputLayout item = (TextInputLayout) view;
-        ((AutoCompleteTextView) item.getEditText()).showDropDown();
-        view.jumpDrawablesToCurrentState();
-        CheckableImageButton iconView = item.findViewById(R.id.text_input_end_icon);
-        iconView.setChecked(true);
       }
     };
   }

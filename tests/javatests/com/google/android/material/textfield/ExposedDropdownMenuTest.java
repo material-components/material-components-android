@@ -17,7 +17,6 @@ package com.google.android.material.textfield;
 
 import static com.google.android.material.testutils.TestUtilsActions.waitFor;
 import static com.google.android.material.testutils.TextInputLayoutActions.clickIcon;
-import static com.google.android.material.testutils.TextInputLayoutActions.showDropdown;
 import static com.google.android.material.testutils.TextInputLayoutActions.skipAnimations;
 import static com.google.android.material.testutils.TextInputLayoutMatchers.endIconHasContentDescription;
 import static androidx.test.espresso.Espresso.onView;
@@ -69,8 +68,11 @@ public class ExposedDropdownMenuTest {
   public void testEndIconClickHidesDropdownPopup() {
     final Activity activity = activityTestRule.getActivity();
     final AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
-    onView(withId(R.id.filled_dropdown)).perform(showDropdown());
+    // Show dropdown.
+    onView(withId(R.id.filled_dropdown)).perform(clickIcon(true));
+    onView(withId(R.id.filled_dropdown)).perform(skipAnimations());
 
+    // Hide dropdown.
     onView(withId(R.id.filled_dropdown)).perform(clickIcon(true));
     onView(withId(R.id.filled_dropdown)).perform(skipAnimations());
 
@@ -92,8 +94,12 @@ public class ExposedDropdownMenuTest {
   public void testLayoutClickHidesDropdownPopup() {
     final Activity activity = activityTestRule.getActivity();
     final AutoCompleteTextView editText = activity.findViewById(R.id.edittext_filled);
-    onView(withId(R.id.filled_dropdown)).perform(showDropdown());
+    // Show dropdown.
+    onView(withId(R.id.filled_dropdown)).perform(click());
+    onView(withId(R.id.filled_dropdown)).perform(skipAnimations());
 
+
+    // Hide dropdown.
     onView(withId(R.id.filled_dropdown)).perform(click());
     onView(withId(R.id.filled_dropdown)).perform(skipAnimations());
 

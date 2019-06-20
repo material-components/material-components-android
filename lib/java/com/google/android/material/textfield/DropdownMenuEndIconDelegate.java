@@ -21,6 +21,9 @@ import com.google.android.material.R;
 import static androidx.core.view.ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
 import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
 
+import android.animation.Animator;
+import android.animation.AnimatorListenerAdapter;
+import android.animation.ValueAnimator;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -30,6 +33,7 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
@@ -53,12 +57,9 @@ import com.google.android.material.color.MaterialColors;
 class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
   private static final boolean IS_LOLLIPOP = VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP;
+  private static final int ANIMATION_FADE_OUT_DURATION = 50;
+  private static final int ANIMATION_FADE_IN_DURATION = 67;
 
-  private boolean dropdownPopupDirty = false;
-  private long dropdownPopupActivatedAt = Long.MAX_VALUE;
-  private StateListDrawable filledPopupBackground;
-  private MaterialShapeDrawable outlinedPopupBackground;
-  private AccessibilityManager accessibilityManager;
   private final TextWatcher exposedDropdownEndIconTextWatcher =
       new TextWatcher() {
         @Override
@@ -74,7 +75,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           editText.post(
               () -> {
                 boolean isPopupShowing = editText.isPopupShowing();
-                endIconView.setChecked(isPopupShowing);
+                setEndIconChecked(isPopupShowing);
                 dropdownPopupDirty = isPopupShowing;
               });
         }
@@ -119,6 +120,15 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
 
         textInputLayout.setEndIconVisible(true);
       };
+
+  private boolean dropdownPopupDirty = false;
+  private boolean isEndIconChecked = false;
+  private long dropdownPopupActivatedAt = Long.MAX_VALUE;
+  private StateListDrawable filledPopupBackground;
+  private MaterialShapeDrawable outlinedPopupBackground;
+  private AccessibilityManager accessibilityManager;
+  private ValueAnimator fadeOutAnim;
+  private ValueAnimator fadeInAnim;
 
   DropdownMenuEndIconDelegate(TextInputLayout textInputLayout) {
     super(textInputLayout);
@@ -173,6 +183,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           showHideDropdown(editText);
         });
     textInputLayout.addOnEditTextAttachedListener(dropdownMenuOnEditTextAttachedListener);
+    initAnimators();
     ViewCompat.setImportantForAccessibility(endIconView, IMPORTANT_FOR_ACCESSIBILITY_NO);
     accessibilityManager =
         (AccessibilityManager) context.getSystemService(Context.ACCESSIBILITY_SERVICE);
@@ -196,8 +207,13 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
       dropdownPopupDirty = false;
     }
     if (!dropdownPopupDirty) {
-      endIconView.toggle();
-      if (endIconView.isChecked()) {
+      if (IS_LOLLIPOP) {
+        setEndIconChecked(!isEndIconChecked);
+      } else {
+        isEndIconChecked = !isEndIconChecked;
+        endIconView.toggle();
+      }
+      if (isEndIconChecked) {
         editText.requestFocus();
         editText.showDropDown();
       } else {
@@ -230,7 +246,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     int rippleColor = MaterialColors.getColor(editText, R.attr.colorControlHighlight);
     int[][] states =
         new int[][] {
-          new int[] {android.R.attr.state_pressed}, new int[] {},
+            new int[] {android.R.attr.state_pressed}, new int[] {},
         };
 
     if (boxBackgroundMode == TextInputLayout.BOX_BACKGROUND_OUTLINE) {
@@ -318,7 +334,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         (view, hasFocus) -> {
           textInputLayout.setEndIconActivated(hasFocus);
           if (!hasFocus) {
-            endIconView.setChecked(false);
+            setEndIconChecked(false);
             dropdownPopupDirty = false;
           }
         });
@@ -328,7 +344,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           () -> {
             dropdownPopupDirty = true;
             dropdownPopupActivatedAt = System.currentTimeMillis();
-            endIconView.setChecked(false);
+            setEndIconChecked(false);
           });
     }
   }
@@ -358,5 +374,39 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     }
 
     return (AutoCompleteTextView) editText;
+  }
+
+  private void setEndIconChecked(boolean checked) {
+    if (isEndIconChecked != checked) {
+      isEndIconChecked = checked;
+      fadeInAnim.cancel();
+      fadeOutAnim.start();
+    }
+  }
+
+  private void initAnimators() {
+    fadeInAnim = getAlphaAnimator(ANIMATION_FADE_IN_DURATION, 0, 1);
+    fadeOutAnim = getAlphaAnimator(ANIMATION_FADE_OUT_DURATION, 1, 0);
+    fadeOutAnim.addListener(
+        new AnimatorListenerAdapter() {
+          @Override
+          public void onAnimationEnd(Animator animation) {
+            endIconView.setChecked(isEndIconChecked);
+            fadeInAnim.start();
+          }
+        });
+  }
+
+  private ValueAnimator getAlphaAnimator(int duration, float... values) {
+    ValueAnimator animator = ValueAnimator.ofFloat(values);
+    animator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
+    animator.setDuration(duration);
+    animator.addUpdateListener(
+        animation -> {
+          float alpha = (float) animation.getAnimatedValue();
+          endIconView.setAlpha(alpha);
+        });
+
+    return animator;
   }
 }
