@@ -20,10 +20,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
-import com.google.android.material.circularreveal.CircularRevealHelper;
-import com.google.android.material.circularreveal.CircularRevealWidget;
 import android.util.AttributeSet;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.circularreveal.CircularRevealHelper;
+import com.google.android.material.circularreveal.CircularRevealWidget;
 
 /** A CircularRevealWidget wrapper for {@link CoordinatorLayout}. */
 public class CircularRevealCoordinatorLayout extends CoordinatorLayout

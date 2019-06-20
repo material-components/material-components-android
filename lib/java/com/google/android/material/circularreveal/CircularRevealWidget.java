@@ -20,10 +20,10 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
-import com.google.android.material.circularreveal.CircularRevealHelper.Delegate;
 import android.util.Property;
 import android.view.View;
 import android.view.ViewAnimationUtils;
+import com.google.android.material.circularreveal.CircularRevealHelper.Delegate;
 import com.google.android.material.math.MathUtils;
 
 /**

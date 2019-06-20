@@ -21,9 +21,9 @@ import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
 import com.google.android.material.card.MaterialCardView;
+import android.util.AttributeSet;
 import com.google.android.material.circularreveal.CircularRevealHelper;
 import com.google.android.material.circularreveal.CircularRevealWidget;
-import android.util.AttributeSet;
 
 /**
  * A CircularRevealWidget wrapper for {@link MaterialCardView}.

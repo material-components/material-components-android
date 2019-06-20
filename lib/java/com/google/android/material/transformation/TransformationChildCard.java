@@ -16,8 +16,8 @@
 package com.google.android.material.transformation;
 
 import android.content.Context;
-import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
 import android.util.AttributeSet;
+import com.google.android.material.circularreveal.cardview.CircularRevealCardView;
 import com.google.android.material.expandable.ExpandableWidget;
 
 /**
