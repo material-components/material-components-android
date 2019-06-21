@@ -126,7 +126,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     if (!TextUtils.isEmpty(itemData.getContentDescription())) {
       setContentDescription(itemData.getContentDescription());
     }
-    TooltipCompat.setTooltipText(this, itemData.getTooltipText());
+    if (!TextUtils.isEmpty(itemData.getTooltipText())) {
+      TooltipCompat.setTooltipText(this, itemData.getTooltipText());
+    } else {
+      TooltipCompat.setTooltipText(this, itemData.getTitle());
+    }
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
   }
 
@@ -171,6 +175,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     largeLabel.setText(title);
     if (itemData == null || TextUtils.isEmpty(itemData.getContentDescription())) {
       setContentDescription(title);
+    }
+    if (!TextUtils.isEmpty(itemData.getTooltipText())) {
+      TooltipCompat.setTooltipText(this, itemData.getTooltipText());
+    } else {
+      TooltipCompat.setTooltipText(this, title);
     }
   }
 
