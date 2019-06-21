@@ -23,7 +23,7 @@ dependencies {
   testImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
   testImplementation "junit:junit:4.12"
-  testImplementation "com.google.truth:truth:0.45"
+  testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
   testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
   testImplementation "org.robolectric:robolectric:4.3-alpha-2"
 
