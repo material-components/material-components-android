@@ -30,8 +30,6 @@ import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.animation.AnimatorSetCompat;
-import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
@@ -50,6 +48,8 @@ import android.view.ViewGroup.LayoutParams;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import com.google.android.material.animation.AnimatorSetCompat;
+import com.google.android.material.animation.MotionSpec;
 import java.util.ArrayList;
 import java.util.List;
 

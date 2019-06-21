@@ -33,7 +33,6 @@ import android.graphics.drawable.RippleDrawable;
 import android.graphics.drawable.StateListDrawable;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
@@ -51,6 +50,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.AutoCompleteTextView;
 import android.widget.EditText;
 import android.widget.Spinner;
+import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
 
 /** Default initialization of the exposed dropdown menu {@link TextInputLayout.EndIconMode}. */

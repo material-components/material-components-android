@@ -19,10 +19,10 @@ package com.google.android.material.snackbar;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 import static com.google.android.material.animation.AnimationUtils.LINEAR_INTERPOLATOR;
 import static com.google.android.material.animation.AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR;
-import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.animation.Animator;
