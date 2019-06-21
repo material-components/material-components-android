@@ -51,7 +51,14 @@ final class CalendarStyle {
    */
   final Paint rangeFill;
 
+  private final Context context;
+
+  boolean refreshStyles(Context context) {
+    return !this.context.equals(context);
+  }
+
   CalendarStyle(Context context) {
+    this.context = context;
     int calendarStyle =
         MaterialAttributes.resolveOrThrow(
             context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());

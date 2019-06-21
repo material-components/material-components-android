@@ -18,13 +18,13 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    style="?attr/materialCalendarHeaderLayout"
     android:layout_height="@dimen/mtrl_calendar_header_height_fullscreen"
     android:paddingTop="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:paddingStart="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:paddingEnd="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:paddingLeft="@dimen/mtrl_calendar_header_content_padding_fullscreen"
     android:paddingRight="@dimen/mtrl_calendar_header_content_padding_fullscreen"
-    android:background="?attr/colorPrimary"
     android:orientation="horizontal"
     tools:ignore="Overdraw">
 

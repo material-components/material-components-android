@@ -40,7 +40,7 @@
 
   <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
     <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar.Fullscreen</item>
-    <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection.FullScreen</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection.Fullscreen</item>
   </style>
 
 </resources>

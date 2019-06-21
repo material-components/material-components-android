@@ -67,8 +67,9 @@
     <item name="autoSizeMinTextSize">2sp</item>
   </style>
 
-  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection.FullScreen">
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderSelection.Fullscreen">
     <item name="android:textAppearance">?attr/textAppearanceHeadline6</item>
+    <item name="android:maxLines">1</item>
     <item name="autoSizeMaxTextSize">20sp</item>
   </style>
 

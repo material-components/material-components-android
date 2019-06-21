@@ -55,10 +55,9 @@ public class DateGridSelector implements GridSelector<Long> {
 
   // The context is not available on construction and parceling, so we lazily initialize styles.
   private void initializeStyles(Context context) {
-    if (calendarStyle != null) {
-      return;
+    if (calendarStyle == null || calendarStyle.refreshStyles(context)) {
+      calendarStyle = new CalendarStyle(context);
     }
-    calendarStyle = new CalendarStyle(context);
   }
 
   @Override

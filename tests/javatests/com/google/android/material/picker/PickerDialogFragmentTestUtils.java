@@ -49,53 +49,77 @@ public final class PickerDialogFragmentTestUtils {
   private static final ViewInteraction onViewPager =
       onView(withTagValue(equalTo(MaterialCalendar.VIEW_PAGER_TAG)));
 
-  static MaterialDatePickerDialogFragment showDatePicker(
+  public static MaterialDatePickerDialogFragment showDatePicker(
+      ActivityTestRule<? extends AppCompatActivity> activityTestRule) {
+    return showDatePicker(activityTestRule, 0);
+  }
+
+  public static MaterialDatePickerDialogFragment showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
+      CalendarBounds calendarBounds) {
+    return showDatePicker(activityTestRule, 0, calendarBounds);
+  }
+
+  public static MaterialDatePickerDialogFragment showDatePicker(
+      ActivityTestRule<? extends AppCompatActivity> activityTestRule, int themeResId) {
+
+    Month start = Month.create(1900, Calendar.JANUARY);
+    Month end = Month.create(2100, Calendar.DECEMBER);
+    Month current = Month.create(2018, Calendar.APRIL);
+    CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
+
+    return showDatePicker(activityTestRule, themeResId, calendarBounds);
+  }
+
+  public static MaterialDatePickerDialogFragment showDatePicker(
+      ActivityTestRule<? extends AppCompatActivity> activityTestRule,
+      int themeResId,
       CalendarBounds calendarBounds) {
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date DialogFragment";
 
     MaterialDatePickerDialogFragment dialogFragment =
-        MaterialDatePickerDialogFragment.newInstance(calendarBounds);
+        MaterialDatePickerDialogFragment.newInstance(themeResId, calendarBounds);
     dialogFragment.show(fragmentManager, tag);
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     return dialogFragment;
   }
 
-  static MaterialDatePickerDialogFragment showDatePicker(
+  public static MaterialDateRangePickerDialogFragment showRangePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule) {
+    return showRangePicker(activityTestRule, 0);
+  }
 
+  public static MaterialDateRangePickerDialogFragment showRangePicker(
+      ActivityTestRule<? extends AppCompatActivity> activityTestRule,
+      CalendarBounds calendarBounds) {
+    return showRangePicker(activityTestRule, 0, calendarBounds);
+  }
+
+  public static MaterialDateRangePickerDialogFragment showRangePicker(
+      ActivityTestRule<? extends AppCompatActivity> activityTestRule, int themeResId) {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
     Month current = Month.create(2018, Calendar.APRIL);
     CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
-
-    return showDatePicker(activityTestRule, calendarBounds);
+    return showRangePicker(activityTestRule, themeResId, calendarBounds);
   }
 
   static MaterialDateRangePickerDialogFragment showRangePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
-      CalendarBounds calendarBounds) {
+      int themeResId,
+      CalendarBounds calendarBound) {
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date Range DialogFragment";
 
     MaterialDateRangePickerDialogFragment dialogFragment =
-        MaterialDateRangePickerDialogFragment.newInstance(calendarBounds);
+        MaterialDateRangePickerDialogFragment.newInstance(themeResId, calendarBound);
     dialogFragment.show(fragmentManager, tag);
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     return dialogFragment;
   }
 
-  static MaterialDateRangePickerDialogFragment showRangePicker(
-      ActivityTestRule<? extends AppCompatActivity> activityTestRule) {
-    Month start = Month.create(1900, Calendar.JANUARY);
-    Month end = Month.create(2100, Calendar.DECEMBER);
-    Month current = Month.create(2018, Calendar.APRIL);
-    CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
-    return showRangePicker(activityTestRule, calendarBounds);
-  }
-
-  static void clickDay(Month month, int day) {
+  public static void clickDay(Month month, int day) {
     onView(
             allOf(
                 isDescendantOfA(withTagValue(equalTo(MaterialCalendar.VIEW_PAGER_TAG))),
