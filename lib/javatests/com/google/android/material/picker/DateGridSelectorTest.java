@@ -17,9 +17,9 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
@@ -54,18 +54,18 @@ public class DateGridSelectorTest {
   @Test
   public void dateGridSelectorMaintainsSelectionAfterParceling() {
     int position = 8;
-    assertTrue(adapter.withinMonth(position));
+    assertThat(adapter.withinMonth(position), is(true));
     dateGridSelector.select(adapter.getItem(position));
     Calendar expected = adapter.getItem(position);
     DateGridSelector dateGridSelectorFromParcel =
         ParcelableTestUtils.parcelAndCreate(dateGridSelector, DateGridSelector.CREATOR);
-    assertEquals(expected, dateGridSelectorFromParcel.getSelection());
+    assertThat(dateGridSelectorFromParcel.getSelection(), is(expected.getTimeInMillis()));
   }
 
   @Test
   public void nullDateSelectionFromParcel() {
     DateGridSelector dateGridSelectorFromParcel =
         ParcelableTestUtils.parcelAndCreate(dateGridSelector, DateGridSelector.CREATOR);
-    assertNull(dateGridSelectorFromParcel.getSelection());
+    assertThat(dateGridSelectorFromParcel.getSelection(), nullValue());
   }
 }

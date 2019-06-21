@@ -18,7 +18,6 @@ package com.google.android.material.picker;
 import android.icu.text.DateFormat;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.core.util.Pair;
 import java.text.SimpleDateFormat;
@@ -82,20 +81,21 @@ class DateStrings {
    *
    * <p>If userDefinedDateFormat is set, this format overrides the rule above.
    *
-   * @param calendar Date to get string for.
+   * @param timeInMillis Date to get string for.
    * @param userDefinedDateFormat {@link SimpleDateFormat} specified by the user, if set.
    * @return Formatted date string.
    */
-  static String getDateString(
-      @NonNull Calendar calendar, @Nullable SimpleDateFormat userDefinedDateFormat) {
+  static String getDateString(long timeInMillis, @Nullable SimpleDateFormat userDefinedDateFormat) {
     Calendar currentCalendar = Calendar.getInstance();
     Locale defaultLocale = Locale.getDefault();
 
-    Date date = calendar.getTime();
+    Date date = new Date(timeInMillis);
+    Calendar calendarDate = Calendar.getInstance();
+    calendarDate.setTimeInMillis(timeInMillis);
 
     if (userDefinedDateFormat != null) {
       return userDefinedDateFormat.format(date);
-    } else if (currentCalendar.get(Calendar.YEAR) == calendar.get(Calendar.YEAR)) {
+    } else if (currentCalendar.get(Calendar.YEAR) == calendarDate.get(Calendar.YEAR)) {
       return getMonthDay(date, defaultLocale);
     } else {
       return getYearMonthDay(date, defaultLocale);
@@ -119,9 +119,7 @@ class DateStrings {
    * @return Formatted date range string.
    */
   static Pair<String, String> getDateRangeString(
-      @Nullable Calendar start,
-      @Nullable Calendar end,
-      @Nullable SimpleDateFormat userDefinedDateFormat) {
+      @Nullable Long start, @Nullable Long end, @Nullable SimpleDateFormat userDefinedDateFormat) {
     if (start == null && end == null) {
       return Pair.create(null, null);
     } else if (start == null) {
@@ -133,14 +131,18 @@ class DateStrings {
     Calendar currentCalendar = Calendar.getInstance();
     Locale locale = Locale.getDefault();
 
-    Date startDate = start.getTime();
-    Date endDate = end.getTime();
+    Date startDate = new Date(start);
+    Date endDate = new Date(end);
+    Calendar startCalendar = Calendar.getInstance();
+    startCalendar.setTimeInMillis(start);
+    Calendar endCalendar = Calendar.getInstance();
+    endCalendar.setTimeInMillis(end);
 
     if (userDefinedDateFormat != null) {
       return Pair.create(
           userDefinedDateFormat.format(startDate), userDefinedDateFormat.format(endDate));
-    } else if (start.get(Calendar.YEAR) == end.get(Calendar.YEAR)) {
-      if (start.get(Calendar.YEAR) == currentCalendar.get(Calendar.YEAR)) {
+    } else if (startCalendar.get(Calendar.YEAR) == endCalendar.get(Calendar.YEAR)) {
+      if (startCalendar.get(Calendar.YEAR) == currentCalendar.get(Calendar.YEAR)) {
         return Pair.create(getMonthDay(startDate, locale), getMonthDay(endDate, locale));
       } else {
         return Pair.create(getMonthDay(startDate, locale), getYearMonthDay(endDate, locale));

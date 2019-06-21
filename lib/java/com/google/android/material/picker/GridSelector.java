@@ -43,7 +43,7 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public interface GridSelector<S> extends Parcelable {
 
-  /** Returns the current selection */
+  /** Returns the current selection. */
   @Nullable
   S getSelection();
 

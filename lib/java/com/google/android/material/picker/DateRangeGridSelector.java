@@ -41,15 +41,15 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 
 /**
- * A {@link GridSelector} that uses a {@link Pair} of {@link Calendar} objects to represent a
- * selected range.
+ * A {@link GridSelector} that uses a {@link Pair} of {@link Long} objects to represent a selected
+ * range.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calendar>> {
+public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
 
-  private final LinkedHashSet<OnSelectionChangedListener<Pair<Calendar, Calendar>>>
+  private final LinkedHashSet<OnSelectionChangedListener<Pair<Long, Long>>>
       onSelectionChangedListeners = new LinkedHashSet<>();
 
   @Nullable private Calendar selectedStartItem = null;
@@ -81,13 +81,13 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
 
   @Override
   public boolean addOnSelectionChangedListener(
-      OnSelectionChangedListener<Pair<Calendar, Calendar>> listener) {
+      OnSelectionChangedListener<Pair<Long, Long>> listener) {
     return onSelectionChangedListeners.add(listener);
   }
 
   @Override
   public boolean removeOnSelectionChangedListener(
-      OnSelectionChangedListener<Pair<Calendar, Calendar>> listener) {
+      OnSelectionChangedListener<Pair<Long, Long>> listener) {
     return onSelectionChangedListeners.remove(listener);
   }
 
@@ -212,30 +212,11 @@ public class DateRangeGridSelector implements GridSelector<Pair<Calendar, Calend
   }
 
   @Override
-  @Nullable
-  public Pair<Calendar, Calendar> getSelection() {
-    if (selectedStartItem == null) {
-      return null;
-    }
-    return new Pair<>(selectedStartItem, selectedEndItem);
-  }
-
-  /** Returns a {@link java.util.Calendar} representing the start of the range. */
-  @Nullable
-  public Calendar getStart() {
-    if (selectedStartItem == null || selectedEndItem == null) {
-      return null;
-    }
-    return selectedStartItem;
-  }
-
-  /** Returns a {@link java.util.Calendar} representing the end of the range. */
-  @Nullable
-  public Calendar getEnd() {
-    if (selectedStartItem == null || selectedEndItem == null) {
-      return null;
-    }
-    return selectedEndItem;
+  @NonNull
+  public Pair<Long, Long> getSelection() {
+    return new Pair<>(
+        selectedStartItem == null ? null : selectedStartItem.getTimeInMillis(),
+        selectedEndItem == null ? null : selectedEndItem.getTimeInMillis());
   }
 
   private boolean skipMonth(

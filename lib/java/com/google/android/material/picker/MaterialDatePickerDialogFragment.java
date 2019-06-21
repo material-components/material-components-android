@@ -20,18 +20,19 @@ import com.google.android.material.R;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.Locale;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialCalendar<Calendar>}, and set of actions.
+ * A {@link Dialog} with a header, {@link MaterialCalendar<Long>}, and set of actions.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragment<Calendar> {
+public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragment<Long> {
 
   public static MaterialDatePickerDialogFragment newInstance() {
     return newInstance(0);
@@ -66,14 +67,14 @@ public class MaterialDatePickerDialogFragment extends MaterialPickerDialogFragme
   }
 
   @Override
-  public String getHeaderText(Calendar selection) {
+  public String getHeaderText(@Nullable Long selection) {
     if (selection == null) {
       return getContext().getResources().getString(R.string.mtrl_picker_date_header_unselected);
     }
     String startString =
         getSimpleDateFormat() == null
-            ? DateStrings.getYearMonthDay(selection.getTime(), Locale.getDefault())
-            : getSimpleDateFormat().format(selection.getTime());
+            ? DateStrings.getYearMonthDay(new Date(selection), Locale.getDefault())
+            : getSimpleDateFormat().format(new Date(selection));
     return getContext()
         .getResources()
         .getString(R.string.mtrl_picker_date_header_selected, startString);

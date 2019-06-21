@@ -24,17 +24,15 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.core.util.Pair;
-import java.util.Calendar;
 
 /**
- * A {@link Dialog} with a header, {@link MaterialCalendar<Pair<Calendar, Calendar>>}, and set of
- * actions.
+ * A {@link Dialog} with a header, {@link MaterialCalendar<Pair<Long, Long>>}, and set of actions.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class MaterialDateRangePickerDialogFragment
-    extends MaterialPickerDialogFragment<Pair<Calendar, Calendar>> {
+    extends MaterialPickerDialogFragment<Pair<Long, Long>> {
 
   public static MaterialDateRangePickerDialogFragment newInstance() {
     return newInstance(0);
@@ -69,12 +67,12 @@ public class MaterialDateRangePickerDialogFragment
   }
 
   @Override
-  protected GridSelector<Pair<Calendar, Calendar>> createGridSelector() {
+  protected DateRangeGridSelector createGridSelector() {
     return new DateRangeGridSelector();
   }
 
   @Override
-  public String getHeaderText(Pair<Calendar, Calendar> selection) {
+  public String getHeaderText(Pair<Long, Long> selection) {
     Pair<String, String> dateRangeStrings = null;
     if (selection != null) {
       dateRangeStrings =
@@ -98,15 +96,15 @@ public class MaterialDateRangePickerDialogFragment
     }
   }
 
-  /** Returns the start date for the selection or null if the user has not yet confirmed. */
+  /** Returns the start date for the selection currently selected by the user. */
   @Nullable
-  public Calendar getStart() {
+  public Long getStart() {
     return getSelection() == null ? null : getSelection().first;
   }
 
-  /** Returns the end date for the selection or null if the user has not yet confirmed. */
+  /** Returns the end date for the selection currently selected by the user. */
   @Nullable
-  public Calendar getEnd() {
+  public Long getEnd() {
     return getSelection() == null ? null : getSelection().second;
   }
 }

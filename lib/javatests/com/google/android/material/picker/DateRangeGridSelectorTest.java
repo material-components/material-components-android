@@ -17,9 +17,9 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
+import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.nullValue;
+import static org.junit.Assert.assertThat;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
@@ -64,18 +64,19 @@ public class DateRangeGridSelectorTest {
     DateRangeGridSelector dateRangeGridSelectorFromParcel =
         ParcelableTestUtils.parcelAndCreate(dateRangeGridSelector, DateRangeGridSelector.CREATOR);
 
-    assertTrue(adapter.withinMonth(startPosition));
-    assertTrue(adapter.withinMonth(endPosition));
-
-    assertEquals(expectedStart, dateRangeGridSelectorFromParcel.getStart());
-    assertEquals(expectedEnd, dateRangeGridSelectorFromParcel.getEnd());
+    assertThat(adapter.withinMonth(startPosition), is(true));
+    assertThat(adapter.withinMonth(endPosition), is(true));
+    assertThat(
+        dateRangeGridSelectorFromParcel.getSelection().first, is(expectedStart.getTimeInMillis()));
+    assertThat(
+        dateRangeGridSelectorFromParcel.getSelection().second, is(expectedEnd.getTimeInMillis()));
   }
 
   @Test
   public void nullDateSelectionFromParcel() {
     DateRangeGridSelector dateRangeGridSelectorFromParcel =
         ParcelableTestUtils.parcelAndCreate(dateRangeGridSelector, DateRangeGridSelector.CREATOR);
-    assertNull(dateRangeGridSelectorFromParcel.getStart());
-    assertNull(dateRangeGridSelectorFromParcel.getEnd());
+    assertThat(dateRangeGridSelectorFromParcel.getSelection().first, nullValue());
+    assertThat(dateRangeGridSelectorFromParcel.getSelection().second, nullValue());
   }
 }

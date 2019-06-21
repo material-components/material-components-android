@@ -40,14 +40,14 @@ import java.util.LinkedHashSet;
 import java.util.Locale;
 
 /**
- * A {@link GridSelector} that uses a {@link Calendar} for its selection state.
+ * A {@link GridSelector} that uses a {@link Long} for its selection state.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class DateGridSelector implements GridSelector<Calendar> {
+public class DateGridSelector implements GridSelector<Long> {
 
-  private final LinkedHashSet<OnSelectionChangedListener<Calendar>> onSelectionChangedListeners =
+  private final LinkedHashSet<OnSelectionChangedListener<Long>> onSelectionChangedListeners =
       new LinkedHashSet<>();
 
   @Nullable private Calendar selectedItem;
@@ -68,12 +68,12 @@ public class DateGridSelector implements GridSelector<Calendar> {
   }
 
   @Override
-  public boolean addOnSelectionChangedListener(OnSelectionChangedListener<Calendar> listener) {
+  public boolean addOnSelectionChangedListener(OnSelectionChangedListener<Long> listener) {
     return onSelectionChangedListeners.add(listener);
   }
 
   @Override
-  public boolean removeOnSelectionChangedListener(OnSelectionChangedListener<Calendar> listener) {
+  public boolean removeOnSelectionChangedListener(OnSelectionChangedListener<Long> listener) {
     return onSelectionChangedListeners.remove(listener);
   }
 
@@ -98,8 +98,8 @@ public class DateGridSelector implements GridSelector<Calendar> {
 
   @Override
   @Nullable
-  public Calendar getSelection() {
-    return selectedItem;
+  public Long getSelection() {
+    return selectedItem == null ? null : selectedItem.getTimeInMillis();
   }
 
   @Override
