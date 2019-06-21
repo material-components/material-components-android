@@ -33,8 +33,8 @@
     <item name="itemTextColor">@color/test_mtrl_calendar_day</item>
     <item name="itemStrokeColor">@color/test_mtrl_calendar_day</item>
     <item name="itemStrokeWidth">0dp</item>
-    <item name="itemShapeAppearance">@style/Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar</item>
-    <item name="itemShapeAppearanceOverlay">@style/Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar</item>
+    <item name="itemShapeAppearance">@style/Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="itemShapeAppearanceOverlay">@style/Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day</item>
   </style>
 
   <style name="Test.Widget.MaterialComponents.MaterialCalendar.Day.Selected" parent="">
@@ -42,11 +42,11 @@
     <item name="itemTextColor">@color/test_mtrl_calendar_day_selected</item>
     <item name="itemStrokeColor">@color/test_mtrl_calendar_day</item>
     <item name="itemStrokeWidth">0dp</item>
-    <item name="itemShapeAppearance">@style/Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar</item>
-    <item name="itemShapeAppearanceOverlay">@style/Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar</item>
+    <item name="itemShapeAppearance">@style/Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="itemShapeAppearanceOverlay">@style/Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day</item>
   </style>
 
-  <style name="Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar" parent="">
+  <style name="Test.ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" parent="">
     <item name="cornerFamily">rounded</item>
     <item name="cornerSize">@dimen/test_mtrl_calendar_day_cornerSize</item>
   </style>

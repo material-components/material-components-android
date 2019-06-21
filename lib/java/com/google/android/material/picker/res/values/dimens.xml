@@ -18,6 +18,7 @@
 <resources>
   <dimen name="mtrl_alert_dialog_picker_background_inset">24dp</dimen>
 
+  <dimen name="mtrl_calendar_maximum_default_fullscreen_width">480dp</dimen>
   <dimen name="mtrl_calendar_dialog_background_inset">16dp</dimen>
   <dimen name="mtrl_calendar_header_height">120dp</dimen>
   <dimen name="mtrl_calendar_header_text_padding">12dp</dimen>

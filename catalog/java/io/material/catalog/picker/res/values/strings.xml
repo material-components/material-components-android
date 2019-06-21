@@ -29,9 +29,13 @@
   <!-- Launches a window with a styled android calendar (days of the week) based layout. [CHAR LIMIT=60] -->
   <string name="cat_picker_styled_date_calendar">Material Styled Date Picker Calendar</string>
   <!-- Launches a window with a calendar (days of the week) based layout. [CHAR LIMIT=60] -->
-  <string name="cat_picker_date_calendar">Material Date Picker Calendar</string>
+  <string name="cat_picker_date_calendar">Material Date Picker Calendar Default Theme</string>
   <!-- Launches a window with a calendar (days of the week) based layout for choosing a range of dates. [CHAR LIMIT=60] -->
-  <string name="cat_picker_date_range_calendar">Material Date Range Picker Calendar</string>
+  <string name="cat_picker_date_range_calendar">Material Date Range Picker Calendar Default Theme</string>
+  <!-- Launches a window with a calendar (days of the week) based layout with a fullscreen style. [CHAR LIMIT=60] -->
+  <string name="cat_picker_date_calendar_fullscreen">Material Date Picker Calendar Fullscreen Theme</string>
+  <!-- Launches a window with a calendar (days of the week) based layout for choosing a range of dates with a dialog style. [CHAR LIMIT=60] -->
+  <string name="cat_picker_date_range_calendar_dialog">Material Date Range Picker Calendar Dialog Theme</string>
 
   <!-- Informs that the user clicked the cancel button [CHAR LIMIT=120]-->
   <string name="cat_picker_user_clicked_cancel">The user clicked the cancel button.</string>

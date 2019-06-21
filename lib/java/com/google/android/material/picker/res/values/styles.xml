@@ -31,15 +31,16 @@
 
   <style name="Widget.MaterialComponents.MaterialCalendar" parent="android:Widget">
     <item name="android:windowFullscreen">false</item>
+    <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     <item name="dayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
-    <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected
-    </item>
+    <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
     <item name="dayTodayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Today</item>
     <item name="rangeFillColor">@color/mtrl_calendar_selected_range</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Fullscreen" parent="Widget.MaterialComponents.MaterialCalendar">
     <item name="android:windowFullscreen">true</item>
+    <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Window.Fullscreen</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderLayout" parent="android:Widget">
@@ -87,9 +88,7 @@
     <item name="itemStrokeColor">@color/mtrl_on_surface_emphasis_high_type</item>
     <item name="itemStrokeWidth">0dp</item>
     <item name="itemShapeAppearance">?attr/shapeAppearanceSmallComponent</item>
-    <item name="itemShapeAppearanceOverlay">
-      @style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar
-    </item>
+    <item name="itemShapeAppearanceOverlay">@style/ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
@@ -102,8 +101,12 @@
     <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
   </style>
 
-  <style name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar" parent="">
+  <style name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Day" parent="">
     <item name="cornerSize">@dimen/mtrl_calendar_day_selection_corner</item>
+  </style>
+
+  <style name="ShapeAppearanceOverlay.MaterialComponents.MaterialCalendar.Window.Fullscreen" parent="">
+    <item name="cornerSize">0dp</item>
   </style>
 
 </resources>

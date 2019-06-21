@@ -104,7 +104,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    *
    * @param selection The current user selection
    */
-  protected abstract String getHeaderText(@Nullable S selection);
+  public abstract String getHeaderText(@Nullable S selection);
 
   /** Returns an {@link @AttrRes} to apply as a theme overlay to the DialogFragment */
   protected abstract int getDefaultThemeAttr();
@@ -134,7 +134,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
-  private MaterialShapeDrawable fullscreenBackground;
+  private MaterialShapeDrawable background;
 
   /**
    * Adds the super class required arguments to the Bundle.
@@ -199,8 +199,14 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
             getContext(),
             R.attr.colorSurface,
             MaterialPickerDialogFragment.class.getCanonicalName());
-    fullscreenBackground = new MaterialShapeDrawable();
-    fullscreenBackground.setFillColor(ColorStateList.valueOf(surfaceColor));
+    background =
+        new MaterialShapeDrawable(
+            context,
+            null,
+            R.attr.materialCalendarStyle,
+            R.style.Widget_MaterialComponents_MaterialCalendar);
+    background.initializeElevationOverlay(context);
+    background.setFillColor(ColorStateList.valueOf(surfaceColor));
     return dialog;
   }
 
@@ -254,12 +260,12 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     // Dialogs use a background with an InsetDrawable by default, so we have to replace it.
     if (fullscreen) {
       window.setLayout(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
-      window.setBackgroundDrawable(fullscreenBackground);
+      window.setBackgroundDrawable(background);
     } else {
       window.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT);
       int inset =
           getResources().getDimensionPixelOffset(R.dimen.mtrl_calendar_dialog_background_inset);
-      window.setBackgroundDrawable(new InsetDrawable(fullscreenBackground, inset));
+      window.setBackgroundDrawable(new InsetDrawable(background, inset));
       Rect insets = new Rect(inset, inset, inset, inset);
       window
           .getDecorView()

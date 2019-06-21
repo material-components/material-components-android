@@ -60,7 +60,12 @@ public class MaterialDateRangePickerDialogFragment
 
   @Override
   protected int getDefaultThemeAttr() {
-    return R.attr.materialCalendarFullscreenTheme;
+    int maximumDefaultFullscreenWidth =
+        getResources()
+            .getDimensionPixelSize(R.dimen.mtrl_calendar_maximum_default_fullscreen_width);
+    return getResources().getDisplayMetrics().widthPixels > maximumDefaultFullscreenWidth
+        ? R.attr.materialCalendarTheme
+        : R.attr.materialCalendarFullscreenTheme;
   }
 
   @Override
