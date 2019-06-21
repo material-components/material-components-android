@@ -28,7 +28,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
@@ -40,6 +39,7 @@ import android.widget.TextView;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import com.google.android.material.expandable.ExpandableWidget;
+import com.google.android.material.navigation.NavigationView;
 import org.hamcrest.Matcher;
 
 public class TestUtilsActions {
