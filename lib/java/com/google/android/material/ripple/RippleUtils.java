@@ -26,7 +26,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.graphics.ColorUtils;
+import android.util.Log;
 import android.util.StateSet;
 
 /**
@@ -67,6 +69,17 @@ public class RippleUtils {
   private static final int[] SELECTED_STATE_SET = {
     android.R.attr.state_selected,
   };
+
+  private static final int[] ENABLED_PRESSED_STATE_SET = {
+    android.R.attr.state_enabled, android.R.attr.state_pressed
+  };
+
+  @VisibleForTesting static final String LOG_TAG = RippleUtils.class.getSimpleName();
+
+  @VisibleForTesting
+  static final String TRANSPARENT_DEFAULT_COLOR_WARNING =
+      "Use a non-transparent color for the default color as it will be used to finish ripple"
+          + " animations.";
 
   private RippleUtils() {}
 
@@ -170,6 +183,34 @@ public class RippleUtils {
 
       return new ColorStateList(states, colors);
     }
+  }
+
+  /**
+   * Returns a {@link ColorStateList} that is safe to pass to {@link
+   * android.graphics.drawable.RippleDrawable}.
+   *
+   * <p>If given a null ColorStateList, this will return a new transparent ColorStateList since
+   * RippleDrawable requires a non-null ColorStateList.
+   *
+   * <p>If given a non-null ColorStateList, this method will log a warning for API 22-27 if the
+   * ColorStateList is transparent in the default state and non-transparent in the pressed state.
+   * This will result in using the pressed state color for the ripple until the finger is lifted at
+   * which point the ripple will transition to the default state color (transparent), making the
+   * ripple appear to terminate prematurely.
+   */
+  @NonNull
+  public static ColorStateList sanitizeRippleDrawableColor(@Nullable ColorStateList rippleColor) {
+    if (rippleColor != null) {
+      if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP_MR1
+          && VERSION.SDK_INT <= VERSION_CODES.O_MR1
+          && Color.alpha(rippleColor.getDefaultColor()) == 0
+          && Color.alpha(rippleColor.getColorForState(ENABLED_PRESSED_STATE_SET, Color.TRANSPARENT))
+              != 0) {
+        Log.w(LOG_TAG, TRANSPARENT_DEFAULT_COLOR_WARNING);
+      }
+      return rippleColor;
+    }
+    return ColorStateList.valueOf(Color.TRANSPARENT);
   }
 
   /**
