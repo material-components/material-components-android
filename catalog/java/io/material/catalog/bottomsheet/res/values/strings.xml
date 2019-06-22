@@ -40,4 +40,8 @@
   <string name="cat_bottomsheet_persistent">
     Persistent Bottomsheet
   </string>
+  <string name="cat_bottomsheet_button_label_enabled">Enabled</string>
+  <string name="cat_bottomsheet_button_label_disabled">Disabled</string>
+  <string name="cat_bottomsheet_button_clicked">Button clicked</string>
+
 </resources>

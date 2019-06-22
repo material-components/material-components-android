@@ -27,13 +27,16 @@ import androidx.annotation.Nullable;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
+import com.google.android.material.switchmaterial.SwitchMaterial;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.FrameLayout;
 import android.widget.Switch;
 import android.widget.TextView;
+import android.widget.Toast;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main BottomSheet demo for the Catalog app. */
@@ -50,7 +53,32 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(400);
     View button = view.findViewById(R.id.bottomsheet_button);
-    button.setOnClickListener(v -> bottomSheetDialog.show());
+    button.setOnClickListener(
+        v -> {
+          bottomSheetDialog.show();
+          Button button0 = bottomSheetInternal.findViewById(R.id.cat_bottomsheet_modal_button);
+          button0.setOnClickListener(
+              v0 ->
+                  Toast.makeText(
+                          v.getContext(),
+                          R.string.cat_bottomsheet_button_clicked,
+                          Toast.LENGTH_SHORT)
+                      .show());
+
+          SwitchMaterial enabledSwitch =
+              bottomSheetInternal.findViewById(R.id.cat_bottomsheet_modal_enabled_switch);
+          enabledSwitch.setOnCheckedChangeListener(
+              (buttonSwitch, isSwitchChecked) -> {
+                CharSequence updatedText =
+                    getText(
+                        isSwitchChecked
+                            ? R.string.cat_bottomsheet_button_label_enabled
+                            : R.string.cat_bottomsheet_button_label_disabled);
+                button0.setText(updatedText);
+                button0.setEnabled(isSwitchChecked);
+              });
+        });
+
     Switch fullScreenSwitch = view.findViewById(R.id.cat_fullscreen_switch);
 
     fullScreenSwitch.setOnCheckedChangeListener(
@@ -101,6 +129,25 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
     View bottomSheetPersistent = view.findViewById(R.id.bottom_drawer);
     BottomSheetBehavior.from(bottomSheetPersistent)
         .setBottomSheetCallback(createBottomSheetCallback(bottomSheetText));
+
+    Button button1 = view.findViewById(R.id.cat_bottomsheet_button);
+    button1.setOnClickListener(
+        v ->
+            Toast.makeText(
+                    v.getContext(), R.string.cat_bottomsheet_button_clicked, Toast.LENGTH_SHORT)
+                .show());
+
+    SwitchMaterial enabledSwitch = view.findViewById(R.id.cat_bottomsheet_enabled_switch);
+    enabledSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          CharSequence updatedText =
+              getText(
+                  isChecked
+                      ? R.string.cat_bottomsheet_button_label_enabled
+                      : R.string.cat_bottomsheet_button_label_disabled);
+          button1.setText(updatedText);
+          button1.setEnabled(isChecked);
+        });
 
     return view;
   }
