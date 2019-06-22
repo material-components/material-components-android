@@ -30,13 +30,14 @@ import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
+import static android.os.Build.VERSION_CODES.O;
 import static com.google.common.truth.Truth.assertThat;
 import static org.mockito.Mockito.when;
 
 /** Tests for {@link BottomNavigationItemView}. */
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
-@Config(sdk = 26)
+@Config(sdk = O)
 public final class BottomNavigationItemViewTest {
 
   private static final int MENU_TYPE = 0;
