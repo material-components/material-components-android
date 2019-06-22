@@ -16,12 +16,8 @@
 package com.google.android.material.bottomnavigation;
 
 import android.content.Context;
-import android.view.Menu;
-import android.view.MenuItem;
 
-import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
-import androidx.appcompat.widget.TooltipCompat;
 import androidx.test.core.app.ApplicationProvider;
 
 import com.google.android.material.R;
