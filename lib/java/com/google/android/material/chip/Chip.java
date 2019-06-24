@@ -424,7 +424,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     //noinspection NewApi
     ripple =
         new RippleDrawable(
-            RippleUtils.convertToRippleDrawableColor(chipDrawable.getRippleColor()),
+            RippleUtils.sanitizeRippleDrawableColor(chipDrawable.getRippleColor()),
             getBackgroundDrawable(),
             null);
     chipDrawable.setUseCompatRipple(false);

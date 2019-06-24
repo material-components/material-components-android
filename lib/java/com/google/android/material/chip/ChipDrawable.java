@@ -1006,7 +1006,7 @@ public class ChipDrawable extends MaterialShapeDrawable
     }
 
     int newCompatRippleColor =
-        compatRippleColor != null
+        compatRippleColor != null && RippleUtils.shouldDrawRippleCompat(chipState)
             ? compatRippleColor.getColorForState(chipState, currentCompatRippleColor)
             : 0;
     if (currentCompatRippleColor != newCompatRippleColor) {
@@ -1280,7 +1280,7 @@ public class ChipDrawable extends MaterialShapeDrawable
 
   private void updateCompatRippleColor() {
     compatRippleColor =
-        useCompatRipple ? RippleUtils.convertToRippleDrawableColor(rippleColor) : null;
+        useCompatRipple ? RippleUtils.sanitizeRippleDrawableColor(rippleColor) : null;
   }
 
   private void setChipSurfaceColor(@Nullable ColorStateList chipSurfaceColor) {
@@ -1795,7 +1795,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   private void updateFrameworkCloseIconRipple() {
     closeIconRipple =
         new RippleDrawable(
-            RippleUtils.convertToRippleDrawableColor(getRippleColor()),
+            RippleUtils.sanitizeRippleDrawableColor(getRippleColor()),
             closeIcon,
             // A separate drawable with a solid background is needed for the mask because by
             // default, the close icon has a transparent background.
