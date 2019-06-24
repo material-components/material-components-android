@@ -66,7 +66,7 @@ initialized by setting the `app:checkedButton` attribute on a
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/toggle_button_group"
     android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+    android:layout_height="wrap_content">
 
     <com.google.android.material.button.MaterialButton
         style="?attr/materialButtonOutlinedStyle"
@@ -89,7 +89,7 @@ initialized by setting the `app:checkedButton` attribute on a
         android:layout_height="wrap_content"
         android:text="@string/button_label_custom"/>
 
-<com.google.android.material.button.MaterialButtonToggleGroup />
+</com.google.android.material.button.MaterialButtonToggleGroup>
 ```
 
 You can also add buttons to this view group programmatically via the
