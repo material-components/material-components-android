@@ -67,6 +67,7 @@ def srcDirs = [
   'com/google/android/material/switchmaterial',
   'com/google/android/material/tabs',
   'com/google/android/material/textfield',
+  'com/google/android/material/textview',
   'com/google/android/material/theme',
   'com/google/android/material/transformation',
   'com/google/android/material/typography',
