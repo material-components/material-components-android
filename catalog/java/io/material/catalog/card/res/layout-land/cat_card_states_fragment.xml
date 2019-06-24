@@ -21,13 +21,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="16dp"
-    android:orientation="vertical">
+    android:orientation="horizontal">
 
   <com.google.android.material.card.MaterialCardView
       android:id="@+id/card"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="0.4"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="0.3"
       android:layout_margin="16dp"
       android:clickable="true"
       android:focusable="true"
@@ -43,13 +43,13 @@
 
   <com.google.android.material.card.MaterialCardView
       android:id="@+id/checkable_card"
-      android:layout_width="match_parent"
-      android:layout_height="0dp"
-      android:layout_weight="0.4"
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="0.3"
       android:layout_margin="16dp"
-      android:checkable="true"
       android:clickable="true"
       android:focusable="true"
+      android:checkable="true"
       app:contentPadding="8dp">
 
     <TextView
@@ -61,41 +61,45 @@
 
   </com.google.android.material.card.MaterialCardView>
 
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:layout_marginTop="16dp"
-      android:layout_marginBottom="8dp"
-      android:text="@string/cat_card_select"
-      android:textAppearance="?attr/textAppearanceBody1"/>
-
-  <RadioGroup
-      android:id="@+id/cat_card_radio_group"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_marginBottom="8dp"
+  <LinearLayout
+      android:layout_width="0dp"
+      android:layout_height="match_parent"
+      android:layout_weight="0.3"
       android:layout_gravity="center"
-      android:orientation="horizontal">
+      android:layout_margin="16dp"
+      android:orientation="vertical">
 
-    <RadioButton
-        android:id="@+id/pressed"
-        android:layout_width="0dp"
+    <TextView
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/cat_card_state_pressed"/>
-    <RadioButton
-        android:id="@+id/hovered"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/cat_card_state_hovered"/>
-    <RadioButton
-        android:id="@+id/none"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_weight="1"
-        android:text="@string/cat_card_state_none"/>
+        android:text="@string/cat_card_select"
+        android:textAppearance="?attr/textAppearanceBody1"/>
 
-  </RadioGroup>
+    <RadioGroup
+        android:id="@+id/cat_card_radio_group"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:orientation="vertical">
+
+      <RadioButton
+          android:id="@+id/pressed"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_card_state_pressed"/>
+      <RadioButton
+          android:id="@+id/hovered"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_card_state_hovered"/>
+      <RadioButton
+          android:id="@+id/none"
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          android:text="@string/cat_card_state_none"/>
+
+    </RadioGroup>
+
+  </LinearLayout>
 
 </LinearLayout>
