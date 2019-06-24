@@ -38,6 +38,7 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import android.widget.FrameLayout;
@@ -148,8 +149,15 @@ public class MaterialCardView extends CardView implements Checkable {
     super.onInitializeAccessibilityNodeInfo(info);
     info.setClassName(MaterialCardView.class.getName());
     info.setCheckable(isCheckable());
-    info.setLongClickable(isCheckable());
     info.setClickable(isClickable());
+    info.setChecked(isChecked());
+  }
+
+  @Override
+  public void onInitializeAccessibilityEvent(AccessibilityEvent accessibilityEvent) {
+    super.onInitializeAccessibilityEvent(accessibilityEvent);
+    accessibilityEvent.setClassName(MaterialCardView.class.getName());
+    accessibilityEvent.setChecked(isChecked());
   }
 
   private void updateContentLayout() {
