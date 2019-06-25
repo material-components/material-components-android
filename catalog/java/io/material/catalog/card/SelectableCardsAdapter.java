@@ -20,7 +20,6 @@ import io.material.catalog.R;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.card.MaterialCardView;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -30,6 +29,7 @@ import android.widget.TextView;
 import androidx.recyclerview.selection.ItemDetailsLookup;
 import androidx.recyclerview.selection.ItemKeyProvider;
 import androidx.recyclerview.selection.SelectionTracker;
+import com.google.android.material.card.MaterialCardView;
 import java.util.ArrayList;
 import java.util.List;
 

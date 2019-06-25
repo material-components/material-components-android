@@ -20,8 +20,8 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Nullable;
-import com.google.android.material.card.MaterialCardView;
 import android.util.AttributeSet;
+import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.circularreveal.CircularRevealHelper;
 import com.google.android.material.circularreveal.CircularRevealWidget;
 

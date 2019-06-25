@@ -31,7 +31,7 @@ include functionality for card behavior in groups of cards.
     Cards](https://material.io/go/design-cards)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/card/MaterialCardView.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com.google.android.material.card/MaterialCardView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
     overview](https://developer.android.com/reference/com/google/android/material/card/MaterialCardView)
