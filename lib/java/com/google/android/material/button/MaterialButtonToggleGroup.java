@@ -76,7 +76,7 @@ import java.util.List;
  *         android:layout_height="wrap_content"
  *         android:text="@string/button_label_custom"/&gt;
  *
- * &lt;com.google.android.material.button.MaterialButtonToggleGroup /&gt;
+ * &lt;/com.google.android.material.button.MaterialButtonToggleGroup&gt;
  * </pre>
  *
  * <p>Buttons can also be added to this view group programmatically via the {@link #addView(View)}
