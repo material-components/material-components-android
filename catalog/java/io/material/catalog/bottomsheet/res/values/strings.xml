@@ -22,6 +22,10 @@
   <string name="cat_bottomsheet_switch_text">
     fullscreen mode
   </string>
+  <string name="cat_bottomsheet_expansion_switch_text">
+    restrict expansion
+  </string>
+
   <string name="cat_bottomsheet_button_text">
     Show Modal BottomSheetDialog
   </string>

@@ -32,9 +32,9 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.ViewGroup.LayoutParams;
 import android.widget.Button;
 import android.widget.FrameLayout;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import io.material.catalog.feature.DemoFragment;
@@ -79,18 +79,11 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
               });
         });
 
-    Switch fullScreenSwitch = view.findViewById(R.id.cat_fullscreen_switch);
+    SwitchMaterial expansionSwitch = view.findViewById(R.id.cat_bottomsheet_expansion_switch);
 
+    SwitchMaterial fullScreenSwitch = view.findViewById(R.id.cat_fullscreen_switch);
     fullScreenSwitch.setOnCheckedChangeListener(
         (buttonView, isChecked) -> {
-          // Calculate window height for fullscreen use
-          DisplayMetrics displayMetrics = new DisplayMetrics();
-          ((Activity) getContext())
-              .getWindowManager()
-              .getDefaultDisplay()
-              .getMetrics(displayMetrics);
-          int windowHeight = displayMetrics.heightPixels;
-
           View bottomSheetChildView = view.findViewById(R.id.bottom_drawer);
           ViewGroup.LayoutParams params = bottomSheetChildView.getLayoutParams();
           BottomSheetBehavior<View> bottomSheetBehavior =
@@ -101,17 +94,16 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
               bottomSheetDialog.getBehavior();
           boolean fitToContents = true;
           float halfExpandedRatio = 0.5f;
-
+          int windowHeight = getWindowHeight();
           if (params != null && layoutParams != null) {
             if (isChecked) {
               params.height = windowHeight;
               layoutParams.height = windowHeight;
               fitToContents = false;
               halfExpandedRatio = 0.7f;
-
             } else {
-              params.height = (windowHeight * 3 / 5);
-              layoutParams.height = (windowHeight * 2 / 3);
+              params.height = getBottomSheetPersistentDefaultHeight();
+              layoutParams.height = getBottomSheetDialogDefaultHeight();
             }
             bottomSheetChildView.setLayoutParams(params);
             modalBottomSheetChildView.setLayoutParams(layoutParams);
@@ -120,13 +112,31 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
             bottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio);
             modalBottomSheetBehavior.setHalfExpandedRatio(halfExpandedRatio);
           }
+
+          expansionSwitch.setEnabled(!isChecked);
+        });
+
+    View bottomSheetPersistent = view.findViewById(R.id.bottom_drawer);
+
+    expansionSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          LayoutParams lp = bottomSheetInternal.getLayoutParams();
+          lp.height = isChecked ? 400 : getBottomSheetDialogDefaultHeight();
+          bottomSheetInternal.setLayoutParams(lp);
+
+          lp = bottomSheetPersistent.getLayoutParams();
+          lp.height = isChecked ? 400 : getBottomSheetPersistentDefaultHeight();
+          bottomSheetPersistent.setLayoutParams(lp);
+
+          fullScreenSwitch.setEnabled(!isChecked);
+
+          view.requestLayout();
         });
 
     TextView dialogText = bottomSheetInternal.findViewById(R.id.bottomsheet_state);
     BottomSheetBehavior.from(bottomSheetInternal)
         .setBottomSheetCallback(createBottomSheetCallback(dialogText));
     TextView bottomSheetText = view.findViewById(R.id.cat_persistent_bottomsheet_state);
-    View bottomSheetPersistent = view.findViewById(R.id.bottom_drawer);
     BottomSheetBehavior.from(bottomSheetPersistent)
         .setBottomSheetCallback(createBottomSheetCallback(bottomSheetText));
 
@@ -150,6 +160,21 @@ public class BottomSheetMainDemoFragment extends DemoFragment {
         });
 
     return view;
+  }
+
+  private int getBottomSheetDialogDefaultHeight() {
+    return getWindowHeight() * 2 / 3;
+  }
+
+  private int getBottomSheetPersistentDefaultHeight() {
+    return getWindowHeight() * 3 / 5;
+  }
+
+  private int getWindowHeight() {
+    // Calculate window height for fullscreen use
+    DisplayMetrics displayMetrics = new DisplayMetrics();
+    ((Activity) getContext()).getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+    return displayMetrics.heightPixels;
   }
 
   @LayoutRes
