@@ -170,6 +170,7 @@ public class ChipDrawable extends MaterialShapeDrawable
         new int[] {
           android.R.attr.state_enabled, android.R.attr.state_checked,
         },
+        new int[] {android.R.attr.state_enabled, android.R.attr.state_checkable},
         new int[] {android.R.attr.state_enabled},
         new int[] {} // default
       };

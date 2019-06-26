@@ -131,6 +131,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
   private static final Rect EMPTY_BOUNDS = new Rect();
 
   private static final int[] SELECTED_STATE = new int[] {android.R.attr.state_selected};
+  private static final int[] CHECKABLE_STATE_SET = {android.R.attr.state_checkable};
 
   private static final String NAMESPACE_ANDROID = "http://schemas.android.com/apk/res/android";
 
@@ -444,9 +445,12 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
 
   @Override
   protected int[] onCreateDrawableState(int extraSpace) {
-    final int[] state = super.onCreateDrawableState(extraSpace + 1);
+    final int[] state = super.onCreateDrawableState(extraSpace + 2);
     if (isChecked()) {
       mergeDrawableStates(state, SELECTED_STATE);
+    }
+    if (isCheckable()) {
+      mergeDrawableStates(state, CHECKABLE_STATE_SET);
     }
     return state;
   }
