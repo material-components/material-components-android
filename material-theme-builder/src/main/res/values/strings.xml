@@ -59,7 +59,7 @@
 
     <string name="drawer_label_title">Drawer</string>
 
-    <string name="text_field_label_title">Text filed</string>
+    <string name="text_field_label_title" description="Label text for a text field [CHAR LIMIT=50]">Text field</string>
     <string name="text_field_hint_text">Label</string>
 
     <string name="bottom_nav_label_title">Bottom navigation</string>
