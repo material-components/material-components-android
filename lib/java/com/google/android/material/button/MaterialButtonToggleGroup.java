@@ -53,7 +53,7 @@ import java.util.List;
  *     xmlns:android="http://schemas.android.com/apk/res/android"
  *     android:id="@+id/toggle_button_group"
  *     android:layout_width="wrap_content"
- *     android:layout_height="wrap_content" /&gt;
+ *     android:layout_height="wrap_content"&gt;
  *
  *     &lt;com.google.android.material.button.MaterialButton
  *         style="?attr/materialButtonOutlinedStyle"
@@ -76,7 +76,7 @@ import java.util.List;
  *         android:layout_height="wrap_content"
  *         android:text="@string/button_label_custom"/&gt;
  *
- * &lt;com.google.android.material.button.MaterialButtonToggleGroup /&gt;
+ * &lt;/com.google.android.material.button.MaterialButtonToggleGroup&gt;
  * </pre>
  *
  * <p>Buttons can also be added to this view group programmatically via the {@link #addView(View)}
