@@ -33,10 +33,17 @@
     <attr name="dayStyle" format="reference"/>
     <attr name="daySelectedStyle" format="reference"/>
     <attr name="dayTodayStyle" format="reference"/>
+    <attr name="yearStyle" format="reference"/>
+    <attr name="yearSelectedStyle" format="reference"/>
+    <attr name="yearTodayStyle" format="reference"/>
     <attr name="rangeFillColor" format="color"/>
   </declare-styleable>
 
-  <declare-styleable name="MaterialCalendarDay">
+  <declare-styleable name="MaterialCalendarItem">
+    <attr name="android:insetLeft"/>
+    <attr name="android:insetTop"/>
+    <attr name="android:insetRight"/>
+    <attr name="android:insetBottom"/>
     <attr name="itemFillColor" format="color"/>
     <attr name="itemTextColor"/>
     <attr name="itemStrokeColor" format="color"/>

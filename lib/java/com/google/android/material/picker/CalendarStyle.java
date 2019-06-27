@@ -26,25 +26,42 @@ import com.google.android.material.resources.MaterialResources;
 
 /**
  * Data class for loaded {@link R.styleable#MaterialCalendar} and {@link
- * R.styleable#MaterialCalendarDay} attributes.
+ * R.styleable#MaterialCalendarItem} attributes.
  */
 final class CalendarStyle {
 
   /**
-   * The {@link R.styleable#MaterialCalendarDay} style for days with no unique characteristics from
+   * The {@link R.styleable#MaterialCalendarItem} style for days with no unique characteristics from
    * {@link R.styleable#MaterialCalendar_dayStyle}.
    */
   final CalendarItemStyle day;
   /**
-   * The {@link R.styleable#MaterialCalendarDay} style for selected days from {@link
+   * The {@link R.styleable#MaterialCalendarItem} style for selected days from {@link
    * R.styleable#MaterialCalendar_daySelectedStyle}.
    */
   final CalendarItemStyle selectedDay;
   /**
-   * The {@link R.styleable#MaterialCalendarDay} style for today from {@link
+   * The {@link R.styleable#MaterialCalendarItem} style for today from {@link
    * R.styleable#MaterialCalendar_dayTodayStyle}.
    */
-  final CalendarItemStyle today;
+  final CalendarItemStyle todayDay;
+
+  /**
+   * The {@link R.styleable#MaterialCalendarItem} style for years with no unique characteristics
+   * from {@link R.styleable#MaterialCalendar_yearStyle}.
+   */
+  final CalendarItemStyle year;
+  /**
+   * The {@link R.styleable#MaterialCalendarItem} style for selected years from {@link
+   * R.styleable#MaterialCalendar_yearSelectedStyle}.
+   */
+  final CalendarItemStyle selectedYear;
+  /**
+   * The {@link R.styleable#MaterialCalendarItem} style for today's year from {@link
+   * R.styleable#MaterialCalendar_yearTodayStyle}.
+   */
+  final CalendarItemStyle todayYear;
+
   /**
    * A {@link Paint} for styling days between selected days with {@link
    * R.styleable#MaterialCalendar_rangeFillColor}.
@@ -72,13 +89,26 @@ final class CalendarStyle {
         CalendarItemStyle.create(
             context,
             calendarAttributes.getResourceId(R.styleable.MaterialCalendar_daySelectedStyle, 0));
-    today =
+    todayDay =
         CalendarItemStyle.create(
             context,
             calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayTodayStyle, 0));
     ColorStateList rangeFillColorList =
         MaterialResources.getColorStateList(
             context, calendarAttributes, R.styleable.MaterialCalendar_rangeFillColor);
+
+    year =
+        CalendarItemStyle.create(
+            context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearStyle, 0));
+    selectedYear =
+        CalendarItemStyle.create(
+            context,
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearSelectedStyle, 0));
+    todayYear =
+        CalendarItemStyle.create(
+            context,
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_yearTodayStyle, 0));
+
     rangeFill = new Paint();
     rangeFill.setColor(rangeFillColorList.getDefaultColor());
 

@@ -28,6 +28,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.textfield.TextInputLayout;
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -88,7 +89,7 @@ public class DateGridSelector implements GridSelector<Long> {
     if (content.equals(selectedItem)) {
       style = calendarStyle.selectedDay;
     } else if (DateUtils.isToday(content.getTimeInMillis())) {
-      style = calendarStyle.today;
+      style = calendarStyle.todayDay;
     } else {
       style = calendarStyle.day;
     }
@@ -102,8 +103,27 @@ public class DateGridSelector implements GridSelector<Long> {
   }
 
   @Override
+  public void drawYearItem(TextView view, int year) {
+    initializeStyles(view.getContext());
+    CalendarItemStyle style;
+    if (selectedItem != null && selectedItem.get(Calendar.YEAR) == year) {
+      style = calendarStyle.selectedYear;
+    } else if (Calendar.getInstance().get(Calendar.YEAR) == year) {
+      style = calendarStyle.todayYear;
+    } else {
+      style = calendarStyle.year;
+    }
+    style.styleItem(view);
+  }
+
+  @Override
   public void onCalendarMonthDraw(Canvas canvas, MaterialCalendarGridView gridView) {
     // do nothing
+  }
+
+  @Override
+  public ItemDecoration createYearDecorator() {
+    return new ItemDecoration() {};
   }
 
   @Override

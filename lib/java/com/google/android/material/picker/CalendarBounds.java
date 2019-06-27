@@ -33,6 +33,9 @@ public final class CalendarBounds implements Parcelable {
   private final Month end;
   private final Month current;
 
+  private final int yearSpan;
+  private final int monthSpan;
+
   private CalendarBounds(Month start, Month end, Month current) {
     this.start = start;
     this.end = end;
@@ -43,6 +46,8 @@ public final class CalendarBounds implements Parcelable {
     if (current.compareTo(end) > 0) {
       throw new IllegalArgumentException("current Month cannot be after end Month");
     }
+    monthSpan = start.monthsUntil(end) + 1;
+    yearSpan = end.year - start.year + 1;
   }
 
   /**
@@ -78,6 +83,22 @@ public final class CalendarBounds implements Parcelable {
   /** Returns the current {@link Month} within this set of bounds. */
   public Month getCurrent() {
     return current;
+  }
+
+  /**
+   * Returns the total number of {@link java.util.Calendar#MONTH} included in {@code start} to
+   * {@code end}.
+   */
+  int getMonthSpan() {
+    return monthSpan;
+  }
+
+  /**
+   * Returns the total number of {@link java.util.Calendar#YEAR} included in {@code start} to {@code
+   * end}.
+   */
+  int getYearSpan() {
+    return yearSpan;
   }
 
   @Override

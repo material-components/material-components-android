@@ -27,17 +27,18 @@
       android:layout_height="wrap_content"
       android:orientation="vertical">
 
-  <FrameLayout
-      android:id="@+id/mtrl_calendar_frame"
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:paddingStart="@dimen/mtrl_calendar_content_padding"
-      android:paddingEnd="@dimen/mtrl_calendar_content_padding"
-      android:paddingLeft="@dimen/mtrl_calendar_content_padding"
-      android:paddingRight="@dimen/mtrl_calendar_content_padding"
-      android:paddingBottom="@dimen/mtrl_calendar_bottom_padding"/>
+    <!-- The layout_height and layout_width are overridden in code -->
+    <FrameLayout
+        android:id="@+id/mtrl_calendar_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingBottom="@dimen/mtrl_calendar_bottom_padding"
+        android:paddingStart="@dimen/mtrl_calendar_content_padding"
+        android:paddingEnd="@dimen/mtrl_calendar_content_padding"
+        android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+        android:paddingRight="@dimen/mtrl_calendar_content_padding"/>
 
-  <include layout="@layout/mtrl_picker_actions"/>
+    <include layout="@layout/mtrl_picker_actions"/>
 
   </LinearLayout>
 

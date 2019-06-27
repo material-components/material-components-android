@@ -37,8 +37,7 @@ import java.util.List;
  */
 class MonthsPagerAdapter extends FragmentStateAdapter {
 
-  private final Month firstPage;
-  private final Month lastPage;
+  private final CalendarBounds calendarBounds;
   private final int startIndex;
   private final GridSelector<?> gridSelector;
   private final SparseArray<AdapterDataObserver> observingFragments = new SparseArray<>();
@@ -56,28 +55,26 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
    *     Fragment#getLifecycle()} and {@see FragmentActivity#getLifecycle()}.
    * @param gridSelector The {@link GridSelector} that controls selection and highlights for all
    *     {@link MonthFragment} objects.
-   * @param firstPage The earliest accessible {@link Month}. This {@link Month} will be at position
-   *     0. {@link MonthsPagerAdapter#createFragment(int)}.
-   * @param lastPage The latest accessible {@link Month}. Must be chronologically after or the same
-   *     as {@code firstPage}.
-   * @param startPage The starting {@link Month} displayed. Must be chronologically between {@code
-   *     firstPage} and {@code lastPage} inclusive.
+   * @param calendarBounds The {@link CalendarBounds} that specifies the valid range and starting
+   *     point for selection.
    */
   MonthsPagerAdapter(
       Context context,
       FragmentManager fragmentManager,
       Lifecycle lifecycle,
       GridSelector<?> gridSelector,
-      Month firstPage,
-      Month lastPage,
-      Month startPage,
+      CalendarBounds calendarBounds,
       OnDayClickListener onDayClickListener) {
     super(fragmentManager, lifecycle);
-    if (firstPage.compareTo(startPage) > 0) {
-      throw new IllegalArgumentException("firstPage cannot be after startPage");
+    Month firstPage = calendarBounds.getStart();
+    Month lastPage = calendarBounds.getEnd();
+    Month currentPage = calendarBounds.getCurrent();
+
+    if (firstPage.compareTo(currentPage) > 0) {
+      throw new IllegalArgumentException("firstPage cannot be after currentPage");
     }
-    if (startPage.compareTo(lastPage) > 0) {
-      throw new IllegalArgumentException("startPage cannot be after lastPage");
+    if (currentPage.compareTo(lastPage) > 0) {
+      throw new IllegalArgumentException("currentPage cannot be after lastPage");
     }
 
     int daysHeight = MonthAdapter.MAXIMUM_WEEKS * MaterialCalendar.getDayHeight(context);
@@ -87,9 +84,8 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
             : 0;
 
     this.itemHeight = daysHeight + labelHeight;
-    this.firstPage = firstPage;
-    this.lastPage = lastPage;
-    startIndex = firstPage.monthsUntil(startPage);
+    this.calendarBounds = calendarBounds;
+    startIndex = firstPage.monthsUntil(currentPage);
     this.gridSelector = gridSelector;
     this.onDayClickListener = onDayClickListener;
   }
@@ -110,13 +106,13 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
 
   @Override
   public int getItemCount() {
-    return firstPage.monthsUntil(lastPage) + 1;
+    return calendarBounds.getMonthSpan();
   }
 
   @Override
   public MonthFragment createFragment(final int position) {
     final MonthFragment monthFragment =
-        MonthFragment.newInstance(firstPage.monthsLater(position), gridSelector);
+        MonthFragment.newInstance(calendarBounds.getStart().monthsLater(position), gridSelector);
 
     monthFragment
         .getLifecycle()
@@ -160,6 +156,10 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
   }
 
   Month getPageMonth(int position) {
-    return firstPage.monthsLater(position);
+    return calendarBounds.getStart().monthsLater(position);
+  }
+
+  int getPosition(Month month) {
+    return calendarBounds.getStart().monthsUntil(month);
   }
 }

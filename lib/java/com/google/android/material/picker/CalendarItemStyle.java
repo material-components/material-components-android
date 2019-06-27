@@ -19,8 +19,8 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
-import android.content.res.Resources;
 import android.content.res.TypedArray;
+import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import android.graphics.drawable.InsetDrawable;
 import android.graphics.drawable.RippleDrawable;
@@ -40,24 +40,19 @@ import android.widget.TextView;
  */
 final class CalendarItemStyle {
 
+  /**
+   * The inset between the TextView horizontal edge - bounding the touch target for an item - and
+   * the selection marker.
+   *
+   * <p>The selection marker's size is defined by the {@link
+   * R.styleable.MaterialCalendarItem#itemShapeAppearance} and {@link
+   * R.styleable.MaterialCalendarItem#itemShapeAppearanceOverlay}.
+   */
+  private final Rect insets;
+
   private final ColorStateList textColor;
   private final MaterialShapeDrawable backgroundDrawable;
   private final MaterialShapeDrawable shapeMask;
-
-  /**
-   * The padding between the View horizontal edge and the selection marker.
-   *
-   * <p>The selection marker's size is defined by {@code
-   * R.dimen.mtrl_calendar_day_selection_corner}.
-   */
-  final int horizontalPadding;
-  /**
-   * The padding between the View vertical edge and the selection marker.
-   *
-   * <p>The selection marker's size is defined by {@code
-   * R.dimen.mtrl_calendar_day_selection_corner}.
-   */
-  final int verticalPadding;
 
   private CalendarItemStyle(
       ColorStateList backgroundColor,
@@ -65,69 +60,72 @@ final class CalendarItemStyle {
       ColorStateList strokeColor,
       int strokeWidth,
       ShapeAppearanceModel itemShape,
-      int horizontalPadding,
-      int verticalPadding) {
-    Preconditions.checkArgumentNonnegative(horizontalPadding);
-    Preconditions.checkArgumentNonnegative(verticalPadding);
+      Rect insets) {
+    Preconditions.checkArgumentNonnegative(insets.left);
+    Preconditions.checkArgumentNonnegative(insets.top);
+    Preconditions.checkArgumentNonnegative(insets.right);
+    Preconditions.checkArgumentNonnegative(insets.bottom);
 
     this.textColor = textColor;
+    this.insets = insets;
+
     backgroundDrawable = new MaterialShapeDrawable();
     shapeMask = new MaterialShapeDrawable();
     backgroundDrawable.setShapeAppearanceModel(itemShape);
     shapeMask.setShapeAppearanceModel(itemShape);
     backgroundDrawable.setFillColor(backgroundColor);
     backgroundDrawable.setStroke(strokeWidth, strokeColor);
-    this.horizontalPadding = horizontalPadding;
-    this.verticalPadding = verticalPadding;
   }
 
   /**
-   * Creates a {@link CalendarItemStyle} using the provided {@link R.styleable#MaterialCalendarDay}.
+   * Creates a {@link CalendarItemStyle} using the provided {@link
+   * R.styleable#MaterialCalendarItem}.
    */
-  static CalendarItemStyle create(Context context, @StyleRes int materialCalendarDayStyle) {
-    Resources resources = context.getResources();
+  static CalendarItemStyle create(Context context, @StyleRes int materialCalendarItemStyle) {
     Preconditions.checkArgument(
-        materialCalendarDayStyle != 0, "Cannot create a CalendarItemStyle with a styleResId of 0");
+        materialCalendarItemStyle != 0, "Cannot create a CalendarItemStyle with a styleResId of 0");
+
     TypedArray styleableArray =
-        context.obtainStyledAttributes(materialCalendarDayStyle, R.styleable.MaterialCalendarDay);
+        context.obtainStyledAttributes(materialCalendarItemStyle, R.styleable.MaterialCalendarItem);
+    int insetLeft =
+        styleableArray.getDimensionPixelOffset(
+            R.styleable.MaterialCalendarItem_android_insetLeft, 0);
+    int insetTop =
+        styleableArray.getDimensionPixelOffset(
+            R.styleable.MaterialCalendarItem_android_insetTop, 0);
+    int insetRight =
+        styleableArray.getDimensionPixelOffset(
+            R.styleable.MaterialCalendarItem_android_insetRight, 0);
+    int insetBottom =
+        styleableArray.getDimensionPixelOffset(
+            R.styleable.MaterialCalendarItem_android_insetBottom, 0);
+    Rect insets = new Rect(insetLeft, insetTop, insetRight, insetBottom);
+
     ColorStateList backgroundColor =
         MaterialResources.getColorStateList(
-            context, styleableArray, R.styleable.MaterialCalendarDay_itemFillColor);
+            context, styleableArray, R.styleable.MaterialCalendarItem_itemFillColor);
     ColorStateList textColor =
         MaterialResources.getColorStateList(
-            context, styleableArray, R.styleable.MaterialCalendarDay_itemTextColor);
+            context, styleableArray, R.styleable.MaterialCalendarItem_itemTextColor);
     ColorStateList strokeColor =
         MaterialResources.getColorStateList(
-            context, styleableArray, R.styleable.MaterialCalendarDay_itemStrokeColor);
+            context, styleableArray, R.styleable.MaterialCalendarItem_itemStrokeColor);
     int strokeWidth =
-        styleableArray.getDimensionPixelSize(R.styleable.MaterialCalendarDay_itemStrokeWidth, 0);
+        styleableArray.getDimensionPixelSize(R.styleable.MaterialCalendarItem_itemStrokeWidth, 0);
 
     int shapeAppearanceResId =
-        styleableArray.getResourceId(R.styleable.MaterialCalendarDay_itemShapeAppearance, 0);
+        styleableArray.getResourceId(R.styleable.MaterialCalendarItem_itemShapeAppearance, 0);
     int shapeAppearanceOverlayResId =
-        styleableArray.getResourceId(R.styleable.MaterialCalendarDay_itemShapeAppearanceOverlay, 0);
+        styleableArray.getResourceId(
+            R.styleable.MaterialCalendarItem_itemShapeAppearanceOverlay, 0);
 
     ShapeAppearanceModel itemShape =
         new ShapeAppearanceModel(context, shapeAppearanceResId, shapeAppearanceOverlayResId);
+
     styleableArray.recycle();
 
-    int horizontalPadding =
-        (resources.getDimensionPixelSize(R.dimen.mtrl_calendar_day_width)
-                - 2 * resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_day_selection_corner))
-            / 2;
-    int verticalPadding =
-        (resources.getDimensionPixelSize(R.dimen.mtrl_calendar_day_height)
-                - 2 * resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_day_selection_corner))
-            / 2;
-
     return new CalendarItemStyle(
-        backgroundColor,
-        textColor,
-        strokeColor,
-        strokeWidth,
-        itemShape,
-        horizontalPadding,
-        verticalPadding);
+        backgroundColor, textColor, strokeColor, strokeWidth, itemShape, insets);
   }
 
   /** Applies the {@link R.styleable#MaterialCalendarDay} style to the provided {@code item} */
@@ -140,8 +138,22 @@ final class CalendarItemStyle {
       d = backgroundDrawable;
     }
     ViewCompat.setBackground(
-        item,
-        new InsetDrawable(
-            d, horizontalPadding, verticalPadding, horizontalPadding, verticalPadding));
+        item, new InsetDrawable(d, insets.left, insets.top, insets.right, insets.bottom));
+  }
+
+  int getLeftInset() {
+    return insets.left;
+  }
+
+  int getRightInset() {
+    return insets.right;
+  }
+
+  int getTopInset() {
+    return insets.top;
+  }
+
+  int getBottomInset() {
+    return insets.bottom;
   }
 }

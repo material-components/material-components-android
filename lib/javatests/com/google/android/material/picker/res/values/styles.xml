@@ -25,6 +25,9 @@
     <item name="dayStyle">@style/Test.Widget.MaterialComponents.MaterialCalendar.Day</item>
     <item name="daySelectedStyle">@style/Test.Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
     <item name="dayTodayStyle">@style/Test.Widget.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="yearStyle">@style/Test.Widget.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="yearSelectedStyle">@style/Test.Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
+    <item name="yearTodayStyle">@style/Test.Widget.MaterialComponents.MaterialCalendar.Day</item>
     <item name="rangeFillColor">@color/test_mtrl_calendar_day</item>
   </style>
 

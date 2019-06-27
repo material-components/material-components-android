@@ -222,9 +222,13 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     Context context = root.getContext();
 
     View frame = root.findViewById(R.id.mtrl_calendar_frame);
-    frame.setLayoutParams(
-        new LayoutParams(getPaddedPickerWidth(context), LayoutParams.WRAP_CONTENT));
-
+    if (fullscreen) {
+      frame.setLayoutParams(
+          new LayoutParams(getPaddedPickerWidth(context), LayoutParams.WRAP_CONTENT));
+    } else {
+      frame.setLayoutParams(
+          new LayoutParams(getPaddedPickerWidth(context), getDialogPickerHeight(context)));
+    }
     headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
     ((TextView) root.findViewById(R.id.mtrl_picker_title_text)).setText(titleTextResId);
@@ -372,6 +376,23 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     boolean fullscreen = a.getBoolean(0, false);
     a.recycle();
     return fullscreen;
+  }
+
+  private static int getDialogPickerHeight(Context context) {
+    Resources resources = context.getResources();
+    int navigationHeight =
+        resources.getDimensionPixelSize(R.dimen.mtrl_calendar_navigation_height)
+            + resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_navigation_top_padding)
+            + resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_navigation_bottom_padding);
+    int daysOfWeekHeight =
+        resources.getDimensionPixelSize(R.dimen.mtrl_calendar_days_of_week_height);
+    int calendarHeight =
+        MonthAdapter.MAXIMUM_WEEKS
+                * resources.getDimensionPixelSize(R.dimen.mtrl_calendar_day_height)
+            + (MonthAdapter.MAXIMUM_WEEKS - 1)
+                * resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_month_vertical_padding);
+    int calendarPadding = resources.getDimensionPixelOffset(R.dimen.mtrl_calendar_bottom_padding);
+    return navigationHeight + daysOfWeekHeight + calendarHeight + calendarPadding;
   }
 
   private static int getPaddedPickerWidth(Context context) {

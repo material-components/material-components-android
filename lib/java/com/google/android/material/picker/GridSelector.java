@@ -15,6 +15,8 @@
  */
 package com.google.android.material.picker;
 
+import com.google.android.material.R;
+
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -22,6 +24,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
+import androidx.recyclerview.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -64,7 +69,8 @@ public interface GridSelector<S> extends Parcelable {
   void clearOnSelectionChangedListeners();
 
   /**
-   * Modifies the provided {@link TextView} to indicate its selection status.
+   * Modifies the provided {@link TextView} to indicate its selection status using day styles from
+   * {@link R.styleable#MaterialCalendar}.
    *
    * <p>Called for each {@link TextView} as part of {@link MonthAdapter#getView(int, View,
    * ViewGroup)}
@@ -74,6 +80,24 @@ public interface GridSelector<S> extends Parcelable {
    * @param content The {@link Calendar} returned from {@link MonthAdapter#getItem(int)}.
    */
   void drawItem(TextView view, Calendar content);
+
+  /**
+   * Modifies the provided {@link TextView} to indicate its selection status using year styles from
+   * {@link R.styleable#MaterialCalendar}.
+   *
+   * <p>Called for each {@link TextView} as part of {@link
+   * YearGridAdapter#bindViewHolder(ViewHolder, int)}.
+   *
+   * @param yearView The {@link TextView} held in {@link YearGridAdapter.ViewHolder#textView}.
+   * @param year The year represented by this {@code yearView}.
+   */
+  void drawYearItem(TextView yearView, int year);
+
+  /**
+   * Returns an {@link ItemDecoration} applied to the {@link RecyclerView} backed by {@link
+   * YearGridAdapter}.
+   */
+  ItemDecoration createYearDecorator();
 
   /**
    * Called after {@link

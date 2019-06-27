@@ -29,6 +29,10 @@ import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.core.util.Pair;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
+import androidx.recyclerview.widget.RecyclerView.State;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -56,6 +60,48 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
   @Nullable private Calendar selectedEndItem = null;
 
   private CalendarStyle calendarStyle;
+
+  private final ItemDecoration rangeFill =
+      new ItemDecoration() {
+        @Override
+        public void onDraw(
+            @NonNull Canvas canvas, @NonNull RecyclerView recyclerView, @NonNull State state) {
+          initializeStyles(recyclerView.getContext());
+          if (selectedStartItem == null
+              || selectedEndItem == null
+              || !(recyclerView.getAdapter() instanceof YearGridAdapter)
+              || !(recyclerView.getLayoutManager() instanceof GridLayoutManager)) {
+            return;
+          }
+          YearGridAdapter adapter = (YearGridAdapter) recyclerView.getAdapter();
+          GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+          int firstHighlightPosition =
+              adapter.getPositionForYear(selectedStartItem.get(Calendar.YEAR));
+          int lastHighlightPosition =
+              adapter.getPositionForYear(selectedEndItem.get(Calendar.YEAR));
+          View firstView = layoutManager.findViewByPosition(firstHighlightPosition);
+          View lastView = layoutManager.findViewByPosition(lastHighlightPosition);
+
+          int firstRow = firstHighlightPosition / layoutManager.getSpanCount();
+          int lastRow = lastHighlightPosition / layoutManager.getSpanCount();
+
+          for (int row = firstRow; row <= lastRow; row++) {
+            int firstPositionInRow = row * layoutManager.getSpanCount();
+            View viewInRow = layoutManager.findViewByPosition(firstPositionInRow);
+            if (viewInRow == null) {
+              continue;
+            }
+            int top = viewInRow.getTop() + calendarStyle.year.getTopInset();
+            int bottom = viewInRow.getBottom() - calendarStyle.year.getBottomInset();
+            int left = row == firstRow ? firstView.getLeft() + firstView.getWidth() / 2 : 0;
+            int right =
+                row == lastRow
+                    ? lastView.getLeft() + lastView.getWidth() / 2
+                    : recyclerView.getWidth();
+            canvas.drawRect(left, top, right, bottom, calendarStyle.rangeFill);
+          }
+        }
+      };
 
   // The context is not available on construction and parceling, so we lazily initialize styles.
   private void initializeStyles(Context context) {
@@ -91,6 +137,11 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
   }
 
   @Override
+  public ItemDecoration createYearDecorator() {
+    return rangeFill;
+  }
+
+  @Override
   public void clearOnSelectionChangedListeners() {
     onSelectionChangedListeners.clear();
   }
@@ -102,9 +153,24 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
     if (content.equals(selectedStartItem) || content.equals(selectedEndItem)) {
       style = calendarStyle.selectedDay;
     } else if (DateUtils.isToday(content.getTimeInMillis())) {
-      style = calendarStyle.today;
+      style = calendarStyle.todayDay;
     } else {
       style = calendarStyle.day;
+    }
+    style.styleItem(view);
+  }
+
+  @Override
+  public void drawYearItem(TextView view, int year) {
+    initializeStyles(view.getContext());
+    CalendarItemStyle style;
+    if ((selectedStartItem != null && selectedStartItem.get(Calendar.YEAR) == year)
+        || (selectedEndItem != null && selectedEndItem.get(Calendar.YEAR) == year)) {
+      style = calendarStyle.selectedYear;
+    } else if (Calendar.getInstance().get(Calendar.YEAR) == year) {
+      style = calendarStyle.todayYear;
+    } else {
+      style = calendarStyle.year;
     }
     style.styleItem(view);
   }
@@ -153,8 +219,8 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
       int firstPositionInRow = row * gridView.getNumColumns();
       int lastPositionInRow = firstPositionInRow + gridView.getNumColumns() - 1;
       View firstView = gridView.getChildAt(firstPositionInRow);
-      int top = firstView.getTop() + calendarStyle.day.verticalPadding;
-      int bottom = firstView.getBottom() - calendarStyle.day.verticalPadding;
+      int top = firstView.getTop() + calendarStyle.day.getTopInset();
+      int bottom = firstView.getBottom() - calendarStyle.day.getBottomInset();
       int left = firstPositionInRow > firstHighlightPosition ? 0 : rangeHighlightStart;
       int right =
           lastHighlightPosition > lastPositionInRow ? gridView.getWidth() : rangeHighlightEnd;

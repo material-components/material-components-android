@@ -60,9 +60,8 @@ public class MonthsPagerAdapterTest {
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,
-            /* firstPage= */ feb2016,
-            /* lastPage= */ april2016,
-            /* startPage= */ march2016,
+            CalendarBounds.create(
+                /* start= */ feb2016, /* end= */ april2016, /* current= */ march2016),
             /* onDayClickListener= */ null);
     assertEquals(3, monthsAdapter.getItemCount());
     assertEquals(1, monthsAdapter.getStartPosition());
@@ -76,9 +75,7 @@ public class MonthsPagerAdapterTest {
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,
-            /* firstPage= */ feb2016,
-            /* lastPage= */ feb2016,
-            /* startPage= */ feb2016,
+            CalendarBounds.create(/* start= */ feb2016, /* end= */ feb2016, /* current= */ feb2016),
             /* onDayClickListener= */ null);
     assertEquals(1, monthsAdapter.getItemCount());
     assertEquals(0, monthsAdapter.getStartPosition());
@@ -94,9 +91,7 @@ public class MonthsPagerAdapterTest {
         activity.getSupportFragmentManager(),
         activity.getLifecycle(),
         /* gridSelector= */ null,
-        /* firstPage= */ feb2016,
-        /* lastPage= */ march2016,
-        /* startPage= */ april2016,
+        CalendarBounds.create(/* start= */ feb2016, /* end= */ march2016, /* current= */ april2016),
         /* onDayClickListener= */ null);
   }
 
@@ -108,9 +103,7 @@ public class MonthsPagerAdapterTest {
         activity.getSupportFragmentManager(),
         activity.getLifecycle(),
         /* gridSelector= */ null,
-        /* firstPage= */ march2016,
-        /* lastPage= */ feb2016,
-        /* startPage= */ march2016,
+        CalendarBounds.create(/* start= */ march2016, /* end= */ feb2016, /* current= */ march2016),
         /* onDayClickListener= */ null);
   }
 
@@ -122,9 +115,8 @@ public class MonthsPagerAdapterTest {
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,
-            /* firstPage= */ feb2016,
-            /* lastPage= */ april2016,
-            /* startPage= */ march2016,
+            CalendarBounds.create(
+                /* start= */ feb2016, /* end= */ april2016, /* current= */ march2016),
             /* onDayClickListener= */ null);
     assertEquals(feb2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 0).toString());
     assertEquals(march2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 1).toString());

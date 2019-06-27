@@ -18,6 +18,7 @@
 <resources>
   <dimen name="mtrl_alert_dialog_picker_background_inset">24dp</dimen>
 
+  <integer name="mtrl_calendar_year_selector_span">3</integer>
   <dimen name="mtrl_calendar_maximum_default_fullscreen_width">480dp</dimen>
   <dimen name="mtrl_calendar_dialog_background_inset">16dp</dimen>
   <dimen name="mtrl_calendar_header_height">120dp</dimen>
@@ -31,7 +32,14 @@
   <dimen name="mtrl_calendar_action_padding">8dp</dimen>
   <dimen name="mtrl_calendar_header_content_padding_fullscreen">4dp</dimen>
   <dimen name="mtrl_calendar_header_selection_line_height">32dp</dimen>
-  <!-- Prior to Lollipop, AppComaptTextView will clip font descenders when using
+
+  <dimen name="mtrl_calendar_year_height">52dp</dimen>
+  <dimen name="mtrl_calendar_year_width">88dp</dimen>
+  <dimen name="mtrl_calendar_year_corner">18dp</dimen>
+  <dimen name="mtrl_calendar_year_horizontal_padding">8dp</dimen>
+  <dimen name="mtrl_calendar_year_vertical_padding">8dp</dimen>
+
+  <!-- Prior to Lollipop, AppCompatTextView will clip font descenders when using
   first_baseline_to_top_height to determine padding. This additional padding prevents clipping. -->
   <dimen name="mtrl_calendar_pre_l_text_clip_padding">8dp</dimen>
 
@@ -55,9 +63,12 @@
   <!-- screens with less than 360dp minimum dimension -->
   <dimen name="mtrl_calendar_bottom_padding">0dp</dimen>
   <dimen name="mtrl_calendar_month_horizontal_padding">2dp</dimen>
-  <dimen name="mtrl_calendar_day_selection_corner">15dp</dimen>
+
+  <dimen name="mtrl_calendar_day_corner">15dp</dimen>
   <dimen name="mtrl_calendar_day_height">32dp</dimen>
   <dimen name="mtrl_calendar_day_width">36dp</dimen>
+  <dimen name="mtrl_calendar_day_horizontal_padding">3dp</dimen>
+  <dimen name="mtrl_calendar_day_vertical_padding">1dp</dimen>
 
   <!-- only portrait and screens with less than 360dp minimum dimension-->
   <dimen name="mtrl_calendar_days_of_week_height">24dp</dimen>

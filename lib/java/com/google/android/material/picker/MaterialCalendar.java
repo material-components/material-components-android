@@ -26,12 +26,13 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import androidx.viewpager2.widget.ViewPager2;
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;
@@ -46,6 +47,12 @@ import java.util.Calendar;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public final class MaterialCalendar<S> extends PickerFragment<S> {
 
+  /** The views supported by {@link MaterialCalendar}. */
+  enum CalendarSelector {
+    DAY,
+    YEAR
+  };
+
   private static final String THEME_RES_ID_KEY = "THEME_RES_ID_KEY";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String CALENDAR_BOUNDS_KEY = "CALENDAR_BOUNDS_KEY";
@@ -57,7 +64,11 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private int themeResId;
   private GridSelector<S> gridSelector;
   private CalendarBounds calendarBounds;
-  private MonthsPagerAdapter monthsPagerAdapter;
+  private CalendarSelector calendarSelector;
+  private RecyclerView yearSelector;
+  private ViewPager2 monthPager;
+  private View yearFrame;
+  private View dayFrame;
 
   /**
    * Creates a {@link MaterialCalendar} with {@link GridSelector#drawItem(TextView, Calendar)}
@@ -105,8 +116,6 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     LayoutInflater themedInflater = layoutInflater.cloneInContext(themedContext);
 
     Month earliestMonth = calendarBounds.getStart();
-    Month latestMonth = calendarBounds.getEnd();
-    Month currentMonth = calendarBounds.getCurrent();
 
     int layout;
     int orientation;
@@ -126,29 +135,59 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     ViewPager2 monthsPager = root.findViewById(R.id.mtrl_calendar_viewpager);
     monthsPager.setOrientation(orientation);
     monthsPager.setTag(VIEW_PAGER_TAG);
-    monthsPager.setLayoutParams(
-        new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT));
 
-    monthsPagerAdapter =
+    final MonthsPagerAdapter monthsPagerAdapter =
         new MonthsPagerAdapter(
             themedContext,
             getChildFragmentManager(),
             getLifecycle(),
             gridSelector,
-            earliestMonth,
-            latestMonth,
-            currentMonth,
+            calendarBounds,
             day -> {
               gridSelector.select(day);
-              monthsPagerAdapter.notifyDataSetChanged();
+              monthsPager.getAdapter().notifyDataSetChanged();
+              if (yearSelector != null) {
+                yearSelector.getAdapter().notifyDataSetChanged();
+              }
             });
     monthsPager.setAdapter(monthsPagerAdapter);
     monthsPager.setCurrentItem(monthsPagerAdapter.getStartPosition(), false);
+
+    int columns =
+        themedContext.getResources().getInteger(R.integer.mtrl_calendar_year_selector_span);
+    yearSelector = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
+    if (yearSelector != null) {
+      yearSelector.setHasFixedSize(true);
+      yearSelector.setLayoutManager(
+          new GridLayoutManager(themedContext, columns, RecyclerView.VERTICAL, false));
+      yearSelector.setAdapter(new YearGridAdapter(this));
+      yearSelector.addItemDecoration(gridSelector.createYearDecorator());
+    }
+
     if (root.findViewById(R.id.month_navigation_fragment_toggle) != null) {
       addActionsToMonthNavigation(root, monthsPagerAdapter);
     }
 
     return root;
+  }
+
+  /** Returns the {@link CalendarBounds} in use by this {@link MaterialCalendar}. */
+  CalendarBounds getCalendarBounds() {
+    return calendarBounds;
+  }
+
+  /**
+   * Changes the currently displayed {@link Month} to {@code moveTo}.
+   *
+   * @throws IllegalArgumentException If {@code moveTo} is not within the allowed {@link
+   *     CalendarBounds}.
+   */
+  void setCurrentMonth(Month moveTo) {
+    calendarBounds =
+        CalendarBounds.create(calendarBounds.getStart(), calendarBounds.getEnd(), moveTo);
+    int moveToPosition =
+        ((MonthsPagerAdapter) monthPager.getAdapter()).getPosition(calendarBounds.getCurrent());
+    monthPager.setCurrentItem(moveToPosition);
   }
 
   @Override
@@ -167,13 +206,42 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     return context.getResources().getDimensionPixelSize(R.dimen.mtrl_calendar_day_height);
   }
 
+  void setSelector(CalendarSelector selector) {
+    this.calendarSelector = selector;
+    if (selector == CalendarSelector.YEAR) {
+      yearSelector
+          .getLayoutManager()
+          .scrollToPosition(
+              ((YearGridAdapter) yearSelector.getAdapter())
+                  .getPositionForYear(calendarBounds.getCurrent().year));
+      yearFrame.setVisibility(View.VISIBLE);
+      dayFrame.setVisibility(View.GONE);
+    } else if (selector == CalendarSelector.DAY) {
+      yearFrame.setVisibility(View.GONE);
+      dayFrame.setVisibility(View.VISIBLE);
+    }
+  }
+
+  void toggleVisibleSelector() {
+    if (calendarSelector == CalendarSelector.YEAR) {
+      setSelector(CalendarSelector.DAY);
+    } else if (calendarSelector == CalendarSelector.DAY) {
+      setSelector(CalendarSelector.YEAR);
+    }
+  }
+
   private void addActionsToMonthNavigation(
       final View root, final MonthsPagerAdapter monthsPagerAdapter) {
-    final ViewPager2 monthPager = root.findViewById(R.id.mtrl_calendar_viewpager);
+    monthPager = root.findViewById(R.id.mtrl_calendar_viewpager);
     final MaterialButton monthDropSelect = root.findViewById(R.id.month_navigation_fragment_toggle);
     monthDropSelect.setText(monthsPagerAdapter.getPageTitle(monthPager.getCurrentItem()));
     final MaterialButton monthPrev = root.findViewById(R.id.month_navigation_previous);
     final MaterialButton monthNext = root.findViewById(R.id.month_navigation_next);
+
+    yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
+    dayFrame = root.findViewById(R.id.mtrl_calendar_day_selector_frame);
+    setSelector(CalendarSelector.DAY);
+
     monthPager.registerOnPageChangeCallback(
         new OnPageChangeCallback() {
           @Override
@@ -187,16 +255,21 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           }
         });
 
+    monthDropSelect.setOnClickListener(
+        view -> {
+          toggleVisibleSelector();
+        });
+
     monthNext.setOnClickListener(
         view -> {
           if (monthPager.getCurrentItem() + 1 < monthPager.getAdapter().getItemCount()) {
-            monthPager.setCurrentItem(monthPager.getCurrentItem() + 1);
+            setCurrentMonth(monthsPagerAdapter.getPageMonth(monthPager.getCurrentItem() + 1));
           }
         });
     monthPrev.setOnClickListener(
         view -> {
           if (monthPager.getCurrentItem() - 1 >= 0) {
-            monthPager.setCurrentItem(monthPager.getCurrentItem() - 1);
+            setCurrentMonth(monthsPagerAdapter.getPageMonth(monthPager.getCurrentItem() - 1));
           }
         });
   }

@@ -15,14 +15,36 @@
     limitations under the License.
 -->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content"
-    android:orientation="vertical">
+  android:layout_width="match_parent"
+  android:layout_height="match_parent"
+  android:orientation="vertical">
 
   <include layout="@layout/mtrl_calendar_month_navigation"/>
 
-  <include layout="@layout/mtrl_calendar_days_of_week"/>
+  <FrameLayout
+    android:id="@+id/mtrl_calendar_selection_frame"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
 
-  <include layout="@layout/mtrl_calendar_viewpager"/>
+    <androidx.recyclerview.widget.RecyclerView
+      android:id="@+id/mtrl_calendar_year_selector_frame"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:layout_gravity="center_horizontal"
+      android:scrollbars="none"/>
+
+    <LinearLayout
+      android:id="@+id/mtrl_calendar_day_selector_frame"
+      android:layout_width="wrap_content"
+      android:layout_height="match_parent"
+      android:orientation="vertical">
+
+      <include layout="@layout/mtrl_calendar_days_of_week"/>
+
+      <include layout="@layout/mtrl_calendar_viewpager"/>
+
+    </LinearLayout>
+
+  </FrameLayout>
 
 </LinearLayout>

@@ -92,7 +92,7 @@ class MonthAdapter extends BaseAdapter {
     }
     int offsetPosition = position - firstPositionInMonth();
     if (offsetPosition < 0 || offsetPosition >= month.daysInMonth) {
-      day.setVisibility(View.INVISIBLE);
+      day.setVisibility(View.GONE);
     } else {
       // The tag and text uniquely identify the view within the MaterialCalendar for testing
       day.setText(String.valueOf(offsetPosition + 1));

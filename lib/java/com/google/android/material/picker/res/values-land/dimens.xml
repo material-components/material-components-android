@@ -22,6 +22,7 @@
   <dimen name="mtrl_calendar_selection_text_baseline_to_bottom_fullscreen">28dp</dimen>
   <dimen name="mtrl_calendar_title_baseline_to_top">24dp</dimen>
   <dimen name="mtrl_calendar_selection_text_baseline_to_top">64dp</dimen>
+  <dimen name="mtrl_calendar_header_toggle_margin_bottom">0dp</dimen>
 
   <dimen name="mtrl_calendar_header_content_padding">4dp</dimen>
   <dimen name="mtrl_calendar_header_toggle_margin_top">0dp</dimen>
