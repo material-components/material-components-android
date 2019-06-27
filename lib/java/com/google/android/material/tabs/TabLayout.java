@@ -1418,6 +1418,8 @@ public class TabLayout extends HorizontalScrollView {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
 
+    MaterialShapeUtils.setParentAbsoluteElevation(this);
+
     if (viewPager == null) {
       // If we don't have a ViewPager already, check if our parent is a ViewPager to
       // setup with it automatically
