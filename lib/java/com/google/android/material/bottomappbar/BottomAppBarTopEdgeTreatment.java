@@ -19,9 +19,9 @@ package com.google.android.material.bottomappbar;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import androidx.annotation.RestrictTo;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.ShapePath;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 /**
  * Top edge treatment for the bottom app bar which "cradles" a circular {@link
