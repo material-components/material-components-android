@@ -19,6 +19,9 @@ package com.google.android.material.snackbar;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_CONTROLS;
+import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_ICONS;
+import static android.view.accessibility.AccessibilityManager.FLAG_CONTENT_TEXT;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -26,6 +29,8 @@ import android.content.res.TypedArray;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
@@ -326,10 +331,22 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
   @Override
   public int getDuration() {
+    int userSetDuration = super.getDuration();
+    if (userSetDuration == BaseTransientBottomBar.LENGTH_INDEFINITE) {
+      return BaseTransientBottomBar.LENGTH_INDEFINITE;
+    }
+
+    if (VERSION.SDK_INT >= VERSION_CODES.Q) {
+      int controlsFlag = hasAction ? FLAG_CONTENT_CONTROLS : 0;
+      return accessibilityManager.getRecommendedTimeoutMillis(
+          userSetDuration,
+          controlsFlag | FLAG_CONTENT_ICONS | FLAG_CONTENT_TEXT);
+    }
+
     // If touch exploration is enabled override duration to give people chance to interact.
     return hasAction && accessibilityManager.isTouchExplorationEnabled()
         ? BaseTransientBottomBar.LENGTH_INDEFINITE
-        : super.getDuration();
+        : userSetDuration;
   }
 
   /**
