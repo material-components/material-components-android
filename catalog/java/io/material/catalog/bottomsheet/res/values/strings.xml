@@ -47,5 +47,15 @@
   <string name="cat_bottomsheet_button_label_enabled">Enabled</string>
   <string name="cat_bottomsheet_button_label_disabled">Disabled</string>
   <string name="cat_bottomsheet_button_clicked">Button clicked</string>
-
+  <string name="cat_bottomsheet_scrollable_content_demo_title">
+    Vertically scrollable content demo
+  </string>
+  <string name="cat_bottomsheet_label_add_people">Add People</string>
+  <string name="cat_bottomsheet_label_copy_link">Copy link</string>
+  <string name="cat_bottomsheet_label_open_in">Open In</string>
+  <string name="cat_bottomsheet_label_move">Move</string>
+  <string name="cat_bottomsheet_label_available_offline">Available offline</string>
+  <string name="cat_bottomsheet_label_star">Star</string>
+  <string name="cat_bottomsheet_label_remove">Remove</string>
+  <string name="cat_bottomsheet_label_rename">Rename</string>
 </resources>
