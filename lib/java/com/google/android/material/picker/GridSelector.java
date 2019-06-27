@@ -101,8 +101,8 @@ public interface GridSelector<S> extends Parcelable {
 
   /**
    * Called after {@link
-   * com.google.android.material.picker.MaterialCalendarGridView#onDraw(android.graphics.Canvas)} for
-   * each month so selectors can draw on the canvas.
+   * com.google.android.material.picker.MaterialCalendarGridView#onDraw(android.graphics.Canvas)}
+   * for each month so selectors can draw on the canvas.
    */
   void onCalendarMonthDraw(Canvas canvas, MaterialCalendarGridView gridView);
 

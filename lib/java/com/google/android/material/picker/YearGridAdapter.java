@@ -18,12 +18,12 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import androidx.annotation.NonNull;
-import com.google.android.material.picker.MaterialCalendar.CalendarSelector;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import com.google.android.material.picker.MaterialCalendar.CalendarSelector;
 import java.util.Locale;
 
 class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
