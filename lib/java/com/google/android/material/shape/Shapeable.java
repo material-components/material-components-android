@@ -19,23 +19,20 @@ package com.google.android.material.shape;
 import androidx.annotation.NonNull;
 
 /**
- * Provides a mechanism to uniformly modify the {@link ShapeAppearanceModel} that backs a {@link
- * MaterialShapeDrawable}. Components that support custom shapes via {@link MaterialShapeDrawable}
- * should implement this interface.
+ * Provides a mechanism to uniformly modify the {@link ShapeAppearanceModel} that backs a
+ * component or {@link android.graphics.drawable.Drawable}'s shape.
  */
 public interface Shapeable {
 
   /**
-   * Sets the {@link ShapeAppearanceModel} that defines the component's {@link
-   * MaterialShapeDrawable}'s shape using {@code shapeAppearanceModel}.
+   * Sets the {@link ShapeAppearanceModel} that defines the shape.
    */
   void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel);
 
   /**
-   * Returns the {@link ShapeAppearanceModel} used for the components's {@link
-   * MaterialShapeDrawable}'s shape definition.
+   * Returns the {@link ShapeAppearanceModel} used for the shape definition.
    *
-   * <p>This {@link ShapeAppearanceModel} can be modified to change the component's shape.
+   * <p>This {@link ShapeAppearanceModel} can be modified to change the shape.
    */
   @NonNull
   ShapeAppearanceModel getShapeAppearanceModel();

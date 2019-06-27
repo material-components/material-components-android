@@ -68,7 +68,7 @@ import java.lang.annotation.RetentionPolicy;
  * generated path.
  */
 public class MaterialShapeDrawable extends Drawable
-    implements TintAwareDrawable, ShapeAppearanceModel.OnChangedListener {
+    implements TintAwareDrawable, ShapeAppearanceModel.OnChangedListener, Shapeable {
 
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
@@ -229,6 +229,7 @@ public class MaterialShapeDrawable extends Drawable
    *
    * @param shapeAppearanceModel the desired model.
    */
+  @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     drawableState.shapeAppearanceModel.removeOnChangedListener(this);
     drawableState.shapeAppearanceModel = shapeAppearanceModel;
@@ -243,6 +244,7 @@ public class MaterialShapeDrawable extends Drawable
    * @return the current model.
    */
   @NonNull
+  @Override
   public ShapeAppearanceModel getShapeAppearanceModel() {
     return drawableState.shapeAppearanceModel;
   }
