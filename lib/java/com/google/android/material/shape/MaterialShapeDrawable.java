@@ -557,6 +557,15 @@ public class MaterialShapeDrawable extends Drawable
         shadowEnabled ? SHADOW_COMPAT_MODE_DEFAULT : SHADOW_COMPAT_MODE_NEVER);
   }
 
+  /**
+   * Returns whether the elevation overlay functionality is initialized and enabled in this
+   * drawable's theme context.
+   */
+  public boolean isElevationOverlayEnabled() {
+    return drawableState.elevationOverlayProvider != null
+        && drawableState.elevationOverlayProvider.isThemeElevationOverlayEnabled();
+  }
+
   /** Returns whether the elevation overlay functionality has been initialized for this drawable. */
   public boolean isElevationOverlayInitialized() {
     return drawableState.elevationOverlayProvider != null;
@@ -575,8 +584,10 @@ public class MaterialShapeDrawable extends Drawable
 
   @ColorInt
   private int compositeElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
+    float elevation = getZ() + getParentAbsoluteElevation();
     return drawableState.elevationOverlayProvider != null
-        ? drawableState.elevationOverlayProvider.compositeOverlayIfNeeded(backgroundColor, getZ())
+        ? drawableState.elevationOverlayProvider.compositeOverlayIfNeeded(
+            backgroundColor, elevation)
         : backgroundColor;
   }
 
@@ -602,6 +613,19 @@ public class MaterialShapeDrawable extends Drawable
       drawableState.interpolation = interpolation;
       pathDirty = true;
       invalidateSelf();
+    }
+  }
+
+  /** Returns the parent absolute elevation. */
+  public float getParentAbsoluteElevation() {
+    return drawableState.parentAbsoluteElevation;
+  }
+
+  /** Sets the parent absolute elevation, which is used to render elevation overlays. */
+  public void setParentAbsoluteElevation(float parentAbsoluteElevation) {
+    if (drawableState.parentAbsoluteElevation != parentAbsoluteElevation) {
+      drawableState.parentAbsoluteElevation = parentAbsoluteElevation;
+      updateZ();
     }
   }
 
@@ -1266,6 +1290,7 @@ public class MaterialShapeDrawable extends Drawable
     public float strokeWidth;
 
     public int alpha = 255;
+    public float parentAbsoluteElevation = 0;
     public float elevation = 0;
     public float translationZ = 0;
     public int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
@@ -1299,6 +1324,7 @@ public class MaterialShapeDrawable extends Drawable
       shadowCompatMode = orig.shadowCompatMode;
       useTintColorForShadow = orig.useTintColorForShadow;
       interpolation = orig.interpolation;
+      parentAbsoluteElevation = orig.parentAbsoluteElevation;
       elevation = orig.elevation;
       translationZ = orig.translationZ;
       shadowCompatRadius = orig.shadowCompatRadius;

@@ -43,6 +43,7 @@ import androidx.annotation.RestrictTo;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 import androidx.core.graphics.drawable.DrawableCompat;
@@ -407,6 +408,14 @@ public class MaterialButton extends AppCompatButton implements Checkable, Shapea
   protected void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
     super.onTextChanged(charSequence, i, i1, i2);
     updateIconPosition();
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(
+        this, materialButtonHelper.getMaterialShapeDrawable());
   }
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)

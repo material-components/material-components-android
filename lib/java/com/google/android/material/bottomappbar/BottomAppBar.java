@@ -47,6 +47,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
@@ -821,6 +822,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   @Override
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(this, materialShapeDrawable);
 
     // Automatically don't clip children for the parent view of BottomAppBar. This allows the shadow
     // to be drawn outside the bounds.

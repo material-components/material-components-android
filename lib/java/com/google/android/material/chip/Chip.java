@@ -54,6 +54,7 @@ import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.resources.TextAppearanceFontCallback;
+import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
 import androidx.core.view.ViewCompat;
@@ -235,6 +236,13 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
       setMinHeight(minTouchTargetSize);
     }
     lastLayoutDirection = ViewCompat.getLayoutDirection(this);
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(this, chipDrawable);
   }
 
   @RequiresApi(VERSION_CODES.LOLLIPOP)

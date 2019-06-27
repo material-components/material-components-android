@@ -79,7 +79,7 @@ To see how Material components adapt in a dark theme, build and run the
 ways:
 
 *   Any API Level: Overflow menu on Catalog home screen
-*   Android Q: `Settings > Display > Theme`
+*   Android Q: `Settings > Display > Dark Theme` (or Dark Theme tile in Notification Tray)
 *   Android P: `Settings > System > Developer options > Night mode`
 
 ### Color Palette
@@ -141,8 +141,8 @@ in dark theme, because they use `colorSurface` and can be elevated:
 In order to facilitate some orchestration around the elevation overlays, we have
 the following theme attributes:
 
-Attribute Name               |Description                                                                          |Default Value
------------------------------|-------------------------------------------------------------------------------------|-------------
+Attribute Name              |Description                                                                          |Default Value
+----------------------------|-------------------------------------------------------------------------------------|-------------
 `elevationOverlayEnabled`   |Whether the elevation overlay functionality is enabled.                              |`false` in `Light` themes, `true` in `Dark` themes
 `elevationOverlayColor`     |The color used for the elevation overlays, applied at an alpha based on elevation.   |`colorOnSurface`
 
@@ -188,6 +188,16 @@ If you need to blend the overlays with an arbitrary color or an adjusted surface
 color, or get access to lower level values such as the overlay alpha
 percentages, take a look at the other `ElevationOverlayProvider` methods
 including `compositeOverlayIfNeeded`, `compositeOverlay`, and `calculateOverlayAlpha`.
+
+##### Absolute Elevation
+
+When calculating the elevation overlay alpha percentage, Material components
+factor in the absolute elevation of their parent view. This is because the
+distance from the light source is the driving factor behind elevation overlays.
+
+Note: This means that you should consider accessibility contrast ratios for
+text and iconography, when deeply nesting elevated Material components and
+views that support elevation overlays.
 
 [dark-theme-mdc-spec]: https://material.io/design/color/dark-theme.html
 [dark-theme-mdc-spec-ui-application]: https://material.io/design/color/dark-theme.html#ui-application

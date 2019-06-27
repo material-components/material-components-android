@@ -33,6 +33,7 @@ import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.shape.MaterialShapeUtils;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -289,6 +290,13 @@ public class MaterialCardView extends CardView implements Checkable {
   public void setClickable(boolean clickable) {
     super.setClickable(clickable);
     cardViewHelper.updateClickable();
+  }
+
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(this, cardViewHelper.getBackground());
   }
 
   @Override

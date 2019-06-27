@@ -28,6 +28,7 @@ import androidx.core.view.WindowInsetsCompat;
 import android.util.TypedValue;
 import android.view.View;
 import android.view.View.OnAttachStateChangeListener;
+import android.view.ViewParent;
 import android.view.WindowInsets;
 import android.view.inputmethod.InputMethodManager;
 
@@ -165,5 +166,19 @@ public class ViewUtils {
             public void onViewDetachedFromWindow(View v) {}
           });
     }
+  }
+
+  /**
+   * Returns the absolute elevation of the parent of the provided {@code view}, or in other words,
+   * the sum of the elevations of all ancestors of the {@code view}.
+   */
+  public static float getParentAbsoluteElevation(View view) {
+    float absoluteElevation = 0;
+    ViewParent viewParent = view.getParent();
+    while (viewParent instanceof View) {
+      absoluteElevation += ViewCompat.getElevation((View) viewParent);
+      viewParent = viewParent.getParent();
+    }
+    return absoluteElevation;
   }
 }

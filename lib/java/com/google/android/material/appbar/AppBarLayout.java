@@ -43,6 +43,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
 import androidx.core.util.ObjectsCompat;
@@ -496,13 +497,19 @@ public class AppBarLayout extends LinearLayout {
     super.setOrientation(orientation);
   }
 
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(this);
+  }
+
   @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
-    if (getBackground() instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) getBackground()).setElevation(elevation);
-    }
+
+    MaterialShapeUtils.setElevation(this, elevation);
   }
 
   /**

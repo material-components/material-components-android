@@ -28,6 +28,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.RequiresApi;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
@@ -73,13 +74,19 @@ public class MaterialToolbar extends Toolbar {
     initBackground(context);
   }
 
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(this);
+  }
+
   @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
-    if (getBackground() instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) getBackground()).setElevation(elevation);
-    }
+
+    MaterialShapeUtils.setElevation(this, elevation);
   }
 
   private void initBackground(Context context) {

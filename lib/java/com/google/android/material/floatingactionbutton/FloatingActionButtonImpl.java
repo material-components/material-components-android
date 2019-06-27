@@ -42,6 +42,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.internal.StateListAnimator;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Preconditions;
@@ -677,6 +678,10 @@ class FloatingActionButtonImpl {
   }
 
   void onAttachedToWindow() {
+    if (shapeDrawable != null) {
+      MaterialShapeUtils.setParentAbsoluteElevation(view, shapeDrawable);
+    }
+
     if (requirePreDrawListener()) {
       view.getViewTreeObserver().addOnPreDrawListener(getOrCreatePreDrawListener());
     }

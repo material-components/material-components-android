@@ -26,6 +26,7 @@ import android.content.res.TypedArray;
 import androidx.annotation.Nullable;
 import com.google.android.material.elevation.ElevationOverlayProvider;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
 import androidx.appcompat.widget.SwitchCompat;
 import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
@@ -119,8 +120,10 @@ public class SwitchMaterial extends SwitchCompat {
     if (materialThemeColorsThumbTintList == null) {
       int colorSurface = MaterialColors.getColor(this, R.attr.colorSurface);
       int colorControlActivated = MaterialColors.getColor(this, R.attr.colorControlActivated);
-      int thumbElevation =
-          getResources().getDimensionPixelSize(R.dimen.mtrl_switch_thumb_elevation);
+      float thumbElevation = getResources().getDimension(R.dimen.mtrl_switch_thumb_elevation);
+      if (elevationOverlayProvider.isThemeElevationOverlayEnabled()) {
+        thumbElevation += ViewUtils.getParentAbsoluteElevation(this);
+      }
       int colorThumbOff =
           elevationOverlayProvider.compositeOverlayIfNeeded(colorSurface, thumbElevation);
 

@@ -45,6 +45,7 @@ import com.google.android.material.internal.ScrimInsetsFrameLayout;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.content.ContextCompat;
 import androidx.customview.view.AbsSavedState;
@@ -234,14 +235,18 @@ public class NavigationView extends ScrimInsetsFrameLayout {
   }
 
   @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(this);
+  }
+
+  @Override
   public void setElevation(float elevation) {
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       super.setElevation(elevation);
     }
-    Drawable background = getBackground();
-    if (background instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) background).setElevation(elevation);
-    }
+    MaterialShapeUtils.setElevation(this, elevation);
   }
 
   /**

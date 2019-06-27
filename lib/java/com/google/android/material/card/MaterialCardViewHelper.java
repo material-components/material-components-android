@@ -228,6 +228,10 @@ class MaterialCardViewHelper {
     return strokeWidth;
   }
 
+  MaterialShapeDrawable getBackground() {
+    return bgDrawable;
+  }
+
   void setCardBackgroundColor(ColorStateList color) {
     bgDrawable.setFillColor(color);
   }

@@ -44,6 +44,7 @@ import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.customview.view.AbsSavedState;
@@ -254,6 +255,13 @@ public class BottomNavigationView extends FrameLayout {
     return materialShapeDrawable;
   }
 
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(this);
+  }
+
   /**
    * Sets the base elevation of this view, in pixels.
    *
@@ -263,10 +271,8 @@ public class BottomNavigationView extends FrameLayout {
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
-    Drawable background = getBackground();
-    if (background instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) background).setElevation(elevation);
-    }
+
+    MaterialShapeUtils.setElevation(this, elevation);
   }
 
   /**

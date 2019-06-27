@@ -61,6 +61,7 @@ import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Pools;
 import androidx.core.view.GravityCompat;
@@ -1572,9 +1573,8 @@ public class TabLayout extends HorizontalScrollView {
   @Override
   public void setElevation(float elevation) {
     super.setElevation(elevation);
-    if (getBackground() instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) getBackground()).setElevation(elevation);
-    }
+
+    MaterialShapeUtils.setElevation(this, elevation);
   }
 
   @Override
