@@ -18,8 +18,8 @@ package com.google.android.material.bottomappbar;
 
 import com.google.android.material.R;
 
-import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static com.google.android.material.shape.MaterialShapeDrawable.SHADOW_COMPAT_MODE_ALWAYS;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
@@ -39,8 +39,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
-import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.EdgeTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -63,6 +61,8 @@ import com.google.android.material.animation.TransformationListener;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
+import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;

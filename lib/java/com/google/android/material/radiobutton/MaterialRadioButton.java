@@ -24,11 +24,11 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import androidx.annotation.Nullable;
-import com.google.android.material.internal.ThemeEnforcement;
 import androidx.core.widget.CompoundButtonCompat;
 import androidx.appcompat.widget.AppCompatRadioButton;
 import android.util.AttributeSet;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.ThemeEnforcement;
 
 /**
  * A class that creates a Material Themed RadioButton.

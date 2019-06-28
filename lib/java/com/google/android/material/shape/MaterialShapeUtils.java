@@ -17,8 +17,8 @@
 package com.google.android.material.shape;
 
 import android.graphics.drawable.Drawable;
-import com.google.android.material.internal.ViewUtils;
 import android.view.View;
+import com.google.android.material.internal.ViewUtils;
 
 /** Utility methods for {@link MaterialShapeDrawable} and related classes. */
 public class MaterialShapeUtils {

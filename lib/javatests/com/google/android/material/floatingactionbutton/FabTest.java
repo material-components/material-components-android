@@ -19,8 +19,8 @@ package com.google.android.material.floatingactionbutton;
 import com.google.android.material.R;
 
 import static android.os.Build.VERSION_CODES.LOLLIPOP;
-import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static com.google.android.material.floatingactionbutton.FloatingActionButton.SIZE_MINI;
+import static com.google.android.material.internal.ViewUtils.dpToPx;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertTrue;

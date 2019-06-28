@@ -28,13 +28,13 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
-import com.google.android.material.internal.FlowLayout;
-import com.google.android.material.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.CompoundButton;
+import com.google.android.material.internal.FlowLayout;
+import com.google.android.material.internal.ThemeEnforcement;
 
 /**
  * A ChipGroup is used to hold multiple {@link Chip}s. By default, the chips are reflowed across

@@ -29,7 +29,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.internal.TextScale;
 import androidx.core.util.Pools;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -48,6 +47,7 @@ import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.internal.TextScale;
 import java.util.HashSet;
 
 /** @hide For internal use only. */

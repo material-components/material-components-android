@@ -43,10 +43,6 @@ import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.StyleableRes;
 import androidx.annotation.XmlRes;
-import com.google.android.material.internal.DrawableUtils;
-import com.google.android.material.internal.TextDrawableHelper;
-import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
-import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.resources.TextAppearance;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -55,6 +51,10 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+import com.google.android.material.internal.DrawableUtils;
+import com.google.android.material.internal.TextDrawableHelper;
+import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
+import com.google.android.material.internal.ThemeEnforcement;
 import java.lang.ref.WeakReference;
 
 /**

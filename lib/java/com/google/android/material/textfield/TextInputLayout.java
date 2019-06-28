@@ -18,8 +18,8 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
-import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static com.google.android.material.textfield.IndicatorViewController.COUNTER_INDEX;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
@@ -46,11 +46,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.internal.CheckableImageButton;
-import com.google.android.material.internal.CollapsingTextHelper;
-import com.google.android.material.internal.DescendantOffsetUtils;
-import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
@@ -86,6 +81,11 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.CheckableImageButton;
+import com.google.android.material.internal.CollapsingTextHelper;
+import com.google.android.material.internal.DescendantOffsetUtils;
+import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;

@@ -17,8 +17,8 @@
 package com.google.android.material.textfield;
 
 import android.content.Context;
-import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
+import com.google.android.material.internal.CheckableImageButton;
 
 /**
  * End icon delegate abstract class.

@@ -33,8 +33,6 @@ import androidx.annotation.VisibleForTesting;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.internal.DescendantOffsetUtils;
-import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
@@ -50,6 +48,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.MotionSpec;
+import com.google.android.material.internal.DescendantOffsetUtils;
+import com.google.android.material.internal.ThemeEnforcement;
 import java.util.ArrayList;
 import java.util.List;
 

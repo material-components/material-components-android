@@ -24,10 +24,10 @@ import android.animation.StateListAnimator;
 import android.content.Context;
 import android.content.res.TypedArray;
 import androidx.annotation.RequiresApi;
-import com.google.android.material.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
+import com.google.android.material.internal.ThemeEnforcement;
 
 @RequiresApi(21)
 class ViewUtilsLollipop {

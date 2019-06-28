@@ -39,10 +39,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.internal.NavigationMenu;
-import com.google.android.material.internal.NavigationMenuPresenter;
-import com.google.android.material.internal.ScrimInsetsFrameLayout;
-import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
@@ -62,6 +58,10 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import com.google.android.material.internal.NavigationMenu;
+import com.google.android.material.internal.NavigationMenuPresenter;
+import com.google.android.material.internal.ScrimInsetsFrameLayout;
+import com.google.android.material.internal.ThemeEnforcement;
 
 /**
  * Represents a standard navigation menu for application. The menu contents can be populated by a

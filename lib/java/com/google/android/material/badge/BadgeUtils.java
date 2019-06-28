@@ -24,11 +24,11 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
-import com.google.android.material.internal.ParcelableSparseArray;
 import android.util.SparseArray;
 import android.view.View;
 import android.widget.FrameLayout;
 import com.google.android.material.badge.BadgeDrawable.SavedState;
+import com.google.android.material.internal.ParcelableSparseArray;
 
 /**
  * Utility class for {@link BadgeDrawable}.

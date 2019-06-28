@@ -18,8 +18,8 @@ package com.google.android.material.card;
 
 import com.google.android.material.R;
 
-import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static android.view.ViewGroup.LayoutParams.MATCH_PARENT;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -32,7 +32,6 @@ import androidx.annotation.ColorRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
 import androidx.annotation.Nullable;
-import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.shape.MaterialShapeUtils;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
@@ -44,6 +43,7 @@ import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.Checkable;
 import android.widget.FrameLayout;
 import androidx.cardview.widget.CardView;
+import com.google.android.material.internal.ThemeEnforcement;
 
 /**
  * Provides a Material card.

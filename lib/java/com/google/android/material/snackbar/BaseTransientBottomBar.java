@@ -19,10 +19,10 @@ package com.google.android.material.snackbar;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static com.google.android.material.animation.AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR;
 import static com.google.android.material.animation.AnimationUtils.LINEAR_INTERPOLATOR;
 import static com.google.android.material.animation.AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.accessibilityservice.AccessibilityServiceInfo;
 import android.animation.Animator;
@@ -47,7 +47,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import com.google.android.material.behavior.SwipeDismissBehavior;
-import com.google.android.material.internal.ThemeEnforcement;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -64,6 +63,7 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.ThemeEnforcement;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
