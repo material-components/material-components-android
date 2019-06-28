@@ -32,8 +32,6 @@ import android.os.Build;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
-import androidx.annotation.IntDef;
-import androidx.annotation.IntRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
@@ -49,8 +47,6 @@ import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
 import android.widget.TextView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import java.lang.annotation.Retention;
-import java.lang.annotation.RetentionPolicy;
 
 /**
  * Snackbars provide lightweight feedback about an operation. They show a brief message at the
@@ -71,35 +67,6 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
   private final AccessibilityManager accessibilityManager;
   private boolean hasAction;
-
-  /** @hide */
-  @RestrictTo(LIBRARY_GROUP)
-  @IntDef({LENGTH_INDEFINITE, LENGTH_SHORT, LENGTH_LONG})
-  @IntRange(from = 1)
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface Duration {}
-
-  /**
-   * Show the Snackbar indefinitely. This means that the Snackbar will be displayed from the time
-   * that is {@link #show() shown} until either it is dismissed, or another Snackbar is shown.
-   *
-   * @see #setDuration
-   */
-  public static final int LENGTH_INDEFINITE = BaseTransientBottomBar.LENGTH_INDEFINITE;
-
-  /**
-   * Show the Snackbar for a short period of time.
-   *
-   * @see #setDuration
-   */
-  public static final int LENGTH_SHORT = BaseTransientBottomBar.LENGTH_SHORT;
-
-  /**
-   * Show the Snackbar for a long period of time.
-   *
-   * @see #setDuration
-   */
-  public static final int LENGTH_LONG = BaseTransientBottomBar.LENGTH_LONG;
 
   private static final int[] SNACKBAR_BUTTON_STYLE_ATTR = new int[] {R.attr.snackbarButtonStyle};
 
@@ -330,10 +297,11 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   }
 
   @Override
+  @Duration
   public int getDuration() {
     int userSetDuration = super.getDuration();
-    if (userSetDuration == BaseTransientBottomBar.LENGTH_INDEFINITE) {
-      return BaseTransientBottomBar.LENGTH_INDEFINITE;
+    if (userSetDuration == LENGTH_INDEFINITE) {
+      return LENGTH_INDEFINITE;
     }
 
     if (VERSION.SDK_INT >= VERSION_CODES.Q) {
@@ -345,7 +313,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
 
     // If touch exploration is enabled override duration to give people chance to interact.
     return hasAction && accessibilityManager.isTouchExplorationEnabled()
-        ? BaseTransientBottomBar.LENGTH_INDEFINITE
+        ? LENGTH_INDEFINITE
         : userSetDuration;
   }
 
