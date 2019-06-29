@@ -217,6 +217,20 @@ public class CollapsingToolbarLayout extends FrameLayout {
           a.getResourceId(R.styleable.CollapsingToolbarLayout_collapsedTitleTextAppearance, 0));
     }
 
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_maxLines)) {
+      collapsingTextHelper.setMaxLines(a.getInt(R.styleable.CollapsingToolbarLayout_maxLines, 1));
+    }
+
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_lineSpacingExtra)) {
+      collapsingTextHelper.setLineSpacingExtra(
+          a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_lineSpacingExtra, 0));
+    }
+
+    if (a.hasValue(R.styleable.CollapsingToolbarLayout_lineSpacingMultiplier)) {
+      collapsingTextHelper.setLineSpacingMultiplier(
+          a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_lineSpacingMultiplier, 1));
+    }
+
     scrimVisibleHeightTrigger =
         a.getDimensionPixelSize(R.styleable.CollapsingToolbarLayout_scrimVisibleHeightTrigger, -1);
 
@@ -1041,6 +1055,48 @@ public class CollapsingToolbarLayout extends FrameLayout {
   public void setExpandedTitleMarginBottom(int margin) {
     expandedMarginBottom = margin;
     requestLayout();
+  }
+
+  /**
+   * Sets the maximum number of lines to display in the expanded state.
+   */
+  public void setMaxLines(int maxLines) {
+    collapsingTextHelper.setMaxLines(maxLines);
+  }
+
+  /**
+   * Gets the maximum number of lines to display in the expanded state.
+   */
+  public int getMaxLines() {
+    return collapsingTextHelper.getMaxLines();
+  }
+
+  /**
+   * Set line spacing extra applied to each line in the expanded state.
+   */
+  void setLineSpacingExtra(float lineSpacingExtra) {
+    collapsingTextHelper.setLineSpacingExtra(lineSpacingExtra);
+  }
+
+  /**
+   * Gets the line spacing extra applied to each line in the expanded state.
+   */
+  float getLineSpacingExtra() {
+    return collapsingTextHelper.getLineSpacingExtra();
+  }
+
+  /**
+   * Sets the line spacing multiplier applied to each line in the expanded state.
+   */
+  void setLineSpacingMultiplier(float lineSpacingMultiplier) {
+    collapsingTextHelper.setLineSpacingMultiplier(lineSpacingMultiplier);
+  }
+
+  /**
+   * Gets the line spacing multiplier applied to each line in the expanded state.
+   */
+  float getLineSpacingMultiplier() {
+    return collapsingTextHelper.getLineSpacingMultiplier();
   }
 
   /**

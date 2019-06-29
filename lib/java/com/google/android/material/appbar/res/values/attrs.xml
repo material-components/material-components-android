@@ -194,6 +194,12 @@
     <attr name="titleEnabled" format="boolean"/>
     <!-- The title to show when titleEnabled is set to true. -->
     <attr name="title"/>
+    <!-- The maximum number of lines of text to show in the expanded state -->
+    <attr name="maxLines" format="integer" />
+    <!-- Extra spacing between lines of text. -->
+    <attr name="lineSpacingExtra" format="float"/>
+    <!-- Extra spacing between lines of text, as a multiplier. -->
+    <attr name="lineSpacingMultiplier" format="float"/>
   </declare-styleable>
 
   <declare-styleable name="CollapsingToolbarLayout_Layout">
