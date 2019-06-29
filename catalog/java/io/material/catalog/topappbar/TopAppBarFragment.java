@@ -79,6 +79,13 @@ public class TopAppBarFragment extends DemoLandingFragment {
             return new TopAppBarCollapsingDemoFragment();
           }
         });
+    additionalDemos.add(
+        new Demo(R.string.cat_topappbar_collapsing_multiline_title) {
+          @Override
+          public Fragment createFragment() {
+            return new TopAppBarCollapsingMultilineDemoFragment();
+          }
+        });
     additionalDemos.add(getToolbarDemo());
     additionalDemos.addAll(getActionBarDemos());
     return additionalDemos;
