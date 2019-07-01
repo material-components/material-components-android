@@ -29,7 +29,7 @@ other UI elements on the screen.
     Buttons](https://material.io/go/design-fab)
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com.google.android.material.floatingactionbutton/FloatingActionButton.java)
+    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/FloatingActionButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class
     overview](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/FloatingActionButton)

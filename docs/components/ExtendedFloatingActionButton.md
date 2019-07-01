@@ -27,7 +27,7 @@ response to other UI elements on the screen.
 
 -   [Material Design guidelines: Floating Action Buttons](https://material.io/go/design-extended-fab)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com.google.android.material.floatingactionbutton/ExtendedFloatingActionButton.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class overview](https://developer.android.com/reference/com/google/android/material/floatingactionbutton/ExtendedFloatingActionButton)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
