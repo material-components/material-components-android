@@ -24,6 +24,8 @@
   <public name="colorOnBackground" type="attr"/>
   <public name="colorOnError" type="attr"/>
   <public name="colorOnSurface" type="attr"/>
+  <public name="colorPrimarySurface" type="attr"/>
+  <public name="colorOnPrimarySurface" type="attr"/>
   <public name="scrimBackground" type="attr"/>
 
   <public name="design_default_color_primary" type="color"/>

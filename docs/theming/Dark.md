@@ -98,6 +98,24 @@ branded palette, including `colorPrimary` and `colorSecondary`. See the
 [Material Dark Theme spec][dark-theme-mdc-spec-ui-application] for guidance on
 how you can adjust your brand colors for dark theme.
 
+#### Primary vs. Surface Coloring for Large Surfaces
+
+According to the
+[Material Dark Theme spec][dark-theme-mdc-spec-custom-application], large
+surfaces should not use bright background colors because they can emit too much
+brightness. When applicable, the Material themes will provide this behavior
+out-of-the-box, e.g., by having the `Light` theme default to
+`Widget.MaterialComponents.AppBarLayout.Primary` and the `Dark` theme default to
+`Widget.MaterialComponents.AppBarLayout.Surface`.
+
+However, there may be some cases where you need to apply this primary vs.
+surface color swap to some custom UI. For convencience, the Material themes
+provide a `colorPrimarySurface` attribute, that points to `colorPrimary` in the
+`Light` theme and `colorSurface` in the `Dark` theme. There is also a
+corresponding `colorOnPrimarySurface` attribute that can be used for foreground
+elements such as text and iconography on top of a `colorPrimarySurface`
+background.
+
 ### Elevation Overlays
 
 In addition to the color palette adjustments mentioned above, communicating the
@@ -201,6 +219,7 @@ views that support elevation overlays.
 
 [dark-theme-mdc-spec]: https://material.io/design/color/dark-theme.html
 [dark-theme-mdc-spec-ui-application]: https://material.io/design/color/dark-theme.html#ui-application
+[dark-theme-mdc-spec-custom-application]: https://material.io/design/color/dark-theme.html#custom-application
 [dark-theme-dac-docs]: https://developer.android.com/preview/features/darktheme
 [daynight-appcompat-docs]: https://medium.com/androiddevelopers/appcompat-v23-2-daynight-d10f90c83e94
 [maven-repo-mdc]: https://mvnrepository.com/artifact/com.google.android.material/material
