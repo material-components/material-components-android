@@ -20,6 +20,7 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
 import com.google.android.material.button.MaterialButton;
 import androidx.appcompat.app.AlertDialog;
 import android.view.LayoutInflater;
@@ -207,7 +208,37 @@ public class DialogMainDemoFragment extends DemoFragment {
             .setPositiveButton(R.string.short_text_1, null)
             .setNeutralButton(R.string.short_text_2, null));
 
+    // title, outlined buttons
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.title_outlined_buttons,
+        new MaterialAlertDialogBuilder(getContext(), getOutlinedButtonThemeOverlay())
+            .setTitle(title)
+            .setPositiveButton(positiveText, null)
+            .setNegativeButton(negativeText, null)
+            .setNeutralButton(neutralText, null));
+
+    // title, filled buttons
+    addDialogLauncher(
+        dialogLaunchersLayout,
+        R.string.title_filled_buttons,
+        new MaterialAlertDialogBuilder(getContext(), getFilledButtonThemeOverlay())
+            .setTitle(title)
+            .setPositiveButton(positiveText, null)
+            .setNegativeButton(negativeText, null)
+            .setNeutralButton(neutralText, null));
+
     return view;
+  }
+
+  @StyleRes
+  protected int getFilledButtonThemeOverlay() {
+    return R.style.ThemeOverlay_Catalog_MaterialAlertDialog_FilledButton;
+  }
+
+  @StyleRes
+  protected int getOutlinedButtonThemeOverlay() {
+    return R.style.ThemeOverlay_Catalog_MaterialAlertDialog_OutlinedButton;
   }
 
   private void addDialogLauncher(
