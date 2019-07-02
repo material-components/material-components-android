@@ -32,6 +32,8 @@
     <item name="android:background">?attr/colorSurface</item>
   </style>
 
+  <style name="Widget.MaterialComponents.AppBarLayout.PrimarySurface" parent="Widget.MaterialComponents.AppBarLayout.Primary"/>
+
   <!-- CollapsingToolbarLayout styles -->
   <style name="Widget.Design.CollapsingToolbar" parent="android:Widget">
     <item name="expandedTitleMargin">32dp</item>
@@ -70,6 +72,8 @@
     <item name="android:theme">@style/ThemeOverlay.MaterialComponents.Toolbar.Surface</item>
   </style>
 
+  <style name="Widget.MaterialComponents.Toolbar.PrimarySurface" parent="Widget.MaterialComponents.Toolbar.Primary"/>
+
   <style name="ThemeOverlay.MaterialComponents.Toolbar.Primary" parent="">
     <item name="colorControlNormal">?attr/colorOnPrimary</item>
     <item name="actionMenuTextColor">?attr/colorOnPrimary</item>
@@ -106,6 +110,8 @@
     <item name="background">?attr/colorSurface</item>
     <item name="elevation">0dp</item>
   </style>
+
+  <style name="Widget.MaterialComponents.ActionBar.PrimarySurface" parent="Widget.MaterialComponents.ActionBar.Primary"/>
 
   <style name="ThemeOverlay.MaterialComponents.ActionBar.Primary" parent="">
     <item name="android:textColorPrimary">?attr/colorOnPrimary</item>

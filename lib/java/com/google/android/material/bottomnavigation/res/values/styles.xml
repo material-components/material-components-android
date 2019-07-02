@@ -56,4 +56,6 @@
     <item name="itemTextColor">@color/mtrl_bottom_nav_colored_item_tint</item>
   </style>
 
+  <style name="Widget.MaterialComponents.BottomNavigationView.PrimarySurface" parent="Widget.MaterialComponents.BottomNavigationView.Colored"/>
+
 </resources>

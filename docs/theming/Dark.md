@@ -109,12 +109,23 @@ out-of-the-box, e.g., by having the `Light` theme default to
 `Widget.MaterialComponents.AppBarLayout.Surface`.
 
 However, there may be some cases where you need to apply this primary vs.
-surface color swap to some custom UI. For convencience, the Material themes
+surface color swap to some custom UI. For convenience, the Material themes
 provide a `colorPrimarySurface` attribute, that points to `colorPrimary` in the
 `Light` theme and `colorSurface` in the `Dark` theme. There is also a
 corresponding `colorOnPrimarySurface` attribute that can be used for foreground
 elements such as text and iconography on top of a `colorPrimarySurface`
 background.
+
+Additionally, the Material Android library provides `PrimarySurface` styles for
+components that act as large surfaces and commonly use `colorPrimary` for their
+background in light theme. These styles will automatically switch between the
+component's primary colored style in light theme and surface colored style in
+dark theme. E.g.:
+
+* `Widget.MaterialComponents.BottomAppBar.PrimarySurface`
+* `Widget.MaterialComponents.BottomNavigationView.PrimarySurface`
+* `Widget.MaterialComponents.TabLayout.PrimarySurface`
+* `Widget.MaterialComponents.Toolbar.PrimarySurface`
 
 ### Elevation Overlays
 

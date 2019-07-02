@@ -43,4 +43,5 @@
   <public name="Widget.Design.TabLayout" type="style"/>
   <public name="Widget.MaterialComponents.TabLayout" type="style"/>
   <public name="Widget.MaterialComponents.TabLayout.Colored" type="style"/>
+  <public name="Widget.MaterialComponents.TabLayout.PrimarySurface" type="style"/>
 </resources>

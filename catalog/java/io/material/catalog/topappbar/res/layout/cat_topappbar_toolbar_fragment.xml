@@ -60,5 +60,13 @@
         android:elevation="@dimen/design_appbar_elevation"
         app:subtitle="Surface Elevated"
         app:title="Toolbar"/>
+
+    <com.google.android.material.appbar.MaterialToolbar
+        style="@style/Widget.MaterialComponents.Toolbar.PrimarySurface"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="32dp"
+        app:subtitle="Primary Surface"
+        app:title="Toolbar"/>
   </LinearLayout>
 </ScrollView>
