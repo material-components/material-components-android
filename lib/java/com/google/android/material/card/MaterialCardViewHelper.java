@@ -92,12 +92,11 @@ class MaterialCardViewHelper {
 
   private final MaterialCardView materialCardView;
   private final Rect userContentPadding = new Rect();
-  private final ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
   private final MaterialShapeDrawable bgDrawable; // Will always wrapped in an InsetDrawable
   private final MaterialShapeDrawable
       foregroundContentDrawable; // Will always wrapped in an InsetDrawable
+  private MaterialShapeDrawable foregroundShapeDrawable;
 
-  private final ShapeAppearanceModel shapeAppearanceModelInsetByStroke;
   private final MaterialShapeDrawable drawableInsetByStroke;
   private final Rect temporaryBounds = new Rect();
 
@@ -106,6 +105,8 @@ class MaterialCardViewHelper {
   private Drawable checkedIcon;
   private ColorStateList rippleColor;
   private ColorStateList checkedIconTint;
+  private ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
+  private ShapeAppearanceModel shapeAppearanceModelInsetByStroke;
 
   @Nullable private ColorStateList strokeColor;
   @Nullable private Drawable rippleDrawable;
@@ -428,6 +429,31 @@ class MaterialCardViewHelper {
     }
   }
 
+  void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
+    refreshDrawableInsetByStroke(shapeAppearanceModel);
+    bgDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    if (foregroundContentDrawable != null) {
+      foregroundContentDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    }
+
+    if (foregroundShapeDrawable != null) {
+      foregroundShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    }
+  }
+
+  ShapeAppearanceModel getShapeAppearanceModel() {
+    return shapeAppearanceModel;
+  }
+
+  private void refreshDrawableInsetByStroke(ShapeAppearanceModel shapeAppearanceModel) {
+    shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
+    adjustShapeAppearanceModelInsetByStroke();
+    if (drawableInsetByStroke != null) {
+      drawableInsetByStroke.setShapeAppearanceModel(shapeAppearanceModel);
+    }
+  }
+
   private void adjustShapeAppearanceModelInsetByStroke() {
     shapeAppearanceModelInsetByStroke
         .getTopLeftCorner()
@@ -575,8 +601,9 @@ class MaterialCardViewHelper {
 
   private Drawable createForegroundRippleDrawable() {
     if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
+      foregroundShapeDrawable = createForegroundShapeDrawable();
       //noinspection NewApi
-      return new RippleDrawable(rippleColor, null, createForegroundShapeDrawable());
+      return new RippleDrawable(rippleColor, null, foregroundShapeDrawable);
     }
 
     return createCompatRippleDrawable();

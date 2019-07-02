@@ -31,8 +31,11 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -72,7 +75,7 @@ import com.google.android.material.internal.ThemeEnforcement;
  * but rather an intermediate View. If you need to access a MaterialCardView directly, set an {@code
  * android:id} and use {@link View#findViewById(int)}.
  */
-public class MaterialCardView extends CardView implements Checkable {
+public class MaterialCardView extends CardView implements Checkable, Shapeable {
 
   /** Interface definition for a callback to be invoked when the card checked state changes. */
   public interface OnCheckedChangeListener {
@@ -563,6 +566,22 @@ public class MaterialCardView extends CardView implements Checkable {
    */
   public void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
     cardViewHelper.setCheckedIconTint(checkedIconTint);
+  }
+
+  @Override
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
+    cardViewHelper.setShapeAppearanceModel(shapeAppearanceModel);
+  }
+
+  /**
+   * Due to limitations in the current implementation, if you modify the returned object
+   * call {@link #setShapeAppearanceModel(ShapeAppearanceModel)} again with the modified value
+   * to propagate the required changes.
+   */
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getShapeAppearanceModel() {
+    return cardViewHelper.getShapeAppearanceModel();
   }
 
   private void forceRippleRedrawIfNeeded() {
