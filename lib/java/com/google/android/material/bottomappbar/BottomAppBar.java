@@ -100,7 +100,8 @@ import java.util.List;
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleMargin
  * @attr ref
  *     com.google.android.material.R.styleable#BottomAppBar_fabCradleRoundedCornerRadius
- * @attr ref com.google.android.material.R.styleable#BottomAppBar_fabCradleVerticalOffset
+ * @attr ref
+ *     com.google.android.material.R.styleable#BottomAppBar_fabCradleVerticalOffset
  * @attr ref com.google.android.material.R.styleable#BottomAppBar_hideOnScroll
  */
 public class BottomAppBar extends Toolbar implements AttachedBehavior {
@@ -161,6 +162,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
   private boolean fabAttached = true;
 
   private Behavior behavior;
+
+  private int bottomInset;
 
   /**
    * Listens to the FABs hide or show animation to kick off an animation on BottomAppBar that reacts
@@ -251,6 +254,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     ViewUtils.doOnApplyWindowInsets(
         this,
         (view, insets, initialPadding) -> {
+          bottomInset = insets.getSystemWindowInsetBottom();
           initialPadding.bottom += insets.getSystemWindowInsetBottom();
           initialPadding.applyToView(view);
           return insets;
@@ -800,6 +804,10 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
     fab.addTransformationListener(fabTransformationListener);
   }
 
+  private int getBottomInset() {
+    return bottomInset;
+  }
+
   @Override
   public void setTitle(CharSequence title) {
     // Don't do anything. BottomAppBar can't have a title.
@@ -842,44 +850,58 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     private WeakReference<BottomAppBar> viewRef;
 
-    private final OnLayoutChangeListener fabLayoutListener = new OnLayoutChangeListener() {
-      @Override
-      public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft,
-          int oldTop, int oldRight, int oldBottom) {
-        BottomAppBar child = viewRef.get();
+    private final OnLayoutChangeListener fabLayoutListener =
+        new OnLayoutChangeListener() {
+          @Override
+          public void onLayoutChange(
+              View v,
+              int left,
+              int top,
+              int right,
+              int bottom,
+              int oldLeft,
+              int oldTop,
+              int oldRight,
+              int oldBottom) {
+            BottomAppBar child = viewRef.get();
 
-        // If the child BAB no longer exists, remove the listener.
-        if (child == null || !(v instanceof FloatingActionButton)) {
-          v.removeOnLayoutChangeListener(this);
-          return;
-        }
+            // If the child BAB no longer exists, remove the listener.
+            if (child == null || !(v instanceof FloatingActionButton)) {
+              v.removeOnLayoutChangeListener(this);
+              return;
+            }
 
-        FloatingActionButton fab = ((FloatingActionButton) v);
+            FloatingActionButton fab = ((FloatingActionButton) v);
 
-        fab.getMeasuredContentRect(fabContentRect);
-        int height = fabContentRect.height();
+            fab.getMeasuredContentRect(fabContentRect);
+            int height = fabContentRect.height();
 
-        // Set the cutout diameter based on the height of the fab.
-        if (!child.setFabDiameter(height)) {
-          // The size of the fab didn't change so return early.
-          return;
-        }
+            // Set the cutout diameter based on the height of the fab.
+            if (!child.setFabDiameter(height)) {
+              // The size of the fab didn't change so return early.
+              return;
+            }
 
-        CoordinatorLayout.LayoutParams fabLayoutParams = (CoordinatorLayout.LayoutParams) v
-            .getLayoutParams();
+            CoordinatorLayout.LayoutParams fabLayoutParams =
+                (CoordinatorLayout.LayoutParams) v.getLayoutParams();
 
-        // Set the bottomMargin of the fab if it is 0dp. This adds space below the fab if the
-        // BottomAppBar is hidden.
-        if (fabLayoutParams.bottomMargin == 0) {
-          // Extra padding is added for the fake shadow on API < 21. Ensure we don't add too much
-          // space by removing that extra padding.
-          int bottomShadowPadding = (fab.getMeasuredHeight() - fabContentRect.height()) / 2;
-          int bottomMargin = child.getResources()
-              .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
-          fabLayoutParams.bottomMargin = Math.max(0, bottomMargin - bottomShadowPadding);
-        }
-      }
-    };
+            // Set the bottomMargin of the fab if it is 0dp. This adds space below the fab if the
+            // BottomAppBar is hidden.
+            if (fabLayoutParams.bottomMargin == 0) {
+              // Extra padding is added for the fake shadow on API < 21. Ensure we don't add too
+              // much space by removing that extra padding.
+              int bottomShadowPadding = (fab.getMeasuredHeight() - fabContentRect.height()) / 2;
+              int bottomMargin =
+                  child
+                      .getResources()
+                      .getDimensionPixelOffset(R.dimen.mtrl_bottomappbar_fab_bottom_margin);
+              // At least be tall enough to be above the bottom insets, otherwise set some space
+              // ignoring any shadow padding.
+              fabLayoutParams.bottomMargin =
+                  Math.max(child.getBottomInset(), bottomMargin - bottomShadowPadding);
+            }
+          }
+        };
 
     public Behavior() {
       fabContentRect = new Rect();
