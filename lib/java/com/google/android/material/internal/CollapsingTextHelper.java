@@ -659,7 +659,8 @@ public final class CollapsingTextHelper {
       float x = currentDrawX;
       float y = currentDrawY;
 
-      final boolean drawTexture = useTexture && expandedTitleTexture != null;
+      final boolean drawTexture = useTexture && expandedTitleTexture != null
+          && collapsedTitleTexture != null && crossSectionTitleTexture != null;
 
       final float ascent;
       // Update the TextPaint to the current text size
