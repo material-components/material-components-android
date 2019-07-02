@@ -27,6 +27,7 @@ import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.textview.MaterialTextView;
 import org.junit.Before;
 import org.junit.Rule;
 import org.junit.Test;
@@ -48,19 +49,25 @@ public class MaterialComponentsViewInflaterTest {
 
   @Test
   public void ensureThatInflaterCreatesMaterialButton() {
-    final View view = testActivity.findViewById(R.id.test_button);
+    View view = testActivity.findViewById(R.id.test_button);
     assertThat(view).isInstanceOf(MaterialButton.class);
   }
 
   @Test
   public void ensureThatInflaterCreatesMaterialRadioButton() {
-    final View view = testActivity.findViewById(R.id.test_radiobutton);
+    View view = testActivity.findViewById(R.id.test_radiobutton);
     assertThat(view).isInstanceOf(MaterialRadioButton.class);
   }
 
   @Test
   public void ensureThatInflaterCreatesMaterialCheckBox() {
-    final View view = testActivity.findViewById(R.id.test_checkbox);
+    View view = testActivity.findViewById(R.id.test_checkbox);
     assertThat(view).isInstanceOf(MaterialCheckBox.class);
+  }
+
+  @Test
+  public void ensureThatInflaterCreatesMaterialTextView() {
+    View view = testActivity.findViewById(R.id.test_text_view);
+    assertThat(view).isInstanceOf(MaterialTextView.class);
   }
 }

@@ -26,9 +26,11 @@ import androidx.appcompat.app.AppCompatViewInflater;
 import androidx.appcompat.widget.AppCompatButton;
 import androidx.appcompat.widget.AppCompatCheckBox;
 import androidx.appcompat.widget.AppCompatRadioButton;
+import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.radiobutton.MaterialRadioButton;
+import com.google.android.material.textview.MaterialTextView;
 
 /**
  * An extension of {@link AppCompatViewInflater} that replaces some framework widgets with Material
@@ -93,5 +95,11 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
   @Override
   protected AppCompatRadioButton createRadioButton(Context context, AttributeSet attrs) {
     return new MaterialRadioButton(context, attrs);
+  }
+
+  @NonNull
+  @Override
+  protected AppCompatTextView createTextView(Context context, AttributeSet attrs) {
+    return new MaterialTextView(context, attrs);
   }
 }

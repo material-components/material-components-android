@@ -14,22 +14,7 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources>
-
-  <style name="TestStyleWithoutLineHeight" parent="TextAppearance.AppCompat.Title">
-    <item name="android:textSize">20sp</item>
-  </style>
-
-  <style name="TestStyleWithLineHeight" parent="TestStyleWithoutLineHeight">
-    <item name="lineHeight">@dimen/material_text_view_test_line_height</item>
-  </style>
-
-  <style name="TestStyleWithLineHeightAppearance">
-    <item name="android:textAppearance">@style/TestStyleWithLineHeight</item>
-  </style>
-
-  <style name="TestStyleWithThemeLineHeightAttribute" parent="TestStyleWithoutLineHeight">
-    <item name="lineHeight">?attr/themeLineHeight</item>
-  </style>
-
-</resources>
+<com.google.android.material.textview.MaterialTextView
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content" />

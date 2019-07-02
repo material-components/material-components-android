@@ -49,12 +49,24 @@ public class MaterialTextViewTest {
   }
 
   @Test
+  public void ensureThatViewCanBeCreatedWithoutSettingLineHeightAttribute() {
+    inflater.inflate(R.layout.text_view_without_line_height, null, false);
+  }
+
+  @Test
+  public void ensureThatCreatedViewUsesLineHeightFromThemeAttribute() {
+    context.setTheme(R.style.TestThemeWithLineHeight);
+    MaterialTextView textView =
+        (MaterialTextView) inflater.inflate(R.layout.text_view_with_theme_line_height, null, false);
+    assertThat(textView.getLineHeight()).isEqualTo(testLineHeight);
+  }
+
+  @Test
   public void ensureThatCreatedViewUsesLineHeightFromTextAppearance() {
     MaterialTextView textView =
         (MaterialTextView)
             inflater.inflate(R.layout.text_view_with_line_height_from_appearance, null, false);
-    final int actualLineHeight = textView.getLineHeight();
-    assertThat(actualLineHeight).isEqualTo(testLineHeight);
+    assertThat(textView.getLineHeight()).isEqualTo(testLineHeight);
   }
 
   @Test
@@ -62,8 +74,7 @@ public class MaterialTextViewTest {
     MaterialTextView textView =
         (MaterialTextView)
             inflater.inflate(R.layout.text_view_with_line_height_from_style, null, false);
-    final int actualLineHeight = textView.getLineHeight();
-    assertThat(actualLineHeight).isEqualTo(testLineHeight);
+    assertThat(textView.getLineHeight()).isEqualTo(testLineHeight);
   }
 
   @Test
@@ -71,15 +82,30 @@ public class MaterialTextViewTest {
     MaterialTextView textView =
         (MaterialTextView)
             inflater.inflate(R.layout.text_view_with_line_height_from_layout, null, false);
-    final int actualLineHeight = textView.getLineHeight();
-    assertThat(actualLineHeight).isEqualTo(testLineHeightOverride);
+    assertThat(textView.getLineHeight()).isEqualTo(testLineHeightOverride);
   }
 
   @Test
   public void ensureThatViewAppliesLineHeightWhenSettingTextAppearance() {
     MaterialTextView textView = new MaterialTextView(context);
     textView.setTextAppearance(context, R.style.TestStyleWithLineHeight);
-    final int actualLineHeight = textView.getLineHeight();
-    assertThat(actualLineHeight).isEqualTo(testLineHeight);
+    assertThat(textView.getLineHeight()).isEqualTo(testLineHeight);
+  }
+
+  @Test
+  public void ensureThatCreatedViewIgnoresLineHeightFromTextAppearanceIfLineHeightIsDisabled() {
+    context.setTheme(R.style.TestThemeWithLineHeightDisabled);
+    MaterialTextView textView =
+        (MaterialTextView)
+            inflater.inflate(R.layout.text_view_with_line_height_from_appearance, null, false);
+    assertThat(textView.getLineHeight()).isNotEqualTo(testLineHeight);
+  }
+
+  @Test
+  public void ensureThatViewIgnoreLineHeightWhenSettingTextAppearanceIfLineHeightIsDisabled() {
+    context.setTheme(R.style.TestThemeWithLineHeightDisabled);
+    MaterialTextView textView = new MaterialTextView(context);
+    textView.setTextAppearance(context, R.style.TestStyleWithLineHeight);
+    assertThat(textView.getLineHeight()).isNotEqualTo(testLineHeight);
   }
 }

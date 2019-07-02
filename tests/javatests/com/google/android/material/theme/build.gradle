@@ -17,7 +17,7 @@
 apply plugin: 'com.android.test'
 
 dependencies {
-  implementation "androidx.test.ext:junit:${project.rootProject.ext.junitVersion}"
+  implementation "androidx.test.ext:junit:1.1.1"
   implementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
   implementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
   implementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"

@@ -16,20 +16,13 @@
   -->
 <resources>
 
-  <style name="TestStyleWithoutLineHeight" parent="TextAppearance.AppCompat.Title">
-    <item name="android:textSize">20sp</item>
+  <attr name="themeLineHeight" format="dimension" />
+
+  <style name="TestThemeWithLineHeight" parent="Theme.AppCompat.Light">
+    <item name="themeLineHeight">@dimen/material_text_view_test_line_height</item>
   </style>
 
-  <style name="TestStyleWithLineHeight" parent="TestStyleWithoutLineHeight">
-    <item name="lineHeight">@dimen/material_text_view_test_line_height</item>
+  <style name="TestThemeWithLineHeightDisabled" parent="TestThemeWithLineHeight">
+    <item name="textAppearanceLineHeightEnabled">false</item>
   </style>
-
-  <style name="TestStyleWithLineHeightAppearance">
-    <item name="android:textAppearance">@style/TestStyleWithLineHeight</item>
-  </style>
-
-  <style name="TestStyleWithThemeLineHeightAttribute" parent="TestStyleWithoutLineHeight">
-    <item name="lineHeight">?attr/themeLineHeight</item>
-  </style>
-
 </resources>

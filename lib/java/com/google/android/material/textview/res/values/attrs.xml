@@ -16,6 +16,12 @@
   -->
 <resources>
 
+  <!--
+        Setting this attribute value to false in the theme, will cause the MaterialTextView to ignore
+        line height specified in all text appearance styles. The value is true by default.
+  -->
+  <attr name="textAppearanceLineHeightEnabled" format="boolean" />
+
   <declare-styleable name="MaterialTextAppearance" parent="TextAppearance">
     <!--
         Specifies explicit line height for this TextView. This is equivalent to the vertical

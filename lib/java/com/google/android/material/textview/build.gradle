@@ -1,9 +1,6 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 
-archivesBaseName = getArchivesBaseName(project.name)
-version = rootProject.ext.mdcLibraryVersion
-
 dependencies {
   implementation compatibility("appcompat")
 

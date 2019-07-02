@@ -22,14 +22,15 @@ import android.content.Context;
 import android.content.res.Resources;
 import android.content.res.Resources.Theme;
 import android.content.res.TypedArray;
+import androidx.annotation.StyleableRes;
+import com.google.android.material.resources.MaterialAttributes;
+import com.google.android.material.resources.MaterialResources;
 import androidx.appcompat.widget.AppCompatTextView;
 import android.util.AttributeSet;
-import android.widget.EditText;
-import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * A MaterialTextView is a derivative of {@link AppCompatTextView} that displays text to the user.
- * To provide user-editable text, see {@link EditText}.
+ * To provide user-editable text, see {@link android.widget.EditText}.
  *
  * <p>MaterialTextView supports the ability to read and apply {@code android:lineHeight} value from
  * a {@code TextAppearance} style.
@@ -70,13 +71,6 @@ import java.util.concurrent.atomic.AtomicBoolean;
  */
 public class MaterialTextView extends AppCompatTextView {
 
-  /**
-   * Flag that will be used to avoid applying line height more than once when {@link
-   * #setTextAppearance(int)} method is called, the base implementation of which may call the {@link
-   * #setTextAppearance(Context, int)} internally.
-   */
-  private final AtomicBoolean skipApplyingLineHeight = new AtomicBoolean();
-
   public MaterialTextView(Context context) {
     this(context, null /* attrs */);
   }
@@ -92,35 +86,35 @@ public class MaterialTextView extends AppCompatTextView {
   public MaterialTextView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
     super(context, attrs, defStyleAttr);
 
-    final Resources.Theme theme = context.getTheme();
+    if (canApplyTextAppearanceLineHeight(context)) {
+      final Resources.Theme theme = context.getTheme();
 
-    if (readLineHeightFromLayout(theme, attrs, defStyleAttr, defStyleRes) < 0) {
-      int resId = findViewAppearanceResourceId(theme, attrs, defStyleAttr, defStyleRes);
-      if (resId != -1) {
-        applyLineHeightFromViewAppearance(theme, resId);
+      if (!viewAttrsHasLineHeight(context, theme, attrs, defStyleAttr, defStyleRes)) {
+        int resId = findViewAppearanceResourceId(theme, attrs, defStyleAttr, defStyleRes);
+        if (resId != -1) {
+          applyLineHeightFromViewAppearance(theme, resId);
+        }
       }
     }
   }
 
   @Override
-  public void setTextAppearance(int resId) {
-    skipApplyingLineHeight.set(true);
-    super.setTextAppearance(resId);
-    skipApplyingLineHeight.set(false);
-    applyLineHeightFromViewAppearance(getContext().getTheme(), resId);
-  }
-
-  @Override
   public void setTextAppearance(Context context, int resId) {
     super.setTextAppearance(context, resId);
-    if (!skipApplyingLineHeight.get()) {
+
+    if (canApplyTextAppearanceLineHeight(context)) {
       applyLineHeightFromViewAppearance(context.getTheme(), resId);
     }
   }
 
   private void applyLineHeightFromViewAppearance(Theme theme, int resId) {
     TypedArray attributes = theme.obtainStyledAttributes(resId, R.styleable.MaterialTextAppearance);
-    int lineHeight = readLineHeighAttribute(attributes);
+    int lineHeight =
+        readFirstAvailableDimension(
+            getContext(),
+            attributes,
+            R.styleable.MaterialTextAppearance_android_lineHeight,
+            R.styleable.MaterialTextAppearance_lineHeight);
     attributes.recycle();
 
     if (lineHeight >= 0) {
@@ -128,25 +122,35 @@ public class MaterialTextView extends AppCompatTextView {
     }
   }
 
-  private static int readLineHeightFromLayout(
-      Theme theme, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
-    TypedArray attributes =
-        theme.obtainStyledAttributes(
-            attrs, R.styleable.MaterialTextView, defStyleAttr, defStyleRes);
-    int lineHeight = readLineHeighAttribute(attributes);
-    attributes.recycle();
+  private static boolean canApplyTextAppearanceLineHeight(Context context) {
+    return MaterialAttributes.resolveBoolean(context, R.attr.textAppearanceLineHeightEnabled, true);
+  }
+
+  private static int readFirstAvailableDimension(
+      Context context, TypedArray attributes, @StyleableRes int... indices) {
+    int lineHeight = -1;
+
+    for (int index = 0; index < indices.length && lineHeight < 0; ++index) {
+      lineHeight = MaterialResources.getDimensionPixelSize(context, attributes, indices[index], -1);
+    }
 
     return lineHeight;
   }
 
-  private static int readLineHeighAttribute(TypedArray attributes) {
+  private static boolean viewAttrsHasLineHeight(
+      Context context, Theme theme, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    TypedArray attributes =
+        theme.obtainStyledAttributes(
+            attrs, R.styleable.MaterialTextView, defStyleAttr, defStyleRes);
     int lineHeight =
-        attributes.getDimensionPixelSize(R.styleable.MaterialTextView_android_lineHeight, -1);
-    if (lineHeight < 0) {
-      lineHeight = attributes.getDimensionPixelSize(R.styleable.MaterialTextView_lineHeight, -1);
-    }
+        readFirstAvailableDimension(
+            context,
+            attributes,
+            R.styleable.MaterialTextView_android_lineHeight,
+            R.styleable.MaterialTextView_lineHeight);
+    attributes.recycle();
 
-    return lineHeight;
+    return lineHeight != -1;
   }
 
   private static int findViewAppearanceResourceId(
