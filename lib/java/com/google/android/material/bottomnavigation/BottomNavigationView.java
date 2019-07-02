@@ -40,7 +40,6 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.StyleRes;
-import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
@@ -61,6 +60,7 @@ import android.view.ViewGroup;
 import android.widget.FrameLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.ripple.RippleUtils;
 
