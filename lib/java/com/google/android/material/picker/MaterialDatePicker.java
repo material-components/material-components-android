@@ -126,15 +126,15 @@ public class MaterialDatePicker<S> extends DialogFragment {
   private CheckableImageButton headerToggleButton;
   private MaterialShapeDrawable background;
 
-  static <S> MaterialDatePicker<S> newInstance(MaterialDatePicker.Builder<S> options) {
-    MaterialDatePicker<S> materialDateRangePickerDialogFragment = new MaterialDatePicker<>();
+  static <S> MaterialDatePicker<S> newInstance(Builder<S> options) {
+    MaterialDatePicker<S> materialDatePickerDialogFragment = new MaterialDatePicker<>();
     Bundle args = new Bundle();
     args.putInt(OVERRIDE_THEME_RES_ID, options.overrideThemeResId);
     args.putParcelable(GRID_SELECTOR_KEY, options.gridSelector);
     args.putParcelable(CALENDAR_BOUNDS_KEY, options.calendarBounds);
     args.putInt(TITLE_TEXT_RES_ID_KEY, options.titleTextResId);
-    materialDateRangePickerDialogFragment.setArguments(args);
-    return materialDateRangePickerDialogFragment;
+    materialDatePickerDialogFragment.setArguments(args);
+    return materialDatePickerDialogFragment;
   }
 
   @Override
