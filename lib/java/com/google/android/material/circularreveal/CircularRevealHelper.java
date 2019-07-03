@@ -54,7 +54,7 @@ public class CircularRevealHelper {
   /**
    * Delegate interface to be implemented by the {@link CircularRevealWidget} that owns this helper.
    */
-  interface Delegate {
+  public interface Delegate {
 
     /**
      * Calls {@link View#draw(Canvas) super#draw(Canvas)}.
