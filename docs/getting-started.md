@@ -30,7 +30,7 @@ To use it:
     ```groovy
       dependencies {
         // ...
-        implementation 'com.google.android.material:material:1.1.0-alpha06'
+        implementation 'com.google.android.material:material:1.1.0-alpha07'
         // ...
       }
     ```
