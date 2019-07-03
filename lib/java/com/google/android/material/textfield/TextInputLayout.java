@@ -1995,12 +1995,17 @@ public class TextInputLayout extends LinearLayout {
   @Override
   protected void onMeasure(int widthMeasureSpec, int heightMeasureSpec) {
     super.onMeasure(widthMeasureSpec, heightMeasureSpec);
-    setEditTextHeightAndDummyDrawables();
+
+    boolean updatedHeight = updateEditTextHeightBasedOnIcon();
+    boolean updatedIcon = updateIconDummyDrawables();
+    if (updatedHeight || updatedIcon) {
+      editText.post(() -> editText.requestLayout());
+    }
   }
 
-  private void setEditTextHeightAndDummyDrawables() {
+  private boolean updateEditTextHeightBasedOnIcon() {
     if (editText == null) {
-      return;
+      return false;
     }
 
     // We need to make sure that the EditText's height is at least the same as the end or start
@@ -2010,10 +2015,10 @@ public class TextInputLayout extends LinearLayout {
         Math.max(endIconView.getMeasuredHeight(), startIconView.getMeasuredHeight());
     if (editText.getMeasuredHeight() < maxIconHeight) {
       editText.setMinimumHeight(maxIconHeight);
-      editText.post(() -> editText.requestLayout());
+      return true;
     }
 
-    updateIconDummyDrawables();
+    return false;
   }
 
   /**
@@ -2667,33 +2672,40 @@ public class TextInputLayout extends LinearLayout {
    * We need to add a dummy drawable as the start and/or end compound drawables so that the text is
    * indented and doesn't display below the icon views.
    */
-  private void updateIconDummyDrawables() {
+  private boolean updateIconDummyDrawables() {
     if (editText == null) {
-      return;
+      return false;
     }
 
+    boolean updatedIcon = false;
     // Update start icon drawable if needed.
-    if (hasStartIcon() && isStartIconVisible()) {
-      startIconDummyDrawable = new ColorDrawable();
-      int right =
-          startIconView.getMeasuredWidth()
-              - editText.getPaddingLeft()
-              + MarginLayoutParamsCompat.getMarginEnd(
-                  ((MarginLayoutParams) startIconView.getLayoutParams()));
-      startIconDummyDrawable.setBounds(0, 0, right, 1);
+    if (hasStartIcon() && isStartIconVisible() && startIconView.getMeasuredWidth() > 0) {
+      if (startIconDummyDrawable == null) {
+        startIconDummyDrawable = new ColorDrawable();
+        int right =
+            startIconView.getMeasuredWidth()
+                - editText.getPaddingLeft()
+                + MarginLayoutParamsCompat.getMarginEnd(
+                ((MarginLayoutParams) startIconView.getLayoutParams()));
+        startIconDummyDrawable.setBounds(0, 0, right, 1);
+      }
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
-      TextViewCompat.setCompoundDrawablesRelative(
-          editText, startIconDummyDrawable, compounds[1], compounds[2], compounds[3]);
+      if (compounds[0] != startIconDummyDrawable) {
+        TextViewCompat.setCompoundDrawablesRelative(
+            editText, startIconDummyDrawable, compounds[1], compounds[2], compounds[3]);
+        updatedIcon = true;
+      }
     } else if (startIconDummyDrawable != null) {
       // Remove the dummy start compound drawable if it exists and clear it.
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
       TextViewCompat.setCompoundDrawablesRelative(
           editText, null, compounds[1], compounds[2], compounds[3]);
       startIconDummyDrawable = null;
+      updatedIcon = true;
     }
 
     // Update end icon drawable if needed.
-    if (hasEndIcon() && isEndIconVisible()) {
+    if (hasEndIcon() && isEndIconVisible() && endIconView.getMeasuredWidth() > 0) {
       if (endIconDummyDrawable == null) {
         endIconDummyDrawable = new ColorDrawable();
         int right =
@@ -2709,6 +2721,7 @@ public class TextInputLayout extends LinearLayout {
         originalEditTextEndDrawable = compounds[2];
         TextViewCompat.setCompoundDrawablesRelative(
             editText, compounds[0], compounds[1], endIconDummyDrawable, compounds[3]);
+        updatedIcon = true;
       }
     } else if (endIconDummyDrawable != null) {
       // Remove the dummy end compound drawable if it exists and clear it.
@@ -2716,9 +2729,12 @@ public class TextInputLayout extends LinearLayout {
       if (compounds[2] == endIconDummyDrawable) {
         TextViewCompat.setCompoundDrawablesRelative(
             editText, compounds[0], compounds[1], originalEditTextEndDrawable, compounds[3]);
+        updatedIcon = true;
       }
       endIconDummyDrawable = null;
     }
+
+    return updatedIcon;
   }
 
   private void applyIconTint(
