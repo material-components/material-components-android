@@ -60,7 +60,7 @@ public class TextInputEditText extends AppCompatEditText {
     if (layout != null
         && layout.isProvidingHint()
         && super.getHint() == null
-        && Build.MANUFACTURER.equals("Meizu")) {
+        && Build.MANUFACTURER.equalsIgnoreCase("Meizu")) {
       setHint("");
     }
   }
