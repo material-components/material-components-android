@@ -57,7 +57,7 @@ The `materialAlertDialogTheme` attribute supports additional choices:
 ```xml
 <item name="materialAlertDialogTitlePanelStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Panel</item>
 <item name="materialAlertDialogTitleIconStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Icon</item>
-<item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text</item>item>
+<item name="materialAlertDialogTitleTextStyle">@style/MaterialAlertDialog.MaterialComponents.Title.Text</item>
 ```
 
 `AlertDialog` objects created by a `MaterialAlertDialogBuilder` will also respond to these additional attributes set in `alertDialogStyle` that help position the window.
