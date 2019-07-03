@@ -47,29 +47,78 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
       if (bottomSheet != null) {
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
 
-        WeakReference<AppCompatDialogFragment> dialogFragmentWeakReference = new WeakReference<>(this);
-
-        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-          @Override
-          public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-              AppCompatDialogFragment dialogFragment = dialogFragmentWeakReference.get();
-              if (dialogFragment != null) {
-                dialogFragment.dismiss();
-              }
-            }
-          }
-
-          @Override
-          public void onSlide(@NonNull View bottomSheet, float slideOffset) { }
-        });
-
-        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        dismissWithAnimation(behavior);
       } else {
         super.dismiss();
       }
     } else {
       super.dismiss();
     }
+  }
+
+  @Override
+  public void dismissAllowingStateLoss() {
+    Dialog dialog = getDialog();
+    if (dialog != null) {
+      View bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
+      if (bottomSheet != null) {
+        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+
+        dismissWithAnimation(behavior, true);
+      } else {
+        super.dismissAllowingStateLoss();
+      }
+    } else {
+      super.dismissAllowingStateLoss();
+    }
+  }
+
+  private void dismissWithAnimation(@NonNull BottomSheetBehavior behavior) {
+    dismissWithAnimation(behavior, false);
+  }
+
+  private void dismissWithAnimation(@NonNull BottomSheetBehavior behavior,
+                                    boolean allowingStateLoss) {
+    if (behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+      if (allowingStateLoss) {
+        super.dismissAllowingStateLoss();
+      } else {
+        super.dismiss();
+      }
+    } else {
+      BottomSheetBehavior.BottomSheetCallback dismissCallback =
+          getDismissBehaviorCallback(allowingStateLoss);
+
+      behavior.setBottomSheetCallback(dismissCallback);
+
+      behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+  }
+
+  private BottomSheetBehavior.BottomSheetCallback getDismissBehaviorCallback(
+      boolean allowingStateLoss) {
+
+    WeakReference<AppCompatDialogFragment> dialogFragmentWeakReference =
+        new WeakReference<>(this);
+
+    return new BottomSheetBehavior.BottomSheetCallback() {
+      @Override
+      public void onStateChanged(@NonNull View bottomSheet, int newState) {
+        if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+          AppCompatDialogFragment dialogFragment = dialogFragmentWeakReference.get();
+
+          if (dialogFragment != null) {
+            if (allowingStateLoss) {
+              dialogFragment.dismissAllowingStateLoss();
+            } else {
+              dialogFragment.dismiss();
+            }
+          }
+        }
+      }
+
+      @Override
+      public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+    };
   }
 }

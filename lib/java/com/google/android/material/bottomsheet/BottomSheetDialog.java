@@ -131,30 +131,35 @@ public class BottomSheetDialog extends AppCompatDialog {
    */
   @Override
   public void cancel() {
-    // DialogSheet was swiped down to STATE_HIDDEN, so safe to defer to parent cancel().
     if (getBehavior().getState() == BottomSheetBehavior.STATE_HIDDEN) {
       super.cancel();
     } else {
-      // DialogSheet cancelled through another method.
-      WeakReference<BottomSheetDialog> dialogWeakReference = new WeakReference<>(this);
-
       BottomSheetBehavior behavior = getBehavior();
-      behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-        @Override
-        public void onStateChanged(@NonNull View bottomSheet, int newState) {
-          if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-            BottomSheetDialog dialog = dialogWeakReference.get();
-            if (dialog != null) {
-              dialog.cancel();
+
+      // If the default callback was not overridden, then set the state to STATE_HIDDEN and defer
+      // to the default callback behavior.
+      if (behavior.getBottomSheetCallback() == bottomSheetCallback) {
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+      } else {
+        WeakReference<BottomSheetDialog> dialogWeakReference = new WeakReference<>(this);
+
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+          @Override
+          public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+              BottomSheetDialog dialog = dialogWeakReference.get();
+              if (dialog != null) {
+                dialog.cancel();
+              }
             }
           }
-        }
 
-        @Override
-        public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
-      });
+          @Override
+          public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+        });
 
-      behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+      }
     }
   }
 
