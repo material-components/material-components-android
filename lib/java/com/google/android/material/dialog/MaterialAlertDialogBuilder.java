@@ -103,7 +103,7 @@ public class MaterialAlertDialogBuilder extends AlertDialog.Builder {
   }
 
   public MaterialAlertDialogBuilder(Context context, int overrideThemeResId) {
-    // Only pass in 0 for themeResId if both overrideThemeResId and
+    // Only pass in 0 for overrideThemeResId if both overrideThemeResId and
     // MATERIAL_ALERT_DIALOG_THEME_OVERLAY are 0 otherwise alertDialogTheme will override both.
     super(
         createMaterialAlertDialogThemedContext(context),

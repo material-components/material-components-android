@@ -17,6 +17,7 @@ package com.google.android.material.picker;
 
 import com.google.android.material.R;
 
+import android.content.Context;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Parcelable;
@@ -24,6 +25,8 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import androidx.annotation.StringRes;
+import androidx.annotation.StyleRes;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import androidx.recyclerview.widget.RecyclerView.ViewHolder;
@@ -105,6 +108,14 @@ public interface GridSelector<S> extends Parcelable {
    * for each month so selectors can draw on the canvas.
    */
   void onCalendarMonthDraw(Canvas canvas, MaterialCalendarGridView gridView);
+
+  String getSelectionDisplayString(Context context);
+
+  @StringRes
+  int getDefaultTitleResId();
+
+  @StyleRes
+  int getDefaultThemeResId(Context context);
 
   View onCreateTextInputView(
       @NonNull LayoutInflater layoutInflater,

@@ -51,7 +51,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   enum CalendarSelector {
     DAY,
     YEAR
-  };
+  }
 
   private static final String THEME_RES_ID_KEY = "THEME_RES_ID_KEY";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
@@ -119,7 +119,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
     int layout;
     int orientation;
-    if (MaterialPickerDialogFragment.isFullscreen(themedContext)) {
+    if (MaterialDatePicker.isFullscreen(themedContext)) {
       layout = R.layout.mtrl_calendar_vertical;
       orientation = ViewPager2.ORIENTATION_VERTICAL;
     } else {

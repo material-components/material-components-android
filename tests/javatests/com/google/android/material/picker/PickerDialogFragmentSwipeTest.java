@@ -41,7 +41,7 @@ public class PickerDialogFragmentSwipeTest {
   public final ActivityTestRule<AppCompatActivity> activityTestRule =
       new ActivityTestRule<>(AppCompatActivity.class);
 
-  private MaterialDatePickerDialogFragment dialogFragment;
+  private MaterialDatePicker<Long> dialogFragment;
 
   @Before
   public void setupDatePickerDialogForSwiping() {
@@ -49,7 +49,8 @@ public class PickerDialogFragmentSwipeTest {
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date DialogFragment";
 
-    dialogFragment = MaterialDatePickerDialogFragment.newInstance(calendarBounds);
+    dialogFragment =
+        MaterialDatePicker.Builder.datePicker().setCalendarBounds(calendarBounds).build();
     dialogFragment.show(fragmentManager, tag);
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     IdlingRegistry.getInstance()

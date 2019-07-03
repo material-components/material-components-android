@@ -79,9 +79,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
 
     int daysHeight = MonthAdapter.MAXIMUM_WEEKS * MaterialCalendar.getDayHeight(context);
     int labelHeight =
-        MaterialPickerDialogFragment.isFullscreen(context)
-            ? MaterialCalendar.getDayHeight(context)
-            : 0;
+        MaterialDatePicker.isFullscreen(context) ? MaterialCalendar.getDayHeight(context) : 0;
 
     this.itemHeight = daysHeight + labelHeight;
     this.calendarBounds = calendarBounds;

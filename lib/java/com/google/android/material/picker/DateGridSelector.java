@@ -18,6 +18,7 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -26,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
 import android.text.format.DateUtils;
@@ -156,6 +158,27 @@ public class DateGridSelector implements GridSelector<Long> {
     ViewUtils.requestFocusAndShowKeyboard(dateEditText);
 
     return root;
+  }
+
+  @Override
+  public int getDefaultThemeResId(Context context) {
+    return MaterialAttributes.resolveOrThrow(
+        context, R.attr.materialCalendarTheme, MaterialDatePicker.class.getCanonicalName());
+  }
+
+  @Override
+  public String getSelectionDisplayString(Context context) {
+    Resources res = context.getResources();
+    if (selectedItem == null) {
+      return res.getString(R.string.mtrl_picker_date_header_unselected);
+    }
+    String startString = DateStrings.getYearMonthDay(selectedItem.getTime(), Locale.getDefault());
+    return res.getString(R.string.mtrl_picker_date_header_selected, startString);
+  }
+
+  @Override
+  public int getDefaultTitleResId() {
+    return R.string.mtrl_picker_date_header_title;
   }
 
   /* Parcelable interface */

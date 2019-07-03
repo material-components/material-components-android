@@ -138,8 +138,7 @@ public class MonthAdapterTest {
   @Test
   public void usPositions() {
     setupLocalizedCalendars(Locale.US);
-    Map<MonthAdapter, Integer> localizedPositionToDay =
-        localizedPositionToDay = new HashMap<>();
+    Map<MonthAdapter, Integer> localizedPositionToDay = new HashMap<>();
     localizedPositionToDay.put(monthFeb2016, 1);
     localizedPositionToDay.put(monthJuly2018, 7);
     localizedPositionToDay.put(monthFeb2019, 11);
@@ -149,8 +148,7 @@ public class MonthAdapterTest {
   @Test
   public void frPositions() {
     setupLocalizedCalendars(Locale.FRANCE);
-    Map<MonthAdapter, Integer> localizedPositionToDay =
-        localizedPositionToDay = new HashMap<>();
+    Map<MonthAdapter, Integer> localizedPositionToDay = new HashMap<>();
     localizedPositionToDay.put(monthFeb2016, 2);
     localizedPositionToDay.put(monthJuly2018, 1);
     localizedPositionToDay.put(monthFeb2019, 12);
@@ -160,8 +158,7 @@ public class MonthAdapterTest {
   @Test
   public void ilPositions() {
     setupLocalizedCalendars(ISRAEL);
-    Map<MonthAdapter, Integer> localizedPositionToDay =
-        localizedPositionToDay = new HashMap<>();
+    Map<MonthAdapter, Integer> localizedPositionToDay = new HashMap<>();
     localizedPositionToDay.put(monthFeb2016, 1);
     localizedPositionToDay.put(monthJuly2018, 7);
     localizedPositionToDay.put(monthFeb2019, 11);

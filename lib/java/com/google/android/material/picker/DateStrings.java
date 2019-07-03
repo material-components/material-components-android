@@ -25,7 +25,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
-/** Util methods for formatting date strings for use in {@link MaterialPickerDialogFragment}. */
+/** Util methods for formatting date strings for use in {@link MaterialDatePicker}. */
 class DateStrings {
 
   private DateStrings() {}
@@ -74,6 +74,10 @@ class DateStrings {
     }
   }
 
+  static String getDateString(long timeInMillis) {
+    return getDateString(timeInMillis, null);
+  }
+
   /**
    * Return a date string for the given date.
    *
@@ -100,6 +104,10 @@ class DateStrings {
     } else {
       return getYearMonthDay(date, defaultLocale);
     }
+  }
+
+  static Pair<String, String> getDateRangeString(@Nullable Long start, @Nullable Long end) {
+    return getDateRangeString(start, end, null);
   }
 
   /**

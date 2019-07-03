@@ -18,6 +18,7 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Parcel;
@@ -26,6 +27,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
+import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
 import androidx.core.util.Pair;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -122,6 +124,57 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
       selectedStartItem = selection;
     }
     GridSelectors.notifyListeners(this, onSelectionChangedListeners);
+  }
+
+  @Override
+  @NonNull
+  public Pair<Long, Long> getSelection() {
+    return new Pair<>(
+        selectedStartItem == null ? null : selectedStartItem.getTimeInMillis(),
+        selectedEndItem == null ? null : selectedEndItem.getTimeInMillis());
+  }
+
+  @Override
+  public int getDefaultThemeResId(Context context) {
+    Resources res = context.getResources();
+    int maximumDefaultFullscreenWidth =
+        res.getDimensionPixelSize(R.dimen.mtrl_calendar_maximum_default_fullscreen_width);
+    int defaultThemeAttr =
+        res.getDisplayMetrics().widthPixels > maximumDefaultFullscreenWidth
+            ? R.attr.materialCalendarTheme
+            : R.attr.materialCalendarFullscreenTheme;
+    return MaterialAttributes.resolveOrThrow(
+        context, defaultThemeAttr, MaterialDatePicker.class.getCanonicalName());
+  }
+
+  @Override
+  public String getSelectionDisplayString(Context context) {
+    Resources res = context.getResources();
+    if (selectedStartItem == null && selectedEndItem == null) {
+      return res.getString(R.string.mtrl_picker_range_header_unselected);
+    }
+    if (selectedEndItem == null) {
+      return res.getString(
+          R.string.mtrl_picker_range_header_only_start_selected,
+          DateStrings.getDateString(selectedStartItem.getTimeInMillis()));
+    }
+    if (selectedStartItem == null) {
+      return res.getString(
+          R.string.mtrl_picker_range_header_only_end_selected,
+          DateStrings.getDateString(selectedEndItem.getTimeInMillis()));
+    }
+    Pair<String, String> dateRangeStrings =
+        DateStrings.getDateRangeString(
+            selectedStartItem.getTimeInMillis(), selectedEndItem.getTimeInMillis());
+    return res.getString(
+        R.string.mtrl_picker_range_header_selected,
+        dateRangeStrings.first,
+        dateRangeStrings.second);
+  }
+
+  @Override
+  public int getDefaultTitleResId() {
+    return R.string.mtrl_picker_range_header_title;
   }
 
   @Override
@@ -274,14 +327,6 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
     ViewUtils.requestFocusAndShowKeyboard(startEditText);
 
     return root;
-  }
-
-  @Override
-  @NonNull
-  public Pair<Long, Long> getSelection() {
-    return new Pair<>(
-        selectedStartItem == null ? null : selectedStartItem.getTimeInMillis(),
-        selectedEndItem == null ? null : selectedEndItem.getTimeInMillis());
   }
 
   private boolean skipMonth(

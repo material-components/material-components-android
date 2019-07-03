@@ -41,6 +41,7 @@ import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
+import androidx.core.util.Pair;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -50,7 +51,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
 
@@ -60,7 +60,7 @@ import java.util.LinkedHashSet;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
+public class MaterialDatePicker<S> extends DialogFragment {
 
   /**
    * The earliest selectable {@link Month} if {@link CalendarBounds} are not specified: January
@@ -80,7 +80,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   public static final CalendarBounds DEFAULT_BOUNDS =
       CalendarBounds.create(DEFAULT_START, DEFAULT_END);
 
-  private static final String THEME_RES_ID_KEY = "THEME_RES_ID";
+  private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String CALENDAR_BOUNDS_KEY = "CALENDAR_BOUNDS_KEY";
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
@@ -101,21 +101,11 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    * Returns the text to display at the top of the {@link DialogFragment}
    *
    * <p>The text is updated when the Dialog launches and on user clicks.
-   *
-   * @param selection The current user selection
    */
-  public abstract String getHeaderText(@Nullable S selection);
+  public String getHeaderText() {
+    return gridSelector.getSelectionDisplayString(getContext());
+  }
 
-  /** Returns an {@link @AttrRes} to apply as a theme overlay to the DialogFragment */
-  protected abstract int getDefaultThemeAttr();
-
-  /**
-   * Creates the {@link GridSelector} used for the {@link MaterialCalendar} in this {@link
-   * DialogFragment}.
-   */
-  protected abstract GridSelector<S> createGridSelector();
-
-  private SimpleDateFormat userDefinedSimpleDateFormat;
   private final LinkedHashSet<MaterialPickerOnPositiveButtonClickListener<? super S>>
       onPositiveButtonClickListeners = new LinkedHashSet<>();
   private final LinkedHashSet<View.OnClickListener> onNegativeButtonClickListeners =
@@ -125,7 +115,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   private final LinkedHashSet<DialogInterface.OnDismissListener> onDismissListeners =
       new LinkedHashSet<>();
 
-  @StyleRes private int themeResId;
+  @StyleRes private int overrideThemeResId;
   private GridSelector<S> gridSelector;
   private PickerFragment<S> pickerFragment;
   private CalendarBounds calendarBounds;
@@ -136,38 +126,21 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   private CheckableImageButton headerToggleButton;
   private MaterialShapeDrawable background;
 
-  /**
-   * Adds the super class required arguments to the Bundle.
-   *
-   * <p>Call this method in subclasses before the initial call to {@link
-   * DialogFragment#setArguments(Bundle)}
-   *
-   * @param args The Bundle from the subclassing DialogFragment
-   * @param themeResId 0 or a {@link StyleRes} representing a ThemeOverlay
-   */
-  protected static void addArgsToBundle(
-      Bundle args,
-      int themeResId,
-      CalendarBounds calendarBounds,
-      @StringRes int overlineTextResId) {
-    args.putInt(THEME_RES_ID_KEY, themeResId);
-    args.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
-    args.putInt(TITLE_TEXT_RES_ID_KEY, overlineTextResId);
-  }
-
-  @StyleRes
-  private static int getThemeResource(Context context, int defaultThemeAttr, int themeResId) {
-    if (themeResId != 0) {
-      return themeResId;
-    }
-    return MaterialAttributes.resolveOrThrow(
-        context, defaultThemeAttr, MaterialPickerDialogFragment.class.getCanonicalName());
+  static <S> MaterialDatePicker<S> newInstance(MaterialDatePicker.Builder<S> options) {
+    MaterialDatePicker<S> materialDateRangePickerDialogFragment = new MaterialDatePicker<>();
+    Bundle args = new Bundle();
+    args.putInt(OVERRIDE_THEME_RES_ID, options.overrideThemeResId);
+    args.putParcelable(GRID_SELECTOR_KEY, options.gridSelector);
+    args.putParcelable(CALENDAR_BOUNDS_KEY, options.calendarBounds);
+    args.putInt(TITLE_TEXT_RES_ID_KEY, options.titleTextResId);
+    materialDateRangePickerDialogFragment.setArguments(args);
+    return materialDateRangePickerDialogFragment;
   }
 
   @Override
   public final void onSaveInstanceState(Bundle bundle) {
     super.onSaveInstanceState(bundle);
-    bundle.putInt(THEME_RES_ID_KEY, themeResId);
+    bundle.putInt(OVERRIDE_THEME_RES_ID, overrideThemeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
     bundle.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
     bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
@@ -177,28 +150,27 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   public final void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     Bundle activeBundle = bundle == null ? getArguments() : bundle;
-    themeResId =
-        getThemeResource(
-            getContext(), getDefaultThemeAttr(), activeBundle.getInt(THEME_RES_ID_KEY));
+    overrideThemeResId = activeBundle.getInt(OVERRIDE_THEME_RES_ID);
     gridSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
     calendarBounds = activeBundle.getParcelable(CALENDAR_BOUNDS_KEY);
     titleTextResId = activeBundle.getInt(TITLE_TEXT_RES_ID_KEY);
+  }
 
-    if (gridSelector == null) {
-      gridSelector = createGridSelector();
+  private int getThemeResId(Context context) {
+    if (overrideThemeResId != 0) {
+      return overrideThemeResId;
     }
+    return gridSelector.getDefaultThemeResId(context);
   }
 
   @Override
   public final Dialog onCreateDialog(@Nullable Bundle bundle) {
-    Dialog dialog = new Dialog(requireContext(), themeResId);
+    Dialog dialog = new Dialog(requireContext(), getThemeResId(requireContext()));
     Context context = dialog.getContext();
     fullscreen = isFullscreen(context);
     int surfaceColor =
         MaterialAttributes.resolveOrThrow(
-            getContext(),
-            R.attr.colorSurface,
-            MaterialPickerDialogFragment.class.getCanonicalName());
+            getContext(), R.attr.colorSurface, MaterialDatePicker.class.getCanonicalName());
     background =
         new MaterialShapeDrawable(
             context,
@@ -313,30 +285,16 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     return gridSelector.getSelection();
   }
 
-  /**
-   * Sets a user-defined date formatter.
-   *
-   * <p>Useful when the default localized date format is inadequate
-   */
-  public final void setSimpleDateFormat(@Nullable SimpleDateFormat simpleDateFormat) {
-    userDefinedSimpleDateFormat = simpleDateFormat;
-  }
-
-  /** Returns the user-defined date formatter. */
-  @Nullable
-  public final SimpleDateFormat getSimpleDateFormat() {
-    return userDefinedSimpleDateFormat;
-  }
-
   private void updateHeader(S selection) {
-    headerSelectionText.setText(getHeaderText(selection));
+    headerSelectionText.setText(getHeaderText());
   }
 
   private void startPickerFragment() {
     pickerFragment =
         headerToggleButton.isChecked()
             ? MaterialTextInputPicker.newInstance(gridSelector, calendarBounds)
-            : MaterialCalendar.newInstance(gridSelector, themeResId, calendarBounds);
+            : MaterialCalendar.newInstance(
+                gridSelector, getThemeResId(requireContext()), calendarBounds);
     updateHeader(gridSelector.getSelection());
 
     FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
@@ -413,7 +371,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
   /**
    * Removes a listener previously added via {@link
-   * MaterialPickerDialogFragment#addOnPositiveButtonClickListener}.
+   * MaterialDatePicker#addOnPositiveButtonClickListener}.
    */
   public boolean removeOnPositiveButtonClickListener(
       MaterialPickerOnPositiveButtonClickListener<? super S> onPositiveButtonClickListener) {
@@ -421,8 +379,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   /**
-   * Removes all listeners added via {@link
-   * MaterialPickerDialogFragment#addOnPositiveButtonClickListener}.
+   * Removes all listeners added via {@link MaterialDatePicker#addOnPositiveButtonClickListener}.
    */
   public void clearOnPositiveButtonClickListeners() {
     onPositiveButtonClickListeners.clear();
@@ -436,7 +393,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
 
   /**
    * Removes a listener previously added via {@link
-   * MaterialPickerDialogFragment#addOnNegativeButtonClickListener}.
+   * MaterialDatePicker#addOnNegativeButtonClickListener}.
    */
   public boolean removeOnNegativeButtonClickListener(
       View.OnClickListener onNegativeButtonClickListener) {
@@ -444,8 +401,7 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
   }
 
   /**
-   * Removes all listeners added via {@link
-   * MaterialPickerDialogFragment#addOnNegativeButtonClickListener}.
+   * Removes all listeners added via {@link MaterialDatePicker#addOnNegativeButtonClickListener}.
    */
   public void clearOnNegativeButtonClickListeners() {
     onNegativeButtonClickListeners.clear();
@@ -455,21 +411,18 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
    * The supplied listener is called when the user cancels the picker via back button or a touch
    * outside the view. It is not called when the user clicks the cancel button. To add a listener
    * for use when the user clicks the cancel button, use {@link
-   * MaterialPickerDialogFragment#addOnNegativeButtonClickListener}.
+   * MaterialDatePicker#addOnNegativeButtonClickListener}.
    */
   public boolean addOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
     return onCancelListeners.add(onCancelListener);
   }
 
-  /**
-   * Removes a listener previously added via {@link
-   * MaterialPickerDialogFragment#addOnCancelListener}.
-   */
+  /** Removes a listener previously added via {@link MaterialDatePicker#addOnCancelListener}. */
   public boolean removeOnCancelListener(DialogInterface.OnCancelListener onCancelListener) {
     return onCancelListeners.remove(onCancelListener);
   }
 
-  /** Removes all listeners added via {@link MaterialPickerDialogFragment#addOnCancelListener}. */
+  /** Removes all listeners added via {@link MaterialDatePicker#addOnCancelListener}. */
   public void clearOnCancelListeners() {
     onCancelListeners.clear();
   }
@@ -482,16 +435,74 @@ public abstract class MaterialPickerDialogFragment<S> extends DialogFragment {
     return onDismissListeners.add(onDismissListener);
   }
 
-  /**
-   * Removes a listener previously added via {@link
-   * MaterialPickerDialogFragment#addOnDismissListener}.
-   */
+  /** Removes a listener previously added via {@link MaterialDatePicker#addOnDismissListener}. */
   public boolean removeOnDismissListener(DialogInterface.OnDismissListener onDismissListener) {
     return onDismissListeners.remove(onDismissListener);
   }
 
-  /** Removes all listeners added via {@link MaterialPickerDialogFragment#addOnDismissListener}. */
+  /** Removes all listeners added via {@link MaterialDatePicker#addOnDismissListener}. */
   public void clearOnDismissListeners() {
     onDismissListeners.clear();
+  }
+
+  /** Used to create MaterialDatePicker instances with default and overridden settings */
+  public static class Builder<S> {
+
+    final GridSelector<S> gridSelector;
+    int overrideThemeResId = 0;
+
+    CalendarBounds calendarBounds;
+    int titleTextResId = 0;
+
+    private Builder(GridSelector<S> gridSelector) {
+      this.gridSelector = gridSelector;
+    }
+
+    /**
+     * Sets the Builder's selection manager to the provided {@link
+     * com.google.android.material.picker.GridSelector}.
+     */
+    public static <S> Builder<S> customDatePicker(GridSelector<S> gridSelector) {
+      return new Builder<>(gridSelector);
+    }
+
+    /** Used to create a Builder using a {@link DateGridSelector}. */
+    public static Builder<Long> datePicker() {
+      return new Builder<>(new DateGridSelector());
+    }
+
+    /** Used to create a Builder using {@link DateRangeGridSelector}. */
+    public static Builder<Pair<Long, Long>> dateRangePicker() {
+      return new Builder<>(new DateRangeGridSelector());
+    }
+
+    /** Sets the theme controlling fullscreen mode as well as other styles. */
+    public Builder<S> setTheme(@StyleRes int themeResId) {
+      this.overrideThemeResId = themeResId;
+      return this;
+    }
+
+    /** Sets the first, last, and starting {@link Month}. */
+    public Builder<S> setCalendarBounds(CalendarBounds bounds) {
+      this.calendarBounds = bounds;
+      return this;
+    }
+
+    /** Sets the text used to guide the user at the top of the picker. */
+    public Builder<S> setTitleTextResId(@StringRes int titleTextResId) {
+      this.titleTextResId = titleTextResId;
+      return this;
+    }
+
+    /** Creates a {@link MaterialDatePicker} with the provided options. */
+    public MaterialDatePicker<S> build() {
+      if (calendarBounds == null) {
+        calendarBounds = MaterialDatePicker.DEFAULT_BOUNDS;
+      }
+      if (titleTextResId == 0) {
+        titleTextResId = gridSelector.getDefaultTitleResId();
+      }
+      return MaterialDatePicker.newInstance(this);
+    }
   }
 }

@@ -31,6 +31,7 @@ import android.app.Activity;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
+import androidx.core.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,18 +50,18 @@ public final class PickerDialogFragmentTestUtils {
   private static final ViewInteraction onViewPager =
       onView(withTagValue(equalTo(MaterialCalendar.VIEW_PAGER_TAG)));
 
-  public static MaterialDatePickerDialogFragment showDatePicker(
+  public static MaterialDatePicker<Long> showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule) {
     return showDatePicker(activityTestRule, 0);
   }
 
-  public static MaterialDatePickerDialogFragment showDatePicker(
+  public static MaterialDatePicker<Long> showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
       CalendarBounds calendarBounds) {
     return showDatePicker(activityTestRule, 0, calendarBounds);
   }
 
-  public static MaterialDatePickerDialogFragment showDatePicker(
+  public static MaterialDatePicker<Long> showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule, int themeResId) {
 
     Month start = Month.create(1900, Calendar.JANUARY);
@@ -71,32 +72,35 @@ public final class PickerDialogFragmentTestUtils {
     return showDatePicker(activityTestRule, themeResId, calendarBounds);
   }
 
-  public static MaterialDatePickerDialogFragment showDatePicker(
+  public static MaterialDatePicker<Long> showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
       int themeResId,
       CalendarBounds calendarBounds) {
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date DialogFragment";
 
-    MaterialDatePickerDialogFragment dialogFragment =
-        MaterialDatePickerDialogFragment.newInstance(themeResId, calendarBounds);
+    MaterialDatePicker<Long> dialogFragment =
+        MaterialDatePicker.Builder.datePicker()
+            .setCalendarBounds(calendarBounds)
+            .setTheme(themeResId)
+            .build();
     dialogFragment.show(fragmentManager, tag);
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     return dialogFragment;
   }
 
-  public static MaterialDateRangePickerDialogFragment showRangePicker(
+  public static MaterialDatePicker<Pair<Long, Long>> showRangePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule) {
     return showRangePicker(activityTestRule, 0);
   }
 
-  public static MaterialDateRangePickerDialogFragment showRangePicker(
+  public static MaterialDatePicker<Pair<Long, Long>> showRangePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
       CalendarBounds calendarBounds) {
     return showRangePicker(activityTestRule, 0, calendarBounds);
   }
 
-  public static MaterialDateRangePickerDialogFragment showRangePicker(
+  public static MaterialDatePicker<Pair<Long, Long>> showRangePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule, int themeResId) {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
@@ -105,15 +109,18 @@ public final class PickerDialogFragmentTestUtils {
     return showRangePicker(activityTestRule, themeResId, calendarBounds);
   }
 
-  static MaterialDateRangePickerDialogFragment showRangePicker(
+  static MaterialDatePicker<Pair<Long, Long>> showRangePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
       int themeResId,
-      CalendarBounds calendarBound) {
+      CalendarBounds calendarBounds) {
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date Range DialogFragment";
 
-    MaterialDateRangePickerDialogFragment dialogFragment =
-        MaterialDateRangePickerDialogFragment.newInstance(themeResId, calendarBound);
+    MaterialDatePicker<Pair<Long, Long>> dialogFragment =
+        MaterialDatePicker.Builder.dateRangePicker()
+            .setCalendarBounds(calendarBounds)
+            .setTheme(themeResId)
+            .build();
     dialogFragment.show(fragmentManager, tag);
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     return dialogFragment;
@@ -130,12 +137,12 @@ public final class PickerDialogFragmentTestUtils {
   }
 
   static void clickOk() {
-    onView(withTagValue(equalTo(MaterialPickerDialogFragment.CONFIRM_BUTTON_TAG))).perform(click());
+    onView(withTagValue(equalTo(MaterialDatePicker.CONFIRM_BUTTON_TAG))).perform(click());
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
   static void clickCancel() {
-    onView(withTagValue(equalTo(MaterialPickerDialogFragment.CANCEL_BUTTON_TAG))).perform(click());
+    onView(withTagValue(equalTo(MaterialDatePicker.CANCEL_BUTTON_TAG))).perform(click());
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
@@ -162,7 +169,7 @@ public final class PickerDialogFragmentTestUtils {
   }
 
   static void clickHeaderToggle(Fragment fragment) {
-    onView(withTagValue(equalTo(MaterialPickerDialogFragment.TOGGLE_BUTTON_TAG))).perform(click());
+    onView(withTagValue(equalTo(MaterialDatePicker.TOGGLE_BUTTON_TAG))).perform(click());
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     hideAllEditTextCursors(fragment.getView());
   }
