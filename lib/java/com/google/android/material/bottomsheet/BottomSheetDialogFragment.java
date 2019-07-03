@@ -18,6 +18,13 @@ package com.google.android.material.bottomsheet;
 
 import android.app.Dialog;
 import android.os.Bundle;
+import android.view.View;
+
+import com.google.android.material.R;
+
+import java.lang.ref.WeakReference;
+
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.appcompat.app.AppCompatDialogFragment;
 
@@ -30,5 +37,39 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
   @Override
   public Dialog onCreateDialog(Bundle savedInstanceState) {
     return new BottomSheetDialog(getContext(), getTheme());
+  }
+
+  @Override
+  public void dismiss() {
+    Dialog dialog = getDialog();
+    if (dialog != null) {
+      View bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
+      if (bottomSheet != null) {
+        BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
+
+        WeakReference<AppCompatDialogFragment> dialogFragmentWeakReference = new WeakReference<>(this);
+
+        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+          @Override
+          public void onStateChanged(@NonNull View bottomSheet, int newState) {
+            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+              AppCompatDialogFragment dialogFragment = dialogFragmentWeakReference.get();
+              if (dialogFragment != null) {
+                dialogFragment.dismiss();
+              }
+            }
+          }
+
+          @Override
+          public void onSlide(@NonNull View bottomSheet, float slideOffset) { }
+        });
+
+        behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+      } else {
+        super.dismiss();
+      }
+    } else {
+      super.dismiss();
+    }
   }
 }

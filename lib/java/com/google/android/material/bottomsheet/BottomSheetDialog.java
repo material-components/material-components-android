@@ -36,6 +36,9 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
+
+import java.lang.ref.WeakReference;
+
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /** Base class for {@link android.app.Dialog}s styled as a bottom sheet. */
@@ -109,6 +112,49 @@ public class BottomSheetDialog extends AppCompatDialog {
     super.onStart();
     if (behavior != null && behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
       behavior.setState(BottomSheetBehavior.STATE_COLLAPSED);
+    }
+  }
+
+  /**
+   * This function can be called from a few different use cases, including Swiping the dialog down
+   * or calling `dismiss()` from a `BottomSheetDialogFragment`, tapping outside a dialog, etc...
+   *
+   * The default animation to dismiss this dialog is a fade-out transition.
+   * We want to utilize the swipe down dismiss animation for all cases.
+   *
+   * If this function is called from a swipe down interaction, then keep the default behavior.
+   *
+   * Else, since this is a terminal event which will finish this dialog, we override the attached
+   * {@link com.google.android.material.bottomsheet.BottomSheetBehavior.BottomSheetCallback}
+   * to call this function, after {@link BottomSheetBehavior#STATE_HIDDEN} is set.
+   * This will enforce the swipe down animation before canceling this dialog.
+   */
+  @Override
+  public void cancel() {
+    // DialogSheet was swiped down to STATE_HIDDEN, so safe to defer to parent cancel().
+    if (getBehavior().getState() == BottomSheetBehavior.STATE_HIDDEN) {
+      super.cancel();
+    } else {
+      // DialogSheet cancelled through another method.
+      WeakReference<BottomSheetDialog> dialogWeakReference = new WeakReference<>(this);
+
+      BottomSheetBehavior behavior = getBehavior();
+      behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
+        @Override
+        public void onStateChanged(@NonNull View bottomSheet, int newState) {
+          if (newState == BottomSheetBehavior.STATE_HIDDEN) {
+            BottomSheetDialog dialog = dialogWeakReference.get();
+            if (dialog != null) {
+              dialog.cancel();
+            }
+          }
+        }
+
+        @Override
+        public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
+      });
+
+      behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
     }
   }
 
