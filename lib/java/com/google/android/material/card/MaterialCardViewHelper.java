@@ -95,6 +95,12 @@ class MaterialCardViewHelper {
   private final MaterialShapeDrawable bgDrawable; // Will always wrapped in an InsetDrawable
   private final MaterialShapeDrawable
       foregroundContentDrawable; // Will always wrapped in an InsetDrawable
+
+  @Dimension
+  private final int checkedIconMargin;
+  @Dimension
+  private final int checkedIconSize;
+
   private MaterialShapeDrawable foregroundShapeDrawable;
 
   private final MaterialShapeDrawable drawableInsetByStroke;
@@ -137,6 +143,11 @@ class MaterialCardViewHelper {
 
     shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
     drawableInsetByStroke = new MaterialShapeDrawable(shapeAppearanceModelInsetByStroke);
+    Resources resources = card.getResources();
+    // TODO: support custom sizing
+    checkedIconMargin = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin);
+    checkedIconSize = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_size);
+
     cardViewAttributes.recycle();
   }
 
@@ -396,14 +407,10 @@ class MaterialCardViewHelper {
   }
 
   void onMeasure(int measuredWidth, int measuredHeight) {
-    if (materialCardView.isCheckable() && clickableForegroundDrawable != null) {
-      Resources resources = materialCardView.getResources();
-      // TODO: support custom sizing
-      int margin = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin);
-      int size = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_size);
-      int left = measuredWidth - margin - size;
-      int bottom = measuredHeight - margin - size;
-      int right = margin;
+    if (clickableForegroundDrawable != null) {
+      int left = measuredWidth - checkedIconMargin - checkedIconSize;
+      int bottom = measuredHeight - checkedIconMargin - checkedIconSize;
+      int right = checkedIconMargin;
       if (ViewCompat.getLayoutDirection(materialCardView) == ViewCompat.LAYOUT_DIRECTION_RTL) {
         // swap left and right
         int tmp = right;
@@ -412,7 +419,7 @@ class MaterialCardViewHelper {
       }
 
       clickableForegroundDrawable.setLayerInset(
-          CHECKED_ICON_LAYER_INDEX, left, margin /* top */, right, bottom);
+          CHECKED_ICON_LAYER_INDEX, left, checkedIconMargin /* top */, right, bottom);
     }
   }
 
