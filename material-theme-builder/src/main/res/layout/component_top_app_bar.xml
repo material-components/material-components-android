@@ -40,6 +40,7 @@
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginTop="@dimen/keyline_4"
+      app:menu="@menu/top_app_bar_menu"
       app:navigationIcon="@drawable/ic_menu_control_normal_24dp"
       app:title="@string/text_headline_6"
       app:layout_constraintTop_toBottomOf="@+id/label"

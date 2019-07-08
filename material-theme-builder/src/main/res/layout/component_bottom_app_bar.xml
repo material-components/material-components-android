@@ -49,6 +49,7 @@
           android:layout_height="?actionBarSize"
           android:layout_gravity="bottom"
           app:fabAlignmentMode="center"
+          app:menu="@menu/bottom_app_bar_menu"
           app:navigationIcon="@drawable/ic_menu_on_surface_24dp" />
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton

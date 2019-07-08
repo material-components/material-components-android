@@ -21,7 +21,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.FrameLayout
-import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.recyclerview.widget.RecyclerView
@@ -71,16 +70,7 @@ sealed class ComponentViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
   class TopAppBarComponentViewHolder(
     parent: ViewGroup
-  ) : ComponentViewHolder(inflate(parent, R.layout.component_top_app_bar)) {
-    private val toolbar: Toolbar = view.findViewById(R.id.toolbar)
-    override fun bind(component: Component) {
-      toolbar.overflowIcon = ContextCompat.getDrawable(
-        view.context,
-        R.drawable.ic_more_vert_control_normal_24dp
-      )
-      toolbar.inflateMenu(R.menu.top_app_bar_menu)
-    }
-  }
+  ) : ComponentViewHolder(inflate(parent, R.layout.component_top_app_bar))
 
   class ChipComponentViewHolder(
     parent: ViewGroup
@@ -126,10 +116,9 @@ sealed class ComponentViewHolder(val view: View) : RecyclerView.ViewHolder(view)
 
     override fun bind(component: Component) {
       bottomAppBar.overflowIcon = ContextCompat.getDrawable(
-        view.context,
+        bottomAppBar.context,
         R.drawable.ic_more_vert_on_surface_24dp
       )
-      bottomAppBar.replaceMenu(R.menu.bottom_app_bar_menu)
     }
   }
 
