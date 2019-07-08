@@ -1047,8 +1047,8 @@ public class TextInputLayout extends LinearLayout {
 
     indicatorViewController.adjustIndicatorPadding();
 
-    updateIconViewOnEditTextAttached(startIconView);
-    updateIconViewOnEditTextAttached(endIconView);
+    startIconView.bringToFront();
+    endIconView.bringToFront();
     dispatchOnEditTextAttached();
 
     // Update the label visibility with no animation, but force a state change
@@ -2770,26 +2770,6 @@ public class TextInputLayout extends LinearLayout {
         : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
 
     ViewCompat.setImportantForAccessibility(iconView, importantForAccessiblity);
-  }
-
-  private void updateIconViewOnEditTextAttached(@NonNull View iconView) {
-    ViewCompat.setPaddingRelative(
-        iconView, 0, getIconViewPaddingTop(iconView), 0, getIconViewPaddingBottom(iconView));
-    iconView.bringToFront();
-  }
-
-  private int getIconViewPaddingTop(@NonNull View iconView) {
-    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
-      return iconView.getPaddingTop();
-    }
-    return editText != null ? editText.getPaddingTop() : 0;
-  }
-
-  private int getIconViewPaddingBottom(@NonNull View iconView) {
-    if (boxBackgroundMode == BOX_BACKGROUND_FILLED) {
-      return iconView.getPaddingBottom();
-    }
-    return editText != null ? editText.getPaddingBottom() : 0;
   }
 
   @Override
