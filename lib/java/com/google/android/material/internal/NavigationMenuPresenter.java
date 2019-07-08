@@ -89,6 +89,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   /** Padding for separators between items */
   int paddingSeparator;
+  private int overScrollMode = -1;
 
   @Override
   public void initForMenu(Context context, MenuBuilder menu) {
@@ -108,6 +109,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
           new NavigationMenuViewAccessibilityDelegate(menuView));
       if (adapter == null) {
         adapter = new NavigationMenuAdapter();
+      }
+      if (overScrollMode != -1) {
+        menuView.setOverScrollMode(overScrollMode);
       }
       headerLayout =
           (LinearLayout)
@@ -325,6 +329,13 @@ public class NavigationMenuPresenter implements MenuPresenter {
       }
     }
     ViewCompat.dispatchApplyWindowInsets(headerLayout, insets);
+  }
+
+  public void setOverScrollMode(int overScrollMode) {
+    this.overScrollMode = overScrollMode;
+    if (menuView != null) {
+      menuView.setOverScrollMode(overScrollMode);
+    }
   }
 
   private abstract static class ViewHolder extends RecyclerView.ViewHolder {

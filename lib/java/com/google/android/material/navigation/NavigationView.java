@@ -209,6 +209,7 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     presenter.setId(PRESENTER_NAVIGATION_VIEW_ID);
     presenter.initForMenu(context, this.menu);
     presenter.setItemIconTintList(itemIconTint);
+    presenter.setOverScrollMode(getOverScrollMode());
     if (textAppearanceSet) {
       presenter.setItemTextAppearance(textAppearance);
     }
@@ -227,6 +228,14 @@ public class NavigationView extends ScrimInsetsFrameLayout {
     }
 
     a.recycle();
+  }
+
+  @Override
+  public void setOverScrollMode(int overScrollMode) {
+    super.setOverScrollMode(overScrollMode);
+    if (presenter != null) {
+      presenter.setOverScrollMode(overScrollMode);
+    }
   }
 
   private boolean hasShapeAppearance(TintTypedArray a) {
