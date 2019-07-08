@@ -295,8 +295,7 @@ public class ChipDrawable extends MaterialShapeDrawable
    * }</pre>
    */
   public static ChipDrawable createFromResource(Context context, @XmlRes int id) {
-    AttributeSet attrs =
-        com.google.android.material.internal.DrawableUtils.parseDrawableXml(context, id, "chip");
+    AttributeSet attrs = DrawableUtils.parseDrawableXml(context, id, "chip");
     @StyleRes int style = attrs.getStyleAttribute();
     if (style == 0) {
       style = R.style.Widget_MaterialComponents_Chip_Entry;
