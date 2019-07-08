@@ -16,7 +16,10 @@
   -->
 <resources>
 
-  <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary"/>
+  <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
+    <!-- Toolbar should always be within an AppBarLayout which provides the background. -->
+    <item name="android:background">@null</item>
+  </style>
 
   <style name="Widget.Catalog.Toolbar.WithCloseButton" parent="Widget.Catalog.Toolbar">
     <item name="navigationContentDescription">@string/toolbar_navigation_close_description</item>
@@ -33,8 +36,8 @@
   </style>
 
   <style name="ThemeOverlay.Catalog.AppBarLayout" parent="">
-    <item name="android:textColorPrimary">?attr/colorOnPrimary</item>
-    <item name="colorControlNormal">?attr/colorOnPrimary</item>
+    <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
+    <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
   </style>
 
 </resources>

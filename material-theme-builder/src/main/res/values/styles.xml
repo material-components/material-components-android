@@ -37,8 +37,5 @@
     <style name="Widget.MyTheme.NavigationView" parent="Widget.MaterialComponents.NavigationView">
         <item name="itemTextAppearance">?textAppearanceBody2</item>
     </style>
-    
-    <!--Toolbar-->
-    <style name="Widget.MyTheme.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary"/>
 
 </resources>
