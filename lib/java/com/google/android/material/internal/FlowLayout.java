@@ -88,7 +88,8 @@ public class FlowLayout extends ViewGroup {
     this.itemSpacing = itemSpacing;
   }
 
-  protected boolean isSingleLine() {
+  /** Returns whether this chip group is single line or reflowed multiline. */
+  public boolean isSingleLine() {
     return singleLine;
   }
 

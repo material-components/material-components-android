@@ -360,6 +360,20 @@ public class ChipGroup extends FlowLayout {
     setChipSpacingVertical(getResources().getDimensionPixelOffset(id));
   }
 
+  // Need to override here in order to un-restrict access to this method outside of the library.
+  @SuppressWarnings("RedundantOverride")
+  @Override
+  public boolean isSingleLine() {
+    return super.isSingleLine();
+  }
+
+  // Need to override here in order to un-restrict access to this method outside of the library.
+  @SuppressWarnings("RedundantOverride")
+  @Override
+  public void setSingleLine(boolean singleLine) {
+    super.setSingleLine(singleLine);
+  }
+
   /** Sets whether this chip group is single line, or reflowed multiline. */
   public void setSingleLine(@BoolRes int id) {
     setSingleLine(getResources().getBoolean(id));
