@@ -34,5 +34,5 @@ Sync and build the project. All of the library’s modules will be shown in the 
 Run the project by going to ‘Run>Run’ and selecting the ‘material-theme-builder’ run configuration. The project will build and deploy on a device or emulator and will be configured, by default, with the baseline Material theme.
 
 Under the modules ‘res’ folder, open `color.xml`, `type.xml` and `shape.xml`. Each file has detailed comments describing the Material subsystem it controls. Try modifying each subsystem, re-running the app and seeing how changes are propagated throughout the app. 
-d
+
 Once you build your Material theme, move the theme resources (`color.xml` `night/color.xml`, `type.xml`, `shape.xml`, `styles.xml`, `themes.xml` and `night/themes.xml`) over to your app to start using your Material theme in projects.
