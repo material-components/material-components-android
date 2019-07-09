@@ -70,7 +70,15 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-    return gridSelector.onCreateTextInputView(layoutInflater, viewGroup, bundle);
+    return gridSelector.onCreateTextInputView(
+        layoutInflater,
+        viewGroup,
+        bundle,
+        selection -> {
+          for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
+            listener.onSelectionChanged(selection);
+          }
+        });
   }
 
   @Override

@@ -142,6 +142,9 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             calendarBounds,
             day -> {
               gridSelector.select(day);
+              for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
+                listener.onSelectionChanged(gridSelector.getSelection());
+              }
               monthsPager.getAdapter().notifyDataSetChanged();
               if (yearSelector != null) {
                 yearSelector.getAdapter().notifyDataSetChanged();

@@ -32,7 +32,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import java.util.Calendar;
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Interface for users of {@link MaterialCalendar<S>} to control how the Calendar displays and
@@ -59,28 +59,19 @@ public interface GridSelector<S> extends Parcelable {
    */
   void select(Calendar selection);
 
-  /** Adds a listener for selection changes. */
-  boolean addOnSelectionChangedListener(OnSelectionChangedListener<S> listener);
-
-  /** Removes a listener for selection changes. */
-  boolean removeOnSelectionChangedListener(OnSelectionChangedListener<S> listener);
-
-  /** Removes all listeners for selection changes. */
-  void clearOnSelectionChangedListeners();
-
   /**
    * Returns a list of longs whose time value represents days that should be marked selected.
    *
    * <p>Uses {@link R.styleable#MaterialCalendar_daySelectedStyle} for styling.
    */
-  List<Long> getSelectedDays();
+  Collection<Long> getSelectedDays();
 
   /**
    * Returns a list of ranges whose time values represent ranges that should be filled.
    *
    * <p>Uses {@link R.styleable#MaterialCalendar_rangeFillColor} for styling.
    */
-  List<Pair<Long, Long>> getSelectedRanges();
+  Collection<Pair<Long, Long>> getSelectedRanges();
 
   String getSelectionDisplayString(Context context);
 
@@ -93,5 +84,6 @@ public interface GridSelector<S> extends Parcelable {
   View onCreateTextInputView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
-      @Nullable Bundle bundle);
+      @Nullable Bundle bundle,
+      @NonNull OnSelectionChangedListener<S> listener);
 }

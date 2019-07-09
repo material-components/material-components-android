@@ -16,8 +16,27 @@
 package com.google.android.material.picker;
 
 import androidx.fragment.app.Fragment;
+import java.util.LinkedHashSet;
 
 abstract class PickerFragment<S> extends Fragment {
 
+  protected final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
+      new LinkedHashSet<>();
+
   abstract GridSelector<S> getGridSelector();
+
+  /** Adds a listener for selection changes. */
+  boolean addOnSelectionChangedListener(OnSelectionChangedListener<S> listener) {
+    return onSelectionChangedListeners.add(listener);
+  }
+
+  /** Removes a listener for selection changes. */
+  boolean removeOnSelectionChangedListener(OnSelectionChangedListener<S> listener) {
+    return onSelectionChangedListeners.remove(listener);
+  }
+
+  /** Removes all listeners for selection changes. */
+  void clearOnSelectionChangedListeners() {
+    onSelectionChangedListeners.clear();
+  }
 }

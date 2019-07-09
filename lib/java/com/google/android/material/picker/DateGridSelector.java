@@ -37,8 +37,7 @@ import com.google.android.material.internal.ViewUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 
 /**
@@ -49,39 +48,20 @@ import java.util.Locale;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DateGridSelector implements GridSelector<Long> {
 
-  private final LinkedHashSet<OnSelectionChangedListener<Long>> onSelectionChangedListeners =
-      new LinkedHashSet<>();
-
   @Nullable private Calendar selectedItem;
 
   @Override
   public void select(Calendar selection) {
     selectedItem = selection;
-    GridSelectors.notifyListeners(this, onSelectionChangedListeners);
   }
 
   @Override
-  public boolean addOnSelectionChangedListener(OnSelectionChangedListener<Long> listener) {
-    return onSelectionChangedListeners.add(listener);
-  }
-
-  @Override
-  public boolean removeOnSelectionChangedListener(OnSelectionChangedListener<Long> listener) {
-    return onSelectionChangedListeners.remove(listener);
-  }
-
-  @Override
-  public void clearOnSelectionChangedListeners() {
-    onSelectionChangedListeners.clear();
-  }
-
-  @Override
-  public List<Pair<Long, Long>> getSelectedRanges() {
+  public Collection<Pair<Long, Long>> getSelectedRanges() {
     return new ArrayList<>();
   }
 
   @Override
-  public List<Long> getSelectedDays() {
+  public Collection<Long> getSelectedDays() {
     ArrayList<Long> selections = new ArrayList<>();
     if (selectedItem != null) {
       selections.add(selectedItem.getTimeInMillis());
@@ -99,7 +79,8 @@ public class DateGridSelector implements GridSelector<Long> {
   public View onCreateTextInputView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
-      @Nullable Bundle bundle) {
+      @Nullable Bundle bundle,
+      @NonNull OnSelectionChangedListener<Long> listener) {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_text_input_date, viewGroup, false);
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
@@ -119,6 +100,7 @@ public class DateGridSelector implements GridSelector<Long> {
           @Override
           void onDateChanged(@Nullable Calendar calendar) {
             select(calendar);
+            listener.onSelectionChanged(getSelection());
           }
         });
 

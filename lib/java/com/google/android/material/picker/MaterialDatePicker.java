@@ -252,7 +252,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
 
   @Override
   public void onStop() {
-    pickerFragment.getGridSelector().clearOnSelectionChangedListeners();
+    pickerFragment.clearOnSelectionChangedListeners();
     super.onStop();
   }
 
@@ -301,7 +301,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
     fragmentTransaction.replace(R.id.mtrl_calendar_frame, pickerFragment);
     fragmentTransaction.commitNow();
 
-    pickerFragment.getGridSelector().addOnSelectionChangedListener(this::updateHeader);
+    pickerFragment.addOnSelectionChangedListener(this::updateHeader);
   }
 
   private void initHeaderToggle(Context context) {

@@ -37,8 +37,7 @@ import com.google.android.material.internal.ViewUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.LinkedHashSet;
-import java.util.List;
+import java.util.Collection;
 import java.util.Locale;
 
 /**
@@ -49,9 +48,6 @@ import java.util.Locale;
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
-
-  private final LinkedHashSet<OnSelectionChangedListener<Pair<Long, Long>>>
-      onSelectionChangedListeners = new LinkedHashSet<>();
 
   @Nullable private Calendar selectedStartItem = null;
   @Nullable private Calendar selectedEndItem = null;
@@ -67,7 +63,6 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
       selectedEndItem = null;
       selectedStartItem = selection;
     }
-    GridSelectors.notifyListeners(this, onSelectionChangedListeners);
   }
 
   @Override
@@ -79,7 +74,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
   }
 
   @Override
-  public List<Pair<Long, Long>> getSelectedRanges() {
+  public Collection<Pair<Long, Long>> getSelectedRanges() {
     if (selectedStartItem == null || selectedEndItem == null) {
       return new ArrayList<>();
     }
@@ -91,7 +86,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
   }
 
   @Override
-  public List<Long> getSelectedDays() {
+  public Collection<Long> getSelectedDays() {
     ArrayList<Long> selections = new ArrayList<>();
     if (selectedStartItem != null) {
       selections.add(selectedStartItem.getTimeInMillis());
@@ -146,27 +141,11 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
   }
 
   @Override
-  public boolean addOnSelectionChangedListener(
-      OnSelectionChangedListener<Pair<Long, Long>> listener) {
-    return onSelectionChangedListeners.add(listener);
-  }
-
-  @Override
-  public boolean removeOnSelectionChangedListener(
-      OnSelectionChangedListener<Pair<Long, Long>> listener) {
-    return onSelectionChangedListeners.remove(listener);
-  }
-
-  @Override
-  public void clearOnSelectionChangedListeners() {
-    onSelectionChangedListeners.clear();
-  }
-
-  @Override
   public View onCreateTextInputView(
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
-      @Nullable Bundle bundle) {
+      @Nullable Bundle bundle,
+      @NonNull OnSelectionChangedListener<Pair<Long, Long>> listener) {
     View root =
         layoutInflater.inflate(R.layout.mtrl_picker_text_input_date_range, viewGroup, false);
 
@@ -193,7 +172,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
           @Override
           void onDateChanged(@Nullable Calendar calendar) {
             selectedStartItem = calendar;
-            GridSelectors.notifyListeners(DateRangeGridSelector.this, onSelectionChangedListeners);
+            listener.onSelectionChanged(getSelection());
           }
         });
     endEditText.addTextChangedListener(
@@ -201,7 +180,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
           @Override
           void onDateChanged(@Nullable Calendar calendar) {
             selectedEndItem = calendar;
-            GridSelectors.notifyListeners(DateRangeGridSelector.this, onSelectionChangedListeners);
+            listener.onSelectionChanged(getSelection());
           }
         });
 
