@@ -31,8 +31,10 @@ import androidx.annotation.ColorInt;
 import androidx.annotation.ColorRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.DrawableRes;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import com.google.android.material.shape.Shapeable;
@@ -237,6 +239,27 @@ public class MaterialCardView extends CardView implements Checkable, Shapeable {
 
   float getCardViewRadius() {
     return MaterialCardView.super.getRadius();
+  }
+
+
+  /**
+   * Sets the interpolation on the Shape Path of the card. Useful for animations.
+   * @see MaterialShapeDrawable#setInterpolation(float)
+   * @see ShapeAppearanceModel
+   */
+  public void setProgress(@FloatRange(from = 0f, to = 1f) float progress) {
+    cardViewHelper.setProgress(progress);
+  }
+
+
+  /**
+   * Returns the interpolation on the Shape Path of the card.
+   * @see MaterialShapeDrawable#getInterpolation()
+   * @see ShapeAppearanceModel
+   */
+  @FloatRange(from = 0f, to = 1f)
+  public float getProgress() {
+    return cardViewHelper.getProgress();
   }
 
   @Override

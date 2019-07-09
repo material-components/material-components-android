@@ -37,6 +37,7 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -286,6 +287,22 @@ class MaterialCardViewHelper {
 
   float getCornerRadius() {
     return shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+  }
+
+  void setProgress(@FloatRange(from = 0f, to = 1f) float progress) {
+    bgDrawable.setInterpolation(progress);
+    if (foregroundContentDrawable != null) {
+      foregroundContentDrawable.setInterpolation(progress);
+    }
+
+    if (foregroundShapeDrawable != null) {
+      foregroundShapeDrawable.setInterpolation(progress);
+    }
+  }
+
+  @FloatRange(from = 0f, to = 1f)
+  float getProgress() {
+    return bgDrawable.getInterpolation();
   }
 
   void updateElevation() {
