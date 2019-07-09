@@ -33,18 +33,18 @@ import android.view.ViewGroup;
 public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
 
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
-  private static final String CALENDAR_BOUNDS_KEY = "CALENDAR_BOUNDS_KEY";
+  private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
 
   private GridSelector<S> gridSelector;
-  // TODO: make use of calendarBounds or delete
-  private CalendarBounds calendarBounds;
+  // TODO: make use of calendarConstraints or delete
+  private CalendarConstraints calendarConstraints;
 
   static <T> MaterialTextInputPicker<T> newInstance(
-      GridSelector<T> gridSelector, CalendarBounds calendarBounds) {
+      GridSelector<T> gridSelector, CalendarConstraints calendarConstraints) {
     MaterialTextInputPicker<T> materialCalendar = new MaterialTextInputPicker<>();
     Bundle args = new Bundle();
     args.putParcelable(GRID_SELECTOR_KEY, gridSelector);
-    args.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
+    args.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
     materialCalendar.setArguments(args);
     return materialCalendar;
   }
@@ -53,7 +53,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   public void onSaveInstanceState(@NonNull Bundle bundle) {
     super.onSaveInstanceState(bundle);
     bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
-    bundle.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
+    bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
   }
 
   @Override
@@ -61,7 +61,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
     super.onCreate(bundle);
     Bundle activeBundle = bundle == null ? getArguments() : bundle;
     gridSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
-    calendarBounds = activeBundle.getParcelable(CALENDAR_BOUNDS_KEY);
+    calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
   }
 
   @NonNull

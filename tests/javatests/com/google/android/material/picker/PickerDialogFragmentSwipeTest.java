@@ -45,12 +45,12 @@ public class PickerDialogFragmentSwipeTest {
 
   @Before
   public void setupDatePickerDialogForSwiping() {
-    CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
+    CalendarConstraints calendarConstraints = CalendarConstraints.create(start, end, current);
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date DialogFragment";
 
     dialogFragment =
-        MaterialDatePicker.Builder.datePicker().setCalendarBounds(calendarBounds).build();
+        MaterialDatePicker.Builder.datePicker().setCalendarConstraints(calendarConstraints).build();
     dialogFragment.show(fragmentManager, tag);
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     IdlingRegistry.getInstance()

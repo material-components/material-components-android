@@ -62,20 +62,15 @@ final class CalendarStyle {
    */
   final CalendarItemStyle todayYear;
 
+  final CalendarItemStyle invalidDay;
+
   /**
    * A {@link Paint} for styling days between selected days with {@link
    * R.styleable#MaterialCalendar_rangeFillColor}.
    */
   final Paint rangeFill;
 
-  private final Context context;
-
-  boolean refreshStyles(Context context) {
-    return !this.context.equals(context);
-  }
-
   CalendarStyle(Context context) {
-    this.context = context;
     int calendarStyle =
         MaterialAttributes.resolveOrThrow(
             context, R.attr.materialCalendarStyle, MaterialCalendar.class.getCanonicalName());
@@ -85,6 +80,10 @@ final class CalendarStyle {
     day =
         CalendarItemStyle.create(
             context, calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayStyle, 0));
+    invalidDay =
+        CalendarItemStyle.create(
+            context,
+            calendarAttributes.getResourceId(R.styleable.MaterialCalendar_dayInvalidStyle, 0));
     selectedDay =
         CalendarItemStyle.create(
             context,

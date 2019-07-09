@@ -63,6 +63,7 @@ public class PickerMainDemoFragment extends DemoFragment {
         dialogLaunchersLayout,
         R.string.cat_picker_date_calendar_fullscreen,
         MaterialDatePicker.Builder.datePicker().setTheme(fullscreenTheme));
+
     setupDialogFragment(
         dialogLaunchersLayout,
         R.string.cat_picker_date_range_calendar,

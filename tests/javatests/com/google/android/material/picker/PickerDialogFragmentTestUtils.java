@@ -57,8 +57,8 @@ public final class PickerDialogFragmentTestUtils {
 
   public static MaterialDatePicker<Long> showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
-      CalendarBounds calendarBounds) {
-    return showDatePicker(activityTestRule, 0, calendarBounds);
+      CalendarConstraints calendarConstraints) {
+    return showDatePicker(activityTestRule, 0, calendarConstraints);
   }
 
   public static MaterialDatePicker<Long> showDatePicker(
@@ -67,21 +67,21 @@ public final class PickerDialogFragmentTestUtils {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
     Month current = Month.create(2018, Calendar.APRIL);
-    CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
+    CalendarConstraints calendarConstraints = CalendarConstraints.create(start, end, current);
 
-    return showDatePicker(activityTestRule, themeResId, calendarBounds);
+    return showDatePicker(activityTestRule, themeResId, calendarConstraints);
   }
 
   public static MaterialDatePicker<Long> showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
       int themeResId,
-      CalendarBounds calendarBounds) {
+      CalendarConstraints calendarConstraints) {
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date DialogFragment";
 
     MaterialDatePicker<Long> dialogFragment =
         MaterialDatePicker.Builder.datePicker()
-            .setCalendarBounds(calendarBounds)
+            .setCalendarConstraints(calendarConstraints)
             .setTheme(themeResId)
             .build();
     dialogFragment.show(fragmentManager, tag);
@@ -96,8 +96,8 @@ public final class PickerDialogFragmentTestUtils {
 
   public static MaterialDatePicker<Pair<Long, Long>> showRangePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
-      CalendarBounds calendarBounds) {
-    return showRangePicker(activityTestRule, 0, calendarBounds);
+      CalendarConstraints calendarConstraints) {
+    return showRangePicker(activityTestRule, 0, calendarConstraints);
   }
 
   public static MaterialDatePicker<Pair<Long, Long>> showRangePicker(
@@ -105,22 +105,34 @@ public final class PickerDialogFragmentTestUtils {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
     Month current = Month.create(2018, Calendar.APRIL);
-    CalendarBounds calendarBounds = CalendarBounds.create(start, end, current);
-    return showRangePicker(activityTestRule, themeResId, calendarBounds);
+    CalendarConstraints calendarConstraints = CalendarConstraints.create(start, end, current);
+    return showRangePicker(activityTestRule, themeResId, calendarConstraints);
   }
 
   static MaterialDatePicker<Pair<Long, Long>> showRangePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule,
       int themeResId,
-      CalendarBounds calendarBounds) {
+      CalendarConstraints calendarConstraints) {
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date Range DialogFragment";
 
     MaterialDatePicker<Pair<Long, Long>> dialogFragment =
         MaterialDatePicker.Builder.dateRangePicker()
-            .setCalendarBounds(calendarBounds)
+            .setCalendarConstraints(calendarConstraints)
             .setTheme(themeResId)
             .build();
+    dialogFragment.show(fragmentManager, tag);
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+    return dialogFragment;
+  }
+
+  static <S> MaterialDatePicker<S> showPicker(
+      ActivityTestRule<? extends AppCompatActivity> activityTestRule,
+      MaterialDatePicker.Builder<S> builder) {
+    FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
+    String tag = "Date Range DialogFragment";
+
+    MaterialDatePicker<S> dialogFragment = builder.build();
     dialogFragment.show(fragmentManager, tag);
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     return dialogFragment;
@@ -155,6 +167,7 @@ public final class PickerDialogFragmentTestUtils {
     } else {
       onViewPager.perform(swipeDown());
     }
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
   static void swipeLater(DialogFragment dialogFragment) {
@@ -166,6 +179,7 @@ public final class PickerDialogFragmentTestUtils {
     } else {
       onViewPager.perform(swipeUp());
     }
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
   static void clickHeaderToggle(Fragment fragment) {

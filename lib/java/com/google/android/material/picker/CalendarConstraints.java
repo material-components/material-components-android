@@ -27,19 +27,28 @@ import java.util.Arrays;
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public final class CalendarBounds implements Parcelable {
+public final class CalendarConstraints implements Parcelable {
 
   private final Month start;
   private final Month end;
   private final Month current;
+  private final DateValidator validator;
 
   private final int yearSpan;
   private final int monthSpan;
 
-  private CalendarBounds(Month start, Month end, Month current) {
+  /** Used to determine whether {@link MaterialCalendar} days are enabled. */
+  public interface DateValidator extends Parcelable {
+
+    /** Returns true if the provided {@code date} is enabled. */
+    boolean isValid(long date);
+  }
+
+  private CalendarConstraints(Month start, Month end, Month current, DateValidator validator) {
     this.start = start;
     this.end = end;
     this.current = current;
+    this.validator = validator;
     if (start.compareTo(current) > 0) {
       throw new IllegalArgumentException("start Month cannot be after current Month");
     }
@@ -51,23 +60,37 @@ public final class CalendarBounds implements Parcelable {
   }
 
   /**
-   * Creates a CalendarBounds instance which opens onto {@code current} and is bounded between
-   * {@code start} and {@code end}.
+   * Creates a CalendarConstraints instance that opens on today if it is within the bounds or {@code
+   * start} if today is not within the bounds.
    */
-  public static CalendarBounds create(Month start, Month end, Month current) {
-    return new CalendarBounds(start, end, current);
+  public static CalendarConstraints create(Month start, Month end) {
+    Month today = Month.today();
+    if (end.compareTo(today) >= 0 && today.compareTo(start) >= 0) {
+      return create(start, end, Month.today());
+    }
+    return create(start, end, start);
   }
 
   /**
-   * Creates a CalendarBounds instance that opens on today if it is within the bounds or {@code
-   * start} if today is not within the bounds.
+   * Creates a CalendarConstraints instance which opens onto {@code current} and is bounded between
+   * {@code start} and {@code end}.
    */
-  public static CalendarBounds create(Month start, Month end) {
-    Month today = Month.today();
-    if (end.compareTo(today) >= 0 && today.compareTo(start) >= 0) {
-      return new CalendarBounds(start, end, Month.today());
-    }
-    return new CalendarBounds(start, end, start);
+  public static CalendarConstraints create(Month start, Month end, Month current) {
+    return create(start, end, current, new DateValidatorPointForward(0));
+  }
+
+  /**
+   * Creates a CalendarConstraints instance which opens onto {@code current}, is bounded between
+   * {@code start} and {@code end}, and disables dates for which {@link DateValidator#isValid(long)}
+   * is false.
+   */
+  public static CalendarConstraints create(
+      Month start, Month end, Month current, DateValidator validator) {
+    return new CalendarConstraints(start, end, current, validator);
+  }
+
+  public DateValidator getDateValidator() {
+    return validator;
   }
 
   /** Returns the earliest {@link Month} allowed by this set of bounds. */
@@ -106,10 +129,10 @@ public final class CalendarBounds implements Parcelable {
     if (this == o) {
       return true;
     }
-    if (!(o instanceof CalendarBounds)) {
+    if (!(o instanceof CalendarConstraints)) {
       return false;
     }
-    CalendarBounds that = (CalendarBounds) o;
+    CalendarConstraints that = (CalendarConstraints) o;
     return start.equals(that.start) && end.equals(that.end) && current.equals(that.current);
   }
 
@@ -122,19 +145,20 @@ public final class CalendarBounds implements Parcelable {
   /* Parcelable interface */
 
   /** {@link Parcelable.Creator} */
-  public static final Parcelable.Creator<CalendarBounds> CREATOR =
-      new Parcelable.Creator<CalendarBounds>() {
+  public static final Parcelable.Creator<CalendarConstraints> CREATOR =
+      new Parcelable.Creator<CalendarConstraints>() {
         @Override
-        public CalendarBounds createFromParcel(Parcel source) {
+        public CalendarConstraints createFromParcel(Parcel source) {
           Month start = source.readParcelable(Month.class.getClassLoader());
           Month end = source.readParcelable(Month.class.getClassLoader());
           Month current = source.readParcelable(Month.class.getClassLoader());
-          return CalendarBounds.create(start, end, current);
+          DateValidator validator = source.readParcelable(DateValidator.class.getClassLoader());
+          return CalendarConstraints.create(start, end, current, validator);
         }
 
         @Override
-        public CalendarBounds[] newArray(int size) {
-          return new CalendarBounds[size];
+        public CalendarConstraints[] newArray(int size) {
+          return new CalendarConstraints[size];
         }
       };
 
@@ -148,5 +172,6 @@ public final class CalendarBounds implements Parcelable {
     dest.writeParcelable(start, /* parcelableFlags= */ 0);
     dest.writeParcelable(end, /* parcelableFlags= */ 0);
     dest.writeParcelable(current, /* parcelableFlags= */ 0);
+    dest.writeParcelable(validator, /* parcelableFlags = */ 0);
   }
 }

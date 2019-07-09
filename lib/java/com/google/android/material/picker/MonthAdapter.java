@@ -47,10 +47,12 @@ class MonthAdapter extends BaseAdapter {
   final GridSelector<?> gridSelector;
 
   CalendarStyle calendarStyle;
+  final CalendarConstraints calendarConstraints;
 
-  MonthAdapter(Month month, GridSelector<?> gridSelector) {
+  MonthAdapter(Month month, GridSelector<?> gridSelector, CalendarConstraints calendarConstraints) {
     this.month = month;
     this.gridSelector = gridSelector;
+    this.calendarConstraints = calendarConstraints;
   }
 
   /**
@@ -103,15 +105,22 @@ class MonthAdapter extends BaseAdapter {
       day.setTag(month);
       day.setVisibility(View.VISIBLE);
     }
+
     Calendar content = getItem(position);
     if (content != null) {
       long date = content.getTimeInMillis();
-      if (gridSelector.getSelectedDays().contains(date)) {
-        calendarStyle.selectedDay.styleItem(day);
-      } else if (DateUtils.isToday(date)) {
-        calendarStyle.todayDay.styleItem(day);
+      if (calendarConstraints.getDateValidator().isValid(date)) {
+        day.setEnabled(true);
+        if (gridSelector.getSelectedDays().contains(date)) {
+          calendarStyle.selectedDay.styleItem(day);
+        } else if (DateUtils.isToday(date)) {
+          calendarStyle.todayDay.styleItem(day);
+        } else {
+          calendarStyle.day.styleItem(day);
+        }
       } else {
-        calendarStyle.day.styleItem(day);
+        day.setEnabled(false);
+        calendarStyle.invalidDay.styleItem(day);
       }
     }
     return day;

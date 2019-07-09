@@ -63,26 +63,26 @@ import java.util.LinkedHashSet;
 public class MaterialDatePicker<S> extends DialogFragment {
 
   /**
-   * The earliest selectable {@link Month} if {@link CalendarBounds} are not specified: January
+   * The earliest selectable {@link Month} if {@link CalendarConstraints} are not specified: January
    * 1900.
    */
   public static final Month DEFAULT_START = Month.create(1900, Calendar.JANUARY);
   /**
-   * The earliest selectable {@link Month} if {@link CalendarBounds} are not specified: December
-   * 2100.
+   * The earliest selectable {@link Month} if {@link CalendarConstraints} are not specified:
+   * December 2100.
    */
   public static final Month DEFAULT_END = Month.create(2100, Calendar.DECEMBER);
 
   /**
-   * The default {@link CalendarBounds}: starting at {@code DEFAULT_START}, ending at {@code
+   * The default {@link CalendarConstraints}: starting at {@code DEFAULT_START}, ending at {@code
    * DEFAULT_END}, and opening on {@link Month#today()}
    */
-  public static final CalendarBounds DEFAULT_BOUNDS =
-      CalendarBounds.create(DEFAULT_START, DEFAULT_END);
+  public static final CalendarConstraints DEFAULT_BOUNDS =
+      CalendarConstraints.create(DEFAULT_START, DEFAULT_END);
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
-  private static final String CALENDAR_BOUNDS_KEY = "CALENDAR_BOUNDS_KEY";
+  private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
 
   @VisibleForTesting
@@ -118,7 +118,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
   @StyleRes private int overrideThemeResId;
   private GridSelector<S> gridSelector;
   private PickerFragment<S> pickerFragment;
-  private CalendarBounds calendarBounds;
+  private CalendarConstraints calendarConstraints;
   @StringRes private int titleTextResId;
   private boolean fullscreen;
 
@@ -131,7 +131,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
     Bundle args = new Bundle();
     args.putInt(OVERRIDE_THEME_RES_ID, options.overrideThemeResId);
     args.putParcelable(GRID_SELECTOR_KEY, options.gridSelector);
-    args.putParcelable(CALENDAR_BOUNDS_KEY, options.calendarBounds);
+    args.putParcelable(CALENDAR_CONSTRAINTS_KEY, options.calendarConstraints);
     args.putInt(TITLE_TEXT_RES_ID_KEY, options.titleTextResId);
     materialDatePickerDialogFragment.setArguments(args);
     return materialDatePickerDialogFragment;
@@ -142,7 +142,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
     super.onSaveInstanceState(bundle);
     bundle.putInt(OVERRIDE_THEME_RES_ID, overrideThemeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
-    bundle.putParcelable(CALENDAR_BOUNDS_KEY, calendarBounds);
+    bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
     bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
   }
 
@@ -152,7 +152,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
     Bundle activeBundle = bundle == null ? getArguments() : bundle;
     overrideThemeResId = activeBundle.getInt(OVERRIDE_THEME_RES_ID);
     gridSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
-    calendarBounds = activeBundle.getParcelable(CALENDAR_BOUNDS_KEY);
+    calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
     titleTextResId = activeBundle.getInt(TITLE_TEXT_RES_ID_KEY);
   }
 
@@ -292,9 +292,9 @@ public class MaterialDatePicker<S> extends DialogFragment {
   private void startPickerFragment() {
     pickerFragment =
         headerToggleButton.isChecked()
-            ? MaterialTextInputPicker.newInstance(gridSelector, calendarBounds)
+            ? MaterialTextInputPicker.newInstance(gridSelector, calendarConstraints)
             : MaterialCalendar.newInstance(
-                gridSelector, getThemeResId(requireContext()), calendarBounds);
+                gridSelector, getThemeResId(requireContext()), calendarConstraints);
     updateHeader(gridSelector.getSelection());
 
     FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
@@ -451,7 +451,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
     final GridSelector<S> gridSelector;
     int overrideThemeResId = 0;
 
-    CalendarBounds calendarBounds;
+    CalendarConstraints calendarConstraints;
     int titleTextResId = 0;
 
     private Builder(GridSelector<S> gridSelector) {
@@ -483,8 +483,8 @@ public class MaterialDatePicker<S> extends DialogFragment {
     }
 
     /** Sets the first, last, and starting {@link Month}. */
-    public Builder<S> setCalendarBounds(CalendarBounds bounds) {
-      this.calendarBounds = bounds;
+    public Builder<S> setCalendarConstraints(CalendarConstraints bounds) {
+      this.calendarConstraints = bounds;
       return this;
     }
 
@@ -496,8 +496,8 @@ public class MaterialDatePicker<S> extends DialogFragment {
 
     /** Creates a {@link MaterialDatePicker} with the provided options. */
     public MaterialDatePicker<S> build() {
-      if (calendarBounds == null) {
-        calendarBounds = MaterialDatePicker.DEFAULT_BOUNDS;
+      if (calendarConstraints == null) {
+        calendarConstraints = MaterialDatePicker.DEFAULT_BOUNDS;
       }
       if (titleTextResId == 0) {
         titleTextResId = gridSelector.getDefaultTitleResId();

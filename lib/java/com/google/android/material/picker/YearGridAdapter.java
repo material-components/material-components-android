@@ -74,7 +74,8 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
 
   private OnClickListener createYearClickListener(int year) {
     return view -> {
-      Month moveTo = Month.create(year, materialCalendar.getCalendarBounds().getCurrent().month);
+      Month moveTo =
+          Month.create(year, materialCalendar.getCalendarConstraints().getCurrent().month);
       materialCalendar.setCurrentMonth(moveTo);
       materialCalendar.setSelector(CalendarSelector.DAY);
     };
@@ -82,14 +83,14 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
 
   @Override
   public int getItemCount() {
-    return materialCalendar.getCalendarBounds().getYearSpan();
+    return materialCalendar.getCalendarConstraints().getYearSpan();
   }
 
   int getPositionForYear(int year) {
-    return year - materialCalendar.getCalendarBounds().getStart().year;
+    return year - materialCalendar.getCalendarConstraints().getStart().year;
   }
 
   int getYearForPosition(int position) {
-    return materialCalendar.getCalendarBounds().getStart().year + position;
+    return materialCalendar.getCalendarConstraints().getStart().year + position;
   }
 }

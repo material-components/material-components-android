@@ -40,10 +40,12 @@ public class MonthFragment extends Fragment {
 
   private static final String MONTH_KEY = "MONTH_KEY";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
+  private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
 
   private Month month;
   private MonthAdapter monthAdapter;
   private GridSelector<?> gridSelector;
+  private CalendarConstraints calendarConstraints;
   // Set as part of Lifecycle.Event#onCreate
   private OnDayClickListener onDayClickListener;
 
@@ -57,11 +59,13 @@ public class MonthFragment extends Fragment {
    * @param month The {@link Month} this {@link MonthFragment} displays data for
    * @param gridSelector The {@link GridSelector} used to highlight and mark the {@link GridView}
    */
-  public static MonthFragment newInstance(Month month, GridSelector<?> gridSelector) {
+  public static MonthFragment newInstance(
+      Month month, GridSelector<?> gridSelector, CalendarConstraints calendarConstraints) {
     MonthFragment monthFragment = new MonthFragment();
     Bundle arguments = new Bundle();
     arguments.putParcelable(MONTH_KEY, month);
     arguments.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    arguments.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
     monthFragment.setArguments(arguments);
     return monthFragment;
   }
@@ -71,6 +75,7 @@ public class MonthFragment extends Fragment {
     super.onCreate(savedInstanceState);
     month = getArguments().getParcelable(MONTH_KEY);
     gridSelector = getArguments().getParcelable(GRID_SELECTOR_KEY);
+    calendarConstraints = getArguments().getParcelable(CALENDAR_CONSTRAINTS_KEY);
   }
 
   @Override
@@ -78,7 +83,7 @@ public class MonthFragment extends Fragment {
       LayoutInflater layoutInflater, ViewGroup root, Bundle savedInstanceState) {
     Context context = getParentFragment().getView().getContext();
     LayoutInflater themedInflater = LayoutInflater.from(context);
-    monthAdapter = new MonthAdapter(month, gridSelector);
+    monthAdapter = new MonthAdapter(month, gridSelector, calendarConstraints);
 
     final int layout;
     if (MaterialDatePicker.isFullscreen(context)) {

@@ -37,7 +37,7 @@ import java.util.List;
  */
 class MonthsPagerAdapter extends FragmentStateAdapter {
 
-  private final CalendarBounds calendarBounds;
+  private final CalendarConstraints calendarConstraints;
   private final int startIndex;
   private final GridSelector<?> gridSelector;
   private final SparseArray<AdapterDataObserver> observingFragments = new SparseArray<>();
@@ -55,20 +55,20 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
    *     Fragment#getLifecycle()} and {@see FragmentActivity#getLifecycle()}.
    * @param gridSelector The {@link GridSelector} that controls selection and highlights for all
    *     {@link MonthFragment} objects.
-   * @param calendarBounds The {@link CalendarBounds} that specifies the valid range and starting
-   *     point for selection.
+   * @param calendarConstraints The {@link CalendarConstraints} that specifies the valid range and
+   *     starting point for selection.
    */
   MonthsPagerAdapter(
       Context context,
       FragmentManager fragmentManager,
       Lifecycle lifecycle,
       GridSelector<?> gridSelector,
-      CalendarBounds calendarBounds,
+      CalendarConstraints calendarConstraints,
       OnDayClickListener onDayClickListener) {
     super(fragmentManager, lifecycle);
-    Month firstPage = calendarBounds.getStart();
-    Month lastPage = calendarBounds.getEnd();
-    Month currentPage = calendarBounds.getCurrent();
+    Month firstPage = calendarConstraints.getStart();
+    Month lastPage = calendarConstraints.getEnd();
+    Month currentPage = calendarConstraints.getCurrent();
 
     if (firstPage.compareTo(currentPage) > 0) {
       throw new IllegalArgumentException("firstPage cannot be after currentPage");
@@ -82,7 +82,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
         MaterialDatePicker.isFullscreen(context) ? MaterialCalendar.getDayHeight(context) : 0;
 
     this.itemHeight = daysHeight + labelHeight;
-    this.calendarBounds = calendarBounds;
+    this.calendarConstraints = calendarConstraints;
     startIndex = firstPage.monthsUntil(currentPage);
     this.gridSelector = gridSelector;
     this.onDayClickListener = onDayClickListener;
@@ -104,13 +104,16 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
 
   @Override
   public int getItemCount() {
-    return calendarBounds.getMonthSpan();
+    return calendarConstraints.getMonthSpan();
   }
 
   @Override
   public MonthFragment createFragment(final int position) {
     final MonthFragment monthFragment =
-        MonthFragment.newInstance(calendarBounds.getStart().monthsLater(position), gridSelector);
+        MonthFragment.newInstance(
+            calendarConstraints.getStart().monthsLater(position),
+            gridSelector,
+            calendarConstraints);
 
     monthFragment
         .getLifecycle()
@@ -154,10 +157,10 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
   }
 
   Month getPageMonth(int position) {
-    return calendarBounds.getStart().monthsLater(position);
+    return calendarConstraints.getStart().monthsLater(position);
   }
 
   int getPosition(Month month) {
-    return calendarBounds.getStart().monthsUntil(month);
+    return calendarConstraints.getStart().monthsUntil(month);
   }
 }

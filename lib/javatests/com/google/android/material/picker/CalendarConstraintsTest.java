@@ -27,7 +27,7 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
-public class CalendarBoundsTest {
+public class CalendarConstraintsTest {
 
   private static final Month FEB_2016 = Month.create(2016, Calendar.FEBRUARY);
   private static final Month MARCH_2016 = Month.create(2016, Calendar.MARCH);
@@ -37,10 +37,10 @@ public class CalendarBoundsTest {
 
   @Test
   public void equalAfterParceling() {
-    CalendarBounds originalBounds =
-        CalendarBounds.create(/* start= */ FEB_2016, /* end= */ APRIL_2016);
-    CalendarBounds constructedBounds =
-        ParcelableTestUtils.parcelAndCreate(originalBounds, CalendarBounds.CREATOR);
+    CalendarConstraints originalBounds =
+        CalendarConstraints.create(/* start= */ FEB_2016, /* end= */ APRIL_2016);
+    CalendarConstraints constructedBounds =
+        ParcelableTestUtils.parcelAndCreate(originalBounds, CalendarConstraints.CREATOR);
     assertEquals(originalBounds, constructedBounds);
   }
 
@@ -49,26 +49,28 @@ public class CalendarBoundsTest {
     Month today = Month.today();
     Month start = today.monthsLater(-1);
     Month end = today.monthsLater(1);
-    CalendarBounds calendarBounds = CalendarBounds.create(start, end);
-    assertEquals(today, calendarBounds.getCurrent());
+    CalendarConstraints calendarConstraints = CalendarConstraints.create(start, end);
+    assertEquals(today, calendarConstraints.getCurrent());
   }
 
   @Test
   public void currentDefaultsToStartIfTodayIsInvalid() {
-    CalendarBounds calendarBounds =
-        CalendarBounds.create(/* start= */ FEB_2016, /* end= */ APRIL_2016);
-    assertEquals(FEB_2016, calendarBounds.getCurrent());
+    CalendarConstraints calendarConstraints =
+        CalendarConstraints.create(/* start= */ FEB_2016, /* end= */ APRIL_2016);
+    assertEquals(FEB_2016, calendarConstraints.getCurrent());
   }
 
   @Test
   public void illegalCurrentMonthFails() {
     exceptionRule.expect(IllegalArgumentException.class);
-    CalendarBounds.create(/* start= */ FEB_2016, /* end= */ MARCH_2016, /* current= */ APRIL_2016);
+    CalendarConstraints.create(
+        /* start= */ FEB_2016, /* end= */ MARCH_2016, /* current= */ APRIL_2016);
   }
 
   @Test
   public void illegalEndMonthFails() {
     exceptionRule.expect(IllegalArgumentException.class);
-    CalendarBounds.create(/* start= */ MARCH_2016, /* end= */ FEB_2016, /* current= */ MARCH_2016);
+    CalendarConstraints.create(
+        /* start= */ MARCH_2016, /* end= */ FEB_2016, /* current= */ MARCH_2016);
   }
 }

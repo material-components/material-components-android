@@ -54,13 +54,14 @@ public class MonthAdapterTest {
     Locale.setDefault(locale);
     DateGridSelector dateGridSelector = new DateGridSelector();
     Month feb2016 = Month.create(2016, Calendar.FEBRUARY);
-    monthFeb2016 = new MonthAdapter(feb2016, dateGridSelector);
+    monthFeb2016 = new MonthAdapter(feb2016, dateGridSelector, MaterialDatePicker.DEFAULT_BOUNDS);
     Month july2018 = Month.create(2018, Calendar.JULY);
-    monthJuly2018 = new MonthAdapter(july2018, dateGridSelector);
+    monthJuly2018 = new MonthAdapter(july2018, dateGridSelector, MaterialDatePicker.DEFAULT_BOUNDS);
     Month feb2019 = Month.create(2019, Calendar.FEBRUARY);
-    monthFeb2019 = new MonthAdapter(feb2019, dateGridSelector);
+    monthFeb2019 = new MonthAdapter(feb2019, dateGridSelector, MaterialDatePicker.DEFAULT_BOUNDS);
     Month march2019 = Month.create(2019, Calendar.MARCH);
-    monthMarch2019 = new MonthAdapter(march2019, dateGridSelector);
+    monthMarch2019 =
+        new MonthAdapter(march2019, dateGridSelector, MaterialDatePicker.DEFAULT_BOUNDS);
   }
 
   @Test

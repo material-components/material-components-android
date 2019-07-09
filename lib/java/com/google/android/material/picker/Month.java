@@ -84,7 +84,7 @@ public final class Month implements Comparable<Month>, Parcelable {
   }
 
   /** Returns the {@link Month} that contains today (as per {@link Calendar#getInstance()}. */
-  static Month today() {
+  public static Month today() {
     Calendar calendar = Calendar.getInstance();
     return Month.create(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH));
   }

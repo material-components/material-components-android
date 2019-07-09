@@ -33,6 +33,7 @@
     <item name="android:windowFullscreen">false</item>
     <item name="shapeAppearance">?attr/shapeAppearanceMediumComponent</item>
     <item name="dayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day</item>
+    <item name="dayInvalidStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Invalid</item>
     <item name="daySelectedStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Selected</item>
     <item name="dayTodayStyle">@style/Widget.MaterialComponents.MaterialCalendar.Day.Today</item>
     <item name="yearStyle">@style/Widget.MaterialComponents.MaterialCalendar.Year</item>
@@ -102,6 +103,11 @@
     <item name="android:insetBottom">@dimen/mtrl_calendar_day_vertical_padding</item>
     <item name="android:insetLeft">@dimen/mtrl_calendar_day_horizontal_padding</item>
     <item name="android:insetRight">@dimen/mtrl_calendar_day_horizontal_padding</item>
+  </style>
+
+  <style name="Widget.MaterialComponents.MaterialCalendar.Day.Invalid">
+    <item name="itemTextColor">@color/mtrl_on_surface_disabled</item>
+    <item name="itemStrokeColor">@color/mtrl_on_surface_disabled</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
