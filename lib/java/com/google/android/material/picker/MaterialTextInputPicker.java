@@ -23,8 +23,6 @@ import androidx.annotation.RestrictTo.Scope;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import java.util.Calendar;
 
 /**
  * Fragment for picking date(s) with text fields.
@@ -41,15 +39,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   // TODO: make use of calendarBounds or delete
   private CalendarBounds calendarBounds;
 
-  /**
-   * Creates a {@link MaterialTextInputPicker} with {@link GridSelector#drawItem(TextView,
-   * Calendar)} applied to each cell.
-   *
-   * @param gridSelector Controls the highlight state of the {@link MaterialTextInputPicker}
-   * @param <T> Type of {@link GridSelector} returned from selections in this {@link
-   *     MaterialTextInputPicker} by {@link MaterialTextInputPicker#getGridSelector()}
-   */
-  public static <T> MaterialTextInputPicker<T> newInstance(
+  static <T> MaterialTextInputPicker<T> newInstance(
       GridSelector<T> gridSelector, CalendarBounds calendarBounds) {
     MaterialTextInputPicker<T> materialCalendar = new MaterialTextInputPicker<>();
     Bundle args = new Bundle();

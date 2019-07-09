@@ -43,6 +43,7 @@ public class MonthFragment extends Fragment {
 
   private Month month;
   private MonthAdapter monthAdapter;
+  private GridSelector<?> gridSelector;
   // Set as part of Lifecycle.Event#onCreate
   private OnDayClickListener onDayClickListener;
 
@@ -69,8 +70,7 @@ public class MonthFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     month = getArguments().getParcelable(MONTH_KEY);
-    GridSelector<?> gridSelector = getArguments().getParcelable(GRID_SELECTOR_KEY);
-    monthAdapter = new MonthAdapter(getContext(), month, gridSelector);
+    gridSelector = getArguments().getParcelable(GRID_SELECTOR_KEY);
   }
 
   @Override
@@ -78,6 +78,7 @@ public class MonthFragment extends Fragment {
       LayoutInflater layoutInflater, ViewGroup root, Bundle savedInstanceState) {
     Context context = getParentFragment().getView().getContext();
     LayoutInflater themedInflater = LayoutInflater.from(context);
+    monthAdapter = new MonthAdapter(month, gridSelector);
 
     final int layout;
     if (MaterialDatePicker.isFullscreen(context)) {

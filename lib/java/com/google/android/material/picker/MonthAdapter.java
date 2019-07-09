@@ -19,6 +19,7 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import androidx.annotation.Nullable;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -45,7 +46,9 @@ class MonthAdapter extends BaseAdapter {
    */
   final GridSelector<?> gridSelector;
 
-  MonthAdapter(Context context, Month month, GridSelector<?> gridSelector) {
+  CalendarStyle calendarStyle;
+
+  MonthAdapter(Month month, GridSelector<?> gridSelector) {
     this.month = month;
     this.gridSelector = gridSelector;
   }
@@ -85,6 +88,7 @@ class MonthAdapter extends BaseAdapter {
 
   @Override
   public TextView getView(int position, View convertView, ViewGroup parent) {
+    initializeStyles(parent.getContext());
     TextView day = (TextView) convertView;
     if (convertView == null) {
       LayoutInflater layoutInflater = LayoutInflater.from(parent.getContext());
@@ -101,9 +105,22 @@ class MonthAdapter extends BaseAdapter {
     }
     Calendar content = getItem(position);
     if (content != null) {
-      gridSelector.drawItem(day, content);
+      long date = content.getTimeInMillis();
+      if (gridSelector.getSelectedDays().contains(date)) {
+        calendarStyle.selectedDay.styleItem(day);
+      } else if (DateUtils.isToday(date)) {
+        calendarStyle.todayDay.styleItem(day);
+      } else {
+        calendarStyle.day.styleItem(day);
+      }
     }
     return day;
+  }
+
+  private void initializeStyles(Context context) {
+    if (calendarStyle == null) {
+      calendarStyle = new CalendarStyle(context);
+    }
   }
 
   /**

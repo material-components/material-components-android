@@ -19,7 +19,6 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.content.res.Resources;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
@@ -29,17 +28,17 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.textfield.TextInputLayout;
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
-import android.text.format.DateUtils;
+import androidx.core.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
-import android.widget.TextView;
 import com.google.android.material.internal.ViewUtils;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Locale;
 
 /**
@@ -54,14 +53,6 @@ public class DateGridSelector implements GridSelector<Long> {
       new LinkedHashSet<>();
 
   @Nullable private Calendar selectedItem;
-  private CalendarStyle calendarStyle;
-
-  // The context is not available on construction and parceling, so we lazily initialize styles.
-  private void initializeStyles(Context context) {
-    if (calendarStyle == null || calendarStyle.refreshStyles(context)) {
-      calendarStyle = new CalendarStyle(context);
-    }
-  }
 
   @Override
   public void select(Calendar selection) {
@@ -85,47 +76,23 @@ public class DateGridSelector implements GridSelector<Long> {
   }
 
   @Override
-  public void drawItem(TextView view, Calendar content) {
-    initializeStyles(view.getContext());
-    CalendarItemStyle style;
-    if (content.equals(selectedItem)) {
-      style = calendarStyle.selectedDay;
-    } else if (DateUtils.isToday(content.getTimeInMillis())) {
-      style = calendarStyle.todayDay;
-    } else {
-      style = calendarStyle.day;
+  public List<Pair<Long, Long>> getSelectedRanges() {
+    return new ArrayList<>();
+  }
+
+  @Override
+  public List<Long> getSelectedDays() {
+    ArrayList<Long> selections = new ArrayList<>();
+    if (selectedItem != null) {
+      selections.add(selectedItem.getTimeInMillis());
     }
-    style.styleItem(view);
+    return selections;
   }
 
   @Override
   @Nullable
   public Long getSelection() {
     return selectedItem == null ? null : selectedItem.getTimeInMillis();
-  }
-
-  @Override
-  public void drawYearItem(TextView view, int year) {
-    initializeStyles(view.getContext());
-    CalendarItemStyle style;
-    if (selectedItem != null && selectedItem.get(Calendar.YEAR) == year) {
-      style = calendarStyle.selectedYear;
-    } else if (Calendar.getInstance().get(Calendar.YEAR) == year) {
-      style = calendarStyle.todayYear;
-    } else {
-      style = calendarStyle.year;
-    }
-    style.styleItem(view);
-  }
-
-  @Override
-  public void onCalendarMonthDraw(Canvas canvas, MaterialCalendarGridView gridView) {
-    // do nothing
-  }
-
-  @Override
-  public ItemDecoration createYearDecorator() {
-    return new ItemDecoration() {};
   }
 
   @Override

@@ -18,7 +18,6 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import android.content.Context;
-import android.graphics.Canvas;
 import android.os.Bundle;
 import android.os.Parcelable;
 import androidx.annotation.NonNull;
@@ -27,15 +26,13 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
-import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
-import androidx.recyclerview.widget.RecyclerView.ViewHolder;
+import androidx.core.util.Pair;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import android.widget.TextView;
 import java.util.Calendar;
+import java.util.List;
 
 /**
  * Interface for users of {@link MaterialCalendar<S>} to control how the Calendar displays and
@@ -72,42 +69,18 @@ public interface GridSelector<S> extends Parcelable {
   void clearOnSelectionChangedListeners();
 
   /**
-   * Modifies the provided {@link TextView} to indicate its selection status using day styles from
-   * {@link R.styleable#MaterialCalendar}.
+   * Returns a list of longs whose time value represents days that should be marked selected.
    *
-   * <p>Called for each {@link TextView} as part of {@link MonthAdapter#getView(int, View,
-   * ViewGroup)}
-   *
-   * @param view The {@link TextView} returned from {@link MonthAdapter#getView(int, View,
-   *     ViewGroup)}
-   * @param content The {@link Calendar} returned from {@link MonthAdapter#getItem(int)}.
+   * <p>Uses {@link R.styleable#MaterialCalendar_daySelectedStyle} for styling.
    */
-  void drawItem(TextView view, Calendar content);
+  List<Long> getSelectedDays();
 
   /**
-   * Modifies the provided {@link TextView} to indicate its selection status using year styles from
-   * {@link R.styleable#MaterialCalendar}.
+   * Returns a list of ranges whose time values represent ranges that should be filled.
    *
-   * <p>Called for each {@link TextView} as part of {@link
-   * YearGridAdapter#bindViewHolder(ViewHolder, int)}.
-   *
-   * @param yearView The {@link TextView} held in {@link YearGridAdapter.ViewHolder#textView}.
-   * @param year The year represented by this {@code yearView}.
+   * <p>Uses {@link R.styleable#MaterialCalendar_rangeFillColor} for styling.
    */
-  void drawYearItem(TextView yearView, int year);
-
-  /**
-   * Returns an {@link ItemDecoration} applied to the {@link RecyclerView} backed by {@link
-   * YearGridAdapter}.
-   */
-  ItemDecoration createYearDecorator();
-
-  /**
-   * Called after {@link
-   * com.google.android.material.picker.MaterialCalendarGridView#onDraw(android.graphics.Canvas)}
-   * for each month so selectors can draw on the canvas.
-   */
-  void onCalendarMonthDraw(Canvas canvas, MaterialCalendarGridView gridView);
+  List<Pair<Long, Long>> getSelectedRanges();
 
   String getSelectionDisplayString(Context context);
 

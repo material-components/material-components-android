@@ -21,8 +21,6 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
-import android.content.Context;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.test.core.app.ApplicationProvider;
 import java.util.Arrays;
 import java.util.Calendar;
@@ -33,7 +31,6 @@ import java.util.Map;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
@@ -43,7 +40,6 @@ public class MonthAdapterTest {
 
   private static final Locale ISRAEL = new Locale("iw", "IL");
 
-  private Context context;
   private MonthAdapter monthFeb2019;
   private MonthAdapter monthFeb2016;
   private MonthAdapter monthJuly2018;
@@ -52,21 +48,19 @@ public class MonthAdapterTest {
   @Before
   public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
-    AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
-    context = activity.getApplicationContext();
   }
 
   private void setupLocalizedCalendars(Locale locale) {
     Locale.setDefault(locale);
     DateGridSelector dateGridSelector = new DateGridSelector();
     Month feb2016 = Month.create(2016, Calendar.FEBRUARY);
-    monthFeb2016 = new MonthAdapter(context, feb2016, dateGridSelector);
+    monthFeb2016 = new MonthAdapter(feb2016, dateGridSelector);
     Month july2018 = Month.create(2018, Calendar.JULY);
-    monthJuly2018 = new MonthAdapter(context, july2018, dateGridSelector);
+    monthJuly2018 = new MonthAdapter(july2018, dateGridSelector);
     Month feb2019 = Month.create(2019, Calendar.FEBRUARY);
-    monthFeb2019 = new MonthAdapter(context, feb2019, dateGridSelector);
+    monthFeb2019 = new MonthAdapter(feb2019, dateGridSelector);
     Month march2019 = Month.create(2019, Calendar.MARCH);
-    monthMarch2019 = new MonthAdapter(context, march2019, dateGridSelector);
+    monthMarch2019 = new MonthAdapter(march2019, dateGridSelector);
   }
 
   @Test
@@ -125,14 +119,11 @@ public class MonthAdapterTest {
 
   private void assertMaxPosition(Map<MonthAdapter, Integer> localizedMaxPositionInMonth) {
     assertEquals(
-        (int) localizedMaxPositionInMonth.get(monthFeb2016),
-        monthFeb2016.lastPositionInMonth());
+        (int) localizedMaxPositionInMonth.get(monthFeb2016), monthFeb2016.lastPositionInMonth());
     assertEquals(
-        (int) localizedMaxPositionInMonth.get(monthJuly2018),
-        monthJuly2018.lastPositionInMonth());
+        (int) localizedMaxPositionInMonth.get(monthJuly2018), monthJuly2018.lastPositionInMonth());
     assertEquals(
-        (int) localizedMaxPositionInMonth.get(monthFeb2019),
-        monthFeb2019.lastPositionInMonth());
+        (int) localizedMaxPositionInMonth.get(monthFeb2019), monthFeb2019.lastPositionInMonth());
   }
 
   @Test
@@ -166,12 +157,9 @@ public class MonthAdapterTest {
   }
 
   private void assertPositionsForDays(Map<MonthAdapter, Integer> localizedPositionToDay) {
-    assertEquals(
-        (int) localizedPositionToDay.get(monthFeb2016), monthFeb2016.positionToDay(1));
-    assertEquals(
-        (int) localizedPositionToDay.get(monthJuly2018), monthJuly2018.positionToDay(6));
-    assertEquals(
-        (int) localizedPositionToDay.get(monthFeb2019), monthFeb2019.positionToDay(15));
+    assertEquals((int) localizedPositionToDay.get(monthFeb2016), monthFeb2016.positionToDay(1));
+    assertEquals((int) localizedPositionToDay.get(monthJuly2018), monthJuly2018.positionToDay(6));
+    assertEquals((int) localizedPositionToDay.get(monthFeb2019), monthFeb2019.positionToDay(15));
   }
 
   @Test

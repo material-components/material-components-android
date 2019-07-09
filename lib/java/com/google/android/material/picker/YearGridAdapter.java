@@ -24,6 +24,7 @@ import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import com.google.android.material.picker.MaterialCalendar.CalendarSelector;
+import java.util.Calendar;
 import java.util.Locale;
 
 class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
@@ -58,7 +59,16 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
   public void onBindViewHolder(@NonNull YearGridAdapter.ViewHolder viewHolder, int position) {
     int year = getYearForPosition(position);
     viewHolder.textView.setText(String.format(Locale.getDefault(), "%d", year));
-    materialCalendar.getGridSelector().drawYearItem(viewHolder.textView, year);
+    CalendarStyle styles = materialCalendar.getCalendarStyle();
+    Calendar calendar = Calendar.getInstance();
+    CalendarItemStyle style = calendar.get(Calendar.YEAR) == year ? styles.todayYear : styles.year;
+    for (Long day : materialCalendar.getGridSelector().getSelectedDays()) {
+      calendar.setTimeInMillis(day);
+      if (calendar.get(Calendar.YEAR) == year) {
+        style = styles.selectedYear;
+      }
+    }
+    style.styleItem(viewHolder.textView);
     viewHolder.textView.setOnClickListener(createYearClickListener(year));
   }
 

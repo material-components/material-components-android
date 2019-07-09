@@ -18,6 +18,7 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.graphics.Canvas;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,14 +27,16 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
+import androidx.core.util.Pair;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.ItemDecoration;
+import androidx.recyclerview.widget.RecyclerView.State;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.GridView;
-import android.widget.TextView;
 import androidx.viewpager2.widget.ViewPager2;
 import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;
 import java.util.Calendar;
@@ -65,20 +68,13 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private GridSelector<S> gridSelector;
   private CalendarBounds calendarBounds;
   private CalendarSelector calendarSelector;
+  private CalendarStyle calendarStyle;
   private RecyclerView yearSelector;
   private ViewPager2 monthPager;
   private View yearFrame;
   private View dayFrame;
 
-  /**
-   * Creates a {@link MaterialCalendar} with {@link GridSelector#drawItem(TextView, Calendar)}
-   * applied to each cell.
-   *
-   * @param gridSelector Controls the highlight state of the {@link MaterialCalendar}
-   * @param <T> Type of {@link GridSelector} returned from selections in this {@link
-   *     MaterialCalendar} by {@link MaterialCalendar#getGridSelector()}
-   */
-  public static <T> MaterialCalendar<T> newInstance(
+  static <T> MaterialCalendar<T> newInstance(
       GridSelector<T> gridSelector, int themeResId, CalendarBounds calendarBounds) {
     MaterialCalendar<T> materialCalendar = new MaterialCalendar<>();
     Bundle args = new Bundle();
@@ -113,6 +109,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
     ContextThemeWrapper themedContext = new ContextThemeWrapper(getContext(), themeResId);
+    calendarStyle = new CalendarStyle(themedContext);
     LayoutInflater themedInflater = layoutInflater.cloneInContext(themedContext);
 
     Month earliestMonth = calendarBounds.getStart();
@@ -161,7 +158,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       yearSelector.setLayoutManager(
           new GridLayoutManager(themedContext, columns, RecyclerView.VERTICAL, false));
       yearSelector.setAdapter(new YearGridAdapter(this));
-      yearSelector.addItemDecoration(gridSelector.createYearDecorator());
+      yearSelector.addItemDecoration(createItemDecoration());
     }
 
     if (root.findViewById(R.id.month_navigation_fragment_toggle) != null) {
@@ -169,6 +166,55 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     }
 
     return root;
+  }
+
+  private ItemDecoration createItemDecoration() {
+    return new ItemDecoration() {
+      @Override
+      public void onDraw(
+          @NonNull Canvas canvas, @NonNull RecyclerView recyclerView, @NonNull State state) {
+        if (!(recyclerView.getAdapter() instanceof YearGridAdapter)
+            || !(recyclerView.getLayoutManager() instanceof GridLayoutManager)) {
+          return;
+        }
+        YearGridAdapter adapter = (YearGridAdapter) recyclerView.getAdapter();
+        GridLayoutManager layoutManager = (GridLayoutManager) recyclerView.getLayoutManager();
+
+        for (Pair<Long, Long> range : gridSelector.getSelectedRanges()) {
+          if (range.first == null || range.second == null) {
+            continue;
+          }
+          Calendar startItem = Calendar.getInstance();
+          Calendar endItem = Calendar.getInstance();
+          startItem.setTimeInMillis(range.first);
+          endItem.setTimeInMillis(range.second);
+
+          int firstHighlightPosition = adapter.getPositionForYear(startItem.get(Calendar.YEAR));
+          int lastHighlightPosition = adapter.getPositionForYear(endItem.get(Calendar.YEAR));
+          View firstView = layoutManager.findViewByPosition(firstHighlightPosition);
+          View lastView = layoutManager.findViewByPosition(lastHighlightPosition);
+
+          int firstRow = firstHighlightPosition / layoutManager.getSpanCount();
+          int lastRow = lastHighlightPosition / layoutManager.getSpanCount();
+
+          for (int row = firstRow; row <= lastRow; row++) {
+            int firstPositionInRow = row * layoutManager.getSpanCount();
+            View viewInRow = layoutManager.findViewByPosition(firstPositionInRow);
+            if (viewInRow == null) {
+              continue;
+            }
+            int top = viewInRow.getTop() + calendarStyle.year.getTopInset();
+            int bottom = viewInRow.getBottom() - calendarStyle.year.getBottomInset();
+            int left = row == firstRow ? firstView.getLeft() + firstView.getWidth() / 2 : 0;
+            int right =
+                row == lastRow
+                    ? lastView.getLeft() + lastView.getWidth() / 2
+                    : recyclerView.getWidth();
+            canvas.drawRect(left, top, right, bottom, calendarStyle.rangeFill);
+          }
+        }
+      }
+    };
   }
 
   /** Returns the {@link CalendarBounds} in use by this {@link MaterialCalendar}. */
@@ -193,6 +239,10 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   @Override
   public GridSelector<S> getGridSelector() {
     return gridSelector;
+  }
+
+  CalendarStyle getCalendarStyle() {
+    return calendarStyle;
   }
 
   interface OnDayClickListener {

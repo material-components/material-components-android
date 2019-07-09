@@ -47,8 +47,7 @@ public class DateRangeGridSelectorTest {
     Context context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
     dateRangeGridSelector = new DateRangeGridSelector();
-    adapter =
-        new MonthAdapter(context, Month.create(2016, Calendar.FEBRUARY), dateRangeGridSelector);
+    adapter = new MonthAdapter(Month.create(2016, Calendar.FEBRUARY), dateRangeGridSelector);
     gridView.setAdapter(adapter);
   }
 
