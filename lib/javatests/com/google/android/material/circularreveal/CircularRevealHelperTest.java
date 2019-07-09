@@ -16,7 +16,7 @@
 package com.google.android.material.circularreveal;
 
 import static com.google.common.truth.Truth.assertThat;
-import static org.mockito.Matchers.anyFloat;
+import static org.mockito.ArgumentMatchers.anyFloat;
 import static org.mockito.Matchers.eq;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -40,7 +40,7 @@ import com.google.android.material.math.MathUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.Matchers;
+import org.mockito.ArgumentMatchers;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
 import org.robolectric.annotation.Config;
@@ -102,8 +102,8 @@ public class CircularRevealHelperTest {
             eq(smallRevealInfo.centerX),
             eq(smallRevealInfo.centerY),
             eq(smallRevealInfo.radius),
-            Matchers.<Paint>any());
-    verify(canvas, never()).clipPath(Matchers.<Path>any());
+            ArgumentMatchers.<Paint>any());
+    verify(canvas, never()).clipPath(ArgumentMatchers.<Path>any());
   }
 
   @Test
@@ -114,8 +114,9 @@ public class CircularRevealHelperTest {
 
     helper.draw(canvas);
 
-    verify(canvas).clipPath(Matchers.<Path>any());
-    verify(canvas, never()).drawCircle(anyFloat(), anyFloat(), anyFloat(), Matchers.<Paint>any());
+    verify(canvas).clipPath(ArgumentMatchers.<Path>any());
+    verify(canvas, never())
+        .drawCircle(anyFloat(), anyFloat(), anyFloat(), ArgumentMatchers.<Paint>any());
   }
 
   @Test
@@ -126,8 +127,9 @@ public class CircularRevealHelperTest {
 
     helper.draw(canvas);
 
-    verify(canvas, never()).clipPath(Matchers.<Path>any());
-    verify(canvas, never()).drawCircle(anyFloat(), anyFloat(), anyFloat(), Matchers.<Paint>any());
+    verify(canvas, never()).clipPath(ArgumentMatchers.<Path>any());
+    verify(canvas, never())
+        .drawCircle(anyFloat(), anyFloat(), anyFloat(), ArgumentMatchers.<Paint>any());
   }
 
   @Test
@@ -148,7 +150,7 @@ public class CircularRevealHelperTest {
             eq(smallRevealInfo.centerX),
             eq(smallRevealInfo.centerY),
             eq(smallRevealInfo.radius),
-            Matchers.<Paint>any());
+            ArgumentMatchers.<Paint>any());
   }
 
   @Test
@@ -166,7 +168,7 @@ public class CircularRevealHelperTest {
             eq(0f),
             eq((float) DELEGATE_WIDTH),
             eq((float) DELEGATE_HEIGHT),
-            Matchers.<Paint>any());
+            ArgumentMatchers.<Paint>any());
   }
 
   @Test
@@ -184,7 +186,7 @@ public class CircularRevealHelperTest {
             eq(0f),
             eq((float) DELEGATE_WIDTH),
             eq((float) DELEGATE_HEIGHT),
-            Matchers.<Paint>any());
+            ArgumentMatchers.<Paint>any());
   }
 
   private static class TestDelegate extends View implements CircularRevealWidget {
