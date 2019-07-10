@@ -283,7 +283,7 @@ subprojects {
               // TODO: Remove this once Gradle automatically determines dependency types.
               whenConfigured { pom ->
                 pom.dependencies.findAll { dependency ->
-                  if (dependency.artifactId != 'annotation') {
+                  if (dependency.artifactId != 'annotation' && dependency.artifactId != 'lifecycle-common-java8') {
                     dependency.type = 'aar'
                   }
                 }
