@@ -101,7 +101,7 @@
     <!-- Guarantee space for the shadow on the last card. Depending on non-demo (real-world) uses
         of CardView, this may not be necessary. This quick-fix is for purposes of this simple
         demo only. -->
-    <androidx.legacy.widget.Space
+    <Space
         android:layout_width="match_parent"
         android:layout_height="@dimen/mtrl_card_spacing"/>
 
