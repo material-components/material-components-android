@@ -797,11 +797,6 @@ public final class CollapsingTextHelper {
         scale = textSize / expandedTextSize;
       }
 
-      final float textSizeRatio = collapsedTextSize / expandedTextSize;
-      // This is the size of the expanded bounds when it is scaled to match the
-      // collapsed text size
-      final float scaledDownWidth = expandedWidth * textSizeRatio;
-
       availableWidth = expandedWidth;
       maxLines = this.maxLines;
     }
