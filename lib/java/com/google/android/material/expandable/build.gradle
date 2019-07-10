@@ -6,7 +6,6 @@ version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   implementation compatibility("annotation")
-  implementation compatibility("core_ui")
 }
 
 android {

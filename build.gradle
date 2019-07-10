@@ -31,8 +31,6 @@ ext {
     coordinatorlayout     : '1.1.0-beta01', // Needed for NestedScrolling3 APIs
     core                  : '1.1.0-rc02', // Needed for CSL + theme attr fixes
     fragment              : '1.0.0',
-    legacySupportCoreUi   : '1.0.0',
-    legacySupportCoreUtils: '1.0.0',
     lifecycle             : "2.0.0",
     recyclerView          : '1.0.0',
     recyclerViewSelection : '1.0.0',
@@ -103,10 +101,6 @@ def compatibility(name) {
       return "androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
     case "core":
       return "androidx.core:core:${androidXVersions.core}"
-    case "core_ui":
-      return "androidx.legacy:legacy-support-core-ui:${androidXVersions.legacySupportCoreUi}"
-    case "core_utils":
-      return "androidx.legacy:legacy-support-core-utils:${androidXVersions.legacySupportCoreUtils}"
     case "fragment":
       return "androidx.fragment:fragment:${androidXVersions.fragment}"
     case "lifecycleCommonJava8":
