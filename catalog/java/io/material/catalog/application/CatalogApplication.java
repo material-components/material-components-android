@@ -19,6 +19,7 @@ package io.material.catalog.application;
 import android.app.Application;
 import android.content.pm.ApplicationInfo;
 import android.content.pm.PackageManager;
+import androidx.appcompat.app.AppCompatDelegate;
 import android.util.Log;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
@@ -36,6 +37,10 @@ public class CatalogApplication extends Application implements HasAndroidInjecto
       "io.material.catalog.application.componentOverride";
 
   @Inject DispatchingAndroidInjector<Object> androidInjector;
+
+  static {
+    AppCompatDelegate.setCompatVectorFromResourcesEnabled(true);
+  }
 
   @Override
   public void onCreate() {
