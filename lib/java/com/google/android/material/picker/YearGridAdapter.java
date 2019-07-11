@@ -75,7 +75,7 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
   private OnClickListener createYearClickListener(int year) {
     return view -> {
       Month moveTo =
-          Month.create(year, materialCalendar.getCalendarConstraints().getCurrent().month);
+          Month.create(year, materialCalendar.getCalendarConstraints().getOpening().month);
       materialCalendar.setCurrentMonth(moveTo);
       materialCalendar.setSelector(CalendarSelector.DAY);
     };

@@ -59,6 +59,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private static final String THEME_RES_ID_KEY = "THEME_RES_ID_KEY";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
+  private static final String CURRENT_MONTH_KEY = "CURRENT_MONTH_KEY";
 
   @VisibleForTesting
   @RestrictTo(Scope.LIBRARY_GROUP)
@@ -67,6 +68,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private int themeResId;
   private GridSelector<S> gridSelector;
   private CalendarConstraints calendarConstraints;
+  private Month current;
   private CalendarSelector calendarSelector;
   private CalendarStyle calendarStyle;
   private RecyclerView yearSelector;
@@ -81,6 +83,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     args.putInt(THEME_RES_ID_KEY, themeResId);
     args.putParcelable(GRID_SELECTOR_KEY, gridSelector);
     args.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
+    args.putParcelable(CURRENT_MONTH_KEY, calendarConstraints.getOpening());
     materialCalendar.setArguments(args);
     return materialCalendar;
   }
@@ -91,6 +94,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     bundle.putInt(THEME_RES_ID_KEY, themeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
     bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
+    bundle.putParcelable(CURRENT_MONTH_KEY, current);
   }
 
   @Override
@@ -100,6 +104,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     themeResId = activeBundle.getInt(THEME_RES_ID_KEY);
     gridSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
     calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
+    current = activeBundle.getParcelable(CURRENT_MONTH_KEY);
   }
 
   @NonNull
@@ -153,7 +158,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
               }
             });
     monthsPager.setAdapter(monthsPagerAdapter);
-    monthsPager.setCurrentItem(monthsPagerAdapter.getStartPosition(), false);
+    monthsPager.setCurrentItem(monthsPagerAdapter.getPosition(current), false);
 
     int columns =
         themedContext.getResources().getInteger(R.integer.mtrl_calendar_year_selector_span);
@@ -224,6 +229,10 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     };
   }
 
+  Month getCurrentMonth() {
+    return current;
+  }
+
   /** Returns the {@link CalendarConstraints} in use by this {@link MaterialCalendar}. */
   CalendarConstraints getCalendarConstraints() {
     return calendarConstraints;
@@ -236,12 +245,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
    *     CalendarConstraints}.
    */
   void setCurrentMonth(Month moveTo) {
-    calendarConstraints =
-        CalendarConstraints.create(
-            calendarConstraints.getStart(), calendarConstraints.getEnd(), moveTo);
-    int moveToPosition =
-        ((MonthsPagerAdapter) monthPager.getAdapter())
-            .getPosition(calendarConstraints.getCurrent());
+    current = moveTo;
+    int moveToPosition = ((MonthsPagerAdapter) monthPager.getAdapter()).getPosition(current);
     monthPager.setCurrentItem(moveToPosition);
   }
 
@@ -272,7 +277,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           .getLayoutManager()
           .scrollToPosition(
               ((YearGridAdapter) yearSelector.getAdapter())
-                  .getPositionForYear(calendarConstraints.getCurrent().year));
+                  .getPositionForYear(calendarConstraints.getOpening().year));
       yearFrame.setVisibility(View.VISIBLE);
       dayFrame.setVisibility(View.GONE);
     } else if (selector == CalendarSelector.DAY) {
@@ -305,12 +310,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         new OnPageChangeCallback() {
           @Override
           public void onPageSelected(int position) {
-            calendarConstraints =
-                CalendarConstraints.create(
-                    calendarConstraints.getStart(),
-                    calendarConstraints.getEnd(),
-                    monthsPagerAdapter.getPageMonth(position),
-                    calendarConstraints.getDateValidator());
+            current = monthsPagerAdapter.getPageMonth(position);
             monthDropSelect.setText(monthsPagerAdapter.getPageTitle(position));
           }
         });

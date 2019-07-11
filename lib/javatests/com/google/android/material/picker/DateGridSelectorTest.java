@@ -51,7 +51,7 @@ public class DateGridSelectorTest {
         new MonthAdapter(
             Month.create(2016, Calendar.FEBRUARY),
             dateGridSelector,
-            MaterialDatePicker.DEFAULT_BOUNDS);
+            new CalendarConstraints.Builder().build());
     gridView.setAdapter(adapter);
   }
 

@@ -38,7 +38,6 @@ import java.util.List;
 class MonthsPagerAdapter extends FragmentStateAdapter {
 
   private final CalendarConstraints calendarConstraints;
-  private final int startIndex;
   private final GridSelector<?> gridSelector;
   private final SparseArray<AdapterDataObserver> observingFragments = new SparseArray<>();
   private final OnDayClickListener onDayClickListener;
@@ -68,7 +67,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
     super(fragmentManager, lifecycle);
     Month firstPage = calendarConstraints.getStart();
     Month lastPage = calendarConstraints.getEnd();
-    Month currentPage = calendarConstraints.getCurrent();
+    Month currentPage = calendarConstraints.getOpening();
 
     if (firstPage.compareTo(currentPage) > 0) {
       throw new IllegalArgumentException("firstPage cannot be after currentPage");
@@ -83,7 +82,6 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
 
     this.itemHeight = daysHeight + labelHeight;
     this.calendarConstraints = calendarConstraints;
-    startIndex = firstPage.monthsUntil(currentPage);
     this.gridSelector = gridSelector;
     this.onDayClickListener = onDayClickListener;
   }
@@ -144,11 +142,6 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
               }
             });
     return monthFragment;
-  }
-
-  /** Returns the position index of the {@link Month} startPage provided on construction. */
-  int getStartPosition() {
-    return startIndex;
   }
 
   @NonNull

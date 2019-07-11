@@ -18,6 +18,7 @@ package com.google.android.material.picker;
 import android.os.Parcel;
 import android.os.Parcelable;
 import com.google.android.material.picker.CalendarConstraints.DateValidator;
+import java.util.Arrays;
 import java.util.Calendar;
 
 /**
@@ -62,5 +63,23 @@ public class DateValidatorPointForward implements DateValidator {
   @Override
   public void writeToParcel(Parcel dest, int flags) {
     dest.writeLong(point);
+  }
+
+  @Override
+  public boolean equals(Object o) {
+    if (this == o) {
+      return true;
+    }
+    if (!(o instanceof DateValidatorPointForward)) {
+      return false;
+    }
+    DateValidatorPointForward that = (DateValidatorPointForward) o;
+    return point == that.point;
+  }
+
+  @Override
+  public int hashCode() {
+    Object[] hashedFields = {point};
+    return Arrays.hashCode(hashedFields);
   }
 }

@@ -60,11 +60,14 @@ public class MonthsPagerAdapterTest {
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,
-            CalendarConstraints.create(
-                /* start= */ feb2016, /* end= */ april2016, /* current= */ march2016),
+            new CalendarConstraints.Builder()
+                .setStart(feb2016)
+                .setEnd(april2016)
+                .setOpening(march2016)
+                .build(),
             /* onDayClickListener= */ null);
     assertEquals(3, monthsAdapter.getItemCount());
-    assertEquals(1, monthsAdapter.getStartPosition());
+    assertEquals(1, monthsAdapter.getPosition(march2016));
   }
 
   @Test
@@ -75,11 +78,14 @@ public class MonthsPagerAdapterTest {
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,
-            CalendarConstraints.create(
-                /* start= */ feb2016, /* end= */ feb2016, /* current= */ feb2016),
+            new CalendarConstraints.Builder()
+                .setStart(feb2016)
+                .setEnd(feb2016)
+                .setOpening(feb2016)
+                .build(),
             /* onDayClickListener= */ null);
     assertEquals(1, monthsAdapter.getItemCount());
-    assertEquals(0, monthsAdapter.getStartPosition());
+    assertEquals(0, monthsAdapter.getPosition(feb2016));
   }
 
   @Rule public ExpectedException exceptionRule = ExpectedException.none();
@@ -92,8 +98,11 @@ public class MonthsPagerAdapterTest {
         activity.getSupportFragmentManager(),
         activity.getLifecycle(),
         /* gridSelector= */ null,
-        CalendarConstraints.create(
-            /* start= */ feb2016, /* end= */ march2016, /* current= */ april2016),
+        new CalendarConstraints.Builder()
+            .setStart(feb2016)
+            .setEnd(march2016)
+            .setOpening(april2016)
+            .build(),
         /* onDayClickListener= */ null);
   }
 
@@ -105,8 +114,11 @@ public class MonthsPagerAdapterTest {
         activity.getSupportFragmentManager(),
         activity.getLifecycle(),
         /* gridSelector= */ null,
-        CalendarConstraints.create(
-            /* start= */ march2016, /* end= */ feb2016, /* current= */ march2016),
+        new CalendarConstraints.Builder()
+            .setStart(march2016)
+            .setEnd(feb2016)
+            .setOpening(march2016)
+            .build(),
         /* onDayClickListener= */ null);
   }
 
@@ -118,8 +130,11 @@ public class MonthsPagerAdapterTest {
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
             /* gridSelector= */ null,
-            CalendarConstraints.create(
-                /* start= */ feb2016, /* end= */ april2016, /* current= */ march2016),
+            new CalendarConstraints.Builder()
+                .setStart(feb2016)
+                .setEnd(april2016)
+                .setOpening(march2016)
+                .build(),
             /* onDayClickListener= */ null);
     assertEquals(feb2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 0).toString());
     assertEquals(march2016.getLongName(), monthsAdapter.getPageTitle(/* position= */ 1).toString());

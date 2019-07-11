@@ -51,7 +51,6 @@ import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
-import java.util.Calendar;
 import java.util.LinkedHashSet;
 
 /**
@@ -61,24 +60,6 @@ import java.util.LinkedHashSet;
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class MaterialDatePicker<S> extends DialogFragment {
-
-  /**
-   * The earliest selectable {@link Month} if {@link CalendarConstraints} are not specified: January
-   * 1900.
-   */
-  public static final Month DEFAULT_START = Month.create(1900, Calendar.JANUARY);
-  /**
-   * The earliest selectable {@link Month} if {@link CalendarConstraints} are not specified:
-   * December 2100.
-   */
-  public static final Month DEFAULT_END = Month.create(2100, Calendar.DECEMBER);
-
-  /**
-   * The default {@link CalendarConstraints}: starting at {@code DEFAULT_START}, ending at {@code
-   * DEFAULT_END}, and opening on {@link Month#today()}
-   */
-  public static final CalendarConstraints DEFAULT_BOUNDS =
-      CalendarConstraints.create(DEFAULT_START, DEFAULT_END);
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
@@ -119,6 +100,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
   private GridSelector<S> gridSelector;
   private PickerFragment<S> pickerFragment;
   private CalendarConstraints calendarConstraints;
+  private MaterialCalendar<S> calendar;
   @StringRes private int titleTextResId;
   private boolean fullscreen;
 
@@ -142,7 +124,11 @@ public class MaterialDatePicker<S> extends DialogFragment {
     super.onSaveInstanceState(bundle);
     bundle.putInt(OVERRIDE_THEME_RES_ID, overrideThemeResId);
     bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
-    bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
+    bundle.putParcelable(
+        CALENDAR_CONSTRAINTS_KEY,
+        new CalendarConstraints.Builder(calendarConstraints)
+            .setOpening(calendar.getCurrentMonth())
+            .build());
     bundle.putInt(TITLE_TEXT_RES_ID_KEY, titleTextResId);
   }
 
@@ -290,11 +276,13 @@ public class MaterialDatePicker<S> extends DialogFragment {
   }
 
   private void startPickerFragment() {
+    calendar =
+        MaterialCalendar.newInstance(
+            gridSelector, getThemeResId(requireContext()), calendarConstraints);
     pickerFragment =
         headerToggleButton.isChecked()
             ? MaterialTextInputPicker.newInstance(gridSelector, calendarConstraints)
-            : MaterialCalendar.newInstance(
-                gridSelector, getThemeResId(requireContext()), calendarConstraints);
+            : calendar;
     updateHeader(gridSelector.getSelection());
 
     FragmentTransaction fragmentTransaction = getChildFragmentManager().beginTransaction();
@@ -497,7 +485,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
     /** Creates a {@link MaterialDatePicker} with the provided options. */
     public MaterialDatePicker<S> build() {
       if (calendarConstraints == null) {
-        calendarConstraints = MaterialDatePicker.DEFAULT_BOUNDS;
+        calendarConstraints = new CalendarConstraints.Builder().build();
       }
       if (titleTextResId == 0) {
         titleTextResId = gridSelector.getDefaultTitleResId();
