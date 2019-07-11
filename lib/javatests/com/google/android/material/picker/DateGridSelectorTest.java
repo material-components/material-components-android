@@ -60,10 +60,10 @@ public class DateGridSelectorTest {
     int position = 8;
     assertThat(adapter.withinMonth(position), is(true));
     dateGridSelector.select(adapter.getItem(position));
-    Calendar expected = adapter.getItem(position);
+    long expected = adapter.getItem(position);
     DateGridSelector dateGridSelectorFromParcel =
         ParcelableTestUtils.parcelAndCreate(dateGridSelector, DateGridSelector.CREATOR);
-    assertThat(dateGridSelectorFromParcel.getSelection(), is(expected.getTimeInMillis()));
+    assertThat(dateGridSelectorFromParcel.getSelection(), is(expected));
   }
 
   @Test

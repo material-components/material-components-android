@@ -254,9 +254,11 @@ public class MonthAdapterTest {
 
   private void assertDaysOfPositions(Map<Integer, Integer> localizedDaysOfPositionsInFebruary2019) {
     for (int day : localizedDaysOfPositionsInFebruary2019.keySet()) {
+      Calendar testCalendar = Calendar.getInstance();
+      testCalendar.setTimeInMillis(monthFeb2019.getItem(day));
       assertEquals(
           (int) localizedDaysOfPositionsInFebruary2019.get(day),
-          monthFeb2019.getItem(day).get(Calendar.DAY_OF_MONTH));
+          testCalendar.get(Calendar.DAY_OF_MONTH));
     }
   }
 

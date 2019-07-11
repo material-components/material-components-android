@@ -65,7 +65,7 @@ class MonthAdapter extends BaseAdapter {
    */
   @Nullable
   @Override
-  public Calendar getItem(int position) {
+  public Long getItem(int position) {
     if (position < month.daysFromStartOfWeekToFirstOfMonth() || position > lastPositionInMonth()) {
       return null;
     }
@@ -106,9 +106,8 @@ class MonthAdapter extends BaseAdapter {
       day.setVisibility(View.VISIBLE);
     }
 
-    Calendar content = getItem(position);
-    if (content != null) {
-      long date = content.getTimeInMillis();
+    Long date = getItem(position);
+    if (date != null) {
       if (calendarConstraints.getDateValidator().isValid(date)) {
         day.setEnabled(true);
         if (gridSelector.getSelectedDays().contains(date)) {

@@ -36,8 +36,8 @@ import android.widget.EditText;
 import com.google.android.material.internal.ViewUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
+import java.util.Date;
 import java.util.Locale;
 
 /**
@@ -48,10 +48,10 @@ import java.util.Locale;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DateGridSelector implements GridSelector<Long> {
 
-  @Nullable private Calendar selectedItem;
+  @Nullable private Long selectedItem;
 
   @Override
-  public void select(Calendar selection) {
+  public void select(long selection) {
     selectedItem = selection;
   }
 
@@ -64,7 +64,7 @@ public class DateGridSelector implements GridSelector<Long> {
   public Collection<Long> getSelectedDays() {
     ArrayList<Long> selections = new ArrayList<>();
     if (selectedItem != null) {
-      selections.add(selectedItem.getTimeInMillis());
+      selections.add(selectedItem);
     }
     return selections;
   }
@@ -72,7 +72,7 @@ public class DateGridSelector implements GridSelector<Long> {
   @Override
   @Nullable
   public Long getSelection() {
-    return selectedItem == null ? null : selectedItem.getTimeInMillis();
+    return selectedItem;
   }
 
   @Override
@@ -92,14 +92,14 @@ public class DateGridSelector implements GridSelector<Long> {
             Locale.getDefault());
 
     if (selectedItem != null) {
-      dateEditText.setText(format.format(selectedItem.getTime()));
+      dateEditText.setText(format.format(selectedItem));
     }
 
     dateEditText.addTextChangedListener(
         new DateFormatTextWatcher(format, dateTextInput) {
           @Override
-          void onDateChanged(@Nullable Calendar calendar) {
-            select(calendar);
+          void onDateChanged(@Nullable Long day) {
+            select(day);
             listener.onSelectionChanged(getSelection());
           }
         });
@@ -121,7 +121,7 @@ public class DateGridSelector implements GridSelector<Long> {
     if (selectedItem == null) {
       return res.getString(R.string.mtrl_picker_date_header_unselected);
     }
-    String startString = DateStrings.getYearMonthDay(selectedItem.getTime(), Locale.getDefault());
+    String startString = DateStrings.getYearMonthDay(new Date(selectedItem), Locale.getDefault());
     return res.getString(R.string.mtrl_picker_date_header_selected, startString);
   }
 
@@ -138,7 +138,7 @@ public class DateGridSelector implements GridSelector<Long> {
         @Override
         public DateGridSelector createFromParcel(Parcel source) {
           DateGridSelector dateGridSelector = new DateGridSelector();
-          dateGridSelector.selectedItem = (Calendar) source.readSerializable();
+          dateGridSelector.selectedItem = (Long) source.readValue(Long.class.getClassLoader());
           return dateGridSelector;
         }
 
@@ -155,6 +155,6 @@ public class DateGridSelector implements GridSelector<Long> {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeSerializable(selectedItem);
+    dest.writeValue(selectedItem);
   }
 }

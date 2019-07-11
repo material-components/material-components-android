@@ -26,8 +26,7 @@ import java.util.Calendar;
 
 final class MaterialCalendarGridView extends GridView {
 
-  private Calendar startItem = Calendar.getInstance();
-  private Calendar endItem = Calendar.getInstance();
+  private final Calendar dayCompute = Calendar.getInstance();
 
   public MaterialCalendarGridView(Context context) {
     this(context, null);
@@ -70,15 +69,15 @@ final class MaterialCalendarGridView extends GridView {
     MonthAdapter monthAdapter = getAdapter();
     GridSelector<?> gridSelector = monthAdapter.gridSelector;
     CalendarStyle calendarStyle = monthAdapter.calendarStyle;
-    Calendar firstOfMonth = monthAdapter.getItem(monthAdapter.firstPositionInMonth());
-    Calendar lastOfMonth = monthAdapter.getItem(monthAdapter.lastPositionInMonth());
+    Long firstOfMonth = monthAdapter.getItem(monthAdapter.firstPositionInMonth());
+    Long lastOfMonth = monthAdapter.getItem(monthAdapter.lastPositionInMonth());
 
     for (Pair<Long, Long> range : gridSelector.getSelectedRanges()) {
       if (range.first == null || range.second == null) {
         continue;
       }
-      startItem.setTimeInMillis(range.first);
-      endItem.setTimeInMillis(range.second);
+      long startItem = range.first;
+      long endItem = range.second;
 
       if (skipMonth(firstOfMonth, lastOfMonth, startItem, endItem)) {
         return;
@@ -86,27 +85,29 @@ final class MaterialCalendarGridView extends GridView {
 
       int firstHighlightPosition;
       int rangeHighlightStart;
-      if (startItem.before(firstOfMonth)) {
+      if (startItem < firstOfMonth) {
         firstHighlightPosition = monthAdapter.firstPositionInMonth();
         rangeHighlightStart =
             monthAdapter.isFirstInRow(firstHighlightPosition)
                 ? 0
                 : getChildAt(firstHighlightPosition - 1).getRight();
       } else {
-        firstHighlightPosition = monthAdapter.dayToPosition(startItem.get(Calendar.DAY_OF_MONTH));
+        dayCompute.setTimeInMillis(startItem);
+        firstHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));
         rangeHighlightStart = horizontalMidPoint(getChildAt(firstHighlightPosition));
       }
 
       int lastHighlightPosition;
       int rangeHighlightEnd;
-      if (endItem.after(lastOfMonth)) {
+      if (endItem > lastOfMonth) {
         lastHighlightPosition = monthAdapter.lastPositionInMonth();
         rangeHighlightEnd =
             monthAdapter.isLastInRow(lastHighlightPosition)
                 ? getWidth()
                 : getChildAt(lastHighlightPosition + 1).getLeft();
       } else {
-        lastHighlightPosition = monthAdapter.dayToPosition(endItem.get(Calendar.DAY_OF_MONTH));
+        dayCompute.setTimeInMillis(endItem);
+        lastHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));
         rangeHighlightEnd = horizontalMidPoint(getChildAt(lastHighlightPosition));
       }
 
@@ -126,11 +127,11 @@ final class MaterialCalendarGridView extends GridView {
   }
 
   private static boolean skipMonth(
-      Calendar firstOfMonth, Calendar lastOfMonth, Calendar startDay, Calendar endDay) {
-    if (startDay == null || endDay == null) {
+      Long firstOfMonth, Long lastOfMonth, Long startDay, Long endDay) {
+    if (firstOfMonth == null || lastOfMonth == null || startDay == null || endDay == null) {
       return true;
     }
-    return startDay.after(lastOfMonth) || endDay.before(firstOfMonth);
+    return startDay > lastOfMonth || endDay < firstOfMonth;
   }
 
   private static int horizontalMidPoint(View view) {

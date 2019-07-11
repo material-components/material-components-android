@@ -105,10 +105,10 @@ public final class Month implements Comparable<Month>, Parcelable {
    * @param day The desired day within this month and year
    * @return A new {@link Calendar} instance for the given day within the specified month and year
    */
-  Calendar getDay(int day) {
+  long getDay(int day) {
     Calendar calendar = ((Calendar) this.calendar.clone());
     calendar.set(Calendar.DAY_OF_MONTH, day);
-    return calendar;
+    return calendar.getTimeInMillis();
   }
 
   @Override

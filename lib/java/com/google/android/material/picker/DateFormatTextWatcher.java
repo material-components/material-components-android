@@ -22,7 +22,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import java.text.DateFormat;
 import java.text.ParseException;
-import java.util.Calendar;
 import java.util.Date;
 
 abstract class DateFormatTextWatcher implements TextWatcher {
@@ -35,7 +34,7 @@ abstract class DateFormatTextWatcher implements TextWatcher {
     this.textInputLayout = textInputLayout;
   }
 
-  abstract void onDateChanged(@Nullable Calendar calendar);
+  abstract void onDateChanged(@Nullable Long day);
 
   @Override
   public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -51,9 +50,7 @@ abstract class DateFormatTextWatcher implements TextWatcher {
     try {
       Date date = dateFormat.parse(s.toString());
       textInputLayout.setError(null);
-      Calendar calendar = Calendar.getInstance();
-      calendar.setTime(date);
-      onDateChanged(calendar);
+      onDateChanged(date.getTime());
     } catch (ParseException e) {
       textInputLayout.setError("Validation error.");
     }

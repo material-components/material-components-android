@@ -36,7 +36,6 @@ import android.widget.EditText;
 import com.google.android.material.internal.ViewUtils;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collection;
 import java.util.Locale;
 
@@ -49,15 +48,15 @@ import java.util.Locale;
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
 
-  @Nullable private Calendar selectedStartItem = null;
-  @Nullable private Calendar selectedEndItem = null;
+  @Nullable private Long selectedStartItem = null;
+  @Nullable private Long selectedEndItem = null;
 
   @Override
-  public void select(Calendar selection) {
+  public void select(long selection) {
     if (selectedStartItem == null) {
       selectedStartItem = selection;
     } else if (selectedEndItem == null
-        && (selection.after(selectedStartItem) || selection.equals(selectedStartItem))) {
+        && (selection > selectedStartItem || selection == selectedStartItem)) {
       selectedEndItem = selection;
     } else {
       selectedEndItem = null;
@@ -68,9 +67,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
   @Override
   @NonNull
   public Pair<Long, Long> getSelection() {
-    return new Pair<>(
-        selectedStartItem == null ? null : selectedStartItem.getTimeInMillis(),
-        selectedEndItem == null ? null : selectedEndItem.getTimeInMillis());
+    return new Pair<>(selectedStartItem, selectedEndItem);
   }
 
   @Override
@@ -79,8 +76,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
       return new ArrayList<>();
     }
     ArrayList<Pair<Long, Long>> ranges = new ArrayList<>();
-    Pair<Long, Long> range =
-        new Pair<>(selectedStartItem.getTimeInMillis(), selectedEndItem.getTimeInMillis());
+    Pair<Long, Long> range = new Pair<>(selectedStartItem, selectedEndItem);
     ranges.add(range);
     return ranges;
   }
@@ -89,10 +85,10 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
   public Collection<Long> getSelectedDays() {
     ArrayList<Long> selections = new ArrayList<>();
     if (selectedStartItem != null) {
-      selections.add(selectedStartItem.getTimeInMillis());
+      selections.add(selectedStartItem);
     }
     if (selectedEndItem != null) {
-      selections.add(selectedEndItem.getTimeInMillis());
+      selections.add(selectedEndItem);
     }
     return selections;
   }
@@ -119,16 +115,15 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
     if (selectedEndItem == null) {
       return res.getString(
           R.string.mtrl_picker_range_header_only_start_selected,
-          DateStrings.getDateString(selectedStartItem.getTimeInMillis()));
+          DateStrings.getDateString(selectedStartItem));
     }
     if (selectedStartItem == null) {
       return res.getString(
           R.string.mtrl_picker_range_header_only_end_selected,
-          DateStrings.getDateString(selectedEndItem.getTimeInMillis()));
+          DateStrings.getDateString(selectedEndItem));
     }
     Pair<String, String> dateRangeStrings =
-        DateStrings.getDateRangeString(
-            selectedStartItem.getTimeInMillis(), selectedEndItem.getTimeInMillis());
+        DateStrings.getDateRangeString(selectedStartItem, selectedEndItem);
     return res.getString(
         R.string.mtrl_picker_range_header_selected,
         dateRangeStrings.first,
@@ -160,26 +155,26 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
             Locale.getDefault());
 
     if (selectedStartItem != null) {
-      startEditText.setText(format.format(selectedStartItem.getTime()));
+      startEditText.setText(format.format(selectedStartItem));
     }
     if (selectedEndItem != null) {
-      endEditText.setText(format.format(selectedEndItem.getTime()));
+      endEditText.setText(format.format(selectedEndItem));
     }
 
     // TODO: handle start/end behavior enforcement
     startEditText.addTextChangedListener(
         new DateFormatTextWatcher(format, startTextInput) {
           @Override
-          void onDateChanged(@Nullable Calendar calendar) {
-            selectedStartItem = calendar;
+          void onDateChanged(@Nullable Long day) {
+            selectedStartItem = day;
             listener.onSelectionChanged(getSelection());
           }
         });
     endEditText.addTextChangedListener(
         new DateFormatTextWatcher(format, endTextInput) {
           @Override
-          void onDateChanged(@Nullable Calendar calendar) {
-            selectedEndItem = calendar;
+          void onDateChanged(@Nullable Long day) {
+            selectedEndItem = day;
             listener.onSelectionChanged(getSelection());
           }
         });
@@ -197,8 +192,10 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
         @Override
         public DateRangeGridSelector createFromParcel(Parcel source) {
           DateRangeGridSelector dateRangeGridSelector = new DateRangeGridSelector();
-          dateRangeGridSelector.selectedStartItem = (Calendar) source.readSerializable();
-          dateRangeGridSelector.selectedEndItem = (Calendar) source.readSerializable();
+          dateRangeGridSelector.selectedStartItem =
+              (Long) source.readValue(Long.class.getClassLoader());
+          dateRangeGridSelector.selectedEndItem =
+              (Long) source.readValue(Long.class.getClassLoader());
           return dateRangeGridSelector;
         }
 
@@ -215,7 +212,7 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
 
   @Override
   public void writeToParcel(Parcel dest, int flags) {
-    dest.writeSerializable(selectedStartItem);
-    dest.writeSerializable(selectedEndItem);
+    dest.writeValue(selectedStartItem);
+    dest.writeValue(selectedEndItem);
   }
 }

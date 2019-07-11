@@ -141,7 +141,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             gridSelector,
             calendarConstraints,
             day -> {
-              if (calendarConstraints.getDateValidator().isValid(day.getTimeInMillis())) {
+              if (calendarConstraints.getDateValidator().isValid(day)) {
                 gridSelector.select(day);
                 for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
                   listener.onSelectionChanged(gridSelector.getSelection());
@@ -175,6 +175,10 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
   private ItemDecoration createItemDecoration() {
     return new ItemDecoration() {
+
+      private final Calendar startItem = Calendar.getInstance();
+      private final Calendar endItem = Calendar.getInstance();
+
       @Override
       public void onDraw(
           @NonNull Canvas canvas, @NonNull RecyclerView recyclerView, @NonNull State state) {
@@ -189,8 +193,6 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
           if (range.first == null || range.second == null) {
             continue;
           }
-          Calendar startItem = Calendar.getInstance();
-          Calendar endItem = Calendar.getInstance();
           startItem.setTimeInMillis(range.first);
           endItem.setTimeInMillis(range.second);
 
@@ -254,7 +256,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
   interface OnDayClickListener {
 
-    void onDayClick(Calendar day);
+    void onDayClick(long day);
   }
 
   /** Returns the pixel height of each {@link android.view.View} representing a day. */

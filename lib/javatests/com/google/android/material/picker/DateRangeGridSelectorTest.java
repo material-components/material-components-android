@@ -59,8 +59,8 @@ public class DateRangeGridSelectorTest {
   public void dateRangeGridSelectorMaintainsSelectionAfterParceling() {
     int startPosition = 8;
     int endPosition = 15;
-    Calendar expectedStart = adapter.getItem(startPosition);
-    Calendar expectedEnd = adapter.getItem(endPosition);
+    long expectedStart = adapter.getItem(startPosition);
+    long expectedEnd = adapter.getItem(endPosition);
 
     dateRangeGridSelector.select(adapter.getItem(startPosition));
     dateRangeGridSelector.select(adapter.getItem(endPosition));
@@ -69,10 +69,8 @@ public class DateRangeGridSelectorTest {
 
     assertThat(adapter.withinMonth(startPosition), is(true));
     assertThat(adapter.withinMonth(endPosition), is(true));
-    assertThat(
-        dateRangeGridSelectorFromParcel.getSelection().first, is(expectedStart.getTimeInMillis()));
-    assertThat(
-        dateRangeGridSelectorFromParcel.getSelection().second, is(expectedEnd.getTimeInMillis()));
+    assertThat(dateRangeGridSelectorFromParcel.getSelection().first, is(expectedStart));
+    assertThat(dateRangeGridSelectorFromParcel.getSelection().second, is(expectedEnd));
   }
 
   @Test

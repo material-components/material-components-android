@@ -31,7 +31,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
-import java.util.Calendar;
 import java.util.Collection;
 
 /**
@@ -40,6 +39,8 @@ import java.util.Collection;
  *
  * <p>Implementors must implement {@link Parcelable} so that selection can be maintained through
  * Lifecycle events (e.g., Fragment destruction).
+ *
+ * <p>Dates are represented as times in UTC milliseconds.
  *
  * @param <S> The type of item available when cells are selected in the {@link AdapterView}
  * @hide
@@ -55,9 +56,9 @@ public interface GridSelector<S> extends Parcelable {
   /**
    * Allows this selection handler to respond to clicks within the {@link AdapterView}.
    *
-   * @param selection The selected day
+   * @param selection The selected day represented as time in UTC milliseconds.
    */
-  void select(Calendar selection);
+  void select(long selection);
 
   /**
    * Returns a list of longs whose time value represents days that should be marked selected.
