@@ -103,6 +103,9 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
       MenuItem menuItem = bn.getMenu().getItem(0);
       int menuItemId = menuItem.getItemId();
       BadgeDrawable badgeDrawable = bn.getOrCreateBadge(menuItemId);
+      // In case the first menu item has been selected and the badge was hidden, call
+      // BadgeDrawable#setVisible() to ensure the badge is visible.
+      badgeDrawable.setVisible(true);
       badgeDrawable.setNumber(badgeDrawable.getNumber() + delta);
     }
   }
