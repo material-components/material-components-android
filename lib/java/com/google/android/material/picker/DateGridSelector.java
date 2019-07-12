@@ -97,13 +97,11 @@ public class DateGridSelector implements GridSelector<Long> {
 
     dateEditText.addTextChangedListener(
         new DateFormatTextWatcher(pattern, format, dateTextInput, constraints) {
+
+          @Override
           void onValidDate(@Nullable Long day) {
             select(day);
             listener.onSelectionChanged(getSelection());
-          }
-
-          void onInvalidDate() {
-            // do nothing
           }
         });
 

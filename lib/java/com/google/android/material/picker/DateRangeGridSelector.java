@@ -174,11 +174,13 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
     startEditText.addTextChangedListener(
         new DateFormatTextWatcher(pattern, format, startTextInput, constraints) {
 
+          @Override
           void onValidDate(@Nullable Long day) {
             proposedTextStart = day;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);
           }
 
+          @Override
           void onInvalidDate() {
             proposedTextStart = null;
             updateIfValidTextProposal(startTextInput, endTextInput, listener);
