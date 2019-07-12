@@ -327,7 +327,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       iconDrawable =
           DrawableCompat.wrap(state == null ? iconDrawable : state.newDrawable()).mutate();
       wrappedIconDrawable = iconDrawable;
-      DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+      if (iconTint != null) {
+        DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+      }
     }
     this.icon.setImageDrawable(iconDrawable);
   }
