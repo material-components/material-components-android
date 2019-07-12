@@ -46,6 +46,7 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
+import androidx.annotation.VisibleForTesting;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -82,6 +83,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   /** Animation mode that corresponds to the fade in and out animations. */
   public static final int ANIMATION_MODE_FADE = 1;
+
+  @VisibleForTesting
+  @RestrictTo(LIBRARY_GROUP)
+  static boolean CONSUMING_TOUCH_EVENTS = true;
 
   /** Animation modes that can be set on the {@link BaseTransientBottomBar}. */
   @IntDef({ANIMATION_MODE_SLIDE, ANIMATION_MODE_FADE})
@@ -563,46 +568,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       final ViewGroup.LayoutParams lp = this.view.getLayoutParams();
 
       if (lp instanceof CoordinatorLayout.LayoutParams) {
-        // If our LayoutParams are from a CoordinatorLayout, we'll setup our Behavior
-        final CoordinatorLayout.LayoutParams clp = (CoordinatorLayout.LayoutParams) lp;
-
-        final SwipeDismissBehavior<? extends View> behavior =
-            this.behavior == null ? getNewBehavior() : this.behavior;
-
-        if (behavior instanceof BaseTransientBottomBar.Behavior) {
-          ((BaseTransientBottomBar.Behavior) behavior).setBaseTransientBottomBar(this);
-        }
-        behavior.setListener(
-            new SwipeDismissBehavior.OnDismissListener() {
-              @Override
-              public void onDismiss(View view) {
-                view.setVisibility(View.GONE);
-                dispatchDismiss(BaseCallback.DISMISS_EVENT_SWIPE);
-              }
-
-              @Override
-              public void onDragStateChanged(int state) {
-                switch (state) {
-                  case SwipeDismissBehavior.STATE_DRAGGING:
-                  case SwipeDismissBehavior.STATE_SETTLING:
-                    // If the view is being dragged or settling, pause the timeout
-                    SnackbarManager.getInstance().pauseTimeout(managerCallback);
-                    break;
-                  case SwipeDismissBehavior.STATE_IDLE:
-                    // If the view has been released and is idle, restore the timeout
-                    SnackbarManager.getInstance().restoreTimeoutIfPaused(managerCallback);
-                    break;
-                  default:
-                    // Any other state is ignored
-                }
-              }
-            });
-        clp.setBehavior(behavior);
-        // Also set the inset edge so that views can dodge the bar correctly, but only if there is
-        // no anchor view.
-        if (anchorView == null) {
-          clp.insetEdge = Gravity.BOTTOM;
-        }
+        setUpBehavior((CoordinatorLayout.LayoutParams) lp);
       }
 
       extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
@@ -629,27 +595,69 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         });
 
     if (ViewCompat.isLaidOut(this.view)) {
-      if (shouldAnimate()) {
-        // If animations are enabled, animate it in
-        animateViewIn();
-      } else {
-        // Else if anims are disabled just call back now
-        onViewShown();
-      }
-    } else {
-      // Otherwise, add one of our layout change listeners and show it in when laid out
-      this.view.setOnLayoutChangeListener(
-          (view, left, top, right, bottom) -> {
-            BaseTransientBottomBar.this.view.setOnLayoutChangeListener(null);
+      showViewImpl();
+      return;
+    }
 
-            if (shouldAnimate()) {
-              // If animations are enabled, animate it in
-              animateViewIn();
-            } else {
-              // Else if anims are disabled just call back now
-              onViewShown();
+    // Otherwise, add one of our layout change listeners and show it in when laid out
+    this.view.setOnLayoutChangeListener(
+        (view, left, top, right, bottom) -> {
+          BaseTransientBottomBar.this.view.setOnLayoutChangeListener(null);
+          showViewImpl();
+        });
+  }
+
+  private void showViewImpl() {
+    if (shouldAnimate()) {
+      // If animations are enabled, animate it in
+      animateViewIn();
+    } else {
+      // Else if animations are disabled just call back now
+      onViewShown();
+    }
+  }
+
+  private void setUpBehavior(CoordinatorLayout.LayoutParams lp) {
+    // If our LayoutParams are from a CoordinatorLayout, we'll setup our Behavior
+    final CoordinatorLayout.LayoutParams clp = lp;
+
+    final SwipeDismissBehavior<? extends View> behavior =
+        this.behavior == null ? getNewBehavior() : this.behavior;
+
+    if (behavior instanceof BaseTransientBottomBar.Behavior) {
+      ((Behavior) behavior).setBaseTransientBottomBar(this);
+    }
+
+    behavior.setListener(
+        new SwipeDismissBehavior.OnDismissListener() {
+          @Override
+          public void onDismiss(View view) {
+            view.setVisibility(View.GONE);
+            dispatchDismiss(BaseCallback.DISMISS_EVENT_SWIPE);
+          }
+
+          @Override
+          public void onDragStateChanged(int state) {
+            switch (state) {
+              case SwipeDismissBehavior.STATE_DRAGGING:
+              case SwipeDismissBehavior.STATE_SETTLING:
+                // If the view is being dragged or settling, pause the timeout
+                SnackbarManager.getInstance().pauseTimeout(managerCallback);
+                break;
+              case SwipeDismissBehavior.STATE_IDLE:
+                // If the view has been released and is idle, restore the timeout
+                SnackbarManager.getInstance().restoreTimeoutIfPaused(managerCallback);
+                break;
+              default:
+                // Any other state is ignored
             }
-          });
+          }
+        });
+    clp.setBehavior(behavior);
+    // Also set the inset edge so that views can dodge the bar correctly, but only if there is
+    // no anchor view.
+    if (anchorView == null) {
+      clp.insetEdge = Gravity.BOTTOM;
     }
   }
 
@@ -883,7 +891,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     private static final OnTouchListener consumeAllTouchListener =
         (v, event) -> {
           // Prevent touches from passing through this view.
-          return true;
+          return CONSUMING_TOUCH_EVENTS;
         };
 
     private BaseTransientBottomBar.OnLayoutChangeListener onLayoutChangeListener;
