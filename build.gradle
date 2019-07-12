@@ -103,8 +103,6 @@ def compatibility(name) {
       return "androidx.core:core:${androidXVersions.core}"
     case "fragment":
       return "androidx.fragment:fragment:${androidXVersions.fragment}"
-    case "lifecycleCommonJava8":
-      return "androidx.lifecycle:lifecycle-common-java8:${androidXVersions.lifecycle}"
     case "lifecycleRuntime":
       return "androidx.lifecycle:lifecycle-runtime:${androidXVersions.lifecycle}"
     case "recyclerview":

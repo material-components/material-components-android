@@ -15,8 +15,9 @@
  */
 package com.google.android.material.picker;
 
-import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.Lifecycle.Event;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -116,10 +117,25 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
     monthFragment
         .getLifecycle()
         .addObserver(
-            new DefaultLifecycleObserver() {
+            new LifecycleEventObserver() {
 
               @Override
-              public void onCreate(LifecycleOwner owner) {
+              public void onStateChanged(
+                  @NonNull LifecycleOwner lifecycleOwner, @NonNull Event event) {
+                switch (event) {
+                  case ON_CREATE:
+                    onCreated();
+                    break;
+                  case ON_DESTROY:
+                    onDestroyed();
+                    break;
+                  default:
+                    // do nothing
+                    break;
+                }
+              }
+
+              private void onCreated() {
                 monthFragment.setOnDayClickListener(onDayClickListener);
                 AdapterDataObserver dataSetObserver =
                     new AdapterDataObserver() {
@@ -132,8 +148,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
                 observingFragments.put(position, dataSetObserver);
               }
 
-              @Override
-              public void onDestroy(LifecycleOwner owner) {
+              private void onDestroyed() {
                 AdapterDataObserver dataSetObserver = observingFragments.get(position);
                 if (dataSetObserver != null) {
                   observingFragments.remove(position);
