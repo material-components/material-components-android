@@ -36,7 +36,6 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
 
   private GridSelector<S> gridSelector;
-  // TODO: make use of calendarConstraints or delete
   private CalendarConstraints calendarConstraints;
 
   static <T> MaterialTextInputPicker<T> newInstance(
@@ -74,6 +73,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
         layoutInflater,
         viewGroup,
         bundle,
+        calendarConstraints,
         selection -> {
           for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
             listener.onSelectionChanged(selection);

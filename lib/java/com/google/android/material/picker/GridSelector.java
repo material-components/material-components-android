@@ -86,5 +86,6 @@ public interface GridSelector<S> extends Parcelable {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle,
+      @NonNull CalendarConstraints constraints,
       @NonNull OnSelectionChangedListener<S> listener);
 }

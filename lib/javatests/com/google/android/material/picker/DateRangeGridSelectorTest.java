@@ -18,12 +18,17 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import static org.hamcrest.Matchers.is;
+import static org.hamcrest.Matchers.notNullValue;
 import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import android.content.Context;
+import com.google.android.material.textfield.TextInputLayout;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.LayoutInflater;
+import android.view.View;
 import android.widget.GridView;
+import android.widget.TextView.BufferType;
 import androidx.test.core.app.ApplicationProvider;
 import java.util.Calendar;
 import org.junit.Before;
@@ -39,12 +44,13 @@ public class DateRangeGridSelectorTest {
 
   private DateRangeGridSelector dateRangeGridSelector;
   private MonthAdapter adapter;
+  private Context context;
 
   @Before
   public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
-    Context context = activity.getApplicationContext();
+    context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
     dateRangeGridSelector = new DateRangeGridSelector();
     adapter =
@@ -53,6 +59,65 @@ public class DateRangeGridSelectorTest {
             dateRangeGridSelector,
             new CalendarConstraints.Builder().build());
     gridView.setAdapter(adapter);
+  }
+
+  @Test
+  public void textInputValid() {
+    View root =
+        dateRangeGridSelector.onCreateTextInputView(
+            LayoutInflater.from(context),
+            null,
+            null,
+            new CalendarConstraints.Builder().build(),
+            selection -> {});
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+
+    startTextInput.getEditText().setText("2/2/2010", BufferType.EDITABLE);
+    endTextInput.getEditText().setText("2/2/2012", BufferType.EDITABLE);
+
+    assertThat(startTextInput.getError(), nullValue());
+    assertThat(endTextInput.getError(), nullValue());
+  }
+
+  @Test
+  public void textInputFormatError() {
+    View root =
+        dateRangeGridSelector.onCreateTextInputView(
+            LayoutInflater.from(context),
+            null,
+            null,
+            new CalendarConstraints.Builder().build(),
+            selection -> {});
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+
+    startTextInput.getEditText().setText("22/22/2010", BufferType.EDITABLE);
+    endTextInput.getEditText().setText("555-555-5555", BufferType.EDITABLE);
+
+    assertThat(startTextInput.getError(), notNullValue());
+    assertThat(endTextInput.getError(), notNullValue());
+  }
+
+  @Test
+  public void textInputRangeError() {
+    dateRangeGridSelector = new DateRangeGridSelector();
+    View root =
+        dateRangeGridSelector.onCreateTextInputView(
+            LayoutInflater.from(context),
+            null,
+            null,
+            new CalendarConstraints.Builder().build(),
+            selection -> {});
+    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+
+    startTextInput.getEditText().setText("2/2/2010", BufferType.EDITABLE);
+    endTextInput.getEditText().setText("2/2/2008", BufferType.EDITABLE);
+
+    assertThat(
+        startTextInput.getError(), is(context.getString(R.string.mtrl_picker_invalid_range)));
+    assertThat(endTextInput.getError(), notNullValue());
   }
 
   @Test

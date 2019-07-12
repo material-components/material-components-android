@@ -80,27 +80,30 @@ public class DateGridSelector implements GridSelector<Long> {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle,
+      CalendarConstraints constraints,
       @NonNull OnSelectionChangedListener<Long> listener) {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_text_input_date, viewGroup, false);
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
     EditText dateEditText = dateTextInput.getEditText();
 
-    SimpleDateFormat format =
-        new SimpleDateFormat(
-            root.getResources().getString(R.string.mtrl_picker_text_input_date_format),
-            Locale.getDefault());
+    String pattern = root.getResources().getString(R.string.mtrl_picker_text_input_date_format);
+    SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+    format.setLenient(false);
 
     if (selectedItem != null) {
       dateEditText.setText(format.format(selectedItem));
     }
 
     dateEditText.addTextChangedListener(
-        new DateFormatTextWatcher(format, dateTextInput) {
-          @Override
-          void onDateChanged(@Nullable Long day) {
+        new DateFormatTextWatcher(pattern, format, dateTextInput, constraints) {
+          void onValidDate(@Nullable Long day) {
             select(day);
             listener.onSelectionChanged(getSelection());
+          }
+
+          void onInvalidDate() {
+            // do nothing
           }
         });
 

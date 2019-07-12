@@ -15,6 +15,8 @@
  */
 package com.google.android.material.picker;
 
+import com.google.android.material.R;
+
 import androidx.annotation.Nullable;
 import com.google.android.material.textfield.TextInputLayout;
 import android.text.Editable;
@@ -26,15 +28,30 @@ import java.util.Date;
 
 abstract class DateFormatTextWatcher implements TextWatcher {
 
+  private final String pattern;
   private final DateFormat dateFormat;
   private final TextInputLayout textInputLayout;
+  private final CalendarConstraints constraints;
+  private final String invalidFormat;
+  private final String outOfRange;
 
-  DateFormatTextWatcher(DateFormat dateFormat, TextInputLayout textInputLayout) {
+  DateFormatTextWatcher(
+      String pattern,
+      DateFormat dateFormat,
+      TextInputLayout textInputLayout,
+      CalendarConstraints constraints) {
+    this.pattern = pattern;
     this.dateFormat = dateFormat;
     this.textInputLayout = textInputLayout;
+    this.constraints = constraints;
+    this.invalidFormat =
+        textInputLayout.getContext().getString(R.string.mtrl_picker_invalid_format);
+    this.outOfRange = textInputLayout.getContext().getString(R.string.mtrl_picker_out_of_range);
   }
 
-  abstract void onDateChanged(@Nullable Long day);
+  abstract void onValidDate(@Nullable Long day);
+
+  void onInvalidDate() {}
 
   @Override
   public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
@@ -42,17 +59,27 @@ abstract class DateFormatTextWatcher implements TextWatcher {
   @Override
   public void onTextChanged(CharSequence s, int start, int before, int count) {
     if (TextUtils.isEmpty(s)) {
-      onDateChanged(null);
+      textInputLayout.setError(null);
+      onValidDate(null);
       return;
     }
 
-    // TODO: better format enforcing and validation error
     try {
       Date date = dateFormat.parse(s.toString());
+
       textInputLayout.setError(null);
-      onDateChanged(date.getTime());
+      long milliseconds = date.getTime();
+      if (constraints.getDateValidator().isValid(milliseconds)
+          && constraints.isWithinBounds(milliseconds)) {
+        onValidDate(date.getTime());
+      } else {
+        textInputLayout.setError(
+            String.format(outOfRange, DateStrings.getDateString(milliseconds)));
+        onInvalidDate();
+      }
     } catch (ParseException e) {
-      textInputLayout.setError("Validation error.");
+      textInputLayout.setError(String.format(invalidFormat, pattern));
+      onInvalidDate();
     }
   }
 

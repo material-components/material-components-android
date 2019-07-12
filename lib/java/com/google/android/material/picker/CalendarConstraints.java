@@ -61,6 +61,10 @@ public final class CalendarConstraints implements Parcelable {
     yearSpan = end.year - start.year + 1;
   }
 
+  boolean isWithinBounds(long date) {
+    return start.getDay(1) <= date && date <= end.getDay(end.daysInMonth);
+  }
+
   public DateValidator getDateValidator() {
     return validator;
   }
