@@ -24,6 +24,7 @@ import static org.junit.Assert.assertThat;
 
 import android.content.Context;
 import com.google.android.material.textfield.TextInputLayout;
+import androidx.core.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -69,7 +70,10 @@ public class DateRangeGridSelectorTest {
             null,
             null,
             new CalendarConstraints.Builder().build(),
-            selection -> {});
+            new OnSelectionChangedListener<Pair<Long, Long>>() {
+              @Override
+              public void onSelectionChanged(Pair<Long, Long> selection) {}
+            });
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
 
@@ -88,7 +92,10 @@ public class DateRangeGridSelectorTest {
             null,
             null,
             new CalendarConstraints.Builder().build(),
-            selection -> {});
+            new OnSelectionChangedListener<Pair<Long, Long>>() {
+              @Override
+              public void onSelectionChanged(Pair<Long, Long> selection) {}
+            });
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
 
@@ -108,7 +115,10 @@ public class DateRangeGridSelectorTest {
             null,
             null,
             new CalendarConstraints.Builder().build(),
-            selection -> {});
+            new OnSelectionChangedListener<Pair<Long, Long>>() {
+              @Override
+              public void onSelectionChanged(Pair<Long, Long> selection) {}
+            });
     TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
     TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
 
@@ -116,7 +126,8 @@ public class DateRangeGridSelectorTest {
     endTextInput.getEditText().setText("2/2/2008", BufferType.EDITABLE);
 
     assertThat(
-        startTextInput.getError(), is(context.getString(R.string.mtrl_picker_invalid_range)));
+        startTextInput.getError(),
+        is((CharSequence) context.getString(R.string.mtrl_picker_invalid_range)));
     assertThat(endTextInput.getError(), notNullValue());
   }
 

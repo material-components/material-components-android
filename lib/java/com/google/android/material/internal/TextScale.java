@@ -72,10 +72,13 @@ public class TextScale extends Transition {
     ValueAnimator animator = ValueAnimator.ofFloat(startSize, endSize);
 
     animator.addUpdateListener(
-        valueAnimator -> {
-          float animatedValue = (float) valueAnimator.getAnimatedValue();
-          view.setScaleX(animatedValue);
-          view.setScaleY(animatedValue);
+        new ValueAnimator.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            float animatedValue = (float) valueAnimator.getAnimatedValue();
+            view.setScaleX(animatedValue);
+            view.setScaleY(animatedValue);
+          }
         });
     return animator;
   }

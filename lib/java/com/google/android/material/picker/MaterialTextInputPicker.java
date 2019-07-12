@@ -74,9 +74,13 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
         viewGroup,
         bundle,
         calendarConstraints,
-        selection -> {
-          for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
-            listener.onSelectionChanged(selection);
+        new OnSelectionChangedListener<S>() {
+          @Override
+          public void onSelectionChanged(S selection) {
+            for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
+              listener.onSelectionChanged(selection);
+            }
+
           }
         });
   }

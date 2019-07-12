@@ -48,6 +48,7 @@ import androidx.customview.view.AbsSavedState;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.ViewCompat.NestedScrollType;
 import androidx.core.view.ViewCompat.ScrollAxis;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.appcompat.widget.ActionMenuView;
 import androidx.appcompat.widget.Toolbar;
 import android.util.AttributeSet;
@@ -63,6 +64,7 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton.OnVisibilityChangedListener;
 import com.google.android.material.internal.ThemeEnforcement;
 import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.internal.ViewUtils.RelativePadding;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -253,11 +255,15 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
 
     ViewUtils.doOnApplyWindowInsets(
         this,
-        (view, insets, initialPadding) -> {
-          bottomInset = insets.getSystemWindowInsetBottom();
-          initialPadding.bottom += insets.getSystemWindowInsetBottom();
-          initialPadding.applyToView(view);
-          return insets;
+        new ViewUtils.OnApplyWindowInsetsListener() {
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(
+              View view, WindowInsetsCompat insets, RelativePadding initialPadding) {
+            bottomInset = insets.getSystemWindowInsetBottom();
+            initialPadding.bottom += insets.getSystemWindowInsetBottom();
+            initialPadding.applyToView(view);
+            return insets;
+          }
         });
   }
 

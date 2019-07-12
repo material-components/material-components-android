@@ -39,6 +39,7 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.Message;
 import androidx.annotation.IdRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.IntRange;
@@ -48,6 +49,7 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
+import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.AttributeSet;
 import android.view.Gravity;
@@ -208,16 +210,19 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     handler =
         new Handler(
             Looper.getMainLooper(),
-            message -> {
-              switch (message.what) {
-                case MSG_SHOW:
-                  ((BaseTransientBottomBar) message.obj).showView();
-                  return true;
-                case MSG_DISMISS:
-                  ((BaseTransientBottomBar) message.obj).hideView(message.arg1);
-                  return true;
-                default:
-                  return false;
+            new Handler.Callback() {
+              @Override
+              public boolean handleMessage(Message message) {
+                switch (message.what) {
+                  case MSG_SHOW:
+                    ((BaseTransientBottomBar) message.obj).showView();
+                    return true;
+                  case MSG_DISMISS:
+                    ((BaseTransientBottomBar) message.obj).hideView(message.arg1);
+                    return true;
+                  default:
+                    return false;
+                }
               }
             });
   }
@@ -305,12 +310,15 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     ViewCompat.setFitsSystemWindows(view, true);
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
-        (v, insets) -> {
-          // Copy over the bottom inset as bottom margin so that we're displayed above the
-          // navigation bar.
-          extraBottomMarginInsets = insets.getSystemWindowInsetBottom();
-          updateBottomMargin();
-          return insets;
+        new androidx.core.view.OnApplyWindowInsetsListener() {
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+            // Copy over the bottom inset as bottom margin so that we're displayed above the
+            // navigation bar.
+            extraBottomMarginInsets = insets.getSystemWindowInsetBottom();
+            updateBottomMargin();
+            return insets;
+          }
         });
 
     // Handle accessibility events
@@ -623,7 +631,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
               // non-user initiated action. Hence we need to make sure that we callback
               // and keep our state up to date. We need to post the call since
               // removeView() will call through to onDetachedFromWindow and thus overflow.
-              handler.post(() -> onViewHidden(BaseCallback.DISMISS_EVENT_MANUAL));
+              handler.post(
+                  new Runnable() {
+                    @Override
+                    public void run() {
+                      onViewHidden(BaseCallback.DISMISS_EVENT_MANUAL);
+                    }
+                  });
             }
           }
         });
@@ -639,15 +653,18 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     } else {
       // Otherwise, add one of our layout change listeners and show it in when laid out
       this.view.setOnLayoutChangeListener(
-          (view, left, top, right, bottom) -> {
-            BaseTransientBottomBar.this.view.setOnLayoutChangeListener(null);
+          new BaseTransientBottomBar.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View view, int left, int top, int right, int bottom) {
+              BaseTransientBottomBar.this.view.setOnLayoutChangeListener(null);
 
-            if (shouldAnimate()) {
-              // If animations are enabled, animate it in
-              animateViewIn();
-            } else {
-              // Else if anims are disabled just call back now
-              onViewShown();
+              if (shouldAnimate()) {
+                // If animations are enabled, animate it in
+                animateViewIn();
+              } else {
+                // Else if anims are disabled just call back now
+                onViewShown();
+              }
             }
           });
     }
@@ -719,7 +736,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     ValueAnimator animator = ValueAnimator.ofFloat(alphaValues);
     animator.setInterpolator(LINEAR_INTERPOLATOR);
     animator.addUpdateListener(
-        valueAnimator -> view.setAlpha((Float) valueAnimator.getAnimatedValue()));
+        new ValueAnimator.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            view.setAlpha((Float) valueAnimator.getAnimatedValue());
+          }
+        });
     return animator;
   }
 
@@ -727,10 +749,13 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     ValueAnimator animator = ValueAnimator.ofFloat(scaleValues);
     animator.setInterpolator(LINEAR_OUT_SLOW_IN_INTERPOLATOR);
     animator.addUpdateListener(
-        valueAnimator -> {
-          float scale = (float) valueAnimator.getAnimatedValue();
-          view.setScaleX(scale);
-          view.setScaleY(scale);
+        new ValueAnimator.AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            float scale = (float) valueAnimator.getAnimatedValue();
+            view.setScaleX(scale);
+            view.setScaleY(scale);
+          }
         });
     return animator;
   }
@@ -879,11 +904,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   @RestrictTo(LIBRARY_GROUP)
   protected static class SnackbarBaseLayout extends FrameLayout {
 
-    @SuppressLint("ClickableViewAccessibility")
     private static final OnTouchListener consumeAllTouchListener =
-        (v, event) -> {
-          // Prevent touches from passing through this view.
-          return true;
+        new OnTouchListener() {
+          @SuppressLint("ClickableViewAccessibility")
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+            // Prevent touches from passing through this view.
+            return true;
+          }
         };
 
     private BaseTransientBottomBar.OnLayoutChangeListener onLayoutChangeListener;

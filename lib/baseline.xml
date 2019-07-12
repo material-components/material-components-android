@@ -854,6 +854,17 @@
 
     <issue
         id="ClickableViewAccessibility"
+        message="`onTouch` should call `View#performClick` when a click is detected"
+        errorLine1="          public boolean onTouch(View view, MotionEvent event) {"
+        errorLine2="                         ~~~~~~~">
+        <location
+            file="java/com/google/android/material/bottomsheet/BottomSheetDialog.java"
+            line="186"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
         message="Custom view `Chip` overrides `onTouchEvent` but not `performClick`"
         errorLine1="  public boolean onTouchEvent(MotionEvent event) {"
         errorLine2="                 ~~~~~~~~~~~~">

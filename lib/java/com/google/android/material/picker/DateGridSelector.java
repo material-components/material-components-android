@@ -81,7 +81,7 @@ public class DateGridSelector implements GridSelector<Long> {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle,
       CalendarConstraints constraints,
-      @NonNull OnSelectionChangedListener<Long> listener) {
+      final @NonNull OnSelectionChangedListener<Long> listener) {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_text_input_date, viewGroup, false);
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);

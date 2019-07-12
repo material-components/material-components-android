@@ -25,6 +25,8 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
@@ -101,9 +103,14 @@ public class MonthFragment extends Fragment {
     gridView.setNumColumns(month.daysInWeek);
     gridView.setAdapter(monthAdapter);
     gridView.setOnItemClickListener(
-        (parent, v, position, id) -> {
-          if (monthAdapter.withinMonth(position)) {
-            onDayClickListener.onDayClick(monthAdapter.getItem(position));
+        new OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (monthAdapter.withinMonth(position)) {
+              if (monthAdapter.withinMonth(position)) {
+                onDayClickListener.onDayClick(monthAdapter.getItem(position));
+              }
+            }
           }
         });
 

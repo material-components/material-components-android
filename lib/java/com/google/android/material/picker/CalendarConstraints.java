@@ -217,7 +217,10 @@ public final class CalendarConstraints implements Parcelable {
       Bundle deepCopyBundle = new Bundle();
       deepCopyBundle.putParcelable(DEEP_COPY_VALIDATOR_KEY, validator);
       return new CalendarConstraints(
-          start, end, opening, deepCopyBundle.getParcelable(DEEP_COPY_VALIDATOR_KEY));
+          start,
+          end,
+          opening,
+          (DateValidator) deepCopyBundle.getParcelable(DEEP_COPY_VALIDATOR_KEY));
     }
   }
 }

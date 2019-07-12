@@ -146,12 +146,13 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle,
       CalendarConstraints constraints,
-      @NonNull OnSelectionChangedListener<Pair<Long, Long>> listener) {
+      final @NonNull OnSelectionChangedListener<Pair<Long, Long>> listener) {
     View root =
         layoutInflater.inflate(R.layout.mtrl_picker_text_input_date_range, viewGroup, false);
 
-    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
-    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    final TextInputLayout startTextInput =
+        root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    final TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
     EditText startEditText = startTextInput.getEditText();
     EditText endEditText = endTextInput.getEditText();
 

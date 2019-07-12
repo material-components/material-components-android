@@ -30,6 +30,7 @@ import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import android.util.AttributeSet;
+import android.view.View;
 import android.widget.FrameLayout;
 
 /** @hide */
@@ -66,19 +67,22 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
 
     ViewCompat.setOnApplyWindowInsetsListener(
         this,
-        (v, insets) -> {
-          if (null == ScrimInsetsFrameLayout.this.insets) {
-            ScrimInsetsFrameLayout.this.insets = new Rect();
+        new androidx.core.view.OnApplyWindowInsetsListener() {
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+            if (null == ScrimInsetsFrameLayout.this.insets) {
+              ScrimInsetsFrameLayout.this.insets = new Rect();
+            }
+            ScrimInsetsFrameLayout.this.insets.set(
+                insets.getSystemWindowInsetLeft(),
+                insets.getSystemWindowInsetTop(),
+                insets.getSystemWindowInsetRight(),
+                insets.getSystemWindowInsetBottom());
+            onInsetsChanged(insets);
+            setWillNotDraw(!insets.hasSystemWindowInsets() || insetForeground == null);
+            ViewCompat.postInvalidateOnAnimation(ScrimInsetsFrameLayout.this);
+            return insets.consumeSystemWindowInsets();
           }
-          ScrimInsetsFrameLayout.this.insets.set(
-              insets.getSystemWindowInsetLeft(),
-              insets.getSystemWindowInsetTop(),
-              insets.getSystemWindowInsetRight(),
-              insets.getSystemWindowInsetBottom());
-          onInsetsChanged(insets);
-          setWillNotDraw(!insets.hasSystemWindowInsets() || insetForeground == null);
-          ViewCompat.postInvalidateOnAnimation(ScrimInsetsFrameLayout.this);
-          return insets.consumeSystemWindowInsets();
         });
   }
 

@@ -1999,7 +1999,13 @@ public class TextInputLayout extends LinearLayout {
     boolean updatedHeight = updateEditTextHeightBasedOnIcon();
     boolean updatedIcon = updateIconDummyDrawables();
     if (updatedHeight || updatedIcon) {
-      editText.post(() -> editText.requestLayout());
+      editText.post(
+          new Runnable() {
+            @Override
+            public void run() {
+              editText.requestLayout();
+            }
+          });
     }
   }
 
@@ -2979,8 +2985,12 @@ public class TextInputLayout extends LinearLayout {
       this.animator.setInterpolator(AnimationUtils.FAST_OUT_SLOW_IN_INTERPOLATOR);
       this.animator.setDuration(LABEL_SCALE_ANIMATION_DURATION);
       this.animator.addUpdateListener(
-          animator ->
-              collapsingTextHelper.setExpansionFraction((float) animator.getAnimatedValue()));
+          new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+              collapsingTextHelper.setExpansionFraction((float) animator.getAnimatedValue());
+            }
+          });
     }
     this.animator.setFloatValues(collapsingTextHelper.getExpansionFraction(), target);
     this.animator.start();

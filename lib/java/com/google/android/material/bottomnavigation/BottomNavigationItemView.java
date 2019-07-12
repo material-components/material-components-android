@@ -105,9 +105,21 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     // TODO: Support displaying a badge on label-only bottom navigation views.
     if (icon != null) {
       icon.addOnLayoutChangeListener(
-          (v, left, top, right, bottom, oldLeft, oldTop, oldRight, oldBottom) -> {
-            if (icon.getVisibility() == VISIBLE) {
-              tryUpdateBadgeBounds(icon);
+          new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(
+                View v,
+                int left,
+                int top,
+                int right,
+                int bottom,
+                int oldLeft,
+                int oldTop,
+                int oldRight,
+                int oldBottom) {
+              if (icon.getVisibility() == VISIBLE) {
+                tryUpdateBadgeBounds(icon);
+              }
             }
           });
     }

@@ -22,10 +22,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.EditText;
 import com.google.android.material.animation.AnimationUtils;
 
 /** Default initialization of the clear text end icon {@link TextInputLayout.EndIconMode}. */
@@ -57,11 +61,14 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         }
       };
   private final OnEditTextAttachedListener clearTextOnEditTextAttachedListener =
-      editText -> {
-        textInputLayout.setEndIconVisible(hasText(editText.getText()));
-        // Make sure there's always only one clear text text watcher added
-        editText.removeTextChangedListener(clearTextEndIconTextWatcher);
-        editText.addTextChangedListener(clearTextEndIconTextWatcher);
+      new OnEditTextAttachedListener() {
+        @Override
+        public void onEditTextAttached(EditText editText) {
+          textInputLayout.setEndIconVisible(hasText(editText.getText()));
+          // Make sure there's always only one clear text text watcher added
+          editText.removeTextChangedListener(clearTextEndIconTextWatcher);
+          editText.addTextChangedListener(clearTextEndIconTextWatcher);
+        }
       };
 
   private AnimatorSet iconInAnim;
@@ -77,7 +84,13 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
         AppCompatResources.getDrawable(context, R.drawable.mtrl_ic_cancel));
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.clear_text_end_icon_content_description));
-    textInputLayout.setEndIconOnClickListener(v -> textInputLayout.getEditText().setText(null));
+    textInputLayout.setEndIconOnClickListener(
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            textInputLayout.getEditText().setText(null);
+          }
+        });
     textInputLayout.addOnEditTextAttachedListener(clearTextOnEditTextAttachedListener);
     initAnimators();
   }
@@ -108,11 +121,13 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
     ValueAnimator animator = ValueAnimator.ofFloat(values);
     animator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
     animator.setDuration(ANIMATION_FADE_DURATION);
-    animator.addUpdateListener(
-        animation -> {
-          float alpha = (float) animation.getAnimatedValue();
-          endIconView.setAlpha(alpha);
-        });
+    animator.addUpdateListener(new AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animation) {
+        float alpha = (float) animation.getAnimatedValue();
+        endIconView.setAlpha(alpha);
+      }
+    });
 
     return animator;
   }
@@ -121,12 +136,14 @@ class ClearTextEndIconDelegate extends EndIconDelegate {
     ValueAnimator animator = ValueAnimator.ofFloat(ANIMATION_SCALE_FROM_VALUE, 1);
     animator.setInterpolator(AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
     animator.setDuration(ANIMATION_SCALE_DURATION);
-    animator.addUpdateListener(
-        animation -> {
-          float scale = (float) animation.getAnimatedValue();
-          endIconView.setScaleX(scale);
-          endIconView.setScaleY(scale);
-        });
+    animator.addUpdateListener(new AnimatorUpdateListener() {
+      @Override
+      public void onAnimationUpdate(ValueAnimator animation) {
+        float scale = (float) animation.getAnimatedValue();
+        endIconView.setScaleX(scale);
+        endIconView.setScaleY(scale);
+      }
+    });
     return animator;
   }
 

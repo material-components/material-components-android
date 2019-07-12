@@ -22,6 +22,8 @@ import static com.google.common.truth.Truth.assertThat;
 
 import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
+import android.view.View;
+import android.view.View.OnClickListener;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.core.app.ApplicationProvider;
 import org.junit.Before;
@@ -59,7 +61,11 @@ public class SnackbarTest {
     accessibilityManager.setTouchExplorationEnabled(true);
 
     CoordinatorLayout view = new CoordinatorLayout(activity);
-    snackbar = Snackbar.make(view, "Test text", Snackbar.LENGTH_LONG).setAction("STUFF!", v -> {});
+    snackbar = Snackbar.make(view, "Test text", Snackbar.LENGTH_LONG).setAction("STUFF!",
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {}
+        });
 
     assertThat(snackbar.getDuration()).isEqualTo(Snackbar.LENGTH_INDEFINITE);
   }
@@ -69,7 +75,11 @@ public class SnackbarTest {
     accessibilityManager.setTouchExplorationEnabled(false);
 
     CoordinatorLayout view = new CoordinatorLayout(activity);
-    snackbar = Snackbar.make(view, "Test text", 300).setAction("STUFF!", v -> {});
+    snackbar = Snackbar.make(view, "Test text", 300).setAction("STUFF!",
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {}
+        });
 
     assertThat(snackbar.getDuration()).isEqualTo(300);
   }

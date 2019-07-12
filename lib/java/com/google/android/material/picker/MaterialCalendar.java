@@ -35,6 +35,7 @@ import androidx.recyclerview.widget.RecyclerView.State;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.GridView;
 import androidx.viewpager2.widget.ViewPager2;
@@ -134,7 +135,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
     daysHeader.setAdapter(new DaysOfWeekAdapter());
     daysHeader.setNumColumns(earliestMonth.daysInWeek);
 
-    ViewPager2 monthsPager = root.findViewById(R.id.mtrl_calendar_viewpager);
+    final ViewPager2 monthsPager = root.findViewById(R.id.mtrl_calendar_viewpager);
     monthsPager.setOrientation(orientation);
     monthsPager.setTag(VIEW_PAGER_TAG);
 
@@ -145,15 +146,19 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
             getLifecycle(),
             gridSelector,
             calendarConstraints,
-            day -> {
-              if (calendarConstraints.getDateValidator().isValid(day)) {
-                gridSelector.select(day);
-                for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
-                  listener.onSelectionChanged(gridSelector.getSelection());
-                }
-                monthsPager.getAdapter().notifyDataSetChanged();
-                if (yearSelector != null) {
-                  yearSelector.getAdapter().notifyDataSetChanged();
+            new OnDayClickListener() {
+
+              @Override
+              public void onDayClick(long day) {
+                if (calendarConstraints.getDateValidator().isValid(day)) {
+                  gridSelector.select(day);
+                  for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
+                    listener.onSelectionChanged(gridSelector.getSelection());
+                  }
+                  monthsPager.getAdapter().notifyDataSetChanged();
+                  if (yearSelector != null) {
+                    yearSelector.getAdapter().notifyDataSetChanged();
+                  }
                 }
               }
             });
@@ -316,20 +321,29 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         });
 
     monthDropSelect.setOnClickListener(
-        view -> {
-          toggleVisibleSelector();
+        new OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            toggleVisibleSelector();
+          }
         });
 
     monthNext.setOnClickListener(
-        view -> {
-          if (monthPager.getCurrentItem() + 1 < monthPager.getAdapter().getItemCount()) {
-            setCurrentMonth(monthsPagerAdapter.getPageMonth(monthPager.getCurrentItem() + 1));
+        new OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            if (monthPager.getCurrentItem() + 1 < monthPager.getAdapter().getItemCount()) {
+              setCurrentMonth(monthsPagerAdapter.getPageMonth(monthPager.getCurrentItem() + 1));
+            }
           }
         });
     monthPrev.setOnClickListener(
-        view -> {
-          if (monthPager.getCurrentItem() - 1 >= 0) {
-            setCurrentMonth(monthsPagerAdapter.getPageMonth(monthPager.getCurrentItem() - 1));
+        new OnClickListener() {
+          @Override
+          public void onClick(View view) {
+            if (monthPager.getCurrentItem() - 1 >= 0) {
+              setCurrentMonth(monthsPagerAdapter.getPageMonth(monthPager.getCurrentItem() - 1));
+            }
           }
         });
   }

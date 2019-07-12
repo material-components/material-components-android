@@ -45,6 +45,7 @@ import androidx.core.util.Pair;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.LinearLayout.LayoutParams;
@@ -195,22 +196,28 @@ public class MaterialDatePicker<S> extends DialogFragment {
     MaterialButton confirmButton = root.findViewById(R.id.confirm_button);
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
     confirmButton.setOnClickListener(
-        v -> {
-          for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
-              onPositiveButtonClickListeners) {
-            listener.onPositiveButtonClick(getSelection());
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            for (MaterialPickerOnPositiveButtonClickListener<? super S> listener :
+                onPositiveButtonClickListeners) {
+              listener.onPositiveButtonClick(getSelection());
+            }
+            dismiss();
           }
-          dismiss();
         });
 
     MaterialButton cancelButton = root.findViewById(R.id.cancel_button);
     cancelButton.setTag(CANCEL_BUTTON_TAG);
     cancelButton.setOnClickListener(
-        v -> {
-          for (View.OnClickListener listener : onNegativeButtonClickListeners) {
-            listener.onClick(v);
+        new View.OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            for (View.OnClickListener listener : onNegativeButtonClickListeners) {
+              listener.onClick(v);
+            }
+            dismiss();
           }
-          dismiss();
         });
     return root;
   }
@@ -289,16 +296,26 @@ public class MaterialDatePicker<S> extends DialogFragment {
     fragmentTransaction.replace(R.id.mtrl_calendar_frame, pickerFragment);
     fragmentTransaction.commitNow();
 
-    pickerFragment.addOnSelectionChangedListener(this::updateHeader);
+    pickerFragment
+        .addOnSelectionChangedListener(
+            new OnSelectionChangedListener<S>() {
+              @Override
+              public void onSelectionChanged(S selection) {
+                updateHeader(selection);
+              }
+            });
   }
 
   private void initHeaderToggle(Context context) {
     headerToggleButton.setTag(TOGGLE_BUTTON_TAG);
     headerToggleButton.setImageDrawable(createHeaderToggleDrawable(context));
     headerToggleButton.setOnClickListener(
-        v -> {
-          headerToggleButton.toggle();
-          startPickerFragment();
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            headerToggleButton.toggle();
+            startPickerFragment();
+          }
         });
   }
 

@@ -21,6 +21,7 @@ import com.google.android.material.R;
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
@@ -258,7 +259,14 @@ public class AppBarLayout extends LinearLayout {
     setStatusBarForeground(a.getDrawable(R.styleable.AppBarLayout_statusBarForeground));
     a.recycle();
 
-    ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> onWindowInsetChanged(insets));
+    ViewCompat.setOnApplyWindowInsetsListener(
+        this,
+        new androidx.core.view.OnApplyWindowInsetsListener() {
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+            return onWindowInsetChanged(insets);
+          }
+        });
   }
 
   /**
@@ -834,7 +842,12 @@ public class AppBarLayout extends LinearLayout {
         getResources().getInteger(R.integer.app_bar_elevation_anim_duration));
     elevationOverlayAnimator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
     elevationOverlayAnimator.addUpdateListener(
-        valueAnimator -> background.setElevation((float) valueAnimator.getAnimatedValue()));
+        new AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            background.setElevation((float) valueAnimator.getAnimatedValue());
+          }
+        });
     elevationOverlayAnimator.start();
   }
 
@@ -1361,9 +1374,13 @@ public class AppBarLayout extends LinearLayout {
         offsetAnimator = new ValueAnimator();
         offsetAnimator.setInterpolator(AnimationUtils.DECELERATE_INTERPOLATOR);
         offsetAnimator.addUpdateListener(
-            animator ->
+            new ValueAnimator.AnimatorUpdateListener() {
+              @Override
+              public void onAnimationUpdate(ValueAnimator animator) {
                 setHeaderTopBottomOffset(
-                    coordinatorLayout, child, (int) animator.getAnimatedValue()));
+                    coordinatorLayout, child, (int) animator.getAnimatedValue());
+              }
+            });
       } else {
         offsetAnimator.cancel();
       }
