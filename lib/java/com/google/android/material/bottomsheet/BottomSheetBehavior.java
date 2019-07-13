@@ -252,7 +252,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     } else {
       createMaterialShapeDrawable(context, attrs, hasBackgroundTint);
     }
-    createShapeValueAnimator();
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
@@ -649,6 +648,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     this.fitToContents = fitToContents;
 
+    createShapeValueAnimator();
+
     // If sheet is already laid out, recalculate the collapsed offset based on new setting.
     // Otherwise, let onLayoutChild handle this later.
     if (viewRef != null) {
@@ -925,18 +926,16 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void updateDrawableOnStateChange(@State int state, @State int previousState) {
-    if (materialShapeDrawable != null) {
+    if (materialShapeDrawable != null && interpolatorAnimator != null) {
       // If the BottomSheetBehavior's state is set directly to STATE_EXPANDED from
       // STATE_HIDDEN or STATE_COLLAPSED, bypassing  STATE_DRAGGING, the corner transition animation
       // will not be triggered automatically, so we will trigger it here.
       if (state == STATE_EXPANDED
           && (previousState == STATE_HIDDEN || previousState == STATE_COLLAPSED)
-          && interpolatorAnimator != null
           && interpolatorAnimator.getAnimatedFraction() == 1) {
         interpolatorAnimator.reverse();
       }
-      if (state == STATE_DRAGGING
-           && previousState == STATE_EXPANDED && interpolatorAnimator != null) {
+      if (state == STATE_DRAGGING  && previousState == STATE_EXPANDED) {
         interpolatorAnimator.start();
       }
     }
@@ -1047,15 +1046,19 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void createShapeValueAnimator() {
-    interpolatorAnimator = ValueAnimator.ofFloat(0f, 1f);
-    interpolatorAnimator.setDuration(CORNER_ANIMATION_DURATION);
-    interpolatorAnimator.addUpdateListener(
-        animation -> {
-          float value = (float) animation.getAnimatedValue();
-          if (materialShapeDrawable != null) {
-            materialShapeDrawable.setInterpolation(value);
-          }
-        });
+    if (!fitToContents) {
+      interpolatorAnimator = ValueAnimator.ofFloat(0f, 1f);
+      interpolatorAnimator.setDuration(CORNER_ANIMATION_DURATION);
+      interpolatorAnimator.addUpdateListener(
+          animation -> {
+            float value = (float) animation.getAnimatedValue();
+            if (materialShapeDrawable != null) {
+              materialShapeDrawable.setInterpolation(value);
+            }
+          });
+    } else {
+      interpolatorAnimator = null;
+    }
   }
 
   private float getYVelocity() {
