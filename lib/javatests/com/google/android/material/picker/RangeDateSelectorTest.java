@@ -41,9 +41,9 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
-public class DateRangeGridSelectorTest {
+public class RangeDateSelectorTest {
 
-  private DateRangeGridSelector dateRangeGridSelector;
+  private RangeDateSelector rangeDateSelector;
   private MonthAdapter adapter;
   private Context context;
 
@@ -53,11 +53,11 @@ public class DateRangeGridSelectorTest {
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
-    dateRangeGridSelector = new DateRangeGridSelector();
+    rangeDateSelector = new RangeDateSelector();
     adapter =
         new MonthAdapter(
             Month.create(2016, Calendar.FEBRUARY),
-            dateRangeGridSelector,
+            rangeDateSelector,
             new CalendarConstraints.Builder().build());
     gridView.setAdapter(adapter);
   }
@@ -65,7 +65,7 @@ public class DateRangeGridSelectorTest {
   @Test
   public void textInputValid() {
     View root =
-        dateRangeGridSelector.onCreateTextInputView(
+        rangeDateSelector.onCreateTextInputView(
             LayoutInflater.from(context),
             null,
             null,
@@ -87,7 +87,7 @@ public class DateRangeGridSelectorTest {
   @Test
   public void textInputFormatError() {
     View root =
-        dateRangeGridSelector.onCreateTextInputView(
+        rangeDateSelector.onCreateTextInputView(
             LayoutInflater.from(context),
             null,
             null,
@@ -108,9 +108,9 @@ public class DateRangeGridSelectorTest {
 
   @Test
   public void textInputRangeError() {
-    dateRangeGridSelector = new DateRangeGridSelector();
+    rangeDateSelector = new RangeDateSelector();
     View root =
-        dateRangeGridSelector.onCreateTextInputView(
+        rangeDateSelector.onCreateTextInputView(
             LayoutInflater.from(context),
             null,
             null,
@@ -132,28 +132,28 @@ public class DateRangeGridSelectorTest {
   }
 
   @Test
-  public void dateRangeGridSelectorMaintainsSelectionAfterParceling() {
+  public void rangeDateSelectorMaintainsStateAfterParceling() {
     int startPosition = 8;
     int endPosition = 15;
     long expectedStart = adapter.getItem(startPosition);
     long expectedEnd = adapter.getItem(endPosition);
 
-    dateRangeGridSelector.select(adapter.getItem(startPosition));
-    dateRangeGridSelector.select(adapter.getItem(endPosition));
-    DateRangeGridSelector dateRangeGridSelectorFromParcel =
-        ParcelableTestUtils.parcelAndCreate(dateRangeGridSelector, DateRangeGridSelector.CREATOR);
+    rangeDateSelector.select(adapter.getItem(startPosition));
+    rangeDateSelector.select(adapter.getItem(endPosition));
+    RangeDateSelector rangeDateSelectorFromParcel =
+        ParcelableTestUtils.parcelAndCreate(rangeDateSelector, RangeDateSelector.CREATOR);
 
     assertThat(adapter.withinMonth(startPosition), is(true));
     assertThat(adapter.withinMonth(endPosition), is(true));
-    assertThat(dateRangeGridSelectorFromParcel.getSelection().first, is(expectedStart));
-    assertThat(dateRangeGridSelectorFromParcel.getSelection().second, is(expectedEnd));
+    assertThat(rangeDateSelectorFromParcel.getSelection().first, is(expectedStart));
+    assertThat(rangeDateSelectorFromParcel.getSelection().second, is(expectedEnd));
   }
 
   @Test
   public void nullDateSelectionFromParcel() {
-    DateRangeGridSelector dateRangeGridSelectorFromParcel =
-        ParcelableTestUtils.parcelAndCreate(dateRangeGridSelector, DateRangeGridSelector.CREATOR);
-    assertThat(dateRangeGridSelectorFromParcel.getSelection().first, nullValue());
-    assertThat(dateRangeGridSelectorFromParcel.getSelection().second, nullValue());
+    RangeDateSelector rangeDateSelectorFromParcel =
+        ParcelableTestUtils.parcelAndCreate(rangeDateSelector, RangeDateSelector.CREATOR);
+    assertThat(rangeDateSelectorFromParcel.getSelection().first, nullValue());
+    assertThat(rangeDateSelectorFromParcel.getSelection().second, nullValue());
   }
 }

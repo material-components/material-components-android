@@ -35,9 +35,9 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
-public class DateGridSelectorTest {
+public class SingleDateSelectorTest {
 
-  private DateGridSelector dateGridSelector;
+  private SingleDateSelector singleDateSelector;
   private MonthAdapter adapter;
 
   @Before
@@ -46,30 +46,30 @@ public class DateGridSelectorTest {
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     Context context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
-    dateGridSelector = new DateGridSelector();
+    singleDateSelector = new SingleDateSelector();
     adapter =
         new MonthAdapter(
             Month.create(2016, Calendar.FEBRUARY),
-            dateGridSelector,
+            singleDateSelector,
             new CalendarConstraints.Builder().build());
     gridView.setAdapter(adapter);
   }
 
   @Test
-  public void dateGridSelectorMaintainsSelectionAfterParceling() {
+  public void dateSelectorMaintainsSelectionAfterParceling() {
     int position = 8;
     assertThat(adapter.withinMonth(position), is(true));
-    dateGridSelector.select(adapter.getItem(position));
+    singleDateSelector.select(adapter.getItem(position));
     long expected = adapter.getItem(position);
-    DateGridSelector dateGridSelectorFromParcel =
-        ParcelableTestUtils.parcelAndCreate(dateGridSelector, DateGridSelector.CREATOR);
-    assertThat(dateGridSelectorFromParcel.getSelection(), is(expected));
+    SingleDateSelector singleDateSelectorFromParcel =
+        ParcelableTestUtils.parcelAndCreate(singleDateSelector, SingleDateSelector.CREATOR);
+    assertThat(singleDateSelectorFromParcel.getSelection(), is(expected));
   }
 
   @Test
   public void nullDateSelectionFromParcel() {
-    DateGridSelector dateGridSelectorFromParcel =
-        ParcelableTestUtils.parcelAndCreate(dateGridSelector, DateGridSelector.CREATOR);
-    assertThat(dateGridSelectorFromParcel.getSelection(), nullValue());
+    SingleDateSelector singleDateSelector =
+        ParcelableTestUtils.parcelAndCreate(this.singleDateSelector, SingleDateSelector.CREATOR);
+    assertThat(singleDateSelector.getSelection(), nullValue());
   }
 }

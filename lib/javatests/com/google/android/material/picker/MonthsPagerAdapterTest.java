@@ -59,7 +59,7 @@ public class MonthsPagerAdapterTest {
             context,
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
-            /* gridSelector= */ null,
+            /* dateSelector= */ null,
             new CalendarConstraints.Builder()
                 .setStart(feb2016)
                 .setEnd(april2016)
@@ -77,7 +77,7 @@ public class MonthsPagerAdapterTest {
             context,
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
-            /* gridSelector= */ null,
+            /* dateSelector= */ null,
             new CalendarConstraints.Builder()
                 .setStart(feb2016)
                 .setEnd(feb2016)
@@ -97,7 +97,7 @@ public class MonthsPagerAdapterTest {
         context,
         activity.getSupportFragmentManager(),
         activity.getLifecycle(),
-        /* gridSelector= */ null,
+        /* dateSelector= */ null,
         new CalendarConstraints.Builder()
             .setStart(feb2016)
             .setEnd(march2016)
@@ -113,7 +113,7 @@ public class MonthsPagerAdapterTest {
         context,
         activity.getSupportFragmentManager(),
         activity.getLifecycle(),
-        /* gridSelector= */ null,
+        /* dateSelector= */ null,
         new CalendarConstraints.Builder()
             .setStart(march2016)
             .setEnd(feb2016)
@@ -129,7 +129,7 @@ public class MonthsPagerAdapterTest {
             context,
             activity.getSupportFragmentManager(),
             activity.getLifecycle(),
-            /* gridSelector= */ null,
+            /* dateSelector= */ null,
             new CalendarConstraints.Builder()
                 .setStart(feb2016)
                 .setEnd(april2016)

@@ -40,13 +40,13 @@ import java.util.Collection;
 import java.util.Locale;
 
 /**
- * A {@link GridSelector} that uses a {@link Pair} of {@link Long} objects to represent a selected
+ * A {@link DateSelector} that uses a {@link Pair} of {@link Long} objects to represent a selected
  * range.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
+public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
   private String invalidRangeStartError;
   // TODO: "" is not considered an error
@@ -240,21 +240,20 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
   /* Parcelable interface */
 
   /** {@link Parcelable.Creator} */
-  public static final Parcelable.Creator<DateRangeGridSelector> CREATOR =
-      new Parcelable.Creator<DateRangeGridSelector>() {
+  public static final Parcelable.Creator<RangeDateSelector> CREATOR =
+      new Parcelable.Creator<RangeDateSelector>() {
         @Override
-        public DateRangeGridSelector createFromParcel(Parcel source) {
-          DateRangeGridSelector dateRangeGridSelector = new DateRangeGridSelector();
-          dateRangeGridSelector.selectedStartItem =
+        public RangeDateSelector createFromParcel(Parcel source) {
+          RangeDateSelector rangeDateSelector = new RangeDateSelector();
+          rangeDateSelector.selectedStartItem =
               (Long) source.readValue(Long.class.getClassLoader());
-          dateRangeGridSelector.selectedEndItem =
-              (Long) source.readValue(Long.class.getClassLoader());
-          return dateRangeGridSelector;
+          rangeDateSelector.selectedEndItem = (Long) source.readValue(Long.class.getClassLoader());
+          return rangeDateSelector;
         }
 
         @Override
-        public DateRangeGridSelector[] newArray(int size) {
-          return new DateRangeGridSelector[size];
+        public RangeDateSelector[] newArray(int size) {
+          return new RangeDateSelector[size];
         }
       };
 

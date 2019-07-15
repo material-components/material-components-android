@@ -45,9 +45,8 @@ import java.util.Collection;
  * @param <S> The type of item available when cells are selected in the {@link AdapterView}
  * @hide
  */
-// TODO: Refactor into client-facing selection mode API
 @RestrictTo(Scope.LIBRARY_GROUP)
-public interface GridSelector<S> extends Parcelable {
+public interface DateSelector<S> extends Parcelable {
 
   /** Returns the current selection. */
   @Nullable

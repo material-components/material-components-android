@@ -35,14 +35,14 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
 
-  private GridSelector<S> gridSelector;
+  private DateSelector<S> dateSelector;
   private CalendarConstraints calendarConstraints;
 
   static <T> MaterialTextInputPicker<T> newInstance(
-      GridSelector<T> gridSelector, CalendarConstraints calendarConstraints) {
+      DateSelector<T> dateSelector, CalendarConstraints calendarConstraints) {
     MaterialTextInputPicker<T> materialCalendar = new MaterialTextInputPicker<>();
     Bundle args = new Bundle();
-    args.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    args.putParcelable(GRID_SELECTOR_KEY, dateSelector);
     args.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
     materialCalendar.setArguments(args);
     return materialCalendar;
@@ -51,7 +51,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   @Override
   public void onSaveInstanceState(@NonNull Bundle bundle) {
     super.onSaveInstanceState(bundle);
-    bundle.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    bundle.putParcelable(GRID_SELECTOR_KEY, dateSelector);
     bundle.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
   }
 
@@ -59,7 +59,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
   public void onCreate(@Nullable Bundle bundle) {
     super.onCreate(bundle);
     Bundle activeBundle = bundle == null ? getArguments() : bundle;
-    gridSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
+    dateSelector = activeBundle.getParcelable(GRID_SELECTOR_KEY);
     calendarConstraints = activeBundle.getParcelable(CALENDAR_CONSTRAINTS_KEY);
   }
 
@@ -69,7 +69,7 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle) {
-    return gridSelector.onCreateTextInputView(
+    return dateSelector.onCreateTextInputView(
         layoutInflater,
         viewGroup,
         bundle,
@@ -80,13 +80,12 @@ public final class MaterialTextInputPicker<S> extends PickerFragment<S> {
             for (OnSelectionChangedListener<S> listener : onSelectionChangedListeners) {
               listener.onSelectionChanged(selection);
             }
-
           }
         });
   }
 
   @Override
-  public GridSelector<S> getGridSelector() {
-    return gridSelector;
+  public DateSelector<S> getDateSelector() {
+    return dateSelector;
   }
 }

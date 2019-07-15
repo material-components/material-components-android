@@ -41,12 +41,12 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * A {@link GridSelector} that uses a {@link Long} for its selection state.
+ * A {@link DateSelector} that uses a {@link Long} for its selection state.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class DateGridSelector implements GridSelector<Long> {
+public class SingleDateSelector implements DateSelector<Long> {
 
   @Nullable private Long selectedItem;
 
@@ -134,18 +134,18 @@ public class DateGridSelector implements GridSelector<Long> {
   /* Parcelable interface */
 
   /** {@link Parcelable.Creator} */
-  public static final Parcelable.Creator<DateGridSelector> CREATOR =
-      new Parcelable.Creator<DateGridSelector>() {
+  public static final Parcelable.Creator<SingleDateSelector> CREATOR =
+      new Parcelable.Creator<SingleDateSelector>() {
         @Override
-        public DateGridSelector createFromParcel(Parcel source) {
-          DateGridSelector dateGridSelector = new DateGridSelector();
-          dateGridSelector.selectedItem = (Long) source.readValue(Long.class.getClassLoader());
-          return dateGridSelector;
+        public SingleDateSelector createFromParcel(Parcel source) {
+          SingleDateSelector singleDateSelector = new SingleDateSelector();
+          singleDateSelector.selectedItem = (Long) source.readValue(Long.class.getClassLoader());
+          return singleDateSelector;
         }
 
         @Override
-        public DateGridSelector[] newArray(int size) {
-          return new DateGridSelector[size];
+        public SingleDateSelector[] newArray(int size) {
+          return new SingleDateSelector[size];
         }
       };
 

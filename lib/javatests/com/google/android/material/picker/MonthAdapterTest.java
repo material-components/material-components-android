@@ -53,15 +53,15 @@ public class MonthAdapterTest {
   private void setupLocalizedCalendars(Locale locale) {
     Locale.setDefault(locale);
     CalendarConstraints defaultConstraints = new CalendarConstraints.Builder().build();
-    DateGridSelector dateGridSelector = new DateGridSelector();
+    SingleDateSelector singleDateSelector = new SingleDateSelector();
     Month feb2016 = Month.create(2016, Calendar.FEBRUARY);
-    monthFeb2016 = new MonthAdapter(feb2016, dateGridSelector, defaultConstraints);
+    monthFeb2016 = new MonthAdapter(feb2016, singleDateSelector, defaultConstraints);
     Month july2018 = Month.create(2018, Calendar.JULY);
-    monthJuly2018 = new MonthAdapter(july2018, dateGridSelector, defaultConstraints);
+    monthJuly2018 = new MonthAdapter(july2018, singleDateSelector, defaultConstraints);
     Month feb2019 = Month.create(2019, Calendar.FEBRUARY);
-    monthFeb2019 = new MonthAdapter(feb2019, dateGridSelector, defaultConstraints);
+    monthFeb2019 = new MonthAdapter(feb2019, singleDateSelector, defaultConstraints);
     Month march2019 = Month.create(2019, Calendar.MARCH);
-    monthMarch2019 = new MonthAdapter(march2019, dateGridSelector, defaultConstraints);
+    monthMarch2019 = new MonthAdapter(march2019, singleDateSelector, defaultConstraints);
   }
 
   @Test
