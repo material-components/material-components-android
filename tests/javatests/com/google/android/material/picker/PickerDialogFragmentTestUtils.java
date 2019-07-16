@@ -67,7 +67,8 @@ public final class PickerDialogFragmentTestUtils {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
     Month current = Month.create(2018, Calendar.APRIL);
-    CalendarConstraints calendarConstraints = CalendarConstraints.create(start, end, current);
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(current).build();
 
     return showDatePicker(activityTestRule, themeResId, calendarConstraints);
   }
@@ -105,7 +106,8 @@ public final class PickerDialogFragmentTestUtils {
     Month start = Month.create(1900, Calendar.JANUARY);
     Month end = Month.create(2100, Calendar.DECEMBER);
     Month current = Month.create(2018, Calendar.APRIL);
-    CalendarConstraints calendarConstraints = CalendarConstraints.create(start, end, current);
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(current).build();
     return showRangePicker(activityTestRule, themeResId, calendarConstraints);
   }
 

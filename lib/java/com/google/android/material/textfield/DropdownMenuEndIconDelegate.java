@@ -24,6 +24,7 @@ import static android.view.accessibility.AccessibilityEvent.TYPE_VIEW_CLICKED;
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.content.Context;
 import android.content.res.ColorStateList;
 import android.graphics.Color;
@@ -45,9 +46,13 @@ import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.View.OnClickListener;
+import android.view.View.OnFocusChangeListener;
+import android.view.View.OnTouchListener;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.AutoCompleteTextView;
+import android.widget.AutoCompleteTextView.OnDismissListener;
 import android.widget.EditText;
 import android.widget.Spinner;
 import com.google.android.material.animation.AnimationUtils;
@@ -73,10 +78,13 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           final AutoCompleteTextView editText =
               castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
           editText.post(
-              () -> {
-                boolean isPopupShowing = editText.isPopupShowing();
-                setEndIconChecked(isPopupShowing);
-                dropdownPopupDirty = isPopupShowing;
+              new Runnable() {
+                @Override
+                public void run() {
+                  boolean isPopupShowing = editText.isPopupShowing();
+                  setEndIconChecked(isPopupShowing);
+                  dropdownPopupDirty = isPopupShowing;
+                }
               });
         }
       };
@@ -107,18 +115,21 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
         }
       };
   private final OnEditTextAttachedListener dropdownMenuOnEditTextAttachedListener =
-      editText -> {
-        AutoCompleteTextView autoCompleteTextView = castAutoCompleteTextViewOrThrow(editText);
+      new OnEditTextAttachedListener() {
+        @Override
+        public void onEditTextAttached(EditText editText) {
+          AutoCompleteTextView autoCompleteTextView = castAutoCompleteTextViewOrThrow(editText);
 
-        setPopupBackground(autoCompleteTextView);
-        addRippleEffect(autoCompleteTextView);
-        setUpDropdownShowHideBehavior(autoCompleteTextView);
-        autoCompleteTextView.setThreshold(0);
-        editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
-        editText.addTextChangedListener(exposedDropdownEndIconTextWatcher);
-        textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
+          setPopupBackground(autoCompleteTextView);
+          addRippleEffect(autoCompleteTextView);
+          setUpDropdownShowHideBehavior(autoCompleteTextView);
+          autoCompleteTextView.setThreshold(0);
+          editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
+          editText.addTextChangedListener(exposedDropdownEndIconTextWatcher);
+          textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
 
-        textInputLayout.setEndIconVisible(true);
+          textInputLayout.setEndIconVisible(true);
+        }
       };
 
   private boolean dropdownPopupDirty = false;
@@ -178,9 +189,12 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     textInputLayout.setEndIconContentDescription(
         textInputLayout.getResources().getText(R.string.exposed_dropdown_menu_content_description));
     textInputLayout.setEndIconOnClickListener(
-        v -> {
-          AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
-          showHideDropdown(editText);
+        new OnClickListener() {
+          @Override
+          public void onClick(View v) {
+            AutoCompleteTextView editText = (AutoCompleteTextView) textInputLayout.getEditText();
+            showHideDropdown(editText);
+          }
         });
     textInputLayout.addOnEditTextAttachedListener(dropdownMenuOnEditTextAttachedListener);
     initAnimators();
@@ -319,32 +333,41 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private void setUpDropdownShowHideBehavior(final AutoCompleteTextView editText) {
     // Set whole layout clickable.
     editText.setOnTouchListener(
-        (v, event) -> {
-          if (event.getAction() == MotionEvent.ACTION_UP) {
-            if (isDropdownPopupActive()) {
-              dropdownPopupDirty = false;
+        new OnTouchListener() {
+          @Override
+          public boolean onTouch(View v, MotionEvent event) {
+            if (event.getAction() == MotionEvent.ACTION_UP) {
+              if (isDropdownPopupActive()) {
+                dropdownPopupDirty = false;
+              }
+              showHideDropdown(editText);
+              v.performClick();
             }
-            showHideDropdown(editText);
-            v.performClick();
+            return false;
           }
-          return false;
         });
 
     editText.setOnFocusChangeListener(
-        (view, hasFocus) -> {
-          textInputLayout.setEndIconActivated(hasFocus);
-          if (!hasFocus) {
-            setEndIconChecked(false);
-            dropdownPopupDirty = false;
+        new OnFocusChangeListener() {
+          @Override
+          public void onFocusChange(View view, boolean hasFocus) {
+            textInputLayout.setEndIconActivated(hasFocus);
+            if (!hasFocus) {
+              setEndIconChecked(false);
+              dropdownPopupDirty = false;
+            }
           }
         });
 
     if (IS_LOLLIPOP) {
       editText.setOnDismissListener(
-          () -> {
-            dropdownPopupDirty = true;
-            dropdownPopupActivatedAt = System.currentTimeMillis();
-            setEndIconChecked(false);
+          new OnDismissListener() {
+            @Override
+            public void onDismiss() {
+              dropdownPopupDirty = true;
+              dropdownPopupActivatedAt = System.currentTimeMillis();
+              setEndIconChecked(false);
+            }
           });
     }
   }
@@ -402,9 +425,12 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
     animator.setInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
     animator.setDuration(duration);
     animator.addUpdateListener(
-        animation -> {
-          float alpha = (float) animation.getAnimatedValue();
-          endIconView.setAlpha(alpha);
+        new AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animation) {
+            float alpha = (float) animation.getAnimatedValue();
+            endIconView.setAlpha(alpha);
+          }
         });
 
     return animator;

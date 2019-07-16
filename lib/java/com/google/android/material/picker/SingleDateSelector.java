@@ -41,12 +41,12 @@ import java.util.Date;
 import java.util.Locale;
 
 /**
- * A {@link GridSelector} that uses a {@link Long} for its selection state.
+ * A {@link DateSelector} that uses a {@link Long} for its selection state.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class DateGridSelector implements GridSelector<Long> {
+public class SingleDateSelector implements DateSelector<Long> {
 
   @Nullable private Long selectedItem;
 
@@ -80,25 +80,26 @@ public class DateGridSelector implements GridSelector<Long> {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle,
-      @NonNull OnSelectionChangedListener<Long> listener) {
+      CalendarConstraints constraints,
+      final @NonNull OnSelectionChangedListener<Long> listener) {
     View root = layoutInflater.inflate(R.layout.mtrl_picker_text_input_date, viewGroup, false);
 
     TextInputLayout dateTextInput = root.findViewById(R.id.mtrl_picker_text_input_date);
     EditText dateEditText = dateTextInput.getEditText();
 
-    SimpleDateFormat format =
-        new SimpleDateFormat(
-            root.getResources().getString(R.string.mtrl_picker_text_input_date_format),
-            Locale.getDefault());
+    String pattern = root.getResources().getString(R.string.mtrl_picker_text_input_date_format);
+    SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+    format.setLenient(false);
 
     if (selectedItem != null) {
       dateEditText.setText(format.format(selectedItem));
     }
 
     dateEditText.addTextChangedListener(
-        new DateFormatTextWatcher(format, dateTextInput) {
+        new DateFormatTextWatcher(pattern, format, dateTextInput, constraints) {
+
           @Override
-          void onDateChanged(@Nullable Long day) {
+          void onValidDate(@Nullable Long day) {
             select(day);
             listener.onSelectionChanged(getSelection());
           }
@@ -133,18 +134,18 @@ public class DateGridSelector implements GridSelector<Long> {
   /* Parcelable interface */
 
   /** {@link Parcelable.Creator} */
-  public static final Parcelable.Creator<DateGridSelector> CREATOR =
-      new Parcelable.Creator<DateGridSelector>() {
+  public static final Parcelable.Creator<SingleDateSelector> CREATOR =
+      new Parcelable.Creator<SingleDateSelector>() {
         @Override
-        public DateGridSelector createFromParcel(Parcel source) {
-          DateGridSelector dateGridSelector = new DateGridSelector();
-          dateGridSelector.selectedItem = (Long) source.readValue(Long.class.getClassLoader());
-          return dateGridSelector;
+        public SingleDateSelector createFromParcel(Parcel source) {
+          SingleDateSelector singleDateSelector = new SingleDateSelector();
+          singleDateSelector.selectedItem = (Long) source.readValue(Long.class.getClassLoader());
+          return singleDateSelector;
         }
 
         @Override
-        public DateGridSelector[] newArray(int size) {
-          return new DateGridSelector[size];
+        public SingleDateSelector[] newArray(int size) {
+          return new SingleDateSelector[size];
         }
       };
 

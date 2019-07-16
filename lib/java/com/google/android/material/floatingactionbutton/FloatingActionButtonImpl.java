@@ -710,9 +710,12 @@ class FloatingActionButtonImpl {
   private ViewTreeObserver.OnPreDrawListener getOrCreatePreDrawListener() {
     if (preDrawListener == null) {
       preDrawListener =
-          () -> {
-            FloatingActionButtonImpl.this.onPreDraw();
-            return true;
+          new ViewTreeObserver.OnPreDrawListener() {
+            @Override
+            public boolean onPreDraw() {
+              FloatingActionButtonImpl.this.onPreDraw();
+              return true;
+            }
           };
     }
 

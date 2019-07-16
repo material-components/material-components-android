@@ -42,16 +42,16 @@ class MonthAdapter extends BaseAdapter {
 
   private final Month month;
   /**
-   * The {@link GridSelector} dictating the draw behavior of {@link #getView(int, View, ViewGroup)}.
+   * The {@link DateSelector} dictating the draw behavior of {@link #getView(int, View, ViewGroup)}.
    */
-  final GridSelector<?> gridSelector;
+  final DateSelector<?> dateSelector;
 
   CalendarStyle calendarStyle;
   final CalendarConstraints calendarConstraints;
 
-  MonthAdapter(Month month, GridSelector<?> gridSelector, CalendarConstraints calendarConstraints) {
+  MonthAdapter(Month month, DateSelector<?> dateSelector, CalendarConstraints calendarConstraints) {
     this.month = month;
-    this.gridSelector = gridSelector;
+    this.dateSelector = dateSelector;
     this.calendarConstraints = calendarConstraints;
   }
 
@@ -110,7 +110,7 @@ class MonthAdapter extends BaseAdapter {
     if (date != null) {
       if (calendarConstraints.getDateValidator().isValid(date)) {
         day.setEnabled(true);
-        if (gridSelector.getSelectedDays().contains(date)) {
+        if (dateSelector.getSelectedDays().contains(date)) {
           calendarStyle.selectedDay.styleItem(day);
         } else if (DateUtils.isToday(date)) {
           calendarStyle.todayDay.styleItem(day);

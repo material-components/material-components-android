@@ -234,7 +234,14 @@ public class CollapsingToolbarLayout extends FrameLayout {
 
     setWillNotDraw(false);
 
-    ViewCompat.setOnApplyWindowInsetsListener(this, (v, insets) -> onWindowInsetChanged(insets));
+    ViewCompat.setOnApplyWindowInsetsListener(
+        this,
+        new androidx.core.view.OnApplyWindowInsetsListener() {
+          @Override
+          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+            return onWindowInsetChanged(insets);
+          }
+        });
   }
 
   @Override
@@ -611,7 +618,13 @@ public class CollapsingToolbarLayout extends FrameLayout {
           targetAlpha > scrimAlpha
               ? AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR
               : AnimationUtils.LINEAR_OUT_SLOW_IN_INTERPOLATOR);
-      scrimAnimator.addUpdateListener(animator -> setScrimAlpha((int) animator.getAnimatedValue()));
+      scrimAnimator.addUpdateListener(
+          new ValueAnimator.AnimatorUpdateListener() {
+            @Override
+            public void onAnimationUpdate(ValueAnimator animator) {
+              setScrimAlpha((int) animator.getAnimatedValue());
+            }
+          });
     } else if (scrimAnimator.isRunning()) {
       scrimAnimator.cancel();
     }

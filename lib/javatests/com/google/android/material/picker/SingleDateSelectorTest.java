@@ -35,9 +35,9 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
-public class DateRangeGridSelectorTest {
+public class SingleDateSelectorTest {
 
-  private DateRangeGridSelector dateRangeGridSelector;
+  private SingleDateSelector singleDateSelector;
   private MonthAdapter adapter;
 
   @Before
@@ -46,38 +46,30 @@ public class DateRangeGridSelectorTest {
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     Context context = activity.getApplicationContext();
     GridView gridView = new GridView(context);
-    dateRangeGridSelector = new DateRangeGridSelector();
+    singleDateSelector = new SingleDateSelector();
     adapter =
         new MonthAdapter(
             Month.create(2016, Calendar.FEBRUARY),
-            dateRangeGridSelector,
-            MaterialDatePicker.DEFAULT_BOUNDS);
+            singleDateSelector,
+            new CalendarConstraints.Builder().build());
     gridView.setAdapter(adapter);
   }
 
   @Test
-  public void dateRangeGridSelectorMaintainsSelectionAfterParceling() {
-    int startPosition = 8;
-    int endPosition = 15;
-    long expectedStart = adapter.getItem(startPosition);
-    long expectedEnd = adapter.getItem(endPosition);
-
-    dateRangeGridSelector.select(adapter.getItem(startPosition));
-    dateRangeGridSelector.select(adapter.getItem(endPosition));
-    DateRangeGridSelector dateRangeGridSelectorFromParcel =
-        ParcelableTestUtils.parcelAndCreate(dateRangeGridSelector, DateRangeGridSelector.CREATOR);
-
-    assertThat(adapter.withinMonth(startPosition), is(true));
-    assertThat(adapter.withinMonth(endPosition), is(true));
-    assertThat(dateRangeGridSelectorFromParcel.getSelection().first, is(expectedStart));
-    assertThat(dateRangeGridSelectorFromParcel.getSelection().second, is(expectedEnd));
+  public void dateSelectorMaintainsSelectionAfterParceling() {
+    int position = 8;
+    assertThat(adapter.withinMonth(position), is(true));
+    singleDateSelector.select(adapter.getItem(position));
+    long expected = adapter.getItem(position);
+    SingleDateSelector singleDateSelectorFromParcel =
+        ParcelableTestUtils.parcelAndCreate(singleDateSelector, SingleDateSelector.CREATOR);
+    assertThat(singleDateSelectorFromParcel.getSelection(), is(expected));
   }
 
   @Test
   public void nullDateSelectionFromParcel() {
-    DateRangeGridSelector dateRangeGridSelectorFromParcel =
-        ParcelableTestUtils.parcelAndCreate(dateRangeGridSelector, DateRangeGridSelector.CREATOR);
-    assertThat(dateRangeGridSelectorFromParcel.getSelection().first, nullValue());
-    assertThat(dateRangeGridSelectorFromParcel.getSelection().second, nullValue());
+    SingleDateSelector singleDateSelector =
+        ParcelableTestUtils.parcelAndCreate(this.singleDateSelector, SingleDateSelector.CREATOR);
+    assertThat(singleDateSelector.getSelection(), nullValue());
   }
 }

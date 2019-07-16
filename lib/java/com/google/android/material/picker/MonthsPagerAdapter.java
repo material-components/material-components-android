@@ -15,8 +15,9 @@
  */
 package com.google.android.material.picker;
 
-import androidx.lifecycle.DefaultLifecycleObserver;
 import androidx.lifecycle.Lifecycle;
+import androidx.lifecycle.Lifecycle.Event;
+import androidx.lifecycle.LifecycleEventObserver;
 import androidx.lifecycle.LifecycleOwner;
 import android.content.Context;
 import androidx.annotation.NonNull;
@@ -38,8 +39,7 @@ import java.util.List;
 class MonthsPagerAdapter extends FragmentStateAdapter {
 
   private final CalendarConstraints calendarConstraints;
-  private final int startIndex;
-  private final GridSelector<?> gridSelector;
+  private final DateSelector<?> dateSelector;
   private final SparseArray<AdapterDataObserver> observingFragments = new SparseArray<>();
   private final OnDayClickListener onDayClickListener;
   private final int itemHeight;
@@ -53,7 +53,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
    *     FragmentActivity#getSupportFragmentManager()}.
    * @param lifecycle The {@link Lifecycle} to manage each {@link MonthFragment}. {@see
    *     Fragment#getLifecycle()} and {@see FragmentActivity#getLifecycle()}.
-   * @param gridSelector The {@link GridSelector} that controls selection and highlights for all
+   * @param dateSelector The {@link DateSelector} that controls selection and highlights for all
    *     {@link MonthFragment} objects.
    * @param calendarConstraints The {@link CalendarConstraints} that specifies the valid range and
    *     starting point for selection.
@@ -62,13 +62,13 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
       Context context,
       FragmentManager fragmentManager,
       Lifecycle lifecycle,
-      GridSelector<?> gridSelector,
+      DateSelector<?> dateSelector,
       CalendarConstraints calendarConstraints,
       OnDayClickListener onDayClickListener) {
     super(fragmentManager, lifecycle);
     Month firstPage = calendarConstraints.getStart();
     Month lastPage = calendarConstraints.getEnd();
-    Month currentPage = calendarConstraints.getCurrent();
+    Month currentPage = calendarConstraints.getOpening();
 
     if (firstPage.compareTo(currentPage) > 0) {
       throw new IllegalArgumentException("firstPage cannot be after currentPage");
@@ -83,8 +83,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
 
     this.itemHeight = daysHeight + labelHeight;
     this.calendarConstraints = calendarConstraints;
-    startIndex = firstPage.monthsUntil(currentPage);
-    this.gridSelector = gridSelector;
+    this.dateSelector = dateSelector;
     this.onDayClickListener = onDayClickListener;
   }
 
@@ -112,16 +111,31 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
     final MonthFragment monthFragment =
         MonthFragment.newInstance(
             calendarConstraints.getStart().monthsLater(position),
-            gridSelector,
+            dateSelector,
             calendarConstraints);
 
     monthFragment
         .getLifecycle()
         .addObserver(
-            new DefaultLifecycleObserver() {
+            new LifecycleEventObserver() {
 
               @Override
-              public void onCreate(LifecycleOwner owner) {
+              public void onStateChanged(
+                  @NonNull LifecycleOwner lifecycleOwner, @NonNull Event event) {
+                switch (event) {
+                  case ON_CREATE:
+                    onCreated();
+                    break;
+                  case ON_DESTROY:
+                    onDestroyed();
+                    break;
+                  default:
+                    // do nothing
+                    break;
+                }
+              }
+
+              private void onCreated() {
                 monthFragment.setOnDayClickListener(onDayClickListener);
                 AdapterDataObserver dataSetObserver =
                     new AdapterDataObserver() {
@@ -134,8 +148,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
                 observingFragments.put(position, dataSetObserver);
               }
 
-              @Override
-              public void onDestroy(LifecycleOwner owner) {
+              private void onDestroyed() {
                 AdapterDataObserver dataSetObserver = observingFragments.get(position);
                 if (dataSetObserver != null) {
                   observingFragments.remove(position);
@@ -144,11 +157,6 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
               }
             });
     return monthFragment;
-  }
-
-  /** Returns the position index of the {@link Month} startPage provided on construction. */
-  int getStartPosition() {
-    return startIndex;
   }
 
   @NonNull

@@ -18,6 +18,7 @@ package com.google.android.material.shape;
 
 import android.view.View;
 import android.view.ViewTreeObserver;
+import android.view.ViewTreeObserver.OnScrollChangedListener;
 import android.widget.ScrollView;
 
 /** Helper class to handle shape interpolation when shaped views enter or exit the window. */
@@ -29,7 +30,12 @@ public class InterpolateOnScrollPositionChangeHelper {
   private final int[] scrollLocation = new int[2];
   private final int[] containerLocation = new int[2];
   private final ViewTreeObserver.OnScrollChangedListener scrollChangedListener =
-      this::updateInterpolationForScreenPosition;
+      new OnScrollChangedListener() {
+        @Override
+        public void onScrollChanged() {
+          updateInterpolationForScreenPosition();
+        }
+      };
 
   /**
    * Instantiate a scroll position helper.

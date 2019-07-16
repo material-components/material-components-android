@@ -49,13 +49,16 @@ class SnackbarManager {
     handler =
         new Handler(
             Looper.getMainLooper(),
-            message -> {
-              switch (message.what) {
-                case MSG_TIMEOUT:
-                  handleTimeout((SnackbarRecord) message.obj);
-                  return true;
-                default:
-                  return false;
+            new Handler.Callback() {
+              @Override
+              public boolean handleMessage(Message message) {
+                switch (message.what) {
+                  case MSG_TIMEOUT:
+                    handleTimeout((SnackbarRecord) message.obj);
+                    return true;
+                  default:
+                    return false;
+                }
               }
             });
   }

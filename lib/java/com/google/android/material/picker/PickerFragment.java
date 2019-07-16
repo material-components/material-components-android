@@ -23,7 +23,7 @@ abstract class PickerFragment<S> extends Fragment {
   protected final LinkedHashSet<OnSelectionChangedListener<S>> onSelectionChangedListeners =
       new LinkedHashSet<>();
 
-  abstract GridSelector<S> getGridSelector();
+  abstract DateSelector<S> getDateSelector();
 
   /** Adds a listener for selection changes. */
   boolean addOnSelectionChangedListener(OnSelectionChangedListener<S> listener) {

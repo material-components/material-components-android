@@ -25,13 +25,15 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.GridView;
 import android.widget.TextView;
 import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
 
 /**
  * A {@link Fragment} representing the days of a single {@link Month} highlighted by a {@link
- * GridSelector}.
+ * DateSelector}.
  *
  * @hide
  */
@@ -44,7 +46,7 @@ public class MonthFragment extends Fragment {
 
   private Month month;
   private MonthAdapter monthAdapter;
-  private GridSelector<?> gridSelector;
+  private DateSelector<?> dateSelector;
   private CalendarConstraints calendarConstraints;
   // Set as part of Lifecycle.Event#onCreate
   private OnDayClickListener onDayClickListener;
@@ -57,14 +59,14 @@ public class MonthFragment extends Fragment {
    * Constructs a new {@link MonthFragment}.
    *
    * @param month The {@link Month} this {@link MonthFragment} displays data for
-   * @param gridSelector The {@link GridSelector} used to highlight and mark the {@link GridView}
+   * @param dateSelector The {@link DateSelector} used to highlight and mark the {@link GridView}
    */
   public static MonthFragment newInstance(
-      Month month, GridSelector<?> gridSelector, CalendarConstraints calendarConstraints) {
+      Month month, DateSelector<?> dateSelector, CalendarConstraints calendarConstraints) {
     MonthFragment monthFragment = new MonthFragment();
     Bundle arguments = new Bundle();
     arguments.putParcelable(MONTH_KEY, month);
-    arguments.putParcelable(GRID_SELECTOR_KEY, gridSelector);
+    arguments.putParcelable(GRID_SELECTOR_KEY, dateSelector);
     arguments.putParcelable(CALENDAR_CONSTRAINTS_KEY, calendarConstraints);
     monthFragment.setArguments(arguments);
     return monthFragment;
@@ -74,7 +76,7 @@ public class MonthFragment extends Fragment {
   public void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     month = getArguments().getParcelable(MONTH_KEY);
-    gridSelector = getArguments().getParcelable(GRID_SELECTOR_KEY);
+    dateSelector = getArguments().getParcelable(GRID_SELECTOR_KEY);
     calendarConstraints = getArguments().getParcelable(CALENDAR_CONSTRAINTS_KEY);
   }
 
@@ -83,7 +85,7 @@ public class MonthFragment extends Fragment {
       LayoutInflater layoutInflater, ViewGroup root, Bundle savedInstanceState) {
     Context context = getParentFragment().getView().getContext();
     LayoutInflater themedInflater = LayoutInflater.from(context);
-    monthAdapter = new MonthAdapter(month, gridSelector, calendarConstraints);
+    monthAdapter = new MonthAdapter(month, dateSelector, calendarConstraints);
 
     final int layout;
     if (MaterialDatePicker.isFullscreen(context)) {
@@ -101,9 +103,14 @@ public class MonthFragment extends Fragment {
     gridView.setNumColumns(month.daysInWeek);
     gridView.setAdapter(monthAdapter);
     gridView.setOnItemClickListener(
-        (parent, v, position, id) -> {
-          if (monthAdapter.withinMonth(position)) {
-            onDayClickListener.onDayClick(monthAdapter.getItem(position));
+        new OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (monthAdapter.withinMonth(position)) {
+              if (monthAdapter.withinMonth(position)) {
+                onDayClickListener.onDayClick(monthAdapter.getItem(position));
+              }
+            }
           }
         });
 

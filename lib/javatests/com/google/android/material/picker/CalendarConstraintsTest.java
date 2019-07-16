@@ -38,7 +38,7 @@ public class CalendarConstraintsTest {
   @Test
   public void equalAfterParceling() {
     CalendarConstraints originalBounds =
-        CalendarConstraints.create(/* start= */ FEB_2016, /* end= */ APRIL_2016);
+        new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016).build();
     CalendarConstraints constructedBounds =
         ParcelableTestUtils.parcelAndCreate(originalBounds, CalendarConstraints.CREATOR);
     assertEquals(originalBounds, constructedBounds);
@@ -49,28 +49,35 @@ public class CalendarConstraintsTest {
     Month today = Month.today();
     Month start = today.monthsLater(-1);
     Month end = today.monthsLater(1);
-    CalendarConstraints calendarConstraints = CalendarConstraints.create(start, end);
-    assertEquals(today, calendarConstraints.getCurrent());
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(start).setEnd(end).build();
+    assertEquals(today, calendarConstraints.getOpening());
   }
 
   @Test
   public void currentDefaultsToStartIfTodayIsInvalid() {
     CalendarConstraints calendarConstraints =
-        CalendarConstraints.create(/* start= */ FEB_2016, /* end= */ APRIL_2016);
-    assertEquals(FEB_2016, calendarConstraints.getCurrent());
+        new CalendarConstraints.Builder().setStart(FEB_2016).setEnd(APRIL_2016).build();
+    assertEquals(FEB_2016, calendarConstraints.getOpening());
   }
 
   @Test
   public void illegalCurrentMonthFails() {
     exceptionRule.expect(IllegalArgumentException.class);
-    CalendarConstraints.create(
-        /* start= */ FEB_2016, /* end= */ MARCH_2016, /* current= */ APRIL_2016);
+    new CalendarConstraints.Builder()
+        .setStart(FEB_2016)
+        .setEnd(MARCH_2016)
+        .setOpening(APRIL_2016)
+        .build();
   }
 
   @Test
   public void illegalEndMonthFails() {
     exceptionRule.expect(IllegalArgumentException.class);
-    CalendarConstraints.create(
-        /* start= */ MARCH_2016, /* end= */ FEB_2016, /* current= */ MARCH_2016);
+    new CalendarConstraints.Builder()
+        .setStart(MARCH_2016)
+        .setEnd(FEB_2016)
+        .setOpening(MARCH_2016)
+        .build();
   }
 }

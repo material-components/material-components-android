@@ -40,16 +40,21 @@ import java.util.Collection;
 import java.util.Locale;
 
 /**
- * A {@link GridSelector} that uses a {@link Pair} of {@link Long} objects to represent a selected
+ * A {@link DateSelector} that uses a {@link Pair} of {@link Long} objects to represent a selected
  * range.
  *
  * @hide
  */
 @RestrictTo(Scope.LIBRARY_GROUP)
-public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
+public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
 
+  private String invalidRangeStartError;
+  // TODO: "" is not considered an error
+  private final String invalidRangeEndError = " ";
   @Nullable private Long selectedStartItem = null;
   @Nullable private Long selectedEndItem = null;
+  @Nullable private Long proposedTextStart = null;
+  @Nullable private Long proposedTextEnd = null;
 
   @Override
   public void select(long selection) {
@@ -140,42 +145,58 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
       @NonNull LayoutInflater layoutInflater,
       @Nullable ViewGroup viewGroup,
       @Nullable Bundle bundle,
-      @NonNull OnSelectionChangedListener<Pair<Long, Long>> listener) {
+      CalendarConstraints constraints,
+      final @NonNull OnSelectionChangedListener<Pair<Long, Long>> listener) {
     View root =
         layoutInflater.inflate(R.layout.mtrl_picker_text_input_date_range, viewGroup, false);
 
-    TextInputLayout startTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_start);
-    TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
+    final TextInputLayout startTextInput =
+        root.findViewById(R.id.mtrl_picker_text_input_range_start);
+    final TextInputLayout endTextInput = root.findViewById(R.id.mtrl_picker_text_input_range_end);
     EditText startEditText = startTextInput.getEditText();
     EditText endEditText = endTextInput.getEditText();
 
-    SimpleDateFormat format =
-        new SimpleDateFormat(
-            root.getResources().getString(R.string.mtrl_picker_text_input_date_format),
-            Locale.getDefault());
+    String pattern = root.getResources().getString(R.string.mtrl_picker_text_input_date_format);
+    invalidRangeStartError = root.getResources().getString(R.string.mtrl_picker_invalid_range);
+
+    SimpleDateFormat format = new SimpleDateFormat(pattern, Locale.getDefault());
+    format.setLenient(false);
 
     if (selectedStartItem != null) {
       startEditText.setText(format.format(selectedStartItem));
+      proposedTextStart = selectedStartItem;
     }
     if (selectedEndItem != null) {
       endEditText.setText(format.format(selectedEndItem));
+      proposedTextEnd = selectedEndItem;
     }
 
-    // TODO: handle start/end behavior enforcement
     startEditText.addTextChangedListener(
-        new DateFormatTextWatcher(format, startTextInput) {
+        new DateFormatTextWatcher(pattern, format, startTextInput, constraints) {
+
           @Override
-          void onDateChanged(@Nullable Long day) {
-            selectedStartItem = day;
-            listener.onSelectionChanged(getSelection());
+          void onValidDate(@Nullable Long day) {
+            proposedTextStart = day;
+            updateIfValidTextProposal(startTextInput, endTextInput, listener);
+          }
+
+          @Override
+          void onInvalidDate() {
+            proposedTextStart = null;
+            updateIfValidTextProposal(startTextInput, endTextInput, listener);
           }
         });
+
     endEditText.addTextChangedListener(
-        new DateFormatTextWatcher(format, endTextInput) {
-          @Override
-          void onDateChanged(@Nullable Long day) {
-            selectedEndItem = day;
-            listener.onSelectionChanged(getSelection());
+        new DateFormatTextWatcher(pattern, format, endTextInput, constraints) {
+          void onValidDate(@Nullable Long day) {
+            proposedTextEnd = day;
+            updateIfValidTextProposal(startTextInput, endTextInput, listener);
+          }
+
+          void onInvalidDate() {
+            proposedTextEnd = null;
+            updateIfValidTextProposal(startTextInput, endTextInput, listener);
           }
         });
 
@@ -184,24 +205,55 @@ public class DateRangeGridSelector implements GridSelector<Pair<Long, Long>> {
     return root;
   }
 
+  private void updateIfValidTextProposal(
+      TextInputLayout startTextInput,
+      TextInputLayout endTextInput,
+      OnSelectionChangedListener<Pair<Long, Long>> listener) {
+    if (proposedTextStart == null || proposedTextEnd == null) {
+      clearInvalidRange(startTextInput, endTextInput);
+      return;
+    }
+    if (proposedTextEnd < proposedTextStart) {
+      setInvalidRange(startTextInput, endTextInput);
+      return;
+    }
+    selectedStartItem = proposedTextStart;
+    selectedEndItem = proposedTextEnd;
+    listener.onSelectionChanged(getSelection());
+    return;
+  }
+
+  private void clearInvalidRange(TextInputLayout start, TextInputLayout end) {
+    if (start.getError() != null && invalidRangeStartError.contentEquals(start.getError())) {
+      start.setError(null);
+    }
+    if (end.getError() != null && invalidRangeEndError.contentEquals(end.getError())) {
+      end.setError(null);
+    }
+  }
+
+  private void setInvalidRange(TextInputLayout start, TextInputLayout end) {
+    start.setError(invalidRangeStartError);
+    end.setError(invalidRangeEndError);
+  }
+
   /* Parcelable interface */
 
   /** {@link Parcelable.Creator} */
-  public static final Parcelable.Creator<DateRangeGridSelector> CREATOR =
-      new Parcelable.Creator<DateRangeGridSelector>() {
+  public static final Parcelable.Creator<RangeDateSelector> CREATOR =
+      new Parcelable.Creator<RangeDateSelector>() {
         @Override
-        public DateRangeGridSelector createFromParcel(Parcel source) {
-          DateRangeGridSelector dateRangeGridSelector = new DateRangeGridSelector();
-          dateRangeGridSelector.selectedStartItem =
+        public RangeDateSelector createFromParcel(Parcel source) {
+          RangeDateSelector rangeDateSelector = new RangeDateSelector();
+          rangeDateSelector.selectedStartItem =
               (Long) source.readValue(Long.class.getClassLoader());
-          dateRangeGridSelector.selectedEndItem =
-              (Long) source.readValue(Long.class.getClassLoader());
-          return dateRangeGridSelector;
+          rangeDateSelector.selectedEndItem = (Long) source.readValue(Long.class.getClassLoader());
+          return rangeDateSelector;
         }
 
         @Override
-        public DateRangeGridSelector[] newArray(int size) {
-          return new DateRangeGridSelector[size];
+        public RangeDateSelector[] newArray(int size) {
+          return new RangeDateSelector[size];
         }
       };
 

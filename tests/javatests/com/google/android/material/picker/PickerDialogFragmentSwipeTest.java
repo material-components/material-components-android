@@ -35,7 +35,7 @@ public class PickerDialogFragmentSwipeTest {
 
   private static final Month start = Month.create(2000, Calendar.JANUARY);
   private static final Month end = Month.create(2000, Calendar.MAY);
-  private static final Month current = Month.create(2000, Calendar.FEBRUARY);
+  private static final Month opening = Month.create(2000, Calendar.FEBRUARY);
 
   @Rule
   public final ActivityTestRule<AppCompatActivity> activityTestRule =
@@ -45,7 +45,8 @@ public class PickerDialogFragmentSwipeTest {
 
   @Before
   public void setupDatePickerDialogForSwiping() {
-    CalendarConstraints calendarConstraints = CalendarConstraints.create(start, end, current);
+    CalendarConstraints calendarConstraints =
+        new CalendarConstraints.Builder().setStart(start).setEnd(end).setOpening(opening).build();
     FragmentManager fragmentManager = activityTestRule.getActivity().getSupportFragmentManager();
     String tag = "Date DialogFragment";
 
@@ -90,6 +91,6 @@ public class PickerDialogFragmentSwipeTest {
     ViewPager2 viewPager =
         dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
     MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) viewPager.getAdapter();
-    assertEquals(current, monthsPagerAdapter.getPageMonth(viewPager.getCurrentItem()));
+    assertEquals(opening, monthsPagerAdapter.getPageMonth(viewPager.getCurrentItem()));
   }
 }

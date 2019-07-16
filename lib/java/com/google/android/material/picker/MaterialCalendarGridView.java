@@ -67,12 +67,12 @@ final class MaterialCalendarGridView extends GridView {
   protected final void onDraw(Canvas canvas) {
     super.onDraw(canvas);
     MonthAdapter monthAdapter = getAdapter();
-    GridSelector<?> gridSelector = monthAdapter.gridSelector;
+    DateSelector<?> dateSelector = monthAdapter.dateSelector;
     CalendarStyle calendarStyle = monthAdapter.calendarStyle;
     Long firstOfMonth = monthAdapter.getItem(monthAdapter.firstPositionInMonth());
     Long lastOfMonth = monthAdapter.getItem(monthAdapter.lastPositionInMonth());
 
-    for (Pair<Long, Long> range : gridSelector.getSelectedRanges()) {
+    for (Pair<Long, Long> range : dateSelector.getSelectedRanges()) {
       if (range.first == null || range.second == null) {
         continue;
       }

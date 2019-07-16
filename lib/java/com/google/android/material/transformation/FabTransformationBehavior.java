@@ -26,6 +26,7 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.TargetApi;
 import android.content.Context;
 import android.content.res.ColorStateList;
@@ -329,7 +330,13 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
 
     // icon.setCallback() is not expected to be called and
     // child.verifyDrawable() is not expected to be implemented.
-    animator.addUpdateListener(animation -> child.invalidate());
+    animator.addUpdateListener(
+        new AnimatorUpdateListener() {
+          @Override
+          public void onAnimationUpdate(ValueAnimator animation) {
+            child.invalidate();
+          }
+        });
 
     MotionTiming timing = spec.timings.getTiming("iconFade");
     timing.apply(animator);

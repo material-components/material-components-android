@@ -103,8 +103,6 @@ def compatibility(name) {
       return "androidx.core:core:${androidXVersions.core}"
     case "fragment":
       return "androidx.fragment:fragment:${androidXVersions.fragment}"
-    case "lifecycleCommonJava8":
-      return "androidx.lifecycle:lifecycle-common-java8:${androidXVersions.lifecycle}"
     case "lifecycleRuntime":
       return "androidx.lifecycle:lifecycle-runtime:${androidXVersions.lifecycle}"
     case "recyclerview":
@@ -193,8 +191,8 @@ subprojects {
         // This disables the builds tools automatic vector -> PNG generation
         defaultConfig.generatedDensities = []
 
-        compileOptions.sourceCompatibility JavaVersion.VERSION_1_8
-        compileOptions.targetCompatibility JavaVersion.VERSION_1_8
+        compileOptions.sourceCompatibility JavaVersion.VERSION_1_7
+        compileOptions.targetCompatibility JavaVersion.VERSION_1_7
 
         aaptOptions.additionalParameters "--no-version-vectors"
 

@@ -20,6 +20,7 @@ import com.google.android.material.R;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -62,7 +63,7 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
     CalendarStyle styles = materialCalendar.getCalendarStyle();
     Calendar calendar = Calendar.getInstance();
     CalendarItemStyle style = calendar.get(Calendar.YEAR) == year ? styles.todayYear : styles.year;
-    for (Long day : materialCalendar.getGridSelector().getSelectedDays()) {
+    for (Long day : materialCalendar.getDateSelector().getSelectedDays()) {
       calendar.setTimeInMillis(day);
       if (calendar.get(Calendar.YEAR) == year) {
         style = styles.selectedYear;
@@ -72,12 +73,15 @@ class YearGridAdapter extends RecyclerView.Adapter<YearGridAdapter.ViewHolder> {
     viewHolder.textView.setOnClickListener(createYearClickListener(year));
   }
 
-  private OnClickListener createYearClickListener(int year) {
-    return view -> {
-      Month moveTo =
-          Month.create(year, materialCalendar.getCalendarConstraints().getCurrent().month);
-      materialCalendar.setCurrentMonth(moveTo);
-      materialCalendar.setSelector(CalendarSelector.DAY);
+  private OnClickListener createYearClickListener(final int year) {
+    return new OnClickListener() {
+      @Override
+      public void onClick(View view) {
+        Month moveTo =
+            Month.create(year, materialCalendar.getCalendarConstraints().getOpening().month);
+        materialCalendar.setCurrentMonth(moveTo);
+        materialCalendar.setSelector(CalendarSelector.DAY);
+      }
     };
   }
 

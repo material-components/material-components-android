@@ -379,19 +379,23 @@ public class NavigationMenuPresenter implements MenuPresenter {
    * Handles click events for the menu items. The items has to be {@link NavigationMenuItemView}.
    */
   final View.OnClickListener onClickListener =
-      (view) -> {
-        NavigationMenuItemView itemView = (NavigationMenuItemView) view;
-        setUpdateSuspended(true);
-        MenuItemImpl item = itemView.getItemData();
-        boolean result = menu.performItemAction(item, NavigationMenuPresenter.this, 0);
-        boolean checkStateChanged = false;
-        if (item != null && item.isCheckable() && result) {
-          adapter.setCheckedItem(item);
-          checkStateChanged = true;
-        }
-        setUpdateSuspended(false);
-        if (checkStateChanged) {
-          updateMenuView(false);
+      new View.OnClickListener() {
+
+        @Override
+        public void onClick(View view) {
+          NavigationMenuItemView itemView = (NavigationMenuItemView) view;
+          setUpdateSuspended(true);
+          MenuItemImpl item = itemView.getItemData();
+          boolean result = menu.performItemAction(item, NavigationMenuPresenter.this, 0);
+          boolean checkStateChanged = false;
+          if (item != null && item.isCheckable() && result) {
+            adapter.setCheckedItem(item);
+            checkStateChanged = true;
+          }
+          setUpdateSuspended(false);
+          if (checkStateChanged) {
+            updateMenuView(false);
+          }
         }
       };
 

@@ -11,7 +11,6 @@ dependencies {
   api compatibility("coordinatorlayout")
   api compatibility("core")
   api compatibility("fragment")
-  api compatibility("lifecycleCommonJava8")
   api compatibility("lifecycleRuntime")
   api compatibility("recyclerview")
   api compatibility("transition")
