@@ -869,17 +869,6 @@
 
     <issue
         id="UnusedResources"
-        message="The resource `R.layout.include_nestedscrollview` appears to be unused"
-        errorLine1="&lt;androidx.core.widget.NestedScrollView"
-        errorLine2="^">
-        <location
-            file="res/layout/include_nestedscrollview.xml"
-            line="18"
-            column="1"/>
-    </issue>
-
-    <issue
-        id="UnusedResources"
         message="The resource `R.drawable.photo` appears to be unused">
         <location
             file="res/drawable-nodpi/photo.jpg"/>
