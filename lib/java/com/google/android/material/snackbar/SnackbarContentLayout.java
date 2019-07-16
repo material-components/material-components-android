@@ -22,13 +22,13 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import android.content.Context;
 import android.content.res.TypedArray;
 import androidx.annotation.RestrictTo;
-import com.google.android.material.color.MaterialColors;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import com.google.android.material.color.MaterialColors;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)

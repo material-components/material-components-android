@@ -16,13 +16,16 @@
 
 package io.material.catalog.feature;
 
+import android.app.Activity;
+import com.google.android.material.snackbar.Snackbar;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import java.util.ArrayList;
 import java.util.List;
 
 /** Utils for demos. */
-public abstract class DemoUtils {
+public class DemoUtils {
 
   public static <T extends View> List<T> findViewsWithType(View root, Class<T> type) {
     List<T> views = new ArrayList<>();
@@ -41,5 +44,15 @@ public abstract class DemoUtils {
         findViewsWithType(viewGroup.getChildAt(i), type, views);
       }
     }
+  }
+
+  public static boolean showSnackbar(Activity activity, MenuItem menuItem) {
+    if (menuItem.getItemId() == android.R.id.home) {
+      return false;
+    }
+    Snackbar.make(
+            activity.findViewById(android.R.id.content), menuItem.getTitle(), Snackbar.LENGTH_SHORT)
+        .show();
+    return true;
   }
 }

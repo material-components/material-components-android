@@ -63,10 +63,5 @@ class TocViewHolder extends ViewHolder {
   }
 
   private final OnClickListener clickListener =
-      new OnClickListener() {
-        @Override
-        public void onClick(View v) {
-          FeatureDemoUtils.startFragment(activity, featureDemo.createFragment(), FRAGMENT_CONTENT);
-        }
-      };
+      v -> FeatureDemoUtils.startFragment(activity, featureDemo.createFragment(), FRAGMENT_CONTENT);
 }

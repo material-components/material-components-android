@@ -40,6 +40,14 @@ import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import com.google.android.material.shape.MaterialShapeDrawable;
+import com.google.android.material.shape.MaterialShapeUtils;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import androidx.core.graphics.drawable.DrawableCompat;
+import androidx.core.util.Preconditions;
+import androidx.core.view.ViewCompat;
+import android.view.View;
+import android.view.ViewTreeObserver;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.ImageMatrixProperty;
@@ -48,12 +56,6 @@ import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.internal.StateListAnimator;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
-import com.google.android.material.shape.MaterialShapeDrawable;
-import com.google.android.material.shape.ShapeAppearanceModel;
-import androidx.core.graphics.drawable.DrawableCompat;
-import androidx.core.view.ViewCompat;
-import android.view.View;
-import android.view.ViewTreeObserver;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -175,7 +177,7 @@ class FloatingActionButtonImpl {
     rotation = this.view.getRotation();
   }
 
-  void setBackgroundDrawable(
+  void initializeBackgroundDrawable(
       ColorStateList backgroundTint,
       PorterDuff.Mode backgroundTintMode,
       ColorStateList rippleColor,
@@ -200,7 +202,6 @@ class FloatingActionButtonImpl {
         checkNotNull(shapeDrawable),
         touchFeedbackShape};
     contentBackground = new LayerDrawable(layers);
-    shadowViewDelegate.setBackgroundDrawable(contentBackground);
   }
 
   void setBackgroundTintList(@Nullable ColorStateList tint) {
@@ -662,6 +663,7 @@ class FloatingActionButtonImpl {
   }
 
   void onPaddingUpdated(Rect padding) {
+    Preconditions.checkNotNull(contentBackground, "Didn't initialize content background");
     if (shouldAddPadding()) {
       InsetDrawable insetDrawable = new InsetDrawable(
           contentBackground, padding.left, padding.top, padding.right, padding.bottom);
@@ -676,6 +678,10 @@ class FloatingActionButtonImpl {
   }
 
   void onAttachedToWindow() {
+    if (shapeDrawable != null) {
+      MaterialShapeUtils.setParentAbsoluteElevation(view, shapeDrawable);
+    }
+
     if (requirePreDrawListener()) {
       view.getViewTreeObserver().addOnPreDrawListener(getOrCreatePreDrawListener());
     }

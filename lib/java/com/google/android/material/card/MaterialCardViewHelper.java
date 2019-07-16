@@ -37,14 +37,13 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.Dimension;
+import androidx.annotation.FloatRange;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.color.MaterialColors;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shape.CornerTreatment;
 import com.google.android.material.shape.CutCornerTreatment;
 import com.google.android.material.shape.MaterialShapeDrawable;
@@ -56,6 +55,8 @@ import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewOutlineProvider;
 import androidx.cardview.widget.CardView;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.ripple.RippleUtils;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -92,12 +93,17 @@ class MaterialCardViewHelper {
 
   private final MaterialCardView materialCardView;
   private final Rect userContentPadding = new Rect();
-  private final ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
   private final MaterialShapeDrawable bgDrawable; // Will always wrapped in an InsetDrawable
   private final MaterialShapeDrawable
       foregroundContentDrawable; // Will always wrapped in an InsetDrawable
 
-  private final ShapeAppearanceModel shapeAppearanceModelInsetByStroke;
+  @Dimension
+  private final int checkedIconMargin;
+  @Dimension
+  private final int checkedIconSize;
+
+  private MaterialShapeDrawable foregroundShapeDrawable;
+
   private final MaterialShapeDrawable drawableInsetByStroke;
   private final Rect temporaryBounds = new Rect();
 
@@ -106,6 +112,8 @@ class MaterialCardViewHelper {
   private Drawable checkedIcon;
   private ColorStateList rippleColor;
   private ColorStateList checkedIconTint;
+  private ShapeAppearanceModel shapeAppearanceModel; // Shared by background, stroke & ripple
+  private ShapeAppearanceModel shapeAppearanceModelInsetByStroke;
 
   @Nullable private ColorStateList strokeColor;
   @Nullable private Drawable rippleDrawable;
@@ -136,6 +144,12 @@ class MaterialCardViewHelper {
 
     shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
     drawableInsetByStroke = new MaterialShapeDrawable(shapeAppearanceModelInsetByStroke);
+    Resources resources = card.getResources();
+    // TODO: support custom sizing
+    checkedIconMargin = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin);
+    checkedIconSize = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_size);
+
+    cardViewAttributes.recycle();
   }
 
   void loadFromAttributes(TypedArray attributes) {
@@ -227,6 +241,10 @@ class MaterialCardViewHelper {
     return strokeWidth;
   }
 
+  MaterialShapeDrawable getBackground() {
+    return bgDrawable;
+  }
+
   void setCardBackgroundColor(ColorStateList color) {
     bgDrawable.setFillColor(color);
   }
@@ -269,6 +287,22 @@ class MaterialCardViewHelper {
 
   float getCornerRadius() {
     return shapeAppearanceModel.getTopLeftCorner().getCornerSize();
+  }
+
+  void setProgress(@FloatRange(from = 0f, to = 1f) float progress) {
+    bgDrawable.setInterpolation(progress);
+    if (foregroundContentDrawable != null) {
+      foregroundContentDrawable.setInterpolation(progress);
+    }
+
+    if (foregroundShapeDrawable != null) {
+      foregroundShapeDrawable.setInterpolation(progress);
+    }
+  }
+
+  @FloatRange(from = 0f, to = 1f)
+  float getProgress() {
+    return bgDrawable.getInterpolation();
   }
 
   void updateElevation() {
@@ -350,6 +384,7 @@ class MaterialCardViewHelper {
 
   void setRippleColor(@Nullable ColorStateList rippleColor) {
     this.rippleColor = rippleColor;
+    updateRippleColor();
   }
 
   void setCheckedIconTint(@Nullable ColorStateList checkedIconTint) {
@@ -389,15 +424,11 @@ class MaterialCardViewHelper {
   }
 
   void onMeasure(int measuredWidth, int measuredHeight) {
-    if (materialCardView.isCheckable() && clickableForegroundDrawable != null) {
-      Resources resources = materialCardView.getResources();
-      // TODO: support custom sizing
-      int margin = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_margin);
-      int size = resources.getDimensionPixelSize(R.dimen.mtrl_card_checked_icon_size);
-      int left = measuredWidth - margin - size;
-      int bottom = measuredHeight - margin - size;
-      int right = margin;
-      if (ViewCompat.getLayoutDirection(materialCardView) == View.LAYOUT_DIRECTION_RTL) {
+    if (clickableForegroundDrawable != null) {
+      int left = measuredWidth - checkedIconMargin - checkedIconSize;
+      int bottom = measuredHeight - checkedIconMargin - checkedIconSize;
+      int right = checkedIconMargin;
+      if (ViewCompat.getLayoutDirection(materialCardView) == ViewCompat.LAYOUT_DIRECTION_RTL) {
         // swap left and right
         int tmp = right;
         right = left;
@@ -405,7 +436,7 @@ class MaterialCardViewHelper {
       }
 
       clickableForegroundDrawable.setLayerInset(
-          CHECKED_ICON_LAYER_INDEX, left, margin /* top */, right, bottom);
+          CHECKED_ICON_LAYER_INDEX, left, checkedIconMargin /* top */, right, bottom);
     }
   }
 
@@ -419,6 +450,31 @@ class MaterialCardViewHelper {
       int bottom = bounds.bottom;
       rippleDrawable.setBounds(bounds.left, bounds.top, bounds.right, bottom - 1);
       rippleDrawable.setBounds(bounds.left, bounds.top, bounds.right, bottom);
+    }
+  }
+
+  void setShapeAppearanceModel(ShapeAppearanceModel shapeAppearanceModel) {
+    this.shapeAppearanceModel = shapeAppearanceModel;
+    refreshDrawableInsetByStroke(shapeAppearanceModel);
+    bgDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    if (foregroundContentDrawable != null) {
+      foregroundContentDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    }
+
+    if (foregroundShapeDrawable != null) {
+      foregroundShapeDrawable.setShapeAppearanceModel(shapeAppearanceModel);
+    }
+  }
+
+  ShapeAppearanceModel getShapeAppearanceModel() {
+    return shapeAppearanceModel;
+  }
+
+  private void refreshDrawableInsetByStroke(ShapeAppearanceModel shapeAppearanceModel) {
+    shapeAppearanceModelInsetByStroke = new ShapeAppearanceModel(shapeAppearanceModel);
+    adjustShapeAppearanceModelInsetByStroke();
+    if (drawableInsetByStroke != null) {
+      drawableInsetByStroke.setShapeAppearanceModel(shapeAppearanceModel);
     }
   }
 
@@ -569,8 +625,9 @@ class MaterialCardViewHelper {
 
   private Drawable createForegroundRippleDrawable() {
     if (RippleUtils.USE_FRAMEWORK_RIPPLE) {
+      foregroundShapeDrawable = createForegroundShapeDrawable();
       //noinspection NewApi
-      return new RippleDrawable(rippleColor, null, createForegroundShapeDrawable());
+      return new RippleDrawable(rippleColor, null, foregroundShapeDrawable);
     }
 
     return createCompatRippleDrawable();

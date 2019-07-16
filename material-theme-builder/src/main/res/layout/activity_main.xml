@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+~ Copyright (C) 2019 The Android Open Source Project
+~
+~ Licensed under the Apache License, Version 2.0 (the "License");
+~ you may not use this file except in compliance with the License.
+~ You may obtain a copy of the License at
+~
+~      http://www.apache.org/licenses/LICENSE-2.0
+~
+~ Unless required by applicable law or agreed to in writing, software
+~ distributed under the License is distributed on an "AS IS" BASIS,
+~ WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+~ See the License for the specific language governing permissions and
+~ limitations under the License.
+-->
+
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:layout_height="match_parent"
+  android:layout_width="match_parent"
+  xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.viewpager.widget.ViewPager
+      android:id="@+id/view_pager"
+      android:layout_width="match_parent"
+      android:layout_height="match_parent"
+      app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+
+    <com.google.android.material.appbar.AppBarLayout
+      style="@style/Widget.MaterialComponents.AppBarLayout.Surface"
+      android:layout_width="match_parent"
+      android:layout_height="wrap_content"
+      android:translationZ="@dimen/elevation_default_top_app_bar">
+
+        <com.google.android.material.appbar.CollapsingToolbarLayout
+          android:layout_width="match_parent"
+          android:layout_height="wrap_content"
+          app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+            <LinearLayout
+              android:layout_width="match_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:layout_marginStart="@dimen/keyline_4"
+              android:layout_marginEnd="@dimen/keyline_4">
+
+                <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:paddingTop="42dp"
+                  android:orientation="horizontal">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_vertical"
+                      app:srcCompat="@drawable/ic_material_icon_24dp" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:layout_gravity="center_vertical"
+                      android:layout_marginLeft="@dimen/keyline_2"
+                      android:layout_marginRight="@dimen/keyline_4"
+                      android:gravity="center_vertical"
+                      android:text="@string/app_name"
+                      android:textAppearance="?textAppearanceHeadline6"
+                      android:alpha="?alphaEmphasisHigh"
+                      android:textColor="?colorOnSurface"
+                      android:textStyle="bold"
+                      app:fontFamily="@font/roboto_black_italic" />
+
+                </LinearLayout>
+
+                <androidx.appcompat.widget.AppCompatEditText
+                  android:id="@+id/theme_name_edit_text"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"
+                  android:layout_marginTop="32dp"
+                  android:layout_marginBottom="32dp"
+                  android:background="@android:color/transparent"
+                  android:hint="@string/theme_name_hint"
+                  android:textAppearance="?textAppearanceHeadline4"
+                  android:alpha="?alphaEmphasisHigh"
+                  android:textColor="?colorControlNormal"
+                  android:maxLines="1"
+                  android:scrollHorizontally="true"
+                  android:inputType="textCapWords"
+                  android:imeOptions="actionDone" />
+
+            </LinearLayout>
+
+
+        </com.google.android.material.appbar.CollapsingToolbarLayout>
+
+        <com.google.android.material.tabs.TabLayout
+          android:id="@+id/tab_layout"
+          android:layout_width="match_parent"
+          android:layout_height="?actionBarSize"
+          android:layout_gravity="bottom"
+          android:background="@android:color/transparent"
+          app:tabTextColor="?colorOnSurface"
+          app:tabSelectedTextColor="?colorPrimary"
+          app:tabIndicatorColor="?colorPrimary"
+          app:tabMode="scrollable" />
+
+    </com.google.android.material.appbar.AppBarLayout>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

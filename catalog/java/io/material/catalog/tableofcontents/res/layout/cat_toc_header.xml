@@ -14,24 +14,34 @@
   See the License for the specific language governing permissions and
   limitations under the License.
   -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:gravity="center_vertical"
-    android:orientation="horizontal">
-  <ImageView
+    android:theme="@style/ThemeOverlay.Catalog.AppBarLayout">
+
+  <LinearLayout
       android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_marginEnd="4dp"
-      android:contentDescription="@null"
-      android:importantForAccessibility="no"
-      app:srcCompat="@drawable/ic_logo_components_48px"/>
-  <TextView
-      android:layout_width="wrap_content"
-      android:layout_height="wrap_content"
-      android:includeFontPadding="false"
-      android:text="@string/cat_toc_title"
-      android:textAppearance="?attr/textAppearanceHeadline6"
-      android:textColor="?colorOnPrimary"/>
-</LinearLayout>
+      android:layout_gravity="center"
+      android:gravity="center"
+      android:orientation="horizontal">
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginRight="4dp"
+        android:layout_marginEnd="4dp"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no"
+        app:srcCompat="@drawable/ic_logo_components_48px"/>
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:includeFontPadding="false"
+        android:text="@string/cat_toc_title"
+        android:textAppearance="?attr/textAppearanceHeadline6"/>
+  </LinearLayout>
+
+  <ImageButton
+      style="@style/Widget.Catalog.ChooseThemeButton"/>
+</FrameLayout>

@@ -17,6 +17,9 @@
 
 <resources>
 
+  <!-- Style to use for Badges in this theme. -->
+  <attr name="badgeStyle" format="reference"/>
+
   <declare-styleable name="Badge">
     <attr name="backgroundColor" format="color"/>
     <attr name="badgeTextColor" format="color"/>

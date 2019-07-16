@@ -8,7 +8,6 @@ dependencies {
   api compatibility("annotation")
   api compatibility("appcompat")
   api compatibility("core")
-  api compatibility("core_ui")
 
   implementation project(fromPath("lib/java/com/google/android/material/animation"))
 }

@@ -40,6 +40,15 @@ import androidx.annotation.CallSuper;
 import androidx.annotation.ColorInt;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.view.ViewCompat;
+import android.util.AttributeSet;
+import android.util.Pair;
+import android.view.Gravity;
+import android.view.View;
+import android.view.ViewAnimationUtils;
+import android.view.ViewGroup;
+import android.widget.ImageView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.animation.AnimatorSetCompat;
 import com.google.android.material.animation.ArgbEvaluatorCompat;
 import com.google.android.material.animation.ChildrenAlphaProperty;
@@ -54,15 +63,6 @@ import com.google.android.material.circularreveal.CircularRevealWidget.CircularR
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.math.MathUtils;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.core.view.ViewCompat;
-import android.util.AttributeSet;
-import android.util.Pair;
-import android.view.Gravity;
-import android.view.View;
-import android.view.ViewAnimationUtils;
-import android.view.ViewGroup;
-import android.widget.ImageView;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -328,12 +328,12 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
       animator = ObjectAnimator.ofInt(icon, DrawableAlphaProperty.DRAWABLE_ALPHA_COMPAT, 0xFF);
     }
 
+    // icon.setCallback() is not expected to be called and
+    // child.verifyDrawable() is not expected to be implemented.
     animator.addUpdateListener(
         new AnimatorUpdateListener() {
           @Override
           public void onAnimationUpdate(ValueAnimator animation) {
-            // icon.setCallback() is not expected to be called and
-            // child.verifyDrawable() is not expected to be implemented.
             child.invalidate();
           }
         });

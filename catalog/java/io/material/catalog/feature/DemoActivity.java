@@ -21,7 +21,6 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import androidx.fragment.app.Fragment;
 import androidx.appcompat.app.ActionBar;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -32,21 +31,19 @@ import android.view.ViewGroup;
 import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
-import dagger.android.HasFragmentInjector;
-import dagger.android.support.HasSupportFragmentInjector;
+import dagger.android.HasAndroidInjector;
 import javax.inject.Inject;
 
 /** Base Activity class that provides a demo screen structure for a single demo. */
 public abstract class DemoActivity extends AppCompatActivity
-    implements HasFragmentInjector, HasSupportFragmentInjector {
+    implements HasAndroidInjector {
 
   public static final String EXTRA_DEMO_TITLE = "demo_title";
 
   private Toolbar toolbar;
   private ViewGroup demoContainer;
 
-  @Inject DispatchingAndroidInjector<Fragment> supportFragmentInjector;
-  @Inject DispatchingAndroidInjector<android.app.Fragment> frameworkFragmentInjector;
+  @Inject DispatchingAndroidInjector<Object> androidInjector;
 
   @Override
   protected void onCreate(@Nullable Bundle bundle) {
@@ -84,15 +81,10 @@ public abstract class DemoActivity extends AppCompatActivity
   }
 
   @Override
-  public AndroidInjector<Fragment> supportFragmentInjector() {
-    return supportFragmentInjector;
+  public AndroidInjector<Object> androidInjector() {
+    return androidInjector;
   }
-
-  @Override
-  public AndroidInjector<android.app.Fragment> fragmentInjector() {
-    return frameworkFragmentInjector;
-  }
-
+  
   private void safeInject() {
     try {
       AndroidInjection.inject(this);

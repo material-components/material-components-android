@@ -19,6 +19,7 @@ package com.google.android.material.textfield;
 import com.google.android.material.R;
 
 import android.content.Context;
+import android.os.Build;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatEditText;
 import android.util.AttributeSet;
@@ -49,11 +50,27 @@ public class TextInputEditText extends AppCompatEditText {
   }
 
   @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    // Meizu devices expect TextView#mHintLayout to be non-null if TextView#getHint() is non-null.
+    // In order to avoid crashing, we force the creation of the layout by setting an empty non-null
+    // hint.
+    TextInputLayout layout = getTextInputLayout();
+    if (layout != null
+        && layout.isProvidingHint()
+        && super.getHint() == null
+        && Build.MANUFACTURER.equalsIgnoreCase("Meizu")) {
+      setHint("");
+    }
+  }
+
+  @Override
   public CharSequence getHint() {
     // Certain test frameworks expect the actionable element to expose its hint as a label. When
     // TextInputLayout is providing our hint, retrieve it from the parent layout.
     TextInputLayout layout = getTextInputLayout();
-    if ((layout != null) && layout.isProvidingHint()) {
+    if (layout != null && layout.isProvidingHint()) {
       return layout.getHint();
     }
     return super.getHint();

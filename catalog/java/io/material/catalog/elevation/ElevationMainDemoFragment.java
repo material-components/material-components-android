@@ -21,13 +21,13 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import com.google.android.material.card.MaterialCardView;
-import androidx.core.view.ViewCompat;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.internal.ViewUtils;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -52,6 +52,7 @@ public class ElevationMainDemoFragment extends DemoFragment {
     return R.layout.cat_elevation_shadows_fragment;
   }
 
+  @SuppressWarnings("RestrictTo") // It's safe to use restricted MDC code in MDC Catalog.
   protected void updateElevationLevel(View view, int newLevel) {
     List<MaterialCardView> elevationCards =
         DemoUtils.findViewsWithType(view, MaterialCardView.class);
@@ -62,11 +63,10 @@ public class ElevationMainDemoFragment extends DemoFragment {
       currentElevation = newLevel;
       elevationDP = elevationValues[currentElevation];
       for (MaterialCardView elevationCard : elevationCards) {
-        ViewCompat.setElevation(elevationCard, elevationDP);
+        elevationCard.setCardElevation(ViewUtils.dpToPx(view.getContext(), elevationDP));
       }
       levelText.setText(
-          getResources()
-              .getString(R.string.cat_elevation_fragment_level, elevationDP));
+          getResources().getString(R.string.cat_elevation_fragment_level, elevationDP));
     }
   }
 
@@ -78,20 +78,8 @@ public class ElevationMainDemoFragment extends DemoFragment {
 
     elevationDP = elevationValues[currentElevation];
 
-    increaseButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View button) {
-            updateElevationLevel(view, currentElevation + 1);
-          }
-        });
-    decreaseButton.setOnClickListener(
-        new View.OnClickListener() {
-          @Override
-          public void onClick(View button) {
-            updateElevationLevel(view, currentElevation - 1);
-          }
-        });
+    increaseButton.setOnClickListener(button -> updateElevationLevel(view, currentElevation + 1));
+    decreaseButton.setOnClickListener(button -> updateElevationLevel(view, currentElevation - 1));
     updateElevationLevel(view, 0);
   }
 

@@ -26,29 +26,29 @@
     <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
-  <style name="Base.Theme.MaterialComponents.Light.Dialog.Alert.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
+  <style name="Theme.MaterialComponents.Light.Dialog.Alert.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
     <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
     <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
-  <style name="Base.Theme.MaterialComponents.Dialog.MinWidth.Brige" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
+  <style name="Theme.MaterialComponents.Dialog.MinWidth.Bridge" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
     <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
     <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
-  <style name="Base.Theme.MaterialComponents.Light.Dialog.MinWidth.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
+  <style name="Theme.MaterialComponents.Light.Dialog.MinWidth.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
     <item name="windowMinWidthMajor">@dimen/abc_dialog_min_width_major</item>
     <item name="windowMinWidthMinor">@dimen/abc_dialog_min_width_minor</item>
   </style>
 
-  <style name="Base.Theme.MaterialComponents.Dialog.FixedSize.Bridge" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
+  <style name="Theme.MaterialComponents.Dialog.FixedSize.Bridge" parent="Base.Theme.MaterialComponents.Dialog.Bridge">
     <item name="windowFixedWidthMajor">@dimen/abc_dialog_fixed_width_major</item>
     <item name="windowFixedWidthMinor">@dimen/abc_dialog_fixed_width_minor</item>
     <item name="windowFixedHeightMajor">@dimen/abc_dialog_fixed_height_major</item>
     <item name="windowFixedHeightMinor">@dimen/abc_dialog_fixed_height_minor</item>
   </style>
 
-  <style name="Base.Theme.MaterialComponents.Light.Dialog.FixedSize.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
+  <style name="Theme.MaterialComponents.Light.Dialog.FixedSize.Bridge" parent="Base.Theme.MaterialComponents.Light.Dialog.Bridge">
     <item name="windowFixedWidthMajor">@dimen/abc_dialog_fixed_width_major</item>
     <item name="windowFixedWidthMinor">@dimen/abc_dialog_fixed_width_minor</item>
     <item name="windowFixedHeightMajor">@dimen/abc_dialog_fixed_height_major</item>

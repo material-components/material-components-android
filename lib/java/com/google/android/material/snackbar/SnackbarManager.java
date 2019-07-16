@@ -56,8 +56,9 @@ class SnackbarManager {
                   case MSG_TIMEOUT:
                     handleTimeout((SnackbarRecord) message.obj);
                     return true;
+                  default:
+                    return false;
                 }
-                return false;
               }
             });
   }

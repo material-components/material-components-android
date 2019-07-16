@@ -120,6 +120,12 @@
     <item name="closeIconVisible">false</item>
 
     <item name="checkedIcon">@drawable/ic_mtrl_chip_checked_black</item>
+
+    <item name="android:textColor">@color/mtrl_choice_chip_text_color</item>
+
+    <item name="chipBackgroundColor">@color/mtrl_choice_chip_background_color</item>
+    <item name="rippleColor">@color/mtrl_choice_chip_ripple_color</item>
+
   </style>
 
   <!-- Style for Chips that act as a button.

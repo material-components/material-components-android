@@ -28,9 +28,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
-import com.google.android.material.expandable.ExpandableWidget;
-import com.google.android.material.navigation.NavigationView;
-import com.google.android.material.tabs.TabLayout;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import android.util.SparseArray;
@@ -40,6 +37,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import com.google.android.material.expandable.ExpandableWidget;
+import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.tabs.TabLayout;
 import org.hamcrest.Matcher;
 
 public class TestUtilsActions {
@@ -421,6 +421,45 @@ public class TestUtilsActions {
       @Override
       public void perform(UiController uiController, View view) {
         ((ExpandableWidget) view).setExpanded(expanded);
+      }
+    };
+  }
+
+  public static ViewAction setTabMode(final int tabMode) {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(TabLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "set tab mode";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        ((TabLayout) view).setTabMode(tabMode);
+      }
+    };
+  }
+
+  /** Returns a {@link ViewAction} that requests focus on the {@link View}. */
+  public static ViewAction requestFocus() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return any(View.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "focus";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        view.requestFocus();
       }
     };
   }

@@ -25,10 +25,10 @@ import android.content.res.ColorStateList;
 import android.content.res.Resources;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.Dimension;
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.internal.TextScale;
 import androidx.core.util.Pools;
 import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -36,21 +36,25 @@ import androidx.appcompat.view.menu.MenuBuilder;
 import androidx.appcompat.view.menu.MenuItemImpl;
 import androidx.appcompat.view.menu.MenuView;
 import android.util.AttributeSet;
+import android.util.SparseArray;
 import android.util.TypedValue;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.transition.AutoTransition;
 import androidx.transition.TransitionManager;
 import androidx.transition.TransitionSet;
-import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
-
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.internal.TextScale;
+import java.util.HashSet;
 
 /** @hide For internal use only. */
 @RestrictTo(LIBRARY_GROUP)
 public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private static final long ACTIVE_ANIMATION_DURATION_MS = 115L;
+  private static final int ITEM_POOL_SIZE = 5;
 
   private static final int[] CHECKED_STATE_SET = {android.R.attr.state_checked};
   private static final int[] DISABLED_STATE_SET = {-android.R.attr.state_enabled};
@@ -62,7 +66,8 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private final int activeItemMinWidth;
   private final int itemHeight;
   private final OnClickListener onClickListener;
-  private final Pools.Pool<BottomNavigationItemView> itemPool = new Pools.SynchronizedPool<>(5);
+  private final Pools.Pool<BottomNavigationItemView> itemPool =
+      new Pools.SynchronizedPool<>(ITEM_POOL_SIZE);
 
   private boolean itemHorizontalTranslationEnabled;
   @LabelVisibilityMode private int labelVisibilityMode;
@@ -80,6 +85,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   private Drawable itemBackground;
   private int itemBackgroundRes;
   private int[] tempChildWidths;
+  @NonNull private SparseArray<BadgeDrawable> badgeDrawables = new SparseArray<>(ITEM_POOL_SIZE);
 
   private BottomNavigationPresenter presenter;
   private MenuBuilder menu;
@@ -491,15 +497,19 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       for (BottomNavigationItemView item : buttons) {
         if (item != null) {
           itemPool.release(item);
+          item.removeBadge();
         }
       }
     }
+
     if (menu.size() == 0) {
       selectedItemId = 0;
       selectedItemPosition = 0;
       buttons = null;
       return;
     }
+    removeUnusedBadges();
+
     buttons = new BottomNavigationItemView[menu.size()];
     boolean shifting = isShifting(labelVisibilityMode, menu.getVisibleItems().size());
     for (int i = 0; i < menu.size(); i++) {
@@ -528,6 +538,7 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
       if (selectedItemId != Menu.NONE && menu.getItem(i).getItemId() == selectedItemId) {
         selectedItemPosition = i;
       }
+      setBadgeIfNeeded(child);
       addView(child);
     }
     selectedItemPosition = Math.min(menu.size() - 1, selectedItemPosition);
@@ -598,6 +609,102 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
         item.setChecked(true);
         break;
       }
+    }
+  }
+
+  SparseArray<BadgeDrawable> getBadgeDrawables() {
+    return badgeDrawables;
+  }
+
+  void setBadgeDrawables(SparseArray<BadgeDrawable> badgeDrawables) {
+    this.badgeDrawables = badgeDrawables;
+  }
+
+  @Nullable
+  BadgeDrawable getBadge(int menuItemId) {
+    return badgeDrawables.get(menuItemId);
+  }
+
+  /**
+   * Creates an instance of {@link BadgeDrawable} if none exists. Initializes (if needed) and
+   * returns the associated instance of {@link BadgeDrawable}.
+   *
+   * @param menuItemId Id of the menu item.
+   * @return an instance of BadgeDrawable associated with {@code menuItemId}.
+   */
+  BadgeDrawable getOrCreateBadge(int menuItemId) {
+    validateMenuItemId(menuItemId);
+    BadgeDrawable badgeDrawable = badgeDrawables.get(menuItemId);
+    // Create an instance of BadgeDrawable if none were already initialized for this menu item.
+    if (badgeDrawable == null) {
+      badgeDrawable = BadgeDrawable.create(getContext());
+      badgeDrawables.put(menuItemId, badgeDrawable);
+    }
+    BottomNavigationItemView itemView = findItemView(menuItemId);
+    if (itemView != null) {
+      itemView.setBadge(badgeDrawable);
+    }
+    return badgeDrawable;
+  }
+
+  void removeBadge(int menuItemId) {
+    validateMenuItemId(menuItemId);
+    BadgeDrawable badgeDrawable = badgeDrawables.get(menuItemId);
+    BottomNavigationItemView itemView = findItemView(menuItemId);
+    if (itemView != null) {
+      itemView.removeBadge();
+    }
+    if (badgeDrawable != null) {
+      badgeDrawables.remove(menuItemId);
+    }
+  }
+
+  private void setBadgeIfNeeded(BottomNavigationItemView child) {
+    int childId = child.getId();
+    if (!isValidId(childId)) {
+      // Child doesn't have a valid id, do not set any BadgeDrawable on the view.
+      return;
+    }
+
+    BadgeDrawable badgeDrawable = badgeDrawables.get(childId);
+    if (badgeDrawable != null) {
+      child.setBadge(badgeDrawable);
+    }
+  }
+
+  private void removeUnusedBadges() {
+    HashSet<Integer> activeKeys = new HashSet<>();
+    // Remove keys from badgeDrawables that don't have a corresponding value in the menu.
+    for (int i = 0; i < menu.size(); i++) {
+      activeKeys.add(menu.getItem(i).getItemId());
+    }
+
+    for (int i = 0; i < badgeDrawables.size(); i++) {
+      int key = badgeDrawables.keyAt(i);
+      if (!activeKeys.contains(key)) {
+        badgeDrawables.delete(key);
+      }
+    }
+  }
+
+  @Nullable
+  private BottomNavigationItemView findItemView(int menuItemId) {
+    validateMenuItemId(menuItemId);
+    for (BottomNavigationItemView itemView : buttons) {
+      if (itemView.getId() == menuItemId) {
+        return itemView;
+      }
+    }
+    return null;
+  }
+
+  private boolean isValidId(int viewId) {
+    return viewId != View.NO_ID;
+  }
+
+  private void validateMenuItemId(int viewId) {
+    if (!isValidId(viewId)) {
+      throw new IllegalArgumentException(viewId + " is not a valid view id");
     }
   }
 }

@@ -26,13 +26,13 @@ import static org.junit.Assert.assertEquals;
 import androidx.annotation.CallSuper;
 import androidx.annotation.IdRes;
 import androidx.annotation.LayoutRes;
-import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.Shakespeare;
 import android.text.TextUtils;
 import android.widget.TextView;
 import androidx.test.filters.MediumTest;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

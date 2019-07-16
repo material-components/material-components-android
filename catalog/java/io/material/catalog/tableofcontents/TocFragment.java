@@ -23,7 +23,6 @@ import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import com.google.android.material.appbar.AppBarLayout;
-import com.google.android.material.appbar.AppBarLayout.OnOffsetChangedListener;
 import androidx.fragment.app.Fragment;
 import androidx.core.content.ContextCompat;
 import androidx.core.math.MathUtils;
@@ -35,9 +34,12 @@ import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import dagger.android.support.DaggerFragment;
 import io.material.catalog.feature.FeatureDemo;
 import io.material.catalog.feature.FeatureDemoUtils;
+import io.material.catalog.themeswitcher.ThemePreferencesManager;
+import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
 import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -53,10 +55,33 @@ public class TocFragment extends DaggerFragment {
 
   @Inject Set<FeatureDemo> featureDemos;
   @Inject TocResourceProvider tocResourceProvider;
+  @Inject ThemeSwitcherResourceProvider themeSwitcherResourceProvider;
 
+  private ThemePreferencesManager themePreferencesManager;
   private AppBarLayout appBarLayout;
   private View gridTopDivider;
   private RecyclerView recyclerView;
+  private ImageButton themeButton;
+
+  @Override
+  public void onCreate(@Nullable Bundle bundle) {
+    super.onCreate(bundle);
+
+    themePreferencesManager =
+        new ThemePreferencesManager(getContext(), themeSwitcherResourceProvider);
+
+    String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
+    if (!defaultDemo.isEmpty() && bundle == null) {
+      for (FeatureDemo demo : featureDemos) {
+        Fragment fragment = demo.createFragment();
+        String key = fragment.getClass().getName();
+        if (key.equals(defaultDemo)) {
+          FeatureDemoUtils.startFragment(getActivity(), fragment, "fragment_content");
+          return;
+        }
+      }
+    }
+  }
 
   @Nullable
   @Override
@@ -76,6 +101,7 @@ public class TocFragment extends DaggerFragment {
     appBarLayout = view.findViewById(R.id.cat_toc_app_bar_layout);
     gridTopDivider = view.findViewById(R.id.cat_toc_grid_top_divider);
     recyclerView = view.findViewById(R.id.cat_toc_grid);
+    themeButton = view.findViewById(R.id.cat_toc_theme_button);
 
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
       addGridTopDividerVisibilityListener();
@@ -105,6 +131,8 @@ public class TocFragment extends DaggerFragment {
     TocAdapter tocAdapter = new TocAdapter(getActivity(), featureList);
     recyclerView.setAdapter(tocAdapter);
 
+    initThemeButton();
+
     return view;
   }
 
@@ -115,34 +143,15 @@ public class TocFragment extends DaggerFragment {
     ((AppCompatActivity) getActivity()).setSupportActionBar(null);
   }
 
-  @Override
-  public void onCreate(@Nullable Bundle bundle) {
-    super.onCreate(bundle);
-    String defaultDemo = FeatureDemoUtils.getDefaultDemo(getContext());
-    if (!defaultDemo.isEmpty() && bundle == null) {
-      for (FeatureDemo demo : featureDemos) {
-        Fragment fragment = demo.createFragment();
-        String key = fragment.getClass().getName();
-        if (key.equals(defaultDemo)) {
-          FeatureDemoUtils.startFragment(getActivity(), fragment, "fragment_content");
-          return;
-        }
-      }
-    }
-  }
-
   private void addGridTopDividerVisibilityListener() {
     appBarLayout.addOnOffsetChangedListener(
-        new OnOffsetChangedListener() {
-          @Override
-          public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
-            if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
-              // CTL is collapsed, hide top divider
-              gridTopDivider.setVisibility(View.GONE);
-            } else {
-              // CTL is expanded or expanding, show top divider
-              gridTopDivider.setVisibility(View.VISIBLE);
-            }
+        (appBarLayout, verticalOffset) -> {
+          if (Math.abs(verticalOffset) == appBarLayout.getTotalScrollRange()) {
+            // CTL is collapsed, hide top divider
+            gridTopDivider.setVisibility(View.GONE);
+          } else {
+            // CTL is expanded or expanding, show top divider
+            gridTopDivider.setVisibility(View.VISIBLE);
           }
         });
   }
@@ -153,5 +162,10 @@ public class TocFragment extends DaggerFragment {
     int itemSize = getResources().getDimensionPixelSize(R.dimen.cat_toc_item_size);
     int gridSpanCount = displayWidth / itemSize;
     return MathUtils.clamp(gridSpanCount, GRID_SPAN_COUNT_MIN, GRID_SPAN_COUNT_MAX);
+  }
+
+  private void initThemeButton() {
+    themePreferencesManager.applyTheme();
+    themeButton.setOnClickListener(v -> themePreferencesManager.showChooseThemePopup(themeButton));
   }
 }

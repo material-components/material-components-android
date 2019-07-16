@@ -79,6 +79,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
   int itemIconPadding;
   int itemIconSize;
   boolean hasCustomItemIconSize;
+  private int itemMaxLines;
 
   /**
    * Padding to be inserted at the top of the list to avoid the first menu item from being placed
@@ -88,6 +89,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
 
   /** Padding for separators between items */
   int paddingSeparator;
+  private int overScrollMode = -1;
 
   @Override
   public void initForMenu(Context context, MenuBuilder menu) {
@@ -107,6 +109,9 @@ public class NavigationMenuPresenter implements MenuPresenter {
           new NavigationMenuViewAccessibilityDelegate(menuView));
       if (adapter == null) {
         adapter = new NavigationMenuAdapter();
+      }
+      if (overScrollMode != -1) {
+        menuView.setOverScrollMode(overScrollMode);
       }
       headerLayout =
           (LinearLayout)
@@ -292,6 +297,15 @@ public class NavigationMenuPresenter implements MenuPresenter {
     updateMenuView(false);
   }
 
+  public void setItemMaxLines(int itemMaxLines) {
+    this.itemMaxLines = itemMaxLines;
+    updateMenuView(false);
+  }
+
+  public int getItemMaxLines() {
+    return itemMaxLines;
+  }
+
   public void setItemIconSize(@Dimension int itemIconSize) {
     if (this.itemIconSize != itemIconSize) {
       this.itemIconSize = itemIconSize;
@@ -315,6 +329,13 @@ public class NavigationMenuPresenter implements MenuPresenter {
       }
     }
     ViewCompat.dispatchApplyWindowInsets(headerLayout, insets);
+  }
+
+  public void setOverScrollMode(int overScrollMode) {
+    this.overScrollMode = overScrollMode;
+    if (menuView != null) {
+      menuView.setOverScrollMode(overScrollMode);
+    }
   }
 
   private abstract static class ViewHolder extends RecyclerView.ViewHolder {
@@ -361,8 +382,8 @@ public class NavigationMenuPresenter implements MenuPresenter {
       new View.OnClickListener() {
 
         @Override
-        public void onClick(View v) {
-          NavigationMenuItemView itemView = (NavigationMenuItemView) v;
+        public void onClick(View view) {
+          NavigationMenuItemView itemView = (NavigationMenuItemView) view;
           setUpdateSuspended(true);
           MenuItemImpl item = itemView.getItemData();
           boolean result = menu.performItemAction(item, NavigationMenuPresenter.this, 0);
@@ -462,6 +483,7 @@ public class NavigationMenuPresenter implements MenuPresenter {
             if (hasCustomItemIconSize) {
               itemView.setIconSize(itemIconSize);
             }
+            itemView.setMaxLines(itemMaxLines);
             itemView.initialize(item.getMenuItem(), 0);
             break;
           }

@@ -26,11 +26,11 @@
   <com.google.android.material.card.MaterialCardView
       android:id="@+id/card"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="0dp"
+      android:layout_weight="0.4"
       android:layout_margin="16dp"
       android:clickable="true"
       android:focusable="true"
-      android:minHeight="@dimen/cat_card_demo_min_height"
       app:contentPadding="16dp">
 
     <TextView
@@ -44,12 +44,12 @@
   <com.google.android.material.card.MaterialCardView
       android:id="@+id/checkable_card"
       android:layout_width="match_parent"
-      android:layout_height="wrap_content"
+      android:layout_height="0dp"
+      android:layout_weight="0.4"
       android:layout_margin="16dp"
+      android:checkable="true"
       android:clickable="true"
       android:focusable="true"
-      android:checkable="true"
-      android:minHeight="@dimen/cat_card_demo_min_height"
       app:contentPadding="8dp">
 
     <TextView

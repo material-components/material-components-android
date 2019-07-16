@@ -15,6 +15,7 @@
   ~ limitations under the License.
 -->
 <resources>
+  <public name="badgeStyle" type="attr"/>
   <public name="backgroundColor" type="attr"/>
   <public name="badgeTextColor" type="attr"/>
   <public name="maxCharacterCount" type="attr"/>

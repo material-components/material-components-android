@@ -18,9 +18,9 @@
   <!-- Flag that determines whether elevation overlays (translucent overlay based on
        elevation to provide contrast) are enabled. Default is false in light themes
        and true in dark themes. -->
-  <attr name="elevationOverlaysEnabled" format="boolean"/>
+  <attr name="elevationOverlayEnabled" format="boolean"/>
   <!-- The color of the elevation overlay layer, which will be used with an alpha
        percentage based on elevation. -->
-  <attr name="elevationOverlaysColor" format="color"/>
+  <attr name="elevationOverlayColor" format="color"/>
 
 </resources>

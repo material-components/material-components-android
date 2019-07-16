@@ -7,7 +7,6 @@ version = rootProject.ext.mdcLibraryVersion
 dependencies {
   implementation compatibility("annotation")
   implementation compatibility("core")
-  implementation compatibility("core_ui")
 
   implementation project(fromPath("lib/java/com/google/android/material/animation"))
   implementation project(fromPath("lib/java/com/google/android/material/circularreveal"))

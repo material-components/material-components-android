@@ -49,4 +49,11 @@
   <string name="textinput_helper">Helper text to the user</string>
   <string name="textinput_helper_not_enabled">Helper text to the user, helper not enabled</string>
   <string name="textinput_custom_end_icon">Custom end icon</string>
+
+  <string-array name="exposed_dropdown_content">
+    <item>Item 1</item>
+    <item>Item 2</item>
+    <item>Item 3</item>
+    <item>Item 4</item>
+  </string-array>
 </resources>

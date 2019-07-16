@@ -19,6 +19,7 @@ package io.material.catalog.themeswitcher;
 import io.material.catalog.R;
 
 import androidx.annotation.ArrayRes;
+import androidx.annotation.AttrRes;
 import androidx.annotation.StyleableRes;
 
 /** A helper class that facilitates overriding of theme switcher resources in the Catalog app. */
@@ -39,6 +40,11 @@ public class ThemeSwitcherResourceProvider {
   @StyleableRes
   public int[] getSecondaryThemeOverlayAttrs() {
     return SECONDARY_THEME_OVERLAY_ATTRS;
+  }
+
+  @AttrRes
+  public int getPrimaryColor() {
+    return R.attr.colorPrimary;
   }
 
   @ArrayRes

@@ -26,15 +26,23 @@
   <public name="expandedTitleTextAppearance" type="attr"/>
   <public name="collapsedTitleTextAppearance" type="attr"/>
   <public name="contentScrim" type="attr"/>
+  <public name="statusBarForeground" type="attr"/>
   <public name="statusBarScrim" type="attr"/>
   <public name="toolbarId" type="attr"/>
   <public name="Widget.Design.AppBarLayout" type="style"/>
   <public name="Widget.Design.CollapsingToolbar" type="style"/>
+  <public name="Widget.MaterialComponents.AppBarLayout.Primary" type="style"/>
+  <public name="Widget.MaterialComponents.AppBarLayout.Surface" type="style"/>
+  <public name="Widget.MaterialComponents.AppBarLayout.PrimarySurface" type="style"/>
   <public name="Widget.MaterialComponents.Toolbar" type="style"/>
   <public name="Widget.MaterialComponents.Toolbar.Primary" type="style"/>
   <public name="Widget.MaterialComponents.Toolbar.Surface" type="style"/>
+  <public name="Widget.MaterialComponents.Toolbar.PrimarySurface" type="style"/>
   <public name="Widget.MaterialComponents.ActionBar.Solid" type="style"/>
   <public name="Widget.MaterialComponents.Light.ActionBar.Solid" type="style"/>
+  <public name="Widget.MaterialComponents.ActionBar.Primary" type="style"/>
+  <public name="Widget.MaterialComponents.ActionBar.Surface" type="style"/>
+  <public name="Widget.MaterialComponents.ActionBar.PrimarySurface" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Primary" type="style"/>
   <public name="ThemeOverlay.MaterialComponents.Toolbar.Surface" type="style"/>
   <public name="TextAppearance.Design.CollapsingToolbar.Expanded" type="style"/>

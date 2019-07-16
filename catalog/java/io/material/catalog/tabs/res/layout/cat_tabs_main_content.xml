@@ -55,7 +55,6 @@
       android:textSize="16sp"/>
 
   <com.google.android.material.tabs.TabLayout
-      style="@style/Widget.MaterialComponents.TabLayout"
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
       android:layout_marginBottom="16dp">
@@ -97,4 +96,11 @@
 
   </com.google.android.material.tabs.TabLayout>
 
+  <Button
+      android:id="@+id/increment_badge_number_button"
+      android:layout_width="wrap_content"
+      android:layout_height="wrap_content"
+      android:layout_marginVertical="8dp"
+      android:layout_gravity="center_horizontal"
+      android:text="@string/cat_tabs_increment_badge_number"/>
 </LinearLayout>

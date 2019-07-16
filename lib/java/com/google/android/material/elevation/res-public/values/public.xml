@@ -15,6 +15,6 @@
   ~ limitations under the License.
 -->
 <resources>
-  <public name="elevationOverlaysEnabled" type="attr"/>
-  <public name="elevationOverlaysColor" type="attr"/>
+  <public name="elevationOverlayEnabled" type="attr"/>
+  <public name="elevationOverlayColor" type="attr"/>
 </resources>

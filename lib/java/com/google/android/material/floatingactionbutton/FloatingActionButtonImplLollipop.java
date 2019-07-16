@@ -36,12 +36,12 @@ import android.os.Build.VERSION_CODES;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
-import com.google.android.material.ripple.RippleUtils;
-import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
 import androidx.core.content.ContextCompat;
 import android.view.View;
+import com.google.android.material.ripple.RippleUtils;
+import com.google.android.material.shadow.ShadowViewDelegate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -54,7 +54,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   }
 
   @Override
-  void setBackgroundDrawable(
+  void initializeBackgroundDrawable(
       ColorStateList backgroundTint,
       PorterDuff.Mode backgroundTintMode,
       ColorStateList rippleColor,
@@ -82,7 +82,6 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
             RippleUtils.convertToRippleDrawableColor(rippleColor), rippleContent, null);
 
     contentBackground = rippleDrawable;
-    shadowViewDelegate.setBackgroundDrawable(contentBackground);
   }
 
   @Override

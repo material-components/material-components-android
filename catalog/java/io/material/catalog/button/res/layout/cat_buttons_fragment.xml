@@ -20,14 +20,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-  <GridLayout
-      android:id="@+id/grid"
+  <LinearLayout
       android:layout_width="match_parent"
       android:layout_height="wrap_content"
-      android:layout_gravity="center"
-      android:paddingStart="16dp"
-      android:clipToPadding="false"
-      android:columnCount="2">
+      android:orientation="vertical"
+      android:paddingTop="16dp"
+      android:paddingBottom="16dp"
+      android:gravity="center_horizontal">
 
     <TextView
         android:textStyle="bold"
@@ -37,21 +36,11 @@
         android:text="@string/cat_btn_text"
         android:textSize="16sp"/>
 
-    <Space/>
-
     <Button
         android:id="@+id/material_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"/>
-
-    <Button
-        android:id="@+id/disabled_material_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:enabled="false"
-        android:text="@string/cat_button_label_disabled"/>
 
     <TextView
         android:textStyle="bold"
@@ -61,23 +50,12 @@
         android:text="@string/cat_unelevated_btn_text"
         android:textSize="16sp"/>
 
-    <Space/>
-
     <Button
         android:id="@+id/material_unelevated_button"
         style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"/>
-
-    <Button
-        android:id="@+id/disabled_material_unelevated_button"
-        style="@style/Widget.MaterialComponents.Button.UnelevatedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:enabled="false"
-        android:text="@string/cat_button_label_disabled"/>
 
     <TextView
         android:textStyle="bold"
@@ -87,24 +65,12 @@
         android:text="@string/cat_icon_btn_text"
         android:textSize="16sp"/>
 
-    <Space/>
-
     <Button
         android:id="@+id/material_icon_button"
         style="@style/Widget.MaterialComponents.Button.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"
-        app:icon="@drawable/ic_dialogs_24px"/>
-
-    <Button
-        android:id="@+id/disabled_material_icon_button"
-        style="@style/Widget.MaterialComponents.Button.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:enabled="false"
-        android:text="@string/cat_button_label_disabled"
         app:icon="@drawable/ic_dialogs_24px"/>
 
     <TextView
@@ -115,23 +81,12 @@
         android:text="@string/cat_text_btn_text"
         android:textSize="16sp"/>
 
-    <Space/>
-
     <Button
         android:id="@+id/material_text_button"
         style="@style/Widget.MaterialComponents.Button.TextButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"/>
-
-    <Button
-        android:id="@+id/disabled_material_text_button"
-        style="@style/Widget.MaterialComponents.Button.TextButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:enabled="false"
-        android:text="@string/cat_button_label_disabled"/>
 
     <TextView
         android:textStyle="bold"
@@ -141,24 +96,12 @@
         android:text="@string/cat_icon_text_btn_text"
         android:textSize="16sp"/>
 
-    <Space/>
-
     <Button
         android:id="@+id/material_icon_text_button"
         style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"
-        app:icon="@drawable/ic_dialogs_24px"/>
-
-    <Button
-        android:id="@+id/disabled_material_icon_text_button"
-        style="@style/Widget.MaterialComponents.Button.TextButton.Icon"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:enabled="false"
-        android:text="@string/cat_button_label_disabled"
         app:icon="@drawable/ic_dialogs_24px"/>
 
     <TextView
@@ -169,23 +112,12 @@
         android:text="@string/cat_outlined_btn_text"
         android:textSize="16sp"/>
 
-    <Space/>
-
     <Button
         android:id="@+id/material_outlined_button"
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="@string/cat_button_label_enabled"/>
-
-    <Button
-        android:id="@+id/disabled_material_outlined_button"
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="16dp"
-        android:enabled="false"
-        android:text="@string/cat_button_label_disabled"/>
 
     <TextView
         android:textStyle="bold"
@@ -195,8 +127,6 @@
         android:text="@string/cat_outlined_icon_btn_text"
         android:textSize="16sp"/>
 
-    <Space/>
-
     <Button
         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
         android:layout_width="wrap_content"
@@ -206,16 +136,12 @@
         app:iconGravity="textStart"
         app:iconPadding="0dp"/>
 
-    <Button
-        style="@style/Widget.MaterialComponents.Button.OutlinedButton"
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/cat_button_enabled_switch"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:contentDescription="@string/cat_button_icon_btn_text"
-        android:layout_marginStart="16dp"
-        android:enabled="false"
-        app:icon="@drawable/ic_dialogs_24px"
-        app:iconGravity="textStart"
-        app:iconPadding="0dp"/>
-
-  </GridLayout>
+        android:layout_marginTop="16dp"
+        android:text="@string/cat_button_label_enabled"
+        android:checked="true"/>
+  </LinearLayout>
 </ScrollView>

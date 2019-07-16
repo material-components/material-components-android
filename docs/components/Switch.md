@@ -11,14 +11,14 @@ path: /catalog/switch/
 
 A `Switch` represents a button with two states, on and off. Switches are most
 often used on mobile devices to enable and disable options in an options menu. A
-switch consists of a track and thumb; the thimb moves along the track to
+switch consists of a track and thumb; the thumb moves along the track to
 indicate its current state.
 
 ## Design & API Documentation
 
 -   [Material Design guidelines: Switches](https://material.io/go/design-switches)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/switch/SwitchMaterial.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/switchmaterial/SwitchMaterial.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
 -   [Class overview](https://developer.android.com/reference/android/support/v7/widget/SwitchCompat)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->

@@ -17,9 +17,9 @@
 package com.google.android.material.appbar;
 
 import android.content.Context;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.util.AttributeSet;
 import android.view.View;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /** Behavior will automatically sets up a {@link ViewOffsetHelper} on a {@link View}. */
 class ViewOffsetBehavior<V extends View> extends CoordinatorLayout.Behavior<V> {

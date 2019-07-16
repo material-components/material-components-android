@@ -22,6 +22,7 @@
   <string name="cat_card_selection_mode">Selectable Cards</string>
   <string name="cat_card_selectable_item_title">Message</string>
   <string name="cat_card_states">Card States</string>
+  <string name="cat_card_list" translatable="false">Card List With Drag-and-Drop</string>
   <string name="cat_card_draggable_card_content">This is a draggable Card.</string>
   <string name="cat_card_states_card_content">This demo shows the different states on a card.</string>
   <string name="cat_card_state_hovered">Hovered</string>
@@ -79,4 +80,21 @@
   <string name="cat_card_rich_media_chip_title_4">Item 4</string>
   <string name="cat_card_rich_media_action_1">Action 1</string>
   <string name="cat_card_rich_media_action_2">Action 2</string>
+
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the top left corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_top_left">Move to top left</string>
+
+
+  <string description="A description of an action that a user of an accessibility service can perform to swap the card with the one above it. [CHAR LIMIT=25]"
+      name="cat_card_action_move_up">Move Up</string>
+  <string description="A description of an action that a user of an accessibility service can perform to swap the card with the one below it. [CHAR LIMIT=25]"
+      name="cat_card_action_move_down">Move Down</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the top right corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_top_right">Move to top right</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the bottom left corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_bottom_left">Move to bottom left</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the bottom right corner of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_bottom_right">Move to bottom right</string>
+  <string description="A description of an action that a user of an accessibility service can perform to move the card to the center of the screen. [CHAR LIMIT=25]"
+      name="cat_card_action_move_center">Move to center</string>
 </resources>

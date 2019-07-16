@@ -18,8 +18,8 @@ package com.google.android.material.testutils;
 
 import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 
-import androidx.drawerlayout.widget.DrawerLayout;
 import android.view.View;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import org.hamcrest.Matcher;

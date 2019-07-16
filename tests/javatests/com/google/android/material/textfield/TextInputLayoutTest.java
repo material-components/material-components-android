@@ -65,12 +65,10 @@ import androidx.core.widget.TextViewCompat;
 import android.text.TextPaint;
 import android.util.AttributeSet;
 import android.util.SparseArray;
-import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import androidx.test.annotation.UiThreadTest;
-import androidx.test.espresso.NoMatchingViewException;
 import androidx.test.espresso.ViewAssertion;
 import androidx.test.filters.MediumTest;
 import androidx.test.filters.SdkSuppress;
@@ -600,53 +598,38 @@ public class TextInputLayoutTest {
   }
 
   private static ViewAssertion isHintExpanded(final boolean expanded) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(expanded, ((TextInputLayout) view).isHintExpanded());
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(expanded, ((TextInputLayout) view).isHintExpanded());
     };
   }
 
   private static ViewAssertion isBoxStrokeColor(@ColorInt final int boxStrokeColor) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeColor());
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(boxStrokeColor, ((TextInputLayout) view).getBoxStrokeColor());
     };
   }
 
   private static ViewAssertion isBoxBackgroundColor(@ColorInt final int boxBackgroundColor) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(boxBackgroundColor, ((TextInputLayout) view).getBoxBackgroundColor());
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(boxBackgroundColor, ((TextInputLayout) view).getBoxBackgroundColor());
     };
   }
 
   private static ViewAssertion isBoxCornerRadiusTopEnd(final float boxCornerRadiusTopEnd) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(
-            boxCornerRadiusTopEnd, ((TextInputLayout) view).getBoxCornerRadiusTopEnd(), 0.01);
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(
+          boxCornerRadiusTopEnd, ((TextInputLayout) view).getBoxCornerRadiusTopEnd(), 0.01);
     };
   }
 
   private static ViewAssertion isCutoutOpen(final boolean open) {
-    return new ViewAssertion() {
-      @Override
-      public void check(View view, NoMatchingViewException noViewFoundException) {
-        assertTrue(view instanceof TextInputLayout);
-        assertEquals(open, ((TextInputLayout) view).cutoutIsOpen());
-      }
+    return (view, noViewFoundException) -> {
+      assertTrue(view instanceof TextInputLayout);
+      assertEquals(open, ((TextInputLayout) view).cutoutIsOpen());
     };
   }
 }

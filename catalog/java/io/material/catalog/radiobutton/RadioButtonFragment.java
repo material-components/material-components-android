@@ -63,7 +63,7 @@ public class RadioButtonFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_radiobutton_title, R.drawable.ic_radio_button) {
+      return new FeatureDemo(R.string.cat_radiobutton_title, R.drawable.ic_radiobutton) {
         @Override
         public Fragment createFragment() {
           return new RadioButtonFragment();

@@ -25,16 +25,15 @@ import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DimenRes;
-import com.google.android.material.internal.CheckableImageButton;
 import com.google.android.material.testapp.R;
 import com.google.android.material.textfield.TextInputLayout;
-import android.text.method.PasswordTransformationMethod;
+import android.text.method.TransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
-import android.widget.EditText;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
+import com.google.android.material.internal.CheckableImageButton;
 import org.hamcrest.Matcher;
 
 public class TextInputLayoutActions {
@@ -179,22 +178,25 @@ public class TextInputLayoutActions {
     };
   }
 
-  public static ViewAction setInputTypeToPasswordTransformationMethod() {
+  /** Sets the transformation method. */
+  public static ViewAction setTransformationMethod(
+      final TransformationMethod transformationMethod) {
     return new ViewAction() {
+
       @Override
       public Matcher<View> getConstraints() {
-        return isAssignableFrom(EditText.class);
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
       }
 
       @Override
       public String getDescription() {
-        return "Set the input type of the EditText to be of password type";
+        return "Sets the transformation method";
       }
 
       @Override
       public void perform(UiController uiController, View view) {
-        EditText edittext = (EditText) view;
-        edittext.setTransformationMethod(PasswordTransformationMethod.getInstance());
+        TextInputLayout item = (TextInputLayout) view;
+        item.getEditText().setTransformationMethod(transformationMethod);
       }
     };
   }
@@ -537,6 +539,27 @@ public class TextInputLayoutActions {
         CheckableImageButton iconView =
             item.findViewById(isEndIcon ? R.id.text_input_end_icon : R.id.text_input_start_icon);
         iconView.performClick();
+      }
+    };
+  }
+
+  /** Skips any animations on the layout. */
+  public static ViewAction skipAnimations() {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return ViewMatchers.isAssignableFrom(TextInputLayout.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "Skips any animations.";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        view.jumpDrawablesToCurrentState();
       }
     };
   }

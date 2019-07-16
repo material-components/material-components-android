@@ -35,6 +35,18 @@
     <item>@string/cat_tabs_selected_indicator_rounded_line</item>
   </string-array>
 
+  <string-array name="cat_tabs_titles">
+    <item>@string/cat_tabs_label_all</item>
+    <item>@string/cat_tabs_label_shopping</item>
+    <item>@string/cat_tabs_label_news</item>
+    <item>@string/cat_tabs_label_maps</item>
+    <item>@string/cat_tabs_label_images</item>
+    <item>@string/cat_tabs_label_updates</item>
+    <item>@string/cat_tabs_label_settings</item>
+    <item>@string/cat_tabs_label_plugins</item>
+    <item>@string/cat_tabs_label_more</item>
+  </string-array>
+
   <integer-array name="cat_tabs_selected_indicator_drawable_gravities">
     <!-- Bottom -->
     <item>0</item>

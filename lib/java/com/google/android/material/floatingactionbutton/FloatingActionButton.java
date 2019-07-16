@@ -19,8 +19,8 @@ package com.google.android.material.floatingactionbutton;
 import com.google.android.material.R;
 
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
-import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static androidx.core.util.Preconditions.checkNotNull;
+import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 
 import android.animation.Animator.AnimatorListener;
 import android.content.Context;
@@ -48,23 +48,10 @@ import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.VisibleForTesting;
-import com.google.android.material.animation.MotionSpec;
-import com.google.android.material.animation.TransformationListener;
 import com.google.android.material.appbar.AppBarLayout;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.expandable.ExpandableTransformationWidget;
-import com.google.android.material.expandable.ExpandableWidgetHelper;
-import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalTransformationListener;
-import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalVisibilityChangedListener;
-import com.google.android.material.internal.DescendantOffsetUtils;
-import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
-import com.google.android.material.internal.VisibilityAwareImageButton;
 import com.google.android.material.resources.MaterialResources;
-import com.google.android.material.shadow.ShadowViewDelegate;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.stateful.ExtendableSavedState;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.TintableBackgroundView;
 import androidx.core.view.ViewCompat;
@@ -78,6 +65,19 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.animation.MotionSpec;
+import com.google.android.material.animation.TransformationListener;
+import com.google.android.material.expandable.ExpandableTransformationWidget;
+import com.google.android.material.expandable.ExpandableWidgetHelper;
+import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalTransformationListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalVisibilityChangedListener;
+import com.google.android.material.internal.DescendantOffsetUtils;
+import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.internal.VisibilityAwareImageButton;
+import com.google.android.material.shadow.ShadowViewDelegate;
+import com.google.android.material.stateful.ExtendableSavedState;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.List;
@@ -249,7 +249,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     expandableWidgetHelper = new ExpandableWidgetHelper(this);
 
     getImpl().setShapeAppearance(shapeAppearance, usingDefaultCorner);
-    getImpl().setBackgroundDrawable(backgroundTint, backgroundTintMode, rippleColor, borderWidth);
+    getImpl()
+        .initializeBackgroundDrawable(backgroundTint, backgroundTintMode, rippleColor, borderWidth);
     getImpl().setMinTouchTargetSize(minTouchTargetSize);
     getImpl().setElevation(elevation);
     getImpl().setHoveredFocusedTranslationZ(hoveredFocusedTranslationZ);
@@ -738,7 +739,11 @@ public class FloatingActionButton extends VisibilityAwareImageButton
       throw new IllegalArgumentException("Custom size must be non-negative");
     }
 
-    customSize = size;
+    if (size != customSize) {
+      customSize = size;
+      getImpl().updateSize();
+      requestLayout();
+    }
   }
 
   /**
@@ -1325,11 +1330,9 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
   }
 
-  /**
-   * Add a {@link TransformationListener} which can watch for changes to this view.
-   */
+  /** Add a {@link TransformationListener} which can watch for changes to this view. */
   public void addTransformationListener(
-      @NonNull TransformationListener<FloatingActionButton> listener) {
+      @NonNull TransformationListener<? extends FloatingActionButton> listener) {
     getImpl().addTransformationListener(new TransformationListenerWrapper(listener));
   }
 
@@ -1338,7 +1341,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * when this view is transformed.
    */
   public void removeTransformationListener(
-      @NonNull TransformationListener<FloatingActionButton> listener) {
+      @NonNull TransformationListener<? extends FloatingActionButton> listener) {
     getImpl().removeTransformationListener(new TransformationListenerWrapper(listener));
   }
 
@@ -1346,22 +1349,23 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     return shapeAppearance.getTopRightCorner().getCornerSize() == -1;
   }
 
-  class TransformationListenerWrapper implements InternalTransformationListener {
+  class TransformationListenerWrapper<T extends FloatingActionButton>
+      implements InternalTransformationListener {
 
-    @NonNull private final TransformationListener<FloatingActionButton> listener;
+    @NonNull private final TransformationListener<T> listener;
 
-    TransformationListenerWrapper(@NonNull TransformationListener<FloatingActionButton> listener) {
+    TransformationListenerWrapper(@NonNull TransformationListener<T> listener) {
       this.listener = listener;
     }
 
     @Override
     public void onTranslationChanged() {
-      listener.onTranslationChanged(FloatingActionButton.this);
+      listener.onTranslationChanged((T) FloatingActionButton.this);
     }
 
     @Override
     public void onScaleChanged() {
-      listener.onScaleChanged(FloatingActionButton.this);
+      listener.onScaleChanged((T) FloatingActionButton.this);
     }
 
     @Override

@@ -23,9 +23,9 @@ import android.content.Context;
 import androidx.annotation.CallSuper;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import com.google.android.material.expandable.ExpandableWidget;
 import android.util.AttributeSet;
 import android.view.View;
+import com.google.android.material.expandable.ExpandableWidget;
 
 /**
  * Base Behavior for views that can react to an {@link ExpandableWidget}'s {@link

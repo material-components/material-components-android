@@ -138,14 +138,7 @@ public class SnackbarUtils {
   public static <B extends BaseTransientBottomBar<B>>
       void dismissTransientBottomBarAndWaitUntilFullyDismissed(@NonNull final B transientBottomBar)
           throws Throwable {
-    performActionAndWaitUntilFullyDismissed(
-        transientBottomBar,
-        new TransientBottomBarAction() {
-          @Override
-          public void perform() throws Throwable {
-            transientBottomBar.dismiss();
-          }
-        });
+    performActionAndWaitUntilFullyDismissed(transientBottomBar, transientBottomBar::dismiss);
   }
 
   /**

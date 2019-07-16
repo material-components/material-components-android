@@ -15,9 +15,42 @@
   ~ limitations under the License.
 -->
 <resources>
-  <attr name="materialDatePickerStyle" format="reference"/>
-  <attr name="materialDateRangePickerStyle" format="reference"/>
-  <attr name="materialDatePickerDialogTheme" format="reference"/>
-  <attr name="materialDateRangePickerDialogTheme" format="reference"/>
+  <attr name="materialCalendarStyle" format="reference"/>
+  <attr name="materialCalendarFullscreenTheme" format="reference"/>
+  <attr name="materialCalendarTheme" format="reference"/>
+
+  <!-- Header Styles -->
+  <attr name="materialCalendarHeaderLayout" format="reference"/>
+  <attr name="materialCalendarHeaderTitle" format="reference"/>
+  <attr name="materialCalendarHeaderSelection" format="reference"/>
+  <attr name="materialCalendarHeaderToggleButton" format="reference"/>
+
+  <!-- Grid Styles -->
+  <attr name="materialCalendarDay" format="reference"/>
+
+  <declare-styleable name="MaterialCalendar">
+    <attr name="android:windowFullscreen"/>
+    <attr name="dayStyle" format="reference"/>
+    <attr name="dayInvalidStyle" format="reference"/>
+    <attr name="daySelectedStyle" format="reference"/>
+    <attr name="dayTodayStyle" format="reference"/>
+    <attr name="yearStyle" format="reference"/>
+    <attr name="yearSelectedStyle" format="reference"/>
+    <attr name="yearTodayStyle" format="reference"/>
+    <attr name="rangeFillColor" format="color"/>
+  </declare-styleable>
+
+  <declare-styleable name="MaterialCalendarItem">
+    <attr name="android:insetLeft"/>
+    <attr name="android:insetTop"/>
+    <attr name="android:insetRight"/>
+    <attr name="android:insetBottom"/>
+    <attr name="itemFillColor" format="color"/>
+    <attr name="itemTextColor"/>
+    <attr name="itemStrokeColor" format="color"/>
+    <attr name="itemStrokeWidth" format="dimension"/>
+    <attr name="itemShapeAppearance"/>
+    <attr name="itemShapeAppearanceOverlay"/>
+  </declare-styleable>
 
 </resources>

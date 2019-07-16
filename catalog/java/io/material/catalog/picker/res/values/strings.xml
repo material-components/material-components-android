@@ -20,17 +20,22 @@
   <string name="cat_picker_title">Pickers</string>
   <!-- Description of what pickers are used for in applications. [CHAR LIMIT=NONE] -->
   <string name="cat_picker_description">Pickers allow users to choose dates and times.</string>
-  <!-- Launches a window with the default date picker used if the client makes no setting changes. [CHAR LIMIT=60] -->
-  <string name="cat_picker_base">Default Date Picker</string>
-  <!-- Launches a window with a Material date picker used if the client just changes the class. [CHAR LIMIT=60] -->
-  <string name="cat_picker_date_material_styled">Material Styled Date Picker with no themeResId</string>
-  <!-- Launches a window with a styled android spinner based date picker. [CHAR LIMIT=60] -->
-  <string name="cat_picker_styled_date_spinner">Material Styled Date Picker Spinner</string>
-  <!-- Launches a window with a styled android calendar (days of the week) based layout. [CHAR LIMIT=60] -->
-  <string name="cat_picker_styled_date_calendar">Material Styled Date Picker Calendar</string>
+  <!-- Launches a window with the framework date picker. [CHAR LIMIT=60] -->
+  <string name="cat_picker_base">Framework Date</string>
   <!-- Launches a window with a calendar (days of the week) based layout. [CHAR LIMIT=60] -->
-  <string name="cat_picker_date_calendar">Material Date Picker Calendar</string>
+  <string name="cat_picker_date_calendar">Date Default</string>
   <!-- Launches a window with a calendar (days of the week) based layout for choosing a range of dates. [CHAR LIMIT=60] -->
-  <string name="cat_picker_date_range_calendar">Material Date Range Picker Calendar</string>
+  <string name="cat_picker_date_range_calendar">Date Range Default</string>
+  <!-- Launches a window with a calendar (days of the week) based layout with a fullscreen style. [CHAR LIMIT=60] -->
+  <string name="cat_picker_date_calendar_fullscreen">Date Fullscreen</string>
+  <!-- Launches a window with a calendar (days of the week) based layout for choosing a range of dates with a dialog style. [CHAR LIMIT=60] -->
+  <string name="cat_picker_date_range_calendar_dialog">Date Range Dialog</string>
+
+  <!-- Informs that the user clicked the cancel button [CHAR LIMIT=120]-->
+  <string name="cat_picker_user_clicked_cancel">The user clicked the cancel button.</string>
+  <!-- Informs that the picker was cancelled [CHAR LIMIT=120]-->
+  <string name="cat_picker_cancel">The picker was cancelled.</string>
+  <!-- Informs that the user action is being awaited [CHAR LIMIT=120] -->
+  <string name="cat_picker_no_action">Awaiting user action.</string>
 
 </resources>

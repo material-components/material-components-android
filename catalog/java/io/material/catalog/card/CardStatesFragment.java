@@ -20,11 +20,11 @@ import io.material.catalog.R;
 
 import android.os.Bundle;
 import androidx.annotation.Nullable;
-import com.google.android.material.card.MaterialCardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RadioGroup;
+import com.google.android.material.card.MaterialCardView;
 import io.material.catalog.feature.DemoFragment;
 
 /**
@@ -46,23 +46,18 @@ public class CardStatesFragment extends DemoFragment {
     final MaterialCardView card = view.findViewById(R.id.card);
     final MaterialCardView checkableCard = view.findViewById(R.id.checkable_card);
 
-    checkableCard.setOnLongClickListener(new View.OnLongClickListener() {
-      @Override
-      public boolean onLongClick(View v) {
-        checkableCard.setChecked(!checkableCard.isChecked());
-        return true;
-      }
-    });
+    checkableCard.setOnLongClickListener(
+        v -> {
+          checkableCard.setChecked(!checkableCard.isChecked());
+          return true;
+        });
 
     radioGroup.setOnCheckedChangeListener(
-        new RadioGroup.OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(RadioGroup group, int checkedId) {
-            card.setHovered(checkedId == R.id.hovered);
-            card.setPressed(checkedId == R.id.pressed);
-            checkableCard.setHovered(checkedId == R.id.hovered);
-            checkableCard.setPressed(checkedId == R.id.pressed);
-          }
+        (group, checkedId) -> {
+          card.setHovered(checkedId == R.id.hovered);
+          card.setPressed(checkedId == R.id.pressed);
+          checkableCard.setHovered(checkedId == R.id.hovered);
+          checkableCard.setPressed(checkedId == R.id.pressed);
         });
 
     return view;

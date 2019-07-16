@@ -70,7 +70,6 @@ import com.google.android.material.testapp.custom.NavigationTestView;
 import com.google.android.material.testutils.TestDrawable;
 import androidx.core.content.res.ResourcesCompat;
 import androidx.core.view.GravityCompat;
-import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.appcompat.widget.SwitchCompat;
 import android.util.SparseArray;
@@ -79,6 +78,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
@@ -634,13 +634,7 @@ public class NavigationViewTest {
         checkedItemBackground);
 
     // Register a navigation listener that "marks" the selected item
-    navigationView.setNavigationItemSelectedListener(
-        new NavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(MenuItem item) {
-            return true;
-          }
-        });
+    navigationView.setNavigationItemSelectedListener(item -> true);
 
     // Click one of our items
     onView(
@@ -657,13 +651,7 @@ public class NavigationViewTest {
         checkedItemBackground);
 
     // Register a navigation listener that doesn't "mark" the selected item
-    navigationView.setNavigationItemSelectedListener(
-        new NavigationView.OnNavigationItemSelectedListener() {
-          @Override
-          public boolean onNavigationItemSelected(MenuItem item) {
-            return false;
-          }
-        });
+    navigationView.setNavigationItemSelectedListener(item -> false);
 
     // Click another items
     onView(

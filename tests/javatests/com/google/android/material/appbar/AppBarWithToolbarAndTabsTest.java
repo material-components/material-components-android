@@ -24,12 +24,12 @@ import static org.junit.Assert.assertEquals;
 import android.os.SystemClock;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
-import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.Cheeses;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.filters.LargeTest;
 import androidx.test.runner.AndroidJUnit4;
+import com.google.android.material.tabs.TabLayout;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 

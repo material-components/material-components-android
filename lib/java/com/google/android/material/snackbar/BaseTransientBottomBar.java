@@ -47,10 +47,6 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
-import com.google.android.material.behavior.SwipeDismissBehavior;
-import com.google.android.material.color.MaterialColors;
-import com.google.android.material.internal.ThemeEnforcement;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -66,6 +62,10 @@ import android.view.ViewGroup.MarginLayoutParams;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityManager;
 import android.widget.FrameLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import com.google.android.material.behavior.SwipeDismissBehavior;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.internal.ThemeEnforcement;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.ArrayList;
@@ -738,8 +738,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     animator.addUpdateListener(
         new ValueAnimator.AnimatorUpdateListener() {
           @Override
-          public void onAnimationUpdate(ValueAnimator animator) {
-            view.setAlpha((Float) animator.getAnimatedValue());
+          public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            view.setAlpha((Float) valueAnimator.getAnimatedValue());
           }
         });
     return animator;
@@ -751,8 +751,8 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     animator.addUpdateListener(
         new ValueAnimator.AnimatorUpdateListener() {
           @Override
-          public void onAnimationUpdate(ValueAnimator animator) {
-            float scale = (float) animator.getAnimatedValue();
+          public void onAnimationUpdate(ValueAnimator valueAnimator) {
+            float scale = (float) valueAnimator.getAnimatedValue();
             view.setScaleX(scale);
             view.setScaleY(scale);
           }

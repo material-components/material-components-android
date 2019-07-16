@@ -16,9 +16,12 @@
 -->
 <com.google.android.material.internal.NavigationMenuItemView
     xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="?attr/listPreferredItemHeightSmall"
+    android:layout_height="wrap_content"
+    android:minHeight="?attr/listPreferredItemHeightSmall"
     android:paddingLeft="?attr/listPreferredItemPaddingLeft"
     android:paddingRight="?attr/listPreferredItemPaddingRight"
     android:focusable="true"
-    android:foreground="?attr/selectableItemBackground"/>
+    android:foreground="?attr/selectableItemBackground"
+    tools:ignore="UnusedAttribute"/>

@@ -28,13 +28,13 @@ import androidx.annotation.DimenRes;
 import androidx.annotation.Dimension;
 import androidx.annotation.IdRes;
 import androidx.annotation.Nullable;
-import com.google.android.material.internal.FlowLayout;
-import com.google.android.material.internal.ThemeEnforcement;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewGroup.MarginLayoutParams;
 import android.widget.CompoundButton;
+import com.google.android.material.internal.FlowLayout;
+import com.google.android.material.internal.ThemeEnforcement;
 
 /**
  * A ChipGroup is used to hold multiple {@link Chip}s. By default, the chips are reflowed across
@@ -358,6 +358,20 @@ public class ChipGroup extends FlowLayout {
   /** Sets the vertical spacing between visible chips in this group. */
   public void setChipSpacingVerticalResource(@DimenRes int id) {
     setChipSpacingVertical(getResources().getDimensionPixelOffset(id));
+  }
+
+  // Need to override here in order to un-restrict access to this method outside of the library.
+  @SuppressWarnings("RedundantOverride")
+  @Override
+  public boolean isSingleLine() {
+    return super.isSingleLine();
+  }
+
+  // Need to override here in order to un-restrict access to this method outside of the library.
+  @SuppressWarnings("RedundantOverride")
+  @Override
+  public void setSingleLine(boolean singleLine) {
+    super.setSingleLine(singleLine);
   }
 
   /** Sets whether this chip group is single line, or reflowed multiline. */

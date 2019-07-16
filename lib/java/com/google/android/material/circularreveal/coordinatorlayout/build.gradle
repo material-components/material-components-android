@@ -6,7 +6,6 @@ version = rootProject.ext.mdcLibraryVersion
 
 dependencies {
   api compatibility("annotation")
-  api compatibility("core_ui")
 
   api project(fromPath("lib/java/com/google/android/material/circularreveal"))
 }

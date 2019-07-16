@@ -1,11 +1,13 @@
 buildscript {
+  ext.kotlinVersion = '1.3.21'
   repositories {
     google()
     jcenter()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:3.2.1'
+    classpath 'com.android.tools.build:gradle:3.3.2'
     classpath 'com.github.dcendents:android-maven-gradle-plugin:2.1'
+    classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
   }
 }
 
@@ -18,27 +20,29 @@ allprojects {
 }
 
 ext {
-  compileSdkVersion = 28
+  compileSdkVersion = 29
   minSdkVersion = 14
   targetSdkVersion = 27
 
   androidXVersions = [
     annotation            : '1.0.1',
-    appCompat             : '1.1.0-alpha01',
+    appCompat             : '1.1.0-rc01', // Needed for CSL + theme attr fixes
     cardView              : '1.0.0',
-    coordinatorlayout     : '1.1.0-alpha01',
-    core                  : '1.1.0-alpha03',
+    coordinatorlayout     : '1.1.0-beta01', // Needed for NestedScrolling3 APIs
+    core                  : '1.1.0-rc02', // Needed for CSL + theme attr fixes
     fragment              : '1.0.0',
-    legacySupportCoreUi   : '1.0.0',
-    legacySupportCoreUtils: '1.0.0',
-    recyclerView          : '1.1.0-alpha01',
-    recyclerViewSelection : '1.1.0-alpha01',
+    lifecycle             : "2.0.0",
+    recyclerView          : '1.0.0',
+    recyclerViewSelection : '1.0.0',
     transition            : '1.0.1',
-    vectorDrawable        : '1.1.0-alpha01',
+    vectorDrawable        : '1.1.0-rc01', // Needed for CSL + theme attr fixes
+    viewpager2            : '1.0.0-alpha06', // Needed for TabLayout and MaterialCalendar
   ]
 
   testRunnerVersion = '1.1.0'
   espressoVersion = '3.1.0'
+  mockitoCoreVersion = '2.25.0'
+  truthVersion = '0.45'
 
   // Enforce the use of prebuilt dependencies in all sub-projects. This is
   // required for the doclava dependency.
@@ -51,13 +55,15 @@ ext {
     ? project.property('mavenRepoUrl') : 'file://localhost/tmp/myRepo/')
 
   // Current version of the library (could be in-development/unreleased).
-  mdcLibraryVersion = '1.1.0-alpha05'
+  mdcLibraryVersion = '1.1.0-alpha08'
   mdcLibraryPackage = "com.google.android.material"
   mdcLibraryDir = "com/google/android/material"
 }
 
 // lint every library
-task(lint) << {
+task lint {
+  doLast {
+  }
 }
 
 task clean(type: Delete) {
@@ -95,12 +101,10 @@ def compatibility(name) {
       return "androidx.coordinatorlayout:coordinatorlayout:${androidXVersions.coordinatorlayout}"
     case "core":
       return "androidx.core:core:${androidXVersions.core}"
-    case "core_ui":
-      return "androidx.legacy:legacy-support-core-ui:${androidXVersions.legacySupportCoreUi}"
-    case "core_utils":
-      return "androidx.legacy:legacy-support-core-utils:${androidXVersions.legacySupportCoreUtils}"
     case "fragment":
       return "androidx.fragment:fragment:${androidXVersions.fragment}"
+    case "lifecycleRuntime":
+      return "androidx.lifecycle:lifecycle-runtime:${androidXVersions.lifecycle}"
     case "recyclerview":
       return "androidx.recyclerview:recyclerview:${androidXVersions.recyclerView}"
     case "transition":
@@ -109,6 +113,8 @@ def compatibility(name) {
       return "androidx.vectordrawable:vectordrawable:${androidXVersions.vectorDrawable}"
     case "recyclerViewSelection":
       return "androidx.recyclerview:recyclerview-selection:${androidXVersions.recyclerViewSelection}"
+    case "viewpager2":
+      return "androidx.viewpager2:viewpager2:${androidXVersions.viewpager2}"
     default:
       throw new IllegalArgumentException("No mapping exists for name: $name.")
   }
@@ -146,6 +152,17 @@ subprojects {
   version = rootProject.ext.mdcLibraryVersion
   group = 'com.google.android.material'
 
+  // Disable strict dependency resolution version constraints for test projects
+  if (project.name.contains("tests")) {
+    project.configurations.all {
+      dependencyConstraints.configureEach { dependencyConstraint ->
+        dependencyConstraint.version { versionConstraint ->
+          versionConstraint.strictly("")
+        }
+      }
+    }
+  }
+
   project.plugins.whenPluginAdded { plugin ->
     def isAndroidLibrary = "com.android.build.gradle.LibraryPlugin".equals(plugin.class.name)
     def isAndroidApp = "com.android.build.gradle.AppPlugin".equals(plugin.class.name)
@@ -161,13 +178,6 @@ subprojects {
 
     if (isAndroidLibrary || isAndroidApp || isAndroidTest) {
       if (!isAndroidTest) {
-        // Enforce NewApi lint check as fatal.
-        project.android.lintOptions.check 'NewApi'
-        project.android.lintOptions.fatal 'NewApi'
-        // Output lint errors on stdout
-        project.android.lintOptions.textReport true
-        project.android.lintOptions.textOutput 'stdout'
-
         rootProject.lint.dependsOn project.lint
       }
 
@@ -185,6 +195,12 @@ subprojects {
         compileOptions.targetCompatibility JavaVersion.VERSION_1_7
 
         aaptOptions.additionalParameters "--no-version-vectors"
+
+        lintOptions {
+          baseline file("baseline.xml")
+          disable 'IconLauncherShape', 'IconDuplicates', 'SwitchIntDef', 'PxUsage', 'PrivateResource'
+          warningsAsErrors true
+        }
 
         if (isAndroidLibrary) {
           def JAVA_RESOURCES_TEMP_DIR = "$buildDir/javaResources"
@@ -259,7 +275,7 @@ subprojects {
               // TODO: Remove this once Gradle automatically determines dependency types.
               whenConfigured { pom ->
                 pom.dependencies.findAll { dependency ->
-                  if (dependency.artifactId != 'annotation') {
+                  if (dependency.artifactId != 'annotation' && dependency.artifactId != 'lifecycle-common-java8') {
                     dependency.type = 'aar'
                   }
                 }

@@ -19,9 +19,14 @@ Material Components for Android.
 For information on the individual Material Theming systems, take a look at the
 following guides:
 
-* [Color Theming](theming/Color.md)
-* [Typography Theming](theming/Typography.md)
-* [Shape Theming](theming/Shape.md)
+*   [Color Theming](theming/Color.md)
+*   [Typography Theming](theming/Typography.md)
+*   [Shape Theming](theming/Shape.md)
+
+Additionally, take a look at our [Dark Theme](theming/Dark.md) guide for
+information on how to apply the
+[Material dark theme system](https://material.io/design/color/dark-theme.html)
+to your app.
 
 ## Useful Links
 - [Getting Started](getting-started.md)

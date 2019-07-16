@@ -40,6 +40,9 @@
          If this id is not set, the {@link AppBarLayout} will use the target view provided
          by nested scrolling to determine whether it should be lifted. -->
     <attr name="liftOnScrollTargetViewId" format="reference"/>
+    <!-- The drawable to display in front of the layout's content, but behind the status bar.
+         Only works on Lollipop when used together with android:fitSystemWindows="true". -->
+    <attr name="statusBarForeground" format="color"/>
   </declare-styleable>
 
   <declare-styleable name="AppBarLayoutStates">
@@ -127,7 +130,7 @@
     <attr name="contentScrim" format="color"/>
     <!-- The drawable to use as a scrim for the status bar content when the
          CollapsingToolbarLayout has been scrolled sufficiently off screen. Only works on
-         Lollipop with the correct setup. -->
+         Lollipop when used together with android:fitSystemWindows="true". -->
     <attr name="statusBarScrim" format="color"/>
     <!-- The id of the primary Toolbar child that you wish to use for the purpose of collapsing.
          This Toolbar descendant view does not need to be a direct child of the layout.

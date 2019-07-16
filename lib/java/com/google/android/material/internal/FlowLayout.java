@@ -88,7 +88,8 @@ public class FlowLayout extends ViewGroup {
     this.itemSpacing = itemSpacing;
   }
 
-  protected boolean isSingleLine() {
+  /** Returns whether this chip group is single line or reflowed multiline. */
+  public boolean isSingleLine() {
     return singleLine;
   }
 
@@ -187,7 +188,7 @@ public class FlowLayout extends ViewGroup {
       return;
     }
 
-    boolean isRtl = ViewCompat.getLayoutDirection(this) == LAYOUT_DIRECTION_RTL;
+    boolean isRtl = ViewCompat.getLayoutDirection(this) == ViewCompat.LAYOUT_DIRECTION_RTL;
     int paddingStart = isRtl ? getPaddingRight() : getPaddingLeft();
     int paddingEnd = isRtl ? getPaddingLeft() : getPaddingRight();
     int childStart = paddingStart;

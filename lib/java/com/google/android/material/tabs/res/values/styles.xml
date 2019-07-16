@@ -65,4 +65,6 @@
     <item name="tabRippleColor">@color/mtrl_tabs_colored_ripple_color</item>
   </style>
 
+  <style name="Widget.MaterialComponents.TabLayout.PrimarySurface" parent="Widget.MaterialComponents.TabLayout.Colored"/>
+
 </resources>

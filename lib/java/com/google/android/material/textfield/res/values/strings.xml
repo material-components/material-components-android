@@ -23,6 +23,8 @@
   <string name="character_counter_overflowed_content_description">Character limit exceeded %1$d of %2$d</string>
   <!-- Content description for the password visibility toggle button. [CHAR LIMIT=NONE] -->
   <string name="password_toggle_content_description">Show password</string>
-  <!-- Content description for the clear text button end icon. -->
+  <!-- Content description for the clear text button end icon. [CHAR LIMIT=NONE] -->
   <string name="clear_text_end_icon_content_description">Clear text</string>
+  <!-- Content description for the exposed dropdown menu button. [CHAR LIMIT=NONE] -->
+  <string name="exposed_dropdown_menu_content_description">Show dropdown menu</string>
 </resources>

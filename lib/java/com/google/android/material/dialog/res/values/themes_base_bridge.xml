@@ -34,24 +34,18 @@
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_dark_default_color_primary_variant</item>
+    <item name="colorSecondary">@color/design_dark_default_color_secondary</item>
     <item name="colorSecondaryVariant">@color/design_dark_default_color_secondary_variant</item>
     <item name="colorSurface">@color/design_dark_default_color_surface</item>
+    <item name="colorPrimarySurface">?attr/colorSurface</item>
     <item name="colorOnPrimary">@color/design_dark_default_color_on_primary</item>
     <item name="colorOnSecondary">@color/design_dark_default_color_on_secondary</item>
     <item name="colorOnBackground">@color/design_dark_default_color_on_background</item>
     <item name="colorOnError">@color/design_dark_default_color_on_error</item>
     <item name="colorOnSurface">@color/design_dark_default_color_on_surface</item>
+    <item name="colorOnPrimarySurface">?attr/colorOnSurface</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
-
-    <item name="colorOnPrimaryDisabled">@color/mtrl_dark_on_primary_disabled</item>
-    <item name="colorOnPrimaryEmphasisHighType">@color/mtrl_dark_on_primary_emphasis_high_type
-    </item>
-    <item name="colorOnPrimaryEmphasisMedium">@color/mtrl_dark_on_primary_emphasis_medium</item>
-    <item name="colorOnSurfaceDisabled">@color/mtrl_dark_on_surface_disabled</item>
-    <item name="colorOnSurfaceEmphasisHighType">@color/mtrl_dark_on_surface_emphasis_high_type
-    </item>
-    <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_dark_on_surface_emphasis_medium</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -80,30 +74,26 @@
     </item>
 
     <!-- Elevation Overlays -->
-    <item name="elevationOverlaysEnabled">true</item>
-    <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
+    <item name="elevationOverlayEnabled">true</item>
+    <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
 
   <style name="Base.V14.Theme.MaterialComponents.Light.Dialog.Bridge" parent="Platform.MaterialComponents.Light.Dialog">
     <item name="isMaterialTheme">true</item>
 
     <item name="colorPrimaryVariant">@color/design_default_color_primary_variant</item>
+    <item name="colorSecondary">@color/design_default_color_secondary</item>
     <item name="colorSecondaryVariant">@color/design_default_color_secondary_variant</item>
     <item name="colorSurface">@color/design_default_color_surface</item>
+    <item name="colorPrimarySurface">?attr/colorPrimary</item>
     <item name="colorOnPrimary">@color/design_default_color_on_primary</item>
     <item name="colorOnSecondary">@color/design_default_color_on_secondary</item>
     <item name="colorOnBackground">@color/design_default_color_on_background</item>
     <item name="colorOnError">@color/design_default_color_on_error</item>
     <item name="colorOnSurface">@color/design_default_color_on_surface</item>
+    <item name="colorOnPrimarySurface">?attr/colorOnPrimary</item>
 
     <item name="scrimBackground">@color/mtrl_scrim_color</item>
-
-    <item name="colorOnPrimaryDisabled">@color/mtrl_on_primary_disabled</item>
-    <item name="colorOnPrimaryEmphasisHighType">@color/mtrl_on_primary_emphasis_high_type</item>
-    <item name="colorOnPrimaryEmphasisMedium">@color/mtrl_on_primary_emphasis_medium</item>
-    <item name="colorOnSurfaceDisabled">@color/mtrl_on_surface_disabled</item>
-    <item name="colorOnSurfaceEmphasisHighType">@color/mtrl_on_surface_emphasis_high_type</item>
-    <item name="colorOnSurfaceEmphasisMedium">@color/mtrl_on_surface_emphasis_medium</item>
 
     <!-- Type styles -->
     <item name="textAppearanceHeadline1">@style/TextAppearance.MaterialComponents.Headline1</item>
@@ -132,8 +122,8 @@
     </item>
 
     <!-- Elevation Overlays -->
-    <item name="elevationOverlaysEnabled">false</item>
-    <item name="elevationOverlaysColor">?attr/colorOnSurface</item>
+    <item name="elevationOverlayEnabled">false</item>
+    <item name="elevationOverlayColor">?attr/colorOnSurface</item>
   </style>
 
   <!-- Themes in the "Base.Theme" family vary based on the current platform

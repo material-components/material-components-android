@@ -21,11 +21,11 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import android.content.res.ColorStateList;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import android.view.View;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import org.hamcrest.Matcher;
 
 public class FloatingActionButtonActions {

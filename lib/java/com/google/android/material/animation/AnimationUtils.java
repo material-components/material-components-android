@@ -25,7 +25,11 @@ import androidx.interpolator.view.animation.FastOutLinearInInterpolator;
 import androidx.interpolator.view.animation.FastOutSlowInInterpolator;
 import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
-/** Utility class for animations containing Material interpolators. */
+/**
+ * Utility class for animations containing Material interpolators.
+ *
+ * @hide
+ */
 @RestrictTo(Scope.LIBRARY_GROUP)
 public class AnimationUtils {
 

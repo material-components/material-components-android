@@ -27,11 +27,11 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
-import com.google.android.material.navigation.NavigationView;
 import android.view.LayoutInflater;
 import android.view.View;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
+import com.google.android.material.navigation.NavigationView;
 import org.hamcrest.Matcher;
 
 public class NavigationViewActions {

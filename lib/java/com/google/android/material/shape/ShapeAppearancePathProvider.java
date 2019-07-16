@@ -27,15 +27,13 @@ import androidx.annotation.RestrictTo.Scope;
 
 /**
  * A class to convert a {@link ShapeAppearanceModel to a {@link android.graphics.Path}}.
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
 public class ShapeAppearancePathProvider {
 
   /**
    * Listener called every time a {@link ShapePath} is created for a corner or an edge treatment.
    */
+  @RestrictTo(Scope.LIBRARY_GROUP)
   public interface PathListener {
     void onCornerPathCreated(ShapePath cornerPath, Matrix transform, int count);
 
@@ -83,6 +81,7 @@ public class ShapeAppearancePathProvider {
    * @param pathListener the path
    * @param path the returned path out-var.
    */
+  @RestrictTo(Scope.LIBRARY_GROUP)
   public void calculatePath(
       ShapeAppearanceModel shapeAppearanceModel,
       float interpolation,

@@ -20,14 +20,14 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.content.Context;
-import com.google.android.material.animation.AnimationUtils;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewPropertyAnimator;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.Behavior;
+import com.google.android.material.animation.AnimationUtils;
 
 /**
  * The {@link Behavior} for a View within a {@link CoordinatorLayout} to hide the view off the
@@ -43,6 +43,7 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
 
   private int height = 0;
   private int currentState = STATE_SCROLLED_UP;
+  private int additionalHiddenOffsetY = 0;
   private ViewPropertyAnimator currentAnimator;
 
   public HideBottomViewOnScrollBehavior() {}
@@ -57,6 +58,15 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
         (ViewGroup.MarginLayoutParams) child.getLayoutParams();
     height = child.getMeasuredHeight() + paramsCompat.bottomMargin;
     return super.onLayoutChild(parent, child, layoutDirection);
+  }
+
+  /** Sets an additional offset for the y position used to hide the view. */
+  public void setAdditionalHiddenOffsetY(V child, int offset) {
+    additionalHiddenOffsetY = offset;
+
+    if (currentState == STATE_SCROLLED_DOWN) {
+      child.setTranslationY(height + additionalHiddenOffsetY);
+    }
   }
 
   @Override
@@ -78,9 +88,9 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
       int dyConsumed,
       int dxUnconsumed,
       int dyUnconsumed) {
-    if (currentState != STATE_SCROLLED_DOWN && dyConsumed > 0) {
+    if (dyConsumed > 0) {
       slideDown(child);
-    } else if (currentState != STATE_SCROLLED_UP && dyConsumed < 0) {
+    } else if (dyConsumed < 0) {
       slideUp(child);
     }
   }
@@ -90,6 +100,10 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    * screen.
    */
   public void slideUp(V child) {
+    if (currentState == STATE_SCROLLED_UP) {
+      return;
+    }
+
     if (currentAnimator != null) {
       currentAnimator.cancel();
       child.clearAnimation();
@@ -104,13 +118,20 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
    * screen.
    */
   public void slideDown(V child) {
+    if (currentState == STATE_SCROLLED_DOWN) {
+      return;
+    }
+
     if (currentAnimator != null) {
       currentAnimator.cancel();
       child.clearAnimation();
     }
     currentState = STATE_SCROLLED_DOWN;
     animateChildTo(
-        child, height, EXIT_ANIMATION_DURATION, AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
+        child,
+        height + additionalHiddenOffsetY,
+        EXIT_ANIMATION_DURATION,
+        AnimationUtils.FAST_OUT_LINEAR_IN_INTERPOLATOR);
   }
 
   private void animateChildTo(V child, int targetY, long duration, TimeInterpolator interpolator) {

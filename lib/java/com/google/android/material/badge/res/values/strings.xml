@@ -14,7 +14,15 @@
   ~ See the License for the specific language governing permissions and
   ~ limitations under the License.
   -->
-<resources xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2"
-    xmlns:tools="http://schemas.android.com/tools">
-<string name="mtrl_exceed_max_badge_number_suffix" translatable="false"><xliff:g id="maximum number" example="999">%1$d</xliff:g><xliff:g id="suffix" example="+">%2$s</xliff:g></string>
+<resources xmlns:tools="http://schemas.android.com/tools"
+  xmlns:xliff="urn:oasis:names:tc:xliff:document:1.2">
+  <string name="mtrl_exceed_max_badge_number_suffix" translatable="false"><xliff:g example="999" id="maximum number">%1$d</xliff:g><xliff:g example="+" id="suffix">%2$s</xliff:g></string>
+
+  <string name="mtrl_badge_numberless_content_description" description="Content description for new notification (no number count) [CHAR_LIMIT=NONE]">New notification</string>
+
+  <plurals name="mtrl_badge_content_description" description="Plural form content description for number of new notifications [CHAR_LIMIT=NONE]">
+    <item quantity="one"><xliff:g id="count">%d</xliff:g> new notification</item>
+    <item quantity="other"><xliff:g id="count">%d</xliff:g> new notifications</item>
+  </plurals>
+
 </resources>

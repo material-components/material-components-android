@@ -19,12 +19,12 @@ package com.google.android.material.testutils;
 import static androidx.test.espresso.matcher.ViewMatchers.isDisplayingAtLeast;
 
 import androidx.annotation.Nullable;
-import com.google.android.material.tabs.TabLayout;
-import androidx.viewpager.widget.ViewPager;
 import android.view.View;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.matcher.ViewMatchers;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.tabs.TabLayout;
 import org.hamcrest.Matcher;
 
 public class TabLayoutActions {

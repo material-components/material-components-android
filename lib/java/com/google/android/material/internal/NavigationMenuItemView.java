@@ -279,4 +279,8 @@ public class NavigationMenuItemView extends ForegroundLinearLayout implements Me
   public void setIconPadding(int padding) {
     textView.setCompoundDrawablePadding(padding);
   }
+
+  public void setMaxLines(int maxLines) {
+    textView.setMaxLines(maxLines);
+  }
 }

@@ -22,11 +22,11 @@ import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
+import android.view.View;
+import android.view.ViewAnimationUtils;
 import com.google.android.material.circularreveal.CircularRevealWidget.CircularRevealEvaluator;
 import com.google.android.material.circularreveal.CircularRevealWidget.CircularRevealProperty;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
-import android.view.View;
-import android.view.ViewAnimationUtils;
 
 /**
  * Defines compat implementations of circular reveal animations.

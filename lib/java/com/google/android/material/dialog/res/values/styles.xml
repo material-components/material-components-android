@@ -21,7 +21,7 @@
 
   <style name="Widget.MaterialComponents.CheckedTextView" parent="Base.Widget.MaterialComponents.CheckedTextView">
     <item name="android:textAppearance">?attr/textAppearanceBody1</item>
-    <item name="android:textColor">?attr/colorOnSurfaceEmphasisMedium</item>
+    <item name="android:textColor">@color/mtrl_on_surface_emphasis_medium</item>
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents" parent="AlertDialog.AppCompat">
@@ -55,7 +55,7 @@
 
   <style name="Base.MaterialAlertDialog.MaterialComponents.Title.Text" parent="RtlOverlay.DialogWindowTitle.AppCompat">
     <item name="android:textAppearance">?attr/textAppearanceSubtitle1</item>
-    <item name="android:textColor">?attr/colorOnSurfaceEmphasisHighType</item>
+    <item name="android:textColor">@color/mtrl_on_surface_emphasis_high_type</item>
     <item name="android:layout_width">wrap_content</item>
     <item name="android:layout_height">wrap_content</item>
     <item name="android:ellipsize">end</item>
@@ -64,7 +64,7 @@
 
   <style name="MaterialAlertDialog.MaterialComponents.Body.Text" parent="TextAppearance.MaterialComponents.Body2">
     <item name="android:textAppearance">?attr/textAppearanceBody2</item>
-    <item name="android:textColor">?attr/colorOnSurfaceEmphasisMedium</item>
+    <item name="android:textColor">@color/mtrl_on_surface_emphasis_medium</item>
   </style>
 
   <style name="MaterialAlertDialog.MaterialComponents.Title.Panel"

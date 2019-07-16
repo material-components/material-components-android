@@ -16,6 +16,8 @@
 
 package com.google.android.material.shape;
 
+import com.google.android.material.R;
+
 import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.annotation.TargetApi;
@@ -51,12 +53,13 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
 import com.google.android.material.elevation.ElevationOverlayProvider;
-import com.google.android.material.shadow.ShadowRenderer;
 import com.google.android.material.shape.ShapeAppearancePathProvider.PathListener;
 import com.google.android.material.shape.ShapePath.ShadowCompatOperation;
 import androidx.core.graphics.drawable.TintAwareDrawable;
 import androidx.core.util.ObjectsCompat;
 import android.util.AttributeSet;
+import com.google.android.material.color.MaterialColors;
+import com.google.android.material.shadow.ShadowRenderer;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -65,7 +68,7 @@ import java.lang.annotation.RetentionPolicy;
  * generated path.
  */
 public class MaterialShapeDrawable extends Drawable
-    implements TintAwareDrawable, ShapeAppearanceModel.OnChangedListener {
+    implements TintAwareDrawable, ShapeAppearanceModel.OnChangedListener, Shapeable {
 
   private static final float SHADOW_RADIUS_MULTIPLIER = .75f;
 
@@ -125,6 +128,37 @@ public class MaterialShapeDrawable extends Drawable
 
   @Nullable private PorterDuffColorFilter tintFilter;
   @Nullable private PorterDuffColorFilter strokeTintFilter;
+
+  @Nullable private Rect padding;
+
+  /**
+   * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
+   * fill color of {@code colorSurface}, and an elevation of 0.
+   *
+   * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
+   * when the overlay will be active.
+   */
+  public static MaterialShapeDrawable createWithElevationOverlay(Context context) {
+    return createWithElevationOverlay(context, 0);
+  }
+
+  /**
+   * Returns a {@code MaterialShapeDrawable} with the elevation overlay functionality initialized, a
+   * fill color of {@code colorSurface}, and an elevation of {@code elevation}.
+   *
+   * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
+   * when the overlay will be active.
+   */
+  public static MaterialShapeDrawable createWithElevationOverlay(Context context, float elevation) {
+    int colorSurface =
+        MaterialColors.getColor(
+            context, R.attr.colorSurface, MaterialShapeDrawable.class.getSimpleName());
+    MaterialShapeDrawable materialShapeDrawable = new MaterialShapeDrawable();
+    materialShapeDrawable.initializeElevationOverlay(context);
+    materialShapeDrawable.setFillColor(ColorStateList.valueOf(colorSurface));
+    materialShapeDrawable.setElevation(elevation);
+    return materialShapeDrawable;
+  }
 
   public MaterialShapeDrawable() {
     this(new ShapeAppearanceModel());
@@ -195,6 +229,7 @@ public class MaterialShapeDrawable extends Drawable
    *
    * @param shapeAppearanceModel the desired model.
    */
+  @Override
   public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     drawableState.shapeAppearanceModel.removeOnChangedListener(this);
     drawableState.shapeAppearanceModel = shapeAppearanceModel;
@@ -209,6 +244,7 @@ public class MaterialShapeDrawable extends Drawable
    * @return the current model.
    */
   @NonNull
+  @Override
   public ShapeAppearanceModel getShapeAppearanceModel() {
     return drawableState.shapeAppearanceModel;
   }
@@ -447,6 +483,34 @@ public class MaterialShapeDrawable extends Drawable
     return drawableState.shadowCompatMode;
   }
 
+  @Override
+  public boolean getPadding(Rect padding) {
+    if (this.padding != null) {
+      padding.set(this.padding);
+      return true;
+    } else {
+      return super.getPadding(padding);
+    }
+  }
+
+  /**
+   * Configure the padding of the shape
+   *
+   * @param left Left padding of the shape
+   * @param top Top padding of the shape
+   * @param right Right padding of the shape
+   * @param bottom Bottom padding of the shape
+   */
+  public void setPadding(int left, int top, int right, int bottom) {
+    if (drawableState.padding == null) {
+      drawableState.padding = new Rect();
+    }
+
+    drawableState.padding.set(left, top, right, bottom);
+    padding = drawableState.padding;
+    invalidateSelf();
+  }
+
   /**
    * Set the shadow compatibility mode. This allows control over when fake shadows should drawn
    * instead of native elevation shadows.
@@ -493,22 +557,37 @@ public class MaterialShapeDrawable extends Drawable
         shadowEnabled ? SHADOW_COMPAT_MODE_DEFAULT : SHADOW_COMPAT_MODE_NEVER);
   }
 
-  public void initializeElevationOverlay(Context context) {
-    drawableState.elevationOverlayProvider = new ElevationOverlayProvider(context);
-    updateElevationOverlayTint();
-    invalidateSelfIgnoreShape();
+  /**
+   * Returns whether the elevation overlay functionality is initialized and enabled in this
+   * drawable's theme context.
+   */
+  public boolean isElevationOverlayEnabled() {
+    return drawableState.elevationOverlayProvider != null
+        && drawableState.elevationOverlayProvider.isThemeElevationOverlayEnabled();
   }
 
-  private void updateElevationOverlayTint() {
-    // Recalculate fillPaint tint filter based on elevation, elevationOverlayEnabled, etc.
-    updateTintFilter();
+  /** Returns whether the elevation overlay functionality has been initialized for this drawable. */
+  public boolean isElevationOverlayInitialized() {
+    return drawableState.elevationOverlayProvider != null;
+  }
+
+  /**
+   * Initializes the elevation overlay functionality for this drawable.
+   *
+   * <p>See {@link ElevationOverlayProvider#compositeOverlayIfNeeded(int, float)} for information on
+   * when the overlay will be active.
+   */
+  public void initializeElevationOverlay(Context context) {
+    drawableState.elevationOverlayProvider = new ElevationOverlayProvider(context);
+    updateZ();
   }
 
   @ColorInt
-  private int layerElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
+  private int compositeElevationOverlayIfNeeded(@ColorInt int backgroundColor) {
+    float elevation = getZ() + getParentAbsoluteElevation();
     return drawableState.elevationOverlayProvider != null
-        ? drawableState.elevationOverlayProvider.layerOverlayIfNeeded(
-            backgroundColor, drawableState.elevation)
+        ? drawableState.elevationOverlayProvider.compositeOverlayIfNeeded(
+            backgroundColor, elevation)
         : backgroundColor;
   }
 
@@ -537,28 +616,86 @@ public class MaterialShapeDrawable extends Drawable
     }
   }
 
+  /** Returns the parent absolute elevation. */
+  public float getParentAbsoluteElevation() {
+    return drawableState.parentAbsoluteElevation;
+  }
+
+  /** Sets the parent absolute elevation, which is used to render elevation overlays. */
+  public void setParentAbsoluteElevation(float parentAbsoluteElevation) {
+    if (drawableState.parentAbsoluteElevation != parentAbsoluteElevation) {
+      drawableState.parentAbsoluteElevation = parentAbsoluteElevation;
+      updateZ();
+    }
+  }
+
   /**
-   * Returns the elevation used to render fake shadows when {@link #requiresCompatShadow()} is true.
-   * This value is the same as the native elevation that would be used to render shadows on API 21
-   * and up.
+   * Returns the elevation used to render both fake shadows when {@link #requiresCompatShadow()} is
+   * true and elevation overlays. This value is the same as the native elevation that would be used
+   * to render shadows on API 21 and up.
    */
   public float getElevation() {
     return drawableState.elevation;
   }
 
   /**
-   * Sets the elevation used to render shadows when {@link #requiresCompatShadow()} is true. This
-   * value is the same as the native elevation that would be used to render shadows on API 21 and
-   * up.
+   * Sets the elevation used to render both fake shadows when {@link #requiresCompatShadow()} is
+   * true and elevation overlays. This value is the same as the native elevation that would be used
+   * to render shadows on API 21 and up.
    */
   public void setElevation(float elevation) {
     if (drawableState.elevation != elevation) {
-      drawableState.shadowCompatRadius = (int) Math.ceil(elevation * SHADOW_RADIUS_MULTIPLIER);
-      drawableState.shadowCompatOffset = (int) Math.ceil(elevation * SHADOW_OFFSET_MULTIPLIER);
       drawableState.elevation = elevation;
-      updateElevationOverlayTint();
-      invalidateSelfIgnoreShape();
+      updateZ();
     }
+  }
+
+  /**
+   * Returns the translationZ used to render both fake shadows when {@link #requiresCompatShadow()}
+   * is true and elevation overlays. This value is the same as the native translationZ that would be
+   * used to render shadows on API 21 and up.
+   */
+  public float getTranslationZ() {
+    return drawableState.translationZ;
+  }
+
+  /**
+   * Sets the translationZ used to render both fake shadows when {@link #requiresCompatShadow()} is
+   * true and elevation overlays. This value is the same as the native translationZ that would be
+   * used to render shadows on API 21 and up.
+   */
+  public void setTranslationZ(float translationZ) {
+    if (drawableState.translationZ != translationZ) {
+      drawableState.translationZ = translationZ;
+      updateZ();
+    }
+  }
+
+  /**
+   * Returns the visual z position of this drawable, in pixels. This is equivalent to the {@link
+   * #getTranslationZ() translationZ} property plus the current {@link #getElevation() elevation}
+   * property.
+   */
+  public float getZ() {
+    return getElevation() + getTranslationZ();
+  }
+
+  /**
+   * Sets the visual z position of this view, in pixels. This is equivalent to setting the {@link
+   * #setTranslationZ(float) translationZ} property to be the difference between the z value passed
+   * in and the current {@link #getElevation() elevation} property.
+   */
+  public void setZ(float z) {
+    setTranslationZ(z - getElevation());
+  }
+
+  private void updateZ() {
+    float z = getZ();
+    drawableState.shadowCompatRadius = (int) Math.ceil(z * SHADOW_RADIUS_MULTIPLIER);
+    drawableState.shadowCompatOffset = (int) Math.ceil(z * SHADOW_OFFSET_MULTIPLIER);
+    // Recalculate fillPaint tint filter based on z, elevationOverlayProvider, etc.
+    updateTintFilter();
+    invalidateSelfIgnoreShape();
   }
 
   /**
@@ -585,6 +722,8 @@ public class MaterialShapeDrawable extends Drawable
   /**
    * Returns the shadow vertical offset rendered for shadows when {@link #requiresCompatShadow()} is
    * true.
+   *
+   * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   public int getShadowVerticalOffset() {
@@ -597,6 +736,8 @@ public class MaterialShapeDrawable extends Drawable
    * realistic looking shadow depending on the placement of the view on the screen. Normally, if the
    * View is positioned further down on the screen, less shadow appears above the View, and more
    * shadow appears below it.
+   *
+   * @hide
    */
   @RestrictTo(LIBRARY_GROUP)
   public void setShadowVerticalOffset(int shadowOffset) {
@@ -630,12 +771,10 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   /**
-   * Get the shadow radius rendered by the path.
-   *
-   * @return the shadow radius rendered by the path.
-   * @deprecated use {@link #getElevation()} instead.
+   * Get the shadow radius rendered by the path in pixels. This method should be used only when the
+   * actual size of the shadow is required. Usually {@link getElevation()} should be used instead to
+   * get the actual elevation of this view as it might be different.
    */
-  @Deprecated
   public int getShadowRadius() {
     return drawableState.shadowCompatRadius;
   }
@@ -875,14 +1014,8 @@ public class MaterialShapeDrawable extends Drawable
 
   private void prepareCanvasForShadow(Canvas canvas) {
     // Calculate the translation to offset the canvas for the given offset and rotation.
-    int shadowOffsetX =
-        (int)
-            (drawableState.shadowCompatOffset
-                * Math.sin(Math.toRadians(drawableState.shadowCompatRotation)));
-    int shadowOffsetY =
-        (int)
-            (drawableState.shadowCompatOffset
-                * Math.cos(Math.toRadians(drawableState.shadowCompatRotation)));
+    int shadowOffsetX = getShadowOffsetX();
+    int shadowOffsetY = getShadowOffsetY();
 
     // We only handle clipping as a convenience for older apis where we are trying to seamlessly
     // provide fake shadows. On newer versions of android, we require that the parent is set so that
@@ -919,18 +1052,26 @@ public class MaterialShapeDrawable extends Drawable
       edgeShadowOperation[index].draw(shadowRenderer, drawableState.shadowCompatRadius, canvas);
     }
 
-    int shadowOffsetX =
-        (int)
-            (drawableState.shadowCompatOffset
-                * Math.sin(Math.toRadians(drawableState.shadowCompatRotation)));
-    int shadowOffsetY =
-        (int)
-            (drawableState.shadowCompatOffset
-                * Math.cos(Math.toRadians(drawableState.shadowCompatRotation)));
+    int shadowOffsetX = getShadowOffsetX();
+    int shadowOffsetY = getShadowOffsetY();
 
     canvas.translate(-shadowOffsetX, -shadowOffsetY);
     canvas.drawPath(path, clearPaint);
     canvas.translate(shadowOffsetX, shadowOffsetY);
+  }
+
+  /** Returns the X offset of the shadow from the bounds of the shape. */
+  public int getShadowOffsetX() {
+    return (int)
+        (drawableState.shadowCompatOffset
+            * Math.sin(Math.toRadians(drawableState.shadowCompatRotation)));
+  }
+
+  /** Returns the Y offset of the shadow from the bounds of the shape. */
+  public int getShadowOffsetY() {
+    return (int)
+        (drawableState.shadowCompatOffset
+            * Math.cos(Math.toRadians(drawableState.shadowCompatRotation)));
   }
 
   /** @deprecated see {@link ShapeAppearancePathProvider} */
@@ -1023,13 +1164,13 @@ public class MaterialShapeDrawable extends Drawable
             drawableState.tintList,
             drawableState.tintMode,
             fillPaint,
-            /* requiresElevationOverlays= */ true);
+            /* requiresElevationOverlay= */ true);
     strokeTintFilter =
         calculateTintFilter(
             drawableState.strokeTintList,
             drawableState.tintMode,
             strokePaint,
-            /* requiresElevationOverlays= */ false);
+            /* requiresElevationOverlay= */ false);
     if (drawableState.useTintColorForShadow) {
       shadowRenderer.setShadowColor(
           drawableState.tintList.getColorForState(getState(), Color.TRANSPARENT));
@@ -1043,18 +1184,18 @@ public class MaterialShapeDrawable extends Drawable
       ColorStateList tintList,
       PorterDuff.Mode tintMode,
       Paint paint,
-      boolean requiresElevationOverlays) {
+      boolean requiresElevationOverlay) {
     return tintList == null || tintMode == null
-        ? calculatePaintColorTintFilter(paint, requiresElevationOverlays)
-        : calculateTintColorTintFilter(tintList, tintMode, requiresElevationOverlays);
+        ? calculatePaintColorTintFilter(paint, requiresElevationOverlay)
+        : calculateTintColorTintFilter(tintList, tintMode, requiresElevationOverlay);
   }
 
   @Nullable
   private PorterDuffColorFilter calculatePaintColorTintFilter(
-      Paint paint, boolean requiresElevationOverlays) {
-    if (requiresElevationOverlays) {
+      Paint paint, boolean requiresElevationOverlay) {
+    if (requiresElevationOverlay) {
       int paintColor = paint.getColor();
-      int tintColor = layerElevationOverlayIfNeeded(paintColor);
+      int tintColor = compositeElevationOverlayIfNeeded(paintColor);
       if (tintColor != paintColor) {
         return new PorterDuffColorFilter(tintColor, PorterDuff.Mode.SRC_IN);
       }
@@ -1063,10 +1204,10 @@ public class MaterialShapeDrawable extends Drawable
   }
 
   private PorterDuffColorFilter calculateTintColorTintFilter(
-      ColorStateList tintList, PorterDuff.Mode tintMode, boolean requiresElevationOverlays) {
+      ColorStateList tintList, PorterDuff.Mode tintMode, boolean requiresElevationOverlay) {
     int tintColor = tintList.getColorForState(getState(), Color.TRANSPARENT);
-    if (requiresElevationOverlays) {
-      tintColor = layerElevationOverlayIfNeeded(tintColor);
+    if (requiresElevationOverlay) {
+      tintColor = compositeElevationOverlayIfNeeded(tintColor);
     }
     return new PorterDuffColorFilter(tintColor, tintMode);
   }
@@ -1142,13 +1283,16 @@ public class MaterialShapeDrawable extends Drawable
     @Nullable public ColorStateList strokeTintList = null;
     @Nullable public ColorStateList tintList = null;
     @Nullable public PorterDuff.Mode tintMode = PorterDuff.Mode.SRC_IN;
+    @Nullable public Rect padding = null;
 
     public float scale = 1f;
     public float interpolation = 1f;
     public float strokeWidth;
 
     public int alpha = 255;
+    public float parentAbsoluteElevation = 0;
     public float elevation = 0;
+    public float translationZ = 0;
     public int shadowCompatMode = SHADOW_COMPAT_MODE_DEFAULT;
     public int shadowCompatRadius = 0;
     public int shadowCompatOffset = 0;
@@ -1180,16 +1324,24 @@ public class MaterialShapeDrawable extends Drawable
       shadowCompatMode = orig.shadowCompatMode;
       useTintColorForShadow = orig.useTintColorForShadow;
       interpolation = orig.interpolation;
+      parentAbsoluteElevation = orig.parentAbsoluteElevation;
       elevation = orig.elevation;
+      translationZ = orig.translationZ;
       shadowCompatRadius = orig.shadowCompatRadius;
       shadowCompatRotation = orig.shadowCompatRotation;
       strokeTintList = orig.strokeTintList;
       paintStyle = orig.paintStyle;
+      if (orig.padding != null) {
+        padding = new Rect(orig.padding);
+      }
     }
 
     @Override
     public Drawable newDrawable() {
-      return new MaterialShapeDrawable(this);
+      MaterialShapeDrawable msd = new MaterialShapeDrawable(this);
+      // Force the calculation of the path for the new drawable.
+      msd.pathDirty = true;
+      return msd;
     }
 
     @Override

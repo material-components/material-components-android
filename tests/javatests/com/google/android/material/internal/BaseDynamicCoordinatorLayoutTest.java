@@ -23,10 +23,10 @@ import static org.hamcrest.Matchers.any;
 import androidx.annotation.LayoutRes;
 import com.google.android.material.testapp.DynamicCoordinatorLayoutActivity;
 import com.google.android.material.testapp.R;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import android.view.View;
 import android.view.ViewStub;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.UiController;
 import androidx.test.espresso.ViewAction;
 import androidx.test.rule.ActivityTestRule;
@@ -49,15 +49,12 @@ public abstract class BaseDynamicCoordinatorLayoutTest {
   public void tearDown() {
     getInstrumentation()
         .runOnMainSync(
-            new Runnable() {
-              @Override
-              public void run() {
-                // Now that the test is done, replace the activity content view with ViewStub so
-                // that it's ready to be replaced for the next test.
-                final DynamicCoordinatorLayoutActivity activity = activityTestRule.getActivity();
-                activity.setContentView(R.layout.dynamic_coordinator_layout);
-                mCoordinatorLayout = null;
-              }
+            () -> {
+              // Now that the test is done, replace the activity content view with ViewStub so
+              // that it's ready to be replaced for the next test.
+              final DynamicCoordinatorLayoutActivity activity = activityTestRule.getActivity();
+              activity.setContentView(R.layout.dynamic_coordinator_layout);
+              mCoordinatorLayout = null;
             });
   }
 

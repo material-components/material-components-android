@@ -22,15 +22,13 @@ import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
-import androidx.core.math.MathUtils;
+import com.google.android.material.switchmaterial.SwitchMaterial;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
-import android.widget.GridLayout;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -55,39 +53,28 @@ public class ButtonsMainDemoFragment extends DemoFragment {
           v -> {
             // Show a Snackbar with an action button, which should also have a MaterialButton style
             Snackbar snackbar =
-                Snackbar.make(v, R.string.cat_button_clicked, BaseTransientBottomBar.LENGTH_LONG);
-            snackbar.setAction(
-                R.string.cat_snackbar_action_button_text,
-                new OnClickListener() {
-                  @Override
-                  public void onClick(View v) {}
-                });
+                Snackbar.make(v, R.string.cat_button_clicked, Snackbar.LENGTH_LONG);
+            snackbar.setAction(R.string.cat_snackbar_action_button_text, v1 -> {});
             snackbar.show();
           });
     }
 
-    // If GridLayout should be collapsed to one column, re-generate it
-    GridLayout gridLayout = view.findViewById(R.id.grid);
-    int columnCount = calculateGridColumnCount(maxMeasuredWidth);
-
-    if (columnCount == 1) {
-      List<View> allChildViews = DemoUtils.findViewsWithType(gridLayout, View.class);
-      allChildViews.remove(0); // Remove root view found by DemoUtils.findViewsWithType
-
-      gridLayout.removeAllViews();
-      ((ViewGroup) view).removeView(gridLayout);
-
-      gridLayout = new GridLayout(getContext());
-      gridLayout.setAlignmentMode(GridLayout.ALIGN_BOUNDS);
-      gridLayout.setColumnCount(columnCount);
-      gridLayout.setRowCount(allChildViews.size());
-
-      for (View childView : allChildViews) {
-        gridLayout.addView(childView);
-      }
-
-      ((ViewGroup) view).addView(gridLayout);
-    }
+    SwitchMaterial enabledSwitch = view.findViewById(R.id.cat_button_enabled_switch);
+    enabledSwitch.setOnCheckedChangeListener(
+        (buttonView, isChecked) -> {
+          CharSequence updatedText =
+              getText(
+                  isChecked
+                      ? R.string.cat_button_label_enabled
+                      : R.string.cat_button_label_disabled);
+          for (MaterialButton button : buttons) {
+            if (!TextUtils.isEmpty(button.getText())) {
+              // Do not update icon only button.
+              button.setText(updatedText);
+            }
+            button.setEnabled(isChecked);
+          }
+        });
 
     return view;
   }
@@ -95,12 +82,5 @@ public class ButtonsMainDemoFragment extends DemoFragment {
   @LayoutRes
   protected int getButtonsContent() {
     return R.layout.cat_buttons_fragment;
-  }
-
-  private int calculateGridColumnCount(int itemSize) {
-    DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-    int displayWidth = displayMetrics.widthPixels;
-    int gridColumnCount = displayWidth / itemSize;
-    return MathUtils.clamp(gridColumnCount, 1, 2);
   }
 }

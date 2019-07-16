@@ -1,0 +1,899 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Copyright 2019 The Android Open Source Project
+
+  Licensed under the Apache License, Version 2.0 (the "License");
+  you may not use this file except in compliance with the License.
+  You may obtain a copy of the License at
+
+      https://www.apache.org/licenses/LICENSE-2.0
+
+  Unless required by applicable law or agreed to in writing, software
+  distributed under the License is distributed on an "AS IS" BASIS,
+  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  See the License for the specific language governing permissions and
+  limitations under the License.
+  -->
+<issues format="4" by="lint 3.2.1" client="gradle" variant="all" version="3.2.1">
+
+    <issue
+        id="CustomViewStyleable"
+        message="By convention, the custom view (`SnackbarBaseLayout`) and the declare-styleable (`SnackbarLayout`) should have the same name (various editor features rely on this convention)"
+        errorLine1="      TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);"
+        errorLine2="                                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/snackbar/BaseTransientBottomBar.java"
+            line="932"
+            column="60"/>
+    </issue>
+
+    <issue
+        id="CustomViewStyleable"
+        message="By convention, the custom view (`SnackbarContentLayout`) and the declare-styleable (`SnackbarLayout`) should have the same name (various editor features rely on this convention)"
+        errorLine1="    TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SnackbarLayout);"
+        errorLine2="                                                         ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/snackbar/SnackbarContentLayout.java"
+            line="48"
+            column="58"/>
+    </issue>
+
+    <issue
+        id="CustomViewStyleable"
+        message="By convention, the custom view (`TabLayout`) and the declare-styleable (`TextAppearance`) should have the same name (various editor features rely on this convention)"
+        errorLine1="            tabTextAppearance, androidx.appcompat.R.styleable.TextAppearance);"
+        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/tabs/TabLayout.java"
+            line="519"
+            column="32"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `scrollIndicators` is only used in API level 23 and higher (current min is 14)"
+        errorLine1="    android:scrollIndicators=&quot;top|bottom&quot;>"
+        errorLine2="    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_dialog_actions.xml"
+            line="24"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `layoutDirection` is only used in API level 17 and higher (current min is 14)"
+        errorLine1="      android:layoutDirection=&quot;locale&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_dialog_actions.xml"
+            line="30"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `paddingHorizontal` is only used in API level 26 and higher (current min is 14)"
+        errorLine1="      android:paddingHorizontal=&quot;8dp&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_dialog_actions.xml"
+            line="32"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `paddingVertical` is only used in API level 26 and higher (current min is 14)"
+        errorLine1="      android:paddingVertical=&quot;2dp&quot;"
+        errorLine2="      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_dialog_actions.xml"
+            line="35"
+            column="7"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `controlX1` is only used in API level 21 and higher (current min is 14)"
+        errorLine1="  android:controlX1=&quot;0.4&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/card/res/anim/mtrl_card_lowers_interpolator.xml"
+            line="19"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `controlY1` is only used in API level 21 and higher (current min is 14)"
+        errorLine1="  android:controlY1=&quot;0&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/card/res/anim/mtrl_card_lowers_interpolator.xml"
+            line="20"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `controlX2` is only used in API level 21 and higher (current min is 14)"
+        errorLine1="  android:controlX2=&quot;0.6&quot;"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/card/res/anim/mtrl_card_lowers_interpolator.xml"
+            line="21"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `controlY2` is only used in API level 21 and higher (current min is 14)"
+        errorLine1="  android:controlY2=&quot;1&quot;/>"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/card/res/anim/mtrl_card_lowers_interpolator.xml"
+            line="22"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `startDelay` is only used in API level 19 and higher (current min is 14)"
+        errorLine1="        android:startDelay=&quot;@integer/mtrl_card_anim_delay_ms&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/card/res/animator/mtrl_card_state_list_anim.xml"
+            line="31"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `startDelay` is only used in API level 19 and higher (current min is 14)"
+        errorLine1="            android:startDelay=&quot;@integer/mtrl_btn_anim_delay_ms&quot;"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/floatingactionbutton/res/animator/mtrl_extended_fab_state_list_animator.xml"
+            line="81"
+            column="13"/>
+    </issue>
+
+    <issue
+        id="UnusedAttribute"
+        message="Attribute `elevation` is only used in API level 21 and higher (current min is 14)"
+        errorLine1="  android:elevation=&quot;@dimen/design_appbar_elevation&quot;/>"
+        errorLine2="  ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="javatests/com/google/android/material/appbar/res/layout/test_toolbar_elevation.xml"
+            line="20"
+            column="3"/>
+    </issue>
+
+    <issue
+        id="VectorRaster"
+        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
+        errorLine1="    android:fillColor=&quot;@android:color/white&quot;"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/textfield/res/drawable/mtrl_ic_arrow_drop_down.xml"
+            line="25"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="VectorRaster"
+        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
+        errorLine1="    android:fillColor=&quot;@android:color/white&quot;"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/textfield/res/drawable/mtrl_ic_arrow_drop_up.xml"
+            line="25"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="VectorRaster"
+        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
+        errorLine1="    android:fillColor=&quot;@android:color/white&quot;"
+        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/textfield/res/drawable/mtrl_ic_cancel.xml"
+            line="25"
+            column="24"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_textSize` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="              androidx.appcompat.R.styleable.TextAppearance_android_textSize, 0);"
+        errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/tabs/TabLayout.java"
+            line="523"
+            column="46"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_textColor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="              androidx.appcompat.R.styleable.TextAppearance_android_textColor);"
+        errorLine2="                                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/tabs/TabLayout.java"
+            line="528"
+            column="46"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_textSize` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    textSize = a.getDimension(R.styleable.TextAppearance_android_textSize, 0f);"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="77"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_textColor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="            context, a, R.styleable.TextAppearance_android_textColor);"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="80"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_textColorHint` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="            context, a, R.styleable.TextAppearance_android_textColorHint);"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="83"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_textColorLink` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="            context, a, R.styleable.TextAppearance_android_textColorLink);"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="86"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_textStyle` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    textStyle = a.getInt(R.styleable.TextAppearance_android_textStyle, Typeface.NORMAL);"
+        errorLine2="                                     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="87"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_typeface` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    typeface = a.getInt(R.styleable.TextAppearance_android_typeface, TYPEFACE_SANS);"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="88"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_fontFamily` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="            R.styleable.TextAppearance_fontFamily,"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="92"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_fontFamily` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="            R.styleable.TextAppearance_android_fontFamily);"
+        errorLine2="                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="93"
+            column="25"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_textAllCaps` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    textAllCaps = a.getBoolean(R.styleable.TextAppearance_textAllCaps, false);"
+        errorLine2="                                           ~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="96"
+            column="44"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_shadowColor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="            context, a, R.styleable.TextAppearance_android_shadowColor);"
+        errorLine2="                                    ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="99"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_shadowDx` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    shadowDx = a.getFloat(R.styleable.TextAppearance_android_shadowDx, 0);"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="100"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_shadowDy` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    shadowDy = a.getFloat(R.styleable.TextAppearance_android_shadowDy, 0);"
+        errorLine2="                                      ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="101"
+            column="39"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@styleable/TextAppearance_android_shadowRadius` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    shadowRadius = a.getFloat(R.styleable.TextAppearance_android_shadowRadius, 0);"
+        errorLine2="                                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/resources/TextAppearance.java"
+            line="102"
+            column="43"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_padding_top_material` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="            android:layout_height=&quot;@dimen/abc_dialog_padding_top_material&quot;"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_dialog.xml"
+            line="54"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_padding_top_material` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="            android:layout_height=&quot;@dimen/abc_dialog_padding_top_material&quot;"
+        errorLine2="                                   ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_dialog.xml"
+            line="68"
+            column="36"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_title_divider_material` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="      android:layout_height=&quot;@dimen/abc_dialog_title_divider_material&quot;"
+        errorLine2="                             ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_dialog_title.xml"
+            line="44"
+            column="30"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_select_dialog_padding_start_material` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    android:paddingLeft=&quot;@dimen/abc_select_dialog_padding_start_material&quot;"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_select_dialog_multichoice.xml"
+            line="24"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_select_dialog_padding_start_material` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    android:paddingStart=&quot;@dimen/abc_select_dialog_padding_start_material&quot;"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_select_dialog_multichoice.xml"
+            line="26"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_select_dialog_padding_start_material` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    android:paddingLeft=&quot;@dimen/abc_select_dialog_padding_start_material&quot;"
+        errorLine2="                         ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_select_dialog_singlechoice.xml"
+            line="24"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_select_dialog_padding_start_material` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    android:paddingStart=&quot;@dimen/abc_select_dialog_padding_start_material&quot;"
+        errorLine2="                          ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/dialog/res/layout/mtrl_alert_select_dialog_singlechoice.xml"
+            line="26"
+            column="27"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_padding_top_material` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;android:paddingTop&quot;>@dimen/abc_dialog_padding_top_material&lt;/item>"
+        errorLine2="                                    ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/styles.xml"
+            line="45"
+            column="37"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@drawable/abc_list_selector_holo_dark` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;listChoiceBackgroundIndicator&quot;>@drawable/abc_list_selector_holo_dark&lt;/item>"
+        errorLine2="                                               ^">
+        <location
+            file="java/com/google/android/material/theme/res/values/themes_base.xml"
+            line="165"
+            column="48"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/primary_dark_material_dark` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;colorPrimaryDark&quot;>@color/primary_dark_material_dark&lt;/item>"
+        errorLine2="                                  ^">
+        <location
+            file="java/com/google/android/material/theme/res/values/themes_base.xml"
+            line="167"
+            column="35"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@color/primary_material_dark` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;colorPrimary&quot;>@color/primary_material_dark&lt;/item>"
+        errorLine2="                              ^">
+        <location
+            file="java/com/google/android/material/theme/res/values/themes_base.xml"
+            line="168"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMajor&quot;>@dimen/abc_dialog_min_width_major&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="169"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMinor&quot;>@dimen/abc_dialog_min_width_minor&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="170"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMajor&quot;>@dimen/abc_dialog_min_width_major&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="174"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMinor&quot;>@dimen/abc_dialog_min_width_minor&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="175"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMajor&quot;>@dimen/abc_dialog_min_width_major&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="179"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMinor&quot;>@dimen/abc_dialog_min_width_minor&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="180"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMajor&quot;>@dimen/abc_dialog_min_width_major&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="184"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMinor&quot;>@dimen/abc_dialog_min_width_minor&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="185"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedWidthMajor&quot;>@dimen/abc_dialog_fixed_width_major&lt;/item>"
+        errorLine2="                                       ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="189"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedWidthMinor&quot;>@dimen/abc_dialog_fixed_width_minor&lt;/item>"
+        errorLine2="                                       ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="190"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_height_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedHeightMajor&quot;>@dimen/abc_dialog_fixed_height_major&lt;/item>"
+        errorLine2="                                        ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="191"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_height_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedHeightMinor&quot;>@dimen/abc_dialog_fixed_height_minor&lt;/item>"
+        errorLine2="                                        ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="192"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedWidthMajor&quot;>@dimen/abc_dialog_fixed_width_major&lt;/item>"
+        errorLine2="                                       ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="196"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedWidthMinor&quot;>@dimen/abc_dialog_fixed_width_minor&lt;/item>"
+        errorLine2="                                       ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="197"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_height_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedHeightMajor&quot;>@dimen/abc_dialog_fixed_height_major&lt;/item>"
+        errorLine2="                                        ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="198"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_height_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedHeightMinor&quot;>@dimen/abc_dialog_fixed_height_minor&lt;/item>"
+        errorLine2="                                        ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_base.xml"
+            line="199"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMajor&quot;>@dimen/abc_dialog_min_width_major&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="25"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMinor&quot;>@dimen/abc_dialog_min_width_minor&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="26"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMajor&quot;>@dimen/abc_dialog_min_width_major&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="30"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMinor&quot;>@dimen/abc_dialog_min_width_minor&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="31"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMajor&quot;>@dimen/abc_dialog_min_width_major&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="35"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMinor&quot;>@dimen/abc_dialog_min_width_minor&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="36"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMajor&quot;>@dimen/abc_dialog_min_width_major&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="40"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_min_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowMinWidthMinor&quot;>@dimen/abc_dialog_min_width_minor&lt;/item>"
+        errorLine2="                                     ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="41"
+            column="38"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedWidthMajor&quot;>@dimen/abc_dialog_fixed_width_major&lt;/item>"
+        errorLine2="                                       ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="45"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedWidthMinor&quot;>@dimen/abc_dialog_fixed_width_minor&lt;/item>"
+        errorLine2="                                       ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="46"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_height_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedHeightMajor&quot;>@dimen/abc_dialog_fixed_height_major&lt;/item>"
+        errorLine2="                                        ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="47"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_height_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedHeightMinor&quot;>@dimen/abc_dialog_fixed_height_minor&lt;/item>"
+        errorLine2="                                        ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="48"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_width_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedWidthMajor&quot;>@dimen/abc_dialog_fixed_width_major&lt;/item>"
+        errorLine2="                                       ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="52"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_width_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedWidthMinor&quot;>@dimen/abc_dialog_fixed_width_minor&lt;/item>"
+        errorLine2="                                       ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="53"
+            column="40"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_height_major` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedHeightMajor&quot;>@dimen/abc_dialog_fixed_height_major&lt;/item>"
+        errorLine2="                                        ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="54"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="PrivateResource"
+        message="The resource `@dimen/abc_dialog_fixed_height_minor` is marked as private in androidx.appcompat:appcompat"
+        errorLine1="    &lt;item name=&quot;windowFixedHeightMinor&quot;>@dimen/abc_dialog_fixed_height_minor&lt;/item>"
+        errorLine2="                                        ^">
+        <location
+            file="java/com/google/android/material/dialog/res/values/themes_bridge.xml"
+            line="55"
+            column="41"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="Custom view ``FrameLayout`` has `setOnTouchListener` called on it but does not override `performClick`"
+        errorLine1="    bottomSheet.setOnTouchListener("
+        errorLine2="    ^">
+        <location
+            file="java/com/google/android/material/bottomsheet/BottomSheetDialog.java"
+            line="183"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="`onTouch` should call `View#performClick` when a click is detected"
+        errorLine1="          public boolean onTouch(View view, MotionEvent event) {"
+        errorLine2="                         ~~~~~~~">
+        <location
+            file="java/com/google/android/material/bottomsheet/BottomSheetDialog.java"
+            line="186"
+            column="26"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="Custom view `Chip` overrides `onTouchEvent` but not `performClick`"
+        errorLine1="  public boolean onTouchEvent(MotionEvent event) {"
+        errorLine2="                 ~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/chip/Chip.java"
+            line="714"
+            column="18"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="Custom view ``AutoCompleteTextView`` has `setOnTouchListener` called on it but does not override `performClick`"
+        errorLine1="    editText.setOnTouchListener("
+        errorLine2="    ^">
+        <location
+            file="java/com/google/android/material/textfield/DropdownMenuEndIconDelegate.java"
+            line="318"
+            column="5"/>
+    </issue>
+
+    <issue
+        id="ClickableViewAccessibility"
+        message="Custom view `FloatingActionButton` overrides `onTouchEvent` but not `performClick`"
+        errorLine1="  public boolean onTouchEvent(MotionEvent ev) {"
+        errorLine2="                 ~~~~~~~~~~~~">
+        <location
+            file="java/com/google/android/material/floatingactionbutton/FloatingActionButton.java"
+            line="917"
+            column="18"/>
+    </issue>
+
+</issues>

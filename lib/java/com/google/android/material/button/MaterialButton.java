@@ -40,10 +40,10 @@ import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
-import com.google.android.material.internal.ThemeEnforcement;
-import com.google.android.material.internal.ViewUtils;
 import com.google.android.material.resources.MaterialResources;
+import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
@@ -53,7 +53,11 @@ import android.util.AttributeSet;
 import android.util.Log;
 import android.view.accessibility.AccessibilityEvent;
 import android.view.accessibility.AccessibilityNodeInfo;
+import android.widget.Button;
 import android.widget.Checkable;
+import android.widget.CompoundButton;
+import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.util.LinkedHashSet;
@@ -74,9 +78,15 @@ import java.util.LinkedHashSet;
  * tint color and {@code ?attr/colorOnPrimary} for the text color. For unfilled buttons, this class
  * uses {@code ?attr/colorPrimary} for the text color and transparent for the background tint.
  *
- * <p>Add icons to the start or center of this button using the {@link R.attr#icon app:icon}, {@link
- * R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint}, {@link
+ * <p>Add icons to the start, center, or end of this button using the {@link R.attr#icon app:icon},
+ * {@link R.attr#iconPadding app:iconPadding}, {@link R.attr#iconTint app:iconTint}, {@link
  * R.attr#iconTintMode app:iconTintMode} and {@link R.attr#iconGravity app:iconGravity} attributes.
+ *
+ * <p>If a start-aligned icon is added to this button, please use a style like one of the ".Icon"
+ * styles specified in the default MaterialButton styles. The ".Icon" styles adjust padding slightly
+ * to achieve a better visual balance. This style should only be used with a start-aligned icon
+ * button. If your icon is end-aligned, you cannot use a ".Icon" style and must instead manually
+ * adjust your padding such that the visual adjustment is mirrored.
  *
  * <p>Specify background tint using the {@link R.attr#backgroundTint app:backgroundTint} and {@link
  * R.attr#backgroundTintMode app:backgroundTintMode} attributes, which accepts either a color or a
@@ -94,7 +104,7 @@ import java.util.LinkedHashSet;
  * <p>Specify the radius of all four corners of the button using the {@link R.attr#cornerRadius
  * app:cornerRadius} attribute.
  */
-public class MaterialButton extends AppCompatButton implements Checkable {
+public class MaterialButton extends AppCompatButton implements Checkable, Shapeable {
 
   /** Interface definition for a callback to be invoked when the button checked state changes. */
   public interface OnCheckedChangeListener {
@@ -131,8 +141,24 @@ public class MaterialButton extends AppCompatButton implements Checkable {
    */
   public static final int ICON_GRAVITY_TEXT_START = 0x2;
 
+  /**
+   * Gravity used to position the icon at the end of the view.
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_END = 0x3;
+
+  /**
+   * Gravity used to position the icon in the center of the view at the end of the text
+   *
+   * @see #setIconGravity(int)
+   * @see #getIconGravity()
+   */
+  public static final int ICON_GRAVITY_TEXT_END = 0x4;
+
   /** Positions the icon can be set to. */
-  @IntDef({ICON_GRAVITY_START, ICON_GRAVITY_TEXT_START})
+  @IntDef({ICON_GRAVITY_START, ICON_GRAVITY_TEXT_START, ICON_GRAVITY_END, ICON_GRAVITY_TEXT_END})
   @Retention(RetentionPolicy.SOURCE)
   public @interface IconGravity {}
 
@@ -140,20 +166,15 @@ public class MaterialButton extends AppCompatButton implements Checkable {
 
   private static final int DEF_STYLE_RES = R.style.Widget_MaterialComponents_Button;
 
-  // Accessibility class names so that Talkback can recognize this as a button.
-  // These must be kept as literals so that they're not affected by proguard / appreduce.
-  private static final String A11Y_CLASS_NAME = "android.widget.Button";
-
-  private static final String A11Y_CLASS_NAME_WHEN_CHECKABLE = "android.widget.CompoundButton";
-
   @Nullable private final MaterialButtonHelper materialButtonHelper;
 
-  @Px private int iconPadding;
   private Mode iconTintMode;
   private ColorStateList iconTint;
   private Drawable icon;
   @Px private int iconSize;
   @Px private int iconLeft;
+  @Px private int iconPadding;
+
   private boolean checked = false;
   private boolean broadcasting = false;
 
@@ -206,7 +227,8 @@ public class MaterialButton extends AppCompatButton implements Checkable {
   }
 
   private String getA11yClassName() {
-    return isCheckable() ? A11Y_CLASS_NAME_WHEN_CHECKABLE : A11Y_CLASS_NAME;
+    // Use the platform widget classes so Talkback can recognize this as a button.
+    return (isCheckable() ? CompoundButton.class : Button.class).getName();
   }
 
   @Override
@@ -388,6 +410,14 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     updateIconPosition();
   }
 
+  @Override
+  protected void onAttachedToWindow() {
+    super.onAttachedToWindow();
+
+    MaterialShapeUtils.setParentAbsoluteElevation(
+        this, materialButtonHelper.getMaterialShapeDrawable());
+  }
+
   @RequiresApi(VERSION_CODES.LOLLIPOP)
   @Override
   public void setElevation(float elevation) {
@@ -398,7 +428,13 @@ public class MaterialButton extends AppCompatButton implements Checkable {
   }
 
   private void updateIconPosition() {
-    if (icon == null || iconGravity != ICON_GRAVITY_TEXT_START || getLayout() == null) {
+    if (icon == null || getLayout() == null) {
+      return;
+    }
+
+    if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_END) {
+      iconLeft = 0;
+      updateIcon();
       return;
     }
 
@@ -423,7 +459,8 @@ public class MaterialButton extends AppCompatButton implements Checkable {
                 - ViewCompat.getPaddingStart(this))
             / 2;
 
-    if (isLayoutRTL()) {
+    // Only flip the bound value if either isLayoutRTL() or iconGravity is textEnd, but not both
+    if (isLayoutRTL() != (iconGravity == ICON_GRAVITY_TEXT_END)) {
       newIconLeft = -newIconLeft;
     }
 
@@ -513,7 +550,7 @@ public class MaterialButton extends AppCompatButton implements Checkable {
    * @see #setIconResource(int)
    * @see #getIcon()
    */
-  public void setIcon(Drawable icon) {
+  public void setIcon(@Nullable Drawable icon) {
     if (this.icon != icon) {
       this.icon = icon;
       updateIcon();
@@ -626,7 +663,11 @@ public class MaterialButton extends AppCompatButton implements Checkable {
       icon.setBounds(iconLeft, 0, iconLeft + width, height);
     }
 
-    TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
+    if (iconGravity == ICON_GRAVITY_START || iconGravity == ICON_GRAVITY_TEXT_START) {
+      TextViewCompat.setCompoundDrawablesRelative(this, icon, null, null, null);
+    } else {
+      TextViewCompat.setCompoundDrawablesRelative(this, null, null, icon, null);
+    }
   }
 
   /**
@@ -815,7 +856,10 @@ public class MaterialButton extends AppCompatButton implements Checkable {
    * @see #getIconGravity()
    */
   public void setIconGravity(@IconGravity int iconGravity) {
-    this.iconGravity = iconGravity;
+    if (this.iconGravity != iconGravity) {
+      this.iconGravity = iconGravity;
+      updateIconPosition();
+    }
   }
 
   @Override
@@ -919,19 +963,39 @@ public class MaterialButton extends AppCompatButton implements Checkable {
     }
   }
 
-  void setShapeAppearanceModel(@Nullable ShapeAppearanceModel shapeAppearanceModel) {
+  /**
+   * {@inheritDoc}
+   *
+   * @throws IllegalStateException if the MaterialButton's background has been overwritten.
+   */
+  @Override
+  public void setShapeAppearanceModel(@NonNull ShapeAppearanceModel shapeAppearanceModel) {
     if (isUsingOriginalBackground()) {
       materialButtonHelper.setShapeAppearanceModel(shapeAppearanceModel);
+    } else {
+      throw new IllegalStateException(
+          "Attempted to set ShapeAppearanceModel on a MaterialButton which has an overwritten"
+              + " background.");
     }
   }
 
-  @Nullable
-  ShapeAppearanceModel getShapeAppearanceModel() {
+  /**
+   * Returns the {@link ShapeAppearanceModel} used for this MaterialButton's shape definition.
+   *
+   * <p>This {@link ShapeAppearanceModel} can be modified to change the component's shape.
+   *
+   * @throws IllegalStateException if the MaterialButton's background has been overwritten.
+   */
+  @NonNull
+  @Override
+  public ShapeAppearanceModel getShapeAppearanceModel() {
     if (isUsingOriginalBackground()) {
       return materialButtonHelper.getShapeAppearanceModel();
+    } else {
+      throw new IllegalStateException(
+          "Attempted to get ShapeAppearanceModel from a MaterialButton which has an overwritten"
+              + " background.");
     }
-
-    return null;
   }
 
   /**

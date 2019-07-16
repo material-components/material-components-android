@@ -21,13 +21,12 @@ import io.material.catalog.R;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
-import com.google.android.material.snackbar.BaseTransientBottomBar;
 import com.google.android.material.snackbar.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -54,7 +53,7 @@ public class ExtendedFabDemoFragment extends DemoFragment {
     for (ExtendedFloatingActionButton extendedFab : extendedFabs) {
       extendedFab.setOnClickListener(
           v -> {
-            Snackbar.make(v, R.string.cat_extended_fab_clicked, BaseTransientBottomBar.LENGTH_SHORT)
+            Snackbar.make(v, R.string.cat_extended_fab_clicked, Snackbar.LENGTH_SHORT)
                 .show();
           });
     }

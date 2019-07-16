@@ -18,4 +18,8 @@
 
   <style name="Base.Widget.MaterialComponents.CheckedTextView" parent="android:Widget.Material.CheckedTextView"/>
 
+  <style name="Base.ThemeOverlay.MaterialComponents.Dialog" parent="Base.V14.ThemeOverlay.MaterialComponents.Dialog">
+    <item name="android:windowBackground">@drawable/mtrl_dialog_background</item>
+  </style>
+
 </resources>

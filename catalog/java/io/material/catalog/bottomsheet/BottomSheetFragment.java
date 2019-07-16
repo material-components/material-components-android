@@ -28,6 +28,8 @@ import io.material.catalog.application.scope.FragmentScope;
 import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
+import java.util.ArrayList;
+import java.util.List;
 
 /** A landing fragment that links to BottomSheet demos for the Catalog app. */
 public class BottomSheetFragment extends DemoLandingFragment {
@@ -52,6 +54,22 @@ public class BottomSheetFragment extends DemoLandingFragment {
     };
   }
 
+  @Override
+  public List<Demo> getAdditionalDemos() {
+    List<Demo> additionalDemos = new ArrayList<>();
+    // TODO: Enable below once this bug is fixed.
+    if (false) {
+    additionalDemos.add(
+        new Demo(R.string.cat_bottomsheet_scrollable_content_demo_title) {
+          @Override
+          public Fragment createFragment() {
+            return new BottomSheetScrollableContentDemoFragment();
+          }
+        });
+    }
+    return additionalDemos;
+  }
+
   /** The Dagger module for {@link BottomSheetMainDemoFragment} dependencies. */
   @dagger.Module
   public abstract static class Module {
@@ -64,7 +82,7 @@ public class BottomSheetFragment extends DemoLandingFragment {
     @Provides
     @ActivityScope
     static FeatureDemo provideFeatureDemo() {
-      return new FeatureDemo(R.string.cat_bottomsheet_title, R.drawable.ic_placeholder) {
+      return new FeatureDemo(R.string.cat_bottomsheet_title, R.drawable.ic_bottomsheet) {
         @Override
         public Fragment createFragment() {
           return new BottomSheetFragment();

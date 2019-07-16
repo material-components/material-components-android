@@ -22,7 +22,8 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center_vertical|end|right"
-    android:background="?attr/selectableItemBackgroundBorderless"
+    android:layout_marginStart="@dimen/mtrl_textinput_end_icon_margin_start"
+    android:background="?attr/actionBarItemBackground"
     android:minHeight="48dp"
     android:minWidth="48dp"
     tools:ignore="Overdraw"/>

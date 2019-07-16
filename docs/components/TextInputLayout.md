@@ -18,6 +18,13 @@ fields](https://material.io/go/design-text-fields). Used in conjunction with a
 `TextInputLayout` makes it easy to include Material **text fields** in your
 layouts.
 
+`TextInputLayout` also provides an implementation for the
+[Exposed Dropdown Menu](https://material.io/design/components/menus.html#exposed-dropdown-menu)
+when used in conjuction with an
+[AutoCompleteTextView](https://developer.android.com/reference/android/widget/AutoCompleteTextView)
+and a `Widget.MaterialComponents.TextInputLayout.*.ExposedDropdownMenu` style.
+For information on the Exposed Dropdown Menu usage, see the [Menu documentation](Menu.md#exposed-dropdown-menus).
+
 ## Design & API Documentation
 
 -   [Material Design guidelines: Text
@@ -137,13 +144,13 @@ features](https://material.io/go/design-text-fields#text-fields-layout).
 These are some commonly used properties you can update to control the look of
 your text field:
 
-Text field element                     | Relevant attributes/methods
-:------------------------------------- | :--------------------------
-Label (also called a “Floating Label”) | [`android:hint`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_android_hint)<br/>[`app:hintEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_hintEnabled)
-Error message                          | [`app:errorEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_errorEnabled)<br/>[`#setError(CharSequence)`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#setError(java.lang.CharSequence))
-Helper text                            | [`app:helperTextEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_helperTextEnabled)<br/>[`app:helperText`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_helperText)
-Character counter                      | [`app:counterEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_counterEnabled)<br/>[`app:counterMaxLength`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_counterMaxLength)
-End icon mode <ul><li>Password redaction</li><li>Text clearing</li><li>Custom mode</li></ul>    | [`app:endIconMode`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_endIconMode)
+Text field element                                                | Relevant attributes/methods
+:---------------------------------------------------------------- | :--------------------------
+Label (also called a “Floating Label”)                            | [`android:hint`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_android_hint)<br/>[`app:hintEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_hintEnabled)
+Error message                                                     | [`app:errorEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_errorEnabled)<br/>[`#setError(CharSequence)`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#setError\(java.lang.CharSequence\))
+Helper text                                                       | [`app:helperTextEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_helperTextEnabled)<br/>[`app:helperText`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_helperText)
+Character counter                                                 | [`app:counterEnabled`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_counterEnabled)<br/>[`app:counterMaxLength`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_counterMaxLength)
+End icon mode (password redaction, text clearing and custom mode) | [`app:endIconMode`](https://developer.android.com/reference/com/google/android/material/textfield/TextInputLayout#attr_TextInputLayout_endIconMode)
 
 ## Notes about setting the hint
 

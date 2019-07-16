@@ -29,6 +29,7 @@ import io.material.catalog.feature.Demo;
 import io.material.catalog.feature.DemoLandingFragment;
 import io.material.catalog.feature.FeatureDemo;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /** A landing fragment that links to Top App Bar demos for the Catalog app. */
@@ -65,33 +66,47 @@ public class TopAppBarFragment extends DemoLandingFragment {
           }
         });
     additionalDemos.add(
+        new Demo(R.string.cat_topappbar_scrolling_transparent_title) {
+          @Override
+          public Intent createActivityIntent() {
+            return new Intent(getContext(), TopAppBarScrollingTransparentStatusDemoActivity.class);
+          }
+        });
+    additionalDemos.add(
         new Demo(R.string.cat_topappbar_collapsing_title) {
           @Override
           public Fragment createFragment() {
             return new TopAppBarCollapsingDemoFragment();
           }
         });
+    additionalDemos.add(getToolbarDemo());
     additionalDemos.addAll(getActionBarDemos());
     return additionalDemos;
   }
 
-  public List<Demo> getActionBarDemos() {
-    List<Demo> demos = new ArrayList<>();
-    demos.add(
+  protected Demo getToolbarDemo() {
+    return new Demo(R.string.cat_topappbar_toolbar_title) {
+      @Override
+      public Fragment createFragment() {
+        return new TopAppBarToolbarDemoFragment();
+      }
+    };
+  }
+
+  protected List<Demo> getActionBarDemos() {
+    return Arrays.asList(
         new Demo(R.string.cat_topappbar_action_bar_title) {
           @Override
           public Intent createActivityIntent() {
             return new Intent(getContext(), TopAppBarActionBarDemoActivity.class);
           }
-        });
-    demos.add(
+        },
         new Demo(R.string.cat_topappbar_dark_action_bar_title) {
           @Override
           public Intent createActivityIntent() {
             return new Intent(getContext(), TopAppBarDarkActionBarDemoActivity.class);
           }
         });
-    return demos;
   }
 
   /** The Dagger module for {@link TopAppBarFragment} dependencies. */

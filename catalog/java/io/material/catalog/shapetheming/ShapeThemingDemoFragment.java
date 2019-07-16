@@ -25,14 +25,13 @@ import androidx.annotation.StyleRes;
 import com.google.android.material.bottomsheet.BottomSheetBehavior;
 import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import androidx.appcompat.view.ContextThemeWrapper;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.view.Window;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import io.material.catalog.feature.DemoFragment;
 
 /** A base class for Shape Theming demos in the Catalog app. */
@@ -86,24 +85,13 @@ public abstract class ShapeThemingDemoFragment extends DemoFragment {
             .setTitle(R.string.cat_shape_theming_dialog_title)
             .setMessage(R.string.cat_shape_theming_dialog_message)
             .setPositiveButton(R.string.cat_shape_theming_dialog_ok, null);
-    materialButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            materialAlertDialogBuilder.show();
-          }
-        });
+    materialButton.setOnClickListener(v -> materialAlertDialogBuilder.show());
     BottomSheetDialog bottomSheetDialog = new BottomSheetDialog(wrappedContext);
     bottomSheetDialog.setContentView(R.layout.cat_shape_theming_bottomsheet_content);
     View bottomSheetInternal = bottomSheetDialog.findViewById(R.id.design_bottom_sheet);
     BottomSheetBehavior.from(bottomSheetInternal).setPeekHeight(300);
     MaterialButton button = container.findViewById(R.id.material_button_2);
-    button.setOnClickListener(new OnClickListener() {
-      @Override
-      public void onClick(View v) {
-        bottomSheetDialog.show();
-      }
-    });
+    button.setOnClickListener(v -> bottomSheetDialog.show());
 
     return view;
   }

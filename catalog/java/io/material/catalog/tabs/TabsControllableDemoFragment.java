@@ -25,21 +25,21 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
-import com.google.android.material.tabs.TabLayout;
-import com.google.android.material.tabs.TabLayout.LabelVisibility;
-import androidx.viewpager.widget.ViewPager;
 import androidx.appcompat.widget.SwitchCompat;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
-import android.widget.CompoundButton;
-import android.widget.CompoundButton.OnCheckedChangeListener;
 import android.widget.RadioButton;
 import android.widget.Spinner;
+import androidx.viewpager.widget.ViewPager;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayout.LabelVisibility;
+import com.google.android.material.tabs.TabLayout.OnTabSelectedListener;
+import com.google.android.material.tabs.TabLayout.Tab;
 import io.material.catalog.feature.DemoFragment;
 import io.material.catalog.feature.DemoUtils;
 import java.util.List;
@@ -74,61 +74,40 @@ public class TabsControllableDemoFragment extends DemoFragment {
     setupViewPager();
     setAllTabLayoutIcons(ICON_DRAWABLE_RES);
     setAllTabLayoutText(LABEL_STRING_RES);
+    setAllTabLayoutBadges();
 
     SwitchCompat iconsToggle = view.findViewById(R.id.toggle_icons_switch);
     iconsToggle.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            showIcons = isChecked;
-            setAllTabLayoutIcons(ICON_DRAWABLE_RES);
-          }
+        (buttonView, isChecked) -> {
+          showIcons = isChecked;
+          setAllTabLayoutIcons(ICON_DRAWABLE_RES);
         });
 
     SwitchCompat labelsToggle = view.findViewById(R.id.toggle_labels_switch);
     labelsToggle.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            showLabels = isChecked;
-            if (isChecked) {
-              for (TabLayout tabLayout : tabLayouts) {
-                setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_LABELED);
-              }
-            } else {
-              for (TabLayout tabLayout : tabLayouts) {
-                setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_UNLABELED);
-              }
+        (buttonView, isChecked) -> {
+          showLabels = isChecked;
+          if (isChecked) {
+            for (TabLayout tabLayout : tabLayouts) {
+              setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_LABELED);
+            }
+          } else {
+            for (TabLayout tabLayout : tabLayouts) {
+              setLabelVisibility(tabLayout, TabLayout.TAB_LABEL_VISIBILITY_UNLABELED);
             }
           }
         });
 
     RadioButton tabGravityFillButton = view.findViewById(R.id.tabs_gravity_fill_button);
-    tabGravityFillButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            setAllTabLayoutGravity(TabLayout.GRAVITY_FILL);
-          }
-        });
+    tabGravityFillButton.setOnClickListener(v -> setAllTabLayoutGravity(TabLayout.GRAVITY_FILL));
 
     RadioButton tabGravityCenterButton = view.findViewById(R.id.tabs_gravity_center_button);
     tabGravityCenterButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            setAllTabLayoutGravity(TabLayout.GRAVITY_CENTER);
-          }
-        });
+        v -> setAllTabLayoutGravity(TabLayout.GRAVITY_CENTER));
 
     SwitchCompat inlineToggle = view.findViewById(R.id.toggle_inline_switch);
     inlineToggle.setOnCheckedChangeListener(
-        new OnCheckedChangeListener() {
-          @Override
-          public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            setAllTabLayoutInline(isChecked);
-          }
-        });
+        (buttonView, isChecked) -> setAllTabLayoutInline(isChecked));
 
     Spinner selectedIndicatorSpinner = (Spinner) view.findViewById(R.id.selector_spinner);
     ArrayAdapter<CharSequence> adapter =
@@ -209,6 +188,41 @@ public class TabsControllableDemoFragment extends DemoFragment {
       // Convert tab index (zero-based) to readable tab label starting at 1.
       tabLayout.getTabAt(i).setText(getResources().getString(stringResId, i + 1));
     }
+  }
+
+  private void setAllTabLayoutBadges() {
+    for (TabLayout tabLayout : tabLayouts) {
+      setupBadging(tabLayout);
+      tabLayout.addOnTabSelectedListener(
+          new OnTabSelectedListener() {
+            @Override
+            public void onTabSelected(Tab tab) {
+              tab.removeBadge();
+            }
+
+            @Override
+            public void onTabUnselected(Tab tab) {}
+
+            @Override
+            public void onTabReselected(Tab tab) {
+              tab.removeBadge();
+            }
+          });
+    }
+  }
+
+  private void setupBadging(TabLayout tabLayout) {
+    BadgeDrawable badgeDrawable = tabLayout.getTabAt(0).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(1);
+
+    badgeDrawable = tabLayout.getTabAt(1).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(88);
+
+    badgeDrawable = tabLayout.getTabAt(2).getOrCreateBadge();
+    badgeDrawable.setVisible(true);
+    badgeDrawable.setNumber(999);
   }
 
   private void setLabelVisibility(TabLayout tabLayout, @LabelVisibility int mode) {

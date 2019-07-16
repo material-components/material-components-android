@@ -35,7 +35,6 @@ import androidx.annotation.IdRes;
 import androidx.annotation.IntRange;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.StringRes;
-import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import com.google.android.material.resources.TextAppearanceConfig;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testutils.Shakespeare;
@@ -44,6 +43,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import android.text.TextUtils;
 import android.widget.TextView;
+import com.google.android.material.internal.BaseDynamicCoordinatorLayoutTest;
 import org.hamcrest.Description;
 import org.hamcrest.Matcher;
 import org.hamcrest.TypeSafeMatcher;
@@ -81,22 +81,10 @@ public abstract class AppBarLayoutBaseTest extends BaseDynamicCoordinatorLayoutT
     mToolbar = mAppBar.findViewById(R.id.toolbar);
 
     final AppCompatActivity activity = activityTestRule.getActivity();
-    activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            activity.setSupportActionBar(mToolbar);
-          }
-        });
+    activityTestRule.runOnUiThread(() -> activity.setSupportActionBar(mToolbar));
 
     final CharSequence activityTitle = activity.getString(titleResId);
-    activityTestRule.runOnUiThread(
-        new Runnable() {
-          @Override
-          public void run() {
-            activity.setTitle(activityTitle);
-          }
-        });
+    activityTestRule.runOnUiThread(() -> activity.setTitle(activityTitle));
     getInstrumentation().waitForIdleSync();
 
     if (mCollapsingToolbar != null) {

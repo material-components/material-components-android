@@ -36,65 +36,65 @@ public class ElevationOverlayProviderTest {
 
   private static final float ELEVATION_ZERO = 0;
   private static final float ELEVATION_NON_ZERO = 4;
-  private static final String EXPECTED_ELEVATION_NON_ZERO_COLOR_WITH_OVERLAY = "ff121212";
-  private static final float EXPECTED_ELEVATION_NON_ZERO_ALPHA_FRACTION = 0.07f;
-  private static final int EXPECTED_ELEVATION_NON_ZERO_ALPHA = 18;
+  private static final String EXPECTED_ELEVATION_NON_ZERO_COLOR_WITH_OVERLAY = "ff181818";
+  private static final float EXPECTED_ELEVATION_NON_ZERO_ALPHA_FRACTION = 0.09f;
+  private static final int EXPECTED_ELEVATION_NON_ZERO_ALPHA = 24;
 
   private final Context context = ApplicationProvider.getApplicationContext();
 
   private ElevationOverlayProvider provider;
 
   @Before
-  public void initContextThemeWithElevationOverlays() {
+  public void initContextThemeWithElevationOverlay() {
     context.setTheme(R.style.Theme_MaterialComponents_NoActionBar);
   }
 
   @Test
   public void
-      givenOverlaysEnabledAndSurfaceColorAndElevation_whenLayerOverlayIfNeeded_returnsColorWithOverlay() {
+      givenOverlayEnabledAndSurfaceColorAndElevation_whenCompositeOverlayIfNeeded_returnsColorWithOverlay() {
     provider = new ElevationOverlayProvider(context);
 
-    int backgroundColor = provider.getColorSurface();
-    assertThat(provider.layerOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
-        .isEqualTo(provider.layerOverlay(backgroundColor, ELEVATION_NON_ZERO));
+    int backgroundColor = provider.getThemeSurfaceColor();
+    assertThat(provider.compositeOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
+        .isEqualTo(provider.compositeOverlay(backgroundColor, ELEVATION_NON_ZERO));
   }
 
   @Test
   public void
-      givenOverlaysEnabledAndNoSurfaceColorAndElevation_whenLayerOverlayIfNeeded_returnsColorWithoutOverlay() {
+      givenOverlayEnabledAndNoSurfaceColorAndElevation_whenCompositeOverlayIfNeeded_returnsColorWithoutOverlay() {
     provider = new ElevationOverlayProvider(context);
 
     int backgroundColor = Color.RED;
-    assertThat(provider.layerOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
+    assertThat(provider.compositeOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
         .isEqualTo(backgroundColor);
   }
 
   @Test
   public void
-      givenOverlaysEnabledAndSurfaceColorAndNoElevation_whenLayerOverlayIfNeeded_returnsColorWithoutOverlay() {
+      givenOverlayEnabledAndSurfaceColorAndNoElevation_whenCompositeOverlayIfNeeded_returnsColorWithoutOverlay() {
     provider = new ElevationOverlayProvider(context);
 
-    int backgroundColor = provider.getColorSurface();
-    assertThat(provider.layerOverlayIfNeeded(backgroundColor, ELEVATION_ZERO))
+    int backgroundColor = provider.getThemeSurfaceColor();
+    assertThat(provider.compositeOverlayIfNeeded(backgroundColor, ELEVATION_ZERO))
         .isEqualTo(backgroundColor);
   }
 
   @Test
-  public void givenOverlaysDisabled_whenLayerOverlayIfNeeded_returnsColorWithoutOverlay() {
+  public void givenOverlayDisabled_whenCompositeOverlayIfNeeded_returnsColorWithoutOverlay() {
     context.setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar);
 
     provider = new ElevationOverlayProvider(context);
 
-    int backgroundColor = provider.getColorSurface();
-    assertThat(provider.layerOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
+    int backgroundColor = provider.getThemeSurfaceColor();
+    assertThat(provider.compositeOverlayIfNeeded(backgroundColor, ELEVATION_NON_ZERO))
         .isEqualTo(backgroundColor);
   }
 
   @Test
-  public void givenBackgroundColorAndElevation_whenLayerOverlay_returnsColorWithOverlay() {
+  public void givenBackgroundColorAndElevation_whenCompositeOverlay_returnsColorWithOverlay() {
     provider = new ElevationOverlayProvider(context);
 
-    assertThat(Integer.toHexString(provider.layerOverlay(Color.BLACK, ELEVATION_NON_ZERO)))
+    assertThat(Integer.toHexString(provider.compositeOverlay(Color.BLACK, ELEVATION_NON_ZERO)))
         .isEqualTo(EXPECTED_ELEVATION_NON_ZERO_COLOR_WITH_OVERLAY);
   }
 

@@ -20,27 +20,25 @@ navigate to.
 
 ## Design & API Documentation
 
--   [Material Design guidelines: Bottom
-    Navigation](https://material.io/go/design-bottom-navigation)
+-   [Material Design guidelines: Bottom Navigation](https://material.io/go/design-bottom-navigation)
     <!--{: .icon-list-item.icon-list-item--spec }-->
--   [Class
-    definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/BottomNavigationView.java)
+-   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/bottomnavigation/BottomNavigationView.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
     <!-- Styles for list items requiring icons instead of standard bullets. -->
--   [Class
-    overview](https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView)
+-   [Class overview](https://developer.android.com/reference/com/google/android/material/bottomnavigation/BottomNavigationView)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
 
-1. Create a [menu
-resource](https://developer.android.com/guide/topics/resources/menu-resource.html)
-with up to 5 navigation targets (`BottomNavigationView` does not support more than
-5 items).
-2. Lay out your `BottomNavigationView` below your content.
-3. Set the `app:menu` attribute on your `BottomNavigationView` to your menu
-resource.
-4. Listen for selection events using `setOnNavigationItemSelectedListener(...)`.
+1.  Create a
+    [menu resource](https://developer.android.com/guide/topics/resources/menu-resource.html)
+    with up to 5 navigation targets (`BottomNavigationView` does not support
+    more than 5 items).
+2.  Lay out your `BottomNavigationView` below your content.
+3.  Set the `app:menu` attribute on your `BottomNavigationView` to your menu
+    resource.
+4.  Listen for selection events using
+    `setOnNavigationItemSelectedListener(...)`.
 
 A typical layout file would look something like this:
 
@@ -65,6 +63,31 @@ A typical layout file would look something like this:
 
 </FrameLayout>
 ```
+
+### Badges
+
+![Bottom Navigation with badges](assets/bottom-navigation-badges.png)
+
+`BottomNavigationView` supports displaying icon and number badges.
+
+Initializes and shows a BadgeDrawable associated with menuItemId. Subsequent
+calls to this method will reuse the existing BadgeDrawable.
+
+```java
+BadgeDrawable badge = bottomNavigationView.showBadge(menuItemId);
+```
+NOTE: Don't forget to remove any BadgeDrawables that are no longer needed.
+
+```java
+bottomNavigationView.removeBadge(menuItemId);
+```
+
+Best Practice: If you only need to temporarily hide the badge(e.g. until the next
+notification is received), the recommended/lightweight alternative is to change
+the visibility of the BadgeDrawable instead.
+
+Please see [`BadgeDrawable`](BadgeDrawable.md) for details on how to update the
+badge content being displayed.
 
 ### Handling States
 
@@ -191,8 +214,8 @@ theming attributes.
 There are other navigation patterns you should be aware of:
 
 -   [Hierarchical navigation](https://developer.android.com/training/implementing-navigation/index.html).
-    *See also [Navigation with Back and
-    Up](https://developer.android.com/design/patterns/navigation.html).*
+    *See also
+    [Navigation with Back and Up](https://developer.android.com/design/patterns/navigation.html).*
 -   Swipeable tabs using [TabLayout](TabLayout.md) and
     [ViewPager](https://developer.android.com/reference/android/support/v4/view/ViewPager.html).
 -   Using [NavigationView](NavigationView.md) to display a longer list of

@@ -41,9 +41,12 @@ import android.util.AttributeSet;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.view.accessibility.AccessibilityNodeInfo;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.TextView;
+import com.google.android.material.badge.BadgeDrawable;
+import com.google.android.material.badge.BadgeUtils;
 
 /** @hide */
 @RestrictTo(LIBRARY_GROUP)
@@ -71,6 +74,8 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
   private Drawable originalIconDrawable;
   private Drawable wrappedIconDrawable;
 
+  @Nullable private BadgeDrawable badgeDrawable;
+
   public BottomNavigationItemView(@NonNull Context context) {
     this(context, null);
   }
@@ -96,6 +101,29 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     ViewCompat.setImportantForAccessibility(largeLabel, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
     setFocusable(true);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
+
+    // TODO: Support displaying a badge on label-only bottom navigation views.
+    if (icon != null) {
+      icon.addOnLayoutChangeListener(
+          new OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(
+                View v,
+                int left,
+                int top,
+                int right,
+                int bottom,
+                int oldLeft,
+                int oldTop,
+                int oldRight,
+                int oldBottom) {
+              if (icon.getVisibility() == VISIBLE) {
+                tryUpdateBadgeBounds(icon);
+              }
+            }
+          });
+    }
+    ViewCompat.setAccessibilityDelegate(this, null);
   }
 
   @Override
@@ -110,7 +138,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     if (!TextUtils.isEmpty(itemData.getContentDescription())) {
       setContentDescription(itemData.getContentDescription());
     }
-    TooltipCompat.setTooltipText(this, itemData.getTooltipText());
+
+    CharSequence tooltipText = !TextUtils.isEmpty(itemData.getTooltipText())
+        ? itemData.getTooltipText()
+        : itemData.getTitle();
+    TooltipCompat.setTooltipText(this, tooltipText);
     setVisibility(itemData.isVisible() ? View.VISIBLE : View.GONE);
   }
 
@@ -156,6 +188,11 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     if (itemData == null || TextUtils.isEmpty(itemData.getContentDescription())) {
       setContentDescription(title);
     }
+
+    CharSequence tooltipText = itemData == null || TextUtils.isEmpty(itemData.getTooltipText())
+        ? title
+        : itemData.getTooltipText();
+    TooltipCompat.setTooltipText(this, tooltipText);
   }
 
   @Override
@@ -236,6 +273,19 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     setSelected(checked);
   }
 
+  @Override
+  public void onInitializeAccessibilityNodeInfo(AccessibilityNodeInfo info) {
+    super.onInitializeAccessibilityNodeInfo(info);
+    if (badgeDrawable != null && badgeDrawable.isVisible()) {
+      CharSequence customContentDescription = itemData.getTitle();
+      if (!TextUtils.isEmpty(itemData.getContentDescription())) {
+        customContentDescription = itemData.getContentDescription();
+      }
+      info.setContentDescription(
+          customContentDescription + ", " + badgeDrawable.getContentDescription());
+    }
+  }
+
   private void setViewLayoutParams(@NonNull View view, int topMargin, int gravity) {
     LayoutParams viewParams = (LayoutParams) view.getLayoutParams();
     viewParams.topMargin = topMargin;
@@ -289,7 +339,9 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       iconDrawable =
           DrawableCompat.wrap(state == null ? iconDrawable : state.newDrawable()).mutate();
       wrappedIconDrawable = iconDrawable;
-      DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+      if (iconTint != null) {
+        DrawableCompat.setTintList(wrappedIconDrawable, iconTint);
+      }
     }
     this.icon.setImageDrawable(iconDrawable);
   }
@@ -353,5 +405,71 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
       background = background.getConstantState().newDrawable().mutate();
     }
     ViewCompat.setBackground(this, background);
+  }
+
+  void setBadge(@NonNull BadgeDrawable badgeDrawable) {
+    this.badgeDrawable = badgeDrawable;
+    if (icon != null) {
+      tryAttachBadgeToAnchor(icon);
+    }
+  }
+
+  @Nullable
+  BadgeDrawable getBadge() {
+    return this.badgeDrawable;
+  }
+
+  void removeBadge() {
+    tryRemoveBadgeFromAnchor(icon);
+  }
+
+  private boolean hasBadge() {
+    return badgeDrawable != null;
+  }
+
+  private void tryUpdateBadgeBounds(View anchorView) {
+    if (!hasBadge()) {
+      return;
+    }
+    BadgeUtils.setBadgeDrawableBounds(
+        badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+  }
+
+  private void tryAttachBadgeToAnchor(View anchorView) {
+    if (!hasBadge()) {
+      return;
+    }
+    if (anchorView != null) {
+      // Avoid clipping a badge if it's displayed.
+      setClipChildren(false);
+      setClipToPadding(false);
+
+      BadgeUtils.attachBadgeDrawable(
+          badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+    }
+  }
+
+  private void tryRemoveBadgeFromAnchor(View anchorView) {
+    if (!hasBadge()) {
+      return;
+    }
+    if (anchorView != null) {
+      // Clip children / view to padding when no badge is displayed.
+      setClipChildren(true);
+      setClipToPadding(true);
+
+      BadgeUtils.detachBadgeDrawable(
+          badgeDrawable, anchorView, getCustomParentForBadge(anchorView));
+    }
+    badgeDrawable = null;
+  }
+
+  @Nullable
+  private FrameLayout getCustomParentForBadge(View anchorView) {
+    if (anchorView == icon) {
+      return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) icon.getParent()) : null;
+    }
+    // TODO: Support displaying a badge on label-only bottom navigation views.
+    return null;
   }
 }

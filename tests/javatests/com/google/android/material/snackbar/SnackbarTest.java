@@ -30,7 +30,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.withText;
 import static org.hamcrest.core.AllOf.allOf;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
-import static org.mockito.Matchers.any;
+import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
@@ -44,13 +44,12 @@ import androidx.annotation.StringRes;
 import com.google.android.material.testapp.R;
 import com.google.android.material.testapp.SnackbarActivity;
 import com.google.android.material.testutils.SnackbarUtils;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.view.ViewCompat;
 import android.text.TextUtils;
 import android.view.View;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.ViewAction;
 import androidx.test.espresso.ViewInteraction;
-import androidx.test.espresso.action.CoordinatesProvider;
 import androidx.test.espresso.action.GeneralSwipeAction;
 import androidx.test.espresso.action.Press;
 import androidx.test.espresso.action.Swipe;
@@ -181,20 +180,11 @@ public class SnackbarTest {
     // Now perform the UI interaction
     SnackbarUtils.performActionAndWaitUntilFullyDismissed(
         snackbar,
-        new SnackbarUtils.TransientBottomBarAction() {
-          @Override
-          public void perform() throws Throwable {
-            if (action != null) {
-              interaction.perform(action);
-            } else if (dismissAction != null) {
-              activityTestRule.runOnUiThread(
-                  new Runnable() {
-                    @Override
-                    public void run() {
-                      dismissAction.dismiss(snackbar);
-                    }
-                  });
-            }
+        () -> {
+          if (action != null) {
+            interaction.perform(action);
+          } else if (dismissAction != null) {
+            activityTestRule.runOnUiThread(() -> dismissAction.dismiss(snackbar));
           }
         });
 
@@ -245,12 +235,7 @@ public class SnackbarTest {
     verifyDismissCallback(
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         null,
-        new DismissAction() {
-          @Override
-          public void dismiss(Snackbar snackbar) {
-            snackbar.dismiss();
-          }
-        },
+        Snackbar::dismiss,
         Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_MANUAL);
   }
@@ -273,21 +258,15 @@ public class SnackbarTest {
         // (outside the bounds)
         new GeneralSwipeAction(
             Swipe.SLOW,
-            new CoordinatesProvider() {
-              @Override
-              public float[] calculateCoordinates(View view) {
-                final int[] loc = new int[2];
-                view.getLocationOnScreen(loc);
-                return new float[] {loc[0] + view.getWidth() / 2, loc[1] + view.getHeight() / 2};
-              }
+            view -> {
+              final int[] loc = new int[2];
+              view.getLocationOnScreen(loc);
+              return new float[] {loc[0] + view.getWidth() / 2, loc[1] + view.getHeight() / 2};
             },
-            new CoordinatesProvider() {
-              @Override
-              public float[] calculateCoordinates(View view) {
-                final int[] loc = new int[2];
-                view.getLocationOnScreen(loc);
-                return new float[] {loc[0] + view.getWidth() / 2, loc[1] - view.getHeight()};
-              }
+            view -> {
+              final int[] loc = new int[2];
+              view.getLocationOnScreen(loc);
+              return new float[] {loc[0] + view.getWidth() / 2, loc[1] - view.getHeight()};
             },
             Press.FINGER),
         null,
@@ -305,12 +284,7 @@ public class SnackbarTest {
     verifyDismissCallback(
         onView(isAssignableFrom(Snackbar.SnackbarLayout.class)),
         null,
-        new DismissAction() {
-          @Override
-          public void dismiss(Snackbar snackbar) {
-            anotherSnackbar.show();
-          }
-        },
+        snackbar -> anotherSnackbar.show(),
         Snackbar.LENGTH_INDEFINITE,
         Snackbar.Callback.DISMISS_EVENT_CONSECUTIVE);
 

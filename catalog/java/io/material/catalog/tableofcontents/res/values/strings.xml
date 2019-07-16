@@ -17,6 +17,5 @@
 
 <resources>
   <string name="cat_toc_title">Material Components</string>
-
   <string name="cat_toc_status_wip">WIP</string>
 </resources>

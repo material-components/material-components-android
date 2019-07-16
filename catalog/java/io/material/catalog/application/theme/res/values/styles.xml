@@ -16,11 +16,28 @@
   -->
 <resources>
 
-  <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar.Primary"/>
+  <style name="Widget.Catalog.Toolbar" parent="Widget.MaterialComponents.Toolbar.PrimarySurface">
+    <!-- Toolbar should always be within an AppBarLayout which provides the background. -->
+    <item name="android:background">@null</item>
+  </style>
 
   <style name="Widget.Catalog.Toolbar.WithCloseButton" parent="Widget.Catalog.Toolbar">
     <item name="navigationContentDescription">@string/toolbar_navigation_close_description</item>
     <item name="navigationIcon">@drawable/ic_close_vd_theme_24px</item>
+  </style>
+
+  <style name="Widget.Catalog.ChooseThemeButton" parent="Widget.AppCompat.ImageButton">
+    <item name="android:id">@id/cat_toc_theme_button</item>
+    <item name="android:layout_width">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:layout_height">@dimen/mtrl_min_touch_target_size</item>
+    <item name="android:layout_gravity">center_vertical|end</item>
+    <item name="android:background">?attr/actionBarItemBackground</item>
+    <item name="srcCompat">@drawable/abc_ic_menu_overflow_material</item>
+  </style>
+
+  <style name="ThemeOverlay.Catalog.AppBarLayout" parent="">
+    <item name="android:textColorPrimary">?attr/colorOnPrimarySurface</item>
+    <item name="colorControlNormal">?attr/colorOnPrimarySurface</item>
   </style>
 
 </resources>

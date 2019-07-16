@@ -14,27 +14,32 @@
      See the License for the specific language governing permissions and
      limitations under the License.
 -->
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:orientation="vertical">
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:orientation="@integer/mtrl_calendar_header_orientation">
 
-  <include
-      layout="@layout/mtrl_date_picker_header"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_weight="0"/>
+  <include layout="@layout/mtrl_picker_header_dialog"/>
 
-  <FrameLayout
-      android:id="@+id/calendar_frame"
-      android:layout_width="match_parent"
+  <LinearLayout
+      android:layout_width="wrap_content"
       android:layout_height="wrap_content"
-      android:layout_weight="1"/>
+      android:orientation="vertical">
 
-  <include
-      layout="@layout/mtrl_picker_actions"
-      android:layout_width="match_parent"
-      android:layout_height="wrap_content"
-      android:layout_weight="0"/>
+    <!-- The layout_height and layout_width are overridden in code -->
+    <FrameLayout
+        android:id="@+id/mtrl_calendar_frame"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:paddingBottom="@dimen/mtrl_calendar_bottom_padding"
+        android:paddingStart="@dimen/mtrl_calendar_content_padding"
+        android:paddingEnd="@dimen/mtrl_calendar_content_padding"
+        android:paddingLeft="@dimen/mtrl_calendar_content_padding"
+        android:paddingRight="@dimen/mtrl_calendar_content_padding"/>
+
+    <include layout="@layout/mtrl_picker_actions"/>
+
+  </LinearLayout>
 
 </LinearLayout>

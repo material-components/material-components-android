@@ -21,7 +21,26 @@
   <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Spinner"/>
   <style name="ThemeOverlay.MaterialComponents.MaterialAlertDialog.Picker.Date.Calendar"/>
 
-  <style name="ThemeOverlay.MaterialComponents.MaterialCalendarView" parent="ThemeOverlay.MaterialComponents.Dialog"/>
-  <style name="ThemeOverlay.MaterialComponents.DatePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendarView"/>
-  <style name="ThemeOverlay.MaterialComponents.DateRangePicker" parent="ThemeOverlay.MaterialComponents.MaterialCalendarView"/>
+  <style name="ThemeOverlay.MaterialComponents.MaterialCalendar" parent="ThemeOverlay.MaterialComponents.Dialog">
+    <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar</item>
+
+    <!-- Header Styles -->
+    <item name="materialCalendarHeaderLayout">@style/Widget.MaterialComponents.MaterialCalendar.HeaderLayout</item>
+    <item name="materialCalendarHeaderTitle">@style/Widget.MaterialComponents.MaterialCalendar.HeaderTitle</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection</item>
+    <item name="materialCalendarHeaderToggleButton">@style/Widget.MaterialComponents.MaterialCalendar.HeaderToggleButton</item>
+
+    <!-- Grid Styles -->
+    <item name="materialCalendarDay">@style/Widget.MaterialComponents.MaterialCalendar.DayTextView</item>
+
+    <!-- Action Styles -->
+    <item name="buttonBarPositiveButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+    <item name="buttonBarNegativeButtonStyle">@style/Widget.MaterialComponents.Button.TextButton.Dialog</item>
+  </style>
+
+  <style name="ThemeOverlay.MaterialComponents.MaterialCalendar.Fullscreen" parent="ThemeOverlay.MaterialComponents.MaterialCalendar">
+    <item name="materialCalendarStyle">@style/Widget.MaterialComponents.MaterialCalendar.Fullscreen</item>
+    <item name="materialCalendarHeaderSelection">@style/Widget.MaterialComponents.MaterialCalendar.HeaderSelection.Fullscreen</item>
+  </style>
+
 </resources>

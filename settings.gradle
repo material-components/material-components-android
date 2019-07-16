@@ -12,6 +12,8 @@ include ':tests:javatests:com:google:android:material:theme'
 
 include ':catalog'
 
+include ':material-theme-builder'
+
 include ':demos:java:io:material:demo:shrine'
 include ':demos:java:io:material:demo:shrine:filters'
 include ':demos:java:io:material:demo:shrine:products'

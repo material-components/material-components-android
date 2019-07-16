@@ -18,29 +18,43 @@ package io.material.catalog.menu;
 
 import io.material.catalog.R;
 
+import static android.content.Context.CLIPBOARD_SERVICE;
+import static android.text.Spanned.SPAN_EXCLUSIVE_EXCLUSIVE;
+
+import android.content.ClipData;
+import android.content.ClipboardManager;
+import android.content.Context;
 import android.graphics.drawable.InsetDrawable;
 import android.os.Bundle;
+import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.snackbar.Snackbar;
 import androidx.appcompat.view.menu.MenuBuilder;
+import androidx.appcompat.widget.ListPopupWindow;
 import androidx.appcompat.widget.PopupMenu;
-import androidx.appcompat.widget.PopupMenu.OnMenuItemClickListener;
+import android.text.Spannable;
+import android.text.style.BackgroundColorSpan;
 import android.util.TypedValue;
+import android.view.ContextMenu;
+import android.view.ContextMenu.ContextMenuInfo;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.TextView;
 import io.material.catalog.feature.DemoFragment;
 
 /** A fragment that displays the main menu demo for the Catalog app. */
 public class MenuMainDemoFragment extends DemoFragment {
 
-  public static final int ICON_MARGIN = 8;
+  private static final int ICON_MARGIN = 8;
+  private static final String CLIP_DATA_LABEL = "Sample text to copy";
+  @LayoutRes private int popupItemLayout;
 
   @Override
   public void onCreateOptionsMenu(Menu menu, MenuInflater menuInflater) {
@@ -54,20 +68,15 @@ public class MenuMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(R.layout.cat_menu_fragment, viewGroup, false);
     Button button = view.findViewById(R.id.menu_button);
     Button iconMenuButton = view.findViewById(R.id.menu_button_with_icons);
-    button.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            showMenu(v, R.menu.popup_menu);
-          }
-        });
-    iconMenuButton.setOnClickListener(
-        new OnClickListener() {
-          @Override
-          public void onClick(View v) {
-            showMenu(v, R.menu.menu_with_icons);
-          }
-        });
+    button.setOnClickListener(v -> showMenu(v, R.menu.popup_menu));
+    iconMenuButton.setOnClickListener(v -> showMenu(v, R.menu.menu_with_icons));
+
+    TextView contextMenuTextView = view.findViewById(R.id.context_menu_tv);
+    registerForContextMenu(contextMenuTextView);
+
+    Button listPopupWindowButton = view.findViewById(R.id.list_popup_window);
+    ListPopupWindow listPopupWindow = initializeListPopupMenu(listPopupWindowButton);
+    listPopupWindowButton.setOnClickListener(v -> listPopupWindow.show());
 
     return view;
   }
@@ -96,17 +105,73 @@ public class MenuMainDemoFragment extends DemoFragment {
       }
     }
     popup.setOnMenuItemClickListener(
-        new OnMenuItemClickListener() {
-          @Override
-          public boolean onMenuItemClick(MenuItem menuItem) {
-            Snackbar.make(
-                    getActivity().findViewById(android.R.id.content),
-                    menuItem.getTitle(),
-                    Snackbar.LENGTH_LONG)
-                .show();
-            return true;
-          }
+        menuItem -> {
+          Snackbar.make(
+                  getActivity().findViewById(android.R.id.content),
+                  menuItem.getTitle(),
+                  Snackbar.LENGTH_LONG)
+              .show();
+          return true;
         });
     popup.show();
+  }
+
+  @Override
+  public void onCreateContextMenu(ContextMenu menu, View v, ContextMenuInfo menuInfo) {
+    TextView contextMenuTextView = (TextView) v;
+    Context context = getContext();
+    menu.add(android.R.string.copy)
+        .setOnMenuItemClickListener(
+            item -> {
+              ClipboardManager clipboard =
+                  (ClipboardManager) context.getSystemService(CLIPBOARD_SERVICE);
+              clipboard.setPrimaryClip(
+                  ClipData.newPlainText(CLIP_DATA_LABEL, contextMenuTextView.getText()));
+              return true;
+            });
+
+    menu.add(R.string.context_menu_highlight)
+        .setOnMenuItemClickListener(
+            item -> {
+              highlightText(contextMenuTextView);
+              return true;
+            });
+  }
+
+  public void setPopupItemLayoutRes(@LayoutRes int popupItemRes) {
+    popupItemLayout = popupItemRes;
+  }
+
+  private ListPopupWindow initializeListPopupMenu(View v) {
+    ListPopupWindow listPopupWindow =
+        new ListPopupWindow(getContext(), null, R.attr.listPopupWindowStyle);
+    ArrayAdapter<CharSequence> adapter =
+        new ArrayAdapter<>(
+            getContext(),
+            popupItemLayout,
+            getResources().getStringArray(R.array.cat_list_popup_window_content));
+    listPopupWindow.setAdapter(adapter);
+    listPopupWindow.setAnchorView(v);
+    listPopupWindow.setOnItemClickListener(
+        (parent, view, position, id) -> {
+          Snackbar.make(
+                  getActivity().findViewById(android.R.id.content),
+                  adapter.getItem(position).toString(),
+                  Snackbar.LENGTH_LONG)
+              .show();
+          listPopupWindow.dismiss();
+        });
+    return listPopupWindow;
+  }
+
+  private void highlightText(TextView textView) {
+    Context context = textView.getContext();
+    CharSequence text = textView.getText();
+    TypedValue value = new TypedValue();
+    context.getTheme().resolveAttribute(R.attr.colorPrimary, value, true);
+    Spannable spanText = Spannable.Factory.getInstance().newSpannable(text);
+    spanText.setSpan(
+        new BackgroundColorSpan(value.data), 0, text.length(), SPAN_EXCLUSIVE_EXCLUSIVE);
+    textView.setText(spanText);
   }
 }

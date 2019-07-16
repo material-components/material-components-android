@@ -22,7 +22,6 @@ import static org.junit.Assert.assertEquals;
 
 import android.content.Context;
 import androidx.test.core.app.ApplicationProvider;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.robolectric.RobolectricTestRunner;
@@ -33,15 +32,12 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 public class ResourceLoadTest {
 
   private final Context context = ApplicationProvider.getApplicationContext();
-  private final int defaultMinimumTouchTargetSize = context.getResources().getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size);
-
-  @Before
-  public void setDefaultTheme() {
-    context.setTheme(R.style.Theme_MaterialComponents_Light);
-  }
+  private final int defaultMinimumTouchTargetSize =
+      context.getResources().getDimensionPixelSize(R.dimen.mtrl_min_touch_target_size);
 
   @Test
   public void defaultThemeReturnsAccessibleMinimumTouchTarget() {
+    context.setTheme(R.style.Theme_MaterialComponents_Light);
     int minimumTouchTarget = MaterialAttributes.resolveMinimumAccessibleTouchTarget(context);
     assertEquals(defaultMinimumTouchTargetSize, minimumTouchTarget);
   }
@@ -61,4 +57,22 @@ public class ResourceLoadTest {
     assertEquals(pxExpected, minimumTouchTarget);
   }
 
+  @Test
+  public void dimensionValueLoadsFromContext() {
+    context.setTheme(R.style.Theme_MaterialComponents_Light_BarSize);
+    int resolvedDimension =
+        MaterialAttributes.resolveDimension(
+            context, R.attr.actionBarSize, R.dimen.default_dimension);
+    assertEquals(context.getResources().getDimensionPixelSize(R.dimen.action_bar_size), resolvedDimension);
+  }
+
+  @Test
+  public void dimensionValueLoadsFromDefault() {
+    context.setTheme(R.style.EmptyTheme);
+    int resolvedDimension =
+        MaterialAttributes.resolveDimension(
+            context, R.attr.actionBarSize, R.dimen.default_dimension);
+    assertEquals(
+        context.getResources().getDimensionPixelSize(R.dimen.default_dimension), resolvedDimension);
+  }
 }

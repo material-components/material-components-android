@@ -70,9 +70,8 @@ for an `OnCheckedChangeListener` is also provided.
 
 Cards have a `dragged_state`. In the default style,
 `@style/Widget.MaterialComponents.CardView`, the dragged state has foreground
-and elevation changes to convey motion.
-The recommended way of using dragged state is via
-`androidx.customview.widget.ViewDragHelper`.
+and elevation changes to convey motion. The recommended way of using dragged
+state is via the androidx `ViewDragHelper`.
 
 ```java
  private class ViewDragHelperCallback extends ViewDragHelper.Callback {

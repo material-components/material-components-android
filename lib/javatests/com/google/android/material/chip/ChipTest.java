@@ -17,13 +17,12 @@ package com.google.android.material.chip;
 
 import com.google.android.material.R;
 
-
 import static com.google.android.material.internal.ViewUtils.dpToPx;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
+import static com.google.common.truth.Truth.assertThat;
 
+import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
+import android.text.TextUtils;
 import android.text.TextUtils.TruncateAt;
 import android.view.View;
 import android.view.View.MeasureSpec;
@@ -35,9 +34,11 @@ import org.junit.rules.ExpectedException;
 import org.junit.runner.RunWith;
 import org.robolectric.Robolectric;
 import org.robolectric.RobolectricTestRunner;
+import org.robolectric.annotation.TextLayoutMode;
 import org.robolectric.annotation.internal.DoNotInstrument;
 
 /** Tests for {@link com.google.android.material.chip.Chip}. */
+@TextLayoutMode(value = TextLayoutMode.Mode.LEGACY, issueId = "130377392")
 @RunWith(RobolectricTestRunner.class)
 @DoNotInstrument
 public class ChipTest {
@@ -45,15 +46,15 @@ public class ChipTest {
   @Rule public final ExpectedException thrown = ExpectedException.none();
 
   private static final int CHIP_LINES = 2;
-  private static final double DELTA = 0.01;
+  private static final float DELTA = 0.01f;
   private static final int MIN_SIZE_FOR_ALLY_DP = 48;
 
   private Chip chip;
 
   @Before
   public void themeApplicationContext() {
-    ApplicationProvider.getApplicationContext().setTheme(
-        R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
+    ApplicationProvider.getApplicationContext()
+        .setTheme(R.style.Theme_MaterialComponents_Light_NoActionBar_Bridge);
     AppCompatActivity activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
     View inflated = activity.getLayoutInflater().inflate(R.layout.test_action_chip, null);
     chip = inflated.findViewById(R.id.chip);
@@ -135,17 +136,8 @@ public class ChipTest {
   public void ensureMinTouchTarget_is48dp() {
     setupAndMeasureChip(true);
 
-    assertEquals(
-        "Chip width: " + chip.getMeasuredWidth(),
-        getMinTouchTargetSize(),
-        chip.getMeasuredWidth(),
-        DELTA);
-
-    assertEquals(
-        "Chip height: " + chip.getMeasuredHeight(),
-        getMinTouchTargetSize(),
-        chip.getMeasuredHeight(),
-        DELTA);
+    assertThat(getMinTouchTargetSize()).isWithin(DELTA).of(chip.getMeasuredWidth());
+    assertThat(getMinTouchTargetSize()).isWithin(DELTA).of(chip.getMeasuredHeight());
   }
 
   @Test
@@ -153,15 +145,23 @@ public class ChipTest {
 
     setupAndMeasureChip(false);
 
-    assertNotEquals(chip.getMeasuredWidth(), getMinTouchTargetSize(), DELTA);
+    assertThat(getMinTouchTargetSize()).isNotWithin(DELTA).of(chip.getMeasuredWidth());
 
-    assertTrue(
-        "Chip width: " + chip.getMeasuredWidth(),
-        chip.getMeasuredWidth() < getMinTouchTargetSize());
+    assertThat(chip.getMeasuredWidth()).isLessThan((int) getMinTouchTargetSize());
 
-    assertTrue(
-        "Chip height: " + chip.getMeasuredHeight(),
-        chip.getMeasuredHeight() < getMinTouchTargetSize());
+    assertThat(chip.getMeasuredHeight()).isLessThan((int) getMinTouchTargetSize());
+  }
+
+  @Test
+  public void testSetChipDrawableGetText() {
+    Context context = ApplicationProvider.getApplicationContext();
+    Chip resultChip = new Chip(context);
+    ChipDrawable chipDrawable =
+        ChipDrawable.createFromAttributes(
+            context, null, 0, R.style.Widget_MaterialComponents_Chip_Choice);
+    resultChip.setChipDrawable(chipDrawable);
+    resultChip.setText("foo");
+    assertThat(TextUtils.equals(resultChip.getText(), "foo")).isTrue();
   }
 
   private static float getMinTouchTargetSize() {

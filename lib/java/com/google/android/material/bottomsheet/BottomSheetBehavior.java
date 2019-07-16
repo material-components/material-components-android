@@ -26,6 +26,8 @@ import android.content.Context;
 import android.content.res.ColorStateList;
 import android.content.res.TypedArray;
 import android.os.Build;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.IntDef;
@@ -36,8 +38,6 @@ import androidx.annotation.VisibleForTesting;
 import com.google.android.material.resources.MaterialResources;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
-import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import androidx.core.math.MathUtils;
 import androidx.customview.view.AbsSavedState;
 import androidx.core.view.ViewCompat;
@@ -51,6 +51,8 @@ import android.view.ViewConfiguration;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.view.accessibility.AccessibilityEvent;
+import androidx.coordinatorlayout.widget.CoordinatorLayout;
+import androidx.coordinatorlayout.widget.CoordinatorLayout.LayoutParams;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
@@ -191,6 +193,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   private static final int DEF_STYLE_RES = R.style.Widget_Design_BottomSheet_Modal;
 
+  int expandedOffset;
+
   int fitToContentsOffset;
 
   int halfExpandedOffset;
@@ -198,6 +202,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   float halfExpandedRatio = 0.5f;
 
   int collapsedOffset;
+
+  float elevation = -1;
 
   boolean hideable;
 
@@ -249,6 +255,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     }
     createShapeValueAnimator();
 
+    if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {
+      this.elevation = a.getDimension(R.styleable.BottomSheetBehavior_Layout_android_elevation, -1);
+    }
+
     TypedValue value = a.peekValue(R.styleable.BottomSheetBehavior_Layout_behavior_peekHeight);
     if (value != null && value.data == PEEK_HEIGHT_AUTO) {
       setPeekHeight(value.data);
@@ -264,6 +274,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         a.getBoolean(R.styleable.BottomSheetBehavior_Layout_behavior_skipCollapsed, false));
     setSaveFlags(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_saveFlags, SAVE_NONE));
     setHalfExpandedRatio(a.getFloat(R.styleable.BottomSheetBehavior_Layout_behavior_halfExpandedRatio, 0.5f));
+    setExpandedOffset(a.getInt(R.styleable.BottomSheetBehavior_Layout_behavior_expandedOffset, 0));
     a.recycle();
     ViewConfiguration configuration = ViewConfiguration.get(context);
     maximumVelocity = configuration.getScaledMaximumFlingVelocity();
@@ -316,9 +327,10 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       ViewCompat.setBackground(child, materialShapeDrawable);
     }
     // Set elevation on MaterialShapeDrawable
-    float elevation = ViewCompat.getElevation(child);
     if (materialShapeDrawable != null) {
-      materialShapeDrawable.setElevation(elevation);
+      // Use elevation attr if set on bottomsheet; otherwise, use elevation of child view.
+      materialShapeDrawable.setElevation(
+          elevation == -1 ? ViewCompat.getElevation(child) : elevation);
     }
 
     if (viewRef == null) {
@@ -545,7 +557,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
       } else {
         if (currentTop < halfExpandedOffset) {
           if (currentTop < Math.abs(currentTop - collapsedOffset)) {
-            top = 0;
+            top = expandedOffset;
             targetState = STATE_EXPANDED;
           } else {
             top = halfExpandedOffset;
@@ -562,8 +574,20 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
         }
       }
     } else {
-      top = collapsedOffset;
-      targetState = STATE_COLLAPSED;
+      if (fitToContents) {
+        top = collapsedOffset;
+        targetState = STATE_COLLAPSED;
+      } else {
+        // Settle to nearest height.
+        int currentTop = child.getTop();
+        if (Math.abs(currentTop - halfExpandedOffset) < Math.abs(currentTop - collapsedOffset)) {
+          top = halfExpandedOffset;
+          targetState = STATE_HALF_EXPANDED;
+        } else {
+          top = collapsedOffset;
+          targetState = STATE_COLLAPSED;
+        }
+      }
     }
     if (viewDragHelper.smoothSlideViewTo(child, child.getLeft(), top)) {
       setStateInternal(STATE_SETTLING);
@@ -712,7 +736,23 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
     this.halfExpandedRatio = ratio;
   }
 
-   /**
+  /**
+   * Determines the top offset of the BottomSheet in the {@link #STATE_EXPANDED} state when
+   * fitsToContent is false. The default value is 0, which results in the sheet matching the
+   * parent's top.
+   *
+   * @param offset an integer value greater than equal to 0, representing the {@link
+   *     #STATE_EXPANDED} offset. Value must not exceed the offset in the half expanded state.
+   * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_expandedOffset
+   */
+  public void setExpandedOffset(int offset) {
+    if (offset < 0) {
+      throw new IllegalArgumentException("offset must be greater than or equal to 0");
+    }
+    this.expandedOffset = offset;
+  }
+
+  /**
    * Gets the ratio for the height of the BottomSheet in the {@link #STATE_HALF_EXPANDED} state.
    *
    * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
@@ -925,7 +965,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private void calculateHalfExpandedOffset() {
-      this.halfExpandedOffset = (int) (parentHeight * halfExpandedRatio);
+    this.halfExpandedOffset = (int) (parentHeight * (1 - halfExpandedRatio));
   }
 
   private void reset() {
@@ -1037,7 +1077,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   private int getExpandedOffset() {
-    return fitToContents ? fitToContentsOffset : 0;
+    return fitToContents ? fitToContentsOffset : expandedOffset;
   }
 
   void startSettlingAnimation(View child, int state) {
@@ -1114,7 +1154,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 top = halfExpandedOffset;
                 targetState = STATE_HALF_EXPANDED;
               } else {
-                top = 0;
+                top = expandedOffset;
                 targetState = STATE_EXPANDED;
               }
             }
@@ -1141,7 +1181,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
             } else {
               if (currentTop < halfExpandedOffset) {
                 if (currentTop < Math.abs(currentTop - collapsedOffset)) {
-                  top = 0;
+                  top = expandedOffset;
                   targetState = STATE_EXPANDED;
                 } else {
                   top = halfExpandedOffset;
@@ -1158,9 +1198,22 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
                 }
               }
             }
-          } else {
-            top = collapsedOffset;
-            targetState = STATE_COLLAPSED;
+          } else { // Moving Down
+            if (fitToContents) {
+              top = collapsedOffset;
+              targetState = STATE_COLLAPSED;
+            } else {
+              // Settle to the nearest correct height.
+              int currentTop = releasedChild.getTop();
+              if (Math.abs(currentTop - halfExpandedOffset)
+                  < Math.abs(currentTop - collapsedOffset)) {
+                top = halfExpandedOffset;
+                targetState = STATE_HALF_EXPANDED;
+              } else {
+                top = collapsedOffset;
+                targetState = STATE_COLLAPSED;
+              }
+            }
           }
           if (viewDragHelper.settleCapturedViewAt(releasedChild.getLeft(), top)) {
             setStateInternal(STATE_SETTLING);
@@ -1214,6 +1267,17 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   @VisibleForTesting
   int getPeekHeightMin() {
     return peekHeightMin;
+  }
+
+  /**
+   * Disables the shaped corner {@link ShapeAppearanceModel} interpolation transition animations.
+   * Will have no effect unless the sheet utilizes a {@link MaterialShapeDrawable} with set shape
+   * theming properties. Only For use in UI testing.
+   */
+  @VisibleForTesting
+  public void disableShapeAnimations() {
+    // Sets the shape value animator to null, prevents animations from occuring during testing.
+    interpolatorAnimator = null;
   }
 
   private class SettleRunnable implements Runnable {

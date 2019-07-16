@@ -21,6 +21,7 @@ import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 
 import android.content.Context;
 import androidx.annotation.AttrRes;
+import androidx.annotation.DimenRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.Px;
 import androidx.annotation.RestrictTo;
@@ -36,34 +37,16 @@ import android.view.View;
 public class MaterialAttributes {
 
   /**
-   * Returns the {@link TypedValue} for the provided {@code attributeResId}, using the context of
-   * the provided {@code componentView}.
-   *
-   * @throws IllegalArgumentException if the attribute is not present in the current theme.
+   * Returns the {@link TypedValue} for the provided {@code attributeResId} or null if the attribute
+   * is not present in the current theme.
    */
-  public static TypedValue resolveAttributeOrThrow(
-      View componentView, @AttrRes int attributeResId) {
-    return resolveAttributeOrThrow(
-        componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
-  }
-
-  /**
-   * Returns the boolean value for the provided {@code attributeResId}.
-   *
-   * @throws IllegalArgumentException if the attribute is not present in the current theme.
-   */
-  public static boolean resolveBooleanAttributeOrThrow(
-      Context context, @AttrRes int attributeResId, String errorMessageComponent) {
-    return resolveAttributeOrThrow(context, attributeResId, errorMessageComponent).data != 0;
-  }
-
-  /**
-   * Returns the boolean value for the provided {@code attributeResId}, or false if the attribute is
-   * not present in the current theme.
-   */
-  public static boolean resolveBooleanAttribute(Context context, @AttrRes int attributeResId) {
-    TypedValue typedValue = resolveAttribute(context, attributeResId);
-    return typedValue != null && typedValue.data != 0;
+  @Nullable
+  public static TypedValue resolve(Context context, @AttrRes int attributeResId) {
+    TypedValue typedValue = new TypedValue();
+    if (context.getTheme().resolveAttribute(attributeResId, typedValue, true)) {
+      return typedValue;
+    }
+    return null;
   }
 
   /**
@@ -71,9 +54,9 @@ public class MaterialAttributes {
    *
    * @throws IllegalArgumentException if the attribute is not present in the current theme.
    */
-  public static TypedValue resolveAttributeOrThrow(
+  public static int resolveOrThrow(
       Context context, @AttrRes int attributeResId, String errorMessageComponent) {
-    TypedValue typedValue = resolveAttribute(context, attributeResId);
+    TypedValue typedValue = resolve(context, attributeResId);
     if (typedValue == null) {
       String errorMessage =
           "%1$s requires a value for the %2$s attribute to be set in your app theme. "
@@ -85,28 +68,61 @@ public class MaterialAttributes {
               errorMessageComponent,
               context.getResources().getResourceName(attributeResId)));
     }
-    return typedValue;
+    return typedValue.data;
   }
 
-  /** Returns the {@link TypedValue} for the provided {@code attributeResId}. */
-  @Nullable
-  public static TypedValue resolveAttribute(Context context, @AttrRes int attributeResId) {
-    TypedValue typedValue = new TypedValue();
-    if (context.getTheme().resolveAttribute(attributeResId, typedValue, true)) {
-      return typedValue;
-    }
-    return null;
+  /**
+   * Returns the {@link TypedValue} for the provided {@code attributeResId}, using the context of
+   * the provided {@code componentView}.
+   *
+   * @throws IllegalArgumentException if the attribute is not present in the current theme.
+   */
+  public static int resolveOrThrow(View componentView, @AttrRes int attributeResId) {
+    return resolveOrThrow(
+        componentView.getContext(), attributeResId, componentView.getClass().getCanonicalName());
+  }
+
+  /**
+   * Returns the boolean value for the provided {@code attributeResId}.
+   *
+   * @throws IllegalArgumentException if the attribute is not present in the current theme.
+   */
+  public static boolean resolveBooleanOrThrow(
+      Context context, @AttrRes int attributeResId, String errorMessageComponent) {
+    return resolveOrThrow(context, attributeResId, errorMessageComponent) != 0;
+  }
+
+  /**
+   * Returns the boolean value for the provided {@code attributeResId} or {@code defaultValue} if
+   * the attribute is not a boolean or not present in the current theme.
+   */
+  public static boolean resolveBoolean(
+      Context context, @AttrRes int attributeResId, boolean defaultValue) {
+    TypedValue typedValue = resolve(context, attributeResId);
+    return (typedValue != null && typedValue.type == TypedValue.TYPE_INT_BOOLEAN)
+        ? typedValue.data != 0
+        : defaultValue;
   }
 
   /** Returns the minimum touch target size, acceptable for accessibility, in pixels. */
   @Px
   public static int resolveMinimumAccessibleTouchTarget(Context context) {
-    TypedValue minTouchTargetSizeValue =
-        MaterialAttributes.resolveAttribute(context, R.attr.minTouchTargetSize);
-    if (minTouchTargetSizeValue == null) {
-      return (int) context.getResources().getDimension(R.dimen.mtrl_min_touch_target_size);
+    return resolveDimension(context, R.attr.minTouchTargetSize, R.dimen.mtrl_min_touch_target_size);
+  }
+
+  /**
+   * Returns the pixel value of the dimension specified by {@code attributeResId}. Defaults to
+   * {@code defaultDimenResId} if {@code attributeResId} cannot be found or is not a dimension
+   * within the given {@code context}.
+   */
+  @Px
+  public static int resolveDimension(
+      Context context, @AttrRes int attributeResId, @DimenRes int defaultDimenResId) {
+    TypedValue dimensionValue = resolve(context, attributeResId);
+    if (dimensionValue == null || dimensionValue.type != TypedValue.TYPE_DIMENSION) {
+      return (int) context.getResources().getDimension(defaultDimenResId);
     } else {
-      return (int) minTouchTargetSizeValue.getDimension(context.getResources().getDisplayMetrics());
+      return (int) dimensionValue.getDimension(context.getResources().getDisplayMetrics());
     }
   }
 }

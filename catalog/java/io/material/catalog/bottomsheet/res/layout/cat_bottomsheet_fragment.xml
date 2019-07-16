@@ -32,7 +32,7 @@
         android:layout_marginTop="16dp"
         android:layout_centerHorizontal="true"
         android:text="@string/cat_bottomsheet_button_text"/>
-      <Switch
+      <com.google.android.material.switchmaterial.SwitchMaterial
           android:id="@+id/cat_fullscreen_switch"
           android:layout_width="wrap_content"
           android:layout_height="wrap_content"
@@ -43,14 +43,25 @@
           android:textAllCaps="true"
           android:switchMinWidth="56dp"
           android:text="@string/cat_bottomsheet_switch_text"/>
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/cat_bottomsheet_expansion_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cat_fullscreen_switch"
+        android:layout_centerHorizontal="true"
+        android:padding="16dp"
+        android:switchMinWidth="56dp"
+        android:text="@string/cat_bottomsheet_expansion_switch_text"
+        android:textAllCaps="true"
+        android:textSize="14sp"/>
 
   </RelativeLayout>
+
   <RelativeLayout
       android:id="@+id/bottom_drawer"
-      style="@style/Widget.MaterialComponents.BottomSheet.Modal"
+      style="@style/Widget.MaterialComponents.BottomSheet"
       android:layout_width="match_parent"
       android:layout_height="400dp"
-      android:elevation="16dp"
       app:behavior_hideable="false"
       app:backgroundTint="?attr/colorSurface"
       app:behavior_peekHeight="200dp"
@@ -76,6 +87,24 @@
         android:text="@string/cat_bottomsheet_state_collapsed"
         android:textColor="?attr/colorOnSurface"
         android:textSize="18sp"/>
+
+    <Button
+        android:id="@+id/cat_bottomsheet_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cat_persistent_bottomsheet_state"
+        android:layout_centerHorizontal="true"
+        android:text="@string/cat_bottomsheet_button_label_enabled"/>
+
+    <com.google.android.material.switchmaterial.SwitchMaterial
+        android:id="@+id/cat_bottomsheet_enabled_switch"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/cat_bottomsheet_button"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="16dp"
+        android:text="@string/cat_bottomsheet_button_label_enabled"
+        android:checked="true"/>
 
   </RelativeLayout>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

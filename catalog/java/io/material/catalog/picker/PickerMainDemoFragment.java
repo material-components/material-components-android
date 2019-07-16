@@ -18,26 +18,26 @@ package io.material.catalog.picker;
 import io.material.catalog.R;
 
 import android.app.DatePickerDialog;
-import android.app.Dialog;
 import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.picker.MaterialDatePickerDialogFragment;
-import com.google.android.material.picker.MaterialDateRangePickerDialogFragment;
-import com.google.android.material.picker.MaterialStyledDatePickerDialog;
-import androidx.fragment.app.DialogFragment;
+import com.google.android.material.resources.MaterialAttributes;
+import com.google.android.material.snackbar.Snackbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
+import com.google.android.material.picker.MaterialDatePicker;
 import io.material.catalog.feature.DemoFragment;
 import java.util.Calendar;
 
 /** A fragment that displays the main Picker demos for the Catalog app. */
 public class PickerMainDemoFragment extends DemoFragment {
+
+  private Snackbar snackbar;
 
   // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
   @SuppressWarnings("RestrictTo")
@@ -47,37 +47,75 @@ public class PickerMainDemoFragment extends DemoFragment {
     View view = layoutInflater.inflate(R.layout.picker_main_demo, viewGroup, false);
     LinearLayout dialogLaunchersLayout = view.findViewById(R.id.picker_launcher_buttons_layout);
 
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.cat_picker_base,
-        buildOnClickListener(frameworkTodayDatePicker(0)));
+    snackbar = Snackbar.make(viewGroup, R.string.cat_picker_no_action, Snackbar.LENGTH_LONG);
+    int dialogTheme =
+        MaterialAttributes.resolveOrThrow(
+            getContext(), R.attr.materialCalendarTheme, getClass().getCanonicalName());
+    int fullscreenTheme =
+        MaterialAttributes.resolveOrThrow(
+            getContext(), R.attr.materialCalendarFullscreenTheme, getClass().getCanonicalName());
 
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.cat_picker_date_material_styled,
-        buildOnClickListener(materialStyledTodayDatePicker(0)));
-
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.cat_picker_styled_date_spinner,
-        buildOnClickListener(materialStyledTodayDatePicker(getSpinnerTheme())));
-
-    addDialogLauncher(
-        dialogLaunchersLayout,
-        R.string.cat_picker_styled_date_calendar,
-        buildOnClickListener(materialStyledTodayDatePicker(getCalendarTheme())));
-
-    addDialogLauncher(
+    setupDialogFragment(
         dialogLaunchersLayout,
         R.string.cat_picker_date_calendar,
-        buildOnClickListener(MaterialDatePickerDialogFragment.newInstance()));
+        MaterialDatePicker.Builder.datePicker());
+    setupDialogFragment(
+        dialogLaunchersLayout,
+        R.string.cat_picker_date_calendar_fullscreen,
+        MaterialDatePicker.Builder.datePicker().setTheme(fullscreenTheme));
 
-    addDialogLauncher(
+    setupDialogFragment(
         dialogLaunchersLayout,
         R.string.cat_picker_date_range_calendar,
-        buildOnClickListener(MaterialDateRangePickerDialogFragment.newInstance()));
+        MaterialDatePicker.Builder.dateRangePicker());
+    setupDialogFragment(
+        dialogLaunchersLayout,
+        R.string.cat_picker_date_range_calendar_dialog,
+        MaterialDatePicker.Builder.dateRangePicker().setTheme(dialogTheme));
+
+    layoutInflater.inflate(R.layout.cat_picker_spacer, dialogLaunchersLayout, true);
+    addDialogLauncher(
+        dialogLaunchersLayout, R.string.cat_picker_base, v -> frameworkTodayDatePicker(0).show());
 
     return view;
+  }
+
+  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
+  @SuppressWarnings("RestrictTo")
+  private void setupDialogFragment(
+      ViewGroup dialogLaunchersLayout,
+      @StringRes int tagId,
+      MaterialDatePicker.Builder<?> builder) {
+    String tag = getString(tagId);
+    final MaterialDatePicker<?> materialCalendarPicker;
+    if (getFragmentManager().findFragmentByTag(tag) == null) {
+      materialCalendarPicker = builder.build();
+    } else {
+      materialCalendarPicker = (MaterialDatePicker<?>) getFragmentManager().findFragmentByTag(tag);
+    }
+    addSnackBarListeners(materialCalendarPicker);
+    addDialogLauncher(
+        dialogLaunchersLayout, tagId, v -> materialCalendarPicker.show(getFragmentManager(), tag));
+  }
+
+  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
+  @SuppressWarnings("RestrictTo")
+  private void addSnackBarListeners(MaterialDatePicker<?> materialCalendarPicker) {
+    materialCalendarPicker.addOnPositiveButtonClickListener(
+        selection -> {
+          snackbar.setText(materialCalendarPicker.getHeaderText());
+          snackbar.show();
+        });
+    materialCalendarPicker.addOnNegativeButtonClickListener(
+        dialog -> {
+          snackbar.setText(R.string.cat_picker_user_clicked_cancel);
+          snackbar.show();
+        });
+    materialCalendarPicker.addOnCancelListener(
+        dialog -> {
+          snackbar.setText(R.string.cat_picker_cancel);
+          snackbar.show();
+        });
   }
 
   protected int getSpinnerTheme() {
@@ -86,14 +124,6 @@ public class PickerMainDemoFragment extends DemoFragment {
 
   protected int getCalendarTheme() {
     return R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Calendar;
-  }
-
-  private OnClickListener buildOnClickListener(Dialog dialog) {
-    return v -> dialog.show();
-  }
-
-  private OnClickListener buildOnClickListener(DialogFragment dialogFragment) {
-    return v -> dialogFragment.show(getFragmentManager(), "Calendar Fragment");
   }
 
   private void addDialogLauncher(
@@ -110,15 +140,5 @@ public class PickerMainDemoFragment extends DemoFragment {
     int month = calendar.get(Calendar.MONTH);
     int day = calendar.get(Calendar.DAY_OF_MONTH);
     return new DatePickerDialog(getContext(), themeResId, null, year, month, day);
-  }
-
-  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
-  @SuppressWarnings("RestrictTo")
-  private DatePickerDialog materialStyledTodayDatePicker(@StyleRes int themeResId) {
-    Calendar calendar = Calendar.getInstance();
-    int year = calendar.get(Calendar.YEAR);
-    int month = calendar.get(Calendar.MONTH);
-    int day = calendar.get(Calendar.DAY_OF_MONTH);
-    return new MaterialStyledDatePickerDialog(getContext(), themeResId, null, year, month, day);
   }
 }

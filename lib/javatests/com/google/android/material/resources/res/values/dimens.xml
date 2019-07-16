@@ -15,5 +15,7 @@
     limitations under the License.
 -->
   <dimen name="mtrl_large_touch_target">100dp</dimen>
+  <dimen name="action_bar_size">16dp</dimen>
+  <dimen name="default_dimension">100dp</dimen>
 
 </resources>

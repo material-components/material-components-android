@@ -24,5 +24,8 @@
 
   <dimen name="mtrl_navigation_elevation">0dp</dimen>
   <dimen name="mtrl_navigation_item_icon_padding">14dp</dimen>
+  <dimen name="mtrl_navigation_item_icon_size">24dp</dimen>
   <dimen name="mtrl_navigation_item_horizontal_padding">22dp</dimen>
+  <dimen name="mtrl_navigation_item_shape_horizontal_margin">8dp</dimen>
+  <dimen name="mtrl_navigation_item_shape_vertical_margin">4dp</dimen>
 </resources>

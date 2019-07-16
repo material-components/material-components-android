@@ -38,10 +38,6 @@ import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.annotation.RestrictTo;
 import androidx.annotation.StyleRes;
-import com.google.android.material.animation.AnimationUtils;
-import com.google.android.material.internal.CollapsingTextHelper;
-import com.google.android.material.internal.DescendantOffsetUtils;
-import com.google.android.material.internal.ThemeEnforcement;
 import androidx.core.content.ContextCompat;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.math.MathUtils;
@@ -57,6 +53,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewParent;
 import android.widget.FrameLayout;
+import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.internal.CollapsingTextHelper;
+import com.google.android.material.internal.DescendantOffsetUtils;
+import com.google.android.material.internal.ThemeEnforcement;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -789,7 +789,7 @@ public class CollapsingToolbarLayout extends FrameLayout {
   }
 
   /**
-   * Set the drawable to use for the content scrim from resources.
+   * Set the drawable to use for the status bar scrim from resources.
    *
    * @param resId drawable resource id
    * @attr ref R.styleable#CollapsingToolbarLayout_statusBarScrim

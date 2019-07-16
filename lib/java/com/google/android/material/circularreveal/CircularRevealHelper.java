@@ -34,9 +34,9 @@ import android.os.Build.VERSION_CODES;
 import androidx.annotation.ColorInt;
 import androidx.annotation.IntDef;
 import androidx.annotation.Nullable;
+import android.view.View;
 import com.google.android.material.circularreveal.CircularRevealWidget.RevealInfo;
 import com.google.android.material.math.MathUtils;
-import android.view.View;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
@@ -54,7 +54,7 @@ public class CircularRevealHelper {
   /**
    * Delegate interface to be implemented by the {@link CircularRevealWidget} that owns this helper.
    */
-  interface Delegate {
+  public interface Delegate {
 
     /**
      * Calls {@link View#draw(Canvas) super#draw(Canvas)}.
