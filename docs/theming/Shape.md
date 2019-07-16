@@ -37,9 +37,9 @@ generally passed in to a MaterialShapeDrawable's constructor.
 The `shape` library provides some subclassed `CornerTreatment`s and
 `EdgeTreatment`s to allow for easily building new shapes:
 
--   [`CutCornerTreatment`](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/shape/CutCornerTreatment.java)
--   [`RoundedCornerTreatment`](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/shape/RoundedCornerTreatment.java)
--   [`TriangleEdgeTreatment`](https://github.com/material-components/material-components-android/blob/master/lib/java/com/google/android/material/shape/TriangleEdgeTreatment.java)
+-   [`CutCornerTreatment`](https://developer.android.com/reference/com/google/android/material/shape/CutCornerTreatment)
+-   [`RoundedCornerTreatment`](https://developer.android.com/reference/com/google/android/material/shape/RoundedCornerTreatment)
+-   [`TriangleEdgeTreatment`](https://developer.android.com/reference/com/google/android/material/shape/TriangleEdgeTreatment)
 
 Both `CornerTreatment` and `EdgeTreatment` can be subclassed to create custom
 corners and edges.
