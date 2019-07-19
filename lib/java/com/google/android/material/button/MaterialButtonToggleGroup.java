@@ -56,22 +56,22 @@ import java.util.List;
  *     android:layout_height="wrap_content"&gt;
  *
  *     &lt;com.google.android.material.button.MaterialButton
- *         style="?attr/materialButtonOutlinedStyle"
+ *         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
  *         android:layout_width="wrap_content"
  *         android:layout_height="wrap_content"
  *         android:text="@string/button_label_private"/&gt;
  *     &lt;com.google.android.material.button.MaterialButton
- *         style="?attr/materialButtonOutlinedStyle"
+ *         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
  *         android:layout_width="wrap_content"
  *         android:layout_height="wrap_content"
  *         android:text="@string/button_label_team"/&gt;
  *     &lt;com.google.android.material.button.MaterialButton
- *         style="?attr/materialButtonOutlinedStyle"
+ *         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
  *         android:layout_width="wrap_content"
  *         android:layout_height="wrap_content"
  *         android:text="@string/button_label_everyone"/&gt;
  *     &lt;com.google.android.material.button.MaterialButton
- *         style="?attr/materialButtonOutlinedStyle"
+ *         style="@style/Widget.MaterialComponents.Button.OutlinedButton"
  *         android:layout_width="wrap_content"
  *         android:layout_height="wrap_content"
  *         android:text="@string/button_label_custom"/&gt;
@@ -83,9 +83,9 @@ import java.util.List;
  * methods.
  *
  * <p>Note: Styling must applied to each child button individually. It is recommended to use the
- * {@link R.attr#materialButtonOutlinedStyle} attribute for all child buttons. {@link
- * R.attr#materialButtonOutlinedStyle} will most closely match the Material Design guidelines for
- * this component, and supports the checked state for child buttons.
+ * {@link R.style#Widget.MaterialComponents.Button.OutlinedButton} attribute for all child buttons.
+ * {@link R.style#Widget.MaterialComponents.Button.OutlinedButton} will most closely match the
+ * Material Design guidelines for this component, and supports the checked state for child buttons.
  *
  * <p>Any {@link MaterialButton}s added to this view group are automatically marked as {@code
  * checkable}, and by default multiple buttons within the same group can be checked. To enforce that
