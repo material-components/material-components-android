@@ -35,6 +35,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import androidx.annotation.AttrRes;
 import androidx.annotation.ColorInt;
+import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.PluralsRes;
@@ -55,14 +56,16 @@ import com.google.android.material.drawable.DrawableUtils;
 import com.google.android.material.internal.TextDrawableHelper;
 import com.google.android.material.internal.TextDrawableHelper.TextDrawableDelegate;
 import com.google.android.material.internal.ThemeEnforcement;
+import java.lang.annotation.Retention;
+import java.lang.annotation.RetentionPolicy;
 import java.lang.ref.WeakReference;
 
 /**
  * BadgeDrawable contains all the layout and draw logic for a badge.
  *
  * <p>You can use {@code BadgeDrawable} to display dynamic information such as a number of pending
- * requests in a {@link com.google.android.material.bottomnavigation.BottomNavigationView}. To create an
- * instance of {@code BadgeDrawable}, use {@link #create(Context)} or {@link
+ * requests in a {@link com.google.android.material.bottomnavigation.BottomNavigationView}. To
+ * create an instance of {@code BadgeDrawable}, use {@link #create(Context)} or {@link
  * #createFromAttributes(Context, AttributeSet, int, int)}. How to add and display a {@code
  * BadgeDrawable} on top of its anchor view depends on the API level:
  *
@@ -99,6 +102,29 @@ import java.lang.ref.WeakReference;
  * Material Android components generally support (e.g. themed attributes).
  */
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
+
+  /** Position the badge can be set to. */
+  @IntDef({
+    TOP_END,
+    TOP_START,
+    BOTTOM_END,
+    BOTTOM_START,
+  })
+  @Retention(RetentionPolicy.SOURCE)
+  public @interface BadgeGravity {}
+
+  /** The badge is positioned along the top and end edges of its anchor view */
+  public static final int TOP_END = 0;
+
+  /** The badge is positioned along the top and start edges of its anchor view */
+  public static final int TOP_START = 1;
+
+  /** The badge is positioned along the bottom and end edges of its anchor view */
+  public static final int BOTTOM_END = 2;
+
+  /** The badge is positioned along the bottom and start edges of its anchor view */
+  public static final int BOTTOM_START = 3;
+
   /**
    * Maximum number of characters a badge supports displaying by default. It could be changed using
    * BadgeDrawable#setMaxBadgeCount.
@@ -133,6 +159,9 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
   private float badgeCenterX;
   private float badgeCenterY;
   private int maxBadgeNumber;
+  // Need to keep a local reference in order to support updating badge gravity.
+  @Nullable private WeakReference<View> anchorView;
+  @Nullable private WeakReference<ViewGroup> customBadgeParent;
 
   /**
    * A {@link Parcelable} implementation used to ensure the state of BadgeDrawable is saved.
@@ -149,6 +178,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     private int maxCharacterCount;
     private CharSequence contentDescriptionNumberless;
     @PluralsRes private int contentDescriptionQuantityStrings;
+    @BadgeGravity private int badgeGravity;
 
     public SavedState(Context context) {
       // If the badge text color attribute was not explicitly set, use the text color specified in
@@ -169,6 +199,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       maxCharacterCount = in.readInt();
       contentDescriptionNumberless = in.readString();
       contentDescriptionQuantityStrings = in.readInt();
+      badgeGravity = in.readInt();
     }
 
     public static final Creator<SavedState> CREATOR =
@@ -198,6 +229,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       dest.writeInt(maxCharacterCount);
       dest.writeString(contentDescriptionNumberless.toString());
       dest.writeInt(contentDescriptionQuantityStrings);
+      dest.writeInt(badgeGravity);
     }
   }
 
@@ -272,6 +304,8 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     // Only set the badge text color if this attribute has explicitly been set, otherwise use the
     // text color specified in the TextAppearance.
     setBadgeTextColor(savedState.badgeTextColor);
+
+    setBadgeGravity(savedState.badgeGravity);
   }
 
   private void loadDefaultStateFromAttributes(
@@ -298,6 +332,7 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       setBadgeTextColor(readColorFromAttributes(context, a, R.styleable.Badge_badgeTextColor));
     }
 
+    setBadgeGravity(a.getInt(R.styleable.Badge_badgeGravity, TOP_END));
     a.recycle();
   }
 
@@ -460,6 +495,26 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       textDrawableHelper.setTextWidthDirty(true);
       updateBounds();
       invalidateSelf();
+    }
+  }
+
+  @BadgeGravity
+  public int getBadgeGravity() {
+    return savedState.badgeGravity;
+  }
+
+  /**
+   * Sets this badge's gravity with respect to its anchor view.
+   *
+   * @param gravity Constant representing one of 4 possible {@link BadgeGravity} values.
+   */
+  public void setBadgeGravity(@BadgeGravity int gravity) {
+    if (savedState.badgeGravity != gravity) {
+      savedState.badgeGravity = gravity;
+      if (anchorView != null && anchorView.get() != null) {
+        updateBadgeCoordinates(
+            anchorView.get(), customBadgeParent != null ? customBadgeParent.get() : null);
+      }
     }
   }
 
@@ -638,11 +693,24 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
     if (context == null) {
       return;
     }
+    this.anchorView = new WeakReference<>(anchorView);
+    this.customBadgeParent = new WeakReference<>(customBadgeParent);
     Resources res = context.getResources();
     Rect anchorRect = new Rect();
     // Returns the visible bounds of the anchor view.
     anchorView.getDrawingRect(anchorRect);
-    anchorRect.top += res.getDimensionPixelSize(R.dimen.mtrl_badge_vertical_offset);
+    int deltaY = res.getDimensionPixelSize(R.dimen.mtrl_badge_vertical_offset);
+    switch (savedState.badgeGravity) {
+      case BOTTOM_END:
+      case BOTTOM_START:
+        anchorRect.bottom -= deltaY;
+        break;
+      case TOP_END:
+      case TOP_START:
+      default:
+        anchorRect.top += deltaY;
+        break;
+    }
     if (customBadgeParent != null || BadgeUtils.USE_COMPAT_PARENT) {
       // Calculates coordinates relative to the parent.
       ViewGroup viewGroup =
@@ -650,10 +718,34 @@ public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
       viewGroup.offsetDescendantRectToMyCoords(anchorView, anchorRect);
     }
 
-    badgeCenterX =
-        ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
-            ? anchorRect.right
-            : anchorRect.left;
-    badgeCenterY = anchorRect.top;
+    switch (savedState.badgeGravity) {
+      case BOTTOM_START:
+      case TOP_START:
+        badgeCenterX =
+            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+                ? anchorRect.left
+                : anchorRect.right;
+        break;
+      case BOTTOM_END:
+      case TOP_END:
+      default:
+        badgeCenterX =
+            ViewCompat.getLayoutDirection(anchorView) == View.LAYOUT_DIRECTION_LTR
+                ? anchorRect.right
+                : anchorRect.left;
+        break;
+    }
+
+    switch (savedState.badgeGravity) {
+      case BOTTOM_END:
+      case BOTTOM_START:
+        badgeCenterY = anchorRect.bottom;
+        break;
+      case TOP_END:
+      case TOP_START:
+      default:
+        badgeCenterY = anchorRect.top;
+        break;
+    }
   }
 }

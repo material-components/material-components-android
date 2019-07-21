@@ -25,6 +25,12 @@
     <attr name="badgeTextColor" format="color"/>
     <attr name="maxCharacterCount" format="integer"/>
     <attr name="number" format="integer"/>
+    <attr name="badgeGravity">
+      <enum name="TOP_END" value ="0"/>
+      <enum name="TOP_START" value ="1"/>
+      <enum name="BOTTOM_END" value ="2"/>
+      <enum name="BOTTOM_START" value ="3"/>
+    </attr>
   </declare-styleable>
 
 </resources>

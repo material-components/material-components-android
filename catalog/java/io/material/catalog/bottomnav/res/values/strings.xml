@@ -54,6 +54,14 @@
   <string name="cat_bottom_nav_clock">Clock</string>
   <string name="cat_bottom_nav_timer">Timer</string>
   <string name="cat_bottom_nav_stopwatch">Stopwatch</string>
+
+  <string name="cat_bottom_nav_badge_gravity_top_end">Top end</string>
+  <string name="cat_bottom_nav_badge_gravity_top_start">Top start</string>
+  <string name="cat_bottom_nav_badge_gravity_bottom_end">Bottom end</string>
+  <string name="cat_bottom_nav_badge_gravity_bottom_start">Bottom start</string>
+
+  <string name="cat_bottom_nav_badge_gravity_spinner_label">Badge gravity</string>
+
 </resources>
 
 

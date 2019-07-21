@@ -54,6 +54,7 @@ public class BadgeDrawableTest {
     BadgeDrawable badgeDrawable = BadgeDrawable.create(context);
     SavedState drawableState = badgeDrawable.getSavedState();
     badgeDrawable.setNumber(TEST_BADGE_NUMBER);
+    badgeDrawable.setBadgeGravity(BadgeDrawable.TOP_START);
 
     badgeDrawable.setBackgroundColor(testBackgroundColor);
     badgeDrawable.setBadgeTextColor(testBadgeTextColor);
@@ -71,5 +72,6 @@ public class BadgeDrawableTest {
     // Values based on the default badge style.
     assertThat(restoredBadgeDrawable.getAlpha()).isEqualTo(255);
     assertThat(restoredBadgeDrawable.getMaxCharacterCount()).isEqualTo(4);
+    assertThat(restoredBadgeDrawable.getBadgeGravity()).isEqualTo(BadgeDrawable.TOP_START);
   }
 }
