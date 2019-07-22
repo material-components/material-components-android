@@ -29,6 +29,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
+import android.animation.ValueAnimator.AnimatorUpdateListener;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.res.TypedArray;
@@ -48,6 +49,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.OnApplyWindowInsetsListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
@@ -108,14 +110,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     /** Indicates that the Snackbar was dismissed from a new Snackbar being shown. */
     public static final int DISMISS_EVENT_CONSECUTIVE = 4;
 
-    /** @hide */
+    /** Annotation for types of Dismiss events. */
     @RestrictTo(LIBRARY_GROUP)
     @IntDef({
-      DISMISS_EVENT_SWIPE,
-      DISMISS_EVENT_ACTION,
-      DISMISS_EVENT_TIMEOUT,
-      DISMISS_EVENT_MANUAL,
-      DISMISS_EVENT_CONSECUTIVE
+        DISMISS_EVENT_SWIPE,
+        DISMISS_EVENT_ACTION,
+        DISMISS_EVENT_TIMEOUT,
+        DISMISS_EVENT_MANUAL,
+        DISMISS_EVENT_CONSECUTIVE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface DismissEvent {}
@@ -310,9 +312,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     ViewCompat.setFitsSystemWindows(view, true);
     ViewCompat.setOnApplyWindowInsetsListener(
         view,
-        new androidx.core.view.OnApplyWindowInsetsListener() {
+        new OnApplyWindowInsetsListener() {
           @Override
-          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
+          public WindowInsetsCompat onApplyWindowInsets(View v,
+              WindowInsetsCompat insets) {
             // Copy over the bottom inset as bottom margin so that we're displayed above the
             // navigation bar.
             extraBottomMarginInsets = insets.getSystemWindowInsetBottom();
@@ -548,7 +551,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     return SnackbarManager.getInstance().isCurrentOrNext(managerCallback);
   }
 
-  final SnackbarManager.Callback managerCallback =
+  SnackbarManager.Callback managerCallback =
       new SnackbarManager.Callback() {
         @Override
         public void show() {
@@ -568,49 +571,10 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   final void showView() {
     if (this.view.getParent() == null) {
-      final ViewGroup.LayoutParams lp = this.view.getLayoutParams();
+      ViewGroup.LayoutParams lp = this.view.getLayoutParams();
 
       if (lp instanceof CoordinatorLayout.LayoutParams) {
-        // If our LayoutParams are from a CoordinatorLayout, we'll setup our Behavior
-        final CoordinatorLayout.LayoutParams clp = (CoordinatorLayout.LayoutParams) lp;
-
-        final SwipeDismissBehavior<? extends View> behavior =
-            this.behavior == null ? getNewBehavior() : this.behavior;
-
-        if (behavior instanceof BaseTransientBottomBar.Behavior) {
-          ((BaseTransientBottomBar.Behavior) behavior).setBaseTransientBottomBar(this);
-        }
-        behavior.setListener(
-            new SwipeDismissBehavior.OnDismissListener() {
-              @Override
-              public void onDismiss(View view) {
-                view.setVisibility(View.GONE);
-                dispatchDismiss(BaseCallback.DISMISS_EVENT_SWIPE);
-              }
-
-              @Override
-              public void onDragStateChanged(int state) {
-                switch (state) {
-                  case SwipeDismissBehavior.STATE_DRAGGING:
-                  case SwipeDismissBehavior.STATE_SETTLING:
-                    // If the view is being dragged or settling, pause the timeout
-                    SnackbarManager.getInstance().pauseTimeout(managerCallback);
-                    break;
-                  case SwipeDismissBehavior.STATE_IDLE:
-                    // If the view has been released and is idle, restore the timeout
-                    SnackbarManager.getInstance().restoreTimeoutIfPaused(managerCallback);
-                    break;
-                  default:
-                    // Any other state is ignored
-                }
-              }
-            });
-        clp.setBehavior(behavior);
-        // Also set the inset edge so that views can dodge the bar correctly, but only if there is
-        // no anchor view.
-        if (anchorView == null) {
-          clp.insetEdge = Gravity.BOTTOM;
-        }
+        setUpBehavior((CoordinatorLayout.LayoutParams) lp);
       }
 
       extraBottomMarginAnchorView = calculateBottomMarginForAnchorView();
@@ -643,30 +607,72 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         });
 
     if (ViewCompat.isLaidOut(this.view)) {
-      if (shouldAnimate()) {
-        // If animations are enabled, animate it in
-        animateViewIn();
-      } else {
-        // Else if anims are disabled just call back now
-        onViewShown();
-      }
-    } else {
-      // Otherwise, add one of our layout change listeners and show it in when laid out
-      this.view.setOnLayoutChangeListener(
-          new BaseTransientBottomBar.OnLayoutChangeListener() {
-            @Override
-            public void onLayoutChange(View view, int left, int top, int right, int bottom) {
-              BaseTransientBottomBar.this.view.setOnLayoutChangeListener(null);
+      showViewImpl();
+      return;
+    }
 
-              if (shouldAnimate()) {
-                // If animations are enabled, animate it in
-                animateViewIn();
-              } else {
-                // Else if anims are disabled just call back now
-                onViewShown();
-              }
+    // Otherwise, add one of our layout change listeners and show it in when laid out
+    this.view.setOnLayoutChangeListener(
+        new OnLayoutChangeListener() {
+          @Override
+          public void onLayoutChange(View view, int left, int top, int right, int bottom) {
+            BaseTransientBottomBar.this.view.setOnLayoutChangeListener(null);
+            BaseTransientBottomBar.this.showViewImpl();
+          }
+        });
+  }
+
+  private void showViewImpl() {
+    if (shouldAnimate()) {
+      // If animations are enabled, animate it in
+      animateViewIn();
+    } else {
+      // Else if animations are disabled just call back now
+      onViewShown();
+    }
+  }
+
+  private void setUpBehavior(CoordinatorLayout.LayoutParams lp) {
+    // If our LayoutParams are from a CoordinatorLayout, we'll setup our Behavior
+    CoordinatorLayout.LayoutParams clp = lp;
+
+    SwipeDismissBehavior<? extends View> behavior =
+        this.behavior == null ? getNewBehavior() : this.behavior;
+
+    if (behavior instanceof BaseTransientBottomBar.Behavior) {
+      ((Behavior) behavior).setBaseTransientBottomBar(this);
+    }
+
+    behavior.setListener(
+        new SwipeDismissBehavior.OnDismissListener() {
+          @Override
+          public void onDismiss(View view) {
+            view.setVisibility(View.GONE);
+            dispatchDismiss(BaseCallback.DISMISS_EVENT_SWIPE);
+          }
+
+          @Override
+          public void onDragStateChanged(int state) {
+            switch (state) {
+              case SwipeDismissBehavior.STATE_DRAGGING:
+              case SwipeDismissBehavior.STATE_SETTLING:
+                // If the view is being dragged or settling, pause the timeout
+                SnackbarManager.getInstance().pauseTimeout(managerCallback);
+                break;
+              case SwipeDismissBehavior.STATE_IDLE:
+                // If the view has been released and is idle, restore the timeout
+                SnackbarManager.getInstance().restoreTimeoutIfPaused(managerCallback);
+                break;
+              default:
+                // Any other state is ignored
             }
-          });
+          }
+        });
+    clp.setBehavior(behavior);
+    // Also set the inset edge so that views can dodge the bar correctly, but only if there is
+    // no anchor view.
+    if (anchorView == null) {
+      clp.insetEdge = Gravity.BOTTOM;
     }
   }
 
@@ -694,7 +700,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     }
   }
 
-  private void animateViewOut(final int event) {
+  private void animateViewOut(int event) {
     if (view.getAnimationMode() == ANIMATION_MODE_FADE) {
       startFadeOutAnimation(event);
     } else {
@@ -720,7 +726,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void startFadeOutAnimation(final int event) {
-    final ValueAnimator animator = getAlphaAnimator(1, 0);
+    ValueAnimator animator = getAlphaAnimator(1, 0);
     animator.setDuration(ANIMATION_FADE_OUT_DURATION);
     animator.addListener(
         new AnimatorListenerAdapter() {
@@ -736,7 +742,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     ValueAnimator animator = ValueAnimator.ofFloat(alphaValues);
     animator.setInterpolator(LINEAR_INTERPOLATOR);
     animator.addUpdateListener(
-        new ValueAnimator.AnimatorUpdateListener() {
+        new AnimatorUpdateListener() {
           @Override
           public void onAnimationUpdate(ValueAnimator valueAnimator) {
             view.setAlpha((Float) valueAnimator.getAnimatedValue());
@@ -749,7 +755,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     ValueAnimator animator = ValueAnimator.ofFloat(scaleValues);
     animator.setInterpolator(LINEAR_OUT_SLOW_IN_INTERPOLATOR);
     animator.addUpdateListener(
-        new ValueAnimator.AnimatorUpdateListener() {
+        new AnimatorUpdateListener() {
           @Override
           public void onAnimationUpdate(ValueAnimator valueAnimator) {
             float scale = (float) valueAnimator.getAnimatedValue();
@@ -768,7 +774,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       view.setTranslationY(translationYBottom);
     }
 
-    final ValueAnimator animator = new ValueAnimator();
+    ValueAnimator animator = new ValueAnimator();
     animator.setIntValues(translationYBottom, 0);
     animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
     animator.setDuration(ANIMATION_DURATION);
@@ -807,7 +813,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   }
 
   private void startSlideOutAnimation(final int event) {
-    final ValueAnimator animator = new ValueAnimator();
+    ValueAnimator animator = new ValueAnimator();
     animator.setIntValues(0, getTranslationYBottom());
     animator.setInterpolator(FAST_OUT_SLOW_IN_INTERPOLATOR);
     animator.setDuration(ANIMATION_DURATION);
@@ -853,7 +859,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     return translationY;
   }
 
-  final void hideView(@BaseCallback.DismissEvent final int event) {
+  final void hideView(@BaseCallback.DismissEvent int event) {
     if (shouldAnimate() && view.getVisibility() == View.VISIBLE) {
       animateViewOut(event);
     } else {
@@ -886,7 +892,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
       }
     }
     // Lastly, hide and remove the view from the parent (if attached)
-    final ViewParent parent = view.getParent();
+    ViewParent parent = view.getParent();
     if (parent instanceof ViewGroup) {
       ((ViewGroup) parent).removeView(view);
     }
@@ -894,7 +900,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   /** Returns true if we should animate the Snackbar view in/out. */
   boolean shouldAnimate() {
-    final int feedbackFlags = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
+    int feedbackFlags = AccessibilityServiceInfo.FEEDBACK_SPOKEN;
     List<AccessibilityServiceInfo> serviceList =
         accessibilityManager.getEnabledAccessibilityServiceList(feedbackFlags);
     return serviceList != null && serviceList.isEmpty();
