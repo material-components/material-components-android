@@ -22,5 +22,6 @@
   <dimen name="shrine_toolbar_elevation">4dp</dimen>
   <dimen name="shrine_bottom_nav_view_elevation">16dp</dimen>
   <dimen name="shrine_bottom_nav_view_height">56dp</dimen>
+  <dimen name="shrine_bottom_nav_view_height_with_standard_spacing">72dp</dimen>
   <dimen name="launchscreens_product_logo_bottom">16dp</dimen>
 </resources>
