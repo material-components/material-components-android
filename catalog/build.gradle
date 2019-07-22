@@ -15,6 +15,14 @@ dependencies {
   api project(':lib')
 
   api compatibility("recyclerViewSelection")
+
+  androidTestImplementation "androidx.test:core:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test:runner:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test:rules:${project.rootProject.ext.testRunnerVersion}"
+  androidTestImplementation "androidx.test.espresso:espresso-core:${project.rootProject.ext.espressoVersion}"
+  androidTestImplementation "androidx.test.espresso:espresso-contrib:${project.rootProject.ext.espressoVersion}"
+
+  testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
 
 def srcDirs = [
@@ -59,9 +67,15 @@ android {
       application_theme            : 'Catalog',
       catalog_application_component: 'io.material.catalog.application.DaggerCatalogApplicationComponent'
     ]
+
+    testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     vectorDrawables.useSupportLibrary = true
     minSdkVersion 14
     targetSdkVersion 27
+  }
+
+  testOptions {
+    unitTests.returnDefaultValues = true
   }
 
   aaptOptions {
@@ -81,6 +95,7 @@ android {
         res.srcDirs += 'java/io/material/catalog/' + it + '/res'
       }
     }
+    androidTest.java.srcDir 'javatests'
   }
 
   compileOptions {

@@ -97,4 +97,12 @@
       name="cat_card_action_move_bottom_right">Move to bottom right</string>
   <string description="A description of an action that a user of an accessibility service can perform to move the card to the center of the screen. [CHAR LIMIT=25]"
       name="cat_card_action_move_center">Move to center</string>
+
+  <string description="a transient text that appears on screen when a card is dismissed [CHAR LIMIT=30]"
+      name="cat_card_dismissed">Card Dismissed</string>
+  <string description="A label in a button to dismiss the last action [CHAR LIMIT=15]"
+      name="cat_card_undo">Undo</string>
+  <string description="A label in a button to dismiss the last action [CHAR LIMIT=30]"
+      name="cat_card_swipe_to_dismiss">Swipe this card to dismiss it</string>
+  <string name="cat_card_swipe_dismiss" description="the title of a screen where you can swipe to dismiss a card [CHAR LIMIT=20]">Card Swipe Dismiss</string>
 </resources>
