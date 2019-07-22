@@ -36,7 +36,7 @@ ext {
     recyclerViewSelection : '1.0.0',
     transition            : '1.0.1',
     vectorDrawable        : '1.1.0-rc01', // Needed for CSL + theme attr fixes
-    viewpager2            : '1.0.0-alpha06', // Needed for TabLayout and MaterialCalendar
+    viewpager2            : '1.0.0-beta02', // Needed for TabLayout and MaterialCalendar
   ]
 
   testRunnerVersion = '1.1.0'
