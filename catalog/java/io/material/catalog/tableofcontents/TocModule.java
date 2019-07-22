@@ -42,10 +42,7 @@ import io.material.catalog.themeswitcher.ThemeSwitcherResourceProvider;
 import io.material.catalog.topappbar.TopAppBarFragment;
 import io.material.catalog.transformation.TransformationFragment;
 
-/**
- * The Dagger module for {@link TocFragment} dependencies.
- *
- */
+/** The Dagger module for {@link TocFragment} dependencies. */
 @dagger.Module(
     includes = {
       BottomAppBarFragment.Module.class,

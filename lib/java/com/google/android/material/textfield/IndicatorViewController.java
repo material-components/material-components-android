@@ -55,10 +55,6 @@ import java.util.List;
  * com.google.android.material.textfield.TextInputLayout}. This class controls helper and error views.
  */
 final class IndicatorViewController {
-  /*
-   * TODO: Update placeholder values for caption animation.
-   *
-   */
 
   /** Duration for the caption's vertical translation animation. */
   private static final int CAPTION_TRANSLATE_Y_ANIMATION_DURATION = 217;

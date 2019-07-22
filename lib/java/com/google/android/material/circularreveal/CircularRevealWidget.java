@@ -88,7 +88,6 @@ public interface CircularRevealWidget extends Delegate {
    * <p>Note that on L+, calling this method doesn't result in any visual changes. You must use this
    * with {@link ViewAnimationUtils}.
    *
-   *
    * <p>Implementations should call the corresponding method in {@link CircularRevealHelper}.
    */
   void setRevealInfo(@Nullable RevealInfo revealInfo);

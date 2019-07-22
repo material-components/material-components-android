@@ -724,6 +724,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     }
   }
 
+  /** Adds pre radial expansion animator. */
   private void createPreFillRadialExpansion(
       View child,
       long delay,
@@ -744,6 +745,7 @@ public abstract class FabTransformationBehavior extends ExpandableTransformation
     }
   }
 
+  /** Adds post radial expansion animator. */
   private void createPostFillRadialExpansion(
       View child,
       long delay,
