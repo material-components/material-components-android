@@ -17,17 +17,6 @@
 <issues format="5" by="lint 3.3.2" client="gradle" variant="all" version="3.3.2">
 
     <issue
-        id="OldTargetApi"
-        message="Not targeting the latest versions of Android; compatibility modes apply. Consider testing and updating this version. Consult the android.os.Build.VERSION_CODES javadoc for details."
-        errorLine1="        targetSdkVersion 28"
-        errorLine2="        ~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="build.gradle"
-            line="10"
-            column="9"/>
-    </issue>
-
-    <issue
         id="UnusedAttribute"
         message="Attribute `firstBaselineToTopHeight` is only used in API level 28 and higher (current min is 23)"
         errorLine1="              android:firstBaselineToTopHeight=&quot;40dp&quot;"
