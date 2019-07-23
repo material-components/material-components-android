@@ -55,11 +55,13 @@
   <public name="hintTextColor" type="attr"/>
   <public name="startIconDrawable" type="attr"/>
   <public name="startIconContentDescription" type="attr"/>
+  <public name="startIconCheckable" type="attr"/>
   <public name="startIconTint" type="attr"/>
   <public name="startIconTintMode" type="attr"/>
   <public name="endIconMode" type="attr"/>
   <public name="endIconDrawable" type="attr"/>
   <public name="endIconContentDescription" type="attr"/>
+  <public name="endIconCheckable" type="attr"/>
   <public name="endIconTint" type="attr"/>
   <public name="endIconTintMode" type="attr"/>
   <!-- Deprecated. Use endIconMode instead. -->

@@ -72,6 +72,8 @@
     <attr name="startIconDrawable" format="reference"/>
     <!-- Text to set as the content description for the start icon. -->
     <attr name="startIconContentDescription" format="string"/>
+    <!-- Whether the start icon is checkable. -->
+    <attr name="startIconCheckable" format="boolean"/>
     <!-- Tint color to use for the start icon. -->
     <attr name="startIconTint" format="color"/>
     <!-- Blending mode used to apply the background tint. -->
@@ -109,6 +111,8 @@
     <attr name="endIconDrawable" format="reference"/>
     <!-- Text to set as the content description for the end icon. -->
     <attr name="endIconContentDescription" format="string"/>
+    <!-- Whether the end icon is checkable. -->
+    <attr name="endIconCheckable" format="boolean"/>
     <!-- Tint color to use for the end icon. -->
     <attr name="endIconTint" format="color"/>
     <!-- Blending mode used to apply the background tint. -->

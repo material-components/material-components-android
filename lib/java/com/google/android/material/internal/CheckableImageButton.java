@@ -41,6 +41,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
   private static final int[] DRAWABLE_STATE_CHECKED = new int[] {android.R.attr.state_checked};
 
   private boolean checked;
+  private boolean checkable = true;
 
   public CheckableImageButton(Context context) {
     this(context, null);
@@ -66,7 +67,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
           public void onInitializeAccessibilityNodeInfo(
               View host, AccessibilityNodeInfoCompat info) {
             super.onInitializeAccessibilityNodeInfo(host, info);
-            info.setCheckable(true);
+            info.setCheckable(isCheckable());
             info.setChecked(isChecked());
           }
         });
@@ -74,7 +75,7 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
 
   @Override
   public void setChecked(boolean checked) {
-    if (this.checked != checked) {
+    if (checkable && this.checked != checked) {
       this.checked = checked;
       refreshDrawableState();
       sendAccessibilityEvent(AccessibilityEventCompat.TYPE_WINDOW_CONTENT_CHANGED);
@@ -119,6 +120,19 @@ public class CheckableImageButton extends AppCompatImageButton implements Checka
     SavedState savedState = (SavedState) state;
     super.onRestoreInstanceState(savedState.getSuperState());
     setChecked(savedState.checked);
+  }
+
+  /** Sets image button to be checkable or not. */
+  public void setCheckable(boolean checkable) {
+    if (this.checkable != checkable) {
+      this.checkable = checkable;
+      sendAccessibilityEvent(AccessibilityEventCompat.CONTENT_CHANGE_TYPE_UNDEFINED);
+    }
+  }
+
+  /** Returns whether the image button is checkable. */
+  public boolean isCheckable() {
+    return checkable;
   }
 
   static class SavedState extends AbsSavedState {

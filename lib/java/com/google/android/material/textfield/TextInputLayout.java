@@ -550,6 +550,7 @@ public class TextInputLayout extends LinearLayout {
         setStartIconContentDescription(
             a.getText(R.styleable.TextInputLayout_startIconContentDescription));
       }
+      setStartIconCheckable(a.getBoolean(R.styleable.TextInputLayout_startIconCheckable, true));
     }
     // Default tint for a start icon or value specified by user.
     if (a.hasValue(R.styleable.TextInputLayout_startIconTint)) {
@@ -617,6 +618,7 @@ public class TextInputLayout extends LinearLayout {
         setEndIconContentDescription(
             a.getText(R.styleable.TextInputLayout_endIconContentDescription));
       }
+      setEndIconCheckable(a.getBoolean(R.styleable.TextInputLayout_endIconCheckable, true));
     } else if (a.hasValue(R.styleable.TextInputLayout_passwordToggleEnabled)) {
       // Support for deprecated attributes related to the password toggle end icon
       boolean passwordToggleEnabled =
@@ -2106,6 +2108,29 @@ public class TextInputLayout extends LinearLayout {
   }
 
   /**
+   * Sets the current start icon to be checkable or not.
+   *
+   * <p>If the icon works just as a button and the fact that it's checked or not doesn't affect its
+   * behavior, such as the clear text end icon, calling this method is encouraged so that screen
+   * readers will not announce the icon's checked state.
+   *
+   * @param startIconCheckable whether the icon should be checkable
+   * @attr com.google.android.material.R.styleable#TextInputLayout_startIconCheckable
+   */
+  public void setStartIconCheckable(boolean startIconCheckable) {
+    startIconView.setCheckable(startIconCheckable);
+  }
+
+  /**
+   * Returns whether the start icon is checkable.
+   *
+   * @see #setStartIconCheckable(boolean)
+   */
+  public boolean isStartIconCheckable() {
+    return startIconView.isCheckable();
+  }
+
+  /**
    * Set a content description for the start icon.
    *
    * <p>The content description will be read via screen readers or other accessibility systems to
@@ -2255,6 +2280,29 @@ public class TextInputLayout extends LinearLayout {
    */
   public void setEndIconActivated(boolean endIconActivated) {
     endIconView.setActivated(endIconActivated);
+  }
+
+  /**
+   * Sets the current end icon to be checkable or not.
+   *
+   * <p>If the icon works just as a button and the fact that it's checked or not doesn't affect its
+   * behavior, such as the clear text end icon, calling this method is encouraged so that screen
+   * readers will not announce the icon's checked state.
+   *
+   * @param endIconCheckable whether the icon should be checkable
+   * @attr com.google.android.material.R.styleable#TextInputLayout_endIconCheckable
+   */
+  public void setEndIconCheckable(boolean endIconCheckable) {
+    endIconView.setCheckable(endIconCheckable);
+  }
+
+  /**
+   * Returns whether the end icon is checkable.
+   *
+   * @see #setEndIconCheckable(boolean)
+   */
+  public boolean isEndIconCheckable() {
+    return endIconView.isCheckable();
   }
 
   /**
@@ -2692,7 +2740,7 @@ public class TextInputLayout extends LinearLayout {
             startIconView.getMeasuredWidth()
                 - editText.getPaddingLeft()
                 + MarginLayoutParamsCompat.getMarginEnd(
-                ((MarginLayoutParams) startIconView.getLayoutParams()));
+                    ((MarginLayoutParams) startIconView.getLayoutParams()));
         startIconDummyDrawable.setBounds(0, 0, right, 1);
       }
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
@@ -2771,11 +2819,12 @@ public class TextInputLayout extends LinearLayout {
     iconView.setOnClickListener(onClickListener);
     iconView.setFocusable(clickable);
     iconView.setClickable(clickable);
-    int importantForAccessiblity = clickable
-        ? ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES
-        : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
+    int importantForAccessibility =
+        clickable
+            ? ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_YES
+            : ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO;
 
-    ViewCompat.setImportantForAccessibility(iconView, importantForAccessiblity);
+    ViewCompat.setImportantForAccessibility(iconView, importantForAccessibility);
   }
 
   @Override
