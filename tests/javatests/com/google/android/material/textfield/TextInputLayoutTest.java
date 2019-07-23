@@ -318,6 +318,7 @@ public class TextInputLayoutTest {
     final EditText editText = activity.findViewById(R.id.textinput_edittext);
     assertNull(editText.getHint());
   }
+
   @UiThreadTest
   @Test
   public void testDrawableStateChanged() {

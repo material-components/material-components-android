@@ -60,7 +60,6 @@ public class BottomAppBarTopEdgeTreatment extends EdgeTreatment implements Clone
     this.fabMargin = fabMargin;
     this.roundedCornerRadius = roundedCornerRadius;
     this.cradleVerticalOffset = cradleVerticalOffset;
-    // TODO: potentially support negative values.
     if (cradleVerticalOffset < 0) {
       throw new IllegalArgumentException("cradleVerticalOffset must be positive.");
     }

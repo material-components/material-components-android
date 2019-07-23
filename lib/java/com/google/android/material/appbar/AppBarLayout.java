@@ -135,7 +135,7 @@ public class AppBarLayout extends LinearLayout {
    * Interface definition for a callback to be invoked when an {@link AppBarLayout}'s vertical
    * offset changes.
    */
-  // TODO: remove this base interface after the widget migration
+  // TODO(b/76413401): remove this base interface after the widget migration
   public interface BaseOnOffsetChangedListener<T extends AppBarLayout> {
 
     /**
@@ -153,7 +153,7 @@ public class AppBarLayout extends LinearLayout {
    * Interface definition for a callback to be invoked when an {@link AppBarLayout}'s vertical
    * offset changes.
    */
-  // TODO: update this interface after the widget migration
+  // TODO(b/76413401): update this interface after the widget migration
   public interface OnOffsetChangedListener extends BaseOnOffsetChangedListener<AppBarLayout> {
     void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset);
   }
@@ -295,7 +295,7 @@ public class AppBarLayout extends LinearLayout {
    *
    * @param listener the listener to remove.
    */
-  // TODO: change back to removeOnOffsetChangedListener once the widget migration is
+  // TODO(b/76413401): change back to removeOnOffsetChangedListener once the widget migration is
   // finished since the shim class needs to implement this method.
   @SuppressWarnings("FunctionalInterfaceClash")
   public void removeOnOffsetChangedListener(BaseOnOffsetChangedListener listener) {
@@ -1170,7 +1170,7 @@ public class AppBarLayout extends LinearLayout {
    * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
    * handling with offsetting.
    */
-  // TODO: remove the base class and generic type after the widget migration is done
+  // TODO(b/76413401): remove the base class and generic type after the widget migration is done
   public static class Behavior extends BaseBehavior<AppBarLayout> {
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
@@ -1189,13 +1189,13 @@ public class AppBarLayout extends LinearLayout {
    * The default {@link Behavior} for {@link AppBarLayout}. Implements the necessary nested scroll
    * handling with offsetting.
    */
-  // TODO: remove this base class and generic type after the widget migration is done
+  // TODO(b/76413401): remove this base class and generic type after the widget migration is done
   protected static class BaseBehavior<T extends AppBarLayout> extends HeaderBehavior<T> {
     private static final int MAX_OFFSET_ANIMATION_DURATION = 600; // ms
     private static final int INVALID_POSITION = -1;
 
     /** Callback to allow control over any {@link AppBarLayout} dragging. */
-    // TODO: remove this base class and generic type after the widget migration
+    // TODO(b/76413401): remove this base class and generic type after the widget migration
     public abstract static class BaseDragCallback<T extends AppBarLayout> {
       /**
        * Allows control over whether the given {@link AppBarLayout} can be dragged or not.

@@ -102,7 +102,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     setFocusable(true);
     calculateTextScaleFactors(smallLabel.getTextSize(), largeLabel.getTextSize());
 
-    // TODO: Support displaying a badge on label-only bottom navigation views.
+    // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     if (icon != null) {
       icon.addOnLayoutChangeListener(
           new OnLayoutChangeListener() {
@@ -469,7 +469,7 @@ public class BottomNavigationItemView extends FrameLayout implements MenuView.It
     if (anchorView == icon) {
       return BadgeUtils.USE_COMPAT_PARENT ? ((FrameLayout) icon.getParent()) : null;
     }
-    // TODO: Support displaying a badge on label-only bottom navigation views.
+    // TODO(b/138148581): Support displaying a badge on label-only bottom navigation views.
     return null;
   }
 }

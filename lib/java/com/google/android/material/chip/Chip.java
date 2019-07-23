@@ -262,7 +262,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
     info.setClickable(isClickable());
   }
 
-  // TODO: Due to a11y bug, avoid setting custom ExploreByTouchHelper as delegate
+  // TODO(b/80452017): Due to a11y bug, avoid setting custom ExploreByTouchHelper as delegate
   // unless there's a close/trailing icon. Revert this once bug is fixed.
   private void updateAccessibilityDelegate() {
     if (VERSION.SDK_INT >= VERSION_CODES.N) {
@@ -1323,7 +1323,7 @@ public class Chip extends AppCompatCheckBox implements Delegate, Shapeable {
    * @attr ref com.google.android.material.R.styleable#Chip_android_textappearance
    */
   public void setTextAppearance(@Nullable TextAppearance textAppearance) {
-    // TODO: Make sure this also updates parent TextView styles.
+    // TODO(b/138147619): Make sure this also updates parent TextView styles.
     if (chipDrawable != null) {
       chipDrawable.setTextAppearance(textAppearance);
     }

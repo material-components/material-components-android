@@ -159,7 +159,7 @@ public class ShapeAppearancePathProvider {
     cornerTransforms[nextIndex].mapPoints(scratch2);
 
     float edgeLength = (float) Math.hypot(scratch[0] - scratch2[0], scratch[1] - scratch2[1]);
-    // TODO: Remove this -.001f that is currently needed to handle rounding errors
+    // TODO(b/121352029): Remove this -.001f that is currently needed to handle rounding errors
     edgeLength = Math.max(edgeLength - .001f, 0);
     float center = getEdgeCenterForIndex(spec.bounds, index);
     shapePath.reset(0, 0);

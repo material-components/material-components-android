@@ -247,14 +247,14 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   private final AccessibilityManager accessibilityManager;
 
   /** @hide */
-  // TODO: make package private after the widget migration is finished
+  // TODO(b/76413401): make package private after the widget migration is finished
   @RestrictTo(LIBRARY_GROUP)
   protected interface OnLayoutChangeListener {
     void onLayoutChange(View view, int left, int top, int right, int bottom);
   }
 
   /** @hide */
-  // TODO: make package private after the widget migration is finished
+  // TODO(b/76413401): make package private after the widget migration is finished
   @RestrictTo(LIBRARY_GROUP)
   protected interface OnAttachStateChangeListener {
     void onViewAttachedToWindow(View v);
@@ -1037,7 +1037,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
 
   /** @hide */
   @RestrictTo(LIBRARY_GROUP)
-  // TODO: Delegate can be rolled up into behavior after the widget migration is finished.
+  // TODO(b/76413401): Delegate can be rolled up into behavior after widget migration is finished.
   public static class BehaviorDelegate {
     private SnackbarManager.Callback managerCallback;
 

@@ -270,7 +270,7 @@ subprojects {
               // Adds a <type> tag for each dependency. This assumes that all dependencies except
               // for "annotation" are aars, but it can break if in the future the artifactId
               // changes or we depend on anything else that's not an aar.
-              // TODO: Remove this once Gradle automatically determines dependency types.
+              // TODO(b/73783252): Remove this once Gradle automatically determines dependency types.
               whenConfigured { pom ->
                 pom.dependencies.findAll { dependency ->
                   if (dependency.artifactId != 'annotation' && dependency.artifactId != 'lifecycle-common-java8') {

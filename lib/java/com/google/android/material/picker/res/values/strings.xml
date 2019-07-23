@@ -28,7 +28,7 @@
   <string name="mtrl_picker_text_input_date_hint" description="Label for a single date selected by the user [CHAR_LIMIT=60]">Date</string>
   <string name="mtrl_picker_text_input_date_range_start_hint" description="Label for the start date in a range selected by the user [CHAR_LIMIT=60]">Start Date</string>
   <string name="mtrl_picker_text_input_date_range_end_hint" description="Label for the end date in a range selected by the user [CHAR_LIMIT=60]">End Date</string>
-  <!-- TODO: internationalize date format strings -->
+  <!-- TODO(b/134174653): internationalize date format strings -->
   <string name="mtrl_picker_date_format" description="The format for how a date will be shown to the user, with the year included [CHAR_LIMIT=16]">MMM dd, yyyy</string>
   <string name="mtrl_picker_date_format_without_year" description="The format for how a date will be shown to the user, without the year included [CHAR_LIMIT=16]">MMM dd</string>
   <string name="mtrl_picker_text_input_date_format" description="The format for how the user should enter a date via text input [CHAR_LIMIT=16]">MM/dd/yyyy</string>

@@ -90,7 +90,7 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
   @Override
   public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
     super.onAttachedToRecyclerView(recyclerView);
-    // TODO: Remove ViewPager2 workaround
+    // TODO(b/134764679): Remove ViewPager2 workaround
     recyclerView.clearOnChildAttachStateChangeListeners();
   }
 

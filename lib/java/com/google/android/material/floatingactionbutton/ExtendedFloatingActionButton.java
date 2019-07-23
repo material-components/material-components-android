@@ -1004,7 +1004,7 @@ public class ExtendedFloatingActionButton extends MaterialButton implements Atta
   /**
    * Returns an adjusted radius value that corrects any rounding errors.
    *
-   * <p>TODO: Remove this method once this bug is fixed.
+   * <p>TODO(b/121352029): Remove this method once this bug is fixed.
    */
   private int getAdjustedRadius(int value) {
     return (value - 1) / 2;

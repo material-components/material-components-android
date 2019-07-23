@@ -272,8 +272,6 @@ public class TextAppearance {
     }
   }
 
-  // TODO: Move the TextPaint utilities below to a separate class.
-
   /**
    * Applies the attributes that affect drawing from TextAppearance to the given TextPaint. Note
    * that not all attributes can be applied to the TextPaint.

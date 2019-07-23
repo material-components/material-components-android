@@ -159,7 +159,7 @@ public class ShadowRenderer {
             cornerPositions,
             Shader.TileMode.CLAMP));
 
-    // TODO: handle oval bounds by scaling the canvas.
+    // TODO(b/117606382): handle oval bounds by scaling the canvas.
 
     canvas.save();
     canvas.concat(matrix);

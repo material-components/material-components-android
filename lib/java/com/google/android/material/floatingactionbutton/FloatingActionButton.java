@@ -929,7 +929,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * move {@link FloatingActionButton} views so that any displayed {@link
    * com.google.android.material.snackbar.Snackbar}s do not cover them.
    */
-  // TODO: remove this generic type after the widget migration is done
+  // TODO(b/76413401): remove this generic type after the widget migration is done
   public static class Behavior extends BaseBehavior<FloatingActionButton> {
 
     public Behavior() {
@@ -946,7 +946,7 @@ public class FloatingActionButton extends VisibilityAwareImageButton
    * move {@link FloatingActionButton} views so that any displayed {@link
    * com.google.android.material.snackbar.Snackbar}s do not cover them.
    */
-  // TODO: remove this generic type after the widget migration is done
+  // TODO(b/76413401): remove this generic type after the widget migration is done
   protected static class BaseBehavior<T extends FloatingActionButton>
       extends CoordinatorLayout.Behavior<T> {
     private static final boolean AUTO_HIDE_DEFAULT = true;
