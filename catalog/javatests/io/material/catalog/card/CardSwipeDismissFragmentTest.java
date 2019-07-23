@@ -33,13 +33,18 @@ import androidx.test.runner.AndroidJUnit4;
 import io.material.catalog.R;
 import io.material.catalog.main.MainActivity;
 import org.junit.Before;
+import org.junit.Ignore;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
-/** Tests for {@link CardSwipeDismissFragment} */
+/**
+ * Tests for {@link CardSwipeDismissFragment}
+ * TODO(b/138149803) re-enable once no longer flaky
+ */
 @MediumTest
 @RunWith(AndroidJUnit4.class)
+@Ignore
 public class CardSwipeDismissFragmentTest {
 
   @Rule
