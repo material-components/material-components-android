@@ -32,8 +32,7 @@ requests in a [`BottomNavigationView`](BottomNavigationView.md) or
     <!--{: .icon-list-item.icon-list-item--spec }-->
 -   [Class definition](https://github.com/material-components/material-components-android/tree/master/lib/java/com/google/android/material/badge/BadgeDrawable.java)
     <!--{: .icon-list-item.icon-list-item--link }-->
-    <!-- TODO: Add class overview once the javadoc is published on developer.android.com -->
-    <!-- - [Class overview](https://developer.android.com/reference/com/google/android/material/badge/Badge) -->
+-   [Class overview](https://developer.android.com/reference/com/google/android/material/badge/BadgeDrawable)
     <!--{: .icon-list-item.icon-list-item--link }--> <!--{: .icon-list }-->
 
 ## Usage
