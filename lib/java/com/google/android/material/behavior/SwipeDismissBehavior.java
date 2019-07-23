@@ -214,7 +214,8 @@ public class SwipeDismissBehavior<V extends View> extends CoordinatorLayout.Beha
         @Override
         public boolean tryCaptureView(View child, int pointerId) {
           // Only capture if we don't already have an active pointer id
-          return activePointerId == INVALID_POINTER_ID && canSwipeDismissView(child);
+          return (activePointerId == INVALID_POINTER_ID || activePointerId == pointerId)
+              && canSwipeDismissView(child);
         }
 
         @Override
