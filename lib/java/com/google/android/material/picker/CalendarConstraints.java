@@ -18,17 +18,12 @@ package com.google.android.material.picker;
 import android.os.Bundle;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 import java.util.Arrays;
 import java.util.Calendar;
 
 /**
  * Used to limit the display range of {@link MaterialCalendar} and set a starting {@link Month}.
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
 public final class CalendarConstraints implements Parcelable {
 
   private final Month start;
@@ -65,6 +60,9 @@ public final class CalendarConstraints implements Parcelable {
     return start.getDay(1) <= date && date <= end.getDay(end.daysInMonth);
   }
 
+  /**
+   * Returns the {@link DateValidator} that determines whether a date can be clicked and selected.
+   */
   public DateValidator getDateValidator() {
     return validator;
   }

@@ -31,8 +31,6 @@ import android.graphics.drawable.StateListDrawable;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.annotation.RestrictTo;
-import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
@@ -56,10 +54,7 @@ import java.util.LinkedHashSet;
 
 /**
  * A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions.
- *
- * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
 public class MaterialDatePicker<S> extends DialogFragment {
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
@@ -68,15 +63,12 @@ public class MaterialDatePicker<S> extends DialogFragment {
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
 
   @VisibleForTesting
-  @RestrictTo(Scope.LIBRARY_GROUP)
   public static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
 
   @VisibleForTesting
-  @RestrictTo(Scope.LIBRARY_GROUP)
   public static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
 
   @VisibleForTesting
-  @RestrictTo(Scope.LIBRARY_GROUP)
   public static final Object TOGGLE_BUTTON_TAG = "TOGGLE_BUTTON_TAG";
 
   /**
@@ -463,7 +455,7 @@ public class MaterialDatePicker<S> extends DialogFragment {
     }
 
     /** Sets the Builder's selection manager to the provided {@link DateSelector}. */
-    public static <S> Builder<S> customDatePicker(DateSelector<S> dateSelector) {
+    static <S> Builder<S> customDatePicker(DateSelector<S> dateSelector) {
       return new Builder<>(dateSelector);
     }
 

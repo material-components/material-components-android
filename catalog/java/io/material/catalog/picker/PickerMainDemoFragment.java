@@ -18,13 +18,15 @@ package io.material.catalog.picker;
 import io.material.catalog.R;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
+import androidx.annotation.AttrRes;
 import androidx.annotation.Nullable;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import com.google.android.material.button.MaterialButton;
-import com.google.android.material.resources.MaterialAttributes;
 import com.google.android.material.snackbar.Snackbar;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -39,8 +41,6 @@ public class PickerMainDemoFragment extends DemoFragment {
 
   private Snackbar snackbar;
 
-  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
-  @SuppressWarnings("RestrictTo")
   @Override
   public View onCreateDemoView(
       LayoutInflater layoutInflater, @Nullable ViewGroup viewGroup, @Nullable Bundle bundle) {
@@ -48,12 +48,8 @@ public class PickerMainDemoFragment extends DemoFragment {
     LinearLayout dialogLaunchersLayout = view.findViewById(R.id.picker_launcher_buttons_layout);
 
     snackbar = Snackbar.make(viewGroup, R.string.cat_picker_no_action, Snackbar.LENGTH_LONG);
-    int dialogTheme =
-        MaterialAttributes.resolveOrThrow(
-            getContext(), R.attr.materialCalendarTheme, getClass().getCanonicalName());
-    int fullscreenTheme =
-        MaterialAttributes.resolveOrThrow(
-            getContext(), R.attr.materialCalendarFullscreenTheme, getClass().getCanonicalName());
+    int dialogTheme = resolveOrThrow(getContext(), R.attr.materialCalendarTheme);
+    int fullscreenTheme = resolveOrThrow(getContext(), R.attr.materialCalendarFullscreenTheme);
 
     setupDialogFragment(
         dialogLaunchersLayout,
@@ -80,8 +76,14 @@ public class PickerMainDemoFragment extends DemoFragment {
     return view;
   }
 
-  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
-  @SuppressWarnings("RestrictTo")
+  private static int resolveOrThrow(Context context, @AttrRes int attributeResId) {
+    TypedValue typedValue = new TypedValue();
+    if (context.getTheme().resolveAttribute(attributeResId, typedValue, true)) {
+      return typedValue.data;
+    }
+    throw new IllegalArgumentException(context.getResources().getResourceName(attributeResId));
+  }
+
   private void setupDialogFragment(
       ViewGroup dialogLaunchersLayout,
       @StringRes int tagId,
@@ -98,8 +100,6 @@ public class PickerMainDemoFragment extends DemoFragment {
         dialogLaunchersLayout, tagId, v -> materialCalendarPicker.show(getFragmentManager(), tag));
   }
 
-  // This demo is for a transient API. Once the API is set, the RestrictTo will be removed.
-  @SuppressWarnings("RestrictTo")
   private void addSnackBarListeners(MaterialDatePicker<?> materialCalendarPicker) {
     materialCalendarPicker.addOnPositiveButtonClickListener(
         selection -> {
@@ -116,14 +116,6 @@ public class PickerMainDemoFragment extends DemoFragment {
           snackbar.setText(R.string.cat_picker_cancel);
           snackbar.show();
         });
-  }
-
-  protected int getSpinnerTheme() {
-    return R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Spinner;
-  }
-
-  protected int getCalendarTheme() {
-    return R.style.ThemeOverlay_MaterialComponents_MaterialAlertDialog_Picker_Date_Calendar;
   }
 
   private void addDialogLauncher(
