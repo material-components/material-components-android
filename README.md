@@ -21,7 +21,7 @@ take a look at our [Getting Started](docs/getting-started.md) guide.
 For usage questions: ask on
 [Stack  Overflow](http://stackoverflow.com/questions/tagged/material-components).
 
-Bugs or feature requests should be submitted at https://issuetracker.google.com/issues/new?component=439535
+Bugs or feature requests should be submitted at our [GitHub Issues section](https://github.com/material-components/material-components-android/issues).
 
 ## Useful Links
 - [All Components](https://github.com/material-components/material-components-android/tree/master/lib/)
