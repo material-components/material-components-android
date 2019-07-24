@@ -20,6 +20,7 @@ import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
 import android.animation.TimeInterpolator;
 import android.content.Context;
+import androidx.annotation.Dimension;
 import androidx.core.view.ViewCompat;
 import android.util.AttributeSet;
 import android.view.View;
@@ -60,8 +61,12 @@ public class HideBottomViewOnScrollBehavior<V extends View> extends CoordinatorL
     return super.onLayoutChild(parent, child, layoutDirection);
   }
 
-  /** Sets an additional offset for the y position used to hide the view. */
-  public void setAdditionalHiddenOffsetY(V child, int offset) {
+  /** Sets an additional offset for the y position used to hide the view.
+   *
+   * @param child the child view that is hidden by this behavior
+   * @param offset the additional offset in pixels that should be added when the view slides away
+   */
+  public void setAdditionalHiddenOffsetY(V child, @Dimension int offset) {
     additionalHiddenOffsetY = offset;
 
     if (currentState == STATE_SCROLLED_DOWN) {
