@@ -23,7 +23,7 @@ import android.view.View;
  * {@link com.google.android.material.bottomappbar.BottomAppBar} reacting to the {@link
  * com.google.android.material.floatingactionbutton.FloatingActionButton}.
  */
-public interface TransformationListener<T extends View> {
+public interface TransformationCallback<T extends View> {
   /**
    * Called when the view has been translated.
    *

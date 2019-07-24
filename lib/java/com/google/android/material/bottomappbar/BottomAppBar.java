@@ -57,7 +57,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.coordinatorlayout.widget.CoordinatorLayout.AttachedBehavior;
-import com.google.android.material.animation.TransformationListener;
+import com.google.android.material.animation.TransformationCallback;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -180,8 +180,8 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
       };
 
   /** Listens to any transformations applied to the FAB so the cutout can react. */
-  TransformationListener<FloatingActionButton> fabTransformationListener =
-      new TransformationListener<FloatingActionButton>() {
+  TransformationCallback<FloatingActionButton> fabTransformationCallback =
+      new TransformationCallback<FloatingActionButton>() {
         @Override
         public void onScaleChanged(FloatingActionButton fab) {
           materialShapeDrawable.setInterpolation(
@@ -807,7 +807,7 @@ public class BottomAppBar extends Toolbar implements AttachedBehavior {
             }
           }
         });
-    fab.addTransformationListener(fabTransformationListener);
+    fab.addTransformationCallback(fabTransformationCallback);
   }
 
   private int getBottomInset() {

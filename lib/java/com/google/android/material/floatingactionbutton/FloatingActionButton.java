@@ -67,10 +67,10 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.animation.MotionSpec;
-import com.google.android.material.animation.TransformationListener;
+import com.google.android.material.animation.TransformationCallback;
 import com.google.android.material.expandable.ExpandableTransformationWidget;
 import com.google.android.material.expandable.ExpandableWidgetHelper;
-import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalTransformationListener;
+import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalTransformationCallback;
 import com.google.android.material.floatingactionbutton.FloatingActionButtonImpl.InternalVisibilityChangedListener;
 import com.google.android.material.internal.DescendantOffsetUtils;
 import com.google.android.material.internal.ThemeEnforcement;
@@ -1330,31 +1330,31 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     setHideMotionSpec(MotionSpec.createFromResource(getContext(), id));
   }
 
-  /** Add a {@link TransformationListener} which can watch for changes to this view. */
-  public void addTransformationListener(
-      @NonNull TransformationListener<? extends FloatingActionButton> listener) {
-    getImpl().addTransformationListener(new TransformationListenerWrapper(listener));
+  /** Add a {@link TransformationCallback} which can watch for changes to this view. */
+  public void addTransformationCallback(
+      @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
+    getImpl().addTransformationCallback(new TransformationCallbackWrapper(listener));
   }
 
   /**
-   * Remove the {@link TransformationListener} from this view. It will no longer receive updates
+   * Remove the {@link TransformationCallback} from this view. It will no longer receive updates
    * when this view is transformed.
    */
-  public void removeTransformationListener(
-      @NonNull TransformationListener<? extends FloatingActionButton> listener) {
-    getImpl().removeTransformationListener(new TransformationListenerWrapper(listener));
+  public void removeTransformationCallback(
+      @NonNull TransformationCallback<? extends FloatingActionButton> listener) {
+    getImpl().removeTransformationCallback(new TransformationCallbackWrapper(listener));
   }
 
   private boolean isUsingDefaultCorner(ShapeAppearanceModel shapeAppearance) {
     return shapeAppearance.getTopRightCorner().getCornerSize() == -1;
   }
 
-  class TransformationListenerWrapper<T extends FloatingActionButton>
-      implements InternalTransformationListener {
+  class TransformationCallbackWrapper<T extends FloatingActionButton>
+      implements InternalTransformationCallback {
 
-    @NonNull private final TransformationListener<T> listener;
+    @NonNull private final TransformationCallback<T> listener;
 
-    TransformationListenerWrapper(@NonNull TransformationListener<T> listener) {
+    TransformationCallbackWrapper(@NonNull TransformationCallback<T> listener) {
       this.listener = listener;
     }
 
@@ -1370,8 +1370,8 @@ public class FloatingActionButton extends VisibilityAwareImageButton
 
     @Override
     public boolean equals(@Nullable Object obj) {
-      return obj instanceof TransformationListenerWrapper
-          && ((TransformationListenerWrapper) obj).listener.equals(listener);
+      return obj instanceof TransformationCallbackWrapper
+          && ((TransformationCallbackWrapper) obj).listener.equals(listener);
     }
 
     @Override

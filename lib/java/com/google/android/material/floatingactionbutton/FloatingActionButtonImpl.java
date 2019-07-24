@@ -106,9 +106,9 @@ class FloatingActionButtonImpl {
 
   private ArrayList<AnimatorListener> showListeners;
   private ArrayList<AnimatorListener> hideListeners;
-  private ArrayList<InternalTransformationListener> transformationListeners;
+  private ArrayList<InternalTransformationCallback> transformationCallbacks;
 
-  interface InternalTransformationListener {
+  interface InternalTransformationCallback {
 
     void onTranslationChanged();
 
@@ -593,33 +593,33 @@ class FloatingActionButtonImpl {
     return set;
   }
 
-  void addTransformationListener(@NonNull InternalTransformationListener listener) {
-    if (transformationListeners == null) {
-      transformationListeners = new ArrayList<>();
+  void addTransformationCallback(@NonNull InternalTransformationCallback listener) {
+    if (transformationCallbacks == null) {
+      transformationCallbacks = new ArrayList<>();
     }
-    transformationListeners.add(listener);
+    transformationCallbacks.add(listener);
   }
 
-  void removeTransformationListener(@NonNull InternalTransformationListener listener) {
-    if (transformationListeners == null) {
+  void removeTransformationCallback(@NonNull InternalTransformationCallback listener) {
+    if (transformationCallbacks == null) {
       // This can happen if this method is called before the first call to
-      // addTransformationListener.
+      // addTransformationCallback.
       return;
     }
-    transformationListeners.remove(listener);
+    transformationCallbacks.remove(listener);
   }
 
   void onTranslationChanged() {
-    if (transformationListeners != null) {
-      for (InternalTransformationListener l : transformationListeners) {
+    if (transformationCallbacks != null) {
+      for (InternalTransformationCallback l : transformationCallbacks) {
         l.onTranslationChanged();
       }
     }
   }
 
   void onScaleChanged() {
-    if (transformationListeners != null) {
-      for (InternalTransformationListener l : transformationListeners) {
+    if (transformationCallbacks != null) {
+      for (InternalTransformationCallback l : transformationCallbacks) {
         l.onScaleChanged();
       }
     }
