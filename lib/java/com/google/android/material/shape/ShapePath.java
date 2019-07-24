@@ -32,14 +32,57 @@ import java.util.List;
 public class ShapePath {
 
   private static final float ANGLE_UP = 270;
+  /**
+   * Degrees measured from the vector [0,1].
+   *
+   * @hide
+   */
   protected static final float ANGLE_LEFT = 180;
 
-  public float startX;
-  public float startY;
-  public float endX;
-  public float endY;
-  public float currentShadowAngle;
-  public float endShadowAngle;
+  /**
+   * The x coordinate for the start of the path. Does not change. Do not change.
+   *
+   * @deprecated Use the class methods to interact with this field so internal state can be
+   *     maintained.
+   */
+  @Deprecated public float startX;
+  /**
+   * The y coordinate for the start of the path. Does not change. Do not change.
+   *
+   * @deprecated Use the class methods to interact with this field so internal state can be
+   *     maintained.
+   */
+  @Deprecated public float startY;
+  /**
+   * The x coordinate for the current end of the path given the previously applied transformation.
+   * Changes internally. Do not change.
+   *
+   * @deprecated Use the class methods to interact with this field so internal state can be
+   *     maintained.
+   */
+  @Deprecated public float endX;
+  /**
+   * The y coordinate for the current end of the path given the previously applied transformation.
+   * Changes internally. Do not change.
+   *
+   * @deprecated Use the class methods to interact with this field so internal state can be
+   *     maintained.
+   */
+  @Deprecated public float endY;
+  /**
+   * The angle of the start of the last drawn shadow. Changes internally. Do not change.
+   *
+   * @deprecated Use the class methods to interact with this field so internal state can be *
+   *     maintained.
+   */
+  @Deprecated public float currentShadowAngle;
+  /**
+   * The angle at the end of the final shadow. Changes internally. Do not change.
+   *
+   * @deprecated Use the class methods to interact with this field so internal state can be *
+   *     maintained.
+   */
+  @Deprecated public float endShadowAngle;
 
   private final List<PathOperation> operations = new ArrayList<>();
   private final List<ShadowCompatOperation> shadowCompatOperations = new ArrayList<>();
@@ -52,17 +95,22 @@ public class ShapePath {
     reset(startX, startY);
   }
 
+  /**
+   * Resets the ShapePath using a default shadow. {@link ShapePath#reset(float, float, float,
+   * float)}.
+   */
   public void reset(float startX, float startY) {
     reset(startX, startY, ANGLE_UP, 0);
   }
 
+  /** Resets fields given the provided assignment parameters. */
   public void reset(float startX, float startY, float shadowStartAngle, float shadowSweepAngle) {
-    this.startX = startX;
-    this.startY = startY;
-    this.endX = startX;
-    this.endY = startY;
-    this.currentShadowAngle = shadowStartAngle;
-    this.endShadowAngle = (shadowStartAngle + shadowSweepAngle) % 360;
+    setStartX(startX);
+    setStartY(startY);
+    setEndX(startX);
+    setEndY(startY);
+    setCurrentShadowAngle(shadowStartAngle);
+    setEndShadowAngle((shadowStartAngle + shadowSweepAngle) % 360);
     this.operations.clear();
     this.shadowCompatOperations.clear();
   }
@@ -79,7 +127,7 @@ public class ShapePath {
     operation.y = y;
     operations.add(operation);
 
-    LineShadowOperation shadowOperation = new LineShadowOperation(operation, endX, endY);
+    LineShadowOperation shadowOperation = new LineShadowOperation(operation, getEndX(), getEndY());
 
     // The previous endX and endY is the starting point for this shadow operation.
     addShadowCompatOperation(
@@ -87,8 +135,8 @@ public class ShapePath {
         ANGLE_UP + shadowOperation.getAngle(),
         ANGLE_UP + shadowOperation.getAngle());
 
-    endX = x;
-    endY = y;
+    setEndX(x);
+    setEndY(y);
   }
 
   /**
@@ -101,14 +149,14 @@ public class ShapePath {
    */
   public void quadToPoint(float controlX, float controlY, float toX, float toY) {
     PathQuadOperation operation = new PathQuadOperation();
-    operation.controlX = controlX;
-    operation.controlY = controlY;
-    operation.endX = toX;
-    operation.endY = toY;
+    operation.setControlX(controlX);
+    operation.setControlY(controlY);
+    operation.setEndX(toX);
+    operation.setEndY(toY);
     operations.add(operation);
 
-    endX = toX;
-    endY = toY;
+    setEndX(toX);
+    setEndY(toY);
   }
 
   /**
@@ -121,11 +169,11 @@ public class ShapePath {
    * @param startAngle start angle of the arc.
    * @param sweepAngle sweep angle of the arc.
    */
-  public void addArc(float left, float top, float right, float bottom, float startAngle,
-      float sweepAngle) {
+  public void addArc(
+      float left, float top, float right, float bottom, float startAngle, float sweepAngle) {
     PathArcOperation operation = new PathArcOperation(left, top, right, bottom);
-    operation.startAngle = startAngle;
-    operation.sweepAngle = sweepAngle;
+    operation.setStartAngle(startAngle);
+    operation.setSweepAngle(sweepAngle);
     operations.add(operation);
 
     ArcShadowOperation arcShadowOperation = new ArcShadowOperation(operation);
@@ -139,10 +187,12 @@ public class ShapePath {
         drawShadowInsideBounds ? (180 + startAngle) % 360 : startAngle,
         drawShadowInsideBounds ? (180 + endAngle) % 360 : endAngle);
 
-    endX = (left + right) * 0.5f
-        + (right - left) / 2 * (float) Math.cos(Math.toRadians(startAngle + sweepAngle));
-    endY = (top + bottom) * 0.5f
-        + (bottom - top) / 2 * (float) Math.sin(Math.toRadians(startAngle + sweepAngle));
+    setEndX(
+        (left + right) * 0.5f
+            + (right - left) / 2 * (float) Math.cos(Math.toRadians(startAngle + sweepAngle)));
+    setEndY(
+        (top + bottom) * 0.5f
+            + (bottom - top) / 2 * (float) Math.sin(Math.toRadians(startAngle + sweepAngle)));
   }
 
   /**
@@ -164,7 +214,7 @@ public class ShapePath {
    */
   ShadowCompatOperation createShadowCompatOperation(final Matrix transform) {
     // If the shadowCompatOperations don't end on the desired endShadowAngle, add an arc to do so.
-    addConnectingShadowIfNecessary(endShadowAngle);
+    addConnectingShadowIfNecessary(getEndShadowAngle());
     final List<ShadowCompatOperation> operations = new ArrayList<>(shadowCompatOperations);
     return new ShadowCompatOperation() {
       @Override
@@ -185,7 +235,7 @@ public class ShapePath {
       ShadowCompatOperation shadowOperation, float startShadowAngle, float endShadowAngle) {
     addConnectingShadowIfNecessary(startShadowAngle);
     shadowCompatOperations.add(shadowOperation);
-    currentShadowAngle = endShadowAngle;
+    setCurrentShadowAngle(endShadowAngle);
   }
 
   /**
@@ -193,20 +243,69 @@ public class ShapePath {
    * the next shadow angle, if there would be a gap.
    */
   private void addConnectingShadowIfNecessary(float nextShadowAngle) {
-    if (currentShadowAngle == nextShadowAngle) {
+    if (getCurrentShadowAngle() == nextShadowAngle) {
       // Previously drawn shadow lines up with the next shadow, so don't draw anything.
       return;
     }
-    float shadowSweep = (nextShadowAngle - currentShadowAngle + 360) % 360;
+    float shadowSweep = (nextShadowAngle - getCurrentShadowAngle() + 360) % 360;
     if (shadowSweep > 180) {
       // Shadows are actually overlapping, so don't draw anything.
       return;
     }
-    PathArcOperation pathArcOperation = new PathArcOperation(endX, endY, endX, endY);
-    pathArcOperation.startAngle = currentShadowAngle;
-    pathArcOperation.sweepAngle = shadowSweep;
+    PathArcOperation pathArcOperation =
+        new PathArcOperation(getEndX(), getEndY(), getEndX(), getEndY());
+    pathArcOperation.setStartAngle(getCurrentShadowAngle());
+    pathArcOperation.setSweepAngle(shadowSweep);
     shadowCompatOperations.add(new ArcShadowOperation(pathArcOperation));
-    currentShadowAngle = nextShadowAngle;
+    setCurrentShadowAngle(nextShadowAngle);
+  }
+
+  float getStartX() {
+    return startX;
+  }
+
+  float getStartY() {
+    return startY;
+  }
+
+  float getEndX() {
+    return endX;
+  }
+
+  float getEndY() {
+    return endY;
+  }
+
+  private float getCurrentShadowAngle() {
+    return currentShadowAngle;
+  }
+
+  private float getEndShadowAngle() {
+    return endShadowAngle;
+  }
+
+  private void setStartX(float startX) {
+    this.startX = startX;
+  }
+
+  private void setStartY(float startY) {
+    this.startY = startY;
+  }
+
+  private void setEndX(float endX) {
+    this.endX = endX;
+  }
+
+  private void setEndY(float endY) {
+    this.endY = endY;
+  }
+
+  private void setCurrentShadowAngle(float currentShadowAngle) {
+    this.currentShadowAngle = currentShadowAngle;
+  }
+
+  private void setEndShadowAngle(float endShadowAngle) {
+    this.endShadowAngle = endShadowAngle;
   }
 
   /**
@@ -270,9 +369,11 @@ public class ShapePath {
     @Override
     public void draw(
         Matrix transform, ShadowRenderer shadowRenderer, int shadowElevation, Canvas canvas) {
-      float startAngle = operation.startAngle;
-      float sweepAngle = operation.sweepAngle;
-      RectF rect = new RectF(operation.left, operation.top, operation.right, operation.bottom);
+      float startAngle = operation.getStartAngle();
+      float sweepAngle = operation.getSweepAngle();
+      RectF rect =
+          new RectF(
+              operation.getLeft(), operation.getTop(), operation.getRight(), operation.getBottom());
       shadowRenderer.drawCornerShadow(
           canvas, transform, rect, shadowElevation, startAngle, sweepAngle);
     }
@@ -280,8 +381,11 @@ public class ShapePath {
 
   /** Interface for a path operation to be appended to the operations list. */
   public abstract static class PathOperation {
+
+    /** A usable {@link Matrix} object for transformations. */
     protected final Matrix matrix = new Matrix();
 
+    /** Applies the given {@code transform} to the provided {@code path}. */
     public abstract void applyToPath(Matrix transform, Path path);
   }
 
@@ -302,18 +406,66 @@ public class ShapePath {
 
   /** Path quad operation. */
   public static class PathQuadOperation extends PathOperation {
-    public float controlX;
-    public float controlY;
-    public float endX;
-    public float endY;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float controlX;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float controlY;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float endX;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float endY;
 
     @Override
     public void applyToPath(Matrix transform, Path path) {
       Matrix inverse = matrix;
       transform.invert(inverse);
       path.transform(inverse);
-      path.quadTo(controlX, controlY, endX, endY);
+      path.quadTo(getControlX(), getControlY(), getEndX(), getEndY());
       path.transform(transform);
+    }
+
+    private float getEndX() {
+      return endX;
+    }
+
+    private void setEndX(float endX) {
+      this.endX = endX;
+    }
+
+    private float getControlY() {
+      return controlY;
+    }
+
+    private void setControlY(float controlY) {
+      this.controlY = controlY;
+    }
+
+    private float getEndY() {
+      return endY;
+    }
+
+    private void setEndY(float endY) {
+      this.endY = endY;
+    }
+
+    private float getControlX() {
+      return controlX;
+    }
+
+    private void setControlX(float controlX) {
+      this.controlX = controlX;
     }
   }
 
@@ -321,18 +473,42 @@ public class ShapePath {
   public static class PathArcOperation extends PathOperation {
     private static final RectF rectF = new RectF();
 
-    public float left;
-    public float top;
-    public float right;
-    public float bottom;
-    public float startAngle;
-    public float sweepAngle;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float left;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float top;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float right;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float bottom;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float startAngle;
+    /**
+     * @deprecated Use the class methods to interact with this field so internal state can be
+     *     maintained.
+     */
+    @Deprecated public float sweepAngle;
 
     public PathArcOperation(float left, float top, float right, float bottom) {
-      this.left = left;
-      this.top = top;
-      this.right = right;
-      this.bottom = bottom;
+      setLeft(left);
+      setTop(top);
+      setRight(right);
+      setBottom(bottom);
     }
 
     @Override
@@ -340,9 +516,57 @@ public class ShapePath {
       Matrix inverse = matrix;
       transform.invert(inverse);
       path.transform(inverse);
-      rectF.set(left, top, right, bottom);
-      path.arcTo(rectF, startAngle, sweepAngle, false);
+      rectF.set(getLeft(), getTop(), getRight(), getBottom());
+      path.arcTo(rectF, getStartAngle(), getSweepAngle(), false);
       path.transform(transform);
+    }
+
+    private float getLeft() {
+      return left;
+    }
+
+    private float getTop() {
+      return top;
+    }
+
+    private float getRight() {
+      return right;
+    }
+
+    private float getBottom() {
+      return bottom;
+    }
+
+    private void setLeft(float left) {
+      this.left = left;
+    }
+
+    private void setTop(float top) {
+      this.top = top;
+    }
+
+    private void setRight(float right) {
+      this.right = right;
+    }
+
+    private void setBottom(float bottom) {
+      this.bottom = bottom;
+    }
+
+    private float getStartAngle() {
+      return startAngle;
+    }
+
+    private float getSweepAngle() {
+      return sweepAngle;
+    }
+
+    private void setStartAngle(float startAngle) {
+      this.startAngle = startAngle;
+    }
+
+    private void setSweepAngle(float sweepAngle) {
+      this.sweepAngle = sweepAngle;
     }
   }
 }

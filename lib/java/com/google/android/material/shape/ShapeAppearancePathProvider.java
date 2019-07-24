@@ -124,8 +124,8 @@ public class ShapeAppearancePathProvider {
   }
 
   private void setEdgePathAndTransform(int index) {
-    scratch[0] = cornerPaths[index].endX;
-    scratch[1] = cornerPaths[index].endY;
+    scratch[0] = cornerPaths[index].getEndX();
+    scratch[1] = cornerPaths[index].getEndY();
     cornerTransforms[index].mapPoints(scratch);
     float edgeAngle = angleOfEdge(index);
     edgeTransforms[index].reset();
@@ -134,8 +134,8 @@ public class ShapeAppearancePathProvider {
   }
 
   private void appendCornerPath(ShapeAppearancePathSpec spec, int index) {
-    scratch[0] = cornerPaths[index].startX;
-    scratch[1] = cornerPaths[index].startY;
+    scratch[0] = cornerPaths[index].getStartX();
+    scratch[1] = cornerPaths[index].getStartY();
     cornerTransforms[index].mapPoints(scratch);
     if (index == 0) {
       spec.path.moveTo(scratch[0], scratch[1]);
@@ -150,12 +150,12 @@ public class ShapeAppearancePathProvider {
 
   private void appendEdgePath(ShapeAppearancePathSpec spec, int index) {
     int nextIndex = (index + 1) % 4;
-    scratch[0] = cornerPaths[index].endX;
-    scratch[1] = cornerPaths[index].endY;
+    scratch[0] = cornerPaths[index].getEndX();
+    scratch[1] = cornerPaths[index].getEndY();
     cornerTransforms[index].mapPoints(scratch);
 
-    scratch2[0] = cornerPaths[nextIndex].startX;
-    scratch2[1] = cornerPaths[nextIndex].startY;
+    scratch2[0] = cornerPaths[nextIndex].getStartX();
+    scratch2[1] = cornerPaths[nextIndex].getStartY();
     cornerTransforms[nextIndex].mapPoints(scratch2);
 
     float edgeLength = (float) Math.hypot(scratch[0] - scratch2[0], scratch[1] - scratch2[1]);
