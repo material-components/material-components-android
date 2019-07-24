@@ -18,10 +18,10 @@ package com.google.android.material.picker;
 import com.google.android.material.R;
 
 import androidx.annotation.Nullable;
-import com.google.android.material.textfield.TextInputLayout;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import com.google.android.material.textfield.TextInputLayout;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.util.Date;

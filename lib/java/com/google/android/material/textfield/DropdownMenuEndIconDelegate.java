@@ -36,9 +36,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.ShapeAppearanceModel;
-import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
-import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
-import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.appcompat.content.res.AppCompatResources;
@@ -57,6 +54,9 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import com.google.android.material.animation.AnimationUtils;
 import com.google.android.material.color.MaterialColors;
+import com.google.android.material.textfield.TextInputLayout.AccessibilityDelegate;
+import com.google.android.material.textfield.TextInputLayout.BoxBackgroundMode;
+import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 
 /** Default initialization of the exposed dropdown menu {@link TextInputLayout.EndIconMode}. */
 class DropdownMenuEndIconDelegate extends EndIconDelegate {

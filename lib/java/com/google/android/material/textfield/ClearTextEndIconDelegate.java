@@ -23,7 +23,6 @@ import android.animation.AnimatorListenerAdapter;
 import android.animation.AnimatorSet;
 import android.animation.ValueAnimator;
 import android.animation.ValueAnimator.AnimatorUpdateListener;
-import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -31,6 +30,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
 import com.google.android.material.animation.AnimationUtils;
+import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
 
 /** Default initialization of the clear text end icon {@link TextInputLayout.EndIconMode}. */
 class ClearTextEndIconDelegate extends EndIconDelegate {

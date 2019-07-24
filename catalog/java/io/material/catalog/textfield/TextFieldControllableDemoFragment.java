@@ -20,13 +20,13 @@ import io.material.catalog.R;
 
 import android.graphics.Color;
 import androidx.annotation.LayoutRes;
-import com.google.android.material.textfield.TextInputEditText;
-import com.google.android.material.textfield.TextInputLayout;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import com.google.android.material.textfield.TextInputEditText;
+import com.google.android.material.textfield.TextInputLayout;
 
 /** A base class for controllable text field demos in the Catalog app. */
 public abstract class TextFieldControllableDemoFragment extends TextFieldDemoFragment {

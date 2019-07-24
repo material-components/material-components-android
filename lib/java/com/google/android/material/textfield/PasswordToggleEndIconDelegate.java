@@ -18,8 +18,6 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
-import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
-import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -27,6 +25,8 @@ import android.text.method.PasswordTransformationMethod;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.EditText;
+import com.google.android.material.textfield.TextInputLayout.OnEditTextAttachedListener;
+import com.google.android.material.textfield.TextInputLayout.OnEndIconChangedListener;
 
 /** Default initialization of the password toggle end icon. */
 class PasswordToggleEndIconDelegate extends EndIconDelegate {

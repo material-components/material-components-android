@@ -23,7 +23,6 @@ import static org.hamcrest.Matchers.nullValue;
 import static org.junit.Assert.assertThat;
 
 import android.content.Context;
-import com.google.android.material.textfield.TextInputLayout;
 import androidx.core.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.LayoutInflater;
@@ -31,6 +30,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView.BufferType;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;

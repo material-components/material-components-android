@@ -18,8 +18,8 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
-import static com.google.android.material.textfield.IndicatorViewController.COUNTER_INDEX;
 import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
+import static com.google.android.material.textfield.IndicatorViewController.COUNTER_INDEX;
 
 import android.animation.ValueAnimator;
 import android.content.Context;
