@@ -98,7 +98,10 @@ import java.lang.ref.WeakReference;
  * BadgeUtils.attachBadgeDrawable(badgeDrawable, anchor, anchorFrameLayoutParent);
  * </pre>
  *
- * Note: This is still under development and may not support the full range of customization
+ * <p>By default, {@code BadgeDrawable} is aligned to the top and end edges of its anchor view (with
+ * some offsets). Call #setBadgeGravity(int) to change it to one of the other supported modes.
+ *
+ * <p>Note: This is still under development and may not support the full range of customization
  * Material Android components generally support (e.g. themed attributes).
  */
 public class BadgeDrawable extends Drawable implements TextDrawableDelegate {
