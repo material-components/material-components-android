@@ -310,8 +310,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
     if (VERSION.SDK_INT >= VERSION_CODES.Q) {
       int controlsFlag = hasAction ? FLAG_CONTENT_CONTROLS : 0;
       return accessibilityManager.getRecommendedTimeoutMillis(
-          userSetDuration,
-          controlsFlag | FLAG_CONTENT_ICONS | FLAG_CONTENT_TEXT);
+          userSetDuration, controlsFlag | FLAG_CONTENT_ICONS | FLAG_CONTENT_TEXT);
     }
 
     // If touch exploration is enabled override duration to give people chance to interact.
@@ -373,6 +372,7 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
   public Snackbar setBackgroundTint(@ColorInt int color) {
     Drawable background = view.getBackground();
     if (background != null) {
+      background = background.mutate();
       // Drawable doesn't implement setTint in API 21 and Snackbar does not yet use
       // MaterialShapeDrawable as its background (i.e. TintAwareDrawable)
       if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
@@ -381,6 +381,13 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
         background.setColorFilter(color, PorterDuff.Mode.SRC_IN);
       }
     }
+    return this;
+  }
+
+  /** Sets the tint color state list of the background Drawable. */
+  @NonNull
+  public Snackbar setBackgroundTintList(ColorStateList colorStateList) {
+    DrawableCompat.setTintList(view.getBackground().mutate(), colorStateList);
     return this;
   }
 
