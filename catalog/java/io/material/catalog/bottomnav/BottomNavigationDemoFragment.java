@@ -122,7 +122,7 @@ public abstract class BottomNavigationDemoFragment extends DemoFragment {
         MenuItem menuItem = bn.getMenu().getItem(i);
         int menuItemId = menuItem.getItemId();
         BadgeDrawable badgeDrawable = bn.getBadge(menuItemId);
-        if (badgeDrawable != null && badgeDrawable.getBadgeGravity() != badgeGravity) {
+        if (badgeDrawable != null) {
           badgeDrawable.setBadgeGravity(badgeGravity);
         }
       }
