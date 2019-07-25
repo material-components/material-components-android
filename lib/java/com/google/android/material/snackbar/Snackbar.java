@@ -144,7 +144,8 @@ public class Snackbar extends BaseTransientBottomBar<Snackbar> {
    * <p>Having a {@link CoordinatorLayout} in your view hierarchy allows Snackbar to enable certain
    * features, such as swipe-to-dismiss and automatically moving of widgets.
    *
-   * @param view The view to find a parent from.
+   * @param view The view to find a parent from. This view is also used to find the anchor view when
+   *     calling {@link Snackbar#setAnchorView(int)}.
    * @param text The text to show. Can be formatted text.
    * @param duration How long to display the message. Can be {@link #LENGTH_SHORT}, {@link
    *     #LENGTH_LONG}, {@link #LENGTH_INDEFINITE}, or a custom duration in milliseconds.

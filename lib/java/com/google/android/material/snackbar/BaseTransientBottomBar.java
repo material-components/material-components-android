@@ -113,11 +113,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     /** Annotation for types of Dismiss events. */
     @RestrictTo(LIBRARY_GROUP)
     @IntDef({
-        DISMISS_EVENT_SWIPE,
-        DISMISS_EVENT_ACTION,
-        DISMISS_EVENT_TIMEOUT,
-        DISMISS_EVENT_MANUAL,
-        DISMISS_EVENT_CONSECUTIVE
+      DISMISS_EVENT_SWIPE,
+      DISMISS_EVENT_ACTION,
+      DISMISS_EVENT_TIMEOUT,
+      DISMISS_EVENT_MANUAL,
+      DISMISS_EVENT_CONSECUTIVE
     })
     @Retention(RetentionPolicy.SOURCE)
     public @interface DismissEvent {}
@@ -314,8 +314,7 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
         view,
         new OnApplyWindowInsetsListener() {
           @Override
-          public WindowInsetsCompat onApplyWindowInsets(View v,
-              WindowInsetsCompat insets) {
+          public WindowInsetsCompat onApplyWindowInsets(View v, WindowInsetsCompat insets) {
             // Copy over the bottom inset as bottom margin so that we're displayed above the
             // navigation bar.
             extraBottomMarginInsets = insets.getSystemWindowInsetBottom();
@@ -446,10 +445,17 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     return (B) this;
   }
 
-  /** Sets the id of the view the {@link BaseTransientBottomBar} should be anchored above. */
+  /**
+   * Sets the id of the view the {@link BaseTransientBottomBar} should be anchored above.
+   *
+   * @throws IllegalArgumentException if the anchor view is not found.
+   */
   @NonNull
   public B setAnchorView(@IdRes int anchorViewId) {
     this.anchorView = targetParent.findViewById(anchorViewId);
+    if (this.anchorView == null) {
+      throw new IllegalArgumentException("Unable to find anchor view with id: " + anchorViewId);
+    }
     return (B) this;
   }
 
