@@ -62,6 +62,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import com.google.android.material.badge.BadgeDrawable;
 import com.google.android.material.behavior.HideBottomViewOnScrollBehavior;
 import com.google.android.material.internal.ThemeEnforcement;
+import com.google.android.material.internal.ViewUtils;
+import com.google.android.material.internal.ViewUtils.RelativePadding;
 import com.google.android.material.ripple.RippleUtils;
 
 /**
@@ -241,6 +243,24 @@ public class BottomNavigationView extends FrameLayout {
 
           @Override
           public void onMenuModeChange(MenuBuilder menu) {}
+        });
+
+    applyWindowInsets();
+  }
+
+  private void applyWindowInsets() {
+    ViewUtils.doOnApplyWindowInsets(
+        this,
+        new ViewUtils.OnApplyWindowInsetsListener() {
+          @Override
+          public androidx.core.view.WindowInsetsCompat onApplyWindowInsets(
+              View view,
+              androidx.core.view.WindowInsetsCompat insets,
+              RelativePadding initialPadding) {
+            initialPadding.bottom += insets.getSystemWindowInsetBottom();
+            initialPadding.applyToView(view);
+            return insets;
+          }
         });
   }
 
