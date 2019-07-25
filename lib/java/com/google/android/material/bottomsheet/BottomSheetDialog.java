@@ -36,9 +36,6 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.FrameLayout;
-
-import java.lang.ref.WeakReference;
-
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 
 /** Base class for {@link android.app.Dialog}s styled as a bottom sheet. */
@@ -141,23 +138,7 @@ public class BottomSheetDialog extends AppCompatDialog {
       if (behavior.getBottomSheetCallback() == bottomSheetCallback) {
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
       } else {
-        WeakReference<BottomSheetDialog> dialogWeakReference = new WeakReference<>(this);
-
-        behavior.setBottomSheetCallback(new BottomSheetBehavior.BottomSheetCallback() {
-          @Override
-          public void onStateChanged(@NonNull View bottomSheet, int newState) {
-            if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-              BottomSheetDialog dialog = dialogWeakReference.get();
-              if (dialog != null) {
-                dialog.cancel();
-              }
-            }
-          }
-
-          @Override
-          public void onSlide(@NonNull View bottomSheet, float slideOffset) {}
-        });
-
+        behavior.setBottomSheetCallback(bottomSheetCallback);
         behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
       }
     }
