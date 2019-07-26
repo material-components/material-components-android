@@ -20,6 +20,7 @@ import android.app.Dialog;
 import android.os.Bundle;
 import android.view.View;
 
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.google.android.material.R;
 
 import java.lang.ref.WeakReference;
@@ -96,16 +97,16 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
   }
 
   private BottomSheetBehavior.BottomSheetCallback getDismissBehaviorCallback(
-      boolean allowingStateLoss) {
+      final boolean allowingStateLoss) {
 
-    WeakReference<AppCompatDialogFragment> dialogFragmentWeakReference =
+    final WeakReference<BottomSheetDialogFragment> dialogFragmentWeakReference =
         new WeakReference<>(this);
 
     return new BottomSheetBehavior.BottomSheetCallback() {
       @Override
       public void onStateChanged(@NonNull View bottomSheet, int newState) {
         if (newState == BottomSheetBehavior.STATE_HIDDEN) {
-          AppCompatDialogFragment dialogFragment = dialogFragmentWeakReference.get();
+          BottomSheetDialogFragment dialogFragment = dialogFragmentWeakReference.get();
 
           if (dialogFragment != null) {
             if (allowingStateLoss) {
