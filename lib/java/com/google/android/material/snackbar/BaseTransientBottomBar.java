@@ -87,7 +87,12 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
   /** Animation mode that corresponds to the fade in and out animations. */
   public static final int ANIMATION_MODE_FADE = 1;
 
-  /** Animation modes that can be set on the {@link BaseTransientBottomBar}. */
+  /**
+   * Animation modes that can be set on the {@link BaseTransientBottomBar}.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
   @IntDef({ANIMATION_MODE_SLIDE, ANIMATION_MODE_FADE})
   @Retention(RetentionPolicy.SOURCE)
   public @interface AnimationMode {}
@@ -110,7 +115,11 @@ public abstract class BaseTransientBottomBar<B extends BaseTransientBottomBar<B>
     /** Indicates that the Snackbar was dismissed from a new Snackbar being shown. */
     public static final int DISMISS_EVENT_CONSECUTIVE = 4;
 
-    /** Annotation for types of Dismiss events. */
+    /**
+     * Annotation for types of Dismiss events.
+     *
+     * @hide
+     */
     @RestrictTo(LIBRARY_GROUP)
     @IntDef({
       DISMISS_EVENT_SWIPE,
