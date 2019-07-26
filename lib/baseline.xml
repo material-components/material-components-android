@@ -171,39 +171,6 @@
     </issue>
 
     <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="    android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/textfield/res/drawable/mtrl_ic_arrow_drop_down.xml"
-            line="25"
-            column="24"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="    android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/textfield/res/drawable/mtrl_ic_arrow_drop_up.xml"
-            line="25"
-            column="24"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="    android:fillColor=&quot;@android:color/white&quot;"
-        errorLine2="                       ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="java/com/google/android/material/textfield/res/drawable/mtrl_ic_cancel.xml"
-            line="25"
-            column="24"/>
-    </issue>
-
-    <issue
         id="PrivateResource"
         message="The resource `@styleable/TextAppearance_android_textSize` is marked as private in androidx.appcompat:appcompat"
         errorLine1="              androidx.appcompat.R.styleable.TextAppearance_android_textSize, 0);"

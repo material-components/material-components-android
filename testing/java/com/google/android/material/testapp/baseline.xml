@@ -72,28 +72,6 @@
     </issue>
 
     <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="        android:tint=&quot;?attr/colorControlNormal&quot;>"
-        errorLine2="                      ~~~~~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/vector_icon.xml"
-            line="22"
-            column="23"/>
-    </issue>
-
-    <issue
-        id="VectorRaster"
-        message="Resource references will not work correctly in images generated for this vector icon for API &lt; 21; check generated icon to make sure it looks acceptable"
-        errorLine1="            android:fillColor=&quot;@android:color/white&quot;/>"
-        errorLine2="                               ~~~~~~~~~~~~~~~~~~~~">
-        <location
-            file="res/drawable/vector_icon.xml"
-            line="25"
-            column="32"/>
-    </issue>
-
-    <issue
         id="GradleDependency"
         message="A newer version of androidx.multidex:multidex than 2.0.0 is available: 2.0.1"
         errorLine1="  api &apos;androidx.multidex:multidex:2.0.0&apos;"
