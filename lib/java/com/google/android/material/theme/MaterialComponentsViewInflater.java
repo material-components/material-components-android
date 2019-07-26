@@ -16,11 +16,14 @@
 
 package com.google.android.material.theme;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
+
 import android.content.Context;
 import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import androidx.annotation.Keep;
 import androidx.annotation.NonNull;
+import androidx.annotation.RestrictTo;
 import com.google.android.material.button.MaterialButton;
 import androidx.appcompat.app.AppCompatViewInflater;
 import androidx.appcompat.widget.AppCompatButton;
@@ -54,6 +57,8 @@ public class MaterialComponentsViewInflater extends AppCompatViewInflater {
     return new MaterialButton(context, attrs);
   }
 
+  /** @hide */
+  @RestrictTo(LIBRARY_GROUP)
   protected boolean shouldInflateAppCompatButton(Context context, AttributeSet attrs) {
     // Workaround for FloatingToolbar inflating floating_popup_menu_button.xml on API 23-25, which
     // should not have MaterialButton styling.
