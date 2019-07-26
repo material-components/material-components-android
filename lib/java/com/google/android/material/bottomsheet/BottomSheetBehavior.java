@@ -30,7 +30,6 @@ import android.os.Build.VERSION;
 import android.os.Build.VERSION_CODES;
 import android.os.Parcel;
 import android.os.Parcelable;
-import androidx.annotation.FloatRange;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -137,17 +136,17 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   /**
    * This flag will preserve the fitToContents boolean value on configuration change.
    */
-  public static final int SAVE_FIT_TO_CONTENTS = 1 << 1;
+  public static final int SAVE_FIT_TO_CONTENTS = 0x2;
 
   /**
    * This flag will preserve the hideable boolean value on configuration change.
    */
-  public static final int SAVE_HIDEABLE = 1 << 2;
+  public static final int SAVE_HIDEABLE = 0x4;
 
   /**
    * This flag will preserve the skipCollapsed boolean value on configuration change.
    */
-  public static final int SAVE_SKIP_COLLAPSED = 1 << 3;
+  public static final int SAVE_SKIP_COLLAPSED = 0x8;
 
   /**
    * This flag will preserve all aforementioned values on configuration change.
@@ -161,22 +160,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    */
   public static final int SAVE_NONE = 0;
 
-  /** @hide */
-  @RestrictTo(LIBRARY_GROUP)
-  @IntDef(
-      flag = true,
-      value = {
-        SAVE_PEEK_HEIGHT,
-        SAVE_FIT_TO_CONTENTS,
-        SAVE_HIDEABLE,
-        SAVE_SKIP_COLLAPSED,
-        SAVE_ALL,
-        SAVE_NONE,
-      })
-  @Retention(RetentionPolicy.SOURCE)
-  public @interface SaveFlags {}
-
-  @SaveFlags private int saveFlags = SAVE_NONE;
+  private int saveFlags = SAVE_NONE;
 
   private static final float HIDE_THRESHOLD = 0.5f;
 
@@ -744,7 +728,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @param ratio a float between 0 and 1, representing the {@link #STATE_HALF_EXPANDED} ratio.
    * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
-  public void setHalfExpandedRatio(@FloatRange(from = 0.0f, to = 1.0f) float ratio) {
+  public void setHalfExpandedRatio(float ratio) {
 
     if ((ratio <= 0) || (ratio >= 1)) {
       throw new IllegalArgumentException("ratio must be a float value between 0 and 1");
@@ -773,7 +757,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    *
    * @attr com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_halfExpandedRatio
    */
-  @FloatRange(from = 0.0f, to = 1.0f)
   public float getHalfExpandedRatio() {
     return halfExpandedRatio;
   }
@@ -835,7 +818,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @see #getSaveFlags()
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_saveFlags
    */
-  public void setSaveFlags(@SaveFlags int flags) {
+  public void setSaveFlags(int flags) {
     this.saveFlags = flags;
   }
   /**
@@ -844,7 +827,6 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * @see #setSaveFlags(int)
    * @attr ref com.google.android.material.R.styleable#BottomSheetBehavior_Layout_behavior_saveFlags
    */
-  @SaveFlags
    public int getSaveFlags() {
     return this.saveFlags;
   }
@@ -1291,10 +1273,7 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    * Disables the shaped corner {@link ShapeAppearanceModel} interpolation transition animations.
    * Will have no effect unless the sheet utilizes a {@link MaterialShapeDrawable} with set shape
    * theming properties. Only For use in UI testing.
-   *
-   * @hide
    */
-  @RestrictTo(LIBRARY_GROUP)
   @VisibleForTesting
   public void disableShapeAnimations() {
     // Sets the shape value animator to null, prevents animations from occuring during testing.
