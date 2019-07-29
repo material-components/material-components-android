@@ -22,6 +22,7 @@ import static com.google.android.material.testutils.TextInputLayoutActions.click
 import static com.google.android.material.testutils.TextInputLayoutActions.setCustomEndIconContent;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconMode;
 import static com.google.android.material.testutils.TextInputLayoutActions.setEndIconOnClickListener;
+import static com.google.android.material.testutils.TextInputLayoutActions.setError;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIcon;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconContentDescription;
 import static com.google.android.material.testutils.TextInputLayoutActions.setStartIconOnClickListener;
@@ -38,11 +39,14 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
+import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.AccessibilityChecks.accessibilityAssertion;
 import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
+import static androidx.test.espresso.matcher.ViewMatchers.withEffectiveVisibility;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.not;
@@ -65,6 +69,7 @@ import android.text.method.TransformationMethod;
 import android.view.KeyEvent;
 import android.widget.EditText;
 import androidx.test.espresso.ViewAssertion;
+import androidx.test.espresso.matcher.ViewMatchers.Visibility;
 import androidx.test.filters.LargeTest;
 import androidx.test.filters.MediumTest;
 import androidx.test.rule.ActivityTestRule;
@@ -222,7 +227,9 @@ public class TextInputLayoutIconsTest {
   public void testPasswordToggleIsAccessible() {
     onView(
             allOf(
-                withId(R.id.text_input_end_icon), isDescendantOfA(withId(R.id.textinput_password))))
+                withId(R.id.text_input_end_icon),
+                withContentDescription(R.string.password_toggle_content_description),
+                isDescendantOfA(withId(R.id.textinput_password))))
         .check(accessibilityAssertion());
   }
 
@@ -342,6 +349,7 @@ public class TextInputLayoutIconsTest {
     onView(
             allOf(
                 withId(R.id.text_input_end_icon),
+                withContentDescription(R.string.clear_text_end_icon_content_description),
                 isDescendantOfA(withId(R.id.textinput_clear))))
         .check(accessibilityAssertion());
   }
@@ -500,6 +508,107 @@ public class TextInputLayoutIconsTest {
             withId(R.id.text_input_start_icon),
             isDescendantOfA(withId(R.id.textinput_starticon))))
         .check(accessibilityAssertion());
+  }
+
+  @Test
+  public  void testErrorIconAppears() {
+    // Set error
+    onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
+
+    // Check the icon is visible
+    onView(withId(R.id.textinput_no_icon)).check(matches(showsEndIcon()));
+  }
+
+  @Test
+  public  void testErrorIconDisappears() {
+    // Set error
+    onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
+
+    // Unset error
+    onView(withId(R.id.textinput_no_icon)).perform(setError(null));
+
+    // Check there is no icon
+    onView(withId(R.id.textinput_no_icon)).check(matches(doesNotShowEndIcon()));
+  }
+
+ @Test
+ public void testErrorIconMaintainsCompoundDrawables() {
+    // Set a known set of test compound drawables on the EditText
+    final Drawable start = new ColorDrawable(Color.RED);
+    final Drawable top = new ColorDrawable(Color.GREEN);
+    final Drawable end = new ColorDrawable(Color.BLUE);
+    final Drawable bottom = new ColorDrawable(Color.BLACK);
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .perform(setCompoundDrawablesRelative(start, top, end, bottom));
+
+    // Set error and check that the start, top and bottom drawables are maintained
+    onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .check(matches(withCompoundDrawable(0, start)))
+        .check(matches(withCompoundDrawable(1, top)))
+        .check(matches(not(withCompoundDrawable(2, end))))
+        .check(matches(withCompoundDrawable(3, bottom)));
+
+    // Now remove error and check that all of the original compound drawables are set
+    onView(withId(R.id.textinput_no_icon)).perform(setError(null));
+    onView(withId(R.id.textinput_edittext_no_icon))
+        .check(matches(withCompoundDrawable(0, start)))
+        .check(matches(withCompoundDrawable(1, top)))
+        .check(matches(withCompoundDrawable(2, end)))
+        .check(matches(withCompoundDrawable(3, bottom)));
+ }
+
+ @Test
+ public void testErrorIconMaintainsEndIcon() {
+   // Set error on text field with password toggle icon
+   onView(withId(R.id.textinput_password)).perform(setError("Error"));
+   // Check icon showing is error icon only
+   onView(
+       allOf(
+           withId(R.id.text_input_end_icon),
+           withContentDescription(R.string.error_icon_content_description),
+           isDescendantOfA(withId(R.id.textinput_password))))
+       .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+   onView(
+       allOf(
+           withId(R.id.text_input_end_icon),
+           withContentDescription(R.string.password_toggle_content_description),
+           isDescendantOfA(withId(R.id.textinput_password))))
+       .check(doesNotExist());
+
+   // Unset error
+   onView(withId(R.id.textinput_password)).perform(setError(null));
+
+   // Check end icon is back
+   onView(
+       allOf(
+           withId(R.id.text_input_end_icon),
+           withContentDescription(R.string.error_icon_content_description),
+           isDescendantOfA(withId(R.id.textinput_password))))
+       .check(matches(withEffectiveVisibility(Visibility.GONE)));
+   onView(
+       allOf(
+           withId(R.id.text_input_end_icon),
+           withContentDescription(R.string.password_toggle_content_description),
+           isDescendantOfA(withId(R.id.textinput_password))))
+       .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
+ }
+
+  @Test
+  public void testErrorIconMaintainsDisguisedInputText() {
+    final Activity activity = activityTestRule.getActivity();
+    final EditText editText =
+        activity.findViewById(R.id.textinput_edittext_pwd);
+    // Set some text on the EditText
+    onView(withId(R.id.textinput_edittext_pwd)).perform(typeText(INPUT_TEXT));
+    // Assert that the password is disguised
+    assertNotEquals(INPUT_TEXT, editText.getLayout().getText().toString());
+
+    // Set error
+    onView(withId(R.id.textinput_password)).perform(setError("Error"));
+
+    // Check that the password is disguised still
+    assertNotEquals(INPUT_TEXT, editText.getLayout().getText().toString());
   }
 
   private static ViewAssertion isPasswordToggledVisible(final boolean isToggledVisible) {

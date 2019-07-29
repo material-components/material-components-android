@@ -126,6 +126,7 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
           autoCompleteTextView.setThreshold(0);
           editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
           editText.addTextChangedListener(exposedDropdownEndIconTextWatcher);
+          textInputLayout.setErrorIconDrawable(null);
           textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
 
           textInputLayout.setEndIconVisible(true);

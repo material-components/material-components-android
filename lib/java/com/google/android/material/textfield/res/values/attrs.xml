@@ -52,6 +52,27 @@
     <!-- Text color for any error message displayed.
          If set, this takes precedence over errorTextAppearance. -->
     <attr name="errorTextColor" format="color"/>
+    <!-- End icon to be shown when an error is displayed. -->
+    <attr name="errorIconDrawable" format="reference"/>
+    <!-- Tint color to use for the error icon. -->
+    <attr name="errorIconTint" format="reference"/>
+    <!-- Blending mode used to apply the error icon tint. -->
+    <attr name="errorIconTintMode">
+      <!-- The tint is drawn on top of the drawable.
+           [Sa + (1 - Sa)*Da, Rc = Sc + (1 - Sa)*Dc] -->
+      <enum name="src_over" value="3"/>
+      <!-- The tint is masked by the alpha channel of the drawable. The drawable’s
+           color channels are thrown out. [Sa * Da, Sc * Da] -->
+      <enum name="src_in" value="5"/>
+      <!-- The tint is drawn above the drawable, but with the drawable’s alpha
+           channel masking the result. [Da, Sc * Da + (1 - Sa) * Dc] -->
+      <enum name="src_atop" value="9"/>
+      <!-- Multiplies the color and alpha channels of the drawable with those of
+           the tint. [Sa * Da, Sc * Dc] -->
+      <enum name="multiply" value="14"/>
+      <!-- [Sa + Da - Sa * Da, Sc + Dc - Sc * Dc] -->
+      <enum name="screen" value="15"/>
+    </attr>
 
     <!-- Whether the layout is laid out as if the character counter will be displayed. -->
     <attr name="counterEnabled" format="boolean"/>

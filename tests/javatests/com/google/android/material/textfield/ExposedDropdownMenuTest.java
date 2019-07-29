@@ -28,6 +28,7 @@ import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.AccessibilityChecks.accessibilityAssertion;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.isRoot;
+import static androidx.test.espresso.matcher.ViewMatchers.withContentDescription;
 import static androidx.test.espresso.matcher.ViewMatchers.withId;
 import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.allOf;
@@ -140,7 +141,9 @@ public class ExposedDropdownMenuTest {
 
   @Test
   public void testEndIconIsAccessible() {
-    onView(allOf(withId(R.id.text_input_end_icon), isDescendantOfA(withId(R.id.filled_dropdown))))
+    onView(allOf(withId(R.id.text_input_end_icon),
+        withContentDescription(R.string.exposed_dropdown_menu_content_description),
+        isDescendantOfA(withId(R.id.filled_dropdown))))
         .check(accessibilityAssertion());
   }
 }

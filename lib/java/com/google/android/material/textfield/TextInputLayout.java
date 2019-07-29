@@ -349,6 +349,7 @@ public class TextInputLayout extends LinearLayout {
   private boolean hasEndIconTintMode;
   private Drawable endIconDummyDrawable;
   private Drawable originalEditTextEndDrawable;
+  private final CheckableImageButton errorIconView;
 
   private ColorStateList defaultHintTextColor;
   private ColorStateList focusedTextColor;
@@ -522,6 +523,32 @@ public class TextInputLayout extends LinearLayout {
     final int errorTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_errorTextAppearance, 0);
     final boolean errorEnabled = a.getBoolean(R.styleable.TextInputLayout_errorEnabled, false);
+    // Initialize error icon view.
+    errorIconView =
+        (CheckableImageButton)
+            LayoutInflater.from(getContext())
+                .inflate(R.layout.design_text_input_end_icon, inputFrame, false);
+    inputFrame.addView(errorIconView);
+    errorIconView.setVisibility(GONE);
+    if (a.hasValue(R.styleable.TextInputLayout_errorIconDrawable)) {
+      setErrorIconDrawable(a.getDrawable(R.styleable.TextInputLayout_errorIconDrawable));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_errorIconTint)) {
+      setErrorIconTintList(
+          MaterialResources.getColorStateList(
+              context, a, R.styleable.TextInputLayout_errorIconTint));
+    }
+    if (a.hasValue(R.styleable.TextInputLayout_errorIconTintMode)) {
+      setErrorIconTintMode(
+          ViewUtils.parseTintMode(
+              a.getInt(R.styleable.TextInputLayout_errorIconTintMode, -1), null));
+    }
+    errorIconView.setContentDescription(
+        getResources().getText(R.string.error_icon_content_description));
+    ViewCompat
+        .setImportantForAccessibility(errorIconView, ViewCompat.IMPORTANT_FOR_ACCESSIBILITY_NO);
+    errorIconView.setClickable(false);
+    errorIconView.setFocusable(false);
 
     final int helperTextTextAppearance =
         a.getResourceId(R.styleable.TextInputLayout_helperTextTextAppearance, 0);
@@ -1051,6 +1078,7 @@ public class TextInputLayout extends LinearLayout {
 
     startIconView.bringToFront();
     endIconView.bringToFront();
+    errorIconView.bringToFront();
     dispatchOnEditTextAttached();
 
     // Update the label visibility with no animation, but force a state change
@@ -1419,6 +1447,75 @@ public class TextInputLayout extends LinearLayout {
       indicatorViewController.showError(errorText);
     } else {
       indicatorViewController.hideError();
+    }
+  }
+
+  /**
+   * Set the drawable to use for the error icon.
+   *
+   * @param resId resource id of the drawable to set, or 0 to clear the icon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorIconDrawable
+   */
+  public void setErrorIconDrawable(@DrawableRes int resId) {
+    setErrorIconDrawable(resId != 0 ? AppCompatResources.getDrawable(getContext(), resId) : null);
+  }
+
+  /**
+   * Set the drawable to use for the error icon.
+   *
+   * @param errorIconDrawable Drawable to set, may be null to clear the icon
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorIconDrawable
+   */
+  public void setErrorIconDrawable(@Nullable Drawable errorIconDrawable) {
+    errorIconView.setImageDrawable(errorIconDrawable);
+    setErrorIconVisible(errorIconDrawable != null);
+  }
+
+  /**
+   * Returns the drawable currently used for the error icon.
+   *
+   * @see #setErrorIconDrawable(Drawable)
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorIconDrawable
+   */
+  @Nullable
+  public Drawable getErrorIconDrawable() {
+    return errorIconView.getDrawable();
+  }
+
+  /**
+   * Applies a tint to the error icon drawable.
+   *
+   * @param errorIconTintList the tint to apply, may be null to clear tint
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorIconTint
+   */
+  public void setErrorIconTintList(@Nullable ColorStateList errorIconTintList) {
+    Drawable icon = errorIconView.getDrawable();
+    if (icon != null) {
+      icon = DrawableCompat.wrap(icon).mutate();
+      DrawableCompat.setTintList(icon, errorIconTintList);
+    }
+
+    if (errorIconView.getDrawable() != icon) {
+      errorIconView.setImageDrawable(icon);
+    }
+  }
+
+  /**
+   * Specifies the blending mode used to apply tint to the end icon drawable. The default mode is
+   * {@link PorterDuff.Mode#SRC_IN}.
+   *
+   * @param errorIconTintMode the blending mode used to apply the tint, may be null to clear tint
+   * @attr ref com.google.android.material.R.styleable#TextInputLayout_errorIconTintMode
+   */
+  public void setErrorIconTintMode(@Nullable PorterDuff.Mode errorIconTintMode) {
+    Drawable icon = errorIconView.getDrawable();
+    if (icon != null) {
+      icon = DrawableCompat.wrap(icon).mutate();
+      DrawableCompat.setTintMode(icon, errorIconTintMode);
+    }
+
+    if (errorIconView.getDrawable() != icon) {
+      errorIconView.setImageDrawable(icon);
     }
   }
 
@@ -2270,7 +2367,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setEndIconVisible(boolean)
    */
   public boolean isEndIconVisible() {
-    return endIconView.getVisibility() == View.VISIBLE;
+    return endIconView.getParent() != null && endIconView.getVisibility() == View.VISIBLE;
   }
 
   /**
@@ -2758,15 +2855,16 @@ public class TextInputLayout extends LinearLayout {
       updatedIcon = true;
     }
 
-    // Update end icon drawable if needed.
-    if (hasEndIcon() && isEndIconVisible() && endIconView.getMeasuredWidth() > 0) {
+    // Update end icon or error icon drawable if needed.
+    CheckableImageButton iconView = getEndIconToUpdateDummyDrawable();
+    if (iconView != null && iconView.getMeasuredWidth() > 0) {
       if (endIconDummyDrawable == null) {
         endIconDummyDrawable = new ColorDrawable();
         int right =
-            endIconView.getMeasuredWidth()
+            iconView.getMeasuredWidth()
                 - editText.getPaddingRight()
                 + MarginLayoutParamsCompat.getMarginStart(
-                    ((MarginLayoutParams) endIconView.getLayoutParams()));
+                    ((MarginLayoutParams) iconView.getLayoutParams()));
         endIconDummyDrawable.setBounds(0, 0, right, 1);
       }
       final Drawable[] compounds = TextViewCompat.getCompoundDrawablesRelative(editText);
@@ -2789,6 +2887,17 @@ public class TextInputLayout extends LinearLayout {
     }
 
     return updatedIcon;
+  }
+
+  @Nullable
+  private CheckableImageButton getEndIconToUpdateDummyDrawable() {
+    if (errorIconView.getVisibility() == VISIBLE) {
+      return errorIconView;
+    } else if (hasEndIcon() && isEndIconVisible()) {
+      return endIconView;
+    } else {
+      return null;
+    }
   }
 
   private void applyIconTint(
@@ -2987,6 +3096,8 @@ public class TextInputLayout extends LinearLayout {
     tintEndIconOnError(
         indicatorViewController.errorShouldBeShown()
             && getEndIconDelegate().shouldTintIconOnError());
+    setErrorIconVisible(
+        getErrorIconDrawable() != null && indicatorViewController.errorShouldBeShown());
 
     // Update the text box's stroke width based on the current state.
     if ((isHovered || hasFocus) && isEnabled()) {
@@ -3007,6 +3118,25 @@ public class TextInputLayout extends LinearLayout {
     }
 
     applyBoxAttributes();
+  }
+
+  private void setErrorIconVisible(boolean errorIconVisible) {
+    int newErrorIconVisibility = errorIconVisible ? VISIBLE : GONE;
+    if (errorIconView.getVisibility() == newErrorIconVisibility) {
+      return;
+    }
+
+    errorIconView.setVisibility(newErrorIconVisibility);
+
+    if (errorIconVisible) {
+      inputFrame.removeView(endIconView);
+    } else if (endIconView.getParent() == null) {
+      inputFrame.addView(endIconView);
+    }
+
+    if (!hasEndIcon()) {
+      updateIconDummyDrawables();
+    }
   }
 
   private void expandHint(boolean animate) {
