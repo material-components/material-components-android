@@ -21,6 +21,7 @@ import static androidx.test.espresso.matcher.ViewMatchers.isAssignableFrom;
 import android.content.res.ColorStateList;
 import androidx.annotation.ColorInt;
 import androidx.annotation.DrawableRes;
+import com.google.android.material.shape.ShapeAppearanceModel;
 import android.view.View;
 import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.test.espresso.UiController;
@@ -199,6 +200,33 @@ public class FloatingActionButtonActions {
 
         long duration = fab.getHideMotionSpec().getTotalDuration();
         uiController.loopMainThreadForAtLeast(duration + 50);
+      }
+    };
+  }
+
+  /**
+   * Returns a {@link ViewAction} that requests will make the visual representation of the FAB fill
+   * the {@link View}. It will remove corners, shadow padding, and stop ensuring min touch target
+   * size. This should only be used to help with checking color contrast heuristics.
+   */
+  public static ViewAction fillView() {
+    return new ViewAction() {
+      @Override
+      public Matcher<View> getConstraints() {
+        return isAssignableFrom(FloatingActionButton.class);
+      }
+
+      @Override
+      public String getDescription() {
+        return "removing corner radii from FAB";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        FloatingActionButton fab = (FloatingActionButton) view;
+        fab.setShapeAppearance(new ShapeAppearanceModel());
+        fab.setShadowPaddingEnabled(false);
+        fab.setEnsureMinTouchTargetSize(false);
       }
     };
   }

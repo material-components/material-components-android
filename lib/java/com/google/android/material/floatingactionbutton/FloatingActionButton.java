@@ -1410,6 +1410,17 @@ public class FloatingActionButton extends VisibilityAwareImageButton
     getImpl().onScaleChanged();
   }
 
+  /**
+   * Set whether padding to show compat shadows should be added.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
+  @VisibleForTesting
+  public void setShadowPaddingEnabled(boolean shadowPaddingEnabled) {
+    getImpl().setShadowPaddingEnabled(shadowPaddingEnabled);
+  }
+
   private FloatingActionButtonImpl getImpl() {
     if (impl == null) {
       impl = createImpl();

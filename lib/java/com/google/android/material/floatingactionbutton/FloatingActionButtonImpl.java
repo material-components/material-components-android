@@ -86,6 +86,7 @@ class FloatingActionButtonImpl {
 
   boolean usingDefaultCorner;
   boolean ensureMinTouchTargetSize;
+  boolean shadowPaddingEnabled = true;
   float elevation;
   float hoveredFocusedTranslationZ;
   float pressedTranslationZ;
@@ -354,6 +355,11 @@ class FloatingActionButtonImpl {
 
   void setEnsureMinTouchTargetSize(boolean flag) {
     ensureMinTouchTargetSize = flag;
+  }
+
+  void setShadowPaddingEnabled(boolean shadowPaddingEnabled) {
+    this.shadowPaddingEnabled = shadowPaddingEnabled;
+    updatePadding();
   }
 
   void onElevationsChanged(
@@ -656,7 +662,7 @@ class FloatingActionButtonImpl {
         ? (minTouchTargetSize - view.getSizeDimension()) / 2
         : 0;
 
-    final float maxShadowSize = (getElevation() + pressedTranslationZ);
+    final float maxShadowSize = shadowPaddingEnabled ? (getElevation() + pressedTranslationZ) : 0;
     final int hPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize));
     final int vPadding = Math.max(minPadding, (int) Math.ceil(maxShadowSize * SHADOW_MULTIPLIER));
     rect.set(hPadding, vPadding, hPadding, vPadding);
