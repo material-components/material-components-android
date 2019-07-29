@@ -50,7 +50,8 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   private final OnEditTextAttachedListener onEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
-        public void onEditTextAttached(EditText editText) {
+        public void onEditTextAttached(TextInputLayout textInputLayout) {
+          EditText editText = textInputLayout.getEditText();
           textInputLayout.setEndIconVisible(true);
           endIconView.setChecked(!hasPasswordTransformation());
           // Make sure there's always only one password toggle text watcher added
@@ -61,7 +62,7 @@ class PasswordToggleEndIconDelegate extends EndIconDelegate {
   private final OnEndIconChangedListener onEndIconChangedListener =
       new OnEndIconChangedListener() {
         @Override
-        public void onEndIconChanged(int previousIcon) {
+        public void onEndIconChanged(TextInputLayout textInputLayout, int previousIcon) {
           EditText editText = textInputLayout.getEditText();
           if (editText != null && previousIcon == TextInputLayout.END_ICON_PASSWORD_TOGGLE) {
             // If the end icon was the password toggle add it back the PasswordTransformation

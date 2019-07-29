@@ -117,15 +117,16 @@ class DropdownMenuEndIconDelegate extends EndIconDelegate {
   private final OnEditTextAttachedListener dropdownMenuOnEditTextAttachedListener =
       new OnEditTextAttachedListener() {
         @Override
-        public void onEditTextAttached(EditText editText) {
-          AutoCompleteTextView autoCompleteTextView = castAutoCompleteTextViewOrThrow(editText);
+        public void onEditTextAttached(TextInputLayout textInputLayout) {
+          AutoCompleteTextView autoCompleteTextView =
+              castAutoCompleteTextViewOrThrow(textInputLayout.getEditText());
 
           setPopupBackground(autoCompleteTextView);
           addRippleEffect(autoCompleteTextView);
           setUpDropdownShowHideBehavior(autoCompleteTextView);
           autoCompleteTextView.setThreshold(0);
-          editText.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
-          editText.addTextChangedListener(exposedDropdownEndIconTextWatcher);
+          autoCompleteTextView.removeTextChangedListener(exposedDropdownEndIconTextWatcher);
+          autoCompleteTextView.addTextChangedListener(exposedDropdownEndIconTextWatcher);
           textInputLayout.setErrorIconDrawable(null);
           textInputLayout.setTextInputAccessibilityDelegate(accessibilityDelegate);
 

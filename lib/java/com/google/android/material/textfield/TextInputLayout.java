@@ -18,6 +18,7 @@ package com.google.android.material.textfield;
 
 import com.google.android.material.R;
 
+import static androidx.annotation.RestrictTo.Scope.LIBRARY_GROUP;
 import static com.google.android.material.internal.ThemeEnforcement.createThemedContext;
 import static com.google.android.material.textfield.IndicatorViewController.COUNTER_INDEX;
 
@@ -43,6 +44,7 @@ import androidx.annotation.DrawableRes;
 import androidx.annotation.IntDef;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RestrictTo;
 import androidx.annotation.StringRes;
 import androidx.annotation.StyleRes;
 import androidx.annotation.VisibleForTesting;
@@ -240,7 +242,12 @@ public class TextInputLayout extends LinearLayout {
   private boolean hasStartIconTintMode;
   private Drawable startIconDummyDrawable;
 
-  /** Values for the end icon mode. */
+  /**
+   * Values for the end icon mode.
+   *
+   * @hide
+   */
+  @RestrictTo(LIBRARY_GROUP)
   @IntDef({
     END_ICON_CUSTOM,
     END_ICON_NONE,
@@ -315,9 +322,9 @@ public class TextInputLayout extends LinearLayout {
      * #addOnEditTextAttachedListener(OnEditTextAttachedListener)} if the edit text is already
      * present.
      *
-     * @param editText the {@link EditText}
+     * @param textInputLayout the {@link TextInputLayout}
      */
-    void onEditTextAttached(EditText editText);
+    void onEditTextAttached(TextInputLayout textInputLayout);
   }
 
   /**
@@ -330,9 +337,10 @@ public class TextInputLayout extends LinearLayout {
     /**
      * Called when the end icon changes.
      *
+     * @param textInputLayout the {@link TextInputLayout}
      * @param previousIcon the {@link EndIconMode} the view previously had set
      */
-    void onEndIconChanged(@EndIconMode int previousIcon);
+    void onEndIconChanged(TextInputLayout textInputLayout, @EndIconMode int previousIcon);
   }
 
   private final LinkedHashSet<OnEditTextAttachedListener> editTextAttachedListeners =
@@ -2554,7 +2562,7 @@ public class TextInputLayout extends LinearLayout {
   public void addOnEditTextAttachedListener(OnEditTextAttachedListener listener) {
     editTextAttachedListeners.add(listener);
     if (editText != null) {
-      listener.onEditTextAttached(editText);
+      listener.onEditTextAttached(this);
     }
   }
 
@@ -2774,7 +2782,7 @@ public class TextInputLayout extends LinearLayout {
 
   private void dispatchOnEditTextAttached() {
     for (OnEditTextAttachedListener listener : editTextAttachedListeners) {
-      listener.onEditTextAttached(editText);
+      listener.onEditTextAttached(this);
     }
   }
 
@@ -2797,7 +2805,7 @@ public class TextInputLayout extends LinearLayout {
 
   private void dispatchOnEndIconChanged(@EndIconMode int previousIcon) {
     for (OnEndIconChangedListener listener : endIconChangedListeners) {
-      listener.onEndIconChanged(previousIcon);
+      listener.onEndIconChanged(this, previousIcon);
     }
   }
 
