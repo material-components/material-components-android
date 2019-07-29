@@ -162,18 +162,7 @@ public class ChipDrawable extends MaterialShapeDrawable
   private static final boolean DEBUG = false;
   private static final int[] DEFAULT_STATE = new int[] {android.R.attr.state_enabled};
   private static final String NAMESPACE_APP = "http://schemas.android.com/apk/res-auto";
-  private static final int[][] states =
-      new int[][] {
-        new int[] {
-          android.R.attr.state_enabled, android.R.attr.state_selected,
-        },
-        new int[] {
-          android.R.attr.state_enabled, android.R.attr.state_checked,
-        },
-        new int[] {android.R.attr.state_enabled, android.R.attr.state_checkable},
-        new int[] {android.R.attr.state_enabled},
-        new int[] {} // default
-      };
+
   private static final ShapeDrawable closeIconRippleMask = new ShapeDrawable(new OvalShape());
 
   // Visuals
@@ -254,6 +243,7 @@ public class ChipDrawable extends MaterialShapeDrawable
 
   @ColorInt private int currentChipSurfaceColor;
   @ColorInt private int currentChipBackgroundColor;
+  @ColorInt private int currentCompositeSurfaceBackgroundColor;
   @ColorInt private int currentChipStrokeColor;
   @ColorInt private int currentCompatRippleColor;
   @ColorInt private int currentTextColor;
@@ -996,6 +986,14 @@ public class ChipDrawable extends MaterialShapeDrawable
       invalidate = true;
     }
 
+    int newCompositeSurfaceBackgroundColor =
+        MaterialColors.layer(newChipSurfaceColor, newChipBackgroundColor);
+    if (currentCompositeSurfaceBackgroundColor != newCompositeSurfaceBackgroundColor) {
+      currentCompositeSurfaceBackgroundColor = newCompositeSurfaceBackgroundColor;
+      setFillColor(ColorStateList.valueOf(currentCompositeSurfaceBackgroundColor));
+      invalidate = true;
+    }
+
     int newChipStrokeColor =
         chipStrokeColor != null
             ? chipStrokeColor.getColorForState(chipState, currentChipStrokeColor)
@@ -1294,11 +1292,6 @@ public class ChipDrawable extends MaterialShapeDrawable
   private void setChipSurfaceColor(@Nullable ColorStateList chipSurfaceColor) {
     if (this.chipSurfaceColor != chipSurfaceColor) {
       this.chipSurfaceColor = chipSurfaceColor;
-      if (isShapeThemingEnabled) {
-        if (chipSurfaceColor != null && chipBackgroundColor != null) {
-          setFillColor(compositeSurfaceBackgroundColor(chipBackgroundColor, chipSurfaceColor));
-        }
-      }
       onStateChange(getState());
     }
   }
@@ -1356,19 +1349,8 @@ public class ChipDrawable extends MaterialShapeDrawable
   public void setChipBackgroundColor(@Nullable ColorStateList chipBackgroundColor) {
     if (this.chipBackgroundColor != chipBackgroundColor) {
       this.chipBackgroundColor = chipBackgroundColor;
-      if (isShapeThemingEnabled) {
-        if (chipSurfaceColor != null && chipBackgroundColor != null) {
-          setFillColor(compositeSurfaceBackgroundColor(chipBackgroundColor, chipSurfaceColor));
-        }
-      }
       onStateChange(getState());
     }
-  }
-
-  private ColorStateList compositeSurfaceBackgroundColor(
-      @NonNull ColorStateList backgroundColor, @NonNull ColorStateList surfaceColor) {
-    return MaterialColors.layer(
-        surfaceColor, currentChipSurfaceColor, backgroundColor, currentChipBackgroundColor, states);
   }
 
   /**
