@@ -1055,7 +1055,15 @@ public class ChipDrawable extends MaterialShapeDrawable
       invalidate |= checkedIcon.setState(chipState);
     }
     if (isStateful(closeIcon)) {
-      invalidate |= closeIcon.setState(closeIconState);
+      // Merge the chipState and closeIconState so that when the Chip is pressed, focused, or
+      // hovered, the close icon acts like it is pressed, focused, or hovered. Do not use the merged
+      // state for the closeIconRipple as that should only behave pressed, focused, or hovered when
+      // the closeIcon is pressed, focused, or hovered.
+      int[] closeIconMergedState = new int[chipState.length + closeIconState.length];
+      System.arraycopy(chipState, 0, closeIconMergedState, 0, chipState.length);
+      System.arraycopy(
+          closeIconState, 0, closeIconMergedState, chipState.length, closeIconState.length);
+      invalidate |= closeIcon.setState(closeIconMergedState);
     }
     //noinspection NewApi
     if (RippleUtils.USE_FRAMEWORK_RIPPLE && isStateful(closeIconRipple)) {
