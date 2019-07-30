@@ -17,33 +17,33 @@
 package io.material.catalog.themeswitcher;
 
 import android.app.Activity;
+import androidx.annotation.IdRes;
 import androidx.annotation.StyleRes;
-import java.util.Arrays;
+import android.util.SparseIntArray;
 
-/** Utils for theme overlays. */
-public abstract class ThemeOverlayUtils {
+/** Utils for theme themeOverlays. */
+public class ThemeOverlayUtils {
 
-  @StyleRes private static int[] themeOverlays = new int[0];
+  private ThemeOverlayUtils() { }
 
-  public static void setThemeOverlays(Activity activity, @StyleRes int... themeOverlays) {
-    if (!Arrays.equals(ThemeOverlayUtils.themeOverlays, themeOverlays)) {
-      ThemeOverlayUtils.themeOverlays = themeOverlays;
-      activity.recreate();
-    }
+  private static final SparseIntArray themeOverlays = new SparseIntArray();
+
+  public static void setThemeOverlay(@IdRes int id, @StyleRes int themeOverlay) {
+    themeOverlays.put(id, themeOverlay);
   }
 
   public static void clearThemeOverlays(Activity activity) {
-    setThemeOverlays(activity);
+    themeOverlays.clear();
+    activity.recreate();
   }
 
-  @StyleRes
-  public static int[] getThemeOverlays() {
-    return themeOverlays;
+  public static int getThemeOverlay(@IdRes int id) {
+    return themeOverlays.get(id);
   }
 
   public static void applyThemeOverlays(Activity activity) {
-    for (int themeOverlay : themeOverlays) {
-      activity.setTheme(themeOverlay);
+    for (int i = 0; i < themeOverlays.size(); ++i) {
+      activity.setTheme(themeOverlays.valueAt(i));
     }
   }
 }
