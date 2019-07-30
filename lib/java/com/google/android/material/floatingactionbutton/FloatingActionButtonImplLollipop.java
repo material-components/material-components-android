@@ -79,7 +79,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
 
     rippleDrawable =
         new RippleDrawable(
-            RippleUtils.convertToRippleDrawableColor(rippleColor), rippleContent, null);
+            RippleUtils.sanitizeRippleDrawableColor(rippleColor), rippleContent, null);
 
     contentBackground = rippleDrawable;
   }
@@ -88,7 +88,7 @@ class FloatingActionButtonImplLollipop extends FloatingActionButtonImpl {
   void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (rippleDrawable instanceof RippleDrawable) {
       ((RippleDrawable) rippleDrawable)
-          .setColor(RippleUtils.convertToRippleDrawableColor(rippleColor));
+          .setColor(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     } else {
       super.setRippleColor(rippleColor);
     }

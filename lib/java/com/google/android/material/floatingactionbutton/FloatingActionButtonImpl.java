@@ -43,6 +43,7 @@ import androidx.annotation.Nullable;
 import com.google.android.material.shape.MaterialShapeDrawable;
 import com.google.android.material.shape.MaterialShapeUtils;
 import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import androidx.core.graphics.drawable.DrawableCompat;
 import androidx.core.util.Preconditions;
 import androidx.core.view.ViewCompat;
@@ -54,6 +55,7 @@ import com.google.android.material.animation.ImageMatrixProperty;
 import com.google.android.material.animation.MatrixEvaluator;
 import com.google.android.material.animation.MotionSpec;
 import com.google.android.material.internal.StateListAnimator;
+import com.google.android.material.ripple.RippleDrawableCompat;
 import com.google.android.material.ripple.RippleUtils;
 import com.google.android.material.shadow.ShadowViewDelegate;
 import java.util.ArrayList;
@@ -195,8 +197,9 @@ class FloatingActionButtonImpl {
     shapeDrawable.initializeElevationOverlay(view.getContext());
 
     // Now we created a mask Drawable which will be used for touch feedback.
-    MaterialShapeDrawable touchFeedbackShape = createShapeDrawable();
-    touchFeedbackShape.setTintList(RippleUtils.convertToRippleDrawableColor(rippleColor));
+    RippleDrawableCompat touchFeedbackShape =
+        new RippleDrawableCompat(shapeDrawable.getShapeAppearanceModel());
+    touchFeedbackShape.setTintList(RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     rippleDrawable = touchFeedbackShape;
 
     final Drawable[] layers = new Drawable[]{
@@ -227,7 +230,7 @@ class FloatingActionButtonImpl {
   void setRippleColor(@Nullable ColorStateList rippleColor) {
     if (rippleDrawable != null) {
       DrawableCompat.setTintList(
-          rippleDrawable, RippleUtils.convertToRippleDrawableColor(rippleColor));
+          rippleDrawable, RippleUtils.sanitizeRippleDrawableColor(rippleColor));
     }
   }
 
@@ -313,8 +316,8 @@ class FloatingActionButtonImpl {
       shapeDrawable.setShapeAppearanceModel(shapeAppearance);
     }
 
-    if (rippleDrawable instanceof MaterialShapeDrawable) {
-      ((MaterialShapeDrawable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
+    if (rippleDrawable instanceof Shapeable) {
+      ((Shapeable) rippleDrawable).setShapeAppearanceModel(shapeAppearance);
     }
 
     if (borderDrawable != null) {
