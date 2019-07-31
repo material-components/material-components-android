@@ -22,7 +22,7 @@ dependencies {
   testImplementation "junit:junit:4.12"
   testImplementation "com.google.truth:truth:${project.rootProject.ext.truthVersion}"
   testImplementation "org.mockito:mockito-core:${project.rootProject.ext.mockitoCoreVersion}"
-  testImplementation "org.robolectric:robolectric:4.3-alpha-2"
+  testImplementation "org.robolectric:robolectric:4.3"
 
   testAnnotationProcessor "com.google.auto.service:auto-service:1.0-rc4"
 }
