@@ -180,6 +180,7 @@ public class TextInputLayout extends LinearLayout {
   private static final String LOG_TAG = "TextInputLayout";
 
   private final FrameLayout inputFrame;
+  private final FrameLayout endIconFrame;
   EditText editText;
   private CharSequence originalHint;
 
@@ -404,6 +405,13 @@ public class TextInputLayout extends LinearLayout {
     inputFrame = new FrameLayout(context);
     inputFrame.setAddStatesFromChildren(true);
     addView(inputFrame);
+    endIconFrame = new FrameLayout(context);
+    endIconFrame.setLayoutParams(
+        new FrameLayout.LayoutParams(
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            ViewGroup.LayoutParams.WRAP_CONTENT,
+            Gravity.END | Gravity.RIGHT | Gravity.CENTER_VERTICAL));
+    inputFrame.addView(endIconFrame);
 
     collapsingTextHelper.setTextSizeInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
     collapsingTextHelper.setPositionInterpolator(AnimationUtils.LINEAR_INTERPOLATOR);
@@ -633,8 +641,8 @@ public class TextInputLayout extends LinearLayout {
     endIconView =
         (CheckableImageButton)
             LayoutInflater.from(getContext())
-                .inflate(R.layout.design_text_input_end_icon, inputFrame, false);
-    inputFrame.addView(endIconView);
+                .inflate(R.layout.design_text_input_end_icon, endIconFrame, false);
+    endIconFrame.addView(endIconView);
     endIconView.setVisibility(GONE);
     endIconDelegates.append(END_ICON_CUSTOM, new CustomEndIconDelegate(this));
     endIconDelegates.append(END_ICON_NONE, new NoEndIconDelegate(this));
@@ -1085,7 +1093,7 @@ public class TextInputLayout extends LinearLayout {
     indicatorViewController.adjustIndicatorPadding();
 
     startIconView.bringToFront();
-    endIconView.bringToFront();
+    endIconFrame.bringToFront();
     errorIconView.bringToFront();
     dispatchOnEditTextAttached();
 
@@ -2375,7 +2383,7 @@ public class TextInputLayout extends LinearLayout {
    * @see #setEndIconVisible(boolean)
    */
   public boolean isEndIconVisible() {
-    return endIconView.getParent() != null && endIconView.getVisibility() == View.VISIBLE;
+    return endIconFrame.getVisibility() == VISIBLE && endIconView.getVisibility() == VISIBLE;
   }
 
   /**
@@ -3129,19 +3137,8 @@ public class TextInputLayout extends LinearLayout {
   }
 
   private void setErrorIconVisible(boolean errorIconVisible) {
-    int newErrorIconVisibility = errorIconVisible ? VISIBLE : GONE;
-    if (errorIconView.getVisibility() == newErrorIconVisibility) {
-      return;
-    }
-
-    errorIconView.setVisibility(newErrorIconVisibility);
-
-    if (errorIconVisible) {
-      inputFrame.removeView(endIconView);
-    } else if (endIconView.getParent() == null) {
-      inputFrame.addView(endIconView);
-    }
-
+    errorIconView.setVisibility(errorIconVisible ? VISIBLE : GONE);
+    endIconFrame.setVisibility(errorIconVisible ? GONE : VISIBLE);
     if (!hasEndIcon()) {
       updateIconDummyDrawables();
     }

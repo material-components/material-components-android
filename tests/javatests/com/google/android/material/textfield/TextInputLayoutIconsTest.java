@@ -39,7 +39,6 @@ import static androidx.test.espresso.Espresso.onView;
 import static androidx.test.espresso.action.ViewActions.clearText;
 import static androidx.test.espresso.action.ViewActions.click;
 import static androidx.test.espresso.action.ViewActions.typeText;
-import static androidx.test.espresso.assertion.ViewAssertions.doesNotExist;
 import static androidx.test.espresso.assertion.ViewAssertions.matches;
 import static androidx.test.espresso.contrib.AccessibilityChecks.accessibilityAssertion;
 import static androidx.test.espresso.matcher.ViewMatchers.hasFocus;
@@ -516,7 +515,12 @@ public class TextInputLayoutIconsTest {
     onView(withId(R.id.textinput_no_icon)).perform(setError("Error"));
 
     // Check the icon is visible
-    onView(withId(R.id.textinput_no_icon)).check(matches(showsEndIcon()));
+    onView(
+        allOf(
+            withId(R.id.text_input_end_icon),
+            withContentDescription(R.string.error_icon_content_description),
+            isDescendantOfA(withId(R.id.textinput_no_icon))))
+        .check(matches(withEffectiveVisibility(Visibility.VISIBLE)));
   }
 
   @Test
@@ -574,7 +578,7 @@ public class TextInputLayoutIconsTest {
            withId(R.id.text_input_end_icon),
            withContentDescription(R.string.password_toggle_content_description),
            isDescendantOfA(withId(R.id.textinput_password))))
-       .check(doesNotExist());
+       .check(matches(withEffectiveVisibility(Visibility.GONE)));
 
    // Unset error
    onView(withId(R.id.textinput_password)).perform(setError(null));
