@@ -49,10 +49,11 @@ final class CalendarItemStyle {
    * R.styleable.MaterialCalendarItem#itemShapeAppearanceOverlay}.
    */
   private final Rect insets;
-
   private final ColorStateList textColor;
-  private final MaterialShapeDrawable backgroundDrawable;
-  private final MaterialShapeDrawable shapeMask;
+  private final ColorStateList backgroundColor;
+  private final ColorStateList strokeColor;
+  private final int strokeWidth;
+  private final ShapeAppearanceModel itemShape;
 
   private CalendarItemStyle(
       ColorStateList backgroundColor,
@@ -66,15 +67,12 @@ final class CalendarItemStyle {
     Preconditions.checkArgumentNonnegative(insets.right);
     Preconditions.checkArgumentNonnegative(insets.bottom);
 
-    this.textColor = textColor;
     this.insets = insets;
-
-    backgroundDrawable = new MaterialShapeDrawable();
-    shapeMask = new MaterialShapeDrawable();
-    backgroundDrawable.setShapeAppearanceModel(itemShape);
-    shapeMask.setShapeAppearanceModel(itemShape);
-    backgroundDrawable.setFillColor(backgroundColor);
-    backgroundDrawable.setStroke(strokeWidth, strokeColor);
+    this.textColor = textColor;
+    this.backgroundColor = backgroundColor;
+    this.strokeColor = strokeColor;
+    this.strokeWidth = strokeWidth;
+    this.itemShape = itemShape;
   }
 
   /**
@@ -130,6 +128,12 @@ final class CalendarItemStyle {
 
   /** Applies the {@link R.styleable#MaterialCalendarDay} style to the provided {@code item} */
   void styleItem(TextView item) {
+    MaterialShapeDrawable backgroundDrawable = new MaterialShapeDrawable();
+    MaterialShapeDrawable shapeMask = new MaterialShapeDrawable();
+    backgroundDrawable.setShapeAppearanceModel(itemShape);
+    shapeMask.setShapeAppearanceModel(itemShape);
+    backgroundDrawable.setFillColor(backgroundColor);
+    backgroundDrawable.setStroke(strokeWidth, strokeColor);
     item.setTextColor(textColor);
     Drawable d;
     if (VERSION.SDK_INT >= VERSION_CODES.LOLLIPOP) {

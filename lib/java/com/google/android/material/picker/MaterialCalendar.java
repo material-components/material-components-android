@@ -61,6 +61,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
   private static final String CURRENT_MONTH_KEY = "CURRENT_MONTH_KEY";
+  private static final int VERTICAL_OFF_SCREEN_PAGE_LIMIT = ViewPager2.OFFSCREEN_PAGE_LIMIT_DEFAULT;
+  private static final int HORIZONTAL_OFF_SCREEN_PAGE_LIMIT = 1;
 
   @VisibleForTesting
   @RestrictTo(Scope.LIBRARY_GROUP)
@@ -122,22 +124,27 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
     int layout;
     int orientation;
+    int pageLimit;
     if (MaterialDatePicker.isFullscreen(themedContext)) {
       layout = R.layout.mtrl_calendar_vertical;
       orientation = ViewPager2.ORIENTATION_VERTICAL;
+      pageLimit = VERTICAL_OFF_SCREEN_PAGE_LIMIT;
     } else {
       layout = R.layout.mtrl_calendar_horizontal;
       orientation = ViewPager2.ORIENTATION_HORIZONTAL;
+      pageLimit = HORIZONTAL_OFF_SCREEN_PAGE_LIMIT;
     }
 
     View root = themedInflater.inflate(layout, viewGroup, false);
     GridView daysHeader = root.findViewById(R.id.mtrl_calendar_days_of_week);
     daysHeader.setAdapter(new DaysOfWeekAdapter());
     daysHeader.setNumColumns(earliestMonth.daysInWeek);
+    daysHeader.setEnabled(false);
 
     final ViewPager2 monthsPager = root.findViewById(R.id.mtrl_calendar_viewpager);
     monthsPager.setOrientation(orientation);
     monthsPager.setTag(VIEW_PAGER_TAG);
+    monthsPager.setOffscreenPageLimit(pageLimit);
 
     final MonthsPagerAdapter monthsPagerAdapter =
         new MonthsPagerAdapter(

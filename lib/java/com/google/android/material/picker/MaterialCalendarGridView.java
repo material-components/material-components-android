@@ -19,6 +19,7 @@ import android.content.Context;
 import android.graphics.Canvas;
 import androidx.core.util.Pair;
 import android.util.AttributeSet;
+import android.view.KeyEvent;
 import android.view.View;
 import android.widget.GridView;
 import android.widget.ListAdapter;
@@ -44,6 +45,32 @@ final class MaterialCalendarGridView extends GridView {
   protected void onAttachedToWindow() {
     super.onAttachedToWindow();
     getAdapter().notifyDataSetChanged();
+  }
+
+  @Override
+  public void setSelection(int position) {
+    if (position < getAdapter().firstPositionInMonth()) {
+      super.setSelection(getAdapter().firstPositionInMonth());
+    } else {
+      super.setSelection(position);
+    }
+  }
+
+  @Override
+  public boolean onKeyDown(int keyCode, KeyEvent event) {
+    boolean result = super.onKeyDown(keyCode, event);
+    if (!result) {
+      return false;
+    }
+    if (getSelectedItemPosition() == INVALID_POSITION
+        || getSelectedItemPosition() >= getAdapter().firstPositionInMonth()) {
+      return true;
+    }
+    if (KeyEvent.KEYCODE_DPAD_UP == keyCode) {
+      setSelection(getAdapter().firstPositionInMonth());
+      return true;
+    }
+    return false;
   }
 
   @Override
@@ -104,7 +131,7 @@ final class MaterialCalendarGridView extends GridView {
         rangeHighlightEnd =
             monthAdapter.isLastInRow(lastHighlightPosition)
                 ? getWidth()
-                : getChildAt(lastHighlightPosition + 1).getLeft();
+                : getChildAt(lastHighlightPosition).getRight();
       } else {
         dayCompute.setTimeInMillis(endItem);
         lastHighlightPosition = monthAdapter.dayToPosition(dayCompute.get(Calendar.DAY_OF_MONTH));

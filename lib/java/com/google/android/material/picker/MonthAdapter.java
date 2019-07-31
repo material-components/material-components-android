@@ -78,14 +78,16 @@ class MonthAdapter extends BaseAdapter {
   }
 
   /**
-   * Returns the number of days in a week times the maximum number of weeks in any possible month.
-   * This number is at least the number of days in the month.
+   * Returns the number of days in a month plus the amount required to off-set for the first day to
+   * the correct position within the week.
+   *
+   * <p>{@see MonthAdapter#firstPositionInMonth}.
    *
    * @return The maximum valid position index
    */
   @Override
   public int getCount() {
-    return month.daysInWeek * MAXIMUM_WEEKS;
+    return month.daysInMonth + firstPositionInMonth();
   }
 
   @Override
@@ -99,11 +101,13 @@ class MonthAdapter extends BaseAdapter {
     int offsetPosition = position - firstPositionInMonth();
     if (offsetPosition < 0 || offsetPosition >= month.daysInMonth) {
       day.setVisibility(View.GONE);
+      day.setEnabled(false);
     } else {
       // The tag and text uniquely identify the view within the MaterialCalendar for testing
       day.setText(String.valueOf(offsetPosition + 1));
       day.setTag(month);
       day.setVisibility(View.VISIBLE);
+      day.setEnabled(true);
     }
 
     Long date = getItem(position);

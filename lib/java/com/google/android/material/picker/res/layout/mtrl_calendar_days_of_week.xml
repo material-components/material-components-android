@@ -19,5 +19,4 @@
     android:layout_width="match_parent"
     android:layout_height="@dimen/mtrl_calendar_days_of_week_height"
     android:horizontalSpacing="@dimen/mtrl_calendar_month_horizontal_padding"
-    android:listSelector="@android:color/transparent"
     android:gravity="center_horizontal"/>

@@ -20,6 +20,7 @@
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:addStatesFromChildren="false"
+  android:defaultFocusHighlightEnabled="false"
   android:descendantFocusability="afterDescendants"
   android:gravity="center"
   android:horizontalSpacing="@dimen/mtrl_calendar_month_horizontal_padding"

@@ -164,27 +164,27 @@ public class MonthAdapterTest {
   }
 
   @Test
-  public void usStableCount() {
+  public void usItemCount() {
     setupLocalizedCalendars(Locale.US);
-    assertStableCount();
+    assertEquals(30, monthFeb2016.getCount());
+    assertEquals(31, monthJuly2018.getCount());
+    assertEquals(33, monthFeb2019.getCount());
   }
 
   @Test
-  public void frStableCount() {
+  public void frItemCount() {
     setupLocalizedCalendars(Locale.FRANCE);
-    assertStableCount();
+    assertEquals(29, monthFeb2016.getCount());
+    assertEquals(37, monthJuly2018.getCount());
+    assertEquals(32, monthFeb2019.getCount());
   }
 
   @Test
-  public void ilStableCount() {
+  public void ilItemCount() {
     setupLocalizedCalendars(ISRAEL);
-    assertStableCount();
-  }
-
-  private void assertStableCount() {
-    assertEquals(6 * 7, monthFeb2016.getCount());
-    assertEquals(6 * 7, monthJuly2018.getCount());
-    assertEquals(6 * 7, monthFeb2019.getCount());
+    assertEquals(30, monthFeb2016.getCount());
+    assertEquals(31, monthJuly2018.getCount());
+    assertEquals(33, monthFeb2019.getCount());
   }
 
   @Test

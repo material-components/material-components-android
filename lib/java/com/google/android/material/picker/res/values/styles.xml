@@ -90,8 +90,8 @@
   <style name="Widget.MaterialComponents.MaterialCalendar.Item" parent="">
     <item name="itemFillColor">@android:color/transparent</item>
     <item name="itemTextColor">@color/mtrl_on_surface_emphasis_high_type</item>
-    <item name="itemStrokeColor">@color/mtrl_on_surface_emphasis_high_type</item>
-    <item name="itemStrokeWidth">0dp</item>
+    <item name="itemStrokeColor">@color/mtrl_calendar_item_stroke_color</item>
+    <item name="itemStrokeWidth">1dp</item>
     <item name="itemShapeAppearance">?attr/shapeAppearanceSmallComponent</item>
   </style>
 
@@ -107,16 +107,17 @@
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Day.Invalid">
     <item name="itemTextColor">@color/mtrl_on_surface_disabled</item>
-    <item name="itemStrokeColor">@color/mtrl_on_surface_disabled</item>
+    <item name="itemStrokeWidth">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Day.Selected">
     <item name="itemFillColor">?attr/colorPrimary</item>
     <item name="itemTextColor">?attr/colorOnPrimary</item>
-    <item name="itemStrokeColor">?attr/colorOnPrimary</item>
+    <item name="itemStrokeWidth">0dp</item>
   </style>
 
   <style name="Widget.MaterialComponents.MaterialCalendar.Day.Today">
+    <item name="itemStrokeColor">@color/mtrl_on_surface_emphasis_high_type</item>
     <item name="itemStrokeWidth">@dimen/mtrl_calendar_day_today_stroke</item>
   </style>
 
