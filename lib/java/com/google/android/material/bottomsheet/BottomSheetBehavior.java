@@ -207,6 +207,8 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
 
   boolean hideable;
 
+  boolean dismissWithAnimation;
+
   private boolean skipCollapsed;
 
   @State int state = STATE_COLLAPSED;
@@ -848,6 +850,14 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
    */
   public BottomSheetCallback getBottomSheetCallback() {
     return callback;
+  }
+
+  /**
+   * Set to perform the swipe down animation when dismissing.
+   * @param dismissWithAnimation True if swipe down animation should be used when dismissing.
+   */
+  public void setDismissWithAnimation(boolean dismissWithAnimation) {
+    this.dismissWithAnimation = dismissWithAnimation;
   }
 
   /**

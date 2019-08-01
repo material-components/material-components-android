@@ -128,7 +128,9 @@ public class BottomSheetDialog extends AppCompatDialog {
    */
   @Override
   public void cancel() {
-    if (getBehavior().getState() == BottomSheetBehavior.STATE_HIDDEN) {
+    boolean shouldDismissWithAnimation = getBehavior().dismissWithAnimation;
+
+    if (!shouldDismissWithAnimation || getBehavior().getState() == BottomSheetBehavior.STATE_HIDDEN) {
       super.cancel();
     } else {
       BottomSheetBehavior behavior = getBehavior();

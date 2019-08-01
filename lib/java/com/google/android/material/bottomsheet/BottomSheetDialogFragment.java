@@ -47,8 +47,11 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
       View bottomSheet = dialog.findViewById(R.id.design_bottom_sheet);
       if (bottomSheet != null) {
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
-
-        dismissWithAnimation(behavior);
+        if (behavior.dismissWithAnimation) {
+          dismissWithAnimation(behavior);
+        } else {
+          super.dismiss();
+        }
       } else {
         super.dismiss();
       }
@@ -65,7 +68,11 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
       if (bottomSheet != null) {
         BottomSheetBehavior<View> behavior = BottomSheetBehavior.from(bottomSheet);
 
-        dismissWithAnimation(behavior, true);
+        if (behavior.dismissWithAnimation) {
+          dismissWithAnimation(behavior, true);
+        } else {
+          super.dismissAllowingStateLoss();
+        }
       } else {
         super.dismissAllowingStateLoss();
       }
