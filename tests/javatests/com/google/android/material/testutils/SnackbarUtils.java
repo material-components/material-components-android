@@ -109,7 +109,7 @@ public class SnackbarUtils {
    */
   public static <B extends BaseTransientBottomBar<B>>
       void showTransientBottomBarAndWaitUntilFullyShown(@NonNull B transientBottomBar) {
-    TransientBottomBarShownCallback callback = new TransientBottomBarShownCallback();
+    TransientBottomBarShownCallback<B> callback = new TransientBottomBarShownCallback<B>();
     transientBottomBar.addCallback(callback);
     try {
       // Register our listener as idling resource so that Espresso waits until the
@@ -147,7 +147,7 @@ public class SnackbarUtils {
    */
   public static <B extends BaseTransientBottomBar<B>> void performActionAndWaitUntilFullyDismissed(
       @NonNull B transientBottomBar, @NonNull TransientBottomBarAction action) throws Throwable {
-    TransientBottomBarDismissedCallback callback = new TransientBottomBarDismissedCallback();
+    TransientBottomBarDismissedCallback<B> callback = new TransientBottomBarDismissedCallback<B>();
     transientBottomBar.addCallback(callback);
     try {
       // Register our listener as idling resource so that Espresso waits until the
@@ -172,7 +172,7 @@ public class SnackbarUtils {
   /** Helper method that waits until the given bar has been fully dismissed. */
   public static <B extends BaseTransientBottomBar<B>> void waitUntilFullyDismissed(
       @NonNull B transientBottomBar) {
-    TransientBottomBarDismissedCallback callback = new TransientBottomBarDismissedCallback();
+    TransientBottomBarDismissedCallback<B> callback = new TransientBottomBarDismissedCallback<B>();
     transientBottomBar.addCallback(callback);
     try {
       // Register our listener as idling resource so that Espresso waits until the
