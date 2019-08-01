@@ -28,6 +28,8 @@ import androidx.annotation.LayoutRes;
 import androidx.annotation.MenuRes;
 import androidx.annotation.Nullable;
 import com.google.android.material.appbar.CollapsingToolbarLayout;
+import com.google.android.material.shape.ShapeAppearanceModel;
+import com.google.android.material.shape.Shapeable;
 import androidx.core.view.ViewCompat;
 import androidx.core.widget.TextViewCompat;
 import android.util.SparseArray;
@@ -40,7 +42,9 @@ import androidx.test.espresso.ViewAction;
 import com.google.android.material.expandable.ExpandableWidget;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.tabs.TabLayout;
+import org.hamcrest.Description;
 import org.hamcrest.Matcher;
+import org.hamcrest.TypeSafeMatcher;
 
 public class TestUtilsActions {
   /**
@@ -460,6 +464,41 @@ public class TestUtilsActions {
       @Override
       public void perform(UiController uiController, View view) {
         view.requestFocus();
+      }
+    };
+  }
+
+  /**
+   * Returns a {@link ViewAction} that resets a {@link Shapeable} component to have the default (no
+   * corner, straight edge) shape.
+   */
+  public static ViewAction resetShape() {
+    return new ViewAction() {
+
+      @Override
+      public Matcher<View> getConstraints() {
+        return new TypeSafeMatcher<View>() {
+          @Override
+          public void describeTo(Description description) {
+            description.appendText("is shapeable");
+          }
+
+          @Override
+          public boolean matchesSafely(View view) {
+            return view instanceof Shapeable;
+          }
+        };
+      }
+
+      @Override
+      public String getDescription() {
+        return "reset shape";
+      }
+
+      @Override
+      public void perform(UiController uiController, View view) {
+        Shapeable shapeable = (Shapeable) view;
+        shapeable.setShapeAppearanceModel(new ShapeAppearanceModel());
       }
     };
   }
