@@ -99,7 +99,8 @@ import java.util.LinkedHashSet;
  * <p>Also supports:
  *
  * <ul>
- *   <li>Showing an error via {@link #setErrorEnabled(boolean)} and {@link #setError(CharSequence)}
+ *   <li>Showing an error via {@link #setErrorEnabled(boolean)} and {@link #setError(CharSequence)},
+ *       along with showing an error icon via {@link #setErrorIconDrawable}
  *   <li>Showing helper text via {@link #setHelperTextEnabled(boolean)} and {@link
  *       #setHelperText(CharSequence)}
  *   <li>Showing a character counter via {@link #setCounterEnabled(boolean)} and {@link
