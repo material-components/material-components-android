@@ -15,57 +15,37 @@
  */
 package com.google.android.material.picker;
 
-import androidx.lifecycle.Lifecycle;
-import androidx.lifecycle.Lifecycle.Event;
-import androidx.lifecycle.LifecycleEventObserver;
-import androidx.lifecycle.LifecycleOwner;
+import com.google.android.material.R;
+
 import android.content.Context;
 import androidx.annotation.NonNull;
-import androidx.fragment.app.FragmentManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.recyclerview.widget.RecyclerView.AdapterDataObserver;
 import androidx.recyclerview.widget.RecyclerView.LayoutParams;
-import android.util.SparseArray;
-import androidx.viewpager2.adapter.FragmentStateAdapter;
-import androidx.viewpager2.adapter.FragmentViewHolder;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import com.google.android.material.picker.MaterialCalendar.OnDayClickListener;
-import java.util.List;
 
 /**
- * Manages the instances of {@link MonthFragment}, capping memory usage.
- *
- * @hide
+ * Manages the instances of {@link MaterialCalendarGridView} that represent each month in a {@link
+ * MaterialCalendar}. Caps memory usage via {@link RecyclerView} extension.
  */
-class MonthsPagerAdapter extends FragmentStateAdapter {
+class MonthsPagerAdapter extends RecyclerView.Adapter<MonthsPagerAdapter.ViewHolder> {
 
   private final CalendarConstraints calendarConstraints;
   private final DateSelector<?> dateSelector;
-  private final SparseArray<AdapterDataObserver> observingFragments = new SparseArray<>();
   private final OnDayClickListener onDayClickListener;
   private final int itemHeight;
 
-  /**
-   * Creates a new {@link FragmentStateAdapter} that manages instances of {@link MonthFragment}.
-   *
-   * @param context The {@link Context} with the calendar theme and dimensions.
-   * @param fragmentManager A {@link FragmentManager} for the {@link MonthFragment} objects. {@see
-   *     Fragment#getChildFragmentManager()} and {@see
-   *     FragmentActivity#getSupportFragmentManager()}.
-   * @param lifecycle The {@link Lifecycle} to manage each {@link MonthFragment}. {@see
-   *     Fragment#getLifecycle()} and {@see FragmentActivity#getLifecycle()}.
-   * @param dateSelector The {@link DateSelector} that controls selection and highlights for all
-   *     {@link MonthFragment} objects.
-   * @param calendarConstraints The {@link CalendarConstraints} that specifies the valid range and
-   *     starting point for selection.
-   */
   MonthsPagerAdapter(
       Context context,
-      FragmentManager fragmentManager,
-      Lifecycle lifecycle,
       DateSelector<?> dateSelector,
       CalendarConstraints calendarConstraints,
       OnDayClickListener onDayClickListener) {
-    super(fragmentManager, lifecycle);
     Month firstPage = calendarConstraints.getStart();
     Month lastPage = calendarConstraints.getEnd();
     Month currentPage = calendarConstraints.getOpening();
@@ -85,78 +65,69 @@ class MonthsPagerAdapter extends FragmentStateAdapter {
     this.calendarConstraints = calendarConstraints;
     this.dateSelector = dateSelector;
     this.onDayClickListener = onDayClickListener;
+    setHasStableIds(true);
+  }
+
+  public static class ViewHolder extends RecyclerView.ViewHolder {
+
+    final TextView monthTitle;
+    final MaterialCalendarGridView monthGrid;
+
+    ViewHolder(LinearLayout container, boolean showLabel) {
+      super(container);
+      this.monthTitle = container.findViewById(R.id.month_title);
+      this.monthGrid = container.findViewById(R.id.month_grid);
+      if (!showLabel) {
+        monthTitle.setVisibility(View.GONE);
+      }
+    }
+  }
+
+  @NonNull
+  @Override
+  public ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int viewType) {
+    LinearLayout container =
+        (LinearLayout)
+            LayoutInflater.from(viewGroup.getContext())
+                .inflate(R.layout.mtrl_calendar_month_labeled, viewGroup, false);
+    container.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, itemHeight));
+    return new ViewHolder(
+        container, /* showLabel= */ MaterialDatePicker.isFullscreen(viewGroup.getContext()));
   }
 
   @Override
-  public void onAttachedToRecyclerView(@NonNull RecyclerView recyclerView) {
-    super.onAttachedToRecyclerView(recyclerView);
-    // TODO(b/134764679): Remove ViewPager2 workaround
-    recyclerView.clearOnChildAttachStateChangeListeners();
+  public void onBindViewHolder(@NonNull MonthsPagerAdapter.ViewHolder viewHolder, int position) {
+    Month month = calendarConstraints.getStart().monthsLater(position);
+    viewHolder.monthTitle.setText(month.getLongName());
+    final MaterialCalendarGridView monthGrid = viewHolder.monthGrid.findViewById(R.id.month_grid);
+
+    if (monthGrid.getAdapter() != null && month.equals(monthGrid.getAdapter().month)) {
+      monthGrid.getAdapter().notifyDataSetChanged();
+    } else {
+      MonthAdapter monthAdapter = new MonthAdapter(month, dateSelector, calendarConstraints);
+      monthGrid.setNumColumns(month.daysInWeek);
+      monthGrid.setAdapter(monthAdapter);
+    }
+
+    monthGrid.setOnItemClickListener(
+        new OnItemClickListener() {
+          @Override
+          public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+            if (monthGrid.getAdapter().withinMonth(position)) {
+              onDayClickListener.onDayClick(monthGrid.getAdapter().getItem(position));
+            }
+          }
+        });
   }
 
   @Override
-  public void onBindViewHolder(
-      @NonNull FragmentViewHolder holder, int position, @NonNull List<Object> payloads) {
-    super.onBindViewHolder(holder, position, payloads);
-    holder.itemView.setLayoutParams(new LayoutParams(LayoutParams.MATCH_PARENT, itemHeight));
+  public long getItemId(int position) {
+    return calendarConstraints.getStart().monthsLater(position).getStableId();
   }
 
   @Override
   public int getItemCount() {
     return calendarConstraints.getMonthSpan();
-  }
-
-  @Override
-  public MonthFragment createFragment(final int position) {
-    final MonthFragment monthFragment =
-        MonthFragment.newInstance(
-            calendarConstraints.getStart().monthsLater(position),
-            dateSelector,
-            calendarConstraints);
-
-    monthFragment
-        .getLifecycle()
-        .addObserver(
-            new LifecycleEventObserver() {
-
-              @Override
-              public void onStateChanged(
-                  @NonNull LifecycleOwner lifecycleOwner, @NonNull Event event) {
-                switch (event) {
-                  case ON_CREATE:
-                    onCreated();
-                    break;
-                  case ON_DESTROY:
-                    onDestroyed();
-                    break;
-                  default:
-                    // do nothing
-                    break;
-                }
-              }
-
-              private void onCreated() {
-                monthFragment.setOnDayClickListener(onDayClickListener);
-                AdapterDataObserver dataSetObserver =
-                    new AdapterDataObserver() {
-                      @Override
-                      public void onChanged() {
-                        monthFragment.notifyDataSetChanged();
-                      }
-                    };
-                registerAdapterDataObserver(dataSetObserver);
-                observingFragments.put(position, dataSetObserver);
-              }
-
-              private void onDestroyed() {
-                AdapterDataObserver dataSetObserver = observingFragments.get(position);
-                if (dataSetObserver != null) {
-                  observingFragments.remove(position);
-                  unregisterAdapterDataObserver(dataSetObserver);
-                }
-              }
-            });
-    return monthFragment;
   }
 
   @NonNull

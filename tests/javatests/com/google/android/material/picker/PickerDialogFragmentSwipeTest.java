@@ -19,11 +19,12 @@ import static org.junit.Assert.assertEquals;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.test.espresso.IdlingRegistry;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
 import androidx.test.runner.AndroidJUnit4;
-import androidx.viewpager2.widget.ViewPager2;
 import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Rule;
@@ -56,8 +57,8 @@ public class PickerDialogFragmentSwipeTest {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
     IdlingRegistry.getInstance()
         .register(
-            new ViewPagerIdlingResource(
-                dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG)));
+            new RecyclerIdlingResource(
+                dialogFragment.getView().findViewWithTag(MaterialCalendar.MONTHS_VIEW_GROUP_TAG)));
   }
 
   @Test
@@ -67,10 +68,7 @@ public class PickerDialogFragmentSwipeTest {
     PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
     PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
 
-    ViewPager2 viewPager =
-        dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
-    MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) viewPager.getAdapter();
-    assertEquals(start, monthsPagerAdapter.getPageMonth(viewPager.getCurrentItem()));
+    assertEquals(start, findFirstVisibleItem());
   }
 
   @Test
@@ -79,18 +77,19 @@ public class PickerDialogFragmentSwipeTest {
     PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
     PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
     PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
-
-    ViewPager2 viewPager =
-        dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
-    MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) viewPager.getAdapter();
-    assertEquals(end, monthsPagerAdapter.getPageMonth(viewPager.getCurrentItem()));
+    assertEquals(end, findFirstVisibleItem());
   }
 
   @Test
   public void calendarOpensOnCurrent() {
-    ViewPager2 viewPager =
-        dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
-    MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) viewPager.getAdapter();
-    assertEquals(opening, monthsPagerAdapter.getPageMonth(viewPager.getCurrentItem()));
+    assertEquals(opening, findFirstVisibleItem());
+  }
+
+  private Month findFirstVisibleItem() {
+    RecyclerView recyclerView =
+        dialogFragment.getView().findViewWithTag(MaterialCalendar.MONTHS_VIEW_GROUP_TAG);
+    MonthsPagerAdapter monthsPagerAdapter = (MonthsPagerAdapter) recyclerView.getAdapter();
+    return monthsPagerAdapter.getPageMonth(
+        ((LinearLayoutManager) recyclerView.getLayoutManager()).findFirstVisibleItemPosition());
   }
 }

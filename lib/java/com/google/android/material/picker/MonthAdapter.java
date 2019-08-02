@@ -40,7 +40,7 @@ class MonthAdapter extends BaseAdapter {
    */
   static final int MAXIMUM_WEEKS = Calendar.getInstance().getMaximum(Calendar.WEEK_OF_MONTH);
 
-  private final Month month;
+  final Month month;
   /**
    * The {@link DateSelector} dictating the draw behavior of {@link #getView(int, View, ViewGroup)}.
    */
@@ -55,13 +55,18 @@ class MonthAdapter extends BaseAdapter {
     this.calendarConstraints = calendarConstraints;
   }
 
+  @Override
+  public boolean hasStableIds() {
+    return true;
+  }
+
   /**
-   * Returns a {@link Calendar} object for the given grid position
+   * Returns a {@link Long} object for the given grid position
    *
    * @param position Index for the item. 0 matches the {@link Calendar#getFirstDayOfWeek()} for the
    *     first week of the month represented by {@link Month}.
-   * @return An {@link Calendar} representing the day at the position or null if the position does
-   *     not represent a valid day in the month.
+   * @return A {@link Long} representing the day at the position or null if the position does not
+   *     represent a valid day in the month.
    */
   @Nullable
   @Override

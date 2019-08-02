@@ -97,20 +97,6 @@ public final class Month implements Comparable<Month>, Parcelable {
     return difference;
   }
 
-  /**
-   * Gets a {@link Calendar} for the specific day within the instance's month and year.
-   *
-   * <p>This method only guarantees validity with respect to {@link Calendar#isLenient()}.
-   *
-   * @param day The desired day within this month and year
-   * @return A new {@link Calendar} instance for the given day within the specified month and year
-   */
-  long getDay(int day) {
-    Calendar calendar = ((Calendar) this.calendar.clone());
-    calendar.set(Calendar.DAY_OF_MONTH, day);
-    return calendar.getTimeInMillis();
-  }
-
   @Override
   public boolean equals(Object o) {
     if (this == o) {
@@ -149,6 +135,25 @@ public final class Month implements Comparable<Month>, Parcelable {
     } else {
       throw new IllegalArgumentException("Only Gregorian calendars are supported.");
     }
+  }
+
+  long getStableId() {
+    return calendar.getTimeInMillis();
+  }
+
+  /**
+   * Gets a long for the specific day within the instance's month and year.
+   *
+   * <p>This method only guarantees validity with respect to {@link Calendar#isLenient()}.
+   *
+   * @param day The desired day within this month and year
+   * @return A long representing a time in milliseconds for the given day within the specified month
+   *     and year
+   */
+  long getDay(int day) {
+    Calendar calendar = ((Calendar) this.calendar.clone());
+    calendar.set(Calendar.DAY_OF_MONTH, day);
+    return calendar.getTimeInMillis();
   }
 
   /**

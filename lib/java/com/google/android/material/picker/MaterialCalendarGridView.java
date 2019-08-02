@@ -15,8 +15,11 @@
  */
 package com.google.android.material.picker;
 
+import com.google.android.material.R;
+
 import android.content.Context;
 import android.graphics.Canvas;
+import android.graphics.Rect;
 import androidx.core.util.Pair;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
@@ -39,6 +42,10 @@ final class MaterialCalendarGridView extends GridView {
 
   public MaterialCalendarGridView(Context context, AttributeSet attrs, int defStyleAttr) {
     super(context, attrs, defStyleAttr);
+    if (MaterialDatePicker.isFullscreen(getContext())) {
+      setNextFocusLeftId(R.id.cancel_button);
+      setNextFocusRightId(R.id.confirm_button);
+    }
   }
 
   @Override
@@ -150,6 +157,25 @@ final class MaterialCalendarGridView extends GridView {
         int right = lastHighlightPosition > lastPositionInRow ? getWidth() : rangeHighlightEnd;
         canvas.drawRect(left, top, right, bottom, calendarStyle.rangeFill);
       }
+    }
+  }
+
+  @Override
+  protected void onFocusChanged(boolean gainFocus, int direction, Rect previouslyFocusedRect) {
+    if (gainFocus) {
+      gainFocus(direction, previouslyFocusedRect);
+    } else {
+      super.onFocusChanged(false, direction, previouslyFocusedRect);
+    }
+  }
+
+  private void gainFocus(int direction, Rect previouslyFocusedRect) {
+    if (direction == FOCUS_UP) {
+      setSelection(getAdapter().lastPositionInMonth());
+    } else if (direction == FOCUS_DOWN) {
+      setSelection(getAdapter().firstPositionInMonth());
+    } else {
+      super.onFocusChanged(true, direction, previouslyFocusedRect);
     }
   }
 

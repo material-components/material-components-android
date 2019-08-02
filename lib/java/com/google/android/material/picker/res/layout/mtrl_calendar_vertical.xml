@@ -27,6 +27,6 @@
       android:layout_height="1dp"
       android:background="?attr/colorOnSurface"/>
 
-  <include layout="@layout/mtrl_calendar_viewpager"/>
+  <include layout="@layout/mtrl_calendar_months"/>
 
 </LinearLayout>

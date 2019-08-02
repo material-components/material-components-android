@@ -41,7 +41,7 @@
 
       <include layout="@layout/mtrl_calendar_days_of_week"/>
 
-      <include layout="@layout/mtrl_calendar_viewpager"/>
+      <include layout="@layout/mtrl_calendar_months"/>
 
     </LinearLayout>
 

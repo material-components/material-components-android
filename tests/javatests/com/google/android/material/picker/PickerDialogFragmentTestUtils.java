@@ -33,13 +33,14 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.core.util.Pair;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import androidx.test.espresso.ViewInteraction;
 import androidx.test.platform.app.InstrumentationRegistry;
 import androidx.test.rule.ActivityTestRule;
-import androidx.viewpager2.widget.ViewPager2;
 import java.util.Calendar;
 import org.hamcrest.core.IsEqual;
 
@@ -47,8 +48,8 @@ public final class PickerDialogFragmentTestUtils {
 
   private PickerDialogFragmentTestUtils() {}
 
-  private static final ViewInteraction onViewPager =
-      onView(withTagValue(equalTo(MaterialCalendar.VIEW_PAGER_TAG)));
+  private static final ViewInteraction onMonthsGroup =
+      onView(withTagValue(equalTo(MaterialCalendar.MONTHS_VIEW_GROUP_TAG)));
 
   public static MaterialDatePicker<Long> showDatePicker(
       ActivityTestRule<? extends AppCompatActivity> activityTestRule) {
@@ -143,7 +144,7 @@ public final class PickerDialogFragmentTestUtils {
   public static void clickDay(Month month, int day) {
     onView(
             allOf(
-                isDescendantOfA(withTagValue(equalTo(MaterialCalendar.VIEW_PAGER_TAG))),
+                isDescendantOfA(withTagValue(equalTo(MaterialCalendar.MONTHS_VIEW_GROUP_TAG))),
                 withTagValue(IsEqual.<Object>equalTo(month)),
                 withText(String.valueOf(day))))
         .perform(click());
@@ -161,25 +162,21 @@ public final class PickerDialogFragmentTestUtils {
   }
 
   static void swipeEarlier(DialogFragment dialogFragment) {
-    int orientation =
-        ((ViewPager2) dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG))
-            .getOrientation();
-    if (orientation == ViewPager2.ORIENTATION_HORIZONTAL) {
-      onViewPager.perform(swipeRight());
+    int orientation = getOrientation(dialogFragment);
+    if (orientation == LinearLayoutManager.HORIZONTAL) {
+      onMonthsGroup.perform(swipeRight());
     } else {
-      onViewPager.perform(swipeDown());
+      onMonthsGroup.perform(swipeDown());
     }
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
   static void swipeLater(DialogFragment dialogFragment) {
-    int orientation =
-        ((ViewPager2) dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG))
-            .getOrientation();
-    if (orientation == ViewPager2.ORIENTATION_HORIZONTAL) {
-      onViewPager.perform(swipeLeft());
+    int orientation = getOrientation(dialogFragment);
+    if (orientation == LinearLayoutManager.HORIZONTAL) {
+      onMonthsGroup.perform(swipeLeft());
     } else {
-      onViewPager.perform(swipeUp());
+      onMonthsGroup.perform(swipeUp());
     }
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
@@ -191,13 +188,12 @@ public final class PickerDialogFragmentTestUtils {
   }
 
   static void setPage(Activity activity, DialogFragment dialogFragment, final int position) {
-    ViewPager2 viewPager2 =
-        dialogFragment.getView().findViewWithTag(MaterialCalendar.VIEW_PAGER_TAG);
+    RecyclerView recyclerView = getMonthsViewGroup(dialogFragment);
     activity.runOnUiThread(
         new Runnable() {
           @Override
           public void run() {
-            viewPager2.setCurrentItem(position, false);
+            recyclerView.scrollToPosition(position);
           }
         });
   }
@@ -211,5 +207,14 @@ public final class PickerDialogFragmentTestUtils {
         hideAllEditTextCursors(viewGroup.getChildAt(i));
       }
     }
+  }
+
+  private static int getOrientation(DialogFragment dialogFragment) {
+    return ((LinearLayoutManager) getMonthsViewGroup(dialogFragment).getLayoutManager())
+        .getOrientation();
+  }
+
+  private static RecyclerView getMonthsViewGroup(DialogFragment dialogFragment) {
+    return dialogFragment.getView().findViewWithTag(MaterialCalendar.MONTHS_VIEW_GROUP_TAG);
   }
 }

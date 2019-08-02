@@ -15,24 +15,25 @@
  */
 package com.google.android.material.picker;
 
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+import androidx.recyclerview.widget.RecyclerView.OnScrollListener;
 import androidx.test.espresso.IdlingResource;
-import androidx.viewpager2.widget.ViewPager2;
-import androidx.viewpager2.widget.ViewPager2.OnPageChangeCallback;
 
-public class ViewPagerIdlingResource implements IdlingResource {
+public class RecyclerIdlingResource implements IdlingResource {
 
   private ResourceCallback resourceCallback;
   private boolean isIdle;
 
-  public ViewPagerIdlingResource(ViewPager2 viewPager) {
+  public RecyclerIdlingResource(RecyclerView recyclerView) {
     isIdle = true;
-    viewPager.registerOnPageChangeCallback(
-        new OnPageChangeCallback() {
-
+    recyclerView.addOnScrollListener(
+        new OnScrollListener() {
           @Override
-          public void onPageScrollStateChanged(int state) {
+          public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int state) {
             isIdle =
-                state == ViewPager2.SCROLL_STATE_IDLE || state == ViewPager2.SCROLL_STATE_DRAGGING;
+                state == RecyclerView.SCROLL_STATE_IDLE
+                    || state == RecyclerView.SCROLL_STATE_DRAGGING;
             if (isIdleNow() && resourceCallback != null) {
               resourceCallback.onTransitionToIdle();
             }
@@ -42,7 +43,7 @@ public class ViewPagerIdlingResource implements IdlingResource {
 
   @Override
   public String getName() {
-    return "ViewPager IdlingResource";
+    return "RecyclerView IdlingResource";
   }
 
   @Override

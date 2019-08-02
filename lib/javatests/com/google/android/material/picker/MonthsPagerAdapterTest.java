@@ -36,7 +36,6 @@ import org.robolectric.annotation.internal.DoNotInstrument;
 @DoNotInstrument
 public class MonthsPagerAdapterTest {
 
-  private AppCompatActivity activity;
   private Context context;
   private Month feb2016;
   private Month march2016;
@@ -45,8 +44,8 @@ public class MonthsPagerAdapterTest {
   @Before
   public void setupMonthAdapters() {
     ApplicationProvider.getApplicationContext().setTheme(R.style.Theme_MaterialComponents_Light);
-    activity = Robolectric.buildActivity(AppCompatActivity.class).setup().get();
-    context = activity.getApplicationContext();
+    context =
+        Robolectric.buildActivity(AppCompatActivity.class).setup().get().getApplicationContext();
     feb2016 = Month.create(2016, Calendar.FEBRUARY);
     march2016 = Month.create(2016, Calendar.MARCH);
     april2016 = Month.create(2016, Calendar.APRIL);
@@ -57,8 +56,6 @@ public class MonthsPagerAdapterTest {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
             context,
-            activity.getSupportFragmentManager(),
-            activity.getLifecycle(),
             /* dateSelector= */ null,
             new CalendarConstraints.Builder()
                 .setStart(feb2016)
@@ -75,8 +72,6 @@ public class MonthsPagerAdapterTest {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
             context,
-            activity.getSupportFragmentManager(),
-            activity.getLifecycle(),
             /* dateSelector= */ null,
             new CalendarConstraints.Builder()
                 .setStart(feb2016)
@@ -95,8 +90,6 @@ public class MonthsPagerAdapterTest {
     exceptionRule.expect(IllegalArgumentException.class);
     new MonthsPagerAdapter(
         context,
-        activity.getSupportFragmentManager(),
-        activity.getLifecycle(),
         /* dateSelector= */ null,
         new CalendarConstraints.Builder()
             .setStart(feb2016)
@@ -111,8 +104,6 @@ public class MonthsPagerAdapterTest {
     exceptionRule.expect(IllegalArgumentException.class);
     new MonthsPagerAdapter(
         context,
-        activity.getSupportFragmentManager(),
-        activity.getLifecycle(),
         /* dateSelector= */ null,
         new CalendarConstraints.Builder()
             .setStart(march2016)
@@ -127,8 +118,6 @@ public class MonthsPagerAdapterTest {
     MonthsPagerAdapter monthsAdapter =
         new MonthsPagerAdapter(
             context,
-            activity.getSupportFragmentManager(),
-            activity.getLifecycle(),
             /* dateSelector= */ null,
             new CalendarConstraints.Builder()
                 .setStart(feb2016)

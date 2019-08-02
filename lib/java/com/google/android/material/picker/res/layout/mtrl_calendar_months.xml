@@ -15,9 +15,9 @@
      limitations under the License.
 -->
 
-<androidx.viewpager2.widget.ViewPager2
+<androidx.recyclerview.widget.RecyclerView
   xmlns:android="http://schemas.android.com/apk/res/android"
-  android:id="@+id/mtrl_calendar_viewpager"
+  android:id="@+id/mtrl_calendar_months"
   android:layout_width="match_parent"
   android:layout_height="match_parent"
   android:listSelector="@android:color/transparent"/>
