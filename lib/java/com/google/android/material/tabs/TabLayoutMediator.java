@@ -29,12 +29,19 @@ import java.lang.ref.WeakReference;
 /**
  * A mediator to link a TabLayout with a ViewPager2. The mediator will synchronize the ViewPager2's
  * position with the selected tab when a tab is selected, and the TabLayout's scroll position when
- * the user drags the ViewPager2.
+ * the user drags the ViewPager2. TabLayoutMediator will listen to ViewPager2's OnPageChangeCallback
+ * to adjust tab when ViewPager2 moves. TabLayoutMediator listens to TabLayout's
+ * OnTabSelectedListener to adjust VP2 when tab moves. TLM listens to RecyclerView's
+ * AdapterDataObserver to recreate tab content when dataset changes.
  *
  * <p>Establish the link by creating an instance of this class, make sure the ViewPager2 has an
- * adapter and then call {@link #attach()} on it. When creating an instance of this class, you must
- * supply an implementation of {@link OnConfigureTabCallback} in which you set the text of the tab,
- * and/or perform any styling of the tabs that you require.
+ * adapter and then call {@link #attach()} on it. Instantiating a TabLayoutMediator will only create
+ * the mediator object, {@link #attach()} will link the TabLayout and the ViewPager2 together. When
+ * creating an instance of this class, you must supply an implementation of {@link
+ * OnConfigureTabCallback} in which you set the text of the tab, and/or perform any styling of the
+ * tabs that you require. Changing ViewPager2's adapter will require a {@link #detach()} followed by
+ * {@link #attach()} call. Changing the ViewPager2 or TabLayout will require a new instantiation of
+ * TabLayoutMediator.
  */
 public final class TabLayoutMediator {
   @NonNull private final TabLayout tabLayout;
@@ -83,7 +90,9 @@ public final class TabLayoutMediator {
   }
 
   /**
-   * Link the TabLayout and the ViewPager2 together.
+   * Link the TabLayout and the ViewPager2 together. Must be called after ViewPager2 has an adapter
+   * set. To be called on a new instance of TabLayoutMediator or if the ViewPager2's adapter
+   * changes.
    *
    * @throws IllegalStateException If the mediator is already attached, or the ViewPager2 has no
    *     adapter.
@@ -121,7 +130,11 @@ public final class TabLayoutMediator {
     tabLayout.setScrollPosition(viewPager.getCurrentItem(), 0f, true);
   }
 
-  /** Unlink the TabLayout and the ViewPager */
+  /**
+   * Unlink the TabLayout and the ViewPager. To be called on a stale TabLayoutMediator if a new one
+   * is instantiated, to prevent holding on to a view that should be garbage collected. Also to be
+   * called before {@link #attach()} when a ViewPager2's adapter is changed.
+   */
   public void detach() {
     adapter.unregisterAdapterDataObserver(pagerAdapterObserver);
     tabLayout.removeOnTabSelectedListener(onTabSelectedListener);
