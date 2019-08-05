@@ -690,9 +690,11 @@ public class BottomNavigationMenuView extends ViewGroup implements MenuView {
   @Nullable
   private BottomNavigationItemView findItemView(int menuItemId) {
     validateMenuItemId(menuItemId);
-    for (BottomNavigationItemView itemView : buttons) {
-      if (itemView.getId() == menuItemId) {
-        return itemView;
+    if (buttons != null) {
+      for (BottomNavigationItemView itemView : buttons) {
+        if (itemView.getId() == menuItemId) {
+          return itemView;
+        }
       }
     }
     return null;
