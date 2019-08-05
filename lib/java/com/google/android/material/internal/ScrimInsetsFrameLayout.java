@@ -26,6 +26,7 @@ import android.graphics.Canvas;
 import android.graphics.Rect;
 import android.graphics.drawable.Drawable;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RestrictTo;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
@@ -84,6 +85,15 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
             return insets.consumeSystemWindowInsets();
           }
         });
+  }
+
+  /**
+   * Sets the drawable used for the inset foreground.
+   *
+   * @hide
+   */
+  public void setScrimInsetForeground(@Nullable Drawable drawable) {
+    insetForeground = drawable;
   }
 
   @Override
