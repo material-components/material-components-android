@@ -24,6 +24,7 @@ import android.os.Build;
 import android.os.Bundle;
 import androidx.annotation.LayoutRes;
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.StyleRes;
 import androidx.core.view.AccessibilityDelegateCompat;
 import androidx.core.view.ViewCompat;
@@ -42,6 +43,8 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 public class BottomSheetDialog extends AppCompatDialog {
 
   private BottomSheetBehavior<FrameLayout> behavior;
+
+  boolean dismissWithAnimation;
 
   boolean cancelable = true;
   private boolean canceledOnTouchOutside = true;
@@ -112,6 +115,44 @@ public class BottomSheetDialog extends AppCompatDialog {
     }
   }
 
+  /**
+   * This function can be called from a few different use cases, including Swiping the dialog down
+   * or calling `dismiss()` from a `BottomSheetDialogFragment`, tapping outside a dialog, etc...
+   *
+   * <p>The default animation to dismiss this dialog is a fade-out transition through a
+   * windowAnimation. Call {@link setDismissWithAnimation(true)} if you want to utilize the
+   * BottomSheet animation instead.
+   *
+   * <p>If this function is called from a swipe down interaction, or dismissWithAnimation is false,
+   * then keep the default behavior.
+   *
+   * <p>Else, since this is a terminal event which will finish this dialog, we override the attached
+   * {@link BottomSheetBehavior.BottomSheetCallback} to call this function, after {@link
+   * BottomSheetBehavior#STATE_HIDDEN} is set. This will enforce the swipe down animation before
+   * canceling this dialog.
+   */
+  @Override
+  public void cancel() {
+    BottomSheetBehavior<FrameLayout> behavior = getBehavior();
+
+    if (behavior == null
+        || !dismissWithAnimation
+        || behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+      super.cancel();
+    } else {
+
+      // If the default callback was overridden, reset to the default callback behavior which will
+      // cancel then set the state is set to STATE_HIDDEN. This will prevent a custom callback from
+      // recieving the state change, however this is consistent with previous behavior where
+      // cancel() would just call through to super.
+      if (behavior.getBottomSheetCallback() != bottomSheetCallback) {
+        behavior.setBottomSheetCallback(bottomSheetCallback);
+      }
+
+      behavior.setState(BottomSheetBehavior.STATE_HIDDEN);
+    }
+  }
+
   @Override
   public void setCanceledOnTouchOutside(boolean cancel) {
     super.setCanceledOnTouchOutside(cancel);
@@ -122,9 +163,27 @@ public class BottomSheetDialog extends AppCompatDialog {
     canceledOnTouchOutsideSet = true;
   }
 
-  @NonNull
+  @Nullable
   public BottomSheetBehavior<FrameLayout> getBehavior() {
     return behavior;
+  }
+
+  /**
+   * Set to perform the swipe down animation when dismissing instead of the window animation for the
+   * dialog.
+   *
+   * @param dismissWithAnimation True if swipe down animation should be used when dismissing.
+   */
+  public void setDismissWithAnimation(boolean dismissWithAnimation) {
+    this.dismissWithAnimation = dismissWithAnimation;
+  }
+
+  /**
+   * Returns if dismissing will perform the swipe down animation on the bottom sheet, rather than
+   * the window animation for the dialog.
+   */
+  public boolean getDismissWithAnimation() {
+    return dismissWithAnimation;
   }
 
   private View wrapInBottomSheet(int layoutResId, View view, ViewGroup.LayoutParams params) {
