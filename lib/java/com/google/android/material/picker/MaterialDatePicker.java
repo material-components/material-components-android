@@ -40,6 +40,7 @@ import com.google.android.material.shape.MaterialShapeDrawable;
 import androidx.fragment.app.DialogFragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.core.util.Pair;
+import androidx.core.view.ViewCompat;
 import androidx.appcompat.content.res.AppCompatResources;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -52,9 +53,7 @@ import com.google.android.material.dialog.InsetDialogOnTouchListener;
 import com.google.android.material.internal.CheckableImageButton;
 import java.util.LinkedHashSet;
 
-/**
- * A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions.
- */
+/** A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions. */
 public class MaterialDatePicker<S> extends DialogFragment {
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
@@ -62,14 +61,11 @@ public class MaterialDatePicker<S> extends DialogFragment {
   private static final String CALENDAR_CONSTRAINTS_KEY = "CALENDAR_CONSTRAINTS_KEY";
   private static final String TITLE_TEXT_RES_ID_KEY = "TITLE_TEXT_RES_ID_KEY";
 
-  @VisibleForTesting
-  public static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
+  @VisibleForTesting public static final Object CONFIRM_BUTTON_TAG = "CONFIRM_BUTTON_TAG";
 
-  @VisibleForTesting
-  public static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
+  @VisibleForTesting public static final Object CANCEL_BUTTON_TAG = "CANCEL_BUTTON_TAG";
 
-  @VisibleForTesting
-  public static final Object TOGGLE_BUTTON_TAG = "TOGGLE_BUTTON_TAG";
+  @VisibleForTesting public static final Object TOGGLE_BUTTON_TAG = "TOGGLE_BUTTON_TAG";
 
   /**
    * Returns the text to display at the top of the {@link DialogFragment}
@@ -300,14 +296,27 @@ public class MaterialDatePicker<S> extends DialogFragment {
   private void initHeaderToggle(Context context) {
     headerToggleButton.setTag(TOGGLE_BUTTON_TAG);
     headerToggleButton.setImageDrawable(createHeaderToggleDrawable(context));
+    // By default, CheckableImageButton adds a delegate that reads checked state.
+    // This information is not useful; we remove the delegate and use custom content descriptions.
+    ViewCompat.setAccessibilityDelegate(headerToggleButton, null);
+    updateToggleContentDescription(headerToggleButton);
     headerToggleButton.setOnClickListener(
         new OnClickListener() {
           @Override
           public void onClick(View v) {
             headerToggleButton.toggle();
+            updateToggleContentDescription(headerToggleButton);
             startPickerFragment();
           }
         });
+  }
+
+  private void updateToggleContentDescription(CheckableImageButton toggle) {
+    String contentDescription =
+        headerToggleButton.isChecked()
+            ? toggle.getContext().getString(R.string.mtrl_picker_toggle_to_calendar_input_mode)
+            : toggle.getContext().getString(R.string.mtrl_picker_toggle_to_text_input_mode);
+    headerToggleButton.setContentDescription(contentDescription);
   }
 
   // Create StateListDrawable programmatically for pre-lollipop support

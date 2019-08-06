@@ -16,49 +16,51 @@
 -->
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:id="@+id/month_navigation_bar"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:paddingTop="@dimen/mtrl_calendar_navigation_top_padding"
-    android:paddingBottom="@dimen/mtrl_calendar_navigation_bottom_padding"
-    android:orientation="horizontal">
+  xmlns:app="http://schemas.android.com/apk/res-auto"
+  android:id="@+id/month_navigation_bar"
+  android:layout_width="match_parent"
+  android:layout_height="wrap_content"
+  android:paddingTop="@dimen/mtrl_calendar_navigation_top_padding"
+  android:paddingBottom="@dimen/mtrl_calendar_navigation_bottom_padding"
+  android:orientation="horizontal">
 
   <com.google.android.material.button.MaterialButton
-      android:id="@+id/month_navigation_fragment_toggle"
-      android:layout_width="wrap_content"
-      android:layout_height="@dimen/mtrl_calendar_navigation_height"
-      android:layout_gravity="start"
-      android:gravity="center_vertical|start"
-      android:insetBottom="0dp"
-      android:insetTop="0dp"
-      app:icon="@drawable/ic_menu_arrow_down_black_24dp"
-      app:iconGravity="textEnd"
-      app:iconPadding="4dp"/>
+    android:id="@+id/month_navigation_fragment_toggle"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/mtrl_calendar_navigation_height"
+    android:layout_gravity="start"
+    android:gravity="center_vertical|start"
+    android:insetBottom="0dp"
+    android:insetTop="0dp"
+    app:icon="@drawable/ic_menu_arrow_down_black_24dp"
+    app:iconGravity="textEnd"
+    app:iconPadding="4dp"/>
 
   <View
-      android:layout_width="0dp"
-      android:layout_height="@dimen/mtrl_calendar_navigation_height"
-      android:layout_weight="1"/>
+    android:layout_width="0dp"
+    android:layout_height="@dimen/mtrl_calendar_navigation_height"
+    android:layout_weight="1"/>
 
   <com.google.android.material.button.MaterialButton
-      android:id="@+id/month_navigation_previous"
-      android:layout_width="@dimen/mtrl_min_touch_target_size"
-      android:layout_height="@dimen/mtrl_calendar_navigation_height"
-      android:layout_gravity="end"
-      android:gravity="center"
-      android:insetBottom="0dp"
-      android:insetTop="0dp"
-      app:icon="@drawable/ic_keyboard_arrow_left_black_24dp"/>
+    android:id="@+id/month_navigation_previous"
+    android:layout_width="@dimen/mtrl_min_touch_target_size"
+    android:layout_height="@dimen/mtrl_calendar_navigation_height"
+    android:layout_gravity="end"
+    android:contentDescription="@string/mtrl_picker_a11y_prev_month"
+    android:gravity="center"
+    android:insetBottom="0dp"
+    android:insetTop="0dp"
+    app:icon="@drawable/ic_keyboard_arrow_left_black_24dp"/>
 
   <com.google.android.material.button.MaterialButton
-      android:id="@+id/month_navigation_next"
-      android:layout_width="@dimen/mtrl_min_touch_target_size"
-      android:layout_height="@dimen/mtrl_calendar_navigation_height"
-      android:layout_gravity="end"
-      android:gravity="center"
-      android:insetBottom="0dp"
-      android:insetTop="0dp"
-      app:icon="@drawable/ic_keyboard_arrow_right_black_24dp"/>
+    android:id="@+id/month_navigation_next"
+    android:layout_width="@dimen/mtrl_min_touch_target_size"
+    android:layout_height="@dimen/mtrl_calendar_navigation_height"
+    android:layout_gravity="end"
+    android:contentDescription="@string/mtrl_picker_a11y_next_month"
+    android:gravity="center"
+    android:insetBottom="0dp"
+    android:insetTop="0dp"
+    app:icon="@drawable/ic_keyboard_arrow_right_black_24dp"/>
 
 </LinearLayout>

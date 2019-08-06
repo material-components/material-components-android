@@ -19,6 +19,8 @@ import com.google.android.material.R;
 
 import android.content.Context;
 import android.graphics.Canvas;
+import android.os.Build.VERSION;
+import android.os.Build.VERSION_CODES;
 import android.os.Bundle;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -28,6 +30,9 @@ import androidx.annotation.RestrictTo.Scope;
 import androidx.annotation.VisibleForTesting;
 import com.google.android.material.button.MaterialButton;
 import androidx.core.util.Pair;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.LinearSnapHelper;
@@ -40,6 +45,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
+import android.view.accessibility.AccessibilityEvent;
 import android.widget.GridView;
 import java.util.Calendar;
 
@@ -77,6 +83,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private RecyclerView recyclerView;
   private View yearFrame;
   private View dayFrame;
+  private MaterialButton monthDropSelect;
 
   static <T> MaterialCalendar<T> newInstance(
       DateSelector<T> dateSelector, int themeResId, CalendarConstraints calendarConstraints) {
@@ -328,24 +335,53 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private void addActionsToMonthNavigation(
       final View root, final MonthsPagerAdapter monthsPagerAdapter) {
     recyclerView = root.findViewById(R.id.mtrl_calendar_months);
-    final MaterialButton monthDropSelect = root.findViewById(R.id.month_navigation_fragment_toggle);
+    monthDropSelect = root.findViewById(R.id.month_navigation_fragment_toggle);
+    ViewCompat.setAccessibilityDelegate(
+        monthDropSelect,
+        new AccessibilityDelegateCompat() {
+
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View view, AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+            super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
+            accessibilityNodeInfoCompat.setHintText(
+                dayFrame.getVisibility() == View.VISIBLE
+                    ? getString(R.string.mtrl_picker_toggle_to_year_selection)
+                    : getString(R.string.mtrl_picker_toggle_to_day_selection));
+          }
+        });
+
     final MaterialButton monthPrev = root.findViewById(R.id.month_navigation_previous);
     final MaterialButton monthNext = root.findViewById(R.id.month_navigation_next);
 
     yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
     dayFrame = root.findViewById(R.id.mtrl_calendar_day_selector_frame);
     setSelector(CalendarSelector.DAY);
-
     monthDropSelect.setText(current.getLongName());
     recyclerView.addOnScrollListener(
         new OnScrollListener() {
           @Override
+          public void onScrolled(@NonNull RecyclerView recyclerView, int dx, int dy) {
+            LinearLayoutManager layoutManager =
+                (LinearLayoutManager) recyclerView.getLayoutManager();
+            int currentItem;
+            if (dx < 0) {
+              currentItem = layoutManager.findFirstVisibleItemPosition();
+            } else {
+              currentItem = layoutManager.findLastVisibleItemPosition();
+            }
+            monthDropSelect.setText(monthsPagerAdapter.getPageTitle(currentItem));
+          }
+
+          @Override
           public void onScrollStateChanged(@NonNull RecyclerView recyclerView, int newState) {
             if (newState == RecyclerView.SCROLL_STATE_IDLE) {
-              int currentItem =
-                  ((LinearLayoutManager) MaterialCalendar.this.recyclerView.getLayoutManager())
-                      .findFirstVisibleItemPosition();
-              monthDropSelect.setText(monthsPagerAdapter.getPageTitle(currentItem));
+              CharSequence announcementText = monthDropSelect.getText();
+              if (VERSION.SDK_INT >= VERSION_CODES.JELLY_BEAN) {
+                recyclerView.announceForAccessibility(announcementText);
+              } else {
+                recyclerView.sendAccessibilityEvent(AccessibilityEvent.TYPE_WINDOW_CONTENT_CHANGED);
+              }
             }
           }
         });

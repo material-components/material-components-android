@@ -36,4 +36,12 @@
   <string name="mtrl_picker_invalid_range" description="Notifies the user that the two entered dates do not represent a valid range of dates [CHAR_LIMIT=36]">Invalid Range.</string>
   <string name="mtrl_picker_out_of_range" description="Notifies the user that the entered date is outside the allowed range [CHAR_LIMIT=36]">Out of Range: %1$s</string>
   <string name="mtrl_picker_invalid_format" description="Indicates that the user entered date cannot be parsed because its format is wrong. The user should instead use the format after the colon. Includes a line break [CHAR_LIMIT=54]">Invalid Format.\nUse: %1$s</string>
+
+  <string name="mtrl_picker_toggle_to_calendar_input_mode" description="a11y string to indicate this button changes the input mode to a calendar [CHAR_LIMIT=NONE]">Switch to Calendar Input mode</string>
+  <string name="mtrl_picker_toggle_to_text_input_mode" description="a11y string to indicate this button changes the input mode to a text field [CHAR_LIMIT=NONE]">Switch to Text Input mode</string>
+  <string name="mtrl_picker_a11y_prev_month" description="a11y string to indicate this button moves the calendar to the previous month [CHAR_LIMIT=NONE]">Move to previous month</string>
+  <string name="mtrl_picker_a11y_next_month" description="a11y string to indicate this button moves the calendar to the next month [CHAR_LIMIT=NONE]">Move to next month</string>
+  <string name="mtrl_picker_toggle_to_year_selection" description="a11y string to indicate this button switches the user to choosing a year [CHAR_LIMIT=NONE]">Tap to switch to selecting a year</string>
+  <string name="mtrl_picker_toggle_to_day_selection" description="a11y string to indicate this button switches the user to choosing a day [CHAR_LIMIT=NONE]">Tap to switch to selecting a day</string>
+
 </resources>
