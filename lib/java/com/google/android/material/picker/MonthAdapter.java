@@ -108,9 +108,16 @@ class MonthAdapter extends BaseAdapter {
       day.setVisibility(View.GONE);
       day.setEnabled(false);
     } else {
+      int dayNumber = offsetPosition + 1;
       // The tag and text uniquely identify the view within the MaterialCalendar for testing
-      day.setText(String.valueOf(offsetPosition + 1));
       day.setTag(month);
+      day.setText(String.valueOf(dayNumber));
+      long dayInMillis = month.getDay(dayNumber);
+      if (month.year == Month.today().year) {
+        day.setContentDescription(DateStrings.getMonthDayOfWeekDay(dayInMillis));
+      } else {
+        day.setContentDescription(DateStrings.getYearMonthDayOfWeekDay(dayInMillis));
+      }
       day.setVisibility(View.VISIBLE);
       day.setEnabled(true);
     }

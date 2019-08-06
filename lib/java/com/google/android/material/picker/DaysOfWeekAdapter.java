@@ -43,6 +43,7 @@ class DaysOfWeekAdapter extends BaseAdapter {
   private final int firstDayOfWeek;
   /** Style value from Calendar.NARROW_FORMAT unavailable before 1.8 */
   private static final int NARROW_FORMAT = 4;
+
   private static final int CALENDAR_DAY_STYLE =
       VERSION.SDK_INT >= VERSION_CODES.O ? NARROW_FORMAT : Calendar.SHORT;
 
@@ -84,6 +85,10 @@ class DaysOfWeekAdapter extends BaseAdapter {
     calendar.set(Calendar.DAY_OF_WEEK, positionToDayOfWeek(position));
     dayOfWeek.setText(
         calendar.getDisplayName(Calendar.DAY_OF_WEEK, CALENDAR_DAY_STYLE, Locale.getDefault()));
+    dayOfWeek.setContentDescription(
+        String.format(
+            parent.getContext().getString(R.string.mtrl_picker_day_of_week_column_header),
+            calendar.getDisplayName(Calendar.DAY_OF_WEEK, Calendar.LONG, Locale.getDefault())));
     return dayOfWeek;
   }
 

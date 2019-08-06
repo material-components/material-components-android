@@ -74,6 +74,31 @@ class DateStrings {
     }
   }
 
+  static String getMonthDayOfWeekDay(long timeInMillis) {
+    if (VERSION.SDK_INT >= VERSION_CODES.N) {
+      DateFormat df =
+          DateFormat.getInstanceForSkeleton(DateFormat.ABBR_MONTH_WEEKDAY_DAY, Locale.getDefault());
+      return df.format(new Date(timeInMillis));
+    } else {
+      java.text.DateFormat df =
+          java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
+      return df.format(new Date(timeInMillis));
+    }
+  }
+
+  static String getYearMonthDayOfWeekDay(long timeInMillis) {
+    if (VERSION.SDK_INT >= VERSION_CODES.N) {
+      DateFormat df =
+          DateFormat.getInstanceForSkeleton(
+              DateFormat.YEAR_ABBR_MONTH_WEEKDAY_DAY, Locale.getDefault());
+      return df.format(new Date(timeInMillis));
+    } else {
+      java.text.DateFormat df =
+          java.text.DateFormat.getDateInstance(java.text.DateFormat.FULL, Locale.getDefault());
+      return df.format(new Date(timeInMillis));
+    }
+  }
+
   static String getDateString(long timeInMillis) {
     return getDateString(timeInMillis, null);
   }

@@ -177,6 +177,8 @@ public class MaterialDatePicker<S> extends DialogFragment {
           new LayoutParams(getPaddedPickerWidth(context), getDialogPickerHeight(context)));
     }
     headerSelectionText = root.findViewById(R.id.mtrl_picker_header_selection_text);
+    ViewCompat.setAccessibilityLiveRegion(
+        headerSelectionText, ViewCompat.ACCESSIBILITY_LIVE_REGION_POLITE);
     headerToggleButton = root.findViewById(R.id.mtrl_picker_header_toggle);
     ((TextView) root.findViewById(R.id.mtrl_picker_title_text)).setText(titleTextResId);
     initHeaderToggle(context);
@@ -267,7 +269,10 @@ public class MaterialDatePicker<S> extends DialogFragment {
   }
 
   private void updateHeader() {
-    headerSelectionText.setText(getHeaderText());
+    String headerText = getHeaderText();
+    headerSelectionText.setContentDescription(
+        String.format(getString(R.string.mtrl_picker_announce_current_selection), headerText));
+    headerSelectionText.setText(headerText);
   }
 
   private void startPickerFragment() {

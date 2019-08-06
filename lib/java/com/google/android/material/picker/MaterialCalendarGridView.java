@@ -21,6 +21,9 @@ import android.content.Context;
 import android.graphics.Canvas;
 import android.graphics.Rect;
 import androidx.core.util.Pair;
+import androidx.core.view.AccessibilityDelegateCompat;
+import androidx.core.view.ViewCompat;
+import androidx.core.view.accessibility.AccessibilityNodeInfoCompat;
 import android.util.AttributeSet;
 import android.view.KeyEvent;
 import android.view.View;
@@ -46,6 +49,17 @@ final class MaterialCalendarGridView extends GridView {
       setNextFocusLeftId(R.id.cancel_button);
       setNextFocusRightId(R.id.confirm_button);
     }
+    ViewCompat.setAccessibilityDelegate(
+        this,
+        new AccessibilityDelegateCompat() {
+          @Override
+          public void onInitializeAccessibilityNodeInfo(
+              View view, AccessibilityNodeInfoCompat accessibilityNodeInfoCompat) {
+            super.onInitializeAccessibilityNodeInfo(view, accessibilityNodeInfoCompat);
+            // Stop announcing of row/col information in favor of internationalized day information.
+            accessibilityNodeInfoCompat.setCollectionInfo(null);
+          }
+        });
   }
 
   @Override
