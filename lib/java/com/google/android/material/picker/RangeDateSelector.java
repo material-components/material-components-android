@@ -28,6 +28,7 @@ import androidx.annotation.RestrictTo;
 import androidx.annotation.RestrictTo.Scope;
 import com.google.android.material.resources.MaterialAttributes;
 import androidx.core.util.Pair;
+import androidx.core.util.Preconditions;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -60,13 +61,23 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   public void select(long selection) {
     if (selectedStartItem == null) {
       selectedStartItem = selection;
-    } else if (selectedEndItem == null
-        && (selection > selectedStartItem || selection == selectedStartItem)) {
+    } else if (selectedEndItem == null && isValidRange(selectedStartItem, selection)) {
       selectedEndItem = selection;
     } else {
       selectedEndItem = null;
       selectedStartItem = selection;
     }
+  }
+
+  @Override
+  public void setSelection(Pair<Long, Long> selection) {
+    if (selection.first != null && selection.second != null) {
+      Preconditions.checkArgument(isValidRange(selection.first, selection.second));
+    }
+    selectedStartItem =
+        selection.first == null ? null : DateLongs.canonicalYearMonthDay(selection.first);
+    selectedEndItem =
+        selection.second == null ? null : DateLongs.canonicalYearMonthDay(selection.second);
   }
 
   @Override
@@ -205,6 +216,10 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
     return root;
   }
 
+  private boolean isValidRange(long start, long end) {
+    return start <= end;
+  }
+
   private void updateIfValidTextProposal(
       TextInputLayout startTextInput,
       TextInputLayout endTextInput,
@@ -213,14 +228,13 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
       clearInvalidRange(startTextInput, endTextInput);
       return;
     }
-    if (proposedTextEnd < proposedTextStart) {
+    if (isValidRange(proposedTextStart, proposedTextEnd)) {
+      selectedStartItem = proposedTextStart;
+      selectedEndItem = proposedTextEnd;
+      listener.onSelectionChanged(getSelection());
+    } else {
       setInvalidRange(startTextInput, endTextInput);
-      return;
     }
-    selectedStartItem = proposedTextStart;
-    selectedEndItem = proposedTextEnd;
-    listener.onSelectionChanged(getSelection());
-    return;
   }
 
   private void clearInvalidRange(TextInputLayout start, TextInputLayout end) {

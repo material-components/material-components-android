@@ -72,4 +72,26 @@ public class SingleDateSelectorTest {
         ParcelableTestUtils.parcelAndCreate(this.singleDateSelector, SingleDateSelector.CREATOR);
     assertThat(singleDateSelector.getSelection(), nullValue());
   }
+
+  @Test
+  public void setSelectionDirectly() {
+    Calendar setTo = Calendar.getInstance();
+    setTo.set(2004, Calendar.MARCH, 5);
+    singleDateSelector.setSelection(setTo.getTimeInMillis());
+    Calendar resultCalendar = Calendar.getInstance();
+
+    resultCalendar.setTimeInMillis(singleDateSelector.getSelection());
+
+    assertThat(resultCalendar.get(Calendar.DAY_OF_MONTH), is(5));
+    assertThat(
+        singleDateSelector
+            .getSelectedDays()
+            .contains(DateLongs.canonicalYearMonthDay(setTo.getTimeInMillis())),
+        is(true));
+    assertThat(
+        singleDateSelector
+            .getSelectedDays()
+            .contains(DateLongs.canonicalYearMonthDay(Calendar.getInstance().getTimeInMillis())),
+        is(false));
+  }
 }

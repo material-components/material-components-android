@@ -32,6 +32,7 @@ import android.widget.TextView.BufferType;
 import androidx.test.core.app.ApplicationProvider;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
+import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -155,5 +156,55 @@ public class RangeDateSelectorTest {
         ParcelableTestUtils.parcelAndCreate(rangeDateSelector, RangeDateSelector.CREATOR);
     assertThat(rangeDateSelectorFromParcel.getSelection().first, nullValue());
     assertThat(rangeDateSelectorFromParcel.getSelection().second, nullValue());
+  }
+
+  @Test
+  public void setSelectionDirectly() {
+    Calendar setToStart = Calendar.getInstance();
+    setToStart.set(2004, Calendar.MARCH, 5);
+    Calendar setToEnd = Calendar.getInstance();
+    setToEnd.set(2005, Calendar.FEBRUARY, 1);
+
+    rangeDateSelector.setSelection(
+        new Pair<>(setToStart.getTimeInMillis(), setToEnd.getTimeInMillis()));
+    Calendar resultCalendarStart = Calendar.getInstance();
+    Calendar resultCalendarEnd = Calendar.getInstance();
+    resultCalendarStart.setTimeInMillis(rangeDateSelector.getSelection().first);
+    resultCalendarEnd.setTimeInMillis(rangeDateSelector.getSelection().second);
+
+    assertThat(resultCalendarStart.get(Calendar.DAY_OF_MONTH), is(5));
+    assertThat(resultCalendarEnd.get(Calendar.DAY_OF_MONTH), is(1));
+    assertThat(
+        rangeDateSelector
+            .getSelectedDays()
+            .contains(DateLongs.canonicalYearMonthDay(setToStart.getTimeInMillis())),
+        is(true));
+    assertThat(
+        rangeDateSelector
+            .getSelectedDays()
+            .contains(DateLongs.canonicalYearMonthDay(setToStart.getTimeInMillis())),
+        is(true));
+    assertThat(
+        rangeDateSelector
+            .getSelectedDays()
+            .contains(DateLongs.canonicalYearMonthDay(Calendar.getInstance().getTimeInMillis())),
+        is(false));
+  }
+
+  @Test
+  public void invalidSetThrowsException() {
+    Calendar setToStart = Calendar.getInstance();
+    setToStart.set(2005, Calendar.FEBRUARY, 1);
+    Calendar setToEnd = Calendar.getInstance();
+    setToEnd.set(2004, Calendar.MARCH, 5);
+
+    // ThrowingRunnable used by assertThrows is not available until gradle 4.13
+    try {
+      rangeDateSelector.setSelection(
+          new Pair<>(setToStart.getTimeInMillis(), setToEnd.getTimeInMillis()));
+    } catch (IllegalArgumentException e) {
+      return;
+    }
+    Assert.fail();
   }
 }

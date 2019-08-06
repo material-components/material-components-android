@@ -54,7 +54,7 @@ import com.google.android.material.internal.CheckableImageButton;
 import java.util.LinkedHashSet;
 
 /** A {@link Dialog} with a header, {@link MaterialCalendar}, and set of actions. */
-public class MaterialDatePicker<S> extends DialogFragment {
+public final class MaterialDatePicker<S> extends DialogFragment {
 
   private static final String OVERRIDE_THEME_RES_ID = "OVERRIDE_THEME_RES_ID";
   private static final String GRID_SELECTOR_KEY = "GRID_SELECTOR_KEY";
@@ -456,13 +456,14 @@ public class MaterialDatePicker<S> extends DialogFragment {
   }
 
   /** Used to create MaterialDatePicker instances with default and overridden settings */
-  public static class Builder<S> {
+  public static final class Builder<S> {
 
     final DateSelector<S> dateSelector;
     int overrideThemeResId = 0;
 
     CalendarConstraints calendarConstraints;
     int titleTextResId = 0;
+    S selection = null;
 
     private Builder(DateSelector<S> dateSelector) {
       this.dateSelector = dateSelector;
@@ -481,6 +482,11 @@ public class MaterialDatePicker<S> extends DialogFragment {
     /** Used to create a Builder using {@link RangeDateSelector}. */
     public static Builder<Pair<Long, Long>> dateRangePicker() {
       return new Builder<>(new RangeDateSelector());
+    }
+
+    public Builder<S> setSelection(S selection) {
+      this.selection = selection;
+      return this;
     }
 
     /** Sets the theme controlling fullscreen mode as well as other styles. */
@@ -508,6 +514,9 @@ public class MaterialDatePicker<S> extends DialogFragment {
       }
       if (titleTextResId == 0) {
         titleTextResId = dateSelector.getDefaultTitleResId();
+      }
+      if (selection != null) {
+        dateSelector.setSelection(selection);
       }
       return MaterialDatePicker.newInstance(this);
     }

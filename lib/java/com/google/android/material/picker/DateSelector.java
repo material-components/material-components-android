@@ -53,6 +53,13 @@ public interface DateSelector<S> extends Parcelable {
   S getSelection();
 
   /**
+   * Sets the current selection to {@code selection}.
+   *
+   * @throws IllegalArgumentException If {@code selection} creates an invalid state.
+   */
+  void setSelection(@NonNull S selection);
+
+  /**
    * Allows this selection handler to respond to clicks within the {@link AdapterView}.
    *
    * @param selection The selected day represented as time in UTC milliseconds.

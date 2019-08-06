@@ -56,6 +56,11 @@ public class SingleDateSelector implements DateSelector<Long> {
   }
 
   @Override
+  public void setSelection(Long selection) {
+    selectedItem = selection == null ? null : DateLongs.canonicalYearMonthDay(selection);
+  }
+
+  @Override
   public Collection<Pair<Long, Long>> getSelectedRanges() {
     return new ArrayList<>();
   }
