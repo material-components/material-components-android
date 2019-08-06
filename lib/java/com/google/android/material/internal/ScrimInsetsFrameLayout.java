@@ -87,11 +87,7 @@ public class ScrimInsetsFrameLayout extends FrameLayout {
         });
   }
 
-  /**
-   * Sets the drawable used for the inset foreground.
-   *
-   * @hide
-   */
+  /** Sets the drawable used for the inset foreground. */
   public void setScrimInsetForeground(@Nullable Drawable drawable) {
     insetForeground = drawable;
   }
