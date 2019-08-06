@@ -19,10 +19,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="io.material.materialthemebuilder">
 
-    <uses-sdk
-      android:minSdkVersion="23"
-      android:targetSdkVersion="29" />
-
     <application
         android:name=".App"
         android:allowBackup="true"

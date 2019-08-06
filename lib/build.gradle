@@ -91,6 +91,9 @@ android {
   buildTypes.all {
     consumerProguardFiles 'proguard-behaviors.pro', 'proguard-inflater.pro', 'proguard-recyclerview.pro'
   }
+  defaultConfig {
+    minSdkVersion 14
+  }
 }
 
 // Add the resource directories to the main sourceSet for all test tasks
