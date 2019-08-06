@@ -859,6 +859,16 @@ public class BottomSheetBehavior<V extends View> extends CoordinatorLayout.Behav
   }
 
   /**
+   * Gets the attached {@link BottomSheetCallback} that will be notified of bottom sheet events.
+   *
+   * @return {@link BottomSheetCallback} The attached callback that will be notified when bottom
+   *     sheet events occur.
+   */
+  public BottomSheetCallback getBottomSheetCallback() {
+    return callback;
+  }
+
+  /**
    * Sets the state of the bottom sheet. The bottom sheet will transition to that state with
    * animation.
    *
