@@ -38,7 +38,7 @@ import java.lang.ref.WeakReference;
  * adapter and then call {@link #attach()} on it. Instantiating a TabLayoutMediator will only create
  * the mediator object, {@link #attach()} will link the TabLayout and the ViewPager2 together. When
  * creating an instance of this class, you must supply an implementation of {@link
- * OnConfigureTabCallback} in which you set the text of the tab, and/or perform any styling of the
+ * TabConfigurationStrategy} in which you set the text of the tab, and/or perform any styling of the
  * tabs that you require. Changing ViewPager2's adapter will require a {@link #detach()} followed by
  * {@link #attach()} call. Changing the ViewPager2 or TabLayout will require a new instantiation of
  * TabLayoutMediator.
@@ -47,7 +47,7 @@ public final class TabLayoutMediator {
   @NonNull private final TabLayout tabLayout;
   @NonNull private final ViewPager2 viewPager;
   private final boolean autoRefresh;
-  private final OnConfigureTabCallback onConfigureTabCallback;
+  private final TabConfigurationStrategy tabConfigurationStrategy;
   private RecyclerView.Adapter<?> adapter;
   private boolean attached;
 
@@ -59,7 +59,7 @@ public final class TabLayoutMediator {
    * A callback interface that must be implemented to set the text and styling of newly created
    * tabs.
    */
-  public interface OnConfigureTabCallback {
+  public interface TabConfigurationStrategy {
     /**
      * Called to configure the tab for the page at the specified position. Typically calls {@link
      * TabLayout.Tab#setText(CharSequence)}, but any form of styling can be applied.
@@ -74,19 +74,19 @@ public final class TabLayoutMediator {
   public TabLayoutMediator(
       @NonNull TabLayout tabLayout,
       @NonNull ViewPager2 viewPager,
-      @NonNull OnConfigureTabCallback onConfigureTabCallback) {
-    this(tabLayout, viewPager, true, onConfigureTabCallback);
+      @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
+    this(tabLayout, viewPager, true, tabConfigurationStrategy);
   }
 
   public TabLayoutMediator(
       @NonNull TabLayout tabLayout,
       @NonNull ViewPager2 viewPager,
       boolean autoRefresh,
-      @NonNull OnConfigureTabCallback onConfigureTabCallback) {
+      @NonNull TabConfigurationStrategy tabConfigurationStrategy) {
     this.tabLayout = tabLayout;
     this.viewPager = viewPager;
     this.autoRefresh = autoRefresh;
-    this.onConfigureTabCallback = onConfigureTabCallback;
+    this.tabConfigurationStrategy = tabConfigurationStrategy;
   }
 
   /**
@@ -153,7 +153,7 @@ public final class TabLayoutMediator {
       int adapterCount = adapter.getItemCount();
       for (int i = 0; i < adapterCount; i++) {
         TabLayout.Tab tab = tabLayout.newTab();
-        onConfigureTabCallback.onConfigureTab(tab, i);
+        tabConfigurationStrategy.onConfigureTab(tab, i);
         tabLayout.addTab(tab, false);
       }
 
