@@ -193,11 +193,11 @@ def addResources(tasks) {
 
     def releaseVariant = android.libraryVariants.find { it.name == 'release' }
     it.classpath += files(android.libraryVariants.collect { variant ->
-      variant.javaCompile.classpath.files
+      variant.javaCompileProvider.get().classpath.files
     })
     it.classpath += releaseVariant.getCompileClasspath(null)
-    it.classpath += it.project.files(releaseVariant.javaCompile.destinationDir)
-    it.source += releaseVariant.javaCompile.source
+    it.classpath += it.project.files(releaseVariant.javaCompileProvider.get().destinationDir)
+    it.source += releaseVariant.javaCompileProvider.get().source
   }
 }
 
