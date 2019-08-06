@@ -17,6 +17,7 @@ package com.google.android.material.picker;
 
 import static org.junit.Assert.assertEquals;
 
+import com.google.android.material.internal.ParcelableTestUtils;
 import java.util.Calendar;
 import org.junit.Rule;
 import org.junit.Test;

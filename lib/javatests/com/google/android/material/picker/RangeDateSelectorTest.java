@@ -30,6 +30,7 @@ import android.view.View;
 import android.widget.GridView;
 import android.widget.TextView.BufferType;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.internal.ParcelableTestUtils;
 import com.google.android.material.textfield.TextInputLayout;
 import java.util.Calendar;
 import org.junit.Assert;

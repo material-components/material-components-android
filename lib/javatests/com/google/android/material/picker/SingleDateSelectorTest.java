@@ -25,6 +25,7 @@ import android.content.Context;
 import androidx.appcompat.app.AppCompatActivity;
 import android.widget.GridView;
 import androidx.test.core.app.ApplicationProvider;
+import com.google.android.material.internal.ParcelableTestUtils;
 import java.util.Calendar;
 import org.junit.Before;
 import org.junit.Test;
