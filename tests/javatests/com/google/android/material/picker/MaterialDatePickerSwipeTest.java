@@ -32,7 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class PickerDialogFragmentSwipeTest {
+public class MaterialDatePickerSwipeTest {
 
   private static final Month start = Month.create(2000, Calendar.JANUARY);
   private static final Month end = Month.create(2000, Calendar.MAY);
@@ -63,20 +63,20 @@ public class PickerDialogFragmentSwipeTest {
 
   @Test
   public void calendarSwipeCappedAtStart() {
-    PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
-    PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
-    PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
-    PickerDialogFragmentTestUtils.swipeEarlier(dialogFragment);
+    MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
+    MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
+    MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
+    MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
 
     assertEquals(start, findFirstVisibleItem());
   }
 
   @Test
   public void calendarSwipeCappedAtEnd() {
-    PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
-    PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
-    PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
-    PickerDialogFragmentTestUtils.swipeLater(dialogFragment);
+    MaterialDatePickerTestUtils.swipeLater(dialogFragment);
+    MaterialDatePickerTestUtils.swipeLater(dialogFragment);
+    MaterialDatePickerTestUtils.swipeLater(dialogFragment);
+    MaterialDatePickerTestUtils.swipeLater(dialogFragment);
     assertEquals(end, findFirstVisibleItem());
   }
 

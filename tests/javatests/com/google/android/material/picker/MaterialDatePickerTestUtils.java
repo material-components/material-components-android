@@ -44,9 +44,9 @@ import androidx.test.rule.ActivityTestRule;
 import java.util.Calendar;
 import org.hamcrest.core.IsEqual;
 
-public final class PickerDialogFragmentTestUtils {
+public final class MaterialDatePickerTestUtils {
 
-  private PickerDialogFragmentTestUtils() {}
+  private MaterialDatePickerTestUtils() {}
 
   private static final ViewInteraction onMonthsGroup =
       onView(withTagValue(equalTo(MaterialCalendar.MONTHS_VIEW_GROUP_TAG)));
