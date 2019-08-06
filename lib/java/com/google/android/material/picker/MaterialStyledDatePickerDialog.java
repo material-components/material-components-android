@@ -43,7 +43,7 @@ import com.google.android.material.dialog.MaterialDialogs;
  *
  * @hide
  */
-@RestrictTo(Scope.LIBRARY_GROUP)
+@RestrictTo({Scope.LIBRARY_GROUP, Scope.TESTS})
 public class MaterialStyledDatePickerDialog extends DatePickerDialog {
 
   @AttrRes private static final int DEF_STYLE_ATTR = android.R.attr.datePickerStyle;
