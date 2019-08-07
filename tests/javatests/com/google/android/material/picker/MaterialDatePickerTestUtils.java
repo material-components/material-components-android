@@ -21,6 +21,7 @@ import static androidx.test.espresso.action.ViewActions.swipeDown;
 import static androidx.test.espresso.action.ViewActions.swipeLeft;
 import static androidx.test.espresso.action.ViewActions.swipeRight;
 import static androidx.test.espresso.action.ViewActions.swipeUp;
+import static androidx.test.espresso.matcher.ViewMatchers.isCompletelyDisplayed;
 import static androidx.test.espresso.matcher.ViewMatchers.isDescendantOfA;
 import static androidx.test.espresso.matcher.ViewMatchers.withTagValue;
 import static androidx.test.espresso.matcher.ViewMatchers.withText;
@@ -151,6 +152,16 @@ public final class MaterialDatePickerTestUtils {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
+  static void clickDialogVisibleDay(int day) {
+    onView(
+            allOf(
+                isDescendantOfA(withTagValue(equalTo(MaterialCalendar.MONTHS_VIEW_GROUP_TAG))),
+                isCompletelyDisplayed(),
+                withText(String.valueOf(day))))
+        .perform(click());
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
   static void clickOk() {
     onView(withTagValue(equalTo(MaterialDatePicker.CONFIRM_BUTTON_TAG))).perform(click());
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
@@ -158,6 +169,16 @@ public final class MaterialDatePickerTestUtils {
 
   static void clickCancel() {
     onView(withTagValue(equalTo(MaterialDatePicker.CANCEL_BUTTON_TAG))).perform(click());
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
+  static void clickNext() {
+    onView(withTagValue(equalTo(MaterialCalendar.NAVIGATION_NEXT_TAG))).perform(click());
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
+  static void clickPrev() {
+    onView(withTagValue(equalTo(MaterialCalendar.NAVIGATION_PREV_TAG))).perform(click());
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 

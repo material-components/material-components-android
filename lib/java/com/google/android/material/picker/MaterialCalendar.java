@@ -70,9 +70,11 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private static final String CURRENT_MONTH_KEY = "CURRENT_MONTH_KEY";
   private static final int SMOOTH_SCROLL_MAX = 3;
 
-  @VisibleForTesting
-  @RestrictTo(Scope.LIBRARY_GROUP)
-  public static final Object MONTHS_VIEW_GROUP_TAG = "MONTHS_VIEW_GROUP_TAG";
+  @VisibleForTesting static final Object MONTHS_VIEW_GROUP_TAG = "MONTHS_VIEW_GROUP_TAG";
+
+  @VisibleForTesting static final Object NAVIGATION_PREV_TAG = "NAVIGATION_PREV_TAG";
+
+  @VisibleForTesting static final Object NAVIGATION_NEXT_TAG = "NAVIGATION_NEXT_TAG";
 
   private int themeResId;
   private DateSelector<S> dateSelector;
@@ -366,7 +368,9 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
         });
 
     final MaterialButton monthPrev = root.findViewById(R.id.month_navigation_previous);
+    monthPrev.setTag(NAVIGATION_PREV_TAG);
     final MaterialButton monthNext = root.findViewById(R.id.month_navigation_next);
+    monthNext.setTag(NAVIGATION_NEXT_TAG);
 
     yearFrame = root.findViewById(R.id.mtrl_calendar_year_selector_frame);
     dayFrame = root.findViewById(R.id.mtrl_calendar_day_selector_frame);

@@ -15,7 +15,9 @@
  */
 package com.google.android.material.picker;
 
+import static org.hamcrest.Matchers.lessThan;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThat;
 
 import androidx.fragment.app.FragmentManager;
 import androidx.appcompat.app.AppCompatActivity;
@@ -38,6 +40,8 @@ public class MaterialDatePickerSwipeTest {
   private static final Month end = Month.create(2000, Calendar.MAY);
   private static final Month opening = Month.create(2000, Calendar.FEBRUARY);
 
+  private ListenerIdlingResource listenerIdlingResource;
+
   @Rule
   public final ActivityTestRule<AppCompatActivity> activityTestRule =
       new ActivityTestRule<>(AppCompatActivity.class);
@@ -59,6 +63,7 @@ public class MaterialDatePickerSwipeTest {
         .register(
             new RecyclerIdlingResource(
                 dialogFragment.getView().findViewWithTag(MaterialCalendar.MONTHS_VIEW_GROUP_TAG)));
+    listenerIdlingResource = new ListenerIdlingResource();
   }
 
   @Test
@@ -83,6 +88,30 @@ public class MaterialDatePickerSwipeTest {
   @Test
   public void calendarOpensOnCurrent() {
     assertEquals(opening, findFirstVisibleItem());
+  }
+
+  @Test
+  public void swipeChangesMonth() {
+    // This listener with idling resource guarantees that the call to getSelection() is not null.
+    dialogFragment.addOnPositiveButtonClickListener(
+        new MaterialPickerOnPositiveButtonClickListener<Long>() {
+          @Override
+          public void onPositiveButtonClick(Long selection) {
+            listenerIdlingResource.callFromListener();
+          }
+        });
+    Calendar startingTimeOfMonth = Calendar.getInstance();
+    startingTimeOfMonth.clear();
+    startingTimeOfMonth.set(opening.year, opening.month, 1);
+    MaterialDatePickerTestUtils.swipeEarlier(dialogFragment);
+    MaterialDatePickerTestUtils.clickDialogVisibleDay(5);
+
+    MaterialDatePickerTestUtils.clickOk();
+    listenerIdlingResource.beginBlocking();
+    Calendar c = Calendar.getInstance();
+    c.setTimeInMillis(dialogFragment.getSelection());
+
+    assertThat(c.getTimeInMillis(), lessThan(startingTimeOfMonth.getTimeInMillis()));
   }
 
   private Month findFirstVisibleItem() {
