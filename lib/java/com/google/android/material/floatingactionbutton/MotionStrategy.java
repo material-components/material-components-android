@@ -23,7 +23,7 @@ import androidx.annotation.AnimatorRes;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import com.google.android.material.animation.MotionSpec;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.OnChangedCallback;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.OnChangedListener;
 import java.util.List;
 
 /**
@@ -56,9 +56,7 @@ interface MotionStrategy {
 
   void onAnimationCancel();
 
-  void onChange(@Nullable OnChangedCallback callback);
-
-  boolean shouldCancel();
+  void onChange(@Nullable OnChangedListener listener);
 }
 
 
