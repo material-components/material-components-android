@@ -57,7 +57,8 @@ def srcDirs = [
   'textfield',
   'themeswitcher',
   'topappbar',
-  'transformation'
+  'transformation',
+  'windowpreferences'
 ]
 
 android {

@@ -17,5 +17,6 @@
 <resources>
 
   <item name="cat_toc_theme_button" type="id"/>
+  <item name="cat_edge_to_edge_button" type="id"/>
 
 </resources>

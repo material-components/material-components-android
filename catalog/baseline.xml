@@ -1428,17 +1428,6 @@
     </issue>
 
     <issue
-        id="ContentDescription"
-        message="Missing `contentDescription` attribute on image"
-        errorLine1="  &lt;ImageButton"
-        errorLine2="   ~~~~~~~~~~~">
-        <location
-            file="java/io/material/catalog/tableofcontents/res/layout/cat_toc_header.xml"
-            line="45"
-            column="4"/>
-    </issue>
-
-    <issue
         id="KeyboardInaccessibleWidget"
         message="&apos;clickable&apos; attribute found, please also add &apos;focusable&apos;"
         errorLine1="        android:clickable=&quot;true&quot;>"
