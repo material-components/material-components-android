@@ -32,6 +32,7 @@
   <dimen name="mtrl_calendar_action_padding">8dp</dimen>
   <dimen name="mtrl_calendar_header_content_padding_fullscreen">4dp</dimen>
   <dimen name="mtrl_calendar_header_selection_line_height">32dp</dimen>
+  <dimen name="mtrl_calendar_header_divider_thickness">1dp</dimen>
 
   <dimen name="mtrl_calendar_year_height">52dp</dimen>
   <dimen name="mtrl_calendar_year_width">88dp</dimen>

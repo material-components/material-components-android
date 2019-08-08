@@ -51,6 +51,11 @@
     <item name="android:background">?attr/colorPrimary</item>
   </style>
 
+  <style name="Widget.MaterialComponents.MaterialCalendar.HeaderDivider" parent="android:Widget">
+    <item name="android:visibility">gone</item>
+    <item name="android:background">?attr/colorOnPrimary</item>
+  </style>
+
   <style name="Widget.MaterialComponents.MaterialCalendar.HeaderTitle" parent="Widget.AppCompat.TextView">
     <item name="android:textAppearance">?attr/textAppearanceOverline</item>
     <item name="android:textColor">?attr/colorOnPrimary</item>

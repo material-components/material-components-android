@@ -154,6 +154,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
             R.style.Widget_MaterialComponents_MaterialCalendar);
     background.initializeElevationOverlay(context);
     background.setFillColor(ColorStateList.valueOf(surfaceColor));
+    background.setElevation(ViewCompat.getElevation(dialog.getWindow().getDecorView()));
     return dialog;
   }
 
