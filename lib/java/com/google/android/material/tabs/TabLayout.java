@@ -1603,9 +1603,9 @@ public class TabLayout extends HorizontalScrollView {
                 + getPaddingBottom());
     switch (MeasureSpec.getMode(heightMeasureSpec)) {
       case MeasureSpec.AT_MOST:
-        heightMeasureSpec =
-            MeasureSpec.makeMeasureSpec(
-                Math.min(idealHeight, MeasureSpec.getSize(heightMeasureSpec)), MeasureSpec.EXACTLY);
+        if (getChildCount() == 1 && MeasureSpec.getSize(heightMeasureSpec) >= idealHeight) {
+          getChildAt(0).setMinimumHeight(idealHeight);
+        }
         break;
       case MeasureSpec.UNSPECIFIED:
         heightMeasureSpec = MeasureSpec.makeMeasureSpec(idealHeight, MeasureSpec.EXACTLY);
