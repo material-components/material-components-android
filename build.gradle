@@ -29,14 +29,14 @@ ext {
     appCompat             : '1.1.0-rc01', // Needed for CSL + theme attr fixes
     cardView              : '1.0.0',
     coordinatorlayout     : '1.1.0-beta01', // Needed for NestedScrolling3 APIs
-    core                  : '1.1.0-rc02', // Needed for CSL + theme attr fixes
+    core                  : '1.1.0-rc03', // Needed for CSL + theme attr fixes
     fragment              : '1.0.0',
     lifecycle             : "2.0.0",
     recyclerView          : '1.0.0',
     recyclerViewSelection : '1.0.0',
     transition            : '1.0.1',
     vectorDrawable        : '1.1.0-rc01', // Needed for CSL + theme attr fixes
-    viewpager2            : '1.0.0-beta02', // Needed for TabLayout and MaterialCalendar
+    viewpager2            : '1.0.0-beta03', // Needed for TabLayout and MaterialCalendar
   ]
 
   testRunnerVersion = '1.1.0'
