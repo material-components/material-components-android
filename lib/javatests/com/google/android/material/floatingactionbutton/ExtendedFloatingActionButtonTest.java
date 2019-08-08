@@ -31,7 +31,7 @@ import android.view.View;
 import android.view.View.MeasureSpec;
 import android.view.ViewGroup.LayoutParams;
 import androidx.test.core.app.ApplicationProvider;
-import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.OnChangedListener;
+import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton.OnChangedCallback;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -63,40 +63,57 @@ public class ExtendedFloatingActionButtonTest {
     int originalWidth = fabForTest.getMeasuredWidth();
     fabForTest.shrink();
 
-    OnChangedListener onChangedListener = mock(OnChangedListener.class);
-    fabForTest.extend(onChangedListener);
+    OnChangedCallback onChangedCallback = mock(OnChangedCallback.class);
+    fabForTest.extend(onChangedCallback);
     shadowOf(Looper.getMainLooper()).idle();
 
-    verify(onChangedListener, times(1)).onExtended(fabForTest);
+    verify(onChangedCallback, times(1)).onExtended(fabForTest);
     assertThat(fabForTest.getLayoutParams().width).isEqualTo(originalWidth);
   }
 
   @Test
   public void sizeAndCallsCorrectListener_forCollapse() {
-    OnChangedListener onChangedListener = mock(OnChangedListener.class);
+    OnChangedCallback onChangedCallback = mock(OnChangedCallback.class);
 
-    fabForTest.shrink(onChangedListener);
+    fabForTest.shrink(onChangedCallback);
     shadowOf(Looper.getMainLooper()).idle();
 
-    verify(onChangedListener, times(1)).onShrunken(fabForTest);
+    verify(onChangedCallback, times(1)).onShrunken(fabForTest);
     assertThat(fabForTest.getLayoutParams().width).isEqualTo(fabForTest.getCollapsedSize());
   }
 
   @Test
   public void hideAndShow_correctVisibilityAndListener() {
-    OnChangedListener onChangedListener = mock(OnChangedListener.class);
+    OnChangedCallback onChangedCallback = mock(OnChangedCallback.class);
 
-    fabForTest.hide(onChangedListener);
+    fabForTest.hide(onChangedCallback);
     shadowOf(Looper.getMainLooper()).idle();
 
-    verify(onChangedListener, times(1)).onHidden(fabForTest);
+    verify(onChangedCallback, times(1)).onHidden(fabForTest);
     assertThat(fabForTest.getVisibility()).isEqualTo(View.GONE);
 
 
-    fabForTest.show(onChangedListener);
+    fabForTest.show(onChangedCallback);
 
-    verify(onChangedListener, times(1)).onShown(fabForTest);
+    verify(onChangedCallback, times(1)).onShown(fabForTest);
     assertThat(fabForTest.getVisibility()).isEqualTo(View.VISIBLE);
+  }
+
+  @Test
+  public void setExtended_correctSize_whenExtendedFalse() {
+    fabForTest.setExtended(false);
+
+    assertThat(fabForTest.getLayoutParams().width).isEqualTo(fabForTest.getCollapsedSize());
+  }
+
+  @Test
+  public void setExtended_correctSize_whenExtendedTrue() {
+    int originalWidth = fabForTest.getMeasuredWidth();
+    // collapse first so it's not a noop.
+    fabForTest.setExtended(false);
+    fabForTest.setExtended(true);
+
+    assertThat(fabForTest.getLayoutParams().width).isEqualTo(originalWidth);
   }
 
   private ExtendedFloatingActionButton createFabForTest() {
