@@ -96,6 +96,7 @@ public final class MaterialDatePicker<S> extends DialogFragment {
   private TextView headerSelectionText;
   private CheckableImageButton headerToggleButton;
   private MaterialShapeDrawable background;
+  private MaterialButton confirmButton;
 
   static <S> MaterialDatePicker<S> newInstance(Builder<S> options) {
     MaterialDatePicker<S> materialDatePickerDialogFragment = new MaterialDatePicker<>();
@@ -184,7 +185,12 @@ public final class MaterialDatePicker<S> extends DialogFragment {
     ((TextView) root.findViewById(R.id.mtrl_picker_title_text)).setText(titleTextResId);
     initHeaderToggle(context);
 
-    MaterialButton confirmButton = root.findViewById(R.id.confirm_button);
+    confirmButton = root.findViewById(R.id.confirm_button);
+    if (dateSelector.isSelectionComplete()) {
+      confirmButton.setEnabled(true);
+    } else {
+      confirmButton.setEnabled(false);
+    }
     confirmButton.setTag(CONFIRM_BUTTON_TAG);
     confirmButton.setOnClickListener(
         new View.OnClickListener() {
@@ -295,6 +301,11 @@ public final class MaterialDatePicker<S> extends DialogFragment {
           @Override
           public void onSelectionChanged(S selection) {
             updateHeader();
+            if (dateSelector.isSelectionComplete()) {
+              confirmButton.setEnabled(true);
+            } else {
+              confirmButton.setEnabled(false);
+            }
           }
         });
   }

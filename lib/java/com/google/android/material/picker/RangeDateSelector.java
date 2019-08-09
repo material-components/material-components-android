@@ -70,6 +70,13 @@ public class RangeDateSelector implements DateSelector<Pair<Long, Long>> {
   }
 
   @Override
+  public boolean isSelectionComplete() {
+    return selectedStartItem != null
+        && selectedEndItem != null
+        && isValidRange(selectedStartItem, selectedEndItem);
+  }
+
+  @Override
   public void setSelection(Pair<Long, Long> selection) {
     if (selection.first != null && selection.second != null) {
       Preconditions.checkArgument(isValidRange(selection.first, selection.second));

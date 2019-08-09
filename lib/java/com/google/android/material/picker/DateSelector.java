@@ -52,6 +52,9 @@ public interface DateSelector<S> extends Parcelable {
   @Nullable
   S getSelection();
 
+  /** Returns true if the current selection is acceptable. */
+  boolean isSelectionComplete();
+
   /**
    * Sets the current selection to {@code selection}.
    *

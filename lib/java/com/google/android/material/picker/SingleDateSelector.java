@@ -61,6 +61,11 @@ public class SingleDateSelector implements DateSelector<Long> {
   }
 
   @Override
+  public boolean isSelectionComplete() {
+    return selectedItem != null;
+  }
+
+  @Override
   public Collection<Pair<Long, Long>> getSelectedRanges() {
     return new ArrayList<>();
   }
