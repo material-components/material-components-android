@@ -39,8 +39,8 @@
 
   <string name="mtrl_picker_toggle_to_calendar_input_mode" description="a11y string to indicate this button changes the input mode to a calendar [CHAR_LIMIT=NONE]">Switch to Calendar Input mode</string>
   <string name="mtrl_picker_toggle_to_text_input_mode" description="a11y string to indicate this button changes the input mode to a text field [CHAR_LIMIT=NONE]">Switch to Text Input mode</string>
-  <string name="mtrl_picker_a11y_prev_month" description="a11y string to indicate this button moves the calendar to the previous month [CHAR_LIMIT=NONE]">Move to previous month</string>
-  <string name="mtrl_picker_a11y_next_month" description="a11y string to indicate this button moves the calendar to the next month [CHAR_LIMIT=NONE]">Move to next month</string>
+  <string name="mtrl_picker_a11y_prev_month" description="a11y string to indicate this button moves the calendar to the previous month [CHAR_LIMIT=NONE]">Change to previous month</string>
+  <string name="mtrl_picker_a11y_next_month" description="a11y string to indicate this button moves the calendar to the next month [CHAR_LIMIT=NONE]">Change to next month</string>
   <string name="mtrl_picker_toggle_to_year_selection" description="a11y string to indicate this button switches the user to choosing a year [CHAR_LIMIT=NONE]">Tap to switch to selecting a year</string>
   <string name="mtrl_picker_toggle_to_day_selection" description="a11y string to indicate this button switches the user to choosing a day [CHAR_LIMIT=NONE]">Tap to switch to selecting a day</string>
   <string name="mtrl_picker_day_of_week_column_header" description="a11y string to indicate this is a header for a column of days for one day of the week (e.g., Monday) [CHAR_LIMIT=NONE]">Column of days: %1$s</string>
