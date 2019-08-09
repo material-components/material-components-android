@@ -68,7 +68,7 @@ public class BottomSheetDialogFragment extends AppCompatDialogFragment {
    */
   private boolean tryDismissWithAnimation(boolean allowingStateLoss) {
     BottomSheetBehavior<View> behavior = getBottomSheetBehavior();
-    if (behavior != null && getDialog().getDismissWithAnimation()) {
+    if (behavior != null && behavior.isHideable() && getDialog().getDismissWithAnimation()) {
       dismissWithAnimation(behavior, allowingStateLoss);
       return true;
     }
