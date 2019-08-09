@@ -43,6 +43,8 @@ public class BottomSheetDialog extends AppCompatDialog {
 
   private BottomSheetBehavior<FrameLayout> behavior;
 
+  private FrameLayout container;
+
   boolean dismissWithAnimation;
 
   boolean cancelable = true;
@@ -134,9 +136,7 @@ public class BottomSheetDialog extends AppCompatDialog {
   public void cancel() {
     BottomSheetBehavior<FrameLayout> behavior = getBehavior();
 
-    if (behavior == null
-        || !dismissWithAnimation
-        || behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
+    if (!dismissWithAnimation || behavior.getState() == BottomSheetBehavior.STATE_HIDDEN) {
       super.cancel();
     } else {
 
@@ -164,6 +164,10 @@ public class BottomSheetDialog extends AppCompatDialog {
 
   @NonNull
   public BottomSheetBehavior<FrameLayout> getBehavior() {
+    if (behavior == null) {
+      // The content hasn't been set, so the behavior doesn't exist yet. Let's create it.
+      ensureContainerAndBehavior();
+    }
     return behavior;
   }
 
@@ -185,17 +189,28 @@ public class BottomSheetDialog extends AppCompatDialog {
     return dismissWithAnimation;
   }
 
+  /** Creates the container layout which must exist to find the behavior */
+  private FrameLayout ensureContainerAndBehavior() {
+    if (container == null) {
+      container =
+          (FrameLayout) View.inflate(getContext(), R.layout.design_bottom_sheet_dialog, null);
+
+      FrameLayout bottomSheet = (FrameLayout) container.findViewById(R.id.design_bottom_sheet);
+      behavior = BottomSheetBehavior.from(bottomSheet);
+      behavior.setBottomSheetCallback(bottomSheetCallback);
+      behavior.setHideable(cancelable);
+    }
+    return container;
+  }
+
   private View wrapInBottomSheet(int layoutResId, View view, ViewGroup.LayoutParams params) {
-    FrameLayout container =
-        (FrameLayout) View.inflate(getContext(), R.layout.design_bottom_sheet_dialog, null);
+    ensureContainerAndBehavior();
     CoordinatorLayout coordinator = (CoordinatorLayout) container.findViewById(R.id.coordinator);
     if (layoutResId != 0 && view == null) {
       view = getLayoutInflater().inflate(layoutResId, coordinator, false);
     }
-    FrameLayout bottomSheet = (FrameLayout) coordinator.findViewById(R.id.design_bottom_sheet);
-    behavior = BottomSheetBehavior.from(bottomSheet);
-    behavior.setBottomSheetCallback(bottomSheetCallback);
-    behavior.setHideable(cancelable);
+
+    FrameLayout bottomSheet = (FrameLayout) container.findViewById(R.id.design_bottom_sheet);
     if (params == null) {
       bottomSheet.addView(view);
     } else {
