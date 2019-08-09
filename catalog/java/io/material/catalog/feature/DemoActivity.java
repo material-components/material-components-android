@@ -32,6 +32,7 @@ import dagger.android.AndroidInjection;
 import dagger.android.AndroidInjector;
 import dagger.android.DispatchingAndroidInjector;
 import dagger.android.HasAndroidInjector;
+import io.material.catalog.windowpreferences.WindowPreferencesManager;
 import javax.inject.Inject;
 
 /** Base Activity class that provides a demo screen structure for a single demo. */
@@ -56,6 +57,9 @@ public abstract class DemoActivity extends AppCompatActivity
 
     initDemoActionBar();
     demoContainer.addView(onCreateDemoView(LayoutInflater.from(this), demoContainer, bundle));
+
+    WindowPreferencesManager windowPreferencesManager = new WindowPreferencesManager(this);
+    windowPreferencesManager.applyEdgeToEdgePreference(getWindow());
   }
 
   @Override
