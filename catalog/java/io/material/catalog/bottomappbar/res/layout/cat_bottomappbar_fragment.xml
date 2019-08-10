@@ -20,7 +20,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/coordinator_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true">
 
   <include layout="@layout/cat_bottomappbar_content"/>
 
@@ -30,7 +31,8 @@
       android:layout_height="wrap_content"
       android:layout_gravity="bottom"
       app:navigationIcon="@drawable/ic_drawer_menu_24px"
-      app:navigationContentDescription="@string/cat_bottomappbar_navigation_button_content_description"/>
+      app:navigationContentDescription="@string/cat_bottomappbar_navigation_button_content_description"
+      android:fitsSystemWindows="true"/>
 
   <com.google.android.material.floatingactionbutton.FloatingActionButton
       android:id="@+id/fab"
