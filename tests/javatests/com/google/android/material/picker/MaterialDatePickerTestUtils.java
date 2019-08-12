@@ -182,6 +182,11 @@ public final class MaterialDatePickerTestUtils {
     InstrumentationRegistry.getInstrumentation().waitForIdleSync();
   }
 
+  static void clickSelectorToggle() {
+    onView(withTagValue(equalTo(MaterialCalendar.SELECTOR_TOGGLE_TAG))).perform(click());
+    InstrumentationRegistry.getInstrumentation().waitForIdleSync();
+  }
+
   static void swipeEarlier(DialogFragment dialogFragment) {
     int orientation = getOrientation(dialogFragment);
     if (orientation == LinearLayoutManager.HORIZONTAL) {

@@ -34,7 +34,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(AndroidJUnit4.class)
-public class MaterialDatePickerSwipeTest {
+public class MaterialDatePickerPagesTest {
 
   private static final Month start = Month.create(2000, Calendar.JANUARY);
   private static final Month end = Month.create(2000, Calendar.MAY);
@@ -112,6 +112,14 @@ public class MaterialDatePickerSwipeTest {
     c.setTimeInMillis(dialogFragment.getSelection());
 
     assertThat(c.getTimeInMillis(), lessThan(startingTimeOfMonth.getTimeInMillis()));
+  }
+
+  @Test
+  public void changingSelectorToDayMaintainsCurrentMonth() {
+    MaterialDatePickerTestUtils.clickNext();
+    MaterialDatePickerTestUtils.clickSelectorToggle();
+    MaterialDatePickerTestUtils.clickSelectorToggle();
+    assertEquals(findFirstVisibleItem(), opening.monthsLater(1));
   }
 
   private Month findFirstVisibleItem() {

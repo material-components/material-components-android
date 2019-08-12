@@ -76,6 +76,8 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
 
   @VisibleForTesting static final Object NAVIGATION_NEXT_TAG = "NAVIGATION_NEXT_TAG";
 
+  @VisibleForTesting static final Object SELECTOR_TOGGLE_TAG = "SELECTOR_TOGGLE_TAG";
+
   private int themeResId;
   private DateSelector<S> dateSelector;
   private CalendarConstraints calendarConstraints;
@@ -331,13 +333,15 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
       yearSelector
           .getLayoutManager()
           .scrollToPosition(
-              ((YearGridAdapter) yearSelector.getAdapter())
-                  .getPositionForYear(calendarConstraints.getOpening().year));
+              ((YearGridAdapter) yearSelector.getAdapter()).getPositionForYear(current.year));
       yearFrame.setVisibility(View.VISIBLE);
       dayFrame.setVisibility(View.GONE);
     } else if (selector == CalendarSelector.DAY) {
       yearFrame.setVisibility(View.GONE);
       dayFrame.setVisibility(View.VISIBLE);
+      // When visibility is toggled, the RecyclerView default opens to its lowest available id.
+      // This id is always one month earlier than current, so we force it to current.
+      setCurrentMonth(current);
     }
   }
 
@@ -352,6 +356,7 @@ public final class MaterialCalendar<S> extends PickerFragment<S> {
   private void addActionsToMonthNavigation(
       final View root, final MonthsPagerAdapter monthsPagerAdapter) {
     final MaterialButton monthDropSelect = root.findViewById(R.id.month_navigation_fragment_toggle);
+    monthDropSelect.setTag(SELECTOR_TOGGLE_TAG);
     ViewCompat.setAccessibilityDelegate(
         monthDropSelect,
         new AccessibilityDelegateCompat() {
