@@ -59,6 +59,8 @@
     <item name="startIconTint">@color/mtrl_outlined_icon_tint</item>
     <item name="boxCollapsedPaddingTop">0dp</item>
     <item name="boxStrokeColor">@color/mtrl_outlined_stroke_color</item>
+    <item name="boxStrokeWidth">@dimen/mtrl_textinput_box_stroke_width_default</item>
+    <item name="boxStrokeWidthFocused">@dimen/mtrl_textinput_box_stroke_width_focused</item>
 
     <item name="counterTextAppearance">?attr/textAppearanceCaption</item>
     <item name="counterOverflowTextAppearance">?attr/textAppearanceCaption</item>

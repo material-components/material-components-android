@@ -445,13 +445,17 @@ public class TextInputLayout extends LinearLayout {
         a.getDimensionPixelOffset(R.styleable.TextInputLayout_boxCollapsedPaddingTop, 0);
 
     boxStrokeWidthDefaultPx =
-        context
-            .getResources()
-            .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_default);
+        a.getDimensionPixelSize(
+            R.styleable.TextInputLayout_boxStrokeWidth,
+            context
+                .getResources()
+                .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_default));
     boxStrokeWidthFocusedPx =
-        context
-            .getResources()
-            .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_focused);
+        a.getDimensionPixelSize(
+            R.styleable.TextInputLayout_boxStrokeWidthFocused,
+            context
+                .getResources()
+                .getDimensionPixelSize(R.dimen.mtrl_textinput_box_stroke_width_focused));
     boxStrokeWidthPx = boxStrokeWidthDefaultPx;
 
     float boxCornerRadiusTopStart =

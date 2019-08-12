@@ -177,8 +177,12 @@
     <attr name="boxStrokeColor" format="color"/>
     <!-- The color to use for the box's background color when in filled box mode. -->
     <attr name="boxBackgroundColor" format="color"/>
-    <!-- The value to use for the box's stroke when in outline box mode. -->
+    <!-- The value to use for the box's stroke when in outline box mode, or for the underline stroke
+         in filled mode. -->
     <attr name="boxStrokeWidth" format="dimension"/>
+    <!-- The value to use for the focused box's stroke when in outline box mode, or for the focused
+         underline stroke in filled mode.. -->
+    <attr name="boxStrokeWidthFocused" format="dimension"/>
 
     <!-- Shape appearance style reference for TextInputLayout. Attribute declaration is in the Shape
         package. -->
