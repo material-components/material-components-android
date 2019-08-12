@@ -142,6 +142,7 @@ public final class TabLayoutMediator {
     pagerAdapterObserver = null;
     onTabSelectedListener = null;
     onPageChangeCallback = null;
+    adapter = null;
     attached = false;
   }
 
